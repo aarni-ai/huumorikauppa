@@ -18,6 +18,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
+import OrderConfirmation from "./pages/OrderConfirmation";
 import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/toimitusehdot" element={<Terms />} />
             <Route path="/tietosuojakaytanto" element={<Privacy />} />
             <Route path="/haku" element={<SearchPage />} />
+            <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
