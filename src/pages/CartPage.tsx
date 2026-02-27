@@ -3,6 +3,7 @@ import { useCartContext } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ShoppingCart, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { SEOHead } from "@/components/SEOHead";
 
 const CartPage = () => {
   const { items, removeItem, updateQuantity, totalPrice, totalItems, clearCart } = useCartContext();
@@ -13,6 +14,7 @@ const CartPage = () => {
   if (items.length === 0) {
     return (
       <div className="container py-20 text-center space-y-6">
+        <SEOHead title="Ostoskori – Huumorikauppa" description="Ostoskorisi on tyhjä. Selaa Huumorikaupan hauskoja tuotteita!" />
         <ShoppingCart className="h-16 w-16 text-muted-foreground mx-auto" />
         <h1 className="font-display text-3xl text-foreground">Ostoskori on tyhjä 😅</h1>
         <p className="text-muted-foreground">Etkö löytänyt mitään hauskaa? Mahdotonta!</p>
@@ -25,18 +27,20 @@ const CartPage = () => {
 
   return (
     <div className="container py-8 md:py-12">
+      <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Ostoskori 🛒</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Items */}
         <div className="lg:col-span-2 space-y-4">
-          {items.map((item, index) => (
+          {items.map((item) => (
             <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-4 bg-card border border-border rounded-lg p-4">
               <Link to={`/tuote/${item.product.slug}`} className="shrink-0">
                 <img
                   src={item.product.images[0] || "/placeholder.svg"}
                   alt={item.product.name}
                   className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md bg-muted"
+                  loading="lazy"
                 />
               </Link>
               <div className="flex-1 min-w-0">
@@ -121,7 +125,7 @@ const CartPage = () => {
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
-            <p>🚚 Toimitus 1–3 arkipäivää</p>
+            <p>🚚 Toimitus 3–10 arkipäivää</p>
           </div>
         </div>
       </div>

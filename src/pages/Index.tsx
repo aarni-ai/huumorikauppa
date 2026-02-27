@@ -5,6 +5,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { mockProducts, categories } from "@/data/products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { SEOHead } from "@/components/SEOHead";
 
 const Index = () => {
   const featured = mockProducts.filter(p => p.is_featured).slice(0, 8);
@@ -13,10 +14,29 @@ const Index = () => {
   const hupparit = mockProducts.filter(p => p.category === "hupparit").slice(0, 4);
   const housut = mockProducts.filter(p => p.category === "housut").slice(0, 4);
   const mukit = mockProducts.filter(p => p.category === "mukit").slice(0, 4);
-  const tarraArkit = mockProducts.filter(p => p.category === "tarra-arkit").slice(0, 4);
+  const tarrat = mockProducts.filter(p => p.category === "tarrat").slice(0, 4);
+
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Huumorikauppa",
+    "url": "https://huumorikauppa.fi",
+    "logo": "https://huumorikauppa.fi/favicon.ico",
+    "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
+    "email": "info@huumorikauppa.fi",
+    "sameAs": []
+  };
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat"
+        description="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!"
+        canonical="https://huumorikauppa.fi"
+        jsonLd={orgJsonLd}
+      />
+
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background via-card to-background py-16 md:py-28">
         <div className="absolute inset-0 opacity-5">
@@ -63,7 +83,7 @@ const Index = () => {
       <ProductSection title="Hauskat Hupparit 🧥" linkTo="/kategoria/hupparit" products={hupparit} />
       <ProductSection title="Hauskat Housut 👖" linkTo="/kategoria/housut" products={housut} />
       <ProductSection title="Hauskat Mukit ☕" linkTo="/kategoria/mukit" products={mukit} />
-      <ProductSection title="Hauskat Tarra-arkit 🏷️" linkTo="/kategoria/tarra-arkit" products={tarraArkit} />
+      <ProductSection title="Hauskat Tarrat 🏷️" linkTo="/kategoria/tarrat" products={tarrat} />
 
       {/* BESTSELLERIT */}
       <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
@@ -96,7 +116,7 @@ const Index = () => {
             <TrustCard
               icon={<Heart className="h-8 w-8 text-accent" />}
               title="Helppo tilata"
-              desc="Selkeä kauppa, turvallinen maksu ja nopea toimitus. Tilaaminen onnistuu kaikilta."
+              desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta."
               bg="accent"
             />
             <TrustCard

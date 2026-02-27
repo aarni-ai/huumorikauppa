@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 
 const Terms = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
-      <nav className="text-sm text-muted-foreground mb-6">
+      <SEOHead
+        title="Toimitusehdot – Huumorikauppa"
+        description="Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus, palautukset ja reklamaatiot. Turvallinen verkkokauppa."
+        canonical="https://huumorikauppa.fi/toimitusehdot"
+      />
+
+      <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground">Etusivu</Link>
         <span className="mx-2">/</span>
         <span className="text-foreground">Toimitusehdot</span>
@@ -14,7 +21,7 @@ const Terms = () => {
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
           <h2 className="font-display text-xl text-foreground">1. Yleistä</h2>
-          <p>Nämä toimitusehdot koskevat Huumorikauppa Oy:n (jäljempänä "Myyjä") verkkokaupasta osoitteessa huumorikauppa.fi tehtyjä tilauksia. Tilaamalla tuotteita verkkokaupasta asiakas hyväksyy nämä toimitusehdot.</p>
+          <p>Nämä toimitusehdot koskevat Huumorikaupan verkkokaupasta osoitteessa huumorikauppa.fi tehtyjä tilauksia. Tilaamalla tuotteita verkkokaupasta asiakas hyväksyy nämä toimitusehdot.</p>
         </section>
 
         <section>
@@ -29,12 +36,12 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">4. Toimitus</h2>
-          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on 1–5 arkipäivää tilauksesta. Yli 60 € tilaukset toimitetaan ilman toimituskuluja. Alle 60 € tilausten toimituskulut ovat 5,95 €.</p>
+          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on 3–10 arkipäivää tilauksesta. Yli 60 € tilaukset toimitetaan ilman toimituskuluja. Alle 60 € tilausten toimituskulut ovat 5,95 €.</p>
         </section>
 
         <section>
           <h2 className="font-display text-xl text-foreground">5. Palautukset ja vaihto</h2>
-          <p>Asiakkaalla on kuluttajansuojalain mukainen 14 päivän peruutusoikeus. Tuote tulee palauttaa käyttämättömänä ja alkuperäispakkauksessa. Palautuskulut maksaa asiakas, ellei tuote ole virheellinen.</p>
+          <p>Asiakkaalla on kuluttajansuojalain mukainen 14 päivän peruutusoikeus. Palautuskulut maksaa asiakas, ellei tuote ole virheellinen.</p>
         </section>
 
         <section>
@@ -44,7 +51,7 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">7. Yhteystiedot</h2>
-          <p>Huumorikauppa Oy<br />Esimerkkitie 123<br />00100 Helsinki<br />info@huumorikauppa.fi<br />0400 123 456<br />Asiakaspalvelu: ma–pe 9–17</p>
+          <p>Huumorikauppa<br />Helsinki, Suomi<br />info@huumorikauppa.fi</p>
         </section>
       </div>
     </div>
