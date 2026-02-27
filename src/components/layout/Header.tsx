@@ -25,7 +25,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       {/* Trust banner */}
       <div className="bg-primary text-primary-foreground text-center py-1.5 text-xs md:text-sm font-medium tracking-wide">
-        🚚 Ilmainen toimitus yli 60 € &nbsp;•&nbsp; 💎 +500 tyytyväistä suomalaista &nbsp;•&nbsp; 🔄 14 pv palautusoikeus &nbsp;•&nbsp; 🇫🇮 Suomalainen huumorikauppa
+        🚚 Ilmainen toimitus yli 60 € tilauksista
       </div>
 
       <div className="container flex items-center justify-between h-14 md:h-16 gap-4">

@@ -54,14 +54,14 @@ export function Footer() {
         {/* Newsletter */}
         <div className="space-y-4">
           <h4 className="font-display text-sm text-foreground">TILAA UUTISKIRJE 💥</h4>
-          <p className="text-sm text-muted-foreground">Tilaa kuukausittainen uutiskirje ja saat 10% alennuskoodin heti + viikoittaisen meemi-iskun!</p>
+          <p className="text-sm text-muted-foreground">Tilaa uutiskirje ja saat 10% alennuskoodin ensimmäiseen tilaukseesi!</p>
           <div className="flex gap-2">
             <Input placeholder="anna@email.fi" className="h-9 bg-muted border-border text-sm" />
             <Button size="sm" className="bg-primary text-primary-foreground font-bold shrink-0">
               Tilaa 🚀
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground">Voit peruuttaa milloin vain. Emme myy tietojasi.</p>
+          <p className="text-xs text-muted-foreground">Voit peruuttaa milloin vain.</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <span>🔒 SSL-suojattu</span>
             <span>💳 Turvallinen maksu</span>
-            <span>🚚 Nopeat toimitukset 1–3 arkipäivää</span>
+            <span>🚚 Toimitukset 3–10 arkipäivää</span>
             <span>🇫🇮 Made in Finland</span>
           </div>
         </div>

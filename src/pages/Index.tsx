@@ -27,9 +27,9 @@ const Index = () => {
         </div>
         <div className="container relative text-center space-y-6 md:space-y-8">
           <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-tight">
-            Hauskaa huumoria{" "}
-            <span className="text-primary text-glow-lime">suomalaisille</span>{" "}
-            jo vuodesta 2026 💜😂
+            Suomen hauskin{" "}
+            <span className="text-primary text-glow-lime">meemikauppa</span>{" "}
+            on täällä 💜😂
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Setähuumoria, äitihuumoria ja kaikkien suomalaisten suosikkeja.
@@ -49,10 +49,9 @@ const Index = () => {
       {/* TRUST BADGES */}
       <section className="bg-muted/50 py-4 border-y border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 € tilauksista</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
-          <div className="flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> +500 tyytyväistä suomalaista 💎</div>
         </div>
       </section>
 
@@ -90,27 +89,27 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
             <TrustCard
               icon={<Users className="h-8 w-8 text-primary" />}
-              title="Yli 500 tyytyväistä setää"
-              desc="Ja yhtä monta äitiä jotka tilasi 'vain yhden mukin'. Spoiler: ei jäänyt yhteen."
+              title="Tyytyväisiä asiakkaita"
+              desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen."
               bg="primary"
             />
             <TrustCard
-              icon={<ThumbsUp className="h-8 w-8 text-secondary" />}
-              title="Naapurit kateellisia"
-              desc="Koko naapurusto haluaa tietää mistä sait sen paidan. Vastaus: Huumorikauppa.fi."
-              bg="secondary"
-            />
-            <TrustCard
               icon={<Heart className="h-8 w-8 text-accent" />}
-              title="Mummokin tilasi mukin"
-              desc="Niin helppo tilata, että 87-vuotias mummo sai 'Maailman paras mummo' -mukin itse tilattua."
+              title="Helppo tilata"
+              desc="Selkeä kauppa, turvallinen maksu ja nopea toimitus. Tilaaminen onnistuu kaikilta."
               bg="accent"
             />
             <TrustCard
               icon={<Star className="h-8 w-8 text-primary" />}
               title="Täydellinen lahja"
-              desc="Vuoden paras lahja itselle tai naapurille. Taatusti naurattaa – tai rahat takaisin."
+              desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!"
               bg="primary"
+            />
+            <TrustCard
+              icon={<ThumbsUp className="h-8 w-8 text-secondary" />}
+              title="Custom-painatukset"
+              desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!"
+              bg="secondary"
             />
           </div>
         </div>
@@ -123,7 +122,7 @@ const Index = () => {
             Tilaa uutiskirje 💥
           </h2>
           <p className="text-muted-foreground mb-6">
-            Tilaa kuukausittainen uutiskirje ja saat 10% alennuskoodin heti + viikoittaisen meemi-iskun sähköpostiisi!
+            Tilaa uutiskirje ja saat 10% alennuskoodin ensimmäiseen tilaukseesi!
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Input placeholder="anna@sahkoposti.fi" className="h-11 bg-muted border-border" />
@@ -131,7 +130,7 @@ const Index = () => {
               Tilaa 🚀
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain. Emme myy tietojasi.</p>
+          <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
     </div>
