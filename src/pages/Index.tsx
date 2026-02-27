@@ -46,7 +46,7 @@ const Index = () => {
           <div className="absolute bottom-20 right-10 text-5xl md:text-7xl">🔥</div>
         </div>
         <div className="container relative text-center space-y-6 md:space-y-8">
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-tight">
+          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-tight md:leading-snug">
             Suomen hauskin{" "}
             <span className="text-primary text-glow-lime">meemikauppa</span>{" "}
             on täällä 💜😂
