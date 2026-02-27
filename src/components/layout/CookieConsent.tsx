@@ -6,7 +6,10 @@ export function CookieConsent() {
 
   useEffect(() => {
     const accepted = localStorage.getItem("huumorikauppa-cookies");
-    if (!accepted) setShow(true);
+    if (!accepted) {
+      const timer = setTimeout(() => setShow(true), 500);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const accept = () => {
@@ -14,24 +17,50 @@ export function CookieConsent() {
     setShow(false);
   };
 
+  const acceptNecessary = () => {
+    localStorage.setItem("huumorikauppa-cookies", "necessary");
+    setShow(false);
+  };
+
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border p-4 md:p-6 animate-slide-in-right">
-      <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground">
-          Käytämme evästeitä.{" "}
-          <a href="/tietosuojakaytanto" className="text-primary hover:underline">Lue lisää</a>
-        </p>
-        <div className="flex gap-2 shrink-0">
-          <Button onClick={accept} size="sm" className="bg-primary text-primary-foreground font-bold">
-            Hyväksy evästeet
-          </Button>
-          <Button onClick={() => setShow(false)} variant="ghost" size="sm" className="text-muted-foreground">
-            Vain välttämättömät
-          </Button>
+    <>
+      {/* Overlay */}
+      <div className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm" />
+
+      {/* Cookie popup */}
+      <div className="fixed bottom-6 left-4 right-4 z-50 mx-auto max-w-lg animate-slide-in-right">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-2xl shadow-primary/10">
+          <div className="flex items-start gap-3 mb-4">
+            <span className="text-3xl">🍪</span>
+            <div>
+              <h3 className="font-display text-lg text-foreground mb-1">Käytämme evästeitä</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Käytämme evästeitä parantaaksemme käyttökokemustasi ja analysoidaksemme liikennettä.{" "}
+                <a href="/tietosuojakaytanto" className="text-primary hover:underline font-medium">
+                  Lue lisää →
+                </a>
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button
+              onClick={accept}
+              className="flex-1 bg-primary text-primary-foreground font-bold shadow-glow-lime hover:scale-[1.02] transition-transform"
+            >
+              Hyväksy kaikki 🍪
+            </Button>
+            <Button
+              onClick={acceptNecessary}
+              variant="outline"
+              className="flex-1 border-border text-muted-foreground hover:text-foreground"
+            >
+              Vain välttämättömät
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
