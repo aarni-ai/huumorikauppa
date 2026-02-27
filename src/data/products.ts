@@ -11,7 +11,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 42,
     description: "Tää paita kertoo kaiken mitä sun pitää tietää sunnuntai-iltapäivästä. Sopii grillimestareille, sohvan kuluttajille ja kaikille jotka tietää mikä elämässä on tärkeää. 100% puuvillaa, 100% totuutta. 🍺",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/Oispa_kaljaa_tpaita.jpg?v=1738692131&width=533",
+      "https://meemirotta.fi/cdn/shop/files/unisex-classic-tee-white-front-67a253f68090a.jpg?v=1738691727&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Tummansininen"] },
     is_featured: true,
     is_new: false,
@@ -26,7 +29,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 38,
     description: "Kun kaikki menee pieleen ja haluat kertoa siitä ilman sanoja. Tämä paita hoitaa kommunikaation puolestasi. Sopii erityisesti maanantaiaamuihin. 🤦",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/saatanan-tunarit-huppari-musta-painatus.jpg?v=1758250367&width=533",
+      "https://meemirotta.fi/cdn/shop/files/saatanan-tunarit-huppari-valkoinen-painatus.jpg?v=1758249696&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Punainen"] },
     is_featured: true,
     is_new: true,
@@ -41,7 +47,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 25,
     description: "Better Call Saul -faneille ja kaikille jotka tarvii lakimiestä viikonlopun jälkeen. Käy myös asianajajalahjaksi – ironisesti tietenkin. ⚖️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/lahja-idea-hyva-lahjaidea-musta-t-paita.jpg?v=1757880009&width=533",
+      "https://meemirotta.fi/cdn/shop/files/lahja-idea-hyva-lahjaidea-valkoinen-t-paita.jpg?v=1757880009&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Valkoinen"] },
     is_featured: false,
     is_new: true,
@@ -56,7 +65,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 30,
     description: "Legendaarinen suomalainen meemi paidassa. Jos tiedät, tiedät. Jos et tiedä – kysy setältä. Hän selittää. Pitkään. 🥒🏍️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/unisex-classic-tee-black-front-6731e64573a45.jpg?v=1757968238&width=533",
+      "https://meemirotta.fi/cdn/shop/files/unisex-classic-tee-purple-front-6731e44c12288.jpg?v=1731322971&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Vihreä"] },
     is_featured: true,
     is_new: false,
@@ -71,7 +83,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 20,
     description: "Jäätävä klassikko. Kun haluat olla cool ja suomalainen samaan aikaan. Toimii joka tilanteessa – grillillä, baarissa ja mummon synttäreillä. 🧊😈",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-aita-aloitava-musta.jpg?v=1757949730&width=533",
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-aita-aloitava-valkoinen.jpg?v=1757893082&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta"] },
     is_featured: false,
     is_new: true,
@@ -86,7 +101,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 55,
     description: "Isänpäivälahjojen kuningas. Iskä käyttää tätä joka viikonloppu – ja kertoo kaikille mistä sai sen. Taatusti liikuttaa (tai ainakin naurattaa). 👨‍👧‍👦",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/tonnin-seteli-t-paita-musta-vaihtoehto.jpg?v=1758246180&width=533",
+      "https://meemirotta.fi/cdn/shop/files/tonnin-seteli-t-paita-valkoinen-vaihtoehto.jpg?v=1758246108&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Musta", "Tummansininen"] },
     is_featured: true,
     is_new: false,
@@ -101,7 +119,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 33,
     description: "Kun sä kävelet tää paita päällä, koko naapurusto haluaa tietää mistä sait sen. Vastaus: Huumorikauppa.fi – mistäs muualtakaan. 😎",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-kalja-ja-viina-musta.jpg?v=1757950986&width=533",
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-kalja-ja-viina-tummansininen.jpg?v=1757867006&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa"] },
     is_featured: false,
     is_new: false,
@@ -116,7 +137,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 28,
     description: "Oletko legenda? Luultavasti et, mutta tällä paidalla sä ainakin näytät siltä. Fake it till you make it – suomalaisittain. 🏆",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/paniikki-t-paita-musta-villielainkuva.jpg?v=1758250566&width=533",
+      "https://meemirotta.fi/cdn/shop/files/paniikki-t-paita-sininen-villielainkuva.jpg?v=1757866987&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Valkoinen"] },
     is_featured: false,
     is_new: true,
@@ -131,7 +155,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 15,
     description: "Kärsivällisyys on hyve, mutta setämies bootaa hitaasti. Progress bar pysyy ikuisesti 47%:ssa. Relatable? Tilaa heti. 😴",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/mens-classic-tee-black-front-650368f468e4c.jpg?v=1712668654&width=533",
+      "https://meemirotta.fi/cdn/shop/files/travel-themed-mockup-featuring-a-happy-man-wearing-a-round-neck-t-shirt-m34621_1.jpg?v=1712668654&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa"] },
     is_featured: true,
     is_new: false,
@@ -146,7 +173,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 40,
     description: "Äiti tietää AINA parhaiten. Paitsi kun pitää googlata jotain. Tai käyttää tulostinta. Mutta MUUTEN äiti tietää parhaiten! 💪",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/t-paita-musta-i-love-my-boyfriend.jpg?v=1758438467&width=533",
+      "https://meemirotta.fi/cdn/shop/files/t-paita-valkoinen-i-love-my-boyfriend.jpg?v=1758438388&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Valkoinen", "Pinkki"] },
     is_featured: false,
     is_new: false,
@@ -161,7 +191,10 @@ export const mockProducts: Product[] = [
     price: 34.95,
     stock: 8,
     description: "Ei mikään tavallinen mulkku – PREMIUM mulkku. Gold-printillä, koska sulla on standardit. Kun haluat kertoa maailmalle kuka sä olet, mutta tyylillä. ✨",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/mens-classic-tee-black-front-6542bfab95b71.jpg?v=1758250618&width=533",
+      "https://meemirotta.fi/cdn/shop/files/mens-classic-tee-navy-front-6542bfab93f07.jpg?v=1698873295&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta"] },
     is_featured: true,
     is_new: false,
@@ -176,7 +209,10 @@ export const mockProducts: Product[] = [
     price: 29.95,
     stock: 33,
     description: "YouTube-tutoriaalien ja palaneiden makkaroiden kautta kohti grillimestaruutta. Ei mitään Cordon Bleuta, mutta nakki paistuu. Joskus. 🔥",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/miesten-t-paita-valkoinen-joulupukki-kartta.jpg?v=1757895981&width=533",
+      "https://meemirotta.fi/cdn/shop/files/miesten-t-paita-musta-joulupukki-kartta.jpg?v=1757879757&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Musta", "Punainen"] },
     is_featured: false,
     is_new: false,
@@ -193,7 +229,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 22,
     description: "2026 mood tiivistettynä yhteen huppariin. Huppu päähän ja maailma saa odottaa. Pehmeää fleeceä sisältä – ulkopuoli on tarpeeksi kova. 🔥",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/huppari-harmaa-karhu-printti-kaikki-menee-pain-helvettia.jpg?v=1758250274&width=533",
+      "https://meemirotta.fi/cdn/shop/files/huppari-valkoinen-karhu-printti-kaikki-menee-pain-helvettia.jpg?v=1758249676&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa"] },
     is_featured: true,
     is_new: true,
@@ -208,7 +247,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 18,
     description: "Legendaarinen Kukko Pärssinen elää ikuisesti – nyt myös hupparissa. Kun haluat näyttää siltä että tiedät mistä puhut (vaikka et tiedä). 🐓",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-huppari-kukko-parssinen-musta-huppari.jpg?v=1757896353&width=533",
+      "https://meemirotta.fi/cdn/shop/files/hauska-huppari-kukko-parssinen-valkoinen-huppari.jpg?v=1757894910&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta"] },
     is_featured: true,
     is_new: false,
@@ -223,7 +265,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 25,
     description: "Kun olut soittaa, sä vastaat. Aina. Tämä huppari on virallinen kutsu afterworkeille – joka päivä on perjantai. 🍻📞",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska_huppari.jpg?v=1764260606&width=533",
+      "https://meemirotta.fi/cdn/shop/files/olut-huppari-valkoinen-olut-soittaa-puhelu.jpg?v=1764260505&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Musta", "Tummansininen"] },
     is_featured: false,
     is_new: true,
@@ -238,7 +283,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 20,
     description: "Lauantai-illan seuraukset sunnuntaiaamuna. Tämä huppari ymmärtää sun tuskan. Fleece-sisusta kuin halaus krapulaiselle sielulle. 🤮",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/simsalabim-huppari-valkoinen-saatana-kuvalla.jpg?v=1757895432&width=533",
+      "https://meemirotta.fi/cdn/shop/files/simsalabim-huppari-punainen-saatana-kuvalla.jpg?v=1757888584&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Harmaa", "Musta"] },
     is_featured: false,
     is_new: false,
@@ -253,7 +301,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 15,
     description: "Suomalainen comfort food huppariksi muutettuna. Lämmin kuin äidin kalakeitto ja yhtä lohduttava. Ei sisällä kalaa (valitettavasti). 🐟",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/kalakeitto-huppari-punainen-kala-kuvio.jpg?v=1758250526&width=533",
+      "https://meemirotta.fi/cdn/shop/files/kalakeitto-huppari-musta-kala-kuvio.jpg?v=1758250526&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Tummansininen", "Musta"] },
     is_featured: false,
     is_new: false,
@@ -268,7 +319,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 12,
     description: "Jokaisessa kylässä on yksi. Nyt sä voit olla se – virallisesti. Disclaimer: Huumorikauppa ei kannusta juomiseen, mutta kannustaa huumoriin. 🍺",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/unisex-premium-hoodie-black-front-6708baed6139c.jpg?v=1758250606&width=533",
+      "https://meemirotta.fi/cdn/shop/files/unisex-premium-hoodie-black-back-6708baed64d5a.jpg?v=1728625411&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Musta"] },
     is_featured: false,
     is_new: true,
@@ -283,7 +337,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 35,
     description: "Positiivisuutta päälle puettavassa muodossa. Kun elämä on perseestä mutta sä päätät että on hyvä meininki kuitenkin. 🎉",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-huppari-musta-kissa-kuvalla.jpg?v=1757950163&width=533",
+      "https://meemirotta.fi/cdn/shop/files/hauska-huppari-laivastonsininen-kissa-kuvalla.jpg?v=1757888677&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa", "Vihreä"] },
     is_featured: true,
     is_new: false,
@@ -298,7 +355,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 28,
     description: "Still waiting... Motivaatio on kuin bussi – ei koskaan tule silloin kun sitä tarvii. Mutta ainakin sulla on lämmin huppari odotellessa. ⏳",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/pullover-hoodie-mockup-featuring-a-tattooed-biker-31845_1.jpg?v=1712668681&width=533",
+      "https://meemirotta.fi/cdn/shop/files/unisex-heavy-blend-hoodie-white-front-657181e161a5c.jpg?v=1712668673&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa"] },
     is_featured: false,
     is_new: true,
@@ -313,7 +373,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 18,
     description: "Virallinen introvertin huppari. Huppu päähän = älä puhu mulle. Antisosiaalisuus tyylillä. 🤫",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/saako-silittaa-huppari-musta-voimakkaalla-koirakuviolla.jpg?v=1757949795&width=533",
+      "https://meemirotta.fi/cdn/shop/files/saako-silittaa-huppari-tummansininen-voimakkaalla-koirakuviolla.jpg?v=1757888589&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Musta", "Harmaa"] },
     is_featured: false,
     is_new: false,
@@ -328,7 +391,10 @@ export const mockProducts: Product[] = [
     price: 49.95,
     stock: 22,
     description: "Teams-palaveri ylhäältä, pyjamat alhaalta. Virallisesti hyväksytty etätyövaatteeksi kaikissa isien kokouksissa. Kamera päälle? Ei kiitos. 💻",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/11/asiantuntija_kysy-ihan-vittu-mita-vaan_huppari_paskakauppa-300x300.jpg",
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/10/on-tama-saatana-tyomaa-huppari_paskakauppa-300x300.jpg"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Tummansininen", "Musta"] },
     is_featured: true,
     is_new: false,
@@ -345,7 +411,10 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 20,
     description: "Oispa Kaljaa -klassiikko nyt myös housuissa. Kun paita ei riitä kertomaan asiaa, niin housut jatkaa viestiä. Vyötärönauha antaa periksi. 🍺",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/aluspaita-t-paita-musta-laivakuva.jpg?v=1757880174&width=533",
+      "https://meemirotta.fi/cdn/shop/files/aluspaita-t-paita-sininen-laivakuva.jpg?v=1757880174&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Harmaa"] },
     is_featured: true,
     is_new: true,
@@ -360,7 +429,10 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 25,
     description: "Virallinen perussetän univormu – collegehousut. Käy kauppaan, grillille ja sohvalle. Ei mihinkään muualle, eikä tarvitsekaan. 🛋️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/kuusi-palaa-musta-t-paita-teksti-1.jpg?v=1759317042&width=533",
+      "https://meemirotta.fi/cdn/shop/files/kuusi-palaa-valkoinen-t-paita-teksti-1.jpg?v=1759316924&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Harmaa", "Tummansininen", "Musta"] },
     is_featured: true,
     is_new: false,
@@ -375,7 +447,10 @@ export const mockProducts: Product[] = [
     price: 34.95,
     stock: 30,
     description: "Kesän kuumimmat shortsit. Naapuri kattelee ikkunasta ja miettii mistä sait noin hienot housut. Vastaus: Huumorikauppa.fi. 😎☀️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/t-shirt-mockup-of-a-man-with-tattooed-arms-2193-el1_1.jpg?v=1712668704&width=533",
+      "https://meemirotta.fi/cdn/shop/files/mens-classic-tee-black-front-6560ec87b7d18.jpg?v=1712668704&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Khaki"] },
     is_featured: false,
     is_new: true,
@@ -390,7 +465,10 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 20,
     description: "Viralliset Netflix-katsomishousut. Taskussa tilaa kaukosäätimelle ja sipseille. Vyötärönauha antaa periksi kolmannen pizza-siivun jälkeen. 🍕",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2022/09/asiantuntija-t-paita-paskakauppa_kysy-ihan-vittu-mita-vaan-300x300.jpg",
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/06/naisten-t-paita-perkele_paskakauppa-300x300.jpg"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Harmaa"] },
     is_featured: false,
     is_new: false,
@@ -405,7 +483,9 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 12,
     description: "Hyväksytty Kansainvälisen Laiskuusliiton toimesta. Sisältää sisäänrakennetun anteeksipyynnön: 'En jaksa'. 🥔",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-kalja-ja-viina-musta.jpg?v=1757950986&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Harmaa", "Tummansininen"] },
     is_featured: false,
     is_new: false,
@@ -420,7 +500,9 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 18,
     description: "Sunnuntaiaamun pelastus. Pehmeät, väljät ja anteeksiantavat – aivan kuin sun pitäisi olla. Sopii sohvalle, kauppaan ja häpeäkävelylle. 🫠",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-t-paita-kalja-ja-viina-tummansininen.jpg?v=1757867006&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Harmaa", "Musta"] },
     is_featured: true,
     is_new: true,
@@ -435,7 +517,9 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 22,
     description: "Kaksi sanaa jotka kuvaavat 90% suomalaisista arkiaamuista. Nyt ne on housuissa. Ei tarvitse sanoa ääneen – housut puhuvat puolesta. 😴",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/paniikki-t-paita-sininen-villielainkuva.jpg?v=1757866987&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL"], colors: ["Musta", "Harmaa"] },
     is_featured: false,
     is_new: false,
@@ -450,7 +534,9 @@ export const mockProducts: Product[] = [
     price: 34.95,
     stock: 15,
     description: "Virallinen grillimestarin kesähousu. Mahtuu mustaa makkaraa taskuun. Grillikausi alkaa kun nämä on jalassa – sää ei ratkaise. 🌭",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/miesten-t-paita-musta-joulupukki-kartta.jpg?v=1757879757&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Musta", "Punainen"] },
     is_featured: false,
     is_new: true,
@@ -465,7 +551,9 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 20,
     description: "Sohva on sun valtaistuin ja nämä on sun kruunajaishousu. Hallitse olohuonetta tyylillä. Kaukosäädin ei kuulu hintaan. 👑🛋️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/mens-classic-tee-navy-front-6542bfab93f07.jpg?v=1698873295&width=533"
+    ],
     variants: { sizes: ["S", "M", "L", "XL", "XXL"], colors: ["Tummansininen", "Musta"] },
     is_featured: false,
     is_new: false,
@@ -480,7 +568,9 @@ export const mockProducts: Product[] = [
     price: 39.95,
     stock: 28,
     description: "Mökkielämän virallinen univormu. Sopii saunomiseen, kalastamiseen ja naapurin kanssa rupatteluun. Ei pese itseään, mutta kuka pestään mökillä. 🏕️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/unisex-classic-tee-purple-front-6731e44c12288.jpg?v=1731322971&width=533"
+    ],
     variants: { sizes: ["M", "L", "XL", "XXL"], colors: ["Vihreä", "Harmaa"] },
     is_featured: false,
     is_new: false,
@@ -497,7 +587,9 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 50,
     description: "Aamun ensimmäinen vastaus kaikkiin kysymyksiin. Mahtuu 3dl tietämättömyyttä. Täydellinen toimistoelämään ja etäpalavereihin. ☕🤷",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/05/stressia-vai-tyosopimus_en-vittu-tiia-muki-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Musta"] },
     is_featured: true,
     is_new: true,
@@ -512,7 +604,9 @@ export const mockProducts: Product[] = [
     price: 19.95,
     stock: 35,
     description: "Sama fiilis, mutta GLITTERILLÄ. Koska jos pitää kiroilla, niin tehdään se tyylillä. Kimaltava pinta tuo ripauksen luksusta arkipäivän katkeruuteen. ✨💩",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2020/03/vittumitapaskaa_kahvimuki-300x300.jpg"
+    ],
     variants: { colors: ["Hopea glitter", "Kulta glitter"] },
     is_featured: true,
     is_new: true,
@@ -527,7 +621,9 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 45,
     description: "Joka työpaikalla on se yksi tyyppi joka sanoo tän päivittäin. Nyt se tyyppi saa oman mukin. Sopii rakennusmiehille, ohjelmoijille ja äideille. 🏗️",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/01/on-tama-saatana-tyomaa_oranssi-muki_paskakauppa-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Musta"] },
     is_featured: true,
     is_new: false,
@@ -542,7 +638,10 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 60,
     description: "Koska äiti ON maailman paras. Äitienpäivälahjojen ykkönen jo vuodesta aina. Mahtuu 3dl rakkautta (tai viiniä, ei tuomita). 💝",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/mockup-of-an-ai-generated-coffee-mug-placed-on-a-wooden-surface-featuring-a-flower-tree-m37791.jpg?v=1712668604&width=533",
+      "https://meemirotta.fi/cdn/shop/files/white-glossy-mug-white-15-oz-handle-on-right-681d3d6729f87.jpg?v=1746746829&width=533"
+    ],
     variants: { colors: ["Valkoinen", "Vaaleanpunainen"] },
     is_featured: false,
     is_new: false,
@@ -557,7 +656,9 @@ export const mockProducts: Product[] = [
     price: 24.95,
     stock: 30,
     description: "Kippis joka hetkelle! Termosmuki pitää kahvin kuumana 6 tuntia – tai oluen kylmänä 12 tuntia. Prioriteetit kohdallaan. 🍻",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2020/08/jaxuhalit-saatana_paskakauppa_kahvikuppi-300x300.jpg"
+    ],
     variants: { colors: ["Musta", "Hopea"] },
     is_featured: true,
     is_new: false,
@@ -572,7 +673,10 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 50,
     description: "Aamuinen mantra suomalaiseen tapaan. Kahvi mustana, asenne vielä mustempana. Mahtuu 3dl elämänhallinnan puutetta. ☕",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/hauska-kahvimuki-kahvi-ei-auttaa-sarjakuvatyylinen.jpg?v=1758250276&width=533",
+      "https://meemirotta.fi/cdn/shop/files/hauska-kahvimuki-kahvi-ei-auttaa-eri-nurkasta.jpg?v=1757867471&width=533"
+    ],
     variants: { colors: ["Valkoinen", "Musta"] },
     is_featured: false,
     is_new: false,
@@ -587,7 +691,10 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 35,
     description: "Kun olet oma pomosi – koska kukaan muu ei halunnut palkata sua. Self-made, self-employed, self-deluded. 👑",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://meemirotta.fi/cdn/shop/files/mockup-of-an-11-oz-coffee-mug-placed-on-a-dark-wooden-table-31320.jpg?v=1712668612&width=533",
+      "https://meemirotta.fi/cdn/shop/files/white-glossy-mug-white-15-oz-handle-on-right-681cf0fd7c71b.jpg?v=1746727292&width=533"
+    ],
     variants: { colors: ["Valkoinen"] },
     is_featured: false,
     is_new: false,
@@ -602,7 +709,9 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 45,
     description: "Disclaimer: älä puhu mulle ennen kuin tää on tyhjä. Kommunikaatio mahdollista vasta 2. kupin jälkeen. 😤",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/01/muista-laakkeet-voipi-vituttaa-vahempi-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Musta", "Punainen"] },
     is_featured: false,
     is_new: false,
@@ -616,8 +725,10 @@ export const mockProducts: Product[] = [
     humor_type: "aitihuumori",
     price: 14.95,
     stock: 60,
-    description: "Mummo on paras. Piste. Täydellinen lahja mummolle joka antaa aina liikaa ruokaa ja rahaa. Mummo tilasi tämänkin itse – true story. 🧶",
-    images: ["/placeholder.svg"],
+    description: "Mummo on paras. Piste. Täydellinen lahja mummolle joka antaa aina liikaa ruokaa ja rahaa. 🧶",
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2020/10/ei-vituta-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Vaaleanpunainen"] },
     is_featured: false,
     is_new: false,
@@ -632,7 +743,9 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 40,
     description: "Jokaisen maanantain virallinen muki. Täytä kahvilla, juo hitaasti, ja yritä olla itkemättä. Perjantaihin on vielä 4 päivää. 😩",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2024/03/kahvituttaa_kiroileva-siili-muki-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Musta"] },
     is_featured: false,
     is_new: true,
@@ -647,7 +760,9 @@ export const mockProducts: Product[] = [
     price: 14.95,
     stock: 38,
     description: "Koska joku siellä toimistossa tekee oikeasti töitä. Se olet sinä. Tai ainakin niin sä luulet. Tämä muki todistaa sen. 🦸",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2022/06/ASIANTUNTIJA-300x300.jpg"
+    ],
     variants: { colors: ["Valkoinen", "Tummansininen"] },
     is_featured: false,
     is_new: false,
@@ -662,7 +777,9 @@ export const mockProducts: Product[] = [
     price: 19.95,
     stock: 25,
     description: "Elämä voi olla paskaa, mutta ainakin tämä muki kimaltaa. Glitter-pinnoite tekee aamukahvista luksuskokemuksen. 💩✨",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2022/01/kahvitauko-300x300.jpg"
+    ],
     variants: { colors: ["Pinkki glitter", "Hopea glitter"] },
     is_featured: false,
     is_new: true,
@@ -679,7 +796,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 75,
     description: "10 tarraa per arkki – liimaa läppäriin, jääkaappiin tai työkaverin selkään. Vesitiivis ja kestävä, kuten sun asenne. 📦",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2021/11/motivaatiotarrat-palkintotarrat-paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: true,
     is_new: false,
@@ -694,7 +813,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 100,
     description: "Klassikko tarra-arkkina! 10 tarraa joilla kerrot joka pinnalle mikä on sun päivän toive. Sopii autoon, kännykänkuoreen ja työpaikan kahviautomaattiin. 🍺",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/05/kriisitarrat_paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: true,
     is_new: true,
@@ -709,7 +830,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 80,
     description: "Koska naapurit kadehtii aina. Nyt sä voit kertoa siitä tarralla. Liimaa postilaatikkoon, autoon tai mihin tahansa. 😎",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/09/muista-laakkeet-voipi-vituttaa-vahempi_paskakauppa-magneetti-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: false,
@@ -724,7 +847,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 90,
     description: "10 tarraa jotka tekee läppäristä, autosta tai jääkaapista 100% hauskemman. Sisältää klassikot kuten 'Oispa kaljaa', 'Ei mun vika', ja 'IT-tuki: käynnistä uudelleen'. 📦",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2021/11/motivaatiotarrat-palkintotarrat-paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: false,
@@ -739,7 +864,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 75,
     description: "Kun sanat eivät riitä, tarrat puhuu puolesta. 'Kiitos palautteesta 🙂', 'Joo joo', 'Tää on FINE'. Liimaa työpaikan kahvihuoneen kaappiin. 😊",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/05/kriisitarrat_paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: false,
@@ -754,7 +881,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 60,
     description: "Grilli-themed tarrat: 'Master Chef (not)', 'Nakki paistuu', 'Älä koske grilliin'. Täydellinen isänpäivälahja tai grillikauden avajaisiin. 🌭",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2021/11/motivaatiotarrat-palkintotarrat-paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: true,
@@ -769,7 +898,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 65,
     description: "Tarrat äideille ja äideistä: 'Syö loppuun', 'Laita villasukat', 'Koska mä sanoin niin'. Äitienpäivän paras (ja halvin) lahja. 👩‍👧",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/05/kriisitarrat_paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: false,
@@ -784,7 +915,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 55,
     description: "Suomen kielen rikkain sanasto tarra-arkkina. Sisältää kaikki klassiset voimasanat kauniissa typografiassa. Varoitus: ei sovi toimistoon (mutta sinne ne yleensä päätyy). 🤬",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2021/11/motivaatiotarrat-palkintotarrat-paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: true,
@@ -799,7 +932,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 70,
     description: "'Sä pystyt siihen (ehkä)', 'Tänään on hyvä päivä (lopettaa)', 'Usko itseesi (mä en usko)'. Motivaatiota? Ehkä. Naurua? Varmasti. 💪😂",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2021/11/motivaatiotarrat-palkintotarrat-paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: false,
     is_new: false,
@@ -814,7 +949,9 @@ export const mockProducts: Product[] = [
     price: 9.95,
     stock: 85,
     description: "Isänmaallinen tarra-arkki: Suomen lippu, sauna, mämmi ja tietenkin perkele. Sopii matkalaukkuun, autoon ja ulkomaille mukaan. 🇫🇮",
-    images: ["/placeholder.svg"],
+    images: [
+      "https://vittumitapaskaa.fi/wp-content/uploads/2025/05/kriisitarrat_paskakauppa-300x300.jpg"
+    ],
     variants: {},
     is_featured: true,
     is_new: false,
