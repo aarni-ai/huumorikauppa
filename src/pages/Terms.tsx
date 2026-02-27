@@ -1,0 +1,54 @@
+import { Link } from "react-router-dom";
+
+const Terms = () => {
+  return (
+    <div className="container py-8 md:py-12 max-w-3xl">
+      <nav className="text-sm text-muted-foreground mb-6">
+        <Link to="/" className="hover:text-foreground">Etusivu</Link>
+        <span className="mx-2">/</span>
+        <span className="text-foreground">Toimitusehdot</span>
+      </nav>
+
+      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Toimitusehdot</h1>
+
+      <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
+        <section>
+          <h2 className="font-display text-xl text-foreground">1. Yleistä</h2>
+          <p>Nämä toimitusehdot koskevat Huumorikauppa Oy:n (jäljempänä "Myyjä") verkkokaupasta osoitteessa huumorikauppa.fi tehtyjä tilauksia. Tilaamalla tuotteita verkkokaupasta asiakas hyväksyy nämä toimitusehdot.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">2. Tilaaminen</h2>
+          <p>Tilaus tehdään lisäämällä tuotteet ostoskoriin ja täyttämällä kassalla pyydetyt tiedot. Tilaus on sitova kun maksu on suoritettu. Tilausvahvistus lähetetään sähköpostitse.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">3. Hinnat ja maksaminen</h2>
+          <p>Kaikki hinnat sisältävät arvonlisäveron (ALV 25,5 %). Maksu suoritetaan tilauksen yhteydessä. Hyväksymme seuraavat maksutavat: Visa, Mastercard sekä muut yleisimmät maksutavat.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">4. Toimitus</h2>
+          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on 1–5 arkipäivää tilauksesta. Yli 60 € tilaukset toimitetaan ilman toimituskuluja. Alle 60 € tilausten toimituskulut ovat 5,95 €.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">5. Palautukset ja vaihto</h2>
+          <p>Asiakkaalla on kuluttajansuojalain mukainen 14 päivän peruutusoikeus. Tuote tulee palauttaa käyttämättömänä ja alkuperäispakkauksessa. Palautuskulut maksaa asiakas, ellei tuote ole virheellinen.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">6. Reklamaatiot</h2>
+          <p>Virheellisestä tuotteesta tulee reklamoida viipymättä osoitteeseen info@huumorikauppa.fi. Liitä viestiin tilausnumero, kuvaus virheestä sekä valokuva.</p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl text-foreground">7. Yhteystiedot</h2>
+          <p>Huumorikauppa Oy<br />Esimerkkitie 123<br />00100 Helsinki<br />info@huumorikauppa.fi<br />0400 123 456<br />Asiakaspalvelu: ma–pe 9–17</p>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default Terms;
