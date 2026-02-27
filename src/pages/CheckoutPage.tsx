@@ -4,14 +4,60 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
-import { ShoppingCart, ArrowLeft, ArrowRight, Lock } from "lucide-react";
+import { ShoppingCart, ArrowLeft, ArrowRight, Lock, Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 type Step = "details" | "shipping" | "payment";
 
 const CheckoutPage = () => {
   const { items, totalPrice, totalItems } = useCartContext();
   const [step, setStep] = useState<Step>("details");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", email: "", phone: "",
+    address: "", zip: "", city: "",
+  });
+
+  const updateForm = (field: string, value: string) =>
+    setForm(prev => ({ ...prev, [field]: value }));
+
+  const handlePayment = async () => {
+    if (!form.email || !form.firstName || !form.address || !form.zip || !form.city) {
+      toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
+      return;
+    }
+    setIsProcessing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: {
+          items: items.map(i => ({
+            name: i.product.name,
+            price: i.product.price,
+            quantity: i.quantity,
+            image: i.product.images[0] || undefined,
+            size: i.selectedSize,
+            color: i.selectedColor,
+          })),
+          customerEmail: form.email,
+          customerName: `${form.firstName} ${form.lastName}`,
+          shippingAddress: { address: form.address, zip: form.zip, city: form.city },
+        },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("Stripe-sessiota ei voitu luoda");
+      }
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      toast({ title: "Maksun aloitus epäonnistui", description: err.message, variant: "destructive" });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const shippingFree = totalPrice >= 60;
   const shippingCost = shippingFree ? 0 : 5.95;
@@ -69,20 +115,20 @@ const CheckoutPage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName" className="text-foreground">Etunimi *</Label>
-                  <Input id="firstName" className="bg-muted border-border mt-1" placeholder="Matti" />
+                  <Input id="firstName" value={form.firstName} onChange={e => updateForm("firstName", e.target.value)} className="bg-muted border-border mt-1" placeholder="Matti" />
                 </div>
                 <div>
                   <Label htmlFor="lastName" className="text-foreground">Sukunimi *</Label>
-                  <Input id="lastName" className="bg-muted border-border mt-1" placeholder="Meikäläinen" />
+                  <Input id="lastName" value={form.lastName} onChange={e => updateForm("lastName", e.target.value)} className="bg-muted border-border mt-1" placeholder="Meikäläinen" />
                 </div>
               </div>
               <div>
                 <Label htmlFor="email" className="text-foreground">Sähköposti *</Label>
-                <Input id="email" type="email" className="bg-muted border-border mt-1" placeholder="matti@email.fi" />
+                <Input id="email" type="email" value={form.email} onChange={e => updateForm("email", e.target.value)} className="bg-muted border-border mt-1" placeholder="matti@email.fi" />
               </div>
               <div>
                 <Label htmlFor="phone" className="text-foreground">Puhelin</Label>
-                <Input id="phone" type="tel" className="bg-muted border-border mt-1" placeholder="0401234567" />
+                <Input id="phone" type="tel" value={form.phone} onChange={e => updateForm("phone", e.target.value)} className="bg-muted border-border mt-1" placeholder="0401234567" />
               </div>
               <Button onClick={() => setStep("shipping")} className="bg-primary text-primary-foreground font-bold">
                 Jatka toimitustietoihin <ArrowRight className="h-4 w-4 ml-2" />
@@ -95,16 +141,16 @@ const CheckoutPage = () => {
               <h2 className="font-display text-xl text-foreground">Toimitusosoite</h2>
               <div>
                 <Label htmlFor="address" className="text-foreground">Osoite *</Label>
-                <Input id="address" className="bg-muted border-border mt-1" placeholder="Esimerkkikatu 123" />
+                <Input id="address" value={form.address} onChange={e => updateForm("address", e.target.value)} className="bg-muted border-border mt-1" placeholder="Esimerkkikatu 123" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="zip" className="text-foreground">Postinumero *</Label>
-                  <Input id="zip" className="bg-muted border-border mt-1" placeholder="00100" />
+                  <Input id="zip" value={form.zip} onChange={e => updateForm("zip", e.target.value)} className="bg-muted border-border mt-1" placeholder="00100" />
                 </div>
                 <div>
                   <Label htmlFor="city" className="text-foreground">Kaupunki *</Label>
-                  <Input id="city" className="bg-muted border-border mt-1" placeholder="Helsinki" />
+                  <Input id="city" value={form.city} onChange={e => updateForm("city", e.target.value)} className="bg-muted border-border mt-1" placeholder="Helsinki" />
                 </div>
               </div>
 
@@ -134,8 +180,17 @@ const CheckoutPage = () => {
                 <p className="text-sm text-muted-foreground">
                   Sinut ohjataan turvalliselle maksusivulle. Tuemme Visa, Mastercard ja muita maksutapoja.
                 </p>
-                <Button size="lg" className="bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime w-full hover:scale-[1.02] transition-transform">
-                  Maksa {grandTotal.toFixed(2)} € 🔒
+                <Button 
+                  size="lg" 
+                  onClick={handlePayment}
+                  disabled={isProcessing}
+                  className="bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime w-full hover:scale-[1.02] transition-transform"
+                >
+                  {isProcessing ? (
+                    <><Loader2 className="h-5 w-5 mr-2 animate-spin" /> Käsitellään...</>
+                  ) : (
+                    <>Maksa {grandTotal.toFixed(2)} € 🔒</>
+                  )}
                 </Button>
                 <p className="text-xs text-muted-foreground">SSL-suojattu yhteys • Turvallinen maksu</p>
               </div>
