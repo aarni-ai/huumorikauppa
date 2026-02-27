@@ -17,7 +17,7 @@ export function Footer() {
             Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja koko perheelle. 😂
           </p>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Huumorikauppa, Helsinki, Suomi</span>
+            <span className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Helsinki, Suomi</span>
             <a href="mailto:info@huumorikauppa.fi" className="flex items-center gap-2 hover:text-foreground transition-colors">
               <Mail className="h-4 w-4 shrink-0" /> info@huumorikauppa.fi
             </a>

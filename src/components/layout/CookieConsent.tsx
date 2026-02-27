@@ -20,8 +20,8 @@ export function CookieConsent() {
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border p-4 md:p-6 animate-slide-in-right">
       <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          Käytämme evästeitä sivuston toiminnan varmistamiseksi ja käyttökokemuksen parantamiseksi.{" "}
-          <a href="/tietosuojakaytanto" className="text-primary hover:underline">Lue lisää tietosuojastamme</a>
+          Käytämme evästeitä.{" "}
+          <a href="/tietosuojakaytanto" className="text-primary hover:underline">Lue lisää</a>
         </p>
         <div className="flex gap-2 shrink-0">
           <Button onClick={accept} size="sm" className="bg-primary text-primary-foreground font-bold">
