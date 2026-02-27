@@ -1,5 +1,6 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { SEOHead } from "@/components/SEOHead";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,14 +10,13 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
-      </div>
+    <div className="container py-20 text-center">
+      <SEOHead title="Sivua ei löydy – Huumorikauppa" description="Etsimääsi sivua ei löytynyt. Palaa etusivulle ja selaa tuotteita." />
+      <h1 className="font-display text-5xl text-foreground mb-4">404 😅</h1>
+      <p className="text-xl text-muted-foreground mb-6">Sivua ei löytynyt – ehkä se myytiin loppuun?</p>
+      <Link to="/" className="text-primary hover:underline font-medium text-lg">
+        Takaisin etusivulle →
+      </Link>
     </div>
   );
 };

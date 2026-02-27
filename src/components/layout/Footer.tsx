@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -14,17 +14,13 @@ export function Footer() {
             <span className="font-display text-xl text-secondary">KAUPPA</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            Suomen hauskin verkkokauppa. Hauskaa huumoria suomalaisille jo vuodesta 2026. 😂
+            Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja koko perheelle. 😂
           </p>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Huumorikauppa Oy, Esimerkkitie 123, 00100 Helsinki</span>
-            <a href="tel:0400123456" className="flex items-center gap-2 hover:text-foreground transition-colors">
-              <Phone className="h-4 w-4 shrink-0" /> 0400 123 456
-            </a>
+            <span className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Huumorikauppa, Helsinki, Suomi</span>
             <a href="mailto:info@huumorikauppa.fi" className="flex items-center gap-2 hover:text-foreground transition-colors">
               <Mail className="h-4 w-4 shrink-0" /> info@huumorikauppa.fi
             </a>
-            <span className="flex items-center gap-2"><Clock className="h-4 w-4 shrink-0" /> Asiakaspalvelu ma–pe 9–17</span>
           </div>
         </div>
 
@@ -37,7 +33,7 @@ export function Footer() {
             <Link to="/kategoria/hupparit" className="hover:text-foreground transition-colors">🧥 Hupparit</Link>
             <Link to="/kategoria/housut" className="hover:text-foreground transition-colors">👖 Housut</Link>
             <Link to="/kategoria/mukit" className="hover:text-foreground transition-colors">☕ Mukit</Link>
-            <Link to="/kategoria/tarra-arkit" className="hover:text-foreground transition-colors">🏷️ Tarra-arkit</Link>
+            <Link to="/kategoria/tarrat" className="hover:text-foreground transition-colors">🏷️ Tarrat</Link>
           </div>
         </div>
 
@@ -68,12 +64,12 @@ export function Footer() {
       {/* Bottom */}
       <div className="border-t border-border py-4">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <p>© 2026 Huumorikauppa Oy – Kaikki oikeudet pidätetään</p>
+          <p>© {new Date().getFullYear()} Huumorikauppa – Kaikki oikeudet pidätetään</p>
           <div className="flex items-center gap-4">
             <span>🔒 SSL-suojattu</span>
             <span>💳 Turvallinen maksu</span>
             <span>🚚 Toimitukset 3–10 arkipäivää</span>
-            <span>🇫🇮 Made in Finland</span>
+            <span>🇫🇮 Suomalainen kauppa</span>
           </div>
         </div>
       </div>

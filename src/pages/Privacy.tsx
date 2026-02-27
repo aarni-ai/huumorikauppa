@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 
 const Privacy = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
-      <nav className="text-sm text-muted-foreground mb-6">
+      <SEOHead
+        title="Tietosuojakäytäntö – Huumorikauppa"
+        description="Huumorikaupan tietosuojakäytäntö: miten keräämme, käytämme ja suojaamme henkilötietojasi GDPR:n mukaisesti."
+        canonical="https://huumorikauppa.fi/tietosuojakaytanto"
+      />
+
+      <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-foreground">Etusivu</Link>
         <span className="mx-2">/</span>
         <span className="text-foreground">Tietosuojakäytäntö</span>
@@ -14,7 +21,7 @@ const Privacy = () => {
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
           <h2 className="font-display text-xl text-foreground">1. Rekisterinpitäjä</h2>
-          <p>Huumorikauppa Oy<br />Esimerkkitie 123<br />00100 Helsinki<br />info@huumorikauppa.fi</p>
+          <p>Huumorikauppa<br />Helsinki, Suomi<br />info@huumorikauppa.fi</p>
         </section>
 
         <section>
@@ -49,7 +56,7 @@ const Privacy = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">8. Muutokset</h2>
-          <p>Pidätämme oikeuden muuttaa tätä tietosuojakäytäntöä. Olennaisista muutoksista ilmoitetaan verkkosivuillamme. Viimeksi päivitetty: 27.2.2026.</p>
+          <p>Pidätämme oikeuden muuttaa tätä tietosuojakäytäntöä. Olennaisista muutoksista ilmoitetaan verkkosivuillamme.</p>
         </section>
       </div>
     </div>

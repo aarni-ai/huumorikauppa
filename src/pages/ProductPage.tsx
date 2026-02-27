@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ProductCard } from "@/components/ProductCard";
+import { SEOHead } from "@/components/SEOHead";
 
 const sizeGuide = [
   { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
@@ -68,11 +70,37 @@ const ProductPage = () => {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description,
+    "image": product.images[0] || "/placeholder.svg",
+    "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
+    "brand": { "@type": "Brand", "name": "Huumorikauppa" },
+    "offers": {
+      "@type": "Offer",
+      "price": product.price,
+      "priceCurrency": "EUR",
+      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": { "@type": "Organization", "name": "Huumorikauppa" }
+    }
+  };
+
+  const categoryName = category?.name || product.category;
+
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title={`${product.name} – Osta ${categoryName} | Huumorikauppa`}
+        description={product.description.slice(0, 155)}
+        canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
+        jsonLd={productJsonLd}
+      />
+
       <div className="container py-6 md:py-10">
         {/* Breadcrumb */}
-        <nav className="text-sm text-muted-foreground mb-6">
+        <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
           <Link to={`/kategoria/${product.category}`} className="hover:text-foreground">
@@ -87,8 +115,9 @@ const ProductPage = () => {
           <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
             <img
               src={product.images[0] || "/placeholder.svg"}
-              alt={product.name}
+              alt={`${product.name} – hauska ${categoryName} Huumorikaupasta`}
               className="w-full h-full object-cover"
+              loading="lazy"
             />
             <div className="absolute top-3 left-3 flex flex-col gap-1">
               {product.is_new && <Badge className="bg-accent text-accent-foreground font-bold">UUTUUS 🔥</Badge>}
@@ -110,7 +139,7 @@ const ProductPage = () => {
             {/* Stock */}
             {product.stock <= 10 && product.stock > 0 && (
               <p className="text-sm font-bold text-destructive">
-                Vain {product.stock} jäljellä – tilaa nyt ennen kuin mummo ehtii! 😱
+                Vain {product.stock} jäljellä – tilaa nyt! 😱
               </p>
             )}
 
@@ -278,21 +307,18 @@ const ProductPage = () => {
 
         {/* Related products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-16">
+          <section className="mt-16">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Saatat myös tykätä 😍</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {relatedProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
-          </div>
+          </section>
         )}
       </div>
     </div>
   );
 };
-
-// Need to import ProductCard for related products section
-import { ProductCard } from "@/components/ProductCard";
 
 export default ProductPage;

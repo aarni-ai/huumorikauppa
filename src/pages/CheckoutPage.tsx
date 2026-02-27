@@ -5,23 +5,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { ShoppingCart, ArrowLeft, ArrowRight, Lock } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { SEOHead } from "@/components/SEOHead";
 
 type Step = "details" | "shipping" | "payment";
 
 const CheckoutPage = () => {
   const { items, totalPrice, totalItems } = useCartContext();
   const [step, setStep] = useState<Step>("details");
-  const [giftWrap, setGiftWrap] = useState(false);
 
   const shippingFree = totalPrice >= 60;
   const shippingCost = shippingFree ? 0 : 5.95;
-  const giftWrapCost = giftWrap ? 3.95 : 0;
-  const grandTotal = totalPrice + shippingCost + giftWrapCost;
+  const grandTotal = totalPrice + shippingCost;
 
   if (items.length === 0) {
     return (
       <div className="container py-20 text-center space-y-6">
+        <SEOHead title="Kassa – Huumorikauppa" description="Viimeistele tilauksesi Huumorikaupassa." />
         <ShoppingCart className="h-16 w-16 text-muted-foreground mx-auto" />
         <h1 className="font-display text-3xl text-foreground">Ostoskori on tyhjä</h1>
         <Button asChild className="bg-primary text-primary-foreground font-bold">
@@ -41,6 +40,7 @@ const CheckoutPage = () => {
 
   return (
     <div className="container py-8 md:py-12 max-w-4xl">
+      <SEOHead title="Kassa – Huumorikauppa" description="Viimeistele tilauksesi turvallisesti Huumorikaupassa." />
       <h1 className="font-display text-3xl text-foreground mb-8">Kassa 💳</h1>
 
       {/* Steps */}
@@ -108,14 +108,9 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-2">
-                <Checkbox id="gift" checked={giftWrap} onCheckedChange={(v) => setGiftWrap(!!v)} />
-                <Label htmlFor="gift" className="text-sm text-foreground">Lahjapaketointi (+3,95 €) 🎁</Label>
-              </div>
-
               <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground space-y-1">
                 <p className="font-medium text-foreground">Toimitustapa:</p>
-                <p>📦 Posti – kotiinkuljetus (1–3 arkipäivää)</p>
+                <p>📦 Posti – kotiinkuljetus (3–10 arkipäivää)</p>
                 <p>{shippingFree ? "✅ Ilmainen toimitus!" : `Toimituskulut: ${shippingCost.toFixed(2)} €`}</p>
               </div>
 
@@ -157,7 +152,7 @@ const CheckoutPage = () => {
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {items.map(item => (
               <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-3 text-sm">
-                <img src={item.product.images[0] || "/placeholder.svg"} alt="" className="w-12 h-12 rounded bg-muted object-cover" />
+                <img src={item.product.images[0] || "/placeholder.svg"} alt={item.product.name} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" />
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
                   <p className="text-muted-foreground">{item.quantity} × {item.product.price.toFixed(2)} €</p>
@@ -173,11 +168,6 @@ const CheckoutPage = () => {
               <span>Toimitus</span>
               <span>{shippingFree ? "Ilmainen" : `${shippingCost.toFixed(2)} €`}</span>
             </div>
-            {giftWrap && (
-              <div className="flex justify-between text-muted-foreground">
-                <span>Lahjapaketointi</span><span>{giftWrapCost.toFixed(2)} €</span>
-              </div>
-            )}
             <div className="flex justify-between font-bold text-foreground text-base pt-2 border-t border-border">
               <span>Yhteensä</span><span className="text-primary">{grandTotal.toFixed(2)} €</span>
             </div>
