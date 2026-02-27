@@ -76,7 +76,7 @@ export function Footer() {
             </div>
             {/* Apple Pay */}
             <div className="bg-white rounded-md px-2 py-1.5 h-8 flex items-center justify-center">
-              <span className="text-black font-semibold text-xs tracking-tight"> Pay</span>
+              <span className="text-black font-semibold text-xs tracking-tight">Apple Pay</span>
             </div>
             {/* Google Pay */}
             <div className="bg-white rounded-md px-2 py-1.5 h-8 flex items-center justify-center">
@@ -85,8 +85,9 @@ export function Footer() {
             {/* Klarna */}
             <div className="bg-[#FFB3C7] rounded-md px-2.5 py-1.5 h-8 flex items-center justify-center">
               <span className="text-black font-bold text-xs">Klarna</span>
-            </div>
           </div>
+          <p className="text-xs text-muted-foreground mt-3 md:mt-0">🚚 Toimitukset 3–10 arkipäivää</p>
+        </div>
         </div>
       </div>
     </footer>
