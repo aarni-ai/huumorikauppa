@@ -93,9 +93,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.name}
         </h3>
         <p className="text-lg md:text-xl font-bold text-primary">
-          {product.variants.sizes || product.variants.colors
-            ? `Alkaen ${product.price.toFixed(2)} €`
-            : `${product.price.toFixed(2)} €`}
+          {product.price.toFixed(2)} €
         </p>
       </div>
     </Link>

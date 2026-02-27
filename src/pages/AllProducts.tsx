@@ -11,7 +11,7 @@ const AllProducts = () => {
           <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
-          <div className="flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> +500 tyytyväistä asiakasta 💎</div>
+          <div className="flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> Turvallinen suomalainen kauppa 🇫🇮</div>
         </div>
       </section>
 
@@ -23,7 +23,7 @@ const AllProducts = () => {
         </nav>
 
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Kaikki Tuotteet 🛍️</h1>
-        <p className="text-muted-foreground mb-8">{mockProducts.length} tuotetta – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!</p>
+        <p className="text-muted-foreground mb-8">Runsaasti valikoimaa – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!</p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {mockProducts.map(product => (
