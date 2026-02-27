@@ -23,9 +23,35 @@ const CheckoutPage = () => {
   const updateForm = (field: string, value: string) =>
     setForm(prev => ({ ...prev, [field]: value }));
 
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const canProceedToShipping = () => {
+    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim()) {
+      toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
+      return false;
+    }
+    if (!isValidEmail(form.email)) {
+      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
+
+  const canProceedToPayment = () => {
+    if (!form.address.trim() || !form.zip.trim() || !form.city.trim()) {
+      toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
+
   const handlePayment = async () => {
     if (!form.email || !form.firstName || !form.address || !form.zip || !form.city) {
       toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
+      return;
+    }
+    if (!isValidEmail(form.email)) {
+      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
       return;
     }
     setIsProcessing(true);
@@ -130,7 +156,7 @@ const CheckoutPage = () => {
                 <Label htmlFor="phone" className="text-foreground">Puhelin</Label>
                 <Input id="phone" type="tel" value={form.phone} onChange={e => updateForm("phone", e.target.value)} className="bg-muted border-border mt-1" placeholder="0401234567" />
               </div>
-              <Button onClick={() => setStep("shipping")} className="bg-primary text-primary-foreground font-bold">
+              <Button onClick={() => canProceedToShipping() && setStep("shipping")} className="bg-primary text-primary-foreground font-bold">
                 Jatka toimitustietoihin <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -164,7 +190,7 @@ const CheckoutPage = () => {
                 <Button variant="outline" onClick={() => setStep("details")} className="border-border">
                   <ArrowLeft className="h-4 w-4 mr-2" /> Takaisin
                 </Button>
-                <Button onClick={() => setStep("payment")} className="bg-primary text-primary-foreground font-bold">
+                <Button onClick={() => canProceedToPayment() && setStep("payment")} className="bg-primary text-primary-foreground font-bold">
                   Jatka maksuun <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
@@ -176,9 +202,8 @@ const CheckoutPage = () => {
               <h2 className="font-display text-xl text-foreground">Maksu</h2>
               <div className="bg-muted/50 border border-border rounded-lg p-6 text-center space-y-4">
                 <Lock className="h-10 w-10 text-primary mx-auto" />
-                <p className="text-foreground font-medium">Turvallinen maksu</p>
                 <p className="text-sm text-muted-foreground">
-                  Sinut ohjataan turvalliselle maksusivulle. Tuemme Visa, Mastercard ja muita maksutapoja.
+                  Sinut ohjataan maksusivulle. Tuemme Visa, Mastercard ja muita maksutapoja.
                 </p>
                 <Button 
                   size="lg" 
