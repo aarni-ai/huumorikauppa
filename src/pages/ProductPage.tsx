@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { mockProducts, categories } from "@/data/products";
+import { categories } from "@/data/products";
+import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, Mes
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const sizeGuide = [
   { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
@@ -20,13 +22,28 @@ const sizeGuide = [
 
 const ProductPage = () => {
   const { slug } = useParams();
-  const product = mockProducts.find(p => p.slug === slug);
+  const { product, products: allProducts = [], isLoading } = useProduct(slug);
   const { addItem } = useCartContext();
   const { toast } = useToast();
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="container py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Skeleton className="aspect-square rounded-lg" />
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-8 w-1/4" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -66,7 +83,7 @@ const ProductPage = () => {
     toast({ title: "Linkki kopioitu! 📋" });
   };
 
-  const relatedProducts = mockProducts
+  const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
@@ -99,7 +116,6 @@ const ProductPage = () => {
       />
 
       <div className="container py-6 md:py-10">
-        {/* Breadcrumb */}
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
@@ -111,7 +127,6 @@ const ProductPage = () => {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {/* Image */}
           <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
             <img
               src={product.images[0] || "/placeholder.svg"}
@@ -125,25 +140,18 @@ const ProductPage = () => {
             </div>
           </div>
 
-          {/* Details */}
           <div className="space-y-6">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
-              <p className="text-2xl md:text-3xl font-bold text-primary">
-                {product.price.toFixed(2)} €
-              </p>
+              <p className="text-2xl md:text-3xl font-bold text-primary">{product.price.toFixed(2)} €</p>
             </div>
 
             <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
 
-            {/* Stock */}
             {product.stock <= 10 && product.stock > 0 && (
-              <p className="text-sm font-bold text-destructive">
-                Vain {product.stock} jäljellä – tilaa nyt! 😱
-              </p>
+              <p className="text-sm font-bold text-destructive">Vain {product.stock} jäljellä – tilaa nyt! 😱</p>
             )}
 
-            {/* Size selector */}
             {hasSizes && (
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -201,7 +209,6 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Color selector */}
             {hasColors && (
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">Väri</label>
@@ -223,89 +230,41 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Quantity */}
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">Määrä</label>
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold"
-                >
-                  −
-                </button>
+                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold">−</button>
                 <span className="text-lg font-bold text-foreground w-8 text-center">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                  className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold"
-                >
-                  +
-                </button>
+                <button onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold">+</button>
               </div>
             </div>
 
-            {/* Add to cart */}
             <div className="flex gap-3">
-              <Button
-                onClick={handleAddToCart}
-                size="lg"
-                className="flex-1 bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform"
-              >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                Lisää koriin
+              <Button onClick={handleAddToCart} size="lg" className="flex-1 bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+                <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                  setWishlisted(!wishlisted);
-                  toast({ title: wishlisted ? "Poistettu suosikeista" : "Lisätty suosikkeihin ❤️" });
-                }}
-                className="border-border"
-              >
+              <Button variant="outline" size="lg" onClick={() => { setWishlisted(!wishlisted); toast({ title: wishlisted ? "Poistettu suosikeista" : "Lisätty suosikkeihin ❤️" }); }} className="border-border">
                 <Heart className={`h-5 w-5 ${wishlisted ? "fill-secondary text-secondary" : ""}`} />
               </Button>
             </div>
 
-            {/* Share */}
             <div className="flex items-center gap-3 pt-2">
               <span className="text-sm text-muted-foreground flex items-center gap-1"><Share2 className="h-4 w-4" /> Jaa kaverille:</span>
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(product.name + " – " + shareUrl)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline flex items-center gap-1"
-              >
+              <a href={`https://wa.me/?text=${encodeURIComponent(product.name + " – " + shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline"
-              >
-                Facebook
-              </a>
-              <button onClick={handleCopyLink} className="text-sm text-primary hover:underline flex items-center gap-1">
-                <Copy className="h-4 w-4" /> Kopioi
-              </button>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">Facebook</a>
+              <button onClick={handleCopyLink} className="text-sm text-primary hover:underline flex items-center gap-1"><Copy className="h-4 w-4" /> Kopioi</button>
             </div>
 
-            {/* Trust signals */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 60 €
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu
-              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 60 €</div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu</div>
             </div>
           </div>
         </div>
 
-        {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Saatat myös tykätä 😍</h2>

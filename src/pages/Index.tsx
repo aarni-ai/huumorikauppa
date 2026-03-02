@@ -2,19 +2,23 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
-import { mockProducts, categories } from "@/data/products";
+import { categories } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
-  const featured = mockProducts.filter(p => p.is_featured).slice(0, 8);
-  const newProducts = mockProducts.filter(p => p.is_new).slice(0, 8);
-  const tpaidat = mockProducts.filter(p => p.category === "t-paidat").slice(0, 4);
-  const hupparit = mockProducts.filter(p => p.category === "hupparit").slice(0, 4);
-  const housut = mockProducts.filter(p => p.category === "housut").slice(0, 4);
-  const mukit = mockProducts.filter(p => p.category === "mukit").slice(0, 4);
-  const tarrat = mockProducts.filter(p => p.category === "tarrat").slice(0, 4);
+  const { data: allProducts = [], isLoading } = useProducts();
+
+  const featured = allProducts.filter(p => p.is_featured).slice(0, 8);
+  const newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
+  const tpaidat = allProducts.filter(p => p.category === "t-paidat").slice(0, 4);
+  const hupparit = allProducts.filter(p => p.category === "hupparit").slice(0, 4);
+  const housut = allProducts.filter(p => p.category === "housut").slice(0, 4);
+  const mukit = allProducts.filter(p => p.category === "mukit").slice(0, 4);
+  const tarrat = allProducts.filter(p => p.category === "tarrat").slice(0, 4);
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -75,18 +79,30 @@ const Index = () => {
         </div>
       </section>
 
-      {/* UUTUUDET */}
-      <ProductSection title="Uutuudet 🔥" linkTo="/kaikki-tuotteet?filter=new" products={newProducts} />
+      {isLoading ? (
+        <section className="container py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="aspect-square rounded-lg" />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <>
+          {/* UUTUUDET */}
+          <ProductSection title="Uutuudet 🔥" linkTo="/kaikki-tuotteet?filter=new" products={newProducts} />
 
-      {/* KATEGORIOITTAIN */}
-      <ProductSection title="Hauskat T-Paidat 👕" linkTo="/kategoria/t-paidat" products={tpaidat} />
-      <ProductSection title="Hauskat Hupparit 🧥" linkTo="/kategoria/hupparit" products={hupparit} />
-      <ProductSection title="Hauskat Housut 👖" linkTo="/kategoria/housut" products={housut} />
-      <ProductSection title="Hauskat Mukit ☕" linkTo="/kategoria/mukit" products={mukit} />
-      <ProductSection title="Hauskat Tarrat 🏷️" linkTo="/kategoria/tarrat" products={tarrat} />
+          {/* KATEGORIOITTAIN */}
+          <ProductSection title="Hauskat T-Paidat 👕" linkTo="/kategoria/t-paidat" products={tpaidat} />
+          <ProductSection title="Hauskat Hupparit 🧥" linkTo="/kategoria/hupparit" products={hupparit} />
+          <ProductSection title="Hauskat Housut 👖" linkTo="/kategoria/housut" products={housut} />
+          <ProductSection title="Hauskat Mukit ☕" linkTo="/kategoria/mukit" products={mukit} />
+          <ProductSection title="Hauskat Tarrat 🏷️" linkTo="/kategoria/tarrat" products={tarrat} />
 
-      {/* BESTSELLERIT */}
-      <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+          {/* BESTSELLERIT */}
+          <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+        </>
+      )}
 
       {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
@@ -107,30 +123,10 @@ const Index = () => {
             Miksi asiakkaat rakastavat Huumorikauppaa? 🤔
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            <TrustCard
-              icon={<Users className="h-8 w-8 text-primary" />}
-              title="Tyytyväisiä asiakkaita"
-              desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen."
-              bg="primary"
-            />
-            <TrustCard
-              icon={<Heart className="h-8 w-8 text-accent" />}
-              title="Helppo tilata"
-              desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta."
-              bg="accent"
-            />
-            <TrustCard
-              icon={<Star className="h-8 w-8 text-primary" />}
-              title="Täydellinen lahja"
-              desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!"
-              bg="primary"
-            />
-            <TrustCard
-              icon={<ThumbsUp className="h-8 w-8 text-secondary" />}
-              title="Custom-painatukset"
-              desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!"
-              bg="secondary"
-            />
+            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." bg="primary" />
+            <TrustCard icon={<Heart className="h-8 w-8 text-accent" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." bg="accent" />
+            <TrustCard icon={<Star className="h-8 w-8 text-primary" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" bg="primary" />
+            <TrustCard icon={<ThumbsUp className="h-8 w-8 text-secondary" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" bg="secondary" />
           </div>
         </div>
       </section>

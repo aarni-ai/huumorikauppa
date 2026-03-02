@@ -1,14 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
-import { mockProducts } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { SEOHead } from "@/components/SEOHead";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.toLowerCase() || "";
+  const { data: allProducts = [] } = useProducts();
 
   const results = query
-    ? mockProducts.filter(
+    ? allProducts.filter(
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query) ||

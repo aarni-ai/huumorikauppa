@@ -1,13 +1,16 @@
 import { useParams, Link } from "react-router-dom";
-import { mockProducts, categories } from "@/data/products";
+import { categories } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
-  const products = mockProducts.filter(p => p.category === slug);
+  const { data: allProducts = [], isLoading } = useProducts();
+  const products = allProducts.filter(p => p.category === slug);
 
   if (!category) {
     return (
@@ -42,7 +45,6 @@ const CategoryPage = () => {
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
       />
 
-      {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
           <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
@@ -52,7 +54,6 @@ const CategoryPage = () => {
       </section>
 
       <div className="container py-8 md:py-12">
-        {/* Breadcrumb */}
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
@@ -64,13 +65,21 @@ const CategoryPage = () => {
         </h1>
         <p className="text-muted-foreground mb-8">{category.description} – {products.length} tuotetta</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="aspect-square rounded-lg" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {products.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
-        {products.length === 0 && (
+        {!isLoading && products.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-muted-foreground">Ei tuotteita tässä kategoriassa vielä 😅</p>
           </div>
