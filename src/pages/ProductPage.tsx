@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle } from "lucide-react";
+import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
@@ -20,6 +20,8 @@ const sizeGuide = [
   { size: "XXL", chest: "120–124", waist: "104–108", hip: "120–124" },
 ];
 
+const isMugCategory = (category: string) => category === "mukit";
+
 const ProductPage = () => {
   const { slug } = useParams();
   const { product, products: allProducts = [], isLoading } = useProduct(slug);
@@ -29,6 +31,7 @@ const ProductPage = () => {
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
+  const [descExpanded, setDescExpanded] = useState(false);
 
   if (isLoading) {
     return (
@@ -55,7 +58,8 @@ const ProductPage = () => {
   }
 
   const category = categories.find(c => c.slug === product.category);
-  const hasSizes = product.variants.sizes && product.variants.sizes.length > 0;
+  const isMug = isMugCategory(product.category);
+  const hasSizes = !isMug && product.variants.sizes && product.variants.sizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
@@ -69,7 +73,8 @@ const ProductPage = () => {
       toast({ title: "Valitse väri ensin! 🎨", variant: "destructive" });
       return;
     }
-    addItem(product, quantity, selectedSize, selectedColor);
+    const size = isMug ? product.variants.sizes?.[0] : selectedSize;
+    addItem(product, quantity, size, selectedColor);
     toast({
       title: "Lisätty koriin! 🛒",
       description: `${product.name} (${quantity} kpl) on nyt ostoskorissasi.`,
@@ -105,6 +110,9 @@ const ProductPage = () => {
   };
 
   const categoryName = category?.name || product.category;
+  const descriptionShort = product.description.length > 120 
+    ? product.description.slice(0, 120) + "…" 
+    : product.description;
 
   return (
     <div className="min-h-screen">
@@ -145,8 +153,6 @@ const ProductPage = () => {
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
               <p className="text-2xl md:text-3xl font-bold text-primary">{product.price.toFixed(2)} €</p>
             </div>
-
-            <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
 
             {product.stock <= 10 && product.stock > 0 && (
               <p className="text-sm font-bold text-destructive">Vain {product.stock} jäljellä – tilaa nyt! 😱</p>
@@ -264,6 +270,36 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Product description section – visual card with read more */}
+        <section className="mt-12">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
+            <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
+              {descExpanded || product.description.length <= 120 ? (
+                <p>{product.description}</p>
+              ) : (
+                <>
+                  <p>{descriptionShort}</p>
+                  <button
+                    onClick={() => setDescExpanded(true)}
+                    className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
+                  >
+                    Lue lisää <ChevronDown className="h-4 w-4" />
+                  </button>
+                </>
+              )}
+            </div>
+            {descExpanded && product.description.length > 120 && (
+              <button
+                onClick={() => setDescExpanded(false)}
+                className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
+              >
+                Näytä vähemmän <ChevronDown className="h-4 w-4 rotate-180" />
+              </button>
+            )}
+          </div>
+        </section>
 
         {relatedProducts.length > 0 && (
           <section className="mt-16">
