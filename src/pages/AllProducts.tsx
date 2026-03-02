@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import { mockProducts } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AllProducts = () => {
+  const { data: products = [], isLoading } = useProducts();
+
   return (
     <div className="min-h-screen">
       <SEOHead
@@ -31,11 +34,19 @@ const AllProducts = () => {
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Kaikki Tuotteet 🛍️</h1>
         <p className="text-muted-foreground mb-8">Runsaasti valikoimaa – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {mockProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="aspect-square rounded-lg" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {products.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
