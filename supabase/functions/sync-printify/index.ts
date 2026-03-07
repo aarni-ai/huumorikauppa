@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
     let allProducts: any[] = [];
     let page = 1;
     while (true) {
-      const url = `https://api.printify.com/v1/shops/${shopId}/products.json?page=${page}&limit=100`;
+      const url = `https://api.printify.com/v1/shops/${shopId}/products.json?page=${page}&limit=50`;
       console.log(`Fetching page ${page}: ${url}`);
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${apiKey}` }
@@ -74,15 +74,13 @@ Deno.serve(async (req) => {
       console.log(`Response status: ${res.status}, body preview: ${rawText.slice(0, 500)}`);
       let data;
       try { data = JSON.parse(rawText); } catch { break; }
-      // Printify returns { current_page, data: [...] } or just an array
       const products = Array.isArray(data) ? data : (data.data || data.products || []);
       console.log(`Page ${page}: got ${products.length} products`);
       if (products.length === 0) break;
       allProducts = allProducts.concat(products);
-      // Check if there are more pages
       const lastPage = data.last_page || data.total_pages;
       if (lastPage && page >= lastPage) break;
-      if (products.length < 100) break;
+      if (products.length < 50) break;
       page++;
     }
 
