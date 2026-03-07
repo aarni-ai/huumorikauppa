@@ -194,20 +194,31 @@ Deno.serve(async (req) => {
       for (const color of colors) {
         const varIds = colorVariantIds.get(color) || [];
         const colorImages: string[] = [];
+        const usedSrcsForColor = new Set<string>();
+        
+        // First pass: find images that match this color's variant IDs
         for (const img of allImagesSorted) {
           if (colorImages.length >= maxImagesPerColor) break;
           const imgVarIds: number[] = img.variant_ids || [];
-          if (imgVarIds.some((vid: number) => varIds.includes(vid))) {
-            colorImages.push(img.src);
+          if (imgVarIds.length === 0 || imgVarIds.some((vid: number) => varIds.includes(vid))) {
+            if (!usedSrcsForColor.has(img.src)) {
+              colorImages.push(img.src);
+              usedSrcsForColor.add(img.src);
+            }
           }
         }
-        // If no specific images found for this color, use default images
-        if (colorImages.length === 0 && allImagesSorted.length > 0) {
+        
+        // If still no images, use all available images as fallback
+        if (colorImages.length === 0) {
           for (const img of allImagesSorted) {
             if (colorImages.length >= maxImagesPerColor) break;
-            colorImages.push(img.src);
+            if (!usedSrcsForColor.has(img.src)) {
+              colorImages.push(img.src);
+              usedSrcsForColor.add(img.src);
+            }
           }
         }
+        
         if (colorImages.length > 0) {
           variantImages[color] = colorImages;
         }
