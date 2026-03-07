@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
-import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight } from "lucide-react";
+import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 
-// Priority keywords for sorting products within categories
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
   "kalju", "i ❤️ my", "i love my", "i ❤ my"
@@ -24,7 +24,6 @@ function getPriority(product: { name: string; description: string }): number {
   return PRIORITY_KEYWORDS.length + 1;
 }
 
-// Curated slugs for the hero carousel
 const CAROUSEL_SLUGS = [
   "kalamies-t-paita",
   "maailman-paras-aiti-huppari",
@@ -37,12 +36,11 @@ const CAROUSEL_SLUGS = [
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
 
-  // Curated carousel: match by slug
   const carouselProducts = CAROUSEL_SLUGS
     .map(slug => allProducts.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
     .filter(Boolean) as typeof allProducts;
 
-  // Dynamic categories: only show categories that have products, sorted by count
+  // Dynamic categories sorted by product count (most items first)
   const categoriesWithProducts = categories
     .map(cat => ({
       ...cat,
@@ -62,7 +60,10 @@ const Index = () => {
     "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja.",
     "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
     "email": "info@huumorikauppa.fi",
-    "sameAs": []
+    "sameAs": [
+      "https://www.instagram.com/huumorikauppa",
+      "https://www.facebook.com/profile.php?id=61584153329326"
+    ]
   };
 
   return (
@@ -74,41 +75,24 @@ const Index = () => {
         jsonLd={orgJsonLd}
       />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-card to-background py-16 md:py-28">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 text-6xl md:text-8xl">😂</div>
-          <div className="absolute top-20 right-20 text-5xl md:text-7xl">🤣</div>
-          <div className="absolute bottom-10 left-1/3 text-4xl md:text-6xl">💀</div>
-          <div className="absolute bottom-20 right-10 text-5xl md:text-7xl">🔥</div>
-        </div>
-        <div className="container relative text-center space-y-6 md:space-y-8">
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-foreground leading-tight md:leading-snug">
-            Suomen hauskin{" "}
-            <span className="text-primary text-glow-lime">meemikauppa</span>{" "}
-            on täällä 💜😂
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Setähuumoria, äitihuumoria ja kaikkien suomalaisten suosikkeja.
-            Tilaa ennen kuin naapurit ehtii! 🚀
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-primary text-primary-foreground font-bold text-lg px-8 shadow-glow-lime hover:scale-105 transition-transform">
-              <Link to="/kaikki-tuotteet">Selaa tuotteita 🛒</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-bold text-lg px-8">
-              <Link to="/kategoria/mukit">Katso mukit ☕</Link>
-            </Button>
-          </div>
-        </div>
+      {/* HERO BANNER IMAGE */}
+      <section className="relative">
+        <Link to="/kaikki-tuotteet" className="block">
+          <img
+            src="/images/hero-banner.png"
+            alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
+            className="w-full h-auto object-cover max-h-[280px] sm:max-h-[350px] md:max-h-[420px] lg:max-h-[500px] object-center"
+          />
+        </Link>
       </section>
 
       {/* TRUST BADGES */}
       <section className="bg-muted/50 py-4 border-y border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 € tilauksista</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
+          <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
         </div>
       </section>
 
@@ -127,7 +111,7 @@ const Index = () => {
             <HeroCarousel products={carouselProducts} />
           )}
 
-          {/* CATEGORY SECTIONS – dynamic, sorted by product count */}
+          {/* CATEGORY SECTIONS – sorted by product count */}
           {categoriesWithProducts.map(cat => {
             const catProducts = allProducts.filter(p => p.category === cat.slug).sort((a, b) => getPriority(a) - getPriority(b)).slice(0, 4);
             return (
@@ -159,6 +143,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* REVIEWS */}
+      <ReviewsCarousel />
+
       {/* WHY HUUMORIKAUPPA */}
       <section className="bg-card border-y border-border py-12 md:py-16">
         <div className="container">
@@ -166,7 +153,7 @@ const Index = () => {
             Miksi asiakkaat rakastavat Huumorikauppaa? 🤔
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
+            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadat suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
             <TrustCard icon={<Heart className="h-8 w-8 text-accent" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
             <TrustCard icon={<Star className="h-8 w-8 text-primary" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" />
             <TrustCard icon={<ThumbsUp className="h-8 w-8 text-secondary" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" />
@@ -267,7 +254,6 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
           ))}
         </div>
       </div>
-      {/* Dots */}
       <div className="flex items-center justify-center gap-1.5 mt-4">
         {Array.from({ length: maxIndex + 1 }).map((_, i) => (
           <button

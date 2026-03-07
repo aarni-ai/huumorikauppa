@@ -23,7 +23,6 @@ const sizeGuide = [
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
-// Check if product is a custom text/image product
 function isCustomTextProduct(product: { name: string; description: string }): boolean {
   const t = (product.name + ' ' + product.description).toLowerCase();
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
@@ -98,6 +97,10 @@ const ProductPage = () => {
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
+  const hasDiscount = product.original_price && product.original_price > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
+    : 0;
 
   const handleAddToCart = () => {
     if (needsSize) {
@@ -185,6 +188,9 @@ const ProductPage = () => {
               />
               <div className="absolute top-3 left-3 flex flex-col gap-1">
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
+                {hasDiscount && (
+                  <Badge className="bg-destructive text-destructive-foreground font-bold">-{discountPercent}%</Badge>
+                )}
               </div>
             </div>
             {currentImages.length > 1 && (
@@ -208,7 +214,19 @@ const ProductPage = () => {
           <div className="space-y-5">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
-              <p className="text-2xl md:text-3xl font-bold text-primary">{product.price.toFixed(2)} €</p>
+              <div className="flex items-center gap-3">
+                {hasDiscount && (
+                  <span className="text-xl text-muted-foreground line-through">
+                    {product.original_price!.toFixed(2)} €
+                  </span>
+                )}
+                <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
+                  {product.price.toFixed(2)} €
+                </span>
+                {hasDiscount && (
+                  <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
+                )}
+              </div>
             </div>
 
             {product.stock <= 10 && product.stock > 0 && (
@@ -222,7 +240,7 @@ const ProductPage = () => {
                   Väri{selectedColor ? `: ${selectedColor}` : ""}
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.colors!.map(color => (
+                  {product.variants.colors!.map((color: string) => (
                     <button
                       key={color}
                       onClick={() => handleColorSelect(color)}
@@ -280,7 +298,7 @@ const ProductPage = () => {
                   </Dialog>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.sizes!.map(size => (
+                  {product.variants.sizes!.map((size: string) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
@@ -297,7 +315,7 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Custom text input for oma teksti/kuva products */}
+            {/* Custom text input */}
             {isCustom && (
               <div>
                 <label className="text-sm font-medium text-foreground mb-2 block">

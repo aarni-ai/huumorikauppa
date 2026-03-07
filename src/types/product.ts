@@ -5,6 +5,7 @@ export interface Product {
   category: string;
   humor_type: string;
   price: number;
+  original_price?: number;
   stock: number;
   description: string;
   images: string[];

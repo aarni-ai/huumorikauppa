@@ -10,6 +10,7 @@ interface ProductCardProps {
   product: Product;
 }
 
+// Pick a varied hover color – not always black
 function getHoverImage(product: Product): string | null {
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
   if (!variantImages) {
@@ -18,19 +19,34 @@ function getHoverImage(product: Product): string | null {
 
   const defaultColor = (product.variants.default_color as string) || "";
   const defaultLower = defaultColor.toLowerCase();
-
-  let oppositeColor: string | null = null;
   const colorKeys = Object.keys(variantImages);
 
+  // Build preference list based on default color
+  let oppositeColor: string | null = null;
+
   if (defaultLower.includes("white")) {
-    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("black")) || null;
+    // Prefer: black, then red, blue, navy, any other
+    oppositeColor =
+      colorKeys.find(c => c.toLowerCase().includes("black")) ||
+      colorKeys.find(c => c.toLowerCase().includes("red")) ||
+      colorKeys.find(c => c.toLowerCase().includes("navy")) ||
+      colorKeys.find(c => c.toLowerCase().includes("blue")) ||
+      colorKeys.find(c => c !== defaultColor) ||
+      null;
   } else if (defaultLower.includes("black")) {
-    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("white")) || null;
+    oppositeColor =
+      colorKeys.find(c => c.toLowerCase().includes("white")) ||
+      colorKeys.find(c => c.toLowerCase().includes("red")) ||
+      colorKeys.find(c => c.toLowerCase().includes("sport grey") || c.toLowerCase().includes("gray")) ||
+      colorKeys.find(c => c !== defaultColor) ||
+      null;
   } else {
-    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("black"))
-      || colorKeys.find(c => c.toLowerCase().includes("white"))
-      || colorKeys.find(c => c !== defaultColor)
-      || null;
+    // Colored default: pick black, white, or any other
+    oppositeColor =
+      colorKeys.find(c => c.toLowerCase().includes("black")) ||
+      colorKeys.find(c => c.toLowerCase().includes("white")) ||
+      colorKeys.find(c => c !== defaultColor) ||
+      null;
   }
 
   if (oppositeColor && variantImages[oppositeColor]?.[0]) {
@@ -61,6 +77,11 @@ export function ProductCard({ product }: ProductCardProps) {
     });
   };
 
+  const hasDiscount = product.original_price && product.original_price > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
+    : 0;
+
   return (
     <Link
       to={`/tuote/${product.slug}`}
@@ -80,6 +101,16 @@ export function ProductCard({ product }: ProductCardProps) {
         {hoverImage && (
           <img src={hoverImage} alt="" className="hidden" loading="lazy" />
         )}
+
+        {/* Discount badge */}
+        {hasDiscount && (
+          <div className="absolute top-2 right-2">
+            <Badge className="bg-destructive text-destructive-foreground font-bold text-xs px-2 py-1">
+              -{discountPercent}%
+            </Badge>
+          </div>
+        )}
+
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.is_gift_idea && (
             <Badge className="bg-secondary text-secondary-foreground text-xs font-bold">LAHJAIDEA 🎁</Badge>
@@ -110,9 +141,16 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className="font-sans text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-lg md:text-xl font-bold text-primary">
-          {product.price.toFixed(2)} €
-        </p>
+        <div className="flex items-center gap-2 flex-wrap">
+          {hasDiscount && (
+            <span className="text-sm text-muted-foreground line-through">
+              {product.original_price!.toFixed(2)} €
+            </span>
+          )}
+          <span className={`text-lg md:text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
+            {product.price.toFixed(2)} €
+          </span>
+        </div>
       </div>
     </Link>
   );
