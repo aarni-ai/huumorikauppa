@@ -20,7 +20,7 @@ async function fetchProducts(): Promise<Product[]> {
     stock: p.stock,
     description: p.description,
     images: p.images || [],
-    variants: (p.variants as Record<string, string[]>) || {},
+    variants: (p.variants as Record<string, any>) || {},
     is_featured: p.is_featured,
     is_new: p.is_new,
     is_gift_idea: p.is_gift_idea,

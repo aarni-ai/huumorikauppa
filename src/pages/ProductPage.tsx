@@ -3,7 +3,7 @@ import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown } from "lucide-react";
@@ -20,7 +20,8 @@ const sizeGuide = [
   { size: "XXL", chest: "120–124", waist: "104–108", hip: "120–124" },
 ];
 
-const isMugCategory = (category: string) => category === "mukit";
+// Categories that don't need size selector or size guide
+const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot"];
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -33,6 +34,36 @@ const ProductPage = () => {
   const [wishlisted, setWishlisted] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+
+  // Get variant images map
+  const variantImages = useMemo(() => {
+    return (product?.variants?.variant_images as Record<string, string[]>) || {};
+  }, [product]);
+
+  // Auto-select the default color based on the displayed image
+  useEffect(() => {
+    if (product && !selectedColor) {
+      const defaultColor = product.variants.default_color as string | undefined;
+      if (defaultColor && product.variants.colors?.includes(defaultColor)) {
+        setSelectedColor(defaultColor);
+      } else if (product.variants.colors?.[0]) {
+        setSelectedColor(product.variants.colors[0]);
+      }
+    }
+  }, [product, selectedColor]);
+
+  // Get images for the currently selected color
+  const currentImages = useMemo(() => {
+    if (selectedColor && variantImages[selectedColor]?.length > 0) {
+      return variantImages[selectedColor];
+    }
+    return product?.images || [];
+  }, [selectedColor, variantImages, product]);
+
+  // Reset active image when color changes
+  useEffect(() => {
+    setActiveImage(0);
+  }, [selectedColor]);
 
   if (isLoading) {
     return (
@@ -59,8 +90,8 @@ const ProductPage = () => {
   }
 
   const category = categories.find(c => c.slug === product.category);
-  const isMug = isMugCategory(product.category);
-  const hasSizes = !isMug && product.variants.sizes && product.variants.sizes.length > 1;
+  const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
+  const hasSizes = !hideSize && product.variants.sizes && product.variants.sizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
@@ -74,7 +105,7 @@ const ProductPage = () => {
       toast({ title: "Valitse väri ensin! 🎨", variant: "destructive" });
       return;
     }
-    const size = isMug ? product.variants.sizes?.[0] : selectedSize;
+    const size = hideSize ? product.variants.sizes?.[0] : selectedSize;
     addItem(product, quantity, size, selectedColor);
     toast({
       title: "Lisätty koriin! 🛒",
@@ -89,6 +120,10 @@ const ProductPage = () => {
     toast({ title: "Linkki kopioitu! 📋" });
   };
 
+  const handleColorSelect = (color: string) => {
+    setSelectedColor(color);
+  };
+
   const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
@@ -98,7 +133,7 @@ const ProductPage = () => {
     "@type": "Product",
     "name": product.name,
     "description": product.description,
-    "image": product.images[0] || "/placeholder.svg",
+    "image": currentImages[0] || "/placeholder.svg",
     "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
     "brand": { "@type": "Brand", "name": "Huumorikauppa" },
     "offers": {
@@ -112,7 +147,6 @@ const ProductPage = () => {
 
   const categoryName = category?.name || product.category;
 
-  // Short punchy description
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
@@ -142,21 +176,20 @@ const ProductPage = () => {
           <div className="space-y-3">
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
               <img
-                src={product.images[activeImage] || product.images[0] || "/placeholder.svg"}
-                alt={`${product.name} – hauska ${categoryName} Huumorikaupasta`}
+                src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
+                alt={`${product.name} – ${selectedColor || ""}`}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-3 left-3 flex flex-col gap-1">
-                {product.is_new && <Badge className="bg-accent text-accent-foreground font-bold">UUTUUS 🔥</Badge>}
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
               </div>
             </div>
             {/* Thumbnail gallery */}
-            {product.images.length > 1 && (
+            {currentImages.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
-                {product.images.map((img, i) => (
+                {currentImages.map((img, i) => (
                   <button
-                    key={i}
+                    key={`${selectedColor}-${i}`}
                     onClick={() => setActiveImage(i)}
                     className={`shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
                       activeImage === i ? "border-primary" : "border-border hover:border-primary/50"
@@ -169,7 +202,7 @@ const ProductPage = () => {
             )}
           </div>
 
-          {/* Product info – ultra simple */}
+          {/* Product info */}
           <div className="space-y-5">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
@@ -183,12 +216,14 @@ const ProductPage = () => {
             {/* Color selector */}
             {hasColors && (
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">Väri</label>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Väri{selectedColor ? `: ${selectedColor}` : ""}
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {product.variants.colors!.map(color => (
                     <button
                       key={color}
-                      onClick={() => setSelectedColor(color)}
+                      onClick={() => handleColorSelect(color)}
                       className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
                         selectedColor === color
                           ? "border-primary bg-primary text-primary-foreground"

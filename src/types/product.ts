@@ -8,7 +8,7 @@ export interface Product {
   stock: number;
   description: string;
   images: string[];
-  variants: Record<string, string[]>;
+  variants: Record<string, any>;
   is_featured: boolean;
   is_new: boolean;
   is_gift_idea: boolean;
