@@ -76,8 +76,8 @@ const Index = () => {
       />
 
       {/* HERO BANNER IMAGE */}
-      <section className="relative">
-        <Link to="/kaikki-tuotteet" className="block">
+      <section className="container pt-4 pb-2 md:pt-6 md:pb-3">
+        <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
             src="/images/hero-banner.png"
