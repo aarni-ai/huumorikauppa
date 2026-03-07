@@ -7,7 +7,9 @@ const corsHeaders = {
 
 function mapToCategory(text: string): string | null {
   const t = text.toLowerCase();
-  if (t.includes('hoodie') || t.includes('hooded') || t.includes('sweatshirt')) return 'hupparit';
+  // Order matters: more specific first
+  if (t.includes('long sleeve') || t.includes('pitkähihainen') || t.includes('pitkahihainen')) return 'pitkahihaiset';
+  if (t.includes('hoodie') || t.includes('hooded') || t.includes('sweatshirt') || t.includes('huppari')) return 'hupparit';
   if (t.includes('t-shirt') || t.includes('tee') || t.includes('t-paita')) return 't-paidat';
   if (t.includes('mug') || t.includes('cup') || t.includes('tumbler') || t.includes('kahvikuppi')) return 'mukit';
   if (t.includes('sticker') || t.includes('decal') || t.includes('tarra')) return 'tarrat';
@@ -15,7 +17,8 @@ function mapToCategory(text: string): string | null {
   if (t.includes('blanket') || t.includes('peitto') || t.includes('fleece')) return 'peitot';
   if (t.includes('beanie') || t.includes('pipo') || t.includes('hat') || t.includes('cap')) return 'pipot';
   if (t.includes('bag') || t.includes('tote') || t.includes('laukku') || t.includes('backpack')) return 'laukut';
-  if (t.includes('poster') || t.includes('canvas') || t.includes('wall art') || t.includes('seinätaulu') || t.includes('seinataulu') || t.includes('taulu') || t.includes('koriste')) return 'seinataulut';
+  if (t.includes('ornament') || t.includes('koriste') || t.includes('decoration') || t.includes('christmas ornament')) return 'koristeet';
+  if (t.includes('poster') || t.includes('canvas') || t.includes('wall art') || t.includes('seinätaulu') || t.includes('seinataulu') || t.includes('taulu')) return 'seinataulut';
   return null;
 }
 
@@ -29,7 +32,6 @@ function slugify(text: string): string {
     .trim();
 }
 
-// Known Printify size values
 const SIZE_VALUES = new Set([
   'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL',
   'XXL', 'XXXL', '6XL',
@@ -106,7 +108,8 @@ Deno.serve(async (req) => {
       }
       if (!category) {
         const desc = JSON.stringify(p).toLowerCase();
-        if (desc.includes('hoodie') || desc.includes('hooded')) category = 'hupparit';
+        if (desc.includes('long sleeve')) category = 'pitkahihaiset';
+        else if (desc.includes('hoodie') || desc.includes('hooded')) category = 'hupparit';
         else if (desc.includes('t-shirt') || desc.includes('tee') || desc.includes('unisex')) category = 't-paidat';
         else if (desc.includes('mug')) category = 'mukit';
         else if (desc.includes('sticker')) category = 'tarrat';
@@ -114,6 +117,7 @@ Deno.serve(async (req) => {
         else if (desc.includes('blanket') || desc.includes('fleece')) category = 'peitot';
         else if (desc.includes('beanie')) category = 'pipot';
         else if (desc.includes('tote') || desc.includes('bag')) category = 'laukut';
+        else if (desc.includes('ornament')) category = 'koristeet';
       }
       
       if (!category) {
@@ -121,17 +125,16 @@ Deno.serve(async (req) => {
         continue;
       }
 
-      // Build variant data: extract sizes, colors, and map images per color
+      // Build variant data
       const sizes = new Set<string>();
       const colors = new Set<string>();
-      // Map: color -> variant_ids for that color
       const colorVariantIds = new Map<string, number[]>();
       let minPrice = Infinity;
+      let maxPrice = 0;
 
       for (const variant of (p.variants || [])) {
         if (!variant.is_enabled) continue;
         
-        // Parse variant title: Printify uses "Color / Size" format
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
@@ -139,7 +142,6 @@ Deno.serve(async (req) => {
               sizes.add(part);
             } else if (part.length > 0) {
               colors.add(part);
-              // Track variant IDs per color
               if (!colorVariantIds.has(part)) colorVariantIds.set(part, []);
               colorVariantIds.get(part)!.push(variant.id);
             }
@@ -148,12 +150,17 @@ Deno.serve(async (req) => {
         
         const price = variant.price / 100;
         if (price < minPrice) minPrice = price;
+        if (price > maxPrice) maxPrice = price;
       }
 
       if (minPrice === Infinity) minPrice = 29.95;
 
-      // Build images per color from Printify mockup data
-      // Printify images have variant_ids linking to which variants they show
+      // Override price for pitkähihaiset
+      if (category === 'pitkahihaiset') {
+        minPrice = 39.90;
+      }
+
+      // Build images per color
       const variantImages: Record<string, string[]> = {};
       const allImagesSorted = (p.images || [])
         .filter((img: any) => img.src)
@@ -163,14 +170,15 @@ Deno.serve(async (req) => {
           return (a.position || 0) - (b.position || 0);
         });
 
-      // Map images to colors via variant_ids
+      // For hupparit: limit to 3 images per color (front, back, folded)
+      const maxImagesPerColor = category === 'hupparit' ? 3 : 4;
+
       for (const color of colors) {
         const varIds = colorVariantIds.get(color) || [];
         const colorImages: string[] = [];
         for (const img of allImagesSorted) {
-          if (colorImages.length >= 4) break; // Max 4 images per color
+          if (colorImages.length >= maxImagesPerColor) break;
           const imgVarIds: number[] = img.variant_ids || [];
-          // Check if this image is associated with any variant of this color
           if (imgVarIds.some((vid: number) => varIds.includes(vid))) {
             colorImages.push(img.src);
           }
@@ -180,18 +188,18 @@ Deno.serve(async (req) => {
         }
       }
 
-      // Default images: first 4 unique images for the main display
+      // Default images
       const defaultImages: string[] = [];
       const usedSrcs = new Set<string>();
       for (const img of allImagesSorted) {
-        if (defaultImages.length >= 4) break;
+        if (defaultImages.length >= maxImagesPerColor) break;
         if (!usedSrcs.has(img.src)) {
           defaultImages.push(img.src);
           usedSrcs.add(img.src);
         }
       }
 
-      // Determine default display color from the first default image
+      // Determine default color
       let defaultColor: string | null = null;
       if (allImagesSorted.length > 0) {
         const firstImg = allImagesSorted[0];
@@ -212,7 +220,6 @@ Deno.serve(async (req) => {
 
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
-      // Ensure unique slug using Printify product ID
       let productSlug = slugify(productTitle);
       const existingSlugs = dbProducts.map(dp => dp.slug);
       if (existingSlugs.includes(productSlug)) {
@@ -266,7 +273,7 @@ Deno.serve(async (req) => {
       products_synced: inserted?.length || 0,
       skipped,
       categories: [...new Set(dbProducts.map(p => p.category))],
-      products: inserted?.map(p => ({ name: p.name, category: p.category, price: p.price, variants_summary: { colors: p.variants?.colors?.length, sizes: p.variants?.sizes?.length, variant_images: Object.keys(p.variants?.variant_images || {}).length } }))
+      products: inserted?.map(p => ({ name: p.name, category: p.category, price: p.price }))
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

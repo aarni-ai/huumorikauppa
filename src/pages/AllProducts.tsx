@@ -5,8 +5,32 @@ import { Truck, RotateCcw, Shield } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Priority keywords: products matching these show first
+const PRIORITY_KEYWORDS = [
+  "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
+  "kalju", "i ❤️ my", "i love my", "i ❤ my"
+];
+
+function isCustomTextProduct(name: string, description: string): boolean {
+  const t = (name + ' ' + description).toLowerCase();
+  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
+}
+
+function getPriority(product: { name: string; description: string }): number {
+  const t = (product.name + ' ' + product.description).toLowerCase();
+  for (let i = 0; i < PRIORITY_KEYWORDS.length; i++) {
+    if (t.includes(PRIORITY_KEYWORDS[i].toLowerCase())) return i;
+  }
+  return PRIORITY_KEYWORDS.length + 1;
+}
+
 const AllProducts = () => {
   const { data: products = [], isLoading } = useProducts();
+
+  // Filter out custom text/image products and sort by priority
+  const filteredProducts = products
+    .filter(p => !isCustomTextProduct(p.name, p.description))
+    .sort((a, b) => getPriority(a) - getPriority(b));
 
   return (
     <div className="min-h-screen">
@@ -42,7 +66,7 @@ const AllProducts = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {products.map(product => (
+            {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

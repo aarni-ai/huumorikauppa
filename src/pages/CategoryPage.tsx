@@ -6,11 +6,24 @@ import { Truck, RotateCcw, Shield } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const PRIORITY_KEYWORDS = [
+  "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
+  "kalju", "i ❤️ my", "i love my", "i ❤ my"
+];
+
+function getPriority(product: { name: string; description: string }): number {
+  const t = (product.name + ' ' + product.description).toLowerCase();
+  for (let i = 0; i < PRIORITY_KEYWORDS.length; i++) {
+    if (t.includes(PRIORITY_KEYWORDS[i].toLowerCase())) return i;
+  }
+  return PRIORITY_KEYWORDS.length + 1;
+}
+
 const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const products = allProducts.filter(p => p.category === slug);
+  const products = allProducts.filter(p => p.category === slug).sort((a, b) => getPriority(a) - getPriority(b));
 
   if (!category) {
     return (

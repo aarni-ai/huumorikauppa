@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Product } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
-import { Heart, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
@@ -10,22 +10,15 @@ interface ProductCardProps {
   product: Product;
 }
 
-/**
- * Find the opposite color variant image for hover effect.
- * If default is White → show Black, and vice versa.
- * For colored products, try to show a contrasting variant.
- */
 function getHoverImage(product: Product): string | null {
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
   if (!variantImages) {
-    // Fallback: use second image
     return product.images[1] || null;
   }
 
   const defaultColor = (product.variants.default_color as string) || "";
   const defaultLower = defaultColor.toLowerCase();
 
-  // Determine opposite color
   let oppositeColor: string | null = null;
   const colorKeys = Object.keys(variantImages);
 
@@ -34,7 +27,6 @@ function getHoverImage(product: Product): string | null {
   } else if (defaultLower.includes("black")) {
     oppositeColor = colorKeys.find(c => c.toLowerCase().includes("white")) || null;
   } else {
-    // For colored: try black, then white, then any different color
     oppositeColor = colorKeys.find(c => c.toLowerCase().includes("black"))
       || colorKeys.find(c => c.toLowerCase().includes("white"))
       || colorKeys.find(c => c !== defaultColor)
@@ -45,12 +37,10 @@ function getHoverImage(product: Product): string | null {
     return variantImages[oppositeColor][0];
   }
 
-  // Fallback: second image
   return product.images[1] || null;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [wishlisted, setWishlisted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { addItem } = useCartContext();
   const { toast } = useToast();
@@ -71,16 +61,6 @@ export function ProductCard({ product }: ProductCardProps) {
     });
   };
 
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setWishlisted(!wishlisted);
-    toast({
-      title: wishlisted ? "Poistettu suosikeista" : "Lisätty suosikkeihin ❤️",
-      description: product.name,
-    });
-  };
-
   return (
     <Link
       to={`/tuote/${product.slug}`}
@@ -89,15 +69,6 @@ export function ProductCard({ product }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={() => setIsHovered(prev => !prev)}
     >
-      {/* Wishlist */}
-      <button
-        onClick={handleWishlist}
-        className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
-        aria-label="Lisää suosikkeihin"
-      >
-        <Heart className={`h-4 w-4 transition-colors ${wishlisted ? "fill-secondary text-secondary" : "text-muted-foreground hover:text-secondary"}`} />
-      </button>
-
       {/* Image with hover swap */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
@@ -106,7 +77,6 @@ export function ProductCard({ product }: ProductCardProps) {
           className={`w-full h-full object-cover transition-all duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
         />
-        {/* Preload hover image */}
         {hoverImage && (
           <img src={hoverImage} alt="" className="hidden" loading="lazy" />
         )}
