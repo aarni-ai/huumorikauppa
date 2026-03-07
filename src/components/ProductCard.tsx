@@ -13,25 +13,31 @@ interface ProductCardProps {
 // Pick a varied hover color – cycle through non-default colors
 function getHoverImage(product: Product): string | null {
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
-  if (!variantImages) {
-    return product.images[1] || null;
+  
+  if (variantImages && Object.keys(variantImages).length > 0) {
+    const defaultColor = (product.variants.default_color as string) || "";
+    const colorKeys = Object.keys(variantImages).filter(c => c !== defaultColor);
+
+    if (colorKeys.length > 0) {
+      // Use product id hash to pick a consistent varied color
+      const hash = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+      const picked = colorKeys[hash % colorKeys.length];
+      if (picked && variantImages[picked]?.[0]) {
+        return variantImages[picked][0];
+      }
+    }
+    
+    // If only one color, try second image of that color
+    const allColorKeys = Object.keys(variantImages);
+    if (allColorKeys.length > 0) {
+      const firstColor = allColorKeys[0];
+      if (variantImages[firstColor]?.[1]) {
+        return variantImages[firstColor][1];
+      }
+    }
   }
 
-  const defaultColor = (product.variants.default_color as string) || "";
-  const colorKeys = Object.keys(variantImages).filter(c => c !== defaultColor);
-
-  if (colorKeys.length === 0) {
-    return product.images[1] || null;
-  }
-
-  // Use a hash of product id to pick a consistent but varied color
-  const hash = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const picked = colorKeys[hash % colorKeys.length];
-
-  if (picked && variantImages[picked]?.[0]) {
-    return variantImages[picked][0];
-  }
-
+  // Fallback: second image from product images
   return product.images[1] || null;
 }
 
