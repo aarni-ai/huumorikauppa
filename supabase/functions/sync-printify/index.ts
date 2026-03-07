@@ -129,12 +129,28 @@ Deno.serve(async (req) => {
         continue;
       }
 
-      // Extract images
+      // Extract images – prioritize high-res, get multiple variants for hover effect
       const images: string[] = [];
       if (p.images) {
-        for (const img of p.images) {
-          if (img.src && images.length < 4) {
+        // Sort by position, prefer "default" images first, then variants
+        const sortedImages = [...p.images]
+          .filter((img: any) => img.src)
+          .sort((a: any, b: any) => {
+            // Prefer is_default images first
+            if (a.is_default && !b.is_default) return -1;
+            if (!a.is_default && b.is_default) return 1;
+            return (a.position || 0) - (b.position || 0);
+          });
+        
+        // Try to get diverse images (different variants/colors)
+        const seenVariants = new Set<string>();
+        for (const img of sortedImages) {
+          if (images.length >= 6) break;
+          // Use variant_ids to avoid duplicate color mockups
+          const variantKey = (img.variant_ids || []).sort().join(',');
+          if (!seenVariants.has(variantKey) || images.length < 2) {
             images.push(img.src);
+            if (variantKey) seenVariants.add(variantKey);
           }
         }
       }

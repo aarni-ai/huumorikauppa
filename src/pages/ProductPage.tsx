@@ -32,6 +32,7 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
 
   if (isLoading) {
     return (
@@ -110,8 +111,10 @@ const ProductPage = () => {
   };
 
   const categoryName = category?.name || product.category;
-  const descriptionShort = product.description.length > 120 
-    ? product.description.slice(0, 120) + "…" 
+
+  // Short punchy description
+  const shortDesc = product.description.length > 200
+    ? product.description.slice(0, 200) + "…"
     : product.description;
 
   return (
@@ -135,20 +138,39 @@ const ProductPage = () => {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
-            <img
-              src={product.images[0] || "/placeholder.svg"}
-              alt={`${product.name} – hauska ${categoryName} Huumorikaupasta`}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div className="absolute top-3 left-3 flex flex-col gap-1">
-              {product.is_new && <Badge className="bg-accent text-accent-foreground font-bold">UUTUUS 🔥</Badge>}
-              {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
+          {/* Images */}
+          <div className="space-y-3">
+            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+              <img
+                src={product.images[activeImage] || product.images[0] || "/placeholder.svg"}
+                alt={`${product.name} – hauska ${categoryName} Huumorikaupasta`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-3 left-3 flex flex-col gap-1">
+                {product.is_new && <Badge className="bg-accent text-accent-foreground font-bold">UUTUUS 🔥</Badge>}
+                {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
+              </div>
             </div>
+            {/* Thumbnail gallery */}
+            {product.images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {product.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className={`shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
+                      activeImage === i ? "border-primary" : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="space-y-6">
+          {/* Product info – ultra simple */}
+          <div className="space-y-5">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
               <p className="text-2xl md:text-3xl font-bold text-primary">{product.price.toFixed(2)} €</p>
@@ -158,6 +180,29 @@ const ProductPage = () => {
               <p className="text-sm font-bold text-destructive">Vain {product.stock} jäljellä – tilaa nyt! 😱</p>
             )}
 
+            {/* Color selector */}
+            {hasColors && (
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">Väri</label>
+                <div className="flex flex-wrap gap-2">
+                  {product.variants.colors!.map(color => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                        selectedColor === color
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border text-foreground hover:border-primary/50"
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Size selector with modal size chart */}
             {hasSizes && (
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -165,12 +210,12 @@ const ProductPage = () => {
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="text-xs text-primary hover:underline flex items-center gap-1">
-                        <Ruler className="h-3 w-3" /> Koko-opas
+                        <Ruler className="h-3 w-3" /> Kokotaulukko
                       </button>
                     </DialogTrigger>
-                    <DialogContent className="bg-card border-border">
+                    <DialogContent className="bg-card border-border max-w-sm">
                       <DialogHeader>
-                        <DialogTitle className="font-display text-foreground">Koko-opas (cm)</DialogTitle>
+                        <DialogTitle className="font-display text-foreground">Kokotaulukko (cm)</DialogTitle>
                       </DialogHeader>
                       <div className="overflow-auto">
                         <table className="w-full text-sm">
@@ -215,27 +260,7 @@ const ProductPage = () => {
               </div>
             )}
 
-            {hasColors && (
-              <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">Väri</label>
-                <div className="flex flex-wrap gap-2">
-                  {product.variants.colors!.map(color => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
-                        selectedColor === color
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border text-foreground hover:border-primary/50"
-                      }`}
-                    >
-                      {color}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
+            {/* Quantity */}
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">Määrä</label>
               <div className="flex items-center gap-3">
@@ -245,6 +270,7 @@ const ProductPage = () => {
               </div>
             </div>
 
+            {/* Add to cart + wishlist */}
             <div className="flex gap-3">
               <Button onClick={handleAddToCart} size="lg" className="flex-1 bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
                 <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
@@ -254,8 +280,9 @@ const ProductPage = () => {
               </Button>
             </div>
 
+            {/* Share */}
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-sm text-muted-foreground flex items-center gap-1"><Share2 className="h-4 w-4" /> Jaa kaverille:</span>
+              <span className="text-sm text-muted-foreground flex items-center gap-1"><Share2 className="h-4 w-4" /> Jaa:</span>
               <a href={`https://wa.me/?text=${encodeURIComponent(product.name + " – " + shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
@@ -263,6 +290,7 @@ const ProductPage = () => {
               <button onClick={handleCopyLink} className="text-sm text-primary hover:underline flex items-center gap-1"><Copy className="h-4 w-4" /> Kopioi</button>
             </div>
 
+            {/* Trust badges */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border">
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 60 €</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
@@ -271,16 +299,16 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {/* Product description section – visual card with read more */}
+        {/* Product description – visual card */}
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
             <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
-              {descExpanded || product.description.length <= 120 ? (
+              {descExpanded || product.description.length <= 200 ? (
                 <p>{product.description}</p>
               ) : (
                 <>
-                  <p>{descriptionShort}</p>
+                  <p>{shortDesc}</p>
                   <button
                     onClick={() => setDescExpanded(true)}
                     className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
@@ -290,7 +318,7 @@ const ProductPage = () => {
                 </>
               )}
             </div>
-            {descExpanded && product.description.length > 120 && (
+            {descExpanded && product.description.length > 200 && (
               <button
                 onClick={() => setDescExpanded(false)}
                 className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
@@ -301,6 +329,7 @@ const ProductPage = () => {
           </div>
         </section>
 
+        {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Saatat myös tykätä 😍</h2>
