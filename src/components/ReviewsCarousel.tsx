@@ -1,6 +1,19 @@
 import { Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+const NAMES = [
+  "Anna H.", "Tepe", "Veetu", "Marja-Leena H.", "Reijo T.", "Mika L.",
+  "Anna87", "Sanna", "Sanni", "Jukka P.", "Tiina K.", "Mikko S.",
+  "Laura M.", "Petri V.", "Heikki R.", "Emilia J.", "Tomi", "Riikka",
+  "Antti K.", "Jenni S.", "Ville", "Kaisa M.", "Juha-Pekka", "Elina",
+  "Markku T.", "Henna", "Tommi L.", "Päivi K.", "Aki", "Noora S.",
+  "Jarmo H.", "Susanna", "Kimmo", "Outi V.", "Matias", "Johanna R.",
+  "Samuli", "Katja P.", "Jari M.", "Tuija", "Aleksi", "Minna K.",
+  "Pasi T.", "Anu", "Harri V.", "Leena", "Jesse", "Niina M.",
+  "Riku", "Maija S.", "Tapio", "Kirsi L.", "Arttu", "Helena T.",
+  "Esa P.", "Pirjo", "Lauri", "Tanja K.", "Ilkka", "Saija",
+];
+
 const REVIEWS = [
   { text: "Toimitus Ruotsiin hoitui todella ripeästi. Tuote vastasi täysin sitä mitä odotin.", stars: 5 },
   { text: "Toimitus tuli todella nopeasti, peukkua ylös!", stars: 5 },
@@ -73,7 +86,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const shuffledReviews = shuffle(REVIEWS);
+const shuffledReviews = shuffle(REVIEWS.map((r, i) => ({ ...r, name: NAMES[i % NAMES.length] })));
 
 export function ReviewsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -83,12 +96,11 @@ export function ReviewsCarousel() {
     const el = scrollRef.current;
     if (!el) return;
     let animId: number;
-    let speed = 0.5;
+    const speed = 0.5;
 
     function step() {
       if (!isPaused && el) {
         el.scrollLeft += speed;
-        // Loop: when scrolled past half, reset
         if (el.scrollLeft >= el.scrollWidth / 2) {
           el.scrollLeft = 0;
         }
@@ -131,7 +143,7 @@ export function ReviewsCarousel() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
-            <p className="text-xs text-muted-foreground/60">– Vahvistettu asiakas ✅</p>
+            <p className="text-xs font-medium text-foreground">– {review.name} <span className="text-muted-foreground/60">✅ Vahvistettu asiakas</span></p>
           </div>
         ))}
       </div>

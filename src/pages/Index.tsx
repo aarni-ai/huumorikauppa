@@ -78,10 +78,17 @@ const Index = () => {
       {/* HERO BANNER IMAGE */}
       <section className="relative">
         <Link to="/kaikki-tuotteet" className="block">
+          {/* Mobile: tall version */}
           <img
             src="/images/hero-banner.png"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
-            className="w-full h-auto object-cover max-h-[280px] sm:max-h-[350px] md:max-h-[420px] lg:max-h-[500px] object-center"
+            className="w-full h-auto object-cover object-center block md:hidden"
+          />
+          {/* Tablet & Desktop: wide version */}
+          <img
+            src="/images/hero-banner-wide.png"
+            alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
+            className="w-full h-auto object-cover object-center hidden md:block"
           />
         </Link>
       </section>

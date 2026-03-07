@@ -10,7 +10,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-// Pick a varied hover color – not always black
+// Pick a varied hover color – cycle through non-default colors
 function getHoverImage(product: Product): string | null {
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
   if (!variantImages) {
@@ -18,39 +18,18 @@ function getHoverImage(product: Product): string | null {
   }
 
   const defaultColor = (product.variants.default_color as string) || "";
-  const defaultLower = defaultColor.toLowerCase();
-  const colorKeys = Object.keys(variantImages);
+  const colorKeys = Object.keys(variantImages).filter(c => c !== defaultColor);
 
-  // Build preference list based on default color
-  let oppositeColor: string | null = null;
-
-  if (defaultLower.includes("white")) {
-    // Prefer: black, then red, blue, navy, any other
-    oppositeColor =
-      colorKeys.find(c => c.toLowerCase().includes("black")) ||
-      colorKeys.find(c => c.toLowerCase().includes("red")) ||
-      colorKeys.find(c => c.toLowerCase().includes("navy")) ||
-      colorKeys.find(c => c.toLowerCase().includes("blue")) ||
-      colorKeys.find(c => c !== defaultColor) ||
-      null;
-  } else if (defaultLower.includes("black")) {
-    oppositeColor =
-      colorKeys.find(c => c.toLowerCase().includes("white")) ||
-      colorKeys.find(c => c.toLowerCase().includes("red")) ||
-      colorKeys.find(c => c.toLowerCase().includes("sport grey") || c.toLowerCase().includes("gray")) ||
-      colorKeys.find(c => c !== defaultColor) ||
-      null;
-  } else {
-    // Colored default: pick black, white, or any other
-    oppositeColor =
-      colorKeys.find(c => c.toLowerCase().includes("black")) ||
-      colorKeys.find(c => c.toLowerCase().includes("white")) ||
-      colorKeys.find(c => c !== defaultColor) ||
-      null;
+  if (colorKeys.length === 0) {
+    return product.images[1] || null;
   }
 
-  if (oppositeColor && variantImages[oppositeColor]?.[0]) {
-    return variantImages[oppositeColor][0];
+  // Use a hash of product id to pick a consistent but varied color
+  const hash = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const picked = colorKeys[hash % colorKeys.length];
+
+  if (picked && variantImages[picked]?.[0]) {
+    return variantImages[picked][0];
   }
 
   return product.images[1] || null;
