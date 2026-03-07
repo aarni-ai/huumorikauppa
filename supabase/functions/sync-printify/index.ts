@@ -15,6 +15,7 @@ function mapToCategory(text: string): string | null {
   if (t.includes('blanket') || t.includes('peitto') || t.includes('fleece')) return 'peitot';
   if (t.includes('beanie') || t.includes('pipo') || t.includes('hat') || t.includes('cap')) return 'pipot';
   if (t.includes('bag') || t.includes('tote') || t.includes('laukku') || t.includes('backpack')) return 'laukut';
+  if (t.includes('poster') || t.includes('canvas') || t.includes('wall art') || t.includes('seinätaulu') || t.includes('seinataulu') || t.includes('taulu') || t.includes('koriste')) return 'seinataulut';
   return null;
 }
 

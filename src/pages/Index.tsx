@@ -10,34 +10,23 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef } from "react";
 
+// Curated slugs for the hero carousel
+const CAROUSEL_SLUGS = [
+  "kalamies-t-paita",
+  "maailman-paras-aiti-huppari",
+  "ice-aatanahuppari",
+  "amatimies-t-paita",
+  "mersumies-kahvikuppi",
+  "saatanan-tunarit-huppari",
+];
+
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
 
-  // Carousel: pick 8 diverse products across categories
-  const carouselProducts = (() => {
-    const picked: typeof allProducts = [];
-    const catOrder = ["t-paidat", "hupparit", "mukit", "housut", "tarrat", "digitaaliset"];
-    // Round-robin across categories
-    let round = 0;
-    while (picked.length < 8 && round < 10) {
-      for (const cat of catOrder) {
-        if (picked.length >= 8) break;
-        const catProducts = allProducts.filter(p => p.category === cat);
-        if (catProducts[round]) {
-          picked.push(catProducts[round]);
-        }
-      }
-      round++;
-    }
-    // Fill remaining with any products not yet picked
-    if (picked.length < 8) {
-      for (const p of allProducts) {
-        if (picked.length >= 8) break;
-        if (!picked.find(x => x.id === p.id)) picked.push(p);
-      }
-    }
-    return picked.slice(0, 8);
-  })();
+  // Curated carousel: match by slug
+  const carouselProducts = CAROUSEL_SLUGS
+    .map(slug => allProducts.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
+    .filter(Boolean) as typeof allProducts;
 
   // Dynamic categories: only show categories that have products, sorted by count
   const categoriesWithProducts = categories
@@ -48,7 +37,6 @@ const Index = () => {
     .filter(cat => cat.count > 0)
     .sort((a, b) => b.count - a.count);
 
-  const newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
   const featured = allProducts.filter(p => p.is_featured).slice(0, 8);
 
   const orgJsonLd = {
@@ -120,13 +108,10 @@ const Index = () => {
         </section>
       ) : (
         <>
-          {/* 8-PRODUCT CAROUSEL */}
+          {/* CURATED CAROUSEL */}
           {carouselProducts.length > 0 && (
             <HeroCarousel products={carouselProducts} />
           )}
-
-          {/* UUTUUDET */}
-          <ProductSection title="Uutuudet 🔥" linkTo="/kaikki-tuotteet?filter=new" products={newProducts} />
 
           {/* CATEGORY SECTIONS – dynamic, sorted by product count */}
           {categoriesWithProducts.map(cat => {
@@ -134,7 +119,7 @@ const Index = () => {
             return (
               <ProductSection
                 key={cat.slug}
-                title={`Hauskat ${cat.name} ${cat.emoji}`}
+                title={`${cat.name} ${cat.emoji}`}
                 linkTo={`/kategoria/${cat.slug}`}
                 products={catProducts}
               />
@@ -142,11 +127,13 @@ const Index = () => {
           })}
 
           {/* BESTSELLERIT */}
-          <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+          {featured.length > 0 && (
+            <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+          )}
         </>
       )}
 
-      {/* KATEGORIAT GRID – dynamic, larger cards for categories with more products */}
+      {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
         <h2 className="font-display text-2xl md:text-3xl text-foreground mb-8 text-center">
           Selaa kategorioittain 📦
@@ -165,10 +152,10 @@ const Index = () => {
             Miksi asiakkaat rakastavat Huumorikauppaa? 🤔
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." bg="primary" />
-            <TrustCard icon={<Heart className="h-8 w-8 text-accent" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." bg="accent" />
-            <TrustCard icon={<Star className="h-8 w-8 text-primary" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" bg="primary" />
-            <TrustCard icon={<ThumbsUp className="h-8 w-8 text-secondary" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" bg="secondary" />
+            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadot suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
+            <TrustCard icon={<Heart className="h-8 w-8 text-accent" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
+            <TrustCard icon={<Star className="h-8 w-8 text-primary" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" />
+            <TrustCard icon={<ThumbsUp className="h-8 w-8 text-secondary" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" />
           </div>
         </div>
       </section>
@@ -201,7 +188,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const itemsPerView = typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
+  const itemsPerView = typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 3;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const goTo = useCallback((index: number) => {
@@ -226,7 +213,6 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const handleInteraction = () => {
     setIsAutoPlaying(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
-    // Resume after 8 seconds of no interaction
     setTimeout(() => setIsAutoPlaying(true), 8000);
   };
 
@@ -303,10 +289,10 @@ function ProductSection({ title, linkTo, products }: { title: string; linkTo: st
   );
 }
 
-function TrustCard({ icon, title, desc, bg }: { icon: React.ReactNode; title: string; desc: string; bg: string }) {
+function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <div className="text-center space-y-3">
-      <div className={`mx-auto w-16 h-16 bg-${bg}/10 rounded-full flex items-center justify-center`}>
+      <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
         {icon}
       </div>
       <h3 className="font-display text-lg text-foreground">{title}</h3>

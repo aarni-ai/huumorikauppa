@@ -11,15 +11,42 @@ interface ProductCardProps {
 }
 
 /**
- * Find the "opposite" color image from product images.
- * Uses the variant color info and image list to find a contrasting variant.
- * Logic: If default is dark (Black), show a light variant on hover and vice versa.
+ * Find the opposite color variant image for hover effect.
+ * If default is White → show Black, and vice versa.
+ * For colored products, try to show a contrasting variant.
  */
 function getHoverImage(product: Product): string | null {
-  const images = product.images || [];
-  if (images.length < 2) return null;
-  // Return second image as the alternate/opposite color mockup
-  return images[1] || null;
+  const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
+  if (!variantImages) {
+    // Fallback: use second image
+    return product.images[1] || null;
+  }
+
+  const defaultColor = (product.variants.default_color as string) || "";
+  const defaultLower = defaultColor.toLowerCase();
+
+  // Determine opposite color
+  let oppositeColor: string | null = null;
+  const colorKeys = Object.keys(variantImages);
+
+  if (defaultLower.includes("white")) {
+    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("black")) || null;
+  } else if (defaultLower.includes("black")) {
+    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("white")) || null;
+  } else {
+    // For colored: try black, then white, then any different color
+    oppositeColor = colorKeys.find(c => c.toLowerCase().includes("black"))
+      || colorKeys.find(c => c.toLowerCase().includes("white"))
+      || colorKeys.find(c => c !== defaultColor)
+      || null;
+  }
+
+  if (oppositeColor && variantImages[oppositeColor]?.[0]) {
+    return variantImages[oppositeColor][0];
+  }
+
+  // Fallback: second image
+  return product.images[1] || null;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -84,9 +111,6 @@ export function ProductCard({ product }: ProductCardProps) {
           <img src={hoverImage} alt="" className="hidden" loading="lazy" />
         )}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
-          {product.is_new && (
-            <Badge className="bg-accent text-accent-foreground text-xs font-bold">UUTUUS 🔥</Badge>
-          )}
           {product.is_gift_idea && (
             <Badge className="bg-secondary text-secondary-foreground text-xs font-bold">LAHJAIDEA 🎁</Badge>
           )}
