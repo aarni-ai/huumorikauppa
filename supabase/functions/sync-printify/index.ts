@@ -211,9 +211,16 @@ Deno.serve(async (req) => {
 
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
+      // Ensure unique slug using Printify product ID
+      let productSlug = slugify(productTitle);
+      const existingSlugs = dbProducts.map(dp => dp.slug);
+      if (existingSlugs.includes(productSlug)) {
+        productSlug = productSlug + '-' + (p.id || '').slice(-6);
+      }
+
       dbProducts.push({
         name: productTitle,
-        slug: slugify(productTitle),
+        slug: productSlug,
         category,
         humor_type: 'yleinen' as const,
         price: minPrice,
