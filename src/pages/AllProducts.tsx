@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
-import { Truck, RotateCcw, Shield } from "lucide-react";
+import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Priority keywords: products matching these show first
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
   "kalju", "i ❤️ my", "i love my", "i ❤ my"
@@ -27,10 +26,21 @@ function getPriority(product: { name: string; description: string }): number {
 const AllProducts = () => {
   const { data: products = [], isLoading } = useProducts();
 
-  // Filter out custom text/image products and sort by priority
-  const filteredProducts = products
-    .filter(p => !isCustomTextProduct(p.name, p.description))
-    .sort((a, b) => getPriority(a) - getPriority(b));
+  // Filter out custom text/image products, sort by category count then priority
+  const filtered = products.filter(p => !isCustomTextProduct(p.name, p.description));
+  
+  // Count products per category
+  const catCounts: Record<string, number> = {};
+  for (const p of filtered) {
+    catCounts[p.category] = (catCounts[p.category] || 0) + 1;
+  }
+  
+  // Sort: categories with most products first, then by priority within category
+  const filteredProducts = filtered.sort((a, b) => {
+    const catDiff = (catCounts[b.category] || 0) - (catCounts[a.category] || 0);
+    if (catDiff !== 0) return catDiff;
+    return getPriority(a) - getPriority(b);
+  });
 
   return (
     <div className="min-h-screen">
@@ -45,6 +55,7 @@ const AllProducts = () => {
           <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
+          <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
         </div>
       </section>
 
