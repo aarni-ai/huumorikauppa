@@ -70,10 +70,18 @@ Deno.serve(async (req) => {
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${apiKey}` }
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      console.log(`Response status: ${res.status}, body preview: ${rawText.slice(0, 500)}`);
+      let data;
+      try { data = JSON.parse(rawText); } catch { break; }
+      // Printify returns { current_page, data: [...] } or just an array
       const products = Array.isArray(data) ? data : (data.data || data.products || []);
+      console.log(`Page ${page}: got ${products.length} products`);
       if (products.length === 0) break;
       allProducts = allProducts.concat(products);
+      // Check if there are more pages
+      const lastPage = data.last_page || data.total_pages;
+      if (lastPage && page >= lastPage) break;
       if (products.length < 100) break;
       page++;
     }
