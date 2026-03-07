@@ -10,6 +10,20 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef } from "react";
 
+// Priority keywords for sorting products within categories
+const PRIORITY_KEYWORDS = [
+  "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
+  "kalju", "i ❤️ my", "i love my", "i ❤ my"
+];
+
+function getPriority(product: { name: string; description: string }): number {
+  const t = (product.name + ' ' + product.description).toLowerCase();
+  for (let i = 0; i < PRIORITY_KEYWORDS.length; i++) {
+    if (t.includes(PRIORITY_KEYWORDS[i].toLowerCase())) return i;
+  }
+  return PRIORITY_KEYWORDS.length + 1;
+}
+
 // Curated slugs for the hero carousel
 const CAROUSEL_SLUGS = [
   "kalamies-t-paita",
