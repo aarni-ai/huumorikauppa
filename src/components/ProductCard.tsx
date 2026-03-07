@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Product } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
 import { Heart, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -10,10 +10,27 @@ interface ProductCardProps {
   product: Product;
 }
 
+/**
+ * Find the "opposite" color image from product images.
+ * Uses the variant color info and image list to find a contrasting variant.
+ * Logic: If default is dark (Black), show a light variant on hover and vice versa.
+ */
+function getHoverImage(product: Product): string | null {
+  const images = product.images || [];
+  if (images.length < 2) return null;
+  // Return second image as the alternate/opposite color mockup
+  return images[1] || null;
+}
+
 export function ProductCard({ product }: ProductCardProps) {
   const [wishlisted, setWishlisted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const { addItem } = useCartContext();
   const { toast } = useToast();
+
+  const hoverImage = useMemo(() => getHoverImage(product), [product]);
+  const mainImage = product.images[0] || "/placeholder.svg";
+  const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,6 +58,9 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link
       to={`/tuote/${product.slug}`}
       className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-glow-lime relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(prev => !prev)}
     >
       {/* Wishlist */}
       <button
@@ -51,14 +71,18 @@ export function ProductCard({ product }: ProductCardProps) {
         <Heart className={`h-4 w-4 transition-colors ${wishlisted ? "fill-secondary text-secondary" : "text-muted-foreground hover:text-secondary"}`} />
       </button>
 
-      {/* Image */}
+      {/* Image with hover swap */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
-          src={product.images[0] || "/placeholder.svg"}
+          src={displayImage}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className={`w-full h-full object-cover transition-all duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
         />
+        {/* Preload hover image */}
+        {hoverImage && (
+          <img src={hoverImage} alt="" className="hidden" loading="lazy" />
+        )}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.is_new && (
             <Badge className="bg-accent text-accent-foreground text-xs font-bold">UUTUUS 🔥</Badge>

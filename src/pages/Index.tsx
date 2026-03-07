@@ -4,21 +4,52 @@ import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
-import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield } from "lucide-react";
+import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
 
-  const featured = allProducts.filter(p => p.is_featured).slice(0, 8);
+  // Carousel: pick 8 diverse products across categories
+  const carouselProducts = (() => {
+    const picked: typeof allProducts = [];
+    const catOrder = ["t-paidat", "hupparit", "mukit", "housut", "tarrat", "digitaaliset"];
+    // Round-robin across categories
+    let round = 0;
+    while (picked.length < 8 && round < 10) {
+      for (const cat of catOrder) {
+        if (picked.length >= 8) break;
+        const catProducts = allProducts.filter(p => p.category === cat);
+        if (catProducts[round]) {
+          picked.push(catProducts[round]);
+        }
+      }
+      round++;
+    }
+    // Fill remaining with any products not yet picked
+    if (picked.length < 8) {
+      for (const p of allProducts) {
+        if (picked.length >= 8) break;
+        if (!picked.find(x => x.id === p.id)) picked.push(p);
+      }
+    }
+    return picked.slice(0, 8);
+  })();
+
+  // Dynamic categories: only show categories that have products, sorted by count
+  const categoriesWithProducts = categories
+    .map(cat => ({
+      ...cat,
+      count: allProducts.filter(p => p.category === cat.slug).length,
+    }))
+    .filter(cat => cat.count > 0)
+    .sort((a, b) => b.count - a.count);
+
   const newProducts = allProducts.filter(p => p.is_new).slice(0, 8);
-  const tpaidat = allProducts.filter(p => p.category === "t-paidat").slice(0, 4);
-  const hupparit = allProducts.filter(p => p.category === "hupparit").slice(0, 4);
-  const housut = allProducts.filter(p => p.category === "housut").slice(0, 4);
-  const mukit = allProducts.filter(p => p.category === "mukit").slice(0, 4);
-  const tarrat = allProducts.filter(p => p.category === "tarrat").slice(0, 4);
+  const featured = allProducts.filter(p => p.is_featured).slice(0, 8);
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -89,29 +120,40 @@ const Index = () => {
         </section>
       ) : (
         <>
+          {/* 8-PRODUCT CAROUSEL */}
+          {carouselProducts.length > 0 && (
+            <HeroCarousel products={carouselProducts} />
+          )}
+
           {/* UUTUUDET */}
           <ProductSection title="Uutuudet 🔥" linkTo="/kaikki-tuotteet?filter=new" products={newProducts} />
 
-          {/* KATEGORIOITTAIN */}
-          <ProductSection title="Hauskat T-Paidat 👕" linkTo="/kategoria/t-paidat" products={tpaidat} />
-          <ProductSection title="Hauskat Hupparit 🧥" linkTo="/kategoria/hupparit" products={hupparit} />
-          <ProductSection title="Hauskat Housut 👖" linkTo="/kategoria/housut" products={housut} />
-          <ProductSection title="Hauskat Mukit ☕" linkTo="/kategoria/mukit" products={mukit} />
-          <ProductSection title="Hauskat Tarrat 🏷️" linkTo="/kategoria/tarrat" products={tarrat} />
+          {/* CATEGORY SECTIONS – dynamic, sorted by product count */}
+          {categoriesWithProducts.map(cat => {
+            const catProducts = allProducts.filter(p => p.category === cat.slug).slice(0, 4);
+            return (
+              <ProductSection
+                key={cat.slug}
+                title={`Hauskat ${cat.name} ${cat.emoji}`}
+                linkTo={`/kategoria/${cat.slug}`}
+                products={catProducts}
+              />
+            );
+          })}
 
           {/* BESTSELLERIT */}
           <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
         </>
       )}
 
-      {/* KATEGORIAT GRID */}
+      {/* KATEGORIAT GRID – dynamic, larger cards for categories with more products */}
       <section className="container py-12 md:py-16">
         <h2 className="font-display text-2xl md:text-3xl text-foreground mb-8 text-center">
           Selaa kategorioittain 📦
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-          {categories.map(cat => (
-            <CategoryCard key={cat.slug} {...cat} />
+          {categoriesWithProducts.map(cat => (
+            <CategoryCard key={cat.slug} slug={cat.slug} name={cat.name} emoji={cat.emoji} description={`${cat.description} (${cat.count})`} />
           ))}
         </div>
       </section>
@@ -152,6 +194,95 @@ const Index = () => {
     </div>
   );
 };
+
+/* ========== HERO CAROUSEL ========== */
+function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const itemsPerView = typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 4;
+  const maxIndex = Math.max(0, products.length - itemsPerView);
+
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
+  }, [maxIndex]);
+
+  const next = useCallback(() => {
+    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
+  }, [maxIndex]);
+
+  const prev = useCallback(() => {
+    setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
+  }, [maxIndex]);
+
+  useEffect(() => {
+    if (isAutoPlaying) {
+      intervalRef.current = setInterval(next, 4000);
+      return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+    }
+  }, [isAutoPlaying, next]);
+
+  const handleInteraction = () => {
+    setIsAutoPlaying(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    // Resume after 8 seconds of no interaction
+    setTimeout(() => setIsAutoPlaying(true), 8000);
+  };
+
+  return (
+    <section className="container py-10 md:py-14">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => { handleInteraction(); prev(); }}
+            className="w-9 h-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+            aria-label="Edellinen"
+          >
+            <ChevronLeft className="h-4 w-4 text-foreground" />
+          </button>
+          <button
+            onClick={() => { handleInteraction(); next(); }}
+            className="w-9 h-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+            aria-label="Seuraava"
+          >
+            <ChevronRight className="h-4 w-4 text-foreground" />
+          </button>
+        </div>
+      </div>
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+        >
+          {products.map(product => (
+            <div
+              key={product.id}
+              className="shrink-0 px-2"
+              style={{ width: `${100 / itemsPerView}%` }}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Dots */}
+      <div className="flex items-center justify-center gap-1.5 mt-4">
+        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { handleInteraction(); goTo(i); }}
+            className={`w-2 h-2 rounded-full transition-all ${
+              i === currentIndex ? "bg-primary w-5" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+            }`}
+            aria-label={`Siirry kohtaan ${i + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function ProductSection({ title, linkTo, products }: { title: string; linkTo: string; products: import("@/types/product").Product[] }) {
   if (products.length === 0) return null;
