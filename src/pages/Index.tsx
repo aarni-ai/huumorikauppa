@@ -76,7 +76,7 @@ const Index = () => {
       />
 
       {/* HERO BANNER IMAGE */}
-      <section className="container pt-4 pb-2 md:pt-4 md:pb-2">
+      <section className="container pt-4 pb-2 md:pt-6 md:pb-3">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
@@ -84,11 +84,11 @@ const Index = () => {
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
             className="w-full h-auto object-cover object-center block md:hidden"
           />
-          {/* Tablet & Desktop: wide version, constrained height */}
+          {/* Tablet & Desktop: wide version */}
           <img
             src="/images/hero-banner-wide.png"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
-            className="w-full h-auto object-cover object-center hidden md:block md:max-h-[280px] lg:max-h-[320px]"
+            className="w-full h-auto object-cover object-center hidden md:block"
           />
         </Link>
       </section>

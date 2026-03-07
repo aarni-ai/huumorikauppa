@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const NAMES = [
   "Anna H.", "Tepe", "Veetu", "Marja-Leena H.", "Reijo T.", "Mika L.",
@@ -76,7 +76,6 @@ const REVIEWS = [
   { text: "Paketti tuli juuri sellaisena kuin pitikin.", stars: 5 },
 ];
 
-// Shuffle once on module load
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -90,28 +89,35 @@ const shuffledReviews = shuffle(REVIEWS.map((r, i) => ({ ...r, name: NAMES[i % N
 
 export function ReviewsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const isPausedRef = useRef(false);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    let animId: number;
-    const speed = 0.5;
 
-    function step() {
-      if (!isPaused && el) {
-        el.scrollLeft += speed;
+    let animId: number;
+    let lastTime = 0;
+    const speed = 50; // pixels per second
+
+    function step(timestamp: number) {
+      if (lastTime === 0) lastTime = timestamp;
+      const delta = (timestamp - lastTime) / 1000;
+      lastTime = timestamp;
+
+      if (!isPausedRef.current && el) {
+        el.scrollLeft += speed * delta;
+        // Reset to start for infinite loop
         if (el.scrollLeft >= el.scrollWidth / 2) {
           el.scrollLeft = 0;
         }
       }
       animId = requestAnimationFrame(step);
     }
+
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, [isPaused]);
+  }, []);
 
-  // Duplicate for infinite loop
   const items = [...shuffledReviews, ...shuffledReviews];
 
   return (
@@ -123,11 +129,11 @@ export function ReviewsCarousel() {
       </div>
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-hidden cursor-grab"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
+        className="flex gap-4 overflow-x-hidden"
+        onMouseEnter={() => { isPausedRef.current = true; }}
+        onMouseLeave={() => { isPausedRef.current = false; }}
+        onTouchStart={() => { isPausedRef.current = true; }}
+        onTouchEnd={() => { isPausedRef.current = false; }}
       >
         {items.map((review, i) => (
           <div
