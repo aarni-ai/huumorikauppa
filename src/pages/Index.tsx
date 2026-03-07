@@ -80,13 +80,13 @@ const Index = () => {
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
-            src="/images/hero-banner.png"
+            src="/images/hero-banner.png?v=2"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
             className="w-full h-auto object-cover object-center block md:hidden"
           />
           {/* Tablet & Desktop: wide version */}
           <img
-            src="/images/hero-banner-wide.png"
+            src="/images/hero-banner-wide.png?v=2"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
             className="w-full h-auto object-cover object-center hidden md:block"
           />
