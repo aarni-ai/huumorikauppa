@@ -6,7 +6,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Heart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
@@ -20,8 +21,13 @@ const sizeGuide = [
   { size: "XXL", chest: "120–124", waist: "104–108", hip: "120–124" },
 ];
 
-// Categories that don't need size selector or size guide
-const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot"];
+const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
+
+// Check if product is a custom text/image product
+function isCustomTextProduct(product: { name: string; description: string }): boolean {
+  const t = (product.name + ' ' + product.description).toLowerCase();
+  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
+}
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -31,16 +37,14 @@ const ProductPage = () => {
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
-  const [wishlisted, setWishlisted] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [customText, setCustomText] = useState("");
 
-  // Get variant images map
   const variantImages = useMemo(() => {
     return (product?.variants?.variant_images as Record<string, string[]>) || {};
   }, [product]);
 
-  // Auto-select the default color based on the displayed image
   useEffect(() => {
     if (product && !selectedColor) {
       const defaultColor = product.variants.default_color as string | undefined;
@@ -52,7 +56,6 @@ const ProductPage = () => {
     }
   }, [product, selectedColor]);
 
-  // Get images for the currently selected color
   const currentImages = useMemo(() => {
     if (selectedColor && variantImages[selectedColor]?.length > 0) {
       return variantImages[selectedColor];
@@ -60,7 +63,6 @@ const ProductPage = () => {
     return product?.images || [];
   }, [selectedColor, variantImages, product]);
 
-  // Reset active image when color changes
   useEffect(() => {
     setActiveImage(0);
   }, [selectedColor]);
@@ -95,6 +97,7 @@ const ProductPage = () => {
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
+  const isCustom = isCustomTextProduct(product);
 
   const handleAddToCart = () => {
     if (needsSize) {
@@ -109,7 +112,7 @@ const ProductPage = () => {
     addItem(product, quantity, size, selectedColor);
     toast({
       title: "Lisätty koriin! 🛒",
-      description: `${product.name} (${quantity} kpl) on nyt ostoskorissasi.`,
+      description: `${product.name} (${quantity} kpl) on nyt ostoskorissasi.${customText ? ' Teksti: ' + customText : ''}`,
     });
   };
 
@@ -184,7 +187,6 @@ const ProductPage = () => {
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
               </div>
             </div>
-            {/* Thumbnail gallery */}
             {currentImages.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {currentImages.map((img, i) => (
@@ -295,6 +297,24 @@ const ProductPage = () => {
               </div>
             )}
 
+            {/* Custom text input for oma teksti/kuva products */}
+            {isCustom && (
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Minkä tekstin haluat tuotteeseen? ✍️
+                </label>
+                <Textarea
+                  placeholder="Kirjoita haluamasi teksti tähän..."
+                  value={customText}
+                  onChange={(e) => setCustomText(e.target.value)}
+                  className="bg-muted border-border resize-none"
+                  maxLength={200}
+                  rows={3}
+                />
+                <p className="text-xs text-muted-foreground mt-1">{customText.length}/200 merkkiä</p>
+              </div>
+            )}
+
             {/* Quantity */}
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">Määrä</label>
@@ -305,15 +325,10 @@ const ProductPage = () => {
               </div>
             </div>
 
-            {/* Add to cart + wishlist */}
-            <div className="flex gap-3">
-              <Button onClick={handleAddToCart} size="lg" className="flex-1 bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
-                <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
-              </Button>
-              <Button variant="outline" size="lg" onClick={() => { setWishlisted(!wishlisted); toast({ title: wishlisted ? "Poistettu suosikeista" : "Lisätty suosikkeihin ❤️" }); }} className="border-border">
-                <Heart className={`h-5 w-5 ${wishlisted ? "fill-secondary text-secondary" : ""}`} />
-              </Button>
-            </div>
+            {/* Add to cart */}
+            <Button onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+              <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
+            </Button>
 
             {/* Share */}
             <div className="flex items-center gap-3 pt-2">
@@ -334,7 +349,7 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {/* Product description – visual card */}
+        {/* Product description */}
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
