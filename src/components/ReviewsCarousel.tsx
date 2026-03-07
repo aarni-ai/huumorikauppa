@@ -143,7 +143,7 @@ export function ReviewsCarousel() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
-            <p className="text-xs font-medium text-foreground">– {review.name} <span className="text-muted-foreground/60">✅ Vahvistettu asiakas</span></p>
+            <p className="text-xs font-medium text-foreground">– {review.name}</p>
           </div>
         ))}
       </div>
