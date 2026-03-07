@@ -8,6 +8,8 @@ const corsHeaders = {
 function mapToCategory(text: string): string | null {
   const t = text.toLowerCase();
   // Order matters: more specific first
+  // Ornaments/koristeet before seinätaulut
+  if (t.includes('ornament') || t.includes('koriste') || t.includes('decoration') || t.includes('christmas ornament')) return 'koristeet';
   if (t.includes('long sleeve') || t.includes('pitkähihainen') || t.includes('pitkahihainen')) return 'pitkahihaiset';
   if (t.includes('hoodie') || t.includes('hooded') || t.includes('sweatshirt') || t.includes('huppari')) return 'hupparit';
   if (t.includes('t-shirt') || t.includes('tee') || t.includes('t-paita')) return 't-paidat';
@@ -17,9 +19,22 @@ function mapToCategory(text: string): string | null {
   if (t.includes('blanket') || t.includes('peitto') || t.includes('fleece')) return 'peitot';
   if (t.includes('beanie') || t.includes('pipo') || t.includes('hat') || t.includes('cap')) return 'pipot';
   if (t.includes('bag') || t.includes('tote') || t.includes('laukku') || t.includes('backpack')) return 'laukut';
-  if (t.includes('ornament') || t.includes('koriste') || t.includes('decoration') || t.includes('christmas ornament')) return 'koristeet';
   if (t.includes('poster') || t.includes('canvas') || t.includes('wall art') || t.includes('seinätaulu') || t.includes('seinataulu') || t.includes('taulu')) return 'seinataulut';
   return null;
+}
+
+// Special override: products with specific title keywords go to specific categories
+function overrideCategory(title: string, currentCategory: string): string {
+  const t = title.toLowerCase();
+  // "OMA TEKSTI/KUVA | PITKÄHIHAINEN" should be in pitkahihaiset, not hupparit
+  if (t.includes('pitkähihainen') || t.includes('pitkahihainen') || t.includes('long sleeve')) {
+    return 'pitkahihaiset';
+  }
+  // "OMA TEKSTI/KUVA KORISTE" should be in koristeet, not seinataulut
+  if (t.includes('koriste') || t.includes('ornament')) {
+    return 'koristeet';
+  }
+  return currentCategory;
 }
 
 function slugify(text: string): string {
@@ -108,7 +123,8 @@ Deno.serve(async (req) => {
       }
       if (!category) {
         const desc = JSON.stringify(p).toLowerCase();
-        if (desc.includes('long sleeve')) category = 'pitkahihaiset';
+        if (desc.includes('ornament') || desc.includes('koriste')) category = 'koristeet';
+        else if (desc.includes('long sleeve')) category = 'pitkahihaiset';
         else if (desc.includes('hoodie') || desc.includes('hooded')) category = 'hupparit';
         else if (desc.includes('t-shirt') || desc.includes('tee') || desc.includes('unisex')) category = 't-paidat';
         else if (desc.includes('mug')) category = 'mukit';
@@ -117,13 +133,15 @@ Deno.serve(async (req) => {
         else if (desc.includes('blanket') || desc.includes('fleece')) category = 'peitot';
         else if (desc.includes('beanie')) category = 'pipot';
         else if (desc.includes('tote') || desc.includes('bag')) category = 'laukut';
-        else if (desc.includes('ornament')) category = 'koristeet';
       }
       
       if (!category) {
         skipped.push({ title: p.title, reason: 'no category match' });
         continue;
       }
+
+      // Apply title-based override
+      category = overrideCategory(productTitle, category);
 
       // Build variant data
       const sizes = new Set<string>();
@@ -160,7 +178,7 @@ Deno.serve(async (req) => {
         minPrice = 39.90;
       }
 
-      // Build images per color
+      // Build images per color – ensure ALL colors get images
       const variantImages: Record<string, string[]> = {};
       const allImagesSorted = (p.images || [])
         .filter((img: any) => img.src)
@@ -180,6 +198,13 @@ Deno.serve(async (req) => {
           if (colorImages.length >= maxImagesPerColor) break;
           const imgVarIds: number[] = img.variant_ids || [];
           if (imgVarIds.some((vid: number) => varIds.includes(vid))) {
+            colorImages.push(img.src);
+          }
+        }
+        // If no specific images found for this color, use default images
+        if (colorImages.length === 0 && allImagesSorted.length > 0) {
+          for (const img of allImagesSorted) {
+            if (colorImages.length >= maxImagesPerColor) break;
             colorImages.push(img.src);
           }
         }
