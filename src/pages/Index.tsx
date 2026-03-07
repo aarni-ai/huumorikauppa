@@ -129,7 +129,7 @@ const Index = () => {
 
           {/* CATEGORY SECTIONS – dynamic, sorted by product count */}
           {categoriesWithProducts.map(cat => {
-            const catProducts = allProducts.filter(p => p.category === cat.slug).slice(0, 4);
+            const catProducts = allProducts.filter(p => p.category === cat.slug).sort((a, b) => getPriority(a) - getPriority(b)).slice(0, 4);
             return (
               <ProductSection
                 key={cat.slug}
