@@ -301,10 +301,6 @@ const ProductPage = () => {
     }
     const size = hideSize ? product.variants.sizes?.[0] : selectedSize;
     addItem(product, quantity, size, selectedColor);
-    toast({
-      title: "Lisätty koriin! 🛒",
-      description: `${product.name} (${quantity} kpl) on nyt ostoskorissasi.${customText ? ' Teksti: ' + customText : ''}`,
-    });
   };
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
