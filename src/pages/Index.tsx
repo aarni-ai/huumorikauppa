@@ -4,6 +4,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
@@ -204,7 +205,9 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const itemsPerView = 5;
+  const isMobile = useIsMobile();
+  const isTablet = typeof window !== "undefined" && window.innerWidth >= 768 && window.innerWidth < 1024;
+  const itemsPerView = isMobile ? 3 : isTablet ? 4 : 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const goTo = useCallback((index: number) => {
