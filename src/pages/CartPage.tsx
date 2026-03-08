@@ -38,9 +38,11 @@ const CartPage = () => {
               <Link to={`/tuote/${item.product.slug}`} className="shrink-0">
                 <img
                   src={item.product.images[0] || "/placeholder.svg"}
-                  alt={item.product.name}
+                  alt={`${item.product.name} – ostoskorissa`}
                   className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md bg-muted"
                   loading="lazy"
+                  width={96}
+                  height={96}
                 />
               </Link>
               <div className="flex-1 min-w-0">

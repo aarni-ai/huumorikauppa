@@ -232,7 +232,7 @@ const CheckoutPage = () => {
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {items.map(item => (
               <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-3 text-sm">
-                <img src={item.product.images[0] || "/placeholder.svg"} alt={item.product.name} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" />
+                <img src={item.product.images[0] || "/placeholder.svg"} alt={`${item.product.name} – kassalla`} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" width={48} height={48} />
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
                   <p className="text-muted-foreground">{item.quantity} × {item.product.price.toFixed(2)} €</p>
