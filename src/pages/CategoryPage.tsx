@@ -79,8 +79,9 @@ const CategoryPage = () => {
         title={category.seoTitle || `Hauskat ${category.name} | Huumorikauppa`}
         description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 60 € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
-        jsonLd={collectionJsonLd}
+        jsonLd={itemListJsonLd}
         breadcrumbs={breadcrumbs}
+        ogImage={products[0]?.images[0]}
       />
 
       <section className="bg-muted/50 py-3 border-b border-border">
