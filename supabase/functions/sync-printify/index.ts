@@ -102,12 +102,16 @@ function translateColor(color: string): string {
   for (const [en, fi] of Object.entries(COLOR_TRANSLATIONS)) {
     if (en.toLowerCase() === color.toLowerCase()) return fi;
   }
-  // Try partial match for compound colors like "Heather Sport Dark Navy"
-  const lower = color.toLowerCase();
-  if (lower.includes('heather')) return 'Meleerattu ' + translateColor(color.replace(/heather\s*/i, ''));
-  if (lower.includes('dark ')) return 'Tumma ' + translateColor(color.replace(/dark\s*/i, '').trim()).toLowerCase();
-  if (lower.includes('light ')) return 'Vaalea ' + translateColor(color.replace(/light\s*/i, '').trim()).toLowerCase();
-  return color; // Keep original if no translation found
+  // Try partial match for compound colors
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('heather')) {
+    const rest = trimmed.replace(/heather\s*/i, '').trim();
+    if (!rest) return 'Meleerattu harmaa';
+    return 'Meleerattu ' + translateColor(rest).toLowerCase();
+  }
+  if (lower.includes('dark ')) return 'Tumma ' + translateColor(trimmed.replace(/dark\s*/i, '').trim()).toLowerCase();
+  if (lower.includes('light ')) return 'Vaalea ' + translateColor(trimmed.replace(/light\s*/i, '').trim()).toLowerCase();
+  return trimmed; // Keep original if no translation found
 }
 
 const SIZE_VALUES = new Set([
