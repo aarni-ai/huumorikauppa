@@ -126,7 +126,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/tuote/${product.slug}`}
-      className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-glow-lime relative"
+      className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-300 hover:shadow-glow-lime relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => { setIsHovered(false); if (!showOptions) setShowOptions(false); }}
       onTouchStart={() => setIsHovered(prev => !prev)}
