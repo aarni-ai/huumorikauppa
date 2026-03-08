@@ -3,7 +3,7 @@ import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
