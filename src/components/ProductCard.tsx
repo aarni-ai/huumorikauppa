@@ -5,10 +5,15 @@ import { ShoppingCart, X } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { categories } from "@/data/products";
 
 interface ProductCardProps {
   product: Product;
 }
+
+const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  categories.map(c => [c.slug, c.name.toLowerCase()])
+);
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
