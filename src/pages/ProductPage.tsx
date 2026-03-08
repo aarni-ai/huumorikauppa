@@ -334,11 +334,7 @@ const ProductPage = () => {
   const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
   const hasSizes = !hideSize && product.variants.sizes && product.variants.sizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
-  // Deduplicate colors (e.g. multiple English names map to same Finnish name)
-  const uniqueColors = useMemo(() => {
-    if (!product.variants.colors) return [];
-    return [...new Set(product.variants.colors as string[])];
-  }, [product.variants.colors]);
+  const uniqueColors = [...new Set((product.variants.colors || []) as string[])];
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
