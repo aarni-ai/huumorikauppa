@@ -41,12 +41,19 @@ function parseDescription(description: string) {
   // 3. Split inline bullets: •text or • text → newline before •
   text = text.replace(/([^\n])(\s*•\s*)/g, "$1\n•");
 
-  // 4. Split ALLCAPS lines that are glued together (e.g., "PESUKONE: KYLMÄ (MAX 30 °C)RUMPUKUIVAIN:")
-  // Look for a closing paren or lowercase letter followed by an uppercase word
-  text = text.replace(/(\)|\w)((?:RUMPUKUIVAIN|SILITYS|EI KEMIALLISTA|EI KLOORIPOHJAISTA|PESUKONE)[^\n]*)/g, "$1\n$2");
+  // 4. Split glued label:value pairs (e.g., "30 °C)Rumpukuivain:" or "keskilämpöSilitys")
+  // Common care/feature labels that may be glued
+  const careLabels = [
+    "Pesukone", "Rumpukuivain", "Silitys", "Höyry", "Ei kemiallista",
+    "Ei klooripohjaista", "PESUKONE", "RUMPUKUIVAIN", "SILITYS",
+    "EI KEMIALLISTA", "EI KLOORIPOHJAISTA", "Konepesu", "Käsinpesu",
+  ];
+  for (const label of careLabels) {
+    text = text.replace(new RegExp(`([^\\n])(?=${escapeRegex(label)})`, "gi"), "$1\n");
+  }
 
-  // 5. Split lines like "...viimeistelyKaksinkertainen" (lowercase followed by Uppercase mid-word)
-  text = text.replace(/([a-zäöåü])([A-ZÄÖÅ][a-zäöåü])/g, "$1\n$2");
+  // 5. Split lines like "...viimeistelyKaksinkertainen" (lowercase/digit/paren followed by Uppercase start of new word)
+  text = text.replace(/([a-zäöåü\)°])([A-ZÄÖÅ][a-zäöåü])/g, "$1\n$2");
 
   // 6. Standard bullet split for "- " or "– " after sentence-ending chars
   text = text.replace(/([.!?a-zäöå])(\s*[-–]\s+)/gi, "$1\n$2");
