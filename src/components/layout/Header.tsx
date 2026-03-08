@@ -5,7 +5,9 @@ import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { Input } from "@/components/ui/input";
 
-function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: typeof categories; otherCats: typeof categories; onClose: () => void }) {
+type CategoryItem = { slug: string; name: string; emoji: string; description: string };
+
+function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]; otherCats: CategoryItem[]; onClose: () => void }) {
   const [otherOpen, setOtherOpen] = useState(false);
   return (
     <nav className="md:hidden border-t border-border bg-background pb-4">
