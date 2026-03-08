@@ -744,6 +744,7 @@ const ProductPage = () => {
               );
             })()}
           </div>
+        </section>
 
         {/* Product FAQ */}
         <section className="mt-8 max-w-3xl">
