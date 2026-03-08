@@ -263,9 +263,37 @@ const ProductPage = () => {
       "price": product.price,
       "priceCurrency": "EUR",
       "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "seller": { "@type": "Organization", "name": "Huumorikauppa" }
+      "seller": { "@type": "Organization", "name": "Huumorikauppa" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
+        "freeShippingThreshold": { "@type": "MonetaryAmount", "value": 60, "currency": "EUR" },
+        "deliveryTime": { "@type": "ShippingDeliveryTime", "businessDays": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 10 } }
+      }
     }
   };
+
+  const productFaqs = [
+    { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
+    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
+    { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
+  ];
+
+  const productFaqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": productFaqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  };
+
+  const breadcrumbs = [
+    { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+    { name: category?.name || product.category, url: `https://huumorikauppa.fi/kategoria/${product.category}` },
+    { name: product.name, url: `https://huumorikauppa.fi/tuote/${product.slug}` },
+  ];
 
   const categoryName = category?.name || product.category;
 
