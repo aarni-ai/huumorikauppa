@@ -12,21 +12,45 @@ export function ExitIntentPopup() {
   const { items, totalItems, totalPrice } = useCartContext();
 
   useEffect(() => {
-    // Only on desktop
-    if (window.innerWidth < 768) return;
+    const isMobile = window.innerWidth < 768;
 
-    const handleMouseLeave = (e: MouseEvent) => {
-      // Mouse leaving viewport from the top
-      if (e.clientY <= 0 && items.length > 0) {
-        const shown = sessionStorage.getItem(SESSION_KEY);
-        if (shown) return;
-        sessionStorage.setItem(SESSION_KEY, "true");
-        setOpen(true);
-      }
-    };
+    if (!isMobile) {
+      // Desktop: mouse leaving viewport from top
+      const handleMouseLeave = (e: MouseEvent) => {
+        if (e.clientY <= 0 && items.length > 0) {
+          const shown = sessionStorage.getItem(SESSION_KEY);
+          if (shown) return;
+          sessionStorage.setItem(SESSION_KEY, "true");
+          setOpen(true);
+        }
+      };
+      document.addEventListener("mouseout", handleMouseLeave);
+      return () => document.removeEventListener("mouseout", handleMouseLeave);
+    } else {
+      // Mobile: detect rapid scroll up (user about to leave)
+      let lastScrollY = window.scrollY;
+      let rapidScrollCount = 0;
 
-    document.addEventListener("mouseout", handleMouseLeave);
-    return () => document.removeEventListener("mouseout", handleMouseLeave);
+      const handleScroll = () => {
+        const currentY = window.scrollY;
+        if (currentY < lastScrollY && lastScrollY - currentY > 100) {
+          rapidScrollCount++;
+          if (rapidScrollCount >= 2 && items.length > 0) {
+            const shown = sessionStorage.getItem(SESSION_KEY);
+            if (!shown) {
+              sessionStorage.setItem(SESSION_KEY, "true");
+              setOpen(true);
+            }
+          }
+        } else {
+          rapidScrollCount = 0;
+        }
+        lastScrollY = currentY;
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
   }, [items.length]);
 
   const handleClose = () => setOpen(false);
