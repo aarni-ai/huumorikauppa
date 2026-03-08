@@ -18,15 +18,20 @@ export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, og
   useEffect(() => {
     document.title = title;
 
-    let metaDesc = document.querySelector('meta[name="description"]');
+    const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", description);
 
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", title);
-    const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.setAttribute("content", description);
+    const ogTitleEl = document.querySelector('meta[property="og:title"]');
+    if (ogTitleEl) ogTitleEl.setAttribute("content", title);
+    const ogDescEl = document.querySelector('meta[property="og:description"]');
+    if (ogDescEl) ogDescEl.setAttribute("content", description);
 
-    // Update og:image dynamically
+    const twTitleEl = document.querySelector('meta[name="twitter:title"]');
+    if (twTitleEl) twTitleEl.setAttribute("content", title);
+    const twDescEl = document.querySelector('meta[name="twitter:description"]');
+    if (twDescEl) twDescEl.setAttribute("content", description);
+
+    // Update og:image and twitter:image dynamically
     if (ogImage) {
       const ogImg = document.querySelector('meta[property="og:image"]');
       if (ogImg) ogImg.setAttribute("content", ogImage);
@@ -34,18 +39,8 @@ export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, og
       if (twImg) twImg.setAttribute("content", ogImage);
     }
 
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute("content", title);
-    const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.setAttribute("content", description);
-
-    const twTitle = document.querySelector('meta[name="twitter:title"]');
-    if (twTitle) twTitle.setAttribute("content", title);
-    const twDesc = document.querySelector('meta[name="twitter:description"]');
-    if (twDesc) twDesc.setAttribute("content", description);
-
     if (canonical) {
-      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (link) link.href = canonical;
     }
 
@@ -87,7 +82,7 @@ export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, og
       const s2 = document.getElementById("seo-breadcrumb-jsonld");
       if (s2) s2.remove();
     };
-  }, [title, description, canonical, jsonLd, breadcrumbs]);
+  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage]);
 
   return null;
 }
