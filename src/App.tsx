@@ -22,6 +22,9 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import BlogIndex from "./pages/BlogIndex";
 import BlogPost from "./pages/BlogPost";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { AddToCartDrawer } from "./components/AddToCartDrawer";
+import { NewsletterPopup } from "./components/NewsletterPopup";
+import { ExitIntentPopup } from "./components/ExitIntentPopup";
 
 const queryClient = new QueryClient();
 
