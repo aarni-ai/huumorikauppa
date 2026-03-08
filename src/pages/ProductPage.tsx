@@ -13,6 +13,76 @@ import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
+function ProductDescription({ description, expanded, onToggle }: { description: string; expanded: boolean; onToggle: () => void }) {
+  const isLong = description.length > 200;
+
+  // Split into paragraphs by double newlines or single newlines
+  const paragraphs = description.split(/\n{2,}|\n/).filter(p => p.trim().length > 0);
+  const hasBullets = paragraphs.some(p => p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–'));
+
+  if (!isLong) {
+    return (
+      <div className="text-muted-foreground leading-relaxed space-y-3">
+        {hasBullets ? (
+          <ul className="space-y-2">
+            {paragraphs.map((p, i) => {
+              const isBullet = p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–');
+              return isBullet ? (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>{p.trim().replace(/^[•\-–]\s*/, '')}</span>
+                </li>
+              ) : (
+                <p key={i}>{p}</p>
+              );
+            })}
+          </ul>
+        ) : (
+          paragraphs.map((p, i) => <p key={i}>{p}</p>)
+        )}
+      </div>
+    );
+  }
+
+  const shortText = description.slice(0, 200) + "…";
+
+  return (
+    <div className="text-muted-foreground leading-relaxed">
+      {expanded ? (
+        <div className="space-y-3">
+          {hasBullets ? (
+            <ul className="space-y-2">
+              {paragraphs.map((p, i) => {
+                const isBullet = p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–');
+                return isBullet ? (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">•</span>
+                    <span>{p.trim().replace(/^[•\-–]\s*/, '')}</span>
+                  </li>
+                ) : (
+                  <p key={i}>{p}</p>
+                );
+              })}
+            </ul>
+          ) : (
+            paragraphs.map((p, i) => <p key={i}>{p}</p>)
+          )}
+          <button onClick={onToggle} className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1">
+            Näytä vähemmän <ChevronDown className="h-4 w-4 rotate-180" />
+          </button>
+        </div>
+      ) : (
+        <>
+          <p>{shortText}</p>
+          <button onClick={onToggle} className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1">
+            Lue lisää <ChevronDown className="h-4 w-4" />
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
 const sizeGuide = [
   { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
   { size: "M", chest: "96–100", waist: "80–84", hip: "96–100" },
