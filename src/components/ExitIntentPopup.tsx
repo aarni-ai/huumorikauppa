@@ -121,7 +121,7 @@ export function ExitIntentPopup() {
             </Button>
             <button
               onClick={handleClose}
-              className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+              className="w-full text-sm font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors py-2"
             >
               Jatkan ostoksia
             </button>

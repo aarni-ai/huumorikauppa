@@ -93,7 +93,7 @@ export function NewsletterPopup() {
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+                className="w-full text-sm font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors py-2"
               >
                 Ei kiitos, en halua alennusta
               </button>
