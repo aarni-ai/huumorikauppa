@@ -13,67 +13,113 @@ import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
+function parseDescription(description: string) {
+  // Known section headers to split on
+  const sectionHeaders = [
+    "Tuotteen ominaisuudet",
+    "Product features",
+    "Hoito-ohjeet",
+    "Care instructions",
+  ];
+
+  // Insert line breaks before known section headers
+  let text = description;
+  for (const header of sectionHeaders) {
+    text = text.replace(new RegExp(`(?<!\n)(${header})`, "gi"), "\n\n$1");
+  }
+
+  // Split bullet-style items: detect "- " or "•" or "– " that follow text without newline
+  text = text.replace(/([.!?a-zäöå])(\s*[-•–]\s+)/gi, "$1\n$2");
+
+  // Split paragraphs
+  const rawParagraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0);
+
+  type Section = { type: "heading"; text: string } | { type: "paragraph"; text: string } | { type: "bullets"; items: string[] };
+  const sections: Section[] = [];
+
+  for (const block of rawParagraphs) {
+    const lines = block.split(/\n/).filter(l => l.trim().length > 0);
+    const isHeader = sectionHeaders.some(h => block.trim().toLowerCase().startsWith(h.toLowerCase()));
+
+    if (isHeader && lines.length > 1) {
+      // First line is heading, rest are bullets/content
+      sections.push({ type: "heading", text: lines[0].trim() });
+      const restLines = lines.slice(1);
+      const allBullets = restLines.every(l => /^[\s]*[-•–]/.test(l));
+      if (allBullets) {
+        sections.push({ type: "bullets", items: restLines.map(l => l.replace(/^[\s]*[-•–]\s*/, "").trim()) });
+      } else {
+        // Try to split on bullet patterns within joined text
+        const joined = restLines.join(" ");
+        const bulletSplit = joined.split(/(?=[-•–]\s)/).filter(s => s.trim().length > 0);
+        if (bulletSplit.length > 1) {
+          sections.push({ type: "bullets", items: bulletSplit.map(s => s.replace(/^[-•–]\s*/, "").trim()) });
+        } else {
+          for (const l of restLines) sections.push({ type: "paragraph", text: l.trim() });
+        }
+      }
+    } else if (isHeader) {
+      sections.push({ type: "heading", text: block.trim() });
+    } else {
+      // Check if block contains inline bullets
+      const bulletSplit = block.split(/(?=[-•–]\s)/).filter(s => s.trim().length > 0);
+      const startsWithBullet = /^[-•–]\s/.test(block.trim());
+      if (startsWithBullet && bulletSplit.length > 1) {
+        sections.push({ type: "bullets", items: bulletSplit.map(s => s.replace(/^[-•–]\s*/, "").trim()) });
+      } else {
+        sections.push({ type: "paragraph", text: block.trim() });
+      }
+    }
+  }
+
+  return sections;
+}
+
 function ProductDescription({ description, expanded, onToggle }: { description: string; expanded: boolean; onToggle: () => void }) {
   const isLong = description.length > 200;
+  const sections = parseDescription(description);
 
-  // Split into paragraphs by double newlines or single newlines
-  const paragraphs = description.split(/\n{2,}|\n/).filter(p => p.trim().length > 0);
-  const hasBullets = paragraphs.some(p => p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–'));
+  const renderSections = (secs: ReturnType<typeof parseDescription>) => (
+    <div className="space-y-4">
+      {secs.map((sec, i) => {
+        if (sec.type === "heading") {
+          return <h3 key={i} className="font-semibold text-foreground text-base mt-2">{sec.text}</h3>;
+        }
+        if (sec.type === "bullets") {
+          return (
+            <ul key={i} className="space-y-1.5 ml-1">
+              {sec.items.map((item, j) => (
+                <li key={j} className="flex items-start gap-2 text-sm">
+                  <span className="text-primary mt-0.5 shrink-0">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        }
+        return <p key={i} className="text-sm leading-relaxed">{sec.text}</p>;
+      })}
+    </div>
+  );
 
   if (!isLong) {
-    return (
-      <div className="text-muted-foreground leading-relaxed space-y-3">
-        {hasBullets ? (
-          <ul className="space-y-2">
-            {paragraphs.map((p, i) => {
-              const isBullet = p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–');
-              return isBullet ? (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>{p.trim().replace(/^[•\-–]\s*/, '')}</span>
-                </li>
-              ) : (
-                <p key={i}>{p}</p>
-              );
-            })}
-          </ul>
-        ) : (
-          paragraphs.map((p, i) => <p key={i}>{p}</p>)
-        )}
-      </div>
-    );
+    return <div className="text-muted-foreground">{renderSections(sections)}</div>;
   }
 
   const shortText = description.slice(0, 200) + "…";
 
   return (
-    <div className="text-muted-foreground leading-relaxed">
+    <div className="text-muted-foreground">
       {expanded ? (
-        <div className="space-y-3">
-          {hasBullets ? (
-            <ul className="space-y-2">
-              {paragraphs.map((p, i) => {
-                const isBullet = p.trim().startsWith('•') || p.trim().startsWith('-') || p.trim().startsWith('–');
-                return isBullet ? (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-primary mt-0.5">•</span>
-                    <span>{p.trim().replace(/^[•\-–]\s*/, '')}</span>
-                  </li>
-                ) : (
-                  <p key={i}>{p}</p>
-                );
-              })}
-            </ul>
-          ) : (
-            paragraphs.map((p, i) => <p key={i}>{p}</p>)
-          )}
+        <>
+          {renderSections(sections)}
           <button onClick={onToggle} className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1">
             Näytä vähemmän <ChevronDown className="h-4 w-4 rotate-180" />
           </button>
-        </div>
+        </>
       ) : (
         <>
-          <p>{shortText}</p>
+          <p className="text-sm leading-relaxed">{shortText}</p>
           <button onClick={onToggle} className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1">
             Lue lisää <ChevronDown className="h-4 w-4" />
           </button>
