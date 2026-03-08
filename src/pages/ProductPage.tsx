@@ -314,6 +314,24 @@ const ProductPage = () => {
     setSelectedColor(color);
   };
 
+  // Cross-category: same theme products
+  const themeProducts = useMemo(() => {
+    const skipWords = new Set(['paita', 'paidat', 'huppari', 'muki', 'mukit', 'tarra', 'hauska', 'hauskat', 'kahvikuppi', 'maailman', 'paras', 'body', 'peitto', 'pipo', 'laukku', 'taulu', 'koriste']);
+    const nameWords = product.name.toLowerCase()
+      .split(/[\s\-–,!?()]+/)
+      .filter(w => w.length > 3 && !skipWords.has(w));
+    
+    if (nameWords.length === 0) return [];
+    
+    return allProducts
+      .filter(p =>
+        p.id !== product.id &&
+        p.category !== product.category &&
+        nameWords.some(w => p.name.toLowerCase().includes(w))
+      )
+      .slice(0, 4);
+  }, [product, allProducts]);
+
   const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
