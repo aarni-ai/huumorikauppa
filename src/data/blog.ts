@@ -262,7 +262,7 @@ Huumorikauppa tarjoaa Suomen laajimman valikoiman hauskoja mukeja. Kaikki mukimm
     metaTitle: "Parhaat Polttaripaidat 2026 – Tilaa Ryhmälle | Huumorikauppa",
     metaDescription: "Etsitkö polttaripaitoja ryhmälle? Katso parhaat polttaripaidat ja polttarilahjat 2026. Tilaa yhtenäiset hauskat paidat polttareihin edullisesti.",
     excerpt: "Polttaripaidat ovat polttareiden klassikko. Katso parhaat polttaripaita-ideat ja tilaa ryhmälle yhtenäiset paidat.",
-    publishedAt: "2026-03-06",
+    publishedAt: "2025-05-12",
     updatedAt: "2026-03-08",
     category: "polttarit",
     tags: ["polttaripaidat", "polttaripaita", "polttarilahjat", "polttarit", "häät"],
