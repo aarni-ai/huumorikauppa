@@ -93,7 +93,7 @@ const Index = () => {
           <img
             src="/images/hero-banner-wide.png?v=3"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
-            className="w-full h-auto object-cover object-center hidden md:block md:max-h-[45vh] lg:max-h-[50vh]"
+            className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
           />
         </Link>
       </section>
