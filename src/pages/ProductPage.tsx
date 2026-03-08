@@ -572,7 +572,7 @@ const ProductPage = () => {
                   Väri{selectedColor ? `: ${selectedColor}` : ""}
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.colors!.map((color: string) => (
+                  {uniqueColors.map((color: string) => (
                     <button
                       key={color}
                       onClick={() => handleColorSelect(color)}
