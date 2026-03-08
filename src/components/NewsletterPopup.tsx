@@ -82,7 +82,7 @@ export function NewsletterPopup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-11 bg-muted border-border"
-                autoFocus
+                autoFocus={window.innerWidth >= 768}
               />
               <Button
                 type="submit"

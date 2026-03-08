@@ -61,7 +61,7 @@ export function ExitIntentPopup() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
-      <DialogContent className="bg-card border-border max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden">
+      <DialogContent className="bg-card border-border max-w-[calc(100vw-2rem)] sm:max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden rounded-xl">
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-muted hover:bg-muted-foreground/20 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"

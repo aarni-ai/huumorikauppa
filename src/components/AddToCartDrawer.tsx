@@ -81,7 +81,7 @@ export function AddToCartDrawer() {
         if (!v) handleClose();
       }}
     >
-      <SheetContent className="w-full sm:max-w-md bg-card border-border flex flex-col overflow-y-auto">
+      <SheetContent className="w-[100vw] sm:max-w-md bg-card border-border flex flex-col overflow-y-auto pb-[env(safe-area-inset-bottom,0px)]">
         <SheetHeader className="pb-4 border-b border-border">
           <SheetTitle className="flex items-center gap-2 text-foreground font-display text-lg">
             <Check className="h-5 w-5 text-primary" /> Lisätty ostoskoriin!
