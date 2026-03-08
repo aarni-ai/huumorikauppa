@@ -702,6 +702,49 @@ const ProductPage = () => {
           </div>
         </section>
 
+        {/* Customer Reviews */}
+        <section className="mt-8 max-w-3xl">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
+            {(() => {
+              const reviews = getProductReviews(product.id, 3);
+              const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
+              return (
+                <div className="space-y-4">
+                  {/* Summary */}
+                  <div className="flex items-center gap-3 pb-3 border-b border-border">
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`h-5 w-5 ${i < Math.round(avgStars) ? 'fill-primary text-primary' : 'text-muted-foreground/30'}`} />
+                      ))}
+                    </div>
+                    <span className="text-sm text-muted-foreground">{avgStars.toFixed(1)} / 5 ({reviews.length} arvostelua)</span>
+                  </div>
+                  {/* Individual reviews */}
+                  {reviews.map((review, i) => (
+                    <div key={i} className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-0.5">
+                            {Array.from({ length: review.stars }).map((_, s) => (
+                              <Star key={s} className="h-3.5 w-3.5 fill-primary text-primary" />
+                            ))}
+                            {Array.from({ length: 5 - review.stars }).map((_, s) => (
+                              <Star key={`e-${s}`} className="h-3.5 w-3.5 text-muted-foreground/30" />
+                            ))}
+                          </div>
+                          <span className="text-sm font-medium text-foreground">{review.name}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{review.date}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+
         {/* Product FAQ */}
         <section className="mt-8 max-w-3xl">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
