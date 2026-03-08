@@ -520,6 +520,33 @@ const ProductPage = () => {
           </div>
         </section>
 
+        {/* Product FAQ */}
+        <section className="mt-8 max-w-3xl">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä ❓</h2>
+            <div className="space-y-4">
+              {productFaqs.map((faq, i) => (
+                <div key={i}>
+                  <h3 className="font-medium text-foreground text-sm">{faq.q}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              Lisää kysymyksiä? Katso <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">UKK-sivumme</Link> tai ota yhteyttä info@huumorikauppa.fi
+            </p>
+          </div>
+        </section>
+
+        {/* Category link */}
+        {category && (
+          <section className="mt-6">
+            <Link to={`/kategoria/${product.category}`} className="text-sm text-primary hover:underline">
+              ← Takaisin kategoriaan: {category.emoji} {category.name}
+            </Link>
+          </section>
+        )}
+
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
