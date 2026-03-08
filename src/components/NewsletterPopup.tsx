@@ -44,7 +44,7 @@ export function NewsletterPopup() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleDismiss(); }}>
-      <DialogContent className="bg-card border-border max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden">
+      <DialogContent className="bg-card border-border max-w-[calc(100vw-2rem)] sm:max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden rounded-xl">
         {/* Close button */}
         <button
           onClick={handleDismiss}
