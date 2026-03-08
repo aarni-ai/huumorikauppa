@@ -839,7 +839,7 @@ const ProductPage = () => {
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
             {(() => {
-              const reviews = getProductReviews(product.id, 3);
+              const reviews = getProductReviews(product);
               const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
               return (
                 <div className="space-y-4">
