@@ -85,7 +85,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const shuffledReviews = shuffle(REVIEWS.map((r, i) => ({ ...r, name: NAMES[i % NAMES.length] })));
+const shuffledReviews = shuffle(REVIEWS.slice(0, 20).map((r, i) => ({ ...r, name: NAMES[i % NAMES.length] })));
 
 export function ReviewsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);

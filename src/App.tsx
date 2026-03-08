@@ -7,26 +7,54 @@ import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
-import Index from "./pages/Index";
-import CategoryPage from "./pages/CategoryPage";
-import ProductPage from "./pages/ProductPage";
-import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import AllProducts from "./pages/AllProducts";
-import FAQ from "./pages/FAQ";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import NotFound from "./pages/NotFound";
-import SearchPage from "./pages/SearchPage";
-import OrderConfirmation from "./pages/OrderConfirmation";
-import BlogIndex from "./pages/BlogIndex";
-import BlogPost from "./pages/BlogPost";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { AddToCartDrawer } from "./components/AddToCartDrawer";
-import { NewsletterPopup } from "./components/NewsletterPopup";
-import { ExitIntentPopup } from "./components/ExitIntentPopup";
+import { lazy, Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const queryClient = new QueryClient();
+// Eager: homepage (LCP critical)
+import Index from "./pages/Index";
+
+// Lazy: all other routes
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const AllProducts = lazy(() => import("./pages/AllProducts"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
+const BlogIndex = lazy(() => import("./pages/BlogIndex"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+
+// Lazy: popups (not needed at initial load)
+const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
+const ExitIntentPopup = lazy(() => import("./components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function PageFallback() {
+  return (
+    <div className="container py-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="aspect-square rounded-lg" />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -37,28 +65,32 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <Header />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/kaikki-tuotteet" element={<AllProducts />} />
-            <Route path="/kategoria/:slug" element={<CategoryPage />} />
-            <Route path="/tuote/:slug" element={<ProductPage />} />
-            <Route path="/ostoskori" element={<CartPage />} />
-            <Route path="/kassa" element={<CheckoutPage />} />
-            <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
-            <Route path="/toimitusehdot" element={<Terms />} />
-            <Route path="/tietosuojakaytanto" element={<Privacy />} />
-            <Route path="/haku" element={<SearchPage />} />
-            <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
-            <Route path="/blogi" element={<BlogIndex />} />
-            <Route path="/blogi/:slug" element={<BlogPost />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/kaikki-tuotteet" element={<AllProducts />} />
+              <Route path="/kategoria/:slug" element={<CategoryPage />} />
+              <Route path="/tuote/:slug" element={<ProductPage />} />
+              <Route path="/ostoskori" element={<CartPage />} />
+              <Route path="/kassa" element={<CheckoutPage />} />
+              <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
+              <Route path="/toimitusehdot" element={<Terms />} />
+              <Route path="/tietosuojakaytanto" element={<Privacy />} />
+              <Route path="/haku" element={<SearchPage />} />
+              <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
+              <Route path="/blogi" element={<BlogIndex />} />
+              <Route path="/blogi/:slug" element={<BlogPost />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <Footer />
           <CookieConsent />
           <AddToCartDrawer />
-          <NewsletterPopup />
-          <ExitIntentPopup />
+          <Suspense fallback={null}>
+            <NewsletterPopup />
+            <ExitIntentPopup />
+          </Suspense>
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>
