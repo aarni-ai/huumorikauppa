@@ -87,6 +87,8 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "Mustard": "Sinappi", "Rust": "Ruoste", "Wine": "Viini",
   "Storm": "Myrsky", "Mint": "Minttu", "Dusty Rose": "Vanharoosa",
   "Mauve": "Mauvi", "Plum": "Luumu",
+  "Dark Chocolate": "Tumma suklaa", "Chocolate": "Suklaa",
+  "Charcoal Grey": "Antrasiitinharmaa", "Dark Charcoal": "Tumma antrasiitti",
 };
 
 function translateColor(color: string): string {
