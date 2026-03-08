@@ -75,7 +75,7 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "Sunset": "Auringonlasku", "Sapphire": "Safiiri", "Cornsilk": "Maissinkeltainen",
   "True Royal": "Tummansininen", "Leaf": "Vihreä", "Autumn": "Syksy",
   "Berry": "Marja", "Heliconia": "Helikonia", "Tropical Blue": "Trooppinen sininen",
-  "Ash Grey": "Tuhkanharmaa", "Ice Grey": "Jäänharmaa", "Daisy": "Päivänkakkara",
+  "Ash Grey": "Vaaleanharmaa", "Ice Grey": "Vaaleanharmaa", "Daisy": "Keltainen",
   "Safety Green": "Turvavihreä", "Safety Orange": "Turvaoranssi",
   "Antique Cherry Red": "Antiikin kirsikanpunainen", "Antique Sapphire": "Antiikin safiiri",
   "Sapphire Blue": "Safiininsininen",
