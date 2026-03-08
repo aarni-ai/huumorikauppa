@@ -393,7 +393,7 @@ const ProductPage = () => {
 
   const productFaqs = [
     { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
-    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
+    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–7 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
     { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
   ];
 
