@@ -5,6 +5,34 @@ import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { Input } from "@/components/ui/input";
 
+function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: typeof categories; otherCats: typeof categories; onClose: () => void }) {
+  const [otherOpen, setOtherOpen] = useState(false);
+  return (
+    <nav className="md:hidden border-t border-border bg-background pb-4">
+      <Link to="/kaikki-tuotteet" onClick={onClose} className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+        🛍️ Kaikki tuotteet
+      </Link>
+      {mainCats.map(cat => (
+        <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          {cat.emoji} {cat.name}
+        </Link>
+      ))}
+      <button
+        onClick={() => setOtherOpen(prev => !prev)}
+        className="w-full flex items-center justify-between px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+      >
+        Muut tuotteet
+        <ChevronDown className={`h-4 w-4 transition-transform ${otherOpen ? "rotate-180" : ""}`} />
+      </button>
+      {otherOpen && otherCats.map(cat => (
+        <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-8 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          {cat.emoji} {cat.name}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
 const MAIN_CATEGORIES = ["t-paidat", "hupparit", "pitkahihaiset", "mukit", "bodyt"];
 const OTHER_CATEGORIES = ["tarrat", "peitot", "pipot", "laukut", "seinataulut", "koristeet"];
 
