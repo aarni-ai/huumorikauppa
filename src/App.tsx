@@ -46,6 +46,8 @@ const App = () => (
             <Route path="/tietosuojakaytanto" element={<Privacy />} />
             <Route path="/haku" element={<SearchPage />} />
             <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
+            <Route path="/blogi" element={<BlogIndex />} />
+            <Route path="/blogi/:slug" element={<BlogPost />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

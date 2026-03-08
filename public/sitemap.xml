@@ -20,5 +20,9 @@
   <url><loc>https://huumorikauppa.fi/usein-kysytyt-kysymykset</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/toimitusehdot</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/tietosuojakaytanto</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://huumorikauppa.fi/haku</loc><priority>0.3</priority><changefreq>monthly</changefreq></url>
+  
+  <!-- Blogi -->
+  <url><loc>https://huumorikauppa.fi/blogi</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/20-hauskinta-t-paitaa-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 </urlset>

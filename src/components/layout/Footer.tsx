@@ -53,6 +53,7 @@ export function Footer() {
           <h4 className="font-display text-sm text-foreground">TIETOA</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
             <Link to="/usein-kysytyt-kysymykset" className="hover:text-foreground transition-colors">Usein kysytyt kysymykset</Link>
+            <Link to="/blogi" className="hover:text-foreground transition-colors">Blogi</Link>
             <Link to="/toimitusehdot" className="hover:text-foreground transition-colors">Toimitusehdot</Link>
             <Link to="/tietosuojakaytanto" className="hover:text-foreground transition-colors">Tietosuojakäytäntö</Link>
           </div>
