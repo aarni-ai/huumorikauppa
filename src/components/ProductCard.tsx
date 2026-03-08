@@ -97,10 +97,6 @@ export function ProductCard({ product }: ProductCardProps) {
       const size = product.variants.sizes?.[0];
       const color = product.variants.colors?.[0];
       addItem(product, 1, size, color);
-      toast({
-        title: "Lisätty koriin! 🛒",
-        description: `${product.name} on nyt ostoskorissasi.`,
-      });
     }
   };
 
