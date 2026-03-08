@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: "Sopiiko tuote lahjaksi?",
-    a: "Ehdottomasti! Monet tuotteemme on merkitty 'Lahjaidea' -badgella ja sopivat täydellisesti lahjaksi."
+    a: "Ehdottomasti! Monet tuotteemme on merkitty 'Lahjaidea' -badgella ja sopivat täydellisesti lahjaksi syntymäpäiviin, jouluun, isänpäivään ja äitienpäivään."
   },
   {
     q: "Miten tiedän mikä koko sopii?",
@@ -25,11 +25,19 @@ const faqs = [
   },
   {
     q: "Onko maksaminen turvallista?",
-    a: "Kyllä! Käytämme SSL-suojattua yhteyttä ja luotettavaa maksunvälitystä."
+    a: "Kyllä! Käytämme SSL-suojattua yhteyttä ja luotettavaa maksunvälitystä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna."
   },
   {
     q: "Teettekö custom-painatuksia?",
     a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (info@huumorikauppa.fi) ja kerro mitä haluat – suunnitellaan yhdessä!"
+  },
+  {
+    q: "Mistä tuotteet valmistetaan?",
+    a: "Paitamme ja hupparimme ovat laadukasta puuvillaa tai puuvillapolyesterisekoitetta. Mukit ovat keramiikkaa. Kaikissa on kestävä DTG-painatus."
+  },
+  {
+    q: "Miten hoidan tuotetta?",
+    a: "Vaatteet pestään nurinpäin 30°C:ssa. Mukit kestävät konepesun. Tarkat hoito-ohjeet löytyvät jokaiselta tuotesivulta."
   },
 ];
 

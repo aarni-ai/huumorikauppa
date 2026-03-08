@@ -320,25 +320,57 @@ const ProductPage = () => {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+  const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description,
-    "image": currentImages[0] || "/placeholder.svg",
+    "description": product.description.slice(0, 500),
+    "image": allProductImages,
     "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
+    "sku": product.slug,
+    "mpn": product.id,
     "brand": { "@type": "Brand", "name": "Huumorikauppa" },
+    "category": categoryName,
     "offers": {
       "@type": "Offer",
-      "price": product.price,
+      "price": product.price.toFixed(2),
       "priceCurrency": "EUR",
       "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "seller": { "@type": "Organization", "name": "Huumorikauppa" },
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
+      "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
+      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+      ...(hasDiscount && product.original_price ? {
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": product.price.toFixed(2),
+          "priceCurrency": "EUR",
+          "valueAddedTaxIncluded": true
+        }
+      } : {}),
       "shippingDetails": {
         "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "EUR"
+        },
         "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
-        "freeShippingThreshold": { "@type": "MonetaryAmount", "value": 60, "currency": "EUR" },
-        "deliveryTime": { "@type": "ShippingDeliveryTime", "businessDays": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 10 } }
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "d" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 7, "unitCode": "d" }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "FI",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
       }
     }
   };
