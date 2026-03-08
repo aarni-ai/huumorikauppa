@@ -310,6 +310,8 @@ const ProductPage = () => {
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
       />
+      {/* FAQ Schema injected separately */}
+      <ProductFaqSchema faqs={productFaqs} />
 
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
