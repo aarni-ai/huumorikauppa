@@ -129,6 +129,26 @@ function ProductDescription({ description, expanded, onToggle }: { description: 
   );
 }
 
+function ProductFaqSchema({ faqs }: { faqs: { q: string; a: string }[] }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.id = "product-faq-jsonld";
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    });
+    document.head.appendChild(script);
+    return () => { script.remove(); };
+  }, [faqs]);
+  return null;
+}
+
 const sizeGuide = [
   { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
   { size: "M", chest: "96–100", waist: "80–84", hip: "96–100" },
