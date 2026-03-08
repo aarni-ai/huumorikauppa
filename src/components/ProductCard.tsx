@@ -137,12 +137,14 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
           src={displayImage}
-          alt={product.name}
+          alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
           className={`w-full h-full object-cover transition-all duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
+          width={400}
+          height={400}
         />
         {hoverImage && (
-          <img src={hoverImage} alt="" className="hidden" loading="lazy" />
+          <img src={hoverImage} alt={`${product.name} vaihtoehtoinen kuva`} className="hidden" loading="lazy" />
         )}
 
         {/* Discount badge */}
