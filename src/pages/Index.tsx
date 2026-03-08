@@ -4,6 +4,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
