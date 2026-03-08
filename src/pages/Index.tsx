@@ -204,7 +204,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const itemsPerView = typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 3;
+  const itemsPerView = 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const goTo = useCallback((index: number) => {
