@@ -182,7 +182,7 @@ const CheckoutPage = () => {
 
               <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground space-y-1">
                 <p className="font-medium text-foreground">Toimitustapa:</p>
-                <p>📦 Posti – kotiinkuljetus (3–10 arkipäivää)</p>
+                <p>📦 Posti – kotiinkuljetus (3–7 arkipäivää)</p>
                 <p>{shippingFree ? "✅ Ilmainen toimitus!" : `Toimituskulut: ${shippingCost.toFixed(2)} €`}</p>
               </div>
 
