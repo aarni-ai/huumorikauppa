@@ -401,8 +401,10 @@ const ProductPage = () => {
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
               <img
                 src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
-                alt={`${product.name} – ${selectedColor || ""}`}
+                alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
                 className="w-full h-full object-cover"
+                width={600}
+                height={600}
               />
               <div className="absolute top-3 left-3 flex flex-col gap-1">
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
