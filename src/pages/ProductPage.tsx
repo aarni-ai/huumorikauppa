@@ -423,7 +423,7 @@ const ProductPage = () => {
                       activeImage === i ? "border-primary" : "border-border hover:border-primary/50"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                    <img src={img} alt={`${product.name} kuva ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
                   </button>
                 ))}
               </div>
