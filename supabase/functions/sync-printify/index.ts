@@ -208,10 +208,20 @@ Deno.serve(async (req) => {
       let minPrice = Infinity;
       let maxPrice = 0;
 
+      const totalVariants = (p.variants || []).length;
+      const enabledVariants = (p.variants || []).filter((v: any) => v.is_enabled);
+      
+      if (productTitle.toLowerCase().includes('amatimies') && productTitle.toLowerCase().includes('huppari')) {
+        console.log(`DEBUG ${productTitle}: total=${totalVariants}, enabled=${enabledVariants.length}`);
+        const sampleDisabled = (p.variants || []).filter((v: any) => !v.is_enabled).slice(0, 3);
+        const sampleEnabled = enabledVariants.slice(0, 3);
+        console.log(`  Sample enabled:`, JSON.stringify(sampleEnabled.map((v: any) => ({ title: v.title, is_enabled: v.is_enabled }))));
+        console.log(`  Sample disabled:`, JSON.stringify(sampleDisabled.map((v: any) => ({ title: v.title, is_enabled: v.is_enabled }))));
+      }
+
       for (const variant of (p.variants || [])) {
         // Only use ENABLED variants (approved in Printify)
-        // Printify uses both is_enabled and is_available
-        if (!variant.is_enabled || variant.is_enabled === false) continue;
+        if (!variant.is_enabled) continue;
 
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
