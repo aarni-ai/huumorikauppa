@@ -3,7 +3,7 @@ import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -127,6 +127,26 @@ function ProductDescription({ description, expanded, onToggle }: { description: 
       )}
     </div>
   );
+}
+
+function ProductFaqSchema({ faqs }: { faqs: { q: string; a: string }[] }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.id = "product-faq-jsonld";
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    });
+    document.head.appendChild(script);
+    return () => { script.remove(); };
+  }, [faqs]);
+  return null;
 }
 
 const sizeGuide = [
@@ -263,9 +283,37 @@ const ProductPage = () => {
       "price": product.price,
       "priceCurrency": "EUR",
       "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "seller": { "@type": "Organization", "name": "Huumorikauppa" }
+      "seller": { "@type": "Organization", "name": "Huumorikauppa" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
+        "freeShippingThreshold": { "@type": "MonetaryAmount", "value": 60, "currency": "EUR" },
+        "deliveryTime": { "@type": "ShippingDeliveryTime", "businessDays": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 10 } }
+      }
     }
   };
+
+  const productFaqs = [
+    { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
+    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
+    { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
+  ];
+
+  const productFaqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": productFaqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  };
+
+  const breadcrumbs = [
+    { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+    { name: category?.name || product.category, url: `https://huumorikauppa.fi/kategoria/${product.category}` },
+    { name: product.name, url: `https://huumorikauppa.fi/tuote/${product.slug}` },
+  ];
 
   const categoryName = category?.name || product.category;
 
@@ -277,10 +325,13 @@ const ProductPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={`${product.name} – Osta ${categoryName} | Huumorikauppa`}
-        description={product.description.slice(0, 155)}
+        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
+        breadcrumbs={breadcrumbs}
       />
+      {/* FAQ Schema injected separately */}
+      <ProductFaqSchema faqs={productFaqs} />
 
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
@@ -490,6 +541,33 @@ const ProductPage = () => {
             <ProductDescription description={product.description} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
           </div>
         </section>
+
+        {/* Product FAQ */}
+        <section className="mt-8 max-w-3xl">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä ❓</h2>
+            <div className="space-y-4">
+              {productFaqs.map((faq, i) => (
+                <div key={i}>
+                  <h3 className="font-medium text-foreground text-sm">{faq.q}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              Lisää kysymyksiä? Katso <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">UKK-sivumme</Link> tai ota yhteyttä info@huumorikauppa.fi
+            </p>
+          </div>
+        </section>
+
+        {/* Category link */}
+        {category && (
+          <section className="mt-6">
+            <Link to={`/kategoria/${product.category}`} className="text-sm text-primary hover:underline">
+              ← Takaisin kategoriaan: {category.emoji} {category.name}
+            </Link>
+          </section>
+        )}
 
         {/* Related products */}
         {relatedProducts.length > 0 && (
