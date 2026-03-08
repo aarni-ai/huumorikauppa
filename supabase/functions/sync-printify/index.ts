@@ -95,7 +95,9 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
 };
 
 function translateColor(color: string): string {
-  if (COLOR_TRANSLATIONS[color]) return COLOR_TRANSLATIONS[color];
+  const trimmed = color.trim();
+  if (!trimmed) return trimmed;
+  if (COLOR_TRANSLATIONS[trimmed]) return COLOR_TRANSLATIONS[trimmed];
   // Try case-insensitive
   for (const [en, fi] of Object.entries(COLOR_TRANSLATIONS)) {
     if (en.toLowerCase() === color.toLowerCase()) return fi;
