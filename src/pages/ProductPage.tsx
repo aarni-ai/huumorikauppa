@@ -305,9 +305,10 @@ const ProductPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={`${product.name} – Osta ${categoryName} | Huumorikauppa`}
-        description={product.description.slice(0, 155)}
+        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
+        breadcrumbs={breadcrumbs}
       />
 
       <div className="container py-6 md:py-10">
