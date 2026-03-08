@@ -210,7 +210,8 @@ Deno.serve(async (req) => {
 
       for (const variant of (p.variants || [])) {
         // Only use ENABLED variants (approved in Printify)
-        if (!variant.is_enabled) continue;
+        // Printify uses both is_enabled and is_available
+        if (!variant.is_enabled || variant.is_enabled === false) continue;
 
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
