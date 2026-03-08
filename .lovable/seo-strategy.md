@@ -399,7 +399,7 @@ Blogi
 5. Rakenna sisäisiä linkkejä jokaiseen uuteen sisältöön
 6. Hyödynnä sesonkeja (joulu, isänpäivä, äitienpäivä, polttarit)
 
-### Tavoite 12 kk:
+### Tavoite 1 kk:
 - Top 3 hauilla "hauskat t-paidat", "hauska lahja", "meemipaidat"
 - Top 10 hauilla "hauska lahja miehelle", "hauska syntymäpäivälahja"
 - 50+ avainsanaa Googlen 1. sivulla
