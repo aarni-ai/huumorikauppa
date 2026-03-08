@@ -379,6 +379,7 @@ const ProductPage = () => {
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
+        ogImage={currentImages[0]}
       />
       {/* FAQ Schema injected separately */}
       <ProductFaqSchema faqs={productFaqs} />
@@ -400,8 +401,10 @@ const ProductPage = () => {
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
               <img
                 src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
-                alt={`${product.name} – ${selectedColor || ""}`}
+                alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
                 className="w-full h-full object-cover"
+                width={600}
+                height={600}
               />
               <div className="absolute top-3 left-3 flex flex-col gap-1">
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
@@ -420,7 +423,7 @@ const ProductPage = () => {
                       activeImage === i ? "border-primary" : "border-border hover:border-primary/50"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                    <img src={img} alt={`${product.name} kuva ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
                   </button>
                 ))}
               </div>

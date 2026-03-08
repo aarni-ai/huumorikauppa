@@ -87,14 +87,20 @@ const Index = () => {
           {/* Mobile: tall version */}
           <img
             src="/images/hero-banner.png?v=2"
-            alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
+            alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
             className="w-full h-auto object-cover object-center block md:hidden"
+            width={800}
+            height={800}
+            fetchPriority="high"
           />
           {/* Tablet & Desktop: wide version */}
           <img
             src="/images/hero-banner-wide.png?v=3"
-            alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
+            alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
+            width={1200}
+            height={600}
+            fetchPriority="high"
           />
         </Link>
       </section>

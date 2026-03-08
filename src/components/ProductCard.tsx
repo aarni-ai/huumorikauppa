@@ -5,10 +5,15 @@ import { ShoppingCart, X } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { categories } from "@/data/products";
 
 interface ProductCardProps {
   product: Product;
 }
+
+const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  categories.map(c => [c.slug, c.name.toLowerCase()])
+);
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
@@ -51,6 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCartContext();
   const { toast } = useToast();
   const optionsRef = useRef<HTMLDivElement>(null);
+  const categoryLabel = CATEGORY_LABELS[product.category] || product.category;
 
   const hoverImage = useMemo(() => getHoverImage(product), [product]);
   const mainImage = product.images[0] || "/placeholder.svg";
@@ -137,12 +143,14 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
           src={displayImage}
-          alt={product.name}
+          alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
           className={`w-full h-full object-cover transition-all duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
+          width={400}
+          height={400}
         />
         {hoverImage && (
-          <img src={hoverImage} alt="" className="hidden" loading="lazy" />
+          <img src={hoverImage} alt={`${product.name} vaihtoehtoinen kuva`} className="hidden" loading="lazy" />
         )}
 
         {/* Discount badge */}
