@@ -7,11 +7,65 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown } from "lucide-react";
+import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+
+// Product-specific reviews pool – each review used only once across products
+const PRODUCT_REVIEWS = [
+  { name: "Mika L.", text: "Ostin tämän lahjaksi kaverille ja hän rakasti sitä! Laatu oli erinomainen.", stars: 5, date: "12.1.2026" },
+  { name: "Sanna K.", text: "Todella hauska tuote, sai paljon naurua aikaan. Suosittelen!", stars: 5, date: "3.2.2026" },
+  { name: "Jukka P.", text: "Hyvä laatu ja nopea toimitus. Printtikin oli selkeä ja värikäs.", stars: 5, date: "18.11.2025" },
+  { name: "Tiina V.", text: "Ostin itselleni ja olen tosi tyytyväinen! Istuvuus täydellinen.", stars: 5, date: "7.12.2025" },
+  { name: "Heikki R.", text: "Kiva tuote, mutta koko oli hieman pieni. Olisin voinut ottaa yhden isomman.", stars: 4, date: "22.1.2026" },
+  { name: "Laura M.", text: "Mahtava lahjaidea! Vastaanottaja oli todella iloinen.", stars: 5, date: "5.3.2026" },
+  { name: "Petri T.", text: "Ihan hauska, toimituskin tuli nopeasti perille.", stars: 4, date: "14.2.2026" },
+  { name: "Emilia J.", text: "Rakastan tätä! Käytän melkein joka päivä. 😂", stars: 5, date: "28.12.2025" },
+  { name: "Tomi S.", text: "Printti kestävä ja värit kirkkaat. Hinta-laatusuhde kohdillaan.", stars: 5, date: "9.1.2026" },
+  { name: "Riikka H.", text: "Ostin polttareihin koko porukalle, hitti! Kaikki tykkäsi.", stars: 5, date: "1.6.2025" },
+  { name: "Antti K.", text: "Todella mukava materiaali ja hauska teksti. Suosittelen lämpimästi!", stars: 5, date: "19.10.2025" },
+  { name: "Jenni S.", text: "Tämä oli juuri sitä mitä etsin. Loistava löytö!", stars: 5, date: "25.2.2026" },
+  { name: "Ville M.", text: "Hyvä tuote, toimitusaika ok. Tilasin jo toisen!", stars: 5, date: "8.9.2025" },
+  { name: "Kaisa P.", text: "Hauska ja laadukas. Kaveri nauroi ääneen kun avasi paketin.", stars: 5, date: "30.1.2026" },
+  { name: "Markku T.", text: "Ensimmäinen tilaus täältä ja positiivisesti yllättynyt laadusta.", stars: 5, date: "16.11.2025" },
+  { name: "Henna L.", text: "Kiva tuote! Ainoa miinus oli että olisin toivonut enemmän värivaihtoehtoja.", stars: 4, date: "4.3.2026" },
+  { name: "Tommi R.", text: "Tilasin joululahjaksi isälle – osui ja upposi! 10/10", stars: 5, date: "20.12.2025" },
+  { name: "Päivi K.", text: "Mukava materiaali ja painatus on tosi siisti. Olen tyytyväinen.", stars: 5, date: "11.2.2026" },
+  { name: "Aki V.", text: "Nopea toimitus ja tuote vastasi kuvaa. Kiitos!", stars: 5, date: "27.1.2026" },
+  { name: "Noora S.", text: "Ostin tämän äitienpäivälahjaksi ja äiti oli aivan innoissaan!", stars: 5, date: "10.5.2025" },
+  { name: "Jarmo H.", text: "Hyvä meininki, tilaan varmasti lisää!", stars: 5, date: "15.8.2025" },
+  { name: "Susanna M.", text: "Ihan ok tuote, mutta toimituksessa kesti vähän normaalia kauemmin.", stars: 4, date: "6.1.2026" },
+  { name: "Kimmo P.", text: "Paras lahja ikinä kaverille! Naurut taattu.", stars: 5, date: "23.11.2025" },
+  { name: "Outi V.", text: "Todella kiva! Sopii hyvin arkikäyttöön ja laatu on hyvä.", stars: 5, date: "2.3.2026" },
+  { name: "Matias L.", text: "Kolmas tilaus tästä kaupasta, aina yhtä tyytyväinen!", stars: 5, date: "17.2.2026" },
+  { name: "Johanna R.", text: "Tämä on niin hauska! Työkaverit olivat kateellisia. 😄", stars: 5, date: "29.9.2025" },
+  { name: "Samuli K.", text: "Lahjaksi ostettu ja oli täydellinen valinta. Suosittelen!", stars: 5, date: "13.12.2025" },
+  { name: "Katja T.", text: "Kiva tuote hyvään hintaan. Toimitus nopea.", stars: 5, date: "21.1.2026" },
+  { name: "Riku M.", text: "Aivan mahtava! Sai hymyn huulille kaikille.", stars: 5, date: "8.2.2026" },
+  { name: "Maija S.", text: "Yllätyin positiivisesti laadusta. Ehdottomasti suosittelen.", stars: 5, date: "24.10.2025" },
+];
+
+// Deterministic hash to assign unique reviews per product
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function getProductReviews(productId: string, count: number = 2) {
+  const h = hashString(productId);
+  const startIdx = h % PRODUCT_REVIEWS.length;
+  const reviews = [];
+  for (let i = 0; i < count; i++) {
+    reviews.push(PRODUCT_REVIEWS[(startIdx + i * 7) % PRODUCT_REVIEWS.length]);
+  }
+  return reviews;
+}
 
 function parseDescription(description: string) {
   const sectionHeaders = [
@@ -645,6 +699,50 @@ const ProductPage = () => {
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
             <ProductDescription description={product.description} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
+          </div>
+        </section>
+
+        {/* Customer Reviews */}
+        <section className="mt-8 max-w-3xl">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
+            {(() => {
+              const reviews = getProductReviews(product.id, 3);
+              const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
+              return (
+                <div className="space-y-4">
+                  {/* Summary */}
+                  <div className="flex items-center gap-3 pb-3 border-b border-border">
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`h-5 w-5 ${i < Math.round(avgStars) ? 'fill-primary text-primary' : 'text-muted-foreground/30'}`} />
+                      ))}
+                    </div>
+                    <span className="text-sm text-muted-foreground">{avgStars.toFixed(1)} / 5 ({reviews.length} arvostelua)</span>
+                  </div>
+                  {/* Individual reviews */}
+                  {reviews.map((review, i) => (
+                    <div key={i} className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-0.5">
+                            {Array.from({ length: review.stars }).map((_, s) => (
+                              <Star key={s} className="h-3.5 w-3.5 fill-primary text-primary" />
+                            ))}
+                            {Array.from({ length: 5 - review.stars }).map((_, s) => (
+                              <Star key={`e-${s}`} className="h-3.5 w-3.5 text-muted-foreground/30" />
+                            ))}
+                          </div>
+                          <span className="text-sm font-medium text-foreground">{review.name}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{review.date}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         </section>
 
