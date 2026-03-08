@@ -497,8 +497,13 @@ const ProductPage = () => {
               </div>
             </div>
 
+            {product.is_featured && (
+              <Badge className="bg-accent text-accent-foreground font-bold w-fit">🔥 Suosittu tuote</Badge>
+            )}
             {product.stock <= 10 && product.stock > 0 && (
-              <p className="text-sm font-bold text-destructive">Vain {product.stock} jäljellä – tilaa nyt! 😱</p>
+              <div className="flex items-center gap-2 bg-destructive/10 text-destructive rounded-md px-3 py-2">
+                <span className="text-sm font-bold">🔥 Vain {product.stock} kpl jäljellä – tilaa ennen kuin loppuu!</span>
+              </div>
             )}
 
             {/* Color selector */}
