@@ -116,23 +116,32 @@ const CategoryPage = () => {
         {/* SEO Category Text */}
         {category.seoText && (
           <section className="mt-12 max-w-3xl">
-            <div className="prose prose-sm text-muted-foreground space-y-3">
-              {category.seoText.split('\n\n').map((paragraph, i) => (
-                <p key={i} className="text-sm leading-relaxed">{paragraph}</p>
-              ))}
+            <div className="prose prose-sm text-muted-foreground space-y-4">
+              {category.seoText.split('\n\n').map((paragraph, i) => {
+                const trimmed = paragraph.trim();
+                if (trimmed.startsWith('## ')) {
+                  return <h2 key={i} className="font-display text-xl text-foreground mt-6 mb-2">{trimmed.replace('## ', '')}</h2>;
+                }
+                if (trimmed.startsWith('### ')) {
+                  return <h3 key={i} className="font-semibold text-foreground mt-4 mb-1">{trimmed.replace('### ', '')}</h3>;
+                }
+                return <p key={i} className="text-sm leading-relaxed">{trimmed}</p>;
+              })}
             </div>
-            <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <span className="text-muted-foreground">Tutustu myös:</span>
-              {crossLinkCategories.map(cat => (
-                <Link
-                  key={cat.slug}
-                  to={`/kategoria/${cat.slug}`}
-                  className="text-primary hover:underline"
-                >
-                  {cat.emoji} {cat.name}
-                </Link>
-              ))}
-            </div>
+            <nav className="mt-8 pt-6 border-t border-border" aria-label="Tutustu muihin kategorioihin">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Tutustu myös muihin kategorioihin:</h3>
+              <div className="flex flex-wrap gap-2">
+                {crossLinkCategories.map(cat => (
+                  <Link
+                    key={cat.slug}
+                    to={`/kategoria/${cat.slug}`}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+                  >
+                    {cat.emoji} {cat.name}
+                  </Link>
+                ))}
+              </div>
+            </nav>
           </section>
         )}
       </div>
