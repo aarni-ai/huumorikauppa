@@ -8,6 +8,10 @@ const Privacy = () => {
         title="Tietosuojakäytäntö – Huumorikauppa"
         description="Huumorikaupan tietosuojakäytäntö: miten keräämme, käytämme ja suojaamme henkilötietojasi GDPR:n mukaisesti."
         canonical="https://huumorikauppa.fi/tietosuojakaytanto"
+        breadcrumbs={[
+          { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+          { name: "Tietosuojakäytäntö", url: "https://huumorikauppa.fi/tietosuojakaytanto" },
+        ]}
       />
 
       <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">

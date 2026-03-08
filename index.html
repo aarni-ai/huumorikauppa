@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fi">
+<html lang="fi" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,13 +7,33 @@
     <meta name="description" content="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!">
     <meta name="author" content="Huumorikauppa" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://huumorikauppa.fi" />
 
     <meta name="keywords" content="hauskat t-paidat, hauska paita, meemipaita, huumoripaita, hauska muki, hauska huppari, hauska lahja, lahja miehelle, lahja isälle, lahja äidille, suomalainen verkkokauppa, meemikauppa, huumorikauppa, hauskoja lahjoja, custom painatus, hauskat tarrat" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="format-detection" content="telephone=no" />
 
+    <!-- Geo meta -->
+    <meta name="geo.region" content="FI" />
+    <meta name="geo.placename" content="Helsinki" />
+    <meta name="geo.position" content="60.1699;24.9384" />
+    <meta name="ICBM" content="60.1699, 24.9384" />
+
+    <!-- Language alternatives -->
+    <link rel="alternate" hreflang="fi" href="https://huumorikauppa.fi" />
+    <link rel="alternate" hreflang="x-default" href="https://huumorikauppa.fi" />
+
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://images-api.printify.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images-api.printify.com" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://huumorikauppa.fi" />
-    
+    <meta property="og:title" content="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat">
+    <meta property="og:description" content="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!">
     <meta property="og:image" content="https://huumorikauppa.fi/images/hero-banner-wide.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="600">
@@ -21,44 +41,105 @@
     <meta property="og:locale" content="fi_FI" />
     <meta property="og:site_name" content="Huumorikauppa" />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat">
+    <meta name="twitter:description" content="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!">
     <meta name="twitter:image" content="https://huumorikauppa.fi/images/hero-banner-wide.png">
+    <meta name="twitter:image:alt" content="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat">
 
+    <!-- Structured Data: WebSite + SearchAction -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Huumorikauppa",
+      "alternateName": "Huumorikauppa.fi",
       "url": "https://huumorikauppa.fi",
       "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja",
+      "inLanguage": "fi",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://huumorikauppa.fi/haku?q={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://huumorikauppa.fi/haku?q={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     }
     </script>
+
+    <!-- Structured Data: Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Huumorikauppa",
       "url": "https://huumorikauppa.fi",
-      "logo": "https://huumorikauppa.fi/favicon.ico",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://huumorikauppa.fi/favicon.ico",
+        "width": 512,
+        "height": 512
+      },
       "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Helsinki",
         "addressCountry": "FI"
       },
-      "email": "info@huumorikauppa.fi"
+      "email": "info@huumorikauppa.fi",
+      "sameAs": [
+        "https://www.instagram.com/huumorikauppa",
+        "https://www.facebook.com/profile.php?id=61584153329326"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "info@huumorikauppa.fi",
+        "contactType": "customer service",
+        "availableLanguage": "Finnish"
+      }
     }
     </script>
-    <meta property="og:title" content="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat">
-  <meta name="twitter:title" content="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat">
-  <meta property="og:description" content="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!">
-  <meta name="twitter:description" content="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!">
-</head>
+
+    <!-- Structured Data: Online Store -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Huumorikauppa",
+      "url": "https://huumorikauppa.fi",
+      "description": "Suomen hauskin verkkokauppa",
+      "priceRange": "€€",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Visa, Mastercard, Apple Pay, Google Pay, Klarna",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Helsinki",
+        "addressCountry": "FI"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "60.1699",
+        "longitude": "24.9384"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "FI"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Huumorikaupan tuotteet",
+        "itemListElement": [
+          {"@type": "OfferCatalog", "name": "Hauskat T-Paidat"},
+          {"@type": "OfferCatalog", "name": "Hauskat Hupparit"},
+          {"@type": "OfferCatalog", "name": "Hauskat Mukit"},
+          {"@type": "OfferCatalog", "name": "Hauskat Tarrat"}
+        ]
+      }
+    }
+    </script>
+  </head>
 
   <body>
     <div id="root"></div>

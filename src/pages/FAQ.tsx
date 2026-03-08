@@ -51,6 +51,10 @@ const FAQ = () => {
         description="Vastaukset yleisimpiin kysymyksiin toimituksesta, palautuksista, maksamisesta ja custom-painatuksista. Huumorikauppa – Suomen hauskin verkkokauppa."
         canonical="https://huumorikauppa.fi/usein-kysytyt-kysymykset"
         jsonLd={faqJsonLd}
+        breadcrumbs={[
+          { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+          { name: "Usein kysytyt kysymykset", url: "https://huumorikauppa.fi/usein-kysytyt-kysymykset" },
+        ]}
       />
 
       <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">

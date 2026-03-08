@@ -8,6 +8,10 @@ const Terms = () => {
         title="Toimitusehdot – Huumorikauppa"
         description="Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus, palautukset ja reklamaatiot. Turvallinen verkkokauppa."
         canonical="https://huumorikauppa.fi/toimitusehdot"
+        breadcrumbs={[
+          { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+          { name: "Toimitusehdot", url: "https://huumorikauppa.fi/toimitusehdot" },
+        ]}
       />
 
       <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
