@@ -379,6 +379,7 @@ const ProductPage = () => {
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
+        ogImage={currentImages[0]}
       />
       {/* FAQ Schema injected separately */}
       <ProductFaqSchema faqs={productFaqs} />
