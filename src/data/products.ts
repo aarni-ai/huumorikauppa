@@ -6,7 +6,7 @@ export const categories = [
     description: "Hauskimmat paidat sedille, mutseille ja kaikille muillekin",
     seoTitle: "Hauskat T-Paidat – Meemipaidat & Vitsipaidat | Huumorikauppa",
     seoDescription: "Osta hauskoja t-paitoja netistä! Meemipaidat, huumoripaidat ja sarkasmipaidat. Täydellisiä lahjoja. Ilmainen toimitus yli 60 €.",
-    seoText: "Etsitko hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan valikoimasta löydät Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat jotka saavat kaikki nauramaan.\n\nValikoimamme sisältää satoja erilaisia hauskoja paitoja: kalastajan huumoripaitoja, setämiehen klassikkopaitoja, äiti-aiheisia huumoripaitoja ja paljon muuta. Jokainen paita on laadukas ja mukava päällä.\n\nHauskat t-paidat ovat täydellisiä lahjoja syntymäpäiviin, isänpäivään, äitienpäivään ja pikkujouluihin. Ne sopivat kaverille, isälle, äidille tai kenelle tahansa joka arvostaa hyvää huumoria.",
+    seoText: "Etsitkö hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan valikoimasta löydät Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat jotka saavat kaikki nauramaan.\n\nValikoimamme sisältää satoja erilaisia hauskoja paitoja: kalastajan huumoripaitoja, setämiehen klassikkopaitoja, äiti-aiheisia huumoripaitoja ja paljon muuta. Jokainen paita on laadukas ja mukava päällä.\n\nHauskat t-paidat ovat täydellisiä lahjoja syntymäpäiviin, isänpäivään, äitienpäivään ja pikkujouluihin. Ne sopivat kaverille, isälle, äidille tai kenelle tahansa joka arvostaa hyvää huumoria.",
   },
   {
     slug: "hupparit",
