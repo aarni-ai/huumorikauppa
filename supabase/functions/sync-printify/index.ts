@@ -65,7 +65,7 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "Teal": "Sinivihreä", "Cyan": "Syaani", "Aqua": "Akvamariini",
   "Coral": "Koralli", "Salmon": "Lohenpunainen", "Peach": "Persikka",
   "Lavender": "Laventeli", "Lilac": "Lila", "Magenta": "Magenta",
-  "Indigo": "Indigo", "Slate": "Liuskekivi", "Charcoal Heather": "Antrasiitti meleerattu",
+  "Indigo": "Tummansininen", "Slate": "Harmaa", "Charcoal Heather": "Tummanharmaa",
   "Heather Red": "Meleerattu punainen", "Heather Navy": "Meleerattu tummansininen",
   "Heather Blue": "Meleerattu sininen", "Heather Green": "Meleerattu vihreä",
   "Heather Purple": "Meleerattu violetti", "Heather Pink": "Meleerattu pinkki",
