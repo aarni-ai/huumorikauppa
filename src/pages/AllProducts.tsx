@@ -48,6 +48,10 @@ const AllProducts = () => {
         title="Kaikki tuotteet – Hauskat t-paidat, hupparit, mukit | Huumorikauppa"
         description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, housuja, mukeja ja tarroja. Ilmainen toimitus yli 60 € tilauksiin!"
         canonical="https://huumorikauppa.fi/kaikki-tuotteet"
+        breadcrumbs={[
+          { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+          { name: "Kaikki tuotteet", url: "https://huumorikauppa.fi/kaikki-tuotteet" },
+        ]}
       />
 
       <section className="bg-muted/50 py-3 border-b border-border">

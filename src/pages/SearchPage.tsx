@@ -22,6 +22,7 @@ const SearchPage = () => {
       <SEOHead
         title={`Haku: ${searchParams.get("q") || ""} – Huumorikauppa`}
         description={`Hakutulokset haulle "${searchParams.get("q") || ""}". Löydä hauskoja t-paitoja, huppareita, mukeja ja tarroja.`}
+        noindex={true}
       />
       <div className="container py-10 md:py-14">
         <h1 className="font-display text-2xl md:text-3xl text-foreground mb-2">

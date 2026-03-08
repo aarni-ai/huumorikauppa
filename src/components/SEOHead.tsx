@@ -12,33 +12,65 @@ interface SEOHeadProps {
   jsonLd?: object;
   breadcrumbs?: BreadcrumbItem[];
   ogImage?: string;
+  noindex?: boolean;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
 }
 
-export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, ogImage }: SEOHeadProps) {
+export function SEOHead({
+  title,
+  description,
+  canonical,
+  jsonLd,
+  breadcrumbs,
+  ogImage,
+  noindex,
+  articlePublishedTime,
+  articleModifiedTime,
+}: SEOHeadProps) {
   useEffect(() => {
+    // Title
     document.title = title;
 
+    // Meta description
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", description);
 
+    // Robots noindex
+    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+    if (robotsMeta && noindex) {
+      robotsMeta.setAttribute("content", "noindex, nofollow");
+    } else if (robotsMeta && !noindex) {
+      robotsMeta.setAttribute("content", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+    }
+
+    // Open Graph
     const ogTitleEl = document.querySelector('meta[property="og:title"]');
     if (ogTitleEl) ogTitleEl.setAttribute("content", title);
     const ogDescEl = document.querySelector('meta[property="og:description"]');
     if (ogDescEl) ogDescEl.setAttribute("content", description);
+    const ogUrlEl = document.querySelector('meta[property="og:url"]');
+    if (ogUrlEl && canonical) ogUrlEl.setAttribute("content", canonical);
 
+    // Twitter
     const twTitleEl = document.querySelector('meta[name="twitter:title"]');
     if (twTitleEl) twTitleEl.setAttribute("content", title);
     const twDescEl = document.querySelector('meta[name="twitter:description"]');
     if (twDescEl) twDescEl.setAttribute("content", description);
 
-    // Update og:image and twitter:image dynamically
+    // og:image and twitter:image
     if (ogImage) {
       const ogImg = document.querySelector('meta[property="og:image"]');
       if (ogImg) ogImg.setAttribute("content", ogImage);
+      const ogImgAlt = document.querySelector('meta[property="og:image:alt"]');
+      if (ogImgAlt) ogImgAlt.setAttribute("content", title);
       const twImg = document.querySelector('meta[name="twitter:image"]');
       if (twImg) twImg.setAttribute("content", ogImage);
+      const twImgAlt = document.querySelector('meta[name="twitter:image:alt"]');
+      if (twImgAlt) twImgAlt.setAttribute("content", title);
     }
 
+    // Canonical
     if (canonical) {
       const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (link) link.href = canonical;
@@ -82,7 +114,7 @@ export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, og
       const s2 = document.getElementById("seo-breadcrumb-jsonld");
       if (s2) s2.remove();
     };
-  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage]);
+  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage, noindex]);
 
   return null;
 }
