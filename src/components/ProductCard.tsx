@@ -56,6 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCartContext();
   const { toast } = useToast();
   const optionsRef = useRef<HTMLDivElement>(null);
+  const categoryLabel = CATEGORY_LABELS[product.category] || product.category;
 
   const hoverImage = useMemo(() => getHoverImage(product), [product]);
   const mainImage = product.images[0] || "/placeholder.svg";
