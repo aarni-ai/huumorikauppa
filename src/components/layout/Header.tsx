@@ -140,25 +140,7 @@ export function Header() {
 
       {/* Mobile menu dropdown */}
       {menuOpen && (
-        <nav className="md:hidden border-t border-border bg-background pb-4">
-          <Link
-            to="/kaikki-tuotteet"
-            onClick={() => setMenuOpen(false)}
-            className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-          >
-            🛍️ Kaikki tuotteet
-          </Link>
-          {categories.map(cat => (
-            <Link
-              key={cat.slug}
-              to={`/kategoria/${cat.slug}`}
-              onClick={() => setMenuOpen(false)}
-              className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              {cat.emoji} {cat.name}
-            </Link>
-          ))}
-        </nav>
+        <MobileMenu mainCats={mainCats} otherCats={otherCats} onClose={() => setMenuOpen(false)} />
       )}
     </header>
   );
