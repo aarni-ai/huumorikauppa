@@ -315,7 +315,7 @@ const ProductPage = () => {
   };
 
   // Cross-category: same theme products
-  const themeProducts = useMemo(() => {
+  const themeProducts = (() => {
     const skipWords = new Set(['paita', 'paidat', 'huppari', 'muki', 'mukit', 'tarra', 'hauska', 'hauskat', 'kahvikuppi', 'maailman', 'paras', 'body', 'peitto', 'pipo', 'laukku', 'taulu', 'koriste']);
     const nameWords = product.name.toLowerCase()
       .split(/[\s\-–,!?()]+/)
@@ -330,7 +330,7 @@ const ProductPage = () => {
         nameWords.some(w => p.name.toLowerCase().includes(w))
       )
       .slice(0, 4);
-  }, [product, allProducts]);
+  })();
 
   const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
