@@ -283,6 +283,7 @@ Deno.serve(async (req) => {
         const varIds = colorVariantIds.get(color) || [];
         const colorImages: string[] = [];
         const usedSrcsForColor = new Set<string>();
+        const usedCameraLabels = new Set<string>();
         
         // First pass: find images that match this color's variant IDs
         for (const img of allImagesSorted) {
@@ -290,6 +291,10 @@ Deno.serve(async (req) => {
           const imgVarIds: number[] = img.variant_ids || [];
           if (imgVarIds.length === 0 || imgVarIds.some((vid: number) => varIds.includes(vid))) {
             if (!usedSrcsForColor.has(img.src)) {
+              // Deduplicate by camera_label to avoid multiple mockups of same angle
+              const cameraLabel = new URL(img.src).searchParams.get('camera_label') || img.src;
+              if (usedCameraLabels.has(cameraLabel)) continue;
+              usedCameraLabels.add(cameraLabel);
               colorImages.push(img.src);
               usedSrcsForColor.add(img.src);
             }
