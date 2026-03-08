@@ -13,41 +13,138 @@ import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Product-specific reviews pool – each review used only once across products
-const PRODUCT_REVIEWS = [
-  { name: "Mika L.", text: "Ostin tämän lahjaksi kaverille ja hän rakasti sitä! Laatu oli erinomainen.", stars: 5, date: "12.1.2026" },
-  { name: "Sanna K.", text: "Todella hauska tuote, sai paljon naurua aikaan. Suosittelen!", stars: 5, date: "3.2.2026" },
-  { name: "Jukka P.", text: "Hyvä laatu ja nopea toimitus. Printtikin oli selkeä ja värikäs.", stars: 5, date: "18.11.2025" },
-  { name: "Tiina V.", text: "Ostin itselleni ja olen tosi tyytyväinen! Istuvuus täydellinen.", stars: 5, date: "7.12.2025" },
-  { name: "Heikki R.", text: "Kiva tuote, mutta koko oli hieman pieni. Olisin voinut ottaa yhden isomman.", stars: 4, date: "22.1.2026" },
-  { name: "Laura M.", text: "Mahtava lahjaidea! Vastaanottaja oli todella iloinen.", stars: 5, date: "5.3.2026" },
-  { name: "Petri T.", text: "Ihan hauska, toimituskin tuli nopeasti perille.", stars: 4, date: "14.2.2026" },
-  { name: "Emilia J.", text: "Rakastan tätä! Käytän melkein joka päivä. 😂", stars: 5, date: "28.12.2025" },
-  { name: "Tomi S.", text: "Printti kestävä ja värit kirkkaat. Hinta-laatusuhde kohdillaan.", stars: 5, date: "9.1.2026" },
-  { name: "Riikka H.", text: "Ostin polttareihin koko porukalle, hitti! Kaikki tykkäsi.", stars: 5, date: "1.6.2025" },
-  { name: "Antti K.", text: "Todella mukava materiaali ja hauska teksti. Suosittelen lämpimästi!", stars: 5, date: "19.10.2025" },
-  { name: "Jenni S.", text: "Tämä oli juuri sitä mitä etsin. Loistava löytö!", stars: 5, date: "25.2.2026" },
-  { name: "Ville M.", text: "Hyvä tuote, toimitusaika ok. Tilasin jo toisen!", stars: 5, date: "8.9.2025" },
-  { name: "Kaisa P.", text: "Hauska ja laadukas. Kaveri nauroi ääneen kun avasi paketin.", stars: 5, date: "30.1.2026" },
-  { name: "Markku T.", text: "Ensimmäinen tilaus täältä ja positiivisesti yllättynyt laadusta.", stars: 5, date: "16.11.2025" },
-  { name: "Henna L.", text: "Kiva tuote! Ainoa miinus oli että olisin toivonut enemmän värivaihtoehtoja.", stars: 4, date: "4.3.2026" },
-  { name: "Tommi R.", text: "Tilasin joululahjaksi isälle – osui ja upposi! 10/10", stars: 5, date: "20.12.2025" },
-  { name: "Päivi K.", text: "Mukava materiaali ja painatus on tosi siisti. Olen tyytyväinen.", stars: 5, date: "11.2.2026" },
+// Category-specific review pools with contextually relevant content
+type Review = { name: string; text: string; stars: number; date: string };
+
+const REVIEWS_BY_CATEGORY: Record<string, Review[]> = {
+  "hupparit": [
+    { name: "Mika L.", text: "Todella lämmin ja mukava huppari! Materiaali tuntuu laadukkaalta ja printtikin kestää pesua.", stars: 5, date: "12.1.2026" },
+    { name: "Sanna K.", text: "Ostin tämän lahjaksi ja vastaanottaja oli ihan fiiliksissä. Istuvuus oli just sopiva.", stars: 5, date: "3.2.2026" },
+    { name: "Heikki R.", text: "Hyvä huppari, mutta olisin voinut ottaa yhden koon isomman. Materiaali on kuitenkin todella pehmeä.", stars: 4, date: "22.1.2026" },
+    { name: "Emilia J.", text: "Rakastan tätä hupparia! Käytän sitä kotona melkein joka päivä. Lämmin ja mukava. 😂", stars: 5, date: "28.12.2025" },
+    { name: "Tomi S.", text: "Printti on tosi kestävä ja värit kirkkaat. Ei haalistu pesussa. Suosittelen!", stars: 5, date: "9.1.2026" },
+    { name: "Päivi K.", text: "Mukava ja pehmeä materiaali, painatus on siisti. Olen tosi tyytyväinen tähän!", stars: 5, date: "11.2.2026" },
+    { name: "Jenni S.", text: "Tämä huppari on niin hauska! Sai paljon kehuja kavereilta.", stars: 5, date: "25.2.2026" },
+    { name: "Jarmo H.", text: "Tilasin itselleni ja vaimolle. Molemmat tyytyväisiä, laatu kohdillaan.", stars: 5, date: "15.8.2025" },
+    { name: "Outi V.", text: "Todella kiva huppari arkikäyttöön. Sopii lenkkeilyyn ja kotiin.", stars: 5, date: "2.3.2026" },
+    { name: "Riku M.", text: "Huppari on aivan mahtava! Pehmeä kangas ja hauska teksti.", stars: 5, date: "8.2.2026" },
+  ],
+  "t-paidat": [
+    { name: "Jukka P.", text: "Paidan laatu yllätti positiivisesti! Printti on selkeä ja värikäs.", stars: 5, date: "18.11.2025" },
+    { name: "Tiina V.", text: "Ostin itselleni ja olen tosi tyytyväinen. Istuvuus on täydellinen ja kangas miellyttävä.", stars: 5, date: "7.12.2025" },
+    { name: "Antti K.", text: "Todella mukava materiaali ja hauska teksti. Paita kerää aina kehuja!", stars: 5, date: "19.10.2025" },
+    { name: "Laura M.", text: "Mahtava lahja! Vastaanottaja ei voinut lopettaa nauramista. Paidan laatu on myös hyvä.", stars: 5, date: "5.3.2026" },
+    { name: "Petri T.", text: "Ihan hauska paita, toimitus tuli nopeasti perille. Kangas voisi olla vähän paksumpi.", stars: 4, date: "14.2.2026" },
+    { name: "Riikka H.", text: "Ostin polttareihin koko porukalle – täysosuma! Kaikki tykkäsi paidoistaan.", stars: 5, date: "1.6.2025" },
+    { name: "Ville M.", text: "Hyvä paita hyvään hintaan. Tilasin jo toisen eri tekstillä!", stars: 5, date: "8.9.2025" },
+    { name: "Kaisa P.", text: "Kaveri nauroi ääneen kun avasi paketin. Paita on hauska ja laadukas!", stars: 5, date: "30.1.2026" },
+    { name: "Johanna R.", text: "Tämä paita on niin hauska! Työkaverit olivat kateellisia. 😄", stars: 5, date: "29.9.2025" },
+    { name: "Matias L.", text: "Kolmas paitatilaus tästä kaupasta, aina yhtä tyytyväinen laatuun!", stars: 5, date: "17.2.2026" },
+  ],
+  "mukit": [
+    { name: "Markku T.", text: "Loistava muki! Teksti on hauska ja laatu erinomainen. Kestää konepesun hyvin.", stars: 5, date: "16.11.2025" },
+    { name: "Henna L.", text: "Ostin toimistoon ja kollegat olivat ihastuksissaan. Kahvi maistuu paremmalta tästä mukista 😄", stars: 5, date: "4.3.2026" },
+    { name: "Tommi R.", text: "Tilasin joululahjaksi – osui ja upposi! Muki on tukeva ja painatus kestävä.", stars: 5, date: "20.12.2025" },
+    { name: "Aki V.", text: "Nopea toimitus ja muki vastasi kuvaa. Hyvä laatu!", stars: 5, date: "27.1.2026" },
+    { name: "Susanna M.", text: "Kiva muki, mutta toimituksessa kesti vähän normaalia pidempään.", stars: 4, date: "6.1.2026" },
+    { name: "Noora S.", text: "Ostin tämän äitienpäivälahjaksi ja äiti käyttää sitä joka aamu!", stars: 5, date: "10.5.2025" },
+    { name: "Samuli K.", text: "Lahjaksi ostettu ja oli täydellinen valinta. Muki on iso ja tukeva.", stars: 5, date: "13.12.2025" },
+    { name: "Katja T.", text: "Hauska muki hyvään hintaan. Käytän itse joka päivä.", stars: 5, date: "21.1.2026" },
+  ],
+  "tarrat": [
+    { name: "Kimmo P.", text: "Tarrat olivat laadukkaita ja kestäviä! Liimasin läppäriin ja kestää hyvin.", stars: 5, date: "23.11.2025" },
+    { name: "Maija S.", text: "Kivat tarrat, laitoin vesipulloon. Yllättävän hyvä laatu hintaan nähden.", stars: 5, date: "24.10.2025" },
+    { name: "Ville M.", text: "Ostin useamman eri tarran, kaikki olivat laadukkaita. Hyvä liimapinta!", stars: 5, date: "8.9.2025" },
+    { name: "Jenni S.", text: "Hauska tarra! Sopii hyvin autoon ja läppäriin.", stars: 5, date: "25.2.2026" },
+  ],
+  "bodyt": [
+    { name: "Laura M.", text: "Niin suloinen body! Kangas on pehmeää ja miellyttävää vauvan iholle.", stars: 5, date: "5.3.2026" },
+    { name: "Noora S.", text: "Ostin tämän vauvalle lahjaksi – vanhemmat rakastivat sitä! Hauska teksti.", stars: 5, date: "10.5.2025" },
+    { name: "Sanna K.", text: "Materiaali on laadukasta ja koko oli juuri oikea. Painatus kestävä!", stars: 5, date: "3.2.2026" },
+    { name: "Päivi K.", text: "Söpö body! Toimitus oli nopea ja laatu hyvä. Suosittelen.", stars: 5, date: "11.2.2026" },
+    { name: "Henna L.", text: "Todella kiva! Laitoin tämän vauvankuvauksiin. Sopii täydellisesti.", stars: 5, date: "4.3.2026" },
+  ],
+  "peitot": [
+    { name: "Outi V.", text: "Pehmeä ja lämmin peitto! Kuvio on hauska ja laatu erinomainen.", stars: 5, date: "2.3.2026" },
+    { name: "Tiina V.", text: "Ostin sohvapeitoksi ja on todella mukava. Kestää hyvin pesun.", stars: 5, date: "7.12.2025" },
+    { name: "Jarmo H.", text: "Hyvä laatu ja hauska kuvio. Sopii täydellisesti olohuoneeseen.", stars: 5, date: "15.8.2025" },
+    { name: "Emilia J.", text: "Rakastan tätä peittoa! Se on niin pehmeä ja lämmin. Kiva lahja!", stars: 5, date: "28.12.2025" },
+  ],
+  "pipot": [
+    { name: "Antti K.", text: "Lämmin ja mukava pipo! Istuu hyvin päähän ja materiaali on laadukasta.", stars: 5, date: "19.10.2025" },
+    { name: "Mika L.", text: "Hyvä pipo talveen. Brodeeraus näyttää siistiltä ja kestää hyvin.", stars: 5, date: "12.1.2026" },
+    { name: "Heikki R.", text: "Ihan ok pipo, mutta hieman tiukka. Materiaali on kuitenkin pehmeä.", stars: 4, date: "22.1.2026" },
+    { name: "Riku M.", text: "Mahtava pipo! Käytän joka päivä ja saa aina kehuja.", stars: 5, date: "8.2.2026" },
+  ],
+  "laukut": [
+    { name: "Katja T.", text: "Kiva kassi! Mahtuu paljon tavaraa ja kankaan laatu on hyvä.", stars: 5, date: "21.1.2026" },
+    { name: "Susanna M.", text: "Käytän tätä kauppakassina ja se on tosi kestävä. Hauska kuva!", stars: 5, date: "6.1.2026" },
+    { name: "Kaisa P.", text: "Ostin lahjaksi ja tykkäsin niin paljon että tilasin itsellekin.", stars: 5, date: "30.1.2026" },
+    { name: "Maija S.", text: "Kestävä kassi ja hauska teksti. Sopii arkeen ja reissuihin.", stars: 5, date: "24.10.2025" },
+  ],
+  "seinataulut": [
+    { name: "Markku T.", text: "Printti on todella tarkka ja värit kirkkaat. Näyttää hienolta seinällä!", stars: 5, date: "16.11.2025" },
+    { name: "Johanna R.", text: "Tilasin toimistoon ja kaikki tykkäävät siitä. Hyvä laatu!", stars: 5, date: "29.9.2025" },
+    { name: "Tomi S.", text: "Hauska taulu! Sopii täydellisesti miehen luolaan. Värit ovat kirkkaat.", stars: 5, date: "9.1.2026" },
+  ],
+  "pitkahihaiset": [
+    { name: "Jukka P.", text: "Laadukas pitkähihainen! Kangas on paksua ja mukavaa. Printti kestää.", stars: 5, date: "18.11.2025" },
+    { name: "Tiina V.", text: "Todella mukava päällä ja sopii hyvin kerrospukeutumiseen.", stars: 5, date: "7.12.2025" },
+    { name: "Antti K.", text: "Hauska teksti ja hyvä materiaali. Sopii syksyyn täydellisesti.", stars: 5, date: "19.10.2025" },
+    { name: "Petri T.", text: "Ihan hyvä paita arkeen. Olisi voinut olla hieman pidempi.", stars: 4, date: "14.2.2026" },
+    { name: "Ville M.", text: "Laadukas ja mukava pitkähihainen, painatus on selkeä ja kestävä.", stars: 5, date: "8.9.2025" },
+  ],
+  "koristeet": [
+    { name: "Noora S.", text: "Söpö koriste! Sopii täydellisesti joulukuuseen. Laatu on hyvä.", stars: 5, date: "10.5.2025" },
+    { name: "Samuli K.", text: "Hauska pieni koriste, toimii myös kivana lahjana. Painatus siisti!", stars: 5, date: "13.12.2025" },
+    { name: "Laura M.", text: "Ostin useamman eri koristeen – kaikki olivat laadukkaita ja hauskoja!", stars: 5, date: "5.3.2026" },
+  ],
+};
+
+// Fallback for categories not listed above
+const REVIEWS_GENERIC: Review[] = [
+  { name: "Mika L.", text: "Hyvä tuote ja nopea toimitus! Suosittelen.", stars: 5, date: "12.1.2026" },
+  { name: "Sanna K.", text: "Todella kiva tuote, sai paljon naurua aikaan!", stars: 5, date: "3.2.2026" },
   { name: "Aki V.", text: "Nopea toimitus ja tuote vastasi kuvaa. Kiitos!", stars: 5, date: "27.1.2026" },
-  { name: "Noora S.", text: "Ostin tämän äitienpäivälahjaksi ja äiti oli aivan innoissaan!", stars: 5, date: "10.5.2025" },
-  { name: "Jarmo H.", text: "Hyvä meininki, tilaan varmasti lisää!", stars: 5, date: "15.8.2025" },
-  { name: "Susanna M.", text: "Ihan ok tuote, mutta toimituksessa kesti vähän normaalia kauemmin.", stars: 4, date: "6.1.2026" },
-  { name: "Kimmo P.", text: "Paras lahja ikinä kaverille! Naurut taattu.", stars: 5, date: "23.11.2025" },
-  { name: "Outi V.", text: "Todella kiva! Sopii hyvin arkikäyttöön ja laatu on hyvä.", stars: 5, date: "2.3.2026" },
-  { name: "Matias L.", text: "Kolmas tilaus tästä kaupasta, aina yhtä tyytyväinen!", stars: 5, date: "17.2.2026" },
-  { name: "Johanna R.", text: "Tämä on niin hauska! Työkaverit olivat kateellisia. 😄", stars: 5, date: "29.9.2025" },
-  { name: "Samuli K.", text: "Lahjaksi ostettu ja oli täydellinen valinta. Suosittelen!", stars: 5, date: "13.12.2025" },
   { name: "Katja T.", text: "Kiva tuote hyvään hintaan. Toimitus nopea.", stars: 5, date: "21.1.2026" },
-  { name: "Riku M.", text: "Aivan mahtava! Sai hymyn huulille kaikille.", stars: 5, date: "8.2.2026" },
-  { name: "Maija S.", text: "Yllätyin positiivisesti laadusta. Ehdottomasti suosittelen.", stars: 5, date: "24.10.2025" },
 ];
 
-// Deterministic hash to assign unique reviews per product
+// Theme-specific review additions based on product name keywords
+const THEME_REVIEWS: Record<string, Review[]> = {
+  "äiti": [
+    { name: "Noora S.", text: "Ostin äitienpäivälahjaksi ja äiti oli aivan innoissaan! Paras lahja ikinä.", stars: 5, date: "10.5.2025" },
+    { name: "Samuli K.", text: "Äiti rakasti tätä! Sanoi että on paras lahja mitä on saanut vuosiin.", stars: 5, date: "13.12.2025" },
+  ],
+  "isä": [
+    { name: "Tommi R.", text: "Tilasin isänpäivälahjaksi – isä oli ihmeissään ja käyttää tätä ylpeänä!", stars: 5, date: "20.12.2025" },
+    { name: "Laura M.", text: "Isä nauroi ääneen kun avasi paketin. Täydellinen lahja!", stars: 5, date: "5.3.2026" },
+  ],
+  "kalast": [
+    { name: "Jarmo H.", text: "Kalakaveri tykkäsi ihan valtavasti! Tämä on nyt kalastusreissun vakiovaruste.", stars: 5, date: "15.8.2025" },
+    { name: "Kimmo P.", text: "Paras lahja kalastajalle! Sai koko porukan nauramaan veneessä.", stars: 5, date: "23.11.2025" },
+  ],
+  "golf": [
+    { name: "Markku T.", text: "Golfkaverit olivat kateellisia! Täydellinen tuote kentälle.", stars: 5, date: "16.11.2025" },
+  ],
+  "eläk": [
+    { name: "Kaisa P.", text: "Ostin eläkkeelle siirtyvälle kollegalle – koko toimisto nauroi! Mahtava lahja.", stars: 5, date: "30.1.2026" },
+    { name: "Matias L.", text: "Eläkejuhlien paras lahja! Juhlakalu oli todella otettu.", stars: 5, date: "17.2.2026" },
+  ],
+  "capybara": [
+    { name: "Emilia J.", text: "Rakastan capybaroja ja tämä on aivan täydellinen! Söpöin tuote ikinä! 🥰", stars: 5, date: "28.12.2025" },
+  ],
+  "setä": [
+    { name: "Tommi R.", text: "Sedälle joululahjaksi – piti itse niin hauskana että nauroi kippurassa!", stars: 5, date: "20.12.2025" },
+  ],
+  "polttari": [
+    { name: "Riikka H.", text: "Tilattiin polttareihin koko porukalle – menivät kuumille kiville! Ehdoton suositus.", stars: 5, date: "1.6.2025" },
+  ],
+  "nörtti": [
+    { name: "Jukka P.", text: "IT-porukkaan täydellinen! Kaikki ymmärtävät vitsin ja tykkäävät.", stars: 5, date: "18.11.2025" },
+  ],
+};
+
+// Deterministic hash
 function hashString(str: string): number {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -57,14 +154,48 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
-function getProductReviews(productId: string, count: number = 2) {
-  const h = hashString(productId);
-  const startIdx = h % PRODUCT_REVIEWS.length;
-  const reviews = [];
-  for (let i = 0; i < count; i++) {
-    reviews.push(PRODUCT_REVIEWS[(startIdx + i * 7) % PRODUCT_REVIEWS.length]);
+function getProductReviews(product: { id: string; name: string; category: string }): Review[] {
+  const h = hashString(product.id);
+  
+  // Varying count: 2-5 reviews based on hash
+  const counts = [2, 3, 3, 4, 4, 5, 2, 3, 5, 4];
+  const count = counts[h % counts.length];
+  
+  // Get category-specific reviews
+  const categoryReviews = REVIEWS_BY_CATEGORY[product.category] || REVIEWS_GENERIC;
+  
+  // Check for theme-specific reviews based on product name
+  const nameLower = product.name.toLowerCase();
+  let themeReview: Review | null = null;
+  for (const [keyword, reviews] of Object.entries(THEME_REVIEWS)) {
+    if (nameLower.includes(keyword)) {
+      themeReview = reviews[h % reviews.length];
+      break;
+    }
   }
-  return reviews;
+  
+  // Pick category reviews deterministically
+  const picked: Review[] = [];
+  const usedNames = new Set<string>();
+  
+  // Add theme review first if available
+  if (themeReview) {
+    picked.push(themeReview);
+    usedNames.add(themeReview.name);
+  }
+  
+  // Fill remaining from category pool
+  const startIdx = h % categoryReviews.length;
+  for (let i = 0; picked.length < count; i++) {
+    const review = categoryReviews[(startIdx + i) % categoryReviews.length];
+    if (!usedNames.has(review.name)) {
+      picked.push(review);
+      usedNames.add(review.name);
+    }
+    if (i > categoryReviews.length + 5) break; // safety
+  }
+  
+  return picked;
 }
 
 function parseDescription(description: string) {
