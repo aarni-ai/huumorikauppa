@@ -19,11 +19,18 @@ function getPriority(product: { name: string; description: string }): number {
   return PRIORITY_KEYWORDS.length + 1;
 }
 
+function isCustomTextProduct(name: string, description: string): boolean {
+  const t = (name + ' ' + description).toLowerCase();
+  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
+}
+
 const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const products = allProducts.filter(p => p.category === slug).sort((a, b) => getPriority(a) - getPriority(b));
+  const products = allProducts
+    .filter(p => p.category === slug && !isCustomTextProduct(p.name, p.description))
+    .sort((a, b) => getPriority(a) - getPriority(b));
 
   if (!category) {
     return (

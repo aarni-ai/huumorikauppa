@@ -151,8 +151,7 @@ Deno.serve(async (req) => {
       let maxPrice = 0;
 
       for (const variant of (p.variants || [])) {
-        if (!variant.is_enabled) continue;
-        
+        // Extract colors and sizes from ALL variants (including disabled) so all options are available
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
@@ -166,6 +165,9 @@ Deno.serve(async (req) => {
           }
         }
         
+        // Only use enabled variants for pricing
+        if (!variant.is_enabled) continue;
+        
         const price = variant.price / 100;
         if (price < minPrice) minPrice = price;
         if (price > maxPrice) maxPrice = price;
@@ -173,10 +175,11 @@ Deno.serve(async (req) => {
 
       if (minPrice === Infinity) minPrice = 29.95;
 
-      // Override price for pitkähihaiset
-      if (category === 'pitkahihaiset') {
-        minPrice = 39.90;
-      }
+      // Override prices by category
+      if (category === 't-paidat') minPrice = 24.90;
+      if (category === 'hupparit') minPrice = 49.90;
+      if (category === 'pitkahihaiset') minPrice = 39.90;
+      if (category === 'bodyt') minPrice = 24.90;
 
       // Build images per color – ensure ALL colors get images
       const variantImages: Record<string, string[]> = {};
