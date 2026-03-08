@@ -288,6 +288,8 @@ const ProductPage = () => {
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
     : 0;
 
+  const categoryName = category?.name || product.category;
+
   const handleAddToCart = () => {
     if (needsSize) {
       toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
