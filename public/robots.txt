@@ -1,10 +1,15 @@
 User-agent: *
 Allow: /
+Disallow: /ostoskori
+Disallow: /kassa
+Disallow: /tilaus-vahvistettu
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
 
 User-agent: Googlebot
 Allow: /
+Disallow: /ostoskori
+Disallow: /kassa
 
 User-agent: Bingbot
 Allow: /

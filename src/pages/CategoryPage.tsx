@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
-import { Truck, RotateCcw, Shield } from "lucide-react";
+import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -30,7 +30,6 @@ const CategoryPage = () => {
   const { data: allProducts = [], isLoading } = useProducts();
   const categoryProducts = allProducts.filter(p => p.category === slug);
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
-  // Show custom products if they're the only ones in the category
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => getPriority(a) - getPriority(b));
 
@@ -43,28 +42,34 @@ const CategoryPage = () => {
     );
   }
 
-  const categoryKeywords: Record<string, string> = {
-    "t-paidat": "Hauskat t-paidat – meemipaidat, huumoripaidat netistä | Huumorikauppa",
-    "hupparit": "Hauskat hupparit – meemihupparit, huumorihupparit | Huumorikauppa",
-    "housut": "Hauskat housut – collegehousut, joggerit, shortsit | Huumorikauppa",
-    "mukit": "Hauskat mukit – kahvimukit, toimistomukit, lahjamukit | Huumorikauppa",
-    "tarrat": "Hauskat tarrat – tarra-arkit, meemitarrat | Huumorikauppa",
-  };
+  // Other categories for cross-linking
+  const otherCategories = categories.filter(c => c.slug !== slug);
+  const crossLinkCategories = otherCategories
+    .filter(c => allProducts.some(p => p.category === c.slug))
+    .slice(0, 5);
 
-  const categoryDescs: Record<string, string> = {
-    "t-paidat": "Osta hauskoja t-paitoja netistä! Meemipaidat, huumoripaidat ja sarkasmipaidat. Täydellisiä lahjoja. Ilmainen toimitus yli 60 €.",
-    "hupparit": "Osta hauskoja huppareita! Meemihupparit, sarkastisia huppareita koko perheelle. Ilmainen toimitus yli 60 €.",
-    "housut": "Osta hauskoja housuja! Collegehousut, joggerit ja shortsit huumorilla. Ilmainen toimitus yli 60 €.",
-    "mukit": "Osta hauskoja mukeja! Kahvimukit, toimistomukit ja lahjamukit tekstillä. Ilmainen toimitus yli 60 €.",
-    "tarrat": "Osta hauskoja tarroja! Tarra-arkit läppäriin, autoon ja jääkaappiin. Ilmainen toimitus yli 60 €.",
+  const breadcrumbs = [
+    { name: "Etusivu", url: "https://huumorikauppa.fi/" },
+    { name: category.name, url: `https://huumorikauppa.fi/kategoria/${slug}` },
+  ];
+
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Hauskat ${category.name}`,
+    "description": category.seoDescription || category.description,
+    "url": `https://huumorikauppa.fi/kategoria/${slug}`,
+    "isPartOf": { "@type": "WebSite", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
   };
 
   return (
     <div className="min-h-screen">
       <SEOHead
-        title={categoryKeywords[slug || ""] || `Hauskat ${category.name} | Huumorikauppa`}
-        description={categoryDescs[slug || ""] || `${category.description}. Ilmainen toimitus yli 60 € tilauksiin!`}
+        title={category.seoTitle || `Hauskat ${category.name} | Huumorikauppa`}
+        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 60 € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
+        jsonLd={collectionJsonLd}
+        breadcrumbs={breadcrumbs}
       />
 
       <section className="bg-muted/50 py-3 border-b border-border">
@@ -72,6 +77,7 @@ const CategoryPage = () => {
           <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
+          <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
         </div>
       </section>
 
@@ -105,6 +111,29 @@ const CategoryPage = () => {
           <div className="text-center py-20">
             <p className="text-xl text-muted-foreground">Ei tuotteita tässä kategoriassa vielä 😅</p>
           </div>
+        )}
+
+        {/* SEO Category Text */}
+        {category.seoText && (
+          <section className="mt-12 max-w-3xl">
+            <div className="prose prose-sm text-muted-foreground space-y-3">
+              {category.seoText.split('\n\n').map((paragraph, i) => (
+                <p key={i} className="text-sm leading-relaxed">{paragraph}</p>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm">
+              <span className="text-muted-foreground">Tutustu myös:</span>
+              {crossLinkCategories.map(cat => (
+                <Link
+                  key={cat.slug}
+                  to={`/kategoria/${cat.slug}`}
+                  className="text-primary hover:underline"
+                >
+                  {cat.emoji} {cat.name}
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </div>

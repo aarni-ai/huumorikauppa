@@ -2,12 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://huumorikauppa.fi/</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
   <url><loc>https://huumorikauppa.fi/kaikki-tuotteet</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  
+  <!-- Kategoriat -->
   <url><loc>https://huumorikauppa.fi/kategoria/t-paidat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/kategoria/hupparit</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://huumorikauppa.fi/kategoria/housut</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/pitkahihaiset</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/kategoria/mukit</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/kategoria/tarrat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/bodyt</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/peitot</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/pipot</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/laukut</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/seinataulut</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/kategoria/koristeet</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  
+  <!-- Informaatiosivut -->
   <url><loc>https://huumorikauppa.fi/usein-kysytyt-kysymykset</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/toimitusehdot</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/tietosuojakaytanto</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/haku</loc><priority>0.3</priority><changefreq>monthly</changefreq></url>
 </urlset>
