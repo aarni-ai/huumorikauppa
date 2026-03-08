@@ -11,6 +11,7 @@ interface SEOHeadProps {
   canonical?: string;
   jsonLd?: object;
   breadcrumbs?: BreadcrumbItem[];
+  ogImage?: string;
 }
 
 export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs }: SEOHeadProps) {
