@@ -1,5 +1,5 @@
 export const categories = [
-  { slug: "t-paidat", name: "T-Paidat", emoji: "👕", description: "Hauskimmat paidat sedille ja mutseille" },
+  { slug: "t-paidat", name: "T-Paidat", emoji: "👕", description: "Hauskimmat paidat sedille, mutseille ja kaikille muillekin" },
   { slug: "hupparit", name: "Hupparit", emoji: "🧥", description: "Lämpöä, asennetta ja huumoria" },
   { slug: "pitkahihaiset", name: "Pitkähihaiset", emoji: "👔", description: "Pitkähihaiset paidat asenteella" },
   { slug: "mukit", name: "Mukit", emoji: "☕", description: "Kahvikupit jotka puhuu puolesta" },
