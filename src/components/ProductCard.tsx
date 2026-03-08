@@ -12,33 +12,38 @@ interface ProductCardProps {
 
 // Pick a varied hover color – cycle through non-default colors
 function getHoverImage(product: Product): string | null {
+  const mainImage = product.images[0] || "";
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
   
   if (variantImages && Object.keys(variantImages).length > 0) {
     const defaultColor = (product.variants.default_color as string) || "";
     const colorKeys = Object.keys(variantImages).filter(c => c !== defaultColor);
 
+    // Try picking a different color's first image that is actually different from main
     if (colorKeys.length > 0) {
-      // Use product id hash to pick a consistent varied color
       const hash = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-      const picked = colorKeys[hash % colorKeys.length];
-      if (picked && variantImages[picked]?.[0]) {
-        return variantImages[picked][0];
+      for (let i = 0; i < colorKeys.length; i++) {
+        const picked = colorKeys[(hash + i) % colorKeys.length];
+        const img = variantImages[picked]?.[0];
+        if (img && img !== mainImage) return img;
       }
     }
     
-    // If only one color, try second image of that color
-    const allColorKeys = Object.keys(variantImages);
-    if (allColorKeys.length > 0) {
-      const firstColor = allColorKeys[0];
-      if (variantImages[firstColor]?.[1]) {
-        return variantImages[firstColor][1];
-      }
+    // Try second image of default color (e.g. back view)
+    const defaultImages = variantImages[defaultColor];
+    if (defaultImages?.[1] && defaultImages[1] !== mainImage) {
+      return defaultImages[1];
+    }
+
+    // Try second image of any color
+    for (const imgs of Object.values(variantImages)) {
+      if (imgs[1] && imgs[1] !== mainImage) return imgs[1];
     }
   }
 
   // Fallback: second image from product images
-  return product.images[1] || null;
+  if (product.images[1] && product.images[1] !== mainImage) return product.images[1];
+  return null;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
