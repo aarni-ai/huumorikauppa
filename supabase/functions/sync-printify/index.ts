@@ -49,7 +49,7 @@ function slugify(text: string): string {
 
 const COLOR_TRANSLATIONS: Record<string, string> = {
   "White": "Valkoinen", "Black": "Musta", "Red": "Punainen", "Blue": "Sininen",
-  "Navy": "Tummansininen", "Navy Blazer": "Tummansininen", "Royal Blue": "Kuninkaansininen",
+  "Navy": "Tummansininen", "Navy Blazer": "Tummansininen", "Royal Blue": "Tummansininen",
   "Light Blue": "Vaaleansininen", "Sky Blue": "Taivaansininen", "Baby Blue": "Vaaleansininen",
   "Green": "Vihreä", "Forest Green": "Metsänvihreä", "Dark Green": "Tummanvihreä",
   "Olive": "Oliivi", "Lime": "Limenvihreä", "Kelly Green": "Kirkasvihreä",
@@ -59,63 +59,80 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "Brown": "Ruskea", "Tan": "Hiekanruskea", "Beige": "Beige", "Khaki": "Khaki",
   "Gray": "Harmaa", "Grey": "Harmaa", "Dark Grey": "Tummanharmaa", "Dark Gray": "Tummanharmaa",
   "Light Gray": "Vaaleanharmaa", "Light Grey": "Vaaleanharmaa", "Charcoal": "Antrasiitti",
-  "Heather Grey": "Meleerattu harmaa", "Dark Heather": "Tumma meleerattu",
-  "Sport Grey": "Urheiluharmaa", "Ash": "Tuhkanharmaa",
+  "Heather Grey": "Meleerattu harmaa", "Dark Heather": "Tummanharmaa",
+  "Sport Grey": "Vaaleanharmaa", "Ash": "Vaaleanharmaa",
   "Silver": "Hopea", "Cream": "Kerma", "Ivory": "Norsunluu",
   "Teal": "Sinivihreä", "Cyan": "Syaani", "Aqua": "Akvamariini",
   "Coral": "Koralli", "Salmon": "Lohenpunainen", "Peach": "Persikka",
   "Lavender": "Laventeli", "Lilac": "Lila", "Magenta": "Magenta",
-  "Indigo": "Indigo", "Slate": "Liuskekivi", "Charcoal Heather": "Antrasiitti meleerattu",
+  "Indigo": "Tummansininen", "Slate": "Harmaa", "Charcoal Heather": "Tummanharmaa",
   "Heather Red": "Meleerattu punainen", "Heather Navy": "Meleerattu tummansininen",
   "Heather Blue": "Meleerattu sininen", "Heather Green": "Meleerattu vihreä",
   "Heather Purple": "Meleerattu violetti", "Heather Pink": "Meleerattu pinkki",
   "Dark Red": "Tummanpunainen", "Cardinal Red": "Kardinaalinapunainen",
   "Irish Green": "Irlanninvihreä", "Military Green": "Armeijanvihreä",
   "Sand": "Hiekka", "Natural": "Luonnonvalkoinen",
-  "Sunset": "Auringonlasku", "Sapphire": "Safiiri", "Cornsilk": "Maissinkeltainen",
-  "True Royal": "Kuninkaansininen", "Leaf": "Lehti", "Autumn": "Syksy",
-  "Berry": "Marja", "Heliconia": "Helikonia", "Tropical Blue": "Trooppinen sininen",
-  "Ash Grey": "Tuhkanharmaa", "Ice Grey": "Jäänharmaa", "Daisy": "Päivänkakkara",
+  "Sunset": "Oranssi", "Sapphire": "Tummansininen", "Cornsilk": "Keltainen",
+  "True Royal": "Tummansininen", "Leaf": "Vihreä", "Autumn": "Syksy",
+  "Berry": "Marja", "Heliconia": "Pinkki", "Tropical Blue": "Vaaleansininen",
+  "Ash Grey": "Vaaleanharmaa", "Ice Grey": "Vaaleanharmaa", "Daisy": "Keltainen",
   "Safety Green": "Turvavihreä", "Safety Orange": "Turvaoranssi",
-  "Antique Cherry Red": "Antiikin kirsikanpunainen", "Antique Sapphire": "Antiikin safiiri",
-  "Sapphire Blue": "Safiininsininen",
-  "Turf Green": "Nurmivihreä", "Irish Cream": "Irlanninkerman",
+  "Antique Cherry Red": "Tummanpunainen", "Antique Sapphire": "Tummansininen",
+  "Sapphire Blue": "Tummansininen",
+  "Turf Green": "Vihreä", "Irish Cream": "Kerma",
   "White Fleck": "Valkopilkullinen", "Black Fleck": "Mustapilkullinen",
-  "Midnight Navy": "Keskiyön tummansininen", "Oxford Navy": "Oxford tummansininen",
-  "Jet Black": "Pikimusta", "Royal": "Kuninkaallinen",
-  "Heather Midnight Navy": "Meleerattu keskiyön sininen",
+  "Midnight Navy": "Tummansininen", "Oxford Navy": "Tummansininen",
+  "Jet Black": "Pikimusta", "Royal": "Tummansininen",
+  "Heather Midnight Navy": "Meleerattu tummansininen",
   "Mustard": "Sinappi", "Rust": "Ruoste", "Wine": "Viini",
-  "Storm": "Myrsky", "Mint": "Minttu", "Dusty Rose": "Vanharoosa",
-  "Mauve": "Mauvi", "Plum": "Luumu",
+  "Storm": "Harmaa", "Mint": "Minttu", "Dusty Rose": "Vanha roosa",
+  "Mauve": "Vaaleanvioletti", "Plum": "Luumu",
   "Dark Chocolate": "Tumma suklaa", "Chocolate": "Suklaa",
-  "Charcoal Grey": "Antrasiitinharmaa", "Dark Charcoal": "Tumma antrasiitti",
+  "Charcoal Grey": "Tummanharmaa", "Dark Charcoal": "Tummanharmaa",
+  "Banana": "Keltainen", "Green Camo": "Camo vihreä", "Key Lime": "Limenvihreä",
+  "Orchid": "Vaaleanvioletti", "Safety Pink": "Pinkki", "Stone": "Harmaa",
+  "Turquoise": "Turkoosi", "Granite": "Harmaa", "Graphite": "Tummanharmaa",
 };
 
 function translateColor(color: string): string {
-  if (COLOR_TRANSLATIONS[color]) return COLOR_TRANSLATIONS[color];
+  const trimmed = color.trim();
+  if (!trimmed) return trimmed;
+  if (COLOR_TRANSLATIONS[trimmed]) return COLOR_TRANSLATIONS[trimmed];
   // Try case-insensitive
   for (const [en, fi] of Object.entries(COLOR_TRANSLATIONS)) {
     if (en.toLowerCase() === color.toLowerCase()) return fi;
   }
-  // Try partial match for compound colors like "Heather Sport Dark Navy"
-  const lower = color.toLowerCase();
-  if (lower.includes('heather')) return 'Meleerattu ' + translateColor(color.replace(/heather\s*/i, ''));
-  if (lower.includes('dark ')) return 'Tumma ' + translateColor(color.replace(/dark\s*/i, '').trim()).toLowerCase();
-  if (lower.includes('light ')) return 'Vaalea ' + translateColor(color.replace(/light\s*/i, '').trim()).toLowerCase();
-  return color; // Keep original if no translation found
+  // Try partial match for compound colors
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('heather')) {
+    const rest = trimmed.replace(/heather\s*/i, '').trim();
+    if (!rest) return 'Meleerattu harmaa';
+    return 'Meleerattu ' + translateColor(rest).toLowerCase();
+  }
+  if (lower.includes('dark ')) return 'Tumma ' + translateColor(trimmed.replace(/dark\s*/i, '').trim()).toLowerCase();
+  if (lower.includes('light ')) return 'Vaalea ' + translateColor(trimmed.replace(/light\s*/i, '').trim()).toLowerCase();
+  return trimmed; // Keep original if no translation found
 }
 
 const SIZE_VALUES = new Set([
   'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL',
   'XXL', 'XXXL', '6XL',
   '0-3M', '3-6M', '6-12M', '12-18M', '18-24M',
+  'NB', 'NB (0-3M)', '6M', '12M', '18M', '24M',
   '2T', '3T', '4T', '5T',
   '11oz', '15oz', '20oz',
   'One size', 'ONE SIZE',
+  'Round', 'Square', 'Transparent',
 ]);
 
-function isSize(val: string): boolean {
-  return SIZE_VALUES.has(val) || /^\d+oz$/.test(val) || /^\d+-\d+[A-Z]$/.test(val);
+function isSizeOrDimension(val: string): boolean {
+  if (SIZE_VALUES.has(val)) return true;
+  if (/^\d+oz$/.test(val)) return true;
+  if (/^\d+-\d+[A-Z]$/.test(val)) return true;
+  // Dimensions like 12" x 9", 50" × 60", 2" × 2", 1.25"
+  if (/^\d+[\."']/.test(val) || /\d+"\s*[x×]\s*\d+"/.test(val)) return true;
+  if (/^\d+"\s*$/.test(val)) return true;
+  return false;
 }
 
 Deno.serve(async (req) => {
@@ -226,7 +243,7 @@ Deno.serve(async (req) => {
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
-            if (isSize(part)) {
+            if (isSizeOrDimension(part)) {
               sizes.add(part);
             } else if (part.length > 0) {
               colors.add(part);

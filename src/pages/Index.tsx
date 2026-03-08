@@ -253,7 +253,11 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
           </button>
         </div>
       </div>
-      <div className="overflow-hidden">
+      <div
+        className="overflow-hidden"
+        onMouseEnter={() => setIsAutoPlaying(false)}
+        onMouseLeave={() => setIsAutoPlaying(true)}
+      >
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}

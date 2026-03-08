@@ -97,7 +97,7 @@ export function ReviewsCarousel() {
 
     let animId: number;
     let lastTime = 0;
-    const speed = 50; // pixels per second
+    const speed = 120; // pixels per second
 
     function step(timestamp: number) {
       if (lastTime === 0) lastTime = timestamp;
