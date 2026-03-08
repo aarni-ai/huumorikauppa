@@ -19,6 +19,8 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import BlogIndex from "./pages/BlogIndex";
+import BlogPost from "./pages/BlogPost";
 import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
