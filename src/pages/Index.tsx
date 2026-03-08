@@ -207,7 +207,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
 
   const isMobile = useIsMobile();
   const isTablet = typeof window !== "undefined" && window.innerWidth >= 768 && window.innerWidth < 1024;
-  const itemsPerView = isMobile ? 3 : isTablet ? 4 : 5;
+  const itemsPerView = isMobile ? 2 : isTablet ? 4 : 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const goTo = useCallback((index: number) => {
