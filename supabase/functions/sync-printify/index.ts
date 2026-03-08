@@ -237,7 +237,7 @@ Deno.serve(async (req) => {
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
-            if (isSize(part)) {
+            if (isSizeOrDimension(part)) {
               sizes.add(part);
             } else if (part.length > 0) {
               colors.add(part);
