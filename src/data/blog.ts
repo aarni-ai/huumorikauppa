@@ -7,7 +7,7 @@ export const blogPosts: BlogPost[] = [
     metaTitle: "20 Hauskinta T-Paitaa 2026 – Parhaat Meemipaidat | Huumorikauppa",
     metaDescription: "Katso 20 hauskinta t-paitaa vuonna 2026! Meemipaidat, vitsipaidat ja huumoripaidat jotka naurattavat. Osta hauska paita itsellesi tai lahjaksi.",
     excerpt: "Kokosimme yhteen vuoden 2026 hauskimmat t-paidat – meemipaidat, setähuumoripaidat ja vitsipaidat jotka saavat kaikki nauramaan.",
-    publishedAt: "2026-03-01",
+    publishedAt: "2024-01-15",
     updatedAt: "2026-03-08",
     category: "t-paidat",
     tags: ["hauskat t-paidat", "meemipaidat", "vitsipaidat", "hauska paita", "hauska lahja"],
