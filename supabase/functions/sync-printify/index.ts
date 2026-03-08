@@ -307,11 +307,19 @@ Deno.serve(async (req) => {
         }
       }
 
+      // Translate colors to Finnish
+      const translatedVariantImages: Record<string, string[]> = {};
+      for (const [color, imgs] of Object.entries(variantImages)) {
+        translatedVariantImages[translateColor(color)] = imgs;
+      }
+      const translatedColors = Array.from(colors).map(c => translateColor(c));
+      const translatedDefaultColor = defaultColor ? translateColor(defaultColor) : null;
+
       const variants: Record<string, any> = {};
       if (sizes.size > 0) variants.sizes = Array.from(sizes);
-      if (colors.size > 0) variants.colors = Array.from(colors);
-      if (Object.keys(variantImages).length > 0) variants.variant_images = variantImages;
-      if (defaultColor) variants.default_color = defaultColor;
+      if (translatedColors.length > 0) variants.colors = translatedColors;
+      if (Object.keys(translatedVariantImages).length > 0) variants.variant_images = translatedVariantImages;
+      if (translatedDefaultColor) variants.default_color = translatedDefaultColor;
 
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
