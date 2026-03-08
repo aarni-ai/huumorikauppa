@@ -19,6 +19,8 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import BlogIndex from "./pages/BlogIndex";
+import BlogPost from "./pages/BlogPost";
 import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/tietosuojakaytanto" element={<Privacy />} />
             <Route path="/haku" element={<SearchPage />} />
             <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
+            <Route path="/blogi" element={<BlogIndex />} />
+            <Route path="/blogi/:slug" element={<BlogPost />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
