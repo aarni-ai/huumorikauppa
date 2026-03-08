@@ -28,6 +28,12 @@
     <!-- Preconnect to external domains for faster loading -->
     <link rel="preconnect" href="https://images-api.printify.com" crossorigin />
     <link rel="dns-prefetch" href="https://images-api.printify.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload LCP hero images -->
+    <link rel="preload" as="image" href="/images/hero-banner.png?v=2" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/images/hero-banner-wide.png?v=3" media="(min-width: 768px)" fetchpriority="high" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

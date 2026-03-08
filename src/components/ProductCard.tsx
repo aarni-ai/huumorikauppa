@@ -136,14 +136,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <img
           src={displayImage}
           alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
-          className={`w-full h-full object-cover transition-all duration-500 ${isHovered ? "scale-105" : "scale-100"}`}
+          className={`w-full h-full object-cover transition-transform duration-500 will-change-transform ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
+          decoding="async"
           width={400}
           height={400}
         />
-        {hoverImage && (
-          <img src={hoverImage} alt={`${product.name} vaihtoehtoinen kuva`} className="hidden" loading="lazy" />
-        )}
 
         {/* Discount badge */}
         {hasDiscount && (

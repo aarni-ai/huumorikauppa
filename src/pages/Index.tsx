@@ -81,7 +81,7 @@ const Index = () => {
         jsonLd={orgJsonLd}
       />
 
-      {/* HERO BANNER IMAGE */}
+      {/* HERO BANNER IMAGE – LCP element */}
       <section className="container pt-4 pb-2 md:pt-2 md:pb-1">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
@@ -92,6 +92,8 @@ const Index = () => {
             width={800}
             height={800}
             fetchPriority="high"
+            loading="eager"
+            decoding="sync"
           />
           {/* Tablet & Desktop: wide version */}
           <img
@@ -101,6 +103,8 @@ const Index = () => {
             width={1200}
             height={600}
             fetchPriority="high"
+            loading="eager"
+            decoding="sync"
           />
         </Link>
       </section>
