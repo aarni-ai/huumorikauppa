@@ -16,8 +16,15 @@ function saveCart(items: CartItem[]) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
 }
 
+export interface LastAddedItem {
+  product: Product;
+  size?: string;
+  color?: string;
+}
+
 export function useCart() {
   const [items, setItems] = useState<CartItem[]>(loadCart);
+  const [lastAddedItem, setLastAddedItem] = useState<LastAddedItem | null>(null);
 
   useEffect(() => {
     saveCart(items);
@@ -35,6 +42,7 @@ export function useCart() {
       }
       return [...prev, { product, quantity, selectedSize, selectedColor }];
     });
+    setLastAddedItem({ product, size: selectedSize, color: selectedColor });
   }, []);
 
   const removeItem = useCallback((productId: string, selectedSize?: string, selectedColor?: string) => {
@@ -56,9 +64,10 @@ export function useCart() {
   }, [removeItem]);
 
   const clearCart = useCallback(() => setItems([]), []);
+  const clearLastAdded = useCallback(() => setLastAddedItem(null), []);
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
 
-  return { items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice };
+  return { items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice, lastAddedItem, clearLastAdded };
 }

@@ -301,10 +301,6 @@ const ProductPage = () => {
     }
     const size = hideSize ? product.variants.sizes?.[0] : selectedSize;
     addItem(product, quantity, size, selectedColor);
-    toast({
-      title: "Lisätty koriin! 🛒",
-      description: `${product.name} (${quantity} kpl) on nyt ostoskorissasi.${customText ? ' Teksti: ' + customText : ''}`,
-    });
   };
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -317,6 +313,24 @@ const ProductPage = () => {
   const handleColorSelect = (color: string) => {
     setSelectedColor(color);
   };
+
+  // Cross-category: same theme products
+  const themeProducts = (() => {
+    const skipWords = new Set(['paita', 'paidat', 'huppari', 'muki', 'mukit', 'tarra', 'hauska', 'hauskat', 'kahvikuppi', 'maailman', 'paras', 'body', 'peitto', 'pipo', 'laukku', 'taulu', 'koriste']);
+    const nameWords = product.name.toLowerCase()
+      .split(/[\s\-–,!?()]+/)
+      .filter(w => w.length > 3 && !skipWords.has(w));
+    
+    if (nameWords.length === 0) return [];
+    
+    return allProducts
+      .filter(p =>
+        p.id !== product.id &&
+        p.category !== product.category &&
+        nameWords.some(w => p.name.toLowerCase().includes(w))
+      )
+      .slice(0, 4);
+  })();
 
   const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
@@ -379,7 +393,7 @@ const ProductPage = () => {
 
   const productFaqs = [
     { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
-    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
+    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–7 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
     { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
   ];
 
@@ -483,8 +497,13 @@ const ProductPage = () => {
               </div>
             </div>
 
+            {product.is_featured && (
+              <Badge className="bg-accent text-accent-foreground font-bold w-fit">🔥 Suosittu tuote</Badge>
+            )}
             {product.stock <= 10 && product.stock > 0 && (
-              <p className="text-sm font-bold text-destructive">Vain {product.stock} jäljellä – tilaa nyt! 😱</p>
+              <div className="flex items-center gap-2 bg-destructive/10 text-destructive rounded-md px-3 py-2">
+                <span className="text-sm font-bold">🔥 Vain {product.stock} kpl jäljellä – tilaa ennen kuin loppuu!</span>
+              </div>
             )}
 
             {/* Color selector */}
@@ -653,6 +672,18 @@ const ProductPage = () => {
             <Link to={`/kategoria/${product.category}`} className="text-sm text-primary hover:underline">
               ← Takaisin kategoriaan: {category.emoji} {category.name}
             </Link>
+          </section>
+        )}
+
+        {/* Same theme cross-sell */}
+        {themeProducts.length > 0 && (
+          <section className="mt-16">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Samalla teemalla eri tuotteina 🎯</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {themeProducts.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
           </section>
         )}
 
