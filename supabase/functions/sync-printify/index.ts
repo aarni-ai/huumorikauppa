@@ -336,12 +336,25 @@ Deno.serve(async (req) => {
         }
       }
 
-      // Translate colors to Finnish
+      // Translate colors to Finnish and deduplicate
       const translatedVariantImages: Record<string, string[]> = {};
       for (const [color, imgs] of Object.entries(variantImages)) {
-        translatedVariantImages[translateColor(color)] = imgs;
+        const translated = translateColor(color);
+        if (translatedVariantImages[translated]) {
+          // Merge images, avoiding duplicates
+          for (const img of imgs) {
+            if (!translatedVariantImages[translated].includes(img)) {
+              translatedVariantImages[translated].push(img);
+            }
+          }
+          // Trim to max images per color
+          translatedVariantImages[translated] = translatedVariantImages[translated].slice(0, maxImagesPerColor);
+        } else {
+          translatedVariantImages[translated] = imgs;
+        }
       }
-      const translatedColors = Array.from(colors).map(c => translateColor(c));
+      // Deduplicate translated colors
+      const translatedColors = [...new Set(Array.from(colors).map(c => translateColor(c)))];
       const translatedDefaultColor = defaultColor ? translateColor(defaultColor) : null;
 
       const variants: Record<string, any> = {};
