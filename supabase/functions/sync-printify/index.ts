@@ -83,7 +83,7 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "White Fleck": "Valkopilkullinen", "Black Fleck": "Mustapilkullinen",
   "Midnight Navy": "Tummansininen", "Oxford Navy": "Tummansininen",
   "Jet Black": "Pikimusta", "Royal": "Tummansininen",
-  "Heather Midnight Navy": "Meleerattu keskiyön sininen",
+  "Heather Midnight Navy": "Meleerattu tummansininen",
   "Mustard": "Sinappi", "Rust": "Ruoste", "Wine": "Viini",
   "Storm": "Myrsky", "Mint": "Minttu", "Dusty Rose": "Vanharoosa",
   "Mauve": "Mauvi", "Plum": "Luumu",
