@@ -81,7 +81,7 @@ const Index = () => {
       />
 
       {/* HERO BANNER IMAGE */}
-      <section className="container pt-4 pb-2 md:pt-6 md:pb-3">
+      <section className="container pt-4 pb-2 md:pt-2 md:pb-1">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
@@ -93,7 +93,7 @@ const Index = () => {
           <img
             src="/images/hero-banner-wide.png?v=3"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
-            className="w-full h-auto object-cover object-center hidden md:block"
+            className="w-full h-auto object-cover object-center hidden md:block md:max-h-[45vh] lg:max-h-[50vh]"
           />
         </Link>
       </section>
@@ -204,7 +204,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const itemsPerView = typeof window !== "undefined" && window.innerWidth < 768 ? 2 : 3;
+  const itemsPerView = 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const goTo = useCallback((index: number) => {
