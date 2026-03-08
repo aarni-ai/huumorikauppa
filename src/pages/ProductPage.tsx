@@ -371,29 +371,7 @@ const ProductPage = () => {
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
-            <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
-              {descExpanded || product.description.length <= 200 ? (
-                <p>{product.description}</p>
-              ) : (
-                <>
-                  <p>{shortDesc}</p>
-                  <button
-                    onClick={() => setDescExpanded(true)}
-                    className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
-                  >
-                    Lue lisää <ChevronDown className="h-4 w-4" />
-                  </button>
-                </>
-              )}
-            </div>
-            {descExpanded && product.description.length > 200 && (
-              <button
-                onClick={() => setDescExpanded(false)}
-                className="mt-3 text-primary font-medium text-sm hover:underline inline-flex items-center gap-1"
-              >
-                Näytä vähemmän <ChevronDown className="h-4 w-4 rotate-180" />
-              </button>
-            )}
+            <ProductDescription description={product.description} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
           </div>
         </section>
 
