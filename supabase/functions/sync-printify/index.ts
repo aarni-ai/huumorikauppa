@@ -85,10 +85,13 @@ const COLOR_TRANSLATIONS: Record<string, string> = {
   "Jet Black": "Pikimusta", "Royal": "Tummansininen",
   "Heather Midnight Navy": "Meleerattu tummansininen",
   "Mustard": "Sinappi", "Rust": "Ruoste", "Wine": "Viini",
-  "Storm": "Myrsky", "Mint": "Minttu", "Dusty Rose": "Vanharoosa",
-  "Mauve": "Mauvi", "Plum": "Luumu",
+  "Storm": "Harmaa", "Mint": "Minttu", "Dusty Rose": "Vanha roosa",
+  "Mauve": "Vaaleanvioletti", "Plum": "Luumu",
   "Dark Chocolate": "Tumma suklaa", "Chocolate": "Suklaa",
-  "Charcoal Grey": "Antrasiitinharmaa", "Dark Charcoal": "Tumma antrasiitti",
+  "Charcoal Grey": "Tummanharmaa", "Dark Charcoal": "Tummanharmaa",
+  "Banana": "Keltainen", "Green Camo": "Camo vihreä", "Key Lime": "Limenvihreä",
+  "Orchid": "Vaaleanvioletti", "Safety Pink": "Pinkki", "Stone": "Harmaa",
+  "Turquoise": "Turkoosi", "Granite": "Harmaa", "Graphite": "Tummanharmaa",
 };
 
 function translateColor(color: string): string {
