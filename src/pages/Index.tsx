@@ -11,6 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 
+function isCustomTextProduct(name: string, description: string): boolean {
+  const t = (name + ' ' + description).toLowerCase();
+  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
+}
+
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
   "kalju", "i ❤️ my", "i love my", "i ❤ my"

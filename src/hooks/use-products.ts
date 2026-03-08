@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 
 // Original prices for specific products (by slug keyword match)
 const ORIGINAL_PRICES: Record<string, number> = {
-  "kalamies": 30,
+  "kalamies": 39,
   "amatimies": 60,
   "elakkeella": 95,
   "eläkkeellä": 95,
