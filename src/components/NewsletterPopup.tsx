@@ -44,7 +44,7 @@ export function NewsletterPopup() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleDismiss(); }}>
-      <DialogContent className="bg-card border-border max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden">
+      <DialogContent className="bg-card border-border max-w-[calc(100vw-2rem)] sm:max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden rounded-xl">
         {/* Close button */}
         <button
           onClick={handleDismiss}
@@ -82,7 +82,7 @@ export function NewsletterPopup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-11 bg-muted border-border"
-                autoFocus
+                autoFocus={window.innerWidth >= 768}
               />
               <Button
                 type="submit"
