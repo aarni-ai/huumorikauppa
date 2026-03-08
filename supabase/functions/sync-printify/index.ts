@@ -209,7 +209,9 @@ Deno.serve(async (req) => {
       let maxPrice = 0;
 
       for (const variant of (p.variants || [])) {
-        // Extract colors and sizes from ALL variants (including disabled) so all options are available
+        // Only use ENABLED variants (approved in Printify)
+        if (!variant.is_enabled) continue;
+
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
@@ -222,9 +224,6 @@ Deno.serve(async (req) => {
             }
           }
         }
-        
-        // Only use enabled variants for pricing
-        if (!variant.is_enabled) continue;
         
         const price = variant.price / 100;
         if (price < minPrice) minPrice = price;
