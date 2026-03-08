@@ -86,7 +86,7 @@ const Index = () => {
           />
           {/* Tablet & Desktop: wide version */}
           <img
-            src="/images/hero-banner-wide.png?v=2"
+            src="/images/hero-banner-wide.png?v=3"
             alt="Kevätale – Suosituimmat huumorituotteet nyt huippuhinnoin"
             className="w-full h-auto object-cover object-center hidden md:block"
           />
