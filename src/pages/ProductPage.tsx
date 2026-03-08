@@ -14,22 +14,42 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function parseDescription(description: string) {
-  // Known section headers to split on
   const sectionHeaders = [
+    "TUOTTEEN OMINAISUUDET",
     "Tuotteen ominaisuudet",
     "Product features",
+    "HOITO-OHJEET",
     "Hoito-ohjeet",
     "Care instructions",
+    "MATERIAALI",
+    "Materiaali",
   ];
 
-  // Insert line breaks before known section headers
   let text = description;
+
+  // 1. Insert newlines BEFORE known section headers that are glued to preceding text
   for (const header of sectionHeaders) {
-    text = text.replace(new RegExp(`(?<!\n)(${header})`, "gi"), "\n\n$1");
+    // Match header glued to previous text (no newline before it)
+    text = text.replace(new RegExp(`(?<![\\n])(?=${escapeRegex(header)})`, "gi"), "\n\n");
   }
 
-  // Split bullet-style items: detect "- " or "•" or "– " that follow text without newline
-  text = text.replace(/([.!?a-zäöå])(\s*[-•–]\s+)/gi, "$1\n$2");
+  // 2. Insert newline AFTER section header if content is glued to it
+  for (const header of sectionHeaders) {
+    text = text.replace(new RegExp(`(${escapeRegex(header)})([A-Z0-9•\\-–])`, "gi"), "$1\n$2");
+  }
+
+  // 3. Split inline bullets: •text or • text → newline before •
+  text = text.replace(/([^\n])(\s*•\s*)/g, "$1\n•");
+
+  // 4. Split ALLCAPS lines that are glued together (e.g., "PESUKONE: KYLMÄ (MAX 30 °C)RUMPUKUIVAIN:")
+  // Look for a closing paren or lowercase letter followed by an uppercase word
+  text = text.replace(/(\)|\w)((?:RUMPUKUIVAIN|SILITYS|EI KEMIALLISTA|EI KLOORIPOHJAISTA|PESUKONE)[^\n]*)/g, "$1\n$2");
+
+  // 5. Split lines like "...viimeistelyKaksinkertainen" (lowercase followed by Uppercase mid-word)
+  text = text.replace(/([a-zäöåü])([A-ZÄÖÅ][a-zäöåü])/g, "$1\n$2");
+
+  // 6. Standard bullet split for "- " or "– " after sentence-ending chars
+  text = text.replace(/([.!?a-zäöå])(\s*[-–]\s+)/gi, "$1\n$2");
 
   // Split paragraphs
   const rawParagraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0);
@@ -41,31 +61,50 @@ function parseDescription(description: string) {
     const lines = block.split(/\n/).filter(l => l.trim().length > 0);
     const isHeader = sectionHeaders.some(h => block.trim().toLowerCase().startsWith(h.toLowerCase()));
 
-    if (isHeader && lines.length > 1) {
-      // First line is heading, rest are bullets/content
+    if (isHeader) {
       sections.push({ type: "heading", text: lines[0].trim() });
       const restLines = lines.slice(1);
-      const allBullets = restLines.every(l => /^[\s]*[-•–]/.test(l));
-      if (allBullets) {
-        sections.push({ type: "bullets", items: restLines.map(l => l.replace(/^[\s]*[-•–]\s*/, "").trim()) });
-      } else {
-        // Try to split on bullet patterns within joined text
-        const joined = restLines.join(" ");
-        const bulletSplit = joined.split(/(?=[-•–]\s)/).filter(s => s.trim().length > 0);
-        if (bulletSplit.length > 1) {
-          sections.push({ type: "bullets", items: bulletSplit.map(s => s.replace(/^[-•–]\s*/, "").trim()) });
-        } else {
-          for (const l of restLines) sections.push({ type: "paragraph", text: l.trim() });
+      if (restLines.length > 0) {
+        const bulletLines: string[] = [];
+        const textLines: string[] = [];
+        for (const l of restLines) {
+          if (/^[\s]*[•\-–]/.test(l)) {
+            bulletLines.push(l.replace(/^[\s]*[•\-–]\s*/, "").trim());
+          } else {
+            // Could be an ALLCAPS instruction line → treat as bullet
+            if (/^[A-ZÄÖÅ\s:()°%\/,\-–0-9]+$/.test(l.trim()) && l.trim().length > 5) {
+              bulletLines.push(l.trim());
+            } else {
+              textLines.push(l.trim());
+            }
+          }
+        }
+        if (bulletLines.length > 0) {
+          sections.push({ type: "bullets", items: bulletLines });
+        }
+        for (const t of textLines) {
+          sections.push({ type: "paragraph", text: t });
         }
       }
-    } else if (isHeader) {
-      sections.push({ type: "heading", text: block.trim() });
     } else {
-      // Check if block contains inline bullets
-      const bulletSplit = block.split(/(?=[-•–]\s)/).filter(s => s.trim().length > 0);
-      const startsWithBullet = /^[-•–]\s/.test(block.trim());
-      if (startsWithBullet && bulletSplit.length > 1) {
-        sections.push({ type: "bullets", items: bulletSplit.map(s => s.replace(/^[-•–]\s*/, "").trim()) });
+      // Check if block has bullets
+      const lines2 = block.split(/\n/).filter(l => l.trim().length > 0);
+      const bulletItems: string[] = [];
+      const paragraphTexts: string[] = [];
+
+      for (const l of lines2) {
+        if (/^[\s]*[•]/.test(l)) {
+          bulletItems.push(l.replace(/^[\s]*[•]\s*/, "").trim());
+        } else {
+          paragraphTexts.push(l.trim());
+        }
+      }
+
+      if (bulletItems.length > 0 && paragraphTexts.length > 0) {
+        for (const t of paragraphTexts) sections.push({ type: "paragraph", text: t });
+        sections.push({ type: "bullets", items: bulletItems });
+      } else if (bulletItems.length > 0) {
+        sections.push({ type: "bullets", items: bulletItems });
       } else {
         sections.push({ type: "paragraph", text: block.trim() });
       }
@@ -73,6 +112,10 @@ function parseDescription(description: string) {
   }
 
   return sections;
+}
+
+function escapeRegex(str: string) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function ProductDescription({ description, expanded, onToggle }: { description: string; expanded: boolean; onToggle: () => void }) {
