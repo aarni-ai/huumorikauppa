@@ -53,13 +53,24 @@ const CategoryPage = () => {
     { name: category.name, url: `https://huumorikauppa.fi/kategoria/${slug}` },
   ];
 
-  const collectionJsonLd = {
+  // ItemList schema for product listing (Google Merchant rich results)
+  const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": `Hauskat ${category.name}`,
     "description": category.seoDescription || category.description,
     "url": `https://huumorikauppa.fi/kategoria/${slug}`,
     "isPartOf": { "@type": "WebSite", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": products.slice(0, 20).map((p, i) => ({
+        "@type": "ListItem",
+        "position": i + 1,
+        "url": `https://huumorikauppa.fi/tuote/${p.slug}`,
+        "name": p.name,
+        "image": p.images[0] || "/placeholder.svg",
+      })),
+    },
   };
 
   return (
