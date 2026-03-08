@@ -355,7 +355,7 @@ Huumorikaupasta löydät laajan valikoiman polttaripaitoja miesten ja naisten po
     metaTitle: "Hauskat Joululahjat & Pikkujoululahjat 2026 | Huumorikauppa",
     metaDescription: "Etsitkö hauskaa joululahjaa tai pikkujoululahjaa? Katso parhaat edulliset lahjaideat 2026: hauskat mukit, t-paidat ja hupparit jouluun.",
     excerpt: "Hauskat joululahjat ja pikkujoululahjat 2026 – löydä edulliset ja naurattavat lahjaideat koko perheelle ja työkavereille.",
-    publishedAt: "2026-03-07",
+    publishedAt: "2025-12-18",
     updatedAt: "2026-03-08",
     category: "lahjaideat",
     tags: ["hauska joululahja", "pikkujoululahja", "joululahja miehelle", "joululahja naiselle", "edullinen joululahja"],
