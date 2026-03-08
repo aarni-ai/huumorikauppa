@@ -28,8 +28,10 @@ const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const products = allProducts
-    .filter(p => p.category === slug && !isCustomTextProduct(p.name, p.description))
+  const categoryProducts = allProducts.filter(p => p.category === slug);
+  const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
+  // Show custom products if they're the only ones in the category
+  const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => getPriority(a) - getPriority(b));
 
   if (!category) {
