@@ -49,7 +49,7 @@ function slugify(text: string): string {
 
 const COLOR_TRANSLATIONS: Record<string, string> = {
   "White": "Valkoinen", "Black": "Musta", "Red": "Punainen", "Blue": "Sininen",
-  "Navy": "Tummansininen", "Navy Blazer": "Tummansininen", "Royal Blue": "Kuninkaansininen",
+  "Navy": "Tummansininen", "Navy Blazer": "Tummansininen", "Royal Blue": "Tummansininen",
   "Light Blue": "Vaaleansininen", "Sky Blue": "Taivaansininen", "Baby Blue": "Vaaleansininen",
   "Green": "Vihreä", "Forest Green": "Metsänvihreä", "Dark Green": "Tummanvihreä",
   "Olive": "Oliivi", "Lime": "Limenvihreä", "Kelly Green": "Kirkasvihreä",
