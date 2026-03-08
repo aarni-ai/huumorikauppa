@@ -47,6 +47,64 @@ function slugify(text: string): string {
     .trim();
 }
 
+const COLOR_TRANSLATIONS: Record<string, string> = {
+  "White": "Valkoinen", "Black": "Musta", "Red": "Punainen", "Blue": "Sininen",
+  "Navy": "Tummansininen", "Navy Blazer": "Tummansininen", "Royal Blue": "Kuninkaansininen",
+  "Light Blue": "Vaaleansininen", "Sky Blue": "Taivaansininen", "Baby Blue": "Vaaleansininen",
+  "Green": "Vihreä", "Forest Green": "Metsänvihreä", "Dark Green": "Tummanvihreä",
+  "Olive": "Oliivi", "Lime": "Limenvihreä", "Kelly Green": "Kirkasvihreä",
+  "Yellow": "Keltainen", "Gold": "Kulta", "Orange": "Oranssi",
+  "Pink": "Pinkki", "Light Pink": "Vaaleanpinkki", "Hot Pink": "Pinkki",
+  "Purple": "Violetti", "Maroon": "Viininpunainen", "Burgundy": "Viininpunainen",
+  "Brown": "Ruskea", "Tan": "Hiekanruskea", "Beige": "Beige", "Khaki": "Khaki",
+  "Gray": "Harmaa", "Grey": "Harmaa", "Dark Grey": "Tummanharmaa", "Dark Gray": "Tummanharmaa",
+  "Light Gray": "Vaaleanharmaa", "Light Grey": "Vaaleanharmaa", "Charcoal": "Antrasiitti",
+  "Heather Grey": "Meleerattu harmaa", "Dark Heather": "Tumma meleerattu",
+  "Sport Grey": "Urheiluharmaa", "Ash": "Tuhkanharmaa",
+  "Silver": "Hopea", "Cream": "Kerma", "Ivory": "Norsunluu",
+  "Teal": "Sinivihreä", "Cyan": "Syaani", "Aqua": "Akvamariini",
+  "Coral": "Koralli", "Salmon": "Lohenpunainen", "Peach": "Persikka",
+  "Lavender": "Laventeli", "Lilac": "Lila", "Magenta": "Magenta",
+  "Indigo": "Indigo", "Slate": "Liuskekivi", "Charcoal Heather": "Antrasiitti meleerattu",
+  "Heather Red": "Meleerattu punainen", "Heather Navy": "Meleerattu tummansininen",
+  "Heather Blue": "Meleerattu sininen", "Heather Green": "Meleerattu vihreä",
+  "Heather Purple": "Meleerattu violetti", "Heather Pink": "Meleerattu pinkki",
+  "Dark Red": "Tummanpunainen", "Cardinal Red": "Kardinaalinapunainen",
+  "Irish Green": "Irlanninvihreä", "Military Green": "Armeijanvihreä",
+  "Sand": "Hiekka", "Natural": "Luonnonvalkoinen",
+  "Sunset": "Auringonlasku", "Sapphire": "Safiiri", "Cornsilk": "Maissinkeltainen",
+  "True Royal": "Kuninkaansininen", "Leaf": "Lehti", "Autumn": "Syksy",
+  "Berry": "Marja", "Heliconia": "Helikonia", "Tropical Blue": "Trooppinen sininen",
+  "Ash Grey": "Tuhkanharmaa", "Ice Grey": "Jäänharmaa", "Daisy": "Päivänkakkara",
+  "Safety Green": "Turvavihreä", "Safety Orange": "Turvaoranssi",
+  "Antique Cherry Red": "Antiikin kirsikanpunainen", "Antique Sapphire": "Antiikin safiiri",
+  "Sapphire Blue": "Safiininsininen",
+  "Turf Green": "Nurmivihreä", "Irish Cream": "Irlanninkerman",
+  "White Fleck": "Valkopilkullinen", "Black Fleck": "Mustapilkullinen",
+  "Midnight Navy": "Keskiyön tummansininen", "Oxford Navy": "Oxford tummansininen",
+  "Jet Black": "Pikimusta", "Royal": "Kuninkaallinen",
+  "Heather Midnight Navy": "Meleerattu keskiyön sininen",
+  "Mustard": "Sinappi", "Rust": "Ruoste", "Wine": "Viini",
+  "Storm": "Myrsky", "Mint": "Minttu", "Dusty Rose": "Vanharoosa",
+  "Mauve": "Mauvi", "Plum": "Luumu",
+  "Dark Chocolate": "Tumma suklaa", "Chocolate": "Suklaa",
+  "Charcoal Grey": "Antrasiitinharmaa", "Dark Charcoal": "Tumma antrasiitti",
+};
+
+function translateColor(color: string): string {
+  if (COLOR_TRANSLATIONS[color]) return COLOR_TRANSLATIONS[color];
+  // Try case-insensitive
+  for (const [en, fi] of Object.entries(COLOR_TRANSLATIONS)) {
+    if (en.toLowerCase() === color.toLowerCase()) return fi;
+  }
+  // Try partial match for compound colors like "Heather Sport Dark Navy"
+  const lower = color.toLowerCase();
+  if (lower.includes('heather')) return 'Meleerattu ' + translateColor(color.replace(/heather\s*/i, ''));
+  if (lower.includes('dark ')) return 'Tumma ' + translateColor(color.replace(/dark\s*/i, '').trim()).toLowerCase();
+  if (lower.includes('light ')) return 'Vaalea ' + translateColor(color.replace(/light\s*/i, '').trim()).toLowerCase();
+  return color; // Keep original if no translation found
+}
+
 const SIZE_VALUES = new Set([
   'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL',
   'XXL', 'XXXL', '6XL',
@@ -251,11 +309,19 @@ Deno.serve(async (req) => {
         }
       }
 
+      // Translate colors to Finnish
+      const translatedVariantImages: Record<string, string[]> = {};
+      for (const [color, imgs] of Object.entries(variantImages)) {
+        translatedVariantImages[translateColor(color)] = imgs;
+      }
+      const translatedColors = Array.from(colors).map(c => translateColor(c));
+      const translatedDefaultColor = defaultColor ? translateColor(defaultColor) : null;
+
       const variants: Record<string, any> = {};
       if (sizes.size > 0) variants.sizes = Array.from(sizes);
-      if (colors.size > 0) variants.colors = Array.from(colors);
-      if (Object.keys(variantImages).length > 0) variants.variant_images = variantImages;
-      if (defaultColor) variants.default_color = defaultColor;
+      if (translatedColors.length > 0) variants.colors = translatedColors;
+      if (Object.keys(translatedVariantImages).length > 0) variants.variant_images = translatedVariantImages;
+      if (translatedDefaultColor) variants.default_color = translatedDefaultColor;
 
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
