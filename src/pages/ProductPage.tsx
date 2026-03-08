@@ -399,7 +399,7 @@ const ProductPage = () => {
     { name: product.name, url: `https://huumorikauppa.fi/tuote/${product.slug}` },
   ];
 
-  const categoryName = category?.name || product.category;
+  // categoryName already declared above
 
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
