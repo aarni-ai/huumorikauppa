@@ -14,12 +14,25 @@ interface SEOHeadProps {
   ogImage?: string;
 }
 
-export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs }: SEOHeadProps) {
+export function SEOHead({ title, description, canonical, jsonLd, breadcrumbs, ogImage }: SEOHeadProps) {
   useEffect(() => {
     document.title = title;
 
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", description);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", title);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute("content", description);
+
+    // Update og:image dynamically
+    if (ogImage) {
+      const ogImg = document.querySelector('meta[property="og:image"]');
+      if (ogImg) ogImg.setAttribute("content", ogImage);
+      const twImg = document.querySelector('meta[name="twitter:image"]');
+      if (twImg) twImg.setAttribute("content", ogImage);
+    }
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.setAttribute("content", title);
