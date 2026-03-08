@@ -104,7 +104,10 @@ export function Footer() {
             <div className="bg-[#FFB3C7] rounded-md px-2.5 py-1.5 h-8 flex items-center justify-center">
               <span className="text-black font-bold text-xs">Klarna</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-3 md:mt-0">🚚 Toimitukset 3–10 arkipäivässä</p>
+            <div className="bg-[#5A78FF] rounded-md px-2.5 py-1.5 h-8 flex items-center justify-center">
+              <span className="text-white font-bold text-xs">MobilePay</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3 md:mt-0">🚚 Toimitukset 3–7 arkipäivässä</p>
           </div>
         </div>
       </div>

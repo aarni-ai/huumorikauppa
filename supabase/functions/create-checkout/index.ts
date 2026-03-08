@@ -99,7 +99,7 @@ serve(async (req) => {
       customer_email: customerEmail,
       line_items: lineItems,
       mode: "payment",
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "klarna", "mobilepay"],
       success_url: `${origin}/tilaus-vahvistettu?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/kassa`,
       metadata: {

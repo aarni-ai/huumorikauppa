@@ -203,7 +203,7 @@ const CheckoutPage = () => {
               <div className="bg-muted/50 border border-border rounded-lg p-6 text-center space-y-4">
                 <Lock className="h-10 w-10 text-primary mx-auto" />
                 <p className="text-sm text-muted-foreground">
-                  Sinut ohjataan maksusivulle. Tuemme Visa, Mastercard ja muita maksutapoja.
+                  Sinut ohjataan turvalliselle maksusivulle. Tuemme Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay.
                 </p>
                 <Button 
                   size="lg" 

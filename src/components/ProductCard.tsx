@@ -113,10 +113,6 @@ export function ProductCard({ product }: ProductCardProps) {
     const color = selectedColor || product.variants.colors?.[0];
 
     addItem(product, 1, size, color);
-    toast({
-      title: "Lisätty koriin! 🛒",
-      description: `${product.name} on nyt ostoskorissasi.`,
-    });
     setShowOptions(false);
     setSelectedSize(undefined);
     setSelectedColor(undefined);

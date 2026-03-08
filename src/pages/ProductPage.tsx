@@ -675,6 +675,18 @@ const ProductPage = () => {
           </section>
         )}
 
+        {/* Same theme cross-sell */}
+        {themeProducts.length > 0 && (
+          <section className="mt-16">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Samalla teemalla eri tuotteina 🎯</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {themeProducts.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">

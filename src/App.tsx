@@ -56,6 +56,9 @@ const App = () => (
           </Routes>
           <Footer />
           <CookieConsent />
+          <AddToCartDrawer />
+          <NewsletterPopup />
+          <ExitIntentPopup />
         </BrowserRouter>
       </CartProvider>
     </TooltipProvider>
