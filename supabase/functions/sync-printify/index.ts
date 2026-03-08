@@ -109,13 +109,21 @@ const SIZE_VALUES = new Set([
   'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL',
   'XXL', 'XXXL', '6XL',
   '0-3M', '3-6M', '6-12M', '12-18M', '18-24M',
+  'NB', 'NB (0-3M)', '6M', '12M', '18M', '24M',
   '2T', '3T', '4T', '5T',
   '11oz', '15oz', '20oz',
   'One size', 'ONE SIZE',
+  'Round', 'Square', 'Transparent',
 ]);
 
-function isSize(val: string): boolean {
-  return SIZE_VALUES.has(val) || /^\d+oz$/.test(val) || /^\d+-\d+[A-Z]$/.test(val);
+function isSizeOrDimension(val: string): boolean {
+  if (SIZE_VALUES.has(val)) return true;
+  if (/^\d+oz$/.test(val)) return true;
+  if (/^\d+-\d+[A-Z]$/.test(val)) return true;
+  // Dimensions like 12" x 9", 50" × 60", 2" × 2", 1.25"
+  if (/^\d+[\."']/.test(val) || /\d+"\s*[x×]\s*\d+"/.test(val)) return true;
+  if (/^\d+"\s*$/.test(val)) return true;
+  return false;
 }
 
 Deno.serve(async (req) => {
