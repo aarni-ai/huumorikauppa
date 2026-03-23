@@ -7,7 +7,7 @@ import { categories } from "@/data/products";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-card mt-16">
-      <div className="container py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container py-12 grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Brand */}
         <div className="space-y-4">
           <div>
