@@ -11,6 +11,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
+import { SEOHomeContent, SEOBuyingContent, SEODesignContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
