@@ -17,9 +17,17 @@ interface SEOHeadProps {
   articleModifiedTime?: string;
 }
 
-function setMeta(selector: string, content: string, attr = "content") {
-  const el = document.querySelector(selector);
-  if (el) el.setAttribute(attr, content);
+/** Set or create a meta tag */
+function ensureMeta(selector: string, content: string, createAttrs?: Record<string, string>) {
+  let el = document.querySelector(selector);
+  if (!el && createAttrs) {
+    el = document.createElement("meta");
+    for (const [k, v] of Object.entries(createAttrs)) {
+      el.setAttribute(k, v);
+    }
+    document.head.appendChild(el);
+  }
+  if (el) el.setAttribute("content", content);
 }
 
 export function SEOHead({
@@ -38,32 +46,32 @@ export function SEOHead({
     document.title = title;
 
     // Meta description
-    setMeta('meta[name="description"]', description);
+    ensureMeta('meta[name="description"]', description, { name: "description" });
 
     // Robots
     const robotsContent = noindex
       ? "noindex, nofollow"
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
-    setMeta('meta[name="robots"]', robotsContent);
+    ensureMeta('meta[name="robots"]', robotsContent, { name: "robots" });
 
     // Open Graph
-    setMeta('meta[property="og:title"]', title);
-    setMeta('meta[property="og:description"]', description);
-    if (canonical) setMeta('meta[property="og:url"]', canonical);
+    ensureMeta('meta[property="og:title"]', title, { property: "og:title" });
+    ensureMeta('meta[property="og:description"]', description, { property: "og:description" });
+    if (canonical) ensureMeta('meta[property="og:url"]', canonical, { property: "og:url" });
 
     // Twitter
-    setMeta('meta[name="twitter:title"]', title);
-    setMeta('meta[name="twitter:description"]', description);
+    ensureMeta('meta[name="twitter:title"]', title, { name: "twitter:title" });
+    ensureMeta('meta[name="twitter:description"]', description, { name: "twitter:description" });
 
     // og:image and twitter:image
     if (ogImage) {
-      setMeta('meta[property="og:image"]', ogImage);
-      setMeta('meta[property="og:image:alt"]', title);
-      setMeta('meta[name="twitter:image"]', ogImage);
-      setMeta('meta[name="twitter:image:alt"]', title);
+      ensureMeta('meta[property="og:image"]', ogImage, { property: "og:image" });
+      ensureMeta('meta[property="og:image:alt"]', title, { property: "og:image:alt" });
+      ensureMeta('meta[name="twitter:image"]', ogImage, { name: "twitter:image" });
+      ensureMeta('meta[name="twitter:image:alt"]', title, { name: "twitter:image:alt" });
     }
 
-    // Canonical – always update if provided
+    // Canonical
     if (canonical) {
       let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
       if (!link) {
@@ -74,24 +82,12 @@ export function SEOHead({
       link.href = canonical;
     }
 
-    // Article meta (for blog posts)
+    // Article meta
     if (articlePublishedTime) {
-      let el = document.querySelector('meta[property="article:published_time"]');
-      if (!el) {
-        el = document.createElement("meta");
-        (el as HTMLMetaElement).setAttribute("property", "article:published_time");
-        document.head.appendChild(el);
-      }
-      el.setAttribute("content", articlePublishedTime);
+      ensureMeta('meta[property="article:published_time"]', articlePublishedTime, { property: "article:published_time" });
     }
     if (articleModifiedTime) {
-      let el = document.querySelector('meta[property="article:modified_time"]');
-      if (!el) {
-        el = document.createElement("meta");
-        (el as HTMLMetaElement).setAttribute("property", "article:modified_time");
-        document.head.appendChild(el);
-      }
-      el.setAttribute("content", articleModifiedTime);
+      ensureMeta('meta[property="article:modified_time"]', articleModifiedTime, { property: "article:modified_time" });
     }
 
     // JSON-LD (main)
