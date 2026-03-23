@@ -81,6 +81,9 @@ const App = () => (
               <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
               <Route path="/blogi" element={<BlogIndex />} />
               <Route path="/blogi/:slug" element={<BlogPost />} />
+              <Route path="/hauskat-lahjat-miehelle" element={<GiftCategoryPage />} />
+              <Route path="/hauskat-lahjat-naiselle" element={<GiftCategoryPage />} />
+              <Route path="/polttari-lahjat" element={<GiftCategoryPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
