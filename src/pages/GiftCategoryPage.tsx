@@ -4,6 +4,7 @@ import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { blogPosts } from "@/data/blog";
+import { useProducts } from "@/hooks/use-products";
 
 interface GiftCategory {
   slug: string;
@@ -37,15 +38,25 @@ const giftCategories: GiftCategory[] = [
     },
     seoText: `## Hauskat lahjat miehelle – lahjaideat isälle, kaverille ja aviomiehelle
 
-Miehelle lahjan ostaminen ei tarvitse olla vaikeaa. Hauska lahja on aina oikea valinta – se naurattaa, ilahduttaa ja tulee oikeasti käyttöön. Huumorikaupan valikoimasta löydät satoja hauskoja tuotteita miehille: t-paitoja, huppareita, mukeja ja paljon muuta.
+Miehelle lahjan ostaminen on tunnetusti vaikeaa – mutta hauska lahja on aina oikea valinta. Se naurattaa, ilahduttaa ja tulee oikeasti käyttöön. Huumorikaupan valikoimasta löydät satoja hauskoja tuotteita miehille: t-paitoja, huppareita, mukeja ja paljon muuta.
+
+## Hauska lahja miehelle ikävuosittain
+
+**Lahja miehelle 30v** – Meemipaidat, sarkasmipaidat ja hauskat mukit sopivat 30-vuotiaalle miehelle joka arvostaa internet-huumoria ja itseironiaa.
+
+**Lahja miehelle 40v** – Setähuumoripaidat alkavat puhutella 40-vuotiasta miestä. Kalastuspaidat, ammattihuumoripaidat ja "elämäni parhaassa iässä" -hupparit ovat hyviä valintoja.
+
+**Lahja miehelle 50v** – "Museo-kappale" -paidat, eläkkeelle valmistautumishuumori ja harrastusaiheiset paidat ovat täydellisiä 50-vuotiaalle.
+
+**Lahja miehelle 60v** – Eläkeläishuumori on kuningas! "Eläkkeellä ja nautinnossa" -tuotteet ja mukavat peitot sohvalle ovat suosituimpia.
 
 ## Suosituimmat lahjat miehelle
 
-Kalastuspaidat, setähuumoripaidat ja eläkeläishuumoripaidat ovat suosituimpia lahjojamme miehille. Ne sopivat isälle, kaverille, aviomiehelle, veljelle ja sedälle. Hauska paita tai muki on edullinen mutta persoonallinen lahja joka kertoo "tunnen sinut ja haluan naurattaa sinua".
+Kalastuspaidat, setähuumoripaidat ja eläkeläishuumoripaidat ovat suosituimpia lahjojamme miehille. Ne sopivat isälle, kaverille, aviomiehelle, veljelle ja sedälle.
 
-## Milloin hauska lahja miehelle?
+## Lahja miehelle jolla on jo kaikkea
 
-Hauska lahja sopii syntymäpäivään, isänpäivään, jouluun, nimipäivään, valmistujaisiin ja eläkkeelle jäämiseen. Se on myös loistava häälahja bestmanille tai polttarilahja sulhaselle.
+Miehelle jolla on jo kaikkea, hauska paita tai muki on täydellinen lahja – se on jotain mitä hänellä ei varmasti vielä ole. Persoonallinen huumori tekee lahjasta erityisen.
 
 ## Miksi tilata Huumorikaupasta?
 
@@ -53,7 +64,7 @@ Hauska lahja sopii syntymäpäivään, isänpäivään, jouluun, nimipäivään,
 - 14 päivän palautusoikeus
 - 3–7 arkipäivän toimitus koko Suomeen
 - 100% suomalainen yritys`,
-    relatedBlogSlugs: ["parhaat-hauskat-lahjat-miehelle", "hauskat-isanpaivalahjat-opas", "mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea"],
+    relatedBlogSlugs: ["parhaat-hauskat-lahjat-miehelle", "hauskat-isanpaivalahjat-opas", "mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", "lahja-miehelle-30v-40v-50v-60v"],
   },
   {
     slug: "hauskat-lahjat-naiselle",
@@ -74,13 +85,19 @@ Hauska lahja sopii syntymäpäivään, isänpäivään, jouluun, nimipäivään,
 
 Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa persoonallisuutta ja huumorintajua – ominaisuuksia joita jokainen nainen arvostaa lahjan antajassa.
 
+## Hauska lahja naiselle ikävuosittain
+
+**Lahja naiselle 30v** – Meemihupparit, hauskat kangaskassit ja söpöt kahvimukit sopivat 30-vuotiaalle naiselle. Itseironia ja arjen huumori puhuttelevat.
+
+**Lahja naiselle 40v** – "Maailman paras äiti" -tuotteet, viinihuumorimukit ja rennot huumorihupparit ovat suosituimpia 40-vuotiaan naisen lahjoja.
+
+**Lahja naiselle 50v** – Laadukkaat peitot, söpöt seinätaulut ja premium-hupparit ilahduttavat 50-vuotiasta naista.
+
+**Lahja naiselle 60v** – Eläkeläishuumorituotteet, mukavat peitot ja lämpimät hupparit ovat täydellisiä 60-vuotiaalle.
+
 ## Suosituimmat lahjat naiselle
 
 "Maailman paras äiti" -hupparit, söpöt huumorimukit ja hauskat kangaskassit ovat suosituimpia lahjojamme naisille. Ne sopivat äidille, ystävälle, siskolle, puolisolle ja työkavereille.
-
-## Milloin hauska lahja naiselle?
-
-Äitienpäivä, syntymäpäivä, ystävänpäivä, joulu ja pikkujoulut ovat täydellisiä tilaisuuksia antaa hauska lahja naiselle. Myös tupaantuliaisissa ja häissä hauska lahja on oivallinen valinta.
 
 ## Miksi tilata Huumorikaupasta?
 
@@ -88,7 +105,7 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 - 14 päivän palautusoikeus
 - 3–7 arkipäivän toimitus koko Suomeen
 - Lahjapaketointimahdollisuus`,
-    relatedBlogSlugs: ["hauskat-lahjat-naiselle-opas", "hauska-aitienpaivalahja-opas"],
+    relatedBlogSlugs: ["hauskat-lahjat-naiselle-opas", "hauska-aitienpaivalahja-opas", "lahja-naiselle-30v-40v-50v-60v"],
   },
   {
     slug: "polttari-lahjat",
@@ -111,23 +128,257 @@ Polttarit ovat ikimuistoinen juhla, ja polttaripaidat tekevät niistä vieläkin
 
 ## Polttaripaidat miesten polttareihin 🤵
 
-Sulhasen paita, bestmanin paita ja ryhmän paidat – tilaa koko porukalle yhtenäiset polttaripaidat hauskalla tekstillä. Suosittuja tekstejä: "Game Over", "Sulhasen viimeinen seikkailu" ja "[Nimi]:n polttarit 2026".
+Sulhasen paita, bestmanin paita ja ryhmän paidat – tilaa koko porukalle yhtenäiset polttaripaidat. Suosittuja tekstejä: "Game Over", "Viimeinen vapaa ilta" ja "[Nimi]:n polttarit 2026".
 
 ## Polttaripaidat naisten polttareihin 👰
 
-Morsiamen paita, kaason paidat ja "Team Bride" -paidat ovat suosittuja naisten polttareissa. Morsiamen paita erottuu usein värillä – valkoinen tai kultainen on klassikko.
+Morsiamen paita, kaason paidat ja "Team Bride" -paidat. Morsiamen paita erottuu usein värillä – valkoinen tai kultainen on klassikko.
 
 ## Polttarilahjat sulhaselle ja morsiamelle
 
-Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: mukeja, huppareita ja tarroja polttariteemalla.
+Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: mukeja, huppareita ja tarroja.
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
 - Ilmainen toimitus yli 60 € tilauksiin
 - 3–7 arkipäivän toimitus
-- 14 päivän palautusoikeus
 - Ryhmätilaukset helposti – lisää eri koot koriin`,
     relatedBlogSlugs: ["parhaat-polttaripaidat-ja-polttarilahjat-2026"],
+  },
+  {
+    slug: "isanpaiva-lahjat",
+    name: "Isänpäivälahjat",
+    emoji: "👨",
+    h1: "Hauskat Isänpäivälahjat",
+    seoTitle: "Hauskat Isänpäivälahjat – Parhaat Lahjat Isälle | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa isänpäivälahja? Parhaat hauskat lahjat isälle: kalastuspaidat, setähuumorimukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      const t = (p.name + " " + p.description).toLowerCase();
+      return (
+        t.includes("isä") || t.includes("iskä") || t.includes("paras isä") ||
+        t.includes("kalastus") || t.includes("kalamies") || t.includes("setä") ||
+        t.includes("amatimies") || t.includes("eläke") ||
+        p.category === "t-paidat" || p.category === "mukit" || p.category === "hupparit"
+      );
+    },
+    seoText: `## Hauskat isänpäivälahjat – lahjoja jotka saavat isän hymyilemään
+
+Isänpäivä on marraskuun toinen sunnuntai. Se on päivä jolloin isä ansaitsee parhaan – ja hauskimman – lahjan. Huumorikaupan valikoimasta löydät satoja hauskoja lahjoja isälle.
+
+## Suosituimmat isänpäivälahjat
+
+**Kalastuspaidat** – Suomen suosituin isänpäivälahja kalastusta harrastavalle isälle. "Kalamies" -paidat ovat klassikko.
+
+**"Maailman paras isä" -tuotteet** – Hupparit, mukit ja paidat jotka kertovat isälle hänen olevan paras.
+
+**Setähuumorimukit** – Isän aamukahvi ansaitsee hauskan mukin. Edullinen ja käytännöllinen isänpäivälahja.
+
+## Isänpäivälahja budjetin mukaan
+
+- **Alle 20 €** – Hauska muki tai tarra-arkki
+- **20–30 €** – Hauska t-paita tai pipo
+- **30–50 €** – Hauska huppari tai peitto
+- **Yli 50 €** – Huppari + muki -combo
+
+## Tilaa isänpäivälahja ajoissa
+
+Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme 3–7 arkipäivässä koko Suomeen.`,
+    relatedBlogSlugs: ["hauskat-isanpaivalahjat-opas", "parhaat-hauskat-lahjat-miehelle"],
+  },
+  {
+    slug: "aitienpaiva-lahjat",
+    name: "Äitienpäivälahjat",
+    emoji: "💐",
+    h1: "Hauskat Äitienpäivälahjat",
+    seoTitle: "Hauskat Äitienpäivälahjat – Parhaat Lahjat Äidille | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa äitienpäivälahja? Parhaat hauskat lahjat äidille: hupparit, mukit ja paidat. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      const t = (p.name + " " + p.description).toLowerCase();
+      return (
+        t.includes("äiti") || t.includes("maailman paras äiti") || t.includes("nainen") ||
+        p.category === "hupparit" || p.category === "mukit" || p.category === "laukut"
+      );
+    },
+    seoText: `## Hauskat äitienpäivälahjat – lahjoja jotka saavat äidin hymyilemään
+
+Äitienpäivä on toukokuun toinen sunnuntai. Äiti ansaitsee lahjan joka naurattaa ja lämmittää sydäntä. Unohda tylsät kukat – anna äidille lahja joka ilahduttaa joka päivä!
+
+## Suosituimmat äitienpäivälahjat
+
+**"Maailman paras äiti" -huppari** – Myydyin äitienpäivälahja. Pehmeä, lämmin ja hauska.
+
+**Hauska kahvimuki äidille** – Aamukahvi maistuu paremmalta hauskasta mukista.
+
+**Söpö huumoripaita** – Hienovaraisen hauska paita jota äiti käyttää oikeasti.
+
+## Äitienpäivälahja budjetin mukaan
+
+- **Alle 20 €** – Hauska muki tai kangaskassi
+- **20–30 €** – Hauska t-paita
+- **30–50 €** – Hauska huppari
+- **Yli 50 €** – Huppari + muki -combo
+
+## Tilaa äitienpäivälahja ajoissa
+
+Tilaa viimeistään 2 viikkoa ennen äitienpäivää.`,
+    relatedBlogSlugs: ["hauska-aitienpaivalahja-opas", "hauskat-lahjat-naiselle-opas"],
+  },
+  {
+    slug: "joululahjat",
+    name: "Hauskat Joululahjat",
+    emoji: "🎄",
+    h1: "Hauskat Joululahjat",
+    seoTitle: "Hauskat Joululahjat – Parhaat Lahjaideat Jouluun | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa joululahjaa? Parhaat hauskat joululahjat miehelle, naiselle ja työkavereille. Pikkujoululahjat alle 20 €. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      return p.category === "t-paidat" || p.category === "hupparit" || 
+             p.category === "mukit" || p.category === "tarrat" || 
+             p.category === "pipot" || p.category === "peitot";
+    },
+    seoText: `## Hauskat joululahjat – naurua joulukuusen alle
+
+Joulu on Suomen suurin lahjanantosesonki. Hauska joululahja on aina oikea valinta – se naurattaa, ilahduttaa ja erottuu muista lahjoista. Huumorikaupasta löydät hauskan joululahjan kaikille.
+
+## Joululahjat miehelle 🎅
+
+Setähuumoripaidat, kalastusmukit ja meemihupparit ovat suosituimpia joululahjoja miehelle.
+
+## Joululahjat naiselle 🎄
+
+"Maailman paras äiti" -hupparit, söpöt mukit ja hauskat kangaskassit ovat suosituimpia joululahjoja naiselle.
+
+## Pikkujoululahjat alle 20 € 🎉
+
+Hauska muki, tarra-arkki tai pipo ovat täydellisiä pikkujoululahjoja työkavereille.
+
+## Joululahja budjetin mukaan
+
+- **Alle 10 €** – Tarrat tai joulukoristeet
+- **Alle 20 €** – Hauska muki tai pipo
+- **Alle 30 €** – Hauska t-paita
+- **Alle 50 €** – Hauska huppari tai peitto
+
+## Milloin tilata joululahjat?
+
+Tilaa viimeistään joulukuun alussa. Toimitamme 3–7 arkipäivässä.`,
+    relatedBlogSlugs: ["parhaat-joululahjat-ja-pikkujoululahjat-2026"],
+  },
+  {
+    slug: "syntymapaivaLahjat",
+    name: "Hauskat Syntymäpäivälahjat",
+    emoji: "🎂",
+    h1: "Hauskat Syntymäpäivälahjat",
+    seoTitle: "Hauskat Syntymäpäivälahjat – Lahjat Jotka Naurattavat | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa syntymäpäivälahja? Parhaat hauskat syntymäpäivälahjat miehelle ja naiselle. Lahja 30v, 40v, 50v, 60v. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      return p.category === "t-paidat" || p.category === "hupparit" || p.category === "mukit";
+    },
+    seoText: `## Hauskat syntymäpäivälahjat – lahjat jotka naurattavat
+
+Syntymäpäivälahjan pitää olla hauska, persoonallinen ja mieleenpainuva. Huumorikaupasta löydät täydellisen hauskan syntymäpäivälahjan jokaiselle ikäluokalle.
+
+## Syntymäpäivälahja ikävuosittain
+
+**Lahja 18v** – Meemipaidat ja internet-huumori
+**Lahja 25v** – Sarkasmipaidat ja hauskat mukit
+**Lahja 30v** – Ammattihuumori ja meemihupparit
+**Lahja 40v** – Setähuumori alkaa puhutella
+**Lahja 50v** – "Museo-kappale" ja eläkehuumori
+**Lahja 60v** – Eläkeläishuumori ja mukavat peitot
+
+## Syntymäpäivälahja miehelle vs. naiselle
+
+**Miehelle:** Kalastuspaidat, setähuumorimukit, meemihupparit
+**Naiselle:** "Maailman paras äiti" -hupparit, söpöt mukit, kangaskassit`,
+    relatedBlogSlugs: ["mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", "lahja-miehelle-30v-40v-50v-60v", "hauskat-syntymapaivaLahjat-opas"],
+  },
+  {
+    slug: "elakelahjat",
+    name: "Hauskat Eläkelahjat",
+    emoji: "🏖️",
+    h1: "Hauskat Eläkelahjat",
+    seoTitle: "Hauskat Eläkelahjat – Parhaat Lahjat Eläkeläiselle | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa eläkelahja? Parhaat hauskat lahjat eläkkeelle jäävälle: huumoripaidat, mukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      const t = (p.name + " " + p.description).toLowerCase();
+      return (
+        t.includes("eläke") || t.includes("eläkkeellä") || t.includes("museo") ||
+        t.includes("vapaa") || t.includes("legenda") ||
+        p.category === "t-paidat" || p.category === "hupparit" || p.category === "mukit"
+      );
+    },
+    seoText: `## Hauskat eläkelahjat – juhli uutta vapautta huumorilla
+
+Eläkkeelle siirtyminen on yksi elämän suurimmista virstanpylväistä. Vuosikymmenten työ on takana ja edessä on vapaus. Hauska eläkelahja juhlistaa tätä hetkeä tyylillä.
+
+## Suosituimmat eläkelahjat
+
+**"Eläkkeellä ja nautinnossa" -paita** – Suosituin eläkelahja
+**"Virallisesti vapaa" -huppari** – Käytännöllinen ja hauska
+**Eläkeläishuumorimuki** – Joka-aamuinen muistutus vapaudesta
+
+## Kenelle eläkelahja?
+
+- Työkavereille eläkejuhliin
+- Isälle tai äidille
+- Puolisolle
+- Ystävälle`,
+    relatedBlogSlugs: ["hauskat-elakelahjat-opas", "mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea"],
+  },
+  {
+    slug: "lahja-kaverille",
+    name: "Hauskat Lahjat Kaverille",
+    emoji: "🤝",
+    h1: "Hauskat Lahjat Kaverille",
+    seoTitle: "Hauskat Lahjat Kaverille – Lahjaideat Ystävälle | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa lahjaa kaverille? Parhaat hauskat lahjat ystävälle: meemipaidat, sarkasmimmukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      return p.category === "t-paidat" || p.category === "mukit" || p.category === "tarrat" || p.category === "hupparit";
+    },
+    seoText: `## Hauskat lahjat kaverille – lahjaideat parhaalle ystävälle
+
+Kaverin lahja saa olla hauska, typerä ja mieleenpainuva. Sisäpiirin vitsit, meemit ja sarkasmi – kaveri arvostaa lahjaa joka naurattaa. Huumorikaupasta löydät täydellisen hauskan lahjan parhaalle kaverille.
+
+## Suosituimmat lahjat kaverille
+
+**Meemipaidat** – Internet-huumori puhuu kaverin kieltä
+**Sarkasmimmukit** – "Tämä palaveri olisi voinut olla sähköposti"
+**Hauska tarra-arkki** – Edullinen ja hauska lisälahja
+**Hauska huppari** – Käytännöllinen ja hauska combo
+
+## Lahja kaverin synttäreille
+
+Kaverin syntymäpäivälahjan ei tarvitse olla kallis – huumori riittää. Alle 30 eurolla saat loistavan hauskan lahjan.`,
+    relatedBlogSlugs: ["hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat", "parhaat-hauskat-lahjat-miehelle"],
+  },
+  {
+    slug: "lahja-tyokaverille",
+    name: "Lahjat Työkavereille",
+    emoji: "💼",
+    h1: "Hauskat Lahjat Työkavereille",
+    seoTitle: "Hauskat Lahjat Työkavereille & Pikkujoululahjat | Huumorikauppa",
+    seoDescription: "Etsitkö hauskaa lahjaa työkavereille? Parhaat pikkujoululahjat ja toimistolahjat: hauskat mukit, tarrat ja pipot. Ilmainen toimitus yli 60 €.",
+    filterFn: (p) => {
+      return p.category === "mukit" || p.category === "tarrat" || p.category === "pipot";
+    },
+    seoText: `## Hauskat lahjat työkavereille – pikkujoululahjat ja toimistolahjat
+
+Työkaverin lahja saa olla hauska mutta sopiva. Pikkujoululahja, syntymäpäivälahja tai läksiäislahja – Huumorikaupasta löydät sopivan hauskan lahjan jokaiselle kollegalle.
+
+## Pikkujoululahjat alle 20 €
+
+**Hauska muki** – Toimistohuumorimuki on pikkujoululahjojen kuningas
+**Tarra-arkki** – Meemitarrat läppäriin
+**Hauska pipo** – Talvipipo hauskalla tekstillä
+
+## Lahja pomolle ja esimiehelle
+
+Pomollekin voi antaa hauskan lahjan – kunhan huumori on sopivaa. Ammattihuumorimukit ja neutraalit sarkasmipaidat ovat turvallisia valintoja.
+
+## Lahja eläkkeelle jäävälle työkavereille
+
+Eläkkeelle jäävä työkaveri ansaitsee hauskan eläkelahjan. "Eläkkeellä ja nautinnossa" -tuotteet ovat suosituimpia.`,
+    relatedBlogSlugs: ["hauskat-mukit-toimistoon-ja-lahjaksi", "parhaat-joululahjat-ja-pikkujoululahjat-2026"],
   },
 ];
 
@@ -136,8 +387,6 @@ export function getGiftCategory(slug: string) {
 }
 
 export { giftCategories };
-
-import { useProducts } from "@/hooks/use-products";
 
 const GiftCategoryPage = () => {
   const location = useLocation();
