@@ -50,6 +50,11 @@ export function Footer() {
           <Link to="/hauskat-lahjat-miehelle" className="hover:text-foreground transition-colors">🎁 Lahjat miehelle</Link>
           <Link to="/hauskat-lahjat-naiselle" className="hover:text-foreground transition-colors">💝 Lahjat naiselle</Link>
           <Link to="/polttari-lahjat" className="hover:text-foreground transition-colors">🎉 Polttarilahjat</Link>
+          <Link to="/joululahjat" className="hover:text-foreground transition-colors">🎄 Joululahjat</Link>
+          <Link to="/isanpaiva-lahjat" className="hover:text-foreground transition-colors">👨 Isänpäivälahjat</Link>
+          <Link to="/aitienpaiva-lahjat" className="hover:text-foreground transition-colors">💐 Äitienpäivälahjat</Link>
+          <Link to="/syntymapaivaLahjat" className="hover:text-foreground transition-colors">🎂 Synttärilahjat</Link>
+          <Link to="/elakelahjat" className="hover:text-foreground transition-colors">🏖️ Eläkelahjat</Link>
         </div>
 
         {/* Info */}

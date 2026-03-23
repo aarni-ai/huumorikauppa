@@ -16,6 +16,18 @@
   <url><loc>https://huumorikauppa.fi/kategoria/seinataulut</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/kategoria/koristeet</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
   
+  <!-- Lahjakategoriat (SEO silo pages) -->
+  <url><loc>https://huumorikauppa.fi/hauskat-lahjat-miehelle</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/hauskat-lahjat-naiselle</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/polttari-lahjat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/isanpaiva-lahjat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/aitienpaiva-lahjat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/joululahjat</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/syntymapaivaLahjat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/elakelahjat</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/lahja-kaverille</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/lahja-tyokaverille</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  
   <!-- Informaatiosivut -->
   <url><loc>https://huumorikauppa.fi/usein-kysytyt-kysymykset</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/toimitusehdot</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
@@ -28,4 +40,24 @@
   <url><loc>https://huumorikauppa.fi/blogi/hauskat-mukit-toimistoon-ja-lahjaksi</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/blogi/parhaat-polttaripaidat-ja-polttarilahjat-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://huumorikauppa.fi/blogi/parhaat-joululahjat-ja-pikkujoululahjat-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/parhaat-hauskat-lahjat-miehelle</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-lahjat-naiselle-opas</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-isanpaivalahjat-opas</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-aitienpaivalahja-opas</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-elakelahjat-opas</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/parhaat-hauskat-tarrat-lappariin</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-vauvalahja-parhaat-bodyt</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/parhaat-meemituotteet-2025</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-seinataulut-sisusta-huumorilla</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/miksi-hauska-paita-paras-lahja</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/lahja-miehelle-30v-40v-50v-60v</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/lahja-naiselle-30v-40v-50v-60v</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-syntymapaivaLahjat-opas</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/lahja-henkilolle-jolla-on-jo-kaikkea</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauskat-lahjat-tyokavereille-opas</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-lahja-kalastajalle</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-lahja-alle-20-euroa</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-lahja-saunojalle</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://huumorikauppa.fi/blogi/hauska-lahja-nortille-ja-gamerille</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
 </urlset>
