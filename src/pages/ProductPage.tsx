@@ -758,7 +758,7 @@ const ProductPage = () => {
                   </Dialog>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.sizes!.map((size: string) => (
+                  {sortSizes(product.variants.sizes!).map((size: string) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}

@@ -233,7 +233,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <div>
                   <label className="text-xs font-medium text-foreground mb-1.5 block">Koko</label>
                   <div className="flex flex-wrap gap-1.5">
-                    {product.variants.sizes!.map((size: string) => (
+                    {sortedSizes.map((size: string) => (
                       <button
                         key={size}
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size); }}
