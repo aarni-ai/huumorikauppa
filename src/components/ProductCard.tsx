@@ -146,7 +146,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <img
           src={displayImage}
           alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
-          className={`w-full h-full object-cover transition-transform duration-500 will-change-transform ${isHovered ? "scale-105" : "scale-100"}`}
+          className={`w-full h-full object-cover transition-transform duration-500 ease-out will-change-transform ${isHovered ? "scale-105" : "scale-100"}`}
           loading="lazy"
           decoding="async"
           width={400}
