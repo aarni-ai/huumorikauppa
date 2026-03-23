@@ -46,6 +46,10 @@ export function Footer() {
               </Link>
             ))}
           </div>
+          <div className="border-t border-border/50 my-2 mx-0"></div>
+          <Link to="/hauskat-lahjat-miehelle" className="hover:text-foreground transition-colors">🎁 Lahjat miehelle</Link>
+          <Link to="/hauskat-lahjat-naiselle" className="hover:text-foreground transition-colors">💝 Lahjat naiselle</Link>
+          <Link to="/polttari-lahjat" className="hover:text-foreground transition-colors">🎉 Polttarilahjat</Link>
         </div>
 
         {/* Info */}
