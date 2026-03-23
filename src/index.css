@@ -65,12 +65,18 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Anton', 'Impact', sans-serif;
     letter-spacing: 0.02em;
     text-transform: uppercase;
+  }
+
+  /* GPU-accelerate common transitions */
+  img {
+    content-visibility: auto;
   }
 }
 
