@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { useProducts } from "@/hooks/use-products";
 import { SEOHead } from "@/components/SEOHead";
+import { SEOHomeContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
@@ -41,6 +42,8 @@ const SearchPage = () => {
           </div>
         )}
       </div>
+      <SEOHomeContent />
+      <SEOGiftContent />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
+import { SEOGiftContent, SEOTargetGroupContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
 
 interface GiftCategory {
   slug: string;
@@ -550,6 +551,9 @@ const GiftCategoryPage = () => {
           </div>
         </nav>
       </div>
+      <SEOGiftContent />
+      <SEOTargetGroupContent />
+      <SEOLongTailContent />
     </div>
   );
 };
