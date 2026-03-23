@@ -17,6 +17,11 @@ interface SEOHeadProps {
   articleModifiedTime?: string;
 }
 
+function setMeta(selector: string, content: string, attr = "content") {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute(attr, content);
+}
+
 export function SEOHead({
   title,
   description,
@@ -33,47 +38,60 @@ export function SEOHead({
     document.title = title;
 
     // Meta description
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute("content", description);
+    setMeta('meta[name="description"]', description);
 
-    // Robots noindex
-    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
-    if (robotsMeta && noindex) {
-      robotsMeta.setAttribute("content", "noindex, nofollow");
-    } else if (robotsMeta && !noindex) {
-      robotsMeta.setAttribute("content", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
-    }
+    // Robots
+    const robotsContent = noindex
+      ? "noindex, nofollow"
+      : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    setMeta('meta[name="robots"]', robotsContent);
 
     // Open Graph
-    const ogTitleEl = document.querySelector('meta[property="og:title"]');
-    if (ogTitleEl) ogTitleEl.setAttribute("content", title);
-    const ogDescEl = document.querySelector('meta[property="og:description"]');
-    if (ogDescEl) ogDescEl.setAttribute("content", description);
-    const ogUrlEl = document.querySelector('meta[property="og:url"]');
-    if (ogUrlEl && canonical) ogUrlEl.setAttribute("content", canonical);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+    if (canonical) setMeta('meta[property="og:url"]', canonical);
 
     // Twitter
-    const twTitleEl = document.querySelector('meta[name="twitter:title"]');
-    if (twTitleEl) twTitleEl.setAttribute("content", title);
-    const twDescEl = document.querySelector('meta[name="twitter:description"]');
-    if (twDescEl) twDescEl.setAttribute("content", description);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
 
     // og:image and twitter:image
     if (ogImage) {
-      const ogImg = document.querySelector('meta[property="og:image"]');
-      if (ogImg) ogImg.setAttribute("content", ogImage);
-      const ogImgAlt = document.querySelector('meta[property="og:image:alt"]');
-      if (ogImgAlt) ogImgAlt.setAttribute("content", title);
-      const twImg = document.querySelector('meta[name="twitter:image"]');
-      if (twImg) twImg.setAttribute("content", ogImage);
-      const twImgAlt = document.querySelector('meta[name="twitter:image:alt"]');
-      if (twImgAlt) twImgAlt.setAttribute("content", title);
+      setMeta('meta[property="og:image"]', ogImage);
+      setMeta('meta[property="og:image:alt"]', title);
+      setMeta('meta[name="twitter:image"]', ogImage);
+      setMeta('meta[name="twitter:image:alt"]', title);
     }
 
-    // Canonical
+    // Canonical – always update if provided
     if (canonical) {
-      const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-      if (link) link.href = canonical;
+      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "canonical";
+        document.head.appendChild(link);
+      }
+      link.href = canonical;
+    }
+
+    // Article meta (for blog posts)
+    if (articlePublishedTime) {
+      let el = document.querySelector('meta[property="article:published_time"]');
+      if (!el) {
+        el = document.createElement("meta");
+        (el as HTMLMetaElement).setAttribute("property", "article:published_time");
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", articlePublishedTime);
+    }
+    if (articleModifiedTime) {
+      let el = document.querySelector('meta[property="article:modified_time"]');
+      if (!el) {
+        el = document.createElement("meta");
+        (el as HTMLMetaElement).setAttribute("property", "article:modified_time");
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", articleModifiedTime);
     }
 
     // JSON-LD (main)
@@ -114,7 +132,7 @@ export function SEOHead({
       const s2 = document.getElementById("seo-breadcrumb-jsonld");
       if (s2) s2.remove();
     };
-  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage, noindex]);
+  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage, noindex, articlePublishedTime, articleModifiedTime]);
 
   return null;
 }
