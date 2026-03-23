@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { categories } from "@/data/products";
+import { sortSizes } from "@/lib/sortSizes";
 
 interface ProductCardProps {
   product: Product;
