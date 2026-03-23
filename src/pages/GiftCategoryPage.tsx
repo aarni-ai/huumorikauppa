@@ -1,5 +1,4 @@
-import { useParams, Link } from "react-router-dom";
-import { useProducts } from "@/hooks/use-products";
+import { useLocation, Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
