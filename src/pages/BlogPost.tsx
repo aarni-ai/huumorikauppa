@@ -100,11 +100,21 @@ const BlogPost = () => {
     );
   }
 
-  const otherPosts = blogPosts.filter((p) => p.slug !== slug);
+  // Smart related posts: match by shared tags, then category, limit to 5
+  const relatedPosts = blogPosts
+    .filter((p) => p.slug !== slug)
+    .map((p) => {
+      const sharedTags = p.tags.filter((t) => post.tags.includes(t)).length;
+      const sameCategory = p.category === post.category ? 1 : 0;
+      return { ...p, score: sharedTags * 2 + sameCategory };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
 
   const relatedCats = post.relatedCategories
     .map((slug) => categories.find((c) => c.slug === slug))
-    .filter(Boolean);
+    .filter(Boolean)
+    .slice(0, 2);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
