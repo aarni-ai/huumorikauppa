@@ -137,8 +137,11 @@ export function getGiftCategory(slug: string) {
 
 export { giftCategories };
 
+import { useProducts } from "@/hooks/use-products";
+
 const GiftCategoryPage = () => {
-  const { slug } = useParams();
+  const location = useLocation();
+  const slug = location.pathname.replace(/^\//, '');
   const category = giftCategories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
 
