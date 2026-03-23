@@ -99,8 +99,8 @@ export function ProductCard({ product }: ProductCardProps) {
       if (!selectedColor && product.variants.colors?.length > 0) {
         setSelectedColor(product.variants.default_color || product.variants.colors[0]);
       }
-      if (!selectedSize && product.variants.sizes?.length === 1) {
-        setSelectedSize(product.variants.sizes[0]);
+      if (!selectedSize && sortedSizes.length === 1) {
+        setSelectedSize(sortedSizes[0]);
       }
     } else {
       // No selection needed, add directly
