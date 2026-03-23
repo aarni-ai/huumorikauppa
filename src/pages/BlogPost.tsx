@@ -100,11 +100,21 @@ const BlogPost = () => {
     );
   }
 
-  const otherPosts = blogPosts.filter((p) => p.slug !== slug);
+  // Smart related posts: match by shared tags, then category, limit to 5
+  const relatedPosts = blogPosts
+    .filter((p) => p.slug !== slug)
+    .map((p) => {
+      const sharedTags = p.tags.filter((t) => post.tags.includes(t)).length;
+      const sameCategory = p.category === post.category ? 1 : 0;
+      return { ...p, score: sharedTags * 2 + sameCategory };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
 
   const relatedCats = post.relatedCategories
     .map((slug) => categories.find((c) => c.slug === slug))
-    .filter(Boolean);
+    .filter(Boolean)
+    .slice(0, 2);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -219,18 +229,18 @@ const BlogPost = () => {
           </nav>
         )}
 
-        {/* Other blog posts */}
-        {otherPosts.length > 0 && (
+        {/* Related blog posts */}
+        {relatedPosts.length > 0 && (
           <section className="mt-12 pt-6 border-t border-border">
             <h3 className="font-display text-xl text-foreground mb-4">Lue myös:</h3>
-            <div className="space-y-4">
-              {otherPosts.map((p) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {relatedPosts.map((p) => (
                 <Link
                   key={p.slug}
                   to={`/blogi/${p.slug}`}
                   className="block p-4 border border-border rounded-lg hover:border-primary/50 transition-colors bg-card"
                 >
-                  <h4 className="font-medium text-foreground hover:text-primary transition-colors mb-1">
+                  <h4 className="font-medium text-foreground hover:text-primary transition-colors mb-1 line-clamp-2">
                     {p.title}
                   </h4>
                   <p className="text-sm text-muted-foreground line-clamp-2">{p.excerpt}</p>
