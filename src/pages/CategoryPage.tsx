@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
