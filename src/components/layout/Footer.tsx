@@ -46,16 +46,22 @@ export function Footer() {
               </Link>
             ))}
           </div>
-          <div className="border-t border-border/50 my-2 mx-0"></div>
-          <Link to="/hauskat-lahjat-miehelle" className="hover:text-foreground transition-colors">🎁 Lahjat miehelle</Link>
-          <Link to="/hauskat-lahjat-naiselle" className="hover:text-foreground transition-colors">💝 Lahjat naiselle</Link>
-          <Link to="/polttari-lahjat" className="hover:text-foreground transition-colors">🎉 Polttarilahjat</Link>
-          <Link to="/joululahjat" className="hover:text-foreground transition-colors">🎄 Joululahjat</Link>
-          <Link to="/isanpaiva-lahjat" className="hover:text-foreground transition-colors">👨 Isänpäivälahjat</Link>
-          <Link to="/aitienpaiva-lahjat" className="hover:text-foreground transition-colors">💐 Äitienpäivälahjat</Link>
-          <Link to="/syntymapaivaLahjat" className="hover:text-foreground transition-colors">🎂 Synttärilahjat</Link>
-          <Link to="/elakelahjat" className="hover:text-foreground transition-colors">🏖️ Eläkelahjat</Link>
+          </div>
         </div>
+
+        {/* Gift categories - own column, visually clean */}
+        <div className="space-y-3">
+          <h4 className="font-display text-sm text-foreground">LAHJAIDEAT</h4>
+          <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <Link to="/hauskat-lahjat-miehelle" className="hover:text-foreground transition-colors">Lahjat miehelle</Link>
+            <Link to="/hauskat-lahjat-naiselle" className="hover:text-foreground transition-colors">Lahjat naiselle</Link>
+            <Link to="/polttari-lahjat" className="hover:text-foreground transition-colors">Polttarilahjat</Link>
+            <Link to="/joululahjat" className="hover:text-foreground transition-colors">Joululahjat</Link>
+            <Link to="/isanpaiva-lahjat" className="hover:text-foreground transition-colors">Isänpäivälahjat</Link>
+            <Link to="/aitienpaiva-lahjat" className="hover:text-foreground transition-colors">Äitienpäivälahjat</Link>
+            <Link to="/syntymapaivaLahjat" className="hover:text-foreground transition-colors">Synttärilahjat</Link>
+            <Link to="/elakelahjat" className="hover:text-foreground transition-colors">Eläkelahjat</Link>
+          </div>
 
         {/* Info */}
         <div className="space-y-3">
