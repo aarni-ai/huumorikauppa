@@ -6,6 +6,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { categories } from "@/data/products";
+import { sortSizes } from "@/lib/sortSizes";
 
 interface ProductCardProps {
   product: Product;
@@ -62,8 +63,17 @@ export function ProductCard({ product }: ProductCardProps) {
   const mainImage = product.images[0] || "/placeholder.svg";
   const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
+  // Preload hover image so swap is instant
+  useEffect(() => {
+    if (hoverImage) {
+      const img = new Image();
+      img.src = hoverImage;
+    }
+  }, [hoverImage]);
+
   const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
-  const hasSizes = !hideSize && product.variants.sizes && product.variants.sizes.length > 1;
+  const sortedSizes = useMemo(() => sortSizes(product.variants.sizes || []), [product.variants.sizes]);
+  const hasSizes = !hideSize && sortedSizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 1;
   const needsSelection = hasSizes || hasColors;
 
@@ -89,8 +99,8 @@ export function ProductCard({ product }: ProductCardProps) {
       if (!selectedColor && product.variants.colors?.length > 0) {
         setSelectedColor(product.variants.default_color || product.variants.colors[0]);
       }
-      if (!selectedSize && product.variants.sizes?.length === 1) {
-        setSelectedSize(product.variants.sizes[0]);
+      if (!selectedSize && sortedSizes.length === 1) {
+        setSelectedSize(sortedSizes[0]);
       }
     } else {
       // No selection needed, add directly
@@ -223,7 +233,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <div>
                   <label className="text-xs font-medium text-foreground mb-1.5 block">Koko</label>
                   <div className="flex flex-wrap gap-1.5">
-                    {product.variants.sizes!.map((size: string) => (
+                    {sortedSizes.map((size: string) => (
                       <button
                         key={size}
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelectedSize(size); }}

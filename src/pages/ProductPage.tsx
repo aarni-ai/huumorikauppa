@@ -4,6 +4,7 @@ import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { sortSizes } from "@/lib/sortSizes";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -757,7 +758,7 @@ const ProductPage = () => {
                   </Dialog>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.variants.sizes!.map((size: string) => (
+                  {sortSizes(product.variants.sizes!).map((size: string) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
