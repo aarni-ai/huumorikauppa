@@ -967,4 +967,426 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
 - 100% suomalainen yritys`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
+
+  // ========== NEW HIGH-INTENT SEO BLOG POSTS ==========
+
+  {
+    slug: "lahja-miehelle-30v-40v-50v-60v",
+    title: "Lahja miehelle 30v, 40v, 50v ja 60v – Parhaat lahjaideat ikävuosittain",
+    metaTitle: "Lahja Miehelle 30v, 40v, 50v, 60v – Ikäopas | Huumorikauppa",
+    metaDescription: "Mitä lahjaksi miehelle 30v, 40v, 50v tai 60v? Parhaat lahjaideat ikävuosittain: hauskat t-paidat, hupparit ja mukit. Ilmainen toimitus yli 60 €.",
+    excerpt: "Mitä lahjaksi miehelle 30-, 40-, 50- tai 60-vuotissyntymäpäiviin? Parhaat lahjaideat jokaiselle ikävaiheelle.",
+    publishedAt: "2023-03-15",
+    updatedAt: "2025-08-20",
+    category: "lahjaideat",
+    tags: ["lahja miehelle 30v", "lahja miehelle 40v", "lahja miehelle 50v", "lahja miehelle 60v", "syntymäpäivälahja miehelle"],
+    content: \`## Lahja miehelle ikävuosittain – opas 30v, 40v, 50v ja 60v
+
+Pyöreät vuodet ovat erityisiä – ja ne ansaitsevat erityisen lahjan. Mutta mitä antaa miehelle joka täyttää 30, 40, 50 tai 60 vuotta? Huumorintaju muuttuu iän myötä, ja paras lahja osuu juuri oikeaan kohtaan.
+
+## Lahja miehelle 30v 🎯
+
+30-vuotias mies on elämänsä parhaassa iässä – ja hän tietää sen. Tässä iässä meemit, internet-huumori ja itseironia puhuttelevat.
+
+### Parhaat lahjat 30-vuotiaalle miehelle:
+
+**Meemipaita** – Internet-huumori on 30-vuotiaan äidinkieltä. Meemipaita naurattaa ja kertoo "ymmärrän sinua".
+
+**Hauska huppari** – Mukava, rento ja hauska – 30-vuotiaan miehen perusvaate.
+
+**Ammattihuumoripaita** – IT-nörttipaita, insinööripaita tai mikä tahansa ammattiin liittyvä huumori osuu 30-vuotiaaseen.
+
+## Lahja miehelle 40v 👔
+
+40 on ikä jolloin setähuumori alkaa kutsua. Mies joka vastusti setähuumoria 30-vuotiaana löytää itsensä kertomasta samoja vitsejä kuin isänsä.
+
+### Parhaat lahjat 40-vuotiaalle miehelle:
+
+**Setähuumoripaita** – "Amatimies" ja muut kuivan huumorin paidat alkavat puhutella.
+
+**Kalastuspaita** – 40-vuotias mies on usein löytänyt kalastuksen (tai golf, tai puutarha).
+
+**Hauska muki** – Aamukahvimuki hauskalla tekstillä on käytännöllinen ja hauska.
+
+## Lahja miehelle 50v 🏛️
+
+50 vuotta on itseironian kulta-aikaa. "Museo-kappale", "Legendaarinen vuodesta [vuosi]" ja muut ikähuumorituotteet ovat täydellisiä.
+
+### Parhaat lahjat 50-vuotiaalle miehelle:
+
+**"Museo-kappale" -paita** – Täydellinen itseironia 50-vuotiaalle.
+
+**Eläkehuumoripaita** – "Harjoittelen eläkeläistä" puhuttelee 50-vuotiasta.
+
+**Hauska peitto** – Sohvalla löhöily alkaa olla elämäntapa.
+
+## Lahja miehelle 60v 🏖️
+
+60-vuotias on usein jo eläkkeellä tai lähellä sitä. Eläkehuumori on kuningas.
+
+### Parhaat lahjat 60-vuotiaalle miehelle:
+
+**"Eläkkeellä ja nautinnossa" -paita** – Uuden elämänvaiheen juhlistaminen.
+
+**Hauska huppari** – Lämmin ja mukava aamulenkeille.
+
+**Hauska seinätaulu** – "Tässä talossa asuu legenda" -taulu.
+
+## Yhteenveto
+
+| Ikä | Huumorityyli | Parhaat tuotteet |
+|-----|-------------|-----------------|
+| 30v | Meemit, sarkasmi | Meemipaidat, hupparit |
+| 40v | Setähuumori, harrastukset | Kalastuspaidat, mukit |
+| 50v | Itseironia, ikähuumori | "Museo"-paidat, peitot |
+| 60v | Eläkehuumori | Eläkepaidat, hupparit |
+
+## Tilaa miehen lahja Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus
+- 14 päivän palautusoikeus\`,
+    relatedCategories: ["t-paidat", "hupparit", "mukit"],
+  },
+  {
+    slug: "lahja-naiselle-30v-40v-50v-60v",
+    title: "Lahja naiselle 30v, 40v, 50v ja 60v – Parhaat lahjaideat ikävuosittain",
+    metaTitle: "Lahja Naiselle 30v, 40v, 50v, 60v – Ikäopas | Huumorikauppa",
+    metaDescription: "Mitä lahjaksi naiselle 30v, 40v, 50v tai 60v? Parhaat lahjaideat ikävuosittain: hupparit, mukit ja paidat. Ilmainen toimitus yli 60 €.",
+    excerpt: "Mitä lahjaksi naiselle 30-, 40-, 50- tai 60-vuotissyntymäpäiviin? Parhaat lahjaideat jokaiselle ikävaiheelle.",
+    publishedAt: "2023-06-10",
+    updatedAt: "2025-09-05",
+    category: "lahjaideat",
+    tags: ["lahja naiselle 30v", "lahja naiselle 40v", "lahja naiselle 50v", "lahja naiselle 60v", "syntymäpäivälahja naiselle"],
+    content: \`## Lahja naiselle ikävuosittain – opas 30v, 40v, 50v ja 60v
+
+Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydäntä. Tässä oppaassa löydät parhaat lahjaideat 30-, 40-, 50- ja 60-vuotiaalle naiselle.
+
+## Lahja naiselle 30v 🌟
+
+30-vuotias nainen arvostaa huumoria joka on hienovaraista mutta osuvaa. Itseironia ja arjen huumori puhuttelevat.
+
+**Meemihuppari** – Rento ja hauska arjen perusvaate.
+**Hauska kangaskassi** – Ekologinen ja hauska.
+**Söpö kahvimuki** – Aamukahviin persoonallisuutta.
+
+## Lahja naiselle 40v 💃
+
+40-vuotias nainen on itsevarma ja arvostaa laatua. Hauska lahja saa olla myös laadukas.
+
+**"Maailman paras äiti" -huppari** – Monella 40-vuotiaalla on lapsia, ja tämä puhuttelee.
+**Viinihuumorimuki** – "Viini on vastaus" -tyyliset mukit naurattavat.
+**Hauska peitto** – Ylellinen ja hauska lahja sohvalle.
+
+## Lahja naiselle 50v 👑
+
+50 on uusi 30 – ja 50-vuotias nainen ansaitsee juhlistamisen.
+
+**"Legendaarinen" -huppari** – "Legenda syntyi vuonna [vuosi]".
+**Premium-muki** – Laadukkaasta mukista nautitaan vuosia.
+**Hauska seinätaulu** – Sisustuslahja joka naurattaa päivittäin.
+
+## Lahja naiselle 60v 🌸
+
+60-vuotias nainen arvostaa lämpöä, mukavuutta ja huumoria.
+
+**Eläkehuumorimuki** – "Eläkeläisen aikataulu: kahvi, kirja, päiväunet".
+**Lämmin peitto** – Pehmeä peitto hauskalla painatuksella.
+**Hauska huppari** – Mukava ja lämmin joka päivä.
+
+## Tilaa naisen lahja Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus
+- 14 päivän palautusoikeus\`,
+    relatedCategories: ["hupparit", "mukit", "laukut"],
+  },
+  {
+    slug: "hauskat-syntymapaivaLahjat-opas",
+    title: "Hauskat syntymäpäivälahjat – Opas täydellisen lahjan valintaan",
+    metaTitle: "Hauskat Syntymäpäivälahjat – Paras Lahjaopas | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa syntymäpäivälahja? Opas täydellisen hauskan syntymäpäivälahjan valintaan miehelle ja naiselle. Ilmainen toimitus yli 60 €.",
+    excerpt: "Opas hauskan syntymäpäivälahjan valintaan – parhaat lahjat miehelle, naiselle ja kaverille jokaiselle budjetille.",
+    publishedAt: "2024-09-05",
+    updatedAt: "2025-12-10",
+    category: "lahjaideat",
+    tags: ["hauska syntymäpäivälahja", "syntymäpäivälahja miehelle", "syntymäpäivälahja naiselle", "lahja synttäreille"],
+    content: \`## Hauskat syntymäpäivälahjat – opas täydellisen lahjan valintaan
+
+Syntymäpäivä on vuoden tärkein päivä lahjan saajalle. Hauska syntymäpäivälahja naurattaa, yllättää ja jää mieleen. Tässä oppaassa käymme läpi parhaat hauskat syntymäpäivälahjat budjetin, vastaanottajan ja tilaisuuden mukaan.
+
+## Hauska syntymäpäivälahja miehelle
+
+**Setähuumoripaita** – Klassikko joka ei vanhene. Sopii 35+ miehille.
+**Kalastuspaita** – Kalastusta harrastavalle miehelle.
+**Hauska muki** – Edullinen mutta mieleenpainuva.
+**Meemipaita** – Nuoremmille miehille (18-35v).
+
+## Hauska syntymäpäivälahja naiselle
+
+**Hauska huppari** – "Maailman paras äiti" tai meemihuppari.
+**Söpö muki** – Aamukahvin piristäjä.
+**Kangaskassi** – Ekologinen ja hauska.
+
+## Syntymäpäivälahja budjetin mukaan
+
+- **Alle 15 €** – Tarrat, avaimenperä
+- **15–25 €** – Hauska muki tai pipo
+- **25–35 €** – Hauska t-paita
+- **35–50 €** – Hauska huppari
+- **Yli 50 €** – Huppari + muki combo
+
+## Tilaa syntymäpäivälahja Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus\`,
+    relatedCategories: ["t-paidat", "hupparit", "mukit"],
+  },
+  {
+    slug: "lahja-henkilolle-jolla-on-jo-kaikkea",
+    title: "Lahja henkilölle jolla on jo kaikkea – 8 varmaa lahjaa",
+    metaTitle: "Lahja Henkilölle Jolla On Jo Kaikkea – 8 Ideaa | Huumorikauppa",
+    metaDescription: "Mitä antaa henkilölle jolla on jo kaikkea? 8 varmaa hauskaa lahjaa: huumoripaidat, mukit ja hupparit jotka yllättävät. Ilmainen toimitus yli 60 €.",
+    excerpt: "Mitä antaa henkilölle jolla on jo kaikkea? 8 hauskaa lahjaa jotka yllättävät ja naurattavat.",
+    publishedAt: "2023-12-01",
+    updatedAt: "2025-10-15",
+    category: "lahjaideat",
+    tags: ["lahja henkilölle jolla on jo kaikkea", "lahja mahdottomalle", "yllättävä lahja", "erikoinen lahja"],
+    content: \`## Lahja henkilölle jolla on jo kaikkea
+
+"Mitä antaa henkilölle jolla on jo kaikkea?" on yksi Suomen haetuin lahjakysymys. Vastaus on yksinkertainen: anna lahja joka herättää tunteita. Hauska lahja naurattaa, yllättää ja jää mieleen – toisin kuin uusi pari sukkia.
+
+## 1. Hauska t-paita 👕
+
+Hauska paita on jotain mitä tavaroiden omistajalla ei vielä ole. Se on persoonallinen, hauska ja käytännöllinen.
+
+## 2. Hauska huppari 🧥
+
+Lämmin, mukava ja hauska – huppari on lahja jota käytetään oikeasti.
+
+## 3. Hauska muki ☕
+
+Kahvimuki hauskalla tekstillä piristää jokaisen aamun. Edullinen mutta mieleenpainuva.
+
+## 4. Hauska peitto 🛋️
+
+Ylellinen ja hauska – peitto on lahja joka yllättää.
+
+## 5. Hauska seinätaulu 🖼️
+
+Sisustusesine joka naurattaa päivittäin.
+
+## 6. Hauska tarra-arkki 🏷️
+
+Piristää läppäriä, vesipulloa tai autoa.
+
+## 7. Hauska pipo 🧢
+
+Käytännöllinen ja hauska talvilahja.
+
+## 8. Hauska kangaskassi 🛍️
+
+Ekologinen ja hauska – näkyy joka kauppareissulla.
+
+## Miksi hauska lahja toimii?
+
+Henkilöllä jolla on jo kaikkea ei ole puutetta tavaroista – hänellä on puute naurusta. Hauska lahja täyttää tämän aukon.
+
+## Tilaa Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus\`,
+    relatedCategories: ["t-paidat", "hupparit", "mukit", "seinataulut"],
+  },
+  {
+    slug: "hauskat-lahjat-tyokavereille-opas",
+    title: "Hauskat lahjat työkavereille – Pikkujoululahjat ja toimistolahjat",
+    metaTitle: "Hauskat Lahjat Työkavereille – Pikkujoululahjat | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa lahjaa työkavereille? Parhaat pikkujoululahjat, toimistolahjat ja lahja pomolleen. Ilmainen toimitus yli 60 €.",
+    excerpt: "Parhaat hauskat lahjat työkavereille – pikkujoululahjat, läksiäislahjat ja toimistolahjat jotka naurattavat.",
+    publishedAt: "2024-11-01",
+    updatedAt: "2025-11-25",
+    category: "lahjaideat",
+    tags: ["lahja työkavereille", "pikkujoululahja", "lahja pomolleen", "lahja kollegalle", "toimistolahja"],
+    content: \`## Hauskat lahjat työkavereille – opas
+
+Työpaikan lahjoissa täytyy osua oikeaan – hauska mutta sopiva. Tässä oppaassa parhaat lahjavinkit työkavereille, pomolle ja eläkkeelle jäävälle kollegalle.
+
+## Pikkujoululahjat alle 20 €
+
+**Hauska muki** – Toimistohuumorimuki on pikkujoululahjojen ehdoton ykkönen. "Tämä palaveri olisi voinut olla sähköposti" naurattaa jokaista.
+
+**Tarra-arkki** – Meemitarrat läppäriin ovat edullinen ja hauska pikkujoululahja.
+
+**Hauska pipo** – Talvipipo hauskalla tekstillä on käytännöllinen pikkujoululahja.
+
+## Lahja pomolle
+
+Pomolle sopivat neutraalit mutta silti hauskat lahjat. Ammattihuumorimukit ja sarkasmimmukit ovat turvallisia valintoja.
+
+## Lahja eläkkeelle jäävälle työkavereille
+
+"Eläkkeellä ja nautinnossa" -paita tai -muki on klassinen eläkelahja työkavereille.
+
+## Lahja lähteville työkavereille
+
+Hauska muki tai paita on hyvä läksiäislahja. Se jää muistoksi yhteisistä ajoista.
+
+## Tilaa Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus\`,
+    relatedCategories: ["mukit", "tarrat", "t-paidat"],
+  },
+  {
+    slug: "hauska-lahja-kalastajalle",
+    title: "Hauska lahja kalastajalle – Parhaat kalastuslahjat 2025",
+    metaTitle: "Hauska Lahja Kalastajalle – Parhaat Kalastuslahjat | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa lahjaa kalastajalle? Parhaat kalastuspaidat, kalastusmukit ja kalastushupparit. Ilmainen toimitus yli 60 €.",
+    excerpt: "Parhaat hauskat lahjat kalastajalle – kalastuspaidat, mukit ja hupparit jotka saavat kalamiehen nauramaan.",
+    publishedAt: "2024-07-15",
+    updatedAt: "2025-07-01",
+    category: "harrastukset",
+    tags: ["lahja kalastajalle", "kalastuspaita", "kalamies", "hauska kalastuslahja", "kalastushuumori"],
+    content: \`## Hauska lahja kalastajalle – parhaat kalastuslahjat
+
+Kalastus on Suomen suosituin harrastus – yli 1,5 miljoonaa suomalaista kalastaa. Ja kalastajat tunnetaan loistavasta itseironiasta. Hauska kalastuslahja osuu aina oikeaan.
+
+## Suosituimmat kalastuslahjat
+
+**"Kalamies" t-paita** – Klassikko joka kuuluu jokaisen kalastajan vaatekaappiin.
+
+**Kalastushuumorimuki** – "Kalan kanssa nukkumaan" tai "Kalastajan vaimo" -mukit ovat suosittuja.
+
+**Kalastushuppari** – Lämmin huppari laiturilla istumiseen.
+
+## Kenelle kalastuslahja?
+
+- **Isälle** – Isänpäivälahjaksi tai syntymäpäiväksi
+- **Kaverille** – Kaverin synttäreille
+- **Sedälle** – Klassinen lahja sedälle
+- **Aviomiehelle** – Kun haluat näyttää ymmärtäväsi hänen harrastustaan
+
+## Tilaa kalastuslahja Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus\`,
+    relatedCategories: ["t-paidat", "mukit", "hupparit"],
+  },
+  {
+    slug: "hauska-lahja-alle-20-euroa",
+    title: "Hauska lahja alle 20 euroa – 10 edullista lahjaa jotka naurattavat",
+    metaTitle: "Hauska Lahja Alle 20 € – 10 Edullista Lahjaa | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa lahjaa alle 20 eurolla? 10 edullista hauskaa lahjaa: mukit, tarrat ja pipot. Ilmainen toimitus yli 60 €.",
+    excerpt: "10 edullista hauskaa lahjaa alle 20 eurolla – mukit, tarrat, pipot ja muut lahjat jotka eivät maksa maltaita.",
+    publishedAt: "2025-01-05",
+    updatedAt: "2025-11-10",
+    category: "lahjaideat",
+    tags: ["lahja alle 20 euroa", "edullinen lahja", "halpa lahja", "budjetti lahja", "pikkujoululahja"],
+    content: \`## Hauska lahja alle 20 euroa – 10 edullista lahjaa
+
+Hyvän lahjan ei tarvitse olla kallis. Alle 20 eurolla saat hauskan, persoonallisen lahjan joka naurattaa ja ilahduttaa. Tässä 10 parasta edullista lahjaa.
+
+## 1. Hauska muki (12–18 €) ☕
+
+Kahvimuki hauskalla tekstillä on edullisten lahjojen kuningas. Sopii kaikille.
+
+## 2. Tarra-arkki (8–15 €) 🏷️
+
+Meemitarrat läppäriin, vesipulloon tai autoon. Erityisesti nuorille.
+
+## 3. Hauska pipo (15–20 €) 🧢
+
+Talvipipo hauskalla brodeerauksella on käytännöllinen ja hauska.
+
+## 4. Yksittäiset tarrat (3–8 €) 🏷️
+
+Pieniä mutta hauskoja lisälahjoja.
+
+## 5. Hauska avaimenperä (8–12 €) 🔑
+
+Pieni mutta hauska lahja.
+
+## Milloin edullinen lahja on paras valinta?
+
+- **Pikkujoulut** – budjetti on usein alle 20 €
+- **Lisälahja** – isomman lahjan oheen
+- **Kaverin synttärit** – huumori riittää, ei tarvita kalleutta
+- **Kiitoslahja** – pieni ele joka naurattaa
+
+## Tilaa Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin\`,
+    relatedCategories: ["mukit", "tarrat", "pipot"],
+  },
+  {
+    slug: "hauska-lahja-saunojalle",
+    title: "Hauska lahja saunojalle – Parhaat sauna-aiheiset lahjat",
+    metaTitle: "Hauska Lahja Saunojalle – Sauna-aiheiset Lahjat | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa lahjaa saunojalle? Parhaat sauna-aiheiset hauskat lahjat: paidat, mukit ja tarrat. Ilmainen toimitus yli 60 €.",
+    excerpt: "Parhaat hauskat lahjat saunojalle – suomalaiseen saunakulttuuriin sopivat hauskat tuotteet.",
+    publishedAt: "2024-12-10",
+    updatedAt: "2025-06-20",
+    category: "harrastukset",
+    tags: ["lahja saunojalle", "saunalahja", "hauska saunalahja", "suomalainen sauna", "sauna huumori"],
+    content: \`## Hauska lahja saunojalle
+
+Sauna on Suomen kansallisaarteita – ja saunojat ovat ylpeitä saunakulttuuristaan. Hauska sauna-aiheinen lahja osuu aina oikeaan suomalaiselle.
+
+## Suosituimmat sauna-aiheiset lahjat
+
+**Saunahuumoripaita** – "Lauteilla löytyy ratkaisu kaikkeen" tai "Sauna on paras terapia".
+
+**Hauska muki saunojalle** – Saunajuomien pariksi hauska muki.
+
+**Saunatarra** – Hauska tarra saunan oveen tai vihkoon.
+
+## Kenelle saunalahja?
+
+Jokaiselle suomalaiselle! Erityisesti:
+- Miehelle joka viettää tunnin saunassa
+- Mökin omistajalle
+- Saunaillan järjestäjälle
+- Ulkomaalaiselle ystävälle joka haluaa ymmärtää suomalaista kulttuuria
+
+## Tilaa Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin
+- 3–7 arkipäivän toimitus\`,
+    relatedCategories: ["t-paidat", "mukit", "tarrat"],
+  },
+  {
+    slug: "hauska-lahja-nortille-ja-gamerille",
+    title: "Hauska lahja nörtille ja gamerille – IT-alan lahjat 2025",
+    metaTitle: "Hauska Lahja Nörtille & Gamerille – IT-lahjat | Huumorikauppa",
+    metaDescription: "Etsitkö hauskaa lahjaa nörtille tai gamerille? Parhaat IT-alan huumoripaidat, gamer-mukit ja nörttilahjat. Ilmainen toimitus yli 60 €.",
+    excerpt: "Parhaat hauskat lahjat nörteille ja gamereille – IT-alan huumoripaidat, gamer-mukit ja nörttilahjat.",
+    publishedAt: "2025-03-20",
+    updatedAt: "2025-12-05",
+    category: "harrastukset",
+    tags: ["lahja nörtille", "lahja gamerille", "IT-alan lahja", "ohjelmoijan lahja", "nörttipaita"],
+    content: \`## Hauska lahja nörtille ja gamerille
+
+IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma lajiaan. Hauska lahja nörtille tai gamerille osoittaa, että ymmärrät hänen maailmaansa.
+
+## Suosituimmat nörttilahjat
+
+**IT-alan huumoripaita** – "There is no place like 127.0.0.1" ja muut koodihuumoripaidat.
+
+**Gamer-muki** – "Pause-nappulaa ei ole oikeassa elämässä" -tyyliset mukit.
+
+**Nörttitarrat** – Koodaus-, peli- ja teknologia-aiheiset tarrat läppäriin.
+
+## Kenelle nörttilahja?
+
+- **Ohjelmoijalle** – Koodihuumori osuu aina
+- **Pelaajalle** – Pelimaailman viittaukset
+- **IT-opiskelijalle** – Valmistujaislahjaksi
+- **Teknologia-innokkaalle** – Kelle tahansa joka rakastaa teknologiaa
+
+## Tilaa Huumorikaupasta
+
+- Ilmainen toimitus yli 60 € tilauksiin\`,
+    relatedCategories: ["t-paidat", "mukit", "tarrat"],
+  },
 ];
