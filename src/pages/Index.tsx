@@ -206,6 +206,10 @@ const Index = () => {
           <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
+      <SEOHomeContent />
+      <SEOBuyingContent />
+      <SEODesignContent />
+      <SEOLongTailContent />
     </div>
   );
 };

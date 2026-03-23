@@ -158,6 +158,8 @@ const CategoryPage = () => {
           </section>
         )}
       </div>
+      <SEOProductsContent />
+      <SEOGiftContent />
     </div>
   );
 };

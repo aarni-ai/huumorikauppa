@@ -42,6 +42,8 @@ const SearchPage = () => {
           </div>
         )}
       </div>
+      <SEOHomeContent />
+      <SEOGiftContent />
     </div>
   );
 };

@@ -88,6 +88,9 @@ const AllProducts = () => {
           </div>
         )}
       </div>
+      <SEOProductsContent />
+      <SEOTargetGroupContent />
+      <SEOCustomContent />
     </div>
   );
 };
