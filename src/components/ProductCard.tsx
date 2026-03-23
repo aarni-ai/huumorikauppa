@@ -63,8 +63,17 @@ export function ProductCard({ product }: ProductCardProps) {
   const mainImage = product.images[0] || "/placeholder.svg";
   const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
 
+  // Preload hover image so swap is instant
+  useEffect(() => {
+    if (hoverImage) {
+      const img = new Image();
+      img.src = hoverImage;
+    }
+  }, [hoverImage]);
+
   const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
-  const hasSizes = !hideSize && product.variants.sizes && product.variants.sizes.length > 1;
+  const sortedSizes = useMemo(() => sortSizes(product.variants.sizes || []), [product.variants.sizes]);
+  const hasSizes = !hideSize && sortedSizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 1;
   const needsSelection = hasSizes || hasColors;
 
