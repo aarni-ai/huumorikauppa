@@ -84,6 +84,13 @@ const App = () => (
               <Route path="/hauskat-lahjat-miehelle" element={<GiftCategoryPage />} />
               <Route path="/hauskat-lahjat-naiselle" element={<GiftCategoryPage />} />
               <Route path="/polttari-lahjat" element={<GiftCategoryPage />} />
+              <Route path="/isanpaiva-lahjat" element={<GiftCategoryPage />} />
+              <Route path="/aitienpaiva-lahjat" element={<GiftCategoryPage />} />
+              <Route path="/joululahjat" element={<GiftCategoryPage />} />
+              <Route path="/syntymapaivaLahjat" element={<GiftCategoryPage />} />
+              <Route path="/elakelahjat" element={<GiftCategoryPage />} />
+              <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
+              <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
