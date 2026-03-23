@@ -29,6 +29,7 @@ const SearchPage = lazy(() => import("./pages/SearchPage"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
 const BlogIndex = lazy(() => import("./pages/BlogIndex"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const GiftCategoryPage = lazy(() => import("./pages/GiftCategoryPage"));
 
 // Lazy: popups (not needed at initial load)
 const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
