@@ -7,7 +7,7 @@ import { categories } from "@/data/products";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-card mt-16">
-      <div className="container py-12 grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="container py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand */}
         <div className="space-y-4">
           <div>
@@ -23,7 +23,6 @@ export function Footer() {
               <Mail className="h-4 w-4 shrink-0" /> info@huumorikauppa.fi
             </a>
           </div>
-          {/* Social */}
           <div className="flex items-center gap-4 pt-2">
             <a href="https://www.instagram.com/huumorikauppa" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <Instagram className="h-4 w-4" /> @huumorikauppa
@@ -35,7 +34,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Shop links - all categories */}
+        {/* Shop links */}
         <div className="space-y-3">
           <h4 className="font-display text-sm text-foreground">KAUPPA</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
@@ -46,24 +45,9 @@ export function Footer() {
               </Link>
             ))}
           </div>
-          </div>
         </div>
 
-        {/* Gift categories - own column, visually clean */}
-        <div className="space-y-3">
-          <h4 className="font-display text-sm text-foreground">LAHJAIDEAT</h4>
-          <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <Link to="/hauskat-lahjat-miehelle" className="hover:text-foreground transition-colors">Lahjat miehelle</Link>
-            <Link to="/hauskat-lahjat-naiselle" className="hover:text-foreground transition-colors">Lahjat naiselle</Link>
-            <Link to="/polttari-lahjat" className="hover:text-foreground transition-colors">Polttarilahjat</Link>
-            <Link to="/joululahjat" className="hover:text-foreground transition-colors">Joululahjat</Link>
-            <Link to="/isanpaiva-lahjat" className="hover:text-foreground transition-colors">Isänpäivälahjat</Link>
-            <Link to="/aitienpaiva-lahjat" className="hover:text-foreground transition-colors">Äitienpäivälahjat</Link>
-            <Link to="/syntymapaivaLahjat" className="hover:text-foreground transition-colors">Synttärilahjat</Link>
-            <Link to="/elakelahjat" className="hover:text-foreground transition-colors">Eläkelahjat</Link>
-          </div>
-
-        {/* Info */}
+        {/* Info + Social */}
         <div className="space-y-3">
           <h4 className="font-display text-sm text-foreground">TIETOA</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
@@ -72,7 +56,6 @@ export function Footer() {
             <Link to="/toimitusehdot" className="hover:text-foreground transition-colors">Toimitusehdot</Link>
             <Link to="/tietosuojakaytanto" className="hover:text-foreground transition-colors">Tietosuojakäytäntö</Link>
           </div>
-          {/* Social repeated for mobile */}
           <div className="flex flex-col gap-2 text-sm text-muted-foreground pt-3">
             <h4 className="font-display text-sm text-foreground">SEURAA MEITÄ</h4>
             <a href="https://www.instagram.com/huumorikauppa" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
@@ -98,6 +81,20 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">Voit peruuttaa milloin vain.</p>
         </div>
       </div>
+
+      {/* SEO gift category links – visually hidden, crawlable by search engines */}
+      <nav aria-label="Lahjaideat" className="sr-only">
+        <Link to="/hauskat-lahjat-miehelle">Hauskat lahjat miehelle</Link>
+        <Link to="/hauskat-lahjat-naiselle">Hauskat lahjat naiselle</Link>
+        <Link to="/polttari-lahjat">Polttarilahjat</Link>
+        <Link to="/joululahjat">Joululahjat</Link>
+        <Link to="/isanpaiva-lahjat">Isänpäivälahjat</Link>
+        <Link to="/aitienpaiva-lahjat">Äitienpäivälahjat</Link>
+        <Link to="/syntymapaivaLahjat">Synttärilahjat</Link>
+        <Link to="/elakelahjat">Eläkelahjat</Link>
+        <Link to="/lahja-kaverille">Lahja kaverille</Link>
+        <Link to="/lahja-tyokaverille">Lahja työkaverille</Link>
+      </nav>
 
       {/* Payment icons */}
       <div className="border-t border-border py-6">
