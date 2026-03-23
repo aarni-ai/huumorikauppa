@@ -551,6 +551,9 @@ const GiftCategoryPage = () => {
           </div>
         </nav>
       </div>
+      <SEOGiftContent />
+      <SEOTargetGroupContent />
+      <SEOLongTailContent />
     </div>
   );
 };
