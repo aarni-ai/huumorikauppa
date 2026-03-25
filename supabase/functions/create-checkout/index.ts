@@ -25,7 +25,13 @@ interface CheckoutRequest {
     zip: string;
     city: string;
   };
+  discountCode?: string;
 }
+
+const DISCOUNT_CODES: Record<string, number> = {
+  "HUUMORI10": 10,
+  "huumori10": 10,
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -40,8 +46,13 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    const { items, customerEmail, customerName, shippingAddress } =
+    const { items, customerEmail, customerName, shippingAddress, discountCode } =
       (await req.json()) as CheckoutRequest;
+
+    // Validate discount code
+    const discountPercent = discountCode
+      ? DISCOUNT_CODES[discountCode] || DISCOUNT_CODES[discountCode?.toUpperCase()] || 0
+      : 0;
 
     if (!items || items.length === 0) {
       throw new Error("No items in cart");
@@ -71,7 +82,7 @@ serve(async (req) => {
               ...(description ? { description } : {}),
               ...(item.image ? { images: [item.image] } : {}),
             },
-            unit_amount: Math.round(item.price * 100), // cents
+            unit_amount: Math.round(item.price * (1 - discountPercent / 100) * 100), // cents
           },
           quantity: item.quantity,
         };
