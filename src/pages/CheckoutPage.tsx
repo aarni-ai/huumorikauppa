@@ -11,10 +11,16 @@ import { toast } from "@/hooks/use-toast";
 
 type Step = "details" | "shipping" | "payment";
 
+const VALID_CODES: Record<string, { percent: number; label: string }> = {
+  "HUUMORI10": { percent: 10, label: "10% alennus" },
+};
+
 const CheckoutPage = () => {
   const { items, totalPrice, totalItems } = useCartContext();
   const [step, setStep] = useState<Step>("details");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; label: string } | null>(null);
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     address: "", zip: "", city: "",
@@ -69,6 +75,7 @@ const CheckoutPage = () => {
           customerEmail: form.email,
           customerName: `${form.firstName} ${form.lastName}`,
           shippingAddress: { address: form.address, zip: form.zip, city: form.city },
+          discountCode: appliedDiscount?.code || undefined,
         },
       });
       if (error) throw error;
