@@ -224,6 +224,7 @@ Deno.serve(async (req) => {
       const colorVariantIds = new Map<string, number[]>();
       let minPrice = Infinity;
       let maxPrice = 0;
+      let totalStock = 0;
 
       const totalVariants = (p.variants || []).length;
       const enabledVariants = (p.variants || []).filter((v: any) => v.is_enabled);
@@ -256,6 +257,10 @@ Deno.serve(async (req) => {
         const price = variant.price / 100;
         if (price < minPrice) minPrice = price;
         if (price > maxPrice) maxPrice = price;
+        
+        // Sum up stock from Printify (print-on-demand typically has unlimited stock)
+        // But if variant has quantity info, use it
+        totalStock += (variant.quantity !== undefined ? variant.quantity : 99);
       }
 
       if (minPrice === Infinity) minPrice = 29.95;
@@ -382,7 +387,7 @@ Deno.serve(async (req) => {
         category,
         humor_type: 'yleinen' as const,
         price: minPrice,
-        stock: 99,
+        stock: Math.min(totalStock, 999),
         description: cleanDesc || `Hauska tuote Huumorikaupasta!`,
         images: defaultImages,
         variants,

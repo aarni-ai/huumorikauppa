@@ -11,10 +11,16 @@ import { toast } from "@/hooks/use-toast";
 
 type Step = "details" | "shipping" | "payment";
 
+const VALID_CODES: Record<string, { percent: number; label: string }> = {
+  "HUUMORI10": { percent: 10, label: "10% alennus" },
+};
+
 const CheckoutPage = () => {
   const { items, totalPrice, totalItems } = useCartContext();
   const [step, setStep] = useState<Step>("details");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percent: number; label: string } | null>(null);
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     address: "", zip: "", city: "",
@@ -69,6 +75,7 @@ const CheckoutPage = () => {
           customerEmail: form.email,
           customerName: `${form.firstName} ${form.lastName}`,
           shippingAddress: { address: form.address, zip: form.zip, city: form.city },
+          discountCode: appliedDiscount?.code || undefined,
         },
       });
       if (error) throw error;
@@ -85,9 +92,21 @@ const CheckoutPage = () => {
     }
   };
 
+  const applyDiscount = () => {
+    const upper = discountCode.trim().toUpperCase();
+    const found = VALID_CODES[upper];
+    if (found) {
+      setAppliedDiscount({ code: upper, ...found });
+      toast({ title: `Koodi "${upper}" aktivoitu! ${found.label} 🎉` });
+    } else {
+      toast({ title: "Virheellinen alennuskoodi", variant: "destructive" });
+    }
+  };
+
+  const discountAmount = appliedDiscount ? totalPrice * (appliedDiscount.percent / 100) : 0;
   const shippingFree = totalPrice >= 60;
   const shippingCost = shippingFree ? 0 : 5.95;
-  const grandTotal = totalPrice + shippingCost;
+  const grandTotal = totalPrice - discountAmount + shippingCost;
 
   if (items.length === 0) {
     return (
@@ -240,10 +259,36 @@ const CheckoutPage = () => {
               </div>
             ))}
           </div>
+          {/* Discount code */}
+          <div className="border-t border-border pt-3 space-y-2">
+            {appliedDiscount ? (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-primary font-medium">✅ {appliedDiscount.code}</span>
+                <span className="text-primary">-{appliedDiscount.label}</span>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Alennuskoodi"
+                  value={discountCode}
+                  onChange={e => setDiscountCode(e.target.value)}
+                  className="bg-muted border-border text-sm"
+                />
+                <Button variant="outline" size="sm" onClick={applyDiscount} className="border-border whitespace-nowrap">
+                  Käytä
+                </Button>
+              </div>
+            )}
+          </div>
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
               <span>Tuotteet</span><span>{totalPrice.toFixed(2)} €</span>
             </div>
+            {appliedDiscount && (
+              <div className="flex justify-between text-primary">
+                <span>Alennus ({appliedDiscount.percent}%)</span><span>-{discountAmount.toFixed(2)} €</span>
+              </div>
+            )}
             <div className="flex justify-between text-muted-foreground">
               <span>Toimitus</span>
               <span>{shippingFree ? "Ilmainen" : `${shippingCost.toFixed(2)} €`}</span>
