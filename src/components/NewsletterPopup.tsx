@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X, Mail, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const STORAGE_KEY = "huumorikauppa-newsletter-dismissed";
 const DELAY_MS = 20000;
@@ -30,12 +31,20 @@ export function NewsletterPopup() {
     localStorage.setItem(STORAGE_KEY, "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
       return;
     }
+    
+    // Save to database
+    try {
+      await supabase.from("newsletter_subscribers").insert({ email: email.trim().toLowerCase() });
+    } catch (err) {
+      // Ignore duplicate errors
+    }
+    
     setSubmitted(true);
     localStorage.setItem(STORAGE_KEY, "true");
     toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi on tulossa sähköpostiisi." });

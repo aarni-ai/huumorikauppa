@@ -66,9 +66,9 @@ const Index = () => {
     "logo": "https://huumorikauppa.fi/favicon.ico",
     "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja.",
     "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
-    "email": "info@huumorikauppa.fi",
+    "email": "huumorikauppa@gmail.com",
     "sameAs": [
-      "https://www.instagram.com/huumorikauppa",
+      "https://www.instagram.com/huumorikauppa.fi",
       "https://www.facebook.com/profile.php?id=61584153329326"
     ]
   };
