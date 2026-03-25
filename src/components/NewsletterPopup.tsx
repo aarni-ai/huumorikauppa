@@ -41,14 +41,18 @@ export function NewsletterPopup() {
     // Save to database
     try {
       await supabase.from("newsletter_subscribers").insert({ email: email.trim().toLowerCase() });
+      // Notify store owner
+      await supabase.functions.invoke("notify-store", {
+        body: { email: email.trim().toLowerCase(), type: "newsletter" },
+      });
     } catch (err) {
       // Ignore duplicate errors
     }
     
     setSubmitted(true);
     localStorage.setItem(STORAGE_KEY, "true");
-    toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi on tulossa sähköpostiisi." });
-    setTimeout(() => setOpen(false), 2000);
+    toast({ title: "Kiitos tilauksesta! 🎉", description: `Alennuskoodisi: HUUMORI10 (-10%)` });
+    setTimeout(() => setOpen(false), 3000);
   };
 
   return (
@@ -80,8 +84,9 @@ export function NewsletterPopup() {
               <Mail className="h-10 w-10 text-primary mx-auto" />
               <p className="font-bold text-foreground">Kiitos! 🎉</p>
               <p className="text-sm text-muted-foreground">
-                Alennuskoodisi on matkalla sähköpostiisi.
+                Alennuskoodisi on: <span className="font-bold text-primary">HUUMORI10</span>
               </p>
+              <p className="text-xs text-muted-foreground">Käytä koodi kassalla saadaksesi 10% alennuksen!</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
