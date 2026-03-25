@@ -29,6 +29,9 @@ function getOriginalPrice(slug: string, name: string, category: string, price: n
   if (category === 'mukit' && price <= 19.90) return 27.90;
   if (category === 'bodyt' && price <= 24.90) return 34.90;
   
+  // Safety cap: no t-shirt original price should exceed 50€
+  if (category === 't-paidat' && origPrice !== undefined && origPrice > 50) return 34.90;
+  
   return undefined;
 }
 

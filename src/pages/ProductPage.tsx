@@ -120,9 +120,29 @@ const THEME_REVIEWS: Record<string, Review[]> = {
     { name: "Tommi R.", text: "Tilasin isänpäivälahjaksi – isä oli ihmeissään ja käyttää tätä ylpeänä!", stars: 5, date: "20.12.2025" },
     { name: "Laura M.", text: "Isä nauroi ääneen kun avasi paketin. Täydellinen lahja!", stars: 5, date: "5.3.2026" },
   ],
+  "iskä": [
+    { name: "Tommi R.", text: "Isälle joululahjaksi – tykkäsi ihan valtavasti ja käyttää kotona jatkuvasti!", stars: 5, date: "20.12.2025" },
+    { name: "Laura M.", text: "Iskä nauroi ihan kippurassa kun avasi paketin. Paras lahja!", stars: 5, date: "5.3.2026" },
+  ],
   "kalast": [
     { name: "Jarmo H.", text: "Kalakaveri tykkäsi ihan valtavasti! Tämä on nyt kalastusreissun vakiovaruste.", stars: 5, date: "15.8.2025" },
     { name: "Kimmo P.", text: "Paras lahja kalastajalle! Sai koko porukan nauramaan veneessä.", stars: 5, date: "23.11.2025" },
+  ],
+  "kalamies": [
+    { name: "Jarmo H.", text: "Ostin kaverille joka kalastaa joka viikonloppu – sanoi että paras lahja ikinä!", stars: 5, date: "15.8.2025" },
+    { name: "Riku M.", text: "Kalamies-teksti on niin osuva! Käytän tätä aina kun lähden kalaan.", stars: 5, date: "8.2.2026" },
+  ],
+  "girlfriend": [
+    { name: "Ville M.", text: "Tyttöystävä tykkäsi tosi paljon! Käyttää tätä jatkuvasti. Söpö idea.", stars: 5, date: "8.9.2025" },
+    { name: "Matias L.", text: "Ostin itselleni ja tyttöystävä oli otettu. Hauska ja romanttinen samaan aikaan!", stars: 5, date: "17.2.2026" },
+  ],
+  "boyfriend": [
+    { name: "Jenni S.", text: "Poikaystävä tykkäsi! Käyttää tätä ylpeänä. Ihana lahja parisuhteeseen.", stars: 5, date: "25.2.2026" },
+    { name: "Emilia J.", text: "Ostin itselleni ja poikaystävä oli tosi otettu kun näki. Söpö!", stars: 5, date: "28.12.2025" },
+  ],
+  "swedish": [
+    { name: "Sanna K.", text: "Hauska paita! Sai paljon naurua ja kommentteja kavereilta.", stars: 5, date: "3.2.2026" },
+    { name: "Antti K.", text: "Ostin vitsillä ja nyt käytän tätä ihan tosissaan. Hauska!", stars: 5, date: "19.10.2025" },
   ],
   "golf": [
     { name: "Markku T.", text: "Golfkaverit olivat kateellisia! Täydellinen tuote kentälle.", stars: 5, date: "16.11.2025" },
@@ -142,6 +162,60 @@ const THEME_REVIEWS: Record<string, Review[]> = {
   ],
   "nörtti": [
     { name: "Jukka P.", text: "IT-porukkaan täydellinen! Kaikki ymmärtävät vitsin ja tykkäävät.", stars: 5, date: "18.11.2025" },
+  ],
+  "alkoholi": [
+    { name: "Mika L.", text: "Kaveriporukka nauroi makeasti kun tuli tämä esiin baarissa. Loistava!", stars: 5, date: "12.1.2026" },
+    { name: "Jukka P.", text: "Hauska teksti ja sopii täydellisesti illanistujaisiin. Aina saa naurut!", stars: 5, date: "18.11.2025" },
+  ],
+  "kaljaa": [
+    { name: "Antti K.", text: "Paras paita bileisiin! Kaikki kysyy mistä tämän saa.", stars: 5, date: "19.10.2025" },
+    { name: "Tomi S.", text: "Kaveriporukan suosikki! Aina tulee hymyä kun tämä on päällä.", stars: 5, date: "9.1.2026" },
+  ],
+  "kalju": [
+    { name: "Heikki R.", text: "Itseironinen ja hauska! Työkaverit tykkäsi ja sai hyvät naurut.", stars: 5, date: "22.1.2026" },
+    { name: "Jarmo H.", text: "Paras paita kaljulle miehelle! Huumori on parasta lääkettä.", stars: 5, date: "15.8.2025" },
+  ],
+  "mersu": [
+    { name: "Markku T.", text: "Mercedes-fanille täydellinen! Käytän tätä aina autoharrastajien tapaamisissa.", stars: 5, date: "16.11.2025" },
+    { name: "Kimmo P.", text: "Mersukuskit tietää! Tämä on nyt vakiovaruste autotapahtumissa.", stars: 5, date: "23.11.2025" },
+  ],
+  "audi": [
+    { name: "Mika L.", text: "Audi-faneille pakollinen! Sai paljon kehuja automiitissä.", stars: 5, date: "12.1.2026" },
+  ],
+  "bemari": [
+    { name: "Tomi S.", text: "BMW-kuskin paras muki! Kollegat on kateellisia.", stars: 5, date: "9.1.2026" },
+  ],
+  "museo": [
+    { name: "Jarmo H.", text: "Hauska vitsi ja sopii täydellisesti autoharrastajalle!", stars: 5, date: "15.8.2025" },
+    { name: "Riku M.", text: "Museokamaa-teksti on nerokas! Saa aina hymyn autopiireissä.", stars: 5, date: "8.2.2026" },
+  ],
+  "sähkömies": [
+    { name: "Antti K.", text: "Sähkömiehelle paras lahja! Työkaverit nauroi makeasti.", stars: 5, date: "19.10.2025" },
+    { name: "Kimmo P.", text: "Ostin sähköasentaja-kaverille – sanoi että paras paita ikinä!", stars: 5, date: "23.11.2025" },
+  ],
+  "tunari": [
+    { name: "Mika L.", text: "Hauska teksti! Sopii moneen tilanteeseen ja saa aina naurut.", stars: 5, date: "12.1.2026" },
+    { name: "Ville M.", text: "Ostin kaveriporukalle ja kaikki tykkäsi. Hauska ja laadukas!", stars: 5, date: "8.9.2025" },
+  ],
+  "tonnin": [
+    { name: "Jukka P.", text: "Klassikkovitsi ja laadukas tuote! Saa aina hymyn.", stars: 5, date: "18.11.2025" },
+    { name: "Heikki R.", text: "Jokainen suomalainen tunnistaa tämän – loistava!", stars: 5, date: "22.1.2026" },
+  ],
+  "ice": [
+    { name: "Tomi S.", text: "Meemiklassikko! Sai paljon naurua ja kehuja kavereilta.", stars: 5, date: "9.1.2026" },
+    { name: "Riku M.", text: "Paras meemipaita/huppari mitä oon nähny! Kaikki tunnistaa tän.", stars: 5, date: "8.2.2026" },
+  ],
+  "ukki": [
+    { name: "Noora S.", text: "Ukille joululahjaksi ja oli tosi tyytyväinen! Käyttää ylpeänä.", stars: 5, date: "10.5.2025" },
+    { name: "Laura M.", text: "Paras lahja ukille! Oli tosi otettu ja näyttää sitä kaikille.", stars: 5, date: "5.3.2026" },
+  ],
+  "pappa": [
+    { name: "Samuli K.", text: "Papalle syntymäpäivälahjaksi – oli tosi iloinen ja käyttää jatkuvasti!", stars: 5, date: "13.12.2025" },
+    { name: "Katja T.", text: "Pappa oli ihan fiiliksissä! Sanoi että on paras lahja.", stars: 5, date: "21.1.2026" },
+  ],
+  "isäntä": [
+    { name: "Sanna K.", text: "Ostin miehelle ja tykkäsi ihan valtavasti! Sopii täydellisesti.", stars: 5, date: "3.2.2026" },
+    { name: "Päivi K.", text: "Hauska ja osuva! Mies käyttää tätä ylpeänä.", stars: 5, date: "11.2.2026" },
   ],
 };
 
