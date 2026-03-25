@@ -68,7 +68,7 @@ const Index = () => {
     "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
     "email": "huumorikauppa@gmail.com",
     "sameAs": [
-      "https://www.instagram.com/huumorikauppa.fi",
+      "https://instagram.com/huumorikauppa.fi",
       "https://www.facebook.com/profile.php?id=61584153329326"
     ]
   };
