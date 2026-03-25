@@ -6,10 +6,16 @@ import { Product } from "@/types/product";
 const ORIGINAL_PRICES: Record<string, number> = {
   "kalamies": 39,
   "amatimies": 60,
-  "elakkeella": 95,
-  "eläkkeellä": 95,
   "i-love-my-girlfriend": 40,
   "i-my-girlfriend": 40,
+};
+
+// Category-specific max original prices to keep things believable
+const MAX_ORIGINAL_BY_CATEGORY: Record<string, number> = {
+  "t-paidat": 39.90,
+  "mukit": 27.90,
+  "bodyt": 34.90,
+  "tarrat": 9.90,
 };
 
 function getOriginalPrice(slug: string, name: string, category: string, price: number): number | undefined {
@@ -18,7 +24,8 @@ function getOriginalPrice(slug: string, name: string, category: string, price: n
   // Check specific product matches
   for (const [keyword, origPrice] of Object.entries(ORIGINAL_PRICES)) {
     if (key.includes(keyword) && origPrice > price) {
-      return origPrice;
+      const max = MAX_ORIGINAL_BY_CATEGORY[category];
+      return max ? Math.min(origPrice, max) : origPrice;
     }
   }
   
@@ -28,9 +35,6 @@ function getOriginalPrice(slug: string, name: string, category: string, price: n
   if (category === 'pitkahihaiset' && price <= 39.90) return 54.90;
   if (category === 'mukit' && price <= 19.90) return 27.90;
   if (category === 'bodyt' && price <= 24.90) return 34.90;
-  
-  // Safety cap: no t-shirt original price should exceed 50€
-  if (category === 't-paidat' && origPrice !== undefined && origPrice > 50) return 34.90;
   
   return undefined;
 }
