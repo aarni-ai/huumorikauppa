@@ -259,10 +259,36 @@ const CheckoutPage = () => {
               </div>
             ))}
           </div>
+          {/* Discount code */}
+          <div className="border-t border-border pt-3 space-y-2">
+            {appliedDiscount ? (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-primary font-medium">✅ {appliedDiscount.code}</span>
+                <span className="text-primary">-{appliedDiscount.label}</span>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Alennuskoodi"
+                  value={discountCode}
+                  onChange={e => setDiscountCode(e.target.value)}
+                  className="bg-muted border-border text-sm"
+                />
+                <Button variant="outline" size="sm" onClick={applyDiscount} className="border-border whitespace-nowrap">
+                  Käytä
+                </Button>
+              </div>
+            )}
+          </div>
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
               <span>Tuotteet</span><span>{totalPrice.toFixed(2)} €</span>
             </div>
+            {appliedDiscount && (
+              <div className="flex justify-between text-primary">
+                <span>Alennus ({appliedDiscount.percent}%)</span><span>-{discountAmount.toFixed(2)} €</span>
+              </div>
+            )}
             <div className="flex justify-between text-muted-foreground">
               <span>Toimitus</span>
               <span>{shippingFree ? "Ilmainen" : `${shippingCost.toFixed(2)} €`}</span>
