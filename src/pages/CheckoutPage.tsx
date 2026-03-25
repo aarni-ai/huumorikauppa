@@ -92,9 +92,21 @@ const CheckoutPage = () => {
     }
   };
 
+  const applyDiscount = () => {
+    const upper = discountCode.trim().toUpperCase();
+    const found = VALID_CODES[upper];
+    if (found) {
+      setAppliedDiscount({ code: upper, ...found });
+      toast({ title: `Koodi "${upper}" aktivoitu! ${found.label} 🎉` });
+    } else {
+      toast({ title: "Virheellinen alennuskoodi", variant: "destructive" });
+    }
+  };
+
+  const discountAmount = appliedDiscount ? totalPrice * (appliedDiscount.percent / 100) : 0;
   const shippingFree = totalPrice >= 60;
   const shippingCost = shippingFree ? 0 : 5.95;
-  const grandTotal = totalPrice + shippingCost;
+  const grandTotal = totalPrice - discountAmount + shippingCost;
 
   if (items.length === 0) {
     return (
