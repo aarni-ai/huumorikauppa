@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const NAMES = [
   "Anna H.", "Tepe", "Veetu", "Marja-Leena H.", "Reijo T.", "Mika L.",
@@ -88,23 +88,55 @@ function shuffle<T>(arr: T[]): T[] {
 const shuffledReviews = shuffle(REVIEWS.slice(0, 20).map((r, i) => ({ ...r, name: NAMES[i % NAMES.length] })));
 
 export function ReviewsCarousel() {
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isPausedRef = useRef(false);
+  const [isMobileLike, setIsMobileLike] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+    const update = () => setIsMobileLike(mediaQuery.matches);
+    update();
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", update);
+      return () => mediaQuery.removeEventListener("change", update);
+    }
+
+    mediaQuery.addListener(update);
+    return () => mediaQuery.removeListener(update);
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || isMobileLike) return;
 
     let animId: number;
     let lastTime = 0;
-    const speed = 120; // pixels per second
+    const speed = 80; // pixels per second
 
     function step(timestamp: number) {
       if (lastTime === 0) lastTime = timestamp;
       const delta = (timestamp - lastTime) / 1000;
       lastTime = timestamp;
 
-      if (!isPausedRef.current && el) {
+      if (!isPausedRef.current && isInView && el) {
         el.scrollLeft += speed * delta;
         // Reset to start for infinite loop
         if (el.scrollLeft >= el.scrollWidth / 2) {
@@ -116,12 +148,12 @@ export function ReviewsCarousel() {
 
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, []);
+  }, [isMobileLike, isInView]);
 
-  const items = [...shuffledReviews, ...shuffledReviews];
+  const items = isMobileLike ? shuffledReviews.slice(0, 10) : [...shuffledReviews, ...shuffledReviews];
 
   return (
-    <section className="py-12 md:py-16 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 overflow-hidden">
       <div className="container mb-8">
         <h2 className="font-display text-2xl md:text-3xl text-foreground text-center">
           Asiakkaiden arviot ⭐
@@ -129,16 +161,15 @@ export function ReviewsCarousel() {
       </div>
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-hidden"
-        onMouseEnter={() => { isPausedRef.current = true; }}
-        onMouseLeave={() => { isPausedRef.current = false; }}
-        onTouchStart={() => { isPausedRef.current = true; }}
-        onTouchEnd={() => { isPausedRef.current = false; }}
+        className={`flex gap-4 ${isMobileLike ? "overflow-x-auto snap-x snap-mandatory pb-2" : "overflow-x-hidden"}`}
+        style={isMobileLike ? { WebkitOverflowScrolling: "touch" } : undefined}
+        onMouseEnter={() => { if (!isMobileLike) isPausedRef.current = true; }}
+        onMouseLeave={() => { if (!isMobileLike) isPausedRef.current = false; }}
       >
         {items.map((review, i) => (
           <div
             key={i}
-            className="shrink-0 w-[300px] md:w-[350px] bg-card border border-border rounded-lg p-5 space-y-3"
+            className={`shrink-0 w-[300px] md:w-[350px] bg-card border border-border rounded-lg p-5 space-y-3 ${isMobileLike ? "snap-start" : ""}`}
           >
             <div className="flex gap-0.5">
               {Array.from({ length: review.stars }).map((_, s) => (
