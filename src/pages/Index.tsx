@@ -316,7 +316,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   };
 
   return (
-    <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: "layout paint" }}>
+    <section ref={sectionRef} className="container py-10 md:py-14">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
         <div className="flex items-center gap-2">
@@ -337,7 +337,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         </div>
       </div>
       <div
-        className="overflow-hidden touch-pan-y [transform:translate3d(0,0,0)] [backface-visibility:hidden]"
+        className="overflow-hidden touch-pan-y"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
