@@ -192,7 +192,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {showOptions && (
           <div
             ref={optionsRef}
-            className="absolute inset-0 bg-card/95 backdrop-blur-sm flex flex-col p-3 z-10 overflow-y-auto"
+            className="absolute inset-0 bg-card flex flex-col p-3 z-10 overflow-y-auto"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
           >
             {/* Close button */}
