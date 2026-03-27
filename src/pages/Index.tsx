@@ -218,11 +218,12 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isInView, setIsInView] = useState(true);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollRafRef = useRef<number | null>(null);
   const isUserScrollingRef = useRef(false);
+  const isInViewRef = useRef(true);
   const sectionRef = useRef<HTMLElement>(null);
 
   const isMobile = useIsMobile();
@@ -236,7 +237,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
+        isInViewRef.current = entry.isIntersecting;
       },
       { threshold: 0.2 }
     );
@@ -249,15 +250,20 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     if (typeof window === "undefined") return;
 
     const onScroll = () => {
-      isUserScrollingRef.current = true;
+      if (scrollRafRef.current !== null) return;
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        isUserScrollingRef.current = true;
 
-      if (scrollIdleTimeoutRef.current) {
-        clearTimeout(scrollIdleTimeoutRef.current);
-      }
+        if (scrollIdleTimeoutRef.current) {
+          clearTimeout(scrollIdleTimeoutRef.current);
+        }
 
-      scrollIdleTimeoutRef.current = setTimeout(() => {
-        isUserScrollingRef.current = false;
-      }, 140);
+        scrollIdleTimeoutRef.current = setTimeout(() => {
+          isUserScrollingRef.current = false;
+        }, 160);
+
+        scrollRafRef.current = null;
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -265,6 +271,9 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (scrollIdleTimeoutRef.current) clearTimeout(scrollIdleTimeoutRef.current);
+      if (scrollRafRef.current !== null) {
+        window.cancelAnimationFrame(scrollRafRef.current);
+      }
     };
   }, []);
 
@@ -287,7 +296,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   }, [maxIndex]);
 
   useEffect(() => {
-    if (!isAutoPlaying || !isInView) {
+    if (!isAutoPlaying) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -296,7 +305,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     }
 
     intervalRef.current = setInterval(() => {
-      if (!isUserScrollingRef.current) {
+      if (isInViewRef.current && !isUserScrollingRef.current) {
         next();
       }
     }, 4000);
@@ -307,7 +316,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlaying, isInView, next]);
+  }, [isAutoPlaying, next]);
 
   const handleInteraction = () => {
     setIsAutoPlaying(false);
