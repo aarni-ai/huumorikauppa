@@ -219,10 +219,10 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isInView, setIsInView] = useState(true);
-  const [isUserScrolling, setIsUserScrolling] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isUserScrollingRef = useRef(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   const isMobile = useIsMobile();
@@ -249,14 +249,14 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     if (typeof window === "undefined") return;
 
     const onScroll = () => {
-      setIsUserScrolling(true);
+      isUserScrollingRef.current = true;
 
       if (scrollIdleTimeoutRef.current) {
         clearTimeout(scrollIdleTimeoutRef.current);
       }
 
       scrollIdleTimeoutRef.current = setTimeout(() => {
-        setIsUserScrolling(false);
+        isUserScrollingRef.current = false;
       }, 140);
     };
 
@@ -287,7 +287,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   }, [maxIndex]);
 
   useEffect(() => {
-    if (!isAutoPlaying || !isInView || isUserScrolling) {
+    if (!isAutoPlaying || !isInView) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -295,7 +295,11 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
       return;
     }
 
-    intervalRef.current = setInterval(next, 4000);
+    intervalRef.current = setInterval(() => {
+      if (!isUserScrollingRef.current) {
+        next();
+      }
+    }, 4000);
 
     return () => {
       if (intervalRef.current) {
@@ -303,7 +307,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlaying, isInView, isUserScrolling, next]);
+  }, [isAutoPlaying, isInView, next]);
 
   const handleInteraction = () => {
     setIsAutoPlaying(false);
@@ -312,7 +316,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   };
 
   return (
-    <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: "layout paint" }}>
+    <section ref={sectionRef} className="container py-10 md:py-14">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
         <div className="flex items-center gap-2">
@@ -333,7 +337,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         </div>
       </div>
       <div
-        className="overflow-hidden touch-pan-y [transform:translate3d(0,0,0)] [backface-visibility:hidden]"
+        className="overflow-hidden touch-pan-y"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
