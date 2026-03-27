@@ -218,12 +218,30 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const isMobile = useIsMobile();
   const isTablet = typeof window !== "undefined" && window.innerWidth >= 768 && window.innerWidth < 1024;
-  const itemsPerView = isMobile ? 2 : isTablet ? 4 : 5;
+  const isMobileLike = isMobile || isCoarsePointer;
+  const itemsPerView = isMobileLike ? 2 : isTablet ? 4 : 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const update = () => setIsCoarsePointer(mediaQuery.matches);
+    update();
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", update);
+      return () => mediaQuery.removeEventListener("change", update);
+    }
+
+    mediaQuery.addListener(update);
+    return () => mediaQuery.removeListener(update);
+  }, []);
 
   const goTo = useCallback((index: number) => {
     setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
@@ -238,17 +256,47 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   }, [maxIndex]);
 
   useEffect(() => {
+    if (isMobileLike) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
+
     if (isAutoPlaying) {
       intervalRef.current = setInterval(next, 4000);
       return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
     }
-  }, [isAutoPlaying, next]);
+  }, [isAutoPlaying, next, isMobileLike]);
 
   const handleInteraction = () => {
+    if (isMobileLike) return;
     setIsAutoPlaying(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
     setTimeout(() => setIsAutoPlaying(true), 8000);
   };
+
+  if (isMobileLike) {
+    return (
+      <section className="container py-10 md:py-14">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
+        </div>
+
+        <div
+          className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="shrink-0 w-[78%] snap-start"
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="container py-10 md:py-14">
