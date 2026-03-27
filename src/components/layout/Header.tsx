@@ -68,7 +68,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-50 border-b border-border bg-background">
       {/* Trust banner */}
       <div className="bg-primary text-primary-foreground text-center py-1.5 text-xs md:text-sm font-medium tracking-wide">
         🚚 Ilmainen toimitus yli 60 € tilauksiin
