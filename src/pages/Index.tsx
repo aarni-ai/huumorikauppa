@@ -230,8 +230,8 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia("(pointer: coarse)");
-    const update = () => setIsCoarsePointer(mediaQuery.matches);
+    const mediaQuery = window.matchMedia("(pointer: coarse), (hover: none)");
+    const update = () => setIsCoarsePointer(mediaQuery.matches || navigator.maxTouchPoints > 0);
     update();
 
     if (mediaQuery.addEventListener) {
