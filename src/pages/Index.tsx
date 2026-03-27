@@ -274,6 +274,18 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     };
   }, []);
 
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
+  }, [maxIndex]);
+
+  const next = useCallback(() => {
+    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
+  }, [maxIndex]);
+
+  const prev = useCallback(() => {
+    setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
+  }, [maxIndex]);
+
   useEffect(() => {
     if (!isAutoPlaying || !isInView || isUserScrolling) {
       if (intervalRef.current) {
@@ -292,18 +304,6 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
       }
     };
   }, [isAutoPlaying, isInView, isUserScrolling, next]);
-
-  const goTo = useCallback((index: number) => {
-    setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
-  }, [maxIndex]);
-
-  const next = useCallback(() => {
-    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
-  }, [maxIndex]);
-
-  const prev = useCallback(() => {
-    setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
-  }, [maxIndex]);
 
   const handleInteraction = () => {
     setIsAutoPlaying(false);
