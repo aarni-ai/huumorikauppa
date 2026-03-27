@@ -139,14 +139,13 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-300 hover:shadow-glow-lime relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => { setIsHovered(false); if (!showOptions) setShowOptions(false); }}
-      onTouchStart={() => setIsHovered(prev => !prev)}
     >
       {/* Image with hover swap */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
           src={displayImage}
           alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
-          className={`w-full h-full object-cover transition-transform duration-500 ease-out will-change-transform ${isHovered ? "scale-105" : "scale-100"}`}
+          className="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
           width={400}
