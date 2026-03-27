@@ -218,30 +218,80 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const isMobile = useIsMobile();
   const isTablet = typeof window !== "undefined" && window.innerWidth >= 768 && window.innerWidth < 1024;
-  const isMobileLike = isMobile || isCoarsePointer;
-  const itemsPerView = isMobileLike ? 2 : isTablet ? 4 : 5;
+  const itemsPerView = isMobile ? 2 : isTablet ? 4 : 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia("(pointer: coarse), (hover: none)");
-    const update = () => setIsCoarsePointer(mediaQuery.matches || navigator.maxTouchPoints > 0);
-    update();
+    const onScroll = () => {
+      setIsUserScrolling(true);
 
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener("change", update);
-      return () => mediaQuery.removeEventListener("change", update);
+      if (scrollIdleTimeoutRef.current) {
+        clearTimeout(scrollIdleTimeoutRef.current);
+      }
+
+      scrollIdleTimeoutRef.current = setTimeout(() => {
+        setIsUserScrolling(false);
+      }, 140);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollIdleTimeoutRef.current) clearTimeout(scrollIdleTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isAutoPlaying || !isInView || isUserScrolling) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
     }
 
-    mediaQuery.addListener(update);
-    return () => mediaQuery.removeListener(update);
-  }, []);
+    intervalRef.current = setInterval(next, 4000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isAutoPlaying, isInView, isUserScrolling, next]);
 
   const goTo = useCallback((index: number) => {
     setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
@@ -255,51 +305,14 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
   }, [maxIndex]);
 
-  useEffect(() => {
-    if (isMobileLike) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      return;
-    }
-
-    if (isAutoPlaying) {
-      intervalRef.current = setInterval(next, 4000);
-      return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-    }
-  }, [isAutoPlaying, next, isMobileLike]);
-
   const handleInteraction = () => {
-    if (isMobileLike) return;
     setIsAutoPlaying(false);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setTimeout(() => setIsAutoPlaying(true), 8000);
+    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+    interactionTimeoutRef.current = setTimeout(() => setIsAutoPlaying(true), 8000);
   };
 
-  if (isMobileLike) {
-    return (
-      <section className="container py-10 md:py-14">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
-        </div>
-
-        <div
-          className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2"
-          style={{ WebkitOverflowScrolling: "touch" }}
-        >
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="shrink-0 w-[78%] snap-start"
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="container py-10 md:py-14">
+    <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: "layout paint" }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
         <div className="flex items-center gap-2">
@@ -320,13 +333,13 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         </div>
       </div>
       <div
-        className="overflow-hidden"
+        className="overflow-hidden touch-pan-y [transform:translate3d(0,0,0)] [backface-visibility:hidden]"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
         <div
-          className="flex transition-transform duration-500 ease-out will-change-transform"
-          style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+          className="flex transition-transform duration-500 ease-out will-change-transform [transform:translateZ(0)]"
+          style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
         >
           {products.map(product => (
             <div
