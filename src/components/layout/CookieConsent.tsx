@@ -27,7 +27,7 @@ export function CookieConsent() {
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm" />
+      <div className="fixed inset-0 z-40 bg-background/70" />
 
       {/* Cookie popup */}
       <div className="fixed bottom-6 left-4 right-4 z-50 mx-auto max-w-lg animate-slide-in-right">
@@ -35,8 +35,8 @@ export function CookieConsent() {
           <div className="flex items-start gap-3 mb-4">
             <span className="text-3xl">🍪</span>
             <div>
-              <h3 className="font-display text-lg text-foreground mb-1">Käytämme evästeitä</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h3 className="font-display text-lg text-foreground mb-1 [text-shadow:0_1px_8px_hsl(var(--background)/0.55)]">Käytämme evästeitä</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed [text-shadow:0_1px_6px_hsl(var(--background)/0.45)]">
                 Käytämme evästeitä parantaaksemme käyttökokemustasi ja analysoidaksemme liikennettä.{" "}
                 <a href="/tietosuojakaytanto" className="text-primary hover:underline font-medium">
                   Lue lisää →
