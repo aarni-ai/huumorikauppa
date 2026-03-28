@@ -25,8 +25,8 @@ const giftCategories: GiftCategory[] = [
     name: "Hauskat Lahjat Miehelle",
     emoji: "🎁",
     h1: "Hauskat Lahjat Miehelle",
-    seoTitle: "Hauskat Lahjat Miehelle – Parhaat Lahjaideat | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa lahjaa miehelle? Parhaat hauskat lahjat isälle, kaverille ja aviomiehelle: t-paidat, hupparit ja mukit. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat lahjat miehelle – Parhaat ideat | Huumorikauppa.fi",
+    seoDescription: "Hauskat lahjat miehelle – Ideat joita hän ei odota! T-paidat, mukit ja paljon muuta. 🎯",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -72,8 +72,8 @@ Miehelle jolla on jo kaikkea, hauska paita tai muki on täydellinen lahja – se
     name: "Hauskat Lahjat Naiselle",
     emoji: "💝",
     h1: "Hauskat Lahjat Naiselle",
-    seoTitle: "Hauskat Lahjat Naiselle – Parhaat Lahjaideat | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa lahjaa naiselle? Parhaat hauskat lahjat äidille, ystävälle ja puolisolle: hupparit, mukit ja paidat. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat lahjat naiselle – Ideat joita hän ei odota | Huumorikauppa.fi",
+    seoDescription: "Hauskat lahjat naiselle – Persoonalliset ideat kaikille naisille. Nopea toimitus. 🌸",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -113,8 +113,8 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
     name: "Polttarilahjat & Polttaripaidat",
     emoji: "🎉",
     h1: "Polttarilahjat & Polttaripaidat",
-    seoTitle: "Polttarilahjat & Polttaripaidat – Tilaa Ryhmälle | Huumorikauppa",
-    seoDescription: "Etsitkö polttaripaitoja tai polttarilahjoja? Tilaa yhtenäiset hauskat paidat polttareihin. Miesten ja naisten polttarit. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Polttarilahjat – Hauskat ideat morsiamelle ja sulhaselle | Huumorikauppa.fi",
+    seoDescription: "Parhaat polttarilahjat morsiamelle ja sulhaselle! Hauskat ja muistamattomat ideat. Toimitus nopeasti. 🥂",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -151,8 +151,8 @@ Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: mukeja, hup
     name: "Isänpäivälahjat",
     emoji: "👨",
     h1: "Hauskat Isänpäivälahjat",
-    seoTitle: "Hauskat Isänpäivälahjat – Parhaat Lahjat Isälle | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa isänpäivälahja? Parhaat hauskat lahjat isälle: kalastuspaidat, setähuumorimukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Isänpäivälahjat – 20 hauskaa lahjaa isälle | Huumorikauppa.fi",
+    seoDescription: "Mitä antaa isälle? 20+ hauskaa ideaa isänpäivään. T-paidat, mukit ja paljon muuta. Tilaa nyt! 👨",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -191,8 +191,8 @@ Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme 3–7 arkipäivä
     name: "Äitienpäivälahjat",
     emoji: "💐",
     h1: "Hauskat Äitienpäivälahjat",
-    seoTitle: "Hauskat Äitienpäivälahjat – Parhaat Lahjat Äidille | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa äitienpäivälahja? Parhaat hauskat lahjat äidille: hupparit, mukit ja paidat. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Äitienpäivälahjat – Hauskat lahjat äidille | Huumorikauppa.fi",
+    seoDescription: "Hae inspiraatiota äitienpäivälahjaan! Hauskat ideat äidille. Tilaa helposti verkosta. 💐",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -229,8 +229,8 @@ Tilaa viimeistään 2 viikkoa ennen äitienpäivää.`,
     name: "Hauskat Joululahjat",
     emoji: "🎄",
     h1: "Hauskat Joululahjat",
-    seoTitle: "Hauskat Joululahjat – Parhaat Lahjaideat Jouluun | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa joululahjaa? Parhaat hauskat joululahjat miehelle, naiselle ja työkavereille. Pikkujoululahjat alle 20 €. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Joululahjat 2025 – Parhaat hauskat ideat | Huumorikauppa.fi",
+    seoDescription: "Parhaat joululahjat 2025! Hauskat ja yllättävät ideat koko perheelle. Osta ajoissa – nopea toimitus. 🎄",
     filterFn: (p) => {
       return p.category === "t-paidat" || p.category === "hupparit" || 
              p.category === "mukit" || p.category === "tarrat" || 
@@ -269,8 +269,8 @@ Tilaa viimeistään joulukuun alussa. Toimitamme 3–7 arkipäivässä.`,
     name: "Hauskat Syntymäpäivälahjat",
     emoji: "🎂",
     h1: "Hauskat Syntymäpäivälahjat",
-    seoTitle: "Hauskat Syntymäpäivälahjat – Lahjat Jotka Naurattavat | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa syntymäpäivälahja? Parhaat hauskat syntymäpäivälahjat miehelle ja naiselle. Lahja 30v, 40v, 50v, 60v. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Syntymäpäivälahjat – Hauskat ja unohtumattomat ideat | Huumorikauppa.fi",
+    seoDescription: "Hauska syntymäpäivälahja? Löydä täydellinen idea kaikille. Nopea toimitus koko Suomeen. 🎂",
     filterFn: (p) => {
       return p.category === "t-paidat" || p.category === "hupparit" || p.category === "mukit";
     },
@@ -298,8 +298,8 @@ Syntymäpäivälahjan pitää olla hauska, persoonallinen ja mieleenpainuva. Huu
     name: "Hauskat Eläkelahjat",
     emoji: "🏖️",
     h1: "Hauskat Eläkelahjat",
-    seoTitle: "Hauskat Eläkelahjat – Parhaat Lahjat Eläkeläiselle | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa eläkelahja? Parhaat hauskat lahjat eläkkeelle jäävälle: huumoripaidat, mukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Eläkeläislahjat – Hauskat muistot eläkkeelle siirtyvälle | Huumorikauppa.fi",
+    seoDescription: "Eläkeläislahja joka muistetaan! Parhaat hauskat ideat eläkkeelle jäävälle. Tilaa verkosta helposti. 🎉",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
       return (
@@ -331,8 +331,8 @@ Eläkkeelle siirtyminen on yksi elämän suurimmista virstanpylväistä. Vuosiky
     name: "Hauskat Lahjat Kaverille",
     emoji: "🤝",
     h1: "Hauskat Lahjat Kaverille",
-    seoTitle: "Hauskat Lahjat Kaverille – Lahjaideat Ystävälle | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa lahjaa kaverille? Parhaat hauskat lahjat ystävälle: meemipaidat, sarkasmimmukit ja hupparit. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauska lahja kaverille – Parhaat ideat | Huumorikauppa.fi",
+    seoDescription: "Hauska lahja kaverille – 15+ ideaa jotka varmasti toimii. Nopea toimitus. Osta nyt! 🎁",
     filterFn: (p) => {
       return p.category === "t-paidat" || p.category === "mukit" || p.category === "tarrat" || p.category === "hupparit";
     },
@@ -357,8 +357,8 @@ Kaverin syntymäpäivälahjan ei tarvitse olla kallis – huumori riittää. All
     name: "Lahjat Työkavereille",
     emoji: "💼",
     h1: "Hauskat Lahjat Työkavereille",
-    seoTitle: "Hauskat Lahjat Työkavereille & Pikkujoululahjat | Huumorikauppa",
-    seoDescription: "Etsitkö hauskaa lahjaa työkavereille? Parhaat pikkujoululahjat ja toimistolahjat: hauskat mukit, tarrat ja pipot. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Lahjat työkavereille – Hauskat toimistolahjat | Huumorikauppa.fi",
+    seoDescription: "Hauska toimistolahja työkavereille – Ideat, jotka saavat kaikki nauramaan. Tilaa nyt! 💼",
     filterFn: (p) => {
       return p.category === "mukit" || p.category === "tarrat" || p.category === "pipot";
     },
