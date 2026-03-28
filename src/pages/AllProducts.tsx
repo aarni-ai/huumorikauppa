@@ -46,8 +46,8 @@ const AllProducts = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Kaikki tuotteet – Hauskat t-paidat, hupparit, mukit | Huumorikauppa"
-        description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, housuja, mukeja ja tarroja. Ilmainen toimitus yli 60 € tilauksiin!"
+        title="Kaikki hauskat tuotteet – T-paidat, hupparit, mukit ja paljon muuta | Huumorikauppa.fi"
+        description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, mukeja ja tarroja. Ilmainen toimitus yli 50 € tilauksiin!"
         canonical="https://huumorikauppa.fi/kaikki-tuotteet"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
@@ -71,7 +71,7 @@ const AllProducts = () => {
           <span className="text-foreground">Kaikki tuotteet</span>
         </nav>
 
-        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Kaikki Tuotteet 🛍️</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Kaikki hauskat tuotteet 🛍️</h1>
         <p className="text-muted-foreground mb-8">Runsaasti valikoimaa – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!</p>
 
         {isLoading ? (

@@ -4,16 +4,36 @@ import { SEOHead } from "@/components/SEOHead";
 
 const faqs = [
   {
-    q: "Kuinka nopeasti tilaukseni toimitetaan?",
-    a: "Toimitamme tilauksesi 3–10 arkipäivässä Postin tai Matkahuollon kautta. Saat seurantakoodin sähköpostiisi heti kun paketti lähtee matkaan."
+    q: "Kuinka nopeasti tilaus toimitetaan?",
+    a: "Toimitamme tilaukset 2–4 arkipäivässä koko Suomeen. Arkisin ennen klo 14 tehdyt tilaukset lähtevät samana päivänä."
   },
   {
-    q: "Onko ilmainen toimitus?",
-    a: "Kyllä! Yli 60 € tilaukset toimitetaan ilmaiseksi koko Suomeen."
+    q: "Onko toimitus ilmainen?",
+    a: "Toimitus on ilmainen yli 50 euron tilauksille. Alle 50 euron tilauksille toimitusmaksu on 4,90 €."
   },
   {
-    q: "Voinko palauttaa tuotteen?",
-    a: "Totta kai! Sinulla on 14 päivän palautusoikeus."
+    q: "Miten palautusoikeus toimii?",
+    a: "Sinulla on 30 päivää aikaa palauttaa tuotteet ilman syytä. Palautus on ilmainen. Rahat palautetaan 5–7 arkipäivässä."
+  },
+  {
+    q: "Mitä maksutapoja teillä on?",
+    a: "Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit ostaa nyt ja maksaa myöhemmin."
+  },
+  {
+    q: "Voinko tilata ilman tiliä?",
+    a: "Kyllä, voit tilata vieraana ilman rekisteröitymistä."
+  },
+  {
+    q: "Toimittaako Huumorikauppa ulkomaille?",
+    a: "Tällä hetkellä toimitamme vain Suomeen, mukaan lukien Ahvenanmaa."
+  },
+  {
+    q: "Miten otan yhteyttä asiakaspalveluun?",
+    a: "Tavoitat meidät sähköpostilla info@huumorikauppa.fi. Vastaamme 1–2 arkipäivässä."
+  },
+  {
+    q: "Ovatko tuotteet suomalaista käsialaa?",
+    a: "Kaikki designit ovat suomalaista käsialaa. Huumorikauppa on 100% suomalainen verkkokauppa, joka toimii Helsingistä."
   },
   {
     q: "Sopiiko tuote lahjaksi?",
@@ -24,20 +44,8 @@ const faqs = [
     a: "Jokaisella vaatetuotesivulla on koko-opas senttimetreinä. Jos olet epävarma, suosittelemme tilaamaan yhden koon isomman."
   },
   {
-    q: "Onko maksaminen turvallista?",
-    a: "Kyllä! Käytämme SSL-suojattua yhteyttä ja luotettavaa maksunvälitystä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna."
-  },
-  {
     q: "Teettekö custom-painatuksia?",
     a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (info@huumorikauppa.fi) ja kerro mitä haluat – suunnitellaan yhdessä!"
-  },
-  {
-    q: "Mistä tuotteet valmistetaan?",
-    a: "Paitamme ja hupparimme ovat laadukasta puuvillaa tai puuvillapolyesterisekoitetta. Mukit ovat keramiikkaa. Kaikissa on kestävä DTG-painatus."
-  },
-  {
-    q: "Miten hoidan tuotetta?",
-    a: "Vaatteet pestään nurinpäin 30°C:ssa. Mukit kestävät konepesun. Tarkat hoito-ohjeet löytyvät jokaiselta tuotesivulta."
   },
 ];
 
@@ -55,7 +63,7 @@ const FAQ = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Usein kysytyt kysymykset – Huumorikauppa"
+        title="Usein kysytyt kysymykset – UKK | Huumorikauppa.fi"
         description="Vastaukset yleisimpiin kysymyksiin toimituksesta, palautuksista, maksamisesta ja custom-painatuksista. Huumorikauppa – Suomen hauskin verkkokauppa."
         canonical="https://huumorikauppa.fi/usein-kysytyt-kysymykset"
         jsonLd={faqJsonLd}
@@ -71,7 +79,7 @@ const FAQ = () => {
         <span className="text-foreground">Usein kysytyt kysymykset</span>
       </nav>
 
-      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Usein Kysytyt Kysymykset</h1>
+      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Usein kysytyt kysymykset</h1>
       <p className="text-muted-foreground mb-8">Vastaukset yleisimpiin kysymyksiin.</p>
 
       <Accordion type="single" collapsible className="space-y-2">

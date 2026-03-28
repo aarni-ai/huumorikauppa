@@ -5,7 +5,7 @@ const Terms = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Toimitusehdot – Huumorikauppa"
+        title="Toimitusehdot & palautukset | Huumorikauppa.fi"
         description="Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus, palautukset ja reklamaatiot. Turvallinen verkkokauppa."
         canonical="https://huumorikauppa.fi/toimitusehdot"
         breadcrumbs={[
@@ -20,7 +20,7 @@ const Terms = () => {
         <span className="text-foreground">Toimitusehdot</span>
       </nav>
 
-      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Toimitusehdot</h1>
+      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Toimitusehdot ja palautukset</h1>
 
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
