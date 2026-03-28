@@ -32,7 +32,7 @@ const BlogIndex = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Blogi – Lahjaideat, vinkit ja huumori | Huumorikauppa"
+        title="Blogi – Lahjavinkit & hauskat ideat 2025 | Huumorikauppa.fi"
         description="Huumorikaupan blogi: lahjaideoita, tuotevinkkejä ja huumoria. Löydä parhaat hauskat lahjat miehelle, naiselle ja kaverille."
         canonical="https://huumorikauppa.fi/blogi"
         jsonLd={blogListJsonLd}
@@ -50,7 +50,7 @@ const BlogIndex = () => {
         </nav>
 
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">
-          Huumorikaupan Blogi 📝
+          Lahjavinkit ja hauskat ideat 📝
         </h1>
         <p className="text-muted-foreground mb-10">
           Lahjaideoita, tuotevinkkejä ja inspiraatiota hauskojen tuotteiden maailmasta.

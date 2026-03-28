@@ -76,14 +76,22 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Huumorikauppa – Hauskat t-paidat, hupparit, mukit ja tarrat"
-        description="Osta hauskoja t-paitoja, huppareita, mukeja ja tarroja Suomen hauskimmasta verkkokaupasta. Ilmainen toimitus yli 60 € tilauksiin. Täydellisiä lahjoja!"
+        title="Hauskat lahjat & huumorituotteet – Nopea toimitus | Huumorikauppa.fi"
+        description="Löydä Suomen hauskin lahja! T-paitoja, huppareita, mukeja, tarroja. Yli 200 tuotetta, nopea toimitus. Tilaa helposti! 🎁"
         canonical="https://huumorikauppa.fi"
         jsonLd={orgJsonLd}
+        ogImage="https://huumorikauppa.fi/images/hero-banner-wide.png"
       />
 
+      {/* H1 — visually integrated with hero */}
+      <section className="container pt-6 pb-2 md:pt-4 md:pb-1">
+        <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center mb-4">
+          Suomen hauskin lahjakauppa 🎁
+        </h1>
+      </section>
+
       {/* HERO BANNER IMAGE – LCP element */}
-      <section className="container pt-4 pb-2 md:pt-2 md:pb-1">
+      <section className="container pb-2 md:pb-1">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
@@ -161,7 +169,7 @@ const Index = () => {
       {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
         <h2 className="font-display text-2xl md:text-3xl text-foreground mb-8 text-center">
-          Selaa kategorioittain 📦
+          Etsitkö lahjaa tilaisuuteen? 📦
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {categoriesWithProducts.map(cat => (
@@ -177,7 +185,7 @@ const Index = () => {
       <section className="bg-card border-y border-border py-12 md:py-16">
         <div className="container">
           <h2 className="font-display text-2xl md:text-3xl text-foreground text-center mb-10">
-            Miksi asiakkaat rakastavat Huumorikauppaa? 🤔
+            Miksi valita Huumorikauppa? 🤔
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
             <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadat suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />

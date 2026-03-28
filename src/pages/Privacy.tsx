@@ -5,7 +5,7 @@ const Privacy = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Tietosuojakäytäntö – Huumorikauppa"
+        title="Tietosuojaseloste | Huumorikauppa.fi"
         description="Huumorikaupan tietosuojakäytäntö: miten keräämme, käytämme ja suojaamme henkilötietojasi GDPR:n mukaisesti."
         canonical="https://huumorikauppa.fi/tietosuojakaytanto"
         breadcrumbs={[
