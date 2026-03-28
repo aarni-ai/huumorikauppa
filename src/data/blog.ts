@@ -1497,3 +1497,4 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
 ];
+
