@@ -1497,9 +1497,6 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
 ];
-
-  {
-    slug: "hauskat-valmistujaislahjat",
     title: "Hauskat valmistujaislahjat – Ideat ylioppilaalle ja opiskelijalle",
     metaTitle: "Hauskat Valmistujaislahjat – Ideat Ylioppilaalle ja Opiskelijalle | Huumorikauppa.fi",
     metaDescription: "Parhaat hauskat valmistujaislahjat 2025! Ideat ylioppilaalle, opiskelijalle ja ammattilaiselle. Tilaa nyt. 🎓",
