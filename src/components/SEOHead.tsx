@@ -12,9 +12,11 @@ interface SEOHeadProps {
   jsonLd?: object;
   breadcrumbs?: BreadcrumbItem[];
   ogImage?: string;
+  ogType?: string;
   noindex?: boolean;
   articlePublishedTime?: string;
   articleModifiedTime?: string;
+  productPrice?: string;
 }
 
 /** Set or create a meta tag */
@@ -30,6 +32,22 @@ function ensureMeta(selector: string, content: string, createAttrs?: Record<stri
   if (el) el.setAttribute("content", content);
 }
 
+function ensureLink(rel: string, extraSelector: string, href: string, extraAttrs?: Record<string, string>) {
+  const selector = `link[rel="${rel}"]${extraSelector}`;
+  let el = document.querySelector(selector) as HTMLLinkElement;
+  if (!el) {
+    el = document.createElement("link");
+    el.rel = rel;
+    if (extraAttrs) {
+      for (const [k, v] of Object.entries(extraAttrs)) {
+        el.setAttribute(k, v);
+      }
+    }
+    document.head.appendChild(el);
+  }
+  el.href = href;
+}
+
 export function SEOHead({
   title,
   description,
@@ -37,9 +55,11 @@ export function SEOHead({
   jsonLd,
   breadcrumbs,
   ogImage,
+  ogType = "website",
   noindex,
   articlePublishedTime,
   articleModifiedTime,
+  productPrice,
 }: SEOHeadProps) {
   useEffect(() => {
     // Title
@@ -54,12 +74,16 @@ export function SEOHead({
       : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
     ensureMeta('meta[name="robots"]', robotsContent, { name: "robots" });
 
-    // Open Graph
+    // Open Graph - always set all
     ensureMeta('meta[property="og:title"]', title, { property: "og:title" });
     ensureMeta('meta[property="og:description"]', description, { property: "og:description" });
+    ensureMeta('meta[property="og:type"]', ogType, { property: "og:type" });
+    ensureMeta('meta[property="og:site_name"]', "Huumorikauppa.fi", { property: "og:site_name" });
+    ensureMeta('meta[property="og:locale"]', "fi_FI", { property: "og:locale" });
     if (canonical) ensureMeta('meta[property="og:url"]', canonical, { property: "og:url" });
 
     // Twitter
+    ensureMeta('meta[name="twitter:card"]', "summary_large_image", { name: "twitter:card" });
     ensureMeta('meta[name="twitter:title"]', title, { name: "twitter:title" });
     ensureMeta('meta[name="twitter:description"]', description, { name: "twitter:description" });
 
@@ -71,6 +95,12 @@ export function SEOHead({
       ensureMeta('meta[name="twitter:image:alt"]', title, { name: "twitter:image:alt" });
     }
 
+    // Product-specific OG
+    if (ogType === "product" && productPrice) {
+      ensureMeta('meta[property="product:price:amount"]', productPrice, { property: "product:price:amount" });
+      ensureMeta('meta[property="product:price:currency"]', "EUR", { property: "product:price:currency" });
+    }
+
     // Canonical
     if (canonical) {
       let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
@@ -80,6 +110,10 @@ export function SEOHead({
         document.head.appendChild(link);
       }
       link.href = canonical;
+
+      // hreflang
+      ensureLink("alternate", '[hreflang="fi"]', canonical, { hreflang: "fi" });
+      ensureLink("alternate", '[hreflang="x-default"]', canonical, { hreflang: "x-default" });
     }
 
     // Article meta
@@ -128,7 +162,7 @@ export function SEOHead({
       const s2 = document.getElementById("seo-breadcrumb-jsonld");
       if (s2) s2.remove();
     };
-  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage, noindex, articlePublishedTime, articleModifiedTime]);
+  }, [title, description, canonical, jsonLd, breadcrumbs, ogImage, ogType, noindex, articlePublishedTime, articleModifiedTime, productPrice]);
 
   return null;
 }
