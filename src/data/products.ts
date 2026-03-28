@@ -4,8 +4,8 @@ export const categories = [
     name: "T-Paidat",
     emoji: "👕",
     description: "Hauskimmat paidat sedille, mutseille ja kaikille muillekin",
-    seoTitle: "Hauskat T-Paidat – Meemipaidat & Vitsipaidat | Huumorikauppa",
-    seoDescription: "Osta hauskoja t-paitoja netistä! Meemipaidat, huumoripaidat ja sarkasmipaidat. Täydellisiä lahjoja. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat t-paidat – Humoristiset painatukset | Huumorikauppa.fi",
+    seoDescription: "Yli 50 hauskaa t-paitaa – Humoristiset painatukset suomalaisille. Koot XS–3XL. Ilmainen toimitus yli 50€. Tilaa nyt! 👕",
     seoText: `## Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat
 
 Etsitkö hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan valikoimasta löydät Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat jotka saavat kaikki nauramaan. Valikoimamme kasvaa jatkuvasti uusilla malleilla ja trendeillä.
@@ -29,8 +29,8 @@ Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. S
     name: "Hupparit",
     emoji: "🧥",
     description: "Lämpöä, asennetta ja huumoria",
-    seoTitle: "Hauskat Hupparit – Meemihupparit & Huumorihupparit | Huumorikauppa",
-    seoDescription: "Osta hauskoja huppareita! Meemihupparit, sarkastisia huppareita koko perheelle. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat hupparit – Löydä paras huumorihuppari | Huumorikauppa.fi",
+    seoDescription: "Löydä paras hauska huppari! Laadukkaat huumorihupparit kaikille. Nopea toimitus. Ilmainen palautus. Tilaa tänään! 🧥",
     seoText: `## Hauskat hupparit – lämpöä, asennetta ja huumoria
 
 Huumorikaupan hauskat hupparit yhdistävät lämmön ja huumorin täydellisesti. Löydä meemihuppari, huumorihuppari tai sarkastinen huppari joka sopii arkeen, vapaa-aikaan ja viikonloppuihin. Hupparimme ovat pehmeää, laadukasta materiaalia ja niissä on kestävä painatus.
@@ -52,8 +52,8 @@ Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät ko
     name: "Pitkähihaiset",
     emoji: "👔",
     description: "Pitkähihaiset paidat asenteella",
-    seoTitle: "Hauskat Pitkähihaiset Paidat – Huumoria Pitkällä Hihalla | Huumorikauppa",
-    seoDescription: "Osta hauskoja pitkähihaisia paitoja! Huumoria ja asennetta pitkällä hihalla. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat pitkähihaiset paidat | Huumorikauppa.fi",
+    seoDescription: "Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 50€. 👔",
     seoText: `## Hauskat pitkähihaiset paidat – huumoria pitkällä hihalla
 
 Pitkähihaiset paidat hauskalla tekstillä ja painatuksella ovat täydellisiä viileämpiin päiviin. Huumorikaupan pitkähihaisten valikoima yhdistää mukavuuden, laadun ja huumorin – näytä asennettasi säällä kuin säällä.
@@ -71,8 +71,8 @@ Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. 
     name: "Mukit",
     emoji: "☕",
     description: "Kahvikupit jotka puhuu puolesta",
-    seoTitle: "Hauskat Mukit – Kahvimukit & Lahjamukit Tekstillä | Huumorikauppa",
-    seoDescription: "Osta hauskoja mukeja! Kahvimukit, toimistomukit ja lahjamukit hauskalla tekstillä. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat mukit – Parhaat huumorimukit töihin ja kotiin | Huumorikauppa.fi",
+    seoDescription: "Parhaat hauskat mukit Suomessa! Täydellinen lahja töihin tai kotiin. Yli 30 designia. Nopea toimitus. ☕",
     seoText: `## Hauskat mukit – kahvimukit hauskalla tekstillä
 
 Huumorikaupan hauskat mukit piristävät jokaisen kahvihetken. Valikoimastamme löydät hauskoja kahvimukeja toimistoon, kotiin ja lahjaksi. Muki hauskalla tekstillä on yksi suosituimmista lahjatuotteistamme – ja syystä!
@@ -94,8 +94,8 @@ Kaikki mukimme ovat laadukkaita keramiikkamukeja kestävällä painatuksella. Ne
     name: "Tarrat",
     emoji: "🏷️",
     description: "Tarrat joka pintaan",
-    seoTitle: "Hauskat Tarrat – Meemitarrat & Tarra-arkit | Huumorikauppa",
-    seoDescription: "Osta hauskoja tarroja! Tarra-arkit läppäriin, autoon ja jääkaappiin. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat tarrat – Parhaat huumoritarrat | Huumorikauppa.fi",
+    seoDescription: "Hauskat tarrat kannettavalle, autolle tai seinälle! Korkealaatuiset suomalainen huumori. Tilaa heti. 🏷️",
     seoText: `## Hauskat tarrat – meemitarrat ja tarra-arkit
 
 Huumorikaupan hauskat tarrat sopivat läppäriin, vesipulloon, autoon, jääkaappiin ja kaikkialle muuallekin. Laadukkaat vinyl-tarrat kestävät säätä, vettä ja kulutusta – ne pysyvät paikallaan vuosia.
@@ -113,8 +113,8 @@ Tarra-arkki on edullinen ja hauska lahja tai lisä mihin tahansa tilaukseen. Eri
     name: "Vauvabodyt",
     emoji: "👶",
     description: "Pienimmille huumoriharrastajille",
-    seoTitle: "Hauskat Vauvabodyt – Huumorilla Varustetut Bodyt | Huumorikauppa",
-    seoDescription: "Osta hauskoja vauvabodyjä! Söpöjä ja hauskoja bodyjä pienimmille. Täydellinen vauvalahja. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat bodyt vauvoille – Hauskat vauvalahjavinkit | Huumorikauppa.fi",
+    seoDescription: "Hauskat bodyt pienimmille! Täydellinen vauvalahja. Pehmeä materiaali. Nopea toimitus. Tilaa nyt! 👶",
     seoText: `## Hauskat vauvabodyt – pienimmille huumoriharrastajille
 
 Hauskat vauvabodyt ovat täydellinen lahja vauvalle ja vanhemmille! Huumorikaupan bodyt yhdistävät söpöyden ja huumorin – ne ovat takuuvarma lahja baby showeriin, kastelahjaksi tai vauvan syntymäpäiväksi.
@@ -132,8 +132,8 @@ Vauvabodymme ovat valmistettu pehmeästä, ihoa hellivästä materiaalista. Ne o
     name: "Peitot",
     emoji: "🛏️",
     description: "Lämpimiä ja hauskoja peittoja",
-    seoTitle: "Hauskat Peitot – Hauskoja Vilttejä & Peittoja | Huumorikauppa",
-    seoDescription: "Osta hauskoja peittoja! Lämpimiä vilttejä ja peittoja hauskalla painatuksella. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat peitot – Humoristinen peitto lahjana | Huumorikauppa.fi",
+    seoDescription: "Hauska peitto lahjaksi tai itselle! Laadukas ja hauska – pitää lämpimänä ja hymyilyttää. Tilaa nyt. 🛋️",
     seoText: `## Hauskat peitot – huumoria sohvannurkkaan
 
 Hauskat peitot tuovat huumoria ja lämpöä kotiin. Huumorikaupan pehmeät peitot hauskalla painatuksella sopivat sohvalle, sänkyyn ja telkkarin eteen.
@@ -151,8 +151,8 @@ Peittomme ovat pehmeää ja lämmintä materiaalia, joka tuntuu ihanan pehmeält
     name: "Pipot & Lippikset",
     emoji: "🧢",
     description: "Päähineet asenteella",
-    seoTitle: "Hauskat Pipot & Lippikset – Päähineet Asenteella | Huumorikauppa",
-    seoDescription: "Osta hauskoja pipoja ja lippiksiä! Päähineet huumorilla ja asenteella. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat pipot – Humoristiset päähineet | Huumorikauppa.fi",
+    seoDescription: "Hauskat pipot kaikkiin seikkailuihin! Lämmin ja hauska – paras talvilahja. Tilaa nyt. 🧢",
     seoText: `## Hauskat pipot ja lippikset – päähineet asenteella
 
 Huumorikaupan pipot ja lippikset lisäävät asennetta asukokonaisuuteen. Laadukkaita päähineitä hauskalla brodeerauksella tai painatuksella – täydellinen lisä huumorikaupan valikoimaan.
@@ -170,8 +170,8 @@ Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat
     name: "Laukut",
     emoji: "👜",
     description: "Kassit ja laukut huumorilla",
-    seoTitle: "Hauskat Laukut & Kassit – Kangaskassit Huumorilla | Huumorikauppa",
-    seoDescription: "Osta hauskoja laukkuja ja kangaskasseja! Kassit ja laukut hauskalla tekstillä. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat laukut – Kangaskassit ja muut hauskuudet | Huumorikauppa.fi",
+    seoDescription: "Hauskat laukut ja kangaskassit suomalaisella huumorilla. Arkikäyttöön tai lahjaksi. Tilaa helposti! 👜",
     seoText: `## Hauskat laukut ja kangaskassit – ekologista huumoria
 
 Hauskat kangaskassit ja laukut ovat ekologinen ja hauska vaihtoehto muovikassille. Huumorikaupan kassit hauskalla tekstillä tai painatuksella kääntävät päitä kaupassa ja kadulla.
@@ -189,8 +189,8 @@ Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raska
     name: "Seinätaulut",
     emoji: "🖼️",
     description: "Taulut ja julisteet seinälle",
-    seoTitle: "Hauskat Seinätaulut & Julisteet – Huumoria Seinälle | Huumorikauppa",
-    seoDescription: "Osta hauskoja seinätauluja ja julisteita! Huumoria ja asennetta kodin seinälle. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat seinätaulut – Humoristinen sisustus | Huumorikauppa.fi",
+    seoDescription: "Hauskat seinätaulut kodin sisustukseen! Piristä seinät huumorilla. Nopea toimitus koko Suomeen. 🖼️",
     seoText: `## Hauskat seinätaulut ja julisteet – huumoria kodin seinälle
 
 Hauska seinätaulu piristää jokaista huonetta. Huumorikaupan valikoimasta löydät hauskoja julisteita ja tauluja jotka sopivat olohuoneeseen, makuuhuoneeseen, toimistoon, mieskämppään ja mihin tahansa tilaan joka kaipaa persoonallisuutta.
@@ -208,8 +208,8 @@ Seinätaulumme ovat saatavilla useissa eri ko'oissa. Laadukas painatus kestää 
     name: "Koristeet",
     emoji: "✨",
     description: "Hauskoja koristeita kotiin",
-    seoTitle: "Hauskat Koristeet – Huumorilla Varustetut Sisustuskoristeet | Huumorikauppa",
-    seoDescription: "Osta hauskoja koristeita kotiin! Sisustuskoristeita huumorilla ja asenteella. Ilmainen toimitus yli 60 €.",
+    seoTitle: "Hauskat koristeet – Huumoria kodin sisustukseen | Huumorikauppa.fi",
+    seoDescription: "Hauskat koristeet kotiin – Huumoria joka nurkkaan. Lahjana tai itselle. Nopea toimitus. 🏠",
     seoText: `## Hauskat koristeet – huumoria kotiin ja toimistoon
 
 Hauskat koristeet tuovat huumoria ja persoonallisuutta kotiin, toimistoon ja mihin tahansa tilaan. Huumorikaupan koristevalikoima sisältää pieniä ja hauskoja esineitä jotka piristävät arkea ja herättävät hymyn.
