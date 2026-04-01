@@ -226,6 +226,7 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isScrolling, setIsScrolling] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -261,6 +262,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
       if (scrollRafRef.current !== null) return;
       scrollRafRef.current = window.requestAnimationFrame(() => {
         isUserScrollingRef.current = true;
+        setIsScrolling(true);
 
         if (scrollIdleTimeoutRef.current) {
           clearTimeout(scrollIdleTimeoutRef.current);
@@ -268,7 +270,8 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
 
         scrollIdleTimeoutRef.current = setTimeout(() => {
           isUserScrollingRef.current = false;
-        }, 160);
+          setIsScrolling(false);
+        }, 300);
 
         scrollRafRef.current = null;
       });
@@ -333,7 +336,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   };
 
   return (
-    <section ref={sectionRef} className="container py-10 md:py-14">
+    <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
         <div className="flex items-center gap-2">
@@ -359,7 +362,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
         <div
-          className="flex transition-transform duration-500 ease-out will-change-transform [transform:translateZ(0)]"
+          className={`flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] ${isScrolling ? '' : 'transition-transform duration-500'}`}
           style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
         >
           {products.map(product => (
