@@ -336,7 +336,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   };
 
   return (
-    <section ref={sectionRef} className="container py-10 md:py-14">
+    <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
         <div className="flex items-center gap-2">
