@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 import { SEOHomeContent, SEOBuyingContent, SEODesignContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
 
@@ -236,9 +236,28 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   const sectionRef = useRef<HTMLElement>(null);
 
   const isMobile = useIsMobile();
-  const isTablet = typeof window !== "undefined" && window.innerWidth >= 768 && window.innerWidth < 1024;
+  const [isTouchViewport, setIsTouchViewport] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const updateTouchViewport = () => setIsTouchViewport(mediaQuery.matches);
+
+    updateTouchViewport();
+    mediaQuery.addEventListener("change", updateTouchViewport);
+
+    return () => mediaQuery.removeEventListener("change", updateTouchViewport);
+  }, []);
+
+  const isTablet = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= 768 && window.innerWidth < 1024;
+  }, [isMobile]);
+
   const itemsPerView = isMobile ? 2 : isTablet ? 4 : 5;
   const maxIndex = Math.max(0, products.length - itemsPerView);
+  const shouldUseStaticMobileLayout = isTouchViewport || isMobile;
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -307,7 +326,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   }, [maxIndex]);
 
   useEffect(() => {
-    if (!isAutoPlaying) {
+    if (shouldUseStaticMobileLayout || !isAutoPlaying) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -316,7 +335,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     }
 
     intervalRef.current = setInterval(() => {
-      if (isInViewRef.current && !isUserScrollingRef.current) {
+      if (!document.hidden && isInViewRef.current && !isUserScrollingRef.current) {
         next();
       }
     }, 4000);
@@ -327,9 +346,11 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlaying, next]);
+  }, [isAutoPlaying, next, shouldUseStaticMobileLayout]);
 
   const handleInteraction = () => {
+    if (shouldUseStaticMobileLayout) return;
+
     setIsAutoPlaying(false);
     if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
     interactionTimeoutRef.current = setTimeout(() => setIsAutoPlaying(true), 8000);
@@ -339,55 +360,77 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => { handleInteraction(); prev(); }}
-            className="w-9 h-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
-            aria-label="Edellinen"
-          >
-            <ChevronLeft className="h-4 w-4 text-foreground" />
-          </button>
-          <button
-            onClick={() => { handleInteraction(); next(); }}
-            className="w-9 h-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
-            aria-label="Seuraava"
-          >
-            <ChevronRight className="h-4 w-4 text-foreground" />
-          </button>
-        </div>
-      </div>
-      <div
-        className="overflow-hidden touch-pan-y"
-        onMouseEnter={() => setIsAutoPlaying(false)}
-        onMouseLeave={() => setIsAutoPlaying(true)}
-      >
-        <div
-          className={`flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] ${isScrolling ? '' : 'transition-transform duration-500'}`}
-          style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
-        >
-          {products.map(product => (
-            <div
-              key={product.id}
-              className="shrink-0 px-2"
-              style={{ width: `${100 / itemsPerView}%` }}
+        {!shouldUseStaticMobileLayout && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { handleInteraction(); prev(); }}
+              className="min-h-11 min-w-11 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+              aria-label="Edellinen"
             >
-              <ProductCard product={product} />
-            </div>
-          ))}
+              <ChevronLeft className="h-4 w-4 text-foreground" />
+            </button>
+            <button
+              onClick={() => { handleInteraction(); next(); }}
+              className="min-h-11 min-w-11 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+              aria-label="Seuraava"
+            >
+              <ChevronRight className="h-4 w-4 text-foreground" />
+            </button>
+          </div>
+        )}
+      </div>
+      {shouldUseStaticMobileLayout ? (
+        <div className="-mx-4 overflow-x-auto px-4 pb-2 touch-pan-x snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex gap-3">
+            {products.map(product => (
+              <div key={product.id} className="w-[78vw] max-w-[320px] shrink-0 snap-start sm:w-[46vw]">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="flex items-center justify-center gap-1.5 mt-4">
-        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => { handleInteraction(); goTo(i); }}
-            className={`w-2 h-2 rounded-full transition-all ${
-              i === currentIndex ? "bg-primary w-5" : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-            }`}
-            aria-label={`Siirry kohtaan ${i + 1}`}
-          />
-        ))}
-      </div>
+      ) : (
+        <>
+          <div
+            className="overflow-hidden touch-pan-y"
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+          >
+            <div
+              className={`flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] ${isScrolling ? '' : 'transition-transform duration-500'}`}
+              style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
+            >
+              {products.map(product => (
+                <div
+                  key={product.id}
+                  className="shrink-0 px-2"
+                  style={{ width: `${100 / itemsPerView}%` }}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-1.5 mt-4">
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { handleInteraction(); goTo(i); }}
+                className={`min-h-11 min-w-11 rounded-full transition-all flex items-center justify-center ${
+                  i === currentIndex ? "bg-primary/15" : "hover:bg-muted"
+                }`}
+                aria-label={`Siirry kohtaan ${i + 1}`}
+              >
+                <span
+                  className={`h-2 w-2 rounded-full transition-all ${
+                    i === currentIndex ? "bg-primary w-5" : "bg-muted-foreground/30"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
