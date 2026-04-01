@@ -362,7 +362,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
         <div
-          className="flex transition-transform duration-500 ease-out will-change-transform [transform:translateZ(0)]"
+          className={`flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] ${isScrolling ? '' : 'transition-transform duration-500'}`}
           style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
         >
           {products.map(product => (
