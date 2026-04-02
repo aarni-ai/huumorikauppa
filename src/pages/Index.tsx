@@ -226,12 +226,11 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const isScrollingRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollRafRef = useRef<number | null>(null);
-  const isUserScrollingRef = useRef(false);
   const isInViewRef = useRef(true);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -280,16 +279,14 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     const onScroll = () => {
       if (scrollRafRef.current !== null) return;
       scrollRafRef.current = window.requestAnimationFrame(() => {
-        isUserScrollingRef.current = true;
-        setIsScrolling(true);
+        isScrollingRef.current = true;
 
         if (scrollIdleTimeoutRef.current) {
           clearTimeout(scrollIdleTimeoutRef.current);
         }
 
         scrollIdleTimeoutRef.current = setTimeout(() => {
-          isUserScrollingRef.current = false;
-          setIsScrolling(false);
+          isScrollingRef.current = false;
         }, 300);
 
         scrollRafRef.current = null;
@@ -335,7 +332,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     }
 
     intervalRef.current = setInterval(() => {
-      if (!document.hidden && isInViewRef.current && !isUserScrollingRef.current) {
+      if (!document.hidden && isInViewRef.current && !isScrollingRef.current) {
         next();
       }
     }, 4000);
@@ -397,7 +394,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
             onMouseLeave={() => setIsAutoPlaying(true)}
           >
             <div
-              className={`flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] ${isScrolling ? '' : 'transition-transform duration-500'}`}
+              className="flex ease-out will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] transition-transform duration-500"
               style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
             >
               {products.map(product => (

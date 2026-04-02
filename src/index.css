@@ -77,10 +77,6 @@
     text-transform: uppercase;
   }
 
-  /* GPU-accelerate common transitions */
-  img {
-    content-visibility: auto;
-  }
 }
 
 @layer utilities {
