@@ -279,17 +279,19 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     const onScroll = () => {
       if (scrollRafRef.current !== null) return;
       scrollRafRef.current = window.requestAnimationFrame(() => {
-        isUserScrollingRef.current = true;
-        setIsScrolling(true);
+        isScrollingRef.current = true;
 
         if (scrollIdleTimeoutRef.current) {
           clearTimeout(scrollIdleTimeoutRef.current);
         }
 
         scrollIdleTimeoutRef.current = setTimeout(() => {
-          isUserScrollingRef.current = false;
-          setIsScrolling(false);
+          isScrollingRef.current = false;
         }, 300);
+
+        scrollRafRef.current = null;
+      });
+    };
 
         scrollRafRef.current = null;
       });
