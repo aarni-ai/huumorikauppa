@@ -293,10 +293,6 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
       });
     };
 
-        scrollRafRef.current = null;
-      });
-    };
-
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
