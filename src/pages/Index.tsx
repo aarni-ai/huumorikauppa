@@ -336,7 +336,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     }
 
     intervalRef.current = setInterval(() => {
-      if (!document.hidden && isInViewRef.current && !isUserScrollingRef.current) {
+      if (!document.hidden && isInViewRef.current && !isScrollingRef.current) {
         next();
       }
     }, 4000);
