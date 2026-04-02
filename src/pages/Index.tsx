@@ -226,12 +226,11 @@ const Index = () => {
 function HeroCarousel({ products }: { products: import("@/types/product").Product[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const isScrollingRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollRafRef = useRef<number | null>(null);
-  const isUserScrollingRef = useRef(false);
   const isInViewRef = useRef(true);
   const sectionRef = useRef<HTMLElement>(null);
 
