@@ -67,8 +67,15 @@ export function ProductCard({ product }: ProductCardProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const updateHoverCapability = () => setCanUseHover(mediaQuery.matches);
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1024px)");
+    const updateHoverCapability = () => {
+      const enabled = mediaQuery.matches;
+      setCanUseHover(enabled);
+      if (!enabled) {
+        setIsHovered(false);
+        setShowOptions(false);
+      }
+    };
 
     updateHoverCapability();
     mediaQuery.addEventListener("change", updateHoverCapability);
