@@ -51,6 +51,7 @@ function getHoverImage(product: Product): string | null {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [canUseHover, setCanUseHover] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
@@ -61,15 +62,27 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const hoverImage = useMemo(() => getHoverImage(product), [product]);
   const mainImage = product.images[0] || "/placeholder.svg";
-  const displayImage = isHovered && hoverImage ? hoverImage : mainImage;
+  const displayImage = canUseHover && isHovered && hoverImage ? hoverImage : mainImage;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const updateHoverCapability = () => setCanUseHover(mediaQuery.matches);
+
+    updateHoverCapability();
+    mediaQuery.addEventListener("change", updateHoverCapability);
+
+    return () => mediaQuery.removeEventListener("change", updateHoverCapability);
+  }, []);
 
   // Preload hover image so swap is instant
   useEffect(() => {
-    if (hoverImage) {
+    if (canUseHover && hoverImage) {
       const img = new Image();
       img.src = hoverImage;
     }
-  }, [hoverImage]);
+  }, [canUseHover, hoverImage]);
 
   const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
   const sortedSizes = useMemo(() => sortSizes(product.variants.sizes || []), [product.variants.sizes]);
@@ -136,9 +149,15 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/tuote/${product.slug}`}
-      className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors duration-300 hover:shadow-glow-lime relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => { setIsHovered(false); if (!showOptions) setShowOptions(false); }}
+      className={`group block bg-card border border-border rounded-lg overflow-hidden transition-colors duration-300 relative ${canUseHover ? "hover:border-primary/50 hover:shadow-glow-lime" : ""}`}
+      onMouseEnter={() => {
+        if (canUseHover) setIsHovered(true);
+      }}
+      onMouseLeave={() => {
+        if (!canUseHover) return;
+        setIsHovered(false);
+        if (!showOptions) setShowOptions(false);
+      }}
     >
       {/* Image with hover swap */}
       <div className="relative aspect-square bg-muted overflow-hidden">
@@ -175,7 +194,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {/* Quick add button overlay */}
-        {!showOptions && (
+        {canUseHover && !showOptions && (
           <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
             <button
               onClick={handleQuickAdd}
@@ -264,7 +283,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Info */}
       <div className="p-3 md:p-4 space-y-1">
-        <h3 className="font-sans text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className={`font-sans text-sm md:text-base font-medium text-foreground transition-colors line-clamp-2 ${canUseHover ? "group-hover:text-primary" : ""}`}>
           {product.name}
         </h3>
         <div className="flex items-center gap-2 flex-wrap">
