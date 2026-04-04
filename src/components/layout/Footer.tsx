@@ -8,6 +8,25 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export function Footer() {
+  const [footerEmail, setFooterEmail] = useState("");
+  const [footerSubmitted, setFooterSubmitted] = useState(false);
+  const { toast } = useToast();
+
+  const handleFooterNewsletter = async () => {
+    if (!footerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) {
+      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return;
+    }
+    try {
+      await supabase.from("newsletter_subscribers").insert({ email: footerEmail.trim().toLowerCase() });
+      await supabase.functions.invoke("notify-store", {
+        body: { email: footerEmail.trim().toLowerCase(), type: "newsletter" },
+      });
+    } catch {}
+    setFooterSubmitted(true);
+    toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi: HUUMORI10 (-10%)" });
+  };
+
   return (
     <footer className="border-t border-border bg-card mt-16">
       <div className="container py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
