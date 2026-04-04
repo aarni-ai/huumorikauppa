@@ -14,7 +14,7 @@ const CartPage = () => {
   if (items.length === 0) {
     return (
       <div className="container py-20 text-center space-y-6">
-        <SEOHead title="Ostoskori – Huumorikauppa" description="Ostoskorisi on tyhjä. Selaa Huumorikaupan hauskoja tuotteita!" />
+        <SEOHead title="Ostoskori – Huumorikauppa" description="Ostoskorisi on tyhjä. Selaa Huumorikaupan hauskoja tuotteita!" noindex={true} />
         <ShoppingCart className="h-16 w-16 text-muted-foreground mx-auto" />
         <h1 className="font-display text-3xl text-foreground">Ostoskori on tyhjä 😅</h1>
         <p className="text-muted-foreground">Etkö löytänyt mitään hauskaa? Mahdotonta!</p>
@@ -27,7 +27,7 @@ const CartPage = () => {
 
   return (
     <div className="container py-8 md:py-12">
-      <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." />
+      <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." noindex={true} />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Ostoskori 🛒</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
