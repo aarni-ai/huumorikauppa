@@ -58,7 +58,7 @@ export function Footer() {
           </div>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground pt-3">
             <h4 className="font-display text-sm text-foreground">SEURAA MEITÄ</h4>
-            <a href="https://instagram.com/huumorikauppa.fi" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
+            <a href="https://instagram.com/huumorikauppa_fi" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
               <Instagram className="h-4 w-4" /> Instagram
             </a>
             <a href="https://www.facebook.com/profile.php?id=61584153329326" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
