@@ -669,7 +669,7 @@ const ProductPage = () => {
         "@type": "MerchantReturnPolicy",
         "applicableCountry": "FI",
         "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-        "merchantReturnDays": 14,
+        "merchantReturnDays": 30,
         "returnMethod": "https://schema.org/ReturnByMail",
         "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
       }
