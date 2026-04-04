@@ -94,12 +94,22 @@ export function Footer() {
         <div className="space-y-4">
           <h4 className="font-display text-sm text-foreground">TILAA UUTISKIRJE 💥</h4>
           <p className="text-sm text-muted-foreground">Tilaa uutiskirje ja saat 10% alennuskoodin ensimmäiseen tilaukseesi!</p>
-          <div className="flex gap-2">
-            <Input placeholder="anna@email.fi" className="h-9 bg-muted border-border text-sm" />
-            <Button size="sm" className="bg-primary text-primary-foreground font-bold shrink-0">
-              Tilaa 🚀
-            </Button>
-          </div>
+          {footerSubmitted ? (
+            <p className="text-sm text-primary font-bold">Kiitos! Koodisi: HUUMORI10 🎉</p>
+          ) : (
+            <div className="flex gap-2">
+              <Input
+                placeholder="anna@email.fi"
+                className="h-9 bg-muted border-border text-sm"
+                value={footerEmail}
+                onChange={(e) => setFooterEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleFooterNewsletter()}
+              />
+              <Button size="sm" onClick={handleFooterNewsletter} className="bg-primary text-primary-foreground font-bold shrink-0">
+                Tilaa 🚀
+              </Button>
+            </div>
+          )}
           <p className="text-xs text-muted-foreground">Voit peruuttaa milloin vain.</p>
         </div>
       </div>
