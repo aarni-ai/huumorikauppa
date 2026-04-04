@@ -84,11 +84,6 @@ const Index = () => {
       />
 
       {/* H1 — visually integrated with hero */}
-      <section className="container pt-6 pb-2 md:pt-4 md:pb-1">
-        <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center mb-4">
-          Suomen hauskin lahjakauppa 🎁
-        </h1>
-      </section>
 
       {/* HERO BANNER IMAGE – LCP element */}
       <section className="container pb-2 md:pb-1">
