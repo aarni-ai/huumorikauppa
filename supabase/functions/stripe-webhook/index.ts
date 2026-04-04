@@ -2,9 +2,42 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, stripe-signature",
+};
+
+async function sendOrderConfirmationEmail(
+  supabase: ReturnType<typeof createClient>,
+  email: string,
+  name: string | null,
+  items: Array<{ name: string; quantity: number; price: number }>,
+  total: number,
+  sessionId: string,
+) {
+  try {
+    await supabase.functions.invoke("send-transactional-email", {
+      body: {
+        templateName: "order-confirmation",
+        recipientEmail: email,
+        idempotencyKey: `order-confirm-${sessionId}`,
+        templateData: {
+          customerName: name || undefined,
+          orderTotal: total.toFixed(2),
+          items,
+        },
+      },
+    });
+    console.log(`Order confirmation email queued for ${email}`);
+  } catch (err) {
+    console.error("Failed to queue order confirmation email:", err);
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: { "Access-Control-Allow-Origin": "*" } });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
@@ -49,11 +82,25 @@ serve(async (req) => {
         .maybeSingle();
 
       if (existing) {
-        // Update status to paid
-        await supabase
+        const { data: existingOrder } = await supabase
           .from("orders")
           .update({ status: "paid" })
-          .eq("stripe_session_id", session.id);
+          .eq("stripe_session_id", session.id)
+          .select("status")
+          .maybeSingle();
+
+        // Send confirmation email
+        const customerEmail = session.customer_email || session.customer_details?.email;
+        if (customerEmail) {
+          await sendOrderConfirmationEmail(
+            supabase,
+            customerEmail,
+            metadata.customer_name || session.customer_details?.name || null,
+            [],
+            (session.amount_total || 0) / 100,
+            session.id,
+          );
+        }
       } else {
         // Retrieve line items
         const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
@@ -72,6 +119,19 @@ serve(async (req) => {
           total: (session.amount_total || 0) / 100,
           status: "paid",
         });
+
+        // Send confirmation email
+        const customerEmail = session.customer_email || session.customer_details?.email;
+        if (customerEmail) {
+          await sendOrderConfirmationEmail(
+            supabase,
+            customerEmail,
+            metadata.customer_name || session.customer_details?.name || null,
+            items,
+            (session.amount_total || 0) / 100,
+            session.id,
+          );
+        }
       }
     }
 
@@ -93,13 +153,13 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify({ received: true }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (err: any) {
     console.error("Webhook error:", err);
     return new Response(JSON.stringify({ error: err.message }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 400,
     });
   }

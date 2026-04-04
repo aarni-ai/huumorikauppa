@@ -31,6 +31,7 @@ const BlogIndex = lazy(() => import("./pages/BlogIndex"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const GiftCategoryPage = lazy(() => import("./pages/GiftCategoryPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
+const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 
 // Lazy: popups (not needed at initial load)
 const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
@@ -93,6 +94,7 @@ const App = () => (
               <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
               <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />
+              <Route path="/unsubscribe" element={<UnsubscribePage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

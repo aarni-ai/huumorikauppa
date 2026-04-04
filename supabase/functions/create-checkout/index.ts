@@ -103,7 +103,7 @@ serve(async (req) => {
       });
     }
 
-    const origin = req.headers.get("origin") || "https://meemi-meisteri-kauppa.lovable.app";
+    const origin = req.headers.get("origin") || "https://huumorikauppa.lovable.app";
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({

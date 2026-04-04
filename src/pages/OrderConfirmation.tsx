@@ -19,7 +19,7 @@ const OrderConfirmation = () => {
   }, [sessionId, clearCart]);
 
   const handleShare = async () => {
-    const text = "Tilasin just Huumorikaupasta! 😂🛒 Käy katsomassa: https://meemi-meisteri-kauppa.lovable.app";
+    const text = "Tilasin just Huumorikaupasta! 😂🛒 Käy katsomassa: https://huumorikauppa.lovable.app";
     if (navigator.share) {
       try {
         await navigator.share({ text });
