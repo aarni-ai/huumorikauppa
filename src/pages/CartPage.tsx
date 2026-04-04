@@ -27,7 +27,7 @@ const CartPage = () => {
 
   return (
     <div className="container py-8 md:py-12">
-      <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." />
+      <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." noindex={true} />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Ostoskori 🛒</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
