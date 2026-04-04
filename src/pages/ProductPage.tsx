@@ -708,7 +708,7 @@ const ProductPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={`${product.name} – ${categoryName} | Huumorikauppa.fi`}
-        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 30 pv palautusoikeus.`}
+        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
