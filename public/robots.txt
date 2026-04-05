@@ -4,9 +4,6 @@ Disallow: /kassa
 Disallow: /tilaus-vahvistettu
 Disallow: /haku?
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
 Sitemap: https://huumorikauppa.fi/sitemap.xml
 
 # Google
