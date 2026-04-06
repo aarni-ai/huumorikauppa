@@ -9,9 +9,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { ReviewsCarousel } from "@/components/ReviewsCarousel";
-import { SEOHomeContent, SEOBuyingContent, SEODesignContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
+import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
+
+const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
+const LazySEOContent = lazy(() => import("@/components/SEOKeywordContent").then(m => ({
+  default: () => (
+    <>
+      <m.SEOHomeContent />
+      <m.SEOBuyingContent />
+      <m.SEODesignContent />
+      <m.SEOLongTailContent />
+    </>
+  )
+})));
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
@@ -173,8 +183,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <ReviewsCarousel />
+      <Suspense fallback={null}>
+        <ReviewsCarousel />
+      </Suspense>
 
       {/* WHY HUUMORIKAUPPA */}
       <section className="bg-card border-y border-border py-12 md:py-16">
@@ -209,10 +220,9 @@ const Index = () => {
           <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
-      <SEOHomeContent />
-      <SEOBuyingContent />
-      <SEODesignContent />
-      <SEOLongTailContent />
+      <Suspense fallback={null}>
+        <LazySEOContent />
+      </Suspense>
     </div>
   );
 };
