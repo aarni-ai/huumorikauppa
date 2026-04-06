@@ -17,5 +17,3 @@ Disallow: /tilaus-vahvistettu
 Disallow: /haku?
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
-
-# This ensures all 64 products can be properly indexed and images shown in Google Merchant Center
