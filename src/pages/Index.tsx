@@ -183,8 +183,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* REVIEWS */}
-      <ReviewsCarousel />
+      <Suspense fallback={null}>
+        <ReviewsCarousel />
+      </Suspense>
 
       {/* WHY HUUMORIKAUPPA */}
       <section className="bg-card border-y border-border py-12 md:py-16">
