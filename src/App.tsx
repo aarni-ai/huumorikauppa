@@ -23,6 +23,7 @@ const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const AllProducts = lazy(() => import("./pages/AllProducts"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Terms = lazy(() => import("./pages/Terms"));
+const ReturnsPolicy = lazy(() => import("./pages/ReturnsPolicy"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
