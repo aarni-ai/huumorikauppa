@@ -23,6 +23,7 @@ const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const AllProducts = lazy(() => import("./pages/AllProducts"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Terms = lazy(() => import("./pages/Terms"));
+const ReturnsPolicy = lazy(() => import("./pages/ReturnsPolicy"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
@@ -78,6 +79,7 @@ const App = () => (
               <Route path="/kassa" element={<CheckoutPage />} />
               <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
               <Route path="/toimitusehdot" element={<Terms />} />
+              <Route path="/palautusehdot" element={<ReturnsPolicy />} />
               <Route path="/tietosuojakaytanto" element={<Privacy />} />
               <Route path="/haku" element={<SearchPage />} />
               <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
