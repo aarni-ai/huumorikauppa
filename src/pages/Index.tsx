@@ -164,9 +164,9 @@ const Index = () => {
             );
           })}
 
-          {/* BESTSELLERIT */}
-          {featured.length > 0 && (
-            <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+          {/* BESTSELLERIT – 24 tuotetta SEO-indeksointia varten */}
+          {allProducts.length > 0 && (
+            <BestsellersSection products={allProducts} />
           )}
         </>
       )}
@@ -433,6 +433,37 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
           </div>
         </>
       )}
+    </section>
+  );
+}
+
+function BestsellersSection({ products }: { products: import("@/types/product").Product[] }) {
+  const bestsellers = useMemo(() => {
+    // Prioritize featured, then sort by priority keywords, exclude custom text products
+    const filtered = products.filter(p => !isCustomTextProduct(p.name, p.description));
+    const sorted = [...filtered].sort((a, b) => {
+      if (a.is_featured && !b.is_featured) return -1;
+      if (!a.is_featured && b.is_featured) return 1;
+      return getPriority(a) - getPriority(b);
+    });
+    return sorted.slice(0, 24);
+  }, [products]);
+
+  if (bestsellers.length === 0) return null;
+
+  return (
+    <section className="container py-10 md:py-14">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground">Bestsellerit 🏆</h2>
+        <Link to="/kaikki-tuotteet" className="text-sm text-primary hover:underline font-medium whitespace-nowrap">
+          Näytä kaikki →
+        </Link>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {bestsellers.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </section>
   );
 }
