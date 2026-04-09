@@ -164,9 +164,9 @@ const Index = () => {
             );
           })}
 
-          {/* BESTSELLERIT */}
-          {featured.length > 0 && (
-            <ProductSection title="Bestsellerit 🏆" linkTo="/kaikki-tuotteet?filter=featured" products={featured} />
+          {/* BESTSELLERIT – 24 tuotetta SEO-indeksointia varten */}
+          {allProducts.length > 0 && (
+            <BestsellersSection products={allProducts} />
           )}
         </>
       )}
