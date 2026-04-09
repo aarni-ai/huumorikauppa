@@ -164,10 +164,6 @@ const Index = () => {
             );
           })}
 
-          {/* BESTSELLERIT – 24 tuotetta SEO-indeksointia varten */}
-          {allProducts.length > 0 && (
-            <BestsellersSection products={allProducts} />
-          )}
         </>
       )}
 
