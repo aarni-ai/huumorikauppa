@@ -492,6 +492,12 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
+    if (product && !isLoading) {
+      window.prerenderReady = true;
+    }
+  }, [product, isLoading]);
+
+  useEffect(() => {
     if (product && !selectedColor) {
       const defaultColor = product.variants.default_color as string | undefined;
       if (defaultColor && product.variants.colors?.includes(defaultColor)) {
