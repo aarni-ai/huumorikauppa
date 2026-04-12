@@ -5,6 +5,7 @@ import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOTargetGroupContent, SEOCustomContent } from "@/components/SEOKeywordContent";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
@@ -26,6 +27,7 @@ function getPriority(product: { name: string; description: string }): number {
 
 const AllProducts = () => {
   const { data: products = [], isLoading } = useProducts();
+  usePrerenderReady(!isLoading && products.length > 0);
 
   // Filter out custom text/image products, sort by category count then priority
   const filtered = products.filter(p => !isCustomTextProduct(p.name, p.description));

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const BlogIndex = () => {
+  usePrerenderReady();
   const sortedPosts = [...blogPosts].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );

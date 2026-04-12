@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Clock } from "lucide-react";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const contactJsonLd = {
   "@context": "https://schema.org",
@@ -26,6 +27,7 @@ const contactJsonLd = {
 };
 
 const ContactPage = () => {
+  usePrerenderReady();
   const { toast } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

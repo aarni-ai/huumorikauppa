@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
 import { categories } from "@/data/products";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 function renderContent(content: string) {
   const lines = content.split("\n");
@@ -86,6 +87,7 @@ function renderInlineFormatting(text: string): (string | JSX.Element)[] {
 }
 
 const BlogPost = () => {
+  usePrerenderReady();
   const { slug } = useParams();
   const post = blogPosts.find((p) => p.slug === slug);
 

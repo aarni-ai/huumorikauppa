@@ -3,6 +3,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
 import { SEOGiftContent, SEOTargetGroupContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
@@ -394,6 +395,7 @@ const GiftCategoryPage = () => {
   const slug = location.pathname.replace(/^\//, '');
   const category = giftCategories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
+  usePrerenderReady(!isLoading && allProducts.length > 0);
 
   if (!category) {
     return (
