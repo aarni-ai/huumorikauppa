@@ -4,22 +4,7 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 
-User-agent: Google-InspectionTool
-Allow: /
-
-User-agent: AdsBot-Google
-Allow: /
-
-User-agent: AdsBot-Google-Mobile
-Allow: /
-
-User-agent: Mediapartners-Google
-Allow: /
-
 User-agent: *
 Allow: /
-Disallow: /kassa
-Disallow: /tilaus-vahvistettu
-Disallow: /haku?
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
