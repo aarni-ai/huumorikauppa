@@ -494,7 +494,11 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product && !isLoading) {
-      window.prerenderReady = true;
+      // Delay prerenderReady so react-helmet-async Helmet has time to flush title + JSON-LD into <head>
+      const raf = requestAnimationFrame(() => {
+        window.prerenderReady = true;
+      });
+      return () => cancelAnimationFrame(raf);
     }
   }, [product, isLoading]);
 
