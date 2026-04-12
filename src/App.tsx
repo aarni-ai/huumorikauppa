@@ -11,6 +11,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { AddToCartDrawer } from "./components/AddToCartDrawer";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { HelmetProvider } from "react-helmet-async";
 
 // Eager: homepage (LCP critical)
 import Index from "./pages/Index";
@@ -61,6 +62,7 @@ function PageFallback() {
 }
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
@@ -112,6 +114,7 @@ const App = () => (
       </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
