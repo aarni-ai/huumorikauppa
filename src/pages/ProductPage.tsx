@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
@@ -714,6 +715,28 @@ const ProductPage = () => {
         breadcrumbs={breadcrumbs}
         ogImage={currentImages[0]}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": product.name,
+            "description": product.description,
+            "image": currentImages[0],
+            "sku": product.slug,
+            "brand": { "@type": "Brand", "name": "Huumorikauppa" },
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "EUR",
+              "price": product.price,
+              "availability": "https://schema.org/InStock",
+              "itemCondition": "https://schema.org/NewCondition",
+              "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
+              "seller": { "@type": "Organization", "name": "Huumorikauppa" }
+            }
+          })}
+        </script>
+      </Helmet>
       {/* FAQ Schema injected separately */}
       <ProductFaqSchema faqs={productFaqs} />
 

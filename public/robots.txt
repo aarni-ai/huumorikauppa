@@ -1,26 +1,17 @@
 User-agent: Googlebot
 Allow: /
-Allow: /tuote/
-Allow: /kategoria/
-Allow: /kaikki-tuotteet
-Allow: /toimitusehdot
-Allow: /palautusehdot
-Allow: /tietosuojakaytanto
 
 User-agent: Googlebot-Image
 Allow: /
-Allow: /tuote/
-Allow: /kategoria/
+
+User-agent: Google-InspectionTool
+Allow: /
 
 User-agent: AdsBot-Google
 Allow: /
-Allow: /tuote/
-Allow: /kategoria/
 
 User-agent: AdsBot-Google-Mobile
 Allow: /
-Allow: /tuote/
-Allow: /kategoria/
 
 User-agent: Mediapartners-Google
 Allow: /
