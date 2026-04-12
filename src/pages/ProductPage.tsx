@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
