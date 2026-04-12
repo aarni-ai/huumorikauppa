@@ -90,6 +90,12 @@ const CategoryPage = () => {
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => getPriority(a) - getPriority(b));
 
+  useEffect(() => {
+    if (!isLoading && allProducts.length > 0) {
+      window.prerenderReady = true;
+    }
+  }, [isLoading, allProducts]);
+
   if (!category) {
     return (
       <div className="container py-20 text-center">
