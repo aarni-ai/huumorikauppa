@@ -718,8 +718,41 @@ const ProductPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{`${product.name} | Huumorikauppa`}</title>
+        <meta name="description" content={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`} />
+        <link rel="canonical" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta property="og:title" content={`${product.name} | Huumorikauppa`} />
+        <meta property="og:description" content={product.description.slice(0, 150)} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
+        <meta property="og:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <meta property="og:site_name" content="Huumorikauppa.fi" />
+        <meta property="og:locale" content="fi_FI" />
+        <meta property="product:price:amount" content={product.price.toFixed(2)} />
+        <meta property="product:price:currency" content="EUR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
+        <meta name="twitter:description" content={product.description.slice(0, 150)} />
+        <meta name="twitter:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
+        <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
+        <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(productFaqJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": breadcrumbs.map((item, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "name": item.name,
+            "item": item.url,
+          }))
+        })}</script>
+      </Helmet>
       <SEOHead
-        title={`${product.name} – ${categoryName} | Huumorikauppa.fi`}
+        title={`${product.name} | Huumorikauppa`}
         description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
@@ -728,8 +761,6 @@ const ProductPage = () => {
         ogType="product"
         productPrice={product.price.toFixed(2)}
       />
-      {/* FAQ Schema injected separately */}
-      <ProductFaqSchema faqs={productFaqs} />
 
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
