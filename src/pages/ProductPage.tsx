@@ -618,7 +618,7 @@ const ProductPage = () => {
     "@type": "Product",
     "name": product.name,
     "description": product.description.slice(0, 500),
-    "image": allProductImages,
+    "image": allProductImages.map(img => img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`),
     "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
     "sku": product.slug,
     "mpn": product.id,
@@ -720,6 +720,8 @@ const ProductPage = () => {
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={currentImages[0]}
+        ogType="product"
+        productPrice={product.price.toFixed(2)}
       />
       {/* FAQ Schema injected separately */}
       <ProductFaqSchema faqs={productFaqs} />

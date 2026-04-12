@@ -115,7 +115,7 @@ serve(async (_req) => {
     <loc>${escapeXml(SITE + "/tuote/" + p.slug)}</loc>
     <lastmod>${toW3CDate(p.updated_at)}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>`
   );
 
