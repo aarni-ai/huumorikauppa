@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ShoppingCart, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const CartPage = () => {
+  usePrerenderReady();
   const { items, removeItem, updateQuantity, totalPrice, totalItems, clearCart } = useCartContext();
 
   const shippingFree = totalPrice >= 60;

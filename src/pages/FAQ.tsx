@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { SEOHead } from "@/components/SEOHead";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const faqs = [
   {
@@ -60,6 +61,7 @@ const faqJsonLd = {
 };
 
 const FAQ = () => {
+  usePrerenderReady();
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead

@@ -1,8 +1,10 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { SEOHead } from "@/components/SEOHead";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const NotFound = () => {
+  usePrerenderReady();
   const location = useLocation();
 
   useEffect(() => {

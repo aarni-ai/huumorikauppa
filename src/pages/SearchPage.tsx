@@ -3,11 +3,13 @@ import { ProductCard } from "@/components/ProductCard";
 import { useProducts } from "@/hooks/use-products";
 import { SEOHead } from "@/components/SEOHead";
 import { SEOHomeContent, SEOGiftContent } from "@/components/SEOKeywordContent";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.toLowerCase() || "";
   const { data: allProducts = [] } = useProducts();
+  usePrerenderReady();
 
   const results = query
     ? allProducts.filter(
