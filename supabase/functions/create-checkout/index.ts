@@ -67,6 +67,17 @@ serve(async (req) => {
     const shippingFree = subtotal >= 60;
     const shippingCost = shippingFree ? 0 : 5.95;
 
+    // Validate image URL: Stripe requires absolute https:// URL
+    const isValidImageUrl = (url?: string): boolean => {
+      if (!url) return false;
+      try {
+        const u = new URL(url);
+        return u.protocol === "https:" || u.protocol === "http:";
+      } catch {
+        return false;
+      }
+    };
+
     // Build line items with price_data for dynamic cart
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map(
       (item) => {
@@ -74,13 +85,15 @@ serve(async (req) => {
           .filter(Boolean)
           .join(", ");
 
+        const validImage = isValidImageUrl(item.image) ? item.image : undefined;
+
         return {
           price_data: {
             currency: "eur",
             product_data: {
               name: item.name,
               ...(description ? { description } : {}),
-              ...(item.image ? { images: [item.image] } : {}),
+              ...(validImage ? { images: [validImage] } : {}),
             },
             unit_amount: Math.round(item.price * (1 - discountPercent / 100) * 100), // cents
           },
