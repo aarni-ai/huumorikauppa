@@ -192,13 +192,6 @@ export function ProductCard({ product }: ProductCardProps) {
             <Badge className="bg-secondary text-secondary-foreground text-xs font-bold">LAHJAIDEA 🎁</Badge>
           )}
         </div>
-        {product.stock <= 5 && product.stock > 0 && (
-          <div className="absolute bottom-2 left-2">
-            <Badge variant="destructive" className="text-xs font-bold">
-              Vain {product.stock} jäljellä! 😱
-            </Badge>
-          </div>
-        )}
 
         {/* Quick add button overlay */}
         {canUseHover && !showOptions && (

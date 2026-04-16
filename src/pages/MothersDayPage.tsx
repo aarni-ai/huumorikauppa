@@ -12,15 +12,14 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 const MOTHERS_DAY = new Date("2026-05-11T00:00:00+03:00");
 
 const MOM_KEYWORDS = [
-  "äiti", "äidi", "mamma", "mummi", "anoppi", "maailman paras äiti",
-  "äitsy", "muori", "mom", "mama"
+  "äiti", "äidi", "mamma", "mummi", "mummo", "anoppi", "maailman paras äiti",
+  "äitsy", "muori", "mom", "mama", "mutsi", "mutsu", "äippä", "memma"
 ];
 
 function isMothersDayProduct(p: { name: string; description: string; category: string }): boolean {
   const t = (p.name + " " + p.description).toLowerCase();
-  if (MOM_KEYWORDS.some(k => t.includes(k))) return true;
-  // Heuristic: gift-suitable categories also count
-  return ["mukit", "hupparit", "t-paidat", "tarrat", "laukut", "peitot"].includes(p.category);
+  // STRICT: must mention mom-related keyword. No category fallback.
+  return MOM_KEYWORDS.some(k => t.includes(k));
 }
 
 function isCustomTextProduct(name: string, description: string): boolean {
@@ -169,7 +168,7 @@ const MothersDayPage = () => {
             Äitienpäivä 11.5.2026
           </div>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-rose-900 mb-3 leading-tight">
-            Hauskat Äitienpäivälahjat 2026
+            Äitienpäivälahjat
           </h1>
           <p className="text-base md:text-xl text-rose-800/80 max-w-2xl mx-auto mb-6">
             Älä osta kukkia. Osta jotain mitä äiti oikeasti muistaa.
@@ -225,38 +224,8 @@ const MothersDayPage = () => {
         </nav>
       </div>
 
-      {/* SEO TEXT BLOCK */}
-      <section className="container py-8 md:py-12 max-w-3xl">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Miksi hauska äitienpäivälahja on paras äitienpäivälahja?
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-8">
-          Äitienpäivä on 11. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
-          suklaat ovat kauniita, mutta ne unohtuvat nopeasti. Hauska äitienpäivälahja — paita, muki tai
-          tarra jossa on täydellinen teksti — jää mieleen vuosiksi. Huumorikauppa.fi on Suomen hauskin
-          verkkokauppa, ja meillä on täydellinen valikoima hauskoja äitienpäivälahjoja kaikille äideille.
-        </p>
-
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Parhaat hauskat äitienpäivälahjat äidille
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-8">
-          Löydät Huumorikaupasta äitienpäivälahjoja joka makuun ja budjettiin. Hauskat mukit sopivat
-          kahvia rakastavalle äidille, hauskat t-paidat ja hupparit ovat täydellisiä äideille joilla on
-          huumorintajua, ja tarrat ovat hauska ja edullinen lisä muiden lahjojen kylkeen.
-        </p>
-
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Nopea toimitus — tilaa ajoissa
-        </h2>
-        <p className="text-muted-foreground leading-relaxed">
-          Tilaa äitienpäivälahja ajoissa — toimitamme nopeasti koko Suomeen. Älä jää kiireeseen, vaan
-          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 11.5.2026.
-        </p>
-      </section>
-
       {/* PRODUCT GRID */}
-      <section id="tuotteet" className="container py-6 md:py-10 scroll-mt-20">
+      <section id="tuotteet" className="container py-8 md:py-12 scroll-mt-20">
         <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
           Äitienpäivätuotteet 🌸
         </h2>
@@ -306,6 +275,36 @@ const MothersDayPage = () => {
             ))}
           </div>
         )}
+      </section>
+
+      {/* SEO TEXT BLOCK — moved below products */}
+      <section className="container py-8 md:py-12 max-w-3xl">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
+          Miksi hauska äitienpäivälahja on paras äitienpäivälahja?
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-8">
+          Äitienpäivä on 11. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
+          suklaat ovat kauniita, mutta ne unohtuvat nopeasti. Hauska äitienpäivälahja — paita, muki tai
+          tarra jossa on täydellinen teksti — jää mieleen vuosiksi. Huumorikauppa.fi on Suomen hauskin
+          verkkokauppa, ja meillä on täydellinen valikoima hauskoja äitienpäivälahjoja kaikille äideille.
+        </p>
+
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
+          Parhaat hauskat äitienpäivälahjat äidille
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-8">
+          Löydät Huumorikaupasta äitienpäivälahjoja joka makuun ja budjettiin. Hauskat mukit sopivat
+          kahvia rakastavalle äidille, hauskat t-paidat ja hupparit ovat täydellisiä äideille joilla on
+          huumorintajua, ja tarrat ovat hauska ja edullinen lisä muiden lahjojen kylkeen.
+        </p>
+
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
+          Nopea toimitus — tilaa ajoissa
+        </h2>
+        <p className="text-muted-foreground leading-relaxed">
+          Tilaa äitienpäivälahja ajoissa — toimitamme nopeasti koko Suomeen. Älä jää kiireeseen, vaan
+          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 11.5.2026.
+        </p>
       </section>
 
       {/* GIFT GUIDE */}
