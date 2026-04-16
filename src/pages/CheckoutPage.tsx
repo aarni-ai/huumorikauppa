@@ -79,6 +79,9 @@ const CheckoutPage = () => {
         },
       });
       if (error) throw error;
+      if (data?.ok === false) {
+        throw new Error(data?.error || "Maksun aloitus epäonnistui");
+      }
       if (data?.url) {
         window.location.href = data.url;
       } else {
