@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/aitienpaiva-lahjat",
+      "destination": "/aitienpaiva",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/sitemap.xml",

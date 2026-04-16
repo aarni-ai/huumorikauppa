@@ -3,9 +3,9 @@ export const categories = [
     slug: "t-paidat",
     name: "T-Paidat",
     emoji: "👕",
-    description: "Hauskimmat paidat sedille, mutseille ja kaikille muillekin",
-    seoTitle: "Hauskat t-paidat – Humoristiset painatukset | Huumorikauppa.fi",
-    seoDescription: "Yli 50 hauskaa t-paitaa – Humoristiset painatukset suomalaisille. Koot XS–3XL. Ilmainen toimitus yli 50€. Tilaa nyt! 👕",
+    description: "Hauskat t-paidat ovat suosituin lahjavaihtoehto Huumorikaupassa. Löydät vaihtoehtoja eri ammateille, tilanteisiin ja henkilöille. Täydellinen äitienpäivälahja äidille tai hauska lisä omaan vaatekaappiin.",
+    seoTitle: "Hauskat T-paidat – Suomen suurin huumoripaita-valikoima | Huumorikauppa.fi",
+    seoDescription: "Hauskat t-paidat lahjaksi äidille, isälle ja kaverille. Yli 100 mallia, koot XS–3XL. Nopea toimitus ennen äitienpäivää 11.5.2026. 👕",
     seoText: `## Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat
 
 Etsitkö hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan valikoimasta löydät Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat jotka saavat kaikki nauramaan. Valikoimamme kasvaa jatkuvasti uusilla malleilla ja trendeillä.
@@ -28,9 +28,9 @@ Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. S
     slug: "hupparit",
     name: "Hupparit",
     emoji: "🧥",
-    description: "Lämpöä, asennetta ja huumoria",
-    seoTitle: "Hauskat hupparit – Löydä paras huumorihuppari | Huumorikauppa.fi",
-    seoDescription: "Löydä paras hauska huppari! Laadukkaat huumorihupparit kaikille. Nopea toimitus. Ilmainen palautus. Tilaa tänään! 🧥",
+    description: "Hauskat hupparit ovat täydellinen lahja syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja — löydä täydellinen huppari äidille, kaverille tai itsellesi. Tilattu ennen äitienpäivää? Toimitamme nopeasti.",
+    seoTitle: "Hauskat Hupparit – Lahja äitienpäivään & syntymäpäiviin | Huumorikauppa.fi",
+    seoDescription: "Hauskat hupparit lahjaksi äidille, kaverille tai itsellesi. Pehmeät, lämpimät ja hauskat — toimitamme nopeasti ennen äitienpäivää 11.5.2026. 🧥",
     seoText: `## Hauskat hupparit – lämpöä, asennetta ja huumoria
 
 Huumorikaupan hauskat hupparit yhdistävät lämmön ja huumorin täydellisesti. Löydä meemihuppari, huumorihuppari tai sarkastinen huppari joka sopii arkeen, vapaa-aikaan ja viikonloppuihin. Hupparimme ovat pehmeää, laadukasta materiaalia ja niissä on kestävä painatus.
@@ -70,9 +70,9 @@ Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. 
     slug: "mukit",
     name: "Mukit",
     emoji: "☕",
-    description: "Kahvikupit jotka puhuu puolesta",
-    seoTitle: "Hauskat mukit – Parhaat huumorimukit töihin ja kotiin | Huumorikauppa.fi",
-    seoDescription: "Parhaat hauskat mukit Suomessa! Täydellinen lahja töihin tai kotiin. Yli 30 designia. Nopea toimitus. ☕",
+    description: "Hauska kahvimuki on yksi parhaista äitienpäivälahjoista — käytännöllinen, edullinen ja mieleenpainuva. Huumorikaupan mukivalikoima sopii äidille, mummille, työkaveille ja kaikille kahvia rakastaville.",
+    seoTitle: "Hauskat Mukit – Paras äitienpäivälahja äidille | Huumorikauppa.fi",
+    seoDescription: "Hauskat kahvimukit lahjaksi äidille, mummille tai työkaverille. Edullinen ja mieleenpainuva äitienpäivälahja — toimitus nopeasti ennen 11.5.2026. ☕",
     seoText: `## Hauskat mukit – kahvimukit hauskalla tekstillä
 
 Huumorikaupan hauskat mukit piristävät jokaisen kahvihetken. Valikoimastamme löydät hauskoja kahvimukeja toimistoon, kotiin ja lahjaksi. Muki hauskalla tekstillä on yksi suosituimmista lahjatuotteistamme – ja syystä!
@@ -93,9 +93,9 @@ Kaikki mukimme ovat laadukkaita keramiikkamukeja kestävällä painatuksella. Ne
     slug: "tarrat",
     name: "Tarrat",
     emoji: "🏷️",
-    description: "Tarrat joka pintaan",
-    seoTitle: "Hauskat tarrat – Parhaat huumoritarrat | Huumorikauppa.fi",
-    seoDescription: "Hauskat tarrat kannettavalle, autolle tai seinälle! Korkealaatuiset suomalainen huumori. Tilaa heti. 🏷️",
+    description: "Hauskat tarrat ovat edullisin tapa tuoda huumoria arkeen. Käytä kannettavassa, vesipullossa tai anna äitienpäivälisuksi muun lahjan kylkeen. Hinnat lähtevät alle kymmenestä eurosta.",
+    seoTitle: "Hauskat Tarrat – Edullinen äitienpäivälisukka | Huumorikauppa.fi",
+    seoDescription: "Hauskat tarrat läppäriin, vesipulloon ja autoon. Edullinen lisä äitienpäivälahjaan — alle 10 €. Nopea toimitus koko Suomeen. 🏷️",
     seoText: `## Hauskat tarrat – meemitarrat ja tarra-arkit
 
 Huumorikaupan hauskat tarrat sopivat läppäriin, vesipulloon, autoon, jääkaappiin ja kaikkialle muuallekin. Laadukkaat vinyl-tarrat kestävät säätä, vettä ja kulutusta – ne pysyvät paikallaan vuosia.
