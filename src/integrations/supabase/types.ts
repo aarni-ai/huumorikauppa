@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      email_logs: {
+        Row: {
+          created_at: string
+          email_type: string
+          error_message: string | null
+          id: string
+          order_id: string | null
+          status: string
+          subject: string
+          to_email: string
+        }
+        Insert: {
+          created_at?: string
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          order_id?: string | null
+          status: string
+          subject: string
+          to_email: string
+        }
+        Update: {
+          created_at?: string
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          order_id?: string | null
+          status?: string
+          subject?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -124,6 +165,7 @@ export type Database = {
           created_at: string
           customer_email: string | null
           customer_name: string | null
+          fulfilled: boolean
           gift_wrap: boolean
           id: string
           items: Json
@@ -138,6 +180,7 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          fulfilled?: boolean
           gift_wrap?: boolean
           id?: string
           items?: Json
@@ -152,6 +195,7 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          fulfilled?: boolean
           gift_wrap?: boolean
           id?: string
           items?: Json
@@ -257,6 +301,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_id: string | null
+          event_type: string
+          id: string
+          raw_data: Json | null
+          stripe_session_id: string | null
+          success: boolean
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_id?: string | null
+          event_type: string
+          id?: string
+          raw_data?: Json | null
+          stripe_session_id?: string | null
+          success?: boolean
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_id?: string | null
+          event_type?: string
+          id?: string
+          raw_data?: Json | null
+          stripe_session_id?: string | null
+          success?: boolean
         }
         Relationships: []
       }
