@@ -32,6 +32,8 @@ const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
 const BlogIndex = lazy(() => import("./pages/BlogIndex"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const GiftCategoryPage = lazy(() => import("./pages/GiftCategoryPage"));
+const MothersDayPage = lazy(() => import("./pages/MothersDayPage"));
+const MothersDayRedirect = lazy(() => import("./pages/MothersDayRedirect"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -89,11 +91,13 @@ const App = () => (
               <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
               <Route path="/blogi" element={<BlogIndex />} />
               <Route path="/blogi/:slug" element={<BlogPost />} />
+              <Route path="/aitienpaiva" element={<MothersDayPage />} />
               <Route path="/hauskat-lahjat-miehelle" element={<GiftCategoryPage />} />
               <Route path="/hauskat-lahjat-naiselle" element={<GiftCategoryPage />} />
               <Route path="/polttari-lahjat" element={<GiftCategoryPage />} />
               <Route path="/isanpaiva-lahjat" element={<GiftCategoryPage />} />
-              <Route path="/aitienpaiva-lahjat" element={<GiftCategoryPage />} />
+              {/* 301-redirect: vanha äitienpäiväsivu → uusi /aitienpaiva */}
+              <Route path="/aitienpaiva-lahjat" element={<MothersDayRedirect />} />
               <Route path="/joululahjat" element={<GiftCategoryPage />} />
               <Route path="/syntymapaivaLahjat" element={<GiftCategoryPage />} />
               <Route path="/elakelahjat" element={<GiftCategoryPage />} />

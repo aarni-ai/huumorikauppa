@@ -101,8 +101,26 @@ const Index = () => {
 
       {/* H1 — visually integrated with hero */}
 
+      {/* MOTHER'S DAY 2026 BANNER */}
+      <section className="container pt-2">
+        <Link
+          to="/aitienpaiva"
+          className="block rounded-xl md:rounded-2xl overflow-hidden text-center px-4 py-3 md:py-4 transition-transform hover:scale-[1.005]"
+          style={{
+            background: "linear-gradient(90deg, hsl(340 75% 55%) 0%, hsl(350 80% 62%) 50%, hsl(20 75% 60%) 100%)",
+          }}
+        >
+          <span className="text-white font-medium text-sm md:text-base">
+            🌸 Äitienpäivä 11.5.2026 — Löydä hauskin lahja äidille
+          </span>
+          <span className="text-white font-bold text-sm md:text-base ml-2 underline-offset-4 hover:underline">
+            Katso äitienpäivälahjat →
+          </span>
+        </Link>
+      </section>
+
       {/* HERO BANNER IMAGE – LCP element */}
-      <section className="container pb-2 md:pb-1">
+      <section className="container pb-2 md:pb-1 pt-2">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
