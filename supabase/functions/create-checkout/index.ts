@@ -38,9 +38,21 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  const respond = (ok: boolean, payload: Record<string, unknown>) =>
+    new Response(JSON.stringify({ ok, ...payload }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
+
   try {
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not configured");
+    if (!stripeKey) {
+      return respond(false, {
+        error: "Maksupalvelun avain puuttuu.",
+        diagnostics: { error_stage: "missing_secret", processing_time_ms: Date.now() - startTime },
+      });
+    }
 
     const stripe = new Stripe(stripeKey, {
       apiVersion: "2025-08-27.basil",
@@ -49,25 +61,28 @@ serve(async (req) => {
     const { items, customerEmail, customerName, shippingAddress, discountCode } =
       (await req.json()) as CheckoutRequest;
 
-    // Validate discount code
     const discountPercent = discountCode
       ? DISCOUNT_CODES[discountCode] || DISCOUNT_CODES[discountCode?.toUpperCase()] || 0
       : 0;
 
     if (!items || items.length === 0) {
-      throw new Error("No items in cart");
+      return respond(false, {
+        error: "Ostoskori on tyhjä.",
+        diagnostics: { error_stage: "missing_items", processing_time_ms: Date.now() - startTime },
+      });
     }
 
     if (!customerEmail) {
-      throw new Error("Customer email is required");
+      return respond(false, {
+        error: "Sähköpostiosoite puuttuu.",
+        diagnostics: { error_stage: "missing_email", processing_time_ms: Date.now() - startTime },
+      });
     }
 
-    // Calculate shipping
     const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
     const shippingFree = subtotal >= 60;
     const shippingCost = shippingFree ? 0 : 5.95;
 
-    // Validate image URL: Stripe requires absolute https:// URL
     const isValidImageUrl = (url?: string): boolean => {
       if (!url) return false;
       try {
@@ -78,7 +93,6 @@ serve(async (req) => {
       }
     };
 
-    // Build line items with price_data for dynamic cart
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map(
       (item) => {
         const description = [item.size && `Koko: ${item.size}`, item.color && `Väri: ${item.color}`]
@@ -95,14 +109,13 @@ serve(async (req) => {
               ...(description ? { description } : {}),
               ...(validImage ? { images: [validImage] } : {}),
             },
-            unit_amount: Math.round(item.price * (1 - discountPercent / 100) * 100), // cents
+            unit_amount: Math.round(item.price * (1 - discountPercent / 100) * 100),
           },
           quantity: item.quantity,
         };
       }
     );
 
-    // Add shipping as line item if not free
     if (shippingCost > 0) {
       lineItems.push({
         price_data: {
@@ -116,14 +129,12 @@ serve(async (req) => {
       });
     }
 
-    const origin = req.headers.get("origin") || "https://huumorikauppa.lovable.app";
+    const origin = req.headers.get("origin") || "https://huumorikauppa.fi";
 
-    // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer_email: customerEmail,
       line_items: lineItems,
       mode: "payment",
-      payment_method_types: ["card", "klarna", "mobilepay"],
       success_url: `${origin}/tilaus-vahvistettu?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/kassa`,
       metadata: {
@@ -133,18 +144,15 @@ serve(async (req) => {
       locale: "fi",
     });
 
-    return new Response(JSON.stringify({ url: session.url }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
+    return respond(true, {
+      url: session.url,
+      diagnostics: { error_stage: "none", processing_time_ms: Date.now() - startTime },
     });
   } catch (error) {
     console.error("Checkout error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500,
-      }
-    );
+    return respond(false, {
+      error: error instanceof Error ? error.message : "Tuntematon virhe maksun aloituksessa.",
+      diagnostics: { error_stage: "stripe_checkout_create", processing_time_ms: Date.now() - startTime },
+    });
   }
 });
