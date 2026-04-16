@@ -12,15 +12,14 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 const MOTHERS_DAY = new Date("2026-05-11T00:00:00+03:00");
 
 const MOM_KEYWORDS = [
-  "äiti", "äidi", "mamma", "mummi", "anoppi", "maailman paras äiti",
-  "äitsy", "muori", "mom", "mama"
+  "äiti", "äidi", "mamma", "mummi", "mummo", "anoppi", "maailman paras äiti",
+  "äitsy", "muori", "mom", "mama", "mutsi", "mutsu", "äippä", "memma"
 ];
 
 function isMothersDayProduct(p: { name: string; description: string; category: string }): boolean {
   const t = (p.name + " " + p.description).toLowerCase();
-  if (MOM_KEYWORDS.some(k => t.includes(k))) return true;
-  // Heuristic: gift-suitable categories also count
-  return ["mukit", "hupparit", "t-paidat", "tarrat", "laukut", "peitot"].includes(p.category);
+  // STRICT: must mention mom-related keyword. No category fallback.
+  return MOM_KEYWORDS.some(k => t.includes(k));
 }
 
 function isCustomTextProduct(name: string, description: string): boolean {
