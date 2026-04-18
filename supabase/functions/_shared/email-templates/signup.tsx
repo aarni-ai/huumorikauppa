@@ -27,32 +27,33 @@ export const SignupEmail = ({
   recipient,
   confirmationUrl,
 }: SignupEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="fi" dir="ltr">
     <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
+    <Preview>Vahvista sähköpostiosoitteesi – Huumorikauppa 🎉</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Heading style={h1}>Tervetuloa Huumorikauppaan! 🎉</Heading>
         <Text style={text}>
-          Thanks for signing up for{' '}
+          Kiitos rekisteröitymisestä{' '}
           <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
+            <strong>Huumorikauppaan</strong>
           </Link>
           !
         </Text>
         <Text style={text}>
-          Please confirm your email address (
+          Vahvista sähköpostiosoitteesi (
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
           </Link>
-          ) by clicking the button below:
+          ) klikkaamalla alla olevaa nappia:
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Verify Email
+          Vahvista sähköposti
         </Button>
         <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
+          Jos et luonut tiliä, voit jättää tämän viestin huomiotta.
         </Text>
+        <Text style={footer}>Terveisin, Huumorikauppa-tiimi 😊</Text>
       </Container>
     </Body>
   </Html>
@@ -60,27 +61,32 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', Arial, sans-serif" }
+const container = { padding: '30px 25px', maxWidth: '560px', margin: '0 auto' }
 const h1 = {
-  fontSize: '22px',
+  fontSize: '26px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#111111',
   margin: '0 0 20px',
+  fontFamily: "'Anton', 'Impact', sans-serif",
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.02em',
 }
 const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  fontSize: '15px',
+  color: '#333333',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
 }
-const link = { color: 'inherit', textDecoration: 'underline' }
+const link = { color: '#7ec832', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
+  backgroundColor: '#7ec832',
+  color: '#0a0a0a',
+  fontSize: '15px',
+  fontWeight: 'bold' as const,
   borderRadius: '8px',
-  padding: '12px 20px',
+  padding: '12px 28px',
   textDecoration: 'none',
+  display: 'inline-block',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '20px 0 8px' }
