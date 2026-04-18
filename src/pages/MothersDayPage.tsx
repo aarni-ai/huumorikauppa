@@ -13,12 +13,12 @@ const MOTHERS_DAY = new Date("2026-05-11T00:00:00+03:00");
 
 const MOM_KEYWORDS = [
   "äiti", "äidi", "mamma", "mummi", "mummo", "anoppi", "maailman paras äiti",
-  "äitsy", "muori", "mom", "mama", "mutsi", "mutsu", "äippä", "memma"
+  "äitsy", "äiskä", "muori", "mom", "mama", "mutsi", "mutsu", "äippä", "memma",
+  "slay queen", "queen", "girlboss", "boss lady", "diiva",
 ];
 
-function isMothersDayProduct(p: { name: string; description: string; category: string }): boolean {
-  const t = (p.name + " " + p.description).toLowerCase();
-  // STRICT: must mention mom-related keyword. No category fallback.
+function isMothersDayProduct(p: { name: string; description: string; slug?: string; category: string }): boolean {
+  const t = (p.name + " " + p.description + " " + (p.slug || "")).toLowerCase();
   return MOM_KEYWORDS.some(k => t.includes(k));
 }
 
