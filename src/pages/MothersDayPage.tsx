@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
-// Mother's Day 2026 = Sunday May 11, 2026 (Finnish: 2nd Sunday of May)
-const MOTHERS_DAY = new Date("2026-05-11T00:00:00+03:00");
+// Finnish Mother's Day 2026 = Sunday May 10, 2026 (2nd Sunday of May)
+const MOTHERS_DAY = new Date("2026-05-10T00:00:00+03:00");
 
 const MOM_KEYWORDS = [
   "äiti", "äidi", "mamma", "mummi", "mummo", "anoppi", "maailman paras äiti",
@@ -40,23 +40,23 @@ const FILTERS: { key: FilterKey; label: string; emoji: string }[] = [
 const FAQS = [
   {
     q: "Milloin äitienpäivä on 2026?",
-    a: "Äitienpäivä 2026 on sunnuntai 11. toukokuuta.",
+    a: "Äitienpäivä on sunnuntaina 10. toukokuuta 2026.",
   },
   {
-    q: "Mikä on hauska äitienpäivälahja äidille?",
-    a: "Hauska muki, t-paita tai huppari äitienpäiväaiheisella tekstillä on lahja jota äiti muistaa pitkään. Huumorikauppa.fi:stä löydät parhaat hauskat äitienpäivälahjat Suomessa.",
+    q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
+    a: "Tilaa viimeistään 5. toukokuuta niin ehdit varmasti. Toimitamme 3–7 arkipäivässä koko Suomeen.",
   },
   {
-    q: "Kuinka nopeasti saan tilauksen?",
-    a: "Toimitamme nopeasti koko Suomeen. Tilaa ajoissa ennen 11.5.2026 äitienpäivää.",
+    q: "Mikä on paras hauska lahja äidille?",
+    a: "Suosituimpia ovat hupparit ja t-paidat hauskoilla teksteillä — äiti käyttää niitä ja muistaa lahjan aina. Myös hauskat mukit ovat aina varma valinta.",
+  },
+  {
+    q: "Toimitetaanko äitienpäiväksi?",
+    a: "Kyllä! Toimitamme 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
     a: "Kyllä! Huumorikaupan tuotteet sopivat erinomaisesti myös mummille, anopille tai muille tärkeille naisille elämässäsi.",
-  },
-  {
-    q: "Mikä on edullisin äitienpäivälahja?",
-    a: "Tarramme ovat edullisin vaihtoehto. Mukit lähtevät jo alle 20 eurosta.",
   },
 ];
 
@@ -143,14 +143,14 @@ const MothersDayPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat Äitienpäivälahjat 2026 – Tilaa hauska lahja äidille | Huumorikauppa.fi"
-        description="Älä osta kukkia. Osta jotain mitä äiti oikeasti muistaa. Hauskat paidat, mukit, hupparit ja tarrat äitienpäivälahjaksi 2026. Nopea toimitus."
+        title="Hauskat Äitienpäivälahjat 2026 – Paras lahja äidille | Huumorikauppa"
+        description="Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa. Hauskat äitienpäivälahjat 2026: paidat, hupparit, mukit. Nopea toimitus koko Suomeen."
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
         ogImage={baseProducts[0]?.images[0] || "https://huumorikauppa.fi/images/hero-banner-wide.png"}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
-          { name: "Äitienpäivä 2026", url: "https://huumorikauppa.fi/aitienpaiva" },
+          { name: "Äitienpäivälahjat 2026", url: "https://huumorikauppa.fi/aitienpaiva" },
         ]}
       />
 
