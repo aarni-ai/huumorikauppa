@@ -752,7 +752,7 @@ const ProductPage = () => {
         <meta property="og:description" content={product.description.slice(0, 150)} />
         <meta property="og:type" content="product" />
         <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
-        <meta property="og:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <meta property="og:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <meta property="og:site_name" content="Huumorikauppa.fi" />
         <meta property="og:locale" content="fi_FI" />
         <meta property="product:price:amount" content={product.price.toFixed(2)} />
@@ -760,21 +760,10 @@ const ProductPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
         <meta name="twitter:description" content={product.description.slice(0, 150)} />
-        <meta name="twitter:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
-        <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(productFaqJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": breadcrumbs.map((item, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "name": item.name,
-            "item": item.url,
-          }))
-        })}</script>
+        {/* JSON-LD (Product + Breadcrumb) is emitted exclusively by SEOHead below to avoid duplicates. FAQPage is emitted by ProductFaqSchema. */}
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
@@ -782,10 +771,11 @@ const ProductPage = () => {
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
-        ogImage={currentImages[0]}
+        ogImage={toProxiedImage(currentImages[0]?.startsWith("http") ? currentImages[0] : `https://huumorikauppa.fi${currentImages[0] || ""}`)}
         ogType="product"
         productPrice={product.price.toFixed(2)}
       />
+      <ProductFaqSchema faqs={productFaqs} />
 
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
