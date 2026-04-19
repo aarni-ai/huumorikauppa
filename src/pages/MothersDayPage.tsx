@@ -165,13 +165,13 @@ const MothersDayPage = () => {
         <div className="container py-12 md:py-20 text-center relative">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 backdrop-blur text-sm font-medium text-rose-700 mb-4">
             <Heart className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />
-            Äitienpäivä 11.5.2026
+            Äitienpäivä 10.5.2026
           </div>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-rose-900 mb-3 leading-tight">
-            Äitienpäivälahjat
+            Hauskat Äitienpäivälahjat 2026 – Lahja jota äiti ei unohda
           </h1>
           <p className="text-base md:text-xl text-rose-800/80 max-w-2xl mx-auto mb-6">
-            Älä osta kukkia. Osta jotain mitä äiti oikeasti muistaa.
+            Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa.
           </p>
 
           {/* Countdown */}
@@ -187,7 +187,7 @@ const MothersDayPage = () => {
             </div>
             <div className="h-8 md:h-10 w-px bg-rose-300/60" />
             <div className="text-center px-1">
-              <div className="font-display text-base md:text-xl text-rose-700 leading-tight">11.5.</div>
+              <div className="font-display text-base md:text-xl text-rose-700 leading-tight">10.5.</div>
               <div className="text-[10px] md:text-xs uppercase tracking-wider text-rose-600/80 mt-1">2026</div>
             </div>
           </div>
@@ -391,7 +391,7 @@ const MothersDayPage = () => {
       >
         <div className="container">
           <p className="text-white font-display text-xl md:text-2xl mb-4">
-            ⏰ Äitienpäivä 11.5.2026 — Tilaa ajoissa, nopea toimitus!
+            ⏰ Äitienpäivä 10.5.2026 — Tilaa ajoissa, nopea toimitus!
           </p>
           <a href="#tuotteet">
             <Button size="lg" className="bg-white text-rose-700 hover:bg-white/90 font-bold">
