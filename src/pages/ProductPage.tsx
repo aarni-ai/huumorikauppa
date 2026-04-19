@@ -471,6 +471,23 @@ const sizeGuide = [
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
+// Build a same-origin proxied URL for a Printify image so Googlebot
+// (which is blocked by Printify CDN) can fetch it via our domain.
+// Only used in JSON-LD + og:image; <img> tags keep the original CDN URL.
+function toProxiedImage(url: string): string {
+  if (!url) return url;
+  try {
+    const u = new URL(url, "https://huumorikauppa.fi");
+    if (u.hostname === "images-api.printify.com" || u.hostname === "images.printify.com") {
+      return `https://huumorikauppa.fi/api/image-proxy?url=${encodeURIComponent(u.toString())}`;
+    }
+    if (u.origin === "https://huumorikauppa.fi") return u.toString();
+    return url;
+  } catch {
+    return url.startsWith("http") ? url : `https://huumorikauppa.fi${url}`;
+  }
+}
+
 function isCustomTextProduct(product: { name: string; description: string }): boolean {
   const t = (product.name + ' ' + product.description).toLowerCase();
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
@@ -623,7 +640,10 @@ const ProductPage = () => {
     "@type": "Product",
     "name": product.name,
     "description": product.description.slice(0, 500),
-    "image": allProductImages.map(img => img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`),
+    "image": allProductImages.map(img => {
+      const abs = img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`;
+      return toProxiedImage(abs);
+    }),
     "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
     "sku": product.slug,
     "mpn": product.id,
@@ -642,7 +662,12 @@ const ProductPage = () => {
       "reviewRating": { "@type": "Rating", "ratingValue": String(r.stars), "bestRating": "5" },
       "datePublished": (() => {
         const parts = r.date.split('.');
-        return `20${parts[2].length === 2 ? parts[2] : parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        const day = parts[0].padStart(2, '0');
+        const month = parts[1].padStart(2, '0');
+        const rawYear = parts[2];
+        // Year in source data is already 4 digits — do not prepend "20"
+        const year = rawYear.length === 4 ? rawYear : `20${rawYear}`;
+        return `${year}-${month}-${day}`;
       })(),
       "reviewBody": r.text,
     })),
@@ -727,7 +752,7 @@ const ProductPage = () => {
         <meta property="og:description" content={product.description.slice(0, 150)} />
         <meta property="og:type" content="product" />
         <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
-        <meta property="og:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <meta property="og:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <meta property="og:site_name" content="Huumorikauppa.fi" />
         <meta property="og:locale" content="fi_FI" />
         <meta property="product:price:amount" content={product.price.toFixed(2)} />
@@ -735,21 +760,10 @@ const ProductPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
         <meta name="twitter:description" content={product.description.slice(0, 150)} />
-        <meta name="twitter:image" content={allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`} />
+        <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
-        <script type="application/ld+json">{JSON.stringify(productJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(productFaqJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": breadcrumbs.map((item, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "name": item.name,
-            "item": item.url,
-          }))
-        })}</script>
+        {/* JSON-LD (Product + Breadcrumb) is emitted exclusively by SEOHead below to avoid duplicates. FAQPage is emitted by ProductFaqSchema. */}
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
@@ -757,10 +771,11 @@ const ProductPage = () => {
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={productJsonLd}
         breadcrumbs={breadcrumbs}
-        ogImage={currentImages[0]}
+        ogImage={toProxiedImage(currentImages[0]?.startsWith("http") ? currentImages[0] : `https://huumorikauppa.fi${currentImages[0] || ""}`)}
         ogType="product"
         productPrice={product.price.toFixed(2)}
       />
+      <ProductFaqSchema faqs={productFaqs} />
 
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
