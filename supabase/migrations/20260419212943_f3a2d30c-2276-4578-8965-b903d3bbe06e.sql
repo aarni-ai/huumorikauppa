@@ -1,0 +1,1 @@
+DELETE FROM public.products WHERE slug = 'testituote-1e';
