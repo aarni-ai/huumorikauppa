@@ -224,32 +224,6 @@ const MothersDayPage = () => {
         </nav>
       </div>
 
-      {/* SEO INTRO — natural ~200 words, above products */}
-      <section className="container pt-6 pb-2 max-w-3xl">
-        <div className="text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
-          <p>
-            Etsitkö parasta <strong>äitienpäivälahjaa</strong> vuodelle 2026? Olet oikeassa paikassa.
-            Huumorikauppa on Suomen suurin valikoima hauskoja äitienpäivälahjoja — paitoja, huppareita,
-            mukeja ja tarroja, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
-            2026 on sunnuntaina <strong>10. toukokuuta</strong>, ja jos haluat antaa lahjan jonka äiti
-            oikeasti muistaa, kannattaa unohtaa rutiininomaiset valinnat.
-          </p>
-          <p>
-            <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
-            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
-            kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
-            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–7 arkipäivässä —
-            ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
-          </p>
-          <p>
-            <strong>Ilmainen toimitus yli 60 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
-            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
-            <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
-            koko vuoden.
-          </p>
-        </div>
-      </section>
-
       {/* PRODUCT GRID */}
       <section id="tuotteet" className="container py-8 md:py-12 scroll-mt-20">
         <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
@@ -303,34 +277,30 @@ const MothersDayPage = () => {
         )}
       </section>
 
-      {/* SEO TEXT BLOCK — moved below products */}
+      {/* SEO TEXT BLOCK — below products */}
       <section className="container py-8 md:py-12 max-w-3xl">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Miksi hauska äitienpäivälahja on paras äitienpäivälahja?
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-8">
-          Äitienpäivä on 10. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
-          suklaat ovat kauniita, mutta ne unohtuvat nopeasti. Hauska äitienpäivälahja — paita, muki tai
-          tarra jossa on täydellinen teksti — jää mieleen vuosiksi. Huumorikauppa.fi on Suomen hauskin
-          verkkokauppa, ja meillä on täydellinen valikoima hauskoja äitienpäivälahjoja kaikille äideille.
-        </p>
-
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Parhaat hauskat äitienpäivälahjat äidille
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-8">
-          Löydät Huumorikaupasta äitienpäivälahjoja joka makuun ja budjettiin. Hauskat mukit sopivat
-          kahvia rakastavalle äidille, hauskat t-paidat ja hupparit ovat täydellisiä äideille joilla on
-          huumorintajua, ja tarrat ovat hauska ja edullinen lisä muiden lahjojen kylkeen.
-        </p>
-
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-          Nopea toimitus — tilaa ajoissa
-        </h2>
-        <p className="text-muted-foreground leading-relaxed">
-          Tilaa äitienpäivälahja ajoissa — toimitamme nopeasti koko Suomeen. Älä jää kiireeseen, vaan
-          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 10.5.2026.
-        </p>
+        <div className="text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
+          <p>
+            Etsitkö parasta <strong>äitienpäivälahjaa</strong> vuodelle 2026? Olet oikeassa paikassa.
+            Huumorikauppa on Suomen suurin valikoima hauskoja äitienpäivälahjoja — paitoja, huppareita,
+            mukeja ja tarroja, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
+            2026 on sunnuntaina <strong>10. toukokuuta</strong>, ja jos haluat antaa lahjan jonka äiti
+            oikeasti muistaa, kannattaa unohtaa rutiininomaiset valinnat.
+          </p>
+          <p>
+            <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
+            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
+            kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
+            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–7 arkipäivässä —
+            ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
+          </p>
+          <p>
+            <strong>Ilmainen toimitus yli 60 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
+            <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
+            koko vuoden.
+          </p>
+        </div>
       </section>
 
       {/* GIFT GUIDE */}
