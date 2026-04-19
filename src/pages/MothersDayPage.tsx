@@ -220,9 +220,35 @@ const MothersDayPage = () => {
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">Äitienpäivä 2026</span>
+          <span className="text-foreground">Äitienpäivälahjat 2026</span>
         </nav>
       </div>
+
+      {/* SEO INTRO — natural ~200 words, above products */}
+      <section className="container pt-6 pb-2 max-w-3xl">
+        <div className="text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
+          <p>
+            Etsitkö parasta <strong>äitienpäivälahjaa</strong> vuodelle 2026? Olet oikeassa paikassa.
+            Huumorikauppa on Suomen suurin valikoima hauskoja äitienpäivälahjoja — paitoja, huppareita,
+            mukeja ja tarroja, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
+            2026 on sunnuntaina <strong>10. toukokuuta</strong>, ja jos haluat antaa lahjan jonka äiti
+            oikeasti muistaa, kannattaa unohtaa rutiininomaiset valinnat.
+          </p>
+          <p>
+            <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
+            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
+            kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
+            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–7 arkipäivässä —
+            ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
+          </p>
+          <p>
+            <strong>Ilmainen toimitus yli 60 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
+            <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
+            koko vuoden.
+          </p>
+        </div>
+      </section>
 
       {/* PRODUCT GRID */}
       <section id="tuotteet" className="container py-8 md:py-12 scroll-mt-20">
