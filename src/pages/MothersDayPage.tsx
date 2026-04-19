@@ -329,7 +329,7 @@ const MothersDayPage = () => {
         </h2>
         <p className="text-muted-foreground leading-relaxed">
           Tilaa äitienpäivälahja ajoissa — toimitamme nopeasti koko Suomeen. Älä jää kiireeseen, vaan
-          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 11.5.2026.
+          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 10.5.2026.
         </p>
       </section>
 
