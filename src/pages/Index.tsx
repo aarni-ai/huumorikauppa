@@ -111,7 +111,7 @@ const Index = () => {
           }}
         >
           <span className="text-white font-medium text-sm md:text-base">
-            🌸 Äitienpäivä 11.5.2026 — Löydä hauskin lahja äidille
+            🌸 Äitienpäivälahjat 2026 (10.5.) — Löydä hauskin lahja äidille
           </span>
           <span className="text-white font-bold text-sm md:text-base ml-2 underline-offset-4 hover:underline">
             Katso äitienpäivälahjat →
