@@ -309,7 +309,7 @@ const MothersDayPage = () => {
           Miksi hauska äitienpäivälahja on paras äitienpäivälahja?
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-8">
-          Äitienpäivä on 11. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
+          Äitienpäivä on 10. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
           suklaat ovat kauniita, mutta ne unohtuvat nopeasti. Hauska äitienpäivälahja — paita, muki tai
           tarra jossa on täydellinen teksti — jää mieleen vuosiksi. Huumorikauppa.fi on Suomen hauskin
           verkkokauppa, ja meillä on täydellinen valikoima hauskoja äitienpäivälahjoja kaikille äideille.
