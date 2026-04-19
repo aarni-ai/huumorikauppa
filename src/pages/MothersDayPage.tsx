@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
-// Mother's Day 2026 = Sunday May 11, 2026 (Finnish: 2nd Sunday of May)
-const MOTHERS_DAY = new Date("2026-05-11T00:00:00+03:00");
+// Finnish Mother's Day 2026 = Sunday May 10, 2026 (2nd Sunday of May)
+const MOTHERS_DAY = new Date("2026-05-10T00:00:00+03:00");
 
 const MOM_KEYWORDS = [
   "äiti", "äidi", "mamma", "mummi", "mummo", "anoppi", "maailman paras äiti",
@@ -40,23 +40,23 @@ const FILTERS: { key: FilterKey; label: string; emoji: string }[] = [
 const FAQS = [
   {
     q: "Milloin äitienpäivä on 2026?",
-    a: "Äitienpäivä 2026 on sunnuntai 11. toukokuuta.",
+    a: "Äitienpäivä on sunnuntaina 10. toukokuuta 2026.",
   },
   {
-    q: "Mikä on hauska äitienpäivälahja äidille?",
-    a: "Hauska muki, t-paita tai huppari äitienpäiväaiheisella tekstillä on lahja jota äiti muistaa pitkään. Huumorikauppa.fi:stä löydät parhaat hauskat äitienpäivälahjat Suomessa.",
+    q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
+    a: "Tilaa viimeistään 5. toukokuuta niin ehdit varmasti. Toimitamme 3–7 arkipäivässä koko Suomeen.",
   },
   {
-    q: "Kuinka nopeasti saan tilauksen?",
-    a: "Toimitamme nopeasti koko Suomeen. Tilaa ajoissa ennen 11.5.2026 äitienpäivää.",
+    q: "Mikä on paras hauska lahja äidille?",
+    a: "Suosituimpia ovat hupparit ja t-paidat hauskoilla teksteillä — äiti käyttää niitä ja muistaa lahjan aina. Myös hauskat mukit ovat aina varma valinta.",
+  },
+  {
+    q: "Toimitetaanko äitienpäiväksi?",
+    a: "Kyllä! Toimitamme 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
     a: "Kyllä! Huumorikaupan tuotteet sopivat erinomaisesti myös mummille, anopille tai muille tärkeille naisille elämässäsi.",
-  },
-  {
-    q: "Mikä on edullisin äitienpäivälahja?",
-    a: "Tarramme ovat edullisin vaihtoehto. Mukit lähtevät jo alle 20 eurosta.",
   },
 ];
 
@@ -143,14 +143,14 @@ const MothersDayPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat Äitienpäivälahjat 2026 – Tilaa hauska lahja äidille | Huumorikauppa.fi"
-        description="Älä osta kukkia. Osta jotain mitä äiti oikeasti muistaa. Hauskat paidat, mukit, hupparit ja tarrat äitienpäivälahjaksi 2026. Nopea toimitus."
+        title="Hauskat Äitienpäivälahjat 2026 – Paras lahja äidille | Huumorikauppa"
+        description="Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa. Hauskat äitienpäivälahjat 2026: paidat, hupparit, mukit. Nopea toimitus koko Suomeen."
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
         ogImage={baseProducts[0]?.images[0] || "https://huumorikauppa.fi/images/hero-banner-wide.png"}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
-          { name: "Äitienpäivä 2026", url: "https://huumorikauppa.fi/aitienpaiva" },
+          { name: "Äitienpäivälahjat 2026", url: "https://huumorikauppa.fi/aitienpaiva" },
         ]}
       />
 
@@ -165,13 +165,13 @@ const MothersDayPage = () => {
         <div className="container py-12 md:py-20 text-center relative">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 backdrop-blur text-sm font-medium text-rose-700 mb-4">
             <Heart className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />
-            Äitienpäivä 11.5.2026
+            Äitienpäivä 10.5.2026
           </div>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl text-rose-900 mb-3 leading-tight">
-            Äitienpäivälahjat
+            Hauskat Äitienpäivälahjat 2026 – Lahja jota äiti ei unohda
           </h1>
           <p className="text-base md:text-xl text-rose-800/80 max-w-2xl mx-auto mb-6">
-            Älä osta kukkia. Osta jotain mitä äiti oikeasti muistaa.
+            Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa.
           </p>
 
           {/* Countdown */}
@@ -187,7 +187,7 @@ const MothersDayPage = () => {
             </div>
             <div className="h-8 md:h-10 w-px bg-rose-300/60" />
             <div className="text-center px-1">
-              <div className="font-display text-base md:text-xl text-rose-700 leading-tight">11.5.</div>
+              <div className="font-display text-base md:text-xl text-rose-700 leading-tight">10.5.</div>
               <div className="text-[10px] md:text-xs uppercase tracking-wider text-rose-600/80 mt-1">2026</div>
             </div>
           </div>
@@ -220,9 +220,35 @@ const MothersDayPage = () => {
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">Äitienpäivä 2026</span>
+          <span className="text-foreground">Äitienpäivälahjat 2026</span>
         </nav>
       </div>
+
+      {/* SEO INTRO — natural ~200 words, above products */}
+      <section className="container pt-6 pb-2 max-w-3xl">
+        <div className="text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
+          <p>
+            Etsitkö parasta <strong>äitienpäivälahjaa</strong> vuodelle 2026? Olet oikeassa paikassa.
+            Huumorikauppa on Suomen suurin valikoima hauskoja äitienpäivälahjoja — paitoja, huppareita,
+            mukeja ja tarroja, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
+            2026 on sunnuntaina <strong>10. toukokuuta</strong>, ja jos haluat antaa lahjan jonka äiti
+            oikeasti muistaa, kannattaa unohtaa rutiininomaiset valinnat.
+          </p>
+          <p>
+            <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
+            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
+            kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
+            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–7 arkipäivässä —
+            ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
+          </p>
+          <p>
+            <strong>Ilmainen toimitus yli 60 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
+            <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
+            koko vuoden.
+          </p>
+        </div>
+      </section>
 
       {/* PRODUCT GRID */}
       <section id="tuotteet" className="container py-8 md:py-12 scroll-mt-20">
@@ -283,7 +309,7 @@ const MothersDayPage = () => {
           Miksi hauska äitienpäivälahja on paras äitienpäivälahja?
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-8">
-          Äitienpäivä on 11. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
+          Äitienpäivä on 10. toukokuuta 2026, ja lahjan etsiminen voi tuntua haastavalta. Kukkaset ja
           suklaat ovat kauniita, mutta ne unohtuvat nopeasti. Hauska äitienpäivälahja — paita, muki tai
           tarra jossa on täydellinen teksti — jää mieleen vuosiksi. Huumorikauppa.fi on Suomen hauskin
           verkkokauppa, ja meillä on täydellinen valikoima hauskoja äitienpäivälahjoja kaikille äideille.
@@ -303,7 +329,7 @@ const MothersDayPage = () => {
         </h2>
         <p className="text-muted-foreground leading-relaxed">
           Tilaa äitienpäivälahja ajoissa — toimitamme nopeasti koko Suomeen. Älä jää kiireeseen, vaan
-          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 11.5.2026.
+          tilaa heti ja varmista että lahja saapuu ennen äitienpäivää 10.5.2026.
         </p>
       </section>
 
@@ -391,7 +417,7 @@ const MothersDayPage = () => {
       >
         <div className="container">
           <p className="text-white font-display text-xl md:text-2xl mb-4">
-            ⏰ Äitienpäivä 11.5.2026 — Tilaa ajoissa, nopea toimitus!
+            ⏰ Äitienpäivä 10.5.2026 — Tilaa ajoissa, nopea toimitus!
           </p>
           <a href="#tuotteet">
             <Button size="lg" className="bg-white text-rose-700 hover:bg-white/90 font-bold">
