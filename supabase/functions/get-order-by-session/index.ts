@@ -31,7 +31,7 @@ serve(async (req) => {
 
     const { data: order } = await supabase
       .from("orders")
-      .select("id, customer_email, customer_name, items, total, status, created_at")
+      .select("id, items, total, status, created_at")
       .eq("stripe_session_id", sessionId)
       .maybeSingle();
 
@@ -58,8 +58,6 @@ serve(async (req) => {
         found: true,
         order: {
           id: order.id,
-          customer_email: order.customer_email,
-          customer_name: order.customer_name,
           items: order.items,
           total: order.total,
           status: order.status,

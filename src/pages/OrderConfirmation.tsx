@@ -9,8 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface OrderInfo {
   id: string;
-  customer_email: string | null;
-  customer_name: string | null;
   items: Array<{ name: string; quantity: number; price: number }>;
   total: number;
   status: string;

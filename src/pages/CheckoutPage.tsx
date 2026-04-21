@@ -65,8 +65,9 @@ const CheckoutPage = () => {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
         body: {
           items: items.map(i => ({
+            id: i.product.id,
+            slug: i.product.slug,
             name: i.product.name,
-            price: i.product.price,
             quantity: i.quantity,
             image: i.product.images[0] || undefined,
             size: i.selectedSize,
