@@ -12,6 +12,14 @@
       "destination": "https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/sitemap"
     },
     {
+      "source": "/merchant-feed.xml",
+      "destination": "https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed"
+    },
+    {
+      "source": "/api/merchant-feed",
+      "destination": "https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed"
+    },
+    {
       "source": "/api/image-proxy",
       "destination": "https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/image-proxy"
     },
