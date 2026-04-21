@@ -82,7 +82,64 @@ serve(async (req) => {
       });
     }
 
-    const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    // 🔒 SECURITY: fetch authoritative prices from DB. Never trust client-supplied prices.
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+
+    const ids = items.map((i) => i.id).filter(Boolean) as string[];
+    const slugs = items.map((i) => i.slug).filter(Boolean) as string[];
+
+    if (ids.length === 0 && slugs.length === 0) {
+      return respond(false, {
+        error: "Tuotetiedot puuttuvat.",
+        diagnostics: { error_stage: "missing_product_ids", processing_time_ms: Date.now() - startTime },
+      });
+    }
+
+    let dbQuery = supabaseAdmin.from("products").select("id, slug, name, price");
+    if (ids.length > 0 && slugs.length > 0) {
+      dbQuery = dbQuery.or(`id.in.(${ids.join(",")}),slug.in.(${slugs.join(",")})`);
+    } else if (ids.length > 0) {
+      dbQuery = dbQuery.in("id", ids);
+    } else {
+      dbQuery = dbQuery.in("slug", slugs);
+    }
+    const { data: dbProducts, error: dbErr } = await dbQuery;
+    if (dbErr || !dbProducts) {
+      return respond(false, {
+        error: "Tuotteiden hinnan tarkistus epäonnistui.",
+        diagnostics: { error_stage: "db_price_lookup", processing_time_ms: Date.now() - startTime },
+      });
+    }
+
+    const priceById = new Map(dbProducts.map((p) => [p.id, Number(p.price)]));
+    const priceBySlug = new Map(dbProducts.map((p) => [p.slug, Number(p.price)]));
+
+    // Resolve each cart item to its authoritative price
+    type ResolvedItem = CartLineItem & { _serverPrice: number };
+    const resolved: ResolvedItem[] = [];
+    for (const item of items) {
+      let serverPrice: number | undefined;
+      if (item.id && priceById.has(item.id)) serverPrice = priceById.get(item.id);
+      else if (item.slug && priceBySlug.has(item.slug)) serverPrice = priceBySlug.get(item.slug);
+      if (typeof serverPrice !== "number" || !Number.isFinite(serverPrice) || serverPrice <= 0) {
+        return respond(false, {
+          error: `Tuotteen hintaa ei voitu vahvistaa: ${item.name}`,
+          diagnostics: { error_stage: "unknown_product_price", processing_time_ms: Date.now() - startTime },
+        });
+      }
+      if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 99) {
+        return respond(false, {
+          error: "Virheellinen määrä.",
+          diagnostics: { error_stage: "invalid_quantity", processing_time_ms: Date.now() - startTime },
+        });
+      }
+      resolved.push({ ...item, _serverPrice: serverPrice });
+    }
+
+    const subtotal = resolved.reduce((sum, i) => sum + i._serverPrice * i.quantity, 0);
     const shippingFree = subtotal >= 60;
     const shippingCost = shippingFree ? 0 : 5.95;
 
@@ -96,7 +153,7 @@ serve(async (req) => {
       }
     };
 
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map(
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = resolved.map(
       (item) => {
         const description = [item.size && `Koko: ${item.size}`, item.color && `Väri: ${item.color}`]
           .filter(Boolean)
@@ -112,7 +169,7 @@ serve(async (req) => {
               ...(description ? { description } : {}),
               ...(validImage ? { images: [validImage] } : {}),
             },
-            unit_amount: Math.round(item.price * (1 - discountPercent / 100) * 100),
+            unit_amount: Math.round(item._serverPrice * (1 - discountPercent / 100) * 100),
           },
           quantity: item.quantity,
         };
