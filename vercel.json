@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/aitienpaiva-lahjat",
-      "destination": "/aitienpaiva",
+      "destination": "https://huumorikauppa.fi/aitienpaiva",
       "permanent": true
     }
   ],
