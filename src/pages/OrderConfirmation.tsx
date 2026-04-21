@@ -32,6 +32,14 @@ const OrderConfirmation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
+  // 🔒 Strip session_id from the URL after capturing it so it doesn't leak
+  // through browser history, referrers, or sharing.
+  useEffect(() => {
+    if (sessionId && typeof window !== "undefined") {
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [sessionId]);
+
   // Poll for order + email status
   useEffect(() => {
     if (!sessionId) return;
@@ -142,7 +150,7 @@ const OrderConfirmation = () => {
       </h1>
 
       <p className="text-lg text-muted-foreground leading-relaxed">
-        Kiitos tilauksestasi! {order?.customer_email ? `Vahvistus on matkalla osoitteeseen ${order.customer_email}.` : "Saat vahvistusviestin sähköpostiisi hetken kuluttua."}
+        Kiitos tilauksestasi! Saat vahvistusviestin sähköpostiisi hetken kuluttua.
         Pakettisi lähtee matkaan 1–3 arkipäivän kuluessa. 📦
       </p>
 
