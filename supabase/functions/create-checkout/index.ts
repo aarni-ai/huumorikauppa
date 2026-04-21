@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,8 +9,10 @@ const corsHeaders = {
 };
 
 interface CartLineItem {
+  id?: string;        // product UUID (preferred — used for server-side price lookup)
+  slug?: string;      // fallback identifier
   name: string;
-  price: number; // in euros
+  price?: number;     // ❌ ignored — server fetches authoritative price from DB
   quantity: number;
   image?: string;
   size?: string;
