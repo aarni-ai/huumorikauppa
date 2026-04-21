@@ -21,3 +21,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = false
   [functions.image-proxy]
     verify_jwt = false
+  [functions.sync-printify]
+    verify_jwt = true
