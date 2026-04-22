@@ -1,5 +1,7 @@
 export const config = {
-  matcher: ['/((?!.*\\..*|_vercel).*)'],
+  // Exclude: paths with a file extension, /_vercel, /api/* (proxies & feeds),
+  // /sitemap.xml, /merchant-feed.xml, /robots.txt
+  matcher: ['/((?!.*\\..*|_vercel|api/|sitemap\\.xml|merchant-feed\\.xml|robots\\.txt).*)'],
 };
 
 const BOTS = ['googlebot','bingbot','yandexbot','duckduckbot','applebot',
