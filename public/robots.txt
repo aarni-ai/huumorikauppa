@@ -18,7 +18,8 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /admin
-Disallow: /api/
+# /api/ paths (image-proxy, merchant-feed) must remain crawlable
+# so Google Merchant Center can fetch product images.
 
 # Block AI scrapers
 User-agent: Amazonbot
