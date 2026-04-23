@@ -1039,6 +1039,27 @@ const ProductPage = () => {
           </div>
         </section>
 
+        {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen */}
+        <section className="mt-8 max-w-3xl">
+          <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Lahjavinkki 💡</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-1">Kenelle sopii</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{audience.charAt(0).toUpperCase() + audience.slice(1)}.</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-1">Miksi tämä on hauska lahja</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{whyFunny}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-1">Mihin tilanteeseen</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{occasion.charAt(0).toUpperCase() + occasion.slice(1)}.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Customer Reviews */}
         <section className="mt-8 max-w-3xl">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
@@ -1088,7 +1109,7 @@ const ProductPage = () => {
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä ❓</h2>
             <div className="space-y-4">
-              {productFaqs.map((faq, i) => (
+              {productFaqsExtended.map((faq, i) => (
                 <div key={i}>
                   <h3 className="font-medium text-foreground text-sm">{faq.q}</h3>
                   <p className="text-sm text-muted-foreground mt-1">{faq.a}</p>
