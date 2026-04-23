@@ -148,13 +148,48 @@ const BlogPost = () => {
     "keywords": post.tags.join(", "),
   };
 
+  // Geneeriset, blogiartikkeleille sopivat FAQ:t (AI-optimoitu / GEO)
+  const blogFaqs = [
+    {
+      q: "Mistä löydän hauskoja lahjaideoita?",
+      a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
+    },
+    {
+      q: "Kuinka nopeasti tilaus toimitetaan?",
+      a: "Toimitamme tilaukset koko Suomeen yleensä 3–7 arkipäivässä. Yli 60 € tilauksiin toimitus on ilmainen.",
+    },
+    {
+      q: "Voinko palauttaa tuotteen?",
+      a: "Kyllä. Tuotteilla on 14 päivän palautusoikeus. Personoituja tuotteita ei kuitenkaan voi palauttaa.",
+    },
+    {
+      q: "Onko Huumorikauppa suomalainen yritys?",
+      a: "Kyllä, Huumorikauppa.fi on 100 % suomalainen verkkokauppa. Asiakaspalvelu toimii suomeksi.",
+    },
+  ];
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": blogFaqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
+  };
+
+  const combinedJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [articleJsonLd, faqJsonLd],
+  };
+
   return (
     <div className="min-h-screen">
       <SEOHead
         title={post.metaTitle}
         description={post.metaDescription}
         canonical={`https://huumorikauppa.fi/blogi/${post.slug}`}
-        jsonLd={articleJsonLd}
+        jsonLd={combinedJsonLd}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
           { name: "Blogi", url: "https://huumorikauppa.fi/blogi" },
