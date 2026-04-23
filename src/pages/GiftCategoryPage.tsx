@@ -434,13 +434,45 @@ const GiftCategoryPage = () => {
     },
   };
 
+  // FAQ for AI/GEO optimointi — quotable Finnish answers
+  const faqs = [
+    {
+      q: `Mikä on paras ${category.name.toLowerCase()}?`,
+      a: `Suosituimpia ${category.name.toLowerCase()} ovat hauskat t-paidat, hupparit ja mukit persoonallisilla teksteillä. Huumorikaupasta löydät ${products.length}+ vaihtoehtoa eri budjettiin.`,
+    },
+    {
+      q: "Kuinka nopeasti tilaus toimitetaan?",
+      a: "Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+    },
+    {
+      q: "Mihin tilaisuuteen lahja sopii?",
+      a: `${category.name} sopivat syntymäpäiviin, jouluun, äitienpäivään, isänpäivään, polttareihin, eläkejuhliin ja työkavereiden lahjoiksi. Hauska lahja on aina yllättävä ja mieleenpainuva.`,
+    },
+    {
+      q: "Voiko lahjan palauttaa jos se ei sovi?",
+      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä info@huumorikauppa.fi ja saat ohjeet.",
+    },
+  ];
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
+  };
+
+  const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
+
   return (
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle}
         description={category.seoDescription}
         canonical={`https://huumorikauppa.fi/${category.slug}`}
-        jsonLd={itemListJsonLd}
+        jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={products[0]?.images[0]}
       />
