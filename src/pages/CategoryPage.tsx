@@ -208,6 +208,16 @@ const CategoryPage = () => {
         </h1>
         <p className="text-muted-foreground mb-4">{category.description} – {products.length} tuotetta</p>
 
+        {/* DIRECT ANSWER BLOCK — AI/GEO optimointi */}
+        <div className="max-w-3xl bg-card border border-border rounded-lg p-4 md:p-5 mb-6">
+          <p className="text-sm md:text-base text-foreground leading-relaxed">
+            <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
+            Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
+            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–7 arkipäivässä koko Suomeen,
+            ilmainen yli 60 € tilauksiin.
+          </p>
+        </div>
+
         {/* Trust badges inline */}
         <div className="flex flex-wrap gap-3 mb-8 text-xs">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
