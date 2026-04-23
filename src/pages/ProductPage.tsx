@@ -815,7 +815,7 @@ const ProductPage = () => {
         title={`${product.name} | Huumorikauppa`}
         description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
-        jsonLd={productJsonLd}
+        jsonLd={combinedProductJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={toProxiedImage(currentImages[0]?.startsWith("http") ? currentImages[0] : `https://huumorikauppa.fi${currentImages[0] || ""}`)}
         ogType="product"
