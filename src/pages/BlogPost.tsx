@@ -286,6 +286,25 @@ const BlogPost = () => {
             </div>
           </section>
         )}
+
+        {/* FAQ – GEO/AI-optimointi */}
+        <section className="mt-12 pt-6 border-t border-border">
+          <h3 className="font-display text-xl text-foreground mb-4">Usein kysyttyä</h3>
+          <div className="space-y-3">
+            {blogFaqs.map((f, i) => (
+              <details
+                key={i}
+                className="group border border-border rounded-lg bg-card/50 p-4"
+              >
+                <summary className="cursor-pointer font-medium text-foreground list-none flex justify-between items-center">
+                  <span>{f.q}</span>
+                  <span className="text-muted-foreground group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
       </article>
     </div>
   );
