@@ -719,6 +719,52 @@ const ProductPage = () => {
     { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
   ];
 
+  // GEO/AI: heuristinen "Kenelle sopii / Miksi hauska / Mihin tilanteeseen"
+  const _t = (product.name + " " + product.description).toLowerCase();
+  const audience = (() => {
+    if (_t.includes("äiti") || _t.includes("mamma") || _t.includes("mummi")) return "äidille, mummille tai anopille — kenelle tahansa elämäsi tärkeälle naiselle";
+    if (_t.includes("isä") || _t.includes("iskä") || _t.includes("ukki")) return "isälle, ukille tai sedälle — miehelle joka rakastaa sopivan ronskia huumoria";
+    if (_t.includes("kala")) return "kalastusta harrastavalle isälle, sedälle tai kaverille";
+    if (_t.includes("eläke") || _t.includes("museo")) return "eläkkeelle jäävälle työkaverille tai juuri eläköityneelle läheiselle";
+    if (_t.includes("polttari") || _t.includes("morsian") || _t.includes("sulhanen")) return "polttariporukalle, morsiamelle tai sulhaselle";
+    if (_t.includes("vauva") || product.category === "bodyt") return "vauvalle ja vanhemmille — turvallinen ja söpö lahja";
+    if (product.category === "mukit") return "kahvinjuojalle, työkaverille tai itsellesi aamukahvia varten";
+    return "kaverille, perheenjäsenelle tai työkaverille — tai vaikka itsellesi";
+  })();
+  const occasion = (() => {
+    if (_t.includes("äiti")) return "äitienpäivään, äidin syntymäpäiviin ja ihan vaan kiitokseksi";
+    if (_t.includes("isä")) return "isänpäivään, isän syntymäpäiviin ja jouluksi";
+    if (_t.includes("eläke")) return "eläkejuhliin ja läksiäisiin";
+    if (_t.includes("polttari")) return "polttareihin ja häihin";
+    if (_t.includes("joulu")) return "jouluksi, pikkujouluihin ja kalenterin täytteeksi";
+    if (product.category === "bodyt") return "vauvanristiäisiin, ristiäislahjaksi ja vauvanpäiville";
+    return "syntymäpäiviin, jouluun, pikkujouluihin ja yllätyslahjaksi";
+  })();
+  const whyFunny = `${product.name} on hauska, koska se yhdistää tutun arkitilanteen ja yllättävän tekstin — juuri sellaisen lahjan, joka jää muistiin pidemmäksi aikaa kuin tavallinen lahja.`;
+
+  // Kasvatetaan FAQ:t AI-vastauksia varten
+  const productFaqsExtended = [
+    ...productFaqs,
+    { q: "Kenelle tämä tuote sopii?", a: `Tämä ${categoryName.toLowerCase().replace(/t$/, "")} sopii ${audience}.` },
+    { q: "Mihin tilanteeseen tämä on hyvä lahja?", a: `${product.name} sopii ${occasion}.` },
+    { q: "Miksi tämä on hauska lahja?", a: whyFunny },
+  ];
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": productFaqsExtended.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
+  };
+
+  const combinedProductJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [productJsonLd, faqJsonLd],
+  };
+
   const productFaqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
