@@ -26,6 +26,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Terms = lazy(() => import("./pages/Terms"));
 const ReturnsPolicy = lazy(() => import("./pages/ReturnsPolicy"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Accessibility = lazy(() => import("./pages/Accessibility"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
@@ -87,6 +88,7 @@ const App = () => (
               <Route path="/toimitusehdot" element={<Terms />} />
               <Route path="/palautusehdot" element={<ReturnsPolicy />} />
               <Route path="/tietosuojakaytanto" element={<Privacy />} />
+              <Route path="/saavutettavuusseloste" element={<Accessibility />} />
               <Route path="/haku" element={<SearchPage />} />
               <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
               <Route path="/blogi" element={<BlogIndex />} />
