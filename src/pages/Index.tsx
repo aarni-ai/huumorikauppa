@@ -157,6 +157,22 @@ const Index = () => {
         </div>
       </section>
 
+      {/* DIRECT ANSWER BLOCK – GEO/AI-optimointi */}
+      <section className="container pt-6 md:pt-8">
+        <div className="max-w-3xl mx-auto bg-card/50 border border-border rounded-lg p-5 md:p-6">
+          <h1 className="font-display text-xl md:text-2xl text-foreground mb-2">
+            Huumorikauppa.fi – Suomen hauskin lahjakauppa 🎁
+          </h1>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            <strong className="text-foreground">Huumorikauppa.fi</strong> on suomalainen verkkokauppa,
+            joka on erikoistunut hauskoihin lahjoihin: t-paitoihin, huppareihin, mukeihin, tarroihin
+            ja sisustustuotteisiin. Yli 200 tuotetta varastossa, nopea toimitus koko Suomeen ja
+            ilmainen toimitus yli 60 € tilauksiin. Täydellinen valinta, kun etsit lahjaa kaverille,
+            työkaverille, äidille, isälle tai itsellesi.
+          </p>
+        </div>
+      </section>
+
       {isLoading ? (
         <section className="container py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
