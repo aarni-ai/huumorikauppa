@@ -594,6 +594,22 @@ const GiftCategoryPage = () => {
             ))}
           </div>
         </nav>
+
+        {/* FAQ — näkyvä versio AI- ja Google-hakuja varten */}
+        <section className="mt-12 max-w-3xl">
+          <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä – {category.name}</h2>
+          <div className="space-y-3">
+            {faqs.map((f, i) => (
+              <details key={i} className="group border border-border rounded-lg bg-card">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors flex items-center justify-between gap-3">
+                  <span>{f.q}</span>
+                  <span className="text-primary transition-transform group-open:rotate-45 text-lg leading-none">+</span>
+                </summary>
+                <div className="px-4 pb-3 text-sm text-muted-foreground leading-relaxed">{f.a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
       </div>
       <SEOGiftContent />
       <SEOTargetGroupContent />
