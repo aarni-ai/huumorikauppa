@@ -154,6 +154,13 @@ const MothersDayPage = () => {
         ]}
       />
 
+      {/* URGENCY BANNER — TikTok-mainokset ajossa, korkea konversio-prioriteetti */}
+      {days > 0 && days <= 14 && (
+        <div className="bg-rose-600 text-white text-center py-2.5 px-4 text-sm md:text-base font-semibold">
+          🎁 Äitienpäivä 10.5. — Tilaa viimeistään {days <= 5 ? "TÄNÄÄN" : "5.5."} että ehtii ajoissa!
+        </div>
+      )}
+
       {/* HERO — soft pink/rose, modern */}
       <section
         className="relative overflow-hidden border-b border-border"
