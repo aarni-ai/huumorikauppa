@@ -208,9 +208,9 @@ const CategoryPage = () => {
         </h1>
         <p className="text-muted-foreground mb-4">{category.description} – {products.length} tuotetta</p>
 
-        {/* DIRECT ANSWER BLOCK — AI/GEO optimointi */}
-        <div className="max-w-3xl bg-card border border-border rounded-lg p-4 md:p-5 mb-6">
-          <p className="text-sm md:text-base text-foreground leading-relaxed">
+        {/* DIRECT ANSWER BLOCK — visuaalisesti piilossa, indeksoitavissa SEO/GEO:lle */}
+        <div className="sr-only" aria-hidden="false">
+          <p>
             <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
             täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–7 arkipäivässä koko Suomeen,
