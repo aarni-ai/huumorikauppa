@@ -498,6 +498,16 @@ const GiftCategoryPage = () => {
         </h1>
         <p className="text-muted-foreground mb-8">{products.length} tuotetta</p>
 
+        {/* DIRECT ANSWER BLOCK — AI/GEO optimointi */}
+        <div className="max-w-3xl bg-card border border-border rounded-lg p-4 md:p-5 mb-8">
+          <p className="text-sm md:text-base text-foreground leading-relaxed">
+            <strong>{category.h1}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
+            Huumorikauppa.fi:stä löydät {products.length}+ persoonallista vaihtoehtoa — täydellisiä
+            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–7
+            arkipäivässä koko Suomeen, ilmainen yli 60 € tilauksiin.
+          </p>
+        </div>
+
         {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {Array.from({ length: 4 }).map((_, i) => (
