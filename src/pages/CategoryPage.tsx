@@ -137,13 +137,45 @@ const CategoryPage = () => {
     },
   };
 
+  // FAQ JSON-LD — quotable answers for AI Overviews / ChatGPT / Perplexity
+  const catLower = category.name.toLowerCase();
+  const catSingular = catLower.replace(/t$/, "");
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `Kuinka nopeasti ${catLower} toimitetaan?`,
+        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen." },
+      },
+      {
+        "@type": "Question",
+        "name": `Voiko ${catLower} palauttaa?`,
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet. Palautusoikeus koskee kaikkia tuotteitamme." },
+      },
+      {
+        "@type": "Question",
+        "name": `Sopiiko hauska ${catSingular} lahjaksi?`,
+        "acceptedAnswer": { "@type": "Answer", "text": `Ehdottomasti. Hauskat ${catLower} ovat yksi suosituimmista huumorilahjaideoista — täydellisiä syntymäpäiviin, jouluun, isänpäivään, äitienpäivään ja työkavereille.` },
+      },
+      {
+        "@type": "Question",
+        "name": `Mistä ${catLower} on tehty?`,
+        "acceptedAnswer": { "@type": "Answer", "text": "Käytämme laadukkaita materiaaleja ja kestäviä DTG- tai sublimaatiopainatuksia. Kaikki tuotteet painetaan ja toimitetaan EU:sta." },
+      },
+    ],
+  };
+
+  const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
+
   return (
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle || `${h1Text} | Huumorikauppa.fi`}
         description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 60 € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
-        jsonLd={itemListJsonLd}
+        jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={products[0]?.images[0]}
       />
@@ -175,6 +207,16 @@ const CategoryPage = () => {
           {h1Text} {category.emoji}
         </h1>
         <p className="text-muted-foreground mb-4">{category.description} – {products.length} tuotetta</p>
+
+        {/* DIRECT ANSWER BLOCK — AI/GEO optimointi */}
+        <div className="max-w-3xl bg-card border border-border rounded-lg p-4 md:p-5 mb-6">
+          <p className="text-sm md:text-base text-foreground leading-relaxed">
+            <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
+            Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
+            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–7 arkipäivässä koko Suomeen,
+            ilmainen yli 60 € tilauksiin.
+          </p>
+        </div>
 
         {/* Trust badges inline */}
         <div className="flex flex-wrap gap-3 mb-8 text-xs">

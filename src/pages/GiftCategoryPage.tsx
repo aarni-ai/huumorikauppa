@@ -434,13 +434,45 @@ const GiftCategoryPage = () => {
     },
   };
 
+  // FAQ for AI/GEO optimointi — quotable Finnish answers
+  const faqs = [
+    {
+      q: `Mikä on paras ${category.name.toLowerCase()}?`,
+      a: `Suosituimpia ${category.name.toLowerCase()} ovat hauskat t-paidat, hupparit ja mukit persoonallisilla teksteillä. Huumorikaupasta löydät ${products.length}+ vaihtoehtoa eri budjettiin.`,
+    },
+    {
+      q: "Kuinka nopeasti tilaus toimitetaan?",
+      a: "Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+    },
+    {
+      q: "Mihin tilaisuuteen lahja sopii?",
+      a: `${category.name} sopivat syntymäpäiviin, jouluun, äitienpäivään, isänpäivään, polttareihin, eläkejuhliin ja työkavereiden lahjoiksi. Hauska lahja on aina yllättävä ja mieleenpainuva.`,
+    },
+    {
+      q: "Voiko lahjan palauttaa jos se ei sovi?",
+      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä info@huumorikauppa.fi ja saat ohjeet.",
+    },
+  ];
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
+  };
+
+  const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
+
   return (
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle}
         description={category.seoDescription}
         canonical={`https://huumorikauppa.fi/${category.slug}`}
-        jsonLd={itemListJsonLd}
+        jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={products[0]?.images[0]}
       />
@@ -465,6 +497,16 @@ const GiftCategoryPage = () => {
           {category.h1} {category.emoji}
         </h1>
         <p className="text-muted-foreground mb-8">{products.length} tuotetta</p>
+
+        {/* DIRECT ANSWER BLOCK — AI/GEO optimointi */}
+        <div className="max-w-3xl bg-card border border-border rounded-lg p-4 md:p-5 mb-8">
+          <p className="text-sm md:text-base text-foreground leading-relaxed">
+            <strong>{category.h1}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
+            Huumorikauppa.fi:stä löydät {products.length}+ persoonallista vaihtoehtoa — täydellisiä
+            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–7
+            arkipäivässä koko Suomeen, ilmainen yli 60 € tilauksiin.
+          </p>
+        </div>
 
         {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -552,6 +594,22 @@ const GiftCategoryPage = () => {
             ))}
           </div>
         </nav>
+
+        {/* FAQ — näkyvä versio AI- ja Google-hakuja varten */}
+        <section className="mt-12 max-w-3xl">
+          <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä – {category.name}</h2>
+          <div className="space-y-3">
+            {faqs.map((f, i) => (
+              <details key={i} className="group border border-border rounded-lg bg-card">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors flex items-center justify-between gap-3">
+                  <span>{f.q}</span>
+                  <span className="text-primary transition-transform group-open:rotate-45 text-lg leading-none">+</span>
+                </summary>
+                <div className="px-4 pb-3 text-sm text-muted-foreground leading-relaxed">{f.a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
       </div>
       <SEOGiftContent />
       <SEOTargetGroupContent />
