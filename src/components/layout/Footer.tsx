@@ -78,6 +78,7 @@ export function Footer() {
             <Link to="/toimitusehdot" className="hover:text-foreground transition-colors">Toimitusehdot</Link>
             <Link to="/palautusehdot" className="hover:text-foreground transition-colors">Palautusehdot</Link>
             <Link to="/tietosuojakaytanto" className="hover:text-foreground transition-colors">Tietosuojakäytäntö</Link>
+            <Link to="/saavutettavuusseloste" className="hover:text-foreground transition-colors">Saavutettavuusseloste</Link>
           </div>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground pt-3">
             <h4 className="font-display text-sm text-foreground">SEURAA MEITÄ</h4>
