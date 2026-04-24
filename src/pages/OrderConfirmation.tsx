@@ -13,6 +13,8 @@ interface OrderInfo {
   total: number;
   status: string;
   created_at: string;
+  customer_email?: string;
+  shipping_country?: string;
 }
 
 const OrderConfirmation = () => {
@@ -25,6 +27,7 @@ const OrderConfirmation = () => {
   const [polling, setPolling] = useState(true);
   const [showResend, setShowResend] = useState(false);
   const [resending, setResending] = useState(false);
+  const [optInRendered, setOptInRendered] = useState(false);
 
   // Clear cart once
   useEffect(() => {
@@ -39,6 +42,61 @@ const OrderConfirmation = () => {
       window.history.replaceState({}, "", window.location.pathname);
     }
   }, [sessionId]);
+
+  // Google Customer Reviews opt-in — render once order data is available
+  useEffect(() => {
+    if (!order || optInRendered) return;
+    if (typeof window === "undefined") return;
+
+    // Estimated delivery: created_at + 7 days (3–10 business day window midpoint)
+    const created = order.created_at ? new Date(order.created_at) : new Date();
+    const eta = new Date(created.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const yyyy = eta.getFullYear();
+    const mm = String(eta.getMonth() + 1).padStart(2, "0");
+    const dd = String(eta.getDate()).padStart(2, "0");
+    const estimatedDeliveryDate = `${yyyy}-${mm}-${dd}`;
+
+    const country = (order.shipping_country || "FI").toUpperCase();
+    const email = order.customer_email || "";
+
+    // Define the global render callback Google's script will call
+    (window as unknown as { renderOptIn?: () => void }).renderOptIn = function () {
+      const w = window as unknown as {
+        gapi?: {
+          load: (name: string, cb: () => void) => void;
+          surveyoptin: {
+            render: (opts: Record<string, unknown>) => void;
+          };
+        };
+      };
+      w.gapi?.load("surveyoptin", function () {
+        w.gapi?.surveyoptin.render({
+          merchant_id: 5759809345,
+          order_id: order.id,
+          email,
+          delivery_country: country,
+          estimated_delivery_date: estimatedDeliveryDate,
+          opt_in_style: "CENTER_DIALOG",
+        });
+      });
+    };
+
+    // Inject Google platform script if not already present
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src^="https://apis.google.com/js/platform.js"]',
+    );
+    if (existing) {
+      // Script already loaded — invoke directly
+      (window as unknown as { renderOptIn?: () => void }).renderOptIn?.();
+    } else {
+      const s = document.createElement("script");
+      s.src = "https://apis.google.com/js/platform.js?onload=renderOptIn";
+      s.async = true;
+      s.defer = true;
+      document.body.appendChild(s);
+    }
+    setOptInRendered(true);
+  }, [order, optInRendered]);
 
   // Poll for order + email status
   useEffect(() => {
@@ -239,6 +297,9 @@ const OrderConfirmation = () => {
       <p className="text-xs text-muted-foreground">
         Ongelmia tilauksesi kanssa? Ota yhteyttä: info@huumorikauppa.fi
       </p>
+
+      {/* Google Customer Reviews opt-in container (Google injects content here) */}
+      <div id="goog-survey-optin-container" />
     </div>
   );
 };
