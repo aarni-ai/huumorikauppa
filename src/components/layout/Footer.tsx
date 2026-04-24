@@ -3,7 +3,7 @@ import { Mail, MapPin, Instagram } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/data/products";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -11,6 +11,28 @@ export function Footer() {
   const [footerEmail, setFooterEmail] = useState("");
   const [footerSubmitted, setFooterSubmitted] = useState(false);
   const { toast } = useToast();
+
+  // Google Customer Reviews badge — load once on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (document.getElementById("merchantWidgetScript")) return;
+
+    const script = document.createElement("script");
+    script.id = "merchantWidgetScript";
+    script.src = "https://www.gstatic.com/shopping/merchant/merchantwidget.js";
+    script.defer = true;
+    script.addEventListener("load", () => {
+      const w = window as unknown as {
+        merchantwidget?: { start: (opts: Record<string, unknown>) => void };
+      };
+      w.merchantwidget?.start({
+        merchant_id: 5759809345,
+        position: "BOTTOM_RIGHT",
+        region: "FI",
+      });
+    });
+    document.body.appendChild(script);
+  }, []);
 
   const handleFooterNewsletter = async () => {
     if (!footerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) {
