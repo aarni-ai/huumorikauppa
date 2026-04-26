@@ -102,7 +102,7 @@ export function NewsletterPopup() {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground font-bold h-11 shadow-glow-lime"
               >
-                Tilaa ja saat 10% alennuksen 🚀
+                Tilaa ja saat 5% alennuksen 🚀
               </Button>
               <button
                 type="button"
