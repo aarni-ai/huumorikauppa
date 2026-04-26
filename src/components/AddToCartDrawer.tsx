@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, Check, ArrowRight } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import { Product } from "@/types/product";
+import { productAlt } from "@/lib/seoAlt";
 
 const SKIP_WORDS = new Set([
   "paita", "paidat", "huppari", "hupparit", "muki", "mukit", "tarra", "tarrat",
@@ -94,7 +95,7 @@ export function AddToCartDrawer() {
             <div className="flex gap-3">
               <img
                 src={lastAddedItem.product.images[0] || "/placeholder.svg"}
-                alt={lastAddedItem.product.name}
+                alt={productAlt(lastAddedItem.product, "lisätty ostoskoriin")}
                 className="w-20 h-20 rounded-md bg-muted object-cover shrink-0"
               />
               <div className="min-w-0">
@@ -177,7 +178,7 @@ export function AddToCartDrawer() {
                     >
                       <img
                         src={p.images[0] || "/placeholder.svg"}
-                        alt={p.name}
+                        alt={productAlt(p, "suositeltu lahjavinkki")}
                         className="w-14 h-14 rounded-md bg-muted object-cover shrink-0"
                         loading="lazy"
                       />
