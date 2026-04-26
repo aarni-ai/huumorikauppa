@@ -51,7 +51,7 @@ export function NewsletterPopup() {
     
     setSubmitted(true);
     localStorage.setItem(STORAGE_KEY, "true");
-    toast({ title: "Kiitos tilauksesta! 🎉", description: `Alennuskoodisi: HUUMORI10 (-10%)` });
+    toast({ title: "Kiitos tilauksesta! 🎉", description: `Alennuskoodisi: HUUMORI5 (-5%)` });
     setTimeout(() => setOpen(false), 3000);
   };
 
@@ -71,7 +71,7 @@ export function NewsletterPopup() {
           <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
             <Gift className="h-8 w-8 text-primary" />
           </div>
-          <h2 className="font-display text-2xl text-foreground">Saat 10% alennuksen! 🎁</h2>
+          <h2 className="font-display text-2xl text-foreground">Saat 5% alennuksen! 🎁</h2>
           <p className="text-sm text-muted-foreground mt-2">
             Tilaa uutiskirje ja saat alennuskoodin ensimmäiseen tilaukseesi.
           </p>
@@ -84,9 +84,9 @@ export function NewsletterPopup() {
               <Mail className="h-10 w-10 text-primary mx-auto" />
               <p className="font-bold text-foreground">Kiitos! 🎉</p>
               <p className="text-sm text-muted-foreground">
-                Alennuskoodisi on: <span className="font-bold text-primary">HUUMORI10</span>
+                Alennuskoodisi on: <span className="font-bold text-primary">HUUMORI5</span>
               </p>
-              <p className="text-xs text-muted-foreground">Käytä koodi kassalla saadaksesi 10% alennuksen!</p>
+              <p className="text-xs text-muted-foreground">Käytä koodi kassalla saadaksesi 5% alennuksen!</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -102,7 +102,7 @@ export function NewsletterPopup() {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground font-bold h-11 shadow-glow-lime"
               >
-                Tilaa ja saat 10% alennuksen 🚀
+                Tilaa ja saat 5% alennuksen 🚀
               </Button>
               <button
                 type="button"

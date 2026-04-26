@@ -39,6 +39,7 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const SituationGiftPage = lazy(() => import("./pages/SituationGiftPage"));
 
 // Lazy: popups (not needed at initial load)
 const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
@@ -105,6 +106,7 @@ const App = () => (
               <Route path="/elakelahjat" element={<GiftCategoryPage />} />
               <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
               <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
+              <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
               <Route path="/admin" element={<Admin />} />

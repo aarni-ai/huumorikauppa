@@ -10,4 +10,13 @@ Disallow: /tilaus-vahvistettu
 User-agent: Googlebot
 Allow: /
 
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Storebot-Google
+Allow: /
+
 Sitemap: https://huumorikauppa.fi/sitemap.xml

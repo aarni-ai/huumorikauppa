@@ -25,6 +25,34 @@ const STATIC_PAGES = [
   { loc: "/lahja-tyokaverille", changefreq: "weekly", priority: "0.7" },
 ];
 
+// Long-tail "tilanne" -lahjasivut (/lahjat/:slug)
+const SITUATION_GIFT_SLUGS = [
+  "50-vuotiaalle-miehelle",
+  "60-vuotiaalle-miehelle",
+  "40-vuotiaalle-miehelle",
+  "30-vuotiaalle-miehelle",
+  "50-vuotiaalle-naiselle",
+  "60-vuotiaalle-naiselle",
+  "polttareihin",
+  "tyokaverille",
+  "opettajalle",
+  "hoitajalle",
+  "rakennusmiehelle",
+  "kalastajalle",
+  "metsastajalle",
+  "kahvinystavalle",
+  "isoäidille",
+  "isoisalle",
+  "syntymapaivasankarille",
+  "muutoiset",
+  "ystavalle",
+  "siskolle",
+  "veljelle",
+  "vauvalle",
+  "joululahjaksi-miehelle",
+  "joululahjaksi-naiselle",
+];
+
 const CATEGORIES = [
   "t-paidat", "mukit", "tarrat", "hupparit", "bodyt",
   "peitot", "pipot", "seinataulut", "pitkahihaiset", "koristeet",
@@ -129,9 +157,19 @@ serve(async (_req) => {
   </url>`
   );
 
+  // Long-tail situation gift pages
+  const situationUrls = SITUATION_GIFT_SLUGS.map(
+    (slug) => `  <url>
+    <loc>${escapeXml(SITE + "/lahjat/" + slug)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`
+  );
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...staticUrls, ...categoryUrls, ...productUrls, ...blogUrls].join("\n")}
+${[...staticUrls, ...categoryUrls, ...situationUrls, ...productUrls, ...blogUrls].join("\n")}
 </urlset>`;
 
   return new Response(xml, {

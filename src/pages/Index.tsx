@@ -242,7 +242,7 @@ const Index = () => {
             Tilaa uutiskirje 💥
           </h2>
           <p className="text-muted-foreground mb-6">
-            Tilaa uutiskirje ja saat 10% alennuskoodin ensimmäiseen tilaukseesi!
+            Tilaa uutiskirje ja saat 5% alennuskoodin ensimmäiseen tilaukseesi!
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Input placeholder="anna@sahkoposti.fi" className="h-11 bg-muted border-border" />
