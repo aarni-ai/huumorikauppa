@@ -25,3 +25,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = true
   [functions.send-monthly-newsletter]
     verify_jwt = true
+  [functions.recover-orders]
+    verify_jwt = false
