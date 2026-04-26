@@ -23,3 +23,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = false
   [functions.sync-printify]
     verify_jwt = true
+  [functions.send-monthly-newsletter]
+    verify_jwt = true
