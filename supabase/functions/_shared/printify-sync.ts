@@ -427,6 +427,26 @@ export async function syncPrintifyCatalog(
   return { total_fetched: all.length, products_synced: updated + inserted, skipped };
 }
 
+async function upsertSingleByPrintifyId(
+  supabase: SupabaseClient,
+  row: BuiltProductRow,
+): Promise<void> {
+  const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
+  const { data: existing } = await supabase
+    .from('products')
+    .select('id')
+    .eq('printify_product_id', row.printify_product_id)
+    .maybeSingle();
+  if (existing?.id) {
+    const { slug: _slug, ...updateFields } = rest;
+    const { error } = await supabase.from('products').update(updateFields).eq('id', existing.id);
+    if (error) throw new Error(error.message);
+  } else {
+    const { error } = await supabase.from('products').insert(rest);
+    if (error) throw new Error(error.message);
+  }
+}
+
 /**
  * Sync a single Printify product into the DB by its Printify product id.
  * Used by process-order for lazy-sync when printify_product_id is missing.
@@ -439,12 +459,8 @@ export async function syncSinglePrintifyProduct(
   if (!p) return null;
   const row = buildProductRow(p);
   if (!row) return null;
-  const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
-  const { error } = await supabase
-    .from('products')
-    .upsert(rest, { onConflict: 'printify_product_id' });
-  if (error) {
-    console.error('Single product upsert failed:', error);
+  try { await upsertSingleByPrintifyId(supabase, row); } catch (err) {
+    console.error('Single product upsert failed:', err);
     return null;
   }
   return row;
@@ -464,12 +480,8 @@ export async function syncPrintifyProductByName(
   if (!match) return null;
   const row = buildProductRow(match);
   if (!row) return null;
-  const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
-  const { error } = await supabase
-    .from('products')
-    .upsert(rest, { onConflict: 'printify_product_id' });
-  if (error) {
-    console.error('Single product upsert by name failed:', error);
+  try { await upsertSingleByPrintifyId(supabase, row); } catch (err) {
+    console.error('Single product upsert by name failed:', err);
     return null;
   }
   return row;
