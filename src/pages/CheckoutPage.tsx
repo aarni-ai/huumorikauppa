@@ -31,13 +31,23 @@ const CheckoutPage = () => {
 
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  const isValidPhone = (phone: string) => {
+    // Hyväksyy +, numerot, välilyönnit ja viivat. Vähintään 6 numeroa.
+    const digits = phone.replace(/\D/g, "");
+    return /^[+\d\s-]+$/.test(phone) && digits.length >= 6;
+  };
+
   const canProceedToShipping = () => {
-    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim()) {
+    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || !form.phone.trim()) {
       toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
       return false;
     }
     if (!isValidEmail(form.email)) {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return false;
+    }
+    if (!isValidPhone(form.phone)) {
+      toast({ title: "Tarkista puhelinnumero", variant: "destructive" });
       return false;
     }
     return true;
@@ -52,12 +62,16 @@ const CheckoutPage = () => {
   };
 
   const handlePayment = async () => {
-    if (!form.email || !form.firstName || !form.address || !form.zip || !form.city) {
+    if (!form.email || !form.firstName || !form.phone || !form.address || !form.zip || !form.city) {
       toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
       return;
     }
     if (!isValidEmail(form.email)) {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return;
+    }
+    if (!isValidPhone(form.phone)) {
+      toast({ title: "Tarkista puhelinnumero", variant: "destructive" });
       return;
     }
     setIsProcessing(true);
@@ -75,7 +89,7 @@ const CheckoutPage = () => {
           })),
           customerEmail: form.email,
           customerName: `${form.firstName} ${form.lastName}`,
-          shippingAddress: { address: form.address, zip: form.zip, city: form.city },
+          shippingAddress: { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
           discountCode: appliedDiscount?.code || undefined,
         },
       });
@@ -176,8 +190,19 @@ const CheckoutPage = () => {
                 <Input id="email" type="email" value={form.email} onChange={e => updateForm("email", e.target.value)} className="bg-muted border-border mt-1" placeholder="matti@email.fi" />
               </div>
               <div>
-                <Label htmlFor="phone" className="text-foreground">Puhelin</Label>
-                <Input id="phone" type="tel" value={form.phone} onChange={e => updateForm("phone", e.target.value)} className="bg-muted border-border mt-1" placeholder="0401234567" />
+                <Label htmlFor="phone" className="text-foreground">Puhelin *</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  required
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={form.phone}
+                  onChange={e => updateForm("phone", e.target.value)}
+                  className="bg-muted border-border mt-1"
+                  placeholder="0401234567"
+                />
+                <p className="text-xs text-muted-foreground mt-1">Tarvitsemme puhelinnumeron toimitusta varten.</p>
               </div>
               <Button onClick={() => canProceedToShipping() && setStep("shipping")} className="bg-primary text-primary-foreground font-bold">
                 Jatka toimitustietoihin <ArrowRight className="h-4 w-4 ml-2" />
