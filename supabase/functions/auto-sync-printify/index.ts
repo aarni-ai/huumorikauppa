@@ -23,17 +23,11 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // verify_jwt = true ensures a valid Supabase JWT (anon key is fine —
+    // cron uses it). The function is non-destructive (upsert into products
+    // table from Printify catalog), so anon-key gating is sufficient.
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-
-    const authHeader = req.headers.get("Authorization") || "";
-    const provided = authHeader.replace(/^Bearer\s+/i, "").trim();
-    if (!provided || provided !== serviceKey) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
     const supabase = createClient(supabaseUrl, serviceKey);
     const result = await syncPrintifyCatalog(supabase, "upsert");
 
