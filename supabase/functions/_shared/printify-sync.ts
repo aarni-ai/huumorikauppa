@@ -400,18 +400,23 @@ export async function syncPrintifyCatalog(
   // avoid unique-slug conflicts) and new (INSERT). This sidesteps the fact
   // that upsert with a single onConflict can't handle two unique columns.
   const printifyIds = built.map((b) => b.printify_product_id);
+  const slugs = built.map((b) => b.slug);
   const { data: existingRows } = await supabase
     .from('products')
-    .select('id, printify_product_id')
-    .in('printify_product_id', printifyIds);
+    .select('id, printify_product_id, slug')
+    .or(`printify_product_id.in.(${printifyIds.join(',')}),slug.in.(${slugs.join(',')})`);
   const existingByPid = new Map<string, string>();
-  for (const r of existingRows || []) existingByPid.set(r.printify_product_id as string, r.id as string);
+  const existingBySlug = new Map<string, string>();
+  for (const r of existingRows || []) {
+    if (r.printify_product_id) existingByPid.set(r.printify_product_id as string, r.id as string);
+    if (r.slug) existingBySlug.set(r.slug as string, r.id as string);
+  }
 
   let updated = 0;
   let inserted = 0;
   for (const row of built) {
     const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
-    const existsId = existingByPid.get(row.printify_product_id);
+    const existsId = existingByPid.get(row.printify_product_id) || existingBySlug.get(row.slug);
     if (existsId) {
       // Don't overwrite slug — keeps SEO-stable URLs and avoids unique conflicts.
       const { slug: _slug, ...updateFields } = rest;
