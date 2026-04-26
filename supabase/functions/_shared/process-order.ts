@@ -126,27 +126,6 @@ async function sendEmailWithRetry(
   return { success: false, error: attempt.error };
 }
 
-// Keep this stub for diff cleanliness — old code below was removed.
-async function _unused_legacy(supabase: SupabaseClient): Promise<void> {
-  if (!supabase) return;
-}
-
-// (legacy function removed — direct fetch implementation above replaces it)
-
-// The lines below were the tail of the old retry block; they are no longer
-// reachable but stay as a comment for git history clarity.
-/*
-      await logEmail(supabase, {
-        order_id: params.orderId,
-        to_email: params.recipientEmail,
-        subject: params.subject,
-        status: "success",
-        email_type: params.emailType,
-      });
-      return { success: true };
-    }
-*/
-
 async function submitPrintifyOrder(args: {
   externalId: string;
   label: string;
