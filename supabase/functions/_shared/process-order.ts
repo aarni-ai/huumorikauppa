@@ -9,6 +9,7 @@
 // - Otherwise it fills in any missing pieces.
 
 import Stripe from "https://esm.sh/stripe@18.5.0";
+import { syncPrintifyProductByName } from "./printify-sync.ts";
 
 // deno-lint-ignore no-explicit-any
 type SupabaseClient = any;
@@ -217,15 +218,44 @@ async function derivePrintifyItemsFromOrder(
   const names = Array.from(new Set(items.map((i) => i.name).filter(Boolean)));
   if (!names.length) return [];
 
-  const { data: prods } = await supabase
+  let { data: prods } = await supabase
     .from("products")
     .select("name, printify_product_id, variants")
     .in("name", names);
 
-  if (!prods || !prods.length) return [];
-
   const byName = new Map<string, any>();
-  for (const p of prods) byName.set(p.name, p);
+  for (const p of prods || []) byName.set(p.name, p);
+
+  // 🔄 Lazy-sync: for any item whose product row is missing, OR exists but
+  // lacks printify_product_id / variant_map, try to fetch it from Printify
+  // right now and upsert it. This guarantees orders go to fulfillment
+  // even if the catalog hasn't been synced yet.
+  const needsSync: string[] = [];
+  for (const name of names) {
+    const p = byName.get(name);
+    const hasIds = !!(p?.printify_product_id && p?.variants?.variant_map);
+    if (!hasIds) needsSync.push(name);
+  }
+
+  if (needsSync.length > 0) {
+    console.log(`Lazy-syncing ${needsSync.length} product(s) from Printify:`, needsSync);
+    for (const name of needsSync) {
+      try {
+        const synced = await syncPrintifyProductByName(supabase, name);
+        if (synced) {
+          byName.set(synced.name, {
+            name: synced.name,
+            printify_product_id: synced.printify_product_id,
+            variants: synced.variants,
+          });
+        } else {
+          console.warn(`Lazy-sync: no Printify match for "${name}"`);
+        }
+      } catch (err) {
+        console.warn(`Lazy-sync failed for "${name}":`, err);
+      }
+    }
+  }
 
   const out: PrintifyLineItem[] = [];
   for (const it of items) {
