@@ -12,6 +12,7 @@ async function sendOne(
   supabase: SupabaseClient,
   email: string,
   monthKey: string,
+  products: Array<{ name: string; price: number; url: string; image?: string }>,
 ): Promise<{ ok: boolean; error?: string }> {
   try {
     const { error } = await supabase.functions.invoke("send-transactional-email", {
@@ -19,7 +20,7 @@ async function sendOne(
         templateName: "monthly-newsletter",
         recipientEmail: email,
         idempotencyKey: `monthly-newsletter-${monthKey}-${email}`,
-        templateData: {},
+        templateData: { products },
       },
     });
     if (error) return { ok: false, error: error.message || "unknown" };
@@ -40,6 +41,30 @@ Deno.serve(async (req) => {
   );
 
   try {
+    // Fetch 3 trending products (featured, then newest)
+    const { data: featured } = await supabase
+      .from("products")
+      .select("name, slug, price, images")
+      .eq("is_featured", true)
+      .limit(3);
+
+    let topProducts: Array<{ name: string; slug: string; price: number; images: string[] }> = featured || [];
+    if (topProducts.length < 3) {
+      const { data: extra } = await supabase
+        .from("products")
+        .select("name, slug, price, images")
+        .order("created_at", { ascending: false })
+        .limit(3 - topProducts.length);
+      topProducts = [...topProducts, ...(extra || [])];
+    }
+
+    const products = topProducts.slice(0, 3).map((p) => ({
+      name: p.name,
+      price: Number(p.price),
+      url: `https://huumorikauppa.fi/tuote/${p.slug}`,
+      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : undefined,
+    }));
+
     // Fetch all active subscribers
     const { data: subs, error: subsErr } = await supabase
       .from("newsletter_subscribers")
@@ -70,7 +95,7 @@ Deno.serve(async (req) => {
 
     // Send sequentially with small delay to avoid rate limits
     for (const email of recipients) {
-      const res = await sendOne(supabase, email, monthKey);
+      const res = await sendOne(supabase, email, monthKey, products);
       if (res.ok) sent++;
       else {
         failed++;
