@@ -11,7 +11,9 @@ const corsHeaders = {
 const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "huumorikauppa@gmail.com";
 const PRINTIFY_API = "https://api.printify.com/v1";
 
-type SupabaseClient = ReturnType<typeof createClient>;
+// Loose-typed to avoid PostgrestVersion generic friction across SDK minor versions
+// deno-lint-ignore no-explicit-any
+type SupabaseClient = any;
 
 interface OrderItem {
   name: string;
