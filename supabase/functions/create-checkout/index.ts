@@ -160,7 +160,24 @@ serve(async (req) => {
       }
       // Look up Printify variant_id from variants.variant_map ("Color|Size" -> id)
       let printifyVariantId: number | null = null;
-      const variantMap = dbProd?.variants?.variant_map as Record<string, number> | undefined;
+      let variantMap = dbProd?.variants?.variant_map as Record<string, number> | undefined;
+      let printifyProductId: string | null = dbProd?.printify_product_id || null;
+
+      // 🔄 Lazy-sync from Printify if this product is missing the data we
+      // need to fulfill it. Ensures every checkout carries valid Printify
+      // metadata, even if the catalog wasn't pre-synced.
+      if (dbProd && (!printifyProductId || !variantMap)) {
+        try {
+          const synced = await syncPrintifyProductByName(supabaseAdmin, dbProd.name);
+          if (synced) {
+            printifyProductId = synced.printify_product_id;
+            variantMap = synced.variants?.variant_map as Record<string, number> | undefined;
+          }
+        } catch (err) {
+          console.warn(`Lazy-sync at checkout failed for "${dbProd.name}":`, err);
+        }
+      }
+
       if (variantMap) {
         const key = `${item.color || ''}|${item.size || ''}`;
         if (typeof variantMap[key] === 'number') printifyVariantId = variantMap[key];
@@ -168,7 +185,7 @@ serve(async (req) => {
       resolved.push({
         ...item,
         _serverPrice: serverPrice,
-        _printifyProductId: dbProd?.printify_product_id || null,
+        _printifyProductId: printifyProductId,
         _printifyVariantId: printifyVariantId,
       });
     }
