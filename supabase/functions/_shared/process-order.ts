@@ -65,38 +65,77 @@ async function sendEmailWithRetry(
     emailType: "customer" | "admin";
   },
 ): Promise<{ success: boolean; error?: string }> {
-  const invoke = async () => {
-    return await supabase.functions.invoke("send-transactional-email", {
-      body: {
-        templateName: params.templateName,
-        recipientEmail: params.recipientEmail,
-        idempotencyKey: params.idempotencyKey,
-        templateData: params.templateData,
-      },
-    });
+  // We call send-transactional-email directly via fetch (not via
+  // supabase.functions.invoke) because that helper does not always include
+  // the service_role key in the Authorization header — and the function is
+  // verify_jwt=true, which would reject anonymous calls with 401.
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const url = `${supabaseUrl}/functions/v1/send-transactional-email`;
+
+  const callOnce = async (): Promise<{ ok: boolean; error?: string }> => {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${serviceKey}`,
+          apikey: serviceKey,
+        },
+        body: JSON.stringify({
+          templateName: params.templateName,
+          recipientEmail: params.recipientEmail,
+          idempotencyKey: params.idempotencyKey,
+          templateData: params.templateData,
+        }),
+      });
+      if (res.ok) return { ok: true };
+      const text = await res.text();
+      return { ok: false, error: `HTTP ${res.status}: ${text.slice(0, 300)}` };
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : String(err) };
+    }
   };
 
-  try {
-    const { error } = await invoke();
-    if (!error) {
-      await logEmail(supabase, {
-        order_id: params.orderId,
-        to_email: params.recipientEmail,
-        subject: params.subject,
-        status: "success",
-        email_type: params.emailType,
-      });
-      return { success: true };
-    }
-    console.warn(`Email send attempt 1 failed for ${params.recipientEmail}:`, error.message);
-  } catch (err) {
-    console.warn(`Email send attempt 1 threw for ${params.recipientEmail}:`, err);
+  let attempt = await callOnce();
+  if (!attempt.ok) {
+    console.warn(`Email send attempt 1 failed for ${params.recipientEmail}: ${attempt.error}`);
+    await new Promise((r) => setTimeout(r, 5_000));
+    attempt = await callOnce();
   }
 
-  await new Promise((r) => setTimeout(r, 5_000));
-  try {
-    const { error } = await invoke();
-    if (!error) {
+  if (attempt.ok) {
+    await logEmail(supabase, {
+      order_id: params.orderId,
+      to_email: params.recipientEmail,
+      subject: params.subject,
+      status: "success",
+      email_type: params.emailType,
+    });
+    return { success: true };
+  }
+
+  await logEmail(supabase, {
+    order_id: params.orderId,
+    to_email: params.recipientEmail,
+    subject: params.subject,
+    status: "failed",
+    error_message: `Retry failed: ${attempt.error}`,
+    email_type: params.emailType,
+  });
+  return { success: false, error: attempt.error };
+}
+
+// Keep this stub for diff cleanliness — old code below was removed.
+async function _unused_legacy(supabase: SupabaseClient): Promise<void> {
+  if (!supabase) return;
+}
+
+// (legacy function removed — direct fetch implementation above replaces it)
+
+// The lines below were the tail of the old retry block; they are no longer
+// reachable but stay as a comment for git history clarity.
+/*
       await logEmail(supabase, {
         order_id: params.orderId,
         to_email: params.recipientEmail,
@@ -106,29 +145,7 @@ async function sendEmailWithRetry(
       });
       return { success: true };
     }
-    const msg = error.message || "unknown error";
-    await logEmail(supabase, {
-      order_id: params.orderId,
-      to_email: params.recipientEmail,
-      subject: params.subject,
-      status: "failed",
-      error_message: `Retry failed: ${msg}`,
-      email_type: params.emailType,
-    });
-    return { success: false, error: msg };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    await logEmail(supabase, {
-      order_id: params.orderId,
-      to_email: params.recipientEmail,
-      subject: params.subject,
-      status: "failed",
-      error_message: `Retry threw: ${msg}`,
-      email_type: params.emailType,
-    });
-    return { success: false, error: msg };
-  }
-}
+*/
 
 async function submitPrintifyOrder(args: {
   externalId: string;
