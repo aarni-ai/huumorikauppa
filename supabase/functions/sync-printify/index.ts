@@ -211,8 +211,8 @@ Deno.serve(async (req) => {
 
     console.log(`Total products fetched: ${allProducts.length}`);
 
-    const dbProducts = [];
-    const skipped = [];
+    const dbProducts: any[] = [];
+    const skipped: any[] = [];
 
     for (const p of allProducts) {
       const productTitle = p.title || '';
@@ -421,7 +421,7 @@ Deno.serve(async (req) => {
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
       let productSlug = slugify(productTitle);
-      const existingSlugs = dbProducts.map(dp => dp.slug);
+      const existingSlugs: string[] = dbProducts.map((dp: any) => dp.slug);
       if (existingSlugs.includes(productSlug)) {
         productSlug = productSlug + '-' + (p.id || '').slice(-6);
       }
@@ -479,7 +479,7 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Sync error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }

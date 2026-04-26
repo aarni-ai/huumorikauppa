@@ -347,7 +347,7 @@ async function processCheckoutSession(
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
         limit: 100,
       });
-      items = lineItems.data.map((li) => ({
+      items = lineItems.data.map((li: any) => ({
         name: li.description || "Tuote",
         quantity: li.quantity || 1,
         price: (li.amount_total || 0) / 100 / (li.quantity || 1),
