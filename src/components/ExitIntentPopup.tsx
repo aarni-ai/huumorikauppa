@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { ShoppingCart, X, ArrowRight } from "lucide-react";
+import { productAlt } from "@/lib/seoAlt";
 
 const SESSION_KEY = "huumorikauppa-exit-intent-shown";
 
@@ -89,7 +90,7 @@ export function ExitIntentPopup() {
               <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-2 text-sm">
                 <img
                   src={item.product.images[0] || "/placeholder.svg"}
-                  alt={item.product.name}
+                  alt={productAlt(item.product, "ostoskorissa")}
                   className="w-10 h-10 rounded bg-muted object-cover shrink-0"
                 />
                 <div className="min-w-0">
