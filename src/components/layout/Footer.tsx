@@ -49,7 +49,7 @@ export function Footer() {
       });
     } catch {}
     setFooterSubmitted(true);
-    toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi: HUUMORI10 (-10%)" });
+    toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi: HUUMORI5 (-5%)" });
   };
 
   return (
@@ -120,9 +120,9 @@ export function Footer() {
         {/* Newsletter */}
         <div className="space-y-4">
           <h4 className="font-display text-sm text-foreground">TILAA UUTISKIRJE 💥</h4>
-          <p className="text-sm text-muted-foreground">Tilaa uutiskirje ja saat 10% alennuskoodin ensimmäiseen tilaukseesi!</p>
+          <p className="text-sm text-muted-foreground">Tilaa uutiskirje ja saat 5% alennuskoodin ensimmäiseen tilaukseesi!</p>
           {footerSubmitted ? (
-            <p className="text-sm text-primary font-bold">Kiitos! Koodisi: HUUMORI10 🎉</p>
+            <p className="text-sm text-primary font-bold">Kiitos! Koodisi: HUUMORI5 🎉</p>
           ) : (
             <div className="flex gap-2">
               <Input

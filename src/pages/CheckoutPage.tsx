@@ -12,7 +12,7 @@ import { toast } from "@/hooks/use-toast";
 type Step = "details" | "shipping" | "payment";
 
 const VALID_CODES: Record<string, { percent: number; label: string }> = {
-  "HUUMORI10": { percent: 10, label: "10% alennus" },
+  "HUUMORI5": { percent: 5, label: "5% alennus" },
 };
 
 const CheckoutPage = () => {
