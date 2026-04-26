@@ -437,10 +437,12 @@ async function upsertSingleByPrintifyId(
   row: BuiltProductRow,
 ): Promise<void> {
   const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
+  // Match either by Printify id (preferred) or slug (fallback for rows
+  // that pre-date Printify linking).
   const { data: existing } = await supabase
     .from('products')
     .select('id')
-    .eq('printify_product_id', row.printify_product_id)
+    .or(`printify_product_id.eq.${row.printify_product_id},slug.eq.${row.slug}`)
     .maybeSingle();
   if (existing?.id) {
     const { slug: _slug, ...updateFields } = rest;
