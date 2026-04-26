@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,10 +31,8 @@ interface CheckoutRequest {
   discountCode?: string;
 }
 
-const DISCOUNT_CODES: Record<string, number> = {
-  "HUUMORI10": 10,
-  "huumori10": 10,
-};
+// Discount codes are loaded dynamically from the discount_codes table.
+type DiscountInfo = { type: 'percent' | 'fixed'; value: number };
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -64,9 +62,27 @@ serve(async (req) => {
     const { items, customerEmail, customerName, shippingAddress, discountCode } =
       (await req.json()) as CheckoutRequest;
 
-    const discountPercent = discountCode
-      ? DISCOUNT_CODES[discountCode] || DISCOUNT_CODES[discountCode?.toUpperCase()] || 0
-      : 0;
+    // Resolve discount from DB (case-insensitive)
+    let discount: DiscountInfo | null = null;
+    if (discountCode) {
+      const supabaseLookup = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      );
+      const { data: dc } = await supabaseLookup
+        .from("discount_codes")
+        .select("discount_type, discount_value, is_active")
+        .ilike("code", discountCode.trim())
+        .maybeSingle();
+      if (dc && (dc as any).is_active) {
+        discount = {
+          type: (dc as any).discount_type === 'fixed' ? 'fixed' : 'percent',
+          value: Number((dc as any).discount_value),
+        };
+      }
+    }
+    const discountPercent = discount?.type === 'percent' ? discount.value : 0;
+    const discountFixedEur = discount?.type === 'fixed' ? discount.value : 0;
 
     if (!items || items.length === 0) {
       return respond(false, {
@@ -98,7 +114,7 @@ serve(async (req) => {
       });
     }
 
-    let dbQuery = supabaseAdmin.from("products").select("id, slug, name, price");
+    let dbQuery = supabaseAdmin.from("products").select("id, slug, name, price, printify_product_id, variants");
     if (ids.length > 0 && slugs.length > 0) {
       dbQuery = dbQuery.or(`id.in.(${ids.join(",")}),slug.in.(${slugs.join(",")})`);
     } else if (ids.length > 0) {
@@ -114,16 +130,21 @@ serve(async (req) => {
       });
     }
 
-    const priceById = new Map(dbProducts.map((p) => [p.id, Number(p.price)]));
-    const priceBySlug = new Map(dbProducts.map((p) => [p.slug, Number(p.price)]));
+    const productById = new Map(dbProducts.map((p: any) => [p.id, p]));
+    const productBySlug = new Map(dbProducts.map((p: any) => [p.slug, p]));
 
     // Resolve each cart item to its authoritative price
-    type ResolvedItem = CartLineItem & { _serverPrice: number };
+    type ResolvedItem = CartLineItem & {
+      _serverPrice: number;
+      _printifyProductId?: string | null;
+      _printifyVariantId?: number | null;
+    };
     const resolved: ResolvedItem[] = [];
     for (const item of items) {
-      let serverPrice: number | undefined;
-      if (item.id && priceById.has(item.id)) serverPrice = priceById.get(item.id);
-      else if (item.slug && priceBySlug.has(item.slug)) serverPrice = priceBySlug.get(item.slug);
+      let dbProd: any = undefined;
+      if (item.id && productById.has(item.id)) dbProd = productById.get(item.id);
+      else if (item.slug && productBySlug.has(item.slug)) dbProd = productBySlug.get(item.slug);
+      const serverPrice = dbProd ? Number(dbProd.price) : undefined;
       if (typeof serverPrice !== "number" || !Number.isFinite(serverPrice) || serverPrice <= 0) {
         return respond(false, {
           error: `Tuotteen hintaa ei voitu vahvistaa: ${item.name}`,
@@ -136,10 +157,25 @@ serve(async (req) => {
           diagnostics: { error_stage: "invalid_quantity", processing_time_ms: Date.now() - startTime },
         });
       }
-      resolved.push({ ...item, _serverPrice: serverPrice });
+      // Look up Printify variant_id from variants.variant_map ("Color|Size" -> id)
+      let printifyVariantId: number | null = null;
+      const variantMap = dbProd?.variants?.variant_map as Record<string, number> | undefined;
+      if (variantMap) {
+        const key = `${item.color || ''}|${item.size || ''}`;
+        if (typeof variantMap[key] === 'number') printifyVariantId = variantMap[key];
+      }
+      resolved.push({
+        ...item,
+        _serverPrice: serverPrice,
+        _printifyProductId: dbProd?.printify_product_id || null,
+        _printifyVariantId: printifyVariantId,
+      });
     }
 
     const subtotal = resolved.reduce((sum, i) => sum + i._serverPrice * i.quantity, 0);
+    // Distribute fixed discount proportionally per unit
+    const discountedSubtotal = Math.max(0, subtotal - discountFixedEur);
+    const fixedDiscountRatio = subtotal > 0 ? discountedSubtotal / subtotal : 1;
     const shippingFree = subtotal >= 60;
     const shippingCost = shippingFree ? 0 : 5.95;
 
@@ -161,6 +197,12 @@ serve(async (req) => {
 
         const validImage = isValidImageUrl(item.image) ? item.image : undefined;
 
+        const baseUnitCents = Math.round(item._serverPrice * 100);
+        const percentAdjusted = baseUnitCents * (1 - discountPercent / 100);
+        const finalUnitAmount = Math.max(
+          0,
+          Math.round(percentAdjusted * fixedDiscountRatio),
+        );
         return {
           price_data: {
             currency: "eur",
@@ -169,7 +211,7 @@ serve(async (req) => {
               ...(description ? { description } : {}),
               ...(validImage ? { images: [validImage] } : {}),
             },
-            unit_amount: Math.round(item._serverPrice * (1 - discountPercent / 100) * 100),
+            unit_amount: finalUnitAmount,
           },
           quantity: item.quantity,
         };
@@ -191,6 +233,15 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://huumorikauppa.fi";
 
+    // Build compact Printify line-items payload for the webhook to fulfill the order
+    const printifyItems = resolved
+      .filter((i) => i._printifyProductId && i._printifyVariantId)
+      .map((i) => ({
+        product_id: i._printifyProductId,
+        variant_id: i._printifyVariantId,
+        quantity: i.quantity,
+      }));
+
     const session = await stripe.checkout.sessions.create({
       customer_email: customerEmail,
       line_items: lineItems,
@@ -200,6 +251,9 @@ serve(async (req) => {
       metadata: {
         customer_name: customerName,
         shipping_address: JSON.stringify(shippingAddress),
+        // Printify fulfillment payload (compact JSON, ≤500 chars per metadata value typical)
+        printify_items: JSON.stringify(printifyItems),
+        discount_code: discountCode || "",
       },
       locale: "fi",
     });

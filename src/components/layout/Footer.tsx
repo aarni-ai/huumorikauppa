@@ -40,7 +40,10 @@ export function Footer() {
       return;
     }
     try {
-      await supabase.from("newsletter_subscribers").insert({ email: footerEmail.trim().toLowerCase() });
+      await supabase.from("newsletter_subscribers").insert({
+        email: footerEmail.trim().toLowerCase(),
+        is_active: true,
+      });
       await supabase.functions.invoke("notify-store", {
         body: { email: footerEmail.trim().toLowerCase(), type: "newsletter" },
       });

@@ -17,7 +17,7 @@ const contactJsonLd = {
   "mainEntity": {
     "@type": "Organization",
     "name": "Huumorikauppa",
-    "email": "info@huumorikauppa.fi",
+    "email": "huumorikauppa@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Helsinki",
@@ -47,7 +47,7 @@ const ContactPage = () => {
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
         title="Ota yhteyttä – Asiakaspalvelu | Huumorikauppa.fi"
-        description="Ota yhteyttä Huumorikaupan asiakaspalveluun. Vastaamme 1–2 arkipäivässä. Sähköposti: info@huumorikauppa.fi. Helsinki, Suomi."
+        description="Ota yhteyttä Huumorikaupan asiakaspalveluun. Vastaamme 1–2 arkipäivässä. Sähköposti: huumorikauppa@gmail.com. Helsinki, Suomi."
         canonical="https://huumorikauppa.fi/yhteystiedot"
         jsonLd={contactJsonLd}
         breadcrumbs={[
@@ -70,7 +70,7 @@ const ContactPage = () => {
           <Mail className="h-5 w-5 text-primary mt-0.5" />
           <div>
             <h3 className="font-medium text-foreground text-sm">Sähköposti</h3>
-            <a href="mailto:info@huumorikauppa.fi" className="text-sm text-primary hover:underline">info@huumorikauppa.fi</a>
+            <a href="mailto:huumorikauppa@gmail.com" className="text-sm text-primary hover:underline">huumorikauppa@gmail.com</a>
           </div>
         </div>
         <div className="flex items-start gap-3 p-4 rounded-lg border border-border bg-card">

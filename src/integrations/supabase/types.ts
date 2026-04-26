@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      discount_codes: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          discount_type: string
+          discount_value: number
+          id: string
+          is_active: boolean
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          discount_type?: string
+          discount_value: number
+          id?: string
+          is_active?: boolean
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          id?: string
+          is_active?: boolean
+        }
+        Relationships: []
+      }
       email_logs: {
         Row: {
           created_at: string
@@ -147,16 +177,22 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          is_active: boolean
+          unsubscribed_at: string | null
         }
         Insert: {
           created_at?: string
           email: string
           id?: string
+          is_active?: boolean
+          unsubscribed_at?: string | null
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
+          is_active?: boolean
+          unsubscribed_at?: string | null
         }
         Relationships: []
       }
@@ -165,10 +201,16 @@ export type Database = {
           created_at: string
           customer_email: string | null
           customer_name: string | null
+          email_confirmation_status: string
+          email_error: string | null
           fulfilled: boolean
           gift_wrap: boolean
           id: string
           items: Json
+          payment_status: string
+          printify_error: string | null
+          printify_order_id: string | null
+          printify_status: string
           shipping_address: Json | null
           status: Database["public"]["Enums"]["order_status"]
           stripe_session_id: string | null
@@ -180,10 +222,16 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          email_confirmation_status?: string
+          email_error?: string | null
           fulfilled?: boolean
           gift_wrap?: boolean
           id?: string
           items?: Json
+          payment_status?: string
+          printify_error?: string | null
+          printify_order_id?: string | null
+          printify_status?: string
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"]
           stripe_session_id?: string | null
@@ -195,10 +243,16 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          email_confirmation_status?: string
+          email_error?: string | null
           fulfilled?: boolean
           gift_wrap?: boolean
           id?: string
           items?: Json
+          payment_status?: string
+          printify_error?: string | null
+          printify_order_id?: string | null
+          printify_status?: string
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"]
           stripe_session_id?: string | null
@@ -221,6 +275,7 @@ export type Database = {
           is_new: boolean
           name: string
           price: number
+          printify_product_id: string | null
           slug: string
           stock: number
           updated_at: string
@@ -238,6 +293,7 @@ export type Database = {
           is_new?: boolean
           name: string
           price: number
+          printify_product_id?: string | null
           slug: string
           stock?: number
           updated_at?: string
@@ -255,6 +311,7 @@ export type Database = {
           is_new?: boolean
           name?: string
           price?: number
+          printify_product_id?: string | null
           slug?: string
           stock?: number
           updated_at?: string

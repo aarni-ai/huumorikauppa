@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,9 +8,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, stripe-signature",
 };
 
-const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "info@huumorikauppa.fi";
+const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "huumorikauppa@gmail.com";
+const PRINTIFY_API = "https://api.printify.com/v1";
 
-type SupabaseClient = ReturnType<typeof createClient>;
+// Loose-typed to avoid PostgrestVersion generic friction across SDK minor versions
+// deno-lint-ignore no-explicit-any
+type SupabaseClient = any;
 
 interface OrderItem {
   name: string;
@@ -147,11 +150,11 @@ async function sendOrderEmails(
     orderId?: string;
     shippingAddress?: { address?: string; zip?: string; city?: string } | null;
   },
-) {
+): Promise<{ customer: { success: boolean; error?: string } }> {
   const orderTotal = args.total.toFixed(2);
 
   // Customer confirmation
-  await sendEmailWithRetry(supabase, {
+  const customerResult = await sendEmailWithRetry(supabase, {
     templateName: "order-confirmation",
     recipientEmail: args.customerEmail,
     idempotencyKey: `order-confirm-${args.sessionId}`,
@@ -162,6 +165,7 @@ async function sendOrderEmails(
       customerName: args.customerName || undefined,
       orderTotal,
       items: args.items,
+      shippingAddress: args.shippingAddress || undefined,
     },
   });
 
@@ -183,6 +187,106 @@ async function sendOrderEmails(
       items: args.items,
     },
   });
+
+  return { customer: customerResult };
+}
+
+// =============================================================================
+// Printify order submission
+// =============================================================================
+
+interface PrintifyLineItem {
+  product_id: string;
+  variant_id: number;
+  quantity: number;
+}
+
+interface ShippingAddress {
+  address?: string;
+  zip?: string;
+  city?: string;
+}
+
+async function submitPrintifyOrder(args: {
+  externalId: string;
+  label: string;
+  lineItems: PrintifyLineItem[];
+  customerName: string | null;
+  customerEmail: string;
+  shippingAddress: ShippingAddress;
+  countryIso?: string;
+}): Promise<{ printifyOrderId: string }> {
+  const apiKey = Deno.env.get("PRINTIFY_API_KEY");
+  const shopId = Deno.env.get("PRINTIFY_SHOP_ID");
+  if (!apiKey || !shopId) {
+    throw new Error("Printify credentials missing (PRINTIFY_API_KEY / PRINTIFY_SHOP_ID)");
+  }
+
+  const fullName = (args.customerName || "Huumorikauppa Asiakas").trim();
+  const [firstName, ...rest] = fullName.split(/\s+/);
+  const lastName = rest.join(" ") || firstName;
+
+  const payload = {
+    external_id: args.externalId,
+    label: args.label,
+    line_items: args.lineItems,
+    shipping_method: 1, // 1 = standard
+    is_printify_express: false,
+    is_economy_shipping: false,
+    send_shipping_notification: true,
+    address_to: {
+      first_name: firstName || "Asiakas",
+      last_name: lastName,
+      email: args.customerEmail,
+      phone: "",
+      country: args.countryIso || "FI",
+      region: "",
+      address1: args.shippingAddress.address || "",
+      address2: "",
+      city: args.shippingAddress.city || "",
+      zip: args.shippingAddress.zip || "",
+    },
+  };
+
+  const res = await fetch(`${PRINTIFY_API}/shops/${shopId}/orders.json`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const text = await res.text();
+  let data: any = null;
+  try { data = JSON.parse(text); } catch { /* ignore */ }
+
+  if (!res.ok) {
+    throw new Error(
+      `Printify API ${res.status}: ${text.slice(0, 500)}`,
+    );
+  }
+
+  const printifyOrderId = data?.id || data?.order_id || "unknown";
+
+  // Submit for production immediately (POST /orders/{id}/send_to_production.json)
+  try {
+    const prodRes = await fetch(
+      `${PRINTIFY_API}/shops/${shopId}/orders/${printifyOrderId}/send_to_production.json`,
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}` },
+      },
+    );
+    if (!prodRes.ok) {
+      const prodTxt = await prodRes.text();
+      console.warn(`Printify send_to_production warning [${prodRes.status}]: ${prodTxt.slice(0, 300)}`);
+    }
+  } catch (prodErr) {
+    console.warn("Printify send_to_production threw:", prodErr);
+  }
+
+  return { printifyOrderId };
 }
 
 async function processCheckoutSession(
@@ -194,6 +298,16 @@ async function processCheckoutSession(
   const shippingAddress = metadata.shipping_address
     ? JSON.parse(metadata.shipping_address)
     : null;
+  const printifyItems: PrintifyLineItem[] = (() => {
+    try {
+      const raw = metadata.printify_items;
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  })();
   const customerEmail =
     session.customer_email || session.customer_details?.email || null;
   const customerName =
@@ -215,7 +329,7 @@ async function processCheckoutSession(
     // Update status to paid (in case it was pending)
     await supabase
       .from("orders")
-      .update({ status: "paid" })
+      .update({ status: "paid", payment_status: "paid" })
       .eq("stripe_session_id", session.id);
 
     // Try to fetch items for emails
@@ -233,7 +347,7 @@ async function processCheckoutSession(
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
         limit: 100,
       });
-      items = lineItems.data.map((li) => ({
+      items = lineItems.data.map((li: any) => ({
         name: li.description || "Tuote",
         quantity: li.quantity || 1,
         price: (li.amount_total || 0) / 100 / (li.quantity || 1),
@@ -252,6 +366,9 @@ async function processCheckoutSession(
         items,
         total,
         status: "paid",
+        payment_status: "paid",
+        printify_status: "pending",
+        email_confirmation_status: "pending",
       })
       .select("id")
       .maybeSingle();
@@ -270,19 +387,95 @@ async function processCheckoutSession(
     }
   }
 
-  // Send emails (always, even if order existed — idempotency key prevents duplicates)
+  // ---------------------------------------------------------------------------
+  // 1) Submit order to Printify (best-effort, fully isolated)
+  // ---------------------------------------------------------------------------
+  if (printifyItems.length > 0 && shippingAddress) {
+    try {
+      const { printifyOrderId } = await submitPrintifyOrder({
+        externalId: orderId || session.id,
+        label: `Huumorikauppa #${(orderId || session.id).slice(0, 8)}`,
+        lineItems: printifyItems,
+        customerName,
+        customerEmail: customerEmail || "noreply@huumorikauppa.fi",
+        shippingAddress: shippingAddress as ShippingAddress,
+        countryIso: "FI",
+      });
+      if (orderId) {
+        await supabase.from("orders").update({
+          printify_status: "submitted",
+          printify_order_id: printifyOrderId,
+          printify_error: null,
+        }).eq("id", orderId);
+      }
+      console.log(`Printify order created: ${printifyOrderId}`);
+    } catch (printifyErr) {
+      const msg = printifyErr instanceof Error ? printifyErr.message : String(printifyErr);
+      console.error("Printify submission failed:", msg);
+      if (orderId) {
+        await supabase.from("orders").update({
+          printify_status: "failed",
+          printify_error: msg.slice(0, 1000),
+        }).eq("id", orderId);
+      }
+      // Also log to webhook_logs for visibility
+      await logWebhook(supabase, {
+        event_type: "printify_submit_failed",
+        stripe_session_id: session.id,
+        success: false,
+        error_message: msg,
+        raw_data: { orderId, lineItemCount: printifyItems.length },
+      });
+    }
+  } else if (orderId) {
+    const reason = printifyItems.length === 0
+      ? "no printify_items in metadata"
+      : "no shipping address";
+    await supabase.from("orders").update({
+      printify_status: "skipped",
+      printify_error: reason,
+    }).eq("id", orderId);
+    console.warn(`Skipping Printify submit: ${reason}`);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2) Send confirmation emails (idempotency key prevents duplicates)
+  // ---------------------------------------------------------------------------
   if (customerEmail) {
-    await sendOrderEmails(supabase, {
-      customerEmail,
-      customerName,
-      items,
-      total,
-      sessionId: session.id,
-      orderId,
-      shippingAddress,
-    });
+    try {
+      const result = await sendOrderEmails(supabase, {
+        customerEmail,
+        customerName,
+        items,
+        total,
+        sessionId: session.id,
+        orderId,
+        shippingAddress,
+      });
+      if (orderId) {
+        await supabase.from("orders").update({
+          email_confirmation_status: result.customer.success ? "sent" : "failed",
+          email_error: result.customer.success ? null : (result.customer.error || "unknown").slice(0, 1000),
+        }).eq("id", orderId);
+      }
+    } catch (emailErr) {
+      const msg = emailErr instanceof Error ? emailErr.message : String(emailErr);
+      console.error("Email send threw:", msg);
+      if (orderId) {
+        await supabase.from("orders").update({
+          email_confirmation_status: "failed",
+          email_error: msg.slice(0, 1000),
+        }).eq("id", orderId);
+      }
+    }
   } else {
     console.warn(`No customer email for session ${session.id}`);
+    if (orderId) {
+      await supabase.from("orders").update({
+        email_confirmation_status: "skipped",
+        email_error: "no customer email",
+      }).eq("id", orderId);
+    }
   }
 
   return { orderId, customerEmail };

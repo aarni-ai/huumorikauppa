@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -211,8 +211,8 @@ Deno.serve(async (req) => {
 
     console.log(`Total products fetched: ${allProducts.length}`);
 
-    const dbProducts = [];
-    const skipped = [];
+    const dbProducts: any[] = [];
+    const skipped: any[] = [];
 
     for (const p of allProducts) {
       const productTitle = p.title || '';
@@ -254,6 +254,8 @@ Deno.serve(async (req) => {
       const sizes = new Set<string>();
       const colors = new Set<string>();
       const colorVariantIds = new Map<string, number[]>();
+      // Map "Color|Size" -> Printify variant_id (used for order fulfillment)
+      const variantMap: Record<string, number> = {};
       let minPrice = Infinity;
       let maxPrice = 0;
       let totalStock = 0;
@@ -273,18 +275,28 @@ Deno.serve(async (req) => {
         // Only use ENABLED variants (approved in Printify)
         if (!variant.is_enabled) continue;
 
+        let variantColor: string | null = null;
+        let variantSize: string | null = null;
         if (variant.title) {
           const parts = variant.title.split('/').map((s: string) => s.trim());
           for (const part of parts) {
             if (isSizeOrDimension(part)) {
               sizes.add(part);
+              variantSize = part;
             } else if (part.length > 0) {
               colors.add(part);
               if (!colorVariantIds.has(part)) colorVariantIds.set(part, []);
               colorVariantIds.get(part)!.push(variant.id);
+              variantColor = part;
             }
           }
         }
+        // Build variant lookup key using TRANSLATED color (we store translated)
+        const colorKey = variantColor ? translateColor(variantColor) : '';
+        const sizeKey = variantSize || '';
+        const key = `${colorKey}|${sizeKey}`;
+        // Only set first occurrence per key
+        if (!(key in variantMap)) variantMap[key] = variant.id;
         
         const price = variant.price / 100;
         if (price < minPrice) minPrice = price;
@@ -404,11 +416,12 @@ Deno.serve(async (req) => {
       if (translatedColors.length > 0) variants.colors = translatedColors;
       if (Object.keys(translatedVariantImages).length > 0) variants.variant_images = translatedVariantImages;
       if (translatedDefaultColor) variants.default_color = translatedDefaultColor;
+      if (Object.keys(variantMap).length > 0) variants.variant_map = variantMap;
 
       const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
 
       let productSlug = slugify(productTitle);
-      const existingSlugs = dbProducts.map(dp => dp.slug);
+      const existingSlugs: string[] = dbProducts.map((dp: any) => dp.slug);
       if (existingSlugs.includes(productSlug)) {
         productSlug = productSlug + '-' + (p.id || '').slice(-6);
       }
@@ -423,6 +436,7 @@ Deno.serve(async (req) => {
         description: cleanDesc || `Hauska tuote Huumorikaupasta!`,
         images: defaultImages,
         variants,
+        printify_product_id: p.id,
         is_featured: false,
         is_new: false,
         is_gift_idea: false,
@@ -465,7 +479,7 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Sync error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
