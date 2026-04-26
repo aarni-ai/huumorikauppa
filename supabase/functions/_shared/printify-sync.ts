@@ -396,13 +396,35 @@ export async function syncPrintifyCatalog(
 
   // upsert mode — preserve existing rows / flags
   // Strip is_featured/is_new/is_gift_idea so we don't overwrite admin choices.
-  const upsertRows = built.map(({ is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest }) => rest);
-  const { data: upserted, error: upsertError } = await supabase
+  // We split into existing (UPDATE by printify_product_id, omitting slug to
+  // avoid unique-slug conflicts) and new (INSERT). This sidesteps the fact
+  // that upsert with a single onConflict can't handle two unique columns.
+  const printifyIds = built.map((b) => b.printify_product_id);
+  const { data: existingRows } = await supabase
     .from('products')
-    .upsert(upsertRows, { onConflict: 'printify_product_id' })
-    .select('id');
-  if (upsertError) throw new Error(upsertError.message);
-  return { total_fetched: all.length, products_synced: upserted?.length || 0, skipped };
+    .select('id, printify_product_id')
+    .in('printify_product_id', printifyIds);
+  const existingByPid = new Map<string, string>();
+  for (const r of existingRows || []) existingByPid.set(r.printify_product_id as string, r.id as string);
+
+  let updated = 0;
+  let inserted = 0;
+  for (const row of built) {
+    const { is_featured: _f, is_new: _n, is_gift_idea: _g, ...rest } = row;
+    const existsId = existingByPid.get(row.printify_product_id);
+    if (existsId) {
+      // Don't overwrite slug — keeps SEO-stable URLs and avoids unique conflicts.
+      const { slug: _slug, ...updateFields } = rest;
+      const { error } = await supabase.from('products').update(updateFields).eq('id', existsId);
+      if (error) console.error(`Update failed for ${row.name}:`, error.message);
+      else updated++;
+    } else {
+      const { error } = await supabase.from('products').insert(rest);
+      if (error) console.error(`Insert failed for ${row.name}:`, error.message);
+      else inserted++;
+    }
+  }
+  return { total_fetched: all.length, products_synced: updated + inserted, skipped };
 }
 
 /**
