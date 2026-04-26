@@ -28,4 +28,4 @@ project_id = "exhzrrbvipqwhjhjgnxs"
   [functions.recover-orders]
     verify_jwt = false
   [functions.auto-sync-printify]
-    verify_jwt = false
+    verify_jwt = true
