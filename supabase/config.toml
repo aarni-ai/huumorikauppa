@@ -16,7 +16,7 @@ project_id = "exhzrrbvipqwhjhjgnxs"
   [functions.resend-order-confirmation]
     verify_jwt = true
   [functions.send-transactional-email]
-    verify_jwt = true
+    verify_jwt = false
   [functions.stripe-webhook]
     verify_jwt = false
   [functions.image-proxy]
@@ -25,3 +25,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = true
   [functions.send-monthly-newsletter]
     verify_jwt = true
+  [functions.recover-orders]
+    verify_jwt = false

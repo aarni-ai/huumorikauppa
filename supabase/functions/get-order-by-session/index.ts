@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+import Stripe from "https://esm.sh/stripe@18.5.0";
+import { processCheckoutSession } from "../_shared/process-order.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,8 +9,11 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-// Public lookup of order by Stripe session ID — used by /tilaus-vahvistettu page
-// Returns sanitized order info (no admin/internal fields)
+// Public lookup of order by Stripe session ID — used by /tilaus-vahvistettu page.
+// SELF-HEALING: if the order is missing OR Printify/email steps are still pending,
+// re-run the order processor (idempotent). This guarantees the customer ALWAYS
+// gets the confirmation email and Printify ALWAYS gets the order, even when the
+// Stripe webhook fails or hasn't fired yet.
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -29,14 +34,46 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    const { data: order } = await supabase
+    let { data: order } = await supabase
       .from("orders")
-      .select("id, items, total, status, created_at, customer_email, shipping_address")
+      .select("id, items, total, status, created_at, customer_email, shipping_address, printify_status, email_confirmation_status")
       .eq("stripe_session_id", sessionId)
       .maybeSingle();
 
+    // Determine if we need to (re)process this session
+    const needsProcessing =
+      !order ||
+      order.printify_status === "pending" ||
+      order.printify_status === "failed" ||
+      order.email_confirmation_status === "pending" ||
+      order.email_confirmation_status === "failed";
+
+    if (needsProcessing) {
+      const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+      if (stripeKey) {
+        try {
+          const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
+          const session = await stripe.checkout.sessions.retrieve(sessionId);
+          // Only process paid sessions
+          if (session.payment_status === "paid") {
+            const result = await processCheckoutSession(supabase, stripe, session);
+            console.log(`get-order-by-session self-heal for ${sessionId}:`, result);
+            // Re-read the order after processing
+            const { data: refreshed } = await supabase
+              .from("orders")
+              .select("id, items, total, status, created_at, customer_email, shipping_address, printify_status, email_confirmation_status")
+              .eq("stripe_session_id", sessionId)
+              .maybeSingle();
+            order = refreshed;
+          }
+        } catch (procErr) {
+          console.error("Self-heal in get-order-by-session failed:", procErr);
+          // Don't fail the request — fall through and return whatever we have
+        }
+      }
+    }
+
     if (!order) {
-      // Order not yet inserted (webhook may still be processing)
       return new Response(
         JSON.stringify({ found: false }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
