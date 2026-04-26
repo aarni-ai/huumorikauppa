@@ -61,7 +61,7 @@ const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfir
         <Hr style={hr} />
 
         <Text style={footer}>
-          Ongelmia tilauksesi kanssa? Ota yhteyttä: info@huumorikauppa.fi
+          Ongelmia tilauksesi kanssa? Ota yhteyttä: huumorikauppa@gmail.com
         </Text>
         <Text style={footer}>
           Terveisin, {SITE_NAME}-tiimi 😊
