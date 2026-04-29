@@ -348,7 +348,9 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
     category,
     humor_type: 'yleinen',
     price: minPrice,
-    stock: Math.min(totalStock, 999),
+    // Floor stock at 4 so customers can buy multiple units and the
+    // "vain X kpl jäljellä" urgency banner stays believable / non-blocking.
+    stock: Math.max(4, Math.min(totalStock, 999)),
     description: cleanDesc || `Hauska tuote Huumorikaupasta!`,
     images: defaultImages,
     variants,
