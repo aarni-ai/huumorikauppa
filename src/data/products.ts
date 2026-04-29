@@ -53,7 +53,7 @@ Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät ko
     emoji: "👔",
     description: "Pitkähihaiset paidat asenteella",
     seoTitle: "Hauskat pitkähihaiset paidat | Huumorikauppa.fi",
-    seoDescription: "Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 50€. 👔",
+    seoDescription: "Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 60 €. 👔",
     seoText: `## Hauskat pitkähihaiset paidat – huumoria pitkällä hihalla
 
 Pitkähihaiset paidat hauskalla tekstillä ja painatuksella ovat täydellisiä viileämpiin päiviin. Huumorikaupan pitkähihaisten valikoima yhdistää mukavuuden, laadun ja huumorin – näytä asennettasi säällä kuin säällä.

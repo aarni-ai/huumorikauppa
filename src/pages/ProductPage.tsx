@@ -791,7 +791,7 @@ const ProductPage = () => {
     <div className="min-h-screen">
       <Helmet>
         <title>{`${product.name} | Huumorikauppa`}</title>
-        <meta name="description" content={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`} />
+        <meta name="description" content={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`} />
         <link rel="canonical" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta property="og:title" content={`${product.name} | Huumorikauppa`} />
@@ -813,7 +813,7 @@ const ProductPage = () => {
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
-        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 50 €. 14 pv palautusoikeus.`}
+        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={combinedProductJsonLd}
         breadcrumbs={breadcrumbs}

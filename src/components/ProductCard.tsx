@@ -170,8 +170,8 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
           src={displayImage}
-          alt={`${product.name} – Osta hauska ${categoryLabel} Huumorikaupasta`}
-          className="w-full h-full object-cover"
+          alt={`Hauska ${categoryLabel} – ${product.name} | Huumorikauppa`}
+          className={`w-full h-full object-cover transition-transform duration-500 ${canUseHover ? "group-hover:scale-105" : ""}`}
           loading="lazy"
           decoding="async"
           width={400}
