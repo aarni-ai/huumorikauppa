@@ -12,16 +12,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
-const LazySEOContent = lazy(() => import("@/components/SEOKeywordContent").then(m => ({
-  default: () => (
-    <>
-      <m.SEOHomeContent />
-      <m.SEOBuyingContent />
-      <m.SEODesignContent />
-      <m.SEOLongTailContent />
-    </>
-  )
-})));
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
@@ -157,18 +147,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* DIRECT ANSWER BLOCK – GEO/AI-optimointi (visuaalisesti piilossa, indeksoitavissa) */}
-      <section className="sr-only" aria-hidden="false">
-        <h1>Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
-        <p>
-          Huumorikauppa.fi on suomalainen verkkokauppa, joka on erikoistunut hauskoihin lahjoihin:
-          t-paitoihin, huppareihin, mukeihin, tarroihin ja sisustustuotteisiin. Yli 200 tuotetta
-          varastossa, nopea toimitus koko Suomeen ja ilmainen toimitus yli 60 € tilauksiin.
-          Täydellinen valinta, kun etsit lahjaa kaverille, työkaverille, äidille, isälle tai
-          itsellesi.
-        </p>
-      </section>
-
+      {/* Visually hidden H1 for SEO – design uses hero banner as visual title */}
+      <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
 
       {isLoading ? (
         <section className="container py-10">
@@ -253,9 +233,31 @@ const Index = () => {
           <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
-      <Suspense fallback={null}>
-        <LazySEOContent />
-      </Suspense>
+
+      {/* HELPFUL CONTENT – semantic, human-readable, no keyword stuffing */}
+      <section className="container py-12 md:py-16">
+        <article className="max-w-3xl mx-auto prose-invert">
+          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+            Huumorikauppa.fi – Suomen hauskin lahjakauppa
+          </h2>
+          <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
+            <p>
+              Etsitkö lahjaa, joka oikeasti naurattaa? Huumorikauppa on suomalainen verkkokauppa,
+              josta löydät hauskat t-paidat, hupparit, mukit ja tarrat – kaikki suunniteltu
+              kotimaisella sydämellä ja vinolla huumorilla. Tuotteemme sopivat täydellisesti
+              isänpäivään, äitienpäivään, syntymäpäiviin tai vain piristämään ihan tavallista
+              keskiviikkoa.
+            </p>
+            <p>
+              Tilaaminen on helppoa, toimitus nopea ja yli 60 € tilauksiin saat ilmaisen
+              toimituksen. Jokainen paita ja muki painetaan tilauksesta, joten saat juuri sen
+              tuotteen jonka valitsit – ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
+              henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a>.
+              Tervetuloa nauramaan!
+            </p>
+          </div>
+        </article>
+      </section>
     </div>
   );
 };
