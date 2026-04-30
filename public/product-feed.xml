@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+  <channel>
+    <title>Huumorikauppa Product Feed</title>
+    <link>https://huumorikauppa.fi</link>
+    <description>Finnish Humor Ecommerce - Funny T-Shirts, Hoodies & Gifts</description>
+    <item>
+      <g:id>kalamies-t-paita</g:id>
+      <title>KALAMIES | T-Paita</title>
+      <description>Hauska t-paita kalastajille</description>
+      <link>https://huumorikauppa.fi/tuote/kalamies-t-paita</link>
+      <g:image_link>https://huumorikauppa.fi/images/kalamies.jpg</g:image_link>
+      <g:price>24.90 EUR</g:price>
+      <g:availability>in stock</g:availability>
+      <g:brand>Huumorikauppa</g:brand>
+      <g:condition>new</g:condition>
+    </item>
+    <item>
+      <g:id>slay-queen-t-paita</g:id>
+      <title>slay queen | T-paita</title>
+      <description>Moderni t-paita naisille</description>
+      <link>https://huumorikauppa.fi/tuote/slay-queen-t-paita</link>
+      <g:image_link>https://huumorikauppa.fi/images/slay-queen.jpg</g:image_link>
+      <g:price>24.90 EUR</g:price>
+      <g:availability>in stock</g:availability>
+      <g:brand>Huumorikauppa</g:brand>
+      <g:condition>new</g:condition>
+    </item>
+    <item>
+      <g:id>tonnin-seteli-t-paita</g:id>
+      <title>se oli tonnin seteli. | T-Paita</title>
+      <description>Klassinen t-paita suomalaisille</description>
+      <link>https://huumorikauppa.fi/tuote/se-oli-tonnin-seteli-t-paita</link>
+      <g:image_link>https://huumorikauppa.fi/images/tonnin-seteli.jpg</g:image_link>
+      <g:price>24.90 EUR</g:price>
+      <g:availability>in stock</g:availability>
+      <g:brand>Huumorikauppa</g:brand>
+      <g:condition>new</g:condition>
+    </item>
+  </channel>
+</rss>
