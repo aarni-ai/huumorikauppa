@@ -10,6 +10,7 @@ import {
   filterProductsForSituation,
   situationGifts,
 } from "@/data/situationGifts";
+import type { SituationGift } from "@/data/situationGifts";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { categories } from "@/data/products";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
