@@ -1069,8 +1069,59 @@ const ProductPage = () => {
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
-            <ProductDescription description={product.description} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
+            <ProductDescription description={effectiveDescription} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
           </div>
+        </section>
+
+        {/* Structured SEO content blocks: Material, Care, Scenarios, Why buy */}
+        <section className="mt-8 max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Materiaali ja koot 🧵</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.material}</p>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Hoito-ohjeet 🧺</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.care}</p>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Tositilanteita 🎬</h2>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              {seoCopy.scenarios.map((s, i) => (
+                <li key={i} className="flex gap-2"><span className="text-primary">•</span><span>{s}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Lahjavinkit 🎁</h2>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              {seoCopy.giftUseCases.map((s, i) => (
+                <li key={i} className="flex gap-2"><span className="text-primary">•</span><span>{s}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:col-span-2 rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Miksi asiakkaamme ostavat tämän 💚</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.whyBuy}</p>
+          </div>
+        </section>
+
+        {/* Internal links: gift guide + category */}
+        <section className="mt-8 max-w-3xl">
+          <nav aria-label="Aiheeseen liittyvät sivut" className="flex flex-wrap gap-2 text-sm">
+            {category && (
+              <Link to={`/kategoria/${product.category}`} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+                {category.emoji} Kaikki {category.name.toLowerCase()}
+              </Link>
+            )}
+            {matchingGiftGuide && (
+              <Link to={`/lahjat/${matchingGiftGuide.slug}`} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+                {matchingGiftGuide.emoji} {matchingGiftGuide.h1}
+              </Link>
+            )}
+            <Link to="/kaikki-tuotteet" className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+              🛍️ Kaikki tuotteet
+            </Link>
+          </nav>
         </section>
 
         {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen */}
