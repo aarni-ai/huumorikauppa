@@ -582,6 +582,32 @@ const ProductPage = () => {
 
   const categoryName = category?.name || product.category;
 
+  // Generate unique long-form SEO copy. If the DB description is rich, keep it;
+  // otherwise we replace the generic "Hauska tuote Huumorikaupasta!" with a real
+  // 150–300 word description so Google has something unique to index.
+  const seoCopy = useMemo(
+    () => generateProductCopy({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+    }),
+    [product]
+  );
+  const useGeneratedDescription = isGenericDescription(product.description);
+  const effectiveDescription = useGeneratedDescription ? seoCopy.longDescription : product.description;
+
+  // Find a matching gift guide (long-tail SEO landing) page to link to
+  const matchingGiftGuide = useMemo(() => {
+    const t = (product.name + " " + product.description).toLowerCase();
+    return situationGifts.find(g =>
+      g.keywords.some(k => t.includes(k.toLowerCase()))
+      || (g.categories || []).includes(product.category)
+    );
+  }, [product]);
+
   const handleAddToCart = () => {
     if (needsSize) {
       toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
