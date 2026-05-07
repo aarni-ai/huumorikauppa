@@ -64,7 +64,7 @@ const SituationGiftPage = () => {
 
   const linkedCategories = (situation.categories || [])
     .map(slug => categories.find(c => c.slug === slug))
-    .filter(Boolean) as typeof categories;
+    .filter((c): c is (typeof categories)[number] => Boolean(c));
 
   const otherSituations = situationGifts.filter(s => s.slug !== situation.slug).slice(0, 12);
 
