@@ -814,16 +814,17 @@ const ProductPage = () => {
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
+  const metaDesc = seoCopy.shortDescription;
 
   return (
     <div className="min-h-screen">
       <Helmet>
         <title>{`${product.name} | Huumorikauppa`}</title>
-        <meta name="description" content={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`} />
+        <meta name="description" content={metaDesc} />
         <link rel="canonical" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta property="og:title" content={`${product.name} | Huumorikauppa`} />
-        <meta property="og:description" content={product.description.slice(0, 150)} />
+        <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="product" />
         <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta property="og:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
@@ -833,7 +834,7 @@ const ProductPage = () => {
         <meta property="product:price:currency" content="EUR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
-        <meta name="twitter:description" content={product.description.slice(0, 150)} />
+        <meta name="twitter:description" content={metaDesc} />
         <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
@@ -841,7 +842,7 @@ const ProductPage = () => {
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
-        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`}
+        description={metaDesc}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={combinedProductJsonLd}
         breadcrumbs={breadcrumbs}
