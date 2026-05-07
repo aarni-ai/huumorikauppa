@@ -15,6 +15,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
+import { situationGifts } from "@/data/situationGifts";
 
 // Category-specific review pools with contextually relevant content
 type Review = { name: string; text: string; stars: number; date: string };
@@ -580,6 +582,32 @@ const ProductPage = () => {
 
   const categoryName = category?.name || product.category;
 
+  // Generate unique long-form SEO copy. If the DB description is rich, keep it;
+  // otherwise we replace the generic "Hauska tuote Huumorikaupasta!" with a real
+  // 150–300 word description so Google has something unique to index.
+  const seoCopy = useMemo(
+    () => generateProductCopy({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+    }),
+    [product]
+  );
+  const useGeneratedDescription = isGenericDescription(product.description);
+  const effectiveDescription = useGeneratedDescription ? seoCopy.longDescription : product.description;
+
+  // Find a matching gift guide (long-tail SEO landing) page to link to
+  const matchingGiftGuide = useMemo(() => {
+    const t = (product.name + " " + product.description).toLowerCase();
+    return situationGifts.find(g =>
+      g.keywords.some(k => t.includes(k.toLowerCase()))
+      || (g.categories || []).includes(product.category)
+    );
+  }, [product]);
+
   const handleAddToCart = () => {
     if (needsSize) {
       toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
@@ -639,7 +667,7 @@ const ProductPage = () => {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description.slice(0, 500),
+    "description": effectiveDescription.slice(0, 5000),
     "image": allProductImages.map(img => {
       const abs = img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`;
       return toProxiedImage(abs);
@@ -786,16 +814,17 @@ const ProductPage = () => {
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
+  const metaDesc = seoCopy.shortDescription;
 
   return (
     <div className="min-h-screen">
       <Helmet>
         <title>{`${product.name} | Huumorikauppa`}</title>
-        <meta name="description" content={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`} />
+        <meta name="description" content={metaDesc} />
         <link rel="canonical" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta property="og:title" content={`${product.name} | Huumorikauppa`} />
-        <meta property="og:description" content={product.description.slice(0, 150)} />
+        <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="product" />
         <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta property="og:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
@@ -805,7 +834,7 @@ const ProductPage = () => {
         <meta property="product:price:currency" content="EUR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
-        <meta name="twitter:description" content={product.description.slice(0, 150)} />
+        <meta name="twitter:description" content={metaDesc} />
         <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
@@ -813,7 +842,7 @@ const ProductPage = () => {
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
-        description={`${product.name} – ${product.description.slice(0, 120)}. Ilmainen toimitus yli 60 €. 14 pv palautusoikeus.`}
+        description={metaDesc}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={combinedProductJsonLd}
         breadcrumbs={breadcrumbs}
@@ -1040,8 +1069,59 @@ const ProductPage = () => {
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Tuotekuvaus 📝</h2>
-            <ProductDescription description={product.description} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
+            <ProductDescription description={effectiveDescription} expanded={descExpanded} onToggle={() => setDescExpanded(prev => !prev)} />
           </div>
+        </section>
+
+        {/* Structured SEO content blocks: Material, Care, Scenarios, Why buy */}
+        <section className="mt-8 max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Materiaali ja koot 🧵</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.material}</p>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Hoito-ohjeet 🧺</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.care}</p>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Tositilanteita 🎬</h2>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              {seoCopy.scenarios.map((s, i) => (
+                <li key={i} className="flex gap-2"><span className="text-primary">•</span><span>{s}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Lahjavinkit 🎁</h2>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
+              {seoCopy.giftUseCases.map((s, i) => (
+                <li key={i} className="flex gap-2"><span className="text-primary">•</span><span>{s}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:col-span-2 rounded-xl border border-border bg-card/50 p-6">
+            <h2 className="font-display text-lg text-foreground mb-2">Miksi asiakkaamme ostavat tämän 💚</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.whyBuy}</p>
+          </div>
+        </section>
+
+        {/* Internal links: gift guide + category */}
+        <section className="mt-8 max-w-3xl">
+          <nav aria-label="Aiheeseen liittyvät sivut" className="flex flex-wrap gap-2 text-sm">
+            {category && (
+              <Link to={`/kategoria/${product.category}`} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+                {category.emoji} Kaikki {category.name.toLowerCase()}
+              </Link>
+            )}
+            {matchingGiftGuide && (
+              <Link to={`/lahjat/${matchingGiftGuide.slug}`} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+                {matchingGiftGuide.emoji} {matchingGiftGuide.h1}
+              </Link>
+            )}
+            <Link to="/kaikki-tuotteet" className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+              🛍️ Kaikki tuotteet
+            </Link>
+          </nav>
         </section>
 
         {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen */}
