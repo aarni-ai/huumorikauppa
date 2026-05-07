@@ -36,6 +36,7 @@ const GiftCategoryPage = lazy(() => import("./pages/GiftCategoryPage"));
 const MothersDayPage = lazy(() => import("./pages/MothersDayPage"));
 const MothersDayRedirect = lazy(() => import("./pages/MothersDayRedirect"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
@@ -108,6 +109,7 @@ const App = () => (
               <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />
+              <Route path="/tietoa-meista" element={<AboutPage />} />
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/login" element={<AdminLogin />} />
