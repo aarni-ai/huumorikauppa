@@ -113,6 +113,53 @@ const AboutPage = () => {
               käytä <Link to="/yhteystiedot" className="text-primary hover:underline">yhteydenottolomakettamme</Link>.
             </p>
           </section>
+
+          {/* --- Authority / E-E-A-T boost (appended; nothing above modified) --- */}
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Miksi tämä brändi on olemassa</h2>
+            <p>
+              Huumori on suomalaisille tapa selvitä – pimeästä talvesta, pitkistä palavereista, sukulaisten kysymyksistä.
+              Halusimme rakentaa kaupan, joka kunnioittaa juuri tätä: paikallista, osuvaa, joskus vinoa, mutta ei koskaan
+              loukkaavaa. Jokainen tuote suunnitellaan niin, että se naurattaa myös vuoden päästä – ei vain ostohetkellä.
+              Tämä on hidas ja tarkka tapa tehdä lahjakauppaa, mutta uskomme sen olevan myös kestävämpi.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Läpinäkyvyys – materiaalit ja tuotanto</h2>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><strong>Suunnittelu:</strong> ideoidaan ja kirjoitetaan Suomessa, ei käännetä englannista.</li>
+              <li><strong>Painatus:</strong> EU-painokumppani, DTG- ja sublimaatiomenetelmä – ei lentorahtia Aasiasta.</li>
+              <li><strong>Materiaalit:</strong> rengaskehrätty puuvilla / puuvilla-polyesterisekoite, korkealaatuinen
+                keramiikka mukeissa, UV-suojattu vinyyli tarroissa.</li>
+              <li><strong>Print-on-demand:</strong> emme tuota turhia varastoja – jokainen tuote painetaan tilauksesta.</li>
+              <li><strong>Identiteetti:</strong> aitoa suomalaista huumoria – setähuumoria, työpaikkavitsejä,
+                eläkeläisklassikoita, ammattikuntahuumoria.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Luottamus ja turvallisuus</h2>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><strong>Toimitus:</strong> Posti, 3–7 arkipäivää, ilmainen yli 60 € tilauksiin.</li>
+              <li><strong>Palautukset:</strong> 14 päivän palautusoikeus ilman selittelyjä.</li>
+              <li><strong>Maksutavat:</strong> Visa, Mastercard, Klarna, MobilePay, Apple Pay, Google Pay.</li>
+              <li><strong>Asiakaspalvelu:</strong> vastaa 1–2 arkipäivässä – aito ihminen, ei chatbottia.</li>
+              <li><strong>Tietosuoja:</strong> noudatamme GDPR:ää – lue lisää{" "}
+                <Link to="/tietosuojakaytanto" className="text-primary hover:underline">tietosuojaselosteestamme</Link>.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Lue lisää</h2>
+            <div className="flex flex-wrap gap-2">
+              <Link to="/lahjat/miehelle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat miehelle</Link>
+              <Link to="/lahjat/naiselle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat naiselle</Link>
+              <Link to="/suomalaiset-tyopaikkameemit-top-50" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">😂 Työpaikkameemit TOP 50</Link>
+              <Link to="/hauskimmat-tyopaikkalaput-2026" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">📋 Työpaikkalaput 2026</Link>
+              <Link to="/blogi" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">📰 Lahjaopas-blogi</Link>
+            </div>
+          </section>
         </article>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">

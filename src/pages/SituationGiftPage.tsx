@@ -10,8 +10,10 @@ import {
   filterProductsForSituation,
   situationGifts,
 } from "@/data/situationGifts";
+import type { SituationGift } from "@/data/situationGifts";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { categories } from "@/data/products";
+import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -68,6 +70,43 @@ const SituationGiftPage = () => {
 
   const otherSituations = situationGifts.filter(s => s.slug !== situation.slug).slice(0, 12);
 
+  // Authority hub: top 8 most useful gift guides for cross-linking
+  const popularHubs = [
+    "miehelle",
+    "naiselle",
+    "tyokaverille",
+    "pomolle",
+    "joulu",
+    "pikkujouluihin",
+    "alle-20-euroa",
+    "polttareihin",
+  ]
+    .filter(slug => slug !== situation.slug)
+    .map(slug => situationGifts.find(s => s.slug === slug))
+    .filter((s): s is SituationGift => Boolean(s))
+    .slice(0, 8);
+
+  // 3-step gift decision logic — appended only, never replaces existing copy
+  const decisionSteps = [
+    `1. Mieti vastaanottaja: harrastus, ammatti tai sisäpiirin vitsi (${situation.h1.toLowerCase()}).`,
+    "2. Valitse tuotemuoto: paita arkikäyttöön, muki työpöydälle, huppari rentoon päivään.",
+    "3. Tarkista koko ja toimitusaika – tilaa 7 arkipäivää ennen lahjapäivää.",
+  ];
+
+  // FAQ enhancement layer — only adds if guide has fewer than 5 FAQs
+  const extraFaqs = [
+    { q: "Voiko lahjan saada nimettömänä?", a: "Kyllä – emme lähetä lähettäjän tietoja paketin mukana, joten yllätyslahja pysyy yllätyksenä." },
+    { q: "Mitä jos koko on väärä?", a: "Vaihdamme tai palautamme tuotteen 14 päivän sisällä – pidä alkuperäinen pakkaus mukana." },
+    { q: "Soveltuuko tämä lahjaksi viime hetkellä?", a: "Tilaa arkena ennen klo 12, niin tilaus lähtee yleensä samana päivänä. Toimitus 3–7 arkipäivää." },
+  ];
+  const mergedFaqs = guide.faqs.length < 5
+    ? [...guide.faqs, ...extraFaqs.slice(0, 5 - guide.faqs.length)]
+    : guide.faqs;
+
+  // SEO title alternates (suggestions only — primary title remains unchanged)
+  const targetForTitle = situation.h1.replace(/^Hauskat lahjat\s*/i, "");
+  const titleAlternates = generateTitleVariants({ target: targetForTitle, kind: "gift" });
+
   return (
     <div className="min-h-screen">
       <SEOHead
@@ -77,6 +116,20 @@ const SituationGiftPage = () => {
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={products[0]?.images[0]}
+      />
+      {/* SEO: alternateName signals additional title variants without replacing the primary title */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            url: canonical,
+            name: situation.seoTitle,
+            alternateName: titleAlternates,
+          }),
+        }}
       />
 
       <section className="bg-muted/50 py-3 border-b border-border">
@@ -145,7 +198,7 @@ const SituationGiftPage = () => {
           <section>
             <h2 className="font-display text-2xl text-foreground mb-3">Usein kysytyt kysymykset</h2>
             <dl className="space-y-4">
-              {guide.faqs.map((f, i) => (
+              {mergedFaqs.map((f, i) => (
                 <div key={i}>
                   <dt className="font-semibold text-foreground">{f.q}</dt>
                   <dd className="mt-1">{f.a}</dd>
@@ -153,6 +206,61 @@ const SituationGiftPage = () => {
               ))}
             </dl>
           </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Lahjan valintaopas – 3 askelta</h2>
+            <ol className="space-y-2 list-decimal pl-5">
+              {decisionSteps.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ol>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Miksi tämä toimii</h2>
+            <p>
+              Hauskat lahjat aktivoivat tunnemuistia paremmin kuin yleisluontoiset tuotteet. Kun lahja viittaa
+              vastaanottajan arkeen, ammattiin tai harrastukseen, se ei jää kaapin pohjalle vaan päätyy aktiiviseen
+              käyttöön. Juuri tämä erottaa onnistuneen lahjan persoonattomasta lahjakortista.
+            </p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Top-valinnat – miksi nämä toimivat</h2>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><strong>T-paidat:</strong> näkyvä huumori, päivittäinen käyttö – vitsi kulkee mukana.</li>
+              <li><strong>Mukit:</strong> kestää vuosia, näkyy joka kahvitauolla työpaikalla.</li>
+              <li><strong>Hupparit:</strong> mukava, pidetty asuste – arvostetaan myös arkilahjana.</li>
+            </ul>
+          </section>
+        </article>
+
+        {/* Suosituimmat lahjaoppaat — internal authority graph */}
+        <nav className="mt-12 pt-6 border-t border-border" aria-label="Suosituimmat lahjaoppaat">
+          <h2 className="font-display text-xl text-foreground mb-4">Suosituimmat lahjaoppaat</h2>
+          <div className="flex flex-wrap gap-2">
+            {popularHubs.map(s => (
+              <Link
+                key={s.slug}
+                to={`/lahjat/${s.slug}`}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+              >
+                {s.emoji} {s.h1}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        {/* Katso myös — backlink-asset cross-promo */}
+        <nav className="mt-8 pt-6 border-t border-border" aria-label="Katso myös">
+          <h2 className="font-display text-xl text-foreground mb-4">Katso myös</h2>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/suomalaiset-tyopaikkameemit-top-50" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/50 transition">😂 Suomalaiset työpaikkameemit – TOP 50</Link>
+            <Link to="/hauskimmat-tyopaikkalaput-2026" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/50 transition">📋 Hauskimmat työpaikkalaput 2026</Link>
+            <Link to="/blogi" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/50 transition">📰 Lahjaopas-blogi</Link>
+            <Link to="/tietoa-meista" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/50 transition">ℹ️ Tietoa meistä</Link>
+          </div>
+        </nav>
+
+        {/* Hide the original closing </article> below — keep DOM tree valid */}
+        <article className="hidden">
         </article>
 
         {/* Internal linking: related categories */}

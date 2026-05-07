@@ -41,6 +41,8 @@ const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const SituationGiftPage = lazy(() => import("./pages/SituationGiftPage"));
+const WorkplaceMemesPage = lazy(() => import("./pages/WorkplaceMemesPage"));
+const OfficeNotesPage = lazy(() => import("./pages/OfficeNotesPage"));
 
 // Lazy: popups (not needed at initial load)
 const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
@@ -108,6 +110,8 @@ const App = () => (
               <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
               <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
+              <Route path="/suomalaiset-tyopaikkameemit-top-50" element={<WorkplaceMemesPage />} />
+              <Route path="/hauskimmat-tyopaikkalaput-2026" element={<OfficeNotesPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />
               <Route path="/tietoa-meista" element={<AboutPage />} />
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
