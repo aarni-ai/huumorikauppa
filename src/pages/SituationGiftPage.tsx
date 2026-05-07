@@ -10,6 +10,8 @@ import {
   filterProductsForSituation,
   situationGifts,
 } from "@/data/situationGifts";
+import { generateGiftGuideContent } from "@/lib/giftGuideContent";
+import { categories } from "@/data/products";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,6 +35,8 @@ const SituationGiftPage = () => {
     { name: situation.h1, url: canonical },
   ];
 
+  const guide = generateGiftGuideContent(situation);
+
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -46,13 +50,31 @@ const SituationGiftPage = () => {
     })),
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: guide.faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
+
+  const linkedCategories = (situation.categories || [])
+    .map(slug => categories.find(c => c.slug === slug))
+    .filter(Boolean) as typeof categories;
+
+  const otherSituations = situationGifts.filter(s => s.slug !== situation.slug).slice(0, 12);
+
   return (
     <div className="min-h-screen">
       <SEOHead
         title={situation.seoTitle}
         description={situation.seoDescription}
         canonical={canonical}
-        jsonLd={itemListJsonLd}
+        jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
         ogImage={products[0]?.images[0]}
       />
@@ -78,7 +100,7 @@ const SituationGiftPage = () => {
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">
           {situation.emoji} {situation.h1}
         </h1>
-        <p className="text-muted-foreground mb-6 max-w-3xl">{situation.intro}</p>
+        <p className="text-muted-foreground mb-6 max-w-3xl">{guide.intro}</p>
         <p className="text-sm text-muted-foreground mb-8">{products.length} tuotetta</p>
 
         {isLoading ? (
@@ -102,11 +124,60 @@ const SituationGiftPage = () => {
           </div>
         )}
 
+        {/* Long-form SEO content – unique per situation */}
+        <article className="prose prose-invert max-w-3xl mt-12 space-y-6 text-muted-foreground">
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Miksi hauska lahja kannattaa?</h2>
+            <p>{guide.whyChoose}</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Kuinka valita oikea lahja</h2>
+            <p>{guide.howToChoose}</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Suosituimmat valinnat</h2>
+            <p>{guide.popular}</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Toimitus ja palautus</h2>
+            <p>{guide.shippingTrust}</p>
+          </section>
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Usein kysytyt kysymykset</h2>
+            <dl className="space-y-4">
+              {guide.faqs.map((f, i) => (
+                <div key={i}>
+                  <dt className="font-semibold text-foreground">{f.q}</dt>
+                  <dd className="mt-1">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        </article>
+
+        {/* Internal linking: related categories */}
+        {linkedCategories.length > 0 && (
+          <nav className="mt-12 pt-6 border-t border-border" aria-label="Liittyvät kategoriat">
+            <h2 className="font-display text-xl text-foreground mb-4">Selaa kategorioita</h2>
+            <div className="flex flex-wrap gap-2">
+              {linkedCategories.map(c => (
+                <Link
+                  key={c.slug}
+                  to={`/kategoria/${c.slug}`}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+                >
+                  {c.emoji} {c.name}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
+
         {/* Cross-link other situation gifts */}
         <nav className="mt-12 pt-6 border-t border-border" aria-label="Muut lahjaideat tilanteen mukaan">
           <h2 className="font-display text-xl text-foreground mb-4">Lahjaideat eri tilanteisiin 🎁</h2>
           <div className="flex flex-wrap gap-2">
-            {situationGifts.filter(s => s.slug !== situation.slug).map(s => (
+            {otherSituations.map(s => (
               <Link
                 key={s.slug}
                 to={`/lahjat/${s.slug}`}
