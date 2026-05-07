@@ -15,6 +15,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
+import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
+import { situationGifts } from "@/data/situationGifts";
 
 // Category-specific review pools with contextually relevant content
 type Review = { name: string; text: string; stars: number; date: string };
