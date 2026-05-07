@@ -667,7 +667,7 @@ const ProductPage = () => {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description.slice(0, 500),
+    "description": effectiveDescription.slice(0, 5000),
     "image": allProductImages.map(img => {
       const abs = img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`;
       return toProxiedImage(abs);
