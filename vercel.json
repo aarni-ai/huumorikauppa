@@ -3,7 +3,7 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!sitemap\\.xml|product-feed\\.xml|merchant-feed\\.xml|robots\\.txt|favicon\\.ico|placeholder\\.svg|images/).*)",
       "destination": "/index.html"
     }
   ]
