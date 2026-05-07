@@ -32,7 +32,7 @@ const MEMES: { title: string; note: string }[] = [
   { title: "Etätyössä mikrofoni on aina päällä.", note: "Aina." },
   { title: "“Tämä on QA:n vika.”", note: "QA: “Tämä on devin vika.”" },
   { title: "Standuppi seisten = nopeampi. Teoriassa.", note: "Käytännössä yhtä pitkä, mutta selkä jumissa." },
-  { title: "Kalenterissa ‘focus time’ = kahdeksan kokousta.", name: undefined as unknown as string } as any,
+  { title: "Kalenterissa ‘focus time’ = kahdeksan kokousta.", note: "Tarkennus: ei yhtään focusta." },
   { title: "Kahvi #4 on se, joka ratkaisee bugit.", note: "Älä kysy miksi, vain ole kiitollinen." },
   { title: "“Onko teillä hetki?” = ei ole. Eikä koskaan ollut.", note: "Mutta sanotaan ‘joo’." },
   { title: "Loma-asetus päällä, vastaan silti.", note: "Suomalainen versio rentoutumisesta." },
