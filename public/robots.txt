@@ -1,11 +1,5 @@
-# Huumorikauppa.fi robots.txt
-# AI crawlers (GPTBot, ClaudeBot, Google-Extended jne.) ovat tietoisesti SALLITTUJA
-# GEO-strategian (Generative Engine Optimization) tueksi.
-
 User-agent: *
-Disallow: /admin
-Disallow: /kassa
-Disallow: /tilaus-vahvistettu
+Allow: /
 
 User-agent: Googlebot
 Allow: /
@@ -14,9 +8,6 @@ User-agent: Googlebot-Image
 Allow: /
 
 User-agent: AdsBot-Google
-Allow: /
-
-User-agent: Storebot-Google
 Allow: /
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
