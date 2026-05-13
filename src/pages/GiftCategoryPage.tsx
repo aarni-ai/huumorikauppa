@@ -64,7 +64,7 @@ Miehelle jolla on jo kaikkea, hauska paita tai muki on täydellinen lahja – se
 
 - Ilmainen toimitus yli 60 € tilauksiin
 - 14 päivän palautusoikeus
-- 3–7 arkipäivän toimitus koko Suomeen
+- 3–10 arkipäivän toimitus koko Suomeen
 - 100% suomalainen yritys`,
     relatedBlogSlugs: ["parhaat-hauskat-lahjat-miehelle", "hauskat-isanpaivalahjat-opas", "mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", "lahja-miehelle-30v-40v-50v-60v"],
   },
@@ -105,7 +105,7 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 
 - Ilmainen toimitus yli 60 € tilauksiin
 - 14 päivän palautusoikeus
-- 3–7 arkipäivän toimitus koko Suomeen
+- 3–10 arkipäivän toimitus koko Suomeen
 - Lahjapaketointimahdollisuus`,
     relatedBlogSlugs: ["hauskat-lahjat-naiselle-opas", "hauska-aitienpaivalahja-opas", "lahja-naiselle-30v-40v-50v-60v"],
   },
@@ -143,7 +143,7 @@ Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: mukeja, hup
 ## Tilaa polttaripaidat Huumorikaupasta
 
 - Ilmainen toimitus yli 60 € tilauksiin
-- 3–7 arkipäivän toimitus
+- 3–10 arkipäivän toimitus
 - Ryhmätilaukset helposti – lisää eri koot koriin`,
     relatedBlogSlugs: ["parhaat-polttaripaidat-ja-polttarilahjat-2026"],
   },
@@ -184,7 +184,7 @@ Isänpäivä on marraskuun toinen sunnuntai. Se on päivä jolloin isä ansaitse
 
 ## Tilaa isänpäivälahja ajoissa
 
-Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme 3–7 arkipäivässä koko Suomeen.`,
+Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme 3–10 arkipäivässä koko Suomeen.`,
     relatedBlogSlugs: ["hauskat-isanpaivalahjat-opas", "parhaat-hauskat-lahjat-miehelle"],
   },
   {
@@ -262,7 +262,7 @@ Hauska muki, tarra-arkki tai pipo ovat täydellisiä pikkujoululahjoja työkaver
 
 ## Milloin tilata joululahjat?
 
-Tilaa viimeistään joulukuun alussa. Toimitamme 3–7 arkipäivässä.`,
+Tilaa viimeistään joulukuun alussa. Toimitamme 3–10 arkipäivässä.`,
     relatedBlogSlugs: ["parhaat-joululahjat-ja-pikkujoululahjat-2026"],
   },
   {
@@ -442,7 +442,7 @@ const GiftCategoryPage = () => {
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+      a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
     },
     {
       q: "Mihin tilaisuuteen lahja sopii?",

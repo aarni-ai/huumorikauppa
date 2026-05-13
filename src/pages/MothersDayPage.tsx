@@ -44,7 +44,7 @@ const FAQS = [
   },
   {
     q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
-    a: "Tilaa viimeistään 5. toukokuuta niin ehdit varmasti. Toimitamme 3–7 arkipäivässä koko Suomeen.",
+    a: "Tilaa viimeistään 5. toukokuuta niin ehdit varmasti. Toimitamme 3–10 arkipäivässä koko Suomeen.",
   },
   {
     q: "Mikä on paras hauska lahja äidille?",
@@ -52,7 +52,7 @@ const FAQS = [
   },
   {
     q: "Toimitetaanko äitienpäiväksi?",
-    a: "Kyllä! Toimitamme 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+    a: "Kyllä! Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
@@ -217,7 +217,7 @@ const MothersDayPage = () => {
         <p>
           <strong>Äitienpäivälahjaksi hauska huppari tai t-paita on yllättävä ja lämmin valinta.</strong>{" "}
           Huumorikauppa.fi:n äitienpäivä-tuotteet — hupparit, t-paidat, mukit ja tarrat — toimitetaan
-          nopeasti 3–7 arkipäivässä koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
+          nopeasti 3–10 arkipäivässä koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
           ja yli 60 € tilauksiin toimitus on ilmainen.
         </p>
         <p>
@@ -312,7 +312,7 @@ const MothersDayPage = () => {
             <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
             oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
             kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
-            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–7 arkipäivässä —
+            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–10 arkipäivässä —
             ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
           </p>
           <p>

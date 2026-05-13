@@ -129,7 +129,7 @@ const CartPage = () => {
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
-            <p>🚚 Toimitus 3–7 arkipäivää</p>
+            <p>🚚 Toimitus 3–10 arkipäivää</p>
           </div>
         </div>
       </div>
