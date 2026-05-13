@@ -1,0 +1,43 @@
+# Huumorikauppa.fi
+
+> Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja, tarroja ja lahjoja huumorintajuisille. Nopea toimitus 2–4 arkipäivässä koko Suomeen.
+
+Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: t-paitoja, huppareita, mukeja, tarroja, pipoja, laukkuja, peittoja ja seinätauluja. Tuotteet on suunniteltu Suomessa ja painetaan tilauksesta. Toimitus on ilmainen yli 50 € tilauksiin ja palautusoikeus 30 päivää.
+
+## Tuotekategoriat
+
+- [Kaikki tuotteet](/kaikki-tuotteet): Koko valikoima.
+- [Hauskat T-paidat](/kategoria/t-paidat): Meemi- ja huumoripaitoja.
+- [Hauskat Hupparit](/kategoria/hupparit): Lämpimät huppareita huumorilla.
+- [Hauskat Mukit](/kategoria/mukit): Aamukahvi paremmaksi.
+- [Hauskat Tarrat](/kategoria/tarrat): Kannettavalle, autolle, jääkaapille.
+- [Pitkähihaiset](/kategoria/pitkahihaiset): Pitkähihaiset paidat.
+- [Vauvan Bodyt](/kategoria/bodyt): Hauskoja vauvanvaatteita.
+- [Peitot](/kategoria/peitot): Pehmeät huumoripeitot.
+- [Pipot & Lippikset](/kategoria/pipot): Päähineitä.
+- [Laukut & Kassit](/kategoria/laukut): Kestokassit ja laukut.
+- [Seinätaulut](/kategoria/seinataulut): Seinäkoristeet huumorilla.
+- [Koristeet](/kategoria/koristeet): Sisustuskoristeita.
+
+## Lahjaideat
+
+- [Lahjat miehelle](/lahjat/miehelle): Hauskat lahjat miehille.
+- [Lahjat naiselle](/lahjat/naiselle): Hauskat lahjat naisille.
+- [Lahjat isälle](/lahjat/isalle): Isänpäivälahjat.
+- [Lahjat äidille](/lahjat/aidille): Äitienpäivälahjat.
+- [Syntymäpäivälahjat](/lahjat/syntymapaiva): Hauskat syntymäpäivälahjat.
+- [Joululahjat](/lahjat/joulu): Hauskat joululahjat.
+
+## Tietoa kaupasta
+
+- [Tietoa meistä](/tietoa-meista): Huumorikaupan tarina.
+- [Blogi](/blogi): Lahjavinkit, huumori ja meemit.
+- [Yhteystiedot](/yhteystiedot): Asiakaspalvelu.
+- [Usein kysytyt kysymykset](/usein-kysytyt-kysymykset): UKK.
+
+## Optional
+
+- [Toimitusehdot](/toimitusehdot): Toimitus- ja maksuehdot.
+- [Palautusehdot](/palautusehdot): 30 päivän palautusoikeus.
+- [Tietosuojakäytäntö](/tietosuojakaytanto): Yksityisyydensuoja.
+- [Saavutettavuusseloste](/saavutettavuusseloste): Saavutettavuus.
