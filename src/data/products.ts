@@ -4,7 +4,7 @@ export const categories = [
     name: "T-Paidat",
     emoji: "👕",
     description: "Hauskat t-paidat ovat suosituin lahjavaihtoehto Huumorikaupassa. Löydät vaihtoehtoja eri ammateille, tilanteisiin ja henkilöille. Täydellinen äitienpäivälahja äidille tai hauska lisä omaan vaatekaappiin.",
-    seoTitle: "Hauskat T-paidat – Suomen suurin huumoripaita-valikoima | Huumorikauppa.fi",
+    seoTitle: "Hauskat T-paidat – Huumoripaidat | Huumorikauppa.fi",
     seoDescription: "Hauskat t-paidat lahjaksi äidille, isälle ja kaverille. Yli 100 mallia, koot XS–3XL. Nopea toimitus ennen äitienpäivää 11.5.2026. 👕",
     seoText: `## Suomen hauskimmat t-paidat – meemipaidat, vitsipaidat ja huumoripaidat
 
@@ -29,7 +29,7 @@ Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. S
     name: "Hupparit",
     emoji: "🧥",
     description: "Hauskat hupparit ovat täydellinen lahja syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja — löydä täydellinen huppari äidille, kaverille tai itsellesi. Tilattu ennen äitienpäivää? Toimitamme nopeasti.",
-    seoTitle: "Hauskat Hupparit – Lahja äitienpäivään & syntymäpäiviin | Huumorikauppa.fi",
+    seoTitle: "Hauskat Hupparit – Huumorihupparit | Huumorikauppa.fi",
     seoDescription: "Hauskat hupparit lahjaksi äidille, kaverille tai itsellesi. Pehmeät, lämpimät ja hauskat — toimitamme nopeasti ennen äitienpäivää 11.5.2026. 🧥",
     seoText: `## Hauskat hupparit – lämpöä, asennetta ja huumoria
 
@@ -71,7 +71,7 @@ Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. 
     name: "Mukit",
     emoji: "☕",
     description: "Hauska kahvimuki on yksi parhaista äitienpäivälahjoista — käytännöllinen, edullinen ja mieleenpainuva. Huumorikaupan mukivalikoima sopii äidille, mummille, työkaveille ja kaikille kahvia rakastaville.",
-    seoTitle: "Hauskat Mukit – Paras äitienpäivälahja äidille | Huumorikauppa.fi",
+    seoTitle: "Hauskat Mukit – Huumorimukit lahjaksi | Huumorikauppa.fi",
     seoDescription: "Hauskat kahvimukit lahjaksi äidille, mummille tai työkaverille. Edullinen ja mieleenpainuva äitienpäivälahja — toimitus nopeasti ennen 11.5.2026. ☕",
     seoText: `## Hauskat mukit – kahvimukit hauskalla tekstillä
 
@@ -94,7 +94,7 @@ Kaikki mukimme ovat laadukkaita keramiikkamukeja kestävällä painatuksella. Ne
     name: "Tarrat",
     emoji: "🏷️",
     description: "Hauskat tarrat ovat edullisin tapa tuoda huumoria arkeen. Käytä kannettavassa, vesipullossa tai anna äitienpäivälisuksi muun lahjan kylkeen. Hinnat lähtevät alle kymmenestä eurosta.",
-    seoTitle: "Hauskat Tarrat – Edullinen äitienpäivälisukka | Huumorikauppa.fi",
+    seoTitle: "Hauskat Tarrat – Huumoritarrat | Huumorikauppa.fi",
     seoDescription: "Hauskat tarrat läppäriin, vesipulloon ja autoon. Edullinen lisä äitienpäivälahjaan — alle 10 €. Nopea toimitus koko Suomeen. 🏷️",
     seoText: `## Hauskat tarrat – meemitarrat ja tarra-arkit
 
@@ -113,7 +113,7 @@ Tarra-arkki on edullinen ja hauska lahja tai lisä mihin tahansa tilaukseen. Eri
     name: "Vauvabodyt",
     emoji: "👶",
     description: "Pienimmille huumoriharrastajille",
-    seoTitle: "Hauskat bodyt vauvoille – Hauskat vauvalahjavinkit | Huumorikauppa.fi",
+    seoTitle: "Hauskat vauvan bodyt – Vauvalahjat | Huumorikauppa.fi",
     seoDescription: "Hauskat bodyt pienimmille! Täydellinen vauvalahja. Pehmeä materiaali. Nopea toimitus. Tilaa nyt! 👶",
     seoText: `## Hauskat vauvabodyt – pienimmille huumoriharrastajille
 
@@ -132,7 +132,7 @@ Vauvabodymme ovat valmistettu pehmeästä, ihoa hellivästä materiaalista. Ne o
     name: "Peitot",
     emoji: "🛏️",
     description: "Lämpimiä ja hauskoja peittoja",
-    seoTitle: "Hauskat peitot – Humoristinen peitto lahjana | Huumorikauppa.fi",
+    seoTitle: "Hauskat peitot – Huumoripeitot | Huumorikauppa.fi",
     seoDescription: "Hauska peitto lahjaksi tai itselle! Laadukas ja hauska – pitää lämpimänä ja hymyilyttää. Tilaa nyt. 🛋️",
     seoText: `## Hauskat peitot – huumoria sohvannurkkaan
 
@@ -170,7 +170,7 @@ Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat
     name: "Laukut",
     emoji: "👜",
     description: "Kassit ja laukut huumorilla",
-    seoTitle: "Hauskat laukut – Kangaskassit ja muut hauskuudet | Huumorikauppa.fi",
+    seoTitle: "Hauskat laukut ja kangaskassit | Huumorikauppa.fi",
     seoDescription: "Hauskat laukut ja kangaskassit suomalaisella huumorilla. Arkikäyttöön tai lahjaksi. Tilaa helposti! 👜",
     seoText: `## Hauskat laukut ja kangaskassit – ekologista huumoria
 
@@ -189,7 +189,7 @@ Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raska
     name: "Seinätaulut",
     emoji: "🖼️",
     description: "Taulut ja julisteet seinälle",
-    seoTitle: "Hauskat seinätaulut – Humoristinen sisustus | Huumorikauppa.fi",
+    seoTitle: "Hauskat seinätaulut – Huumorisisustus | Huumorikauppa.fi",
     seoDescription: "Hauskat seinätaulut kodin sisustukseen! Piristä seinät huumorilla. Nopea toimitus koko Suomeen. 🖼️",
     seoText: `## Hauskat seinätaulut ja julisteet – huumoria kodin seinälle
 
@@ -208,7 +208,7 @@ Seinätaulumme ovat saatavilla useissa eri ko'oissa. Laadukas painatus kestää 
     name: "Koristeet",
     emoji: "✨",
     description: "Hauskoja koristeita kotiin",
-    seoTitle: "Hauskat koristeet – Huumoria kodin sisustukseen | Huumorikauppa.fi",
+    seoTitle: "Hauskat koristeet kotiin | Huumorikauppa.fi",
     seoDescription: "Hauskat koristeet kotiin – Huumoria joka nurkkaan. Lahjana tai itselle. Nopea toimitus. 🏠",
     seoText: `## Hauskat koristeet – huumoria kotiin ja toimistoon
 
