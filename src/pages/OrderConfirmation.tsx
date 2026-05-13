@@ -197,7 +197,7 @@ const OrderConfirmation = () => {
 
   return (
     <div className="container py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8">
-      <SEOHead title="Tilaus vahvistettu! – Huumorikauppa" description="Kiitos tilauksestasi Huumorikaupassa!" />
+      <SEOHead title="Tilaus vahvistettu! – Huumorikauppa" description="Kiitos tilauksestasi Huumorikaupassa!" noindex={true} />
 
       <div className="animate-bounce-once">
         <CheckCircle className="h-20 w-20 text-primary mx-auto" />
