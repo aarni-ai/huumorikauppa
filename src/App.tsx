@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -89,6 +89,7 @@ const App = () => (
               <Route path="/ostoskori" element={<CartPage />} />
               <Route path="/kassa" element={<CheckoutPage />} />
               <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
+              <Route path="/faq" element={<Navigate to="/usein-kysytyt-kysymykset" replace />} />
               <Route path="/toimitusehdot" element={<Terms />} />
               <Route path="/palautusehdot" element={<ReturnsPolicy />} />
               <Route path="/tietosuojakaytanto" element={<Privacy />} />
