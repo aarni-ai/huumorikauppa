@@ -143,7 +143,7 @@ const MothersDayPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat Äitienpäivälahjat 2026 – Paras lahja äidille | Huumorikauppa"
+        title="Hauskat Äitienpäivälahjat 2026 | Huumorikauppa.fi"
         description="Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa. Hauskat äitienpäivälahjat 2026: paidat, hupparit, mukit. Nopea toimitus koko Suomeen."
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
