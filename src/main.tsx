@@ -7,7 +7,7 @@ const rootElement = document.getElementById('root')!;
 const hasStaticHTML = rootElement.hasChildNodes();
 
 if (hasStaticHTML) {
-    ReactDOM.hydrateRoot(rootElement, <React.StrictMode><App /></React.StrictMode>React.StrictMode>)
+    ReactDOM.hydrateRoot(rootElement, <React.StrictMode><App /></React.StrictMode>);
 } else {
-    ReactDOM.createRoot(rootElement).render(<React.StrictMode><App /></React.StrictMode>React.StrictMode>)
+    ReactDOM.createRoot(rootElement).render(<React.StrictMode><App /></React.StrictMode>);
 }
