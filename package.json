@@ -91,6 +91,8 @@
     "react-snap": "^1.23.0"
   },
   "reactSnap": {
+    "source": "dist",
+    "destination": "dist",
     "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
     "removeBlobs": true,
     "asyncScriptTags": true
