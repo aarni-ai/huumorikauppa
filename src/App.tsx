@@ -89,6 +89,7 @@ const App = () => (
               <Route path="/ostoskori" element={<CartPage />} />
               <Route path="/kassa" element={<CheckoutPage />} />
               <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
+              <Route path="/faq" element={<Navigate to="/usein-kysytyt-kysymykset" replace />} />
               <Route path="/toimitusehdot" element={<Terms />} />
               <Route path="/palautusehdot" element={<ReturnsPolicy />} />
               <Route path="/tietosuojakaytanto" element={<Privacy />} />
