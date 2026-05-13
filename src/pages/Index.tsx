@@ -82,7 +82,7 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat lahjat & huumorituotteet – Nopea toimitus | Huumorikauppa.fi"
+        title="Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi"
         description="Löydä Suomen hauskin lahja! T-paitoja, huppareita, mukeja, tarroja. Yli 200 tuotetta, nopea toimitus. Tilaa helposti! 🎁"
         canonical="https://huumorikauppa.fi"
         jsonLd={orgJsonLd}
