@@ -6,7 +6,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 const faqs = [
   {
     q: "Kuinka nopeasti tilaus toimitetaan?",
-    a: "Toimitamme tilaukset 2–4 arkipäivässä koko Suomeen. Arkisin ennen klo 14 tehdyt tilaukset lähtevät samana päivänä."
+    a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Arkisin ennen klo 14 tehdyt tilaukset lähtevät samana päivänä."
   },
   {
     q: "Onko toimitus ilmainen?",

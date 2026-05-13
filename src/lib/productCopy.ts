@@ -175,9 +175,9 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
     `${whyBuy}`,
   ].join("\n\n");
 
-  const feedDescription = `${name} – hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3–7 arkipäivässä, ilmainen yli 60 € tilauksiin, 14 pv palautusoikeus. Painettu EU:ssa, suomalainen design.`.slice(0, 4900);
+  const feedDescription = `${name} – hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3–10 arkipäivässä, ilmainen yli 60 € tilauksiin, 14 pv palautusoikeus. Painettu EU:ssa, suomalainen design.`.slice(0, 4900);
 
-  const shortDescription = `${name} – hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3–7 arkipäivässä, ilmainen yli 60 €.`.slice(0, 158);
+  const shortDescription = `${name} – hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3–10 arkipäivässä, ilmainen yli 60 €.`.slice(0, 158);
 
   // help linter / future use
   void plural;

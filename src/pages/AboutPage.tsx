@@ -85,7 +85,7 @@ const AboutPage = () => {
           <section>
             <h2 className="font-display text-2xl text-foreground mb-3">Toimitus ja palautus</h2>
             <p>
-              Toimitamme kaikki tilaukset 3–7 arkipäivässä koko Suomeen Postin verkostolla. Yli 60 € tilaukset toimitetaan ilmaiseksi.
+              Toimitamme kaikki tilaukset 3–10 arkipäivässä koko Suomeen Postin verkostolla. Yli 60 € tilaukset toimitetaan ilmaiseksi.
               Jokaisella tilauksella on 14 päivän palautusoikeus, ja maksaminen on aina turvallista (Visa, Mastercard, Klarna,
               MobilePay, Apple Pay, Google Pay). Lue lisää{" "}
               <Link to="/toimitusehdot" className="text-primary hover:underline">toimitusehdoistamme</Link> ja{" "}
@@ -98,7 +98,7 @@ const AboutPage = () => {
             <ul className="list-disc pl-6 space-y-1">
               <li>Aitoa suomalaista huumoria – emme käännä vitsejä englannista</li>
               <li>Laadukkaat materiaalit ja kestävä painatus</li>
-              <li>Nopea toimitus 3–7 arkipäivässä koko Suomeen</li>
+              <li>Nopea toimitus 3–10 arkipäivässä koko Suomeen</li>
               <li>Henkilökohtainen asiakaspalvelu, joka vastaa 1–2 arkipäivässä</li>
               <li>14 päivän palautusoikeus ilman selittelyjä</li>
               <li>Tuhansia tyytyväisiä asiakkaita ja todelliset arvostelut</li>
@@ -141,7 +141,7 @@ const AboutPage = () => {
           <section>
             <h2 className="font-display text-2xl text-foreground mb-3">Luottamus ja turvallisuus</h2>
             <ul className="list-disc pl-6 space-y-1">
-              <li><strong>Toimitus:</strong> Posti, 3–7 arkipäivää, ilmainen yli 60 € tilauksiin.</li>
+              <li><strong>Toimitus:</strong> Posti, 3–10 arkipäivää, ilmainen yli 60 € tilauksiin.</li>
               <li><strong>Palautukset:</strong> 14 päivän palautusoikeus ilman selittelyjä.</li>
               <li><strong>Maksutavat:</strong> Visa, Mastercard, Klarna, MobilePay, Apple Pay, Google Pay.</li>
               <li><strong>Asiakaspalvelu:</strong> vastaa 1–2 arkipäivässä – aito ihminen, ei chatbottia.</li>

@@ -147,7 +147,7 @@ const CategoryPage = () => {
       {
         "@type": "Question",
         "name": `Kuinka nopeasti ${catLower} toimitetaan?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen." },
       },
       {
         "@type": "Question",
@@ -213,7 +213,7 @@ const CategoryPage = () => {
           <p>
             <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
-            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–7 arkipäivässä koko Suomeen,
+            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–10 arkipäivässä koko Suomeen,
             ilmainen yli 60 € tilauksiin.
           </p>
         </div>
@@ -224,7 +224,7 @@ const CategoryPage = () => {
             <CheckCircle className="h-3.5 w-3.5" /> Varastossa
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-            <Truck className="h-3.5 w-3.5" /> Toimitus 3–7 arkipäivässä
+            <Truck className="h-3.5 w-3.5" /> Toimitus 3–10 arkipäivässä
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">
             <Star className="h-3.5 w-3.5 fill-yellow-500" /> 4.8/5 arvosana
@@ -306,7 +306,7 @@ const CategoryPage = () => {
               <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
                 Kuinka nopeasti {category.name.toLowerCase()} toimitetaan?
               </summary>
-              <p className="px-4 pb-3 text-sm text-muted-foreground">Toimitamme tilaukset 3–7 arkipäivässä koko Suomeen. Ilmainen toimitus yli 60 € tilauksiin.</p>
+              <p className="px-4 pb-3 text-sm text-muted-foreground">Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Ilmainen toimitus yli 60 € tilauksiin.</p>
             </details>
             <details className="group border border-border rounded-lg">
               <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">

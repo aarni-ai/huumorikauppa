@@ -156,7 +156,7 @@ const BlogPost = () => {
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset koko Suomeen yleensä 3–7 arkipäivässä. Yli 60 € tilauksiin toimitus on ilmainen.",
+      a: "Toimitamme tilaukset koko Suomeen yleensä 3–10 arkipäivässä. Yli 60 € tilauksiin toimitus on ilmainen.",
     },
     {
       q: "Voinko palauttaa tuotteen?",
