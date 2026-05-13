@@ -6,7 +6,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 const faqs = [
   {
     q: "Kuinka nopeasti tilaus toimitetaan?",
-    a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Arkisin ennen klo 14 tehdyt tilaukset lähtevät samana päivänä."
+    a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää tilauksesta. Saat sähköpostiisi toimitusseurantakoodin kun paketti on lähetetty."
   },
   {
     q: "Onko toimitus ilmainen?",
