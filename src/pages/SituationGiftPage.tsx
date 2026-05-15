@@ -5,6 +5,7 @@ import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
+import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import {
   findSituation,
   filterProductsForSituation,
@@ -19,6 +20,7 @@ const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const situation = slug ? findSituation(slug) : undefined;
   const { data: allProducts, isLoading } = useProducts();
+  usePrerenderReady(!isLoading && (allProducts?.length ?? 0) > 0);
 
   const products = useMemo(() => {
     if (!situation || !allProducts) return [];

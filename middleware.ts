@@ -156,6 +156,10 @@ const PAGE_META: Record<string, PageMeta> = {
     title: 'Hauskat koristeet kotiin | Huumorikauppa.fi',
     description: 'Hauskat koristeet kotiin – Huumoria joka nurkkaan. Lahjana tai itselle. Nopea toimitus.',
   },
+  '/aitienpaiva': {
+    title: 'Äitienpäivälahjat 2026 – Hauskat ideat äidille | Huumorikauppa.fi',
+    description: 'Parhaat hauskat äitienpäivälahjat! T-paidat, mukit ja hupparit äidille. Nopea toimitus koko Suomeen.',
+  },
 };
 
 // Blog post metadata (slug without /blogi/ prefix)
