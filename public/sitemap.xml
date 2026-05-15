@@ -973,6 +973,36 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://huumorikauppa.fi/blogi/hauska-lahja-kaverille</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://huumorikauppa.fi/blogi/hauska-lahja-pomolle</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://huumorikauppa.fi/blogi/hauskat-pikkujoululahjat-tyokavereille</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://huumorikauppa.fi/blogi/hauskat-lahjat-teinipojalle-ja-tytolle</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://huumorikauppa.fi/blogi/hauska-lahja-mokkilaiselle</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://huumorikauppa.fi/lahjat/miehelle</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
