@@ -14,13 +14,6 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
       <Link to="/kaikki-tuotteet" onClick={onClose} className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
         🛍️ Kaikki tuotteet
       </Link>
-      <Link
-        to="/aitienpaiva"
-        onClick={onClose}
-        className="block px-6 py-3 text-base font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors"
-      >
-        🌸 Äitienpäivä
-      </Link>
       {mainCats.map(cat => (
         <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           {cat.emoji} {cat.name}
@@ -114,12 +107,6 @@ export function Header() {
               {cat.emoji} {cat.name}
             </Link>
           ))}
-          <Link
-            to="/aitienpaiva"
-            className="px-3 py-2 text-sm font-bold text-rose-600 hover:text-rose-700 transition-colors rounded-md hover:bg-rose-50"
-          >
-            🌸 Äitienpäivä
-          </Link>
 
           {/* "Muut tuotteet" dropdown */}
           <div

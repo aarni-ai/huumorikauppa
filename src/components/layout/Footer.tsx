@@ -150,7 +150,6 @@ export function Footer() {
         <Link to="/polttari-lahjat">Polttarilahjat</Link>
         <Link to="/joululahjat">Joululahjat</Link>
         <Link to="/isanpaiva-lahjat">Isänpäivälahjat</Link>
-        <Link to="/aitienpaiva-lahjat">Äitienpäivälahjat</Link>
         <Link to="/syntymapaivaLahjat">Synttärilahjat</Link>
         <Link to="/elakelahjat">Eläkelahjat</Link>
         <Link to="/lahja-kaverille">Lahja kaverille</Link>
