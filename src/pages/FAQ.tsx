@@ -70,7 +70,6 @@ const faqs = [
   },
   {
     q: "Mitkä ovat parhaat lahjat työkaverille?",
-    o: "Toimistolahjoiksi sopivat hauskat kahvimukit, työpaikkahuumoria sisältävät t-paidat ja toimistotarrat. Suositut tuotteet löytyvät /lahja-tyokaverille-sivulta.",
     a: "Toimistolahjoiksi sopivat hauskat kahvimukit, työpaikkahuumoria sisältävät t-paidat ja toimistotarrat. Suositut tuotteet löytyvät /lahja-tyokaverille-sivulta."
   },
   {
