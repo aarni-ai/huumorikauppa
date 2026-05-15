@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     q: "Sopiiko tuote lahjaksi?",
-    a: "Ehdottomasti! Monet tuotteemme on merkitty 'Lahjaidea' -badgella ja sopivat täydellisesti lahjaksi syntymäpäiviin, jouluun, isänpäivään ja äitienpäivään."
+    a: "Ehdottomasti. Monet tuotteemme on merkitty 'Lahjaidea'-badgella ja sopivat lahjaksi syntymäpäiviin, jouluun, polttareihin, valmistujaisiin, eläkejuhliin ja työkavereille."
   },
   {
     q: "Miten tiedän mikä koko sopii?",
@@ -47,6 +47,62 @@ const faqs = [
   {
     q: "Teettekö custom-painatuksia?",
     a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (huumorikauppa@gmail.com) ja kerro mitä haluat – suunnitellaan yhdessä!"
+  },
+  {
+    q: "Mikä on Huumorikauppa?",
+    a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja, kangaskasseja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta."
+  },
+  {
+    q: "Mistä Huumorikaupan tuotteet painetaan?",
+    a: "Tuotteet painetaan tilauksesta print-on-demand-menetelmällä, joten ylituotantoa ei synny. Painopalvelu on EU-alueelta ja täyttää eurooppalaiset laatuvaatimukset."
+  },
+  {
+    q: "Millaiset materiaalit tuotteissa on käytössä?",
+    a: "T-paidat ja hupparit ovat 100 % puuvillaa tai puuvilla–polyesteri-sekoitteita. Mukit ovat keraamisia, tarrat säänkestävää vinyyliä ja kangaskassit kestävää puuvillaa."
+  },
+  {
+    q: "Mikä on hauska lahja miehelle?",
+    a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, isänpäivä- ja syntymäpäivähupparit, kahvimukit toimistoon ja meemiaiheiset tarrat. Katso valikoima kategoriasta /hauskat-lahjat-miehelle."
+  },
+  {
+    q: "Mikä on hauska lahja naiselle?",
+    a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta /hauskat-lahjat-naiselle."
+  },
+  {
+    q: "Mitkä ovat parhaat lahjat työkaverille?",
+    a: "Toimistolahjoiksi sopivat hauskat kahvimukit, työpaikkahuumoria sisältävät t-paidat ja toimistotarrat. Suositut tuotteet löytyvät /lahja-tyokaverille-sivulta."
+  },
+  {
+    q: "Onko teillä polttarilahjoja?",
+    a: "Kyllä – polttareihin sopivat hauskat ryhmäpaidat ja personoidut hupparit. Katso /polttari-lahjat-kategoria tai pyydä custom-printti sähköpostilla."
+  },
+  {
+    q: "Miten löydän lahjan ihmiselle, jolla on jo kaikkea?",
+    a: "Hauska lahja toimii silloin kun mikään muu ei tunnu sopivalta. Suosittelemme henkilön persoonaan sopivaa huumoripaitaa, mukia tai tekstitaulua – kategoriasta /lahjaideat-jolla-jo-kaikkea löydät listan testattuja vinkkejä."
+  },
+  {
+    q: "Voiko tilauksen noutaa?",
+    a: "Emme tarjoa noutoa tällä hetkellä. Kaikki tilaukset toimitetaan PostNordin kautta lähimpään pakettiautomaattiin tai Postin pisteeseen Suomessa."
+  },
+  {
+    q: "Miten alennuskoodi käytetään?",
+    a: "Syötä alennuskoodi (esim. HUUMORI10) ostoskorin Yhteenveto-osioon ennen kassalle siirtymistä. Alennus näkyy heti loppusummassa."
+  },
+  {
+    q: "Voinko vaihtaa väärän koon?",
+    a: "Kyllä. Lähetä tuote takaisin 30 päivän sisällä ja tilaa uusi koko erillisellä tilauksella – näin saat sen nopeammin kuin vaihdolla."
+  },
+  {
+    q: "Säilyvätkö painatukset pesussa?",
+    a: "Kyllä. Painatukset on tehty kestopainomenetelmällä, ja oikein hoidettuna (käännä nurin ennen pesua, max 40 °C, ei kuivurin korkeinta lämpöä) ne säilyvät vuosia ennallaan."
+  },
+  {
+    q: "Onko tuotteet eettisesti tuotettu?",
+    a: "Käyttämämme tukkutoimittajat (mm. Stanley/Stella ja Bella+Canvas) on sertifioitu Fair Wear- tai vastaavilla työehtosertifikaateilla. Print-on-demand-tuotanto vähentää myös ylituotantoa ja jätettä."
+  },
+  {
+    q: "Tarjoatteko yrityslahjoja tai tukkuhintoja?",
+    a: "Kyllä, teemme yrityslahjoja, kausituotteita ja tiimipaitoja. Pyydä tarjous: huumorikauppa@gmail.com – kerro määrä, tuote ja toivottu painatus."
   },
 ];
 
