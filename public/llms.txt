@@ -24,9 +24,22 @@ Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: 
 - [Lahjat miehelle](/lahjat/miehelle): Hauskat lahjat miehille.
 - [Lahjat naiselle](/lahjat/naiselle): Hauskat lahjat naisille.
 - [Lahjat isälle](/lahjat/isalle): Isänpäivälahjat.
-- [Lahjat äidille](/lahjat/aidille): Äitienpäivälahjat.
 - [Syntymäpäivälahjat](/lahjat/syntymapaiva): Hauskat syntymäpäivälahjat.
 - [Joululahjat](/lahjat/joulu): Hauskat joululahjat.
+- [Lahjat työkaverille](/lahja-tyokaverille): Toimistohuumori ja työpaikkalahjat.
+- [Lahjat kaverille](/lahja-kaverille): Hauskat kaverilahjat.
+- [Polttarilahjat](/polttari-lahjat): Polttareihin sopivat huumorituotteet.
+- [Eläkelahjat](/elakelahjat): Eläkkeelle siirtyvälle.
+- [Lahjaideat ihmiselle, jolla on jo kaikkea](/lahjaideat-jolla-jo-kaikkea): Hauskoja lahjavinkkejä.
+
+## Aiheet ja teemat
+
+- Toimistohuumori ja työpaikkalahjat – kahvimukit, toimistopaidat, meemitarrat.
+- Suomalainen internetkulttuuri ja meemilahjat – käännöshuumori, suomi-vitsit.
+- Nörttilahjat – pelaajille, koodareille ja IT-väelle.
+- Kahvimukit – aamukahviin, kotiin ja toimistoon.
+- Hauskat t-paidat – syntymäpäiville, juhliin ja arkikäyttöön.
+- Custom-painatukset – yrityslahjat, ryhmäpaidat, polttarit.
 
 ## Tietoa kaupasta
 
