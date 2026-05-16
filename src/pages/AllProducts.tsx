@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
@@ -28,9 +28,13 @@ function getPriority(product: { name: string; description: string }): number {
 const AllProducts = () => {
   const { data: products = [], isLoading } = useProducts();
   usePrerenderReady(!isLoading && products.length > 0);
+  const [searchParams] = useSearchParams();
+  const maxPrice = Number(searchParams.get("max")) || null;
 
   // Filter out custom text/image products, sort by category count then priority
-  const filtered = products.filter(p => !isCustomTextProduct(p.name, p.description));
+  const filtered = products.filter(
+    p => !isCustomTextProduct(p.name, p.description) && (!maxPrice || p.price <= maxPrice)
+  );
   
   // Count products per category
   const catCounts: Record<string, number> = {};
@@ -73,8 +77,14 @@ const AllProducts = () => {
           <span className="text-foreground">Kaikki tuotteet</span>
         </nav>
 
-        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Kaikki hauskat tuotteet 🛍️</h1>
-        <p className="text-muted-foreground mb-8">Runsaasti valikoimaa – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!</p>
+        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">
+          {maxPrice ? `Hauskat lahjat alle ${maxPrice} € 💸` : "Kaikki hauskat tuotteet 🛍️"}
+        </h1>
+        <p className="text-muted-foreground mb-8">
+          {maxPrice
+            ? `Edulliset huumorilahjat alle ${maxPrice} eurolla – täydelliset pienet yllätykset.`
+            : "Runsaasti valikoimaa – kaikki Suomen hauskimmat meemituotteet yhdessä paikassa!"}
+        </p>
 
         {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
