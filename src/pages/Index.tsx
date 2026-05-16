@@ -171,24 +171,24 @@ const Index = () => {
       </section>
 
       {/* GIFT FINDER */}
-      <section className="container py-8 md:py-12">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+      <section className="container py-5 md:py-7">
+        <h2 className="font-display text-lg md:text-xl text-foreground mb-3 text-center">
           Kenelle etsit lahjaa? 🎁
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 max-w-3xl mx-auto">
           {[
             { to: "/lahjat/miehelle", emoji: "🎯", label: "Miehelle" },
             { to: "/lahjat/naiselle", emoji: "💝", label: "Naiselle" },
             { to: "/lahja-tyokaverille", emoji: "💼", label: "Työkavereille" },
-            { to: "/kategoria/tarrat", emoji: "💸", label: "Alle 30 €" },
+            { to: "/kaikki-tuotteet?max=30", emoji: "💸", label: "Alle 30 €" },
           ].map((g) => (
             <Link
               key={g.to}
               to={g.to}
-              className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted hover:border-primary/60 hover:-translate-y-0.5 transition-all p-5 md:p-6 text-center shadow-sm hover:shadow-glow-lime"
+              className="group flex flex-row md:flex-col items-center justify-center gap-2 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary/60 transition-all px-3 py-2.5 md:py-3 text-center shadow-sm"
             >
-              <span className="text-4xl md:text-5xl group-hover:scale-110 transition-transform">{g.emoji}</span>
-              <span className="font-display text-base md:text-lg text-foreground">{g.label}</span>
+              <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">{g.emoji}</span>
+              <span className="font-display text-sm md:text-base text-foreground">{g.label}</span>
             </Link>
           ))}
         </div>
