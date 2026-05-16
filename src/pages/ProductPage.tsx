@@ -507,6 +507,20 @@ const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [customText, setCustomText] = useState("");
 
+  const addToCartBtnRef = useRef<HTMLButtonElement>(null);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const el = addToCartBtnRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "0px 0px -80px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [product?.id]);
+
   const variantImages = useMemo(() => {
     return (product?.variants?.variant_images as Record<string, string[]>) || {};
   }, [product]);
