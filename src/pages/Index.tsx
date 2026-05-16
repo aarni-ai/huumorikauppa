@@ -170,6 +170,30 @@ const Index = () => {
         </div>
       </section>
 
+      {/* GIFT FINDER */}
+      <section className="container py-8 md:py-12">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+          Kenelle etsit lahjaa? 🎁
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {[
+            { to: "/lahjat/miehelle", emoji: "🎯", label: "Miehelle" },
+            { to: "/lahjat/naiselle", emoji: "💝", label: "Naiselle" },
+            { to: "/lahja-tyokaverille", emoji: "💼", label: "Työkavereille" },
+            { to: "/kategoria/tarrat", emoji: "💸", label: "Alle 30 €" },
+          ].map((g) => (
+            <Link
+              key={g.to}
+              to={g.to}
+              className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted hover:border-primary/60 hover:-translate-y-0.5 transition-all p-5 md:p-6 text-center shadow-sm hover:shadow-glow-lime"
+            >
+              <span className="text-4xl md:text-5xl group-hover:scale-110 transition-transform">{g.emoji}</span>
+              <span className="font-display text-base md:text-lg text-foreground">{g.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Visually hidden H1 for SEO – design uses hero banner as visual title */}
       <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
 
