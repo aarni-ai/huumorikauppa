@@ -44,6 +44,27 @@ const CAROUSEL_SLUGS = [
 
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
+  const { toast } = useToast();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  const handleNewsletterSubmit = async () => {
+    if (!newsletterEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
+      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return;
+    }
+    try {
+      await supabase.from("newsletter_subscribers").insert({
+        email: newsletterEmail.trim().toLowerCase(),
+        is_active: true,
+      });
+      await supabase.functions.invoke("notify-store", {
+        body: { email: newsletterEmail.trim().toLowerCase(), type: "newsletter" },
+      });
+    } catch {}
+    setNewsletterSubmitted(true);
+    toast({ title: "Kiitos! 🎉", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
+  };
 
   useEffect(() => {
     if (!isLoading && allProducts.length > 0) {
