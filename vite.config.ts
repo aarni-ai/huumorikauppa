@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
           vendor: ["react", "react-dom", "react-router-dom"],
           ui: ["@radix-ui/react-dialog", "@radix-ui/react-toast", "@radix-ui/react-tooltip"],
           query: ["@tanstack/react-query"],
+          supabase: ["@supabase/supabase-js"],
         },
       },
     },

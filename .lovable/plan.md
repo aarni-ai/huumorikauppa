@@ -1,76 +1,70 @@
+# Huumorikauppa.fi – optimointisuunnitelma
 
-# Huumorikauppa.fi – Suomen hauskin verkkokauppa 🚀😂
+Pyyntö on todella laaja (kymmeniä tunteja työtä ja yli 20 tiedostoa). Jaan sen **6 vaiheeseen**, joista jokainen toimitetaan erikseen ja on itsenäisesti production-valmis. Aloitamme vaiheesta 1 vahvistuksesi jälkeen.
 
-## Vaihe 1: Design System & Layout
-- Tumma teema (#0a0a0a pohja) + neon-aksentit (lime, hot-pink, cyan)
-- Impact/Anton otsikkofontti + Inter body-fontti (min 16px)
-- Custom komponentit: MemeButton, ProductCard, TrustBadge, CategoryCard
-- Header: logo, hakupalkki, kategoriat-navigaatio, ostoskori-ikoni (kelluva badge)
-- Footer: yhteystiedot, FAQ-linkki, some-linkit, newsletter, luottamusmerkit
-- Trust-banneri joka sivulla: "Ilmainen toimitus yli 60€", "14pv palautus", "Suomalainen perheyritys"
-- Cookie consent -banneri (GDPR)
+**Säilytetään ehdottomasti:** dark theme + neon-aksentit, fontit, hinnoittelutyyli, arvostelujen "aidot kirjoitusvirheet", Prerender.io-integraatio, hero-banneri, karusellit. (Mem://constraints/visual-integrity)
 
-## Vaihe 2: Supabase-tietokanta & Auth
-- **products**-taulu: id, name, slug, category, price, stock, description, images[], variants (koko/väri JSON)
-- **orders**-taulu: id, user_id (nullable), items (JSON), total, status, stripe_session_id, created_at
-- **user_roles**-taulu: user_id, role (admin/user) – erillinen taulu turvallisuussyistä
-- RLS: tuotteet julkisia, tilaukset vain omat, admin näkee kaikki (has_role-funktio)
-- Supabase Auth: rekisteröityminen + kirjautuminen
-- Supabase Storage: tuotekuvat
+---
 
-## Vaihe 3: Etusivu
-- Hero-banneri: "Hauskimmat meemit nyt paidassa, housuissa ja mukissa 😂" + CTA "Selaa tuotteita"
-- Featured/bestsellerit-ruudukko (4 tuotetta)
-- Uutuudet-karuselli
-- Kategoriakortit isoina (T-paidat, Housut, Mukit, Tarrat, Digitaaliset meemit, Hupparit)
-- "Miksi Huumorikauppa?" -osio hauskoin ikonein: "Yli 2000 tyytyväistä setää", "Naapurit kateellisia", "Mummokin tilasi mukin"
-- Newsletter-osio: "Tilaa ja saat 10% koodin + viikoittaisen meemi-iskun"
+## Vaihe 1 — Äitienpäivä piiloon (säilytetään sivu)
 
-## Vaihe 4: Tuoteselaus & Kategoriasivut
-- Ruudukko: 2 saraketta mobiili, 4 desktop
-- Suodattimet: hinta, väri, koko, huumorityyppi (Setähuumori / Äitihuumori / Perusmulkku)
-- Hakutoiminto yläpalkissa
-- "Näytä kaikki" -napit per kategoria
-- 15–20 esimerkkituotetta kaikista kategorioista (mock-kuvat placeholder.svg:llä)
+- **Header.tsx / Footer.tsx**: poista äitienpäivä-linkit navigaatiosta ja footer-listasta.
+- **Index.tsx**: poista mahdollinen äitienpäivä-bannerikomponentti / hero-CTA / kategoriatile.
+- **CategoryPage.tsx, GiftCategoryPage.tsx, SEOKeywordContent.tsx, productCopy.ts**: poista kaudelliset äitienpäivä-CTA:t ja tekstipätkät, korvaa evergreen-fraaseilla ("hauska lahja naiselle", "syntymäpäivälahja").
+- **App.tsx**: säilytä `/aitienpaiva` ja `/aitienpaiva-lahjat`-reitit (sivu pysyy indeksoitavissa).
+- **MothersDayPage.tsx**: lisää `noindex` vain jos haluat (oletuksena säilytetään indeksoituna ensi vuotta varten).
+- **sitemap.xml & supabase/functions/sitemap**: säilytä `/aitienpaiva`.
+- **FAQ.tsx, blog.ts, situationGifts.ts, products.ts**: poista hero-mainokset / kausitagit ("äitienpäivätarjous"), säilytä historialliset blogiartikkelit.
 
-## Vaihe 5: Tuotesivu
-- Iso tuotekuva + kuvakaruselli (zoom)
-- Hauska, sarkastinen tuotekuvaus
-- Hinta, koko/väri-valinnat
-- Varastosaldo: "Vain 3 jäljellä – tilaa nyt tai itke myöhemmin 😭"
-- Iso vihreä "Lisää koriin" -nappi
-- Koko-opas (cm-taulukko) vaatteille
-- "Lahjaidea?" -badge + lahjapaperi-optio
-- Jako-napit: WhatsApp, Facebook, kopioi linkki
-- Trust-signaalit
+## Vaihe 2 — SEO-perusta (technical SEO)
 
-## Vaihe 6: Ostoskori
-- Kelluva ostoskori-ikoni (kuten Sneak.fi)
-- Tallentuu localStorage + synkronoituu Supabaseen kirjautuneille
-- Slide-over panel tuotteineen, määrä +/-, poista
-- "Jatka kassalle" iso nappi
-- Alennuskoodi-kenttä
+- **index.html**: tarkista title/description-pituudet, lisää `Store`-schemaan `openingHoursSpecification` ja `LocalBusiness`-fallback.
+- **SEOHead.tsx**: laajenna tukemaan `Product`, `FAQPage`, `Article`, `BreadcrumbList` -schemoja ja `og:image` per route.
+- **robots.txt**: korjaa duplikaattisisältö (tiedostossa on tällä hetkellä kaksi blokkia peräkkäin).
+- **Per-route helmet**: varmista että jokainen sivu (FAQ, About, Contact, Category, Product, Blog, GiftCategory, Search, kaikki policy-sivut) asettaa uniikin `title`+`description`+`canonical`.
+- **Breadcrumbs**: lisää näkyvät murupolut Category/Product/Blog-sivuille + BreadcrumbList JSON-LD.
 
-## Vaihe 7: Kassa & Stripe-maksu
-- 3-vaiheinen checkout: Tiedot → Toimitus → Maksu
-- Guest checkout + kirjautumisvaihtoehto
-- Stripe Checkout -integraatio (Lovable Stripe -työkalu)
-- Idempotentti (ei tuplamaksuja)
-- Selkeät virheilmoitukset suomeksi
-- Loading-spinnerit joka vaiheessa
+## Vaihe 3 — GEO / AI-search -optimointi
 
-## Vaihe 8: Tilauksen jälkeen & Extra
-- Kiitossivu hauskalla viestillä + "Jaa tilaus kaverille 😂"
-- "Seuraa tilaustasi" -linkki
-- FAQ-sivu accordion-komponentilla (hauskat vastaukset)
-- Toimitusehdot & tietosuojakäytäntö -sivut (virallinen suomi)
-- SEO meta-tagit suomeksi
-- Yhteydenotto-osio: puhelin, email
+- **FAQ.tsx**: laajenna 15→25 kysymykseen, FAQPage JSON-LD koko listalle.
+- **Mini-FAQ-blokit**: lisää CategoryPage- ja ProductPage-pohjiin 3–5 kysymyksen FAQ JSON-LD:n kanssa.
+- **Entity-rikastus**: Index- ja kategoriasivuille `Speakable`+`mainEntity`-rakenne, selkeät H2-otsikot ("Mitä huumorilahjat ovat?", "Mille tilanteille?").
+- **llms.txt**: päivitä kategorialista, lisää aiheklusterit ("toimistohuumori", "nörttilahjat", "polttarilahjat").
 
-## Mock-tuotteet (15–20kpl, kaikki suomeksi)
-Esimerkkejä per kategoria:
-- T-paidat: "Oispa kaljaa", "Setämies loading...", "Äiti tietää parhaiten (paitsi Googlessa)", "Perusmulkku Premium Edition"
-- Housut: "Netflix & Chill -colleget", "Sohvaperunan virallinen univormu"
-- Mukit: "Kahvia ja katkeruutta", "Pomo vuoden – itseni", "En ole aamuilhminen"
-- Tarrat: "Setähuumori Starter Pack", "Passiivis-aggressiivinen tarrapaketti"
-- Digitaaliset: "Meemipaketti – 50 parasta setämeemiä"
+## Vaihe 4 — Etusivun konversio + sisältö
+
+- **Index.tsx**: hero-CTA + arvostelut + trust-badges + 3 trending-tuotetta + suosituimmat kategoriat + FAQ-snippet (5 kpl) + SEO-sisältöblokki + sisäiset linkit + bloghighlights + uutiskirje. Käytä olemassa olevaa dark-theme-tyyliä.
+- **Sticky add-to-cart**: ProductPage mobiili.
+- **Related products**: ProductPage-pohjaan (3–4 saman kategorian tuotetta).
+- **Trust-elementit**: tilausvahvistuksessa ja checkoutissa (PostNord, 14 päivän palautus, suomalainen, SSL).
+
+## Vaihe 5 — Suorituskyky
+
+- **Code splitting**: tarkista että kaikki reitit ovat `lazy()`-ladattuja.
+- **Image optimization**: varmista `OptimizedImage`-käyttö kaikissa karuselleissa, aseta `width`/`height` joka kuvalle CLS:n estämiseksi.
+- **Preload**: vain LCP-hero (jo paikalla), poista turhat `preconnect`-tagit.
+- **Bundle**: `manualChunks` Vitessä (vendor / router / supabase erikseen).
+- **Critical CSS**: tarkista että Tailwind purge toimii.
+
+## Vaihe 6 — Blogi + sisältöpyörät
+
+Kirjoita 6 uutta täyspitkää (1500+ sanaa) SEO-blogia:
+1. "Parhaat hauskat lahjat 2026 – 50 ideaa"
+2. "Lahja ihmiselle jolla on jo kaikkea"
+3. "Parhaat kahvimukit töihin"
+4. "Toimiston hauskimmat lahjat"
+5. "Parhaat meemilahjat suomalaisille"
+6. "Suomalaiset huumorilahjat – käsikirja"
+
+Sisäiset linkitykset toisiinsa + tuotekategorioihin, Article-schema, päivämäärät retroaktiivisesti.
+
+---
+
+## Tekninen huomio
+
+- React-helmet-async on jo asennettu (mem://tech/stack).
+- Käytössä on Prerender.io + Vercel Edge Middleware → meta-tagit pitää asettaa ennen `window.prerenderReady = true` -laukaisua.
+- Visuaalista layoutia ei kosketa (vain SEO-/perf-/konversiomuutokset, jotka eivät muuta ulkoasua).
+- En tee plain-text recapeja; jokaisen vaiheen lopussa kerron vain mitä testata.
+
+**Aloitanko vaiheesta 1 (äitienpäivä piiloon) heti hyväksynnän jälkeen?**

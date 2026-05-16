@@ -91,7 +91,7 @@ const Index = () => {
 
       {/* H1 — visually integrated with hero */}
 
-      {/* SEASONAL BANNER — Juhannus 2026 */}
+      {/* SEASONAL BANNER — Kesä 2026 */}
       <section className="container pt-2">
         <Link
           to="/lahjat/joulu"
@@ -235,6 +235,40 @@ const Index = () => {
       </section>
 
       {/* HELPFUL CONTENT – semantic, human-readable, no keyword stuffing */}
+      {/* FAQ snippet — AI/SGE-optimoitu vastauslohko */}
+      <section className="container py-12 md:py-16">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+            Usein kysyttyä Huumorikaupasta
+          </h2>
+          <div className="space-y-3">
+            {[
+              { q: "Mikä on Huumorikauppa?", a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta." },
+              { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
+              { q: "Mikä on hauska lahja miehelle?", a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, hupparit, kahvimukit ja meemitarrat. Katso valikoima kategoriasta hauskat lahjat miehelle." },
+              { q: "Mikä on hauska lahja naiselle?", a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta hauskat lahjat naiselle." },
+              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 4,90 €." },
+            ].map((item, i) => (
+              <details
+                key={i}
+                className="group rounded-lg border border-border bg-card px-4 py-3"
+              >
+                <summary className="cursor-pointer list-none font-medium text-foreground flex items-center justify-between">
+                  <span>{item.q}</span>
+                  <span className="ml-4 text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none">+</span>
+                </summary>
+                <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Lisää vastauksia: <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">Usein kysytyt kysymykset →</Link>
+          </p>
+        </div>
+      </section>
+
       <section className="container py-12 md:py-16">
         <article className="max-w-3xl mx-auto prose-invert">
           <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
@@ -245,7 +279,7 @@ const Index = () => {
               Etsitkö lahjaa, joka oikeasti naurattaa? Huumorikauppa on suomalainen verkkokauppa,
               josta löydät hauskat t-paidat, hupparit, mukit ja tarrat – kaikki suunniteltu
               kotimaisella sydämellä ja vinolla huumorilla. Tuotteemme sopivat täydellisesti
-              isänpäivään, äitienpäivään, syntymäpäiviin tai vain piristämään ihan tavallista
+              syntymäpäiviin, isänpäivään, työkavereille tai vain piristämään ihan tavallista
               keskiviikkoa.
             </p>
             <p>
