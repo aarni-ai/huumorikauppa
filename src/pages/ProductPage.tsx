@@ -880,7 +880,52 @@ const ProductPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Images */}
           <div className="space-y-3">
-            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+            {/* Mobile: swipeable scroll-snap gallery */}
+            <div className="md:hidden">
+              <div
+                className="relative flex overflow-x-auto snap-x snap-mandatory rounded-lg bg-muted scrollbar-hide"
+                style={{ scrollSnapType: "x mandatory" }}
+                onScroll={(e) => {
+                  const el = e.currentTarget;
+                  const idx = Math.round(el.scrollLeft / el.clientWidth);
+                  if (idx !== activeImage) setActiveImage(idx);
+                }}
+              >
+                {currentImages.map((img, i) => (
+                  <img
+                    key={`m-${selectedColor}-${i}`}
+                    src={img}
+                    alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – ${categoryName} kuva ${i + 1}`}
+                    className="w-full aspect-square object-cover shrink-0 snap-start"
+                    style={{ scrollSnapAlign: "start" }}
+                    width={600}
+                    height={600}
+                    loading={i === 0 ? "eager" : "lazy"}
+                  />
+                ))}
+                <div className="absolute top-3 left-3 flex flex-col gap-1 pointer-events-none">
+                  {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
+                  {hasDiscount && (
+                    <Badge className="bg-destructive text-destructive-foreground font-bold">-{discountPercent}%</Badge>
+                  )}
+                </div>
+              </div>
+              {currentImages.length > 1 && (
+                <div className="flex justify-center gap-1.5 mt-3">
+                  {currentImages.map((_, i) => (
+                    <span
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all ${
+                        activeImage === i ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/40"
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop: main image + thumbnails */}
+            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden hidden md:block">
               <img
                 src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
                 alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
@@ -896,7 +941,7 @@ const ProductPage = () => {
               </div>
             </div>
             {currentImages.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-1">
+              <div className="hidden md:flex gap-2 overflow-x-auto pb-1">
                 {currentImages.map((img, i) => (
                   <button
                     key={`${selectedColor}-${i}`}
