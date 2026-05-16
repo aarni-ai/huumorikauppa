@@ -271,12 +271,26 @@ const Index = () => {
           <p className="text-muted-foreground mb-6">
             Tilaa uutiskirje ja saat 5% alennuskoodin ensimmäiseen tilaukseesi!
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <Input placeholder="anna@sahkoposti.fi" className="h-11 bg-muted border-border" />
-            <Button className="bg-primary text-primary-foreground font-bold h-11 px-6 shrink-0 shadow-glow-lime">
-              Tilaa 🚀
-            </Button>
-          </div>
+          {newsletterSubmitted ? (
+            <p className="text-primary font-bold">Kiitos! Alennuskoodisi on HUUMORI5 (-5%) 🎉</p>
+          ) : (
+            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <Input
+                type="email"
+                placeholder="anna@sahkoposti.fi"
+                className="h-11 bg-muted border-border"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubmit()}
+              />
+              <Button
+                onClick={handleNewsletterSubmit}
+                className="bg-primary text-primary-foreground font-bold h-11 px-6 shrink-0 shadow-glow-lime"
+              >
+                Tilaa 🚀
+              </Button>
+            </div>
+          )}
           <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
