@@ -5,7 +5,7 @@ import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -1042,7 +1042,7 @@ const ProductPage = () => {
             </div>
 
             {/* Add to cart */}
-            <Button onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+            <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
               <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
             </Button>
 
