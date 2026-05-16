@@ -117,7 +117,7 @@ const Index = () => {
       {/* SEASONAL BANNER — Kesä 2026 */}
       <section className="container pt-2">
         <Link
-          to="/lahjat/joulu"
+          to="/kaikki-tuotteet"
           className="block rounded-xl md:rounded-2xl overflow-hidden text-center px-4 py-3 md:py-4 transition-transform hover:scale-[1.005]"
           style={{
             background: "linear-gradient(90deg, hsl(220 75% 45%) 0%, hsl(200 80% 52%) 50%, hsl(160 65% 45%) 100%)",
