@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
 
@@ -42,6 +44,27 @@ const CAROUSEL_SLUGS = [
 
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
+  const { toast } = useToast();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  const handleNewsletterSubmit = async () => {
+    if (!newsletterEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
+      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
+      return;
+    }
+    try {
+      await supabase.from("newsletter_subscribers").insert({
+        email: newsletterEmail.trim().toLowerCase(),
+        is_active: true,
+      });
+      await supabase.functions.invoke("notify-store", {
+        body: { email: newsletterEmail.trim().toLowerCase(), type: "newsletter" },
+      });
+    } catch {}
+    setNewsletterSubmitted(true);
+    toast({ title: "Kiitos! 🎉", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
+  };
 
   useEffect(() => {
     if (!isLoading && allProducts.length > 0) {
@@ -147,6 +170,30 @@ const Index = () => {
         </div>
       </section>
 
+      {/* GIFT FINDER */}
+      <section className="container py-8 md:py-12">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+          Kenelle etsit lahjaa? 🎁
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {[
+            { to: "/lahjat/miehelle", emoji: "🎯", label: "Miehelle" },
+            { to: "/lahjat/naiselle", emoji: "💝", label: "Naiselle" },
+            { to: "/lahja-tyokaverille", emoji: "💼", label: "Työkavereille" },
+            { to: "/kategoria/tarrat", emoji: "💸", label: "Alle 30 €" },
+          ].map((g) => (
+            <Link
+              key={g.to}
+              to={g.to}
+              className="group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted hover:border-primary/60 hover:-translate-y-0.5 transition-all p-5 md:p-6 text-center shadow-sm hover:shadow-glow-lime"
+            >
+              <span className="text-4xl md:text-5xl group-hover:scale-110 transition-transform">{g.emoji}</span>
+              <span className="font-display text-base md:text-lg text-foreground">{g.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Visually hidden H1 for SEO – design uses hero banner as visual title */}
       <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
 
@@ -224,12 +271,26 @@ const Index = () => {
           <p className="text-muted-foreground mb-6">
             Tilaa uutiskirje ja saat 5% alennuskoodin ensimmäiseen tilaukseesi!
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <Input placeholder="anna@sahkoposti.fi" className="h-11 bg-muted border-border" />
-            <Button className="bg-primary text-primary-foreground font-bold h-11 px-6 shrink-0 shadow-glow-lime">
-              Tilaa 🚀
-            </Button>
-          </div>
+          {newsletterSubmitted ? (
+            <p className="text-primary font-bold">Kiitos! Alennuskoodisi on HUUMORI5 (-5%) 🎉</p>
+          ) : (
+            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <Input
+                type="email"
+                placeholder="anna@sahkoposti.fi"
+                className="h-11 bg-muted border-border"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubmit()}
+              />
+              <Button
+                onClick={handleNewsletterSubmit}
+                className="bg-primary text-primary-foreground font-bold h-11 px-6 shrink-0 shadow-glow-lime"
+              >
+                Tilaa 🚀
+              </Button>
+            </div>
+          )}
           <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
         </div>
       </section>
