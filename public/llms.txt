@@ -2,7 +2,7 @@
 
 > Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja, tarroja ja lahjoja huumorintajuisille. Nopea toimitus 3–10 arkipäivässä koko Suomeen.
 
-Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: t-paitoja, huppareita, mukeja, tarroja, pipoja, laukkuja, peittoja ja seinätauluja. Tuotteet on suunniteltu Suomessa ja painetaan tilauksesta. Toimitus on ilmainen yli 50 € tilauksiin ja palautusoikeus 30 päivää.
+Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: t-paitoja, huppareita, mukeja, tarroja, pipoja, laukkuja, peittoja ja seinätauluja. Tuotteet on suunniteltu Suomessa ja painetaan tilauksesta. Toimitus on ilmainen yli 60 € tilauksiin ja palautusoikeus 14 päivää.
 
 ## Tuotekategoriat
 
@@ -38,6 +38,6 @@ Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: 
 ## Optional
 
 - [Toimitusehdot](/toimitusehdot): Toimitus- ja maksuehdot.
-- [Palautusehdot](/palautusehdot): 30 päivän palautusoikeus.
+- [Palautusehdot](/palautusehdot): 14 päivän palautusoikeus.
 - [Tietosuojakäytäntö](/tietosuojakaytanto): Yksityisyydensuoja.
 - [Saavutettavuusseloste](/saavutettavuusseloste): Saavutettavuus.

@@ -91,20 +91,20 @@ const Index = () => {
 
       {/* H1 — visually integrated with hero */}
 
-      {/* MOTHER'S DAY 2026 BANNER */}
+      {/* SEASONAL BANNER — Juhannus 2026 */}
       <section className="container pt-2">
         <Link
-          to="/aitienpaiva"
+          to="/lahjat/joulu"
           className="block rounded-xl md:rounded-2xl overflow-hidden text-center px-4 py-3 md:py-4 transition-transform hover:scale-[1.005]"
           style={{
-            background: "linear-gradient(90deg, hsl(340 75% 55%) 0%, hsl(350 80% 62%) 50%, hsl(20 75% 60%) 100%)",
+            background: "linear-gradient(90deg, hsl(220 75% 45%) 0%, hsl(200 80% 52%) 50%, hsl(160 65% 45%) 100%)",
           }}
         >
           <span className="text-white font-medium text-sm md:text-base">
-            🌸 Äitienpäivälahjat 2026 (10.5.) — Löydä hauskin lahja äidille
+            ☀️ Kesälahjat 2026 — Löydä hauskin lahja kesäjuhliin ja valmistujaisiin
           </span>
           <span className="text-white font-bold text-sm md:text-base ml-2 underline-offset-4 hover:underline">
-            Katso äitienpäivälahjat →
+            Katso kesälahjat →
           </span>
         </Link>
       </section>

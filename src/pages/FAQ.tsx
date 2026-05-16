@@ -10,11 +10,11 @@ const faqs = [
   },
   {
     q: "Onko toimitus ilmainen?",
-    a: "Toimitus on ilmainen yli 50 euron tilauksille. Alle 50 euron tilauksille toimitusmaksu on 4,90 €."
+    a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 5,95 €."
   },
   {
     q: "Miten palautusoikeus toimii?",
-    a: "Sinulla on 30 päivää aikaa palauttaa tuotteet ilman syytä. Palautus on ilmainen. Rahat palautetaan 5–7 arkipäivässä."
+    a: "Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautuskulut ovat asiakkaan vastuulla. Rahat palautetaan 5–7 arkipäivässä."
   },
   {
     q: "Mitä maksutapoja teillä on?",
