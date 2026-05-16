@@ -5,7 +5,7 @@ import { categories } from "@/data/products";
 import { useProduct } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -506,6 +506,20 @@ const ProductPage = () => {
   const [descExpanded, setDescExpanded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [customText, setCustomText] = useState("");
+
+  const addToCartBtnRef = useRef<HTMLButtonElement>(null);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    const el = addToCartBtnRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "0px 0px -80px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [product?.id]);
 
   const variantImages = useMemo(() => {
     return (product?.variants?.variant_images as Record<string, string[]>) || {};
@@ -1042,7 +1056,7 @@ const ProductPage = () => {
             </div>
 
             {/* Add to cart */}
-            <Button onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+            <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
               <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
             </Button>
 
@@ -1239,6 +1253,33 @@ const ProductPage = () => {
             </div>
           </section>
         )}
+      </div>
+
+      {/* Sticky mobile add-to-cart bar */}
+      <div
+        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)] transition-transform duration-300 ${
+          showStickyBar ? "translate-y-0" : "translate-y-full"
+        }`}
+        aria-hidden={!showStickyBar}
+      >
+        <div className="flex items-center gap-3 p-3">
+          <img
+            src={product.images[0] || "/placeholder.svg"}
+            alt=""
+            className="w-12 h-12 rounded-md object-cover bg-muted shrink-0"
+          />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+            <p className="text-sm font-bold text-primary">{product.price.toFixed(2)} €</p>
+          </div>
+          <Button
+            onClick={handleAddToCart}
+            size="lg"
+            className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
+          >
+            <ShoppingCart className="h-4 w-4 mr-1" /> Lisää
+          </Button>
+        </div>
       </div>
     </div>
   );
