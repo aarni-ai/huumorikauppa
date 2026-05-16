@@ -1254,6 +1254,33 @@ const ProductPage = () => {
           </section>
         )}
       </div>
+
+      {/* Sticky mobile add-to-cart bar */}
+      <div
+        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)] transition-transform duration-300 ${
+          showStickyBar ? "translate-y-0" : "translate-y-full"
+        }`}
+        aria-hidden={!showStickyBar}
+      >
+        <div className="flex items-center gap-3 p-3">
+          <img
+            src={product.images[0] || "/placeholder.svg"}
+            alt=""
+            className="w-12 h-12 rounded-md object-cover bg-muted shrink-0"
+          />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+            <p className="text-sm font-bold text-primary">{product.price.toFixed(2)} €</p>
+          </div>
+          <Button
+            onClick={handleAddToCart}
+            size="lg"
+            className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
+          >
+            <ShoppingCart className="h-4 w-4 mr-1" /> Lisää
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
