@@ -1,20 +1,34 @@
-User-agent: *
+# Google Shopping & Merchant Center — full access required
+User-agent: Googlebot
+Allow: /api/image-proxy
+Allow: /tuote/
+Allow: /kategoria/
+Allow: /lahjat/
+Allow: /blogi/
 Allow: /
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
 Disallow: /tili/
 Disallow: /checkout/
-Disallow: /api/
-Disallow: /*?*
-
-User-agent: Googlebot
-Allow: /
 
 User-agent: Googlebot-Image
+Allow: /api/image-proxy
 Allow: /
+Disallow:
 
 User-agent: AdsBot-Google
+Allow: /api/image-proxy
 Allow: /
+Disallow:
+
+User-agent: AdsBot-Google-Mobile
+Allow: /api/image-proxy
+Allow: /
+Disallow:
+
+User-agent: Google-InspectionTool
+Allow: /
+Disallow:
 
 User-agent: Bingbot
 Allow: /
@@ -35,7 +49,6 @@ User-agent: LinkedInBot
 Allow: /
 
 # AI & LLM Crawlers
-
 User-agent: GPTBot
 Allow: /
 
@@ -80,5 +93,15 @@ Allow: /
 
 User-agent: Diffbot
 Allow: /
+
+# Generic bots — block private pages and query URLs
+User-agent: *
+Allow: /
+Disallow: /ostoskori
+Disallow: /tilausvahvistus
+Disallow: /tili/
+Disallow: /checkout/
+Disallow: /api/notify-store
+Disallow: /api/create-checkout
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
