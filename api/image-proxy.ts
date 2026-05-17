@@ -6,9 +6,7 @@ export default async function handler(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const imageUrl = url.searchParams.get("url");
 
-  if (!imageUrl) {
-    return new Response("Missing url parameter", { status: 400 });
-  }
+  if (!imageUrl) return new Response("Missing url parameter", { status: 400 });
 
   let targetUrl: URL;
   try {
@@ -24,7 +22,7 @@ export default async function handler(request: Request): Promise<Response> {
   try {
     const imageResponse = await fetch(targetUrl.toString(), {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot-Image/1.0; +http://www.google.com/bot.html)",
+        "User-Agent": "Mozilla/5.0 (compatible; Googlebot-Image/1.0)",
         "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
         "Referer": "https://huumorikauppa.fi/",
       },
