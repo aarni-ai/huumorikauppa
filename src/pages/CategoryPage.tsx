@@ -167,22 +167,32 @@ const CategoryPage = () => {
       {
         "@type": "Question",
         "name": `Kuinka nopeasti ${catLower} toimitetaan?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Yli 60 € tilauksiin toimitus on ilmainen. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee." },
       },
       {
         "@type": "Question",
         "name": `Voiko ${catLower} palauttaa?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet. Palautusoikeus koskee kaikkia tuotteitamme." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautus tapahtuu omalla kustannuksellasi. Rahat palautetaan 5–7 arkipäivässä." },
       },
       {
         "@type": "Question",
         "name": `Sopiiko hauska ${catSingular} lahjaksi?`,
-        "acceptedAnswer": { "@type": "Answer", "text": `Ehdottomasti. Hauskat ${catLower} ovat yksi suosituimmista huumorilahjaideoista — täydellisiä syntymäpäiviin, jouluun, isänpäivään, äitienpäivään ja työkavereille.` },
+        "acceptedAnswer": { "@type": "Answer", "text": `Ehdottomasti. Hauskat ${catLower} ovat yksi suosituimmista huumorilahjaideoista — täydellisiä syntymäpäiviin, jouluun, isänpäivään, äitienpäivään, polttareihin, valmistujaisiin ja työkavereille.` },
       },
       {
         "@type": "Question",
-        "name": `Mistä ${catLower} on tehty?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Käytämme laadukkaita materiaaleja ja kestäviä DTG- tai sublimaatiopainatuksia. Kaikki tuotteet painetaan ja toimitetaan EU:sta." },
+        "name": `Minkälaisesta materiaalista ${catLower} ovat tehty?`,
+        "acceptedAnswer": { "@type": "Answer", "text": "Käytämme laadukkaita materiaaleja — t-paidat ja hupparit 100% puuvillaa tai puuvilla-polyesteri-sekoitteita, mukit keraamia, tarrat kestävää vinyyliä. Kaikki painatetaan EU:ssa." },
+      },
+      {
+        "@type": "Question",
+        "name": `Saako ${catLower} omalla tekstillä?`,
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com." },
+      },
+      {
+        "@type": "Question",
+        "name": "Voiko maksaa Klarnalla tai Apple Paylla?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit myös ostaa nyt ja maksaa myöhemmin." },
       },
     ],
   };
@@ -344,25 +354,43 @@ const CategoryPage = () => {
         <section className="mt-12 max-w-3xl">
           <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä – {category.name}</h2>
           <div className="space-y-4">
-            <details className="group border border-border rounded-lg">
-              <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
-                Kuinka nopeasti {category.name.toLowerCase()} toimitetaan?
-              </summary>
-              <p className="px-4 pb-3 text-sm text-muted-foreground">Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Ilmainen toimitus yli 60 € tilauksiin.</p>
-            </details>
-            <details className="group border border-border rounded-lg">
-              <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
-                Voiko {category.name.toLowerCase()} palauttaa?
-              </summary>
-              <p className="px-4 pb-3 text-sm text-muted-foreground">Kyllä! Sinulla on 14 päivää aikaa palauttaa tuotteet. Palautusoikeus koskee kaikkia tuotteitamme.</p>
-            </details>
-            <details className="group border border-border rounded-lg">
-              <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
-                Sopiiko hauska {category.name.toLowerCase().replace(/t$/, '')} lahjaksi?
-              </summary>
-              <p className="px-4 pb-3 text-sm text-muted-foreground">Ehdottomasti! Hauskat {category.name.toLowerCase()} ovat suosittuja lahjoja syntymäpäiviin, jouluun, isänpäivään ja muihin tilaisuuksiin.</p>
-            </details>
+            {[
+              {
+                q: `Kuinka nopeasti ${category.name.toLowerCase()} toimitetaan?`,
+                a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Ilmainen toimitus yli 60 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee."
+              },
+              {
+                q: `Voiko ${category.name.toLowerCase()} palauttaa?`,
+                a: "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautus tapahtuu omalla kustannuksellasi. Rahat palautetaan 5–7 arkipäivässä."
+              },
+              {
+                q: `Sopiiko hauska ${category.name.toLowerCase().replace(/t$/, "")} lahjaksi?`,
+                a: `Ehdottomasti. Hauskat ${category.name.toLowerCase()} ovat suosittuja lahjoja syntymäpäiviin, jouluun, isänpäivään, äitienpäivään, polttareihin, valmistujaisiin ja työkavereille.`
+              },
+              {
+                q: `Minkälaisesta materiaalista ${category.name.toLowerCase()} ovat tehty?`,
+                a: "Käytämme laadukkaita materiaaleja — t-paidat ja hupparit 100% puuvillaa tai puuvilla-polyesteri-sekoitteita, mukit keraamia, tarrat kestävää vinyyliä. Kaikki painatetaan EU:ssa."
+              },
+              {
+                q: `Saako ${category.name.toLowerCase()} omalla tekstillä?`,
+                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com."
+              },
+              {
+                q: "Voiko maksaa Klarnalla tai Appla Paylla?",
+                a: "Kyllä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit myös ostaa nyt ja maksaa myöhemmin."
+              },
+            ].map((faq, i) => (
+              <details key={i} className="group border border-border rounded-lg">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
+                  {faq.q}
+                </summary>
+                <p className="px-4 pb-3 text-sm text-muted-foreground">{faq.a}</p>
+              </details>
+            ))}
           </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Lisää kysymyksiä? Lue <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">kaikki UKK:t</Link> tai kirjoita huumorikauppa@gmail.com
+          </p>
         </section>
       </div>
       <SEOProductsContent />

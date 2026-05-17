@@ -15,6 +15,7 @@ import type { SituationGift } from "@/data/situationGifts";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { categories } from "@/data/products";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
+import { blogPosts } from "@/data/blog";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -69,6 +70,19 @@ const SituationGiftPage = () => {
   const linkedCategories = (situation.categories || [])
     .map(slug => categories.find(c => c.slug === slug))
     .filter((c): c is (typeof categories)[number] => Boolean(c));
+
+  // Related blog posts: match by situation categories or keyword overlap, limit 3
+  const relatedBlogPosts = useMemo(() => {
+    const situationCats = situation.categories || [];
+    const keywords = situation.keywords || [];
+    return blogPosts
+      .filter(p => {
+        const inCat = p.relatedCategories.some(c => situationCats.includes(c));
+        const inKw = keywords.some(k => p.tags.some(t => t.toLowerCase().includes(k.toLowerCase())));
+        return inCat || inKw;
+      })
+      .slice(0, 3);
+  }, [situation]);
 
   const otherSituations = situationGifts.filter(s => s.slug !== situation.slug).slice(0, 12);
 
@@ -233,6 +247,28 @@ const SituationGiftPage = () => {
             </ul>
           </section>
         </article>
+
+        {/* Related blog articles — hub & spoke content cluster */}
+        {relatedBlogPosts.length > 0 && (
+          <section className="mt-12 pt-6 border-t border-border">
+            <h2 className="font-display text-xl text-foreground mb-4">Lue myös – lahjaoppaat</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {relatedBlogPosts.map(post => (
+                <Link
+                  key={post.slug}
+                  to={`/blogi/${post.slug}`}
+                  className="group block rounded-lg border border-border bg-card hover:border-primary/50 transition-colors p-4"
+                >
+                  <h3 className="font-medium text-foreground group-hover:text-primary transition-colors mb-1 line-clamp-2 text-sm leading-snug">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                  <span className="mt-2 inline-block text-xs text-primary font-medium">Lue artikkeli →</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Suosituimmat lahjaoppaat — internal authority graph */}
         <nav className="mt-12 pt-6 border-t border-border" aria-label="Suosituimmat lahjaoppaat">
