@@ -678,13 +678,6 @@ const ProductPage = () => {
 
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
-  // Generate deterministic rating based on product ID hash
-  const reviewsList = getProductReviews(product);
-  const avgRating = reviewsList.length > 0 
-    ? (reviewsList.reduce((sum, r) => sum + r.stars, 0) / reviewsList.length).toFixed(1) 
-    : "4.8";
-  const reviewCount = reviewsList.length || 3;
-
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -699,28 +692,6 @@ const ProductPage = () => {
     "mpn": product.id,
     "brand": { "@type": "Brand", "name": "Huumorikauppa" },
     "category": categoryName,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": avgRating,
-      "reviewCount": String(reviewCount),
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "review": reviewsList.slice(0, 3).map(r => ({
-      "@type": "Review",
-      "author": { "@type": "Person", "name": r.name },
-      "reviewRating": { "@type": "Rating", "ratingValue": String(r.stars), "bestRating": "5" },
-      "datePublished": (() => {
-        const parts = r.date.split('.');
-        const day = parts[0].padStart(2, '0');
-        const month = parts[1].padStart(2, '0');
-        const rawYear = parts[2];
-        // Year in source data is already 4 digits — do not prepend "20"
-        const year = rawYear.length === 4 ? rawYear : `20${rawYear}`;
-        return `${year}-${month}-${day}`;
-      })(),
-      "reviewBody": r.text,
-    })),
     "offers": {
       "@type": "Offer",
       "price": product.price.toFixed(2),
