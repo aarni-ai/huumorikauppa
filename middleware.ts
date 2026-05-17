@@ -296,6 +296,18 @@ const BLOG_META: Record<string, PageMeta> = {
     title: 'Hauska Lahja Kissaihmiselle – Ideat Kissan Omistajalle | Huumorikauppa.fi',
     description: 'Parhaat hauskat lahjat kissaihmiselle! T-paidat, mukit ja muut kissakeskeiset hauskuudet.',
   },
+  'hauskat-valmistujaislahjat-2026': {
+    title: 'Hauskat Valmistujaislahjat 2026 – Ylioppilas ja AMK | Huumorikauppa.fi',
+    description: 'Parhaat hauskat valmistujaislahjat 2026! Ideat ylioppilaalle, AMK:sta valmistuvalle ja maisterille. Nopea toimitus.',
+  },
+  'hauska-lahja-juhannukseen-2026': {
+    title: 'Hauska Lahja Juhannukseen 2026 – Parhaat Mökkimukit ja Saunapaidat | Huumorikauppa.fi',
+    description: 'Parhaat hauskat juhannuslahjat 2026! Mökkimukit, saunapaidat ja tarrat koko juhannusseurueelle. Tilaa ennen 19.6.',
+  },
+  'hauskat-lahjat-alle-30-euroa': {
+    title: 'Hauskat Lahjat Alle 30 Euroa – Top 10 Edullista Ideaa | Huumorikauppa.fi',
+    description: 'Top 10 hauskaa lahjaa alle 30 €! Edulliset mutta laadukkaat lahjaideat kaikkiin tilaisuuksiin. Nopea toimitus.',
+  },
 };
 
 function escapeHtml(str: string): string {
