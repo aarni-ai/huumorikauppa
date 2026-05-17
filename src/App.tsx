@@ -16,37 +16,60 @@ import { HelmetProvider } from "react-helmet-async";
 // Eager: homepage (LCP critical)
 import Index from "./pages/Index";
 
+// Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+) {
+  return lazy(async () => {
+    const KEY = "lovable-chunk-reloaded";
+    try {
+      return await factory();
+    } catch (err) {
+      try {
+        await new Promise((r) => setTimeout(r, 300));
+        return await factory();
+      } catch (err2) {
+        if (typeof window !== "undefined" && !sessionStorage.getItem(KEY)) {
+          sessionStorage.setItem(KEY, "1");
+          window.location.reload();
+        }
+        throw err2;
+      }
+    }
+  });
+}
+
 // Lazy: all other routes
-const CategoryPage = lazy(() => import("./pages/CategoryPage"));
-const ProductPage = lazy(() => import("./pages/ProductPage"));
-const CartPage = lazy(() => import("./pages/CartPage"));
-const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
-const AllProducts = lazy(() => import("./pages/AllProducts"));
-const FAQ = lazy(() => import("./pages/FAQ"));
-const Terms = lazy(() => import("./pages/Terms"));
-const ReturnsPolicy = lazy(() => import("./pages/ReturnsPolicy"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Accessibility = lazy(() => import("./pages/Accessibility"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const SearchPage = lazy(() => import("./pages/SearchPage"));
-const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
-const BlogIndex = lazy(() => import("./pages/BlogIndex"));
-const BlogPost = lazy(() => import("./pages/BlogPost"));
-const GiftCategoryPage = lazy(() => import("./pages/GiftCategoryPage"));
-const MothersDayPage = lazy(() => import("./pages/MothersDayPage"));
-const MothersDayRedirect = lazy(() => import("./pages/MothersDayRedirect"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const UnsubscribePage = lazy(() => import("./pages/UnsubscribePage"));
-const Admin = lazy(() => import("./pages/Admin"));
-const AdminLogin = lazy(() => import("./pages/AdminLogin"));
-const SituationGiftPage = lazy(() => import("./pages/SituationGiftPage"));
-const WorkplaceMemesPage = lazy(() => import("./pages/WorkplaceMemesPage"));
-const OfficeNotesPage = lazy(() => import("./pages/OfficeNotesPage"));
+const CategoryPage = lazyWithRetry(() => import("./pages/CategoryPage"));
+const ProductPage = lazyWithRetry(() => import("./pages/ProductPage"));
+const CartPage = lazyWithRetry(() => import("./pages/CartPage"));
+const CheckoutPage = lazyWithRetry(() => import("./pages/CheckoutPage"));
+const AllProducts = lazyWithRetry(() => import("./pages/AllProducts"));
+const FAQ = lazyWithRetry(() => import("./pages/FAQ"));
+const Terms = lazyWithRetry(() => import("./pages/Terms"));
+const ReturnsPolicy = lazyWithRetry(() => import("./pages/ReturnsPolicy"));
+const Privacy = lazyWithRetry(() => import("./pages/Privacy"));
+const Accessibility = lazyWithRetry(() => import("./pages/Accessibility"));
+const NotFound = lazyWithRetry(() => import("./pages/NotFound"));
+const SearchPage = lazyWithRetry(() => import("./pages/SearchPage"));
+const OrderConfirmation = lazyWithRetry(() => import("./pages/OrderConfirmation"));
+const BlogIndex = lazyWithRetry(() => import("./pages/BlogIndex"));
+const BlogPost = lazyWithRetry(() => import("./pages/BlogPost"));
+const GiftCategoryPage = lazyWithRetry(() => import("./pages/GiftCategoryPage"));
+const MothersDayPage = lazyWithRetry(() => import("./pages/MothersDayPage"));
+const MothersDayRedirect = lazyWithRetry(() => import("./pages/MothersDayRedirect"));
+const ContactPage = lazyWithRetry(() => import("./pages/ContactPage"));
+const AboutPage = lazyWithRetry(() => import("./pages/AboutPage"));
+const UnsubscribePage = lazyWithRetry(() => import("./pages/UnsubscribePage"));
+const Admin = lazyWithRetry(() => import("./pages/Admin"));
+const AdminLogin = lazyWithRetry(() => import("./pages/AdminLogin"));
+const SituationGiftPage = lazyWithRetry(() => import("./pages/SituationGiftPage"));
+const WorkplaceMemesPage = lazyWithRetry(() => import("./pages/WorkplaceMemesPage"));
+const OfficeNotesPage = lazyWithRetry(() => import("./pages/OfficeNotesPage"));
 
 // Lazy: popups (not needed at initial load)
-const NewsletterPopup = lazy(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
-const ExitIntentPopup = lazy(() => import("./components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
+const NewsletterPopup = lazyWithRetry(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
+const ExitIntentPopup = lazyWithRetry(() => import("./components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
