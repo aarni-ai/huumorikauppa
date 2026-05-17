@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
+import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -262,6 +263,39 @@ const Index = () => {
         </div>
       </section>
 
+      {/* LAHJAOPPAAT — sisältöhubi, tukee SEO/GEO topical authoritya */}
+      <section className="container py-12 md:py-16">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-display text-2xl md:text-3xl text-foreground">Lahjaoppaat &amp; vinkit 📖</h2>
+          <Link to="/blogi" className="text-sm text-primary hover:underline hidden sm:block">Näytä kaikki artikkelit →</Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {blogPosts
+            .slice()
+            .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+            .slice(0, 4)
+            .map(post => (
+              <Link
+                key={post.slug}
+                to={`/blogi/${post.slug}`}
+                className="group block rounded-xl border border-border bg-card hover:border-primary/50 transition-colors p-5"
+              >
+                <p className="text-xs text-muted-foreground mb-2">
+                  {new Date(post.publishedAt).toLocaleDateString("fi-FI", { year: "numeric", month: "long", day: "numeric" })}
+                </p>
+                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2 leading-snug">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                <span className="mt-3 inline-block text-xs text-primary font-medium">Lue artikkeli →</span>
+              </Link>
+            ))}
+        </div>
+        <div className="mt-4 text-center sm:hidden">
+          <Link to="/blogi" className="text-sm text-primary hover:underline">Näytä kaikki artikkelit →</Link>
+        </div>
+      </section>
+
       {/* NEWSLETTER */}
       <section className="container py-12 md:py-16">
         <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 border border-border rounded-lg p-8 md:p-12 text-center max-w-2xl mx-auto">
@@ -308,7 +342,7 @@ const Index = () => {
               { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
               { q: "Mikä on hauska lahja miehelle?", a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, hupparit, kahvimukit ja meemitarrat. Katso valikoima kategoriasta hauskat lahjat miehelle." },
               { q: "Mikä on hauska lahja naiselle?", a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta hauskat lahjat naiselle." },
-              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 4,90 €." },
+              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 5,95 €." },
             ].map((item, i) => (
               <details
                 key={i}

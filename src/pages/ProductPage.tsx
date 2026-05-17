@@ -17,6 +17,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
 import { situationGifts } from "@/data/situationGifts";
+import { blogPosts } from "@/data/blog";
 
 // Category-specific review pools with contextually relevant content
 type Review = { name: string; text: string; stars: number; date: string };
@@ -622,6 +623,13 @@ const ProductPage = () => {
     );
   }, [product]);
 
+  // Find related blog posts by category match, limit to 2
+  const relatedBlogPosts = useMemo(() => {
+    return blogPosts
+      .filter(p => p.category === product.category || p.relatedCategories?.includes(product.category))
+      .slice(0, 2);
+  }, [product.category]);
+
   const handleAddToCart = () => {
     if (needsSize) {
       toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
@@ -1182,6 +1190,25 @@ const ProductPage = () => {
             </Link>
           </nav>
         </section>
+
+        {/* Related blog posts — hub & spoke */}
+        {relatedBlogPosts.length > 0 && (
+          <section className="mt-8 max-w-3xl">
+            <h3 className="font-semibold text-foreground mb-3 text-sm">Lue myös – lahjaoppaat:</h3>
+            <div className="flex flex-col sm:flex-row gap-3">
+              {relatedBlogPosts.map(post => (
+                <Link
+                  key={post.slug}
+                  to={`/blogi/${post.slug}`}
+                  className="group flex-1 rounded-lg border border-border bg-card/50 hover:border-primary/50 transition-colors p-4"
+                >
+                  <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-1">{post.title}</p>
+                  <span className="text-xs text-primary font-medium">Lue artikkeli →</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen */}
         <section className="mt-8 max-w-3xl">

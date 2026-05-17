@@ -7,6 +7,7 @@ import { Truck, RotateCcw, Shield, Flag, Star, CheckCircle } from "lucide-react"
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
+import { blogPosts } from "@/data/blog";
 
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
@@ -25,6 +26,21 @@ function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
 }
+
+// Blog posts relevant to each category — hub & spoke internal linking
+const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
+  "t-paidat":       ["20-hauskinta-t-paitaa-2026", "miksi-hauska-paita-paras-lahja", "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat"],
+  "hupparit":       ["hauskat-valmistujaislahjat-2026", "parhaat-polttaripaidat-ja-polttarilahjat-2026", "parhaat-hauskat-lahjat-miehelle"],
+  "mukit":          ["hauskat-mukit-toimistoon-ja-lahjaksi", "hauskat-lahjat-tyokavereille-opas", "hauska-lahja-alle-20-euroa"],
+  "tarrat":         ["parhaat-hauskat-tarrat-lappariin", "hauska-lahja-nortille-ja-gamerille"],
+  "bodyt":          ["hauska-vauvalahja-parhaat-bodyt"],
+  "peitot":         ["hauskat-peitot-lahjaksi", "lahja-henkilolle-jolla-on-jo-kaikkea"],
+  "pipot":          ["hauskat-pipot-suomi", "parhaat-joululahjat-ja-pikkujoululahjat-2026"],
+  "laukut":         ["hauskat-laukut-kangaskassit", "hauskat-lahjat-naiselle-opas"],
+  "seinataulut":    ["hauskat-seinataulut-sisusta-huumorilla", "lahja-henkilolle-jolla-on-jo-kaikkea"],
+  "koristeet":      ["parhaat-joululahjat-ja-pikkujoululahjat-2026", "hauskat-lahjat-tyokavereille-opas"],
+  "pitkahihaiset":  ["20-hauskinta-t-paitaa-2026", "miksi-hauska-paita-paras-lahja"],
+};
 
 // Category-specific H1 overrides
 const CATEGORY_H1: Record<string, string> = {
@@ -109,6 +125,10 @@ const CategoryPage = () => {
   const crossLinkCategories = otherCategories
     .filter(c => allProducts.some(p => p.category === c.slug))
     .slice(0, 5);
+
+  const relatedBlogPosts = (CATEGORY_BLOG_SLUGS[slug || ""] || [])
+    .map(s => blogPosts.find(p => p.slug === s))
+    .filter(Boolean) as typeof blogPosts;
 
   const h1Text = CATEGORY_H1[slug || ""] || `Hauskat ${category.name}`;
   const h2Sections = CATEGORY_H2_SECTIONS[slug || ""] || [];
@@ -295,6 +315,28 @@ const CategoryPage = () => {
                 ))}
               </div>
             </nav>
+          </section>
+        )}
+
+        {/* Related blog posts — hub & spoke internal linking */}
+        {relatedBlogPosts.length > 0 && (
+          <section className="mt-12 max-w-3xl">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Lue myös – lahjaoppaat</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {relatedBlogPosts.map(post => (
+                <Link
+                  key={post.slug}
+                  to={`/blogi/${post.slug}`}
+                  className="group block rounded-lg border border-border bg-card hover:border-primary/50 transition-colors p-4"
+                >
+                  <h3 className="font-medium text-foreground group-hover:text-primary transition-colors mb-1 line-clamp-2 text-sm leading-snug">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                  <span className="mt-2 inline-block text-xs text-primary font-medium">Lue artikkeli →</span>
+                </Link>
+              ))}
+            </div>
           </section>
         )}
 
