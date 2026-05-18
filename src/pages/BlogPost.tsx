@@ -65,7 +65,8 @@ function renderContent(content: string) {
 
 function renderInlineFormatting(text: string): (string | JSX.Element)[] {
   const parts: (string | JSX.Element)[] = [];
-  const regex = /\*\*(.*?)\*\*/g;
+  // Matches **bold** OR [label](url)
+  const regex = /\*\*(.*?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
   let lastIndex = 0;
   let match;
 
@@ -73,11 +74,27 @@ function renderInlineFormatting(text: string): (string | JSX.Element)[] {
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
     }
-    parts.push(
-      <strong key={match.index} className="font-semibold text-foreground">
-        {match[1]}
-      </strong>
-    );
+    if (match[1] !== undefined) {
+      parts.push(
+        <strong key={match.index} className="font-semibold text-foreground">
+          {match[1]}
+        </strong>
+      );
+    } else {
+      const href = match[3];
+      const isExternal = /^https?:\/\//.test(href);
+      parts.push(
+        <a
+          key={match.index}
+          href={href}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          className="text-primary underline hover:text-primary/80 transition-colors"
+        >
+          {match[2]}
+        </a>
+      );
+    }
     lastIndex = regex.lastIndex;
   }
   if (lastIndex < text.length) {
