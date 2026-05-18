@@ -1,0 +1,1 @@
+DELETE FROM public.products WHERE id IN ('066deebb-9577-4dc0-9b5a-054c1d117481','ba069c07-2c37-4e06-bcea-cc2ae1cda37e','b6e6b5d2-669f-435e-a44c-d7d04ecc078e','ace3f10a-39eb-4919-bba2-12c3f46aaae2');
