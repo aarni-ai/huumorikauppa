@@ -8,6 +8,10 @@ Allow: /blogi/
 Allow: /
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
+Disallow: /tilaus-vahvistettu
+Disallow: /kassa
+Disallow: /haku
+Disallow: /faq
 Disallow: /tili/
 Disallow: /checkout/
 
@@ -46,6 +50,10 @@ User-agent: *
 Allow: /
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
+Disallow: /tilaus-vahvistettu
+Disallow: /kassa
+Disallow: /haku
+Disallow: /faq
 Disallow: /tili/
 Disallow: /checkout/
 
