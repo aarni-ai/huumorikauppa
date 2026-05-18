@@ -1831,7 +1831,7 @@ Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen 
   },
   {
     slug: "hauskimmat-elakelahjat-selviytymisopas",
-    title: "Hauskimmat eläkelahjat ja selviytymisopas vapa(a)herralle tai -rouvalle",
+    title: "Hauskimmat eläkelahjat ja selviytymisopas vapaaherralle tai -rouvalle",
     metaTitle: "Hauskimmat eläkelahjat 2026 – Selviytymisopas eläkeläiselle | Huumorikauppa.fi",
     metaDescription: "Eläkkeelle jäävän selviytymisopas: hauskimmat eläkelahjat, lähtökahvit ja vinkit vapaaherran arkeen. Kahvi, mökki ja lottoarvonta odottavat! ☕🎁",
     excerpt: "Eläkkeelle jääminen on Suomen virallisin lupa juoda kahvia, hoitaa pihaa ja kommentoida lottoarvontaa. Tässä hauskimmat eläkelahjat ja selviytymisopas tuoreelle vapaaherralle.",
@@ -1906,7 +1906,7 @@ Eläkkeelle jääminen on juhlimisen arvoinen asia, ja **huumorilahjat** – hau
 
 Mutta kun lähtökahvit on juotu, pulla syöty ja työhuoneen avain palautettu, alkaa oikea arki. Ja siinä arjessa tärkeintä ei ole se, montako vitsimukia kaapissa on, vaan se, että ikääntyvän läheisen elämä sujuu **turvallisesti ja itsenäisesti** – pisimpään mahdollisimpaan kotona.
 
-Kun huumorilahjat on jaettu ja arki alkaa, on hyvä varmistaa, että ikääntyvän läheisen arki sujuu turvallisesti ja itsenäisesti. Laadukkaat ja luotettavat [apuvälineet vanhuksille](https://seniorituki.fi) sekä arjen hyvinvointituotteet löytyvät kotimaisesta Seniorituki.fi-verkkokaupasta.
+Kun huumorilahjat on jaettu ja arki alkaa, on hyvä varmistaa, että ikääntyvän läheisen arki sujuu turvallisesti ja itsenäisesti. Laadukkaat ja luotettavat [apuvälineet vanhuksille](https://seniorituki.fi) sekä arjen hyvinvointituotteet löytyvät kotimaisesta [Seniorituki.fi-verkkokaupasta](https://seniorituki.fi).
 
 Yhdistelmä toimii: **huumorilahja juhlaan, käytännön apuvälineet arkeen.** Näin tuore vapaaherra saa nauraa lähtökahveilla ja elää turvallista, itsenäistä arkea vielä pitkään senkin jälkeen, kun lottoarvonta on käyty läpi tarkkaan – uudelleen.
 
