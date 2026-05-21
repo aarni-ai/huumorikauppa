@@ -1,3 +1,9 @@
+# Environment variables — NEVER commit secrets
+.env
+.env.local
+.env.production
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -10,15 +16,26 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+build/
+.next/
 *.local
+
+# Vercel
+.vercel/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Scripts that may contain keys
+scripts/*.local.js
+scripts/*.local.ts
+*.local.sh
