@@ -1,4 +1,31 @@
 {
+  "redirects": [
+    {
+      "source": "/tuote/-jos-iska-ei-osaa-korjata-sita-t-paita",
+      "destination": "/tuote/jos-iska-ei-osaa-korjata-sita-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/amatimies-t-paita-02f10a",
+      "destination": "/tuote/amatimies-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/amatimies-huppari-0e3e76",
+      "destination": "/tuote/amatimies-huppari",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/100-elakalainen-kahvikuppi",
+      "destination": "/tuote/100-elakelainen-kahvikuppi",
+      "permanent": true
+    },
+    {
+      "source": "/syntymapaivaLahjat",
+      "destination": "/syntymapaivalahjat",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!.*\\.(?:xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",

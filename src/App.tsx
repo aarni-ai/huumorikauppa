@@ -130,9 +130,13 @@ const App = () => (
               <Route path="/aitienpaiva-lahjat" element={<MothersDayRedirect />} />
               <Route path="/joululahjat" element={<GiftCategoryPage />} />
               <Route path="/syntymapaivaLahjat" element={<GiftCategoryPage />} />
+              <Route path="/syntymapaivalahjat" element={<GiftCategoryPage />} />
               <Route path="/elakelahjat" element={<GiftCategoryPage />} />
               <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
               <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
+              <Route path="/hauskat-t-paidat" element={<GiftCategoryPage />} />
+              <Route path="/hauskat-hupparit" element={<GiftCategoryPage />} />
+              <Route path="/lahja-miehelle" element={<GiftCategoryPage />} />
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/suomalaiset-tyopaikkameemit-top-50" element={<WorkplaceMemesPage />} />
               <Route path="/hauskimmat-tyopaikkalaput-2026" element={<OfficeNotesPage />} />
