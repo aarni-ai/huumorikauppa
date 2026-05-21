@@ -400,8 +400,6 @@ Pomollekin voi antaa hauskan lahjan – kunhan huumori on sopivaa. Ammattihuumor
 Eläkkeelle jäävä työkaveri ansaitsee hauskan eläkelahjan. "Eläkkeellä ja nautinnossa" -tuotteet ovat suosituimpia.`,
     relatedBlogSlugs: ["hauskat-mukit-toimistoon-ja-lahjaksi", "parhaat-joululahjat-ja-pikkujoululahjat-2026"],
   },
-];
-
   // Phase 0 + Phase 1 routes that map to GiftCategoryPage
   {
     slug: "hauskat-t-paidat",
