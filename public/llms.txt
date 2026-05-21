@@ -1,68 +1,45 @@
 # Huumorikauppa.fi
 
-> Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja, tarroja ja lahjoja huumorintajuisille. Nopea toimitus 3–10 arkipäivässä koko Suomeen.
+Suomalainen huumorikauppa — t-paitoja, huppareita, mukeja ja
+muita huumorituotteita. Erikoistunut suomalaiseen
+ammattihuumoriin ja äijäteemoihin.
 
-Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: t-paitoja, huppareita, mukeja, tarroja, pipoja, laukkuja, peittoja ja seinätauluja. Tuotteet on suunniteltu Suomessa ja painetaan tilauksesta. Toimitus on ilmainen yli 60 € tilauksiin ja palautusoikeus 14 päivää.
+## Brändi
+Huumorikauppa.fi on Inteller Oy:n (Y-tunnus 3583677-2)
+omistama verkkokauppa. Sijaitsemme Helsingissä. Kaikki
+tuotteet painetaan Suomessa.
 
-Yritys: Inteller Oy, Y-tunnus 3583677-2
+## Tuoteryhmät
+- T-paidat (yli 30 mallia) — /kategoria/t-paidat
+- Hupparit (yli 25 mallia) — /kategoria/hupparit
+- Mukit ja kahvikupit — /kategoria/mukit
+- Tarrat — /kategoria/tarrat
+- Vauvanbody — /kategoria/bodyt
+- Pitkähihaiset paidat — /kategoria/pitkahihaiset
 
-## Tuotekategoriat
+## Suosituimmat teemat
+- Kalamies-teemaiset tuotteet
+- Ammattihuumori (sähkömies, amatimies)
+- Auto-teemat (Mersumies, Audimies, Bemarimies)
+- Eläkeläishuumori
+- 50-vuotis- ja juhlavuositeemat
 
-- [Kaikki tuotteet](/kaikki-tuotteet): Koko valikoima.
-- [Hauskat T-paidat](/kategoria/t-paidat): Meemi- ja huumoripaitoja.
-- [Hauskat Hupparit](/kategoria/hupparit): Lämpimät hupparit huumorilla.
-- [Hauskat Mukit](/kategoria/mukit): Aamukahvi paremmaksi.
-- [Hauskat Tarrat](/kategoria/tarrat): Kannettavalle, autolle, jääkaapille.
-- [Pitkähihaiset](/kategoria/pitkahihaiset): Pitkähihaiset paidat.
-- [Vauvan Bodyt](/kategoria/bodyt): Hauskoja vauvanvaatteita.
-- [Peitot](/kategoria/peitot): Pehmeät huumoripeitot.
-- [Pipot](/kategoria/pipot): Hauskoja pipoja.
-- [Lippikset](/kategoria/lippikset): Hauskat lippikset ja snapback-mallit.
-- [Laukut & Kassit](/kategoria/laukut): Kestokassit ja laukut.
-- [Seinätaulut](/kategoria/seinataulut): Seinäkoristeet huumorilla.
-- [Koristeet](/kategoria/koristeet): Sisustuskoristeita.
-- [Haalarimerkit](/kategoria/haalarimerkit): Opiskelijan haalarimerkit ja -pinssit.
+## Lahjakategoriat
+- Hauskat lahjat miehelle — /hauskat-lahjat-miehelle
+- Hauskat lahjat naiselle — /hauskat-lahjat-naiselle
+- Lahja miehelle — /lahja-miehelle
+- Isänpäivälahjat — /isanpaiva-lahjat
+- Joululahjat — /joululahjat
+- Syntymäpäivälahjat — /syntymapaivalahjat
+- Eläkelahjat — /elakelahjat
+- Polttarilahjat — /polttari-lahjat
 
-## Lahjaideat
+## Toimitus
+Toimitamme tuotteet 3–7 arkipäivässä Suomeen. Tilaukset
+pakataan ja painetaan Suomessa.
 
-- [Hauskat lahjat miehelle](/hauskat-lahjat-miehelle): Parhaat huumorituotteet miehille.
-- [Hauskat lahjat naiselle](/hauskat-lahjat-naiselle): Hauskat lahjat naisille.
-- [Hauskat t-paidat](/hauskat-t-paidat): Parhaat huumorit-paidat.
-- [Hauskat hupparit](/hauskat-hupparit): Parhaat huumorihupparit.
-- [Lahja miehelle](/lahja-miehelle): Lahjavinkit miehille.
-- [Lahjat isälle](/isanpaiva-lahjat): Isänpäivälahjat.
-- [Syntymäpäivälahjat](/syntymapaivalahjat): Hauskat syntymäpäivälahjat.
-- [Joululahjat](/joululahjat): Hauskat joululahjat.
-- [Lahjat työkaverille](/lahja-tyokaverille): Toimistohuumori ja työpaikkalahjat.
-- [Lahjat kaverille](/lahja-kaverille): Hauskat kaverilahjat.
-- [Polttarilahjat](/polttari-lahjat): Polttareihin sopivat huumorituotteet.
-- [Eläkelahjat](/elakelahjat): Eläkkeelle siirtyvälle.
-- [Haalarimerkit](/haalarimerkit): Haalarimerkit ja -pinssit opiskelijoille.
-- [Opiskelijan haalarimerkit](/opiskelijan-haalarimerkit): Haalarimerkit yliopisto- ja amk-opiskelijoille.
+## Asiakaspalvelu
+huumorikauppa@gmail.com
 
-## Aiheet ja teemat
-
-- Toimistohuumori ja työpaikkalahjat – kahvimukit, toimistopaidat, meemitarrat.
-- Suomalainen internetkulttuuri ja meemilahjat – käännöshuumori, suomi-vitsit.
-- Nörttilahjat – pelaajille, koodareille ja IT-väelle.
-- Kahvimukit – aamukahviin, kotiin ja toimistoon.
-- Hauskat t-paidat – syntymäpäiville, juhliin ja arkikäyttöön.
-- Haalarimerkit – opiskelijatapahtumiin, haalarijuhliin ja muistoksi.
-
-## Tietoa kaupasta
-
-- [Tietoa meistä](/tietoa-meista): Huumorikaupan tarina.
-- [Blogi](/blogi): Lahjavinkit, huumori ja meemit.
-- [Yhteystiedot](/yhteystiedot): Asiakaspalvelu.
-- [Usein kysytyt kysymykset](/usein-kysytyt-kysymykset): UKK.
-
-## Yhteystiedot
-
-asiakaspalvelu@huumorikauppa.fi
-
-## Optional
-
-- [Toimitusehdot](/toimitusehdot): Toimitus- ja maksuehdot.
-- [Palautusehdot](/palautusehdot): 14 päivän palautusoikeus.
-- [Tietosuojakäytäntö](/tietosuojakaytanto): Yksityisyydensuoja.
-- [Saavutettavuusseloste](/saavutettavuusseloste): Saavutettavuus.
+## Sivukartta
+https://huumorikauppa.fi/sitemap.xml

@@ -1,4 +1,15 @@
-# Google Shopping & Merchant Center — full access required
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /ostoskori
+Disallow: /tilausvahvistus
+Disallow: /tilaus-vahvistettu
+Disallow: /kassa
+Disallow: /checkout/
+Disallow: /haku
+Disallow: /tili/
+Disallow: /api/
+
 User-agent: Googlebot
 Allow: /api/image-proxy
 Allow: /tuote/
@@ -6,7 +17,6 @@ Allow: /kategoria/
 Allow: /lahjat/
 Allow: /blogi/
 Allow: /
-Disallow: /admin
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
 Disallow: /tilaus-vahvistettu
@@ -19,28 +29,8 @@ Disallow: /checkout/
 User-agent: Googlebot-Image
 Allow: /api/image-proxy
 Allow: /
-Disallow:
 
-User-agent: AdsBot-Google
-Allow: /api/image-proxy
-Allow: /
-Disallow:
-
-User-agent: AdsBot-Google-Mobile
-Allow: /api/image-proxy
-Allow: /
-Disallow:
-
-User-agent: Google-InspectionTool
-Allow: /
-Disallow:
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
+# AI Crawlers — opt-in for GEO
 User-agent: GPTBot
 Allow: /
 
@@ -56,22 +46,13 @@ Allow: /
 User-agent: Perplexity-User
 Allow: /
 
+User-agent: Google-Extended
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: anthropic-ai
 Allow: /
-
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /ostoskori
-Disallow: /tilausvahvistus
-Disallow: /tilaus-vahvistettu
-Disallow: /kassa
-Disallow: /haku
-Disallow: /faq
-Disallow: /tili/
-Disallow: /checkout/
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml
