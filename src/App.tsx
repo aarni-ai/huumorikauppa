@@ -66,6 +66,7 @@ const AdminLogin = lazyWithRetry(() => import("./pages/AdminLogin"));
 const SituationGiftPage = lazyWithRetry(() => import("./pages/SituationGiftPage"));
 const WorkplaceMemesPage = lazyWithRetry(() => import("./pages/WorkplaceMemesPage"));
 const OfficeNotesPage = lazyWithRetry(() => import("./pages/OfficeNotesPage"));
+const HaalarimerkkiPage = lazyWithRetry(() => import("./pages/GiftCategoryPage"));
 
 // Lazy: popups (not needed at initial load)
 const NewsletterPopup = lazyWithRetry(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
@@ -138,6 +139,8 @@ const App = () => (
               <Route path="/hauskat-hupparit" element={<GiftCategoryPage />} />
               <Route path="/lahja-miehelle" element={<GiftCategoryPage />} />
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
+              <Route path="/haalarimerkit" element={<HaalarimerkkiPage />} />
+              <Route path="/opiskelijan-haalarimerkit" element={<HaalarimerkkiPage />} />
               <Route path="/suomalaiset-tyopaikkameemit-top-50" element={<WorkplaceMemesPage />} />
               <Route path="/hauskimmat-tyopaikkalaput-2026" element={<OfficeNotesPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />

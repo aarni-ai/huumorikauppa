@@ -67,12 +67,6 @@ const Index = () => {
     toast({ title: "Kiitos! 🎉", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
   };
 
-  useEffect(() => {
-    if (!isLoading && allProducts.length > 0) {
-      window.prerenderReady = true;
-    }
-  }, [isLoading, allProducts]);
-
   const carouselProducts = CAROUSEL_SLUGS
     .map(slug => allProducts.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
     .filter(Boolean) as typeof allProducts;

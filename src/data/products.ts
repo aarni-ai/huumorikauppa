@@ -222,6 +222,36 @@ Hauska koriste on oivallinen pieni lahja joka sopii moneen tilaisuuteen – tupa
 
 Lisää kodin sisustukseen ripaus huumoria hauskoilla koristeilla. Ne sopivat hyllylle, pöydälle, ikkunalaudalle tai mihin tahansa näkyvälle paikalle. Ilmainen toimitus yli 60 € tilauksiin ja 14 päivän palautusoikeus.`,
   },
+  {
+    slug: "haalarimerkit",
+    name: "Haalarimerkit",
+    emoji: "🎓",
+    description: "Opiskelijan haalarimerkit ja kiltamerkit",
+    seoTitle: "Haalarimerkit – Opiskelijan haalarimerkit | Huumorikauppa.fi",
+    seoDescription: "Hauskat haalarimerkit opiskelijoille. Räätälöitäviä ja valmiita merkkejä — sopivat haalareille, repuille ja jakkareille. Tilaa nyt.",
+    seoText: `## Haalarimerkit – personoi opiskelijan haalarit
+
+Haalarimerkit ovat perinteinen tapa personoida haalarit ja tehdä niistä ainutlaatuiset. Merkit sopivat kaikkiin haalareihin neulakiinnityksellä.
+
+## Valmiit mallit ja räätälöinti
+
+Tarjoamme valmiita haalarimerkkimalleja sekä räätälöityjä merkkejä kiltajärjestöille. Kysy tarjous ryhmätilauksesta asiakaspalvelustamme.`,
+  },
+  {
+    slug: "lippikset",
+    name: "Lippikset",
+    emoji: "🧢",
+    description: "Hauskat lippikset huumorin ystäville",
+    seoTitle: "Hauskat Lippikset – Huumorilippikset | Huumorikauppa.fi",
+    seoDescription: "Hauskat lippikset huumorin ystäville. Räätälöitäviä lippiksiä ja valmiita malleja. Tilaa nyt Huumorikauppa.fi:stä.",
+    seoText: `## Hauskat lippikset – huumoria päälaelle
+
+Hauskat lippikset ovat loistava kesälahja tai lisä vaatekaappiin. Laadukas brodeeraus kestää käyttöä ja pesuja.
+
+## Sopiiko lippis lahjaksi?
+
+Ehdottomasti! Hauska lippis on erinomainen syntymäpäivä-, polttari- tai joululahja huumorin ystävälle.`,
+  },
 ] as const;
 
 export type Category = typeof categories[number];

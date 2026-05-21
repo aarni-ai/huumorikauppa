@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
@@ -105,12 +104,6 @@ const CategoryPage = () => {
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => getPriority(a) - getPriority(b));
-
-  useEffect(() => {
-    if (!isLoading && allProducts.length > 0) {
-      window.prerenderReady = true;
-    }
-  }, [isLoading, allProducts]);
 
   if (!category) {
     return (

@@ -4,33 +4,41 @@
 
 Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: t-paitoja, huppareita, mukeja, tarroja, pipoja, laukkuja, peittoja ja seinätauluja. Tuotteet on suunniteltu Suomessa ja painetaan tilauksesta. Toimitus on ilmainen yli 60 € tilauksiin ja palautusoikeus 14 päivää.
 
+Yritys: Inteller Oy, Y-tunnus 3583677-2
+
 ## Tuotekategoriat
 
 - [Kaikki tuotteet](/kaikki-tuotteet): Koko valikoima.
 - [Hauskat T-paidat](/kategoria/t-paidat): Meemi- ja huumoripaitoja.
-- [Hauskat Hupparit](/kategoria/hupparit): Lämpimät huppareita huumorilla.
+- [Hauskat Hupparit](/kategoria/hupparit): Lämpimät hupparit huumorilla.
 - [Hauskat Mukit](/kategoria/mukit): Aamukahvi paremmaksi.
 - [Hauskat Tarrat](/kategoria/tarrat): Kannettavalle, autolle, jääkaapille.
 - [Pitkähihaiset](/kategoria/pitkahihaiset): Pitkähihaiset paidat.
 - [Vauvan Bodyt](/kategoria/bodyt): Hauskoja vauvanvaatteita.
 - [Peitot](/kategoria/peitot): Pehmeät huumoripeitot.
-- [Pipot & Lippikset](/kategoria/pipot): Päähineitä.
+- [Pipot](/kategoria/pipot): Hauskoja pipoja.
+- [Lippikset](/kategoria/lippikset): Hauskat lippikset ja snapback-mallit.
 - [Laukut & Kassit](/kategoria/laukut): Kestokassit ja laukut.
 - [Seinätaulut](/kategoria/seinataulut): Seinäkoristeet huumorilla.
 - [Koristeet](/kategoria/koristeet): Sisustuskoristeita.
+- [Haalarimerkit](/kategoria/haalarimerkit): Opiskelijan haalarimerkit ja -pinssit.
 
 ## Lahjaideat
 
-- [Lahjat miehelle](/lahjat/miehelle): Hauskat lahjat miehille.
-- [Lahjat naiselle](/lahjat/naiselle): Hauskat lahjat naisille.
-- [Lahjat isälle](/lahjat/isalle): Isänpäivälahjat.
-- [Syntymäpäivälahjat](/lahjat/syntymapaiva): Hauskat syntymäpäivälahjat.
-- [Joululahjat](/lahjat/joulu): Hauskat joululahjat.
+- [Hauskat lahjat miehelle](/hauskat-lahjat-miehelle): Parhaat huumorituotteet miehille.
+- [Hauskat lahjat naiselle](/hauskat-lahjat-naiselle): Hauskat lahjat naisille.
+- [Hauskat t-paidat](/hauskat-t-paidat): Parhaat huumorit-paidat.
+- [Hauskat hupparit](/hauskat-hupparit): Parhaat huumorihupparit.
+- [Lahja miehelle](/lahja-miehelle): Lahjavinkit miehille.
+- [Lahjat isälle](/isanpaiva-lahjat): Isänpäivälahjat.
+- [Syntymäpäivälahjat](/syntymapaivalahjat): Hauskat syntymäpäivälahjat.
+- [Joululahjat](/joululahjat): Hauskat joululahjat.
 - [Lahjat työkaverille](/lahja-tyokaverille): Toimistohuumori ja työpaikkalahjat.
 - [Lahjat kaverille](/lahja-kaverille): Hauskat kaverilahjat.
 - [Polttarilahjat](/polttari-lahjat): Polttareihin sopivat huumorituotteet.
 - [Eläkelahjat](/elakelahjat): Eläkkeelle siirtyvälle.
-- [Lahjaideat ihmiselle, jolla on jo kaikkea](/lahjaideat-jolla-jo-kaikkea): Hauskoja lahjavinkkejä.
+- [Haalarimerkit](/haalarimerkit): Haalarimerkit ja -pinssit opiskelijoille.
+- [Opiskelijan haalarimerkit](/opiskelijan-haalarimerkit): Haalarimerkit yliopisto- ja amk-opiskelijoille.
 
 ## Aiheet ja teemat
 
@@ -39,7 +47,7 @@ Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: 
 - Nörttilahjat – pelaajille, koodareille ja IT-väelle.
 - Kahvimukit – aamukahviin, kotiin ja toimistoon.
 - Hauskat t-paidat – syntymäpäiville, juhliin ja arkikäyttöön.
-- Custom-painatukset – yrityslahjat, ryhmäpaidat, polttarit.
+- Haalarimerkit – opiskelijatapahtumiin, haalarijuhliin ja muistoksi.
 
 ## Tietoa kaupasta
 
@@ -47,6 +55,10 @@ Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja lahjatuotteita: 
 - [Blogi](/blogi): Lahjavinkit, huumori ja meemit.
 - [Yhteystiedot](/yhteystiedot): Asiakaspalvelu.
 - [Usein kysytyt kysymykset](/usein-kysytyt-kysymykset): UKK.
+
+## Yhteystiedot
+
+asiakaspalvelu@huumorikauppa.fi
 
 ## Optional
 

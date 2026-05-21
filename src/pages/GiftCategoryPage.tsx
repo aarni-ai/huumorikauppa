@@ -3,7 +3,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { TldrBox } from "@/components/TldrBox";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
 import { SEOGiftContent, SEOTargetGroupContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
@@ -19,6 +19,24 @@ interface GiftCategory {
   seoText: string;
   relatedBlogSlugs: string[];
 }
+
+const TLDR_TEXTS: Record<string, string> = {
+  "hauskat-lahjat-miehelle": "Hauska lahja miehelle on huumoripaita, -huppari tai -muki joka liittyy hänen harrastukseensa tai ammattiinsa. Suosituimpia ovat kalamies-, ammattimies- ja Mersumies-teemat. Kaikki tuotteet painetaan Suomessa, ja toimitus tapahtuu 3–7 arkipäivässä.",
+  "hauskat-lahjat-naiselle": "Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska kahvimuki tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan Suomessa, toimitus 3–7 arkipäivässä.",
+  "lahja-miehelle": "Lahjaideat miehelle: huumoripaita, -huppari tai -muki ammatista, harrastuksesta tai luonteenpiirteestä. Suosittuja ovat 50-vuotis- ja eläkkeellelähtöteemat. Huumorikaupasta löydät yli 75 hauskaa lahjaideaa miehille kaikkiin tilanteisiin.",
+  "hauskat-t-paidat": "Hauskat t-paidat ovat 100 % puuvillaa, painettu Suomessa. Valikoimassa yli 30 vitsipainatusta — ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus 3–7 arkipäivässä.",
+  "hauskat-hupparit": "Hauskat hupparit ovat lämpimiä ja korkealaatuisia, painettu Suomessa. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus 3–7 arkipäivässä.",
+  "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita, -huppari tai -muki joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras pappa' -teemat. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
+  "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai muki suomalaisesta ammattihuumorista. Suosittuja teemoja ovat kalamies, äijä ja eläkeläinen. Tilaa viimeistään 14.12. saadaksesi tuotteen ennen joulua.",
+  "syntymapaivaLahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–7 arkipäivässä.",
+  "syntymapaivalahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–7 arkipäivässä.",
+  "polttari-lahjat": "Polttarilahja ja ryhmäpaidat: hauskat t-paidat polttariporukalle naimisiin menevälle. Räätälöitäviä tekstipaitoja ja yhteishenkipainatuksia. Tilaa hyvissä ajoin koko ryhmälle.",
+  "elakelahjat": "Hauska eläkelahja eläkkeelle jäävälle työkaverille tai läheiselle. 'Olen eläkkeellä'- ja '100 % eläkeläinen' -teemat ovat suosituimpia. T-paitoja, huppareita ja mukeja. Tilaa nyt.",
+  "lahja-kaverille": "Hauska lahja kaverille: huumoripaita, -huppari tai -muki kaverin harrastuksesta tai persoonallisuudesta. Sopii synttäreille, kihlauksiin tai vain piristämään arkea.",
+  "lahja-tyokaverille": "Hauska lahja työkaverille: huumoripaita, -huppari tai -muki suomalaisesta työpaikkahuumorista. 'No niin' -muki ja '100 % eläkeläinen' -paita ovat suosittuja. Sopii työkaverin lähtöön tai syntymäpäivään.",
+  "haalarimerkit": "Haalarimerkit opiskelijalle: räätälöitäviä ja valmiita malleja kaikkiin haalareihin, reppuihin ja laukkuihin. Sopivat kiltajuhliin ja haalaripäiviin. Toimitus 3–7 arkipäivässä.",
+  "opiskelijan-haalarimerkit": "Opiskelijan haalarimerkit personoivat haalarit persoonallisiksi. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille. Toimitus 3–7 arkipäivässä.",
+};
 
 const giftCategories: GiftCategory[] = [
   {
@@ -384,6 +402,80 @@ Eläkkeelle jäävä työkaveri ansaitsee hauskan eläkelahjan. "Eläkkeellä ja
   },
 ];
 
+  // Phase 0 + Phase 1 routes that map to GiftCategoryPage
+  {
+    slug: "hauskat-t-paidat",
+    name: "Hauskat T-paidat",
+    emoji: "👕",
+    h1: "Hauskat T-paidat",
+    seoTitle: "Hauskat T-paidat – Suomen parhaat huumoripaidat | Huumorikauppa.fi",
+    seoDescription: "Hauskat t-paidat lahjaksi tai itselle. Huumoripaitoja kalamiehille, isille, äijille ja kaikille hauskan ystäville. Tilaa nyt.",
+    filterFn: (p) => p.category === "t-paidat",
+    seoText: "## Hauskat t-paidat – 100 % puuvillaa, painettu Suomessa\n\nHauskat t-paitamme ovat laadukasta puuvillaa ja painetaan Suomessa DTG-tekniikalla. Valikoimassa yli 30 erilaista huumoripainatusta — ammattihuumoria, setäteemoja, kalamiesaiheita ja klassista suomalaista sarkasmi.",
+    relatedBlogSlugs: ["20-hauskinta-t-paitaa-2026", "miksi-hauska-paita-paras-lahja"],
+  },
+  {
+    slug: "hauskat-hupparit",
+    name: "Hauskat Hupparit",
+    emoji: "🧥",
+    h1: "Hauskat Hupparit",
+    seoTitle: "Hauskat Hupparit – Huumorihuppareita Suomessa | Huumorikauppa.fi",
+    seoDescription: "Hauskat hupparit lahjaksi tai itselle. Lämpimiä huumorihuppareita ammattihuumorilla. Painettu Suomessa, nopea toimitus.",
+    filterFn: (p) => p.category === "hupparit",
+    seoText: "## Hauskat hupparit – lämmin ja hauska yhdistelmä\n\nHupparimme ovat pehmeää puuvilla-polyesteri-sekoitetta ja painetaan Suomessa. Koot S–3XL. Täydellinen lahja isälle, kaverille tai itsellesi.",
+    relatedBlogSlugs: ["hauskat-valmistujaislahjat-2026", "parhaat-hauskat-lahjat-miehelle"],
+  },
+  {
+    slug: "lahja-miehelle",
+    name: "Lahja Miehelle",
+    emoji: "🎁",
+    h1: "Lahja Miehelle – Hauskat Lahjaideat",
+    seoTitle: "Lahja Miehelle – Hauskat lahjaideat | Huumorikauppa.fi",
+    seoDescription: "Hauska lahja miehelle — isälle, ukille, kaverille tai puolisolle. Huumoripaidat ja -hupparit ammattihuumorilla. Tilaa Huumorikauppa.fi:stä.",
+    filterFn: (p) => {
+      const t = (p.name + " " + p.description).toLowerCase();
+      return t.includes("isä") || t.includes("iskä") || t.includes("mies") ||
+        t.includes("kalamies") || t.includes("eläke") || t.includes("amatimies") ||
+        p.category === "t-paidat" || p.category === "hupparit" || p.category === "mukit";
+    },
+    seoText: "## Lahja miehelle – yli 75 hauskaa vaihtoehtoa\n\nMiehelle lahjan ostaminen on tunnetusti vaikeaa. Hauska lahja on aina oikea valinta — se naurattaa, ilahduttaa ja tulee oikeasti käyttöön.",
+    relatedBlogSlugs: ["parhaat-hauskat-lahjat-miehelle", "lahja-miehelle-30v-40v-50v-60v"],
+  },
+  {
+    slug: "syntymapaivalahjat",
+    name: "Hauskat Syntymäpäivälahjat",
+    emoji: "🎂",
+    h1: "Hauskat Syntymäpäivälahjat",
+    seoTitle: "Syntymäpäivälahjat – Hauskat synttärilahjat | Huumorikauppa.fi",
+    seoDescription: "Hauskat syntymäpäivälahjat kaikkiin ikiin. Huumorituotteita pyöreille vuosille ja arkisille synttäreille. Tilaa Huumorikauppa.fi:stä.",
+    filterFn: (p) => p.category === "t-paidat" || p.category === "hupparit" || p.category === "mukit",
+    seoText: "## Hauskat syntymäpäivälahjat – lahjat jotka naurattavat\n\nSyntymäpäivälahjan pitää olla hauska, persoonallinen ja mieleenpainuva. Löydä täydellinen hauska syntymäpäivälahja jokaiselle ikäluokalle.",
+    relatedBlogSlugs: ["mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", "lahja-miehelle-30v-40v-50v-60v"],
+  },
+  {
+    slug: "haalarimerkit",
+    name: "Haalarimerkit",
+    emoji: "🎓",
+    h1: "Haalarimerkit Opiskelijalle",
+    seoTitle: "Haalarimerkit Opiskelijalle – Hauskat merkit haalareihin | Huumorikauppa.fi",
+    seoDescription: "Haalarimerkit opiskelijoille — räätälöitäviä ja valmiita malleja. Toimitamme nopeasti Suomeen.",
+    filterFn: (p) => p.category === "haalarimerkit",
+    seoText: "## Haalarimerkit – personoi haalarit\n\nHaalarimerkit ovat perinteinen tapa personoida opiskelijan haalarit. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille.",
+    relatedBlogSlugs: [],
+  },
+  {
+    slug: "opiskelijan-haalarimerkit",
+    name: "Opiskelijan Haalarimerkit",
+    emoji: "🎓",
+    h1: "Opiskelijan Haalarimerkit",
+    seoTitle: "Opiskelijan haalarimerkit – Hauskat merkit | Huumorikauppa.fi",
+    seoDescription: "Opiskelijan haalarimerkit kaikille kiltojen ja ainejärjestöjen jäsenille. Räätälöitävät merkit ja valmiit mallit.",
+    filterFn: (p) => p.category === "haalarimerkit",
+    seoText: "## Opiskelijan haalarimerkit – killoille ja ainejärjestöille\n\nHaalarimerkit sopivat kaikkiin haalareihin neulakiinnityksellä. Tilaa räätälöityjä merkkejä koko ryhmälle.",
+    relatedBlogSlugs: [],
+  },
+];
+
 export function getGiftCategory(slug: string) {
   return giftCategories.find(c => c.slug === slug);
 }
@@ -395,7 +487,6 @@ const GiftCategoryPage = () => {
   const slug = location.pathname.replace(/^\//, '');
   const category = giftCategories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  usePrerenderReady(!isLoading && allProducts.length > 0);
 
   if (!category) {
     return (
@@ -496,7 +587,9 @@ const GiftCategoryPage = () => {
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">
           {category.h1} {category.emoji}
         </h1>
-        <p className="text-muted-foreground mb-8">{products.length} tuotetta</p>
+        <p className="text-muted-foreground mb-4">{products.length} tuotetta</p>
+
+        {TLDR_TEXTS[slug] && <TldrBox text={TLDR_TEXTS[slug]} />}
 
         {/* DIRECT ANSWER BLOCK — visuaalisesti piilossa, indeksoitavissa SEO/GEO:lle */}
         <div className="sr-only" aria-hidden="false">

@@ -527,16 +527,6 @@ const ProductPage = () => {
   }, [product]);
 
   useEffect(() => {
-    if (product && !isLoading) {
-      // Delay prerenderReady so react-helmet-async Helmet has time to flush title + JSON-LD into <head>
-      const raf = requestAnimationFrame(() => {
-        window.prerenderReady = true;
-      });
-      return () => cancelAnimationFrame(raf);
-    }
-  }, [product, isLoading]);
-
-  useEffect(() => {
     if (product && !selectedColor) {
       const defaultColor = product.variants.default_color as string | undefined;
       if (defaultColor && product.variants.colors?.includes(defaultColor)) {
