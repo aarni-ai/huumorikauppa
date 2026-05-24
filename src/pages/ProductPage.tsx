@@ -444,25 +444,6 @@ function ProductDescription({ description, expanded, onToggle }: { description: 
   );
 }
 
-function ProductFaqSchema({ faqs }: { faqs: { q: string; a: string }[] }) {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.id = "product-faq-jsonld";
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    });
-    document.head.appendChild(script);
-    return () => { script.remove(); };
-  }, [faqs]);
-  return null;
-}
 
 const sizeGuide = [
   { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
@@ -772,15 +753,6 @@ const ProductPage = () => {
     "@graph": [productJsonLd, faqJsonLd],
   };
 
-  const productFaqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": productFaqs.map(f => ({
-      "@type": "Question",
-      "name": f.q,
-      "acceptedAnswer": { "@type": "Answer", "text": f.a }
-    }))
-  };
 
   const breadcrumbs = [
     { name: "Etusivu", url: "https://huumorikauppa.fi/" },
@@ -817,7 +789,7 @@ const ProductPage = () => {
         <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
-        {/* JSON-LD (Product + Breadcrumb) is emitted exclusively by SEOHead below to avoid duplicates. FAQPage is emitted by ProductFaqSchema. */}
+        {/* JSON-LD (Product + Breadcrumb + FAQPage) is emitted exclusively by SEOHead below via combinedProductJsonLd. */}
       </Helmet>
       <SEOHead
         title={`${product.name} | Huumorikauppa`}
@@ -829,8 +801,6 @@ const ProductPage = () => {
         ogType="product"
         productPrice={product.price.toFixed(2)}
       />
-      <ProductFaqSchema faqs={productFaqs} />
-
       <div className="container py-6 md:py-10">
         <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
