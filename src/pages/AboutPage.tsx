@@ -161,7 +161,7 @@ const AboutPage = () => {
           <section>
             <h2 className="font-display text-2xl text-foreground mb-3">Yritystiedot</h2>
             <div className="rounded-xl border border-border bg-card/50 p-5 text-sm space-y-2">
-              <div className="flex gap-2"><span className="text-muted-foreground w-28">Yritys</span><span className="text-foreground">Inteller Oy</span></div>
+              <div className="flex gap-2"><span className="text-muted-foreground w-28">Yritys</span><span className="text-foreground">Inteller</span></div>
               <div className="flex gap-2"><span className="text-muted-foreground w-28">Y-tunnus</span><span className="text-foreground">3583677-2</span></div>
               <div className="flex gap-2"><span className="text-muted-foreground w-28">Kotipaikka</span><span className="text-foreground">Helsinki</span></div>
               <div className="flex gap-2"><span className="text-muted-foreground w-28">Wikidata</span><a href="https://www.wikidata.org/wiki/Q139915256" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Q139915256</a></div>
