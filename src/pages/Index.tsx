@@ -92,9 +92,17 @@ const Index = () => {
     "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
     "email": "huumorikauppa@gmail.com",
     "sameAs": [
-      "https://instagram.com/huumorikauppa.fi",
+      "https://www.wikidata.org/wiki/Q139915256",
+      "https://www.instagram.com/huumorikauppa_fi",
+      "https://www.tiktok.com/@huumorikauppa",
+      "https://www.youtube.com/@huumorikauppa",
       "https://www.facebook.com/profile.php?id=61584153329326"
-    ]
+    ],
+    "identifier": {
+      "@type": "PropertyValue",
+      "propertyID": "Finnish Business ID (Y-tunnus)",
+      "value": "3583677-2"
+    }
   };
 
   return (

@@ -18,9 +18,17 @@ const aboutJsonLd = {
     description:
       "Huumorikauppa on 100 % suomalainen verkkokauppa, joka tekee hauskoja t-paitoja, huppareita, mukeja ja muita lahjoja suomalaisella huumorilla.",
     sameAs: [
-      "https://instagram.com/huumorikauppa_fi",
+      "https://www.wikidata.org/wiki/Q139915256",
+      "https://www.instagram.com/huumorikauppa_fi",
+      "https://www.tiktok.com/@huumorikauppa",
+      "https://www.youtube.com/@huumorikauppa",
       "https://www.facebook.com/profile.php?id=61584153329326",
     ],
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "Finnish Business ID (Y-tunnus)",
+      value: "3583677-2",
+    },
   },
 };
 
@@ -148,6 +156,16 @@ const AboutPage = () => {
               <li><strong>Tietosuoja:</strong> noudatamme GDPR:ää – lue lisää{" "}
                 <Link to="/tietosuojakaytanto" className="text-primary hover:underline">tietosuojaselosteestamme</Link>.</li>
             </ul>
+          </section>
+
+          <section>
+            <h2 className="font-display text-2xl text-foreground mb-3">Yritystiedot</h2>
+            <div className="rounded-xl border border-border bg-card/50 p-5 text-sm space-y-2">
+              <div className="flex gap-2"><span className="text-muted-foreground w-28">Yritys</span><span className="text-foreground">Inteller Oy</span></div>
+              <div className="flex gap-2"><span className="text-muted-foreground w-28">Y-tunnus</span><span className="text-foreground">3583677-2</span></div>
+              <div className="flex gap-2"><span className="text-muted-foreground w-28">Kotipaikka</span><span className="text-foreground">Helsinki</span></div>
+              <div className="flex gap-2"><span className="text-muted-foreground w-28">Wikidata</span><a href="https://www.wikidata.org/wiki/Q139915256" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Q139915256</a></div>
+            </div>
           </section>
 
           <section>
