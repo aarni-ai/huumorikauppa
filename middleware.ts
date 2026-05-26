@@ -1431,13 +1431,6 @@ export default async function middleware(request: Request): Promise<Response | u
       html = injectJsonLd(html, ...pageSchemas);
     }
 
-    // Inject page-specific H1 into the noscript block so bots see the right heading.
-    // The only H1 in static HTML is in <noscript> — React's H1s render client-side only.
-    const rawH1 = path === '/'
-      ? 'Hauskat lahjat ja huumorilahjat Suomesta'
-      : (meta?.title ?? 'Huumorikauppa.fi').replace(/ \| Huumorikauppa\.fi$/, '').trim();
-    html = html.replace(/<h1>[^<]*<\/h1>/, `<h1>${escapeHtml(rawH1)}</h1>`);
-
     return new Response(html, {
       status: 200,
       headers: {
