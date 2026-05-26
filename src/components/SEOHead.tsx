@@ -111,9 +111,6 @@ export function SEOHead({
       }
       link.href = canonical;
 
-      // hreflang
-      ensureLink("alternate", '[hreflang="fi"]', canonical, { hreflang: "fi" });
-      ensureLink("alternate", '[hreflang="x-default"]', canonical, { hreflang: "x-default" });
     }
 
     // Article meta
