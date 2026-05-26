@@ -339,14 +339,6 @@ const PRODUCT_META: Record<string, ProductMeta> = {
     category: "mukit",
     categoryName: "Mukit",
   },
-  'less-hustle-more-coffee-mug-typography-coffee-cup': {
-    title: "Less Hustle More Coffee mug | – Mukit | Huumorikauppa.fi",
-    description: "Bright white ceramic mug printed with bold, black typography that loops into a playful spiral reading “LESS HUSTLE MORE COFFEE.” A minimalist, modern state",
-    image: "https://images-api.printify.com/mockup/6a09d5e069ddd35f850e9f0a/65216/6310/less-hustle-more-coffee-mug-typography-coffee-cup.jpg?camera_label=front",
-    price: 10.99,
-    category: "mukit",
-    categoryName: "Mukit",
-  },
   'mersumies-kahvikuppi': {
     title: "Mersumies – Mukit | Huumorikauppa.fi",
     description: "Aloita aamu anteeksi pyytelemättä tällä kaksivärisellä keraamisella mukilla. Rohkea, isot kirjaimet kiiltävällä valkoisella pinnalla, musta sisus ja kahva ",
