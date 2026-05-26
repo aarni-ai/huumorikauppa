@@ -6,6 +6,7 @@ import { categories } from "@/data/products";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { footerGiftLinks } from "@/config/internalLinks";
 
 export function Footer() {
   const [footerEmail, setFooterEmail] = useState("");
@@ -143,17 +144,20 @@ export function Footer() {
         </div>
       </div>
 
-      {/* SEO gift category links – visually hidden, crawlable by search engines */}
-      <nav aria-label="Lahjaideat" className="sr-only">
-        <Link to="/hauskat-lahjat-miehelle">Hauskat lahjat miehelle</Link>
-        <Link to="/hauskat-lahjat-naiselle">Hauskat lahjat naiselle</Link>
-        <Link to="/polttari-lahjat">Polttarilahjat</Link>
-        <Link to="/joululahjat">Joululahjat</Link>
-        <Link to="/isanpaiva-lahjat">Isänpäivälahjat</Link>
-        <Link to="/syntymapaivaLahjat">Synttärilahjat</Link>
-        <Link to="/elakelahjat">Eläkelahjat</Link>
-        <Link to="/lahja-kaverille">Lahja kaverille</Link>
-        <Link to="/lahja-tyokaverille">Lahja työkaverille</Link>
+      {/* Visible gift hub links — covers orphan pages, improves internal link graph */}
+      <nav aria-label="Lahjaideat" className="border-t border-border pt-6 pb-2">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Lahjaideat</p>
+        <div className="flex flex-wrap gap-2">
+          {footerGiftLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-border text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
+            >
+              <span>{link.emoji}</span> {link.label}
+            </Link>
+          ))}
+        </div>
       </nav>
 
       {/* Payment icons */}
