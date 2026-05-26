@@ -79,19 +79,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://huumorikauppa.fi/aitienpaiva-lahjat</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://huumorikauppa.fi/joululahjat</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://huumorikauppa.fi/syntymapaivaLahjat</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -265,7 +253,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://huumorikauppa.fi/lahjat/isoäidille</loc>
+    <loc>https://huumorikauppa.fi/lahjat/iso%C3%A4idille</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -325,12 +313,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://huumorikauppa.fi/tuote/-jos-iska-ei-osaa-korjata-sita-t-paita</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://huumorikauppa.fi/tuote/maailman-paras-aiti-palkinnon-voittaja-huppari</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -338,12 +320,6 @@
   </url>
   <url>
     <loc>https://huumorikauppa.fi/tuote/maailman-paras-aiti-palkinnon-voittaja-t-shirt-t-paita</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://huumorikauppa.fi/tuote/100-elakalainen-kahvikuppi</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -386,18 +362,6 @@
   </url>
   <url>
     <loc>https://huumorikauppa.fi/tuote/amatimies-huppari</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://huumorikauppa.fi/tuote/amatimies-huppari-0e3e76</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://huumorikauppa.fi/tuote/amatimies-t-paita-02f10a</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1155,6 +1119,34 @@
   <url>
     <loc>https://huumorikauppa.fi/tietoa-meista</loc>
     <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://huumorikauppa.fi/syntymapaivalahjat</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://huumorikauppa.fi/tuote/jos-iska-ei-osaa-korjata-sita-t-paita</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://huumorikauppa.fi/tuote/100-elakelainen-kahvikuppi</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://huumorikauppa.fi/blogi/hauskimmat-elakelahjat-selviytymisopas</loc>
+    <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
