@@ -1,3 +1,9 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -9,26 +15,6 @@ Disallow: /checkout/
 Disallow: /haku
 Disallow: /tili/
 Disallow: /api/
-
-User-agent: Googlebot
-Allow: /api/image-proxy
-Allow: /tuote/
-Allow: /kategoria/
-Allow: /lahjat/
-Allow: /blogi/
-Allow: /
-Disallow: /ostoskori
-Disallow: /tilausvahvistus
-Disallow: /tilaus-vahvistettu
-Disallow: /kassa
-Disallow: /haku
-Disallow: /faq
-Disallow: /tili/
-Disallow: /checkout/
-
-User-agent: Googlebot-Image
-Allow: /api/image-proxy
-Allow: /
 
 # AI Crawlers — opt-in for GEO
 User-agent: GPTBot
