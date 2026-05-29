@@ -90,7 +90,7 @@ const Index = () => {
     "logo": "https://huumorikauppa.fi/favicon.ico",
     "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja.",
     "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
-    "email": "huumorikauppa@gmail.com",
+    "email": "info@huumorikauppa.fi",
     "sameAs": [
       "https://www.wikidata.org/wiki/Q139915256",
       "https://www.instagram.com/huumorikauppa_fi",
@@ -383,7 +383,7 @@ const Index = () => {
               Tilaaminen on helppoa, toimitus nopea ja yli 60 € tilauksiin saat ilmaisen
               toimituksen. Jokainen paita ja muki painetaan tilauksesta, joten saat juuri sen
               tuotteen jonka valitsit – ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
-              henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a>.
+              henkilökohtaisesti osoitteessa <a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a>.
               Tervetuloa nauramaan!
             </p>
           </div>

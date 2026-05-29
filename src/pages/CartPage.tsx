@@ -1,17 +1,32 @@
 import { Link } from "react-router-dom";
 import { useCartContext } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus, ShoppingCart, ArrowRight } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart, ArrowRight, Truck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { useProducts } from "@/hooks/use-products";
+import { useMemo } from "react";
+
+const FREE_SHIPPING = 60;
 
 const CartPage = () => {
   usePrerenderReady();
-  const { items, removeItem, updateQuantity, totalPrice, totalItems, clearCart } = useCartContext();
+  const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCartContext();
+  const { data: allProducts = [] } = useProducts();
 
-  const shippingFree = totalPrice >= 60;
+  const shippingFree = totalPrice >= FREE_SHIPPING;
   const shippingCost = shippingFree ? 0 : 5.95;
+  const shippingGap = Math.max(0, FREE_SHIPPING - totalPrice);
+  const shippingProgress = Math.min(100, (totalPrice / FREE_SHIPPING) * 100);
+
+  const cartProductIds = new Set(items.map((i) => i.product.id));
+  const upsellProducts = useMemo(() => {
+    const cartCategories = [...new Set(items.map((i) => i.product.category))];
+    return allProducts
+      .filter((p) => !cartProductIds.has(p.id) && cartCategories.includes(p.category))
+      .slice(0, 4);
+  }, [allProducts, items]);
 
   if (items.length === 0) {
     return (
@@ -31,6 +46,30 @@ const CartPage = () => {
     <div className="container py-8 md:py-12">
       <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." noindex={true} />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Ostoskori 🛒</h1>
+
+      {/* Shipping progress bar */}
+      {!shippingFree ? (
+        <div className="mb-6 rounded-xl border border-border bg-card p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Truck className="h-4 w-4 text-primary shrink-0" />
+            <p className="text-sm text-foreground">
+              Lisää <span className="font-bold text-primary">{shippingGap.toFixed(2)} €</span> tilaukseen → ilmainen toimitus!
+            </p>
+          </div>
+          <div className="h-2 rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-500"
+              style={{ width: `${shippingProgress}%` }}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">{totalPrice.toFixed(2)} € / {FREE_SHIPPING} €</p>
+        </div>
+      ) : (
+        <div className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 flex items-center gap-2">
+          <Truck className="h-4 w-4 text-primary shrink-0" />
+          <p className="text-sm font-medium text-primary">Ilmainen toimitus! 🎉</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Items */}
@@ -84,6 +123,35 @@ const CartPage = () => {
               </div>
             </div>
           ))}
+
+          {/* Upsell */}
+          {upsellProducts.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-sm font-semibold text-foreground mb-3">
+                {shippingFree ? "Täydennä lahjaasi:" : `Lisää ${shippingGap.toFixed(2)} € → ilmainen toimitus:`}
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {upsellProducts.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/tuote/${p.slug}`}
+                    className="group rounded-lg border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden"
+                  >
+                    <img
+                      src={p.images[0] || "/placeholder.svg"}
+                      alt={p.name}
+                      className="w-full aspect-square object-cover bg-muted"
+                      loading="lazy"
+                    />
+                    <div className="p-2">
+                      <p className="text-xs font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">{p.name}</p>
+                      <p className="text-xs font-bold text-primary mt-0.5">{p.price.toFixed(2)} €</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Summary */}
@@ -100,8 +168,8 @@ const CartPage = () => {
               <span>{shippingFree ? <span className="text-primary font-medium">Ilmainen 🎉</span> : `${shippingCost.toFixed(2)} €`}</span>
             </div>
             {!shippingFree && (
-              <p className="text-xs text-primary">
-                Lisää {(60 - totalPrice).toFixed(2)} € saadaksesi ilmaisen toimituksen!
+              <p className="text-xs text-primary font-medium">
+                + {shippingGap.toFixed(2)} € → ilmainen toimitus
               </p>
             )}
           </div>
@@ -130,6 +198,7 @@ const CartPage = () => {
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
             <p>🚚 Toimitus 3–10 arkipäivää</p>
+            <p>↩️ 14 pv palautusoikeus</p>
           </div>
         </div>
       </div>

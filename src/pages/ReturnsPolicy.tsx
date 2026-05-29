@@ -28,7 +28,7 @@ const ReturnsPolicy = () => {
         <section>
           <h2 className="font-display text-xl text-foreground">1. Peruutusoikeus</h2>
           <p>Kuluttajansuojalain (6 luku 14 §) mukaisesti sinulla on oikeus peruuttaa tilauksesi 14 päivän kuluessa tuotteen vastaanottamisesta ilman erillistä syytä. Peruutusoikeus koskee kaikkia Huumorikaupan verkkokaupasta ostettuja tuotteita.</p>
-          <p>Peruutusilmoitus tulee tehdä kirjallisesti sähköpostitse osoitteeseen <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a> ennen 14 päivän määräajan umpeutumista. Ilmoitukseen tulee sisällyttää tilausnumero, palautettavat tuotteet sekä yhteystietosi.</p>
+          <p>Peruutusilmoitus tulee tehdä kirjallisesti sähköpostitse osoitteeseen <a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a> ennen 14 päivän määräajan umpeutumista. Ilmoitukseen tulee sisällyttää tilausnumero, palautettavat tuotteet sekä yhteystietosi.</p>
         </section>
 
         <section>
@@ -40,7 +40,7 @@ const ReturnsPolicy = () => {
           <h2 className="font-display text-xl text-foreground">3. Palautuksen tekeminen</h2>
           <p>Palautusprosessi etenee seuraavasti:</p>
           <ol className="list-decimal list-inside space-y-2 ml-2">
-            <li>Lähetä peruutusilmoitus sähköpostitse osoitteeseen <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a>.</li>
+            <li>Lähetä peruutusilmoitus sähköpostitse osoitteeseen <a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a>.</li>
             <li>Saat sähköpostitse palautusohjeet ja palautusosoitteen.</li>
             <li>Pakkaa tuote huolellisesti alkuperäispakkaukseen ja lähetä se ohjeiden mukaisesti.</li>
             <li>Palautus tulee lähettää 14 päivän kuluessa peruutusilmoituksen tekemisestä.</li>
@@ -80,7 +80,7 @@ const ReturnsPolicy = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">9. Yhteystiedot</h2>
-          <p>Huumorikauppa<br />Helsinki, Suomi<br /><a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a></p>
+          <p>Huumorikauppa<br />Helsinki, Suomi<br /><a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a></p>
           <p className="text-sm mt-2">Vastaamme kaikkiin tiedusteluihin 1–2 arkipäivän kuluessa.</p>
         </section>
       </div>

@@ -169,7 +169,7 @@ const OrderConfirmation = () => {
       } else {
         toast({
           title: "Lähetys epäonnistui",
-          description: data?.customerEmailError || "Ota yhteyttä: huumorikauppa@gmail.com",
+          description: data?.customerEmailError || "Ota yhteyttä: info@huumorikauppa.fi",
           variant: "destructive",
         });
       }
@@ -295,7 +295,7 @@ const OrderConfirmation = () => {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Ongelmia tilauksesi kanssa? Ota yhteyttä: huumorikauppa@gmail.com
+        Ongelmia tilauksesi kanssa? Ota yhteyttä: info@huumorikauppa.fi
       </p>
 
       {/* Google Customer Reviews opt-in container (Google injects content here) */}

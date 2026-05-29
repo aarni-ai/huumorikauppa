@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     q: "Miten otan yhteyttä asiakaspalveluun?",
-    a: "Tavoitat meidät sähköpostilla huumorikauppa@gmail.com. Vastaamme 1–2 arkipäivässä."
+    a: "Tavoitat meidät sähköpostilla info@huumorikauppa.fi. Vastaamme 1–2 arkipäivässä."
   },
   {
     q: "Ovatko tuotteet suomalaista käsialaa?",
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     q: "Teettekö custom-painatuksia?",
-    a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (huumorikauppa@gmail.com) ja kerro mitä haluat – suunnitellaan yhdessä!"
+    a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (info@huumorikauppa.fi) ja kerro mitä haluat – suunnitellaan yhdessä!"
   },
   {
     q: "Mikä on Huumorikauppa?",
@@ -102,7 +102,7 @@ const faqs = [
   },
   {
     q: "Tarjoatteko yrityslahjoja tai tukkuhintoja?",
-    a: "Kyllä, teemme yrityslahjoja, kausituotteita ja tiimipaitoja. Pyydä tarjous: huumorikauppa@gmail.com – kerro määrä, tuote ja toivottu painatus."
+    a: "Kyllä, teemme yrityslahjoja, kausituotteita ja tiimipaitoja. Pyydä tarjous: info@huumorikauppa.fi – kerro määrä, tuote ja toivottu painatus."
   },
 ];
 
@@ -155,7 +155,7 @@ const FAQ = () => {
 
       <div className="mt-10 text-center">
         <p className="text-muted-foreground mb-4">Etkö löytänyt vastausta? Ota yhteyttä!</p>
-        <p className="text-sm text-muted-foreground">📧 huumorikauppa@gmail.com</p>
+        <p className="text-sm text-muted-foreground">📧 info@huumorikauppa.fi</p>
       </div>
     </div>
   );

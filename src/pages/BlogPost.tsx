@@ -3,6 +3,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
 import { categories } from "@/data/products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { ShoppingBag } from "lucide-react";
 
 function renderContent(content: string) {
   const lines = content.split("\n");
@@ -261,9 +262,39 @@ const BlogPost = () => {
 
         <div className="text-muted-foreground">{renderContent(post.content)}</div>
 
-        {/* Related categories */}
+        {/* Inline product CTA — category cards after article body */}
         {relatedCats.length > 0 && (
-          <nav className="mt-12 pt-6 border-t border-border" aria-label="Aiheeseen liittyvät kategoriat">
+          <section className="mt-10 rounded-xl border border-primary/30 bg-primary/5 p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <ShoppingBag className="h-5 w-5 text-primary shrink-0" />
+              <h3 className="font-display text-lg text-foreground">Osta tämä lahja Huumorikaupasta</h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {relatedCats.map((cat) =>
+                cat ? (
+                  <Link
+                    key={cat.slug}
+                    to={`/kategoria/${cat.slug}`}
+                    className="flex items-center gap-3 rounded-lg border border-border bg-card hover:border-primary/60 hover:bg-muted/50 transition-colors p-3"
+                  >
+                    <span className="text-2xl">{cat.emoji}</span>
+                    <div>
+                      <p className="font-medium text-foreground text-sm">{cat.name}</p>
+                      <p className="text-xs text-muted-foreground">Selaa tuotteita →</p>
+                    </div>
+                  </Link>
+                ) : null
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Ilmainen toimitus yli 60 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
+            </p>
+          </section>
+        )}
+
+        {/* Related categories (pill nav) */}
+        {relatedCats.length > 0 && (
+          <nav className="mt-8 pt-6 border-t border-border" aria-label="Aiheeseen liittyvät kategoriat">
             <h3 className="text-sm font-semibold text-foreground mb-3">
               Selaa aiheeseen liittyviä tuotteita:
             </h3>

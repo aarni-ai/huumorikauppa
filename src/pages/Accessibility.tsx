@@ -56,7 +56,7 @@ const Accessibility = () => {
         <section>
           <h2 className="font-display text-xl text-foreground">Palaute ja yhteystiedot</h2>
           <p>Huomasitko saavutettavuuspuutteen verkkopalvelussamme? Kerro siitä meille — teemme parhaamme korjataksemme puutteen.</p>
-          <p>Sähköposti: <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a></p>
+          <p>Sähköposti: <a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a></p>
           <p>Vastaamme palautteeseen 14 päivän kuluessa.</p>
         </section>
 

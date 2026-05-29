@@ -807,8 +807,8 @@ const PAGE_META: Record<string, PageMeta> = {
     description: 'Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 60 €.',
   },
   '/kategoria/mukit': {
-    title: 'Hauskat Mukit – Huumorimukit lahjaksi | Huumorikauppa.fi',
-    description: 'Hauskat kahvimukit lahjaksi tai omaan käyttöön. Unohtumaton lahja – toimitus nopeasti koko Suomeen.',
+    title: 'Hauskat Mukit ja Kahvikupit – Huumorimukit lahjaksi | Huumorikauppa.fi',
+    description: 'Hauskat kahvikupit ja mukit lahjaksi tai omaan käyttöön. Huumorimukit ammattihuumorilla, setäteemalla ja sarkasmilla. Nopea toimitus koko Suomeen.',
   },
   '/kategoria/tarrat': {
     title: 'Hauskat Tarrat – Huumoritarrat | Huumorikauppa.fi',

@@ -52,12 +52,12 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">6. Reklamaatiot</h2>
-          <p>Virheellisestä tuotteesta tulee reklamoida viipymättä osoitteeseen huumorikauppa@gmail.com. Liitä viestiin tilausnumero, kuvaus virheestä sekä valokuva.</p>
+          <p>Virheellisestä tuotteesta tulee reklamoida viipymättä osoitteeseen info@huumorikauppa.fi. Liitä viestiin tilausnumero, kuvaus virheestä sekä valokuva.</p>
         </section>
 
         <section>
           <h2 className="font-display text-xl text-foreground">7. Yhteystiedot</h2>
-          <p>Huumorikauppa<br />Helsinki, Suomi<br />huumorikauppa@gmail.com</p>
+          <p>Huumorikauppa<br />Helsinki, Suomi<br />info@huumorikauppa.fi</p>
         </section>
       </div>
     </div>

@@ -45,7 +45,7 @@ const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
 const CATEGORY_H1: Record<string, string> = {
   "t-paidat": "Hauskat t-paidat",
   "hupparit": "Hauskat hupparit",
-  "mukit": "Hauskat mukit",
+  "mukit": "Hauskat mukit ja kahvikupit",
   "tarrat": "Hauskat tarrat",
   "bodyt": "Hauskat bodyt pienimmille",
   "peitot": "Hauskat peitot",
@@ -67,8 +67,9 @@ const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]> = {
     { h2: "Suosituimmat huumorihupparit", text: "Suosituimpia huppareitamme ovat 'Maailman paras' -sarjan hupparit, kalastushupparit ja eläkehuumorihupparit. Laadukas materiaali ja kestävä painatus." },
   ],
   "mukit": [
-    { h2: "Miksi hauska muki on paras lahja?", text: "Hauska muki on edullinen, käytännöllinen ja ilahduttaa joka aamu. Se sopii työkavereille, perheenjäsenille ja ystäville. Suosituimpia ovat toimistomukit, ammattilaismukit ja sarkastiset tekstimukit." },
-    { h2: "Suosituimmat huumorimukit", text: "Valikoimamme suosituimpia ovat ammattihuumorimukit, setähuumorimukit ja 'Ennen kahvia' -sarjan mukit. Kaikki mukimme ovat konepesuturvallisia." },
+    { h2: "Hauskat kahvikupit – suomalainen aamuklassikko", text: "Hauska kahvikuppi tekee jokaisesta aamuhetkestä paremman. Suomalaiset rakastavat kahvia – ja rakastavat vielä enemmän kahvia hauskasta kupista jossa lukee jotain osuvaa. Valikoimastamme löydät hauskat kahvikupit ammattilaisille, setähuumoria arvostaville, eläkeläisille ja kaikille kahvinjuojille." },
+    { h2: "Miksi hauska muki on paras lahja?", text: "Hauska muki on edullinen, käytännöllinen ja ilahduttaa joka aamu. Se sopii työkavereille, perheenjäsenille ja ystäville – ja budjettiin alle 20 €. Suosituimpia ovat toimistomukit, ammattilaismukit ja sarkastiset tekstimukit." },
+    { h2: "Suosituimmat huumorimukit", text: "Valikoimamme suosituimpia ovat ammattihuumorimukit (Mersumies, Audimies), setähuumorimukit ja eläkemukit. Kaikki mukimme ovat keraamia, astianpesukoneenkestäviä ja 330 ml tilavuudeltaan." },
   ],
   "tarrat": [
     { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Laadukkaat vinyl-tarramme sopivat läppäriin, vesipulloon, autoon ja jääkaappiin. Ne kestävät säätä, vettä ja kulutusta. Tarrat ovat myös erinomainen pieni lahja tai lisä isomman paketin oheen." },
@@ -180,7 +181,7 @@ const CategoryPage = () => {
       {
         "@type": "Question",
         "name": `Saako ${catLower} omalla tekstillä?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä info@huumorikauppa.fi." },
       },
       {
         "@type": "Question",
@@ -366,7 +367,7 @@ const CategoryPage = () => {
               },
               {
                 q: `Saako ${category.name.toLowerCase()} omalla tekstillä?`,
-                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com."
+                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä info@huumorikauppa.fi."
               },
               {
                 q: "Voiko maksaa Klarnalla tai Appla Paylla?",
@@ -382,7 +383,7 @@ const CategoryPage = () => {
             ))}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Lisää kysymyksiä? Lue <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">kaikki UKK:t</Link> tai kirjoita huumorikauppa@gmail.com
+            Lisää kysymyksiä? Lue <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">kaikki UKK:t</Link> tai kirjoita info@huumorikauppa.fi
           </p>
         </section>
       </div>

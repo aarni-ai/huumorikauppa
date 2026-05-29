@@ -21,21 +21,21 @@ interface GiftCategory {
 }
 
 const TLDR_TEXTS: Record<string, string> = {
-  "hauskat-lahjat-miehelle": "Hauska lahja miehelle on huumoripaita, -huppari tai -muki joka liittyy hänen harrastukseensa tai ammattiinsa. Suosituimpia ovat kalamies-, ammattimies- ja Mersumies-teemat. Kaikki tuotteet painetaan Suomessa, ja toimitus tapahtuu 3–7 arkipäivässä.",
-  "hauskat-lahjat-naiselle": "Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska kahvimuki tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan Suomessa, toimitus 3–7 arkipäivässä.",
+  "hauskat-lahjat-miehelle": "Hauska lahja miehelle on huumoripaita, -huppari tai -muki joka liittyy hänen harrastukseensa tai ammattiinsa. Suosituimpia ovat kalamies-, ammattimies- ja Mersumies-teemat. Kaikki tuotteet painetaan Suomessa, ja toimitus tapahtuu 3–10 arkipäivässä.",
+  "hauskat-lahjat-naiselle": "Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska kahvimuki tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan Suomessa, toimitus 3–10 arkipäivässä.",
   "lahja-miehelle": "Lahjaideat miehelle: huumoripaita, -huppari tai -muki ammatista, harrastuksesta tai luonteenpiirteestä. Suosittuja ovat 50-vuotis- ja eläkkeellelähtöteemat. Huumorikaupasta löydät yli 75 hauskaa lahjaideaa miehille kaikkiin tilanteisiin.",
-  "hauskat-t-paidat": "Hauskat t-paidat ovat 100 % puuvillaa, painettu Suomessa. Valikoimassa yli 30 vitsipainatusta — ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus 3–7 arkipäivässä.",
-  "hauskat-hupparit": "Hauskat hupparit ovat lämpimiä ja korkealaatuisia, painettu Suomessa. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus 3–7 arkipäivässä.",
+  "hauskat-t-paidat": "Hauskat t-paidat ovat 100 % puuvillaa, painettu Suomessa. Valikoimassa yli 30 vitsipainatusta — ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus 3–10 arkipäivässä.",
+  "hauskat-hupparit": "Hauskat hupparit ovat lämpimiä ja korkealaatuisia, painettu Suomessa. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus 3–10 arkipäivässä.",
   "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita, -huppari tai -muki joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras pappa' -teemat. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
   "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai muki suomalaisesta ammattihuumorista. Suosittuja teemoja ovat kalamies, äijä ja eläkeläinen. Tilaa viimeistään 14.12. saadaksesi tuotteen ennen joulua.",
-  "syntymapaivaLahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–7 arkipäivässä.",
-  "syntymapaivalahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–7 arkipäivässä.",
+  "syntymapaivaLahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–10 arkipäivässä.",
+  "syntymapaivalahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–10 arkipäivässä.",
   "polttari-lahjat": "Polttarilahja ja ryhmäpaidat: hauskat t-paidat polttariporukalle naimisiin menevälle. Räätälöitäviä tekstipaitoja ja yhteishenkipainatuksia. Tilaa hyvissä ajoin koko ryhmälle.",
   "elakelahjat": "Hauska eläkelahja eläkkeelle jäävälle työkaverille tai läheiselle. 'Olen eläkkeellä'- ja '100 % eläkeläinen' -teemat ovat suosituimpia. T-paitoja, huppareita ja mukeja. Tilaa nyt.",
   "lahja-kaverille": "Hauska lahja kaverille: huumoripaita, -huppari tai -muki kaverin harrastuksesta tai persoonallisuudesta. Sopii synttäreille, kihlauksiin tai vain piristämään arkea.",
   "lahja-tyokaverille": "Hauska lahja työkaverille: huumoripaita, -huppari tai -muki suomalaisesta työpaikkahuumorista. 'No niin' -muki ja '100 % eläkeläinen' -paita ovat suosittuja. Sopii työkaverin lähtöön tai syntymäpäivään.",
-  "haalarimerkit": "Haalarimerkit opiskelijalle: räätälöitäviä ja valmiita malleja kaikkiin haalareihin, reppuihin ja laukkuihin. Sopivat kiltajuhliin ja haalaripäiviin. Toimitus 3–7 arkipäivässä.",
-  "opiskelijan-haalarimerkit": "Opiskelijan haalarimerkit personoivat haalarit persoonallisiksi. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille. Toimitus 3–7 arkipäivässä.",
+  "haalarimerkit": "Haalarimerkit opiskelijalle: räätälöitäviä ja valmiita malleja kaikkiin haalareihin, reppuihin ja laukkuihin. Sopivat kiltajuhliin ja haalaripäiviin. Toimitus 3–10 arkipäivässä.",
+  "opiskelijan-haalarimerkit": "Opiskelijan haalarimerkit personoivat haalarit persoonallisiksi. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille. Toimitus 3–10 arkipäivässä.",
 };
 
 const giftCategories: GiftCategory[] = [
@@ -539,7 +539,7 @@ const GiftCategoryPage = () => {
     },
     {
       q: "Voiko lahjan palauttaa jos se ei sovi?",
-      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä huumorikauppa@gmail.com ja saat ohjeet.",
+      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä info@huumorikauppa.fi ja saat ohjeet.",
     },
   ];
 
@@ -594,7 +594,7 @@ const GiftCategoryPage = () => {
           <p>
             <strong>{category.h1}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ persoonallista vaihtoehtoa — täydellisiä
-            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–7
+            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–10
             arkipäivässä koko Suomeen, ilmainen yli 60 € tilauksiin.
           </p>
         </div>
