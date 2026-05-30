@@ -181,7 +181,7 @@ const CategoryPage = () => {
       {
         "@type": "Question",
         "name": `Saako ${catLower} omalla tekstillä?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä info@huumorikauppa.fi." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com." },
       },
       {
         "@type": "Question",
@@ -367,7 +367,7 @@ const CategoryPage = () => {
               },
               {
                 q: `Saako ${category.name.toLowerCase()} omalla tekstillä?`,
-                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä info@huumorikauppa.fi."
+                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com."
               },
               {
                 q: "Voiko maksaa Klarnalla tai Appla Paylla?",
@@ -383,7 +383,7 @@ const CategoryPage = () => {
             ))}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Lisää kysymyksiä? Lue <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">kaikki UKK:t</Link> tai kirjoita info@huumorikauppa.fi
+            Lisää kysymyksiä? Lue <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">kaikki UKK:t</Link> tai kirjoita huumorikauppa@gmail.com
           </p>
         </section>
       </div>

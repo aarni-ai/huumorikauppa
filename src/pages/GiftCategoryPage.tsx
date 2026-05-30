@@ -539,7 +539,7 @@ const GiftCategoryPage = () => {
     },
     {
       q: "Voiko lahjan palauttaa jos se ei sovi?",
-      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä info@huumorikauppa.fi ja saat ohjeet.",
+      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä huumorikauppa@gmail.com ja saat ohjeet.",
     },
   ];
 

@@ -1215,7 +1215,7 @@ const ProductPage = () => {
               ))}
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              Lisää kysymyksiä? Katso <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">UKK-sivumme</Link> tai ota yhteyttä info@huumorikauppa.fi
+              Lisää kysymyksiä? Katso <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">UKK-sivumme</Link> tai ota yhteyttä huumorikauppa@gmail.com
             </p>
           </div>
         </section>

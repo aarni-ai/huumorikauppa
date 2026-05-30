@@ -27,7 +27,7 @@ const Privacy = () => {
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
           <h2 className="font-display text-xl text-foreground">1. Rekisterinpitäjä</h2>
-          <p>Huumorikauppa<br />Helsinki, Suomi<br />info@huumorikauppa.fi</p>
+          <p>Huumorikauppa<br />Helsinki, Suomi<br />huumorikauppa@gmail.com</p>
         </section>
 
         <section>
@@ -47,7 +47,7 @@ const Privacy = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">5. Rekisteröidyn oikeudet</h2>
-          <p>Sinulla on oikeus tarkastaa, korjata ja poistaa itseäsi koskevat tiedot. Voit myös vastustaa tietojen käsittelyä ja pyytää tietojen siirtämistä. Ota yhteyttä info@huumorikauppa.fi.</p>
+          <p>Sinulla on oikeus tarkastaa, korjata ja poistaa itseäsi koskevat tiedot. Voit myös vastustaa tietojen käsittelyä ja pyytää tietojen siirtämistä. Ota yhteyttä huumorikauppa@gmail.com.</p>
         </section>
 
         <section>

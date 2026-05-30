@@ -13,7 +13,7 @@ const aboutJsonLd = {
     name: "Huumorikauppa",
     url: "https://huumorikauppa.fi",
     logo: "https://huumorikauppa.fi/favicon.ico",
-    email: "info@huumorikauppa.fi",
+    email: "huumorikauppa@gmail.com",
     foundingDate: "2024",
     foundingLocation: {
       "@type": "Place",
@@ -244,7 +244,7 @@ const AboutPage = () => {
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Yritys</span><span className="text-foreground">Inteller</span></div>
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Y-tunnus</span><span className="text-foreground">3583677-2</span></div>
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Kotipaikka</span><span className="text-foreground">Helsinki, Suomi</span></div>
-            <div className="flex gap-2"><span className="text-muted-foreground w-32">Sähköposti</span><a href="mailto:info@huumorikauppa.fi" className="text-primary hover:underline">info@huumorikauppa.fi</a></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">Sähköposti</span><a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a></div>
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Wikidata</span><a href="https://www.wikidata.org/wiki/Q139915256" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Q139915256</a></div>
           </div>
         </section>
@@ -257,10 +257,10 @@ const AboutPage = () => {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="mailto:info@huumorikauppa.fi"
+              href="mailto:huumorikauppa@gmail.com"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:border-primary/60 hover:text-primary transition-colors"
             >
-              <Mail className="h-4 w-4" /> info@huumorikauppa.fi
+              <Mail className="h-4 w-4" /> huumorikauppa@gmail.com
             </a>
             <Link
               to="/yhteystiedot"
