@@ -8,7 +8,7 @@ import { useEffect } from "react";
 export function usePrerenderReady(ready: boolean = true) {
   useEffect(() => {
     if (ready) {
-      window.prerenderReady = true;
+      (window as any).prerenderReady = true;
     }
   }, [ready]);
 }
