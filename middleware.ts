@@ -1437,6 +1437,7 @@ export default async function middleware(request: Request): Promise<Response | u
           "price": pd.price.toFixed(2),
           "availability": "https://schema.org/InStock",
           "itemCondition": "https://schema.org/NewCondition",
+          "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" }
         }
       };
@@ -1451,10 +1452,23 @@ export default async function middleware(request: Request): Promise<Response | u
       };
       html = injectJsonLd(html, productSchema, breadcrumbSchema);
 
-      // Also update og:image for product pages
+      // Also update og:image, og:image:alt and og:type for product pages
       html = html.replace(
         /<meta property="og:image"[^>]*>/,
         `<meta property="og:image" content="${escapeHtml(pd.image)}">`
+      );
+      html = html.replace(
+        /<meta property="og:image:alt"[^>]*>/,
+        `<meta property="og:image:alt" content="${escapeHtml(productSchema.name as string)}">`
+      );
+      html = html.replace(
+        /<meta property="og:type"[^>]*>/,
+        `<meta property="og:type" content="product">`
+      );
+      // Also update twitter:image
+      html = html.replace(
+        /<meta name="twitter:image"[^>]*>/,
+        `<meta name="twitter:image" content="${escapeHtml(pd.image)}">`
       );
     }
 
