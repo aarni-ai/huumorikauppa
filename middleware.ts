@@ -355,6 +355,38 @@ const PRODUCT_META: Record<string, ProductMeta> = {
     category: "mukit",
     categoryName: "Mukit",
   },
+  '1995-nevo-foget-kahvikuppi': {
+    title: "1995 nevö foget – Mukit | Huumorikauppa.fi",
+    description: "1995 nevö foget – hauska muki lahjaksi tai itselle. Korkealaatuinen, painettu Suomessa. Hinta 14,90 €. Tilaa nyt Huumorikauppa.fi:stä.",
+    image: "https://images-api.printify.com/mockup/6a09d6605ad54e2a9503fcca/65216/6311/1995-nevo-foget-kahvikuppi.jpg?camera_label=right",
+    price: 14.9,
+    category: "mukit",
+    categoryName: "Mukit",
+  },
+  'ei-perkele-kahvikuppi': {
+    title: "Ei perkele – Mukit | Huumorikauppa.fi",
+    description: "Ei perkele – hauska muki lahjaksi tai itselle. Korkealaatuinen, painettu Suomessa. Hinta 14,90 €. Tilaa nyt Huumorikauppa.fi:stä.",
+    image: "https://images-api.printify.com/mockup/6a09d5726c4b0feb8008119b/65216/6311/ei-perkele-kahvikuppi.jpg?camera_label=right",
+    price: 14.9,
+    category: "mukit",
+    categoryName: "Mukit",
+  },
+  'ois-viisaampi-haipyy-taalt-kahvikuppi': {
+    title: "Ois viisaampi häipyy täält – Mukit | Huumorikauppa.fi",
+    description: "Ois viisaampi häipyy täält – hauska muki lahjaksi tai itselle. Korkealaatuinen, painettu Suomessa. Hinta 14,90 €. Tilaa nyt Huumorikauppa.fi:stä.",
+    image: "https://images-api.printify.com/mockup/6a09d5e069ddd35f850e9f0a/65216/6312/ois-viisaampi-haipyy-taalt-kahvikuppi.jpg?camera_label=left",
+    price: 14.9,
+    category: "mukit",
+    categoryName: "Mukit",
+  },
+  'ois-viisaampi-haipyy-taalt-t-paita': {
+    title: "Ois viisaampi häipyy täält – T-paidat | Huumorikauppa.fi",
+    description: "Ois viisaampi häipyy täält – hauska t-paita lahjaksi tai itselle. Korkealaatuinen, painettu Suomessa. Hinta 24,90 €. Tilaa nyt Huumorikauppa.fi:stä.",
+    image: "https://images-api.printify.com/mockup/6a09d4de5ad54e2a9503fbbe/73207/98445/ois-viisaampi-haipyy-taalt-t-paita.jpg?camera_label=front",
+    price: 24.9,
+    category: "t-paidat",
+    categoryName: "T-paidat",
+  },
   'oma-tekstikuva-kahvikuppi': {
     title: "Oma Teksti/Kuva – Mukit | Huumorikauppa.fi",
     description: "Haluatko täysin uniikin kahvikupin juuri sinulle? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin paitaan, k",
@@ -1405,6 +1437,7 @@ export default async function middleware(request: Request): Promise<Response | u
           "price": pd.price.toFixed(2),
           "availability": "https://schema.org/InStock",
           "itemCondition": "https://schema.org/NewCondition",
+          "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" }
         }
       };
@@ -1419,10 +1452,23 @@ export default async function middleware(request: Request): Promise<Response | u
       };
       html = injectJsonLd(html, productSchema, breadcrumbSchema);
 
-      // Also update og:image for product pages
+      // Also update og:image, og:image:alt and og:type for product pages
       html = html.replace(
         /<meta property="og:image"[^>]*>/,
         `<meta property="og:image" content="${escapeHtml(pd.image)}">`
+      );
+      html = html.replace(
+        /<meta property="og:image:alt"[^>]*>/,
+        `<meta property="og:image:alt" content="${escapeHtml(productSchema.name as string)}">`
+      );
+      html = html.replace(
+        /<meta property="og:type"[^>]*>/,
+        `<meta property="og:type" content="product">`
+      );
+      // Also update twitter:image
+      html = html.replace(
+        /<meta name="twitter:image"[^>]*>/,
+        `<meta name="twitter:image" content="${escapeHtml(pd.image)}">`
       );
     }
 
