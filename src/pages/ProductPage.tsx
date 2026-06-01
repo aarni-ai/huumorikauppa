@@ -519,10 +519,11 @@ const ProductPage = () => {
   }, [product, selectedColor]);
 
   const currentImages = useMemo(() => {
-    if (selectedColor && variantImages[selectedColor]?.length > 0) {
-      return variantImages[selectedColor];
+    if (selectedColor) {
+      const variantImgs = (variantImages[selectedColor] || []).filter(Boolean);
+      if (variantImgs.length > 0) return variantImgs;
     }
-    return product?.images || [];
+    return (product?.images || []).filter(Boolean);
   }, [selectedColor, variantImages, product]);
 
   useEffect(() => {
@@ -901,17 +902,24 @@ const ProductPage = () => {
           <div className="space-y-5">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
-              <div className="flex items-center gap-3">
-                {hasDiscount && (
-                  <span className="text-xl text-muted-foreground line-through">
-                    {product.original_price!.toFixed(2)} €
+              <div>
+                <div className="flex items-center gap-3">
+                  {hasDiscount && (
+                    <span className="text-xl text-muted-foreground line-through">
+                      {product.original_price!.toFixed(2)} €
+                    </span>
+                  )}
+                  <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
+                    {product.price.toFixed(2)} €
                   </span>
-                )}
-                <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                  {product.price.toFixed(2)} €
-                </span>
+                  {hasDiscount && (
+                    <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
+                  )}
+                </div>
                 {hasDiscount && (
-                  <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Alin hinta 30 päivän ajalta: {product.original_price!.toFixed(2)} €
+                  </p>
                 )}
               </div>
             </div>
@@ -1039,6 +1047,10 @@ const ProductPage = () => {
             <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
               <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
             </Button>
+
+            <p className="text-xs text-muted-foreground">
+              Maksu turvallisesti: Visa · Mastercard · Apple Pay · Google Pay · Klarna · MobilePay
+            </p>
 
             {/* Share */}
             <div className="flex items-center gap-3 pt-2">

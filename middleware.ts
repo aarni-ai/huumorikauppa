@@ -237,7 +237,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-t-paita': {
     title: "Oma Teksti/Kuva – T-paidat | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin paita",
+    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin paita",
     image: "https://images-api.printify.com/mockup/69ab561eee0d13a41b04d648/38191/97992/oma-tekstikuva-t-paita.jpg?camera_label=front",
     price: 24.9,
     category: "t-paidat",
@@ -389,7 +389,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-kahvikuppi': {
     title: "Oma Teksti/Kuva – Mukit | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin kahvikupin juuri sinulle? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin paitaan, k",
+    description: "Haluatko täysin uniikin kahvikupin juuri sinulle? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin paitaan, k",
     image: "https://images-api.printify.com/mockup/69ab5be0b360648baa01bb47/72180/102756/oma-tekstikuva-kahvikuppi.jpg?camera_label=left",
     price: 24.9,
     category: "mukit",
@@ -429,7 +429,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-tarra': {
     title: "Oma Teksti/Kuva – Tarrat | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin tarran juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin tarro",
+    description: "Haluatko täysin uniikin tarran juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin tarro",
     image: "https://images-api.printify.com/mockup/69ab5f22d9d11928ed0861e2/45747/16654/oma-tekstikuva-tarra.jpg?camera_label=front",
     price: 4.99,
     category: "tarrat",
@@ -621,7 +621,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-huppari': {
     title: "Oma Teksti/Kuva – Hupparit | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin paita",
+    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin paita",
     image: "https://images-api.printify.com/mockup/69ab59382571c7daeb003a06/32912/98424/oma-tekstikuva-huppari.jpg?camera_label=front",
     price: 49.9,
     category: "hupparit",
@@ -677,7 +677,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-peitto': {
     title: "Oma Teksti/Kuva – Peitot | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin peiton juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumorikauppa.fiJos haluat oman tekstin peit",
+    description: "Haluatko täysin uniikin peiton juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin peit",
     image: "https://images-api.printify.com/mockup/69ab65909fe8d9aff8072a3a/68322/8862/oma-tekstikuva-peitto.jpg?camera_label=front",
     price: 34.9,
     category: "peitot",
@@ -685,7 +685,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-lippis': {
     title: "Oma Teksti/Kuva – Pipot | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin lippiksen juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumorikauppa.fiJos haluat oman tekstin l",
+    description: "Haluatko täysin uniikin lippiksen juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin l",
     image: "https://images-api.printify.com/mockup/69ab629a373eb1c66b018506/105381/102307/oma-tekstikuva-lippis.jpg?camera_label=front",
     price: 39.9,
     category: "pipot",
@@ -693,7 +693,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-seinataulu': {
     title: "Oma Teksti/Kuva – Seinätaulut | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin taulun juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin taulu",
+    description: "Haluatko täysin uniikin taulun juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin taulu",
     image: "https://images-api.printify.com/mockup/69ab5d2b979ac0562e002ded/91624/60162/oma-tekstikuva-seinataulu.jpg?camera_label=front",
     price: 39.9,
     category: "seinataulut",
@@ -701,7 +701,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-pitkahihainen': {
     title: "Oma teksti/Kuva – Pitkähihaiset | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin paita",
+    description: "Haluatko täysin uniikin paidan juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin paita",
     image: "https://images-api.printify.com/mockup/69ab5a4f65fbf6bfa500f3b1/25458/98502/oma-tekstikuva-pitkahihainen.jpg?camera_label=front",
     price: 39.9,
     category: "pitkahihaiset",
@@ -709,7 +709,7 @@ const PRODUCT_META: Record<string, ProductMeta> = {
   },
   'oma-tekstikuva-koriste': {
     title: "Oma Teksti/Kuva – Koristeet | Huumorikauppa.fi",
-    description: "Haluatko täysin uniikin koristeen juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: info@huumoripaita.fiJos haluat oman tekstin ko",
+    description: "Haluatko täysin uniikin koristeen juuri sinun tyylilläsi? Lähetä oma kuvasi tai ideasi meille sähköpostilla: huumorikauppa@gmail.comJos haluat oman tekstin ko",
     image: "https://images-api.printify.com/mockup/69ab64c3b360648baa01bc9d/112959/110283/oma-tekstikuva-koriste.jpg?camera_label=front",
     price: 19.9,
     category: "koristeet",
@@ -1465,6 +1465,9 @@ export default async function middleware(request: Request): Promise<Response | u
         /<meta property="og:type"[^>]*>/,
         `<meta property="og:type" content="product">`
       );
+      // Update og:image dimensions (Printify mockups are square, not 1200×600)
+      html = html.replace(/<meta property="og:image:width"[^>]*>/, '<meta property="og:image:width" content="800">');
+      html = html.replace(/<meta property="og:image:height"[^>]*>/, '<meta property="og:image:height" content="800">');
       // Also update twitter:image
       html = html.replace(
         /<meta name="twitter:image"[^>]*>/,
