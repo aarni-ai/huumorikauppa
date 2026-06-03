@@ -78,9 +78,9 @@ function OptimizedImageInner({
       height={height}
       loading={priority ? "eager" : "lazy"}
       decoding={priority ? "sync" : "async"}
-      fetchPriority={priority ? "high" : undefined}
       onLoad={() => setLoaded(true)}
       className={`${className} transition-opacity duration-300 ${loaded || !inView ? "opacity-100" : "opacity-0"}`}
+      {...(priority ? { fetchpriority: "high" } as any : {})}
       {...rest}
     />
   );

@@ -145,7 +145,7 @@ const Index = () => {
             className="w-full h-auto object-cover object-center block md:hidden"
             width={800}
             height={800}
-            fetchPriority="high"
+            {...{ fetchpriority: "high" } as any}
             loading="eager"
             decoding="sync"
           />
@@ -156,7 +156,7 @@ const Index = () => {
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
             width={1200}
             height={600}
-            fetchPriority="high"
+            {...{ fetchpriority: "high" } as any}
             loading="eager"
             decoding="sync"
           />
