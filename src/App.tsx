@@ -39,6 +39,20 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
   });
 }
 
+// For non-critical lazy components (popups, etc.) — never reload the page on failure;
+// just render nothing. A failed popup must NOT take down the whole app.
+function lazySafe<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+) {
+  return lazy(async () => {
+    try {
+      return await factory();
+    } catch {
+      return { default: (() => null) as unknown as T };
+    }
+  });
+}
+
 // Lazy: all other routes
 const CategoryPage = lazyWithRetry(() => import("./pages/CategoryPage"));
 const ProductPage = lazyWithRetry(() => import("./pages/ProductPage"));
@@ -68,9 +82,10 @@ const WorkplaceMemesPage = lazyWithRetry(() => import("./pages/WorkplaceMemesPag
 const OfficeNotesPage = lazyWithRetry(() => import("./pages/OfficeNotesPage"));
 const HaalarimerkkiPage = lazyWithRetry(() => import("./pages/GiftCategoryPage"));
 
-// Lazy: popups (not needed at initial load)
-const NewsletterPopup = lazyWithRetry(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
-const ExitIntentPopup = lazyWithRetry(() => import("./components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
+// Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
+// doesn't trigger a full-page reload loop that blanks the site.
+const NewsletterPopup = lazySafe(() => import("./components/NewsletterPopup").then(m => ({ default: m.NewsletterPopup })));
+const ExitIntentPopup = lazySafe(() => import("./components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
