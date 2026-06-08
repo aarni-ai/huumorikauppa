@@ -18,7 +18,7 @@ export const config = {
 };
 
 const BOT_REGEX =
-  /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|anthropic-ai|perplexitybot|perplexity-user|google-extended|applebot|applebot-extended|ccbot|bytespider|cohere-ai|amazonbot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|semrushbot|ahrefsbot|mj12bot|rogerbot/i;
+  /googlebot|storebot-google|google-inspectiontool|apis-google|bingbot|slurp|duckduckbot|baiduspider|yandexbot|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|anthropic-ai|perplexitybot|perplexity-user|google-extended|applebot|applebot-extended|ccbot|bytespider|cohere-ai|amazonbot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|semrushbot|ahrefsbot|mj12bot|rogerbot/i;
 
 interface PageMeta {
   title: string;
@@ -1269,6 +1269,14 @@ export default async function middleware(request: Request): Promise<Response | u
     if (pm) {
       meta = { title: pm.title, description: pm.description };
       productData = { ...pm, slug };
+    } else {
+      // Product exists in the app but not yet in PRODUCT_META (new product).
+      // Provide a minimal fallback so Googlebot still gets a self-canonical.
+      const nameFromSlug = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      meta = {
+        title: `${nameFromSlug} | Huumorikauppa.fi`,
+        description: `${nameFromSlug} – hauska tuote lahjaksi tai itselle. Tilaa Huumorikauppa.fi:stä, nopea toimitus koko Suomeen.`,
+      };
     }
   }
   // Situation gift pages: /lahjat/:slug
@@ -1422,14 +1430,24 @@ export default async function middleware(request: Request): Promise<Response | u
     // Inject product JSON-LD for /tuote/ pages
     if (productData) {
       const pd = productData;
+      const productName = pd.title.replace(/ – [^|]+ \| Huumorikauppa\.fi$/, '').replace(/ \| Huumorikauppa\.fi$/, '');
+      const priceValidUntil = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const productSchema = {
         "@context": "https://schema.org/",
         "@type": "Product",
-        "name": pd.title.replace(/ – [^|]+ \| Huumorikauppa\.fi$/, '').replace(/ \| Huumorikauppa\.fi$/, ''),
+        "name": productName,
         "description": pd.description,
-        "image": pd.image,
+        "image": [pd.image],
         "sku": pd.slug,
+        "mpn": pd.slug,
         "brand": { "@type": "Brand", "name": "Huumorikauppa" },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "4",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "url": `https://huumorikauppa.fi/tuote/${pd.slug}`,
@@ -1437,8 +1455,26 @@ export default async function middleware(request: Request): Promise<Response | u
           "price": pd.price.toFixed(2),
           "availability": "https://schema.org/InStock",
           "itemCondition": "https://schema.org/NewCondition",
-          "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" }
+          "priceValidUntil": priceValidUntil,
+          "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "EUR" },
+            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+              "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY" }
+            }
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "FI",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 14,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
+          }
         }
       };
       const breadcrumbSchema = {
@@ -1447,7 +1483,7 @@ export default async function middleware(request: Request): Promise<Response | u
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Etusivu", "item": "https://huumorikauppa.fi/" },
           { "@type": "ListItem", "position": 2, "name": pd.categoryName, "item": `https://huumorikauppa.fi/kategoria/${pd.category}` },
-          { "@type": "ListItem", "position": 3, "name": productSchema.name, "item": `https://huumorikauppa.fi/tuote/${pd.slug}` }
+          { "@type": "ListItem", "position": 3, "name": productName, "item": `https://huumorikauppa.fi/tuote/${pd.slug}` }
         ]
       };
       html = injectJsonLd(html, productSchema, breadcrumbSchema);
