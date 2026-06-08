@@ -15,7 +15,7 @@ export const giftHubLinks: SiteLink[] = [
   { path: "/isanpaiva-lahjat",         label: "Isänpäivälahjat",          emoji: "👨", tags: ["isänpäivä", "miehelle", "lahjat"] },
   { path: "/aitienpaiva",              label: "Äitienpäivälahjat",        emoji: "💐", tags: ["äitienpäivä", "naiselle", "lahjat"] },
   { path: "/joululahjat",              label: "Joululahjat",              emoji: "🎄", tags: ["joulu", "lahjat"] },
-  { path: "/syntymapaivaLahjat",       label: "Syntymäpäivälahjat",      emoji: "🎂", tags: ["synttäri", "lahjat"] },
+  { path: "/syntymapaivalahjat",        label: "Syntymäpäivälahjat",      emoji: "🎂", tags: ["synttäri", "lahjat"] },
   { path: "/elakelahjat",              label: "Eläkelahjat",              emoji: "🎓", tags: ["eläke", "lahjat"] },
   { path: "/lahja-kaverille",          label: "Lahja kaverille",          emoji: "🤝", tags: ["kaveri", "lahjat"] },
   { path: "/lahja-tyokaverille",       label: "Lahja työkaverille",       emoji: "💼", tags: ["työkaveri", "lahjat"] },
