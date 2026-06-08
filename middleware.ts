@@ -23,6 +23,7 @@ const BOT_REGEX =
 interface PageMeta {
   title: string;
   description: string;
+  noindex?: boolean;
 }
 
 interface ProductMeta {
@@ -783,10 +784,6 @@ const PAGE_META: Record<string, PageMeta> = {
     title: 'Joululahjat 2026 – Parhaat hauskat ideat | Huumorikauppa.fi',
     description: 'Parhaat joululahjat 2026! Hauskat ja yllättävät ideat koko perheelle. Osta ajoissa – nopea toimitus.',
   },
-  '/syntymapaivaLahjat': {
-    title: 'Syntymäpäivälahjat – Hauskat ja unohtumattomat ideat | Huumorikauppa.fi',
-    description: 'Hauska syntymäpäivälahja? Löydä täydellinen idea kaikille. Nopea toimitus koko Suomeen.',
-  },
   '/elakelahjat': {
     title: 'Eläkeläislahjat – Hauskat muistot eläkkeelle siirtyvälle | Huumorikauppa.fi',
     description: 'Eläkeläislahja joka muistetaan! Parhaat hauskat ideat eläkkeelle jäävälle. Tilaa verkosta helposti.',
@@ -890,6 +887,16 @@ const PAGE_META: Record<string, PageMeta> = {
   '/opiskelijan-haalarimerkit': {
     title: 'Opiskelijan haalarimerkit – Hauskat merkit | Huumorikauppa.fi',
     description: 'Opiskelijan haalarimerkit kaikille kiltojen ja ainejärjestöjen jäsenille. Räätälöitävät merkit ja valmiit mallit.',
+  },
+  '/admin': {
+    title: 'Admin – Huumorikauppa',
+    description: 'Huumorikaupan admin-paneeli.',
+    noindex: true,
+  },
+  '/admin/login': {
+    title: 'Admin-kirjautuminen – Huumorikauppa',
+    description: 'Huumorikaupan admin-paneeli.',
+    noindex: true,
   },
 };
 
@@ -1060,7 +1067,6 @@ const GIFT_CATEGORY_CATS: Record<string, string[]> = {
   '/isanpaiva-lahjat':        ['t-paidat', 'hupparit', 'mukit'],
   '/joululahjat':             ['t-paidat', 'hupparit', 'mukit'],
   '/syntymapaivalahjat':      ['t-paidat', 'hupparit', 'mukit'],
-  '/syntymapaivaLahjat':      ['t-paidat', 'hupparit', 'mukit'],
   '/elakelahjat':             ['t-paidat', 'hupparit', 'mukit'],
   '/polttari-lahjat':         ['t-paidat', 'hupparit'],
   '/lahja-kaverille':         ['t-paidat', 'hupparit', 'mukit'],
@@ -1398,6 +1404,17 @@ export default async function middleware(request: Request): Promise<Response | u
       /<meta name="description"[^>]*>/,
       `<meta name="description" content="${safeDesc}">`
     );
+
+    if (meta.noindex) {
+      html = html.replace(
+        /<meta name="robots"[^>]*>/,
+        `<meta name="robots" content="noindex, nofollow">`
+      );
+      html = html.replace(
+        /<meta name="googlebot"[^>]*>/,
+        `<meta name="googlebot" content="noindex, nofollow">`
+      );
+    }
 
     const canonicalTag = `<link rel="canonical" href="${canonical}">`;
     if (/<link rel="canonical"[^>]*>/.test(html)) {

@@ -145,7 +145,6 @@ const App = () => (
               {/* 301-redirect: vanha äitienpäiväsivu → uusi /aitienpaiva */}
               <Route path="/aitienpaiva-lahjat" element={<MothersDayRedirect />} />
               <Route path="/joululahjat" element={<GiftCategoryPage />} />
-              <Route path="/syntymapaivaLahjat" element={<GiftCategoryPage />} />
               <Route path="/syntymapaivalahjat" element={<GiftCategoryPage />} />
               <Route path="/elakelahjat" element={<GiftCategoryPage />} />
               <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
