@@ -646,6 +646,9 @@ const ProductPage = () => {
 
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
+  const productReviewsForSchema = getProductReviews({ id: product.id, name: product.name, category: product.category });
+  const avgRatingForSchema = productReviewsForSchema.reduce((s, r) => s + r.stars, 0) / productReviewsForSchema.length;
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -660,6 +663,13 @@ const ProductPage = () => {
     "mpn": product.id,
     "brand": { "@type": "Brand", "name": "Huumorikauppa" },
     "category": categoryName,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": avgRatingForSchema.toFixed(1),
+      "reviewCount": String(productReviewsForSchema.length),
+      "bestRating": "5",
+      "worstRating": "1"
+    },
     "offers": {
       "@type": "Offer",
       "price": product.price.toFixed(2),
@@ -891,6 +901,8 @@ const ProductPage = () => {
                       alt={`${product.name}${selectedColor ? ' ' + selectedColor : ''} – ${categoryName} kuva ${i + 1} | Huumorikauppa`}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      width={64}
+                      height={64}
                     />
                   </button>
                 ))}
@@ -1278,6 +1290,8 @@ const ProductPage = () => {
             src={product.images[0] || "/placeholder.svg"}
             alt=""
             className="w-12 h-12 rounded-md object-cover bg-muted shrink-0"
+            width={48}
+            height={48}
           />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-foreground truncate">{product.name}</p>

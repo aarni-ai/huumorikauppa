@@ -142,6 +142,8 @@ const CartPage = () => {
                       alt={p.name}
                       className="w-full aspect-square object-cover bg-muted"
                       loading="lazy"
+                      width={200}
+                      height={200}
                     />
                     <div className="p-2">
                       <p className="text-xs font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">{p.name}</p>
