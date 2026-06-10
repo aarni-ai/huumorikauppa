@@ -21,6 +21,7 @@ export interface OrderItem {
   name: string;
   quantity: number;
   price: number;
+  customText?: string;
 }
 
 interface PrintifyLineItem {
@@ -322,6 +323,32 @@ export async function processCheckoutSession(
   const customerName =
     metadata.customer_name || session.customer_details?.name || null;
   const total = (session.amount_total || 0) / 100;
+
+  // Customer personalisation texts (oma teksti/kuva) from checkout metadata.
+  // Stored as chunked JSON arrays: custom_texts, custom_texts_2, ...
+  const customTextEntries: { n: string; s?: string; c?: string; t: string }[] = (() => {
+    const entries: { n: string; s?: string; c?: string; t: string }[] = [];
+    for (const key of Object.keys(metadata)) {
+      if (key !== "custom_texts" && !key.startsWith("custom_texts_")) continue;
+      try {
+        const parsed = JSON.parse(metadata[key] as string);
+        if (Array.isArray(parsed)) entries.push(...parsed.filter((e) => e && typeof e.t === "string"));
+      } catch { /* ignore malformed chunk */ }
+    }
+    return entries;
+  })();
+
+  const attachCustomTexts = (orderItems: OrderItem[]): OrderItem[] => {
+    if (customTextEntries.length === 0) return orderItems;
+    const pool = [...customTextEntries];
+    return orderItems.map((it) => {
+      if (it.customText) return it;
+      const idx = pool.findIndex((e) => it.name && (it.name.startsWith(e.n) || e.n.startsWith(it.name) || it.name.includes(e.n)));
+      if (idx === -1) return it;
+      const [entry] = pool.splice(idx, 1);
+      return { ...it, customText: entry.t };
+    });
+  };
 
   // 1) Look up or insert order
   const { data: existing } = await supabase
