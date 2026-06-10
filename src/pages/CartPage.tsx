@@ -75,7 +75,7 @@ const CartPage = () => {
         {/* Items */}
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => (
-            <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-4 bg-card border border-border rounded-lg p-4">
+            <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${item.customText || ""}`} className="flex gap-4 bg-card border border-border rounded-lg p-4">
               <Link to={`/tuote/${item.product.slug}`} className="shrink-0">
                 <img
                   src={item.product.images[0] || "/placeholder.svg"}
@@ -94,17 +94,20 @@ const CartPage = () => {
                   {item.selectedSize && <span>Koko: {item.selectedSize}</span>}
                   {item.selectedColor && <span>Väri: {item.selectedColor}</span>}
                 </div>
+                {item.customText && (
+                  <p className="text-sm text-primary mt-1 break-words">✍️ Oma teksti: ”{item.customText}”</p>
+                )}
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.selectedSize, item.selectedColor)}
+                      onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.selectedSize, item.selectedColor, item.customText)}
                       className="w-8 h-8 rounded border border-border flex items-center justify-center hover:bg-muted text-foreground"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
                     <span className="text-sm font-bold text-foreground w-6 text-center">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedSize, item.selectedColor)}
+                      onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedSize, item.selectedColor, item.customText)}
                       className="w-8 h-8 rounded border border-border flex items-center justify-center hover:bg-muted text-foreground"
                     >
                       <Plus className="h-3 w-3" />
@@ -113,7 +116,7 @@ const CartPage = () => {
                   <div className="flex items-center gap-3">
                     <span className="font-bold text-primary">{(item.product.price * item.quantity).toFixed(2)} €</span>
                     <button
-                      onClick={() => removeItem(item.product.id, item.selectedSize, item.selectedColor)}
+                      onClick={() => removeItem(item.product.id, item.selectedSize, item.selectedColor, item.customText)}
                       className="text-muted-foreground hover:text-destructive p-1"
                     >
                       <Trash2 className="h-4 w-4" />

@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface OrderInfo {
   id: string;
-  items: Array<{ name: string; quantity: number; price: number }>;
+  items: Array<{ name: string; quantity: number; price: number; customText?: string }>;
   total: number;
   status: string;
   created_at: string;
@@ -239,9 +239,14 @@ const OrderConfirmation = () => {
         <div className="bg-card border border-border rounded-lg p-6 space-y-2 text-left">
           <h3 className="font-display text-lg text-foreground mb-2">Tilauksesi</h3>
           {order.items.map((item, i) => (
-            <div key={i} className="flex justify-between text-sm text-muted-foreground">
-              <span>{item.quantity}× {item.name}</span>
-              <span>{(item.price * item.quantity).toFixed(2)} €</span>
+            <div key={i} className="text-sm text-muted-foreground">
+              <div className="flex justify-between">
+                <span>{item.quantity}× {item.name}</span>
+                <span>{(item.price * item.quantity).toFixed(2)} €</span>
+              </div>
+              {item.customText && (
+                <p className="text-xs text-primary break-words">✍️ Oma teksti: ”{item.customText}”</p>
+              )}
             </div>
           ))}
           <div className="flex justify-between font-bold text-foreground pt-2 border-t border-border">

@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { categories } from "@/data/products";
 import { sortSizes } from "@/lib/sortSizes";
+import { isCustomTextProduct } from "@/lib/customProduct";
 
 interface ProductCardProps {
   product: Product;
@@ -110,6 +111,10 @@ export function ProductCard({ product }: ProductCardProps) {
   }, [showOptions]);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
+    if (isCustomTextProduct(product)) {
+      // Custom products need the design-wish text → let the click navigate to the product page
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
 

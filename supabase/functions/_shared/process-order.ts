@@ -21,6 +21,7 @@ export interface OrderItem {
   name: string;
   quantity: number;
   price: number;
+  customText?: string;
 }
 
 interface PrintifyLineItem {
@@ -323,6 +324,32 @@ export async function processCheckoutSession(
     metadata.customer_name || session.customer_details?.name || null;
   const total = (session.amount_total || 0) / 100;
 
+  // Customer personalisation texts (oma teksti/kuva) from checkout metadata.
+  // Stored as chunked JSON arrays: custom_texts, custom_texts_2, ...
+  const customTextEntries: { n: string; s?: string; c?: string; t: string }[] = (() => {
+    const entries: { n: string; s?: string; c?: string; t: string }[] = [];
+    for (const key of Object.keys(metadata)) {
+      if (key !== "custom_texts" && !key.startsWith("custom_texts_")) continue;
+      try {
+        const parsed = JSON.parse(metadata[key] as string);
+        if (Array.isArray(parsed)) entries.push(...parsed.filter((e) => e && typeof e.t === "string"));
+      } catch { /* ignore malformed chunk */ }
+    }
+    return entries;
+  })();
+
+  const attachCustomTexts = (orderItems: OrderItem[]): OrderItem[] => {
+    if (customTextEntries.length === 0) return orderItems;
+    const pool = [...customTextEntries];
+    return orderItems.map((it) => {
+      if (it.customText) return it;
+      const idx = pool.findIndex((e) => it.name && (it.name.startsWith(e.n) || e.n.startsWith(it.name) || it.name.includes(e.n)));
+      if (idx === -1) return it;
+      const [entry] = pool.splice(idx, 1);
+      return { ...it, customText: entry.t };
+    });
+  };
+
   // 1) Look up or insert order
   const { data: existing } = await supabase
     .from("orders")
@@ -341,7 +368,7 @@ export async function processCheckoutSession(
 
   if (existing) {
     orderId = existing.id as string;
-    items = Array.isArray(existing.items) ? (existing.items as OrderItem[]) : [];
+    items = attachCustomTexts(Array.isArray(existing.items) ? (existing.items as OrderItem[]) : []);
     existingPrintifyStatus = existing.printify_status as string;
     existingEmailStatus = existing.email_confirmation_status as string;
     effectiveCustomerEmail = effectiveCustomerEmail || (existing.customer_email as string | null);
@@ -351,17 +378,22 @@ export async function processCheckoutSession(
     // Ensure status is paid
     await supabase
       .from("orders")
-      .update({ status: "paid", payment_status: "paid" })
+      .update({
+        status: "paid",
+        payment_status: "paid",
+        // Persist customer personalisation texts in case the original insert missed them
+        ...(customTextEntries.length > 0 ? { items } : {}),
+      })
       .eq("id", orderId);
   } else {
     // Fetch line items from Stripe
     try {
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
-      items = lineItems.data.map((li: any) => ({
+      items = attachCustomTexts(lineItems.data.map((li: any) => ({
         name: li.description || "Tuote",
         quantity: li.quantity || 1,
         price: (li.amount_total || 0) / 100 / (li.quantity || 1),
-      }));
+      })));
     } catch (err) {
       console.error("Failed to fetch Stripe line items:", err);
     }

@@ -111,6 +111,11 @@ export function AddToCartDrawer() {
                     <span>Väri: {lastAddedItem.color}</span>
                   )}
                 </div>
+                {lastAddedItem.customText && (
+                  <p className="text-xs text-primary mt-1 break-words">
+                    ✍️ Oma teksti: ”{lastAddedItem.customText}”
+                  </p>
+                )}
               </div>
             </div>
 

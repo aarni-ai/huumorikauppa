@@ -20,6 +20,7 @@ export interface LastAddedItem {
   product: Product;
   size?: string;
   color?: string;
+  customText?: string;
 }
 
 export function useCart() {
@@ -30,34 +31,35 @@ export function useCart() {
     saveCart(items);
   }, [items]);
 
-  const addItem = useCallback((product: Product, quantity = 1, selectedSize?: string, selectedColor?: string) => {
+  const addItem = useCallback((product: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string) => {
+    const trimmedText = customText?.trim() ? customText.trim().slice(0, 200) : undefined;
     setItems(prev => {
       const existing = prev.find(
-        i => i.product.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor
+        i => i.product.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor && (i.customText || undefined) === trimmedText
       );
       if (existing) {
         return prev.map(i =>
           i === existing ? { ...i, quantity: i.quantity + quantity } : i
         );
       }
-      return [...prev, { product, quantity, selectedSize, selectedColor }];
+      return [...prev, { product, quantity, selectedSize, selectedColor, customText: trimmedText }];
     });
-    setLastAddedItem({ product, size: selectedSize, color: selectedColor });
+    setLastAddedItem({ product, size: selectedSize, color: selectedColor, customText: trimmedText });
   }, []);
 
-  const removeItem = useCallback((productId: string, selectedSize?: string, selectedColor?: string) => {
+  const removeItem = useCallback((productId: string, selectedSize?: string, selectedColor?: string, customText?: string) => {
     setItems(prev => prev.filter(
-      i => !(i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor)
+      i => !(i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor && (i.customText || undefined) === (customText || undefined))
     ));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number, selectedSize?: string, selectedColor?: string) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, selectedSize?: string, selectedColor?: string, customText?: string) => {
     if (quantity <= 0) {
-      removeItem(productId, selectedSize, selectedColor);
+      removeItem(productId, selectedSize, selectedColor, customText);
       return;
     }
     setItems(prev => prev.map(i =>
-      i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor
+      i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor && (i.customText || undefined) === (customText || undefined)
         ? { ...i, quantity }
         : i
     ));

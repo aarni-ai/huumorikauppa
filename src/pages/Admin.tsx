@@ -373,9 +373,14 @@ const Admin = () => {
                 <div className="text-xs text-muted-foreground uppercase font-medium mb-2">Tuotteet</div>
                 <div className="space-y-1 bg-muted/30 rounded p-3">
                   {Array.isArray(selectedOrder.items) && selectedOrder.items.map((it: any, i: number) => (
-                    <div key={i} className="flex justify-between">
-                      <span className="text-foreground">{it.quantity}× {it.name}</span>
-                      <span className="text-muted-foreground">{Number(it.price).toFixed(2)} €</span>
+                    <div key={i}>
+                      <div className="flex justify-between">
+                        <span className="text-foreground">{it.quantity}× {it.name}</span>
+                        <span className="text-muted-foreground">{Number(it.price).toFixed(2)} €</span>
+                      </div>
+                      {it.customText && (
+                        <p className="text-xs text-primary font-medium break-words">✍️ OMA TEKSTI: ”{it.customText}”</p>
+                      )}
                     </div>
                   ))}
                 </div>

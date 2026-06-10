@@ -9,7 +9,7 @@ const SITE_NAME = "Huumorikauppa"
 interface OrderConfirmationProps {
   customerName?: string
   orderTotal?: string
-  items?: Array<{ name: string; quantity: number; price: number }>
+  items?: Array<{ name: string; quantity: number; price: number; customText?: string }>
 }
 
 const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfirmationProps) => (
@@ -32,6 +32,7 @@ const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfir
             {items.map((item, i) => (
               <Text key={i} style={itemRow}>
                 {item.quantity}× {item.name} – {item.price.toFixed(2)} €
+                {item.customText ? ` · ✍️ Oma teksti: "${item.customText}"` : ''}
               </Text>
             ))}
           </Section>

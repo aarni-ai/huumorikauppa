@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, Check, ArrowRight } from "lucide-react";
 import { useCartContext } from "@/context/CartContext";
 import { Product } from "@/types/product";
+import { isCustomTextProduct } from "@/lib/customProduct";
 
 interface InlineProductCardProps {
   product: Product;
@@ -14,7 +15,7 @@ export function InlineProductCard({ product }: InlineProductCardProps) {
 
   const sizes: string[] = product.variants?.sizes || [];
   const colors: string[] = product.variants?.colors || [];
-  const canAddDirectly = sizes.length <= 1;
+  const canAddDirectly = sizes.length <= 1 && !isCustomTextProduct(product);
 
   const handleAdd = () => {
     addItem(product, 1, sizes[0], colors[0]);
