@@ -368,7 +368,7 @@ export async function processCheckoutSession(
 
   if (existing) {
     orderId = existing.id as string;
-    items = Array.isArray(existing.items) ? (existing.items as OrderItem[]) : [];
+    items = attachCustomTexts(Array.isArray(existing.items) ? (existing.items as OrderItem[]) : []);
     existingPrintifyStatus = existing.printify_status as string;
     existingEmailStatus = existing.email_confirmation_status as string;
     effectiveCustomerEmail = effectiveCustomerEmail || (existing.customer_email as string | null);
@@ -384,11 +384,11 @@ export async function processCheckoutSession(
     // Fetch line items from Stripe
     try {
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
-      items = lineItems.data.map((li: any) => ({
+      items = attachCustomTexts(lineItems.data.map((li: any) => ({
         name: li.description || "Tuote",
         quantity: li.quantity || 1,
         price: (li.amount_total || 0) / 100 / (li.quantity || 1),
-      }));
+      })));
     } catch (err) {
       console.error("Failed to fetch Stripe line items:", err);
     }
