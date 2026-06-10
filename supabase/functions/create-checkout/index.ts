@@ -18,6 +18,7 @@ interface CartLineItem {
   image?: string;
   size?: string;
   color?: string;
+  customText?: string;  // customer's personalisation wish (oma teksti/kuva)
 }
 
 interface CheckoutRequest {
@@ -212,6 +213,10 @@ serve(async (req) => {
         const description = [item.size && `Koko: ${item.size}`, item.color && `Väri: ${item.color}`]
           .filter(Boolean)
           .join(", ");
+        const cleanCustomText = typeof item.customText === "string" ? item.customText.trim().slice(0, 200) : "";
+        const fullDescription = [description, cleanCustomText ? `Oma teksti: "${cleanCustomText}"` : ""]
+          .filter(Boolean)
+          .join(" | ");
 
         const validImage = isValidImageUrl(item.image) ? item.image : undefined;
 
@@ -226,7 +231,7 @@ serve(async (req) => {
             currency: "eur",
             product_data: {
               name: item.name,
-              ...(description ? { description } : {}),
+              ...(fullDescription ? { description: fullDescription } : {}),
               ...(validImage ? { images: [validImage] } : {}),
             },
             unit_amount: finalUnitAmount,
