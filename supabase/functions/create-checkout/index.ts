@@ -265,6 +265,33 @@ serve(async (req) => {
         quantity: i.quantity,
       }));
 
+    // Customer personalisation texts → Stripe metadata (each value ≤500 chars).
+    // Chunked into custom_texts, custom_texts_2, ... so nothing gets cut off.
+    const customTextEntries = resolved
+      .filter((i) => typeof i.customText === "string" && i.customText.trim().length > 0)
+      .map((i) => ({
+        n: i.name.slice(0, 80),
+        s: i.size || "",
+        c: i.color || "",
+        t: i.customText!.trim().slice(0, 200),
+      }));
+    const customTextMetadata: Record<string, string> = {};
+    if (customTextEntries.length > 0) {
+      let chunk: typeof customTextEntries = [];
+      let key = 1;
+      const flush = () => {
+        if (chunk.length === 0) return;
+        customTextMetadata[key === 1 ? "custom_texts" : `custom_texts_${key}`] = JSON.stringify(chunk);
+        key++;
+        chunk = [];
+      };
+      for (const entry of customTextEntries) {
+        if (JSON.stringify([...chunk, entry]).length > 450) flush();
+        chunk.push(entry);
+      }
+      flush();
+    }
+
     const session = await stripe.checkout.sessions.create({
       customer_email: customerEmail,
       line_items: lineItems,
@@ -277,6 +304,7 @@ serve(async (req) => {
         // Printify fulfillment payload (compact JSON, ≤500 chars per metadata value typical)
         printify_items: JSON.stringify(printifyItems),
         discount_code: discountCode || "",
+        ...customTextMetadata,
       },
       locale: "fi",
     });
