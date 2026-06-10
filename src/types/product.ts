@@ -20,4 +20,5 @@ export interface CartItem {
   quantity: number;
   selectedSize?: string;
   selectedColor?: string;
+  customText?: string;
 }
