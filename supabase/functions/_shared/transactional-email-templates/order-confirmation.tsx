@@ -32,6 +32,7 @@ const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfir
             {items.map((item, i) => (
               <Text key={i} style={itemRow}>
                 {item.quantity}× {item.name} – {item.price.toFixed(2)} €
+                {item.customText ? ` · ✍️ Oma teksti: "${item.customText}"` : ''}
               </Text>
             ))}
           </Section>

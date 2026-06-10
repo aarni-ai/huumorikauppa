@@ -60,6 +60,7 @@ const NewOrderAdminEmail = ({
             {items.map((item, i) => (
               <Text key={i} style={detailRow}>
                 {item.quantity}× {item.name} – {item.price.toFixed(2)} €
+                {item.customText ? <strong> · ✍️ OMA TEKSTI: "{item.customText}"</strong> : null}
               </Text>
             ))}
           </Section>

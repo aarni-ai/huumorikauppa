@@ -378,7 +378,12 @@ export async function processCheckoutSession(
     // Ensure status is paid
     await supabase
       .from("orders")
-      .update({ status: "paid", payment_status: "paid" })
+      .update({
+        status: "paid",
+        payment_status: "paid",
+        // Persist customer personalisation texts in case the original insert missed them
+        ...(customTextEntries.length > 0 ? { items } : {}),
+      })
       .eq("id", orderId);
   } else {
     // Fetch line items from Stripe
