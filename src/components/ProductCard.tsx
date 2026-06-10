@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { categories } from "@/data/products";
 import { sortSizes } from "@/lib/sortSizes";
+import { isCustomTextProduct } from "@/lib/customProduct";
 
 interface ProductCardProps {
   product: Product;
