@@ -1023,18 +1023,19 @@ const ProductPage = () => {
             {/* Custom text input */}
             {isCustom && (
               <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
-                  Minkä tekstin haluat tuotteeseen? ✍️
+                <label htmlFor="custom-text-input" className="text-sm font-medium text-foreground mb-2 block">
+                  Minkä tekstin/kuvan haluat tuotteeseen? ✍️ <span className="text-primary">*</span>
                 </label>
                 <Textarea
-                  placeholder="Kirjoita haluamasi teksti tähän..."
+                  id="custom-text-input"
+                  placeholder="Kirjoita haluamasi teksti tai kuvaile kuvatoiveesi tähän..."
                   value={customText}
                   onChange={(e) => setCustomText(e.target.value)}
                   className="bg-muted border-border resize-none"
                   maxLength={200}
                   rows={3}
                 />
-                <p className="text-xs text-muted-foreground mt-1">{customText.length}/200 merkkiä</p>
+                <p className="text-xs text-muted-foreground mt-1">{customText.length}/200 merkkiä · Toiveesi kulkee tilauksen mukana meille asti</p>
               </div>
             )}
 

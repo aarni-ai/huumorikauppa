@@ -110,6 +110,10 @@ export function ProductCard({ product }: ProductCardProps) {
   }, [showOptions]);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
+    if (isCustomTextProduct(product)) {
+      // Custom products need the design-wish text → let the click navigate to the product page
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
 
