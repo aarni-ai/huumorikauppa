@@ -9,7 +9,7 @@ const SITE_NAME = "Huumorikauppa"
 interface OrderConfirmationProps {
   customerName?: string
   orderTotal?: string
-  items?: Array<{ name: string; quantity: number; price: number }>
+  items?: Array<{ name: string; quantity: number; price: number; customText?: string }>
 }
 
 const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfirmationProps) => (

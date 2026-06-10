@@ -13,7 +13,7 @@ interface NewOrderAdminProps {
   orderId?: string
   stripeSessionId?: string
   shippingAddress?: { address?: string; zip?: string; city?: string }
-  items?: Array<{ name: string; quantity: number; price: number }>
+  items?: Array<{ name: string; quantity: number; price: number; customText?: string }>
 }
 
 const NewOrderAdminEmail = ({
