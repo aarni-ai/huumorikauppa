@@ -140,7 +140,7 @@ const Index = () => {
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
           {/* Mobile: tall version */}
           <img
-            src="/images/hero-banner.png?v=2"
+            src="/images/hero-banner.png?v=4"
             alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
             className="w-full h-auto object-cover object-center block md:hidden"
             width={800}
@@ -151,7 +151,7 @@ const Index = () => {
           />
           {/* Tablet & Desktop: wide version */}
           <img
-            src="/images/hero-banner-wide.png?v=3"
+            src="/images/hero-banner-wide.png?v=4"
             alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
             width={1200}
