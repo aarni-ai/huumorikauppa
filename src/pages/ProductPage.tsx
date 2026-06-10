@@ -16,6 +16,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
+import { isCustomTextProduct } from "@/lib/customProduct";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 
@@ -472,11 +473,6 @@ function toProxiedImage(url: string): string {
   }
 }
 
-function isCustomTextProduct(product: { name: string; description: string }): boolean {
-  const t = (product.name + ' ' + product.description).toLowerCase();
-  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
-}
-
 const ProductPage = () => {
   const { slug } = useParams();
   const { product, products: allProducts = [], isLoading } = useProduct(slug);
@@ -607,8 +603,17 @@ const ProductPage = () => {
       toast({ title: "Valitse väri ensin! 🎨", variant: "destructive" });
       return;
     }
+    if (isCustom && !customText.trim()) {
+      toast({
+        title: "Kerro vielä toiveesi! ✍️",
+        description: "Tämä on personoitava tuote – kirjoita haluamasi teksti tai kuvatoive kenttään ennen koriin lisäystä.",
+        variant: "destructive",
+      });
+      document.getElementById("custom-text-input")?.focus();
+      return;
+    }
     const size = hideSize ? product.variants.sizes?.[0] : selectedSize;
-    addItem(product, quantity, size, selectedColor);
+    addItem(product, quantity, size, selectedColor, isCustom ? customText.trim() : undefined);
   };
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
