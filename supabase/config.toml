@@ -29,3 +29,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = false
   [functions.auto-sync-printify]
     verify_jwt = true
+  [functions.subscribe-mailerlite]
+    verify_jwt = false

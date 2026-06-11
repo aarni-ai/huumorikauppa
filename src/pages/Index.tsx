@@ -55,13 +55,10 @@ const Index = () => {
       return;
     }
     try {
-      await supabase.from("newsletter_subscribers").insert({
-        email: newsletterEmail.trim().toLowerCase(),
-        is_active: true,
-      });
-      await supabase.functions.invoke("notify-store", {
-        body: { email: newsletterEmail.trim().toLowerCase(), type: "newsletter" },
-      });
+      const email = newsletterEmail.trim().toLowerCase();
+      await supabase.functions.invoke("subscribe-mailerlite", { body: { email } });
+      await supabase.from("newsletter_subscribers").insert({ email, is_active: true });
+      await supabase.functions.invoke("notify-store", { body: { email, type: "newsletter" } });
     } catch {}
     setNewsletterSubmitted(true);
     toast({ title: "Kiitos! 🎉", description: "Alennuskoodisi on HUUMORI5 (-5%)" });

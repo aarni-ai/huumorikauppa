@@ -40,10 +40,11 @@ export function NewsletterPopup() {
     
     // Save to database
     try {
-      await supabase.from("newsletter_subscribers").insert({ email: email.trim().toLowerCase() });
-      // Notify store owner
+      const cleanEmail = email.trim().toLowerCase();
+      await supabase.functions.invoke("subscribe-mailerlite", { body: { email: cleanEmail } });
+      await supabase.from("newsletter_subscribers").insert({ email: cleanEmail });
       await supabase.functions.invoke("notify-store", {
-        body: { email: email.trim().toLowerCase(), type: "newsletter" },
+        body: { email: cleanEmail, type: "newsletter" },
       });
     } catch (err) {
       // Ignore duplicate errors
