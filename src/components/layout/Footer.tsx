@@ -41,13 +41,10 @@ export function Footer() {
       return;
     }
     try {
-      await supabase.from("newsletter_subscribers").insert({
-        email: footerEmail.trim().toLowerCase(),
-        is_active: true,
-      });
-      await supabase.functions.invoke("notify-store", {
-        body: { email: footerEmail.trim().toLowerCase(), type: "newsletter" },
-      });
+      const email = footerEmail.trim().toLowerCase();
+      await supabase.functions.invoke("subscribe-mailerlite", { body: { email } });
+      await supabase.from("newsletter_subscribers").insert({ email, is_active: true });
+      await supabase.functions.invoke("notify-store", { body: { email, type: "newsletter" } });
     } catch {}
     setFooterSubmitted(true);
     toast({ title: "Kiitos tilauksesta! 🎉", description: "Alennuskoodisi: HUUMORI5 (-5%)" });
