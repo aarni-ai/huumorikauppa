@@ -27,17 +27,35 @@ async function mlFetch(path: string, apiKey: string, init: RequestInit = {}) {
   return { ok: res.ok, status: res.status, data };
 }
 
+function stripHtml(s: string) {
+  return (s ?? "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function safeImage(url: any): string | undefined {
+  if (!url || typeof url !== "string") return undefined;
+  if (!/^https?:\/\//i.test(url)) return undefined;
+  return url;
+}
+
 function buildProductPayload(p: any) {
-  return {
+  const price = Number(p.price ?? 0);
+  const image = safeImage(p.images?.[0] ?? p.image ?? p.image_url);
+  const slug = p.slug || p.id;
+  const payload: Record<string, any> = {
     resource_id: String(p.id),
-    name: p.name ?? "Tuote",
-    description: (p.description ?? "").substring(0, 1000),
-    url: `${SITE}/tuote/${p.slug}`,
-    image: p.images?.[0] ?? undefined,
-    price: Number(p.price ?? 0).toFixed(2),
+    name: (p.name ?? "Tuote").toString().slice(0, 255),
+    description: stripHtml(p.description ?? "").slice(0, 1000),
+    url: `${SITE}/tuote/${slug}`,
+    price: price.toFixed(2),
     currency: "EUR",
-    status: (Number(p.stock ?? 0) > 0) ? "in_stock" : "out_of_stock",
+    status: (Number(p.stock ?? 1) > 0) ? "in_stock" : "out_of_stock",
   };
+  if (image) payload.image = image;
+  return payload;
 }
 
 serve(async (req) => {
@@ -52,32 +70,73 @@ serve(async (req) => {
         status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    let shopId = Deno.env.get("MAILERLITE_SHOP_ID") || "";
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Auto-create shop if not provided
-    if (!shopId) {
-      const created = await mlFetch("/ecommerce/shops", apiKey, {
-        method: "POST",
-        body: JSON.stringify({
-          name: "Huumorikauppa",
-          url: SITE,
-          currency: "EUR",
-          platform: "custom",
-        }),
-      });
-      if (!created.ok) {
-        return new Response(JSON.stringify({
-          error: "Failed to create MailerLite shop. Set MAILERLITE_SHOP_ID secret to an existing shop id.",
-          details: created.data,
-        }), { status: created.status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    // 1) Resolve shop id: prefer DB cache, then verify against MailerLite, else create.
+    let shopId = "";
+    const { data: settingRow } = await supabase
+      .from("integration_settings")
+      .select("value")
+      .eq("key", "mailerlite_shop_id")
+      .maybeSingle();
+    if (settingRow?.value) shopId = String(settingRow.value);
+
+    // Validate cached shop id exists in MailerLite
+    if (shopId) {
+      const check = await mlFetch(`/ecommerce/shops/${shopId}`, apiKey);
+      if (!check.ok) {
+        console.log("Cached shop id invalid, will recreate:", shopId, check.status, check.data);
+        shopId = "";
       }
-      shopId = String(created.data?.data?.id ?? created.data?.id ?? "");
-      console.log("Created MailerLite shop:", shopId, created.data);
+    }
+
+    if (!shopId) {
+      // Try to find an existing "Huumorikauppa" shop first
+      const list = await mlFetch(`/ecommerce/shops`, apiKey);
+      const shops: any[] = list.data?.data ?? list.data ?? [];
+      const existing = Array.isArray(shops)
+        ? shops.find((s) => (s?.name ?? "").toLowerCase() === "huumorikauppa")
+        : null;
+      if (existing?.id) {
+        shopId = String(existing.id);
+        console.log("Found existing MailerLite shop:", shopId);
+      } else {
+        const created = await mlFetch("/ecommerce/shops", apiKey, {
+          method: "POST",
+          body: JSON.stringify({
+            name: "Huumorikauppa",
+            url: SITE,
+            currency: "EUR",
+            platform: "custom",
+          }),
+        });
+        if (!created.ok) {
+          return new Response(JSON.stringify({
+            error: "Failed to create MailerLite shop",
+            status: created.status,
+            details: created.data,
+          }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        shopId = String(created.data?.data?.id ?? created.data?.id ?? "");
+        console.log("Created MailerLite shop:", shopId);
+      }
+
+      // Persist shop id for future runs
+      if (shopId) {
+        await supabase
+          .from("integration_settings")
+          .upsert({ key: "mailerlite_shop_id", value: shopId, updated_at: new Date().toISOString() });
+      }
+    }
+
+    if (!shopId) {
+      return new Response(JSON.stringify({ error: "Could not resolve MailerLite shop id" }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Fetch products
@@ -93,30 +152,29 @@ serve(async (req) => {
     }
 
     const all = (products ?? []).map(buildProductPayload);
-    const chunkSize = 50;
     let sent = 0;
     const errors: any[] = [];
 
-    for (let i = 0; i < all.length; i += chunkSize) {
-      const chunk = all.slice(i, i + chunkSize);
-      // Try per-product POST (most compatible MailerLite e-commerce endpoint)
-      for (const product of chunk) {
-        const res = await mlFetch(`/ecommerce/shops/${shopId}/products`, apiKey, {
-          method: "POST",
-          body: JSON.stringify(product),
-        });
-        if (!res.ok) {
-          // Try update if it already exists
-          const upd = await mlFetch(`/ecommerce/shops/${shopId}/products/${encodeURIComponent(product.resource_id)}`, apiKey, {
-            method: "PUT",
-            body: JSON.stringify(product),
-          });
-          if (!upd.ok) {
-            errors.push({ resource_id: product.resource_id, status: res.status, details: res.data, updateStatus: upd.status, updateDetails: upd.data });
-            continue;
-          }
-        }
+    for (const product of all) {
+      const res = await mlFetch(`/ecommerce/shops/${shopId}/products`, apiKey, {
+        method: "POST",
+        body: JSON.stringify(product),
+      });
+      if (res.ok || res.status === 201) {
         sent++;
+        continue;
+      }
+      // If already exists, try PUT update
+      if (res.status === 409 || res.status === 422) {
+        const upd = await mlFetch(
+          `/ecommerce/shops/${shopId}/products/${encodeURIComponent(product.resource_id)}`,
+          apiKey,
+          { method: "PUT", body: JSON.stringify(product) },
+        );
+        if (upd.ok) { sent++; continue; }
+        errors.push({ resource_id: product.resource_id, postStatus: res.status, postDetails: res.data, putStatus: upd.status, putDetails: upd.data });
+      } else {
+        errors.push({ resource_id: product.resource_id, status: res.status, details: res.data });
       }
     }
 
@@ -126,7 +184,7 @@ serve(async (req) => {
       total: all.length,
       synced: sent,
       failed: errors.length,
-      errors: errors.slice(0, 10),
+      errors: errors.slice(0, 5),
     }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (err) {
     console.error("sync-mailerlite-products error:", err);
