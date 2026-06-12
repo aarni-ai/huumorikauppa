@@ -31,3 +31,5 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = true
   [functions.subscribe-mailerlite]
     verify_jwt = false
+  [functions.sync-mailerlite-products]
+    verify_jwt = true

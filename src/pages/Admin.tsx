@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SEOHead } from "@/components/SEOHead";
-import { Loader2, RefreshCw, LogOut, Package, AlertCircle, CheckCircle2, Mail, Eye, X } from "lucide-react";
+import { Loader2, RefreshCw, LogOut, Package, AlertCircle, CheckCircle2, Mail, Eye, X, Send } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
@@ -56,6 +56,7 @@ const Admin = () => {
   const [selectedOrder, setSelectedOrder] = useState<OrderRow | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [markingId, setMarkingId] = useState<string | null>(null);
+  const [syncingMl, setSyncingMl] = useState(false);
 
   // Auth + role guard
   useEffect(() => {
@@ -194,6 +195,29 @@ const Admin = () => {
           <p className="text-sm text-muted-foreground">Tilausten ja webhook-lokien hallinta</p>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-border"
+            disabled={syncingMl}
+            onClick={async () => {
+              setSyncingMl(true);
+              try {
+                const { data, error } = await supabase.functions.invoke("sync-mailerlite-products");
+                if (error) throw error;
+                toast({
+                  title: "MailerLite-synkronointi valmis",
+                  description: `Synkronoitu ${data?.synced ?? 0}/${data?.total ?? 0} tuotetta${data?.failed ? `, ${data.failed} virhettä` : ""}.`,
+                });
+              } catch (e: any) {
+                toast({ title: "Synkronointi epäonnistui", description: e?.message ?? "Tuntematon virhe", variant: "destructive" });
+              } finally {
+                setSyncingMl(false);
+              }
+            }}
+          >
+            <Send className={`h-4 w-4 mr-2 ${syncingMl ? "animate-pulse" : ""}`} /> Synkronoi MailerLiteen
+          </Button>
           <Button variant="outline" size="sm" onClick={loadData} className="border-border" disabled={loading}>
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Päivitä
           </Button>
