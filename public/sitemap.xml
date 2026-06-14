@@ -1210,4 +1210,81 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Profession pages /ammatti/:slug -->
+  <url><loc>https://huumorikauppa.fi/ammatti/sairaanhoitaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/lahihoitaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/laakari</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/opettaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/sahkoasentaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/putkimies</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/rakennusmies</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/hitsaaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/koodari</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/rekkakuljettaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/baarimikko</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/kokki</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/kirjanpitaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/myyntimies</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/poliisi</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/palomies</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/yrittaja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/fysioterapeutti</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/hammaslaakari</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/insin%C3%B6ori</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/maanviljelij%C3%A4</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/psykologi</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/ammatti/siivoja</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Hobby pages /harrastus/:slug -->
+  <url><loc>https://huumorikauppa.fi/harrastus/kalastus</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/metsastys</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/golf</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/juokseminen</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/kuntosali</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/sauna</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/py%C3%B6r%C3%A4ily</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/koiraharrastus</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/kissaharrastus</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/videopelit</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/ruoanlaitto</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/harrastus/retkily</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Municipality pages /kaupunki/:slug -->
+  <url><loc>https://huumorikauppa.fi/kaupunki/helsinki</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/espoo</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/tampere</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/turku</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/oulu</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/jyvaskyla</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/lahti</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/kuopio</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/joensuu</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/rovaniemi</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/vaasa</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/seinajoki</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/pori</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/hameenlinna</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/mikkeli</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/kokkola</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/lappeenranta</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/kaupunki/imatra</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Dialect pages /murre/:slug -->
+  <url><loc>https://huumorikauppa.fi/murre/stadin-slangi</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/murre/savon-murre</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/murre/tamperelainen</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/murre/turunmurre</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/murre/etela-pohjanmaa</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/murre/lapin-murre</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Content hub pages -->
+  <url><loc>https://huumorikauppa.fi/suomalaiset-tyopaikkameemit-top-50</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/hauskimmat-tyopaikkalaput-2026</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/hauskat-t-paidat</loc><lastmod>2026-06-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huumorikauppa.fi/hauskat-hupparit</loc><lastmod>2026-06-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huumorikauppa.fi/lahja-miehelle</loc><lastmod>2026-06-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huumorikauppa.fi/haalarimerkit</loc><lastmod>2026-06-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/opiskelijan-haalarimerkit</loc><lastmod>2026-06-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huumorikauppa.fi/aitienpaiva</loc><lastmod>2026-06-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

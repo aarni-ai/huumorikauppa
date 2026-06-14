@@ -81,6 +81,10 @@ const SituationGiftPage = lazyWithRetry(() => import("./pages/SituationGiftPage"
 const WorkplaceMemesPage = lazyWithRetry(() => import("./pages/WorkplaceMemesPage"));
 const OfficeNotesPage = lazyWithRetry(() => import("./pages/OfficeNotesPage"));
 const HaalarimerkkiPage = lazyWithRetry(() => import("./pages/GiftCategoryPage"));
+const ProfessionPage = lazyWithRetry(() => import("./pages/ProfessionPage"));
+const MunicipalityPage = lazyWithRetry(() => import("./pages/MunicipalityPage"));
+const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
+const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
 // doesn't trigger a full-page reload loop that blanks the site.
@@ -162,6 +166,11 @@ const App = () => (
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              {/* Content graph routes: professions, municipalities, hobbies, dialects */}
+              <Route path="/ammatti/:slug" element={<ProfessionPage />} />
+              <Route path="/kaupunki/:slug" element={<MunicipalityPage />} />
+              <Route path="/harrastus/:slug" element={<HobbyPage />} />
+              <Route path="/murre/:slug" element={<DialectPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
