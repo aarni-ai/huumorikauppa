@@ -57,6 +57,7 @@ const Admin = () => {
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [markingId, setMarkingId] = useState<string | null>(null);
   const [syncingMl, setSyncingMl] = useState(false);
+  const [syncingPrintify, setSyncingPrintify] = useState(false);
 
   // Auth + role guard
   useEffect(() => {
@@ -195,6 +196,31 @@ const Admin = () => {
           <p className="text-sm text-muted-foreground">Tilausten ja webhook-lokien hallinta</p>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-border"
+            disabled={syncingPrintify}
+            onClick={async () => {
+              setSyncingPrintify(true);
+              try {
+                const { data, error } = await supabase.functions.invoke("sync-printify", {
+                  body: { mode: "upsert" },
+                });
+                if (error) throw error;
+                toast({
+                  title: "Printify-synkronointi valmis",
+                  description: `Synkronoitu ${data?.products_synced ?? 0}/${data?.total_fetched ?? 0} tuotetta.`,
+                });
+              } catch (e: any) {
+                toast({ title: "Printify-sync epäonnistui", description: e?.message ?? "Tuntematon virhe", variant: "destructive" });
+              } finally {
+                setSyncingPrintify(false);
+              }
+            }}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${syncingPrintify ? "animate-spin" : ""}`} /> Synkronoi Printify
+          </Button>
           <Button
             variant="outline"
             size="sm"

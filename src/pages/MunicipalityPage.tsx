@@ -15,11 +15,14 @@ const MunicipalityPage = () => {
   const { data: allProducts, isLoading } = useProducts();
   usePrerenderReady(!isLoading && (allProducts?.length ?? 0) > 0);
 
-  // For city pages we show popular/featured products (no city-specific filter needed)
   const products = useMemo(() => {
-    if (!allProducts) return [];
-    return allProducts.slice(0, 12);
-  }, [allProducts]);
+    if (!allProducts || !municipality) return [];
+    const cityTag = `#kaupunki:${municipality.name}`;
+    const cityProducts = allProducts.filter(p =>
+      (p.description || '').includes(cityTag)
+    );
+    return cityProducts.length > 0 ? cityProducts : [];
+  }, [allProducts, municipality]);
 
   if (!municipality) {
     return <Navigate to="/kaikki-tuotteet" replace />;

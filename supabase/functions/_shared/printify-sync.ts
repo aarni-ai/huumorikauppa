@@ -23,7 +23,7 @@ function mapToCategory(text: string): string | null {
   if (t.includes('long sleeve') || t.includes('pitkähihainen') || t.includes('pitkahihainen')) return 'pitkahihaiset';
   if (t.includes('hoodie') || t.includes('hooded') || t.includes('sweatshirt') || t.includes('huppari')) return 'hupparit';
   if (t.includes('t-shirt') || t.includes('tee') || t.includes('t-paita')) return 't-paidat';
-  if (t.includes('mug') || t.includes('cup') || t.includes('tumbler') || t.includes('kahvikuppi')) return 'mukit';
+  if (t.includes('mug') || t.includes('cup') || t.includes('tumbler') || t.includes('kahvikuppi') || t.includes('kahvimuki') || t.includes('muki')) return 'mukit';
   if (t.includes('sticker') || t.includes('decal') || t.includes('tarra')) return 'tarrat';
   if (t.includes('onesie') || t.includes('bodysuit') || t.includes('body') || t.includes('baby')) return 'bodyt';
   if (t.includes('blanket') || t.includes('peitto') || t.includes('fleece')) return 'peitot';
@@ -335,7 +335,15 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
   if (translatedDefaultColor) variants.default_color = translatedDefaultColor;
   if (Object.keys(variantMap).length > 0) variants.variant_map = variantMap;
 
-  const cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
+  let cleanDesc = (p.description || '').replace(/<[^>]*>/g, '').trim();
+
+  // City products: embed city name as a machine-readable tag in description
+  // so the frontend can filter by city without a schema change.
+  const SKIP_TAGS = new Set(['Kaupunkipaidat', 'Kaupunkituotteet', 't-paita', 'huppari', 'muki', 'tpaita']);
+  if (Array.isArray(p.tags) && p.tags.includes('Kaupunkipaidat')) {
+    const cityTag = (p.tags as string[]).find((t: string) => !SKIP_TAGS.has(t));
+    if (cityTag) cleanDesc = cleanDesc + ` #kaupunki:${cityTag}`;
+  }
 
   let productSlug = slugify(productTitle);
   if (existingSlugs.includes(productSlug)) {
