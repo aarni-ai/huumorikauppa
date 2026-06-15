@@ -205,7 +205,7 @@ const Admin = () => {
               setSyncingPrintify(true);
               try {
                 const { data, error } = await supabase.functions.invoke("sync-printify", {
-                  body: { mode: "upsert" },
+                  body: { mode: "replace" },
                 });
                 if (error) throw error;
                 toast({
