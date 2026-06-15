@@ -342,18 +342,24 @@ def _placeholder_png() -> bytes:
 VARIANT_CACHE: dict = {}
 
 def get_variants(blueprint_id: int, provider_id: int) -> list[dict]:
-    """Palauttaa variantit — käyttää välimuistia."""
+    """Palauttaa variantit — käyttää välimuistia. Ei tallenna epäonnistunutta tulosta."""
     key = (blueprint_id, provider_id)
     if key in VARIANT_CACHE:
         return VARIANT_CACHE[key]
     print(f"  Haetaan variantit blueprint={blueprint_id} provider={provider_id}...")
-    try:
-        data = api_get(f"/catalog/blueprints/{blueprint_id}/print_providers/{provider_id}/variants.json")
-        variants = data.get("variants", [])
-    except Exception:
-        variants = []
-    VARIANT_CACHE[key] = variants
-    return variants
+    for attempt in range(5):
+        try:
+            data = api_get(f"/catalog/blueprints/{blueprint_id}/print_providers/{provider_id}/variants.json")
+            variants = data.get("variants", [])
+            if variants:
+                VARIANT_CACHE[key] = variants
+                return variants
+        except Exception as e:
+            wait = (attempt + 1) * 15
+            print(f"  Varianttihaku epäonnistui (yritys {attempt+1}/5): {e} — odotetaan {wait}s...")
+            time.sleep(wait)
+    print(f"  VIRHE: Variantteja ei saatu blueprint={blueprint_id} provider={provider_id} jälkeen 5 yritystä.")
+    return []
 
 
 def pick_variants(product_type: str, blueprint_id: int, provider_id: int, hinta_sentit: int) -> list[dict]:
