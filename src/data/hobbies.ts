@@ -13,6 +13,7 @@ export interface Hobby {
   shirtTexts: string[];
   faqs: { q: string; a: string }[];
   relatedSlugs: string[];
+  categories?: string[];
 }
 
 export const hobbies: Hobby[] = [
