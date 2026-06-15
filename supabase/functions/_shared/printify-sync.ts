@@ -405,21 +405,25 @@ export async function syncPrintifyCatalog(
   }
 
   // upsert mode — preserve existing rows / flags
-  // Strip is_featured/is_new/is_gift_idea so we don't overwrite admin choices.
-  // We split into existing (UPDATE by printify_product_id, omitting slug to
-  // avoid unique-slug conflicts) and new (INSERT). This sidesteps the fact
-  // that upsert with a single onConflict can't handle two unique columns.
-  const printifyIds = built.map((b) => b.printify_product_id);
-  const slugs = built.map((b) => b.slug);
-  const { data: existingRows } = await supabase
-    .from('products')
-    .select('id, printify_product_id, slug')
-    .or(`printify_product_id.in.(${printifyIds.join(',')}),slug.in.(${slugs.join(',')})`);
+  // Fetch ALL existing products at once (no filter) to avoid URL-length limits
+  // that a giant OR query over 500+ printify IDs would hit.
   const existingByPid = new Map<string, string>();
   const existingBySlug = new Map<string, string>();
-  for (const r of existingRows || []) {
-    if (r.printify_product_id) existingByPid.set(r.printify_product_id as string, r.id as string);
-    if (r.slug) existingBySlug.set(r.slug as string, r.id as string);
+  let page = 0;
+  const PAGE_SIZE = 1000;
+  while (true) {
+    const { data: rows, error } = await supabase
+      .from('products')
+      .select('id, printify_product_id, slug')
+      .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
+    if (error) { console.error('Existing products fetch error:', error.message); break; }
+    if (!rows || rows.length === 0) break;
+    for (const r of rows) {
+      if (r.printify_product_id) existingByPid.set(r.printify_product_id as string, r.id as string);
+      if (r.slug) existingBySlug.set(r.slug as string, r.id as string);
+    }
+    if (rows.length < PAGE_SIZE) break;
+    page++;
   }
 
   let updated = 0;
