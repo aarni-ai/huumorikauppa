@@ -140,11 +140,10 @@ def make_design_image(vitsin_teksti: str, product_type: str) -> bytes:
     if product_type == "muki":
         W, H = 2700, 1120
         text_color = "#0c0c23"
-        add_logo = False
     else:
+        # Paidat/hupparit: musta teksti — toimii valkoisella, harmaalla, punaisella jne.
         W, H = 4500, 5400
-        text_color = "#ffffff"
-        add_logo = True
+        text_color = "#000000"
 
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -154,7 +153,7 @@ def make_design_image(vitsin_teksti: str, product_type: str) -> bytes:
     raw_lines = vitsin_teksti.upper().split("\n")
     lines = []
     for raw in raw_lines:
-        wrapped = textwrap.wrap(raw, width=20)
+        wrapped = textwrap.wrap(raw, width=18)
         lines.extend(wrapped if wrapped else [raw])
 
     font, _ = auto_fit(draw, lines, font_path, target_w)
@@ -163,24 +162,12 @@ def make_design_image(vitsin_teksti: str, product_type: str) -> bytes:
     except AttributeError: pass
     spacing = int(line_h * 0.15)
     total_h = len(lines) * line_h + (len(lines)-1) * spacing
-
-    if add_logo:
-        text_zone_h = int(H * 0.72)
-        y_start = (text_zone_h - total_h) // 2
-    else:
-        y_start = (H - total_h) // 2
+    y_start = (H - total_h) // 2
 
     for i, line in enumerate(lines):
         x = (W - text_w(draw, line, font)) // 2
         y = y_start + i * (line_h + spacing)
         draw.text((x, y), line, font=font, fill=text_color)
-
-    if add_logo:
-        logo_text = "Huumorikauppa.fi"
-        logo_size = int(H * 0.022)
-        logo_font = get_font(logo_size, font_path)
-        lw = text_w(draw, logo_text, logo_font)
-        draw.text(((W - lw)//2, int(H*0.82)), logo_text, font=logo_font, fill="#ffffff88")
 
     buf = BytesIO()
     img.save(buf, format="PNG")
@@ -236,28 +223,57 @@ def pick_variants(product_type: str, bp: int, pv: int, hinta: int) -> list:
     if product_type == "muki":
         return [{"id": v["id"], "price": hinta, "is_enabled": True} for v in all_v[:4]]
 
-    target_colors = ["black", "musta", "dark", "jet black", "black heather"]
-    target_sizes  = ["s", "m", "l", "xl", "2xl", "xxl"]
+    # Vaaleita värejä jotka toimivat mustalla tekstillä
+    COLOR_PRIORITY = {
+        "white": 100, "sport grey": 90, "ash": 85,
+        "heather grey": 80, "light grey": 80, "heather": 75,
+        "red": 70, "royal blue": 65, "navy": 60,
+        "forest green": 55, "green": 50,
+    }
+    # Tummat värit pois (musta teksti ei näy)
+    DARK_EXCLUDES = ["black", "dark", "charcoal", "midnight", "jet"]
+    TARGET_SIZES  = {"s", "m", "l", "xl", "2xl"}
 
-    def score(v):
+    def color_score(color_str: str) -> int:
+        cl = color_str.lower()
+        if any(x in cl for x in DARK_EXCLUDES):
+            return -1
+        best = 0
+        for pref, score in COLOR_PRIORITY.items():
+            if pref in cl:
+                best = max(best, score)
+        return best
+
+    size_order = {"s": 0, "m": 1, "l": 2, "xl": 3, "2xl": 4}
+    seen, selected = set(), []
+
+    for v in all_v:
+        if not v.get("is_enabled", True):
+            continue
         opts = v.get("options", {})
         vals = [str(x).lower() for x in (opts.values() if isinstance(opts, dict) else [opts])]
-        return (2 if any(c in val for c in target_colors for val in vals) else 0) + \
-               (1 if any(s == val for s in target_sizes for val in vals) else 0)
+        color = next((val for val in vals if val not in TARGET_SIZES), None)
+        size  = next((val for val in vals if val in TARGET_SIZES), None)
+        if not color or not size:
+            continue
+        score = color_score(color)
+        if score <= 0:
+            continue
+        key = (color, size)
+        if key not in seen:
+            seen.add(key)
+            selected.append({
+                "id": v["id"], "price": hinta, "is_enabled": True,
+                "_score": score, "_size": size,
+            })
 
-    ranked = sorted(all_v, key=score, reverse=True)
-    seen, selected = set(), []
-    for v in ranked:
-        opts = v.get("options", {})
-        vals = list(opts.values()) if isinstance(opts, dict) else [opts]
-        size = next((str(x).lower() for x in vals if str(x).lower() in target_sizes), None)
-        if size and size not in seen:
-            seen.add(size)
-            selected.append({"id": v["id"], "price": hinta, "is_enabled": True})
-        if len(selected) >= 5: break
     if not selected:
-        selected = [{"id": v["id"], "price": hinta, "is_enabled": True} for v in all_v[:5]]
-    return selected
+        return [{"id": v["id"], "price": hinta, "is_enabled": True} for v in all_v[:5]]
+
+    # Valkoinen ensin (paras thumbnail), sitten koko, max 20 varianttia
+    selected.sort(key=lambda x: (-x["_score"], size_order.get(x["_size"], 99)))
+    selected = selected[:20]
+    return [{"id": v["id"], "price": v["price"], "is_enabled": v["is_enabled"]} for v in selected]
 
 # ---------------------------------------------------------------------------
 # Päälogiikka

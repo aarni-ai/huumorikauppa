@@ -73,6 +73,7 @@ CITIES = [
 # ---------------------------------------------------------------------------
 
 FRONT_VOWELS = set("äöy")
+BACK_VOWELS  = set("aou")
 
 def to_allative(adj: str) -> str:
     """Taipuu allatiiviin: Helsinkiläinen → Helsinkiläiselle"""
@@ -81,11 +82,20 @@ def to_allative(adj: str) -> str:
     return adj + "lle"
 
 def to_partitive(adj: str) -> str:
-    """Taipuu partitiiviin: Helsinkiläinen → Helsinkiläistä, Tamperelainen → Tamperelaista"""
+    """Taipuu partitiiviin: Helsinkiläinen → Helsinkiläistä, Tamperelainen → Tamperelaista.
+    Yhdyssanoissa kuten Seinäjoki (Seinäjokelainen) viimeinen vokaali ratkaisee vokaaliharmonian."""
     if adj.endswith("inen"):
-        base = adj[:-4]  # poista "inen"
-        has_front = any(c in FRONT_VOWELS for c in base)
-        return base + ("istä" if has_front else "ista")
+        base = adj[:-4]  # poista "inen", esim. "Seinäjokela"
+        # Käytä viimeistä neutraalin ulkopuolista vokaalia (ei e/i)
+        front = False
+        for c in reversed(base.lower()):
+            if c in FRONT_VOWELS:
+                front = True
+                break
+            if c in BACK_VOWELS:
+                front = False
+                break
+        return base + ("istä" if front else "ista")
     return adj
 
 
@@ -109,10 +119,10 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": vs_helsinki,
-            "title": f"Hauska t-paita {adj_alle} – {vs_helsinki}",
+            "title": f"{vs_helsinki} – hauska t-paita {adj_alle}",
             "description": (
                 f"Kaupunkiylpeys paidassa. Hauska t-paita {alle_lower} tai "
-                f"{inessive} vierailleelle. Laadukas painatus Huumorikauppa.fi:stä."
+                f"{inessive} vierailleelle."
             ),
             "tags": BASE_TAGS + ["T-paita", "kaupunkiylpeys"],
             "type": "tpaita",
@@ -121,7 +131,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"Made in {city_name}",
-            "title": f"Hauska t-paita – Made in {city_name}",
+            "title": f"Made in {city_name} – hauska t-paita",
             "description": (
                 f"Kotiseutusydän paidassa. Made in {city_name} – alkuperäinen "
                 f"{adj_lower} tuote. Täydellinen lahja {alle_lower}."
@@ -133,7 +143,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"{adjective}: ylpeästi",
-            "title": f"Hauska kahvimuki {adj_alle} – ylpeästi",
+            "title": f"{adjective}: ylpeästi – hauska kahvimuki",
             "description": (
                 f"Kotiseutupöytä täydennettynä. Hauska muki {alle_lower}, "
                 f"joka rakastaa kotiseutuaan. Lahjaidea {alle_lower}."
@@ -145,7 +155,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"100 % {adj_part} verta",
-            "title": f"Hauska t-paita – 100 % {adj_part} verta",
+            "title": f"100 % {adj_part} verta – hauska t-paita",
             "description": (
                 f"Aitous paidassa. {adjective} syntymästä asti – "
                 f"tämä paita sen todistaa. Hauska lahja {alle_lower}."
@@ -157,7 +167,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"{city_name}: paras paikka maailmassa",
-            "title": f"Hauska kahvimuki – {city_name}: paras paikka maailmassa",
+            "title": f"{city_name}: paras paikka maailmassa – hauska kahvimuki",
             "description": (
                 f"Kotiseutusydän mukissa. {city_name} on paras paikka maailmassa – "
                 f"ainakin {adj_lower}n mielestä. Hauska lahjaidea."
@@ -165,23 +175,23 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
             "tags": BASE_TAGS + ["Kahvimuki", "parhaat-paikat"],
             "type": "muki",
         },
-        # 6 — Syntynyt (t-paita)
+        # 6 — Syntymäkaupunki (t-paita)  — aiemmin "syntynyt {inessive} – ei pahoitteluja"
         {
             "kategoria": "kaupunkituotteet",
-            "vitsin_teksti": f"Syntynyt {inessive} – ei pahoitteluja",
-            "title": f"Hauska t-paita – syntynyt {inessive}, ei pahoitteluja",
+            "vitsin_teksti": f"Syntymäkaupunki: {city_name}",
+            "title": f"Syntymäkaupunki: {city_name} – hauska t-paita",
             "description": (
-                f"Syntymäpaikkahuumori paidassa. {inessive} syntynyt – "
-                f"se on lahja, ei vaiva. Hauska t-paita kotiseutunsa rakastajalle."
+                f"Kotiseutusydän paidassa. Syntymäkaupunki on {city_name} – "
+                f"se sanoo kaiken. Hauska t-paita {alle_lower}."
             ),
-            "tags": BASE_TAGS + ["T-paita", "syntymäpaikka"],
+            "tags": BASE_TAGS + ["T-paita", "syntymäkaupunki"],
             "type": "tpaita",
         },
         # 7 — Selviää mistä vain (huppari)
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"{adjective} selviää mistä vain",
-            "title": f"Hauska huppari {adj_alle} – selviää mistä vain",
+            "title": f"{adjective} selviää mistä vain – hauska huppari",
             "description": (
                 f"{city_name}laisen sisukkuus hupparissa. {adjective} selviää mistä vain – "
                 f"sisu on kotimainen tuonti. Laadukas unisex-huppari."
@@ -193,7 +203,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"{adjective}: vahva, sisukas, hieman outo",
-            "title": f"Hauska kahvimuki – {adjective}: vahva, sisukas, hieman outo",
+            "title": f"{adjective}: vahva, sisukas, hieman outo – kahvimuki",
             "description": (
                 f"Rehellinen kuvaus {adj_lower}sta. Vahva, sisukas ja hieman outo – "
                 f"niin kuin {adj_lower}n kuuluukin olla. Hauska muki."
@@ -205,7 +215,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"{city_name} – {vitsi}",
-            "title": f"Hauska kahvimuki – {city_name}: {vitsi}",
+            "title": f"{city_name}: {vitsi} – hauska kahvimuki",
             "description": (
                 f"Paikallinen huumori mukissa. {city_name} – {vitsi}. "
                 f"Täydellinen muki {alle_lower} tai {inessive} vierailleelle."
@@ -217,7 +227,7 @@ def make_products(city_name: str, adjective: str, region: str, vitsi: str, iness
         {
             "kategoria": "kaupunkituotteet",
             "vitsin_teksti": f"Kotona vain {inessive}",
-            "title": f"Hauska huppari – kotona vain {inessive}",
+            "title": f"Kotona vain {inessive} – hauska huppari",
             "description": (
                 f"Kotiseutukaipaus hupparissa. Maailmaa voi kiertää, "
                 f"mutta kotona on vain {inessive}. Lämmin unisex-huppari {alle_lower}."

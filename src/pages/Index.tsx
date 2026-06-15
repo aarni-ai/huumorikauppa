@@ -3,6 +3,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { blogPosts } from "@/data/blog";
+import { municipalities } from "@/data/municipalities";
 import { useProducts } from "@/hooks/use-products";
 import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -230,6 +231,40 @@ const Index = () => {
 
         </>
       )}
+
+      {/* KAUPUNKITUOTTEET */}
+      <section className="container py-10 md:py-12">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-2xl md:text-3xl text-foreground">
+            Kaupunkituotteet 🏙️
+          </h2>
+          <Link to="/kaupungit" className="text-sm text-primary hover:underline hidden sm:block">
+            Kaikki kaupungit →
+          </Link>
+        </div>
+        <p className="text-muted-foreground text-sm mb-5 max-w-2xl">
+          Hauskoja t-paitoja, huppareita ja mukeja omalle kotiseudulle – yli 50 kaupunkia.
+        </p>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+          {municipalities.slice(0, 18).map(m => (
+            <Link
+              key={m.slug}
+              to={`/kaupunki/${m.slug}`}
+              className="group flex flex-col items-center gap-1 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted transition-all p-2.5 text-center"
+            >
+              <span className="text-xl">{m.emoji}</span>
+              <span className="font-medium text-foreground group-hover:text-primary transition-colors text-xs leading-tight">
+                {m.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-4 text-center sm:hidden">
+          <Link to="/kaupungit" className="text-sm text-primary hover:underline">
+            Kaikki kaupungit →
+          </Link>
+        </div>
+      </section>
 
       {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
