@@ -4,6 +4,7 @@ import { ShoppingCart, Check, ArrowRight } from "lucide-react";
 import { useCartContext } from "@/context/CartContext";
 import { Product } from "@/types/product";
 import { isCustomTextProduct } from "@/lib/customProduct";
+import { proxiedImage } from "@/lib/imageProxy";
 
 interface InlineProductCardProps {
   product: Product;
@@ -38,7 +39,7 @@ export function InlineProductCard({ product }: InlineProductCardProps) {
         aria-hidden="true"
       >
         <img
-          src={product.images[0] || "/placeholder.svg"}
+          src={proxiedImage(product.images[0]) || "/placeholder.svg"}
           alt={product.name}
           className="w-20 h-20 rounded-lg object-cover bg-muted"
           loading="lazy"
