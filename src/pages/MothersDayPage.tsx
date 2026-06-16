@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { proxiedImage } from "@/lib/imageProxy";
 
 // Finnish Mother's Day 2026 = Sunday May 10, 2026 (2nd Sunday of May)
 const MOTHERS_DAY = new Date("2026-05-10T00:00:00+03:00");
@@ -119,7 +120,7 @@ const MothersDayPage = () => {
         "position": i + 1,
         "url": `https://huumorikauppa.fi/tuote/${p.slug}`,
         "name": p.name,
-        "image": p.images[0] || "/placeholder.svg",
+        "image": proxiedImage(p.images[0], { absolute: true }) || "/placeholder.svg",
       })),
     },
   };
@@ -147,7 +148,7 @@ const MothersDayPage = () => {
         description="Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa. Hauskat äitienpäivälahjat 2026: paidat, hupparit, mukit. Nopea toimitus koko Suomeen."
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
-        ogImage={baseProducts[0]?.images[0] || "https://huumorikauppa.fi/images/hero-banner-wide.png"}
+        ogImage={proxiedImage(baseProducts[0]?.images[0], { absolute: true }) || "https://huumorikauppa.fi/images/hero-banner-wide.png"}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
           { name: "Äitienpäivälahjat 2026", url: "https://huumorikauppa.fi/aitienpaiva" },
