@@ -7,6 +7,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 import { blogPosts } from "@/data/blog";
+import { proxiedImage } from "@/lib/imageProxy";
 
 const PRIORITY_KEYWORDS = [
   "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
@@ -146,7 +147,7 @@ const CategoryPage = () => {
         "position": i + 1,
         "url": `https://huumorikauppa.fi/tuote/${p.slug}`,
         "name": p.name,
-        "image": p.images[0] || "/placeholder.svg",
+        "image": proxiedImage(p.images[0], { absolute: true }) || "/placeholder.svg",
       })),
     },
   };
@@ -201,7 +202,7 @@ const CategoryPage = () => {
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
-        ogImage={products[0]?.images[0]}
+        ogImage={proxiedImage(products[0]?.images[0], { absolute: true })}
       />
 
       {/* Trust bar */}

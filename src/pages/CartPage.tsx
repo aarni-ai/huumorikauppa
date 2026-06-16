@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
+import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
 
 const FREE_SHIPPING = 60;
@@ -78,7 +79,7 @@ const CartPage = () => {
             <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${item.customText || ""}`} className="flex gap-4 bg-card border border-border rounded-lg p-4">
               <Link to={`/tuote/${item.product.slug}`} className="shrink-0">
                 <img
-                  src={item.product.images[0] || "/placeholder.svg"}
+                  src={proxiedImage(item.product.images[0]) || "/placeholder.svg"}
                   alt={`${item.product.name} – ostoskorissa`}
                   className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-md bg-muted"
                   loading="lazy"
@@ -141,7 +142,7 @@ const CartPage = () => {
                     className="group rounded-lg border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden"
                   >
                     <img
-                      src={p.images[0] || "/placeholder.svg"}
+                      src={proxiedImage(p.images[0]) || "/placeholder.svg"}
                       alt={p.name}
                       className="w-full aspect-square object-cover bg-muted"
                       loading="lazy"

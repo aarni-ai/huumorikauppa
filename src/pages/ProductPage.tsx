@@ -19,6 +19,7 @@ import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
+import { proxiedImage } from "@/lib/imageProxy";
 
 // Category-specific review pools with contextually relevant content
 type Review = { name: string; text: string; stars: number; date: string };
@@ -461,16 +462,8 @@ const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koriste
 // Only used in JSON-LD + og:image; <img> tags keep the original CDN URL.
 function toProxiedImage(url: string): string {
   if (!url) return url;
-  try {
-    const u = new URL(url, "https://huumorikauppa.fi");
-    if (u.hostname === "images-api.printify.com" || u.hostname === "images.printify.com") {
-      return `https://huumorikauppa.fi/api/image-proxy?url=${encodeURIComponent(u.toString())}`;
-    }
-    if (u.origin === "https://huumorikauppa.fi") return u.toString();
-    return url;
-  } catch {
-    return url.startsWith("http") ? url : `https://huumorikauppa.fi${url}`;
-  }
+  const abs = url.startsWith("http") ? url : `https://huumorikauppa.fi${url}`;
+  return proxiedImage(abs, { absolute: true });
 }
 
 const ProductPage = () => {
@@ -845,7 +838,7 @@ const ProductPage = () => {
                 {currentImages.map((img, i) => (
                   <img
                     key={`m-${selectedColor}-${i}`}
-                    src={img}
+                    src={proxiedImage(img) || img}
                     alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – ${categoryName} kuva ${i + 1}`}
                     className="w-full aspect-square object-cover shrink-0 snap-start"
                     style={{ scrollSnapAlign: "start" }}
@@ -878,7 +871,7 @@ const ProductPage = () => {
             {/* Desktop: main image + thumbnails */}
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden hidden md:block">
               <img
-                src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
+                src={proxiedImage(currentImages[activeImage] || currentImages[0]) || "/placeholder.svg"}
                 alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
                 className="w-full h-full object-cover"
                 width={600}
@@ -902,7 +895,7 @@ const ProductPage = () => {
                     }`}
                   >
                     <img
-                      src={img}
+                      src={proxiedImage(img) || img}
                       alt={`${product.name}${selectedColor ? ' ' + selectedColor : ''} – ${categoryName} kuva ${i + 1} | Huumorikauppa`}
                       className="w-full h-full object-cover"
                       loading="lazy"
@@ -1293,7 +1286,7 @@ const ProductPage = () => {
       >
         <div className="flex items-center gap-3 p-3">
           <img
-            src={product.images[0] || "/placeholder.svg"}
+            src={proxiedImage(product.images[0]) || "/placeholder.svg"}
             alt=""
             className="w-12 h-12 rounded-md object-cover bg-muted shrink-0"
             width={48}
