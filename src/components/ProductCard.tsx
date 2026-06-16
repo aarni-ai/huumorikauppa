@@ -89,7 +89,7 @@ export function ProductCard({ product }: ProductCardProps) {
   useEffect(() => {
     if (canUseHover && hoverImage) {
       const img = new Image();
-      img.src = hoverImage;
+      img.src = proxiedImage(hoverImage);
     }
   }, [canUseHover, hoverImage]);
 
@@ -175,7 +175,7 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Image with hover swap */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img
-          src={displayImage}
+          src={proxiedImage(displayImage) || displayImage}
           alt={`Hauska ${categoryLabel} – ${product.name} | Huumorikauppa`}
           className={`w-full h-full object-cover transition-transform duration-500 ${canUseHover ? "group-hover:scale-105" : ""}`}
           loading="lazy"
