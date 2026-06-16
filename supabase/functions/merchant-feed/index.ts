@@ -2,6 +2,16 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 
 const SITE = "https://huumorikauppa.fi";
+const PRINTIFY_HOST = "images-api.printify.com";
+
+function proxiedImage(url: string): string {
+  if (!url) return "";
+  if (url.includes("/api/img?u=")) return url;
+  let host = "";
+  try { host = new URL(url).host; } catch { return url; }
+  if (host !== PRINTIFY_HOST) return url;
+  return `${SITE}/api/img?u=${encodeURIComponent(url)}`;
+}
 
 const CATEGORY_MAP: Record<string, string> = {
   "t-paidat": "Apparel & Accessories > Clothing > Shirts & Tops > T-Shirts",
@@ -40,7 +50,7 @@ serve(async (_req) => {
 
   const items = (products || []).map((p: any) => {
     const price = Number(p.price).toFixed(2);
-    const image = p.images?.[0] || "";
+    const image = proxiedImage(p.images?.[0] || "");
     const link = `${SITE}/tuote/${p.slug}`;
     const category = CATEGORY_MAP[p.category] || "Apparel & Accessories";
     const availability = p.stock > 0 ? "in_stock" : "out_of_stock";
@@ -49,7 +59,7 @@ serve(async (_req) => {
     let additionalImages = "";
     if (p.images && p.images.length > 1) {
       additionalImages = p.images.slice(1, 11).map((img: string) =>
-        `      <g:additional_image_link>${escapeXml(img)}</g:additional_image_link>`
+        `      <g:additional_image_link>${escapeXml(proxiedImage(img))}</g:additional_image_link>`
       ).join("\n");
     }
 
