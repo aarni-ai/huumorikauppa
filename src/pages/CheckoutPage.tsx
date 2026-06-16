@@ -8,6 +8,7 @@ import { ShoppingCart, ArrowLeft, ArrowRight, Lock, Loader2 } from "lucide-react
 import { SEOHead } from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { proxiedImage } from "@/lib/imageProxy";
 
 type Step = "details" | "shipping" | "payment";
 
@@ -83,7 +84,7 @@ const CheckoutPage = () => {
             slug: i.product.slug,
             name: i.product.name,
             quantity: i.quantity,
-            image: i.product.images[0] || undefined,
+            image: proxiedImage(i.product.images[0], { absolute: true }) || undefined,
             size: i.selectedSize,
             color: i.selectedColor,
             customText: i.customText || undefined,
@@ -281,7 +282,7 @@ const CheckoutPage = () => {
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {items.map(item => (
               <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${item.customText || ""}`} className="flex gap-3 text-sm">
-                <img src={item.product.images[0] || "/placeholder.svg"} alt={`${item.product.name} – kassalla`} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" width={48} height={48} />
+                <img src={proxiedImage(item.product.images[0]) || "/placeholder.svg"} alt={`${item.product.name} – kassalla`} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" width={48} height={48} />
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
                   <p className="text-muted-foreground">{item.quantity} × {item.product.price.toFixed(2)} €</p>
