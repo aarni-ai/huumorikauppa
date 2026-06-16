@@ -838,7 +838,7 @@ const ProductPage = () => {
                 {currentImages.map((img, i) => (
                   <img
                     key={`m-${selectedColor}-${i}`}
-                    src={img}
+                    src={proxiedImage(img) || img}
                     alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – ${categoryName} kuva ${i + 1}`}
                     className="w-full aspect-square object-cover shrink-0 snap-start"
                     style={{ scrollSnapAlign: "start" }}
@@ -871,7 +871,7 @@ const ProductPage = () => {
             {/* Desktop: main image + thumbnails */}
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden hidden md:block">
               <img
-                src={currentImages[activeImage] || currentImages[0] || "/placeholder.svg"}
+                src={proxiedImage(currentImages[activeImage] || currentImages[0]) || "/placeholder.svg"}
                 alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
                 className="w-full h-full object-cover"
                 width={600}
@@ -895,7 +895,7 @@ const ProductPage = () => {
                     }`}
                   >
                     <img
-                      src={img}
+                      src={proxiedImage(img) || img}
                       alt={`${product.name}${selectedColor ? ' ' + selectedColor : ''} – ${categoryName} kuva ${i + 1} | Huumorikauppa`}
                       className="w-full h-full object-cover"
                       loading="lazy"
