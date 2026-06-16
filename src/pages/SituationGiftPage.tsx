@@ -16,6 +16,7 @@ import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { categories } from "@/data/products";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 import { blogPosts } from "@/data/blog";
+import { proxiedImage } from "@/lib/imageProxy";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -131,7 +132,7 @@ const SituationGiftPage = () => {
         canonical={canonical}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
-        ogImage={products[0]?.images[0]}
+        ogImage={proxiedImage(products[0]?.images[0], { absolute: true })}
       />
       {/* SEO: alternateName signals additional title variants without replacing the primary title */}
       <script
