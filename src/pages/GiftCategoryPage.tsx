@@ -4,6 +4,7 @@ import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TldrBox } from "@/components/TldrBox";
+import { proxiedImage } from "@/lib/imageProxy";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
 import { SEOGiftContent, SEOTargetGroupContent, SEOLongTailContent } from "@/components/SEOKeywordContent";
@@ -563,7 +564,7 @@ const GiftCategoryPage = () => {
         canonical={`https://huumorikauppa.fi/${category.slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
-        ogImage={products[0]?.images[0]}
+        ogImage={proxiedImage(products[0]?.images[0], { absolute: true })}
       />
 
       <section className="bg-muted/50 py-3 border-b border-border">
