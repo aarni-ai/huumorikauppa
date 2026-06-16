@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, memo, ImgHTMLAttributes } from "react";
+import { proxiedImage } from "@/lib/imageProxy";
 
 interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'onLoad' | 'onError'> {
   src: string;
@@ -23,7 +24,9 @@ function buildSrcSet(src: string): string | undefined {
   if (!src.includes("images-api.printify.com")) return undefined;
   const base = src.replace(/[?&]s=\d+/g, "").replace(/[?&]width=\d+/g, "");
   const sep = base.includes("?") ? "&" : "?";
-  return [200, 400, 600, 800].map(w => `${base}${sep}width=${w} ${w}w`).join(", ");
+  return [200, 400, 600, 800]
+    .map(w => `${proxiedImage(`${base}${sep}width=${w}`)} ${w}w`)
+    .join(", ");
 }
 
 function OptimizedImageInner({
@@ -64,13 +67,14 @@ function OptimizedImageInner({
     return () => obs.disconnect();
   }, [priority, inView]);
 
+  const proxiedSrc = proxiedImage(src);
   const srcSet = buildSrcSet(src);
   const defaultSizes = sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw";
 
   return (
     <img
       ref={imgRef}
-      src={inView ? src : undefined}
+      src={inView ? proxiedSrc : undefined}
       srcSet={inView ? srcSet : undefined}
       sizes={srcSet ? defaultSizes : undefined}
       alt={alt}
