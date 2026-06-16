@@ -7,6 +7,7 @@ import { ShoppingCart, Check, ArrowRight } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import { Product } from "@/types/product";
 import { productAlt } from "@/lib/seoAlt";
+import { proxiedImage } from "@/lib/imageProxy";
 
 const SKIP_WORDS = new Set([
   "paita", "paidat", "huppari", "hupparit", "muki", "mukit", "tarra", "tarrat",
@@ -94,7 +95,7 @@ export function AddToCartDrawer() {
             {/* Added item */}
             <div className="flex gap-3">
               <img
-                src={lastAddedItem.product.images[0] || "/placeholder.svg"}
+                src={proxiedImage(lastAddedItem.product.images[0]) || "/placeholder.svg"}
                 alt={productAlt(lastAddedItem.product, "lisätty ostoskoriin")}
                 className="w-20 h-20 rounded-md bg-muted object-cover shrink-0"
               />
@@ -182,7 +183,7 @@ export function AddToCartDrawer() {
                       className="flex gap-3 group hover:bg-muted/50 rounded-lg p-2 -mx-2 transition-colors"
                     >
                       <img
-                        src={p.images[0] || "/placeholder.svg"}
+                        src={proxiedImage(p.images[0]) || "/placeholder.svg"}
                         alt={productAlt(p, "suositeltu lahjavinkki")}
                         className="w-14 h-14 rounded-md bg-muted object-cover shrink-0"
                         loading="lazy"
