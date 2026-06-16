@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { categories } from "@/data/products";
 import { sortSizes } from "@/lib/sortSizes";
 import { isCustomTextProduct } from "@/lib/customProduct";
+import { proxiedImage } from "@/lib/imageProxy";
 
 interface ProductCardProps {
   product: Product;
