@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
+import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
 
 const FREE_SHIPPING = 60;
