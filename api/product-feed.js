@@ -10,7 +10,7 @@ const PROXY_HOST_PATTERN =
 function proxiedImage(url) {
   if (!url) return '';
   if (url.includes('/api/img?u=')) return url;
-  return `${SITE}/api/img?u=${encodeURIComponent(url)}`;
+  return `${SITE}/api/img?u=${encodeURIComponent(url)}&v=2`;
 }
 
 // Safety net: rewrite any raw upstream image URL that slipped through so the
