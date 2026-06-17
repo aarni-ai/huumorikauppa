@@ -1,4 +1,13 @@
 {
+  "functions": {
+    "api/img.js": {
+      "includeFiles": [
+        "node_modules/sharp/**/*",
+        "node_modules/@img/sharp-linux-x64/**/*",
+        "node_modules/@img/sharp-libvips-linux-x64/**/*"
+      ]
+    }
+  },
   "redirects": [
     {
       "source": "/tuote/-jos-iska-ei-osaa-korjata-sita-t-paita",
