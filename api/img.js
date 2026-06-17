@@ -27,27 +27,21 @@ export default async function handler(req, res) {
     }
 
     const inputBuffer = Buffer.from(await upstream.arrayBuffer());
-    const ct = (upstream.headers.get('content-type') || '').toLowerCase();
 
-    res.setHeader(
-      'Cache-Control',
-      'public, max-age=86400, s-maxage=604800, immutable',
-    );
-
-    // Already a Google Merchant Center-supported raster format: pass through.
-    if (/^image\/(jpeg|png|gif)$/.test(ct)) {
-      res.setHeader('Content-Type', ct);
-      return res.status(200).send(inputBuffer);
-    }
-
-    // Anything else (webp/avif/svg/unknown) -> transcode to JPEG so GMC accepts it.
+    // Always run through sharp -> clean baseline sRGB JPEG. This normalises
+    // Printify's CMYK / progressive / oddly-headered JPEGs that GMC rejects.
     try {
-      const jpeg = await sharp(inputBuffer)
+      const out = await sharp(inputBuffer)
         .flatten({ background: '#ffffff' })
-        .jpeg({ quality: 85 })
+        .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 85, mozjpeg: true })
         .toBuffer();
       res.setHeader('Content-Type', 'image/jpeg');
-      return res.status(200).send(jpeg);
+      res.setHeader(
+        'Cache-Control',
+        'public, max-age=86400, s-maxage=604800, immutable',
+      );
+      return res.status(200).send(out);
     } catch (e) {
       console.error('Transcode failed:', e);
       return res.status(502).send('Could not process image');
