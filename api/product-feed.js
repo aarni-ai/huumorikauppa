@@ -12,12 +12,27 @@ const PROXY_HOST_PATTERN =
 const PROXIED_IMAGE_PATTERN =
   /https:\/\/huumorikauppa\.fi\/api\/img\?u=[^\s"'<>]+/g;
 
+// XML-escape ampersands (and a few other unsafe chars) so the value is safe
+// to embed inside an XML text node / element. Idempotent for &amp;.
+function xmlEscape(s) {
+  return s
+    .replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function proxiedImage(url) {
   if (!url) return '';
-  if (url.includes('/api/img?u=')) {
-    return url.includes('v=2') ? url : `${url}&v=2`;
+  // Normalize: the regex may capture an already-XML-escaped URL containing
+  // &amp;. Work in raw form, then re-escape at the end.
+  const raw = url.replace(/&amp;/g, '&');
+  let next;
+  if (raw.includes('/api/img?u=')) {
+    next = raw.includes('v=2') ? raw : `${raw}&v=2`;
+  } else {
+    next = `${SITE}/api/img?u=${encodeURIComponent(raw)}&v=2`;
   }
-  return `${SITE}/api/img?u=${encodeURIComponent(url)}&v=2`;
+  return xmlEscape(next);
 }
 
 // Safety net: rewrite any raw upstream image URL that slipped through so the
@@ -25,10 +40,9 @@ function proxiedImage(url) {
 function sanitizeFeed(xml) {
   // First wrap any raw upstream URLs.
   let out = xml.replace(PROXY_HOST_PATTERN, (m) => proxiedImage(m));
-  // Then ensure every already-proxied URL gets the &v=2 cache-buster.
-  out = out.replace(PROXIED_IMAGE_PATTERN, (m) =>
-    m.includes('v=2') ? m : `${m}&v=2`,
-  );
+  // Then ensure every already-proxied URL gets the &v=2 cache-buster and
+  // that any stray unescaped & is XML-escaped to &amp;.
+  out = out.replace(PROXIED_IMAGE_PATTERN, (m) => proxiedImage(m));
   return out;
 }
 
