@@ -1,26 +1,22 @@
 const SUPABASE_FEED_URL =
   'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
 const SITE = 'https://huumorikauppa.fi';
-const PRINTIFY_HOST = 'images-api.printify.com';
+
+// Any host that may serve a product image. Everything matched here gets
+// rewritten to /api/img?u=... so Googlebot only ever sees our domain.
+const PROXY_HOST_PATTERN =
+  /https?:\/\/(?:images-api\.printify\.com|images\.printify\.com|pfy-prod-image-storage\.s3\.amazonaws\.com|pfy-prod-automaton-cache\.s3\.us-east-2\.amazonaws\.com)\/[^\s"'<>]+/g;
 
 function proxiedImage(url) {
   if (!url) return '';
   if (url.includes('/api/img?u=')) return url;
-  try {
-    if (new URL(url).host !== PRINTIFY_HOST) return url;
-  } catch {
-    return url;
-  }
   return `${SITE}/api/img?u=${encodeURIComponent(url)}`;
 }
 
-// Safety net: rewrite any raw Printify URL that slipped through (e.g. inside
-// attribute values) so the live feed NEVER exposes images-api.printify.com.
+// Safety net: rewrite any raw upstream image URL that slipped through so the
+// live feed NEVER exposes a non-proxied image host.
 function sanitizeFeed(xml) {
-  return xml.replace(
-    /https?:\/\/images-api\.printify\.com\/[^\s"'<>]+/g,
-    (m) => proxiedImage(m),
-  );
+  return xml.replace(PROXY_HOST_PATTERN, (m) => proxiedImage(m));
 }
 
 export default async function handler(req, res) {
