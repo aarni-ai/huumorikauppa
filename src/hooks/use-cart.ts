@@ -1,5 +1,6 @@
 import { CartItem, Product } from "@/types/product";
 import { useState, useEffect, useCallback } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 
 const CART_KEY = "huumorikauppa-cart";
 
@@ -45,6 +46,16 @@ export function useCart() {
       return [...prev, { product, quantity, selectedSize, selectedColor, customText: trimmedText }];
     });
     setLastAddedItem({ product, size: selectedSize, color: selectedColor, customText: trimmedText });
+    // GA4 add_to_cart
+    const variant = [selectedSize, selectedColor].filter(Boolean).join(" / ") || undefined;
+    trackAddToCart({
+      item_id: product.id,
+      item_name: product.name,
+      price: product.price,
+      quantity,
+      item_variant: variant,
+      item_category: product.category,
+    });
   }, []);
 
   const removeItem = useCallback((productId: string, selectedSize?: string, selectedColor?: string, customText?: string) => {
