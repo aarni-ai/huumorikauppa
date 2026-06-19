@@ -1,5 +1,4 @@
-// GA4 helper — uses the gtag already loaded in index.html (G-8FJ58JNKGK).
-// Falls back to direct dataLayer.push if gtag function isn't ready yet.
+// GA4 helper — uses the direct gtag.js snippet already loaded in index.html (G-8FJ58JNKGK).
 
 type GtagFn = (...args: unknown[]) => void;
 interface GAWindow {
@@ -10,21 +9,28 @@ interface GAWindow {
 function sendEvent(name: string, params: Record<string, unknown>) {
   if (typeof window === "undefined") return;
   const w = window as unknown as GAWindow;
+  const gtagType = typeof w.gtag;
+  const hasDataLayer = !!w.dataLayer;
   try {
     // eslint-disable-next-line no-console
     console.log("GA event sent:", name, params);
+  } catch { /* ignore */ }
+  try {
+    if (name === "add_to_cart" || name === "begin_checkout") {
+      window.alert(`${name} | gtag=${gtagType} | dataLayer=${hasDataLayer}`);
+    }
   } catch { /* ignore */ }
   try {
     if (typeof w.gtag === "function") {
       w.gtag("event", name, params);
       return;
     }
-  } catch { /* fall through to dataLayer */ }
-  try {
-    w.dataLayer = w.dataLayer || [];
-    // Mirror gtag('event', name, params) shape into dataLayer
-    w.dataLayer.push({ event: name, ...params });
-  } catch { /* ignore */ }
+    // eslint-disable-next-line no-console
+    console.warn("GA event not sent: window.gtag missing", name, params);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("GA event failed:", name, error);
+  }
 }
 
 export interface GAItem {

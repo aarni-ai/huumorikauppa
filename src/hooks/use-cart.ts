@@ -69,12 +69,27 @@ export function useCart() {
       removeItem(productId, selectedSize, selectedColor, customText);
       return;
     }
+    const existing = items.find(i =>
+      i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor && (i.customText || undefined) === (customText || undefined)
+    );
+    if (existing && quantity > existing.quantity) {
+      const addedQuantity = quantity - existing.quantity;
+      const variant = [existing.selectedSize, existing.selectedColor].filter(Boolean).join(" / ") || undefined;
+      trackAddToCart({
+        item_id: existing.product.id,
+        item_name: existing.product.name,
+        price: existing.product.price,
+        quantity: addedQuantity,
+        item_variant: variant,
+        item_category: existing.product.category,
+      });
+    }
     setItems(prev => prev.map(i =>
       i.product.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor && (i.customText || undefined) === (customText || undefined)
         ? { ...i, quantity }
         : i
     ));
-  }, [removeItem]);
+  }, [items, removeItem]);
 
   const clearCart = useCallback(() => setItems([]), []);
   const clearLastAdded = useCallback(() => setLastAddedItem(null), []);
