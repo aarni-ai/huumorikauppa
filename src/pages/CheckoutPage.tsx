@@ -9,6 +9,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
+import { trackBeginCheckout } from "@/lib/analytics";
 
 type Step = "details" | "shipping" | "payment";
 
@@ -77,9 +78,8 @@ const CheckoutPage = () => {
     }
     setIsProcessing(true);
     try {
-      // GA4 begin_checkout
+      // GA4 begin_checkout — fire BEFORE Stripe redirect
       try {
-        const { trackBeginCheckout } = await import("@/lib/analytics");
         trackBeginCheckout(
           items.map(i => ({
             item_id: i.product.id,
