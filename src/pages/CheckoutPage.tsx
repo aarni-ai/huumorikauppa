@@ -77,6 +77,21 @@ const CheckoutPage = () => {
     }
     setIsProcessing(true);
     try {
+      // GA4 begin_checkout
+      try {
+        const { trackBeginCheckout } = await import("@/lib/analytics");
+        trackBeginCheckout(
+          items.map(i => ({
+            item_id: i.product.id,
+            item_name: i.product.name,
+            price: i.product.price,
+            quantity: i.quantity,
+            item_variant: [i.selectedSize, i.selectedColor].filter(Boolean).join(" / ") || undefined,
+            item_category: i.product.category,
+          })),
+          items.reduce((s, i) => s + i.product.price * i.quantity, 0),
+        );
+      } catch { /* analytics is best-effort */ }
       const { data, error } = await supabase.functions.invoke("create-checkout", {
         body: {
           items: items.map(i => ({
