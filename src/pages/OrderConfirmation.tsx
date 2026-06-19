@@ -6,10 +6,11 @@ import { CheckCircle, ShoppingBag, Share2, Mail, Loader2, RefreshCw } from "luci
 import { useCartContext } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { trackPurchaseOnce } from "@/lib/analytics";
 
 interface OrderInfo {
   id: string;
-  items: Array<{ name: string; quantity: number; price: number; customText?: string }>;
+  items: Array<{ name: string; quantity: number; price: number; customText?: string; product_id?: string; id?: string }>;
   total: number;
   status: string;
   created_at: string;
@@ -47,6 +48,18 @@ const OrderConfirmation = () => {
   useEffect(() => {
     if (!order || optInRendered) return;
     if (typeof window === "undefined") return;
+
+    // GA4 purchase — fire once per order id
+    trackPurchaseOnce({
+      transaction_id: order.id,
+      value: Number(order.total) || 0,
+      items: (order.items || []).map((it, idx) => ({
+        item_id: String(it.product_id || it.id || `${order.id}-${idx}`),
+        item_name: it.name,
+        price: Number(it.price) || 0,
+        quantity: Number(it.quantity) || 1,
+      })),
+    });
 
     // Estimated delivery: created_at + 7 days (3–10 business day window midpoint)
     const created = order.created_at ? new Date(order.created_at) : new Date();
