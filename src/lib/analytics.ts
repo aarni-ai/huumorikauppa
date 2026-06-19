@@ -1,14 +1,30 @@
 // GA4 helper — uses the gtag already loaded in index.html (G-8FJ58JNKGK).
-// All calls are safe no-ops if gtag is not available (SSR, prerender, blocked).
+// Falls back to direct dataLayer.push if gtag function isn't ready yet.
 
 type GtagFn = (...args: unknown[]) => void;
+interface GAWindow {
+  gtag?: GtagFn;
+  dataLayer?: unknown[];
+}
 
-function gtag(...args: unknown[]) {
+function sendEvent(name: string, params: Record<string, unknown>) {
   if (typeof window === "undefined") return;
-  const w = window as unknown as { gtag?: GtagFn };
-  if (typeof w.gtag === "function") {
-    w.gtag(...args);
-  }
+  const w = window as unknown as GAWindow;
+  try {
+    // eslint-disable-next-line no-console
+    console.log("GA event sent:", name, params);
+  } catch { /* ignore */ }
+  try {
+    if (typeof w.gtag === "function") {
+      w.gtag("event", name, params);
+      return;
+    }
+  } catch { /* fall through to dataLayer */ }
+  try {
+    w.dataLayer = w.dataLayer || [];
+    // Mirror gtag('event', name, params) shape into dataLayer
+    w.dataLayer.push({ event: name, ...params });
+  } catch { /* ignore */ }
 }
 
 export interface GAItem {
@@ -21,7 +37,7 @@ export interface GAItem {
 }
 
 export function trackAddToCart(item: GAItem) {
-  gtag("event", "add_to_cart", {
+  sendEvent("add_to_cart", {
     currency: "EUR",
     value: +(item.price * item.quantity).toFixed(2),
     items: [item],
@@ -29,7 +45,7 @@ export function trackAddToCart(item: GAItem) {
 }
 
 export function trackBeginCheckout(items: GAItem[], value: number) {
-  gtag("event", "begin_checkout", {
+  sendEvent("begin_checkout", {
     currency: "EUR",
     value: +value.toFixed(2),
     items,
@@ -55,7 +71,7 @@ export function trackPurchaseOnce(params: {
   } catch {
     // ignore — still send the event
   }
-  gtag("event", "purchase", {
+  sendEvent("purchase", {
     transaction_id: params.transaction_id,
     value: +params.value.toFixed(2),
     currency: "EUR",
