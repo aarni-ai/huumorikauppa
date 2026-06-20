@@ -166,8 +166,8 @@ const BlogPost = () => {
     "keywords": post.tags.join(", "),
   };
 
-  // Geneeriset, blogiartikkeleille sopivat FAQ:t (AI-optimoitu / GEO)
-  const blogFaqs = [
+  // Per-post FAQ overrides the generic set when the post defines its own.
+  const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : [
     {
       q: "Mistä löydän hauskoja lahjaideoita?",
       a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
