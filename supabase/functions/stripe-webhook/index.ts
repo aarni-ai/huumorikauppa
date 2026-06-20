@@ -83,6 +83,19 @@ serve(async (req) => {
       const session = event.data.object as Stripe.Checkout.Session;
       try {
         const result = await processCheckoutSession(supabase, stripe, session);
+        // Mark matching abandoned cart(s) as purchased
+        try {
+          const email = (session.customer_details?.email || session.customer_email || result.customerEmail || "").toLowerCase();
+          if (email) {
+            await supabase
+              .from("abandoned_carts")
+              .update({ status: "ostettu", stripe_session_id: session.id })
+              .eq("email", email)
+              .eq("status", "avoin");
+          }
+        } catch (e) {
+          console.error("abandoned_carts update failed:", e);
+        }
         await logWebhook(supabase, {
           event_type: event.type,
           event_id: event.id,
