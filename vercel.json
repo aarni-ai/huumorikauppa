@@ -6,6 +6,12 @@
   },
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.huumorikauppa.fi" }],
+      "destination": "https://huumorikauppa.fi/$1",
+      "permanent": true
+    },
+    {
       "source": "/tuote/-jos-iska-ei-osaa-korjata-sita-t-paita",
       "destination": "/tuote/jos-iska-ei-osaa-korjata-sita-t-paita",
       "permanent": true
@@ -59,6 +65,10 @@
     {
       "source": "/product-feed.xml",
       "destination": "/api/product-feed"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     },
     {
       "source": "/((?!.*\\.(?:xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
