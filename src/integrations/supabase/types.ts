@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      abandoned_carts: {
+        Row: {
+          cart_items: Json
+          cart_total: number
+          created_at: string
+          email: string
+          id: string
+          recovery_token: string
+          reminder_1h_sent_at: string | null
+          reminder_24h_sent_at: string | null
+          reminder_72h_sent_at: string | null
+          status: string
+          stripe_session_id: string | null
+          unsubscribed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          cart_items: Json
+          cart_total: number
+          created_at?: string
+          email: string
+          id?: string
+          recovery_token?: string
+          reminder_1h_sent_at?: string | null
+          reminder_24h_sent_at?: string | null
+          reminder_72h_sent_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cart_items?: Json
+          cart_total?: number
+          created_at?: string
+          email?: string
+          id?: string
+          recovery_token?: string
+          reminder_1h_sent_at?: string | null
+          reminder_24h_sent_at?: string | null
+          reminder_72h_sent_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       discount_codes: {
         Row: {
           code: string
