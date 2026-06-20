@@ -708,6 +708,35 @@ Eläkeläisen aamu alkaa kahvilla – ja hauska muki tekee siitä entistä nauti
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
+    productLinks: [
+      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – klassikko eläkelahja" },
+      { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – työvuosien jälkeen 'amattimies'" },
+      { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – yhteislahja työkavereilta" },
+      { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari – eläkkeelle jäävälle äidille" },
+      { slug: "kalamies-t-paita", label: "KALAMIES | T-Paita – eläkeläiselle joka aikoo kalastaa" },
+    ],
+    faq: [
+      {
+        q: "Mikä on hyvä eläkelahja työkaverille?",
+        a: "Paras eläkelahja työkaverille on '100% eläkeläinen' -kahvikuppi tai 'Eläkkeellä ja nautinnossa' -t-paita. Hauska eläkelahja on muistettava, edullinen ja juhlistaa uutta elämänvaihetta.",
+      },
+      {
+        q: "Paljonko eläkelahjan tulisi maksaa?",
+        a: "Yhden hengen eläkelahjan budjetti on tyypillisesti 15–40 €, ja koko työporukan yhteislahjan 50–150 €. Huumorikaupasta saa hauskan eläkelahjan jo alle 20 €:lla.",
+      },
+      {
+        q: "Mikä on hauska eläkelahja äidille tai isälle?",
+        a: "Vanhemmalle joka jää eläkkeelle paras hauska eläkelahja on lämmin huppari, 'maailman paras äiti/isä' -tuote tai personoitava kahvimuki – tulee oikeasti käyttöön joka päivä.",
+      },
+      {
+        q: "Onko eläkelahja sama kuin syntymäpäivälahja?",
+        a: "Ei aivan. Eläkelahjan idea on juhlistaa työuran päättymistä ja vapaa-ajan alkamista, kun taas syntymäpäivälahja korostaa ikää. Eläkelahjassa toimivat erityisesti eläke- ja harrastusteemaiset huumorituotteet.",
+      },
+      {
+        q: "Kuinka nopeasti eläkelahja toimitetaan?",
+        a: "Toimitamme eläkelahjat 3–10 arkipäivässä koko Suomeen. Tilaa hyvissä ajoin ennen eläkejuhlia – yli 60 € tilauksiin toimitus on ilmainen.",
+      },
+    ],
   },
   {
     slug: "parhaat-hauskat-tarrat-lappariin",
