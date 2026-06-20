@@ -1047,6 +1047,35 @@ Pyöreät vuodet ovat erityisiä – ja ne ansaitsevat erityisen lahjan. Mutta m
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
+    productLinks: [
+      { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – klassikko 40v miehelle" },
+      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – 60v miehelle" },
+      { slug: "kalamies-t-paita", label: "KALAMIES | T-Paita – kalastusta harrastavalle" },
+      { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – setähuumoria" },
+      { slug: "ice-aatanat-paita", label: "ICE AATANA | T-Paita – meemihenkinen lahja miehelle" },
+    ],
+    faq: [
+      {
+        q: "Mikä on paras lahja 50-vuotiaalle miehelle jolla on jo kaikkea?",
+        a: "50-vuotias mies arvostaa itseironista ikähuumoria. Parhaita lahjoja ovat 'museo-kappale' -tyyliset paidat, eläkehuumoripaidat sekä laadukas hauska kahvimuki – käytännöllinen ja muistettava 50v lahja miehelle.",
+      },
+      {
+        q: "Mikä on hauskin lahja 60-vuotiaalle miehelle?",
+        a: "60-vuotiaalle miehelle hauska lahja kannattaa hakea eläkehuumorin puolelta: '100% eläkeläinen' -kahvikuppi, 'Eläkkeellä ja nautinnossa' -paita tai lämmin huppari aamulenkeille.",
+      },
+      {
+        q: "Sopiiko hauska t-paita lahjaksi miehelle?",
+        a: "Kyllä – hauska t-paita on suosituin huumorilahja miehelle. Se on edullinen, tulee oikeasti käyttöön ja erottuu lahjakorteista. Valitse paita harrastuksen tai ammatin mukaan niin osut aina oikeaan.",
+      },
+      {
+        q: "Paljonko hauska lahja miehelle maksaa?",
+        a: "Huumorikaupassa hauskat lahjat miehelle alkavat noin 12 €:sta (mukit ja tarrat). T-paidat ovat tyypillisesti 20–30 € ja hupparit 35–50 €. Yli 60 € tilauksiin toimitus on ilmainen.",
+      },
+      {
+        q: "Kuinka nopeasti hauska lahja toimitetaan?",
+        a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Tilaa pyöreät synttärit mielessä vähintään viikkoa ennen juhlapäivää.",
+      },
+    ],
   },
   {
     slug: "lahja-naiselle-30v-40v-50v-60v",
@@ -1100,6 +1129,35 @@ Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydän
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["hupparit", "mukit", "laukut"],
+    productLinks: [
+      { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari – 40v naiselle/äidille" },
+      { slug: "maailman-paras-aiti-t-paita", label: "Maailman paras ÄITI | T-Paita" },
+      { slug: "personoitava-kahvimuki-aidille-superaiti", label: "Personoitava Kahvimuki Äidille – Superäiti" },
+      { slug: "maailman-paras-aiti-palkinnon-voittaja-huppari", label: "Maailman paras äiti -palkinnon voittaja | Huppari" },
+      { slug: "minulla-ei-ole-alkoholiongelmaa-t-paita", label: "Sarkasmihenkinen t-paita 30v naiselle" },
+    ],
+    faq: [
+      {
+        q: "Mikä on paras lahja 50-vuotiaalle naiselle?",
+        a: "50-vuotias nainen arvostaa lahjaa joka yhdistää huumorin ja laadun. 'Legendaarinen vuodesta 1975' -tyyliset hupparit, premium-kahvimukit ja hauska seinätaulu ovat suosituimpia 50v lahjoja naiselle.",
+      },
+      {
+        q: "Mikä on hyvä lahja 60-vuotiaalle naiselle?",
+        a: "60-vuotiaalle naiselle parhaat lahjat ovat lämpimiä ja käytännöllisiä: hauska huppari, pehmeä peitto huumorilla tai eläkehuumorimuki aamukahviin.",
+      },
+      {
+        q: "Mikä on hauska syntymäpäivälahja naiselle?",
+        a: "Hauska syntymäpäivälahja naiselle kannattaa valita huumorintajun mukaan: meemihuppari 30-vuotiaalle, 'Maailman paras äiti' -tuote 40-vuotiaalle ja eläkehuumorituote 60-vuotiaalle. Personoitava kahvimuki nimellä on aina varma valinta.",
+      },
+      {
+        q: "Mistä saa hauskan lahjan naiselle nopeasti?",
+        a: "Huumorikauppa.fi:stä. Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen ja maksaa onnistuu Klarnalla, Apple Paylla ja korteilla.",
+      },
+      {
+        q: "Voiko lahjan personoida nimellä?",
+        a: "Kyllä. Osa kahvimukeista ja paidoistamme on personoitavissa nimellä – täydellinen lahja naiselle joka 'jolla on jo kaikkea'.",
+      },
+    ],
   },
   {
     slug: "hauskat-syntymapaivaLahjat-opas",
@@ -1237,6 +1295,35 @@ Hauska muki tai paita on hyvä läksiäislahja. Se jää muistoksi yhteisistä a
 - Ilmainen toimitus yli 60 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["mukit", "tarrat", "t-paidat"],
+    productLinks: [
+      { slug: "hauska-kahvimuki-etatyontekijalle-virallinen-pyjama-ammattilainen", label: "Hauska Kahvimuki Etätyöntekijälle – Virallinen Pyjama-Ammattilainen" },
+      { slug: "hauska-t-paita-tyokaverillle-selvian-tyokaverit-auttaa", label: "Hauska T-Paita Työkaverille – 'Selviän, työkaverit auttaa'" },
+      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – eläkkeelle jäävälle työkaverille" },
+      { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – tiimin yhteishenkilö" },
+      { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – kiitoslahja pomolle" },
+    ],
+    faq: [
+      {
+        q: "Mikä on hyvä kiitoslahja työkaverille?",
+        a: "Paras kiitoslahja työkaverille on hauska kahvimuki tai t-paita osuvalla tekstillä. Hauska muki on edullinen (alle 20 €), käytännöllinen ja muistuttaa kiitollisuudesta joka aamukahvilla.",
+      },
+      {
+        q: "Mikä on hauska pikkujoululahja työkaverille?",
+        a: "Pikkujoululahjaksi työkaverille toimii erinomaisesti hauska kahvimuki, meemitarrat läppäriin tai talvipipo hauskalla tekstillä. Budjetti tyypillisesti 10–25 € per henkilö.",
+      },
+      {
+        q: "Mikä on hyvä läksiäislahja työkaverille?",
+        a: "Läksiäislahjaksi sopii personoitava muki tai t-paita yhteisen vitsin teemalla. Eläkkeelle jäävälle kollegalle '100% eläkeläinen' -kahvikuppi on klassikkovalinta.",
+      },
+      {
+        q: "Mitä antaa pomolle lahjaksi?",
+        a: "Pomolle kannattaa valita neutraali mutta silti hauska lahja: ammattihuumorimuki, sarkasmipaita tai laadukas huumoritaulu työhuoneeseen. Vältä liian kärkevää tai poliittista huumoria.",
+      },
+      {
+        q: "Kuinka nopeasti saamme lahjat toimistolle?",
+        a: "Toimitamme yritystilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin (esim. koko tiimin pikkujoululahjat) toimitus on ilmainen.",
+      },
+    ],
   },
   {
     slug: "hauska-lahja-kalastajalle",
@@ -1404,6 +1491,35 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     tags: ["valmistujaislahjat", "ylioppilaslahja", "hauska lahja opiskelijalle", "valmistuminen"],
     content: "## Hauskat valmistujaislahjat – ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä – vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** – hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** – valitse huumori joka sopii valmistujaan\n- **Edullinen** – hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** – paita, muki tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** – Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Hauska muki** – Edullinen mutta hauska ylioppilaan lahja.\n\n**Meemihuppari** – Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** – Koodihuumoripaita tai -muki.\n\n**Opettajan lahja** – Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus – muki + paita + tarra-arkki.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarra-arkki** (8–15 €)\n- **Hauska pipo** (15–20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 2 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
+    productLinks: [
+      { slug: "personoitava-kahvimuki-valmistuvalle-nimi-valmistunut-vuosi", label: "Personoitava Kahvimuki Valmistuvalle – Nimi & valmistunut-vuosi" },
+      { slug: "jyvaskyla-opiskelija-joka-ei-koskaan-valmistunut-hauska-kahvimuki", label: "Opiskelija joka ei koskaan valmistunut | Kahvimuki" },
+      { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – yhteislahja kaveriporukalta" },
+      { slug: "ice-aatanat-paita", label: "ICE AATANA | T-Paita – meemihenkinen ylioppilaslahja" },
+      { slug: "maailman-paras-aiti-t-paita", label: "Maailman paras äiti -paita – valmistuvan äidiltä" },
+    ],
+    faq: [
+      {
+        q: "Mikä on paras hauska ylioppilaslahja?",
+        a: "Paras hauska ylioppilaslahja on personoitava kahvimuki nimellä ja valmistumisvuodella – edullinen, hauska ja jää muistoksi. Toinen suosikki on meemihenkinen t-paita tai huppari rentoon opiskelijaelämään.",
+      },
+      {
+        q: "Mitä antaa lahjaksi valmistuvalle opiskelijalle?",
+        a: "Valmistuvalle opiskelijalle paras lahja on jotain käytännöllistä mutta hauskaa: huumorimuki työpaikan kahvitaukoja varten, ammattihuumoripaita uuteen ammattiin tai laadukas huppari arkikäyttöön.",
+      },
+      {
+        q: "Paljonko ylioppilaslahjan tulisi maksaa?",
+        a: "Tavanomainen ylioppilaslahjan budjetti on 20–50 €. Kummi- ja sukulaislahjat ovat usein 30–100 €. Huumorikaupasta saat hauskan kahvimukin alkaen 12 €, t-paidan 20–30 € ja hupparin 35–50 €.",
+      },
+      {
+        q: "Voiko valmistujaislahjan personoida?",
+        a: "Kyllä. Suosittu valinta on personoitava kahvimuki, johon saadaan valmistujan nimi ja valmistumisvuosi. Personoitavat tuotteet vievät hieman pidempään (n. 7–12 arkipäivää).",
+      },
+      {
+        q: "Milloin valmistujaislahja kannattaa tilata?",
+        a: "Tilaa hauska valmistujaislahja vähintään 2 viikkoa ennen valmistujaisia, jotta toimitus ja mahdollinen personointi ehditään tehdä rauhassa.",
+      },
+    ],
   },
   {
     slug: "hauskat-pipot-suomi",
