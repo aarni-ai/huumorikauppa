@@ -33,3 +33,9 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = false
   [functions.sync-mailerlite-products]
     verify_jwt = true
+  [functions.track-abandoned-cart]
+    verify_jwt = false
+  [functions.restore-cart]
+    verify_jwt = false
+  [functions.send-abandoned-cart-reminders]
+    verify_jwt = false
