@@ -1,70 +1,76 @@
-# Huumorikauppa.fi – optimointisuunnitelma
 
-Pyyntö on todella laaja (kymmeniä tunteja työtä ja yli 20 tiedostoa). Jaan sen **6 vaiheeseen**, joista jokainen toimitetaan erikseen ja on itsenäisesti production-valmis. Aloitamme vaiheesta 1 vahvistuksesi jälkeen.
+# Hylätyn ostoskorin muistutusautomaatio
 
-**Säilytetään ehdottomasti:** dark theme + neon-aksentit, fontit, hinnoittelutyyli, arvostelujen "aidot kirjoitusvirheet", Prerender.io-integraatio, hero-banneri, karusellit. (Mem://constraints/visual-integrity)
+## Tärkeä huomio Resendistä
+Projektissa on jo oma sähköpostijärjestelmä (help.huumorikauppa.fi, queue + Mailgun, unsubscribe-tokenit, tilausvahvistukset jne.). Käytän sitä **samaa olemassa olevaa infraa** Resendin sijaan — se on:
+- Halvempi (et maksa erikseen Resendistä)
+- Luotettavampi (sama domain-maine kuin tilausvahvistuksilla → ei päädy roskapostiin)
+- Sisältää jo unsubscribe-logiikan, suppression-listan ja queuen
 
----
+Jos haluat ehdottomasti Resendin, kerro — vaihdan helposti. Muuten etenen olemassa olevalla infralla.
 
-## Vaihe 1 — Äitienpäivä piiloon (säilytetään sivu)
+## Mitä rakennetaan
 
-- **Header.tsx / Footer.tsx**: poista äitienpäivä-linkit navigaatiosta ja footer-listasta.
-- **Index.tsx**: poista mahdollinen äitienpäivä-bannerikomponentti / hero-CTA / kategoriatile.
-- **CategoryPage.tsx, GiftCategoryPage.tsx, SEOKeywordContent.tsx, productCopy.ts**: poista kaudelliset äitienpäivä-CTA:t ja tekstipätkät, korvaa evergreen-fraaseilla ("hauska lahja naiselle", "syntymäpäivälahja").
-- **App.tsx**: säilytä `/aitienpaiva` ja `/aitienpaiva-lahjat`-reitit (sivu pysyy indeksoitavissa).
-- **MothersDayPage.tsx**: lisää `noindex` vain jos haluat (oletuksena säilytetään indeksoituna ensi vuotta varten).
-- **sitemap.xml & supabase/functions/sitemap**: säilytä `/aitienpaiva`.
-- **FAQ.tsx, blog.ts, situationGifts.ts, products.ts**: poista hero-mainokset / kausitagit ("äitienpäivätarjous"), säilytä historialliset blogiartikkelit.
+### 1. Tietokantataulu `abandoned_carts`
+Kentät: `email`, `cart_items` (jsonb), `cart_total`, `discount_code` (jos käytetty), `recovery_token` (uuid, palaa-linkkiä varten), `status` ('avoin' | 'ostettu' | 'peruttu'), `reminder_1h_sent_at`, `reminder_24h_sent_at`, `reminder_72h_sent_at`, `stripe_session_id`, `unsubscribed_at`, `created_at`, `updated_at`.
 
-## Vaihe 2 — SEO-perusta (technical SEO)
+RLS: vain service_role pääsee käsiksi (kassan kirjoitus tapahtuu edge functionin kautta).
 
-- **index.html**: tarkista title/description-pituudet, lisää `Store`-schemaan `openingHoursSpecification` ja `LocalBusiness`-fallback.
-- **SEOHead.tsx**: laajenna tukemaan `Product`, `FAQPage`, `Article`, `BreadcrumbList` -schemoja ja `og:image` per route.
-- **robots.txt**: korjaa duplikaattisisältö (tiedostossa on tällä hetkellä kaksi blokkia peräkkäin).
-- **Per-route helmet**: varmista että jokainen sivu (FAQ, About, Contact, Category, Product, Blog, GiftCategory, Search, kaikki policy-sivut) asettaa uniikin `title`+`description`+`canonical`.
-- **Breadcrumbs**: lisää näkyvät murupolut Category/Product/Blog-sivuille + BreadcrumbList JSON-LD.
+### 2. Kirjoitus kassasivulta
+`CheckoutPage.tsx`: kun käyttäjä antaa sähköpostin (debounce ~800ms, validi email) **ja** korissa on tuotteita → kutsu uutta edge functionia `track-abandoned-cart` joka upsertaa rivin (key: email + open-status). Päivittää myös, jos käyttäjä muuttaa koria.
 
-## Vaihe 3 — GEO / AI-search -optimointi
+### 3. Merkintä ostetuksi
+`stripe-webhook` (`checkout.session.completed`): merkitse `status='ostettu'` sähköpostin tai `stripe_session_id`:n perusteella.
 
-- **FAQ.tsx**: laajenna 15→25 kysymykseen, FAQPage JSON-LD koko listalle.
-- **Mini-FAQ-blokit**: lisää CategoryPage- ja ProductPage-pohjiin 3–5 kysymyksen FAQ JSON-LD:n kanssa.
-- **Entity-rikastus**: Index- ja kategoriasivuille `Speakable`+`mainEntity`-rakenne, selkeät H2-otsikot ("Mitä huumorilahjat ovat?", "Mille tilanteille?").
-- **llms.txt**: päivitä kategorialista, lisää aiheklusterit ("toimistohuumori", "nörttilahjat", "polttarilahjat").
+### 4. Sähköpostimallit (3 kpl)
+Lisätään `_shared/transactional-email-templates/`:
+- `abandoned-cart-1h` — pehmeä muistutus ("jätit nämä koriin")
+- `abandoned-cart-24h` — muistutus + sosiaalinen todiste (4.8★ arviot, tyytyväisten asiakkaiden määrä)
+- `abandoned-cart-72h` — viimeinen muistutus + alennuskoodi `PALAA10` (-10 %)
 
-## Vaihe 4 — Etusivun konversio + sisältö
+Kaikissa: tuotekuvat, hinta, "Palaa koriin" -nappi → `huumorikauppa.fi/palauta-kori?token={recovery_token}`, peruutuslinkki.
 
-- **Index.tsx**: hero-CTA + arvostelut + trust-badges + 3 trending-tuotetta + suosituimmat kategoriat + FAQ-snippet (5 kpl) + SEO-sisältöblokki + sisäiset linkit + bloghighlights + uutiskirje. Käytä olemassa olevaa dark-theme-tyyliä.
-- **Sticky add-to-cart**: ProductPage mobiili.
-- **Related products**: ProductPage-pohjaan (3–4 saman kategorian tuotetta).
-- **Trust-elementit**: tilausvahvistuksessa ja checkoutissa (PostNord, 14 päivän palautus, suomalainen, SSL).
+Alennuskoodi `PALAA10` lisätään `discount_codes`-tauluun ja `CheckoutPage`:n `VALID_CODES`-listalle.
 
-## Vaihe 5 — Suorituskyky
+### 5. Cron edge function `send-abandoned-cart-reminders`
+Ajetaan pg_cronilla joka 15 min. Hakee avoimet korit ja lähettää oikean muistutuksen kun:
+- 1h ≤ ikä < 24h ja `reminder_1h_sent_at IS NULL`
+- 24h ≤ ikä < 72h ja `reminder_24h_sent_at IS NULL`
+- 72h ≤ ikä < 7d ja `reminder_72h_sent_at IS NULL`
 
-- **Code splitting**: tarkista että kaikki reitit ovat `lazy()`-ladattuja.
-- **Image optimization**: varmista `OptimizedImage`-käyttö kaikissa karuselleissa, aseta `width`/`height` joka kuvalle CLS:n estämiseksi.
-- **Preload**: vain LCP-hero (jo paikalla), poista turhat `preconnect`-tagit.
-- **Bundle**: `manualChunks` Vitessä (vendor / router / supabase erikseen).
-- **Critical CSS**: tarkista että Tailwind purge toimii.
+Skippaa rivit joissa `unsubscribed_at` tai jotka löytyvät `suppressed_emails`-taulusta. Käyttää olemassa olevaa `send-transactional-email`-funktiota → menee queueen → lähtee. Idempotency-key = `abandoned-{cart_id}-{stage}`.
 
-## Vaihe 6 — Blogi + sisältöpyörät
+### 6. Palauta kori -sivu
+Uusi reitti `/palauta-kori?token=...` joka:
+- Hakee `abandoned_carts`-rivin tokenilla (edge function `restore-cart`)
+- Palauttaa tuotteet localStorageen (`useCart`)
+- Lisää alennuskoodin automaattisesti jos 72h-viesti
+- Ohjaa kassalle
 
-Kirjoita 6 uutta täyspitkää (1500+ sanaa) SEO-blogia:
-1. "Parhaat hauskat lahjat 2026 – 50 ideaa"
-2. "Lahja ihmiselle jolla on jo kaikkea"
-3. "Parhaat kahvimukit töihin"
-4. "Toimiston hauskimmat lahjat"
-5. "Parhaat meemilahjat suomalaisille"
-6. "Suomalaiset huumorilahjat – käsikirja"
+### 7. Peruutuslinkki
+Käytetään olemassa olevaa `handle-email-unsubscribe`-flow’ta, mutta lisätään myös merkintä `abandoned_carts.unsubscribed_at` — niin emme lähetä jatkossakaan.
 
-Sisäiset linkitykset toisiinsa + tuotekategorioihin, Article-schema, päivämäärät retroaktiivisesti.
+### 8. Suojaukset
+- Max 3 viestiä per kori (3 saraketta, ei voi lähettää uudestaan).
+- Ei lähetä, jos sama email teki tilauksen 24h sisällä.
+- Ei lähetä, jos email löytyy `suppressed_emails`:sta.
+- Ei lähetä yli 7 päivää vanhoille koreille.
 
----
+## Tekniset yksityiskohdat (tekninen osio)
 
-## Tekninen huomio
+**Edge functionit:**
+- `track-abandoned-cart` (uusi, verify_jwt=false): upsert ostoskori sähköpostin perusteella.
+- `restore-cart` (uusi, verify_jwt=false): palauttaa korin tokenilla.
+- `send-abandoned-cart-reminders` (uusi, verify_jwt=true, cron-kutsuttava): tekee skannauksen + invoke `send-transactional-email`.
+- `stripe-webhook` (muokkaus): merkitsee `status='ostettu'`.
 
-- React-helmet-async on jo asennettu (mem://tech/stack).
-- Käytössä on Prerender.io + Vercel Edge Middleware → meta-tagit pitää asettaa ennen `window.prerenderReady = true` -laukaisua.
-- Visuaalista layoutia ei kosketa (vain SEO-/perf-/konversiomuutokset, jotka eivät muuta ulkoasua).
-- En tee plain-text recapeja; jokaisen vaiheen lopussa kerron vain mitä testata.
+**Migraatio:** `abandoned_carts`-taulu + RLS + indexes (`status`, `email`, `recovery_token`) + pg_cron job 15 min välein.
 
-**Aloitanko vaiheesta 1 (äitienpäivä piiloon) heti hyväksynnän jälkeen?**
+**Frontend:** `CheckoutPage.tsx` (tracking), uusi `RestoreCartPage.tsx`, reitti `App.tsx`:ään.
+
+**Templates:** 3 React Email -tsx-tiedostoa + rekisteröinti `registry.ts`:ään.
+
+## Mitä EI muuteta
+- Visuaalinen ilme, layout, värit (memory: NEVER alter visuals).
+- Olemassa oleva maksuflow.
+- Olemassa olevat sähköpostit (tilausvahvistus jne.).
