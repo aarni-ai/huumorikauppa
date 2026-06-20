@@ -16,11 +16,6 @@ function sendEvent(name: string, params: Record<string, unknown>) {
     console.log("GA event sent:", name, params);
   } catch { /* ignore */ }
   try {
-    if (name === "add_to_cart" || name === "begin_checkout") {
-      window.alert(`${name} | gtag=${gtagType} | dataLayer=${hasDataLayer}`);
-    }
-  } catch { /* ignore */ }
-  try {
     if (typeof w.gtag === "function") {
       w.gtag("event", name, params);
       return;
