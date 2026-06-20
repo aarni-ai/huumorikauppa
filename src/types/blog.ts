@@ -10,4 +10,8 @@ export interface BlogPost {
   tags: string[];
   content: string;
   relatedCategories: string[];
+  /** Optional post-specific FAQ. Overrides the generic blog FAQ when present. */
+  faq?: { q: string; a: string }[];
+  /** Optional internal links to specific products shown in a dedicated section. */
+  productLinks?: { slug: string; label: string }[];
 }

@@ -60,8 +60,8 @@ const CATEGORY_H1: Record<string, string> = {
 // Category-specific H2 text sections for richer SEO
 const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]> = {
   "t-paidat": [
-    { h2: "Miksi hauska t-paita on paras lahja?", text: "Hauska t-paita on lahja joka naurattaa, ilahduttaa ja tulee oikeasti käyttöön. Se sopii syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia malleja – meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
-    { h2: "Suosituimmat hauskat t-paidat", text: "Valikoimamme suosituimpia ovat setähuumoripaidat, eläkeläispaidat, ammattihuumoripaidat ja meemipaidat. Kaikissa on laadukas DTG-painatus ja mukava istuvuus koissa XS–3XL." },
+    { h2: "Miksi hauska t-paita on paras lahja?", text: "Hauskat t-paidat ja huumoripaidat ovat lahjoja jotka naurattavat, ilahduttavat ja tulevat oikeasti käyttöön. Ne sopivat syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia huumoripaitoja – meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
+    { h2: "Suosituimmat huumoripaidat ja hauskat t-paidat", text: "Valikoimamme suosituimpia huumoripaitoja ovat setähuumoripaidat, eläkeläispaidat, ammattihuumoripaidat ja meemipaidat. Kaikissa hauskoissa t-paidoissa on laadukas DTG-painatus ja mukava istuvuus koissa XS–3XL." },
   ],
   "hupparit": [
     { h2: "Miksi hauska huppari on paras lahja?", text: "Hauska huppari yhdistää lämmön ja huumorin. Se on käytännöllinen, mukava ja hauska – täydellinen lahja kenelle tahansa. Valikoimastamme löydät meemihuppareita, setähuumorihuppareita ja sarkastisia tekstihuppareita." },

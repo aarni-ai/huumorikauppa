@@ -166,8 +166,8 @@ const BlogPost = () => {
     "keywords": post.tags.join(", "),
   };
 
-  // Geneeriset, blogiartikkeleille sopivat FAQ:t (AI-optimoitu / GEO)
-  const blogFaqs = [
+  // Per-post FAQ overrides the generic set when the post defines its own.
+  const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : [
     {
       q: "Mistä löydän hauskoja lahjaideoita?",
       a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
@@ -261,6 +261,28 @@ const BlogPost = () => {
         </header>
 
         <div className="text-muted-foreground">{renderContent(post.content)}</div>
+
+        {/* Hand-picked product links — internal linking to specific products */}
+        {post.productLinks && post.productLinks.length > 0 && (
+          <section className="mt-10 rounded-xl border border-primary/30 bg-primary/5 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <ShoppingBag className="h-5 w-5 text-primary shrink-0" />
+              <h3 className="font-display text-lg text-foreground">Suosittelemme näitä tuotteita</h3>
+            </div>
+            <ul className="space-y-2">
+              {post.productLinks.map((pl) => (
+                <li key={pl.slug}>
+                  <Link
+                    to={`/tuote/${pl.slug}`}
+                    className="text-primary underline hover:text-primary/80 transition-colors text-sm"
+                  >
+                    {pl.label} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Inline product CTA — category cards after article body */}
         {relatedCats.length > 0 && (
