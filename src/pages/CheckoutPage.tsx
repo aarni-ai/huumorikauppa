@@ -15,6 +15,7 @@ type Step = "details" | "shipping" | "payment";
 
 const VALID_CODES: Record<string, { percent: number; label: string }> = {
   "HUUMORI5": { percent: 5, label: "5% alennus" },
+  "PALAA10": { percent: 10, label: "10% alennus" },
 };
 
 const CheckoutPage = () => {
@@ -28,6 +29,33 @@ const CheckoutPage = () => {
     firstName: "", lastName: "", email: "", phone: "",
     address: "", zip: "", city: "",
   });
+
+  // Track abandoned cart when user enters a valid email
+  useEffect(() => {
+    const email = form.email.trim().toLowerCase();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (items.length === 0) return;
+    const t = setTimeout(() => {
+      supabase.functions.invoke("track-abandoned-cart", {
+        body: {
+          email,
+          cartItems: items,
+          cartTotal: items.reduce((s, i) => s + i.product.price * i.quantity, 0),
+        },
+      }).catch(() => { /* best-effort */ });
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [form.email, items]);
+
+  // Auto-apply discount code from ?code= (used by recovery emails)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code")?.toUpperCase();
+    if (code && VALID_CODES[code] && !appliedDiscount) {
+      setAppliedDiscount({ code, ...VALID_CODES[code] });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (beginCheckoutSent.current || items.length === 0) return;
