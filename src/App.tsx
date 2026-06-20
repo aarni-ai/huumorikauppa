@@ -75,6 +75,7 @@ const MothersDayRedirect = lazyWithRetry(() => import("./pages/MothersDayRedirec
 const ContactPage = lazyWithRetry(() => import("./pages/ContactPage"));
 const AboutPage = lazyWithRetry(() => import("./pages/AboutPage"));
 const UnsubscribePage = lazyWithRetry(() => import("./pages/UnsubscribePage"));
+const RestoreCartPage = lazyWithRetry(() => import("./pages/RestoreCartPage"));
 const Admin = lazyWithRetry(() => import("./pages/Admin"));
 const AdminLogin = lazyWithRetry(() => import("./pages/AdminLogin"));
 const SituationGiftPage = lazyWithRetry(() => import("./pages/SituationGiftPage"));
@@ -164,6 +165,7 @@ const App = () => (
               <Route path="/yhteystiedot" element={<ContactPage />} />
               <Route path="/tietoa-meista" element={<AboutPage />} />
               <Route path="/unsubscribe" element={<UnsubscribePage />} />
+              <Route path="/palauta-kori" element={<RestoreCartPage />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               {/* Content graph routes: professions, municipalities, hobbies, dialects */}
