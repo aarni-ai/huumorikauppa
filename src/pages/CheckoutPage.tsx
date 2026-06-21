@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useCartContext } from "@/context/CartContext";
+import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -334,6 +335,12 @@ const CheckoutPage = () => {
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
                   <p className="text-muted-foreground">{item.quantity} × {item.product.price.toFixed(2)} €</p>
+                  <ProductRating
+                    product={{ id: item.product.id, name: item.product.name, category: item.product.category }}
+                    size="sm"
+                    showCount={false}
+                    className="!gap-0.5"
+                  />
                   {item.customText && (
                     <p className="text-xs text-primary break-words">✍️ ”{item.customText}”</p>
                   )}

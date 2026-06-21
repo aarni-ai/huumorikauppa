@@ -9,6 +9,7 @@ import { categories } from "@/data/products";
 import { sortSizes } from "@/lib/sortSizes";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { proxiedImage } from "@/lib/imageProxy";
+import { ProductRating } from "@/components/ProductRating";
 
 interface ProductCardProps {
   product: Product;
@@ -292,6 +293,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className={`font-sans text-sm md:text-base font-medium text-foreground transition-colors line-clamp-2 ${canUseHover ? "group-hover:text-primary" : ""}`}>
           {product.name}
         </h3>
+        <ProductRating
+          product={{ id: product.id, name: product.name, category: product.category }}
+          size="sm"
+          showCount={false}
+          className="!gap-1"
+        />
         <div className="flex items-center gap-2 flex-wrap">
           {hasDiscount && (
             <span className="text-sm text-muted-foreground line-through">
