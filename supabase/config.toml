@@ -39,3 +39,9 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = false
   [functions.send-abandoned-cart-reminders]
     verify_jwt = false
+  [functions.send-review-requests]
+    verify_jwt = false
+  [functions.get-order-for-review]
+    verify_jwt = false
+  [functions.submit-review]
+    verify_jwt = false
