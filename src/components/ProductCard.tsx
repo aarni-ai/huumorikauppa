@@ -296,7 +296,6 @@ export function ProductCard({ product }: ProductCardProps) {
         <ProductRating
           product={{ id: product.id, name: product.name, category: product.category }}
           size="sm"
-          showCount={false}
           className="!gap-1"
         />
         <div className="flex items-center gap-2 flex-wrap">
