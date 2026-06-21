@@ -657,6 +657,16 @@ const ProductPage = () => {
           <div className="space-y-5">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
+              <div className="mb-2">
+                <ProductRating
+                  product={{ id: product.id, name: product.name, category: product.category }}
+                  size="md"
+                  onClick={() => {
+                    const el = document.getElementById("asiakasarviot");
+                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                />
+              </div>
               <div>
                 <div className="flex items-center gap-3">
                   {hasDiscount && (
