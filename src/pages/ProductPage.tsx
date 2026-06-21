@@ -21,8 +21,8 @@ import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 
-// Category-specific review pools with contextually relevant content
-type Review = { name: string; text: string; stars: number; date: string };
+import { getProductReviews, getProductRating, type Review } from "@/lib/productReviews";
+import { ProductRating } from "@/components/ProductRating";
 
 const REVIEWS_BY_CATEGORY: Record<string, Review[]> = {
   "hupparit": [
