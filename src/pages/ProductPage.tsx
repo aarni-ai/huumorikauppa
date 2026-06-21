@@ -21,7 +21,7 @@ import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 
-import { getProductReviews, getProductRating, type Review } from "@/lib/productReviews";
+import { getProductReviews, getProductRating } from "@/lib/productReviews";
 import { ProductRating } from "@/components/ProductRating";
 
 
