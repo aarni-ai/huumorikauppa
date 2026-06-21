@@ -277,6 +277,9 @@ export type Database = {
           printify_error: string | null
           printify_order_id: string | null
           printify_status: string
+          review_request_sent_at: string | null
+          review_token: string | null
+          review_unsubscribed: boolean
           shipping_address: Json | null
           status: Database["public"]["Enums"]["order_status"]
           stripe_session_id: string | null
@@ -298,6 +301,9 @@ export type Database = {
           printify_error?: string | null
           printify_order_id?: string | null
           printify_status?: string
+          review_request_sent_at?: string | null
+          review_token?: string | null
+          review_unsubscribed?: boolean
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"]
           stripe_session_id?: string | null
@@ -319,6 +325,9 @@ export type Database = {
           printify_error?: string | null
           printify_order_id?: string | null
           printify_status?: string
+          review_request_sent_at?: string | null
+          review_token?: string | null
+          review_unsubscribed?: boolean
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"]
           stripe_session_id?: string | null
@@ -327,6 +336,53 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      product_reviews: {
+        Row: {
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          id: string
+          order_id: string | null
+          product_name: string
+          product_slug: string | null
+          stars: number
+          status: string
+          text: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          order_id?: string | null
+          product_name: string
+          product_slug?: string | null
+          stars: number
+          status?: string
+          text?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          order_id?: string | null
+          product_name?: string
+          product_slug?: string | null
+          stars?: number
+          status?: string
+          text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
