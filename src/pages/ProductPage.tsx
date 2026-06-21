@@ -937,7 +937,7 @@ const ProductPage = () => {
         </section>
 
         {/* Customer Reviews */}
-        <section className="mt-8 max-w-3xl">
+        <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
             {(() => {
