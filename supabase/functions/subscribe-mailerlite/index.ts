@@ -35,7 +35,14 @@ serve(async (req) => {
       status: "active",
     };
     if (fields && typeof fields === "object") payload.fields = fields;
-    if (Array.isArray(groups)) payload.groups = groups;
+
+    // Always add new subscribers to the welcome-series group so MailerLite
+    // automation triggers fire. Caller can override or extend via `groups`.
+    const defaultGroup = Deno.env.get("MAILERLITE_WELCOME_GROUP_ID");
+    const groupSet = new Set<string>();
+    if (defaultGroup) groupSet.add(defaultGroup);
+    if (Array.isArray(groups)) groups.forEach((g) => g && groupSet.add(String(g)));
+    if (groupSet.size > 0) payload.groups = Array.from(groupSet);
 
     const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
       method: "POST",
