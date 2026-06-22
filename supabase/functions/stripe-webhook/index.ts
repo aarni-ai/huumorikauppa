@@ -3,6 +3,64 @@ import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 import { processCheckoutSession } from "../_shared/process-order.ts";
 
+// Push a "purchased" signal to MailerLite so win-back / welcome-series
+// automations can skip customers who already bought.
+// Non-blocking: failures are logged and never break the webhook.
+async function notifyMailerLitePurchase(params: {
+  email: string;
+  amount?: number;
+  orderId?: string;
+}) {
+  try {
+    const apiKey = Deno.env.get("MAILERLITE_API_KEY");
+    if (!apiKey || !params.email) return;
+    const customerGroup = Deno.env.get("MAILERLITE_CUSTOMER_GROUP_ID");
+    const welcomeGroup = Deno.env.get("MAILERLITE_WELCOME_GROUP_ID");
+
+    const body: Record<string, unknown> = {
+      email: params.email.toLowerCase(),
+      status: "active",
+      fields: {
+        last_purchase_at: new Date().toISOString(),
+        ...(typeof params.amount === "number" ? { last_purchase_amount: params.amount.toFixed(2) } : {}),
+      },
+    };
+    const groups: string[] = [];
+    if (customerGroup) groups.push(customerGroup);
+    if (groups.length) body.groups = groups;
+
+    // Upsert subscriber (adds to customer group, updates last_purchase_at)
+    const upsertRes = await fetch("https://connect.mailerlite.com/api/subscribers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!upsertRes.ok) {
+      console.error("MailerLite purchase upsert failed:", upsertRes.status, await upsertRes.text());
+      return;
+    }
+    const sub = await upsertRes.json().catch(() => ({} as any));
+    const subscriberId = sub?.data?.id;
+
+    // Remove from welcome-series so the rest of the sequence is skipped.
+    if (subscriberId && welcomeGroup) {
+      await fetch(
+        `https://connect.mailerlite.com/api/subscribers/${subscriberId}/groups/${welcomeGroup}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${apiKey}`, Accept: "application/json" },
+        },
+      ).catch(() => {});
+    }
+  } catch (err) {
+    console.error("notifyMailerLitePurchase error:", err);
+  }
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -83,6 +141,19 @@ serve(async (req) => {
       const session = event.data.object as Stripe.Checkout.Session;
       try {
         const result = await processCheckoutSession(supabase, stripe, session);
+        // Marketing: tag purchaser in MailerLite (separate from Mailgun transactional)
+        try {
+          const email = (session.customer_details?.email || session.customer_email || result.customerEmail || "").toLowerCase();
+          if (email) {
+            await notifyMailerLitePurchase({
+              email,
+              amount: typeof session.amount_total === "number" ? session.amount_total / 100 : undefined,
+              orderId: result.orderId,
+            });
+          }
+        } catch (e) {
+          console.error("MailerLite purchase notify failed:", e);
+        }
         // Mark matching abandoned cart(s) as purchased
         try {
           const email = (session.customer_details?.email || session.customer_email || result.customerEmail || "").toLowerCase();
