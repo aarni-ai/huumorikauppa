@@ -32,6 +32,24 @@ Deno.serve(async (req) => {
     const result = await syncPrintifyCatalog(supabase, "upsert");
 
     console.log("auto-sync-printify result:", JSON.stringify(result));
+
+    // After the catalog is up-to-date, push it to MailerLite so the
+    // welcome-series "best sellers" block and the new-products digest
+    // always reflect the live catalog. Fire-and-forget — never block.
+    try {
+      const projectUrl = supabaseUrl;
+      fetch(`${projectUrl}/functions/v1/sync-mailerlite-products`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${serviceKey}`,
+          "Content-Type": "application/json",
+        },
+        body: "{}",
+      }).catch((e) => console.error("sync-mailerlite-products trigger failed:", e));
+    } catch (e) {
+      console.error("MailerLite product sync trigger error:", e);
+    }
+
     return new Response(JSON.stringify({ success: true, mode: "upsert", ...result }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
