@@ -23,6 +23,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 
 import { getProductReviews, getProductRating } from "@/lib/productReviews";
 import { ProductRating } from "@/components/ProductRating";
+import { CityProductsSection } from "@/components/CityProductsSection";
 
 
 function parseDescription(description: string) {
@@ -1030,6 +1031,12 @@ const ProductPage = () => {
             </div>
           </section>
         )}
+
+        {/* City-targeted recommendations (Vercel geo) with bestseller fallback */}
+        <CityProductsSection
+          allProducts={allProducts}
+          currentProductId={product.id}
+        />
       </div>
 
       {/* Sticky mobile add-to-cart bar */}
