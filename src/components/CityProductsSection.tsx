@@ -59,7 +59,7 @@ export function CityProductsSection({ allProducts, currentProductId }: CityProdu
   if (products.length === 0) return null;
 
   const heading = useCityList && displayCity
-    ? `Suosittua ${displayCity}ssa 📍`
+    ? `Tehty kaupungillesi: ${displayCity} 📍`
     : "Suosituimmat juuri nyt 🔥";
 
   return (
