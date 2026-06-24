@@ -1031,6 +1031,12 @@ const ProductPage = () => {
             </div>
           </section>
         )}
+
+        {/* City-targeted recommendations (Vercel geo) with bestseller fallback */}
+        <CityProductsSection
+          allProducts={allProducts}
+          currentProductId={product.id}
+        />
       </div>
 
       {/* Sticky mobile add-to-cart bar */}
