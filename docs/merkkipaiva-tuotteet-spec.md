@@ -8,7 +8,7 @@ täsmälleen sarakkeen **Slug** mukaisen URL:n (`huumorikauppa.fi/tuote/<slug>`)
 auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslinkit.
 
 - T-paita: 24,90 € · Huppari: 49,90 € · Muki: hinta Printifystä (ei kategoriaylikirjoitusta).
-- Tuotteita yhteensä: 26 vitsiä × 3 tyyppiä = 78.
+- Tuotteita yhteensä: 24 vitsiä × 3 tyyppiä = 72.
 
 
 ## Opas: lahja miehelle (30/40/50/60v)
@@ -16,9 +16,6 @@ auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslink
 
 | Painoteksti | Tyyppi | Printify-tuotenimi | Slug | SEO-title | Hinta |
 |---|---|---|---|---|---|
-| 30v – edelleen takuussa | T-paita | 30v – edelleen takuussa \| T-Paita | `30v-edelleen-takuussa-t-paita` | Hauska 30v lahja miehelle – T-paita \| Huumorikauppa | 24,90 € |
-| 30v – edelleen takuussa | Huppari | 30v – edelleen takuussa \| Huppari | `30v-edelleen-takuussa-huppari` | Hauska 30v lahja miehelle – Huppari \| Huumorikauppa | 49,90 € |
-| 30v – edelleen takuussa | Muki | 30v – edelleen takuussa \| Muki | `30v-edelleen-takuussa-muki` | Hauska 30v lahja miehelle – Muki \| Huumorikauppa | Printify-määräinen |
 | Level 30 – selkä rusahtaa nyt | T-paita | Level 30 – selkä rusahtaa nyt \| T-Paita | `level-30-selka-rusahtaa-nyt-t-paita` | Hauska 30v lahja miehelle – T-paita \| Huumorikauppa | 24,90 € |
 | Level 30 – selkä rusahtaa nyt | Huppari | Level 30 – selkä rusahtaa nyt \| Huppari | `level-30-selka-rusahtaa-nyt-huppari` | Hauska 30v lahja miehelle – Huppari \| Huumorikauppa | 49,90 € |
 | Level 30 – selkä rusahtaa nyt | Muki | Level 30 – selkä rusahtaa nyt \| Muki | `level-30-selka-rusahtaa-nyt-muki` | Hauska 30v lahja miehelle – Muki \| Huumorikauppa | Printify-määräinen |
@@ -70,9 +67,6 @@ auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslink
 | 40v – ei vanha, vintage | T-paita | 40v – ei vanha, vintage \| T-Paita | `40v-ei-vanha-vintage-t-paita` | Hauska 40v lahja naiselle – T-paita \| Huumorikauppa | 24,90 € |
 | 40v – ei vanha, vintage | Huppari | 40v – ei vanha, vintage \| Huppari | `40v-ei-vanha-vintage-huppari` | Hauska 40v lahja naiselle – Huppari \| Huumorikauppa | 49,90 € |
 | 40v – ei vanha, vintage | Muki | 40v – ei vanha, vintage \| Muki | `40v-ei-vanha-vintage-muki` | Hauska 40v lahja naiselle – Muki \| Huumorikauppa | Printify-määräinen |
-| 50 vuotta harjoittelua – nyt vasta hyvä | T-paita | 50 vuotta harjoittelua – nyt vasta hyvä \| T-Paita | `50-vuotta-harjoittelua-nyt-vasta-hyva-t-paita` | Hauska 50v lahja naiselle – T-paita \| Huumorikauppa | 24,90 € |
-| 50 vuotta harjoittelua – nyt vasta hyvä | Huppari | 50 vuotta harjoittelua – nyt vasta hyvä \| Huppari | `50-vuotta-harjoittelua-nyt-vasta-hyva-huppari` | Hauska 50v lahja naiselle – Huppari \| Huumorikauppa | 49,90 € |
-| 50 vuotta harjoittelua – nyt vasta hyvä | Muki | 50 vuotta harjoittelua – nyt vasta hyvä \| Muki | `50-vuotta-harjoittelua-nyt-vasta-hyva-muki` | Hauska 50v lahja naiselle – Muki \| Huumorikauppa | Printify-määräinen |
 | 50 ja hopeanhohtoinen (vain hiukset) | T-paita | 50 ja hopeanhohtoinen (vain hiukset) \| T-Paita | `50-ja-hopeanhohtoinen-vain-hiukset-t-paita` | Hauska 50v lahja naiselle – T-paita \| Huumorikauppa | 24,90 € |
 | 50 ja hopeanhohtoinen (vain hiukset) | Huppari | 50 ja hopeanhohtoinen (vain hiukset) \| Huppari | `50-ja-hopeanhohtoinen-vain-hiukset-huppari` | Hauska 50v lahja naiselle – Huppari \| Huumorikauppa | 49,90 € |
 | 50 ja hopeanhohtoinen (vain hiukset) | Muki | 50 ja hopeanhohtoinen (vain hiukset) \| Muki | `50-ja-hopeanhohtoinen-vain-hiukset-muki` | Hauska 50v lahja naiselle – Muki \| Huumorikauppa | Printify-määräinen |
@@ -109,9 +103,6 @@ auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslink
 
 ## SEO-meta descriptions (per tuote)
 
-- **30v-edelleen-takuussa-t-paita**: 30v – edelleen takuussa – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
-- **30v-edelleen-takuussa-huppari**: 30v – edelleen takuussa – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
-- **30v-edelleen-takuussa-muki**: 30v – edelleen takuussa – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **level-30-selka-rusahtaa-nyt-t-paita**: Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **level-30-selka-rusahtaa-nyt-huppari**: Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **level-30-selka-rusahtaa-nyt-muki**: Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
@@ -157,9 +148,6 @@ auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslink
 - **40v-ei-vanha-vintage-t-paita**: 40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **40v-ei-vanha-vintage-huppari**: 40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **40v-ei-vanha-vintage-muki**: 40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
-- **50-vuotta-harjoittelua-nyt-vasta-hyva-t-paita**: 50 vuotta harjoittelua – nyt vasta hyvä – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
-- **50-vuotta-harjoittelua-nyt-vasta-hyva-huppari**: 50 vuotta harjoittelua – nyt vasta hyvä – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
-- **50-vuotta-harjoittelua-nyt-vasta-hyva-muki**: 50 vuotta harjoittelua – nyt vasta hyvä – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **50-ja-hopeanhohtoinen-vain-hiukset-t-paita**: 50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **50-ja-hopeanhohtoinen-vain-hiukset-huppari**: 50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
 - **50-ja-hopeanhohtoinen-vain-hiukset-muki**: 50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus.
