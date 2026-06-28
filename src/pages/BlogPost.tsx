@@ -4,6 +4,7 @@ import { blogPosts } from "@/data/blog";
 import { categories } from "@/data/products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
+import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 
 function renderContent(content: string) {
   const lines = content.split("\n");
@@ -261,6 +262,9 @@ const BlogPost = () => {
         </header>
 
         <div className="text-muted-foreground">{renderContent(post.content)}</div>
+
+        {/* Age-grouped product recommendations (gift guides) */}
+        <GuideProductRecommendations guideSlug={post.slug} />
 
         {/* Inline product CTA — category cards after article body */}
         {relatedCats.length > 0 && (

@@ -84,7 +84,7 @@ auto-sync tuo julkaistut Supabaseen → hyväksynnän jälkeen lisään opaslink
 | 60v – kokenut, ei vanha | Muki | 60v – kokenut, ei vanha \| Muki | `60v-kokenut-ei-vanha-muki` | Hauska 60v lahja naiselle – Muki \| Huumorikauppa | Printify-määräinen |
 
 ## Opas: hauskat eläkelahjat
-→ linkitetään: `/blogi/hauskat-elakelahjat-opas`
+→ linkitetään: `/blogi/hauskimmat-elakelahjat-selviytymisopas`
 
 | Painoteksti | Tyyppi | Printify-tuotenimi | Slug | SEO-title | Hinta |
 |---|---|---|---|---|---|
