@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Gift } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
-import { milestoneHighlightArticles, milestoneHighlightSlugs } from "@/data/milestoneHighlights";
+import { selectMilestoneHighlights } from "@/data/milestoneHighlights";
 import { Product } from "@/types/product";
 
 interface MilestoneProductHighlightsProps {
@@ -9,18 +9,20 @@ interface MilestoneProductHighlightsProps {
 }
 
 /**
- * Image-forward product highlights for the most popular / relevant blog articles.
- * Shows a cross-section of the new milestone products as clickable images that link
- * to the product page. Renders nothing until products are synced (no broken links),
- * and only on articles listed in milestoneHighlightArticles.
+ * Theme-matched, image-forward product highlights for blog articles. The article's
+ * theme is derived from its slug (selectMilestoneHighlights), so e.g. a "miehelle"
+ * article shows men's products, a "toimisto"/"pomo" article shows mugs, etc.
+ * Off-theme articles (stickers, baby, pets, sauna...) render nothing. Cards resolve
+ * live via useProducts(), so they appear only once products are synced.
  */
 export function MilestoneProductHighlights({ articleSlug }: MilestoneProductHighlightsProps) {
   const { data: products } = useProducts();
+  const highlight = selectMilestoneHighlights(articleSlug);
 
-  if (!milestoneHighlightArticles.includes(articleSlug) || !products) return null;
+  if (!highlight || !products) return null;
 
   const bySlug = new Map(products.map((p) => [p.slug, p]));
-  const items = milestoneHighlightSlugs
+  const items = highlight.slugs
     .map((s) => bySlug.get(s))
     .filter((p): p is Product => Boolean(p));
 
@@ -30,7 +32,7 @@ export function MilestoneProductHighlights({ articleSlug }: MilestoneProductHigh
     <section className="mt-10 rounded-xl border border-primary/30 bg-primary/5 p-5">
       <div className="flex items-center gap-2 mb-4">
         <Gift className="h-5 w-5 text-primary shrink-0" />
-        <h3 className="font-display text-lg text-foreground">Hauskat merkkipäivälahjat</h3>
+        <h3 className="font-display text-lg text-foreground">{highlight.title}</h3>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {items.map((p) => (
