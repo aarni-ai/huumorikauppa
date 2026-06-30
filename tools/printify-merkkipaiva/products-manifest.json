@@ -1,0 +1,870 @@
+{
+  "jokes": [
+    {
+      "key": "j01",
+      "text": "Level 30 – selkä rusahtaa nyt",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 30
+    },
+    {
+      "key": "j02",
+      "text": "30 ja liian vanha tyhmyyksiin (teen ne silti)",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 30
+    },
+    {
+      "key": "j03",
+      "text": "40v – kunto kuin 20v, 20 vuotta sitten",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j04",
+      "text": "40 vuotta, henkisesti 18",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j05",
+      "text": "40v – ei keski-ikä, klassikko",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j06",
+      "text": "50v – puoli vuosisataa, ei naarmuakaan",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 50
+    },
+    {
+      "key": "j07",
+      "text": "50 ja paras vasta tulossa",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 50
+    },
+    {
+      "key": "j08",
+      "text": "60v – mutta fyysinen kunto kuin 20v",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j09",
+      "text": "60 vuotta nuori",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j10",
+      "text": "60v – takuu mennyt, toimii silti",
+      "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j11",
+      "text": "30 ja loistossaan",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 30
+    },
+    {
+      "key": "j12",
+      "text": "30v – paranen iän myötä kuin viini",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 30
+    },
+    {
+      "key": "j13",
+      "text": "40v – henkisesti 18, tyylillä 40",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j14",
+      "text": "40 ja fabulous",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j15",
+      "text": "40v – ei vanha, vintage",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 40
+    },
+    {
+      "key": "j16",
+      "text": "50 ja hopeanhohtoinen (vain hiukset)",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 50
+    },
+    {
+      "key": "j17",
+      "text": "50v – klassikkomalli",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 50
+    },
+    {
+      "key": "j18",
+      "text": "60v – mutta sydän kuin 20v",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j19",
+      "text": "60 vuotta nuori ja nokkela",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j20",
+      "text": "60v – kokenut, ei vanha",
+      "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
+      "age": 60
+    },
+    {
+      "key": "j21",
+      "text": "Eläkkeellä – kiireinen tekemään ei mitään",
+      "guide": "/blogi/hauskimmat-elakelahjat-selviytymisopas",
+      "age": "elake"
+    },
+    {
+      "key": "j22",
+      "text": "Virallisesti työtön, epävirallisesti vapaa",
+      "guide": "/blogi/hauskimmat-elakelahjat-selviytymisopas",
+      "age": "elake"
+    },
+    {
+      "key": "j23",
+      "text": "40 vuotta töitä, nyt ikuinen viikonloppu",
+      "guide": "/blogi/hauskimmat-elakelahjat-selviytymisopas",
+      "age": "elake"
+    },
+    {
+      "key": "j24",
+      "text": "Eläkeläinen – aamuherätys vapaaehtoinen",
+      "guide": "/blogi/hauskimmat-elakelahjat-selviytymisopas",
+      "age": "elake"
+    }
+  ],
+  "products": [
+    {
+      "jokeKey": "j01",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "Level 30 – selkä rusahtaa nyt | T-Paita",
+      "slug": "level-30-selka-rusahtaa-nyt-t-paita",
+      "seoTitle": "Hauska 30v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j01",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "Level 30 – selkä rusahtaa nyt | Huppari",
+      "slug": "level-30-selka-rusahtaa-nyt-huppari",
+      "seoTitle": "Hauska 30v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j01",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "Level 30 – selkä rusahtaa nyt | Muki",
+      "slug": "level-30-selka-rusahtaa-nyt-muki",
+      "seoTitle": "Hauska 30v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j02",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | T-Paita",
+      "slug": "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita",
+      "seoTitle": "Hauska 30v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "30 ja liian vanha tyhmyyksiin (teen ne silti) – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j02",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | Huppari",
+      "slug": "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari",
+      "seoTitle": "Hauska 30v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "30 ja liian vanha tyhmyyksiin (teen ne silti) – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j02",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | Muki",
+      "slug": "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki",
+      "seoTitle": "Hauska 30v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "30 ja liian vanha tyhmyyksiin (teen ne silti) – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j03",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | T-Paita",
+      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
+      "seoTitle": "Hauska 40v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j03",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Huppari",
+      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-huppari",
+      "seoTitle": "Hauska 40v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j03",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Muki",
+      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-muki",
+      "seoTitle": "Hauska 40v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j04",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40 vuotta, henkisesti 18 | T-Paita",
+      "slug": "40-vuotta-henkisesti-18-t-paita",
+      "seoTitle": "Hauska 40v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "40 vuotta, henkisesti 18 – hauska 40-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j04",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40 vuotta, henkisesti 18 | Huppari",
+      "slug": "40-vuotta-henkisesti-18-huppari",
+      "seoTitle": "Hauska 40v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "40 vuotta, henkisesti 18 – hauska 40-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j04",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40 vuotta, henkisesti 18 | Muki",
+      "slug": "40-vuotta-henkisesti-18-muki",
+      "seoTitle": "Hauska 40v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "40 vuotta, henkisesti 18 – hauska 40-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j05",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40v – ei keski-ikä, klassikko | T-Paita",
+      "slug": "40v-ei-keski-ika-klassikko-t-paita",
+      "seoTitle": "Hauska 40v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "40v – ei keski-ikä, klassikko – hauska 40-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j05",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40v – ei keski-ikä, klassikko | Huppari",
+      "slug": "40v-ei-keski-ika-klassikko-huppari",
+      "seoTitle": "Hauska 40v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "40v – ei keski-ikä, klassikko – hauska 40-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j05",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40v – ei keski-ikä, klassikko | Muki",
+      "slug": "40v-ei-keski-ika-klassikko-muki",
+      "seoTitle": "Hauska 40v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "40v – ei keski-ikä, klassikko – hauska 40-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j06",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | T-Paita",
+      "slug": "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
+      "seoTitle": "Hauska 50v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "50v – puoli vuosisataa, ei naarmuakaan – hauska 50-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j06",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | Huppari",
+      "slug": "50v-puoli-vuosisataa-ei-naarmuakaan-huppari",
+      "seoTitle": "Hauska 50v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "50v – puoli vuosisataa, ei naarmuakaan – hauska 50-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j06",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | Muki",
+      "slug": "50v-puoli-vuosisataa-ei-naarmuakaan-muki",
+      "seoTitle": "Hauska 50v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "50v – puoli vuosisataa, ei naarmuakaan – hauska 50-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j07",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "50 ja paras vasta tulossa | T-Paita",
+      "slug": "50-ja-paras-vasta-tulossa-t-paita",
+      "seoTitle": "Hauska 50v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "50 ja paras vasta tulossa – hauska 50-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j07",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "50 ja paras vasta tulossa | Huppari",
+      "slug": "50-ja-paras-vasta-tulossa-huppari",
+      "seoTitle": "Hauska 50v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "50 ja paras vasta tulossa – hauska 50-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j07",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "50 ja paras vasta tulossa | Muki",
+      "slug": "50-ja-paras-vasta-tulossa-muki",
+      "seoTitle": "Hauska 50v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "50 ja paras vasta tulossa – hauska 50-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j08",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60v – mutta fyysinen kunto kuin 20v | T-Paita",
+      "slug": "60v-mutta-fyysinen-kunto-kuin-20v-t-paita",
+      "seoTitle": "Hauska 60v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "60v – mutta fyysinen kunto kuin 20v – hauska 60-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j08",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60v – mutta fyysinen kunto kuin 20v | Huppari",
+      "slug": "60v-mutta-fyysinen-kunto-kuin-20v-huppari",
+      "seoTitle": "Hauska 60v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "60v – mutta fyysinen kunto kuin 20v – hauska 60-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j08",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60v – mutta fyysinen kunto kuin 20v | Muki",
+      "slug": "60v-mutta-fyysinen-kunto-kuin-20v-muki",
+      "seoTitle": "Hauska 60v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "60v – mutta fyysinen kunto kuin 20v – hauska 60-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j09",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60 vuotta nuori | T-Paita",
+      "slug": "60-vuotta-nuori-t-paita",
+      "seoTitle": "Hauska 60v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori – hauska 60-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j09",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60 vuotta nuori | Huppari",
+      "slug": "60-vuotta-nuori-huppari",
+      "seoTitle": "Hauska 60v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori – hauska 60-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j09",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60 vuotta nuori | Muki",
+      "slug": "60-vuotta-nuori-muki",
+      "seoTitle": "Hauska 60v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori – hauska 60-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j10",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60v – takuu mennyt, toimii silti | T-Paita",
+      "slug": "60v-takuu-mennyt-toimii-silti-t-paita",
+      "seoTitle": "Hauska 60v lahja miehelle – T-paita | Huumorikauppa",
+      "seoDescription": "60v – takuu mennyt, toimii silti – hauska 60-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j10",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60v – takuu mennyt, toimii silti | Huppari",
+      "slug": "60v-takuu-mennyt-toimii-silti-huppari",
+      "seoTitle": "Hauska 60v lahja miehelle – Huppari | Huumorikauppa",
+      "seoDescription": "60v – takuu mennyt, toimii silti – hauska 60-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j10",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60v – takuu mennyt, toimii silti | Muki",
+      "slug": "60v-takuu-mennyt-toimii-silti-muki",
+      "seoTitle": "Hauska 60v lahja miehelle – Muki | Huumorikauppa",
+      "seoDescription": "60v – takuu mennyt, toimii silti – hauska 60-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j11",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "30 ja loistossaan | T-Paita",
+      "slug": "30-ja-loistossaan-t-paita",
+      "seoTitle": "Hauska 30v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j11",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "30 ja loistossaan | Huppari",
+      "slug": "30-ja-loistossaan-huppari",
+      "seoTitle": "Hauska 30v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j11",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "30 ja loistossaan | Muki",
+      "slug": "30-ja-loistossaan-muki",
+      "seoTitle": "Hauska 30v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j12",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "30v – paranen iän myötä kuin viini | T-Paita",
+      "slug": "30v-paranen-ian-myota-kuin-viini-t-paita",
+      "seoTitle": "Hauska 30v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "30v – paranen iän myötä kuin viini – hauska 30-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j12",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "30v – paranen iän myötä kuin viini | Huppari",
+      "slug": "30v-paranen-ian-myota-kuin-viini-huppari",
+      "seoTitle": "Hauska 30v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "30v – paranen iän myötä kuin viini – hauska 30-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j12",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "30v – paranen iän myötä kuin viini | Muki",
+      "slug": "30v-paranen-ian-myota-kuin-viini-muki",
+      "seoTitle": "Hauska 30v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "30v – paranen iän myötä kuin viini – hauska 30-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j13",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40v – henkisesti 18, tyylillä 40 | T-Paita",
+      "slug": "40v-henkisesti-18-tyylilla-40-t-paita",
+      "seoTitle": "Hauska 40v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "40v – henkisesti 18, tyylillä 40 – hauska 40-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j13",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40v – henkisesti 18, tyylillä 40 | Huppari",
+      "slug": "40v-henkisesti-18-tyylilla-40-huppari",
+      "seoTitle": "Hauska 40v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "40v – henkisesti 18, tyylillä 40 – hauska 40-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j13",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40v – henkisesti 18, tyylillä 40 | Muki",
+      "slug": "40v-henkisesti-18-tyylilla-40-muki",
+      "seoTitle": "Hauska 40v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "40v – henkisesti 18, tyylillä 40 – hauska 40-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j14",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40 ja fabulous | T-Paita",
+      "slug": "40-ja-fabulous-t-paita",
+      "seoTitle": "Hauska 40v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "40 ja fabulous – hauska 40-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j14",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40 ja fabulous | Huppari",
+      "slug": "40-ja-fabulous-huppari",
+      "seoTitle": "Hauska 40v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "40 ja fabulous – hauska 40-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j14",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40 ja fabulous | Muki",
+      "slug": "40-ja-fabulous-muki",
+      "seoTitle": "Hauska 40v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "40 ja fabulous – hauska 40-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j15",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40v – ei vanha, vintage | T-Paita",
+      "slug": "40v-ei-vanha-vintage-t-paita",
+      "seoTitle": "Hauska 40v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j15",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40v – ei vanha, vintage | Huppari",
+      "slug": "40v-ei-vanha-vintage-huppari",
+      "seoTitle": "Hauska 40v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j15",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40v – ei vanha, vintage | Muki",
+      "slug": "40v-ei-vanha-vintage-muki",
+      "seoTitle": "Hauska 40v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "40v – ei vanha, vintage – hauska 40-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j16",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | T-Paita",
+      "slug": "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
+      "seoTitle": "Hauska 50v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j16",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | Huppari",
+      "slug": "50-ja-hopeanhohtoinen-vain-hiukset-huppari",
+      "seoTitle": "Hauska 50v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j16",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | Muki",
+      "slug": "50-ja-hopeanhohtoinen-vain-hiukset-muki",
+      "seoTitle": "Hauska 50v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "50 ja hopeanhohtoinen (vain hiukset) – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j17",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "50v – klassikkomalli | T-Paita",
+      "slug": "50v-klassikkomalli-t-paita",
+      "seoTitle": "Hauska 50v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j17",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "50v – klassikkomalli | Huppari",
+      "slug": "50v-klassikkomalli-huppari",
+      "seoTitle": "Hauska 50v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j17",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "50v – klassikkomalli | Muki",
+      "slug": "50v-klassikkomalli-muki",
+      "seoTitle": "Hauska 50v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j18",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60v – mutta sydän kuin 20v | T-Paita",
+      "slug": "60v-mutta-sydan-kuin-20v-t-paita",
+      "seoTitle": "Hauska 60v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "60v – mutta sydän kuin 20v – hauska 60-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j18",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60v – mutta sydän kuin 20v | Huppari",
+      "slug": "60v-mutta-sydan-kuin-20v-huppari",
+      "seoTitle": "Hauska 60v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "60v – mutta sydän kuin 20v – hauska 60-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j18",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60v – mutta sydän kuin 20v | Muki",
+      "slug": "60v-mutta-sydan-kuin-20v-muki",
+      "seoTitle": "Hauska 60v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "60v – mutta sydän kuin 20v – hauska 60-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j19",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60 vuotta nuori ja nokkela | T-Paita",
+      "slug": "60-vuotta-nuori-ja-nokkela-t-paita",
+      "seoTitle": "Hauska 60v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori ja nokkela – hauska 60-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j19",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60 vuotta nuori ja nokkela | Huppari",
+      "slug": "60-vuotta-nuori-ja-nokkela-huppari",
+      "seoTitle": "Hauska 60v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori ja nokkela – hauska 60-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j19",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60 vuotta nuori ja nokkela | Muki",
+      "slug": "60-vuotta-nuori-ja-nokkela-muki",
+      "seoTitle": "Hauska 60v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "60 vuotta nuori ja nokkela – hauska 60-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j20",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "60v – kokenut, ei vanha | T-Paita",
+      "slug": "60v-kokenut-ei-vanha-t-paita",
+      "seoTitle": "Hauska 60v lahja naiselle – T-paita | Huumorikauppa",
+      "seoDescription": "60v – kokenut, ei vanha – hauska 60-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j20",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "60v – kokenut, ei vanha | Huppari",
+      "slug": "60v-kokenut-ei-vanha-huppari",
+      "seoTitle": "Hauska 60v lahja naiselle – Huppari | Huumorikauppa",
+      "seoDescription": "60v – kokenut, ei vanha – hauska 60-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j20",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "60v – kokenut, ei vanha | Muki",
+      "slug": "60v-kokenut-ei-vanha-muki",
+      "seoTitle": "Hauska 60v lahja naiselle – Muki | Huumorikauppa",
+      "seoDescription": "60v – kokenut, ei vanha – hauska 60-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j21",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | T-Paita",
+      "slug": "elakkeella-kiireinen-tekemaan-ei-mitaan-t-paita",
+      "seoTitle": "Hauska eläkelahja – T-paita | Huumorikauppa",
+      "seoDescription": "Eläkkeellä – kiireinen tekemään ei mitään – hauska eläkelahja. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j21",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | Huppari",
+      "slug": "elakkeella-kiireinen-tekemaan-ei-mitaan-huppari",
+      "seoTitle": "Hauska eläkelahja – Huppari | Huumorikauppa",
+      "seoDescription": "Eläkkeellä – kiireinen tekemään ei mitään – hauska eläkelahja. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j21",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | Muki",
+      "slug": "elakkeella-kiireinen-tekemaan-ei-mitaan-muki",
+      "seoTitle": "Hauska eläkelahja – Muki | Huumorikauppa",
+      "seoDescription": "Eläkkeellä – kiireinen tekemään ei mitään – hauska eläkelahja. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j22",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | T-Paita",
+      "slug": "virallisesti-tyoton-epavirallisesti-vapaa-t-paita",
+      "seoTitle": "Hauska eläkelahja – T-paita | Huumorikauppa",
+      "seoDescription": "Virallisesti työtön, epävirallisesti vapaa – hauska eläkelahja. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j22",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | Huppari",
+      "slug": "virallisesti-tyoton-epavirallisesti-vapaa-huppari",
+      "seoTitle": "Hauska eläkelahja – Huppari | Huumorikauppa",
+      "seoDescription": "Virallisesti työtön, epävirallisesti vapaa – hauska eläkelahja. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j22",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | Muki",
+      "slug": "virallisesti-tyoton-epavirallisesti-vapaa-muki",
+      "seoTitle": "Hauska eläkelahja – Muki | Huumorikauppa",
+      "seoDescription": "Virallisesti työtön, epävirallisesti vapaa – hauska eläkelahja. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j23",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | T-Paita",
+      "slug": "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita",
+      "seoTitle": "Hauska eläkelahja – T-paita | Huumorikauppa",
+      "seoDescription": "40 vuotta töitä, nyt ikuinen viikonloppu – hauska eläkelahja. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j23",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | Huppari",
+      "slug": "40-vuotta-toita-nyt-ikuinen-viikonloppu-huppari",
+      "seoTitle": "Hauska eläkelahja – Huppari | Huumorikauppa",
+      "seoDescription": "40 vuotta töitä, nyt ikuinen viikonloppu – hauska eläkelahja. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j23",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | Muki",
+      "slug": "40-vuotta-toita-nyt-ikuinen-viikonloppu-muki",
+      "seoTitle": "Hauska eläkelahja – Muki | Huumorikauppa",
+      "seoDescription": "40 vuotta töitä, nyt ikuinen viikonloppu – hauska eläkelahja. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j24",
+      "type": "t-paita",
+      "tag": "t-shirt",
+      "orientation": "portrait",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | T-Paita",
+      "slug": "elakelainen-aamuheratys-vapaaehtoinen-t-paita",
+      "seoTitle": "Hauska eläkelahja – T-paita | Huumorikauppa",
+      "seoDescription": "Eläkeläinen – aamuherätys vapaaehtoinen – hauska eläkelahja. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j24",
+      "type": "huppari",
+      "tag": "hoodie",
+      "orientation": "portrait",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | Huppari",
+      "slug": "elakelainen-aamuheratys-vapaaehtoinen-huppari",
+      "seoTitle": "Hauska eläkelahja – Huppari | Huumorikauppa",
+      "seoDescription": "Eläkeläinen – aamuherätys vapaaehtoinen – hauska eläkelahja. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    },
+    {
+      "jokeKey": "j24",
+      "type": "muki",
+      "tag": "mug",
+      "orientation": "landscape",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | Muki",
+      "slug": "elakelainen-aamuheratys-vapaaehtoinen-muki",
+      "seoTitle": "Hauska eläkelahja – Muki | Huumorikauppa",
+      "seoDescription": "Eläkeläinen – aamuherätys vapaaehtoinen – hauska eläkelahja. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+    }
+  ]
+}

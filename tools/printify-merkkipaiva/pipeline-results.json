@@ -1,0 +1,614 @@
+{
+  "uploads": {
+    "j01-portrait": "6a40c9c6278b10212f523fda",
+    "j01-landscape": "6a40ca415661799d94cb8ddd",
+    "j02-portrait": "6a40ca49898d0078ed5d87b0",
+    "j02-landscape": "6a40ca675661799d94cb8de3",
+    "j03-portrait": "6a40ca6d1051a4360b150c0d",
+    "j03-landscape": "6a40ca88d87094daa05532e2",
+    "j04-portrait": "6a40ca90d004a17f084553ea",
+    "j04-landscape": "6a40caaa898d0078ed5d87d6",
+    "j05-portrait": "6a40cab0ebac0041b53156da",
+    "j05-landscape": "6a40caca62d5eba86c8cd541",
+    "j06-portrait": "6a40cad4d87094daa05532e9",
+    "j06-landscape": "6a40caf4e5a8bb3fd04d62b7",
+    "j07-portrait": "6a40cafbcae38c82a8fda2de",
+    "j07-landscape": "6a40cb15d87094daa055330e",
+    "j08-portrait": "6a40cb1e898d0078ed5d87f0",
+    "j08-landscape": "6a40cb3bd87094daa0553312",
+    "j09-portrait": "6a40cb42ef8107c93fa1eafd",
+    "j09-landscape": "6a40cb5162d5eba86c8cd59b",
+    "j10-portrait": "6a40cb54898d0078ed5d882d",
+    "j10-landscape": "6a40cb6462d5eba86c8cd59e",
+    "j11-portrait": "6a40cb68cae38c82a8fda359",
+    "j11-landscape": "6a40cb7462d5eba86c8cd5a2",
+    "j12-portrait": "6a40cb78cae38c82a8fda364",
+    "j12-landscape": "6a40cb8566557726c82adbdd",
+    "j13-portrait": "6a40cb89cae38c82a8fda3b5",
+    "j13-landscape": "6a40cb951051a4360b150e3c",
+    "j14-portrait": "6a40cb99ebac0041b531574e",
+    "j14-landscape": "6a40cba5ebac0041b531574f",
+    "j15-portrait": "6a40cba9ebac0041b5315750",
+    "j15-landscape": "6a40cbb5e5a8bb3fd04d635d",
+    "j16-portrait": "6a40cbb8418d02d44fc6c2e0",
+    "j16-landscape": "6a40cbc5cae38c82a8fda3bd",
+    "j17-portrait": "6a40cbc9418d02d44fc6c2e2",
+    "j17-landscape": "6a40cbd866557726c82adbf2",
+    "j18-portrait": "6a40cbdce5a8bb3fd04d6362",
+    "j18-landscape": "6a40cbe8cae38c82a8fda3c1",
+    "j19-portrait": "6a40cbeb66557726c82adbf6",
+    "j19-landscape": "6a40cbf9418d02d44fc6c2e8",
+    "j20-portrait": "6a40cbfc418d02d44fc6c2e9",
+    "j20-landscape": "6a40cc0acae38c82a8fda401",
+    "j21-portrait": "6a40cc0ee38e97b972c33c1c",
+    "j21-landscape": "6a40cc1f565067137e8969e2",
+    "j22-portrait": "6a40cc22ebac0041b5315777",
+    "j22-landscape": "6a40cc3262d5eba86c8cd5d0",
+    "j23-portrait": "6a40cc35418d02d44fc6c2ed",
+    "j23-landscape": "6a40cc42ebac0041b53157db",
+    "j24-portrait": "6a40cc46cae38c82a8fda429",
+    "j24-landscape": "6a40cc5666557726c82adc0e"
+  },
+  "products": {
+    "level-30-selka-rusahtaa-nyt-t-paita": {
+      "id": "6a40c9cbb38ebb906e072589",
+      "title": "Level 30 – selkä rusahtaa nyt | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j01"
+    },
+    "level-30-selka-rusahtaa-nyt-huppari": {
+      "id": "6a40ca32a7caa8b5d009c085",
+      "title": "Level 30 – selkä rusahtaa nyt | Huppari",
+      "type": "huppari",
+      "jokeKey": "j01"
+    },
+    "level-30-selka-rusahtaa-nyt-muki": {
+      "id": "6a40ca42b38ebb906e0725aa",
+      "title": "Level 30 – selkä rusahtaa nyt | Muki",
+      "type": "muki",
+      "jokeKey": "j01"
+    },
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita": {
+      "id": "6a40ca4ba7caa8b5d009c08a",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j02"
+    },
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari": {
+      "id": "6a40ca581958bb0f40073254",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | Huppari",
+      "type": "huppari",
+      "jokeKey": "j02"
+    },
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki": {
+      "id": "6a40ca68d45ac7daf1109277",
+      "title": "30 ja liian vanha tyhmyyksiin (teen ne silti) | Muki",
+      "type": "muki",
+      "jokeKey": "j02"
+    },
+    "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita": {
+      "id": "6a40ca6fd45ac7daf110927a",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j03"
+    },
+    "40v-kunto-kuin-20v-20-vuotta-sitten-huppari": {
+      "id": "6a40ca7de7b8a9601e1040ad",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Huppari",
+      "type": "huppari",
+      "jokeKey": "j03"
+    },
+    "40v-kunto-kuin-20v-20-vuotta-sitten-muki": {
+      "id": "6a40ca8ae7b8a9601e1040b5",
+      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Muki",
+      "type": "muki",
+      "jokeKey": "j03"
+    },
+    "40-vuotta-henkisesti-18-t-paita": {
+      "id": "6a40ca92d97be4f10b11b38f",
+      "title": "40 vuotta, henkisesti 18 | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j04"
+    },
+    "40-vuotta-henkisesti-18-huppari": {
+      "id": "6a40ca9ee7b8a9601e1040b9",
+      "title": "40 vuotta, henkisesti 18 | Huppari",
+      "type": "huppari",
+      "jokeKey": "j04"
+    },
+    "40-vuotta-henkisesti-18-muki": {
+      "id": "6a40caaba7caa8b5d009c0b5",
+      "title": "40 vuotta, henkisesti 18 | Muki",
+      "type": "muki",
+      "jokeKey": "j04"
+    },
+    "40v-ei-keski-ika-klassikko-t-paita": {
+      "id": "6a40cab2d3a3089d72070fb0",
+      "title": "40v – ei keski-ikä, klassikko | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j05"
+    },
+    "40v-ei-keski-ika-klassikko-huppari": {
+      "id": "6a40cabfa7caa8b5d009c0bb",
+      "title": "40v – ei keski-ikä, klassikko | Huppari",
+      "type": "huppari",
+      "jokeKey": "j05"
+    },
+    "40v-ei-keski-ika-klassikko-muki": {
+      "id": "6a40cacbd97be4f10b11b39a",
+      "title": "40v – ei keski-ikä, klassikko | Muki",
+      "type": "muki",
+      "jokeKey": "j05"
+    },
+    "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita": {
+      "id": "6a40cad6a7caa8b5d009c0c1",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j06"
+    },
+    "50v-puoli-vuosisataa-ei-naarmuakaan-huppari": {
+      "id": "6a40cae5a7caa8b5d009c0c5",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | Huppari",
+      "type": "huppari",
+      "jokeKey": "j06"
+    },
+    "50v-puoli-vuosisataa-ei-naarmuakaan-muki": {
+      "id": "6a40caf51958bb0f4007327d",
+      "title": "50v – puoli vuosisataa, ei naarmuakaan | Muki",
+      "type": "muki",
+      "jokeKey": "j06"
+    },
+    "50-ja-paras-vasta-tulossa-t-paita": {
+      "id": "6a40cafdb38ebb906e0725d7",
+      "title": "50 ja paras vasta tulossa | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j07"
+    },
+    "50-ja-paras-vasta-tulossa-huppari": {
+      "id": "6a40cb0bd45ac7daf11092b0",
+      "title": "50 ja paras vasta tulossa | Huppari",
+      "type": "huppari",
+      "jokeKey": "j07"
+    },
+    "50-ja-paras-vasta-tulossa-muki": {
+      "id": "6a40cb17e7b8a9601e1040d8",
+      "title": "50 ja paras vasta tulossa | Muki",
+      "type": "muki",
+      "jokeKey": "j07"
+    },
+    "60v-mutta-fyysinen-kunto-kuin-20v-t-paita": {
+      "id": "6a40cb20cceb6104070f31c4",
+      "title": "60v – mutta fyysinen kunto kuin 20v | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j08"
+    },
+    "60v-mutta-fyysinen-kunto-kuin-20v-huppari": {
+      "id": "6a40cb2de7b8a9601e1040e3",
+      "title": "60v – mutta fyysinen kunto kuin 20v | Huppari",
+      "type": "huppari",
+      "jokeKey": "j08"
+    },
+    "60v-mutta-fyysinen-kunto-kuin-20v-muki": {
+      "id": "6a40cb3da7caa8b5d009c10e",
+      "title": "60v – mutta fyysinen kunto kuin 20v | Muki",
+      "type": "muki",
+      "jokeKey": "j08"
+    },
+    "60-vuotta-nuori-t-paita": {
+      "id": "6a40cb44d3a3089d7207100a",
+      "title": "60 vuotta nuori | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j09"
+    },
+    "60-vuotta-nuori-huppari": {
+      "id": "6a40cb4ca7caa8b5d009c119",
+      "title": "60 vuotta nuori | Huppari",
+      "type": "huppari",
+      "jokeKey": "j09"
+    },
+    "60-vuotta-nuori-muki": {
+      "id": "6a40cb52b38ebb906e072617",
+      "title": "60 vuotta nuori | Muki",
+      "type": "muki",
+      "jokeKey": "j09"
+    },
+    "60v-takuu-mennyt-toimii-silti-t-paita": {
+      "id": "6a40cb56cceb6104070f3218",
+      "title": "60v – takuu mennyt, toimii silti | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j10"
+    },
+    "60v-takuu-mennyt-toimii-silti-huppari": {
+      "id": "6a40cb5ca7caa8b5d009c11f",
+      "title": "60v – takuu mennyt, toimii silti | Huppari",
+      "type": "huppari",
+      "jokeKey": "j10"
+    },
+    "60v-takuu-mennyt-toimii-silti-muki": {
+      "id": "6a40cb66a7caa8b5d009c122",
+      "title": "60v – takuu mennyt, toimii silti | Muki",
+      "type": "muki",
+      "jokeKey": "j10"
+    },
+    "30-ja-loistossaan-t-paita": {
+      "id": "6a40cb69a7caa8b5d009c127",
+      "title": "30 ja loistossaan | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j11"
+    },
+    "30-ja-loistossaan-huppari": {
+      "id": "6a40cb6fa7caa8b5d009c128",
+      "title": "30 ja loistossaan | Huppari",
+      "type": "huppari",
+      "jokeKey": "j11"
+    },
+    "30-ja-loistossaan-muki": {
+      "id": "6a40cb75d45ac7daf110930d",
+      "title": "30 ja loistossaan | Muki",
+      "type": "muki",
+      "jokeKey": "j11"
+    },
+    "30v-paranen-ian-myota-kuin-viini-t-paita": {
+      "id": "6a40cb7a1958bb0f400732eb",
+      "title": "30v – paranen iän myötä kuin viini | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j12"
+    },
+    "30v-paranen-ian-myota-kuin-viini-huppari": {
+      "id": "6a40cb801958bb0f400732f7",
+      "title": "30v – paranen iän myötä kuin viini | Huppari",
+      "type": "huppari",
+      "jokeKey": "j12"
+    },
+    "30v-paranen-ian-myota-kuin-viini-muki": {
+      "id": "6a40cb871958bb0f40073300",
+      "title": "30v – paranen iän myötä kuin viini | Muki",
+      "type": "muki",
+      "jokeKey": "j12"
+    },
+    "40v-henkisesti-18-tyylilla-40-t-paita": {
+      "id": "6a40cb8be7b8a9601e104143",
+      "title": "40v – henkisesti 18, tyylillä 40 | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j13"
+    },
+    "40v-henkisesti-18-tyylilla-40-huppari": {
+      "id": "6a40cb90a7caa8b5d009c13f",
+      "title": "40v – henkisesti 18, tyylillä 40 | Huppari",
+      "type": "huppari",
+      "jokeKey": "j13"
+    },
+    "40v-henkisesti-18-tyylilla-40-muki": {
+      "id": "6a40cb96d45ac7daf110931e",
+      "title": "40v – henkisesti 18, tyylillä 40 | Muki",
+      "type": "muki",
+      "jokeKey": "j13"
+    },
+    "40-ja-fabulous-t-paita": {
+      "id": "6a40cb9ba7caa8b5d009c142",
+      "title": "40 ja fabulous | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j14"
+    },
+    "40-ja-fabulous-huppari": {
+      "id": "6a40cba1d3a3089d72071027",
+      "title": "40 ja fabulous | Huppari",
+      "type": "huppari",
+      "jokeKey": "j14"
+    },
+    "40-ja-fabulous-muki": {
+      "id": "6a40cba6a7caa8b5d009c144",
+      "title": "40 ja fabulous | Muki",
+      "type": "muki",
+      "jokeKey": "j14"
+    },
+    "40v-ei-vanha-vintage-t-paita": {
+      "id": "6a40cbaaa7caa8b5d009c146",
+      "title": "40v – ei vanha, vintage | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j15"
+    },
+    "40v-ei-vanha-vintage-huppari": {
+      "id": "6a40cbb0b38ebb906e072638",
+      "title": "40v – ei vanha, vintage | Huppari",
+      "type": "huppari",
+      "jokeKey": "j15"
+    },
+    "40v-ei-vanha-vintage-muki": {
+      "id": "6a40cbb6d97be4f10b11b424",
+      "title": "40v – ei vanha, vintage | Muki",
+      "type": "muki",
+      "jokeKey": "j15"
+    },
+    "50-ja-hopeanhohtoinen-vain-hiukset-t-paita": {
+      "id": "6a40cbbad45ac7daf1109329",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j16"
+    },
+    "50-ja-hopeanhohtoinen-vain-hiukset-huppari": {
+      "id": "6a40cbc0d3a3089d7207102d",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | Huppari",
+      "type": "huppari",
+      "jokeKey": "j16"
+    },
+    "50-ja-hopeanhohtoinen-vain-hiukset-muki": {
+      "id": "6a40cbc6d45ac7daf110932b",
+      "title": "50 ja hopeanhohtoinen (vain hiukset) | Muki",
+      "type": "muki",
+      "jokeKey": "j16"
+    },
+    "50v-klassikkomalli-t-paita": {
+      "id": "6a40cbcaa7caa8b5d009c154",
+      "title": "50v – klassikkomalli | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j17"
+    },
+    "50v-klassikkomalli-huppari": {
+      "id": "6a40cbd2e7b8a9601e104154",
+      "title": "50v – klassikkomalli | Huppari",
+      "type": "huppari",
+      "jokeKey": "j17"
+    },
+    "50v-klassikkomalli-muki": {
+      "id": "6a40cbd9d45ac7daf1109330",
+      "title": "50v – klassikkomalli | Muki",
+      "type": "muki",
+      "jokeKey": "j17"
+    },
+    "60v-mutta-sydan-kuin-20v-t-paita": {
+      "id": "6a40cbdde7b8a9601e104157",
+      "title": "60v – mutta sydän kuin 20v | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j18"
+    },
+    "60v-mutta-sydan-kuin-20v-huppari": {
+      "id": "6a40cbe3d97be4f10b11b42d",
+      "title": "60v – mutta sydän kuin 20v | Huppari",
+      "type": "huppari",
+      "jokeKey": "j18"
+    },
+    "60v-mutta-sydan-kuin-20v-muki": {
+      "id": "6a40cbe9d97be4f10b11b434",
+      "title": "60v – mutta sydän kuin 20v | Muki",
+      "type": "muki",
+      "jokeKey": "j18"
+    },
+    "60-vuotta-nuori-ja-nokkela-t-paita": {
+      "id": "6a40cbeed3a3089d72071035",
+      "title": "60 vuotta nuori ja nokkela | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j19"
+    },
+    "60-vuotta-nuori-ja-nokkela-huppari": {
+      "id": "6a40cbf3d45ac7daf110933a",
+      "title": "60 vuotta nuori ja nokkela | Huppari",
+      "type": "huppari",
+      "jokeKey": "j19"
+    },
+    "60-vuotta-nuori-ja-nokkela-muki": {
+      "id": "6a40cbfad97be4f10b11b439",
+      "title": "60 vuotta nuori ja nokkela | Muki",
+      "type": "muki",
+      "jokeKey": "j19"
+    },
+    "60v-kokenut-ei-vanha-t-paita": {
+      "id": "6a40cbfeb38ebb906e072659",
+      "title": "60v – kokenut, ei vanha | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j20"
+    },
+    "60v-kokenut-ei-vanha-huppari": {
+      "id": "6a40cc04d3a3089d7207103d",
+      "title": "60v – kokenut, ei vanha | Huppari",
+      "type": "huppari",
+      "jokeKey": "j20"
+    },
+    "60v-kokenut-ei-vanha-muki": {
+      "id": "6a40cc0cd45ac7daf110933f",
+      "title": "60v – kokenut, ei vanha | Muki",
+      "type": "muki",
+      "jokeKey": "j20"
+    },
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-t-paita": {
+      "id": "6a40cc10d45ac7daf1109342",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j21"
+    },
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-huppari": {
+      "id": "6a40cc1ad97be4f10b11b43f",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | Huppari",
+      "type": "huppari",
+      "jokeKey": "j21"
+    },
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-muki": {
+      "id": "6a40cc20d3a3089d7207104b",
+      "title": "Eläkkeellä – kiireinen tekemään ei mitään | Muki",
+      "type": "muki",
+      "jokeKey": "j21"
+    },
+    "virallisesti-tyoton-epavirallisesti-vapaa-t-paita": {
+      "id": "6a40cc27a7caa8b5d009c175",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j22"
+    },
+    "virallisesti-tyoton-epavirallisesti-vapaa-huppari": {
+      "id": "6a40cc2d1958bb0f40073329",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | Huppari",
+      "type": "huppari",
+      "jokeKey": "j22"
+    },
+    "virallisesti-tyoton-epavirallisesti-vapaa-muki": {
+      "id": "6a40cc33d97be4f10b11b448",
+      "title": "Virallisesti työtön, epävirallisesti vapaa | Muki",
+      "type": "muki",
+      "jokeKey": "j22"
+    },
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita": {
+      "id": "6a40cc37b38ebb906e07266f",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j23"
+    },
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-huppari": {
+      "id": "6a40cc3ea7caa8b5d009c18c",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | Huppari",
+      "type": "huppari",
+      "jokeKey": "j23"
+    },
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-muki": {
+      "id": "6a40cc43d97be4f10b11b463",
+      "title": "40 vuotta töitä, nyt ikuinen viikonloppu | Muki",
+      "type": "muki",
+      "jokeKey": "j23"
+    },
+    "elakelainen-aamuheratys-vapaaehtoinen-t-paita": {
+      "id": "6a40cc47a7caa8b5d009c19e",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | T-Paita",
+      "type": "t-paita",
+      "jokeKey": "j24"
+    },
+    "elakelainen-aamuheratys-vapaaehtoinen-huppari": {
+      "id": "6a40cc4fd97be4f10b11b46f",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | Huppari",
+      "type": "huppari",
+      "jokeKey": "j24"
+    },
+    "elakelainen-aamuheratys-vapaaehtoinen-muki": {
+      "id": "6a40cc57b38ebb906e072687",
+      "title": "Eläkeläinen – aamuherätys vapaaehtoinen | Muki",
+      "type": "muki",
+      "jokeKey": "j24"
+    }
+  },
+  "mugUploads": {
+    "j01": "6a40cd25cae38c82a8fda4ca",
+    "j02": "6a40cd2866557726c82adc3a",
+    "j03": "6a40cd2bcae38c82a8fda4cc",
+    "j04": "6a40cd2e1051a4360b150e67",
+    "j05": "6a40cd31cae38c82a8fda4ce",
+    "j06": "6a40cd34565067137e8969fc",
+    "j07": "6a40cd38cae38c82a8fda53b",
+    "j08": "6a40cd3bebac0041b53158f3",
+    "j09": "6a40cd3e418d02d44fc6c33d",
+    "j10": "6a40cd41e38e97b972c33c96",
+    "j11": "6a40cd44418d02d44fc6c33f",
+    "j12": "6a40cd4766557726c82adc3c",
+    "j13": "6a40cd4a898d0078ed5d8881",
+    "j14": "6a40cd4dcae38c82a8fda557",
+    "j15": "6a40cd50898d0078ed5d8882",
+    "j16": "6a40cd53565067137e896a08",
+    "j17": "6a40cd56e38e97b972c33cb2",
+    "j18": "6a40cd59898d0078ed5d8884",
+    "j19": "6a40cd5c898d0078ed5d8885",
+    "j20": "6a40cd5f565067137e896a09",
+    "j21": "6a40cd6266557726c82adc3e",
+    "j22": "6a40cd6562d5eba86c8cd601",
+    "j23": "6a40cd68e5a8bb3fd04d63b8",
+    "j24": "6a40cd6b66557726c82adc41"
+  },
+  "mugFixed": {
+    "level-30-selka-rusahtaa-nyt-muki": true,
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki": true,
+    "40v-kunto-kuin-20v-20-vuotta-sitten-muki": true,
+    "40-vuotta-henkisesti-18-muki": true,
+    "40v-ei-keski-ika-klassikko-muki": true,
+    "50v-puoli-vuosisataa-ei-naarmuakaan-muki": true,
+    "50-ja-paras-vasta-tulossa-muki": true,
+    "60v-mutta-fyysinen-kunto-kuin-20v-muki": true,
+    "60-vuotta-nuori-muki": true,
+    "60v-takuu-mennyt-toimii-silti-muki": true,
+    "30-ja-loistossaan-muki": true,
+    "30v-paranen-ian-myota-kuin-viini-muki": true,
+    "40v-henkisesti-18-tyylilla-40-muki": true,
+    "40-ja-fabulous-muki": true,
+    "40v-ei-vanha-vintage-muki": true,
+    "50-ja-hopeanhohtoinen-vain-hiukset-muki": true,
+    "50v-klassikkomalli-muki": true,
+    "60v-mutta-sydan-kuin-20v-muki": true,
+    "60-vuotta-nuori-ja-nokkela-muki": true,
+    "60v-kokenut-ei-vanha-muki": true,
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-muki": true,
+    "virallisesti-tyoton-epavirallisesti-vapaa-muki": true,
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-muki": true,
+    "elakelainen-aamuheratys-vapaaehtoinen-muki": true
+  },
+  "portraitUploads": {
+    "j01": "6a419f511a7633d8accd8470",
+    "j02": "6a419fc661e8028ffda54ce5",
+    "j03": "6a419fd20fd14f6278858817",
+    "j04": "6a419fdffd521e9eebf4a353",
+    "j05": "6a419fe961e8028ffda54ce7",
+    "j06": "6a419ff88e552a8cce676f2b",
+    "j07": "6a41a02f8ba58670bb0ea8fd",
+    "j08": "6a41a03d0fd14f6278858824",
+    "j09": "6a41a0491f7b4c0b0f7c7b36",
+    "j10": "6a41a0540fd14f6278858826",
+    "j11": "6a41a063c52e38d6ba281339",
+    "j12": "6a41a06f0599620202752cf6",
+    "j13": "6a41a07cc52e38d6ba28139d",
+    "j14": "6a41a08d05b69db5ce264418",
+    "j15": "6a41a0998ba58670bb0ea988",
+    "j16": "6a41a0a58ba58670bb0ea990",
+    "j17": "6a41a0b18ba58670bb0ea993",
+    "j18": "6a41a0bb05b69db5ce264454",
+    "j19": "6a41a0c6647e23f01ca2da97",
+    "j20": "6a41a0d36a6b66056d5bbc31",
+    "j21": "6a41a0df1f7b4c0b0f7c7b4a",
+    "j22": "6a41a0ee05b69db5ce2644af",
+    "j23": "6a41a0fb6a6b66056d5bbc32",
+    "j24": "6a41a10866b016469014a963"
+  },
+  "portraitFixed": {
+    "level-30-selka-rusahtaa-nyt-t-paita": true,
+    "level-30-selka-rusahtaa-nyt-huppari": true,
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita": true,
+    "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari": true,
+    "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita": true,
+    "40v-kunto-kuin-20v-20-vuotta-sitten-huppari": true,
+    "40-vuotta-henkisesti-18-t-paita": true,
+    "40-vuotta-henkisesti-18-huppari": true,
+    "40v-ei-keski-ika-klassikko-t-paita": true,
+    "40v-ei-keski-ika-klassikko-huppari": true,
+    "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita": true,
+    "50v-puoli-vuosisataa-ei-naarmuakaan-huppari": true,
+    "50-ja-paras-vasta-tulossa-t-paita": true,
+    "50-ja-paras-vasta-tulossa-huppari": true,
+    "60v-mutta-fyysinen-kunto-kuin-20v-t-paita": true,
+    "60v-mutta-fyysinen-kunto-kuin-20v-huppari": true,
+    "60-vuotta-nuori-t-paita": true,
+    "60-vuotta-nuori-huppari": true,
+    "60v-takuu-mennyt-toimii-silti-t-paita": true,
+    "60v-takuu-mennyt-toimii-silti-huppari": true,
+    "30-ja-loistossaan-t-paita": true,
+    "30-ja-loistossaan-huppari": true,
+    "30v-paranen-ian-myota-kuin-viini-t-paita": true,
+    "30v-paranen-ian-myota-kuin-viini-huppari": true,
+    "40v-henkisesti-18-tyylilla-40-t-paita": true,
+    "40v-henkisesti-18-tyylilla-40-huppari": true,
+    "40-ja-fabulous-t-paita": true,
+    "40-ja-fabulous-huppari": true,
+    "40v-ei-vanha-vintage-t-paita": true,
+    "40v-ei-vanha-vintage-huppari": true,
+    "50-ja-hopeanhohtoinen-vain-hiukset-t-paita": true,
+    "50-ja-hopeanhohtoinen-vain-hiukset-huppari": true,
+    "50v-klassikkomalli-t-paita": true,
+    "50v-klassikkomalli-huppari": true,
+    "60v-mutta-sydan-kuin-20v-t-paita": true,
+    "60v-mutta-sydan-kuin-20v-huppari": true,
+    "60-vuotta-nuori-ja-nokkela-t-paita": true,
+    "60-vuotta-nuori-ja-nokkela-huppari": true,
+    "60v-kokenut-ei-vanha-t-paita": true,
+    "60v-kokenut-ei-vanha-huppari": true,
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-t-paita": true,
+    "elakkeella-kiireinen-tekemaan-ei-mitaan-huppari": true,
+    "virallisesti-tyoton-epavirallisesti-vapaa-t-paita": true,
+    "virallisesti-tyoton-epavirallisesti-vapaa-huppari": true,
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita": true,
+    "40-vuotta-toita-nyt-ikuinen-viikonloppu-huppari": true,
+    "elakelainen-aamuheratys-vapaaehtoinen-t-paita": true,
+    "elakelainen-aamuheratys-vapaaehtoinen-huppari": true
+  }
+}

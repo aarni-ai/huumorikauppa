@@ -1,0 +1,5 @@
+.printify_token
+.req*.json
+renderer/designs/
+renderer/out/
+node_modules/

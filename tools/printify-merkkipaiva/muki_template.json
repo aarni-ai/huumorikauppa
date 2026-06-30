@@ -1,0 +1,17 @@
+{
+  "blueprint_id": 68,
+  "print_provider_id": 1,
+  "enabled_variant_ids": [
+    33719
+  ],
+  "price": 1990,
+  "front": {
+    "x": 0.5,
+    "y": 0.5,
+    "scale": 0.85,
+    "angle": 0
+  },
+  "all_variant_ids": [
+    33719
+  ]
+}

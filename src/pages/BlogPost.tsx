@@ -4,6 +4,8 @@ import { blogPosts } from "@/data/blog";
 import { categories } from "@/data/products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
+import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
+import { MilestoneProductHighlights } from "@/components/MilestoneProductHighlights";
 
 function renderContent(content: string) {
   const lines = content.split("\n");
@@ -283,6 +285,12 @@ const BlogPost = () => {
             </ul>
           </section>
         )}
+
+        {/* Age-grouped product recommendations (gift guides) */}
+        <GuideProductRecommendations guideSlug={post.slug} />
+
+        {/* Milestone product highlights (most popular / relevant articles) */}
+        <MilestoneProductHighlights articleSlug={post.slug} />
 
         {/* Inline product CTA — category cards after article body */}
         {relatedCats.length > 0 && (
