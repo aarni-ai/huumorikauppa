@@ -49,7 +49,7 @@ const Email = ({ items = [], cartTotal, restoreUrl }: Props) => (
 
 export const template = {
   component: Email,
-  subject: 'Jäikö jotain mieleen? Ostoskorisi odottaa 🛒',
+  subject: 'Jäikö jotain mieleen? Ostoskorisi odottaa',
   displayName: 'Hylätty kori – 1h',
   previewData: {
     items: [{ name: 'Hauska muki', quantity: 1, price: 19.95 }],

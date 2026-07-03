@@ -57,7 +57,7 @@ const Email = ({ customerName = '', items = [], reviewUrl = 'https://huumorikaup
 
 export const template = {
   component: Email,
-  subject: 'Miten tilauksesi sujui? Jätä lyhyt arvio ⭐',
+  subject: 'Miten tilauksesi sujui? Jätä lyhyt arvio',
   displayName: 'Review request (10 days after order)',
   previewData: {
     customerName: 'Anna',

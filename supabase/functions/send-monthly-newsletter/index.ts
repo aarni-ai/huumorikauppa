@@ -41,24 +41,48 @@ Deno.serve(async (req) => {
   );
 
   try {
-    // Fetch 3 trending products (featured, then newest)
+    // Build a candidate pool (featured first, then newest) and pick 3 DISTINCT
+    // designs. Products share a design across types (e.g. "X | T-Paita", "X | Huppari",
+    // "X | Muki"), so we dedupe by the joke/design — not the product type — and prefer
+    // different categories/themes for variety.
+    type Row = { name: string; slug: string; price: number; images: string[]; category: string };
     const { data: featured } = await supabase
       .from("products")
-      .select("name, slug, price, images")
+      .select("name, slug, price, images, category")
       .eq("is_featured", true)
-      .limit(3);
+      .limit(20);
+    const { data: newest } = await supabase
+      .from("products")
+      .select("name, slug, price, images, category")
+      .order("created_at", { ascending: false })
+      .limit(30);
+    const pool: Row[] = [...((featured as Row[]) || []), ...((newest as Row[]) || [])];
 
-    let topProducts: Array<{ name: string; slug: string; price: number; images: string[] }> = featured || [];
-    if (topProducts.length < 3) {
-      const { data: extra } = await supabase
-        .from("products")
-        .select("name, slug, price, images")
-        .order("created_at", { ascending: false })
-        .limit(3 - topProducts.length);
-      topProducts = [...topProducts, ...(extra || [])];
+    const designKey = (name: string) => String(name).split(" | ")[0].trim().toLowerCase();
+    const picked: Row[] = [];
+    const seenDesign = new Set<string>();
+    const seenCategory = new Set<string>();
+    // Pass 1: distinct design AND distinct category → maximum theme variety.
+    for (const p of pool) {
+      if (picked.length >= 3) break;
+      const dk = designKey(p.name);
+      if (seenDesign.has(dk) || seenCategory.has(p.category)) continue;
+      picked.push(p);
+      seenDesign.add(dk);
+      seenCategory.add(p.category);
+    }
+    // Pass 2: fill any remaining slots with still-distinct designs.
+    if (picked.length < 3) {
+      for (const p of pool) {
+        if (picked.length >= 3) break;
+        const dk = designKey(p.name);
+        if (seenDesign.has(dk)) continue;
+        picked.push(p);
+        seenDesign.add(dk);
+      }
     }
 
-    const products = topProducts.slice(0, 3).map((p) => ({
+    const products = picked.slice(0, 3).map((p) => ({
       name: p.name,
       price: Number(p.price),
       url: `https://huumorikauppa.fi/tuote/${p.slug}`,

@@ -84,7 +84,7 @@ const NewOrderAdminEmail = ({
 
 export const template = {
   component: NewOrderAdminEmail,
-  subject: (data: Record<string, any>) => `🚨 UUSI TILAUS HUUMORIKAUPPAAN – ${data?.orderTotal || '?'} €`,
+  subject: (data: Record<string, any>) => `UUSI TILAUS HUUMORIKAUPPAAN – ${data?.orderTotal || '?'} €`,
   displayName: 'Admin: Uusi tilaus',
   previewData: {
     customerName: 'Matti Meikäläinen',

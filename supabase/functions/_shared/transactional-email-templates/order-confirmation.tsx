@@ -74,7 +74,7 @@ const OrderConfirmationEmail = ({ customerName, orderTotal, items }: OrderConfir
 
 export const template = {
   component: OrderConfirmationEmail,
-  subject: 'Tilausvahvistus – Huumorikauppa 🎉',
+  subject: 'Tilausvahvistus – Huumorikauppa',
   displayName: 'Tilausvahvistus',
   previewData: {
     customerName: 'Matti',

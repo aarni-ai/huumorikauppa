@@ -76,7 +76,7 @@ const MonthlyNewsletter = ({ products = [] }: MonthlyNewsletterProps) => (
 
 export const template = {
   component: MonthlyNewsletter,
-  subject: 'Kuukauden parhaat naurut & uutuudet 😂 – -5 % koodilla HUUMORI5',
+  subject: 'Kuukauden parhaat naurut & uutuudet – -5 % koodilla HUUMORI5',
   displayName: 'Kuukausittainen uutiskirje',
   previewData: {
     products: [

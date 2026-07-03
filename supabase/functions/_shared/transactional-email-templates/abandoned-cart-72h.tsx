@@ -51,7 +51,7 @@ const Email = ({ items = [], cartTotal, restoreUrl, discountCode = 'PALAA10' }: 
 
 export const template = {
   component: Email,
-  subject: 'Viimeinen muistutus – saat -10 % alennuksen 🎁',
+  subject: 'Viimeinen muistutus – saat -10 % alennuksen',
   displayName: 'Hylätty kori – 72h + alennus',
   previewData: {
     items: [{ name: 'Hauska muki', quantity: 1, price: 19.95 }],

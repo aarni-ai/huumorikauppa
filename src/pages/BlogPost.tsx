@@ -6,11 +6,13 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 import { MilestoneProductHighlights } from "@/components/MilestoneProductHighlights";
+import { BlogInlineProducts } from "@/components/BlogInlineProducts";
 
-function renderContent(content: string) {
+function renderContent(content: string, articleSlug: string) {
   const lines = content.split("\n");
   const elements: JSX.Element[] = [];
   let listItems: string[] = [];
+  let h2Count = 0;
 
   const flushList = () => {
     if (listItems.length > 0) {
@@ -44,6 +46,18 @@ function renderContent(content: string) {
           {trimmed.replace("## ", "")}
         </h2>
       );
+      // Inject a theme-matched product strip after the 2nd and 4th subheading.
+      h2Count++;
+      if (h2Count === 2 || h2Count === 4) {
+        elements.push(
+          <BlogInlineProducts
+            key={`inline-${i}`}
+            articleSlug={articleSlug}
+            startIndex={h2Count === 2 ? 0 : 3}
+            count={2}
+          />
+        );
+      }
     } else if (trimmed.startsWith("### ")) {
       flushList();
       elements.push(
@@ -262,7 +276,7 @@ const BlogPost = () => {
           </div>
         </header>
 
-        <div className="text-muted-foreground">{renderContent(post.content)}</div>
+        <div className="text-muted-foreground">{renderContent(post.content, post.slug)}</div>
 
         {/* Hand-picked product links — internal linking to specific products */}
         {post.productLinks && post.productLinks.length > 0 && (

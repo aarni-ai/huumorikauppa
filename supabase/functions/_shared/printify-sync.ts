@@ -257,9 +257,19 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
   if (category === 'bodyt') minPrice = 24.90;
 
   const variantImages: Record<string, string[]> = {};
+  // Prefer flat-lay / no-model mockups ("front", "folded", "back", …) over on-model
+  // "person-*" shots as the primary image, so products default to a neutral image
+  // instead of a model whose gender may not match the product's audience.
+  const isPersonMockup = (src: string): boolean => {
+    try { return /person/i.test(new URL(src).searchParams.get('camera_label') || ''); }
+    catch { return /person/i.test(src); }
+  };
   const allImagesSorted = (p.images || [])
     .filter((img: any) => img.src)
     .sort((a: any, b: any) => {
+      const ap = isPersonMockup(a.src) ? 1 : 0;
+      const bp = isPersonMockup(b.src) ? 1 : 0;
+      if (ap !== bp) return ap - bp; // flat-lay first
       if (a.is_default && !b.is_default) return -1;
       if (!a.is_default && b.is_default) return 1;
       return (a.position || 0) - (b.position || 0);
