@@ -8,9 +8,9 @@
 
 // --- Tuotepoolit (t-paidat hero-tuotteina, mukit omana poolina) ---
 const MEN = [
-  "level-30-selka-rusahtaa-nyt-t-paita",
+  "30v-selka-alkaa-jo-rusahdella-t-paita",
   "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita",
-  "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
+  "40v-kunnossa-niinku-20v-t-paita",
   "40-vuotta-henkisesti-18-t-paita",
   "40v-ei-keski-ika-klassikko-t-paita",
   "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
@@ -20,13 +20,13 @@ const MEN = [
   "60v-takuu-mennyt-toimii-silti-t-paita",
 ];
 const WOMEN = [
-  "30-ja-loistossaan-t-paita",
+  "30-nuori-villi-ja-jo-vasynyt-t-paita",
   "30v-paranen-ian-myota-kuin-viini-t-paita",
   "40v-henkisesti-18-tyylilla-40-t-paita",
   "40-ja-fabulous-t-paita",
   "40v-ei-vanha-vintage-t-paita",
   "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
-  "50v-klassikkomalli-t-paita",
+  "50-vuotta-nuori-t-paita",
   "60v-mutta-sydan-kuin-20v-t-paita",
   "60-vuotta-nuori-ja-nokkela-t-paita",
   "60v-kokenut-ei-vanha-t-paita",
@@ -41,10 +41,10 @@ const AGE50 = [
   "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
   "50-ja-paras-vasta-tulossa-t-paita",
   "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
-  "50v-klassikkomalli-t-paita",
+  "50-vuotta-nuori-t-paita",
 ];
 const MUGS = [
-  "level-30-selka-rusahtaa-nyt-muki",
+  "30v-selka-alkaa-jo-rusahdella-muki",
   "40-vuotta-henkisesti-18-muki",
   "50-ja-paras-vasta-tulossa-muki",
   "60v-takuu-mennyt-toimii-silti-muki",
@@ -55,8 +55,8 @@ const MUGS = [
 ];
 // Tasapainoinen poikkileikkaus (miehet/naiset/eläke) yleisille lahjaoppaille.
 const MIX = [
-  "level-30-selka-rusahtaa-nyt-t-paita",
-  "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
+  "30v-selka-alkaa-jo-rusahdella-t-paita",
+  "40v-kunnossa-niinku-20v-t-paita",
   "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
   "60v-mutta-fyysinen-kunto-kuin-20v-t-paita",
   "40-ja-fabulous-t-paita",

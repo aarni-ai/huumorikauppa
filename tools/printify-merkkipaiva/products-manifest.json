@@ -2,7 +2,7 @@
   "jokes": [
     {
       "key": "j01",
-      "text": "Level 30 – selkä rusahtaa nyt",
+      "text": "30v – selkä alkaa jo rusahdella",
       "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
       "age": 30
     },
@@ -14,7 +14,7 @@
     },
     {
       "key": "j03",
-      "text": "40v – kunto kuin 20v, 20 vuotta sitten",
+      "text": "40v – kunnossa niinku 20v",
       "guide": "/blogi/lahja-miehelle-30v-40v-50v-60v",
       "age": 40
     },
@@ -62,7 +62,7 @@
     },
     {
       "key": "j11",
-      "text": "30 ja loistossaan",
+      "text": "30 – nuori, villi ja jo väsynyt",
       "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
       "age": 30
     },
@@ -98,7 +98,7 @@
     },
     {
       "key": "j17",
-      "text": "50v – klassikkomalli",
+      "text": "50 vuotta nuori",
       "guide": "/blogi/lahja-naiselle-30v-40v-50v-60v",
       "age": 50
     },
@@ -151,30 +151,30 @@
       "type": "t-paita",
       "tag": "t-shirt",
       "orientation": "portrait",
-      "title": "Level 30 – selkä rusahtaa nyt | T-Paita",
-      "slug": "level-30-selka-rusahtaa-nyt-t-paita",
+      "title": "30v – selkä alkaa jo rusahdella | T-Paita",
+      "slug": "30v-selka-alkaa-jo-rusahdella-t-paita",
       "seoTitle": "Hauska 30v lahja miehelle – T-paita | Huumorikauppa",
-      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30v – selkä alkaa jo rusahdella – hauska 30-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j01",
       "type": "huppari",
       "tag": "hoodie",
       "orientation": "portrait",
-      "title": "Level 30 – selkä rusahtaa nyt | Huppari",
-      "slug": "level-30-selka-rusahtaa-nyt-huppari",
+      "title": "30v – selkä alkaa jo rusahdella | Huppari",
+      "slug": "30v-selka-alkaa-jo-rusahdella-huppari",
       "seoTitle": "Hauska 30v lahja miehelle – Huppari | Huumorikauppa",
-      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30v – selkä alkaa jo rusahdella – hauska 30-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j01",
       "type": "muki",
       "tag": "mug",
       "orientation": "landscape",
-      "title": "Level 30 – selkä rusahtaa nyt | Muki",
-      "slug": "level-30-selka-rusahtaa-nyt-muki",
+      "title": "30v – selkä alkaa jo rusahdella | Muki",
+      "slug": "30v-selka-alkaa-jo-rusahdella-muki",
       "seoTitle": "Hauska 30v lahja miehelle – Muki | Huumorikauppa",
-      "seoDescription": "Level 30 – selkä rusahtaa nyt – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30v – selkä alkaa jo rusahdella – hauska 30-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j02",
@@ -211,30 +211,30 @@
       "type": "t-paita",
       "tag": "t-shirt",
       "orientation": "portrait",
-      "title": "40v – kunto kuin 20v, 20 vuotta sitten | T-Paita",
-      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
+      "title": "40v – kunnossa niinku 20v | T-Paita",
+      "slug": "40v-kunnossa-niinku-20v-t-paita",
       "seoTitle": "Hauska 40v lahja miehelle – T-paita | Huumorikauppa",
-      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "40v – kunnossa niinku 20v – hauska 40-vuotislahja miehelle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j03",
       "type": "huppari",
       "tag": "hoodie",
       "orientation": "portrait",
-      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Huppari",
-      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-huppari",
+      "title": "40v – kunnossa niinku 20v | Huppari",
+      "slug": "40v-kunnossa-niinku-20v-huppari",
       "seoTitle": "Hauska 40v lahja miehelle – Huppari | Huumorikauppa",
-      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "40v – kunnossa niinku 20v – hauska 40-vuotislahja miehelle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j03",
       "type": "muki",
       "tag": "mug",
       "orientation": "landscape",
-      "title": "40v – kunto kuin 20v, 20 vuotta sitten | Muki",
-      "slug": "40v-kunto-kuin-20v-20-vuotta-sitten-muki",
+      "title": "40v – kunnossa niinku 20v | Muki",
+      "slug": "40v-kunnossa-niinku-20v-muki",
       "seoTitle": "Hauska 40v lahja miehelle – Muki | Huumorikauppa",
-      "seoDescription": "40v – kunto kuin 20v, 20 vuotta sitten – hauska 40-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "40v – kunnossa niinku 20v – hauska 40-vuotislahja miehelle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j04",
@@ -451,30 +451,30 @@
       "type": "t-paita",
       "tag": "t-shirt",
       "orientation": "portrait",
-      "title": "30 ja loistossaan | T-Paita",
-      "slug": "30-ja-loistossaan-t-paita",
+      "title": "30 – nuori, villi ja jo väsynyt | T-Paita",
+      "slug": "30-nuori-villi-ja-jo-vasynyt-t-paita",
       "seoTitle": "Hauska 30v lahja naiselle – T-paita | Huumorikauppa",
-      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30 – nuori, villi ja jo väsynyt – hauska 30-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j11",
       "type": "huppari",
       "tag": "hoodie",
       "orientation": "portrait",
-      "title": "30 ja loistossaan | Huppari",
-      "slug": "30-ja-loistossaan-huppari",
+      "title": "30 – nuori, villi ja jo väsynyt | Huppari",
+      "slug": "30-nuori-villi-ja-jo-vasynyt-huppari",
       "seoTitle": "Hauska 30v lahja naiselle – Huppari | Huumorikauppa",
-      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30 – nuori, villi ja jo väsynyt – hauska 30-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j11",
       "type": "muki",
       "tag": "mug",
       "orientation": "landscape",
-      "title": "30 ja loistossaan | Muki",
-      "slug": "30-ja-loistossaan-muki",
+      "title": "30 – nuori, villi ja jo väsynyt | Muki",
+      "slug": "30-nuori-villi-ja-jo-vasynyt-muki",
       "seoTitle": "Hauska 30v lahja naiselle – Muki | Huumorikauppa",
-      "seoDescription": "30 ja loistossaan – hauska 30-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "30 – nuori, villi ja jo väsynyt – hauska 30-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j12",
@@ -631,30 +631,30 @@
       "type": "t-paita",
       "tag": "t-shirt",
       "orientation": "portrait",
-      "title": "50v – klassikkomalli | T-Paita",
-      "slug": "50v-klassikkomalli-t-paita",
+      "title": "50 vuotta nuori | T-Paita",
+      "slug": "50-vuotta-nuori-t-paita",
       "seoTitle": "Hauska 50v lahja naiselle – T-paita | Huumorikauppa",
-      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "50 vuotta nuori – hauska 50-vuotislahja naiselle. 100 % puuvillaa (180 g/m2). Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j17",
       "type": "huppari",
       "tag": "hoodie",
       "orientation": "portrait",
-      "title": "50v – klassikkomalli | Huppari",
-      "slug": "50v-klassikkomalli-huppari",
+      "title": "50 vuotta nuori | Huppari",
+      "slug": "50-vuotta-nuori-huppari",
       "seoTitle": "Hauska 50v lahja naiselle – Huppari | Huumorikauppa",
-      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "50 vuotta nuori – hauska 50-vuotislahja naiselle. pehmeä puuvilla-polyesterisekoite. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j17",
       "type": "muki",
       "tag": "mug",
       "orientation": "landscape",
-      "title": "50v – klassikkomalli | Muki",
-      "slug": "50v-klassikkomalli-muki",
+      "title": "50 vuotta nuori | Muki",
+      "slug": "50-vuotta-nuori-muki",
       "seoTitle": "Hauska 50v lahja naiselle – Muki | Huumorikauppa",
-      "seoDescription": "50v – klassikkomalli – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
+      "seoDescription": "50 vuotta nuori – hauska 50-vuotislahja naiselle. 11 oz keraaminen muki. Painettu EU:ssa, ilmainen toimitus yli 60 €, 14 pv palautusoikeus."
     },
     {
       "jokeKey": "j18",

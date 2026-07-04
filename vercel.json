@@ -7,7 +7,12 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.huumorikauppa.fi" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.huumorikauppa.fi"
+        }
+      ],
       "destination": "https://huumorikauppa.fi/$1",
       "permanent": true
     },
@@ -45,19 +50,85 @@
       "source": "/tuotteet/:path*",
       "destination": "/kaikki-tuotteet",
       "permanent": true
+    },
+    {
+      "source": "/tuote/level-30-selka-rusahtaa-nyt-t-paita",
+      "destination": "/tuote/30v-selka-alkaa-jo-rusahdella-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/level-30-selka-rusahtaa-nyt-huppari",
+      "destination": "/tuote/30v-selka-alkaa-jo-rusahdella-huppari",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/level-30-selka-rusahtaa-nyt-muki",
+      "destination": "/tuote/30v-selka-alkaa-jo-rusahdella-muki",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
+      "destination": "/tuote/40v-kunnossa-niinku-20v-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/40v-kunto-kuin-20v-20-vuotta-sitten-huppari",
+      "destination": "/tuote/40v-kunnossa-niinku-20v-huppari",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/40v-kunto-kuin-20v-20-vuotta-sitten-muki",
+      "destination": "/tuote/40v-kunnossa-niinku-20v-muki",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/30-ja-loistossaan-t-paita",
+      "destination": "/tuote/30-nuori-villi-ja-jo-vasynyt-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/30-ja-loistossaan-huppari",
+      "destination": "/tuote/30-nuori-villi-ja-jo-vasynyt-huppari",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/30-ja-loistossaan-muki",
+      "destination": "/tuote/30-nuori-villi-ja-jo-vasynyt-muki",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/50v-klassikkomalli-t-paita",
+      "destination": "/tuote/50-vuotta-nuori-t-paita",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/50v-klassikkomalli-huppari",
+      "destination": "/tuote/50-vuotta-nuori-huppari",
+      "permanent": true
+    },
+    {
+      "source": "/tuote/50v-klassikkomalli-muki",
+      "destination": "/tuote/50-vuotta-nuori-muki",
+      "permanent": true
     }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/images/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=2592000" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
       ]
     }
   ],

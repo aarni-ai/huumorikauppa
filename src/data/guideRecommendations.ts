@@ -10,9 +10,9 @@ export const guideRecommendations: Record<string, GuideRecoGroup[]> = {
     {
       "title": "30-vuotiaalle",
       "slugs": [
-        "level-30-selka-rusahtaa-nyt-t-paita",
-        "level-30-selka-rusahtaa-nyt-huppari",
-        "level-30-selka-rusahtaa-nyt-muki",
+        "30v-selka-alkaa-jo-rusahdella-t-paita",
+        "30v-selka-alkaa-jo-rusahdella-huppari",
+        "30v-selka-alkaa-jo-rusahdella-muki",
         "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita",
         "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari",
         "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki"
@@ -21,9 +21,9 @@ export const guideRecommendations: Record<string, GuideRecoGroup[]> = {
     {
       "title": "40-vuotiaalle",
       "slugs": [
-        "40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
-        "40v-kunto-kuin-20v-20-vuotta-sitten-huppari",
-        "40v-kunto-kuin-20v-20-vuotta-sitten-muki",
+        "40v-kunnossa-niinku-20v-t-paita",
+        "40v-kunnossa-niinku-20v-huppari",
+        "40v-kunnossa-niinku-20v-muki",
         "40-vuotta-henkisesti-18-t-paita",
         "40-vuotta-henkisesti-18-huppari",
         "40-vuotta-henkisesti-18-muki",
@@ -62,9 +62,9 @@ export const guideRecommendations: Record<string, GuideRecoGroup[]> = {
     {
       "title": "30-vuotiaalle",
       "slugs": [
-        "30-ja-loistossaan-t-paita",
-        "30-ja-loistossaan-huppari",
-        "30-ja-loistossaan-muki",
+        "30-nuori-villi-ja-jo-vasynyt-t-paita",
+        "30-nuori-villi-ja-jo-vasynyt-huppari",
+        "30-nuori-villi-ja-jo-vasynyt-muki",
         "30v-paranen-ian-myota-kuin-viini-t-paita",
         "30v-paranen-ian-myota-kuin-viini-huppari",
         "30v-paranen-ian-myota-kuin-viini-muki"
@@ -90,9 +90,9 @@ export const guideRecommendations: Record<string, GuideRecoGroup[]> = {
         "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
         "50-ja-hopeanhohtoinen-vain-hiukset-huppari",
         "50-ja-hopeanhohtoinen-vain-hiukset-muki",
-        "50v-klassikkomalli-t-paita",
-        "50v-klassikkomalli-huppari",
-        "50v-klassikkomalli-muki"
+        "50-vuotta-nuori-t-paita",
+        "50-vuotta-nuori-huppari",
+        "50-vuotta-nuori-muki"
       ]
     },
     {

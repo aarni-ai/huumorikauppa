@@ -22,9 +22,9 @@ const G_ELAKE = '/blogi/hauskimmat-elakelahjat-selviytymisopas';
 // Each joke: guide, audience label for SEO, age (or 'elake'), and the print text.
 const jokes = [
   // MIEHELLE
-  { guide: G_MIES, aud: 'miehelle', age: 30, text: 'Level 30 – selkä rusahtaa nyt' },
+  { guide: G_MIES, aud: 'miehelle', age: 30, text: '30v – selkä alkaa jo rusahdella' },
   { guide: G_MIES, aud: 'miehelle', age: 30, text: '30 ja liian vanha tyhmyyksiin (teen ne silti)' },
-  { guide: G_MIES, aud: 'miehelle', age: 40, text: '40v – kunto kuin 20v, 20 vuotta sitten' },
+  { guide: G_MIES, aud: 'miehelle', age: 40, text: '40v – kunnossa niinku 20v' },
   { guide: G_MIES, aud: 'miehelle', age: 40, text: '40 vuotta, henkisesti 18' },
   { guide: G_MIES, aud: 'miehelle', age: 40, text: '40v – ei keski-ikä, klassikko' },
   { guide: G_MIES, aud: 'miehelle', age: 50, text: '50v – puoli vuosisataa, ei naarmuakaan' },
@@ -33,13 +33,13 @@ const jokes = [
   { guide: G_MIES, aud: 'miehelle', age: 60, text: '60 vuotta nuori' },
   { guide: G_MIES, aud: 'miehelle', age: 60, text: '60v – takuu mennyt, toimii silti' },
   // NAISELLE
-  { guide: G_NAINEN, aud: 'naiselle', age: 30, text: '30 ja loistossaan' },
+  { guide: G_NAINEN, aud: 'naiselle', age: 30, text: '30 – nuori, villi ja jo väsynyt' },
   { guide: G_NAINEN, aud: 'naiselle', age: 30, text: '30v – paranen iän myötä kuin viini' },
   { guide: G_NAINEN, aud: 'naiselle', age: 40, text: '40v – henkisesti 18, tyylillä 40' },
   { guide: G_NAINEN, aud: 'naiselle', age: 40, text: '40 ja fabulous' },
   { guide: G_NAINEN, aud: 'naiselle', age: 40, text: '40v – ei vanha, vintage' },
   { guide: G_NAINEN, aud: 'naiselle', age: 50, text: '50 ja hopeanhohtoinen (vain hiukset)' },
-  { guide: G_NAINEN, aud: 'naiselle', age: 50, text: '50v – klassikkomalli' },
+  { guide: G_NAINEN, aud: 'naiselle', age: 50, text: '50 vuotta nuori' },
   { guide: G_NAINEN, aud: 'naiselle', age: 60, text: '60v – mutta sydän kuin 20v' },
   { guide: G_NAINEN, aud: 'naiselle', age: 60, text: '60 vuotta nuori ja nokkela' },
   { guide: G_NAINEN, aud: 'naiselle', age: 60, text: '60v – kokenut, ei vanha' },

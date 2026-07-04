@@ -96,10 +96,12 @@ const DIMS = {
 // Batch: render one portrait + one landscape PNG per joke from the manifest.
 if (process.argv[2] === 'batch') {
   const FONT = process.argv[3] || 'anton';
+  const only = (process.argv[4] || '').split(',').filter(Boolean);
   const manifest = JSON.parse(fs.readFileSync(join(__dir, '..', 'products-manifest.json')));
   const outDir = join(__dir, 'designs');
   fs.mkdirSync(outDir, { recursive: true });
-  for (const j of manifest.jokes) {
+  const jokesToRender = only.length ? manifest.jokes.filter((j) => only.includes(j.key)) : manifest.jokes;
+  for (const j of jokesToRender) {
     for (const orient of ['portrait', 'landscape']) {
       const out = join(outDir, `${j.key}-${orient}.png`);
       const r = await renderPng(j.text, FONT, out, DIMS[orient]);
