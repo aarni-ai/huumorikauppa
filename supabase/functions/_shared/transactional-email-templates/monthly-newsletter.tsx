@@ -36,6 +36,7 @@ const MonthlyNewsletter = ({ products = [] }: MonthlyNewsletterProps) => (
                   <a href={p.url} style={productLink}>{p.name}</a>
                 </Text>
                 <Text style={productPrice}>{p.price.toFixed(2)} €</Text>
+                <Button style={buyButton} href={p.url}>Osta →</Button>
               </Section>
             ))}
           </Section>
@@ -44,7 +45,7 @@ const MonthlyNewsletter = ({ products = [] }: MonthlyNewsletterProps) => (
         <Section style={codeBox}>
           <Text style={codeLabel}>Käytä koodia kassalla:</Text>
           <Text style={codeValue}>HUUMORI5</Text>
-          <Text style={codeDesc}>Saat -5 % alennuksen seuraavasta tilauksestasi 🎁</Text>
+          <Text style={codeDesc}>Saat -5 % alennuksen seuraavasta tilauksestasi – ja ilmainen toimitus yli 60 € 🎁</Text>
         </Section>
 
         <Section style={{ textAlign: 'center' as const, marginTop: '24px' }}>
@@ -97,6 +98,7 @@ const codeValue = { fontSize: '32px', fontWeight: 'bold' as const, color: '#1111
 const codeDesc = { fontSize: '14px', color: '#333333', margin: '0' }
 const hr = { borderColor: '#eeeeee', margin: '24px 0' }
 const button = { backgroundColor: '#7ec832', color: '#0a0a0a', fontWeight: 'bold' as const, fontSize: '15px', padding: '12px 28px', borderRadius: '8px', textDecoration: 'none', display: 'inline-block' }
+const buyButton = { backgroundColor: '#7ec832', color: '#0a0a0a', fontWeight: 'bold' as const, fontSize: '14px', padding: '10px 24px', borderRadius: '8px', textDecoration: 'none', display: 'inline-block', marginTop: '8px' }
 const footer = { fontSize: '12px', color: '#999999', margin: '0 0 8px' }
 const productRow = { padding: '8px 0', borderBottom: '1px solid #f0f0f0' }
 const productImg = { borderRadius: '6px', verticalAlign: 'middle' as const, marginRight: '12px' }

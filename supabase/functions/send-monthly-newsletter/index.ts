@@ -41,46 +41,96 @@ Deno.serve(async (req) => {
   );
 
   try {
-    // Build a candidate pool (featured first, then newest) and pick 3 DISTINCT
-    // designs. Products share a design across types (e.g. "X | T-Paita", "X | Huppari",
-    // "X | Muki"), so we dedupe by the joke/design — not the product type — and prefer
-    // different categories/themes for variety.
+    // Pick 3 products for "Kuukauden suosikit". Priority:
+    //   1) Novelty — products created this month or flagged is_new (newest first).
+    //   2) If no new products this month → this month's best-sellers (from orders.items).
+    //   3) Fallback → featured, then newest overall (so it's never empty).
+    // Products share a design across types ("X | T-Paita" / "| Huppari" / "| Muki"),
+    // so we dedupe by the joke/design — not the product type — and prefer distinct
+    // categories/themes for variety.
     type Row = { name: string; slug: string; price: number; images: string[]; category: string };
-    const { data: featured } = await supabase
-      .from("products")
-      .select("name, slug, price, images, category")
-      .eq("is_featured", true)
-      .limit(20);
-    const { data: newest } = await supabase
-      .from("products")
-      .select("name, slug, price, images, category")
-      .order("created_at", { ascending: false })
-      .limit(30);
-    const pool: Row[] = [...((featured as Row[]) || []), ...((newest as Row[]) || [])];
-
+    const SELECT = "name, slug, price, images, category";
+    const now = new Date();
+    const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
     const designKey = (name: string) => String(name).split(" | ")[0].trim().toLowerCase();
+    const dedupeBySlug = (rows: Row[]): Row[] => {
+      const seen = new Set<string>(); const out: Row[] = [];
+      for (const r of rows) { if (r?.slug && !seen.has(r.slug)) { seen.add(r.slug); out.push(r); } }
+      return out;
+    };
+
+    // 1) Novelty products (created this month or is_new), newest first.
+    const { data: createdThisMonth } = await supabase.from("products").select(SELECT)
+      .gte("created_at", monthStart).order("created_at", { ascending: false }).limit(40);
+    const { data: flaggedNew } = await supabase.from("products").select(SELECT)
+      .eq("is_new", true).order("created_at", { ascending: false }).limit(40);
+    let pool: Row[] = dedupeBySlug([...((createdThisMonth as Row[]) || []), ...((flaggedNew as Row[]) || [])]);
+    let source = pool.length ? "new" : "none";
+
+    // 2) No new products this month → this month's best-sellers.
+    if (pool.length === 0) {
+      try {
+        const { data: monthOrders } = await supabase.from("orders")
+          .select("items, payment_status").gte("created_at", monthStart);
+        const qtyByName = new Map<string, number>();
+        for (const o of ((monthOrders as Array<{ items: unknown; payment_status?: string }>) || [])) {
+          const status = String(o?.payment_status || "").toLowerCase();
+          if (["cancelled", "peruttu", "failed", "refunded"].includes(status)) continue;
+          const items = Array.isArray(o?.items) ? o.items as Array<{ name?: string; quantity?: number }> : [];
+          for (const it of items) {
+            if (!it?.name) continue;
+            qtyByName.set(it.name, (qtyByName.get(it.name) || 0) + (Number(it.quantity) || 1));
+          }
+        }
+        const topNames = [...qtyByName.entries()].sort((a, b) => b[1] - a[1]).map(([n]) => n).slice(0, 30);
+        if (topNames.length) {
+          const { data: bsRows } = await supabase.from("products").select(SELECT).in("name", topNames);
+          const byName = new Map<string, Row>(((bsRows as Row[]) || []).map((r) => [r.name, r]));
+          pool = topNames.map((n) => byName.get(n)).filter(Boolean) as Row[];
+          if (pool.length) source = "bestsellers";
+        }
+      } catch (e) {
+        console.error("best-sellers lookup failed:", e instanceof Error ? e.message : String(e));
+      }
+    }
+
+    // 3) Fallback → featured, then newest overall.
+    if (pool.length === 0) {
+      const { data: featured } = await supabase.from("products").select(SELECT).eq("is_featured", true).limit(20);
+      const { data: newest } = await supabase.from("products").select(SELECT).order("created_at", { ascending: false }).limit(20);
+      pool = dedupeBySlug([...((featured as Row[]) || []), ...((newest as Row[]) || [])]);
+      if (pool.length) source = "fallback";
+    }
+
+    // Pick up to 3 distinct designs, preferring distinct categories/themes.
     const picked: Row[] = [];
     const seenDesign = new Set<string>();
     const seenCategory = new Set<string>();
-    // Pass 1: distinct design AND distinct category → maximum theme variety.
-    for (const p of pool) {
-      if (picked.length >= 3) break;
-      const dk = designKey(p.name);
-      if (seenDesign.has(dk) || seenCategory.has(p.category)) continue;
-      picked.push(p);
-      seenDesign.add(dk);
-      seenCategory.add(p.category);
-    }
-    // Pass 2: fill any remaining slots with still-distinct designs.
-    if (picked.length < 3) {
-      for (const p of pool) {
+    const addFrom = (rows: Row[], distinctCat: boolean) => {
+      for (const p of rows) {
         if (picked.length >= 3) break;
         const dk = designKey(p.name);
         if (seenDesign.has(dk)) continue;
-        picked.push(p);
-        seenDesign.add(dk);
+        if (distinctCat && seenCategory.has(p.category)) continue;
+        picked.push(p); seenDesign.add(dk); seenCategory.add(p.category);
       }
+    };
+    addFrom(pool, true);
+    addFrom(pool, false);
+    if (picked.length < 3) {
+      const { data: newestAll } = await supabase.from("products").select(SELECT).order("created_at", { ascending: false }).limit(40);
+      addFrom((newestAll as Row[]) || [], false);
     }
+
+    // SAFETY: never send an empty / broken newsletter.
+    if (picked.length === 0) {
+      console.error("send-monthly-newsletter: no products available — send aborted.");
+      return new Response(
+        JSON.stringify({ success: false, skipped: true, reason: "no_products" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
+      );
+    }
+    console.log(`Newsletter products: source=${source}, picked=${picked.length}`);
 
     const products = picked.slice(0, 3).map((p) => ({
       name: p.name,
