@@ -257,23 +257,35 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
   if (category === 'bodyt') minPrice = 24.90;
 
   const variantImages: Record<string, string[]> = {};
-  // Prefer flat-lay / no-model mockups ("front", "folded", "back", …) over on-model
-  // "person-*" shots as the primary image, so products default to a neutral image
-  // instead of a model whose gender may not match the product's audience.
-  const isPersonMockup = (src: string): boolean => {
-    try { return /person/i.test(new URL(src).searchParams.get('camera_label') || ''); }
-    catch { return /person/i.test(src); }
+  // Image ordering (applies to ALL products):
+  //   - Drop on-model "person-*" mockups entirely. Printify's mockup metadata only
+  //     exposes "person-N" (not the model's gender), so we cannot reliably keep the
+  //     matching gender — dropping them guarantees a wrong-gender model never appears
+  //     (e.g. a female model on a "miehelle" product).
+  //   - The primary image is ALWAYS the full front shot ("front"), where the whole
+  //     design is visible. "folded"/size-chart shots are pushed to the end so a folded
+  //     shirt (design hidden) never becomes the main image.
+  const cameraLabelOf = (src: string): string => {
+    try { return (new URL(src).searchParams.get('camera_label') || '').toLowerCase(); }
+    catch { return String(src).toLowerCase(); }
   };
-  const allImagesSorted = (p.images || [])
-    .filter((img: any) => img.src)
-    .sort((a: any, b: any) => {
-      const ap = isPersonMockup(a.src) ? 1 : 0;
-      const bp = isPersonMockup(b.src) ? 1 : 0;
-      if (ap !== bp) return ap - bp; // flat-lay first
-      if (a.is_default && !b.is_default) return -1;
-      if (!a.is_default && b.is_default) return 1;
-      return (a.position || 0) - (b.position || 0);
-    });
+  const isPersonMockup = (src: string): boolean => /person/.test(cameraLabelOf(src));
+  const imageRank = (src: string): number => {
+    const c = cameraLabelOf(src);
+    if (c === 'front') return 0;                               // full front — design fully visible
+    if (c.includes('folded') || c.includes('size')) return 3; // folded / size-chart → end
+    return 1;                                                  // other non-model (back, closeup, lifestyle)
+  };
+  let candidateImages = (p.images || []).filter((img: any) => img.src && !isPersonMockup(img.src));
+  // Safety: if a blueprint only ships on-model mockups, keep them rather than lose all images.
+  if (candidateImages.length === 0) candidateImages = (p.images || []).filter((img: any) => img.src);
+  const allImagesSorted = candidateImages.sort((a: any, b: any) => {
+    const ra = imageRank(a.src), rb = imageRank(b.src);
+    if (ra !== rb) return ra - rb;
+    if (a.is_default && !b.is_default) return -1;
+    if (!a.is_default && b.is_default) return 1;
+    return (a.position || 0) - (b.position || 0);
+  });
   const maxImagesPerColor = category === 'hupparit' ? 3 : 4;
 
   for (const color of colors) {
