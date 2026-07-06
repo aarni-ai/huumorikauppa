@@ -385,6 +385,8 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
     images: defaultImages,
     variants,
     printify_product_id: p.id,
+    supplier: 'printify',
+    origin_country: 'EU', // Printify products are printed in the EU
     is_featured: false,
     is_new: false,
     is_gift_idea: false,
@@ -417,8 +419,10 @@ export async function syncPrintifyCatalog(
   if (built.length === 0) return { total_fetched: all.length, products_synced: 0, skipped };
 
   if (mode === "replace") {
+    // Only wipe Printify-sourced products — never touch products from other
+    // suppliers (e.g. AliExpress dropship items live in the same table).
     const { error: deleteError } = await supabase
-      .from('products').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      .from('products').delete().eq('supplier', 'printify');
     if (deleteError) console.error('Delete error:', deleteError);
     const { data: inserted, error: insertError } = await supabase
       .from('products').insert(built).select('id');
