@@ -402,6 +402,10 @@ export type Database = {
           stock: number
           updated_at: string
           variants: Json
+          supplier: string
+          origin_country: string | null
+          is_active: boolean
+          aliexpress_url: string | null
         }
         Insert: {
           category: Database["public"]["Enums"]["product_category"]
@@ -420,6 +424,10 @@ export type Database = {
           stock?: number
           updated_at?: string
           variants?: Json
+          supplier?: string
+          origin_country?: string | null
+          is_active?: boolean
+          aliexpress_url?: string | null
         }
         Update: {
           category?: Database["public"]["Enums"]["product_category"]
@@ -438,6 +446,10 @@ export type Database = {
           stock?: number
           updated_at?: string
           variants?: Json
+          supplier?: string
+          origin_country?: string | null
+          is_active?: boolean
+          aliexpress_url?: string | null
         }
         Relationships: []
       }

@@ -43,6 +43,7 @@ async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
     .select("*")
+    .eq("is_active", true) // hide draft / unpublished (e.g. AliExpress imports awaiting approval)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -64,6 +65,8 @@ async function fetchProducts(): Promise<Product[]> {
       is_featured: p.is_featured,
       is_new: p.is_new,
       is_gift_idea: p.is_gift_idea,
+      supplier: (p as { supplier?: string }).supplier ?? "printify",
+      aliexpress_url: (p as { aliexpress_url?: string }).aliexpress_url ?? undefined,
     };
   });
 }

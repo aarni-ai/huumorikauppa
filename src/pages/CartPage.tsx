@@ -187,6 +187,18 @@ const CartPage = () => {
             </div>
           </div>
 
+          {items.some((i) => i.product.supplier === "aliexpress") && (
+            <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800 space-y-1">
+              <p className="font-medium">📦 Osa tuotteista toimitetaan erikseen</p>
+              <p>
+                AliExpress-tuotteiden toimitusaika on n. 2–4 viikkoa.
+                {items.some((i) => i.product.supplier !== "aliexpress")
+                  ? " Muut tuotteesi (3–10 arkipäivää) toimitetaan eri paketissa eri aikataululla."
+                  : ""}
+              </p>
+            </div>
+          )}
+
           {/* Discount code */}
           <div className="flex gap-2">
             <Input placeholder="Alennuskoodi" className="h-9 bg-muted border-border text-sm" />

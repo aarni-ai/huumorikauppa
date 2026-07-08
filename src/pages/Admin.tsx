@@ -7,6 +7,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { Loader2, RefreshCw, LogOut, Package, AlertCircle, CheckCircle2, Mail, Eye, X, Send } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { AliExpressImport } from "@/components/admin/AliExpressImport";
 
 interface OrderRow {
   id: string;
@@ -266,6 +267,7 @@ const Admin = () => {
           <TabsTrigger value="orders">Tilaukset ({orders.length})</TabsTrigger>
           <TabsTrigger value="webhooks">Webhook-lokit ({webhookLogs.length})</TabsTrigger>
           <TabsTrigger value="emails">Sähköposti-lokit ({emailLogs.length})</TabsTrigger>
+          <TabsTrigger value="aliexpress">AliExpress-import</TabsTrigger>
         </TabsList>
 
         {/* Orders */}
@@ -401,6 +403,10 @@ const Admin = () => {
               </table>
             </div>
           </div>
+        </TabsContent>
+
+        <TabsContent value="aliexpress">
+          <AliExpressImport />
         </TabsContent>
       </Tabs>
 

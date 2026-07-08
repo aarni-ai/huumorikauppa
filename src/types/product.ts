@@ -13,6 +13,8 @@ export interface Product {
   is_featured: boolean;
   is_new: boolean;
   is_gift_idea: boolean;
+  supplier?: string;
+  aliexpress_url?: string;
 }
 
 export interface CartItem {

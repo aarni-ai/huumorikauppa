@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -689,6 +690,8 @@ const ProductPage = () => {
                 )}
               </div>
             </div>
+
+            <DeliveryBadge supplier={product.supplier} className="w-fit" />
 
             {product.is_featured && (
               <Badge className="bg-accent text-accent-foreground font-bold w-fit">🔥 Suosittu tuote</Badge>
