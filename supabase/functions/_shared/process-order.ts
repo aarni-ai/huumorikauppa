@@ -22,6 +22,10 @@ export interface OrderItem {
   quantity: number;
   price: number;
   customText?: string;
+  size?: string;
+  color?: string;
+  supplier?: string;
+  aliexpress_url?: string | null;
 }
 
 interface PrintifyLineItem {
@@ -388,12 +392,38 @@ export async function processCheckoutSession(
   } else {
     // Fetch line items from Stripe
     try {
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
-      items = attachCustomTexts(lineItems.data.map((li: any) => ({
-        name: li.description || "Tuote",
-        quantity: li.quantity || 1,
-        price: (li.amount_total || 0) / 100 / (li.quantity || 1),
-      })));
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+        limit: 100, expand: ["data.price.product"],
+      });
+      items = attachCustomTexts(lineItems.data.map((li: any) => {
+        const prod = li.price && typeof li.price.product === "object" ? li.price.product : null;
+        const desc: string = prod?.description || "";
+        const size = (desc.match(/Koko:\s*([^,|]+)/i)?.[1] || "").trim();
+        const color = (desc.match(/Väri:\s*([^,|]+)/i)?.[1] || "").trim();
+        return {
+          name: li.description || "Tuote",
+          quantity: li.quantity || 1,
+          price: (li.amount_total || 0) / 100 / (li.quantity || 1),
+          ...(size ? { size } : {}),
+          ...(color ? { color } : {}),
+        };
+      }));
+
+      // Tag each line with its supplier (IOSS/VAT reporting + fulfillment routing).
+      try {
+        const names = [...new Set(items.map((i) => i.name).filter(Boolean))];
+        if (names.length) {
+          const { data: prods } = await supabase.from("products")
+            .select("name, supplier, aliexpress_url").in("name", names);
+          const meta = new Map((prods || []).map((p: any) => [p.name, p]));
+          items = items.map((it) => {
+            const m = meta.get(it.name);
+            return m ? { ...it, supplier: m.supplier || "printify", aliexpress_url: m.aliexpress_url ?? null } : it;
+          });
+        }
+      } catch (e) {
+        console.warn("supplier tagging failed:", e instanceof Error ? e.message : String(e));
+      }
     } catch (err) {
       console.error("Failed to fetch Stripe line items:", err);
     }

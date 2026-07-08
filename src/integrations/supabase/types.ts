@@ -453,6 +453,27 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_fulfillment: {
+        Row: {
+          line_key: string
+          order_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          line_key: string
+          order_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          line_key?: string
+          order_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string

@@ -8,6 +8,7 @@ import { Loader2, RefreshCw, LogOut, Package, AlertCircle, CheckCircle2, Mail, E
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { AliExpressImport } from "@/components/admin/AliExpressImport";
+import { FulfillmentAdmin } from "@/components/admin/FulfillmentAdmin";
 
 interface OrderRow {
   id: string;
@@ -268,6 +269,7 @@ const Admin = () => {
           <TabsTrigger value="webhooks">Webhook-lokit ({webhookLogs.length})</TabsTrigger>
           <TabsTrigger value="emails">Sähköposti-lokit ({emailLogs.length})</TabsTrigger>
           <TabsTrigger value="aliexpress">AliExpress-import</TabsTrigger>
+          <TabsTrigger value="fulfillment">Fulfillment</TabsTrigger>
         </TabsList>
 
         {/* Orders */}
@@ -407,6 +409,10 @@ const Admin = () => {
 
         <TabsContent value="aliexpress">
           <AliExpressImport />
+        </TabsContent>
+
+        <TabsContent value="fulfillment">
+          <FulfillmentAdmin />
         </TabsContent>
       </Tabs>
 
