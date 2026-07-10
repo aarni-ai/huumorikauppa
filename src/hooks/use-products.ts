@@ -43,12 +43,16 @@ async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
     .select("*")
-    .eq("is_active", true) // hide draft / unpublished (e.g. AliExpress imports awaiting approval)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
 
-  return (data || []).map((p) => {
+  return (data || [])
+    // Hide ONLY explicit drafts (is_active === false, e.g. AliExpress imports awaiting
+    // approval). Done in JS — never in the query — so a missing is_active column (frontend
+    // may deploy before the migration) can't break the query or hide existing products.
+    .filter((p) => (p as { is_active?: boolean }).is_active !== false)
+    .map((p) => {
     const price = Number(p.price);
     return {
       id: p.id,
