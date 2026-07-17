@@ -42,7 +42,7 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">4. Toimitus</h2>
-          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on 3–10 arkipäivää tilauksesta. Yli 60 € tilaukset toimitetaan ilman toimituskuluja. Alle 60 € tilausten toimituskulut ovat 5,95 €.</p>
+          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on 3–10 arkipäivää tilauksesta. Yli 60 € tilaukset toimitetaan ilman toimituskuluja. Alle 60 € tilausten toimituskulut ovat 3,90 €.</p>
         </section>
 
         <section>

@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: "Onko toimitus ilmainen?",
-    a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 5,95 €."
+    a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 3,90 €."
   },
   {
     q: "Miten palautusoikeus toimii?",

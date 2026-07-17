@@ -196,7 +196,7 @@ serve(async (req) => {
     const discountedSubtotal = Math.max(0, subtotal - discountFixedEur);
     const fixedDiscountRatio = subtotal > 0 ? discountedSubtotal / subtotal : 1;
     const shippingFree = subtotal >= 60;
-    const shippingCost = shippingFree ? 0 : 5.95;
+    const shippingCost = shippingFree ? 0 : 3.90;
 
     const isValidImageUrl = (url?: string): boolean => {
       if (!url) return false;

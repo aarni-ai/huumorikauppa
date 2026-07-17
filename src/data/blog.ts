@@ -2273,7 +2273,7 @@ Kaupunkipaita voittaa henkilökohtaisuudessa lähes aina. Sen käyttöarvo on ko
 
 **Voiko paidassa olla oma teksti?** Vakiotuotteet on valmiilla teksteillä. Ota yhteyttä custom-painatuksiin jos haluat täysin oman tekstin.
 
-**Mikä maksaa toimitus?** Ilmainen yli 60 €, alle siitä 5,95 €. Toimitus 3–10 arkipäivässä.`,
+**Mikä maksaa toimitus?** Ilmainen yli 60 €, alle siitä 3,90 €. Toimitus 3–10 arkipäivässä.`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
 ];
