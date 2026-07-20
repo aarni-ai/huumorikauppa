@@ -1,46 +1,42 @@
 import { Link } from "react-router-dom";
-import {
-  Shirt, Coffee, Tag, Baby, ShoppingBag, Image as ImageIcon,
-  Package, Layers, Sparkles, HardHat,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 interface CategoryCardProps {
   slug: string;
   name: string;
-  emoji: string;
-  description: string;
+  emoji?: string;
+  description?: string;
+  image?: string;
+  count?: number;
 }
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  "t-paidat":      Shirt,
-  "hupparit":      Layers,
-  "pitkahihaiset": Shirt,
-  "mukit":         Coffee,
-  "bodyt":         Baby,
-  "tarrat":        Tag,
-  "peitot":        Package,
-  "pipot":         HardHat,
-  "laukut":        ShoppingBag,
-  "seinataulut":   ImageIcon,
-  "koristeet":     Sparkles,
-};
-
-export function CategoryCard({ slug, name, description }: CategoryCardProps) {
-  const Icon = CATEGORY_ICONS[slug] ?? Package;
-
+export function CategoryCard({ slug, name, description, image, count }: CategoryCardProps) {
   return (
-    <Link
-      to={`/kategoria/${slug}`}
-      className="group flex flex-col items-center justify-center p-6 md:p-7 bg-card border border-border rounded-2xl hover:border-foreground/20 hover:shadow-md transition-all duration-200 text-center"
-    >
-      <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4 group-hover:bg-foreground group-hover:text-background transition-all duration-200">
-        <Icon className="h-5 w-5 text-muted-foreground group-hover:text-background transition-colors duration-200" />
+    <Link to={`/kategoria/${slug}`} className="group block">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-[#F4F4F4]">
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+          />
+        ) : null}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="font-display text-white font-bold text-base md:text-lg uppercase tracking-tight leading-none">
+            {name}
+          </h3>
+          {(count ?? 0) > 0 && (
+            <p className="text-white/70 text-[11px] font-medium mt-1.5 uppercase tracking-wider">
+              {count} tuotetta
+            </p>
+          )}
+          {!count && description && (
+            <p className="text-white/70 text-xs mt-1 line-clamp-1">{description}</p>
+          )}
+        </div>
       </div>
-      <h3 className="text-sm font-semibold text-foreground group-hover:text-foreground transition-colors">
-        {name}
-      </h3>
-      <p className="text-xs text-muted-foreground mt-1 leading-snug">{description}</p>
     </Link>
   );
 }

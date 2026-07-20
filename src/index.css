@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,9 +6,9 @@
 
 @layer base {
   :root {
-    /* Background: warm off-white */
-    --background: 40 20% 98.5%;
-    --foreground: 0 0% 7%;
+    /* Streetwear: pure white bg, deep black text */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 6%;
 
     /* Cards: pure white */
     --card: 0 0% 100%;
@@ -17,17 +17,17 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 7%;
 
-    /* Primary: near-black — buttons, key accents */
-    --primary: 0 0% 7%;
+    /* Primary: pure black — buttons, key accents */
+    --primary: 0 0% 6%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary: medium gray — visible logo text + subtle buttons */
     --secondary: 0 0% 58%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted: warm light gray */
-    --muted: 40 12% 95%;
-    --muted-foreground: 0 0% 44%;
+    /* Muted: neutral light gray (product tile background) */
+    --muted: 0 0% 95.5%;
+    --muted-foreground: 0 0% 40%;
 
     --accent: 0 0% 93%;
     --accent-foreground: 0 0% 7%;
@@ -40,7 +40,7 @@
     --input: 0 0% 90%;
     --ring: 0 0% 7%;
 
-    --radius: 0.875rem;
+    --radius: 0.5rem;
 
     /* Sidebar (keep for admin) */
     --sidebar-background: 0 0% 98%;
@@ -71,8 +71,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', system-ui, sans-serif;
-    letter-spacing: -0.025em;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.03em;
     font-weight: 700;
     text-transform: none;
   }
@@ -81,8 +81,8 @@
 @layer utilities {
   /* Premium display utility — Inter Bold, tight tracking */
   .font-display {
-    font-family: 'Inter', system-ui, sans-serif;
-    letter-spacing: -0.025em;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.035em;
     font-weight: 700;
     text-transform: none;
   }

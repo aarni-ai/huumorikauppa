@@ -402,10 +402,6 @@ export type Database = {
           stock: number
           updated_at: string
           variants: Json
-          supplier: string
-          origin_country: string | null
-          is_active: boolean
-          aliexpress_url: string | null
         }
         Insert: {
           category: Database["public"]["Enums"]["product_category"]
@@ -424,10 +420,6 @@ export type Database = {
           stock?: number
           updated_at?: string
           variants?: Json
-          supplier?: string
-          origin_country?: string | null
-          is_active?: boolean
-          aliexpress_url?: string | null
         }
         Update: {
           category?: Database["public"]["Enums"]["product_category"]
@@ -446,31 +438,6 @@ export type Database = {
           stock?: number
           updated_at?: string
           variants?: Json
-          supplier?: string
-          origin_country?: string | null
-          is_active?: boolean
-          aliexpress_url?: string | null
-        }
-        Relationships: []
-      }
-      supplier_fulfillment: {
-        Row: {
-          line_key: string
-          order_id: string
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          line_key: string
-          order_id: string
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          line_key?: string
-          order_id?: string
-          status?: string
-          updated_at?: string
         }
         Relationships: []
       }
@@ -558,6 +525,7 @@ export type Database = {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
       }
+      email_queue_dispatch: { Args: never; Returns: undefined }
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number

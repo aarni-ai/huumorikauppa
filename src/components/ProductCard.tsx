@@ -163,7 +163,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/tuote/${product.slug}`}
-      className="group block bg-transparent rounded-2xl overflow-hidden transition-all duration-200 relative"
+      className="group block bg-transparent overflow-hidden transition-all duration-200 relative"
       onMouseEnter={() => {
         if (canUseHover) setIsHovered(true);
       }}
@@ -174,7 +174,7 @@ export function ProductCard({ product }: ProductCardProps) {
       }}
     >
       {/* Image with hover swap */}
-      <div className="relative aspect-square bg-[#EEEDE8] overflow-hidden rounded-2xl">
+      <div className="relative aspect-square bg-[#F4F4F4] overflow-hidden rounded-md">
         <img
           src={proxiedImage(displayImage) || displayImage}
           alt={`Hauska ${categoryLabel} – ${product.name} | Huumorikauppa`}
@@ -187,16 +187,16 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Discount badge */}
         {hasDiscount && (
-          <div className="absolute top-2 right-2">
-            <Badge className="bg-destructive text-destructive-foreground font-bold text-xs px-2 py-1">
+          <div className="absolute top-2.5 right-2.5">
+            <Badge className="bg-destructive text-destructive-foreground font-black text-xs px-2 py-1 rounded-sm tracking-wide">
               -{discountPercent}%
             </Badge>
           </div>
         )}
 
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
           {product.is_gift_idea && (
-            <Badge className="bg-foreground text-background text-xs font-semibold">Lahjaidea</Badge>
+            <Badge className="bg-foreground text-background text-[10px] font-black uppercase tracking-wider rounded-sm">Lahjaidea</Badge>
           )}
         </div>
 
@@ -205,7 +205,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
             <button
               onClick={handleQuickAdd}
-              className="w-full bg-primary text-primary-foreground font-bold text-sm py-2.5 flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
+              className="w-full bg-black text-white font-bold text-sm uppercase tracking-wider py-3 flex items-center justify-center gap-2 hover:bg-black/85 transition-colors"
             >
               <ShoppingCart className="h-4 w-4" />
               Lisää koriin
@@ -289,8 +289,8 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Info */}
-      <div className="p-3 md:p-4 space-y-1">
-        <h3 className={`font-sans text-sm md:text-base font-medium text-foreground transition-colors line-clamp-2 ${canUseHover ? "group-hover:text-primary" : ""}`}>
+      <div className="pt-3 pb-1 px-1 space-y-1.5">
+        <h3 className={`font-sans text-sm md:text-[15px] font-semibold text-foreground leading-snug transition-colors line-clamp-2 ${canUseHover ? "group-hover:text-primary" : ""}`}>
           {product.name}
         </h3>
         <ProductRating
@@ -298,13 +298,13 @@ export function ProductCard({ product }: ProductCardProps) {
           size="sm"
           className="!gap-1"
         />
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
           {hasDiscount && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-xs md:text-sm text-muted-foreground line-through font-medium">
               {product.original_price!.toFixed(2)} €
             </span>
           )}
-          <span className={`text-lg md:text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
+          <span className={`text-lg md:text-xl font-black tracking-tight ${hasDiscount ? "text-destructive" : "text-black"}`}>
             {product.price.toFixed(2)} €
           </span>
         </div>
