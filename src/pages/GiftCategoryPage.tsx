@@ -3,7 +3,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TldrBox } from "@/components/TldrBox";
 import { proxiedImage } from "@/lib/imageProxy";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
