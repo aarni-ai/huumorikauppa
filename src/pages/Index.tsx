@@ -80,9 +80,27 @@ const Index = () => {
     toast({ title: "Kiitos!", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
   };
 
-  const carouselProducts = CAROUSEL_SLUGS
-    .map(slug => allProducts.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
-    .filter(Boolean) as typeof allProducts;
+  // "Kesän suosituimmat" — sekalainen valikoima kaikista tuotteista.
+  // Ensin nostetaan käsin valitut suosikit, sitten sekoitetaan muut,
+  // ja lopuksi taitetut (folded/flat) mockup-kuvat siirretään loppuun.
+  const carouselProducts = (() => {
+    if (!allProducts.length) return [] as typeof allProducts;
+    const nonCustom = allProducts.filter(p => !isCustomTextProduct(p.name, p.description));
+    const handpicked = CAROUSEL_SLUGS
+      .map(slug => nonCustom.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
+      .filter(Boolean) as typeof allProducts;
+    const handpickedIds = new Set(handpicked.map(p => p.id));
+    // Deterministinen sekoitus (päivän mukaan), ei aiheuta hydration mismatchia saman renderin aikana
+    const seed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    const rest = nonCustom
+      .filter(p => !handpickedIds.has(p.id))
+      .map((p, i) => ({ p, k: Math.sin(seed + i * 9301 + 49297) }))
+      .sort((a, b) => a.k - b.k)
+      .map(x => x.p);
+    const merged = [...handpicked, ...rest].slice(0, 16);
+    // Taitetut/flat viimeisiksi
+    return merged.sort((a, b) => garmentSortWeight(a) - garmentSortWeight(b));
+  })();
 
   const categoriesWithProducts = categories
     .map(cat => ({
