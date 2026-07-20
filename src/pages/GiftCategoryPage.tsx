@@ -588,8 +588,6 @@ const GiftCategoryPage = () => {
         </h1>
         <p className="text-muted-foreground mb-4">{products.length} tuotetta</p>
 
-        {TLDR_TEXTS[slug] && <TldrBox text={TLDR_TEXTS[slug]} />}
-
         {/* DIRECT ANSWER BLOCK — visuaalisesti piilossa, indeksoitavissa SEO/GEO:lle */}
         <div className="sr-only" aria-hidden="false">
           <p>
