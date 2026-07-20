@@ -39,6 +39,17 @@ function getPriority(product: { name: string; description: string }): number {
   return PRIORITY_KEYWORDS.length + 1;
 }
 
+// A "folded/flat" mockup is a Printify camera_label=folded-* image.
+// We want products where the thumbnail shows the WHOLE garment (front/context) at the top.
+function isFoldedImage(url?: string): boolean {
+  if (!url) return false;
+  return /camera_label=(folded|flat)/i.test(url);
+}
+function garmentSortWeight(p: { images?: string[] }): number {
+  // 0 = full garment thumbnail (best), 1 = folded/flat thumbnail (worst)
+  return isFoldedImage(p.images?.[0]) ? 1 : 0;
+}
+
 const CAROUSEL_SLUGS = [
   "kalamies-t-paita",
   "maailman-paras-aiti-huppari",
@@ -118,10 +129,11 @@ const Index = () => {
       <section className="container pt-3">
         <Link
           to="/kaikki-tuotteet"
-          className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 bg-foreground text-background transition-opacity hover:opacity-90"
+          className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 text-primary-foreground transition-opacity hover:opacity-90"
+          style={{ background: "linear-gradient(90deg, hsl(var(--brand-green-dark)) 0%, hsl(var(--brand-green)) 100%)" }}
         >
-          <Sun className="h-4 w-4 shrink-0 opacity-80" />
-          <span className="text-sm font-medium">
+          <Sun className="h-4 w-4 shrink-0 opacity-90" />
+          <span className="text-sm font-semibold">
             Löydä hauskin lahja meiltä — tilaa nyt, saat nopeasti!
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
@@ -153,6 +165,14 @@ const Index = () => {
           />
         </Link>
       </section>
+
+      {/* HERO PRODUCT STRIP */}
+      {!isLoading && allProducts.length > 0 && (
+        <HeroProductStrip
+          products={allProducts}
+          excludeSlugs={CAROUSEL_SLUGS}
+        />
+      )}
 
       {/* TRUST BADGES */}
       <section className="border-y border-border bg-muted/40 py-4 mt-3">
@@ -204,7 +224,11 @@ const Index = () => {
           {categoriesWithProducts.map(cat => {
             const catProducts = allProducts
               .filter(p => p.category === cat.slug && !isCustomTextProduct(p.name, p.description))
-              .sort((a, b) => getPriority(a) - getPriority(b))
+              .sort((a, b) => {
+                const g = garmentSortWeight(a) - garmentSortWeight(b);
+                if (g !== 0) return g;
+                return getPriority(a) - getPriority(b);
+              })
               .slice(0, 4);
             return (
               <Fragment key={cat.slug}>
@@ -229,7 +253,7 @@ const Index = () => {
                         <Link
                           key={g.to}
                           to={g.to}
-                          className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
+                          className="px-5 py-2.5 rounded-full border-2 border-primary/30 bg-primary/5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150"
                         >
                           {g.label}
                         </Link>
@@ -554,7 +578,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   return (
     <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet</h2>
+        <h2 className="font-display text-2xl md:text-3xl text-foreground">Kesän suosituimmat</h2>
         <div className="flex items-center gap-2">
           <Link
             to="/kaikki-tuotteet"
@@ -660,3 +684,62 @@ function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string
 }
 
 export default Index;
+
+/* ========== HERO PRODUCT STRIP ==========
+   Small horizontal-scroll tiles of "hauskimmat & parhaimmat"
+   t-paidat + hupparit that AREN'T already in the main carousel. */
+function HeroProductStrip({
+  products,
+  excludeSlugs,
+}: {
+  products: import("@/types/product").Product[];
+  excludeSlugs: string[];
+}) {
+  const excluded = new Set(excludeSlugs);
+  const picks = products
+    .filter(p =>
+      (p.category === "t-paidat" || p.category === "hupparit") &&
+      !excluded.has(p.slug) &&
+      !isCustomTextProduct(p.name, p.description)
+    )
+    .sort((a, b) => {
+      const g = garmentSortWeight(a) - garmentSortWeight(b);
+      if (g !== 0) return g;
+      return getPriority(a) - getPriority(b);
+    })
+    .slice(0, 12);
+
+  if (picks.length === 0) return null;
+
+  return (
+    <section className="container pt-3 pb-1">
+      <div className="-mx-4 overflow-x-auto px-4 pb-2 touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-3 md:gap-4">
+          {picks.map(p => {
+            const img = p.images?.[0] || "/placeholder.svg";
+            return (
+              <Link
+                key={p.id}
+                to={`/tuote/${p.slug}`}
+                className="group shrink-0 w-[92px] md:w-[110px] text-center"
+              >
+                <div className="aspect-square rounded-xl overflow-hidden bg-muted border border-border group-hover:border-primary/60 transition-colors">
+                  <img
+                    src={proxiedImage(img) || img}
+                    alt={p.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <p className="mt-1.5 text-[11px] md:text-xs font-semibold text-foreground line-clamp-2 leading-tight">
+                  {p.name}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

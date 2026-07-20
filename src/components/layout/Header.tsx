@@ -101,7 +101,7 @@ export function Header() {
           </span>
           <span
             className="font-display text-xl md:text-2xl tracking-tight leading-none"
-            style={{ color: "#A855F7", textShadow: "0 0 6px rgba(168,85,247,0.35)" }}
+            style={{ color: "#FF2D95", textShadow: "0 0 8px rgba(255,45,149,0.55)" }}
           >
             KAUPPA
           </span>
