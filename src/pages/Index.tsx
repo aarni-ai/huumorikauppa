@@ -166,43 +166,37 @@ const Index = () => {
         </Link>
       </section>
 
-      {/* HERO PRODUCT STRIP */}
-      {!isLoading && allProducts.length > 0 && (
-        <HeroProductStrip
-          products={allProducts}
-          excludeSlugs={CAROUSEL_SLUGS}
-        />
-      )}
 
       {/* TRUST BADGES */}
-      <section className="border-y border-border bg-muted/40 py-4 mt-3">
-        <div className="container flex flex-wrap items-center justify-center gap-5 md:gap-10 text-sm font-semibold text-foreground">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
-              <Truck className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+      <section className="border-y border-border bg-muted/40 py-2.5 mt-2">
+        <div className="container flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xs font-medium text-foreground">
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
+              <Truck className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
             Ilmainen toimitus yli 60 €
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
-              <RotateCcw className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
+              <RotateCcw className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
             14 pv palautusoikeus
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
-              <Shield className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
+              <Shield className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
             Turvallinen maksu
           </div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
-              <Flag className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
+              <Flag className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
             Kotimainen yritys
           </div>
         </div>
       </section>
+
 
 
       <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
