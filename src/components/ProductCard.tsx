@@ -21,6 +21,28 @@ const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
+// Pick a colorful default image so the grid isn't a sea of white tees.
+// Deterministic per product.id so ordering is stable across renders.
+const COLORFUL_KEYWORDS = ["red", "punainen", "black", "musta", "navy", "sininen", "blue", "green", "vihreä", "vihrea", "yellow", "keltainen", "pink", "vaaleanpunainen", "purple", "violetti", "orange", "oranssi", "maroon", "burgundy"];
+const WHITE_KEYWORDS = ["white", "valko", "valkoi"];
+
+function pickColorfulDefault(product: Product): string | null {
+  const variantImages = product.variants?.variant_images as Record<string, string[]> | undefined;
+  if (!variantImages) return null;
+  const colors = Object.keys(variantImages);
+  if (colors.length < 2) return null;
+
+  const colorful = colors.filter(c => {
+    const lc = c.toLowerCase();
+    if (WHITE_KEYWORDS.some(w => lc.includes(w))) return false;
+    return COLORFUL_KEYWORDS.some(w => lc.includes(w));
+  });
+  const pool = colorful.length > 0 ? colorful : colors;
+  const hash = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const picked = pool[hash % pool.length];
+  return variantImages[picked]?.[0] || null;
+}
+
 function getHoverImage(product: Product): string | null {
   const mainImage = product.images[0] || "";
   const variantImages = product.variants.variant_images as Record<string, string[]> | undefined;
@@ -64,7 +86,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const categoryLabel = CATEGORY_LABELS[product.category] || product.category;
 
   const hoverImage = useMemo(() => getHoverImage(product), [product]);
-  const mainImage = product.images[0] || "/placeholder.svg";
+  const colorfulDefault = useMemo(() => pickColorfulDefault(product), [product]);
+  const mainImage = colorfulDefault || product.images[0] || "/placeholder.svg";
   const displayImage = canUseHover && isHovered && hoverImage ? hoverImage : mainImage;
 
   useEffect(() => {
@@ -188,15 +211,20 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Discount badge */}
         {hasDiscount && (
           <div className="absolute top-2.5 right-2.5">
-            <Badge className="bg-destructive text-destructive-foreground font-black text-xs px-2 py-1 rounded-sm tracking-wide">
-              -{discountPercent}%
+            <Badge className="bg-red-600 hover:bg-red-600 text-white font-black text-xs px-2 py-1 rounded-sm tracking-wide shadow-md">
+              -{discountPercent}% ALE
             </Badge>
           </div>
         )}
 
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
+          {product.is_new && (
+            <Badge className="bg-emerald-500 hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider rounded-sm shadow-md">
+              Uutuus
+            </Badge>
+          )}
           {product.is_gift_idea && (
-            <Badge className="bg-foreground text-background text-[10px] font-black uppercase tracking-wider rounded-sm">Lahjaidea</Badge>
+            <Badge className="bg-amber-400 hover:bg-amber-400 text-black text-[10px] font-black uppercase tracking-wider rounded-sm shadow-md">Lahjaidea</Badge>
           )}
         </div>
 
