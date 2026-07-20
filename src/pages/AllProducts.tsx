@@ -51,11 +51,9 @@ const AllProducts = () => {
     .map((p, i) => ({ p, k: Math.sin(seed + i * 9301 + 49297) }))
     .sort((a, b) => a.k - b.k)
     .map(x => x.p);
-  const filteredProducts = shuffled.sort((a, b) => {
-    const g = garmentSortWeight(a) - garmentSortWeight(b);
-    if (g !== 0) return g;
-    return getPriority(a) - getPriority(b);
-  });
+  const filteredProducts = shuffled.sort(
+    (a, b) => garmentSortWeight(a) - garmentSortWeight(b)
+  );
 
   return (
     <div className="min-h-screen">
