@@ -122,7 +122,7 @@ const Index = () => {
         >
           <Sun className="h-4 w-4 shrink-0 opacity-80" />
           <span className="text-sm font-medium">
-            Kesälahjat 2026 — Löydä hauskin lahja kesäjuhliin ja valmistujaisiin
+            Löydä hauskin lahja meiltä — tilaa nyt, saat nopeasti!
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>
@@ -155,12 +155,32 @@ const Index = () => {
       </section>
 
       {/* TRUST BADGES */}
-      <section className="border-y border-border py-4 mt-3">
-        <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-12 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4" /> Ilmainen toimitus yli 60 €</div>
-          <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4" /> 14 pv palautusoikeus</div>
-          <div className="flex items-center gap-2"><Shield className="h-4 w-4" /> Turvallinen maksu</div>
-          <div className="flex items-center gap-2"><Flag className="h-4 w-4" /> Kotimainen yritys</div>
+      <section className="border-y border-border bg-muted/40 py-4 mt-3">
+        <div className="container flex flex-wrap items-center justify-center gap-5 md:gap-10 text-sm font-semibold text-foreground">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
+              <Truck className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+            </span>
+            Ilmainen toimitus yli 60 €
+          </div>
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
+              <RotateCcw className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+            </span>
+            14 pv palautusoikeus
+          </div>
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
+              <Shield className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+            </span>
+            Turvallinen maksu
+          </div>
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border">
+              <Flag className="h-4 w-4 text-foreground" strokeWidth={2.5} />
+            </span>
+            Kotimainen yritys
+          </div>
         </div>
       </section>
 
