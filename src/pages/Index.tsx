@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -164,29 +164,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* GIFT FINDER */}
-      <section className="container py-6 md:py-8">
-        <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-6 text-center">
-          Kenelle etsit lahjaa?
-        </h2>
-        <div className="flex flex-wrap gap-2.5 justify-center">
-          {[
-            { to: "/lahjat/miehelle",        label: "Miehelle" },
-            { to: "/lahjat/naiselle",        label: "Naiselle" },
-            { to: "/lahja-tyokaverille",     label: "Työkavereille" },
-            { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
-            { to: "/lahjat/joulu",           label: "Kesälahjat" },
-          ].map((g) => (
-            <Link
-              key={g.to}
-              to={g.to}
-              className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
-            >
-              {g.label}
-            </Link>
-          ))}
-        </div>
-      </section>
 
       <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
 
@@ -210,12 +187,37 @@ const Index = () => {
               .sort((a, b) => getPriority(a) - getPriority(b))
               .slice(0, 4);
             return (
-              <ProductSection
-                key={cat.slug}
-                title={cat.name}
-                linkTo={`/kategoria/${cat.slug}`}
-                products={catProducts}
-              />
+              <Fragment key={cat.slug}>
+                <ProductSection
+                  title={cat.name}
+                  linkTo={`/kategoria/${cat.slug}`}
+                  products={catProducts}
+                />
+                {cat.slug === "koristeet" && (
+                  <section className="container py-6 md:py-8">
+                    <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-6 text-center">
+                      Kenelle etsit lahjaa?
+                    </h2>
+                    <div className="flex flex-wrap gap-2.5 justify-center">
+                      {[
+                        { to: "/lahjat/miehelle",        label: "Miehelle" },
+                        { to: "/lahjat/naiselle",        label: "Naiselle" },
+                        { to: "/lahja-tyokaverille",     label: "Työkavereille" },
+                        { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
+                        { to: "/lahjat/joulu",           label: "Kesälahjat" },
+                      ].map((g) => (
+                        <Link
+                          key={g.to}
+                          to={g.to}
+                          className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
+                        >
+                          {g.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </Fragment>
             );
           })}
         </>
@@ -533,24 +535,32 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
     <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet</h2>
-        {!shouldUseStaticMobileLayout && (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => { handleInteraction(); prev(); }}
-              className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
-              aria-label="Edellinen"
-            >
-              <ChevronLeft className="h-4 w-4 text-foreground" />
-            </button>
-            <button
-              onClick={() => { handleInteraction(); next(); }}
-              className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
-              aria-label="Seuraava"
-            >
-              <ChevronRight className="h-4 w-4 text-foreground" />
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Link
+            to="/kaikki-tuotteet"
+            className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Näytä kaikki <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+          {!shouldUseStaticMobileLayout && (
+            <>
+              <button
+                onClick={() => { handleInteraction(); prev(); }}
+                className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+                aria-label="Edellinen"
+              >
+                <ChevronLeft className="h-4 w-4 text-foreground" />
+              </button>
+              <button
+                onClick={() => { handleInteraction(); next(); }}
+                className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+                aria-label="Seuraava"
+              >
+                <ChevronRight className="h-4 w-4 text-foreground" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
       {shouldUseStaticMobileLayout ? (
         <div className="-mx-4 overflow-x-auto px-4 pb-2 touch-pan-x snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
