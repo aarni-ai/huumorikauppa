@@ -39,6 +39,17 @@ function getPriority(product: { name: string; description: string }): number {
   return PRIORITY_KEYWORDS.length + 1;
 }
 
+// A "folded/flat" mockup is a Printify camera_label=folded-* image.
+// We want products where the thumbnail shows the WHOLE garment (front/context) at the top.
+function isFoldedImage(url?: string): boolean {
+  if (!url) return false;
+  return /camera_label=(folded|flat)/i.test(url);
+}
+function garmentSortWeight(p: { images?: string[] }): number {
+  // 0 = full garment thumbnail (best), 1 = folded/flat thumbnail (worst)
+  return isFoldedImage(p.images?.[0]) ? 1 : 0;
+}
+
 const CAROUSEL_SLUGS = [
   "kalamies-t-paita",
   "maailman-paras-aiti-huppari",
