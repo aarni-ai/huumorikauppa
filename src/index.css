@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -81,10 +81,10 @@
 @layer utilities {
   /* Premium display utility — Inter Bold, tight tracking */
   .font-display {
-    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    letter-spacing: -0.035em;
-    font-weight: 700;
-    text-transform: none;
+    font-family: 'Anton', 'Impact', sans-serif;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    text-transform: uppercase;
   }
 
   /* Neutralised glow stubs — all former neon effects become subtle shadows */
