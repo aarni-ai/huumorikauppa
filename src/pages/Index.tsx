@@ -215,7 +215,11 @@ const Index = () => {
           {categoriesWithProducts.map(cat => {
             const catProducts = allProducts
               .filter(p => p.category === cat.slug && !isCustomTextProduct(p.name, p.description))
-              .sort((a, b) => getPriority(a) - getPriority(b))
+              .sort((a, b) => {
+                const g = garmentSortWeight(a) - garmentSortWeight(b);
+                if (g !== 0) return g;
+                return getPriority(a) - getPriority(b);
+              })
               .slice(0, 4);
             return (
               <Fragment key={cat.slug}>
