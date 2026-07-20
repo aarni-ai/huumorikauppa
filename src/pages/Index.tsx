@@ -244,7 +244,7 @@ const Index = () => {
                         <Link
                           key={g.to}
                           to={g.to}
-                          className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
+                          className="px-5 py-2.5 rounded-full border-2 border-primary/30 bg-primary/5 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150"
                         >
                           {g.label}
                         </Link>
