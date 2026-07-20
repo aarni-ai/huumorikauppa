@@ -25,29 +25,35 @@ function getPriority(product: { name: string; description: string }): number {
   return PRIORITY_KEYWORDS.length + 1;
 }
 
+// Push folded/flat Printify mockups to the bottom
+function isFoldedImage(url?: string): boolean {
+  if (!url) return false;
+  return /camera_label=(folded|flat)/i.test(url);
+}
+function garmentSortWeight(p: { images?: string[] }): number {
+  return isFoldedImage(p.images?.[0]) ? 1 : 0;
+}
+
 const AllProducts = () => {
   const { data: products = [], isLoading } = useProducts();
   usePrerenderReady(!isLoading && products.length > 0);
   const [searchParams] = useSearchParams();
   const maxPrice = Number(searchParams.get("max")) || null;
 
-  // Filter out custom text/image products, sort by category count then priority
   const filtered = products.filter(
     p => !isCustomTextProduct(p.name, p.description) && (!maxPrice || p.price <= maxPrice)
   );
-  
-  // Count products per category
-  const catCounts: Record<string, number> = {};
-  for (const p of filtered) {
-    catCounts[p.category] = (catCounts[p.category] || 0) + 1;
-  }
-  
-  // Sort: categories with most products first, then by priority within category
-  const filteredProducts = filtered.sort((a, b) => {
-    const catDiff = (catCounts[b.category] || 0) - (catCounts[a.category] || 0);
-    if (catDiff !== 0) return catDiff;
-    return getPriority(a) - getPriority(b);
-  });
+
+  // Sekalainen mix (t-paidat, hupparit, mukit yms. sekaisin), taitetut mockup-kuvat alimmaksi.
+  // Deterministinen sekoitus (päivän mukaan) ettei järjestys hypi renderin välillä.
+  const seed = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+  const shuffled = filtered
+    .map((p, i) => ({ p, k: Math.sin(seed + i * 9301 + 49297) }))
+    .sort((a, b) => a.k - b.k)
+    .map(x => x.p);
+  const filteredProducts = shuffled.sort(
+    (a, b) => garmentSortWeight(a) - garmentSortWeight(b)
+  );
 
   return (
     <div className="min-h-screen">

@@ -27,6 +27,23 @@ function isCustomTextProduct(name: string, description: string): boolean {
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
 }
 
+// Kategoriakohtaiset "kielletyt" avainsanat tuotenimessä — estää esim. mukin näkymisen T-paidat-sivulla,
+// jos tuotteen kategoria on virheellisesti tallennettu.
+const CATEGORY_EXCLUDE_NAME_KEYWORDS: Record<string, string[]> = {
+  "t-paidat":      ["muki", "kuppi", "huppari", "pipo", "tarra", "kassi", "laukku", "peitto", "taulu", "body"],
+  "hupparit":      ["muki", "kuppi", "t-paita", "tpaita", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
+  "mukit":         ["t-paita", "tpaita", "huppari", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
+  "pitkahihaiset": ["muki", "kuppi", "huppari", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
+};
+
+function matchesCategoryStrictly(name: string, slug: string | undefined): boolean {
+  if (!slug) return true;
+  const banned = CATEGORY_EXCLUDE_NAME_KEYWORDS[slug];
+  if (!banned) return true;
+  const n = name.toLowerCase();
+  return !banned.some(k => n.includes(k));
+}
+
 // Printify folded/flat mockups look like packaged shirts. Push them to the bottom.
 function isFoldedImage(url?: string): boolean {
   if (!url) return false;
@@ -111,7 +128,9 @@ const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const categoryProducts = allProducts.filter(p => p.category === slug);
+  const categoryProducts = allProducts.filter(
+    p => p.category === slug && matchesCategoryStrictly(p.name, slug)
+  );
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => {
