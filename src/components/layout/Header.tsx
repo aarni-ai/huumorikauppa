@@ -92,11 +92,17 @@ export function Header() {
         </button>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="font-display text-xl md:text-2xl text-primary">
+        <Link to="/" className="flex items-center shrink-0" aria-label="Huumorikauppa">
+          <span
+            className="font-display text-xl md:text-2xl tracking-tight leading-none"
+            style={{ color: "#39FF14", textShadow: "0 0 6px rgba(57,255,20,0.35)" }}
+          >
             HUUMORI
           </span>
-          <span className="font-display text-xl md:text-2xl text-secondary">
+          <span
+            className="font-display text-xl md:text-2xl tracking-tight leading-none"
+            style={{ color: "#A855F7", textShadow: "0 0 6px rgba(168,85,247,0.35)" }}
+          >
             KAUPPA
           </span>
         </Link>
