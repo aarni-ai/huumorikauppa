@@ -187,12 +187,37 @@ const Index = () => {
               .sort((a, b) => getPriority(a) - getPriority(b))
               .slice(0, 4);
             return (
-              <ProductSection
-                key={cat.slug}
-                title={cat.name}
-                linkTo={`/kategoria/${cat.slug}`}
-                products={catProducts}
-              />
+              <Fragment key={cat.slug}>
+                <ProductSection
+                  title={cat.name}
+                  linkTo={`/kategoria/${cat.slug}`}
+                  products={catProducts}
+                />
+                {cat.slug === "koristeet" && (
+                  <section className="container py-6 md:py-8">
+                    <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-6 text-center">
+                      Kenelle etsit lahjaa?
+                    </h2>
+                    <div className="flex flex-wrap gap-2.5 justify-center">
+                      {[
+                        { to: "/lahjat/miehelle",        label: "Miehelle" },
+                        { to: "/lahjat/naiselle",        label: "Naiselle" },
+                        { to: "/lahja-tyokaverille",     label: "Työkavereille" },
+                        { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
+                        { to: "/lahjat/joulu",           label: "Kesälahjat" },
+                      ].map((g) => (
+                        <Link
+                          key={g.to}
+                          to={g.to}
+                          className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
+                        >
+                          {g.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </Fragment>
             );
           })}
         </>
