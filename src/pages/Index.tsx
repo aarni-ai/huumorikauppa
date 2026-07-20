@@ -166,7 +166,7 @@ const Index = () => {
 
       {/* GIFT FINDER */}
       <section className="container py-6 md:py-8">
-        <h2 className="font-display text-lg md:text-xl text-foreground mb-5 text-center">
+        <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-6 text-center">
           Kenelle etsit lahjaa?
         </h2>
         <div className="flex flex-wrap gap-2.5 justify-center">

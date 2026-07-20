@@ -3,7 +3,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TldrBox } from "@/components/TldrBox";
 import { proxiedImage } from "@/lib/imageProxy";
 import { blogPosts } from "@/data/blog";
 import { useProducts } from "@/hooks/use-products";
@@ -587,8 +586,6 @@ const GiftCategoryPage = () => {
           {category.h1} {category.emoji}
         </h1>
         <p className="text-muted-foreground mb-4">{products.length} tuotetta</p>
-
-        {TLDR_TEXTS[slug] && <TldrBox text={TLDR_TEXTS[slug]} />}
 
         {/* DIRECT ANSWER BLOCK — visuaalisesti piilossa, indeksoitavissa SEO/GEO:lle */}
         <div className="sr-only" aria-hidden="false">
