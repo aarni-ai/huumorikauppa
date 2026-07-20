@@ -142,7 +142,7 @@ export function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
 
     if (hasSizes && !selectedSize) {
-      toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
+      toast({ title: "Valitse koko ensin", variant: "destructive" });
       return;
     }
 
@@ -163,7 +163,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/tuote/${product.slug}`}
-      className={`group block bg-card border border-border rounded-lg overflow-hidden transition-colors duration-300 relative ${canUseHover ? "hover:border-primary/50 hover:shadow-glow-lime" : ""}`}
+      className={`group block bg-card border border-border rounded-2xl overflow-hidden transition-all duration-200 relative ${canUseHover ? "hover:border-foreground/15 hover:shadow-md" : ""}`}
       onMouseEnter={() => {
         if (canUseHover) setIsHovered(true);
       }}
@@ -196,7 +196,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {product.is_gift_idea && (
-            <Badge className="bg-secondary text-secondary-foreground text-xs font-bold">LAHJAIDEA 🎁</Badge>
+            <Badge className="bg-foreground text-background text-xs font-semibold">Lahjaidea</Badge>
           )}
         </div>
 

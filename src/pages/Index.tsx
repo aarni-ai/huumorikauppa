@@ -5,7 +5,11 @@ import { categories } from "@/data/products";
 import { blogPosts } from "@/data/blog";
 import { municipalities } from "@/data/municipalities";
 import { useProducts } from "@/hooks/use-products";
-import { Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight, Flag } from "lucide-react";
+import {
+  Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield,
+  ChevronLeft, ChevronRight, Flag, Target, Briefcase, Tag,
+  MapPin, Sun, ArrowRight,
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -62,14 +66,13 @@ const Index = () => {
       await supabase.functions.invoke("notify-store", { body: { email, type: "newsletter" } });
     } catch {}
     setNewsletterSubmitted(true);
-    toast({ title: "Kiitos! 🎉", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
+    toast({ title: "Kiitos!", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
   };
 
   const carouselProducts = CAROUSEL_SLUGS
     .map(slug => allProducts.find(p => p.slug === slug || p.slug.includes(slug.replace(/-/g, ''))))
     .filter(Boolean) as typeof allProducts;
 
-  // Dynamic categories sorted by product count (most items first)
   const categoriesWithProducts = categories
     .map(cat => ({
       ...cat,
@@ -77,8 +80,6 @@ const Index = () => {
     }))
     .filter(cat => cat.count > 0)
     .sort((a, b) => b.count - a.count);
-
-  const featured = allProducts.filter(p => p.is_featured).slice(0, 8);
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -107,39 +108,32 @@ const Index = () => {
     <div className="min-h-screen">
       <SEOHead
         title="Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi"
-        description={`Löydä Suomen hauskin lahja! T-paitoja, huppareita, mukeja, tarroja. Yli ${Math.floor((allProducts.length || 700) / 50) * 50} tuotetta, nopea toimitus. Tilaa helposti! 🎁`}
+        description={`Löydä Suomen hauskin lahja! T-paitoja, huppareita, mukeja, tarroja. Yli ${Math.floor((allProducts.length || 700) / 50) * 50} tuotetta, nopea toimitus. Tilaa helposti!`}
         canonical="https://huumorikauppa.fi"
         jsonLd={orgJsonLd}
         ogImage="https://huumorikauppa.fi/images/hero-banner-wide.png"
       />
 
-      {/* H1 — visually integrated with hero */}
-
-      {/* SEASONAL BANNER — Kesä 2026 */}
-      <section className="container pt-2">
+      {/* SEASONAL BANNER */}
+      <section className="container pt-3">
         <Link
           to="/kaikki-tuotteet"
-          className="block rounded-xl md:rounded-2xl overflow-hidden text-center px-4 py-3 md:py-4 transition-transform hover:scale-[1.005]"
-          style={{
-            background: "linear-gradient(90deg, hsl(220 75% 45%) 0%, hsl(200 80% 52%) 50%, hsl(160 65% 45%) 100%)",
-          }}
+          className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 bg-foreground text-background transition-opacity hover:opacity-90"
         >
-          <span className="text-white font-medium text-sm md:text-base">
-            ☀️ Kesälahjat 2026 — Löydä hauskin lahja kesäjuhliin ja valmistujaisiin
+          <Sun className="h-4 w-4 shrink-0 opacity-80" />
+          <span className="text-sm font-medium">
+            Kesälahjat 2026 — Löydä hauskin lahja kesäjuhliin ja valmistujaisiin
           </span>
-          <span className="text-white font-bold text-sm md:text-base ml-2 underline-offset-4 hover:underline">
-            Katso kesälahjat →
-          </span>
+          <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </section>
 
-      {/* HERO BANNER IMAGE – LCP element */}
-      <section className="container pb-2 md:pb-1 pt-2">
-        <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-xl md:rounded-2xl">
-          {/* Mobile: tall version */}
+      {/* HERO BANNER IMAGE */}
+      <section className="container pb-2 md:pb-1 pt-3">
+        <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
           <img
             src="/images/hero-banner.png?v=5"
-            alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
+            alt="Huumorikauppa – Hauskat t-paidat, hupparit ja mukit"
             className="w-full h-auto object-cover object-center block md:hidden"
             width={800}
             height={800}
@@ -147,10 +141,9 @@ const Index = () => {
             loading="eager"
             decoding="sync"
           />
-          {/* Tablet & Desktop: wide version */}
           <img
             src="/images/hero-banner-wide.png?v=5"
-            alt="Huumorikauppa kevätale – Hauskat t-paidat, hupparit ja mukit huippuhinnoin"
+            alt="Huumorikauppa – Hauskat t-paidat, hupparit ja mukit"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
             width={1200}
             height={600}
@@ -162,58 +155,60 @@ const Index = () => {
       </section>
 
       {/* TRUST BADGES */}
-      <section className="bg-muted/50 py-4 border-y border-border">
-        <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
-          <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
-          <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
-          <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
+      <section className="border-y border-border py-4 mt-3">
+        <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-12 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4" /> 14 pv palautusoikeus</div>
+          <div className="flex items-center gap-2"><Shield className="h-4 w-4" /> Turvallinen maksu</div>
+          <div className="flex items-center gap-2"><Flag className="h-4 w-4" /> Kotimainen yritys</div>
         </div>
       </section>
 
       {/* GIFT FINDER */}
-      <section className="container py-5 md:py-7">
-        <h2 className="font-display text-lg md:text-xl text-foreground mb-3 text-center">
-          Kenelle etsit lahjaa? 🎁
+      <section className="container py-8 md:py-10">
+        <h2 className="font-display text-lg md:text-xl text-foreground mb-4 text-center">
+          Kenelle etsit lahjaa?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 max-w-3xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
           {[
-            { to: "/lahjat/miehelle", emoji: "🎯", label: "Miehelle" },
-            { to: "/lahjat/naiselle", emoji: "💝", label: "Naiselle" },
-            { to: "/lahja-tyokaverille", emoji: "💼", label: "Työkavereille" },
-            { to: "/kaikki-tuotteet?max=30", emoji: "💸", label: "Alle 30 €" },
-          ].map((g) => (
-            <Link
-              key={g.to}
-              to={g.to}
-              className="group flex flex-row md:flex-col items-center justify-center gap-2 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary/60 transition-all px-3 py-2.5 md:py-3 text-center shadow-sm"
-            >
-              <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">{g.emoji}</span>
-              <span className="font-display text-sm md:text-base text-foreground">{g.label}</span>
-            </Link>
-          ))}
+            { to: "/lahjat/miehelle",       icon: Target,    label: "Miehelle" },
+            { to: "/lahjat/naiselle",       icon: Heart,     label: "Naiselle" },
+            { to: "/lahja-tyokaverille",    icon: Briefcase, label: "Työkavereille" },
+            { to: "/kaikki-tuotteet?max=30", icon: Tag,      label: "Alle 30 €" },
+          ].map((g) => {
+            const Icon = g.icon;
+            return (
+              <Link
+                key={g.to}
+                to={g.to}
+                className="group flex flex-row md:flex-col items-center justify-start md:justify-center gap-3 rounded-xl border border-border bg-card hover:border-foreground/20 hover:shadow-sm transition-all px-4 py-3 md:py-4"
+              >
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-all duration-200">
+                  <Icon className="h-4 w-4 text-muted-foreground group-hover:text-background transition-colors duration-200" />
+                </div>
+                <span className="text-sm font-semibold text-foreground">{g.label}</span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
-      {/* Visually hidden H1 for SEO – design uses hero banner as visual title */}
       <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
 
       {isLoading ? (
         <section className="container py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-square rounded-lg" />
+              <Skeleton key={i} className="aspect-square rounded-2xl" />
             ))}
           </div>
         </section>
       ) : (
         <>
-          {/* CURATED CAROUSEL */}
           {carouselProducts.length > 0 && (
             <HeroCarousel products={carouselProducts} />
           )}
 
-          {/* CATEGORY SECTIONS – sorted by product count */}
           {categoriesWithProducts.map(cat => {
             const catProducts = allProducts
               .filter(p => p.category === cat.slug && !isCustomTextProduct(p.name, p.description))
@@ -222,27 +217,26 @@ const Index = () => {
             return (
               <ProductSection
                 key={cat.slug}
-                title={`${cat.name} ${cat.emoji}`}
+                title={cat.name}
                 linkTo={`/kategoria/${cat.slug}`}
                 products={catProducts}
               />
             );
           })}
-
         </>
       )}
 
       {/* KAUPUNKITUOTTEET */}
       <section className="container py-10 md:py-12">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-5">
           <h2 className="font-display text-2xl md:text-3xl text-foreground">
-            Kaupunkituotteet 🏙️
+            Kaupunkituotteet
           </h2>
-          <Link to="/kaupungit" className="text-sm text-primary hover:underline hidden sm:block">
-            Kaikki kaupungit →
+          <Link to="/kaupungit" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:flex items-center gap-1">
+            Kaikki kaupungit <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <p className="text-muted-foreground text-sm mb-5 max-w-2xl">
+        <p className="text-muted-foreground text-sm mb-6 max-w-xl">
           Hauskoja t-paitoja, huppareita ja mukeja omalle kotiseudulle – yli 50 kaupunkia.
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
@@ -250,30 +244,31 @@ const Index = () => {
             <Link
               key={m.slug}
               to={`/kaupunki/${m.slug}`}
-              className="group flex flex-col items-center gap-1 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted transition-all p-2.5 text-center"
+              className="group flex flex-col items-center gap-1.5 rounded-xl border border-border bg-card hover:border-foreground/20 hover:shadow-sm transition-all p-3 text-center"
             >
-              <span className="text-xl">{m.emoji}</span>
-              <span className="font-medium text-foreground group-hover:text-primary transition-colors text-xs leading-tight">
+              <MapPin className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <span className="font-medium text-foreground text-xs leading-tight">
                 {m.name}
               </span>
             </Link>
           ))}
         </div>
         <div className="mt-4 text-center sm:hidden">
-          <Link to="/kaupungit" className="text-sm text-primary hover:underline">
-            Kaikki kaupungit →
+          <Link to="/kaupungit" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Kaikki kaupungit
           </Link>
         </div>
       </section>
 
       {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-8 text-center">
-          Etsitkö lahjaa tilaisuuteen? 📦
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3 text-center">
+          Etsitkö lahjaa tilaisuuteen?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+        <p className="text-center text-muted-foreground text-sm mb-8">Selaa kategorioita ja löydä täydellinen lahja.</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {categoriesWithProducts.map(cat => (
-            <CategoryCard key={cat.slug} slug={cat.slug} name={cat.name} emoji={cat.emoji} description={`${cat.description} (${cat.count})`} />
+            <CategoryCard key={cat.slug} slug={cat.slug} name={cat.name} emoji={cat.emoji} description={`${cat.count} tuotetta`} />
           ))}
         </div>
       </section>
@@ -283,25 +278,27 @@ const Index = () => {
       </Suspense>
 
       {/* WHY HUUMORIKAUPPA */}
-      <section className="bg-card border-y border-border py-12 md:py-16">
+      <section className="border-y border-border py-12 md:py-16 bg-muted/40">
         <div className="container">
           <h2 className="font-display text-2xl md:text-3xl text-foreground text-center mb-10">
-            Miksi valita Huumorikauppa? 🤔
+            Miksi Huumorikauppa?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            <TrustCard icon={<Users className="h-8 w-8 text-primary" />} title="Tyytyväisiä asiakkaita" desc="Sadat suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
-            <TrustCard icon={<Heart className="h-8 w-8 text-accent" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
-            <TrustCard icon={<Star className="h-8 w-8 text-primary" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" />
-            <TrustCard icon={<ThumbsUp className="h-8 w-8 text-secondary" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" />
+            <TrustCard icon={<Users className="h-5 w-5" />} title="Tyytyväisiä asiakkaita" desc="Sadat suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
+            <TrustCard icon={<Heart className="h-5 w-5" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
+            <TrustCard icon={<Star className="h-5 w-5" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" />
+            <TrustCard icon={<ThumbsUp className="h-5 w-5" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" />
           </div>
         </div>
       </section>
 
-      {/* LAHJAOPPAAT — sisältöhubi, tukee SEO/GEO topical authoritya */}
+      {/* LAHJAOPPAAT */}
       <section className="container py-12 md:py-16">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground">Lahjaoppaat &amp; vinkit 📖</h2>
-          <Link to="/blogi" className="text-sm text-primary hover:underline hidden sm:block">Näytä kaikki artikkelit →</Link>
+          <h2 className="font-display text-2xl md:text-3xl text-foreground">Lahjaoppaat</h2>
+          <Link to="/blogi" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:flex items-center gap-1">
+            Kaikki artikkelit <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {blogPosts
@@ -312,50 +309,52 @@ const Index = () => {
               <Link
                 key={post.slug}
                 to={`/blogi/${post.slug}`}
-                className="group block rounded-xl border border-border bg-card hover:border-primary/50 transition-colors p-5"
+                className="group block rounded-2xl border border-border bg-card hover:border-foreground/20 hover:shadow-sm transition-all p-5"
               >
                 <p className="text-xs text-muted-foreground mb-2">
                   {new Date(post.publishedAt).toLocaleDateString("fi-FI", { year: "numeric", month: "long", day: "numeric" })}
                 </p>
-                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2 leading-snug">
+                <h3 className="font-semibold text-foreground group-hover:text-foreground transition-colors mb-2 line-clamp-2 leading-snug text-sm">
                   {post.title}
                 </h3>
                 <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                <span className="mt-3 inline-block text-xs text-primary font-medium">Lue artikkeli →</span>
+                <span className="mt-4 inline-flex items-center gap-1 text-xs text-foreground font-medium">
+                  Lue artikkeli <ArrowRight className="h-3 w-3" />
+                </span>
               </Link>
             ))}
         </div>
         <div className="mt-4 text-center sm:hidden">
-          <Link to="/blogi" className="text-sm text-primary hover:underline">Näytä kaikki artikkelit →</Link>
+          <Link to="/blogi" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Kaikki artikkelit</Link>
         </div>
       </section>
 
       {/* NEWSLETTER */}
       <section className="container py-12 md:py-16">
-        <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 border border-border rounded-lg p-8 md:p-12 text-center max-w-2xl mx-auto">
+        <div className="bg-card border border-border rounded-2xl p-8 md:p-12 text-center max-w-xl mx-auto">
           <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-            Tilaa uutiskirje 💥
+            Tilaa uutiskirje
           </h2>
-          <p className="text-muted-foreground mb-6">
-            Tilaa uutiskirje ja saat 5% alennuskoodin ensimmäiseen tilaukseesi!
+          <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+            Tilaa ja saat 5 % alennuskoodin ensimmäiseen tilaukseesi.
           </p>
           {newsletterSubmitted ? (
-            <p className="text-primary font-bold">Kiitos! Alennuskoodisi on HUUMORI5 (-5%) 🎉</p>
+            <p className="text-foreground font-semibold">Kiitos! Alennuskoodisi on HUUMORI5</p>
           ) : (
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
               <Input
                 type="email"
                 placeholder="anna@sahkoposti.fi"
-                className="h-11 bg-muted border-border"
+                className="h-11 bg-muted border-border rounded-xl"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubmit()}
               />
               <Button
                 onClick={handleNewsletterSubmit}
-                className="bg-primary text-primary-foreground font-bold h-11 px-6 shrink-0 shadow-glow-lime"
+                className="h-11 px-6 shrink-0 rounded-xl"
               >
-                Tilaa 🚀
+                Tilaa
               </Button>
             </div>
           )}
@@ -363,14 +362,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* HELPFUL CONTENT – semantic, human-readable, no keyword stuffing */}
-      {/* FAQ snippet — AI/SGE-optimoitu vastauslohko */}
+      {/* FAQ */}
       <section className="container py-12 md:py-16">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
-            Usein kysyttyä Huumorikaupasta
+            Usein kysyttyä
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {[
               { q: "Mikä on Huumorikauppa?", a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta." },
               { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
@@ -380,11 +378,11 @@ const Index = () => {
             ].map((item, i) => (
               <details
                 key={i}
-                className="group rounded-lg border border-border bg-card px-4 py-3"
+                className="group rounded-xl border border-border bg-card px-5 py-4"
               >
-                <summary className="cursor-pointer list-none font-medium text-foreground flex items-center justify-between">
+                <summary className="cursor-pointer list-none font-semibold text-sm text-foreground flex items-center justify-between gap-4">
                   <span>{item.q}</span>
-                  <span className="ml-4 text-muted-foreground group-open:rotate-45 transition-transform text-xl leading-none">+</span>
+                  <span className="text-muted-foreground group-open:rotate-45 transition-transform duration-200 text-lg leading-none shrink-0">+</span>
                 </summary>
                 <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
                   {item.a}
@@ -393,17 +391,18 @@ const Index = () => {
             ))}
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Lisää vastauksia: <Link to="/usein-kysytyt-kysymykset" className="text-primary hover:underline">Usein kysytyt kysymykset →</Link>
+            Lisää vastauksia: <Link to="/usein-kysytyt-kysymykset" className="text-foreground hover:underline font-medium">Usein kysytyt kysymykset</Link>
           </p>
         </div>
       </section>
 
-      <section className="container py-12 md:py-16">
-        <article className="max-w-3xl mx-auto prose-invert">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 text-center">
+      {/* SEO COPY */}
+      <section className="container py-10 md:py-12 border-t border-border">
+        <article className="max-w-2xl mx-auto">
+          <h2 className="font-display text-xl md:text-2xl text-foreground mb-5 text-center">
             Huumorikauppa.fi – Suomen hauskin lahjakauppa
           </h2>
-          <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
+          <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
               Etsitkö lahjaa, joka oikeasti naurattaa? Huumorikauppa on suomalainen verkkokauppa,
               josta löydät hauskat t-paidat, hupparit, mukit ja tarrat – kaikki suunniteltu
@@ -415,7 +414,7 @@ const Index = () => {
               Tilaaminen on helppoa, toimitus nopea ja yli 60 € tilauksiin saat ilmaisen
               toimituksen. Jokainen paita ja muki painetaan tilauksesta, joten saat juuri sen
               tuotteen jonka valitsit – ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
-              henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a>.
+              henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-foreground hover:underline">huumorikauppa@gmail.com</a>.
               Tervetuloa nauramaan!
             </p>
           </div>
@@ -442,14 +441,11 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const mediaQuery = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
-    const updateTouchViewport = () => setIsTouchViewport(mediaQuery.matches);
-
-    updateTouchViewport();
-    mediaQuery.addEventListener("change", updateTouchViewport);
-
-    return () => mediaQuery.removeEventListener("change", updateTouchViewport);
+    const update = () => setIsTouchViewport(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
   }, []);
 
   const isTablet = useMemo(() => {
@@ -464,93 +460,49 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   useEffect(() => {
     const node = sectionRef.current;
     if (!node || typeof IntersectionObserver === "undefined") return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isInViewRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.2 }
-    );
-
+    const observer = new IntersectionObserver(([e]) => { isInViewRef.current = e.isIntersecting; }, { threshold: 0.2 });
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const onScroll = () => {
       if (scrollRafRef.current !== null) return;
       scrollRafRef.current = window.requestAnimationFrame(() => {
         isScrollingRef.current = true;
-
-        if (scrollIdleTimeoutRef.current) {
-          clearTimeout(scrollIdleTimeoutRef.current);
-        }
-
-        scrollIdleTimeoutRef.current = setTimeout(() => {
-          isScrollingRef.current = false;
-        }, 300);
-
+        if (scrollIdleTimeoutRef.current) clearTimeout(scrollIdleTimeoutRef.current);
+        scrollIdleTimeoutRef.current = setTimeout(() => { isScrollingRef.current = false; }, 300);
         scrollRafRef.current = null;
       });
     };
-
     window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (scrollIdleTimeoutRef.current) clearTimeout(scrollIdleTimeoutRef.current);
-      if (scrollRafRef.current !== null) {
-        window.cancelAnimationFrame(scrollRafRef.current);
-      }
+      if (scrollRafRef.current !== null) window.cancelAnimationFrame(scrollRafRef.current);
     };
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-    };
-  }, []);
+  useEffect(() => { return () => { if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current); }; }, []);
 
-  const goTo = useCallback((index: number) => {
-    setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
-  }, [maxIndex]);
-
-  const next = useCallback(() => {
-    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
-  }, [maxIndex]);
-
-  const prev = useCallback(() => {
-    setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
-  }, [maxIndex]);
+  const goTo = useCallback((index: number) => { setCurrentIndex(Math.max(0, Math.min(index, maxIndex))); }, [maxIndex]);
+  const next = useCallback(() => { setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1)); }, [maxIndex]);
+  const prev = useCallback(() => { setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1)); }, [maxIndex]);
 
   useEffect(() => {
     if (shouldUseStaticMobileLayout || !isAutoPlaying) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
       return;
     }
-
     intervalRef.current = setInterval(() => {
-      if (!document.hidden && isInViewRef.current && !isScrollingRef.current) {
-        next();
-      }
+      if (!document.hidden && isInViewRef.current && !isScrollingRef.current) next();
     }, 4000);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
+    return () => { if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; } };
   }, [isAutoPlaying, next, shouldUseStaticMobileLayout]);
 
   const handleInteraction = () => {
     if (shouldUseStaticMobileLayout) return;
-
     setIsAutoPlaying(false);
     if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
     interactionTimeoutRef.current = setTimeout(() => setIsAutoPlaying(true), 8000);
@@ -559,19 +511,19 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   return (
     <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet ⭐</h2>
+        <h2 className="font-display text-2xl md:text-3xl text-foreground">Suositut tuotteet</h2>
         {!shouldUseStaticMobileLayout && (
           <div className="flex items-center gap-2">
             <button
               onClick={() => { handleInteraction(); prev(); }}
-              className="min-h-11 min-w-11 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+              className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="Edellinen"
             >
               <ChevronLeft className="h-4 w-4 text-foreground" />
             </button>
             <button
               onClick={() => { handleInteraction(); next(); }}
-              className="min-h-11 min-w-11 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
+              className="min-h-9 min-w-9 rounded-full border border-border bg-card hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="Seuraava"
             >
               <ChevronRight className="h-4 w-4 text-foreground" />
@@ -601,11 +553,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
               style={{ transform: `translate3d(-${currentIndex * (100 / itemsPerView)}%,0,0)` }}
             >
               {products.map(product => (
-                <div
-                  key={product.id}
-                  className="shrink-0 px-2"
-                  style={{ width: `${100 / itemsPerView}%` }}
-                >
+                <div key={product.id} className="shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
                   <ProductCard product={product} />
                 </div>
               ))}
@@ -616,16 +564,10 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
               <button
                 key={i}
                 onClick={() => { handleInteraction(); goTo(i); }}
-                className={`min-h-11 min-w-11 rounded-full transition-all flex items-center justify-center ${
-                  i === currentIndex ? "bg-primary/15" : "hover:bg-muted"
-                }`}
+                className="min-h-9 min-w-9 rounded-full transition-all flex items-center justify-center hover:bg-muted"
                 aria-label={`Siirry kohtaan ${i + 1}`}
               >
-                <span
-                  className={`h-2 w-2 rounded-full transition-all ${
-                    i === currentIndex ? "bg-primary w-5" : "bg-muted-foreground/30"
-                  }`}
-                />
+                <span className={`h-1.5 rounded-full transition-all ${i === currentIndex ? "bg-foreground w-5" : "bg-border w-1.5"}`} />
               </button>
             ))}
           </div>
@@ -641,11 +583,11 @@ function ProductSection({ title, linkTo, products }: { title: string; linkTo: st
     <section className="container py-10 md:py-14">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl md:text-3xl text-foreground">{title}</h2>
-        <Link to={linkTo} className="text-sm text-primary hover:underline font-medium whitespace-nowrap">
-          Näytä kaikki →
+        <Link to={linkTo} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium whitespace-nowrap flex items-center gap-1">
+          Näytä kaikki <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
         {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -657,11 +599,11 @@ function ProductSection({ title, linkTo, products }: { title: string; linkTo: st
 function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <div className="text-center space-y-3">
-      <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+      <div className="mx-auto w-12 h-12 bg-muted rounded-xl flex items-center justify-center text-muted-foreground">
         {icon}
       </div>
-      <h3 className="font-display text-lg text-foreground">{title}</h3>
-      <p className="text-sm text-muted-foreground">{desc}</p>
+      <h3 className="font-semibold text-sm text-foreground">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
     </div>
   );
 }

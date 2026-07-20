@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÅabcdefghijklmnopqrstuvwxyzäöå0123456789 ');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,52 +6,51 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 95%;
+    /* Background: warm off-white */
+    --background: 40 20% 98.5%;
+    --foreground: 0 0% 7%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 95%;
+    /* Cards: pure white */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
 
-    --primary: 82 85% 55%;
-    --primary-foreground: 0 0% 4%;
+    /* Primary: near-black — buttons, key accents */
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 330 85% 55%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: light gray — subtle backgrounds */
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 12%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
+    /* Muted: warm light gray */
+    --muted: 40 12% 95%;
+    --muted-foreground: 0 0% 44%;
 
-    --accent: 187 85% 55%;
-    --accent-foreground: 0 0% 4%;
+    --accent: 0 0% 93%;
+    --accent-foreground: 0 0% 7%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 82 85% 55%;
+    /* Borders: very subtle */
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 7%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 82 85% 55%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 82 85% 55%;
-
-    /* Custom tokens */
-    --neon-lime: 82 85% 55%;
-    --neon-pink: 330 85% 55%;
-    --neon-cyan: 187 85% 55%;
-    --neon-lime-glow: 0 0 20px hsl(82, 85%, 55%, 0.4);
-    --neon-pink-glow: 0 0 20px hsl(330, 85%, 55%, 0.4);
-    --neon-cyan-glow: 0 0 20px hsl(187, 85%, 55%, 0.4);
+    /* Sidebar (keep for admin) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 7%;
+    --sidebar-primary: 0 0% 7%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 93%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 7%;
   }
 }
 
@@ -72,41 +71,35 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Anton', 'Impact', sans-serif;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    text-transform: none;
   }
-
 }
 
 @layer utilities {
+  /* Premium display utility — Inter Bold, tight tracking */
   .font-display {
-    font-family: 'Anton', 'Impact', sans-serif;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    text-transform: none;
   }
 
-  .text-glow-lime {
-    text-shadow: var(--neon-lime-glow);
-  }
+  /* Neutralised glow stubs — all former neon effects become subtle shadows */
+  .text-glow-lime  { text-shadow: none; }
+  .text-glow-pink  { text-shadow: none; }
+  .text-glow-cyan  { text-shadow: none; }
+  .shadow-glow-lime { box-shadow: 0 1px 4px rgb(0 0 0 / 0.08); }
+  .shadow-glow-pink { box-shadow: 0 1px 4px rgb(0 0 0 / 0.08); }
+  .shadow-glow-cyan { box-shadow: 0 1px 4px rgb(0 0 0 / 0.08); }
 
-  .text-glow-pink {
-    text-shadow: var(--neon-pink-glow);
+  /* Subtle card lift on hover */
+  .hover-lift {
+    @apply transition-all duration-200;
   }
-
-  .text-glow-cyan {
-    text-shadow: var(--neon-cyan-glow);
-  }
-
-  .shadow-glow-lime {
-    box-shadow: var(--neon-lime-glow);
-  }
-
-  .shadow-glow-pink {
-    box-shadow: var(--neon-pink-glow);
-  }
-
-  .shadow-glow-cyan {
-    box-shadow: var(--neon-cyan-glow);
+  .hover-lift:hover {
+    @apply shadow-md -translate-y-0.5;
   }
 }
