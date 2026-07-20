@@ -129,10 +129,11 @@ const Index = () => {
       <section className="container pt-3">
         <Link
           to="/kaikki-tuotteet"
-          className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 bg-foreground text-background transition-opacity hover:opacity-90"
+          className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 text-primary-foreground transition-opacity hover:opacity-90"
+          style={{ background: "linear-gradient(90deg, hsl(var(--brand-green-dark)) 0%, hsl(var(--brand-green)) 100%)" }}
         >
-          <Sun className="h-4 w-4 shrink-0 opacity-80" />
-          <span className="text-sm font-medium">
+          <Sun className="h-4 w-4 shrink-0 opacity-90" />
+          <span className="text-sm font-semibold">
             Löydä hauskin lahja meiltä — tilaa nyt, saat nopeasti!
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
