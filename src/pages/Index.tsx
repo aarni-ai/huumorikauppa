@@ -684,3 +684,62 @@ function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string
 }
 
 export default Index;
+
+/* ========== HERO PRODUCT STRIP ==========
+   Small horizontal-scroll tiles of "hauskimmat & parhaimmat"
+   t-paidat + hupparit that AREN'T already in the main carousel. */
+function HeroProductStrip({
+  products,
+  excludeSlugs,
+}: {
+  products: import("@/types/product").Product[];
+  excludeSlugs: string[];
+}) {
+  const excluded = new Set(excludeSlugs);
+  const picks = products
+    .filter(p =>
+      (p.category === "t-paidat" || p.category === "hupparit") &&
+      !excluded.has(p.slug) &&
+      !isCustomTextProduct(p.name, p.description)
+    )
+    .sort((a, b) => {
+      const g = garmentSortWeight(a) - garmentSortWeight(b);
+      if (g !== 0) return g;
+      return getPriority(a) - getPriority(b);
+    })
+    .slice(0, 12);
+
+  if (picks.length === 0) return null;
+
+  return (
+    <section className="container pt-3 pb-1">
+      <div className="-mx-4 overflow-x-auto px-4 pb-2 touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-3 md:gap-4">
+          {picks.map(p => {
+            const img = p.images?.[0] || "/placeholder.svg";
+            return (
+              <Link
+                key={p.id}
+                to={`/tuote/${p.slug}`}
+                className="group shrink-0 w-[92px] md:w-[110px] text-center"
+              >
+                <div className="aspect-square rounded-xl overflow-hidden bg-muted border border-border group-hover:border-primary/60 transition-colors">
+                  <img
+                    src={proxiedImage(img) || img}
+                    alt={p.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <p className="mt-1.5 text-[11px] md:text-xs font-semibold text-foreground line-clamp-2 leading-tight">
+                  {p.name}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
