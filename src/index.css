@@ -21,9 +21,9 @@
     --primary: 0 0% 7%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: light gray — subtle backgrounds */
-    --secondary: 0 0% 93%;
-    --secondary-foreground: 0 0% 12%;
+    /* Secondary: medium gray — visible logo text + subtle buttons */
+    --secondary: 0 0% 58%;
+    --secondary-foreground: 0 0% 100%;
 
     /* Muted: warm light gray */
     --muted: 40 12% 95%;

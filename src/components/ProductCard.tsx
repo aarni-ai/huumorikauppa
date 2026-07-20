@@ -163,7 +163,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/tuote/${product.slug}`}
-      className={`group block bg-card border border-border rounded-2xl overflow-hidden transition-all duration-200 relative ${canUseHover ? "hover:border-foreground/15 hover:shadow-md" : ""}`}
+      className="group block bg-transparent rounded-2xl overflow-hidden transition-all duration-200 relative"
       onMouseEnter={() => {
         if (canUseHover) setIsHovered(true);
       }}
@@ -174,7 +174,7 @@ export function ProductCard({ product }: ProductCardProps) {
       }}
     >
       {/* Image with hover swap */}
-      <div className="relative aspect-square bg-muted overflow-hidden">
+      <div className="relative aspect-square bg-[#EEEDE8] overflow-hidden rounded-2xl">
         <img
           src={proxiedImage(displayImage) || displayImage}
           alt={`Hauska ${categoryLabel} – ${product.name} | Huumorikauppa`}

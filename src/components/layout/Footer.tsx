@@ -78,8 +78,8 @@ export function Footer() {
         {/* Brand */}
         <div className="space-y-4">
           <div>
-            <span className="font-bold text-xl text-foreground tracking-tight">HUUMORI</span>
-            <span className="font-bold text-xl text-foreground/35 tracking-tight">KAUPPA</span>
+            <span className="font-display text-xl text-primary">HUUMORI</span>
+            <span className="font-display text-xl text-secondary">KAUPPA</span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja koko perheelle.

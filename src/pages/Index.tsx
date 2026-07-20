@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
-import { CategoryCard } from "@/components/CategoryCard";
 import { categories } from "@/data/products";
 import { blogPosts } from "@/data/blog";
 import { municipalities } from "@/data/municipalities";
 import { useProducts } from "@/hooks/use-products";
+import { proxiedImage } from "@/lib/imageProxy";
 import {
   Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield,
-  ChevronLeft, ChevronRight, Flag, Target, Briefcase, Tag,
+  ChevronLeft, ChevronRight, Flag,
   MapPin, Sun, ArrowRight,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -165,31 +165,26 @@ const Index = () => {
       </section>
 
       {/* GIFT FINDER */}
-      <section className="container py-8 md:py-10">
-        <h2 className="font-display text-lg md:text-xl text-foreground mb-4 text-center">
+      <section className="container py-6 md:py-8">
+        <h2 className="font-display text-lg md:text-xl text-foreground mb-5 text-center">
           Kenelle etsit lahjaa?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
+        <div className="flex flex-wrap gap-2.5 justify-center">
           {[
-            { to: "/lahjat/miehelle",       icon: Target,    label: "Miehelle" },
-            { to: "/lahjat/naiselle",       icon: Heart,     label: "Naiselle" },
-            { to: "/lahja-tyokaverille",    icon: Briefcase, label: "Työkavereille" },
-            { to: "/kaikki-tuotteet?max=30", icon: Tag,      label: "Alle 30 €" },
-          ].map((g) => {
-            const Icon = g.icon;
-            return (
-              <Link
-                key={g.to}
-                to={g.to}
-                className="group flex flex-row md:flex-col items-center justify-start md:justify-center gap-3 rounded-xl border border-border bg-card hover:border-foreground/20 hover:shadow-sm transition-all px-4 py-3 md:py-4"
-              >
-                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-all duration-200">
-                  <Icon className="h-4 w-4 text-muted-foreground group-hover:text-background transition-colors duration-200" />
-                </div>
-                <span className="text-sm font-semibold text-foreground">{g.label}</span>
-              </Link>
-            );
-          })}
+            { to: "/lahjat/miehelle",        label: "Miehelle" },
+            { to: "/lahjat/naiselle",        label: "Naiselle" },
+            { to: "/lahja-tyokaverille",     label: "Työkavereille" },
+            { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
+            { to: "/lahjat/joulu",           label: "Kesälahjat" },
+          ].map((g) => (
+            <Link
+              key={g.to}
+              to={g.to}
+              className="px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-150"
+            >
+              {g.label}
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -262,14 +257,40 @@ const Index = () => {
 
       {/* KATEGORIAT GRID */}
       <section className="container py-12 md:py-16">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3 text-center">
-          Etsitkö lahjaa tilaisuuteen?
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-2 text-center">
+          Selaa kategorioita
         </h2>
-        <p className="text-center text-muted-foreground text-sm mb-8">Selaa kategorioita ja löydä täydellinen lahja.</p>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
-          {categoriesWithProducts.map(cat => (
-            <CategoryCard key={cat.slug} slug={cat.slug} name={cat.name} emoji={cat.emoji} description={`${cat.count} tuotetta`} />
-          ))}
+        <p className="text-center text-muted-foreground text-sm mb-8">Löydä oikea lahja — tuotteita kaikille maun mukaan.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {categoriesWithProducts.slice(0, 8).map(cat => {
+            const catImg = allProducts
+              .filter(p => p.category === cat.slug && p.images[0] && !isCustomTextProduct(p.name, p.description || ''))
+              [0]?.images[0] || '';
+            return (
+              <Link
+                key={cat.slug}
+                to={`/kategoria/${cat.slug}`}
+                className="group block"
+              >
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
+                  {catImg && (
+                    <img
+                      src={proxiedImage(catImg) || catImg}
+                      alt={cat.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-white font-bold text-sm md:text-base leading-tight">{cat.name}</h3>
+                    <p className="text-white/65 text-xs mt-0.5">{cat.count} tuotetta</p>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
