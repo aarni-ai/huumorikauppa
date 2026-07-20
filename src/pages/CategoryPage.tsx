@@ -27,6 +27,15 @@ function isCustomTextProduct(name: string, description: string): boolean {
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
 }
 
+// Printify folded/flat mockups look like packaged shirts. Push them to the bottom.
+function isFoldedImage(url?: string): boolean {
+  if (!url) return false;
+  return /camera_label=(folded|flat)/i.test(url);
+}
+function garmentSortWeight(p: { images?: string[] }): number {
+  return isFoldedImage(p.images?.[0]) ? 1 : 0;
+}
+
 // Blog posts relevant to each category — hub & spoke internal linking
 const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
   "t-paidat":       ["20-hauskinta-t-paitaa-2026", "miksi-hauska-paita-paras-lahja", "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat"],
@@ -105,7 +114,11 @@ const CategoryPage = () => {
   const categoryProducts = allProducts.filter(p => p.category === slug);
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
-    .sort((a, b) => getPriority(a) - getPriority(b));
+    .sort((a, b) => {
+      const g = garmentSortWeight(a) - garmentSortWeight(b);
+      if (g !== 0) return g;
+      return getPriority(a) - getPriority(b);
+    });
 
   if (!category) {
     return (
