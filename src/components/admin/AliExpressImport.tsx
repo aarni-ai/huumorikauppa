@@ -109,7 +109,7 @@ export function AliExpressImport() {
     const r = results![idx];
     if (!r.createdId) return;
     const next = !r.published;
-    const { error } = await supabase.from("products").update({ is_active: next }).eq("id", r.createdId);
+    const { error } = await (supabase.from("products") as any).update({ is_active: next }).eq("id", r.createdId);
     if (!error) setResults((rs) => rs!.map((x, i) => (i === idx ? { ...x, published: next } : x)));
   };
 

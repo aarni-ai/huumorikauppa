@@ -27,17 +27,18 @@ export function FulfillmentAdmin() {
 
   const load = useCallback(async () => {
     setLoading(true);
+    const db = supabase as any;
     const [{ data: orders }, { data: products }, { data: statuses }] = await Promise.all([
-      supabase.from("orders")
+      db.from("orders")
         .select("id, created_at, customer_email, shipping_address, items, payment_status")
         .eq("payment_status", "paid").order("created_at", { ascending: false }).limit(200),
-      supabase.from("products").select("name, supplier, aliexpress_url"),
-      supabase.from("supplier_fulfillment").select("order_id, line_key, status"),
+      db.from("products").select("name, supplier, aliexpress_url"),
+      db.from("supplier_fulfillment").select("order_id, line_key, status"),
     ]);
-    const supByName = new Map((products || []).map((p) => [p.name, p]));
-    const statusMap = new Map((statuses || []).map((s) => [`${s.order_id}::${s.line_key}`, s.status]));
+    const supByName = new Map(((products || []) as any[]).map((p) => [p.name, p]));
+    const statusMap = new Map(((statuses || []) as any[]).map((s) => [`${s.order_id}::${s.line_key}`, s.status]));
     const out: Line[] = [];
-    for (const o of orders || []) {
+    for (const o of (orders || []) as any[]) {
       const items = Array.isArray(o.items) ? (o.items as any[]) : [];
       for (const it of items) {
         const meta = supByName.get(it.name);
@@ -58,7 +59,7 @@ export function FulfillmentAdmin() {
   useEffect(() => { load(); }, [load]);
 
   const setStatus = async (line: Line, status: string) => {
-    await supabase.from("supplier_fulfillment").upsert({
+    await (supabase.from as any)("supplier_fulfillment").upsert({
       order_id: line.orderId, line_key: line.lineKey, status, updated_at: new Date().toISOString(),
     });
     setLines((ls) => ls.map((l) => (l.orderId === line.orderId && l.lineKey === line.lineKey ? { ...l, status } : l)));
