@@ -92,9 +92,13 @@ export function Header() {
         </button>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-0 shrink-0">
-          <span className="font-display text-xl md:text-2xl text-primary">HUUMORI</span>
-          <span className="font-display text-xl md:text-2xl text-secondary">KAUPPA</span>
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <span className="font-display text-xl md:text-2xl text-primary">
+            HUUMORI
+          </span>
+          <span className="font-display text-xl md:text-2xl text-secondary">
+            KAUPPA
+          </span>
         </Link>
 
         {/* Desktop nav */}
