@@ -166,6 +166,14 @@ const Index = () => {
         </Link>
       </section>
 
+      {/* HERO PRODUCT STRIP */}
+      {!isLoading && allProducts.length > 0 && (
+        <HeroProductStrip
+          products={allProducts}
+          excludeSlugs={CAROUSEL_SLUGS}
+        />
+      )}
+
       {/* TRUST BADGES */}
       <section className="border-y border-border bg-muted/40 py-4 mt-3">
         <div className="container flex flex-wrap items-center justify-center gap-5 md:gap-10 text-sm font-semibold text-foreground">
