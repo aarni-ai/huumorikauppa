@@ -128,7 +128,9 @@ const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const categoryProducts = allProducts.filter(p => p.category === slug);
+  const categoryProducts = allProducts.filter(
+    p => p.category === slug && matchesCategoryStrictly(p.name, slug)
+  );
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => {
