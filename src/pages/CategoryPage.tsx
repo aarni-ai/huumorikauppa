@@ -8,19 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
-
-const PRIORITY_KEYWORDS = [
-  "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
-  "kalju", "i ❤️ my", "i love my", "i ❤ my"
-];
-
-function getPriority(product: { name: string; description: string }): number {
-  const t = (product.name + ' ' + product.description).toLowerCase();
-  for (let i = 0; i < PRIORITY_KEYWORDS.length; i++) {
-    if (t.includes(PRIORITY_KEYWORDS[i].toLowerCase())) return i;
-  }
-  return PRIORITY_KEYWORDS.length + 1;
-}
+import { getPriorityRank } from "@/lib/productPriority";
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
@@ -134,9 +122,11 @@ const CategoryPage = () => {
   const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
   const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
     .sort((a, b) => {
-      const g = garmentSortWeight(a) - garmentSortWeight(b);
-      if (g !== 0) return g;
-      return getPriority(a) - getPriority(b);
+      // Priority best-sellers absolutely first
+      const pr = getPriorityRank(a) - getPriorityRank(b);
+      if (pr !== 0) return pr;
+      // Then push folded/flat mockups to the bottom
+      return garmentSortWeight(a) - garmentSortWeight(b);
     });
 
   if (!category) {

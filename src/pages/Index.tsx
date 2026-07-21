@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { getPriorityRank } from "@/lib/productPriority";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
 
@@ -97,9 +98,12 @@ const Index = () => {
       .map((p, i) => ({ p, k: Math.sin(seed + i * 9301 + 49297) }))
       .sort((a, b) => a.k - b.k)
       .map(x => x.p);
-    const merged = [...handpicked, ...rest].slice(0, 16);
-    // Taitetut/flat viimeisiksi
-    return merged.sort((a, b) => garmentSortWeight(a) - garmentSortWeight(b));
+    const merged = [...handpicked, ...rest].slice(0, 24);
+    // Taitetut/flat viimeisiksi, sitten priority-tuotteet aivan ylimmäksi
+    const foldedLast = merged.sort((a, b) => garmentSortWeight(a) - garmentSortWeight(b));
+    return foldedLast
+      .sort((a, b) => getPriorityRank(a) - getPriorityRank(b))
+      .slice(0, 16);
   })();
 
   const categoriesWithProducts = categories
