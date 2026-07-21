@@ -6,23 +6,11 @@ import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOTargetGroupContent, SEOCustomContent } from "@/components/SEOKeywordContent";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
-
-const PRIORITY_KEYWORDS = [
-  "amatimies", "museo", "eläkkeellä", "eläke", "iskä ei osaa", "isä ei osaa",
-  "kalju", "i ❤️ my", "i love my", "i ❤ my"
-];
+import { getPriorityRank } from "@/lib/productPriority";
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
-}
-
-function getPriority(product: { name: string; description: string }): number {
-  const t = (product.name + ' ' + product.description).toLowerCase();
-  for (let i = 0; i < PRIORITY_KEYWORDS.length; i++) {
-    if (t.includes(PRIORITY_KEYWORDS[i].toLowerCase())) return i;
-  }
-  return PRIORITY_KEYWORDS.length + 1;
 }
 
 // Push folded/flat Printify mockups to the bottom
@@ -51,8 +39,12 @@ const AllProducts = () => {
     .map((p, i) => ({ p, k: Math.sin(seed + i * 9301 + 49297) }))
     .sort((a, b) => a.k - b.k)
     .map(x => x.p);
-  const filteredProducts = shuffled.sort(
+  // 1) folded/flat mockups viimeisiksi, 2) priority-tuotteet aivan ylimmäksi
+  const withFoldedLast = shuffled.sort(
     (a, b) => garmentSortWeight(a) - garmentSortWeight(b)
+  );
+  const filteredProducts = withFoldedLast.sort(
+    (a, b) => getPriorityRank(a) - getPriorityRank(b)
   );
 
   return (
