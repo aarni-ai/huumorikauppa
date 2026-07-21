@@ -10,6 +10,7 @@ import { sortSizes } from "@/lib/sortSizes";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { proxiedImage } from "@/lib/imageProxy";
 import { ProductRating } from "@/components/ProductRating";
+import { getForcedColor } from "@/lib/productPriority";
 
 interface ProductCardProps {
   product: Product;
@@ -25,6 +26,21 @@ const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koriste
 // Deterministic per product.id so ordering is stable across renders.
 const COLORFUL_KEYWORDS = ["red", "punainen", "black", "musta", "navy", "sininen", "blue", "green", "vihreä", "vihrea", "yellow", "keltainen", "pink", "vaaleanpunainen", "purple", "violetti", "orange", "oranssi", "maroon", "burgundy"];
 const WHITE_KEYWORDS = ["white", "valko", "valkoi"];
+
+function pickForcedColorImage(product: Product): string | null {
+  const forced = getForcedColor({ name: product.name, category: product.category });
+  if (!forced) return null;
+  const variantImages = product.variants?.variant_images as Record<string, string[]> | undefined;
+  if (!variantImages) return null;
+  const wanted = forced.toLowerCase();
+  // Try exact/contains match against variant color keys.
+  const key = Object.keys(variantImages).find(c => {
+    const lc = c.toLowerCase();
+    return lc === wanted || lc.includes(wanted);
+  });
+  if (key && variantImages[key]?.[0]) return variantImages[key][0];
+  return null;
+}
 
 function pickColorfulDefault(product: Product): string | null {
   const variantImages = product.variants?.variant_images as Record<string, string[]> | undefined;
@@ -86,8 +102,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const categoryLabel = CATEGORY_LABELS[product.category] || product.category;
 
   const hoverImage = useMemo(() => getHoverImage(product), [product]);
+  const forcedImage = useMemo(() => pickForcedColorImage(product), [product]);
   const colorfulDefault = useMemo(() => pickColorfulDefault(product), [product]);
-  const mainImage = colorfulDefault || product.images[0] || "/placeholder.svg";
+  const mainImage = forcedImage || colorfulDefault || product.images[0] || "/placeholder.svg";
   const displayImage = canUseHover && isHovered && hoverImage ? hoverImage : mainImage;
 
   useEffect(() => {
