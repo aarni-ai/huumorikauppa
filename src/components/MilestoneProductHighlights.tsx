@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Gift } from "lucide-react";
+import { Gift, ArrowRight } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
 import { selectMilestoneHighlights } from "@/data/milestoneHighlights";
 import { Product } from "@/types/product";
@@ -38,31 +38,33 @@ export function MilestoneProductHighlights({ articleSlug }: MilestoneProductHigh
         {items.map((p) => (
           <div
             key={p.id}
-            className="flex flex-col rounded-lg border border-border bg-card overflow-hidden hover:border-primary/60 transition-colors"
+            className="flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors"
             itemScope
             itemType="https://schema.org/Product"
           >
-            <Link to={`/tuote/${p.slug}`} aria-label={p.name} className="block aspect-square bg-muted">
+            <Link to={`/tuote/${p.slug}`} aria-label={p.name} className="block aspect-square bg-muted overflow-hidden group">
               <img
                 src={p.images[0] || "/placeholder.svg"}
                 alt={p.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
+                width={240}
+                height={240}
                 itemProp="image"
               />
             </Link>
-            <div className="flex flex-col gap-1 p-2.5 flex-1">
+            <div className="flex flex-col gap-1 p-3 flex-1">
               <Link
                 to={`/tuote/${p.slug}`}
-                className="text-xs font-medium text-foreground hover:text-primary transition-colors line-clamp-2"
+                className="text-xs font-medium text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug"
                 itemProp="name"
               >
                 {p.name}
               </Link>
-              <span className="text-sm font-bold text-primary mt-auto">{p.price.toFixed(2)} €</span>
+              <span className="text-sm font-bold text-primary mt-1">{p.price.toFixed(2)} €</span>
               <Link
                 to={`/tuote/${p.slug}`}
-                className="mt-1 inline-flex items-center justify-center px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:opacity-90 transition-opacity"
+                className="mt-auto pt-1.5 inline-flex items-center justify-center px-2 py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold min-h-[40px] hover:opacity-90 transition-opacity"
               >
                 Katso tuote
               </Link>
@@ -70,6 +72,13 @@ export function MilestoneProductHighlights({ articleSlug }: MilestoneProductHigh
           </div>
         ))}
       </div>
+      <Link
+        to={highlight.ctaLink}
+        className="mt-4 flex items-center justify-center gap-1.5 w-full py-3 rounded-lg border border-primary/30 text-primary text-sm font-semibold hover:bg-primary/5 transition-colors"
+      >
+        {highlight.ctaLabel}
+        <ArrowRight className="h-4 w-4 shrink-0" />
+      </Link>
     </section>
   );
 }

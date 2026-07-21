@@ -48,13 +48,13 @@ function renderContent(content: string, articleSlug: string) {
       );
       // Inject a theme-matched product strip after the 2nd and 4th subheading.
       h2Count++;
-      if (h2Count === 2 || h2Count === 4) {
+      if (h2Count === 1 || h2Count === 2 || h2Count === 4) {
         elements.push(
           <BlogInlineProducts
             key={`inline-${i}`}
             articleSlug={articleSlug}
-            startIndex={h2Count === 2 ? 0 : 3}
-            count={2}
+            startIndex={h2Count === 1 ? 0 : h2Count === 2 ? 3 : 6}
+            count={3}
           />
         );
       }
