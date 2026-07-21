@@ -73,19 +73,56 @@ export function parseVariants(str: string): Record<string, string[]> {
   return out;
 }
 
+// ---- Fuzzy file matching ----
+
+/** Strips extension and lowercases — the normalisation key for case/extension-agnostic matching */
+export function normBase(filename: string): string {
+  const dot = filename.lastIndexOf(".");
+  return (dot >= 0 ? filename.slice(0, dot) : filename).toLowerCase();
+}
+
+/**
+ * Build a map from normBase(filename) → actual filename.
+ * First uploaded file wins when multiple share the same base name.
+ * Supports any extension (.jpg/.JPG/.webp/.avif/.png etc.)
+ */
+export function buildFileMap(files: { name: string }[]): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const f of files) {
+    const key = normBase(f.name);
+    if (!map.has(key)) map.set(key, f.name);
+  }
+  return map;
+}
+
+/** Resolve a CSV-specified filename to the matched uploaded filename, or null if not found */
+export function resolveFilename(csvName: string, fileMap: Map<string, string>): string | null {
+  return fileMap.get(normBase(csvName)) ?? null;
+}
+
+export interface ImageMatch {
+  csv: string;
+  resolved: string | null;
+}
+
 export interface RowResult {
   line: number;
   name: string;
   status: "ok" | "warning" | "error";
   price?: number;
   messages: string[];
+  imageMatches: ImageMatch[];
 }
 
-/** Validate + price a single CSV row. Never throws; returns a per-row result. */
+/**
+ * Validate + price a single CSV row.
+ * Never throws; returns a per-row result including image match info.
+ * fileMap must be built with buildFileMap() from the uploaded File list.
+ */
 export function evaluateRow(
   row: Record<string, string>,
   line: number,
-  uploadedFilenames: Set<string>,
+  fileMap: Map<string, string>,
 ): RowResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -102,10 +139,15 @@ export function evaluateRow(
 
   if (!(row.aliexpress_url || "").trim()) errors.push("puuttuva aliexpress_url");
 
-  const imageFiles = (row.image_files || "").split(",").map((f) => f.trim()).filter(Boolean);
-  if (imageFiles.length === 0) errors.push("puuttuva image_files");
-  const missingImgs = imageFiles.filter((f) => !uploadedFilenames.has(f));
-  if (missingImgs.length) errors.push(`kuvatiedostoja ei ladattu: ${missingImgs.join(", ")}`);
+  const csvImageNames = (row.image_files || "").split(",").map((f) => f.trim()).filter(Boolean);
+  if (csvImageNames.length === 0) errors.push("puuttuva image_files");
+
+  const imageMatches: ImageMatch[] = csvImageNames.map((f) => ({
+    csv: f,
+    resolved: resolveFilename(f, fileMap),
+  }));
+  const missingImgs = imageMatches.filter((m) => !m.resolved).map((m) => m.csv);
+  if (missingImgs.length) errors.push(`kuvatiedostoja ei löydy: ${missingImgs.join(", ")}`);
 
   const brand = detectBrand(name, row.description || "");
   if (brand) warnings.push(`mahdollinen brändituote ("${brand}") — tarkista IP-oikeudet ennen julkaisua`);
@@ -114,5 +156,5 @@ export function evaluateRow(
     : (!isNaN(cost) ? computeSellPrice(cost) : undefined);
 
   const status: RowResult["status"] = errors.length ? "error" : warnings.length ? "warning" : "ok";
-  return { line, name: name || "(nimetön)", status, price, messages: [...errors, ...warnings] };
+  return { line, name: name || "(nimetön)", status, price, messages: [...errors, ...warnings], imageMatches };
 }
