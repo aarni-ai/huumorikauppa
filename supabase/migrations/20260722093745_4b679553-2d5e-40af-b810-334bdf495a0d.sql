@@ -1,0 +1,1 @@
+UPDATE public.orders SET customer_email='virtala.annika@gmail.com' WHERE id='097a8b6f-09d6-4eb2-919b-e12316e53c9b';
