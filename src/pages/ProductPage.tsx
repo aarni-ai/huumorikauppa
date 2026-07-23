@@ -226,6 +226,7 @@ const ProductPage = () => {
   const [customText, setCustomText] = useState("");
 
   const addToCartBtnRef = useRef<HTMLButtonElement>(null);
+  const variantSectionRef = useRef<HTMLDivElement>(null);
   const [showStickyBar, setShowStickyBar] = useState(false);
 
   useEffect(() => {
@@ -365,6 +366,10 @@ const ProductPage = () => {
 
   const handleColorSelect = (color: string) => {
     setSelectedColor(color);
+  };
+
+  const scrollToVariants = () => {
+    variantSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   // Cross-category: same theme products
@@ -557,8 +562,13 @@ const ProductPage = () => {
         ogType="product"
         productPrice={product.price.toFixed(2)}
       />
-      <div className="container py-6 md:py-10">
-        <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
+      <div className="container pt-2 pb-6 md:py-10">
+        {/* Mobile: compact back link */}
+        <Link to={`/kategoria/${product.category}`} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-3">
+          ← {category?.name || product.category}
+        </Link>
+        {/* Desktop: full breadcrumb */}
+        <nav aria-label="Murupolku" className="hidden md:flex text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
           <Link to={`/kategoria/${product.category}`} className="hover:text-foreground">
@@ -567,6 +577,29 @@ const ProductPage = () => {
           <span className="mx-2">/</span>
           <span className="text-foreground">{product.name}</span>
         </nav>
+
+        {/* MOBILE ONLY: name + rating + price above gallery for above-the-fold visibility */}
+        <div className="md:hidden mb-3 space-y-1.5">
+          <h1 className="font-display text-2xl text-foreground leading-tight">{product.name}</h1>
+          <div className="flex items-center justify-between gap-3">
+            <ProductRating
+              product={{ id: product.id, name: product.name, category: product.category }}
+              size="sm"
+              onClick={() => document.getElementById("asiakasarviot")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            />
+            <div className="flex items-center gap-2 shrink-0">
+              {hasDiscount && (
+                <span className="text-sm text-muted-foreground line-through">{product.original_price!.toFixed(2)} €</span>
+              )}
+              <span className={`text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
+                {product.price.toFixed(2)} €
+              </span>
+              {hasDiscount && (
+                <Badge className="bg-destructive text-destructive-foreground text-xs font-bold">-{discountPercent}%</Badge>
+              )}
+            </div>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Images */}
@@ -587,7 +620,7 @@ const ProductPage = () => {
                     key={`m-${selectedColor}-${i}`}
                     src={proxiedImage(img) || img}
                     alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – ${categoryName} kuva ${i + 1}`}
-                    className="w-full aspect-square object-cover shrink-0 snap-start"
+                    className="w-full aspect-[4/3] md:aspect-square object-cover shrink-0 snap-start"
                     style={{ scrollSnapAlign: "start" }}
                     width={600}
                     height={600}
@@ -657,7 +690,8 @@ const ProductPage = () => {
 
           {/* Product info */}
           <div className="space-y-5">
-            <div>
+            {/* Desktop only: name/rating/price — on mobile these are shown above the gallery */}
+            <div className="hidden md:block">
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
               <div className="mb-2">
                 <ProductRating
@@ -702,9 +736,9 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Color selector */}
+            {/* Color + size selector — ref used by sticky bar scroll-to */}
             {hasColors && (
-              <div>
+              <div ref={variantSectionRef}>
                 <label className="text-sm font-medium text-foreground mb-2 block">
                   Väri{selectedColor ? `: ${selectedColor}` : ""}
                 </label>
@@ -713,7 +747,7 @@ const ProductPage = () => {
                     <button
                       key={color}
                       onClick={() => handleColorSelect(color)}
-                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                      className={`px-4 py-3 min-h-[44px] rounded-md border text-sm font-medium transition-colors ${
                         selectedColor === color
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border text-foreground hover:border-primary/50"
@@ -728,7 +762,7 @@ const ProductPage = () => {
 
             {/* Size selector with modal size chart */}
             {hasSizes && (
-              <div>
+              <div ref={!hasColors ? variantSectionRef : undefined}>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-foreground">Koko</label>
                   <Dialog>
@@ -771,7 +805,7 @@ const ProductPage = () => {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                      className={`px-4 py-3 min-h-[44px] rounded-md border text-sm font-medium transition-colors ${
                         selectedSize === size
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border text-foreground hover:border-primary/50"
@@ -818,8 +852,8 @@ const ProductPage = () => {
               <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
             </Button>
 
-            <p className="text-xs text-muted-foreground">
-              Maksu turvallisesti: Visa · Mastercard · Apple Pay · Google Pay · Klarna · MobilePay
+            <p className="text-xs text-muted-foreground text-center">
+              Ilmainen toimitus yli 60 € · 14 pv palautusoikeus · Klarna &amp; MobilePay
             </p>
 
             {/* Share */}
@@ -832,8 +866,8 @@ const ProductPage = () => {
               <button onClick={handleCopyLink} className="text-sm text-primary hover:underline flex items-center gap-1"><Copy className="h-4 w-4" /> Kopioi</button>
             </div>
 
-            {/* Trust badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border">
+            {/* Trust badges — desktop only (mobile trust strip is directly below CTA) */}
+            <div className="hidden md:grid grid-cols-3 gap-3 pt-4 border-t border-border">
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 60 €</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu</div>
@@ -1062,11 +1096,17 @@ const ProductPage = () => {
             <p className="text-sm font-bold text-primary">{product.price.toFixed(2)} €</p>
           </div>
           <Button
-            onClick={handleAddToCart}
+            onClick={(needsSize && !selectedSize) || (needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}
             size="lg"
             className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
           >
-            <ShoppingCart className="h-4 w-4 mr-1" /> Lisää
+            {(needsSize && !selectedSize) ? (
+              "Valitse koko ↓"
+            ) : (needsColor && !selectedColor) ? (
+              "Valitse väri ↓"
+            ) : (
+              <><ShoppingCart className="h-4 w-4 mr-1" /> Lisää koriin</>
+            )}
           </Button>
         </div>
       </div>
