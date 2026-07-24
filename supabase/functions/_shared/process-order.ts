@@ -39,6 +39,7 @@ interface ShippingAddress {
   zip?: string;
   city?: string;
   country?: string;
+  phone?: string;
 }
 
 async function logEmail(
@@ -162,7 +163,7 @@ async function submitPrintifyOrder(args: {
       first_name: firstName || "Asiakas",
       last_name: lastName,
       email: args.customerEmail,
-      phone: "",
+      phone: args.shippingAddress.phone || "",
       country: args.shippingAddress.country || "FI",
       region: "",
       address1: args.shippingAddress.address || "",
