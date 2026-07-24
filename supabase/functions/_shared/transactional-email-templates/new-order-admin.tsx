@@ -9,16 +9,18 @@ const SITE_NAME = "Huumorikauppa"
 interface NewOrderAdminProps {
   customerName?: string
   customerEmail?: string
+  customerPhone?: string
   orderTotal?: string
   orderId?: string
   stripeSessionId?: string
-  shippingAddress?: { address?: string; zip?: string; city?: string }
+  shippingAddress?: { address?: string; zip?: string; city?: string; phone?: string }
   items?: Array<{ name: string; quantity: number; price: number; customText?: string }>
 }
 
 const NewOrderAdminEmail = ({
   customerName,
   customerEmail,
+  customerPhone,
   orderTotal,
   orderId,
   stripeSessionId,
@@ -42,6 +44,9 @@ const NewOrderAdminEmail = ({
           <Text style={detailHeader}>Asiakas</Text>
           {customerName && <Text style={detailRow}><strong>Nimi:</strong> {customerName}</Text>}
           {customerEmail && <Text style={detailRow}><strong>Sähköposti:</strong> {customerEmail}</Text>}
+          {(customerPhone || shippingAddress?.phone) && (
+            <Text style={detailRow}><strong>Puhelin:</strong> {customerPhone || shippingAddress?.phone}</Text>
+          )}
         </Section>
 
         {shippingAddress && (shippingAddress.address || shippingAddress.city) && (
