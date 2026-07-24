@@ -113,10 +113,10 @@ export function AliExpressImport() {
           stock: 50,
           humor_type: "yleinen" as Database["public"]["Enums"]["humor_type"],
         };
-        let ins = await supabase.from("products").insert(payload).select("id").single();
+        let ins = await (supabase.from("products") as any).insert(payload).select("id").single();
         if (ins.error && ins.error.code === "23505") {
           payload.slug = `${payload.slug}-${Math.random().toString(36).slice(2, 6)}`;
-          ins = await supabase.from("products").insert(payload).select("id").single();
+          ins = await (supabase.from("products") as any).insert(payload).select("id").single();
         }
         if (ins.error) {
           if (uploadedPaths.length) await supabase.storage.from("product-images").remove(uploadedPaths);

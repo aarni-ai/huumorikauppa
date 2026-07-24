@@ -39,6 +39,7 @@ interface ShippingAddress {
   zip?: string;
   city?: string;
   country?: string;
+  phone?: string;
 }
 
 async function logEmail(
@@ -162,7 +163,7 @@ async function submitPrintifyOrder(args: {
       first_name: firstName || "Asiakas",
       last_name: lastName,
       email: args.customerEmail,
-      phone: "",
+      phone: args.shippingAddress.phone || "",
       country: args.shippingAddress.country || "FI",
       region: "",
       address1: args.shippingAddress.address || "",
@@ -357,7 +358,7 @@ export async function processCheckoutSession(
   // 1) Look up or insert order
   const { data: existing } = await supabase
     .from("orders")
-    .select("id, status, printify_status, email_confirmation_status, items, customer_email, shipping_address, customer_name")
+    .select("id, status, printify_status, email_confirmation_status, items, customer_email, shipping_address, customer_name, customer_phone")
     .eq("stripe_session_id", session.id)
     .maybeSingle();
 
@@ -369,6 +370,8 @@ export async function processCheckoutSession(
   let effectiveCustomerEmail = customerEmail;
   let effectiveCustomerName = customerName;
   let effectiveShipping = shippingAddress;
+  let effectiveCustomerPhone: string | null =
+    (shippingAddress?.phone as string | undefined) || null;
 
   if (existing) {
     orderId = existing.id as string;
@@ -378,6 +381,11 @@ export async function processCheckoutSession(
     effectiveCustomerEmail = effectiveCustomerEmail || (existing.customer_email as string | null);
     effectiveCustomerName = effectiveCustomerName || (existing.customer_name as string | null);
     effectiveShipping = effectiveShipping || (existing.shipping_address as ShippingAddress | null);
+    effectiveCustomerPhone =
+      effectiveCustomerPhone ||
+      ((existing as any).customer_phone as string | null) ||
+      ((existing.shipping_address as any)?.phone as string | undefined) ||
+      null;
 
     // Ensure status is paid
     await supabase
@@ -385,6 +393,7 @@ export async function processCheckoutSession(
       .update({
         status: "paid",
         payment_status: "paid",
+        ...(effectiveCustomerPhone ? { customer_phone: effectiveCustomerPhone } : {}),
         // Persist customer personalisation texts in case the original insert missed them
         ...(customTextEntries.length > 0 ? { items } : {}),
       })
@@ -434,6 +443,7 @@ export async function processCheckoutSession(
         stripe_session_id: session.id,
         customer_email: effectiveCustomerEmail,
         customer_name: effectiveCustomerName,
+        customer_phone: effectiveCustomerPhone,
         shipping_address: effectiveShipping,
         items,
         total,
@@ -544,6 +554,7 @@ export async function processCheckoutSession(
         templateData: {
           customerName: effectiveCustomerName || undefined,
           customerEmail: effectiveCustomerEmail,
+          customerPhone: effectiveCustomerPhone || undefined,
           orderTotal,
           orderId,
           stripeSessionId: session.id,
