@@ -267,6 +267,7 @@ export type Database = {
           created_at: string
           customer_email: string | null
           customer_name: string | null
+          customer_phone: string | null
           email_confirmation_status: string
           email_error: string | null
           fulfilled: boolean
@@ -291,6 +292,7 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          customer_phone?: string | null
           email_confirmation_status?: string
           email_error?: string | null
           fulfilled?: boolean
@@ -315,6 +317,7 @@ export type Database = {
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
+          customer_phone?: string | null
           email_confirmation_status?: string
           email_error?: string | null
           fulfilled?: boolean
