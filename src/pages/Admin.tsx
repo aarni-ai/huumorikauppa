@@ -429,6 +429,7 @@ const Admin = () => {
               <Detail label="Order ID" value={selectedOrder.id} mono />
               <Detail label="Stripe Session" value={selectedOrder.stripe_session_id || "—"} mono />
               <Detail label="Asiakas" value={`${selectedOrder.customer_name || "—"} (${selectedOrder.customer_email || "—"})`} />
+              <Detail label="Puhelin" value={selectedOrder.customer_phone || selectedOrder.shipping_address?.phone || "—"} />
               <Detail label="Toimitusosoite" value={selectedOrder.shipping_address ? `${selectedOrder.shipping_address.address || ""}, ${selectedOrder.shipping_address.zip || ""} ${selectedOrder.shipping_address.city || ""}` : "—"} />
               <Detail label="Tila" value={`${selectedOrder.status}${selectedOrder.fulfilled ? " · Toimitettu" : ""}`} />
               <Detail label="Yhteensä" value={`${Number(selectedOrder.total).toFixed(2)} €`} />
