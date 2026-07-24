@@ -15,6 +15,7 @@ interface OrderRow {
   stripe_session_id: string | null;
   customer_email: string | null;
   customer_name: string | null;
+  customer_phone: string | null;
   shipping_address: any;
   items: any;
   total: number;
