@@ -155,9 +155,20 @@ export async function fetchAllPrintifyProducts(): Promise<any[]> {
   while (true) {
     const url = `${PRINTIFY_API}/shops/${shopId}/products.json?page=${page}&limit=50`;
     const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+    if (!res.ok) {
+      const body = await res.text();
+      console.error(`[printify-sync] Printify API error on page ${page}: HTTP ${res.status} — ${body}`);
+      if (res.status === 401) throw new Error(`Printify API returned 401 Unauthorized — tarkista PRINTIFY_API_KEY Supabase-secreteissä. Body: ${body}`);
+      if (res.status === 403) throw new Error(`Printify API returned 403 Forbidden — token ei oikeuksia shopiin ${shopId}. Body: ${body}`);
+      if (res.status === 429) throw new Error(`Printify API returned 429 Too Many Requests — rate limit ylitetty. Yritä myöhemmin uudelleen.`);
+      throw new Error(`Printify API returned HTTP ${res.status}. Body: ${body}`);
+    }
     const text = await res.text();
     let data: any;
-    try { data = JSON.parse(text); } catch { break; }
+    try { data = JSON.parse(text); } catch (e) {
+      console.error(`[printify-sync] JSON parse failed on page ${page}:`, text.slice(0, 200));
+      break;
+    }
     const products = Array.isArray(data) ? data : (data.data || data.products || []);
     if (!products.length) break;
     all.push(...products);
@@ -166,6 +177,7 @@ export async function fetchAllPrintifyProducts(): Promise<any[]> {
     if (products.length < 50) break;
     page++;
   }
+  console.log(`[printify-sync] Fetched ${all.length} products from Printify (${page} page(s))`);
   return all;
 }
 
@@ -173,7 +185,11 @@ export async function fetchPrintifyProductById(printifyProductId: string): Promi
   const { apiKey, shopId } = getCreds();
   const url = `${PRINTIFY_API}/shops/${shopId}/products/${printifyProductId}.json`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    const body = await res.text();
+    console.error(`[printify-sync] fetchPrintifyProductById(${printifyProductId}) failed: HTTP ${res.status} — ${body}`);
+    return null;
+  }
   return await res.json();
 }
 
