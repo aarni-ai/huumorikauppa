@@ -40,6 +40,7 @@ export function parseCSV(text: string): Record<string, string>[] {
 export const VALID_CATEGORIES = [
   "t-paidat", "hupparit", "pitkahihaiset", "bodyt", "mukit", "tarrat",
   "seinataulut", "peitot", "pipot", "laukut", "koristeet", "housut",
+  "sukat", "avaimenperat", "asut", "naamiot",
 ];
 
 // Trademarked terms that make an AliExpress listing an IP risk — flagged (not blocked).

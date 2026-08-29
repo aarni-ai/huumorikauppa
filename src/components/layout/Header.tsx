@@ -43,7 +43,7 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
 }
 
 const MAIN_CATEGORIES = ["t-paidat", "hupparit", "pitkahihaiset", "mukit", "bodyt"];
-const OTHER_CATEGORIES = ["tarrat", "peitot", "pipot", "laukut", "seinataulut", "koristeet"];
+const OTHER_CATEGORIES = ["tarrat", "peitot", "pipot", "laukut", "seinataulut", "koristeet", "sukat", "avaimenperat", "asut", "naamiot"];
 
 export function Header() {
   const { totalItems } = useCartContext();

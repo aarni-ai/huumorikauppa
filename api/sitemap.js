@@ -48,6 +48,7 @@ const CATEGORIES = [
   "t-paidat", "mukit", "tarrat", "hupparit", "bodyt",
   "peitot", "pipot", "seinataulut", "pitkahihaiset", "koristeet",
   "laukut", "lippikset", "haalarimerkit",
+  "sukat", "avaimenperat", "asut", "naamiot",
 ];
 
 const BLOG_SLUGS = [

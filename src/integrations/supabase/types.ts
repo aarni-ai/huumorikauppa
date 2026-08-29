@@ -576,6 +576,10 @@ export type Database = {
         | "seinataulut"
         | "pitkahihaiset"
         | "koristeet"
+        | "sukat"
+        | "avaimenperat"
+        | "asut"
+        | "naamiot"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -720,6 +724,10 @@ export const Constants = {
         "seinataulut",
         "pitkahihaiset",
         "koristeet",
+        "sukat",
+        "avaimenperat",
+        "asut",
+        "naamiot",
       ],
     },
   },

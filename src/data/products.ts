@@ -252,6 +252,66 @@ Hauskat lippikset ovat loistava kesälahja tai lisä vaatekaappiin. Laadukas bro
 
 Ehdottomasti! Hauska lippis on erinomainen syntymäpäivä-, polttari- tai joululahja huumorin ystävälle.`,
   },
+  {
+    slug: "sukat",
+    name: "Sukat",
+    emoji: "🧦",
+    description: "Hauskat sukat piristävät jokaisen päivän. Täydellinen pieni lahja tai ilo omaan jalkaan.",
+    seoTitle: "Hauskat sukat – Huumorisukat | Huumorikauppa.fi",
+    seoDescription: "Hauskat sukat lahjaksi tai itselle. Pehmeät, värikkäät ja hauskat. Toimitus koko Suomeen. 🧦",
+    seoText: `## Hauskat sukat – huumoria varpaisiin
+
+Hauskat sukat ovat edullinen ja aina osuva lahja. Löydä värikkäät kuosit ja hauskat aiheet joka tilanteeseen – niin arkeen kuin lahjaksi.
+
+## Sukat lahjaksi
+
+Hauskat sukat sopivat pukinkonttiin, syntymäpäivälahjaksi tai pieneksi yllätykseksi kaverille. Toimitusaika n. 2–4 viikkoa.`,
+  },
+  {
+    slug: "avaimenperat",
+    name: "Avaimenperät",
+    emoji: "🔑",
+    description: "Hauskat avaimenperät ovat kätevä ja edullinen lahja. Pidä avaimet tallessa tyylillä ja huumorilla.",
+    seoTitle: "Hauskat avaimenperät | Huumorikauppa.fi",
+    seoDescription: "Hauskat avaimenperät lahjaksi ja itselle. Kestävät ja hauskat. Toimitus koko Suomeen. 🔑",
+    seoText: `## Hauskat avaimenperät – pieni yksityiskohta, iso hymy
+
+Avaimenperä on klassinen pieni lahja joka ei jää käyttämättä. Valikoimastamme löydät hauskoja ja persoonallisia avaimenperiä.
+
+## Avaimenperä lahjaksi
+
+Täydellinen pieni lahja tai lisä omaan avainnippuun. Toimitusaika n. 2–4 viikkoa.`,
+  },
+  {
+    slug: "asut",
+    name: "Asut & Puvut",
+    emoji: "🦸",
+    description: "Hauskat asut ja puvut juhliin, teemabileisiin ja pukujuhliin. Ole illan puheenaihe.",
+    seoTitle: "Hauskat asut ja puvut – Naamiaisasut | Huumorikauppa.fi",
+    seoDescription: "Hauskat asut ja puvut juhliin ja teemabileisiin. Naamiaisasut ja hupsut puvut. Toimitus koko Suomeen. 🦸",
+    seoText: `## Hauskat asut ja puvut – heittäydy rooliin
+
+Hauskat asut ja puvut tekevät juhlista ikimuistoiset. Löydä täydellinen naamiaisasu tai hupsu puku teemabileisiin, polttareihin tai vappuun.
+
+## Asu lahjaksi tai juhliin
+
+Naamiaisasut ovat hauska lahja ja takuuvarma puheenaihe. Toimitusaika n. 2–4 viikkoa.`,
+  },
+  {
+    slug: "naamiot",
+    name: "Naamiot & Balaklavat",
+    emoji: "🎭",
+    description: "Hauskat naamiot ja balaklavat juhliin ja teemabileisiin. Viimeistele asu tai naurata kavereita.",
+    seoTitle: "Hauskat naamiot ja balaklavat | Huumorikauppa.fi",
+    seoDescription: "Hauskat naamiot ja balaklavat juhliin ja teemabileisiin. Hupsut naamat ja kuosit. Toimitus koko Suomeen. 🎭",
+    seoText: `## Hauskat naamiot ja balaklavat – kasvot uuteen rooliin
+
+Hauskat naamiot ja balaklavat viimeistelevät asun ja tuovat pilkettä juhliin. Löydä hupsut naamat ja kuosit teemabileisiin ja pukujuhliin.
+
+## Naamio lahjaksi
+
+Hauska naamio tai balaklava on edullinen ja hauska lahja. Toimitusaika n. 2–4 viikkoa.`,
+  },
 ] as const;
 
 export type Category = typeof categories[number];
