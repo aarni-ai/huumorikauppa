@@ -2,40 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
 
-// Original prices for specific products (by slug keyword match)
-const ORIGINAL_PRICES: Record<string, number> = {
-  "kalamies": 39,
-  "amatimies": 60,
-  "i-love-my-girlfriend": 40,
-  "i-my-girlfriend": 40,
-};
-
-// Category-specific max original prices to keep things believable
-const MAX_ORIGINAL_BY_CATEGORY: Record<string, number> = {
-  "t-paidat": 39.90,
-  "mukit": 27.90,
-  "bodyt": 34.90,
-  "tarrat": 9.90,
-};
-
-function getOriginalPrice(slug: string, name: string, category: string, price: number): number | undefined {
-  const key = (slug + ' ' + name).toLowerCase();
-  
-  // Check specific product matches
-  for (const [keyword, origPrice] of Object.entries(ORIGINAL_PRICES)) {
-    if (key.includes(keyword) && origPrice > price) {
-      const max = MAX_ORIGINAL_BY_CATEGORY[category];
-      return max ? Math.min(origPrice, max) : origPrice;
-    }
-  }
-  
-  // General category-based original prices
-  if (category === 't-paidat' && price <= 24.90) return 34.90;
-  if (category === 'hupparit' && price <= 49.90) return 69.90;
-  if (category === 'pitkahihaiset' && price <= 39.90) return 54.90;
-  if (category === 'mukit' && price <= 19.90) return 27.90;
-  if (category === 'bodyt' && price <= 24.90) return 34.90;
-  
+function getOriginalPrice(_slug: string, _name: string, _category: string, _price: number): number | undefined {
+  // Compare-at prices removed 2026-09-29 (Omnibus directive: vertailuhinta = alin 30 pv:n hinta).
+  // Strikethrough prices must never be shown after a price increase.
   return undefined;
 }
 

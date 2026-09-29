@@ -72,7 +72,7 @@ Polttaripaidat ovat klassikko! Tilaa ryhmälle yhtenäiset hauskat paidat poltta
 Huumorikauppa on suomalainen verkkokauppa joka on erikoistunut hauskoihin vaatteisiin ja tuotteisiin. Meiltä löydät Suomen laajimman valikoiman hauskoja t-paitoja, huppareita, mukeja ja tarroja.
 
 **Miksi tilata Huumorikaupasta?**
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Laadukkaat materiaalit ja kestävä painatus
 - 100% suomalainen yritys
@@ -134,7 +134,7 @@ Syntymäpäivälahjan pitää olla hauska ja persoonallinen.
 Huumorikauppa on Suomen hauskin verkkokauppa, josta löydät hauskoja lahjoja jokaiseen tilaisuuteen.
 
 - **Laaja valikoima** – satoja hauskoja tuotteita eri kategorioissa
-- **Ilmainen toimitus** yli 60 € tilauksiin
+- **Ilmainen toimitus** yli 79 € tilauksiin
 - **14 päivän palautusoikeus**
 - **Turvallinen maksaminen** – Visa, Mastercard, Klarna, Apple Pay
 - **Nopea toimitus** – 3–10 arkipäivässä perille`,
@@ -186,7 +186,7 @@ Toimistossa kahvimuki on osa persoonallisuutta. Suosituimpia toimistomukeja ovat
 
 Huumorikauppa tarjoaa Suomen laajimman valikoiman hauskoja mukeja.
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Turvallinen maksaminen: Visa, Mastercard, Klarna, Apple Pay`,
     relatedCategories: ["mukit", "t-paidat"],
@@ -244,7 +244,7 @@ Laadukas puuvilla hengittää ja tuntuu mukavalta.
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - Toimitus 3–10 arkipäivässä
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit"],
@@ -292,7 +292,7 @@ Joulu on Suomen suurin lahjanantosesonki. Hauska joululahja naurattaa, ilahdutta
 
 ## Tilaa joululahjat Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - Toimitus 3–10 arkipäivässä
 - 14 päivän palautusoikeus
 - Turvallinen maksaminen: Visa, Mastercard, Klarna, Apple Pay`,
@@ -387,7 +387,7 @@ Talvipipo hauskalla brodeerauksella on käytännöllinen ja hauska lahja.
 ## Tilaa miehen lahja Huumorikaupasta
 
 - Satoja hauskoja tuotteita miehille
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - 3–10 arkipäivän toimitus koko Suomeen`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
@@ -452,7 +452,7 @@ Hauska seinätaulu on sisustusesine joka naurattaa päivittäin. Sarkastiset lai
 ## Tilaa naisen lahja Huumorikaupasta
 
 - Satoja hauskoja tuotteita naisille
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Kaunis paketointi saatavilla`,
     relatedCategories: ["hupparit", "mukit", "t-paidat"],
@@ -545,7 +545,7 @@ Kun lahjan saajalla on jo kaikkea, paras lahja on sellainen joka herättää tun
 
 ## Tilaa 50-vuotiaan lahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Satoja hauskoja tuotteita kaikille ikäryhmille
 - 3–10 arkipäivän toimitus koko Suomeen`,
@@ -616,7 +616,7 @@ Isänpäivä on marraskuun 2. sunnuntai. Tilaa lahja viimeistään 2 viikkoa etu
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
@@ -663,7 +663,7 @@ Peitto on ylellinen lahja joka tuo lämpöä ja huumoria äidin sohvannurkkaan.
 
 ## Tilaa äitienpäivälahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus
 - Lahjapaketointimahdollisuus`,
@@ -704,7 +704,7 @@ Eläkeläisen aamu alkaa kahvilla – ja hauska muki tekee siitä entistä nauti
 
 ## Tilaa eläkelahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
@@ -734,7 +734,7 @@ Eläkeläisen aamu alkaa kahvilla – ja hauska muki tekee siitä entistä nauti
       },
       {
         q: "Kuinka nopeasti eläkelahja toimitetaan?",
-        a: "Toimitamme eläkelahjat 3–10 arkipäivässä koko Suomeen. Tilaa hyvissä ajoin ennen eläkejuhlia – yli 60 € tilauksiin toimitus on ilmainen.",
+        a: "Toimitamme eläkelahjat 3–10 arkipäivässä koko Suomeen. Tilaa hyvissä ajoin ennen eläkejuhlia – yli 79 € tilauksiin toimitus on ilmainen.",
       },
     ],
   },
@@ -791,7 +791,7 @@ Vintage-tyyliset tarrat tuovat nostalgian tuntua läppärin kanteen.
 ## Tilaa tarroja Huumorikaupasta
 
 - Laadukkaita vinyl-tarroja jotka kestävät
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus`,
     relatedCategories: ["tarrat", "t-paidat"],
   },
@@ -837,7 +837,7 @@ Kaikki bodymme ovat pehmeää, ihoa hellivää materiaalia. Ne kestävät konepe
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["bodyt", "t-paidat"],
@@ -888,7 +888,7 @@ Aamukahvi ja hyvä meemi – onko parempaa yhdistelmää? Meemimukit ovat suosit
 ## Tilaa meemituotteet Huumorikaupasta
 
 - Suomen laajin meemituotevalikoima
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit", "tarrat"],
@@ -935,7 +935,7 @@ Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajust
 ## Tilaa seinätaulut Huumorikaupasta
 
 - Laadukkaita tauluja eri koissa
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus`,
     relatedCategories: ["seinataulut", "koristeet"],
   },
@@ -991,7 +991,7 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
 ## Tilaa hauska paita Huumorikaupasta
 
 - Suomen laajin valikoima hauskoja paitoja
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - 100% suomalainen yritys`,
     relatedCategories: ["t-paidat", "hupparit"],
@@ -1072,7 +1072,7 @@ Pyöreät vuodet ovat erityisiä – ja ne ansaitsevat erityisen lahjan. Mutta m
 
 ## Tilaa miehen lahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
@@ -1098,7 +1098,7 @@ Pyöreät vuodet ovat erityisiä – ja ne ansaitsevat erityisen lahjan. Mutta m
       },
       {
         q: "Paljonko hauska lahja miehelle maksaa?",
-        a: "Huumorikaupassa hauskat lahjat miehelle alkavat noin 12 €:sta (mukit ja tarrat). T-paidat ovat tyypillisesti 20–30 € ja hupparit 35–50 €. Yli 60 € tilauksiin toimitus on ilmainen.",
+        a: "Huumorikaupassa hauskat lahjat miehelle alkavat noin 12 €:sta (mukit ja tarrat). T-paidat ovat tyypillisesti 20–30 € ja hupparit 35–50 €. Yli 79 € tilauksiin toimitus on ilmainen.",
       },
       {
         q: "Kuinka nopeasti hauska lahja toimitetaan?",
@@ -1154,7 +1154,7 @@ Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydän
 
 ## Tilaa naisen lahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - 14 päivän palautusoikeus`,
     relatedCategories: ["hupparit", "mukit", "laukut"],
@@ -1180,7 +1180,7 @@ Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydän
       },
       {
         q: "Mistä saa hauskan lahjan naiselle nopeasti?",
-        a: "Huumorikauppa.fi:stä. Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen ja maksaa onnistuu Klarnalla, Apple Paylla ja korteilla.",
+        a: "Huumorikauppa.fi:stä. Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin toimitus on ilmainen ja maksaa onnistuu Klarnalla, Apple Paylla ja korteilla.",
       },
       {
         q: "Voiko lahjan personoida nimellä?",
@@ -1225,7 +1225,7 @@ Syntymäpäivä on vuoden tärkein päivä lahjan saajalle. Hauska syntymäpäiv
 
 ## Tilaa syntymäpäivälahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
   },
@@ -1281,7 +1281,7 @@ Henkilöllä jolla on jo kaikkea ei ole puutetta tavaroista – hänellä on puu
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit", "seinataulut"],
   },
@@ -1321,7 +1321,7 @@ Hauska muki tai paita on hyvä läksiäislahja. Se jää muistoksi yhteisistä a
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["mukit", "tarrat", "t-paidat"],
     productLinks: [
@@ -1350,7 +1350,7 @@ Hauska muki tai paita on hyvä läksiäislahja. Se jää muistoksi yhteisistä a
       },
       {
         q: "Kuinka nopeasti saamme lahjat toimistolle?",
-        a: "Toimitamme yritystilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin (esim. koko tiimin pikkujoululahjat) toimitus on ilmainen.",
+        a: "Toimitamme yritystilaukset 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin (esim. koko tiimin pikkujoululahjat) toimitus on ilmainen.",
       },
     ],
   },
@@ -1385,7 +1385,7 @@ Kalastus on Suomen suosituin harrastus – yli 1,5 miljoonaa suomalaista kalasta
 
 ## Tilaa kalastuslahja Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
@@ -1432,7 +1432,7 @@ Pieni mutta hauska lahja.
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin`,
+- Ilmainen toimitus yli 79 € tilauksiin`,
     relatedCategories: ["mukit", "tarrat", "pipot"],
   },
   {
@@ -1467,7 +1467,7 @@ Jokaiselle suomalaiselle! Erityisesti:
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
@@ -1502,7 +1502,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin`,
+- Ilmainen toimitus yli 79 € tilauksiin`,
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
 
@@ -1518,7 +1518,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "lahjaideat",
     tags: ["valmistujaislahjat", "ylioppilaslahja", "hauska lahja opiskelijalle", "valmistuminen"],
-    content: "## Hauskat valmistujaislahjat – ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä – vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** – hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** – valitse huumori joka sopii valmistujaan\n- **Edullinen** – hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** – paita, muki tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** – Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Hauska muki** – Edullinen mutta hauska ylioppilaan lahja.\n\n**Meemihuppari** – Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** – Koodihuumoripaita tai -muki.\n\n**Opettajan lahja** – Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus – muki + paita + tarra-arkki.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarra-arkki** (8–15 €)\n- **Hauska pipo** (15–20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 2 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
+    content: "## Hauskat valmistujaislahjat – ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä – vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** – hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** – valitse huumori joka sopii valmistujaan\n- **Edullinen** – hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** – paita, muki tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** – Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Hauska muki** – Edullinen mutta hauska ylioppilaan lahja.\n\n**Meemihuppari** – Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** – Koodihuumoripaita tai -muki.\n\n**Opettajan lahja** – Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus – muki + paita + tarra-arkki.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarra-arkki** (8–15 €)\n- **Hauska pipo** (15–20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 2 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
     productLinks: [
       { slug: "personoitava-kahvimuki-valmistuvalle-nimi-valmistunut-vuosi", label: "Personoitava Kahvimuki Valmistuvalle – Nimi & valmistunut-vuosi" },
@@ -1560,7 +1560,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "pipot",
     tags: ["hauskat pipot", "hauska pipo", "talvilahja", "pipo lahjaksi"],
-    content: "## Hauskat pipot – löydä paras humoristinen pipo\n\nTalvi Suomessa kestää puolet vuodesta – ja sen ajan tarvitset pipoa. Miksei pipo voisi olla myös hauska?\n\n## Miksi hauska pipo on paras talvilahja? ❄️\n\n- **Käytännöllinen** – pitää pään lämpimänä\n- **Hauska** – brodeerattu teksti naurattaa\n- **Edullinen** – hyvä lahja alle 20 eurolla\n- **Sopii kaikille**\n\n## Parhaat humoristiset pipot 🧢\n\n### Setähuumoripipot\nKuivan huumorin ystäville.\n\n### Meemipipot\nInternet-kulttuurista inspiroituneet pipot.\n\n### Ammattihuumoripipot\nIT-nörtin tai rakentajan pipo.\n\n## Pipo syntymäpäivälahjana 🎂\n\nEdullinen, käytännöllinen ja hauska.\n\n## Alle 20€ pipolahjat 💰\n\nKaikki pipomme ovat alle 20 euroa.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
+    content: "## Hauskat pipot – löydä paras humoristinen pipo\n\nTalvi Suomessa kestää puolet vuodesta – ja sen ajan tarvitset pipoa. Miksei pipo voisi olla myös hauska?\n\n## Miksi hauska pipo on paras talvilahja? ❄️\n\n- **Käytännöllinen** – pitää pään lämpimänä\n- **Hauska** – brodeerattu teksti naurattaa\n- **Edullinen** – hyvä lahja alle 20 eurolla\n- **Sopii kaikille**\n\n## Parhaat humoristiset pipot 🧢\n\n### Setähuumoripipot\nKuivan huumorin ystäville.\n\n### Meemipipot\nInternet-kulttuurista inspiroituneet pipot.\n\n### Ammattihuumoripipot\nIT-nörtin tai rakentajan pipo.\n\n## Pipo syntymäpäivälahjana 🎂\n\nEdullinen, käytännöllinen ja hauska.\n\n## Alle 20€ pipolahjat 💰\n\nKaikki pipomme ovat alle 20 euroa.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
     relatedCategories: ["pipot", "t-paidat"],
   },
   {
@@ -1573,7 +1573,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "peitot",
     tags: ["hauska peitto", "peitto lahjaksi", "huumoripeitto", "sohvapeitto"],
-    content: "## Hauska peitto lahjaksi – parhaat huumoripeittoideat\n\nPeitto on yksi aliarviostetuimmista lahjoista. Hauska peitto on ylellinen, käytännöllinen ja mieleenpainuva lahja.\n\n## Miksi hauska peitto on yllättävä lahja? 🎁\n\n- **Ylellinen** – tuntuu premium-lahjalta\n- **Käytännöllinen** – käytetään joka päivä\n- **Hauska** – naurattaa sohvalla\n- **Kestävä** – kestää vuosia\n\n## Parhaat huumoriaiheet peitossa 😂\n\n**Setähuumoripeitto** – Isälle tai sedälle.\n\n**Eläkeläispeitto** – Täydellinen eläkelahja.\n\n**Pariskuntapeitto** – Hauska lahja pariskunnalle.\n\n## Peitto syntymäpäivälahjana 🎂\n\nErinomainen erityisesti 40+- ja 50+-vuotiaille.\n\n## Joululahja: peitto 🎄\n\nKlassinen joululahja.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
+    content: "## Hauska peitto lahjaksi – parhaat huumoripeittoideat\n\nPeitto on yksi aliarviostetuimmista lahjoista. Hauska peitto on ylellinen, käytännöllinen ja mieleenpainuva lahja.\n\n## Miksi hauska peitto on yllättävä lahja? 🎁\n\n- **Ylellinen** – tuntuu premium-lahjalta\n- **Käytännöllinen** – käytetään joka päivä\n- **Hauska** – naurattaa sohvalla\n- **Kestävä** – kestää vuosia\n\n## Parhaat huumoriaiheet peitossa 😂\n\n**Setähuumoripeitto** – Isälle tai sedälle.\n\n**Eläkeläispeitto** – Täydellinen eläkelahja.\n\n**Pariskuntapeitto** – Hauska lahja pariskunnalle.\n\n## Peitto syntymäpäivälahjana 🎂\n\nErinomainen erityisesti 40+- ja 50+-vuotiaille.\n\n## Joululahja: peitto 🎄\n\nKlassinen joululahja.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
     relatedCategories: ["peitot", "hupparit"],
   },
   {
@@ -1586,7 +1586,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "lahjaideat",
     tags: ["lahja opettajalle", "opettajanlahja", "hauska lahja opettajalle", "opettajahuumori"],
-    content: "## Hauska lahja opettajalle – parhaat opettajanlahjavinkit\n\nOpettaja on yksi elämän tärkeimmistä ihmisistä. Hauska lahja on paras tapa osoittaa kiitosta.\n\n## Miksi hauska lahja toimii opettajalle? 📚\n\n- **Erottuu massasta** – ei taas yksi kukkakimppu\n- **Naurattaa arjessa** – hauska muki piristää tauon\n- **Osoittaa tuntemista** – opettajahuumori osuu\n\n## Parhaat hauskat mukit opettajalle ☕\n\n- \"Opettaja tietää kaiken – erityisesti kahvin tärkeyden\"\n- \"Opetan koska rakastan – ja koska loma-ajat\"\n\n## T-paidat opettajalle 👕\n\nOpettajahuumoripaita on hauska lahja koulun viimeiselle päivälle.\n\n## Opettajanlahja alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarrat** (8–15 €)\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus",
+    content: "## Hauska lahja opettajalle – parhaat opettajanlahjavinkit\n\nOpettaja on yksi elämän tärkeimmistä ihmisistä. Hauska lahja on paras tapa osoittaa kiitosta.\n\n## Miksi hauska lahja toimii opettajalle? 📚\n\n- **Erottuu massasta** – ei taas yksi kukkakimppu\n- **Naurattaa arjessa** – hauska muki piristää tauon\n- **Osoittaa tuntemista** – opettajahuumori osuu\n\n## Parhaat hauskat mukit opettajalle ☕\n\n- \"Opettaja tietää kaiken – erityisesti kahvin tärkeyden\"\n- \"Opetan koska rakastan – ja koska loma-ajat\"\n\n## T-paidat opettajalle 👕\n\nOpettajahuumoripaita on hauska lahja koulun viimeiselle päivälle.\n\n## Opettajanlahja alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarrat** (8–15 €)\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus",
     relatedCategories: ["mukit", "t-paidat"],
   },
   {
@@ -1599,7 +1599,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja urheilijalle", "kuntosalilahja", "hauska urheilulahja", "lahja juoksijalle"],
-    content: "## Hauska lahja urheilijalle – parhaat liikuntalahjaideat\n\nUrheilijat rakastavat huumoria yhtä paljon kuin treenejä.\n\n## Hauskat lahjat juoksijalle 🏃\n\n**Juoksuhuumoripaita** – \"Juoksen koska rakastan ruokaa\" naurattaa.\n\n**Hauska muki** – Aamukahvi ennen lenkkiä.\n\n## Hauskat lahjat kuntosaliharrastajalle 🏋️\n\n**Treenihuumoripaita** – \"No pain, no gain\" -paidat ovat suosittuja.\n\n## Urheilulahja alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarrat** (8–15 €)\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus",
+    content: "## Hauska lahja urheilijalle – parhaat liikuntalahjaideat\n\nUrheilijat rakastavat huumoria yhtä paljon kuin treenejä.\n\n## Hauskat lahjat juoksijalle 🏃\n\n**Juoksuhuumoripaita** – \"Juoksen koska rakastan ruokaa\" naurattaa.\n\n**Hauska muki** – Aamukahvi ennen lenkkiä.\n\n## Hauskat lahjat kuntosaliharrastajalle 🏋️\n\n**Treenihuumoripaita** – \"No pain, no gain\" -paidat ovat suosittuja.\n\n## Urheilulahja alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarrat** (8–15 €)\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus",
     relatedCategories: ["t-paidat", "mukit"],
   },
   {
@@ -1612,7 +1612,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "laukut",
     tags: ["hauskat kangaskassit", "hauska laukku", "kangaskassi lahjaksi", "ekologinen kassi"],
-    content: "## Hauskat laukut ja kangaskassit – parhaat valinnat\n\nKangaskassi on arkipäivän sankari. Kun siihen yhdistää huumorin, syntyy tuote joka piristää jokaista kauppareissua.\n\n## Miksi hauska kangaskassi on paras lahja? 🛍️\n\n- **Ekologinen** – vähentää muovipussien käyttöä\n- **Käytännöllinen** – kestää painoa\n- **Hauska** – naurattaa kassajonossa\n- **Edullinen** – alle 20 eurolla\n\n## Parhaat huumorikassit 😂\n\n**Sarkastiset kassit** – Hauskat tekstit arkeen.\n\n**Ruokahuumorikassit** – Ruoan ystäville.\n\n## Kangaskassi syntymäpäivälahjana 🎂\n\nEdullinen mutta hauska syntymäpäivälahja.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus",
+    content: "## Hauskat laukut ja kangaskassit – parhaat valinnat\n\nKangaskassi on arkipäivän sankari. Kun siihen yhdistää huumorin, syntyy tuote joka piristää jokaista kauppareissua.\n\n## Miksi hauska kangaskassi on paras lahja? 🛍️\n\n- **Ekologinen** – vähentää muovipussien käyttöä\n- **Käytännöllinen** – kestää painoa\n- **Hauska** – naurattaa kassajonossa\n- **Edullinen** – alle 20 eurolla\n\n## Parhaat huumorikassit 😂\n\n**Sarkastiset kassit** – Hauskat tekstit arkeen.\n\n**Ruokahuumorikassit** – Ruoan ystäville.\n\n## Kangaskassi syntymäpäivälahjana 🎂\n\nEdullinen mutta hauska syntymäpäivälahja.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus",
     relatedCategories: ["laukut", "t-paidat"],
   },
   {
@@ -1625,7 +1625,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja koiraihmiselle", "koiralahja", "hauska lahja koiranomistajalle", "koirahuumori"],
-    content: "## Hauska lahja koiraihmiselle – ideat koiraharrastajalle\n\nKoiraihminen tunnistaa helposti: puhelimen kuvagalleria on täynnä koiran kuvia ja paras ystävä kävelee neljällä jalalla.\n\n## Parhaat lahjat koiraihmiselle 🐕\n\n**Koirahuumoripaita** – \"Paras koiraisä/koiraäiti\" -paidat ovat suosittuja.\n\n**Hauska koiramuki** – Aamukahvi koirahuumorilla.\n\n**Koiratarrat** – Hauska koiratarra autoon tai läppäriin.\n\n## Kenelle koiralahja sopii?\n\n- **Koiran omistajalle** – aina ajankohtainen\n- **Koiraharrastajalle** – agilityn ystävälle\n- **Eläinrakkaalle** – kaikille jotka rakastavat koiria\n\n## Koiralahja alle 20€ 💰\n\nHauska muki tai tarra-arkki koira-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus",
+    content: "## Hauska lahja koiraihmiselle – ideat koiraharrastajalle\n\nKoiraihminen tunnistaa helposti: puhelimen kuvagalleria on täynnä koiran kuvia ja paras ystävä kävelee neljällä jalalla.\n\n## Parhaat lahjat koiraihmiselle 🐕\n\n**Koirahuumoripaita** – \"Paras koiraisä/koiraäiti\" -paidat ovat suosittuja.\n\n**Hauska koiramuki** – Aamukahvi koirahuumorilla.\n\n**Koiratarrat** – Hauska koiratarra autoon tai läppäriin.\n\n## Kenelle koiralahja sopii?\n\n- **Koiran omistajalle** – aina ajankohtainen\n- **Koiraharrastajalle** – agilityn ystävälle\n- **Eläinrakkaalle** – kaikille jotka rakastavat koiria\n\n## Koiralahja alle 20€ 💰\n\nHauska muki tai tarra-arkki koira-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus",
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
   {
@@ -1638,7 +1638,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja kissaihmiselle", "kissalahja", "hauska lahja kissanomistajalle", "kissahuumori"],
-    content: "## Hauska lahja kissaihmiselle – ideat kissan omistajalle\n\nKissaihminen on erityinen laji. Hän puhuu kissalle kuin ihmiselle ja myöntää avoimesti, että kissa on perheen pomo.\n\n## Parhaat lahjat kissaihmiselle 🐱\n\n**Kissahuumoripaita** – \"Kissaäiti\" tai \"Kissan palvelija\" -paidat.\n\n**Hauska kissamuki** – Aamukahvi kissaseurassa ansaitsee kissamukin.\n\n**Kissatarrat** – Söpöjä kissatarroja läppäriin.\n\n## Kenelle kissalahja sopii?\n\n- **Kissanomistajalle** – aina varma valinta\n- **Kissafanille** – ei tarvitse edes omistaa kissaa\n- **Ystävälle** – hauska ja persoonallinen lahja\n\n## Kissalahja alle 20€ 💰\n\nHauska kissamuki tai kissatarra-arkki.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 3–10 arkipäivän toimitus",
+    content: "## Hauska lahja kissaihmiselle – ideat kissan omistajalle\n\nKissaihminen on erityinen laji. Hän puhuu kissalle kuin ihmiselle ja myöntää avoimesti, että kissa on perheen pomo.\n\n## Parhaat lahjat kissaihmiselle 🐱\n\n**Kissahuumoripaita** – \"Kissaäiti\" tai \"Kissan palvelija\" -paidat.\n\n**Hauska kissamuki** – Aamukahvi kissaseurassa ansaitsee kissamukin.\n\n**Kissatarrat** – Söpöjä kissatarroja läppäriin.\n\n## Kenelle kissalahja sopii?\n\n- **Kissanomistajalle** – aina varma valinta\n- **Kissafanille** – ei tarvitse edes omistaa kissaa\n- **Ystävälle** – hauska ja persoonallinen lahja\n\n## Kissalahja alle 20€ 💰\n\nHauska kissamuki tai kissatarra-arkki.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus",
     relatedCategories: ["t-paidat", "mukit", "tarrat"],
   },
   {
@@ -1651,7 +1651,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["hauska lahja kaverille", "lahja parhaalle ystävälle", "kaverin synttärilahja", "hauska ystävänlahja"],
-    content: "## Hauska lahja kaverille – 15 ideaa joka naurattaa\n\nKaverille lahjan ostaminen pitäisi olla helppoa – tunnetkos hänet kuitenkin paremmin kuin kukaan muu? Mutta kun lahjaksi haluaa jotain hauskaa ja persoonallista, voi pää mennä sekaisin. Tässä 15 testattua ideaa.\n\n## Hauska t-paita kaverille 👕\n\nMeemipaita kaverin lempivitsillä on aina osuma. Sisäpiirivitsit tuotteissa naurattavat vuosia.\n\n## Hauska muki kaverille ☕\n\nSarkastinen kahvimuki tekstillä \"Olen täällä vain kahvin takia\" on edullinen ja toimiva ystävänlahja.\n\n## Hauska huppari kaverille 🧥\n\nPehmeä huppari hauskalla painatuksella on lahja jota oikeasti käytetään.\n\n## Tarra-arkki läppäriin 💻\n\nKun kaveri istuu paljon koneella, hauskat tarrat ovat täydellinen pieni lahja.\n\n## Kangaskassi 🛍️\n\nEkologinen ja hauska – kaverin kauppakassi piristää koko jonon.\n\n## Lahjaideat tilanteen mukaan\n\n- **Synttärilahja kaverille** – t-paita tai huppari sisäpiirivitsillä\n- **Joululahja kaverille** – muki + tarra-paketti alle 30 €\n- **Muuttoilahja kaverille** – seinätaulu uuteen kotiin\n- **Polttarilahja kaverille** – ryhmäpaidat koko porukalle\n\n## Edullinen lahja kaverille alle 20 €\n\nHauska muki tai tarra-arkki on aina varma valinta pieneen budjettiin.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
+    content: "## Hauska lahja kaverille – 15 ideaa joka naurattaa\n\nKaverille lahjan ostaminen pitäisi olla helppoa – tunnetkos hänet kuitenkin paremmin kuin kukaan muu? Mutta kun lahjaksi haluaa jotain hauskaa ja persoonallista, voi pää mennä sekaisin. Tässä 15 testattua ideaa.\n\n## Hauska t-paita kaverille 👕\n\nMeemipaita kaverin lempivitsillä on aina osuma. Sisäpiirivitsit tuotteissa naurattavat vuosia.\n\n## Hauska muki kaverille ☕\n\nSarkastinen kahvimuki tekstillä \"Olen täällä vain kahvin takia\" on edullinen ja toimiva ystävänlahja.\n\n## Hauska huppari kaverille 🧥\n\nPehmeä huppari hauskalla painatuksella on lahja jota oikeasti käytetään.\n\n## Tarra-arkki läppäriin 💻\n\nKun kaveri istuu paljon koneella, hauskat tarrat ovat täydellinen pieni lahja.\n\n## Kangaskassi 🛍️\n\nEkologinen ja hauska – kaverin kauppakassi piristää koko jonon.\n\n## Lahjaideat tilanteen mukaan\n\n- **Synttärilahja kaverille** – t-paita tai huppari sisäpiirivitsillä\n- **Joululahja kaverille** – muki + tarra-paketti alle 30 €\n- **Muuttoilahja kaverille** – seinätaulu uuteen kotiin\n- **Polttarilahja kaverille** – ryhmäpaidat koko porukalle\n\n## Edullinen lahja kaverille alle 20 €\n\nHauska muki tai tarra-arkki on aina varma valinta pieneen budjettiin.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
   {
@@ -1664,7 +1664,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["lahja pomolle", "lahja esimiehelle", "hauska työlahja", "pomon lahja"],
-    content: "## Hauska lahja pomolle – ideat joista pomokin tykkää\n\nLahja pomolle on aina vähän hankala. Sen pitää olla huomaavainen mutta ei imartelevana, hauska mutta ei loukkaava. Tässä testatut ideat.\n\n## Hauska kahvimuki pomolle ☕\n\nKlassikko-lahja: \"Maailman paras pomo\" tai sarkastisempi \"Tämä palaveri olisi voinut olla sähköposti\". Toimii lähes kaikille esimiehille.\n\n## Hauska t-paita pomolle 👕\n\nVaroitus: tunne pomosi! Kuiva setähuumori toimii parhaiten – jätä rohkein meemihumor kavereille.\n\n## Hauska seinätaulu työhuoneeseen 🖼️\n\nMotivaatioposterin parodia on klassikko, joka sopii esimiehen työhuoneeseen.\n\n## Lahja yhteisellä kolehdilla\n\nKun koko tiimi osallistuu, voi budjetti olla suurempi. Huppari + muki + tarrat -paketti on suosittu yhdistelmä.\n\n## Milloin lahja pomolle?\n\n- **Joululahja pomolle** – tiimin yhteinen lahja\n- **Synttärilahja pomolle** – muki tai t-paita\n- **Eläkelahja pomolle** – isompi paketti uralle\n- **Viimeinen päivä** – kun pomo lähtee, hauska lahja jää muistoksi\n\n## Vältä näitä\n\n- Liian henkilökohtainen huumori\n- Poliittiset tai uskonnolliset vitsit\n- Liian rohkeat aiheet\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- Lasku- ja yritystilausvaihtoehdot\n- Nopea toimitus 3–10 arkipäivässä",
+    content: "## Hauska lahja pomolle – ideat joista pomokin tykkää\n\nLahja pomolle on aina vähän hankala. Sen pitää olla huomaavainen mutta ei imartelevana, hauska mutta ei loukkaava. Tässä testatut ideat.\n\n## Hauska kahvimuki pomolle ☕\n\nKlassikko-lahja: \"Maailman paras pomo\" tai sarkastisempi \"Tämä palaveri olisi voinut olla sähköposti\". Toimii lähes kaikille esimiehille.\n\n## Hauska t-paita pomolle 👕\n\nVaroitus: tunne pomosi! Kuiva setähuumori toimii parhaiten – jätä rohkein meemihumor kavereille.\n\n## Hauska seinätaulu työhuoneeseen 🖼️\n\nMotivaatioposterin parodia on klassikko, joka sopii esimiehen työhuoneeseen.\n\n## Lahja yhteisellä kolehdilla\n\nKun koko tiimi osallistuu, voi budjetti olla suurempi. Huppari + muki + tarrat -paketti on suosittu yhdistelmä.\n\n## Milloin lahja pomolle?\n\n- **Joululahja pomolle** – tiimin yhteinen lahja\n- **Synttärilahja pomolle** – muki tai t-paita\n- **Eläkelahja pomolle** – isompi paketti uralle\n- **Viimeinen päivä** – kun pomo lähtee, hauska lahja jää muistoksi\n\n## Vältä näitä\n\n- Liian henkilökohtainen huumori\n- Poliittiset tai uskonnolliset vitsit\n- Liian rohkeat aiheet\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- Lasku- ja yritystilausvaihtoehdot\n- Nopea toimitus 3–10 arkipäivässä",
     relatedCategories: ["mukit", "t-paidat", "seinataulut"],
   },
   {
@@ -1677,7 +1677,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["pikkujoululahjat", "pikkujoulu lahja", "lahja työkaverille", "yritysjoululahja"],
-    content: "## Hauskat pikkujoululahjat työkavereille 2026\n\nPikkujoulujen lahjanvaihto on yksi vuoden hauskimpia perinteitä – ja samalla yksi stressaavimpia. Mitä antaa työkaverille, jonka tunnet vain käytäväkohtaamisista?\n\n## Salainen tonttu -lahjat 🎅\n\n**Hauska muki** (15–20 €) – ehdoton suosikki salaisen tontun lahjana. Kaikki juovat kahvia, ja hauska teksti naurattaa kuukausia.\n\n**Tarra-arkki** (alle 15 €) – läppärintarra on edullinen ja persoonallinen.\n\n**Hauskat sukat tai pipo** – käytännöllinen ja lämmin.\n\n## Lahja koko tiimille 🎁\n\nKun haluat ilahduttaa koko tiimiä, ryhmäpaidat tai -hupparit yhteisellä vitsillä luovat yhteenkuuluvuutta.\n\n## Pikkujoululahja alle 20 €\n\n- Hauska muki sarkastisella tekstillä\n- Tarra-arkki työpisteelle\n- Hauska kangaskassi\n- Pipo suomalaisella huumorilla\n\n## Pikkujoululahja alle 30 €\n\n- Hauska t-paita\n- Muki + tarrat -paketti\n- Hauska seinätaulu työhuoneeseen\n\n## Yritystilaus pikkujouluihin\n\nIsommat määrät hoituvat suoraan – ota yhteyttä, hoidamme yritystilaukset laskulla.\n\n## Vinkkejä onnistuneeseen pikkujoululahjaan\n\n1. **Pidä huumori turvallisena** – ei poliittista, ei henkilökohtaista\n2. **Käytännöllinen voittaa** – muki tai tarra käytetään, koriste-esine ei\n3. **Pakkaa kauniisti** – pieni vaiva, iso vaikutus\n4. **Tilaa ajoissa** – joulukuussa toimitusajat venyvät\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- Yritystilaukset laskulla\n- Nopea toimitus 3–10 arkipäivässä",
+    content: "## Hauskat pikkujoululahjat työkavereille 2026\n\nPikkujoulujen lahjanvaihto on yksi vuoden hauskimpia perinteitä – ja samalla yksi stressaavimpia. Mitä antaa työkaverille, jonka tunnet vain käytäväkohtaamisista?\n\n## Salainen tonttu -lahjat 🎅\n\n**Hauska muki** (15–20 €) – ehdoton suosikki salaisen tontun lahjana. Kaikki juovat kahvia, ja hauska teksti naurattaa kuukausia.\n\n**Tarra-arkki** (alle 15 €) – läppärintarra on edullinen ja persoonallinen.\n\n**Hauskat sukat tai pipo** – käytännöllinen ja lämmin.\n\n## Lahja koko tiimille 🎁\n\nKun haluat ilahduttaa koko tiimiä, ryhmäpaidat tai -hupparit yhteisellä vitsillä luovat yhteenkuuluvuutta.\n\n## Pikkujoululahja alle 20 €\n\n- Hauska muki sarkastisella tekstillä\n- Tarra-arkki työpisteelle\n- Hauska kangaskassi\n- Pipo suomalaisella huumorilla\n\n## Pikkujoululahja alle 30 €\n\n- Hauska t-paita\n- Muki + tarrat -paketti\n- Hauska seinätaulu työhuoneeseen\n\n## Yritystilaus pikkujouluihin\n\nIsommat määrät hoituvat suoraan – ota yhteyttä, hoidamme yritystilaukset laskulla.\n\n## Vinkkejä onnistuneeseen pikkujoululahjaan\n\n1. **Pidä huumori turvallisena** – ei poliittista, ei henkilökohtaista\n2. **Käytännöllinen voittaa** – muki tai tarra käytetään, koriste-esine ei\n3. **Pakkaa kauniisti** – pieni vaiva, iso vaikutus\n4. **Tilaa ajoissa** – joulukuussa toimitusajat venyvät\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- Yritystilaukset laskulla\n- Nopea toimitus 3–10 arkipäivässä",
     relatedCategories: ["mukit", "t-paidat", "tarrat"],
   },
   {
@@ -1690,7 +1690,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["lahja teinille", "lahja teinipojalle", "lahja teinitytölle", "meemilahja"],
-    content: "## Hauskat lahjat teinille – ideat teinipojalle ja teinitytölle\n\nTeini-iän lahjanvalinta on legendaarisen vaikeaa. Liian lapsellinen ja teini katsoo silmiä pyöräyttäen, liian aikuinen ja lahja jää käyttämättä. Hauska huumorituote on usein juuri sopiva.\n\n## Meemipaidat ja -hupparit 👕\n\nMeemit ovat teinien kieli. Hauska meemipaita tai -huppari on lahja, jota teini oikeasti käyttää – ja näyttää kavereille.\n\n## Tarrat läppäriin ja puhelimeen 💻\n\nTeinit personoivat kaikki laitteensa. Hauska tarra-arkki on edullinen mutta osuva lahja.\n\n## Nörttipaidat ja -mukit 🎮\n\nGaming, anime, sci-fi – jos teini harrastaa jotain spesifiä, sieltä löytyy aina sopiva huumorituote.\n\n## Hauska huppari teinille 🧥\n\nIsoympyräinen, mukava huppari hauskalla painatuksella on klassikkolahja.\n\n## Lahja teinipojalle\n\n- Meemipaita tai gaming-aiheinen huppari\n- Sarkastinen muki yöpelitilanteisiin\n- Tarra-arkki konsoliin tai läppäriin\n\n## Lahja teinitytölle\n\n- Hauska huppari pehmeällä materiaalilla\n- Kangaskassi sarkastisella tekstillä\n- Tarrat puhelinkuoreen\n\n## Vinkkejä lahjan valintaan\n\n1. **Tarkkaile mitä teini katsoo netissä** – meemit kertovat huumorintajusta\n2. **Vältä vanhanaikaisia vitsejä** – setähuumori ei toimi\n3. **Anna lahjakortti varmuuden vuoksi** – jos olet täysin pihalla\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
+    content: "## Hauskat lahjat teinille – ideat teinipojalle ja teinitytölle\n\nTeini-iän lahjanvalinta on legendaarisen vaikeaa. Liian lapsellinen ja teini katsoo silmiä pyöräyttäen, liian aikuinen ja lahja jää käyttämättä. Hauska huumorituote on usein juuri sopiva.\n\n## Meemipaidat ja -hupparit 👕\n\nMeemit ovat teinien kieli. Hauska meemipaita tai -huppari on lahja, jota teini oikeasti käyttää – ja näyttää kavereille.\n\n## Tarrat läppäriin ja puhelimeen 💻\n\nTeinit personoivat kaikki laitteensa. Hauska tarra-arkki on edullinen mutta osuva lahja.\n\n## Nörttipaidat ja -mukit 🎮\n\nGaming, anime, sci-fi – jos teini harrastaa jotain spesifiä, sieltä löytyy aina sopiva huumorituote.\n\n## Hauska huppari teinille 🧥\n\nIsoympyräinen, mukava huppari hauskalla painatuksella on klassikkolahja.\n\n## Lahja teinipojalle\n\n- Meemipaita tai gaming-aiheinen huppari\n- Sarkastinen muki yöpelitilanteisiin\n- Tarra-arkki konsoliin tai läppäriin\n\n## Lahja teinitytölle\n\n- Hauska huppari pehmeällä materiaalilla\n- Kangaskassi sarkastisella tekstillä\n- Tarrat puhelinkuoreen\n\n## Vinkkejä lahjan valintaan\n\n1. **Tarkkaile mitä teini katsoo netissä** – meemit kertovat huumorintajusta\n2. **Vältä vanhanaikaisia vitsejä** – setähuumori ei toimi\n3. **Anna lahjakortti varmuuden vuoksi** – jos olet täysin pihalla\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
     relatedCategories: ["t-paidat", "hupparit", "tarrat"],
   },
   {
@@ -1748,8 +1748,8 @@ Huppari on hieman kalliimpi lahja mutta myös käytetyin. Se on lahja jota käyt
 |---|---|
 | Alle 20 € | Hauska muki tai tarra-arkki |
 | Alle 30 € | Hauska t-paita |
-| Alle 60 € | Hauska huppari |
-| Yli 60 € | Huppari + muki -paketti (ilmainen toimitus!) |
+| Alle 79 € | Hauska huppari |
+| Yli 79 € | Huppari + muki -paketti (ilmainen toimitus!) |
 
 ## Valmistujaislahjat eri valmistujille
 
@@ -1783,7 +1783,7 @@ Tilaa vähintään 5–7 arkipäivää ennen juhlaa. Toimitusaika on 3–10 arki
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Nopea toimitus 3–10 arkipäivässä
 - 100% suomalainen yritys`,
@@ -1862,7 +1862,7 @@ Juhannus 2026 on perjantaina 19.6.2026. Tilaa **viimeistään maanantai 8.6.** v
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Nopea toimitus 3–10 arkipäivässä
 - 100% suomalainen yritys`,
@@ -1950,13 +1950,13 @@ Kolmen tuotteen paketti alle 30 eurolla. Kaksi eri tarraa + hauska muki. Lahjapu
 2. **Lisää henkilökohtainen viesti** – kirjoitettu kortti tekee lahjan erityiseksi
 3. **Valitse oikea teema** – persoonallinen lahja on aina parempi kuin kallis geneerinen
 
-## Ilmainen toimitus yli 60 euroon
+## Ilmainen toimitus yli 79 euroon
 
-Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen (yli 60 € tilaus). Käytä hyödyksi!
+Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen (yli 79 € tilaus). Käytä hyödyksi!
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Nopea toimitus 3–10 arkipäivässä`,
     relatedCategories: ["mukit", "tarrat", "t-paidat"],
@@ -1971,7 +1971,7 @@ Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen 
     updatedAt: "2026-04-12",
     category: "harrastukset",
     tags: ["lahja mökkiläiselle", "mökkihuumori", "kesämökki lahja", "saunalahja"],
-    content: "## Hauska lahja mökkiläiselle – ideat kesämökin omistajalle\n\nMökki on suomalaiselle pyhä paikka. Lahja, joka sopii mökkimiljööseen, on aina arvostettu. Tässä parhaat hauskat mökkilahjat.\n\n## Hauska saunamuki 🧖\n\nLöylyn jälkeinen kalja tai vesi maistuu paremmalta hauskasta mukista. \"Saunamajuri\" tai muu sauna-aiheinen muki on klassikko.\n\n## Mökkihuumoripaita 👕\n\n\"Mökkielämä\" tai \"Laiturielämää\" -paidat ovat kesän hittejä. Mökille mennessä päälle ja kaupungissa muistona.\n\n## Hauska seinätaulu mökille 🖼️\n\nMökin seinä huutaa hauskaa taulua. Kalastusaiheinen, sauna-aiheinen tai yleisesti suomalainen huumori toimii parhaiten.\n\n## Kalastuslahja mökkiläiselle 🎣\n\nMonet mökkiläiset kalastavat. Kalastushuumoripaita tai -muki on osuva lahja.\n\n## Lahja mökille muuttoon\n\nKun joku ostaa mökin, voit antaa:\n\n- **Hauska muki** uuteen mökkikeittiöön\n- **Seinätaulu** takkahuoneeseen\n- **Kangaskassi** kauppareissuille\n- **Pipo** kylminä iltoina\n\n## Mökkilahja eri budjeteille\n\n- **Alle 20 €** – muki tai tarra-arkki\n- **Alle 30 €** – t-paita tai pipo\n- **Alle 50 €** – huppari tai seinätaulu\n- **Yli 50 €** – useampi tuote yhdessä\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 60 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
+    content: "## Hauska lahja mökkiläiselle – ideat kesämökin omistajalle\n\nMökki on suomalaiselle pyhä paikka. Lahja, joka sopii mökkimiljööseen, on aina arvostettu. Tässä parhaat hauskat mökkilahjat.\n\n## Hauska saunamuki 🧖\n\nLöylyn jälkeinen kalja tai vesi maistuu paremmalta hauskasta mukista. \"Saunamajuri\" tai muu sauna-aiheinen muki on klassikko.\n\n## Mökkihuumoripaita 👕\n\n\"Mökkielämä\" tai \"Laiturielämää\" -paidat ovat kesän hittejä. Mökille mennessä päälle ja kaupungissa muistona.\n\n## Hauska seinätaulu mökille 🖼️\n\nMökin seinä huutaa hauskaa taulua. Kalastusaiheinen, sauna-aiheinen tai yleisesti suomalainen huumori toimii parhaiten.\n\n## Kalastuslahja mökkiläiselle 🎣\n\nMonet mökkiläiset kalastavat. Kalastushuumoripaita tai -muki on osuva lahja.\n\n## Lahja mökille muuttoon\n\nKun joku ostaa mökin, voit antaa:\n\n- **Hauska muki** uuteen mökkikeittiöön\n- **Seinätaulu** takkahuoneeseen\n- **Kangaskassi** kauppareissuille\n- **Pipo** kylminä iltoina\n\n## Mökkilahja eri budjeteille\n\n- **Alle 20 €** – muki tai tarra-arkki\n- **Alle 30 €** – t-paita tai pipo\n- **Alle 50 €** – huppari tai seinätaulu\n- **Yli 50 €** – useampi tuote yhdessä\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 14 päivän palautusoikeus\n- Nopea toimitus 3–10 arkipäivässä",
     relatedCategories: ["mukit", "t-paidat", "seinataulut"],
   },
   {
@@ -2063,7 +2063,7 @@ Yhdistelmä toimii: **huumorilahja juhlaan, käytännön apuvälineet arkeen.** 
 
 ## Tilaa Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - Nopea toimitus 3–10 arkipäivässä
 - 100 % suomalainen verkkokauppa`,
@@ -2126,7 +2126,7 @@ Valikoimasta löytyy tuotteita kaikista Suomen suurimmista kaupungeista: Helsink
 
 **Saako paitaa useassa värissä?** Kyllä – t-paidat saatavilla useissa väreissä: valkoinen, harmaa, punainen, sininen.
 
-**Kuinka nopeasti toimitus?** 3–10 arkipäivässä. Ilmainen toimitus yli 60 euron tilauksiin.`,
+**Kuinka nopeasti toimitus?** 3–10 arkipäivässä. Ilmainen toimitus yli 79 euron tilauksiin.`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
   {
@@ -2170,7 +2170,7 @@ Helsinkiläiset ovat usein ylpeitä kaupungistaan – ja usein hiukan naurettava
 
 **Mikä on hauska lahja Helsinkiläiselle naiselle?** Helsinki-huppari tai muki tekstillä "Helsinkiläinen: ylpeästi". Helppo valinta, henkilökohtainen tunne.
 
-**Löytyykö tuotteita nopeasti?** Kyllä – toimitus 3–10 arkipäivässä, ilmainen yli 60 €.`,
+**Löytyykö tuotteita nopeasti?** Kyllä – toimitus 3–10 arkipäivässä, ilmainen yli 79 €.`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
   {
@@ -2213,7 +2213,7 @@ Tampere on enemmän kuin kaupunki – se on elämänasenne. Tamperelainen ei tar
 
 **Mikä on hauska lahja Tamperelaiselle?** Tampere vs Helsinki -aiheinen t-paita tai muki. Erityisesti tekstit joissa Tampere voittaa Helsingin – klassiset tamperelaishuumori-aiheet.
 
-**Toimitetaanko Tampereelle?** Kyllä, toimitamme koko Suomeen. Toimitus 3–10 arkipäivässä, ilmainen yli 60 €.`,
+**Toimitetaanko Tampereelle?** Kyllä, toimitamme koko Suomeen. Toimitus 3–10 arkipäivässä, ilmainen yli 79 €.`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
   {
@@ -2273,7 +2273,7 @@ Kaupunkipaita voittaa henkilökohtaisuudessa lähes aina. Sen käyttöarvo on ko
 
 **Voiko paidassa olla oma teksti?** Vakiotuotteet on valmiilla teksteillä. Ota yhteyttä custom-painatuksiin jos haluat täysin oman tekstin.
 
-**Mikä maksaa toimitus?** Ilmainen yli 60 €, alle siitä 3,90 €. Toimitus 3–10 arkipäivässä.`,
+**Mikä maksaa toimitus?** Ilmainen yli 79 €, alle siitä 6,90 €. Toimitus 3–10 arkipäivässä.`,
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
   },
 ];

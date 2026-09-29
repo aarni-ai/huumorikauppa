@@ -464,7 +464,7 @@ const ProductPage = () => {
 
   const productFaqs = [
     { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
-    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilaukset toimitetaan ilmaiseksi." },
+    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 79 € tilaukset toimitetaan ilmaiseksi." },
     { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
   ];
 
@@ -853,7 +853,7 @@ const ProductPage = () => {
             </Button>
 
             <p className="text-xs text-muted-foreground text-center">
-              Ilmainen toimitus yli 60 € · 14 pv palautusoikeus · Klarna &amp; MobilePay
+              Ilmainen toimitus yli 79 € · 14 pv palautusoikeus · Klarna &amp; MobilePay
             </p>
 
             {/* Share */}
@@ -868,7 +868,7 @@ const ProductPage = () => {
 
             {/* Trust badges — desktop only (mobile trust strip is directly below CTA) */}
             <div className="hidden md:grid grid-cols-3 gap-3 pt-4 border-t border-border">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 60 €</div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 79 €</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu</div>
             </div>

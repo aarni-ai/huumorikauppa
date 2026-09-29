@@ -51,7 +51,7 @@ const AllProducts = () => {
     <div className="min-h-screen">
       <SEOHead
         title="Kaikki hauskat tuotteet – T-paidat, hupparit, mukit ja paljon muuta | Huumorikauppa.fi"
-        description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, mukeja ja tarroja. Ilmainen toimitus yli 60 € tilauksiin!"
+        description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, mukeja ja tarroja. Ilmainen toimitus yli 79 € tilauksiin!"
         canonical="https://huumorikauppa.fi/kaikki-tuotteet"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
@@ -61,7 +61,7 @@ const AllProducts = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>

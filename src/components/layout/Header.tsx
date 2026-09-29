@@ -78,7 +78,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       {/* Premium multi-signal trust strip */}
       <div className="bg-foreground text-background text-center py-1.5 text-[11px] font-medium tracking-widest uppercase">
-        Ilmainen toimitus yli 60 &euro; &middot; Nopea toimitus 3–10 pv &middot; Kotimainen kauppa
+        Ilmainen toimitus yli 79 &euro; &middot; Nopea toimitus 3–10 pv &middot; Kotimainen kauppa
       </div>
 
       <div className="container flex items-center justify-between h-14 md:h-16 gap-4">

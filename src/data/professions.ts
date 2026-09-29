@@ -51,7 +51,7 @@ export const professions: Profession[] = [
       },
       {
         q: "Kuinka nopeasti lahja toimitetaan?",
-        a: "Kaikki tilaukset toimitetaan 3–7 arkipäivässä. Yli 60 € tilauksiin toimitus on ilmainen.",
+        a: "Kaikki tilaukset toimitetaan 3–7 arkipäivässä. Yli 79 € tilauksiin toimitus on ilmainen.",
       },
     ],
     relatedSlugs: ["lahihoitaja", "laakari", "hammaslaakari", "fysioterapeutti"],

@@ -80,7 +80,7 @@ Miehelle jolla on jo kaikkea, hauska paita tai muki on täydellinen lahja – se
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - 3–10 arkipäivän toimitus koko Suomeen
 - 100% suomalainen yritys`,
@@ -121,7 +121,7 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 14 päivän palautusoikeus
 - 3–10 arkipäivän toimitus koko Suomeen
 - Lahjapaketointimahdollisuus`,
@@ -160,7 +160,7 @@ Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: mukeja, hup
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
-- Ilmainen toimitus yli 60 € tilauksiin
+- Ilmainen toimitus yli 79 € tilauksiin
 - 3–10 arkipäivän toimitus
 - Ryhmätilaukset helposti – lisää eri koot koriin`,
     relatedBlogSlugs: ["parhaat-polttaripaidat-ja-polttarilahjat-2026"],
@@ -531,7 +531,7 @@ const GiftCategoryPage = () => {
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+      a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
     },
     {
       q: "Mihin tilaisuuteen lahja sopii?",
@@ -568,7 +568,7 @@ const GiftCategoryPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
@@ -593,7 +593,7 @@ const GiftCategoryPage = () => {
             <strong>{category.h1}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ persoonallista vaihtoehtoa — täydellisiä
             silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–10
-            arkipäivässä koko Suomeen, ilmainen yli 60 € tilauksiin.
+            arkipäivässä koko Suomeen, ilmainen yli 79 € tilauksiin.
           </p>
         </div>
 

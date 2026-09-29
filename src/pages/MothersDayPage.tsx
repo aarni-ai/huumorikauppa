@@ -53,7 +53,7 @@ const FAQS = [
   },
   {
     q: "Toimitetaanko äitienpäiväksi?",
-    a: "Kyllä! Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 60 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+    a: "Kyllä! Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
@@ -219,7 +219,7 @@ const MothersDayPage = () => {
           <strong>Äitienpäivälahjaksi hauska huppari tai t-paita on yllättävä ja lämmin valinta.</strong>{" "}
           Huumorikauppa.fi:n äitienpäivä-tuotteet — hupparit, t-paidat, mukit ja tarrat — toimitetaan
           nopeasti 3–10 arkipäivässä koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
-          ja yli 60 € tilauksiin toimitus on ilmainen.
+          ja yli 79 € tilauksiin toimitus on ilmainen.
         </p>
         <p>
           Toimituksen suositus: Hauska äitienpäivälahja jää mieleen vuosiksi — etenkin silloin kun teksti
@@ -230,7 +230,7 @@ const MothersDayPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-10 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen</div>
@@ -317,7 +317,7 @@ const MothersDayPage = () => {
             ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
           </p>
           <p>
-            <strong>Ilmainen toimitus yli 60 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            <strong>Ilmainen toimitus yli 79 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
             kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
             <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
             koko vuoden.

@@ -64,7 +64,7 @@ const processSteps = [
   {
     number: "04",
     title: "Toimitus",
-    body: "Posti toimittaa suoraan osoitteeseesi 3–10 arkipäivässä. Ilmainen toimitus yli 60 € tilauksiin. Jokainen tilaus on seurattavissa koko matkan ajan.",
+    body: "Posti toimittaa suoraan osoitteeseesi 3–10 arkipäivässä. Ilmainen toimitus yli 79 € tilauksiin. Jokainen tilaus on seurattavissa koko matkan ajan.",
   },
 ];
 
@@ -77,7 +77,7 @@ const materials = [
 ];
 
 const trustPoints = [
-  { icon: Truck, title: "Nopea toimitus", body: "3–10 arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli 60 € tilauksiin." },
+  { icon: Truck, title: "Nopea toimitus", body: "3–10 arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli 79 € tilauksiin." },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
   { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard, Klarna, MobilePay, Apple Pay, Google Pay. Maksut suojattu SSL-salauksella." },
   { icon: Flag, title: "Suomalainen yritys", body: "Rekisteröity Helsinki, Finland. Y-tunnus 3583677-2. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä." },

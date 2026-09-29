@@ -267,10 +267,18 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
   }
 
   if (minPrice === Infinity) minPrice = 29.95;
-  if (category === 't-paidat') minPrice = 24.90;
-  if (category === 'hupparit') minPrice = 49.90;
+  // Category floor prices — updated 2026-09-29
+  if (category === 't-paidat') minPrice = 34.90;
+  if (category === 'hupparit') minPrice = 64.90;
   if (category === 'pitkahihaiset') minPrice = 39.90;
-  if (category === 'bodyt') minPrice = 24.90;
+  if (category === 'bodyt') minPrice = 29.90;
+  if (category === 'mukit') minPrice = Math.max(minPrice, 39.90);
+  if (category === 'pipot') minPrice = Math.max(minPrice, 32.90);
+  if (category === 'laukut') minPrice = Math.max(minPrice, 32.90);
+  if (category === 'seinataulut') minPrice = Math.max(minPrice, 49.90);
+  if (category === 'peitot') minPrice = Math.max(minPrice, 69.90);
+  if (category === 'koristeet') minPrice = Math.max(minPrice, 24.90);
+  if (category === 'tarrat') minPrice = Math.max(minPrice, 7.90);
 
   const variantImages: Record<string, string[]> = {};
   // Image ordering (applies to ALL products):

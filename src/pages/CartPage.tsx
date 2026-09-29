@@ -9,7 +9,7 @@ import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
 
-const FREE_SHIPPING = 60;
+const FREE_SHIPPING = 79;
 
 const CartPage = () => {
   usePrerenderReady();
@@ -17,7 +17,7 @@ const CartPage = () => {
   const { data: allProducts = [] } = useProducts();
 
   const shippingFree = totalPrice >= FREE_SHIPPING;
-  const shippingCost = shippingFree ? 0 : 3.90;
+  const shippingCost = shippingFree ? 0 : 6.90;
   const shippingGap = Math.max(0, FREE_SHIPPING - totalPrice);
   const shippingProgress = Math.min(100, (totalPrice / FREE_SHIPPING) * 100);
 

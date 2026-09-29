@@ -190,7 +190,7 @@ const BlogPost = () => {
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset koko Suomeen yleensä 3–10 arkipäivässä. Yli 60 € tilauksiin toimitus on ilmainen.",
+      a: "Toimitamme tilaukset koko Suomeen yleensä 3–10 arkipäivässä. Yli 79 € tilauksiin toimitus on ilmainen.",
     },
     {
       q: "Voinko palauttaa tuotteen?",
@@ -331,7 +331,7 @@ const BlogPost = () => {
               )}
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              Ilmainen toimitus yli 60 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
+              Ilmainen toimitus yli 79 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
             </p>
           </section>
         )}

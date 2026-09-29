@@ -1,0 +1,17 @@
+kategoria,tuote_esimerkki,variantti,hinta_ennen_eur,huomio
+t-paidat,kaikki t-paidat,S–XL,24.90,sync-logiikan hinta
+t-paidat,kaikki t-paidat,2XL–5XL,24.90,sama – kokoportaistus ei toteutettu
+hupparit,kaikki hupparit,S–XL,49.90,sync-logiikan hinta
+hupparit,kaikki hupparit,2XL–5XL,49.90,sama
+pitkahihaiset,kaikki pitkähihaiset,S–XL,39.90,sync-logiikan hinta
+mukit,kaikki mukit (11oz),one-size,22.95,Printify-hinta / suora – ei ylikirjoitettu
+mukit,isot mukit (15oz),one-size,24.95,Printify-hinta
+bodyt,vauvan bodyt,0-3M–24M,24.90,sync-logiikan hinta
+pipot,hupparit,one-size,22.95,Printify-hinta / suora
+laukut,kangaskassit,one-size,22.95,Printify-hinta / suora
+seinataulut,posterit ja canvakset,eri koot,34.95,Printify-hinta / suora
+peitot,fleece-peitot,one-size,44.95,Printify-hinta / suora
+koristeet,joulukuusen koristeet,one-size,19.95,Printify-hinta / suora
+tarrat,tarra-arkit,one-size,9.95,Printify-hinta / suora
+toimitusmaksu,–,–,3.90,alle 60 euron tilauksiin
+ilmainen_toimitus_raja,–,–,60.00,yli 60 € tilaukset

@@ -62,7 +62,7 @@ export function GuideProductRecommendations({ guideSlug }: GuideProductRecommend
         ))}
       </div>
       <p className="text-xs text-muted-foreground mt-4 mb-3">
-        Ilmainen toimitus yli 60 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
+        Ilmainen toimitus yli 79 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
       </p>
       {cta && (
         <Link

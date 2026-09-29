@@ -173,8 +173,8 @@ const CheckoutPage = () => {
   };
 
   const discountAmount = appliedDiscount ? totalPrice * (appliedDiscount.percent / 100) : 0;
-  const shippingFree = totalPrice >= 60;
-  const shippingCost = shippingFree ? 0 : 3.90;
+  const shippingFree = totalPrice >= 79;
+  const shippingCost = shippingFree ? 0 : 6.90;
   const grandTotal = totalPrice - discountAmount + shippingCost;
 
   if (items.length === 0) {

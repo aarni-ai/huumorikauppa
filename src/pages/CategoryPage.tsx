@@ -184,7 +184,7 @@ const CategoryPage = () => {
       {
         "@type": "Question",
         "name": `Kuinka nopeasti ${catLower} toimitetaan?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Yli 60 € tilauksiin toimitus on ilmainen. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee." },
+        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Yli 79 € tilauksiin toimitus on ilmainen. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee." },
       },
       {
         "@type": "Question",
@@ -220,7 +220,7 @@ const CategoryPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle || `${h1Text} | Huumorikauppa.fi`}
-        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 60 € tilauksiin!`}
+        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 79 € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
@@ -230,7 +230,7 @@ const CategoryPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-8 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 60 €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
@@ -261,7 +261,7 @@ const CategoryPage = () => {
             <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
             täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–10 arkipäivässä koko Suomeen,
-            ilmainen yli 60 € tilauksiin.
+            ilmainen yli 79 € tilauksiin.
           </p>
         </div>
 
@@ -374,7 +374,7 @@ const CategoryPage = () => {
             {[
               {
                 q: `Kuinka nopeasti ${category.name.toLowerCase()} toimitetaan?`,
-                a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Ilmainen toimitus yli 60 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee."
+                a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Ilmainen toimitus yli 79 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee."
               },
               {
                 q: `Voiko ${category.name.toLowerCase()} palauttaa?`,

@@ -196,7 +196,7 @@ const Index = () => {
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
               <Truck className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
-            Ilmainen toimitus yli 60 €
+            Ilmainen toimitus yli 79 €
           </div>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
@@ -457,7 +457,7 @@ const Index = () => {
               { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
               { q: "Mikä on hauska lahja miehelle?", a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, hupparit, kahvimukit ja meemitarrat. Katso valikoima kategoriasta hauskat lahjat miehelle." },
               { q: "Mikä on hauska lahja naiselle?", a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta hauskat lahjat naiselle." },
-              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 60 euron tilauksille. Alle 60 euron tilauksille toimitusmaksu on 3,90 €." },
+              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 79 euron tilauksille. Alle 79 euron tilauksille toimitusmaksu on 6,90 €." },
             ].map((item, i) => (
               <details
                 key={i}
@@ -494,7 +494,7 @@ const Index = () => {
               keskiviikkoa.
             </p>
             <p>
-              Tilaaminen on helppoa, toimitus nopea ja yli 60 € tilauksiin saat ilmaisen
+              Tilaaminen on helppoa, toimitus nopea ja yli 79 € tilauksiin saat ilmaisen
               toimituksen. Jokainen paita ja muki painetaan tilauksesta, joten saat juuri sen
               tuotteen jonka valitsit – ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
               henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-foreground hover:underline">huumorikauppa@gmail.com</a>.

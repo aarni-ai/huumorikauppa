@@ -20,7 +20,7 @@ Erityisen suosittuja lahjapaitojamme ovat setähuumoripaidat, kalastuspaidat, el
 
 ## Miksi tilata hauska t-paita Huumorikaupasta?
 
-Huumorikauppa on 100% suomalainen verkkokauppa, joka on erikoistunut hauskoihin vaatteisiin ja tuotteisiin. Tarjoamme ilmaisen toimituksen yli 60 euron tilauksiin ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.
+Huumorikauppa on 100% suomalainen verkkokauppa, joka on erikoistunut hauskoihin vaatteisiin ja tuotteisiin. Tarjoamme ilmaisen toimituksen yli 79 euron tilauksiin ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.
 
 Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. Seuraa meitä sosiaalisessa mediassa pysyäksesi ajan tasalla uutuuksista ja tarjouksista!`,
   },
@@ -30,7 +30,7 @@ Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. S
     emoji: "🧥",
     description: "Hauskat hupparit ovat täydellinen lahja syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja — löydä täydellinen huppari äidille, kaverille tai itsellesi. Tilattu ennen äitienpäivää? Toimitamme nopeasti.",
     seoTitle: "Hauskat Hupparit – Huumorihupparit | Huumorikauppa.fi",
-    seoDescription: "Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat — ilmainen toimitus yli 60 €. 🧥",
+    seoDescription: "Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat — ilmainen toimitus yli 79 €. 🧥",
     seoText: `## Hauskat hupparit – lämpöä, asennetta ja huumoria
 
 Huumorikaupan hauskat hupparit yhdistävät lämmön ja huumorin täydellisesti. Löydä meemihuppari, huumorihuppari tai sarkastinen huppari joka sopii arkeen, vapaa-aikaan ja viikonloppuihin. Hupparimme ovat pehmeää, laadukasta materiaalia ja niissä on kestävä painatus.
@@ -45,7 +45,7 @@ Hauska huppari on erinomainen lahja syntymäpäiviin, jouluun, isänpäivään t
 
 ## Laatu ja materiaalit
 
-Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät konepesun ja säilyttävät muotonsa ja painatuksensa pitkään. Tarjoamme kokoja S–XXL, joten jokaiselle löytyy sopiva koko. Ilmainen toimitus yli 60 € tilauksiin ja 14 päivän palautusoikeus.`,
+Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät konepesun ja säilyttävät muotonsa ja painatuksensa pitkään. Tarjoamme kokoja S–XXL, joten jokaiselle löytyy sopiva koko. Ilmainen toimitus yli 79 € tilauksiin ja 14 päivän palautusoikeus.`,
   },
   {
     slug: "pitkahihaiset",
@@ -53,7 +53,7 @@ Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät ko
     emoji: "👔",
     description: "Pitkähihaiset paidat asenteella",
     seoTitle: "Hauskat pitkähihaiset paidat | Huumorikauppa.fi",
-    seoDescription: "Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 60 €. 👔",
+    seoDescription: "Hauskat pitkähihaiset paidat huumorilla ja asenteella. Täydellinen valinta viileisiin päiviin. Ilmainen toimitus yli 79 €. 👔",
     seoText: `## Hauskat pitkähihaiset paidat – huumoria pitkällä hihalla
 
 Pitkähihaiset paidat hauskalla tekstillä ja painatuksella ovat täydellisiä viileämpiin päiviin. Huumorikaupan pitkähihaisten valikoima yhdistää mukavuuden, laadun ja huumorin – näytä asennettasi säällä kuin säällä.
@@ -64,7 +64,7 @@ Pitkähihainen hauska paita on erinomainen valinta syksylle ja keväälle, kun t
 
 ## Lahjaksi tai itselle
 
-Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. Ne ovat käytännöllisiä ja hauskoja – yhdistelmä joka ei koskaan petä. Koot S–XXL, ilmainen toimitus yli 60 € tilauksiin.`,
+Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. Ne ovat käytännöllisiä ja hauskoja – yhdistelmä joka ei koskaan petä. Koot S–XXL, ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "mukit",
@@ -87,7 +87,7 @@ Hauska toimistomuki on paras tapa näyttää persoonallisuuttasi työpaikalla. V
 
 ## Laatu ja kestävyys
 
-Kaikki mukimme ovat laadukkaita keramiikkamukeja kestävällä painatuksella. Ne kestävät konepesun ja jokapäiväisen käytön ilman että painatus haalistuu. Tilavuus on standardikokoinen (~325 ml) ja mukit sopivat sekä kahville että teelle. Ilmainen toimitus yli 60 € tilauksiin.`,
+Kaikki mukimme ovat laadukkaita keramiikkamukeja kestävällä painatuksella. Ne kestävät konepesun ja jokapäiväisen käytön ilman että painatus haalistuu. Tilavuus on standardikokoinen (~325 ml) ja mukit sopivat sekä kahville että teelle. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "tarrat",
@@ -106,7 +106,7 @@ Hauskat tarrat ovat monipuolisia: koristele läppärisi kansi, personoi vesipull
 
 ## Tarrat lahjaksi
 
-Tarra-arkki on edullinen ja hauska lahja tai lisä mihin tahansa tilaukseen. Erityisesti nuoret ja opiskelijat arvostavat hauskoja tarroja. Suosittuja ovat meemitarrat, sarkasmitarrat ja ammattihuumoritarrat. Ilmainen toimitus yli 60 € tilauksiin.`,
+Tarra-arkki on edullinen ja hauska lahja tai lisä mihin tahansa tilaukseen. Erityisesti nuoret ja opiskelijat arvostavat hauskoja tarroja. Suosittuja ovat meemitarrat, sarkasmitarrat ja ammattihuumoritarrat. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "bodyt",
@@ -125,7 +125,7 @@ Hauska vauvabody on lahja joka naurattaa vanhempia ja ihastuttaa kaikkia vauvan 
 
 ## Laatu ja turvallisuus
 
-Vauvabodymme ovat valmistettu pehmeästä, ihoa hellivästä materiaalista. Ne ovat helppohoitoisia ja kestävät konepesun. Koot vaihtelevat vastasyntyneestä 18 kuukauden ikäiseen asti. Ilmainen toimitus yli 60 € tilauksiin ja 14 päivän palautusoikeus.`,
+Vauvabodymme ovat valmistettu pehmeästä, ihoa hellivästä materiaalista. Ne ovat helppohoitoisia ja kestävät konepesun. Koot vaihtelevat vastasyntyneestä 18 kuukauden ikäiseen asti. Ilmainen toimitus yli 79 € tilauksiin ja 14 päivän palautusoikeus.`,
   },
   {
     slug: "peitot",
@@ -144,7 +144,7 @@ Peitto on ylellinen ja käytännöllinen lahja joka ilahduttaa pitkään. Hauska
 
 ## Materiaalit ja hoito
 
-Peittomme ovat pehmeää ja lämmintä materiaalia, joka tuntuu ihanan pehmeältä ihoa vasten. Ne kestävät konepesun ja säilyttävät pehmeytensä ja painatuksensa pitkään. Ilmainen toimitus yli 60 € tilauksiin.`,
+Peittomme ovat pehmeää ja lämmintä materiaalia, joka tuntuu ihanan pehmeältä ihoa vasten. Ne kestävät konepesun ja säilyttävät pehmeytensä ja painatuksensa pitkään. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "pipot",
@@ -163,7 +163,7 @@ Hauska pipo tai lippis on kätevä ja edullinen lahja. Se sopii kalastajalle, go
 
 ## Laatu ja istuvuus
 
-Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat valmistettu laadukkaista materiaaleista ja brodeeraus/painatus kestää käyttöä ja pesua. Ilmainen toimitus yli 60 € tilauksiin.`,
+Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat valmistettu laadukkaista materiaaleista ja brodeeraus/painatus kestää käyttöä ja pesua. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "laukut",
@@ -182,7 +182,7 @@ Hauska kangaskassi on käytännöllinen ja edullinen lahja tai lisä isomman til
 
 ## Kestävät materiaalit
 
-Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raskaitakin ostoksia. Painatus kestää konepesun. Ilmainen toimitus yli 60 € tilauksiin.`,
+Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raskaitakin ostoksia. Painatus kestää konepesun. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "seinataulut",
@@ -201,7 +201,7 @@ Hauska seinätaulu on erinomainen lahja tupaantuliaisiin, syntymäpäiviin tai j
 
 ## Koot ja materiaalit
 
-Seinätaulumme ovat saatavilla useissa eri ko'oissa. Laadukas painatus kestää vuosia haalistumatta. Taulut toimitetaan valmiina ripustettavaksi. Ilmainen toimitus yli 60 € tilauksiin.`,
+Seinätaulumme ovat saatavilla useissa eri ko'oissa. Laadukas painatus kestää vuosia haalistumatta. Taulut toimitetaan valmiina ripustettavaksi. Ilmainen toimitus yli 79 € tilauksiin.`,
   },
   {
     slug: "koristeet",
@@ -220,7 +220,7 @@ Hauska koriste on oivallinen pieni lahja joka sopii moneen tilaisuuteen – tupa
 
 ## Sisusta huumorilla
 
-Lisää kodin sisustukseen ripaus huumoria hauskoilla koristeilla. Ne sopivat hyllylle, pöydälle, ikkunalaudalle tai mihin tahansa näkyvälle paikalle. Ilmainen toimitus yli 60 € tilauksiin ja 14 päivän palautusoikeus.`,
+Lisää kodin sisustukseen ripaus huumoria hauskoilla koristeilla. Ne sopivat hyllylle, pöydälle, ikkunalaudalle tai mihin tahansa näkyvälle paikalle. Ilmainen toimitus yli 79 € tilauksiin ja 14 päivän palautusoikeus.`,
   },
   {
     slug: "haalarimerkit",

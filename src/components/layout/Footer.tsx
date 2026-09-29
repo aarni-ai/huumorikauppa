@@ -56,7 +56,7 @@ export function Footer() {
       <div className="border-b border-border py-6">
         <div className="container grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Truck,    label: "Ilmainen toimitus",    sub: "Yli 60 € tilauksiin" },
+            { icon: Truck,    label: "Ilmainen toimitus",    sub: "Yli 79 € tilauksiin" },
             { icon: RotateCcw, label: "14 pv palautusoikeus", sub: "Vaivaton palautus" },
             { icon: Shield,   label: "Turvalliset maksut",   sub: "Stripe, Klarna, MobilePay" },
             { icon: Flag,     label: "Kotimainen kauppa",    sub: "Helsinki · Y: 3583677-2" },
