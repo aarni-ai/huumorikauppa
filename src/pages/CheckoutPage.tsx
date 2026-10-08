@@ -30,6 +30,8 @@ const CheckoutPage = () => {
     firstName: "", lastName: "", email: "", phone: "",
     address: "", zip: "", city: "",
   });
+  const [differentRecipient, setDifferentRecipient] = useState(false);
+  const [recipientName, setRecipientName] = useState("");
 
   // Track abandoned cart when user enters a valid email
   useEffect(() => {
@@ -141,6 +143,7 @@ const CheckoutPage = () => {
           customerEmail: form.email,
           customerName: `${form.firstName} ${form.lastName}`,
           shippingAddress: { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
+          recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,
           discountCode: appliedDiscount?.code || undefined,
         },
       });
@@ -279,9 +282,33 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
+              <div className="pt-1 space-y-3">
+                <label className="flex items-center gap-2 cursor-pointer text-sm text-foreground">
+                  <input
+                    type="checkbox"
+                    checked={differentRecipient}
+                    onChange={e => { setDifferentRecipient(e.target.checked); if (!e.target.checked) setRecipientName(""); }}
+                    className="accent-primary"
+                  />
+                  Toimitetaan eri vastaanottajalle kuin maksaja
+                </label>
+                {differentRecipient && (
+                  <div>
+                    <Label htmlFor="recipientName" className="text-foreground">Vastaanottajan nimi *</Label>
+                    <Input
+                      id="recipientName"
+                      value={recipientName}
+                      onChange={e => setRecipientName(e.target.value)}
+                      className="bg-muted border-border mt-1"
+                      placeholder="Etunimi Sukunimi"
+                    />
+                  </div>
+                )}
+              </div>
+
               <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground space-y-1">
                 <p className="font-medium text-foreground">Toimitustapa:</p>
-                <p>📦 Posti – kotiinkuljetus (3–10 arkipäivää)</p>
+                <p>📦 Posti – kotiinkuljetus (3-10 arkipäivää)</p>
                 <p>{shippingFree ? "✅ Ilmainen toimitus!" : `Toimituskulut: ${shippingCost.toFixed(2)} €`}</p>
               </div>
 

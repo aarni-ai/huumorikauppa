@@ -17,6 +17,7 @@ import { template as abandonedCart24h } from './abandoned-cart-24h.tsx'
 import { template as abandonedCart72h } from './abandoned-cart-72h.tsx'
 import { template as reviewRequest } from './review-request.tsx'
 import { template as adminAlert } from './admin-alert.tsx'
+import { template as orderShipped } from './order-shipped.tsx'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'order-confirmation': orderConfirmation,
@@ -27,4 +28,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'abandoned-cart-72h': abandonedCart72h,
   'review-request': reviewRequest,
   'admin-alert': adminAlert,
+  'order-shipped': orderShipped,
 }

@@ -30,6 +30,7 @@ interface CheckoutRequest {
     zip: string;
     city: string;
   };
+  recipientName?: string;
   discountCode?: string;
 }
 
@@ -61,7 +62,7 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    const { items, customerEmail, customerName, shippingAddress, discountCode } =
+    const { items, customerEmail, customerName, shippingAddress, recipientName, discountCode } =
       (await req.json()) as CheckoutRequest;
 
     // Resolve discount from DB (case-insensitive)
@@ -304,6 +305,7 @@ serve(async (req) => {
         // Printify fulfillment payload (compact JSON, ≤500 chars per metadata value typical)
         printify_items: JSON.stringify(printifyItems),
         discount_code: discountCode || "",
+        ...(recipientName ? { recipient_name: recipientName.trim().slice(0, 200) } : {}),
         ...customTextMetadata,
       },
       locale: "fi",

@@ -327,6 +327,7 @@ export async function processCheckoutSession(
     session.customer_email || session.customer_details?.email || null;
   const customerName =
     metadata.customer_name || session.customer_details?.name || null;
+  const recipientName: string | null = metadata.recipient_name || null;
   const total = (session.amount_total || 0) / 100;
 
   // Customer personalisation texts (oma teksti/kuva) from checkout metadata.
@@ -451,6 +452,7 @@ export async function processCheckoutSession(
         payment_status: "paid",
         printify_status: "pending",
         email_confirmation_status: "pending",
+        ...(recipientName ? { recipient_name: recipientName } : {}),
       })
       .select("id")
       .maybeSingle();
@@ -486,7 +488,7 @@ export async function processCheckoutSession(
           externalId: orderId || session.id,
           label: `Huumorikauppa #${(orderId || session.id).slice(0, 8)}`,
           lineItems: printifyItems,
-          customerName: effectiveCustomerName,
+          customerName: recipientName || effectiveCustomerName,
           customerEmail: effectiveCustomerEmail || "noreply@huumorikauppa.fi",
           shippingAddress: effectiveShipping,
         });
@@ -532,11 +534,14 @@ export async function processCheckoutSession(
         templateName: "order-confirmation",
         recipientEmail: effectiveCustomerEmail,
         idempotencyKey: `order-confirm-${session.id}`,
-        subject: "Tilausvahvistus – Huumorikauppa 🎉",
+        subject: orderId
+          ? `Tilausvahvistus #${orderId.slice(0, 8).toUpperCase()} - Huumorikauppa`
+          : "Tilausvahvistus - Huumorikauppa",
         orderId,
         emailType: "customer",
         templateData: {
           customerName: effectiveCustomerName || undefined,
+          orderId: orderId || undefined,
           orderTotal,
           items,
           shippingAddress: effectiveShipping || undefined,
