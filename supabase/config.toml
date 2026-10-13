@@ -27,6 +27,16 @@ project_id = "exhzrrbvipqwhjhjgnxs"
     verify_jwt = true
   [functions.recover-orders]
     verify_jwt = false
+  # Cron-only internal functions, same as recover-orders: pg_cron calls them with the
+  # service role key, and must keep working even if that GUC is empty.
+  [functions.check-stuck-orders]
+    verify_jwt = false
+  [functions.check-printify-shipments]
+    verify_jwt = false
+  [functions.daily-summary]
+    verify_jwt = false
+  [functions.site-health-check]
+    verify_jwt = false
   [functions.auto-sync-printify]
     verify_jwt = true
   [functions.subscribe-mailerlite]

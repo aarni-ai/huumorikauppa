@@ -1,32 +1,27 @@
-# Auli Hurskainen – vastausluonnos
+# Auli Hurskainen - vastausluonnos
 
-Tilauksen tiedot: haettu SQL-kyselyllä (ks. RUN-IN-SUPABASE.sql).
-Korvaa alle merkittyihin kohtiin oikeat tiedot ennen lähettämistä.
+Tilaus: 27.9.2026, t-paita "Olen eläkkeellä", 27,56 e. Vastaanottaja Toini Aro c/o Auli Hurskainen, Tarvasjoentie 619, 21530 Paimio.
+
+Tilauksen tiedot haetaan `RUN-IN-SUPABASE.sql` osiolla OSA A. Korvaa hakasulkeiset kohdat ennen lähettämistä. Älä lähetä, jos jokin kohta on vielä täyttämättä.
 
 ----- ALKAA -----
 Hei Auli,
 
-kiitos tilauksestasi! Tilaukseesi [TILAUSNUMERO] kuuluva tuote "Olen eläkkeellä" on toimitettu painatukseen. Tilauksesi on nyt matkalla sinulle.
+pahoittelut, että vastaus on viipynyt. Tässä tilauksesi tilanne.
 
-Seurantakoodi: [SEURANTAKOODI]
-Seuraa pakettia osoitteessa: [SEURANTAURL]
+Tilausnumero on [TILAUSNUMERO]. Paita "Olen eläkkeellä" lähtee painosta [LÄHETYSPÄIVÄ TAI ARVIO] ja on perillä yleensä 3-10 arkipäivässä lähetyksestä.
 
-Paketti saapuu yleensä 3-10 arkipaivassa. Jos tarvitset lisatietoja, voit vastata tahan viestiin.
+Paketti on osoitettu nimellä Toini Aro c/o Auli Hurskainen, Tarvasjoentie 619, 21530 Paimio. Jos vastaanottajan nimi pitää olla toisin, kerro se vastauksena tähän viestiin, niin korjaamme ennen lähetystä.
 
-Terveisin,
+Seurantalinkki: [SEURANTAURL]
+
+Terveisin
 Huumorikauppa
 ----- LOPPUU -----
 
----
+## Täyttöohje
 
-## Tiedot täytetään kun SQL-kysely on ajettu
-
-Aja `RUN-IN-SUPABASE.sql` Supabasen SQL Editorissa.
-Korvaa yllä olevat kohdat hakutuloksista:
-
-- **[TILAUSNUMERO]** = `id` (8 ensimmäistä merkkiä isolla, esim. `#AB12CD34`)
-- **[SEURANTAKOODI]** = `tracking_number` (jos jo olemassa) tai selvitä Printify-hallintapaneelista
-- **[SEURANTAURL]** = `tracking_url` (jos jo olemassa)
-
-Jos tilauksen printify_status on `pending` tai `failed`, se on jumiutunut.
-Siinä tapauksessa katso RUN-IN-SUPABASE.sql:n ohjeet manuaalisesta uudelleenyrityksestä.
+- [TILAUSNUMERO] = OSA A -kyselyn `tilausnumero` (8 merkkiä isolla, esim. AB12CD34)
+- [LÄHETYSPÄIVÄ TAI ARVIO] = `shipped_at` jos lähetetty, muuten Printifyn tuotantoarvio (Printify > Orders > tilaus)
+- [SEURANTAURL] = `tracking_url`; jos ei vielä seurantaa, poista koko Seurantalinkki-rivi ja sen tyhjä rivi
+- Jos paketti on jo lähtenyt, vaihda lause muotoon "lähti painosta [PVM]" ja jätä nimenkorjauskappale pois

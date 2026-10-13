@@ -11,7 +11,7 @@ const corsHeaders = {
 // Recovery cron: scans Stripe checkout sessions from the last 14 days and
 // re-processes any paid session that:
 //   - has no order row in DB, OR
-//   - has printify_status in (pending, failed), OR
+//   - has printify_status in (pending, failed, skipped), OR
 //   - has email_confirmation_status in (pending, failed)
 //
 // Idempotent — safe to run as often as needed. Designed for hourly cron.
@@ -71,9 +71,12 @@ serve(async (req) => {
           .eq("stripe_session_id", session.id)
           .maybeSingle();
 
+        // "skipped" is NOT done for Printify: it means the submit was never attempted
+        // (no printify_items / no address at the time). Retry it; a later product sync
+        // may have added the variant mapping. submitPrintifyOrder dedups on external_id.
         const fullyDone =
           existing &&
-          (existing.printify_status === "submitted" || existing.printify_status === "skipped") &&
+          existing.printify_status === "submitted" &&
           (existing.email_confirmation_status === "sent" || existing.email_confirmation_status === "skipped");
 
         if (fullyDone) {
