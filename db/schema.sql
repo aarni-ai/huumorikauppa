@@ -1,0 +1,94 @@
+-- Huumorikauppa, oma tausta (21.10.2026). Aja kerran uuteen Postgres-tietokantaan:
+--   psql "$DATABASE_URL" -f db/schema.sql
+-- Sen jälkeen tuotteet: node scripts/tuo-tuotteet.mjs (tilannekuvasta) tai scripts/printify-tuonti.mjs (Printifystä).
+
+create extension if not exists pgcrypto;
+
+-- Tuotteet: samat sarakkeet kuin vanhassa taustassa (data/products-snapshot.json).
+create table if not exists products (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  slug text not null unique,
+  category text not null,
+  humor_type text,
+  price numeric(10,2) not null,
+  stock integer default 99,
+  description text,
+  images jsonb default '[]'::jsonb,
+  variants jsonb default '{}'::jsonb,
+  is_featured boolean default false,
+  is_new boolean default false,
+  is_gift_idea boolean default false,
+  is_active boolean default true,
+  supplier text default 'printify',
+  aliexpress_url text,
+  origin_country text,
+  printify_product_id text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+create index if not exists products_category on products (category);
+
+create table if not exists discount_codes (
+  code text primary key,
+  discount_type text not null check (discount_type in ('percent', 'fixed')),
+  discount_value numeric(10,2) not null,
+  is_active boolean default true
+);
+insert into discount_codes (code, discount_type, discount_value) values
+  ('HUUMORI5', 'percent', 5), ('PALAA10', 'percent', 10)
+on conflict (code) do nothing;
+
+-- Tilaukset: rivi luodaan ennen maksua (odottaa_maksua), Stripe-sessioon menee vain tilauksen id.
+create table if not exists orders (
+  id uuid primary key default gen_random_uuid(),
+  status text not null default 'odottaa_maksua' check (status in ('odottaa_maksua', 'maksettu', 'peruttu')),
+  customer_email text not null,
+  customer_name text,
+  recipient_name text,
+  phone text,
+  shipping_address jsonb not null,
+  items jsonb not null,          -- [{ product_id, slug, name, size, color, custom_text, quantity, unit_price, printify_product_id, variant_id }]
+  subtotal numeric(10,2) not null,
+  shipping numeric(10,2) not null,
+  discount_code text,
+  discount numeric(10,2) not null default 0,
+  total numeric(10,2) not null,
+  amount_paid numeric(10,2),
+  stripe_session_id text unique,
+  stripe_payment_intent text,
+  printify_status text not null default 'ei_lahetetty'
+    check (printify_status in ('ei_lahetetty', 'luotu', 'tuotannossa', 'lahetetty', 'virhe')),
+  printify_order_id text,
+  printify_error text,
+  printify_attempts integer not null default 0,
+  next_retry_at timestamptz,
+  alert_sent_at timestamptz,
+  sent_to_production_at timestamptz,
+  carrier text,
+  tracking_number text,
+  tracking_url text,
+  shipped_at timestamptz,
+  shipping_email_sent_at timestamptz,
+  confirmation_email_sent_at timestamptz,
+  created_at timestamptz not null default now(),
+  paid_at timestamptz,
+  updated_at timestamptz not null default now()
+);
+create index if not exists orders_status on orders (status, printify_status);
+create index if not exists orders_retry on orders (next_retry_at) where printify_status in ('ei_lahetetty', 'luotu', 'virhe');
+
+create table if not exists order_events (
+  id bigserial primary key,
+  order_id uuid references orders(id) on delete cascade,
+  kind text not null,
+  details jsonb default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+-- Ajastimen tila (päivän yhteenveto kerran päivässä).
+create table if not exists kv (
+  key text primary key,
+  value text,
+  updated_at timestamptz default now()
+);

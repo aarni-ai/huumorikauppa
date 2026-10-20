@@ -1,5 +1,6 @@
-const SUPABASE_FEED_URL =
-  'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
+import { merchantSyote } from './_lib/syote.js';
+import { naytettavatTuotteet } from './_lib/tuotteet.js';
+
 const SITE = 'https://huumorikauppa.fi';
 
 // Any host that may serve a product image. Everything matched here gets
@@ -54,16 +55,9 @@ function dropHiddenItems(xml) {
 
 export default async function handler(req, res) {
   try {
-    const upstream = await fetch(SUPABASE_FEED_URL, {
-      headers: { 'User-Agent': 'huumorikauppa-feed-proxy' },
-    });
-    if (!upstream.ok) {
-      return res
-        .status(502)
-        .send(`Upstream feed error: ${upstream.status}`);
-    }
-    const raw = await upstream.text();
-    // Mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts): pudotetaan Drinkware > Mugs -tuotteet.
+    // Oma tausta (21.10.2026): syöte omasta tuotelähteestä (tietokanta tai tilannekuva), ei Supabasesta.
+    // naytettavatTuotteet jättää pois luonnokset ja piilotetut kategoriat (mukit); dropHiddenItems varmistaa.
+    const raw = merchantSyote(await naytettavatTuotteet());
     const xml = sanitizeFeed(dropHiddenItems(raw));
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');

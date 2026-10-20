@@ -35,22 +35,20 @@ interface SupabaseProduct {
   stock: number;
 }
 
-const SUPABASE_URL: string = (typeof process !== 'undefined' && (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL)) || '';
-const SUPABASE_KEY: string = (typeof process !== 'undefined' && (process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY)) || '';
+
+// Oma tausta (21.10.2026): tuotetiedot saman sivuston /api/products-funktiosta (tietokanta tai tilannekuva),
+// ei enää Supabasesta. ORIGIN asetetaan jokaisen pyynnön alussa.
+let ORIGIN = 'https://huumorikauppa.fi';
 
 async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null> {
-  if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,name,description,images,price,category,stock&limit=1`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-        signal: AbortSignal.timeout(4000),
-      }
+      `${ORIGIN}/api/products?slug=${encodeURIComponent(slug)}&fields=slug,name,description,images,price,category,stock`,
+      { signal: AbortSignal.timeout(4000) }
     );
     if (!res.ok) return null;
-    const data: SupabaseProduct[] = await res.json();
-    return data[0] ?? null;
+    const data: SupabaseProduct | null = await res.json();
+    return data ?? null;
   } catch {
     return null;
   }
@@ -60,18 +58,11 @@ async function fetchCategoryProducts(
   categories: string[],
   limit = 20
 ): Promise<Array<{ slug: string; name: string; image: string; price: number }>> {
-  if (!SUPABASE_URL || !SUPABASE_KEY || categories.length === 0) return [];
-  const filter =
-    categories.length === 1
-      ? `category=eq.${categories[0]}`
-      : `category=in.(${categories.join(',')})`;
+  if (categories.length === 0) return [];
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?${filter}&select=slug,name,images,price&order=created_at.desc&limit=${limit}`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-        signal: AbortSignal.timeout(4000),
-      }
+      `${ORIGIN}/api/products?category=${encodeURIComponent(categories.join(','))}&fields=slug,name,images,price&limit=${limit}`,
+      { signal: AbortSignal.timeout(4000) }
     );
     if (!res.ok) return [];
     const data: Array<{ slug: string; name: string; images: string[]; price: number }> = await res.json();
@@ -603,6 +594,7 @@ export default async function middleware(request: Request): Promise<Response | u
   }
 
   const url = new URL(request.url);
+  ORIGIN = url.origin;
   const path = url.pathname;
 
   let meta: PageMeta | undefined;

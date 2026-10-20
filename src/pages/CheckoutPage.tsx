@@ -128,8 +128,11 @@ const CheckoutPage = () => {
     }
     setIsProcessing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
+      // Oma tausta (21.10.2026): kassa sivuston omassa /api/checkout-funktiossa.
+      const vastaus = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           items: items.map(i => ({
             id: i.product.id,
             slug: i.product.slug,
@@ -145,9 +148,9 @@ const CheckoutPage = () => {
           shippingAddress: { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
           recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,
           discountCode: appliedDiscount?.code || undefined,
-        },
+        }),
       });
-      if (error) throw error;
+      const data = await vastaus.json().catch(() => null);
       if (data?.ok === false) {
         throw new Error(data?.error || "Maksun aloitus epäonnistui");
       }

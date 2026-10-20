@@ -2,6 +2,34 @@
   "functions": {
     "api/img.js": {
       "includeFiles": "node_modules/{sharp,@img/sharp-linux-x64,@img/sharp-libvips-linux-x64}/**/*"
+    },
+    "api/products.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/checkout.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/sitemap.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/product-feed.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/cron/tilaukset.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/order.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/stripe-webhook.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
     }
   },
   "redirects": [
@@ -1599,6 +1627,12 @@
     {
       "source": "/((?!.*\\.(?:xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
       "destination": "/index.html"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/tilaukset",
+      "schedule": "0 * * * *"
     }
   ]
 }

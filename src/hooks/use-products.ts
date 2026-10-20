@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
+import type { Database } from "@/integrations/supabase/types";
+
+type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 import { onPiilotettu } from "@/lib/hiddenCategories";
 
 /** Piilotettujen kategorioiden tuotteiden slugit (tuotesivu ohjaa ne /kaikki-tuotteet). */
@@ -13,12 +15,11 @@ function getOriginalPrice(_slug: string, _name: string, _category: string, _pric
 }
 
 async function fetchProducts(): Promise<Product[]> {
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) throw error;
+  // Oma tausta (21.10.2026): tuotteet sivuston omasta /api/products-funktiosta (tietokanta tai tilannekuva),
+  // ei enää suoraan Lovable Cloudin Supabasesta. Rivimuoto on sama.
+  const res = await fetch("/api/products");
+  if (!res.ok) throw new Error(`Tuotteiden haku epäonnistui (${res.status})`);
+  const data: ProductRow[] = await res.json();
 
   return (data || [])
     // Hide ONLY explicit drafts (is_active === false, e.g. AliExpress imports awaiting

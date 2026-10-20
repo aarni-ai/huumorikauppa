@@ -1,0 +1,114 @@
+/**
+ * Tilausten käsittely (oma-tausta). Tilan kulku:
+ *   status:          odottaa_maksua -> maksettu (tai peruttu)
+ *   printify_status: ei_lahetetty -> luotu (Printifyssä, on-hold) -> tuotannossa -> lahetetty
+ *                    virhe = viimeisin yritys epäonnistui, next_retry_at kertoo seuraavan yrityksen
+ * Tilaus on "lähetetty Printifyyn" vasta, kun send_to_production onnistuu (tuotannossa). Jos tilauksen luonti,
+ * send_to_production tai variantti epäonnistuu, tilaa ei merkitä lähetetyksi: yritetään uudelleen (cron) ja
+ * omistajalle lähtee heti sähköposti (kerran per tilaus ja vaihe, uusi hälytys vasta 24 h päästä).
+ */
+import { sql, kirjaaTapahtuma } from "./db.js";
+import * as P from "./printify.js";
+import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js";
+
+/** Uudelleenyrityksen viive yrityskerran mukaan: 15 min, 30 min, 1 h, 2 h, sitten 4 h välein. */
+export function seuraavaYritys(yrityksia, nyt = new Date()) {
+  const min = [15, 30, 60, 120][yrityksia - 1] ?? 240;
+  return new Date(nyt.getTime() + min * 60000);
+}
+
+/** Puuttuuko jokin Printify-tieto riveiltä. */
+export function puuttuvatVariantit(items) {
+  return (items || []).filter((i) => !i.printify_product_id || typeof i.variant_id !== "number").map((i) => i.name);
+}
+
+/** Hälytetäänkö: ensimmäinen virhe tai edellisestä hälytyksestä yli 24 h. */
+export function halytetaanko(tilaus, nyt = new Date()) {
+  if (!tilaus.alert_sent_at) return true;
+  return nyt.getTime() - new Date(tilaus.alert_sent_at).getTime() > 24 * 3600 * 1000;
+}
+
+async function virhe(tilaus, vaihe, viesti) {
+  const yrityksia = (tilaus.printify_attempts || 0) + 1;
+  const halyta = halytetaanko(tilaus);
+  const db = sql();
+  await db`update orders set printify_status = ${tilaus.printify_order_id ? "luotu" : "virhe"},
+    printify_error = ${`${vaihe}: ${viesti}`.slice(0, 1000)}, printify_attempts = ${yrityksia},
+    next_retry_at = ${seuraavaYritys(yrityksia)}, updated_at = now()
+    ${halyta ? db`, alert_sent_at = now()` : db``}
+    where id = ${tilaus.id}`;
+  await kirjaaTapahtuma(tilaus.id, "printify_virhe", { vaihe, viesti, yrityksia });
+  if (halyta) {
+    await halytys(`Tilaus #${tilausnumero(tilaus.id)} ei mennyt Printifyn tuotantoon`, [
+      `Vaihe: ${vaihe}`,
+      `Virhe: ${viesti}`,
+      `Asiakas: ${tilaus.customer_email}`,
+      `Yrityksiä: ${yrityksia}, seuraava yritys automaattisesti ${seuraavaYritys(yrityksia).toISOString()}`,
+      tilaus.printify_order_id ? `Printify-tilaus: ${tilaus.printify_order_id} (on hold)` : "Printify-tilausta ei ole luotu",
+    ]);
+  }
+  return { ok: false, vaihe, viesti };
+}
+
+/**
+ * Vie maksetun tilauksen Printifyyn ja tuotantoon. Idempotentti: luo Printify-tilauksen vain kerran
+ * (printify_order_id tallennetaan heti) ja lähettää tuotantoon, kunnes se onnistuu.
+ */
+export async function lahetaPrintifyyn(tilausId) {
+  const [tilaus] = await sql()`select * from orders where id = ${tilausId}`;
+  if (!tilaus) return { ok: false, vaihe: "haku", viesti: "tilausta ei löydy" };
+  if (tilaus.status !== "maksettu") return { ok: false, vaihe: "tila", viesti: `tilaus ${tilaus.status}` };
+  if (["tuotannossa", "lahetetty"].includes(tilaus.printify_status)) return { ok: true, jo: true };
+  if (!P.onPrintify()) return virhe(tilaus, "avain", "PRINTIFY_API_KEY tai PRINTIFY_SHOP_ID puuttuu");
+
+  const puuttuu = puuttuvatVariantit(tilaus.items);
+  if (puuttuu.length) return virhe(tilaus, "variantti", `Printify-variantti puuttuu: ${puuttuu.join(", ")}`);
+
+  let printifyId = tilaus.printify_order_id;
+  if (!printifyId) {
+    const r = await P.luoTilaus(P.tilausRunko(tilaus));
+    if (!r.ok || !r.data?.id) return virhe(tilaus, "luonti", r.virhe || "Printify ei palauttanut tilausnumeroa");
+    printifyId = r.data.id;
+    await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', updated_at = now() where id = ${tilaus.id}`;
+    tilaus.printify_order_id = printifyId;
+    await kirjaaTapahtuma(tilaus.id, "printify_luotu", { printifyId });
+  }
+
+  const t = await P.lahetaTuotantoon(printifyId);
+  if (!t.ok) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe");
+  await sql()`update orders set printify_status = 'tuotannossa', printify_error = null, next_retry_at = null,
+    sent_to_production_at = now(), updated_at = now() where id = ${tilaus.id}`;
+  await kirjaaTapahtuma(tilaus.id, "printify_tuotannossa", { printifyId });
+  return { ok: true };
+}
+
+/**
+ * Stripe Checkout -session maksetuksi (webhook, cron ja vahvistussivu käyttävät samaa). Idempotentti.
+ * Palauttaa tilausrivin id:n tai null.
+ */
+export async function kasitteleMaksu(session) {
+  if (session.payment_status !== "paid") return null;
+  const tilausId = session.metadata?.order_id || session.client_reference_id;
+  if (!tilausId) {
+    await halytys("Maksu ilman tilausta", [`Stripe-session ${session.id}`, `Asiakas ${session.customer_details?.email || session.customer_email || "?"}`]);
+    return null;
+  }
+  const paivitetyt = await sql()`update orders set status = 'maksettu', paid_at = now(), stripe_session_id = ${session.id},
+      stripe_payment_intent = ${typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null},
+      amount_paid = ${(session.amount_total ?? 0) / 100}, updated_at = now()
+    where id = ${tilausId} and status = 'odottaa_maksua' returning id`;
+  if (paivitetyt.length) await kirjaaTapahtuma(tilausId, "maksettu", { session: session.id });
+  const [tilaus] = await sql()`select * from orders where id = ${tilausId}`;
+  if (!tilaus) {
+    await halytys("Maksettu tilaus puuttuu tietokannasta", [`Tilaus ${tilausId}`, `Stripe-session ${session.id}`]);
+    return null;
+  }
+  if (!tilaus.confirmation_email_sent_at) {
+    const v = vahvistusViesti(tilaus);
+    const r = await laheta({ to: tilaus.customer_email, ...v });
+    if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
+    else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });
+  }
+  await lahetaPrintifyyn(tilaus.id);
+  return tilaus.id;
+}

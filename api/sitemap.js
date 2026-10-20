@@ -1,3 +1,5 @@
+import { kaikkiTuotteet } from "./_lib/tuotteet.js";
+import { onPiilotettu } from "./_lib/piilotetut.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -100,32 +102,12 @@ function toW3CDate(date) {
 }
 
 async function fetchAllProducts() {
-  if (!SUPABASE_URL || !SUPABASE_KEY) return [];
-  const out = [];
-  const pageSize = 1000;
-  let from = 0;
-  for (let i = 0; i < 10; i++) {
-    const to = from + pageSize - 1;
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,updated_at&category=neq.mukit&order=updated_at.desc`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          Range: `${from}-${to}`,
-          "Range-Unit": "items",
-          Prefer: "count=exact",
-        },
-      }
-    );
-    if (!res.ok) break;
-    const batch = await res.json();
-    if (!Array.isArray(batch) || batch.length === 0) break;
-    out.push(...batch);
-    if (batch.length < pageSize) break;
-    from += pageSize;
-  }
-  return out;
+  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin ennen:
+  // kaikki paitsi piilotetut kategoriat (mukit), uusimmin päivitetty ensin.
+  const rivit = (await kaikkiTuotteet()).filter((p) => !onPiilotettu(p.category));
+  return rivit
+    .map((p) => ({ slug: p.slug, updated_at: p.updated_at }))
+    .sort((x, y) => String(y.updated_at || "").localeCompare(String(x.updated_at || "")));
 }
 
 export default async function handler(req, res) {
