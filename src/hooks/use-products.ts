@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
+import { onPiilotettu } from "@/lib/hiddenCategories";
+
+/** Piilotettujen kategorioiden tuotteiden slugit (tuotesivu ohjaa ne /kaikki-tuotteet). */
+export const piilotetutSlugit = new Set<string>();
 
 function getOriginalPrice(_slug: string, _name: string, _category: string, _price: number): number | undefined {
   // Compare-at prices removed 2026-09-29 (Omnibus directive: vertailuhinta = alin 30 pv:n hinta).
@@ -21,6 +25,12 @@ async function fetchProducts(): Promise<Product[]> {
     // approval). Done in JS — never in the query — so a missing is_active column (frontend
     // may deploy before the migration) can't break the query or hide existing products.
     .filter((p) => (p as { is_active?: boolean }).is_active !== false)
+    // Myynnistä piilotetut kategoriat (src/lib/hiddenCategories.ts, mukit 21.10.2026).
+    .filter((p) => {
+      if (!onPiilotettu(p.category)) return true;
+      piilotetutSlugit.add(p.slug);
+      return false;
+    })
     .map((p) => {
     const price = Number(p.price);
     return {

@@ -1,13 +1,16 @@
 import { CartItem, Product } from "@/types/product";
 import { useState, useEffect, useCallback } from "react";
 import { trackAddToCart } from "@/lib/analytics";
+import { onPiilotettu } from "@/lib/hiddenCategories";
 
 const CART_KEY = "huumorikauppa-cart";
 
 function loadCart(): CartItem[] {
   try {
     const stored = localStorage.getItem(CART_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const items: CartItem[] = stored ? JSON.parse(stored) : [];
+    // Myynnistä piilotetut tuotteet (mukit 21.10.2026) pois tallennetusta korista.
+    return items.filter((i) => !onPiilotettu(i?.product?.category));
   } catch {
     return [];
   }
@@ -33,6 +36,7 @@ export function useCart() {
   }, [items]);
 
   const addItem = useCallback((product: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string) => {
+    if (onPiilotettu(product.category)) return;
     const trimmedText = customText?.trim() ? customText.trim().slice(0, 200) : undefined;
     setItems(prev => {
       const existing = prev.find(

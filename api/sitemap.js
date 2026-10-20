@@ -45,7 +45,8 @@ const SITUATION_GIFT_SLUGS = [
 ];
 
 const CATEGORIES = [
-  "t-paidat", "mukit", "tarrat", "hupparit", "bodyt",
+  "t-paidat", "tarrat", // mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts)
+  "hupparit", "bodyt",
   "peitot", "pipot", "seinataulut", "pitkahihaiset", "koristeet",
   "laukut", "lippikset", "haalarimerkit",
   "sukat", "avaimenperat", "asut", "naamiot",
@@ -106,7 +107,7 @@ async function fetchAllProducts() {
   for (let i = 0; i < 10; i++) {
     const to = from + pageSize - 1;
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,updated_at&order=updated_at.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=slug,updated_at&category=neq.mukit&order=updated_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,

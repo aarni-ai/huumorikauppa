@@ -1,8 +1,8 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import { categories } from "@/data/products";
-import { useProduct } from "@/hooks/use-products";
+import { useProduct, piilotetutSlugit } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
@@ -307,6 +307,9 @@ const ProductPage = () => {
       </div>
     );
   }
+
+  // Myynnistä piilotettu tuote (mukit 21.10.2026): ohjaus kaikkiin tuotteisiin.
+  if (!product && slug && piilotetutSlugit.has(slug)) return <Navigate to="/kaikki-tuotteet" replace />;
 
   if (!product) {
     return (

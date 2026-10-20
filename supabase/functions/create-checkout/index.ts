@@ -117,7 +117,7 @@ serve(async (req) => {
       });
     }
 
-    let dbQuery = supabaseAdmin.from("products").select("id, slug, name, price, printify_product_id, variants");
+    let dbQuery = supabaseAdmin.from("products").select("id, slug, name, price, category, printify_product_id, variants");
     if (ids.length > 0 && slugs.length > 0) {
       dbQuery = dbQuery.or(`id.in.(${ids.join(",")}),slug.in.(${slugs.join(",")})`);
     } else if (ids.length > 0) {
@@ -147,6 +147,13 @@ serve(async (req) => {
       let dbProd: any = undefined;
       if (item.id && productById.has(item.id)) dbProd = productById.get(item.id);
       else if (item.slug && productBySlug.has(item.slug)) dbProd = productBySlug.get(item.slug);
+      // Myynnistä piilotetut kategoriat (mukit 21.10.2026, sama lista kuin src/lib/hiddenCategories.ts).
+      if (dbProd && ["mukit"].includes(dbProd.category)) {
+        return respond(false, {
+          error: `Tuote ei ole enää myynnissä: ${item.name}`,
+          diagnostics: { error_stage: "hidden_category", processing_time_ms: Date.now() - startTime },
+        });
+      }
       const serverPrice = dbProd ? Number(dbProd.price) : undefined;
       if (typeof serverPrice !== "number" || !Number.isFinite(serverPrice) || serverPrice <= 0) {
         return respond(false, {

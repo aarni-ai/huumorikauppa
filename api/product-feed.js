@@ -46,6 +46,12 @@ function sanitizeFeed(xml) {
   return out;
 }
 
+// Myynnistä piilotetut kategoriat syötteen Google-kategoriana (merchant-feed: mukit -> ...Drinkware > Mugs).
+const HIDDEN_GOOGLE_CATEGORY = /Drinkware (?:&gt;|>) Mugs/;
+function dropHiddenItems(xml) {
+  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) ? '' : item));
+}
+
 export default async function handler(req, res) {
   try {
     const upstream = await fetch(SUPABASE_FEED_URL, {
@@ -57,7 +63,8 @@ export default async function handler(req, res) {
         .send(`Upstream feed error: ${upstream.status}`);
     }
     const raw = await upstream.text();
-    const xml = sanitizeFeed(raw);
+    // Mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts): pudotetaan Drinkware > Mugs -tuotteet.
+    const xml = sanitizeFeed(dropHiddenItems(raw));
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(

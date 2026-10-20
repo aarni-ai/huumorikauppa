@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { onPiilotettu } from "@/lib/hiddenCategories";
 import { categories } from "@/data/products";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
@@ -128,6 +129,8 @@ const CategoryPage = () => {
       // Then push folded/flat mockups to the bottom
       return garmentSortWeight(a) - garmentSortWeight(b);
     });
+
+  if (onPiilotettu(slug)) return <Navigate to="/kaikki-tuotteet" replace />;
 
   if (!category) {
     return (

@@ -42,7 +42,7 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
   );
 }
 
-const MAIN_CATEGORIES = ["t-paidat", "hupparit", "pitkahihaiset", "mukit", "bodyt"];
+const MAIN_CATEGORIES = ["t-paidat", "hupparit", "pitkahihaiset", "bodyt"]; // mukit pois myynnistä 21.10.2026
 const OTHER_CATEGORIES = ["tarrat", "peitot", "pipot", "laukut", "seinataulut", "koristeet", "sukat", "avaimenperat", "asut", "naamiot"];
 
 export function Header() {
