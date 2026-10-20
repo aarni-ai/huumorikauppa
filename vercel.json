@@ -1488,8 +1488,8 @@
     },
     {
       "source": "/tuote/100-elakalainen-kahvikuppi",
-      "destination": "/tuote/100-elakelainen-kahvikuppi",
-      "permanent": true
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
     },
     {
       "source": "/syntymapaivaLahjat",
@@ -1518,8 +1518,8 @@
     },
     {
       "source": "/tuote/level-30-selka-rusahtaa-nyt-muki",
-      "destination": "/tuote/30v-selka-alkaa-jo-rusahdella-muki",
-      "permanent": true
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
     },
     {
       "source": "/tuote/40v-kunto-kuin-20v-20-vuotta-sitten-t-paita",
@@ -1533,8 +1533,8 @@
     },
     {
       "source": "/tuote/40v-kunto-kuin-20v-20-vuotta-sitten-muki",
-      "destination": "/tuote/40v-kunnossa-niinku-20v-muki",
-      "permanent": true
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
     },
     {
       "source": "/tuote/30-ja-loistossaan-t-paita",
@@ -1548,8 +1548,8 @@
     },
     {
       "source": "/tuote/30-ja-loistossaan-muki",
-      "destination": "/tuote/30-nuori-villi-ja-jo-vasynyt-muki",
-      "permanent": true
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
     },
     {
       "source": "/tuote/50v-klassikkomalli-t-paita",
@@ -1563,8 +1563,8 @@
     },
     {
       "source": "/tuote/50v-klassikkomalli-muki",
-      "destination": "/tuote/50-vuotta-nuori-muki",
-      "permanent": true
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
     }
   ],
   "headers": [
