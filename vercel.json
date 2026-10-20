@@ -19,1457 +19,1457 @@
     {
       "source": "/kategoria/mukit",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/1995-nevo-foget-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/30-nuori-villi-ja-jo-vasynyt-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/30v-paranen-ian-myota-kuin-viini-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/30v-selka-alkaa-jo-rusahdella-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40-ja-fabulous-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40-vuotta-henkisesti-18-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40-vuotta-toita-nyt-ikuinen-viikonloppu-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40v-ei-keski-ika-klassikko-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40v-ei-vanha-vintage-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40v-henkisesti-18-tyylilla-40-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/40v-kunnossa-niinku-20v-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/50-ja-hopeanhohtoinen-vain-hiukset-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/50-ja-paras-vasta-tulossa-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/50-vuotta-nuori-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/50v-puoli-vuosisataa-ei-naarmuakaan-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60-vuotta-nuori-ja-nokkela-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60-vuotta-nuori-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60v-kokenut-ei-vanha-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60v-mutta-fyysinen-kunto-kuin-20v-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60v-mutta-sydan-kuin-20v-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/60v-takuu-mennyt-toimii-silti-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/akaa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/akaa-pieni-mutta-ylpea-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/akaalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/akaalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/audimies-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/bemarimies-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ei-perkele-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/elakelainen-aamuheratys-vapaaehtoinen-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/elakkeella-kiireinen-tekemaan-ei-mitaan-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/espoo-helsinki-ilman-helsinkia-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/espoo-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/espoolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/espoolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/forssa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/forssa-tekstiiliteollisuuden-henki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/forssalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/forssalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hameenlinna-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hameenlinna-sibeliuksen-kotipaikka-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hameenlinnalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hameenlinnalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/harjavalta-kuparin-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/harjavalta-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/harjavaltalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/harjavaltalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-40-vuotiaalle-40-vuotta-viela-taydessa-iskussa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-50-vuotiaalle-50-vuotta-paras-ika",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-arkkitehdille-piirtaa-talot-asuu-vuokralla",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-budjettiammattilaistelle-budjetti-optimistinen-arvio",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-deadlinepaineissa-deadline-oli-eilen",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-etatyontekijalle-virallinen-pyjama-ammattilainen",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-excel-osaajalle-vlookup-mestari",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-fysioterapeutille-selka-kuntoon-omani-ei",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-hammaslaakarille-suu-auki-kivutkin-menee",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-insinoorille-laskee-ennen-kuin-puhuu",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-it-tuelle-oletko-sammuttanut-ja-kaynnistanyt-uudelleen",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-kahvinjuojalle-ensin-kahvi-sitten-ihminen",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-kirjanpitajalle-excel-is-life",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-kissanomistajalle-kissa-on-pomo-mina-olen-palvelija",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-kokoushirviolle-kokous-37-tanaan-kaikki-hyvin",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-laakarille-ei-googlaile-oireita",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-lakimiehelle-laskuttaa-ajattelemisesta",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-lean-ammattilaiselle-lean-kaikki-pois-myos-jarki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-maanantaille-maanantai-palauttaa-henkiin",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-opettajalle-kesalomaan-178-paivaa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-powerpoint-osaajalle-slide-47-viela-20-jaljella",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-projektipaallikolle-in-scope-ei-tama",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-psykologille-ei-itsekaan-taysin-selvilla",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-puutarhurin-multa-kasissa-sielu-rauhassa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-raportointivelvollisille-raportti-viime-viikolta",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-ruoanlaittoharrastajalle-secret-ingredient-rakkaus-ja-juusto",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-sahkopostiahkyiselle-unread-4728",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-sairaanhoitajalle-sankari-ilman-viittaa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-sairaanhoitajalle-sankari-ilman-viittaa-0e8646",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-sairaanhoitajalle-sankari-ilman-viittaa-117afe",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-sairaanhoitajalle-sankari-ilman-viittaa-117e8c",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-saunojalle-ensin-loyly-sitten-lopu",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-startup-hengelle-disruptoidaan-joskus",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-teams-palavereihin-miksi-tama-olisi-voinut-olla-sahkoposti",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-toimittajalle-off-the-record-myos-tama",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-viiniharrastajalle-sommelieri-vai-stressaantunut",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-ylityontekijalle-ylityot-myos-viikonloppuna",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-yrittajalle-lomapaiva-kasite-tuntematon",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-yrittajalle-lomapaiva-kasite-tuntematon-104caf",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hauska-kahvimuki-zoom-palavereihin-nakyyko-kuuluuko",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/heinola-kymijoen-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/heinola-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/heinolalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/heinolalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/helsinki-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/helsinki-taynna-rakennustyomaita-ja-startup-firmoja-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/helsinkilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/helsinkilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hyvinkaa-junanradan-varrella-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hyvinkaa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hyvinkaalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/hyvinkaalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/iisalmelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/iisalmelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/iisalmi-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/iisalmi-salmi-ja-savolaishuumori-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/imatra-kosken-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/imatra-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/imatralainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/imatralainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jarvenpaa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jarvenpaa-sibeliuksen-ainolassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jarvenpaalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jarvenpaalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/joensuu-karjalan-sydan-ja-ylpeys-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/joensuu-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/joensuulainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/joensuulainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jyvaskyla-opiskelija-joka-ei-koskaan-valmistunut-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jyvaskyla-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jyvaskylalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/jyvaskylalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kaarina-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kaarina-turun-naapuri-ylpeasti-oma-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kaarinalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kaarinalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kajaani-kaukana-mutta-ei-unohdettu-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kajaani-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kajaanilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kajaanilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kangasala-jarvien-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kangasala-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kangasalalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kangasalalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kemi-lumen-kaupunki-kirjaimellisesti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kemi-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kemilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kemilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kerava-nopein-juna-helsinkiin-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kerava-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/keravainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/keravainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kokkola-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kokkola-pohjanmaan-helmi-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kokkolalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kokkolalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kotka-merikaupunki-ja-kotkia-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kotka-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kotkalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kotkalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kouvola-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kouvolalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kouvolalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kuopio-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kuopio-savon-sydan-kaikki-tietaa-sen-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kuopiolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/kuopiolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lahtelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lahtelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lahti-mm-hiihtajien-ja-saastojen-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lahti-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lappeenranta-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lappeenranta-saimaan-rannalla-venajan-naapurina-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lappeenrantalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lappeenrantalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lempaala-moottoritien-varrella-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lempaala-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lempaalalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lempaalalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lieksa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lieksa-pielisen-rannalla-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lieksalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lieksalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lohja-omenat-ja-jarvet-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lohja-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lohjalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/lohjalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/maailman-mestarit-2026-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/mersumies-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/mikkeli-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/mikkeli-saimaan-portilla-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/mikkelilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/mikkelilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/naantali-muumimaailma-ja-kesaloma-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/naantali-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/naantalilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/naantalilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/no-niin-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nokia-ei-se-puhelin-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nokia-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nokialainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nokialainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nummela-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nummela-vihdin-sydan-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nummelalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/nummelalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ois-viisaampi-haipyy-taalt-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/oma-tekstikuva-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/on-tamakin-saatana-tyomaa-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/orimattila-marjat-ja-maaseutu-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/orimattila-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/orimattilalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/orimattilalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/oulu-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/oulu-teknologian-paakaupunki-pakkasessa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/oululainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/oululainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-aidille-superaiti",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-alan-paras-ammattilainen",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-elakkeelle-siirtyvalle-vapautunut",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-kotona-vain-kaupungissa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-maailman-paras-rooli",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-mummolle-paras-keksija",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-nimikirjainlyhenne",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-syntymapaivalle-onnellinen-vuotias",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-vaarille-viisainta-seuraa",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/personoitava-kahvimuki-valmistuvalle-nimi-valmistunut-vuosi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pirkkala-lentoaseman-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pirkkala-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pirkkalalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pirkkalalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pori-jazz-ja-joki-ei-tarvita-muuta-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/pori-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porilainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porilainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porvoo-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porvoo-vanhakaupunki-ja-turistit-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porvoolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/porvoolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raisio-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raisio-raisio-ja-benecol-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raisiolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raisiolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rauma-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rauma-raumanmurre-ja-unesco-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raumalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/raumalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/riihimakelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/riihimakelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/riihimaki-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/riihimaki-rautatiekaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rovaniemelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rovaniemelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rovaniemi-joulupukin-naapuri-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/rovaniemi-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/salo-entinen-nokian-kaupunki-selviytyi-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/salo-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/salolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/salolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/savonlinna-oopperajuhlien-ja-linnan-kaupunki-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/savonlinna-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/savonlinnalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/savonlinnalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/seinajokelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/seinajokelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/seinajoki-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/seinajoki-provinssirock-ja-tasainen-maasto-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/suomi-finland-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tampere-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tampere-suomen-paras-kaupunki-itse-sanoo-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tamperelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tamperelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tonnin-seteli-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tornio-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tornio-ruotsin-naapuri-kay-ostoksilla-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/torniolainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/torniolainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/turku-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/turku-suomen-vanhin-kaupunki-muistaa-sen-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/turkulainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/turkulainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/tya-ukko-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vaasa-kaksikielinen-ja-ylpea-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vaasa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vaasalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vaasalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/valkeakoskelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/valkeakoskelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/valkeakoski-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/valkeakoski-teollisuuskaupunki-ja-kosket-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vantaa-lentokentta-ja-ylpeys-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vantaa-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vantaalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/vantaalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/varkaalainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/varkaalainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/varkaus-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/varkaus-teollisuuskaupunki-savossa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/varo-myrkyllista-kahvikuppi",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/virallisesti-tyoton-epavirallisesti-vapaa-muki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ylojarvelainen-vahva-sisukas-hieman-outo-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ylojarvelainen-ylpeasti-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ylojarvi-paras-paikka-maailmassa-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/ylojarvi-tampereen-naapuri-hauska-kahvimuki",
       "destination": "/kaikki-tuotteet",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tuote/-jos-iska-ei-osaa-korjata-sita-t-paita",
