@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
+import { useProducts } from "@/hooks/use-products";
+import { toimitusTila, arvioiPakettialennus } from "@/lib/ostoskori";
 
 type Step = "details" | "shipping" | "payment";
 
@@ -32,6 +34,14 @@ const CheckoutPage = () => {
   });
   const [differentRecipient, setDifferentRecipient] = useState(false);
   const [recipientName, setRecipientName] = useState("");
+  const { data: allProducts = [] } = useProducts();
+  const [giftCardInput, setGiftCardInput] = useState("");
+  const [appliedGiftCard, setAppliedGiftCard] = useState<{ code: string; saldo: number } | null>(null);
+  const [checkingGiftCard, setCheckingGiftCard] = useState(false);
+  // Pelkät lahjakortit: ei toimitusosoitetta eikä toimitusmaksua.
+  const tila = toimitusTila(items);
+  const onlyGiftCards = tila.vainLahjakortteja;
+  const hasGiftCards = items.some((i) => i.product.type === "giftcard");
 
   // Track abandoned cart when user enters a valid email
   useEffect(() => {
@@ -90,7 +100,7 @@ const CheckoutPage = () => {
   };
 
   const canProceedToShipping = () => {
-    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || !form.phone.trim()) {
+    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || (!onlyGiftCards && !form.phone.trim())) {
       toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
       return false;
     }
@@ -98,7 +108,7 @@ const CheckoutPage = () => {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
       return false;
     }
-    if (!isValidPhone(form.phone)) {
+    if (!onlyGiftCards && !isValidPhone(form.phone)) {
       toast({ title: "Tarkista puhelinnumero", variant: "destructive" });
       return false;
     }
@@ -114,7 +124,7 @@ const CheckoutPage = () => {
   };
 
   const handlePayment = async () => {
-    if (!form.email || !form.firstName || !form.phone || !form.address || !form.zip || !form.city) {
+    if (!form.email || !form.firstName || (!onlyGiftCards && (!form.phone || !form.address || !form.zip || !form.city))) {
       toast({ title: "Täytä kaikki pakolliset kentät", variant: "destructive" });
       return;
     }
@@ -122,7 +132,7 @@ const CheckoutPage = () => {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
       return;
     }
-    if (!isValidPhone(form.phone)) {
+    if (!onlyGiftCards && !isValidPhone(form.phone)) {
       toast({ title: "Tarkista puhelinnumero", variant: "destructive" });
       return;
     }
@@ -142,12 +152,14 @@ const CheckoutPage = () => {
             size: i.selectedSize,
             color: i.selectedColor,
             customText: i.customText || undefined,
+            ...(i.product.type === "giftcard" ? { type: "giftcard", giftCard: i.giftCard } : {}),
           })),
           customerEmail: form.email,
           customerName: `${form.firstName} ${form.lastName}`,
-          shippingAddress: { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
+          shippingAddress: onlyGiftCards ? undefined : { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
           recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,
           discountCode: appliedDiscount?.code || undefined,
+          giftCardCode: appliedGiftCard?.code || undefined,
         }),
       });
       const data = await vastaus.json().catch(() => null);
@@ -178,10 +190,39 @@ const CheckoutPage = () => {
     }
   };
 
-  const discountAmount = appliedDiscount ? totalPrice * (appliedDiscount.percent / 100) : 0;
-  const shippingFree = totalPrice >= 79;
-  const shippingCost = shippingFree ? 0 : 6.90;
-  const grandTotal = totalPrice - discountAmount + shippingCost;
+  const applyGiftCard = async () => {
+    const code = giftCardInput.trim();
+    if (!code) return;
+    setCheckingGiftCard(true);
+    try {
+      const vastaus = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "lahjakortti", code }),
+      });
+      const data = await vastaus.json().catch(() => null);
+      if (data?.ok) {
+        setAppliedGiftCard({ code: data.code, saldo: Number(data.saldo) });
+        toast({ title: `Lahjakortti lisätty, saldo ${Number(data.saldo).toFixed(2).replace(".", ",")} €` });
+      } else {
+        toast({ title: data?.error || "Lahjakortin tarkistus epäonnistui", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Lahjakortin tarkistus epäonnistui", variant: "destructive" });
+    } finally {
+      setCheckingGiftCard(false);
+    }
+  };
+
+  // Alennuskoodi koskee vain fyysisiä tuotteita (ei lahjakortteja). Pakettialennus vain ilman alennuskoodia.
+  // Lopullinen summa lasketaan palvelimella (api/_lib/kassa.js).
+  const discountAmount = appliedDiscount ? Math.round(tila.summa * appliedDiscount.percent) / 100 : 0;
+  const bundleDiscount = appliedDiscount ? 0 : arvioiPakettialennus(items, allProducts);
+  const shippingFree = tila.ilmainen;
+  const shippingCost = tila.toimitus;
+  const grandTotal = Math.round((totalPrice - discountAmount - bundleDiscount + shippingCost) * 100) / 100;
+  const giftCardUse = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
+  const amountDue = Math.round((grandTotal - giftCardUse) * 100) / 100;
 
   if (items.length === 0) {
     return (
@@ -196,11 +237,16 @@ const CheckoutPage = () => {
     );
   }
 
-  const steps: { key: Step; label: string; num: number }[] = [
-    { key: "details", label: "Tiedot", num: 1 },
-    { key: "shipping", label: "Toimitus", num: 2 },
-    { key: "payment", label: "Maksu", num: 3 },
-  ];
+  const steps: { key: Step; label: string; num: number }[] = onlyGiftCards
+    ? [
+        { key: "details", label: "Tiedot", num: 1 },
+        { key: "payment", label: "Maksu", num: 2 },
+      ]
+    : [
+        { key: "details", label: "Tiedot", num: 1 },
+        { key: "shipping", label: "Toimitus", num: 2 },
+        { key: "payment", label: "Maksu", num: 3 },
+      ];
 
   const currentIndex = steps.findIndex(s => s.key === step);
 
@@ -247,7 +293,7 @@ const CheckoutPage = () => {
                 <Input id="email" type="email" value={form.email} onChange={e => updateForm("email", e.target.value)} className="bg-muted border-border mt-1" placeholder="matti@email.fi" />
               </div>
               <div>
-                <Label htmlFor="phone" className="text-foreground">Puhelin *</Label>
+                <Label htmlFor="phone" className="text-foreground">Puhelin{onlyGiftCards ? "" : " *"}</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -259,11 +305,14 @@ const CheckoutPage = () => {
                   className="bg-muted border-border mt-1"
                   placeholder="0401234567"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Tarvitsemme puhelinnumeron toimitusta varten.</p>
+                {!onlyGiftCards && <p className="text-xs text-muted-foreground mt-1">Tarvitsemme puhelinnumeron toimitusta varten.</p>}
               </div>
-              <Button onClick={() => canProceedToShipping() && setStep("shipping")} className="bg-primary text-primary-foreground font-bold">
-                Jatka toimitustietoihin <ArrowRight className="h-4 w-4 ml-2" />
+              <Button onClick={() => canProceedToShipping() && setStep(onlyGiftCards ? "payment" : "shipping")} className="bg-primary text-primary-foreground font-bold">
+                {onlyGiftCards ? "Jatka maksuun" : "Jatka toimitustietoihin"} <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
+              {onlyGiftCards && (
+                <p className="text-xs text-muted-foreground">Lahjakortti toimitetaan sähköpostilla heti maksun jälkeen, joten toimitusosoitetta ei tarvita.</p>
+              )}
             </div>
           )}
 
@@ -342,13 +391,15 @@ const CheckoutPage = () => {
                 >
                   {isProcessing ? (
                     <><Loader2 className="h-5 w-5 mr-2 animate-spin" /> Käsitellään...</>
+                  ) : amountDue <= 0 ? (
+                    <>Vahvista tilaus, maksetaan lahjakortilla</>
                   ) : (
-                    <>Maksa {grandTotal.toFixed(2)} € 🔒</>
+                    <>Maksa {amountDue.toFixed(2)} € 🔒</>
                   )}
                 </Button>
                 <p className="text-xs text-muted-foreground">SSL-suojattu yhteys • Turvallinen maksu</p>
               </div>
-              <Button variant="outline" onClick={() => setStep("shipping")} className="border-border">
+              <Button variant="outline" onClick={() => setStep(onlyGiftCards ? "details" : "shipping")} className="border-border">
                 <ArrowLeft className="h-4 w-4 mr-2" /> Takaisin
               </Button>
             </div>
@@ -360,7 +411,7 @@ const CheckoutPage = () => {
           <h3 className="font-display text-lg text-foreground">Tilauksesi</h3>
           <div className="space-y-3 max-h-60 overflow-y-auto">
             {items.map(item => (
-              <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${item.customText || ""}`} className="flex gap-3 text-sm">
+              <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}-${item.customText || ""}-${item.lineId || ""}`} className="flex gap-3 text-sm">
                 <img src={proxiedImage(item.product.images[0]) || "/placeholder.svg"} alt={`${item.product.name} – kassalla`} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" width={48} height={48} />
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
@@ -399,6 +450,33 @@ const CheckoutPage = () => {
               </div>
             )}
           </div>
+          {!hasGiftCards && (
+            <div className="space-y-2">
+              {appliedGiftCard ? (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-primary font-medium">✅ Lahjakortti {appliedGiftCard.code}</span>
+                  <button type="button" onClick={() => setAppliedGiftCard(null)} className="text-xs text-muted-foreground hover:underline">Poista</button>
+                </div>
+              ) : (
+                <>
+                  <Label htmlFor="giftCardCode" className="text-xs text-muted-foreground">Lahjakortin koodi</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="giftCardCode"
+                      placeholder="HK-XXXX-XXXX-XXXX"
+                      value={giftCardInput}
+                      onChange={e => setGiftCardInput(e.target.value)}
+                      className="bg-muted border-border text-sm"
+                      autoComplete="off"
+                    />
+                    <Button variant="outline" size="sm" onClick={applyGiftCard} disabled={checkingGiftCard} className="border-border whitespace-nowrap">
+                      {checkingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Käytä"}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
               <span>Tuotteet</span><span>{totalPrice.toFixed(2)} €</span>
@@ -408,13 +486,28 @@ const CheckoutPage = () => {
                 <span>Alennus ({appliedDiscount.percent}%)</span><span>-{discountAmount.toFixed(2)} €</span>
               </div>
             )}
+            {bundleDiscount > 0 && (
+              <div className="flex justify-between text-primary">
+                <span>Pakettialennus</span><span>-{bundleDiscount.toFixed(2)} €</span>
+              </div>
+            )}
             <div className="flex justify-between text-muted-foreground">
               <span>Toimitus</span>
-              <span>{shippingFree ? "Ilmainen" : `${shippingCost.toFixed(2)} €`}</span>
+              <span>{onlyGiftCards ? "Sähköpostilla" : shippingFree ? "Ilmainen" : `${shippingCost.toFixed(2)} €`}</span>
             </div>
             <div className="flex justify-between font-bold text-foreground text-base pt-2 border-t border-border">
               <span>Yhteensä</span><span className="text-primary">{grandTotal.toFixed(2)} €</span>
             </div>
+            {appliedGiftCard && (
+              <>
+                <div className="flex justify-between text-primary">
+                  <span>Lahjakortti {appliedGiftCard.code}</span><span>-{giftCardUse.toFixed(2)} €</span>
+                </div>
+                <div className="flex justify-between font-bold text-foreground">
+                  <span>Maksettavaa</span><span>{amountDue.toFixed(2)} €</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

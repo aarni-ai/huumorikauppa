@@ -20,7 +20,9 @@ interface OrderInfo {
 
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  // Stripe-maksu: ?session_id=cs_..., kokonaan lahjakortilla maksettu tilaus: ?tilaus=<tilauksen id>.
+  const sessionId = searchParams.get("session_id") || searchParams.get("tilaus");
+  const tunnisteParametri = searchParams.get("session_id") ? "session_id" : "order_id";
   const { clearCart } = useCartContext();
 
   const [order, setOrder] = useState<OrderInfo | null>(null);
@@ -122,7 +124,7 @@ const OrderConfirmation = () => {
     const poll = async () => {
       try {
         // Oma tausta (21.10.2026): tilaus sivuston omasta /api/order-funktiosta.
-        const res = await fetch(`/api/order?session_id=${encodeURIComponent(sessionId)}`);
+        const res = await fetch(`/api/order?${tunnisteParametri}=${encodeURIComponent(sessionId)}`);
         const json = await res.json();
         if (cancelled) return;
 
