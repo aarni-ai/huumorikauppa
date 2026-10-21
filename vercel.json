@@ -1632,7 +1632,7 @@
   "crons": [
     {
       "path": "/api/cron/tilaukset",
-      "schedule": "0 * * * *"
+      "schedule": "0 5 * * *"
     }
   ]
 }
