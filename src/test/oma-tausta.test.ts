@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { laskeTilaus, KassaVirhe } from "../../api/_lib/kassa.js";
+import { laskeKate, heikoinKate } from "../../api/_lib/kate.js";
 import { printifyVariantti, myynnissa } from "../../api/_lib/tuotteet.js";
 import { seuraavaYritys, puuttuvatVariantit, halytetaanko } from "../../api/_lib/tilaus.js";
 import { tilausRunko } from "../../api/_lib/printify.js";
@@ -9,9 +10,10 @@ import { PIILOTETUT_KATEGORIAT as SELAIN } from "@/lib/hiddenCategories";
 
 const paita = {
   id: "p1", slug: "paita", name: "Paita", category: "t-paidat", price: 34.9, stock: 99, is_active: true,
-  printify_product_id: "pf1", variants: { variant_map: { "Musta|M": 11, "Musta|L": 12, "Valkoinen|M": 13 } },
+  printify_product_id: "pf1",
+  variants: { variant_map: { "Musta|M": 11, "Musta|L": 12, "Valkoinen|M": 13 }, costs: { "11": 1200, "12": 1200, "13": 1200 }, shipping_cents: 450 },
 };
-const yksikoko = { ...paita, id: "p2", slug: "pipo", name: "Pipo", category: "pipot", price: 32.9, variants: { variant_map: { "Musta|OS": 21 } } };
+const yksikoko = { ...paita, id: "p2", slug: "pipo", name: "Pipo", category: "pipot", price: 32.9, variants: { variant_map: { "Musta|OS": 21 }, costs: { "21": 900 }, shipping_cents: 450 } };
 const muki = { ...paita, id: "p3", slug: "muki", name: "Muki", category: "mukit", variants: { variant_map: { "|11oz": 31 } } };
 const tuotteet = [paita, yksikoko, muki];
 const pyynto = (items: unknown[]) => ({
@@ -49,6 +51,32 @@ describe("Kassa", () => {
     expect(() => laskeTilaus(pyynto([{ id: "p3", quantity: 1 }]), tuotteet, null)).toThrow(/ei ole enää myynnissä/);
   });
   it("piilotetut kategoriat samat selaimessa ja palvelimella", () => expect([...PALVELIN]).toEqual([...SELAIN]));
+});
+
+describe("Katesääntö 40 %", () => {
+  it("laskee nettokatteen: (hinta + toimitus) alv 0 - tuotekulu - toimitus - Stripe", () => {
+    // (34,90 + 6,90) / 1,255 = 33,31; Stripe 41,80 * 1,5 % + 0,25 = 0,88; 33,31 - 12,00 - 4,50 - 0,88 = 15,93
+    const k = laskeKate(paita, 11);
+    expect(k).toMatchObject({ tunnettu: true, nettokate: 15.93, sallittu: true });
+    expect(k.kate).toBeCloseTo(0.478, 3);
+  });
+  it("alle 40 % estää kassalla ja piilottaa listasta", () => {
+    const halpa = { ...paita, id: "p4", slug: "halpa", variants: { ...paita.variants, costs: { "11": 1800, "12": 1800, "13": 1800 } } };
+    expect(laskeKate(halpa, 11).sallittu).toBe(false);
+    expect(myynnissa(halpa)).toBe(false);
+    expect(() => laskeTilaus(pyynto([{ id: "p4", quantity: 1, size: "M", color: "Musta" }]), [halpa], null)).toThrow(KassaVirhe);
+  });
+  it("tuntematon kulu: näkyy listassa, mutta kassa ei ota maksua", () => {
+    const tuntematon = { ...paita, id: "p5", slug: "uusi", variants: { variant_map: paita.variants.variant_map } };
+    expect(heikoinKate(tuntematon).tunnettu).toBe(false);
+    expect(myynnissa(tuntematon)).toBe(true);
+    expect(() => laskeTilaus(pyynto([{ id: "p5", quantity: 1, size: "M", color: "Musta" }]), [tuntematon], null)).toThrow(/hintaa ei voitu vahvistaa/);
+  });
+  it("ilmainen toimitus yli 79 €", () => {
+    const kallis = { ...paita, price: 89.9 };
+    // 89,90 / 1,255 = 71,63; Stripe 1,60; 71,63 - 12 - 4,50 - 1,60 = 53,53
+    expect(laskeKate(kallis, 11).nettokate).toBe(53.53);
+  });
 });
 
 describe("Printify-siirto", () => {

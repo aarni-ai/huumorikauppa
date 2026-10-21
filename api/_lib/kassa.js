@@ -4,6 +4,7 @@
  * ei löydy, tai myynnistä piilotettu tuote hylätään ennen maksua.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
+import { laskeKate } from "./kate.js";
 
 export const ILMAINEN_TOIMITUS_RAJA = 79;
 export const TOIMITUS = 6.9;
@@ -42,6 +43,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus) {
     if (!p.printify_product_id || variantti === null) {
       throw new KassaVirhe(`Valitse koko ja väri uudelleen tuotteelle ${p.name}. Tätä vaihtoehtoa ei voi nyt tilata.`, "missing_variant");
     }
+    // Katesääntö: alle 40 % tai tuntematon Printify-kulu -> ei maksua.
+    const kate = laskeKate(p, variantti);
+    if (!kate.tunnettu) throw new KassaVirhe(`Tuotteen ${p.name} hintaa ei voitu vahvistaa. Yritä hetken kuluttua uudelleen.`, "unknown_cost");
+    if (!kate.sallittu) throw new KassaVirhe(`Tuote ${p.name} ei ole tällä hetkellä tilattavissa.`, "low_margin");
     return {
       product_id: p.id, slug: p.slug, name: p.name, size: it.size || null, color: it.color || null,
       custom_text: typeof it.customText === "string" && it.customText.trim() ? it.customText.trim().slice(0, 200) : null,
