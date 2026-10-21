@@ -1,6 +1,7 @@
 const SUPABASE_FEED_URL =
   'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
+import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 
 const SITE = 'https://huumorikauppa.fi';
 
@@ -53,7 +54,9 @@ const HIDDEN_GOOGLE_CATEGORY = /Drinkware (?:&gt;|>) Mugs/;
 function dropHiddenItems(xml) {
   // Myös muut mukit (väärässä kategoriassa, tunnistus nimestä tai osoitteesta kuten src/lib/hiddenCategories.ts).
   const muki = (item) => /<g:link>[^<]*-muki<\/g:link>|<g:title>[^<]*\b(?:Muki|kahvimuki)\b/i.test(item);
-  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) ? '' : item));
+  // Ohjatut kaksoiskappaleet (vercel.json) pois: syötteen linkki ei saa ohjautua muualle.
+  const ohjattu = (item) => OHJATUT_TUOTESLUGIT.has(((item.match(/<g:link>[^<]*\/tuote\/([^<]+)<\/g:link>/) || [])[1]) || '');
+  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) ? '' : item));
 }
 
 export default async function handler(req, res) {
