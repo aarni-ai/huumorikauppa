@@ -1,30 +1,23 @@
-import { categories } from "@/data/products";
 import type { Product } from "@/types/product";
-
-const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
-  categories.map((c) => [c.slug, c.name.toLowerCase()])
-);
+import { productImageAlt } from "@/lib/productNames";
 
 /**
- * Generates an SEO-optimized Finnish alt text for a product image.
- * Example: "Hauska Kalamies t-paita – suomalainen huumorituote Huumorikaupasta"
+ * Kuvaava alt-teksti tuotekuvalle (sama muoto kuin tuotesivulla ja tuotekortissa):
+ * "Kalamies, t-paita, musta - kuva edestä"
  */
 export function productAlt(
-  product: Pick<Product, "name" | "category">,
-  context?: string
+  product: Pick<Product, "name" | "category"> & { variants?: Record<string, unknown> },
+  _context?: string,
+  url?: string,
 ): string {
-  const categoryLabel = CATEGORY_LABELS[product.category] || product.category || "huumorituote";
-  const ctx = context ? ` – ${context}` : "";
-  return `${product.name} – hauska ${categoryLabel} Huumorikaupasta${ctx}`;
+  return productImageAlt(product, { url });
 }
 
-/**
- * Alt text for an additional/gallery image of the same product.
- */
+/** Alt-teksti saman tuotteen lisäkuvalle (index alkaa 1:stä). */
 export function productGalleryAlt(
-  product: Pick<Product, "name" | "category">,
-  index: number
+  product: Pick<Product, "name" | "category"> & { variants?: Record<string, unknown> },
+  index: number,
+  url?: string,
 ): string {
-  const categoryLabel = CATEGORY_LABELS[product.category] || product.category || "huumorituote";
-  return `${product.name} – ${categoryLabel} kuva ${index} | Huumorikauppa`;
+  return productImageAlt(product, { url, index: Math.max(0, index - 1) });
 }
