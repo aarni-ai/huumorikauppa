@@ -513,7 +513,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   ],
   '/joululahjat': [
     { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai muki suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },
-    { q: "Milloin viimeistään tilata joululahja?", a: "Tilaa viimeistään 14.12. saadaksesi tuotteen ennen joulua. Toimitusaika on 3–7 arkipäivää." },
+    { q: "Milloin viimeistään tilata joululahja?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja toimitusajan mukaan." },
     { q: "Miten valitsen oikean koon joululahjaksi?", a: "L on yleisimmin sopiva koko miehille. Epävarma? Valitse yksi koko ylöspäin." },
     { q: "Voiko joululahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus." },
   ],
