@@ -17,9 +17,30 @@ export function Footer() {
   const [footerSubmitted, setFooterSubmitted] = useState(false);
   const { toast } = useToast();
 
-  // Google Customer Reviews badge — load once on mount
+  // Google Customer Reviews -merkki. Ladataan vasta sivun latauduttua ja selaimen ollessa joutilas
+  // (n. 250 kt skriptejä), jotta se ei kilpaile tuotekuvan ja ostopainikkeen kanssa.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const start = () => {
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        const w = window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void };
+        if (w.requestIdleCallback) w.requestIdleCallback(loadWidget, { timeout: 4000 });
+        else loadWidget();
+      }, 3000);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("load", start);
+    };
+  }, []);
+
+  function loadWidget() {
     if (document.getElementById("merchantWidgetScript")) return;
 
     const script = document.createElement("script");
@@ -37,7 +58,7 @@ export function Footer() {
       });
     });
     document.body.appendChild(script);
-  }, []);
+  }
 
   const handleFooterNewsletter = async () => {
     if (!footerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) {
