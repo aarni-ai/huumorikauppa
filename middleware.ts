@@ -365,35 +365,35 @@ const BLOG_META: Record<string, PageMeta> = {
     description: 'Eläkeläislahja joka muistetaan: hauskat ideat eläkkeelle jäävälle. Tilaa verkosta helposti.',
   },
   'parhaat-hauskat-tarrat-lappariin': {
-    title: 'Parhaat Hauskat Tarrat Läppäriin ja Muualle | Huumorikauppa.fi',
+    title: 'Hauskat Tarrat Läppäriin ja Muualle | Huumorikauppa.fi',
     description: 'Hauskat tarrat läppäriin, puhelimeen, auton takalasiin tai seinälle! Laadukkaat suomalaiset huumoritarrat.',
   },
   'hauska-vauvalahja-parhaat-bodyt': {
-    title: 'Hauska Vauvalahja - Parhaat Bodyt ja Muut Ideat | Huumorikauppa.fi',
+    title: 'Hauska Vauvalahja - Hauskat Bodyt ja Muut Ideat | Huumorikauppa.fi',
     description: 'Hauskat vauvalahjavinkit! Hauska body on hauska lahja uudelle perheelle. Tilaa nyt.',
   },
   'parhaat-meemituotteet-2025': {
-    title: 'Parhaat Meemituotteet 2025 - Hauskat Meemin Inspiroimat Lahjat | Huumorikauppa.fi',
-    description: 'Meemit ja hauskat lahjat - paras yhdistelmä! Löydä parhaat meemituotteet 2025. Tilaa helposti.',
+    title: 'Hauskat Meemituotteet 2025 - Hauskat Meemin Inspiroimat Lahjat | Huumorikauppa.fi',
+    description: 'Meemit ja hauskat lahjat - hauska yhdistelmä! Löydä hauskat meemituotteet 2025. Tilaa helposti.',
   },
   'hauskat-seinataulut-sisusta-huumorilla': {
     title: 'Hauskat Seinätaulut - Sisusta Koti Huumorilla | Huumorikauppa.fi',
     description: 'Hauskat seinätaulut kodin sisustukseen! Piristä seinät suomalaisella huumorilla. Nopea toimitus.',
   },
   'miksi-hauska-paita-paras-lahja': {
-    title: 'Miksi Hauska T-paita On Paras Lahja? - Syyt Selitetty | Huumorikauppa.fi',
-    description: 'Hauska t-paita lahjaksi - miksi se toimii aina? Lue parhaat syyt ja vinkit oikean paidan valintaan.',
+    title: 'Miksi Hauska T-paita On Hauska Lahja? - Syyt Selitetty | Huumorikauppa.fi',
+    description: 'Hauska t-paita lahjaksi - miksi se toimii aina? Lue hauskat syyt ja vinkit oikean paidan valintaan.',
   },
   'lahja-miehelle-30v-40v-50v-60v': {
     title: 'Lahja Miehelle 30v, 40v, 50v tai 60v - Hauskat Ideat | Huumorikauppa.fi',
-    description: 'Miehen pyöreä syntymäpäivä tulossa? Löydä täydellinen hauska lahja 30-, 40-, 50- tai 60-vuotiaalle!',
+    description: 'Miehen pyöreä syntymäpäivä tulossa? Löydä hauska lahja 30-, 40-, 50- tai 60-vuotiaalle!',
   },
   'lahja-naiselle-30v-40v-50v-60v': {
     title: 'Lahja Naiselle 30v, 40v, 50v tai 60v - Hauskat Ideat | Huumorikauppa.fi',
     description: 'Naisen pyöreä syntymäpäivä? Hauskat ja persoonalliset lahjaideat 30-, 40-, 50- ja 60-vuotiaalle naiselle!',
   },
   'hauskat-syntymapaivaLahjat-opas': {
-    title: 'Hauskat Syntymäpäivälahjat - Täydellinen Opas 2025 | Huumorikauppa.fi',
+    title: 'Hauskat Syntymäpäivälahjat - Hauska Opas 2025 | Huumorikauppa.fi',
     description: 'Hauskat syntymäpäivälahjat 2025! Ideat kaikille - miehelle, naiselle, lapselle. Nopea toimitus.',
   },
   'lahja-henkilolle-jolla-on-jo-kaikkea': {
@@ -409,11 +409,11 @@ const BLOG_META: Record<string, PageMeta> = {
     description: 'Etsitkö hauskaa lahjaa kalastajalle? Löydä hauskat ideat - t-paidat ja muut hauskuudet!',
   },
   'hauska-lahja-alle-20-euroa': {
-    title: 'Hauska Lahja Alle 20 Euroa - Parhaat Edulliset Ideat | Huumorikauppa.fi',
+    title: 'Hauska Lahja Alle 20 Euroa - Hauskat Edulliset Ideat | Huumorikauppa.fi',
     description: 'Hauskat lahjat alle 20 €! Edullisia ja hauskoja ideoita kaikkiin tilaisuuksiin. Nopea toimitus.',
   },
   'hauska-lahja-saunojalle': {
-    title: 'Hauska Lahja Saunojalle - Parhaat Saunavinkit | Huumorikauppa.fi',
+    title: 'Hauska Lahja Saunojalle - Hauskat Saunavinkit | Huumorikauppa.fi',
     description: 'Lahja saunojalle? Me tiedämme mitä suomalaiset saunojat haluavat! Hauskat lahjat saunan ystäville.',
   },
   'hauska-lahja-nortille-ja-gamerille': {
@@ -425,23 +425,23 @@ const BLOG_META: Record<string, PageMeta> = {
     description: 'Hauskat valmistujaislahjat 2026! Ideat ylioppilaalle, opiskelijalle ja ammattilaiselle. Tilaa nyt.',
   },
   'hauskat-pipot-suomi': {
-    title: 'Hauskat Pipot - Löydä Paras Humoristinen Pipo | Huumorikauppa.fi',
+    title: 'Hauskat Pipot - Löydä Hauska Humoristinen Pipo | Huumorikauppa.fi',
     description: 'Hauskat pipot suomalaisella huumorilla! Lämmin ja hauska pipo lahjaksi tai itselle. Tilaa nyt.',
   },
   'hauskat-peitot-lahjaksi': {
-    title: 'Hauska Peitto Lahjaksi - Parhaat Huumoripeittoideat | Huumorikauppa.fi',
+    title: 'Hauska Peitto Lahjaksi - Hauskat Huumoripeittoideat | Huumorikauppa.fi',
     description: 'Hauska peitto lahjaksi! Laadukas ja hauska peitto - pitää lämpimänä ja hymyilyttää. Tilaa nyt.',
   },
   'hauska-lahja-opettajalle': {
-    title: 'Hauska Lahja Opettajalle - Parhaat Opettajanlahjavinkit | Huumorikauppa.fi',
+    title: 'Hauska Lahja Opettajalle - Hauskat Opettajanlahjavinkit | Huumorikauppa.fi',
     description: 'Opettajanlahja joka muistetaan! Hauskat ideat opettajalle. Nopea toimitus.',
   },
   'hauska-lahja-urheilijalle': {
-    title: 'Hauska Lahja Urheilijalle - Parhaat Liikuntalahjaideat | Huumorikauppa.fi',
+    title: 'Hauska Lahja Urheilijalle - Hauskat Liikuntalahjaideat | Huumorikauppa.fi',
     description: 'Etsitkö hauskaa lahjaa urheilijalle? Hauskat lahjaideat kuntosali- ja juoksuharrastajille.',
   },
   'hauskat-laukut-kangaskassit': {
-    title: 'Hauskat Laukut ja Kangaskassit - Parhaat Valinnat | Huumorikauppa.fi',
+    title: 'Hauskat Laukut ja Kangaskassit - Hauskat Valinnat | Huumorikauppa.fi',
     description: 'Hauskat kangaskassit ja laukut suomalaisella huumorilla! Ekologinen ja hauska - erinomainen lahja.',
   },
   'hauskat-lahjat-koiraihmiselle': {
@@ -542,37 +542,37 @@ const CATEGORY_FAQS: Record<string, Array<{q: string; a: string}>> = {
 // Gift page path → FAQ entries
 const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   '/hauskat-lahjat-miehelle': [
-    { q: "Mikä on paras hauska lahja miehelle?", a: "Suosituimpia hauskoja lahjoja miehelle ovat huumoripaita, -huppari tai -muki joka liittyy hänen harrastukseensa tai ammattiinsa. Suosituimpia ovat kalamies-, ammattimies- ja Mersumies-teemat." },
+    { q: "Mikä on hauska lahja miehelle?", a: "Suosituimpia hauskoja lahjoja miehelle ovat huumoripaita, -huppari tai -muki joka liittyy hänen harrastukseensa tai ammattiinsa. Suosituimpia ovat kalamies-, ammattimies- ja Mersumies-teemat." },
     { q: "Sopiiko huumoripaita lahjaksi 50-vuotiaalle miehelle?", a: "'100 % eläkeläinen' ja 'Museo-kappale' -teemat ovat erityisen suosittuja 50-vuotiaiden lahjoina. Myös ammattihuumoriaiheet toimivat hyvin." },
     { q: "Miten valitsen oikean koon lahjaksi?", a: "L on miesten yleisin koko. Kokoopas löytyy jokaisen tuotteen sivulta. Epävarma? Valitse XL - löysä istuvuus on turvallisempi kuin liian pieni." },
     { q: "Voiko tuotteen paketoida lahjapakettiin?", a: "Tällä hetkellä emme tarjoa lahjapakettia, mutta tilausvahvistus toimii mukavana lahjasaatteena digitaalisesti." },
   ],
   '/hauskat-lahjat-naiselle': [
-    { q: "Mikä on paras hauska lahja naiselle?", a: "Suosituimpia lahjoja naiselle ovat 'Maailman paras äiti' -hupparit, hauskat kahvimukit ja söpöt huumoriaiheeiset tuotteet. Myös kangaskassit ovat suosittuja." },
+    { q: "Mikä on hauska lahja naiselle?", a: "Suosituimpia lahjoja naiselle ovat 'Maailman paras äiti' -hupparit, söpöt huumoriaiheeiset tuotteet. Myös kangaskassit ovat suosittuja." },
     { q: "Sopiiko huumoripaita lahjaksi naiselle?", a: "Kyllä, erityisesti äitiaiheeiset ja arjen huumori- ja viiniaiheeiset tuotteet ovat naisten suosiossa." },
     { q: "Miten valitsen oikean koon lahjaksi naiselle?", a: "M tai L on yleisimmät naisten koot. Ylisuuri (oversized) tyyli on tällä hetkellä trendikäs." },
     { q: "Voiko tuotteen paketoida lahjapakettiin?", a: "Emme tällä hetkellä tarjoa lahjapakettia, mutta tilausvahvistus soveltuu digitaaliseksi lahjasaatteeksi." },
   ],
   '/lahja-miehelle': [
-    { q: "Mikä on hyvä lahja miehelle joka tykkää huumorista?", a: "Paras hauska lahja miehelle on tuote joka liittyy hänen harrastukseensa tai ammattiinsa - kalamies, sähkömies, eläkeläinen, Mersumies. Valikoimastamme löydät yli 75 hauskaa ideaa." },
+    { q: "Mikä on hyvä lahja miehelle joka tykkää huumorista?", a: "Hauska lahja miehelle on tuote joka liittyy hänen harrastukseensa tai ammattiinsa - kalamies, sähkömies, eläkeläinen, Mersumies. Valikoimastamme löydät yli 75 hauskaa ideaa." },
     { q: "Sopiiko huumoripaita lahjaksi 50-vuotiaalle?", a: "Ehdottomasti. Suosituimpia ovat '100 % Eläkeläinen', 'Museo-kappale' ja ammattihuumori. Hauska paita on aina yllättävä ja muistettava lahja." },
     { q: "Miten valitsen oikean koon lahjaksi?", a: "L on miesten yleisin koko. Epävarma? Valitse yksi koko ylöspäin - löysä istuvuus on turvallisempi." },
     { q: "Voiko tuotteen paketoida lahjapakettiin?", a: "Lahjapakettia ei tarjota tällä hetkellä, mutta tilausvahvistus sopii lahjasaatteeksi." },
   ],
   '/isanpaiva-lahjat': [
-    { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita, huppari tai muki joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras isä' -teemat." },
+    { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita, huppari tai pipo joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras isä' -teemat." },
     { q: "Milloin viimeistään pitää tilata isänpäivälahja?", a: "Tilaa viimeistään 2 viikkoa ennen isänpäivää (marraskuun toinen sunnuntai). Toimitusaika on 3-10 arkipäivää." },
     { q: "Miten valitsen oikean koon isänpäivälahjaan?", a: "L on miesten yleisin koko. Jos isä on isokokoinen, valitse XL tai XXL. Kokoopas on jokaisen tuotteen sivulla." },
     { q: "Voiko isänpäivälahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   '/joululahjat': [
-    { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai muki suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },
+    { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },
     { q: "Milloin viimeistään tilata joululahja?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja toimitusajan mukaan." },
     { q: "Miten valitsen oikean koon joululahjaksi?", a: "L on yleisimmin sopiva koko miehille. Epävarma? Valitse yksi koko ylöspäin." },
     { q: "Voiko joululahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus." },
   ],
   '/syntymapaivalahjat': [
-    { q: "Mikä on hauska syntymäpäivälahja huumorin ystävälle?", a: "Huumoripaita, -huppari tai -muki on täydellinen syntymäpäivälahja. Suosituimpia ovat '100 % Eläkeläinen' ja ammattihuumori ikääntyvälle juhlijalle." },
+    { q: "Mikä on hauska syntymäpäivälahja huumorin ystävälle?", a: "Huumoripaita, -huppari tai -muki on hauska syntymäpäivälahja. Suosituimpia ovat '100 % Eläkeläinen' ja ammattihuumori ikääntyvälle juhlijalle." },
     { q: "Sopiiko huumoripaita syntymäpäivälahjaan?", a: "Ehdottomasti! Hauska paita on yllättävä, persoonallinen ja tulee oikeasti käyttöön." },
     { q: "Miten valitsen oikean koon syntymäpäivälahjaan?", a: "L on yleisin koko miehille, M naisille. Epävarma? Yksi koko ylöspäin on turvallisempi." },
     { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa hyvissä ajoin jos synttäripäivä lähestyy." },
@@ -584,7 +584,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
     { q: "Voiko polttaripaitoja tilata isomman erän?", a: "Kyllä! Ryhmätilaukset onnistuvat helposti - lisää eri koot koriin tai ota yhteyttä asiakaspalveluumme." },
   ],
   '/elakelahjat': [
-    { q: "Mikä on paras hauska eläkelahja?", a: "'Olen eläkkeellä' ja '100 % eläkeläinen' -teemat ovat suosituimpia eläkelahja-ideoita. T-paidat, hupparit ja mukit sopivat hyvin." },
+    { q: "Mikä on hauska eläkelahja?", a: "'Olen eläkkeellä' ja '100 % eläkeläinen' -teemat ovat suosituimpia eläkelahja-ideoita. T-paidat, hupparit ja mukit sopivat hyvin." },
     { q: "Sopiiko huumoripaita eläkkeelle jäävälle työkavereille?", a: "Kyllä - hauska eläkelahja on työtovereiden perinteinen tapa toivottaa työkaveri hyvää eläkettä." },
     { q: "Miten valitsen oikean koon eläkelahjaan?", a: "L on miesten ja M naisten yleisin koko. Epävarma? Valitse yksi ylöspäin." },
     { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa ajoissa ennen eläkejuhlia." },
@@ -603,7 +603,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   ],
   '/hauskat-t-paidat': [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paitamme ovat 100 % puuvillaa, painetaan tilauksesta DTG-tekniikalla." },
-    { q: "Sopiiko hauska t-paita lahjaksi?", a: "Ehdottomasti! Hauska t-paita on persoonallinen ja tulee oikeasti käyttöön. Täydellinen syntymäpäivä-, joulu- tai läksiäislahja." },
+    { q: "Sopiiko hauska t-paita lahjaksi?", a: "Ehdottomasti! Hauska t-paita on persoonallinen ja tulee oikeasti käyttöön. Hauska syntymäpäivä-, joulu- tai läksiäislahja." },
     { q: "Miten valitsen oikean koon?", a: "L on miesten yleisin koko. Kokoopas löytyy jokaiselta tuotesivulta. Epävarma? Valitse XL." },
     { q: "Voiko t-paidan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
@@ -791,7 +791,7 @@ export default async function middleware(request: Request): Promise<Response | u
     if (!meta) {
       meta = {
         title: `${slug.replace(/-/g, ' ')} | Huumorikauppa.fi`,
-        description: 'Lahjaideoita ja hauskan ostajan oppaita Huumorikaupasta. Löydä paras hauska lahja!',
+        description: 'Lahjaideoita ja hauskan ostajan oppaita Huumorikaupasta. Löydä hauska lahja!',
       };
     }
   }
