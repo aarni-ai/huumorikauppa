@@ -67,6 +67,9 @@ const Accessibility = lazyWithRetry(() => import("./pages/Accessibility"));
 const NotFound = lazyWithRetry(() => import("./pages/NotFound"));
 const SearchPage = lazyWithRetry(() => import("./pages/SearchPage"));
 const OrderConfirmation = lazyWithRetry(() => import("./pages/OrderConfirmation"));
+const GiftCardPage = lazyWithRetry(() => import("./pages/GiftCardPage"));
+const BundlesPage = lazyWithRetry(() => import("./pages/BundlesPage"));
+const BundlePage = lazyWithRetry(() => import("./pages/BundlesPage").then((m) => ({ default: m.BundlePage })));
 const BlogIndex = lazyWithRetry(() => import("./pages/BlogIndex"));
 const BlogPost = lazyWithRetry(() => import("./pages/BlogPost"));
 const GiftCategoryPage = lazyWithRetry(() => import("./pages/GiftCategoryPage"));
@@ -141,6 +144,9 @@ const App = () => (
               <Route path="/saavutettavuusseloste" element={<Accessibility />} />
               <Route path="/haku" element={<SearchPage />} />
               <Route path="/tilaus-vahvistettu" element={<OrderConfirmation />} />
+              <Route path="/lahjakortti" element={<GiftCardPage />} />
+              <Route path="/paketit" element={<BundlesPage />} />
+              <Route path="/paketit/:slug" element={<BundlePage />} />
               <Route path="/blogi" element={<BlogIndex />} />
               <Route path="/blogi/:slug" element={<BlogPost />} />
               <Route path="/aitienpaiva" element={<MothersDayPage />} />

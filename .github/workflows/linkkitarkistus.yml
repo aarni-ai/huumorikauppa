@@ -1,0 +1,30 @@
+# Viikoittainen linkkitarkistus: sivukartan osoitteet (HEAD/GET, rinnakkain 8, yli yhden hypyn uudelleenohjausketjut
+# virheiksi), tuotesivujen tuotteet /api/products-rajapinnasta ja avainsivujen sisäiset linkit (scripts/linkkitarkistus.mjs).
+# Epäonnistuu ja tulostaa raportin, jos virheitä löytyy. Ei tarvitse salaisuuksia.
+# Valinnainen muuttuja (Settings > Secrets and variables > Actions > Variables): KAUPPA_URL, oletus https://huumorikauppa.fi.
+# Ajastetut työnkulut ajetaan vain oletushaarasta (main).
+name: Linkkitarkistus
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Tarkista sivukartta ja linkit
+        env:
+          KAUPPA_URL: ${{ vars.KAUPPA_URL || 'https://huumorikauppa.fi' }}
+        run: node scripts/linkkitarkistus.mjs --url "$KAUPPA_URL" --rinnakkain 8

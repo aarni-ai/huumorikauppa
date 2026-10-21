@@ -205,6 +205,50 @@ maksut, joita sille ei tullut, ja vanha tausta voi lähettää saman tilauksen P
 Vanhat avoimet tilaukset (maksettu ennen siirtoa) ovat Lovable Cloudissa, eikä niihin ole pääsyä: hoida ne
 Printifyn hallinnasta käsin.
 
+## 10. Kasvutoiminnot (haara kasvu-oma-tausta)
+
+Lahjakortit, paketit, ostoskorin suositukset, toimitusarvio ja kolme valvontaa GitHub Actionsissa.
+
+**Taulut.** Lahjakortit tarvitsevat uudet taulut (`gift_cards`, `gift_card_redemptions`) ja sarakkeet tilauksiin.
+`db/schema.sql` on turvallinen ajaa uudelleen:
+
+```
+npx vercel env pull .env.local && set -a && . ./.env.local && set +a && node scripts/aja-schema.mjs
+```
+
+**Lahjakortit** (`/lahjakortti`, 25/50/75/100 €): ei Printifyä eikä toimitusmaksua; koodi luodaan maksun jälkeen ja
+lähtee ostajalle (ja saajalle, jos osoite annettiin) Resendillä, joten kohta 5 (RESEND_API_KEY) tarvitaan. Kassan kenttä
+"Lahjakortin koodi" vähentää saldoa maksun jälkeen; jos kortti kattaa koko summan, tilaus vahvistetaan ilman Stripeä.
+Stripe-avaimeen ei tarvita uusia oikeuksia.
+
+**Paketit** (`/paketit`): määritykset generoidaan tuotteista, kun tuotteet muuttuvat:
+
+```
+node scripts/generoi-paketit.mjs
+```
+
+Pakettialennus (10 %) annetaan kassalla vain, kun paketin kate alennuksen jälkeen on vähintään 40 %. Ennen kuin
+Printifyn kulut on tuotu (kohta 3, `--kulut`), alennusta ei anneta eikä sitä näytetä sivuilla.
+
+**Toimitusarvio** tuotesivulla käyttää varovaisia oletusaikoja (`src/config/toimitusajat.ts`), joita tarkennetaan
+myöhemmin painotalokohtaisiksi.
+
+**GitHub Actions** (ilmainen, ajetaan vain mainista, eli kun haara on yhdistetty):
+
+| Työnkulku | Milloin | Salaisuudet |
+|---|---|---|
+| Linkkitarkistus (`linkkitarkistus.yml`) | maanantaisin | ei tarvita |
+| Saatavuus (`saatavuus.yml`) | päivittäin | ei tarvita |
+| Katetarkistus (`katetarkistus.yml`) | maanantaisin | `RESEND_API_KEY` (sähköposti), valinnainen `DATABASE_URL` |
+
+Lisää salaisuudet: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > **New repository
+secret**. `RESEND_API_KEY` on sama arvo kuin Vercelissä (kohta 5). `DATABASE_URL` (Vercel > Storage > Neon >
+`.env.local`-tiedoston arvo) antaa katetarkistuksen nähdä myös jo piilotetut alle 40 %:n tuotteet; ilman sitä tuotteet
+haetaan sivuston `/api/products`-rajapinnasta. Ilman `RESEND_API_KEY`:tä katetarkistus päättyy virheeseen ja
+yhteenveto näkyy Actionsin lokissa. Kaikki työnkulut voi ajaa heti: Actions > työnkulku > **Run workflow**.
+
+Huom: niin kauan kuin kaikkien tuotteiden Printify-kulut ovat tuntemattomat, katetarkistus raportoi ne joka viikko.
+
 ## Mitä jää vielä Lovable Cloudiin
 
 Uutiskirjeen tilaus (MailerLite), hylätyn ostoskorin muistutus ja palautus, ylläpitopaneelin kirjautuminen ja

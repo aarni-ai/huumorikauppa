@@ -1,0 +1,29 @@
+# Päivittäinen saatavuustarkistus (scripts/saatavuus.mjs): GET /, /kategoria/t-paidat ja /kassa (200) sekä
+# POST /api/checkout tyhjällä rungolla (JSON-vastaus; 5xx on virhe, paitsi dokumentoitu 503 not_configured).
+# Ei tarvitse salaisuuksia. Valinnainen muuttuja KAUPPA_URL, oletus https://huumorikauppa.fi.
+# Ajastetut työnkulut ajetaan vain oletushaarasta (main).
+name: Saatavuus
+
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  saatavuus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Tarkista sivut ja kassa
+        env:
+          KAUPPA_URL: ${{ vars.KAUPPA_URL || 'https://huumorikauppa.fi' }}
+        run: node scripts/saatavuus.mjs --url "$KAUPPA_URL"

@@ -15,8 +15,10 @@ export const ALV = 0.255;
 export const KATE_RAJA = 0.4;
 export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
-export const TOIMITUSMAKSU = 6.9;
-export const ILMAINEN_RAJA = 79;
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
+
+export const TOIMITUSMAKSU = TOIMITUS;
+export const ILMAINEN_RAJA = ILMAINEN_TOIMITUS_RAJA;
 
 /** Tuotteen variantin kate. Palauttaa { tunnettu, nettokate, kate, sallittu }. */
 export function laskeKate(tuote, varianttiId = null) {
@@ -43,4 +45,59 @@ export function heikoinKate(tuote) {
   const tulokset = idt.map((id) => laskeKate(tuote, id)).filter((k) => k.tunnettu);
   if (!tulokset.length) return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
   return tulokset.reduce((a, b) => (b.kate < a.kate ? b : a));
+}
+
+/**
+ * Paketin (useampi tuote yhdessä tilauksessa, pakettialennus) kate samalla kaavalla. Pahin tapaus: paketti on
+ * tilauksen ainoa sisältö, toimitusmaksu peritään alennusta edeltävän summan mukaan (kuten kassa), ja Printifyn
+ * toimituskulu lasketaan jokaiselle tuotteelle ensimmäisen kappaleen hinnalla (lisäkappaleen hintaa ei tunneta).
+ * @param osat [{ tuote, varianttiId }]
+ * @param alennusProsentti esim. 10
+ * Palauttaa { tunnettu, nettokate, kate, sallittu }. Tuntematon kulu: tunnettu false, sallittu null.
+ */
+export function laskePaketinKate(osat, alennusProsentti = 0) {
+  if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
+  let hinnat = 0;
+  let kulut = 0;
+  for (const { tuote, varianttiId } of osat) {
+    const hinta = Number(tuote?.price);
+    const id = varianttiId ?? Object.values(tuote?.variants?.variant_map || {})[0];
+    const kulu = (tuote?.variants?.costs || {})[String(id)];
+    const toimitus = tuote?.variants?.shipping_cents;
+    if (!Number.isFinite(hinta) || typeof kulu !== "number" || typeof toimitus !== "number") {
+      return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
+    }
+    hinnat += hinta;
+    kulut += (kulu + toimitus) / 100;
+  }
+  const toimitusmaksu = hinnat >= ILMAINEN_RAJA ? 0 : TOIMITUSMAKSU;
+  const maksettu = hinnat * (1 - alennusProsentti / 100) + toimitusmaksu;
+  const myyntiAlv0 = maksettu / (1 + ALV);
+  const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
+  const nettokate = myyntiAlv0 - kulut - stripe;
+  const kate = nettokate / myyntiAlv0;
+  return { tunnettu: true, nettokate: Math.round(nettokate * 100) / 100, kate: Math.round(kate * 1000) / 1000, sallittu: kate >= KATE_RAJA };
+}
+
+/** Paketin heikoin kate kaikilla varianttiyhdistelmillä (näyttö: alennus luvataan vain, jos jokainen yhdistelmä täyttää säännön). */
+export function paketinHeikoinKate(tuotteet, alennusProsentti = 0) {
+  const listat = tuotteet.map((t) => {
+    const idt = Object.values(t?.variants?.variant_map || {});
+    return idt.length ? idt : [null];
+  });
+  let heikoin = null;
+  const kayLapi = (i, valitut) => {
+    if (i === tuotteet.length) {
+      const k = laskePaketinKate(valitut, alennusProsentti);
+      if (!k.tunnettu) heikoin = { tunnettu: false, nettokate: null, kate: null, sallittu: null };
+      else if (heikoin?.tunnettu !== false && (!heikoin || k.kate < heikoin.kate)) heikoin = k;
+      return;
+    }
+    for (const id of listat[i]) {
+      if (heikoin?.tunnettu === false) return;
+      kayLapi(i + 1, [...valitut, { tuote: tuotteet[i], varianttiId: id }]);
+    }
+  };
+  kayLapi(0, []);
+  return heikoin || { tunnettu: false, nettokate: null, kate: null, sallittu: null };
 }

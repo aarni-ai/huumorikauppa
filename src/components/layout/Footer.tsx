@@ -106,6 +106,8 @@ export function Footer() {
           <h4 className="text-xs font-semibold text-foreground uppercase tracking-widest">Kauppa</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
             <Link to="/kaikki-tuotteet" className="hover:text-foreground transition-colors">Kaikki tuotteet</Link>
+            <Link to="/paketit" className="hover:text-foreground transition-colors">Paketit</Link>
+            <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>
             {categories.map(cat => (
               <Link key={cat.slug} to={`/kategoria/${cat.slug}`} className="hover:text-foreground transition-colors">
                 {cat.name}
