@@ -14,4 +14,6 @@ export interface BlogPost {
   faq?: { q: string; a: string }[];
   /** Optional internal links to specific products shown in a dedicated section. */
   productLinks?: { slug: string; label: string }[];
+  /** Optional hero/share image (absolute URL or site path). Used for og:image and Article.image. */
+  image?: string;
 }

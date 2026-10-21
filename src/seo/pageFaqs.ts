@@ -1,142 +1,151 @@
 /**
  * Sivujen UKK-sisällöt. Yhteinen lähde React-sivuille ja build-vaiheen esirenderöinnille
  * (scripts/prerender.mjs), jotta staattinen HTML ja selaimessa näkyvä sivu pysyvät samoina.
+ *
+ * Faktalähteet: Terms.tsx (toimitusehdot), ReturnsPolicy.tsx (palautusehdot), src/seo/site.ts,
+ * create-checkout (toimituskulut, oma teksti), ProductPage (oma teksti, kokotaulukko).
+ * Säännöt: jokainen vastaus alkaa yhdellä suoralla vastauslauseella (enintään noin 25 sanaa),
+ * sen jälkeen tarkennus. Ei ajatusviivoja, ei todistamattomia superlatiiveja, ei arvailevia ilmaisuja.
  */
+import { PRODUCT_TYPE_LABEL, cleanProductName } from "@/lib/productNames";
+
 export interface FaqItem {
   q: string;
   a: string;
 }
 
-/** /usein-kysytyt-kysymykset */
+/** Ainoa jouluna annettava toimituslupaus (seo/toimitusajat.md). */
+export const CHRISTMAS_DEADLINE_TEXT =
+  "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
+
+const DELIVERY_SHORT = "Toimitusaika on 3-10 arkipäivää tilauksesta.";
+const SHIPPING_COST = "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen.";
+
+/** /usein-kysytyt-kysymykset (näkyvä UKK ja FAQPage-JSON-LD samasta listasta). */
 export const SITE_FAQS: FaqItem[] = [
   {
+    q: "Mistä saa hauskan joululahjan nopeasti?",
+    a: `Huumorikauppa.fi:stä saat hauskan joululahjan kotiovelle 3-10 arkipäivässä tilauksesta. ${CHRISTMAS_DEADLINE_TEXT} Valikoimassa on t-paitoja ja huppareita esimerkiksi ammatti-, harrastus-, eläke- ja ikävuositeemoilla sekä tuotteita, joihin voit tilata oman tekstin.`,
+  },
+  {
+    q: "Ehtiikö tilaus jouluksi?",
+    a: `Ehtii, kun tilaat viimeistään perjantaina 20.11.2026: silloin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja kuljetusajan mukaan. Myöhemmin tehdyille tilauksille emme lupaa toimitusta ennen joulua.`,
+  },
+  {
+    q: "Mikä on hyvä lahja miehelle, jolla on kaikki?",
+    a: "Hyvä lahja miehelle, jolla on kaikki, on hauska paita tai huppari, jonka teksti osuu hänen harrastukseensa, ammattiinsa tai ikäänsä. Kalastajalle sopii \"Huonokin päivä kalassa on parempi kuin hyvä päivä töissä\", eläkkeelle jäävälle \"Olen eläkkeellä\" ja kaljuuntuvalle kaverille \"Kalju\". Jos mikään valmis teksti ei osu, tilaa paita omalla tekstillä.",
+  },
+  {
+    q: "Voiko tuotteeseen tilata oman tekstin?",
+    a: "Voi: Oma teksti/kuva -tuotteisiin kirjoitat haluamasi tekstin tai kuvatoiveen tuotesivun kenttään ennen kuin lisäät tuotteen koriin. Kenttään mahtuu 200 merkkiä, ja toive kulkee tilauksen mukana painoon asti. Personoitavia tuotteita ovat esimerkiksi t-paita, huppari, pitkähihainen paita, vauvan body, lippis, tarra, peitto ja seinätaulu. Asiakkaan toiveiden mukaan valmistetuilla tuotteilla ei ole 14 päivän peruutusoikeutta, mutta virheellisen tuotteen korvaamme uudella tai hyvitämme.",
+  },
+  {
+    q: "Paljonko toimitus maksaa?",
+    a: `${SHIPPING_COST} Hinnat sisältävät arvonlisäveron (ALV 25,5 %), ja toimituskulut näet kassalla ennen maksamista.`,
+  },
+  {
     q: "Kuinka nopeasti tilaus toimitetaan?",
-    a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää tilauksesta. Saat sähköpostiisi toimitusseurantakoodin kun paketti on lähetetty."
+    a: `${DELIVERY_SHORT} Jokainen tuote painetaan tilauksesta, minkä jälkeen paketti toimitetaan Postin tai Matkahuollon kautta. Saat sähköpostiisi seurantakoodin, kun paketti on lähetetty.`,
   },
   {
-    q: "Onko toimitus ilmainen?",
-    a: "Toimitus on ilmainen yli 79 euron tilauksille. Alle 79 euron tilauksille toimitusmaksu on 6,90 €."
+    q: "Miten palautus toimii?",
+    a: "Sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita peruutuksesta sähköpostitse osoitteeseen huumorikauppa@gmail.com ja kerro tilausnumero, palautettavat tuotteet ja yhteystietosi, niin saat palautusohjeet ja palautusosoitteen. Lähetä tuote 14 päivän kuluessa ilmoituksesta käyttämättömänä. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen tai väärin toimitettu.",
   },
   {
-    q: "Miten palautusoikeus toimii?",
-    a: "Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautuskulut ovat asiakkaan vastuulla. Rahat palautetaan 5–7 arkipäivässä."
-  },
-  {
-    q: "Mitä maksutapoja teillä on?",
-    a: "Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit ostaa nyt ja maksaa myöhemmin."
-  },
-  {
-    q: "Voinko tilata ilman tiliä?",
-    a: "Kyllä, voit tilata vieraana ilman rekisteröitymistä."
-  },
-  {
-    q: "Toimittaako Huumorikauppa ulkomaille?",
-    a: "Tällä hetkellä toimitamme vain Suomeen, mukaan lukien Ahvenanmaa."
-  },
-  {
-    q: "Miten otan yhteyttä asiakaspalveluun?",
-    a: "Tavoitat meidät sähköpostilla huumorikauppa@gmail.com. Vastaamme 1–2 arkipäivässä."
-  },
-  {
-    q: "Ovatko tuotteet suomalaista käsialaa?",
-    a: "Kaikki designit ovat suomalaista käsialaa. Huumorikauppa on 100% suomalainen verkkokauppa, joka toimii Helsingistä."
-  },
-  {
-    q: "Sopiiko tuote lahjaksi?",
-    a: "Ehdottomasti. Monet tuotteemme on merkitty 'Lahjaidea'-badgella ja sopivat lahjaksi syntymäpäiviin, jouluun, polttareihin, valmistujaisiin, eläkejuhliin ja työkavereille."
-  },
-  {
-    q: "Miten tiedän mikä koko sopii?",
-    a: "Jokaisella vaatetuotesivulla on koko-opas senttimetreinä. Jos olet epävarma, suosittelemme tilaamaan yhden koon isomman."
-  },
-  {
-    q: "Teettekö custom-painatuksia?",
-    a: "Kyllä! Teemme custom-painatuksia paitoihin, huppareihin ja mukeihin. Ota yhteyttä sähköpostilla (huumorikauppa@gmail.com) ja kerro mitä haluat – suunnitellaan yhdessä!"
-  },
-  {
-    q: "Mikä on Huumorikauppa?",
-    a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja, kangaskasseja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta."
-  },
-  {
-    q: "Mistä Huumorikaupan tuotteet painetaan?",
-    a: "Tuotteet painetaan tilauksesta print-on-demand-menetelmällä, joten ylituotantoa ei synny. Painopalvelu on EU-alueelta ja täyttää eurooppalaiset laatuvaatimukset."
-  },
-  {
-    q: "Millaiset materiaalit tuotteissa on käytössä?",
-    a: "T-paidat ja hupparit ovat 100 % puuvillaa tai puuvilla–polyesteri-sekoitteita. Mukit ovat keraamisia, tarrat säänkestävää vinyyliä ja kangaskassit kestävää puuvillaa."
-  },
-  {
-    q: "Mikä on hauska lahja miehelle?",
-    a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, isänpäivä- ja syntymäpäivähupparit, kahvimukit toimistoon ja meemiaiheiset tarrat. Katso valikoima kategoriasta /hauskat-lahjat-miehelle."
-  },
-  {
-    q: "Mikä on hauska lahja naiselle?",
-    a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta /hauskat-lahjat-naiselle."
-  },
-  {
-    q: "Mitkä ovat parhaat lahjat työkaverille?",
-    a: "Toimistolahjoiksi sopivat hauskat kahvimukit, työpaikkahuumoria sisältävät t-paidat ja toimistotarrat. Suositut tuotteet löytyvät /lahja-tyokaverille-sivulta."
-  },
-  {
-    q: "Onko teillä polttarilahjoja?",
-    a: "Kyllä – polttareihin sopivat hauskat ryhmäpaidat ja personoidut hupparit. Katso /polttari-lahjat-kategoria tai pyydä custom-printti sähköpostilla."
-  },
-  {
-    q: "Miten löydän lahjan ihmiselle, jolla on jo kaikkea?",
-    a: "Hauska lahja toimii silloin kun mikään muu ei tunnu sopivalta. Suosittelemme henkilön persoonaan sopivaa huumoripaitaa, mukia tai tekstitaulua – kategoriasta /lahjaideat-jolla-jo-kaikkea löydät listan testattuja vinkkejä."
-  },
-  {
-    q: "Voiko tilauksen noutaa?",
-    a: "Emme tarjoa noutoa tällä hetkellä. Kaikki tilaukset toimitetaan PostNordin kautta lähimpään pakettiautomaattiin tai Postin pisteeseen Suomessa."
-  },
-  {
-    q: "Miten alennuskoodi käytetään?",
-    a: "Syötä alennuskoodi (esim. HUUMORI10) ostoskorin Yhteenveto-osioon ennen kassalle siirtymistä. Alennus näkyy heti loppusummassa."
+    q: "Milloin saan rahat takaisin palautuksesta?",
+    a: "Hyvitys maksetaan alkuperäisellä maksutavalla 14 päivän kuluessa siitä, kun olemme saaneet palautetun tuotteen tai todisteen sen lähettämisestä. Hyvitys sisältää tuotteen hinnan ja alkuperäiset toimituskulut edullisimman toimitustavan mukaan.",
   },
   {
     q: "Voinko vaihtaa väärän koon?",
-    a: "Kyllä. Lähetä tuote takaisin 30 päivän sisällä ja tilaa uusi koko erillisellä tilauksella – näin saat sen nopeammin kuin vaihdolla."
+    a: "Erillistä vaihtoa ei ole, mutta voit palauttaa tuotteen 14 päivän peruutusoikeudella ja tilata oikean koon uutena tilauksena. Palautus tehdään palautusehtojen mukaan sähköpostilla huumorikauppa@gmail.com. Tarkista ennen tilausta tuotesivun kokotaulukko, niin vaihtoa ei tarvita.",
   },
   {
-    q: "Säilyvätkö painatukset pesussa?",
-    a: "Kyllä. Painatukset on tehty kestopainomenetelmällä, ja oikein hoidettuna (käännä nurin ennen pesua, max 40 °C, ei kuivurin korkeinta lämpöä) ne säilyvät vuosia ennallaan."
+    q: "Mitä maksutapoja voin käyttää?",
+    a: "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla, jolle kassa ohjaa sinut. Tilaus on sitova, kun maksu on suoritettu, ja tilausvahvistus tulee sähköpostiisi.",
   },
   {
-    q: "Onko tuotteet eettisesti tuotettu?",
-    a: "Käyttämämme tukkutoimittajat (mm. Stanley/Stella ja Bella+Canvas) on sertifioitu Fair Wear- tai vastaavilla työehtosertifikaateilla. Print-on-demand-tuotanto vähentää myös ylituotantoa ja jätettä."
+    q: "Miten otan yhteyttä asiakaspalveluun?",
+    a: "Tavoitat asiakaspalvelun sähköpostilla huumorikauppa@gmail.com. Vastaamme 1-2 arkipäivän kuluessa. Jos tuotteessa on vika, liitä viestiin tilausnumero, kuvaus virheestä ja valokuva tuotteesta.",
   },
   {
-    q: "Tarjoatteko yrityslahjoja tai tukkuhintoja?",
-    a: "Kyllä, teemme yrityslahjoja, kausituotteita ja tiimipaitoja. Pyydä tarjous: huumorikauppa@gmail.com – kerro määrä, tuote ja toivottu painatus."
+    q: "Voinko tilata ilman tiliä?",
+    a: "Voit: tilaus tehdään kassalla ilman rekisteröitymistä. Täytä toimitustiedot ja maksa tilaus, niin tilausvahvistus tulee sähköpostiisi.",
+  },
+  {
+    q: "Voiko lahjan lähettää suoraan saajalle?",
+    a: "Voi: valitse kassalla \"Toimitetaan eri vastaanottajalle kuin maksaja\" ja kirjoita vastaanottajan nimi ja osoite. Tilausvahvistus ja seurantakoodi tulevat sinun sähköpostiisi.",
+  },
+  {
+    q: "Missä Huumorikaupan tuotteet painetaan?",
+    a: "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa. Jokainen tuote valmistetaan vasta tilauksen jälkeen, joten varastoon ei painata tuotteita etukäteen.",
+  },
+  {
+    q: "Mikä on Huumorikauppa?",
+    a: "Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita tuotteita suomalaisella huumorilla. Y-tunnus on 3583677-2, ja asiakaspalvelu toimii suomeksi sähköpostilla huumorikauppa@gmail.com.",
+  },
+  {
+    q: "Miten tiedän, mikä koko sopii?",
+    a: "Katso tuotesivun kokotaulukko, jossa on rinnan, vyötärön ja lantion mitat senttimetreinä. Vertaa mittoja paitaan, joka istuu hyvin. Tuotteen saatavilla olevat koot ja värit näet tuotesivulla.",
+  },
+  {
+    q: "Miten paita tai huppari pestään?",
+    a: "Pese tuote tuotesivun hoito-ohjeen mukaan. T-paitojen ja huppareiden ohjeissa on tyypillisesti konepesu enintään 30 °C eikä kemiallista pesua. Kun käännät tuotteen nurin ennen pesua, painatus on suojassa hankaukselta.",
+  },
+  {
+    q: "Toimitatteko ulkomaille?",
+    a: "Emme: toimitamme tilauksia vain Suomeen. Paketit kulkevat Postin tai Matkahuollon kautta.",
+  },
+  {
+    q: "Voiko tilauksen noutaa?",
+    a: "Noutoa ei ole, vaan kaikki tilaukset toimitetaan Postin tai Matkahuollon kautta. Saat seurantakoodin sähköpostiisi, kun paketti on lähetetty.",
+  },
+  {
+    q: "Miten alennuskoodi käytetään?",
+    a: "Syötä alennuskoodi kassasivun alennuskoodikenttään ennen maksamista. Hyväksytty alennus näkyy loppusummassa ennen kuin siirryt maksamaan.",
+  },
+  {
+    q: "Mikä on hauska lahja naiselle?",
+    a: "Hauska lahja naiselle on t-paita tai huppari, jonka teksti osuu hänen arkeensa, kuten \"Maailman paras äiti\" tai \"Super äiskä\". Ikävuosille löytyy omat tekstinsä, esimerkiksi \"40 ja fabulous\", ja oman tekstin voi tilata personoitavaan tuotteeseen.",
+  },
+  {
+    q: "Mikä on hauska lahja työkaverille?",
+    a: "Työkaverille sopii t-paita tai huppari, jossa on työpaikkahuumoria, esimerkiksi \"Tämäkin olisi voinut olla sähköposti\". Eläkkeelle jäävälle työkaverille sopivat eläketeemat, kuten \"Olen eläkkeellä\" tai \"Eläkkeellä, kiireinen tekemään ei mitään\".",
+  },
+  {
+    q: "Voiko samaa paitaa tilata koko porukalle?",
+    a: "Voi: lisää koriin samaa tuotetta eri kokoina, niin koko porukan paidat tulevat samalla tilauksella. Isommista tilauksista voit kysyä etukäteen sähköpostilla huumorikauppa@gmail.com.",
   },
 ];
 
 /** Etusivun "Usein kysyttyä" -osio. */
 export const HOME_FAQS: FaqItem[] = [
-  { q: "Mikä on Huumorikauppa?", a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta." },
-  { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
-  { q: "Mikä on hauska lahja miehelle?", a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, hupparit, kahvimukit ja meemitarrat. Katso valikoima kategoriasta hauskat lahjat miehelle." },
-  { q: "Mikä on hauska lahja naiselle?", a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta hauskat lahjat naiselle." },
-  { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 79 euron tilauksille. Alle 79 euron tilauksille toimitusmaksu on 6,90 €." },
+  SITE_FAQS[0],
+  SITE_FAQS[3],
+  SITE_FAQS[5],
+  SITE_FAQS[4],
+  {
+    q: "Mikä on hauska lahja miehelle?",
+    a: "Hauska lahja miehelle on t-paita tai huppari, jonka teksti liittyy hänen harrastukseensa, ammattiinsa tai ikäänsä. Valikoimassa on esimerkiksi kalastus-, eläke-, ammatti- ja syntymäpäiväteemoja.",
+  },
 ];
 
 /** Blogiartikkelin oletus-UKK, kun artikkelilla ei ole omaa. */
 export const DEFAULT_BLOG_FAQS: FaqItem[] = [
   {
     q: "Mistä löydän hauskoja lahjaideoita?",
-    a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
+    a: "Huumorikauppa.fi:n kategorioista ja lahjaoppaista löydät hauskoja t-paitoja, huppareita ja muita lahjoja. Blogin muut artikkelit antavat lisää ideoita eri juhliin ja saajille.",
   },
   {
     q: "Kuinka nopeasti tilaus toimitetaan?",
-    a: "Toimitamme tilaukset koko Suomeen yleensä 3–10 arkipäivässä. Yli 79 € tilauksiin toimitus on ilmainen.",
+    a: `${DELIVERY_SHORT} ${SHIPPING_COST}`,
   },
   {
     q: "Voinko palauttaa tuotteen?",
-    a: "Kyllä. Tuotteilla on 14 päivän palautusoikeus. Personoituja tuotteita ei kuitenkaan voi palauttaa.",
+    a: "Voit: tuotteilla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Asiakkaan toiveiden mukaan personoituja tuotteita peruutusoikeus ei koske.",
   },
   {
     q: "Onko Huumorikauppa suomalainen yritys?",
-    a: "Kyllä, Huumorikauppa.fi on 100 % suomalainen verkkokauppa. Asiakaspalvelu toimii suomeksi.",
+    a: "Kyllä, Huumorikauppa on helsinkiläinen verkkokauppa (Y-tunnus 3583677-2). Asiakaspalvelu toimii suomeksi.",
   },
 ];
 
@@ -146,27 +155,27 @@ export function buildCategoryFaqs(categoryName: string): FaqItem[] {
   return [
     {
       q: `Kuinka nopeasti ${lower} toimitetaan?`,
-      a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Ilmainen toimitus yli 79 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee.",
+      a: `${DELIVERY_SHORT} Tuotteet painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta. ${SHIPPING_COST}`,
     },
     {
       q: `Voiko ${lower} palauttaa?`,
-      a: "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautus tapahtuu omalla kustannuksellasi. Rahat palautetaan 5–7 arkipäivässä.",
+      a: "Voi: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Palautuksen postikulut maksaa asiakas, ja hyvitys maksetaan 14 päivän kuluessa palautuksen vastaanottamisesta. Personoituja tuotteita peruutusoikeus ei koske.",
     },
     {
-      q: `Sopiiko hauska ${lower.replace(/t$/, "")} lahjaksi?`,
-      a: `Ehdottomasti. Hauskat ${lower} ovat suosittuja lahjoja syntymäpäiviin, jouluun, isänpäivään, äitienpäivään, polttareihin, valmistujaisiin ja työkavereille.`,
+      q: `Sopivatko ${lower} lahjaksi?`,
+      a: `Sopivat: hauskalla tekstillä ${lower} toimivat lahjana syntymäpäivinä, jouluna, isänpäivänä, äitienpäivänä, polttareissa ja työkavereille. ${CHRISTMAS_DEADLINE_TEXT}`,
     },
     {
-      q: `Minkälaisesta materiaalista ${lower} ovat tehty?`,
-      a: "Käytämme laadukkaita materiaaleja — t-paidat ja hupparit 100% puuvillaa tai puuvilla-polyesteri-sekoitteita, mukit keraamia, tarrat kestävää vinyyliä. Kaikki painatetaan EU:ssa.",
+      q: `Mistä materiaalista ${lower} on tehty?`,
+      a: "Materiaali vaihtelee tuotteittain, ja tarkka koostumus ja hoito-ohje ovat jokaisen tuotteen kuvauksessa. Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa.",
     },
     {
       q: `Saako ${lower} omalla tekstillä?`,
-      a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com.",
+      a: "Saa niihin tuotteisiin, joiden nimessä on Oma teksti/kuva tai Personoitava. Kirjoitat tekstin tai kuvatoiveen tuotesivun kenttään (enintään 200 merkkiä), ja toive kulkee tilauksen mukana.",
     },
     {
-      q: "Voiko maksaa Klarnalla tai Apple Paylla?",
-      a: "Kyllä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit myös ostaa nyt ja maksaa myöhemmin.",
+      q: "Mitä maksutapoja voin käyttää?",
+      a: "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.",
     },
   ];
 }
@@ -175,28 +184,37 @@ export function buildCategoryFaqs(categoryName: string): FaqItem[] {
 export function buildGiftCategoryFaqs(name: string, productCount: number): FaqItem[] {
   return [
     {
-      q: `Mikä on paras ${name.toLowerCase()}?`,
-      a: `Suosituimpia ${name.toLowerCase()} ovat hauskat t-paidat, hupparit ja mukit persoonallisilla teksteillä. Huumorikaupasta löydät ${productCount}+ vaihtoehtoa eri budjettiin.`,
+      q: `Millaisia ${name.toLowerCase()} Huumorikaupasta löytyy?`,
+      a: `Valikoimassa on ${productCount} tuotetta, pääosin hauskoja t-paitoja ja huppareita persoonallisilla teksteillä. Tuotesivuilta näet jokaisen tuotteen koot ja värit.`,
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+      a: `${DELIVERY_SHORT} ${SHIPPING_COST} ${CHRISTMAS_DEADLINE_TEXT}`,
     },
     {
       q: "Mihin tilaisuuteen lahja sopii?",
-      a: `${name} sopivat syntymäpäiviin, jouluun, äitienpäivään, isänpäivään, polttareihin, eläkejuhliin ja työkavereiden lahjoiksi. Hauska lahja on aina yllättävä ja mieleenpainuva.`,
+      a: `${name} sopivat syntymäpäiviin, jouluun, äitienpäivään, isänpäivään, polttareihin, eläkejuhliin ja työkavereiden lahjoiksi. Hauska teksti tekee lahjasta henkilökohtaisen.`,
     },
     {
-      q: "Voiko lahjan palauttaa jos se ei sovi?",
-      a: "Kyllä. Sinulla on 14 päivän palautusoikeus kaikkiin tuotteisiin. Palautus on helppo: ota yhteyttä huumorikauppa@gmail.com ja saat ohjeet.",
+      q: "Voiko lahjan palauttaa, jos se ei sovi?",
+      a: "Voi: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita palautuksesta osoitteeseen huumorikauppa@gmail.com, niin saat ohjeet. Personoituja tuotteita peruutusoikeus ei koske.",
     },
   ];
 }
 
 const SITUATION_EXTRA_FAQS: FaqItem[] = [
-  { q: "Voiko lahjan saada nimettömänä?", a: "Kyllä – emme lähetä lähettäjän tietoja paketin mukana, joten yllätyslahja pysyy yllätyksenä." },
-  { q: "Mitä jos koko on väärä?", a: "Vaihdamme tai palautamme tuotteen 14 päivän sisällä – pidä alkuperäinen pakkaus mukana." },
-  { q: "Soveltuuko tämä lahjaksi viime hetkellä?", a: "Tilaa arkena ennen klo 12, niin tilaus lähtee yleensä samana päivänä. Toimitus 3–10 arkipäivää." },
+  {
+    q: "Voiko lahjan lähettää suoraan saajalle?",
+    a: "Voi: valitse kassalla \"Toimitetaan eri vastaanottajalle kuin maksaja\" ja kirjoita vastaanottajan nimi ja osoite. Tilausvahvistus tulee sinun sähköpostiisi.",
+  },
+  {
+    q: "Mitä jos koko on väärä?",
+    a: "Voit palauttaa tuotteen 14 päivän peruutusoikeudella ja tilata oikean koon uutena tilauksena. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen.",
+  },
+  {
+    q: "Ehtiikö lahja perille ajoissa?",
+    a: `${DELIVERY_SHORT} Tilaa siis viimeistään kaksi viikkoa ennen juhlaa. Jouluksi: ${CHRISTMAS_DEADLINE_TEXT.charAt(0).toLowerCase()}${CHRISTMAS_DEADLINE_TEXT.slice(1)}`,
+  },
 ];
 
 /** Tilannelahjasivu (/lahjat/:slug): täydennetään UKK viiteen kysymykseen. */
@@ -206,46 +224,70 @@ export function mergeSituationFaqs(guideFaqs: FaqItem[]): FaqItem[] {
     : guideFaqs;
 }
 
+/** Yhdistää UKK-listat: ensimmäinen esiintymä voittaa, sama kysymys (kirjainkoosta ja välimerkeistä riippumatta) vain kerran. */
+export function mergeFaqs(...lists: FaqItem[][]): FaqItem[] {
+  const seen = new Set<string>();
+  const out: FaqItem[] = [];
+  for (const list of lists) {
+    for (const f of list) {
+      const key = f.q.toLowerCase().replace(/[^a-z0-9åäö]+/g, " ").trim();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(f);
+    }
+  }
+  return out;
+}
+
 /** Tuotesivun UKK ja "kenelle / mihin / miksi" -tekstit (ProductPage + esirenderöinti). */
 export function buildProductFaqs(
   product: { name: string; description?: string | null; category: string },
   categoryName: string,
+  opts: { isCustom?: boolean } = {},
 ): { faqs: FaqItem[]; audience: string; occasion: string; whyFunny: string } {
-  const productFaqs = [
-    { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
-    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 79 € tilaukset toimitetaan ilmaiseksi." },
-    { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
+  const productFaqs: FaqItem[] = [
+    {
+      q: "Kuinka nopeasti saan tilauksen?",
+      a: `${DELIVERY_SHORT} Tuote painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta. ${SHIPPING_COST}`,
+    },
+    opts.isCustom
+      ? {
+          q: "Voinko palauttaa tuotteen?",
+          a: "Personoidulla tuotteella ei ole 14 päivän peruutusoikeutta, koska se valmistetaan toiveidesi mukaan. Jos tuote on virheellinen, korvaamme sen uudella tai hyvitämme kauppahinnan.",
+        }
+      : {
+          q: "Voinko palauttaa tuotteen?",
+          a: "Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen.",
+        },
+    { q: "Ehtiikö tilaus jouluksi?", a: `Ehtii, kun tilaat ajoissa. ${CHRISTMAS_DEADLINE_TEXT}` },
   ];
 
   // GEO/AI: heuristinen "Kenelle sopii / Miksi hauska / Mihin tilanteeseen"
   const _t = (product.name + " " + (product.description ?? "")).toLowerCase();
   const audience = (() => {
-    if (_t.includes("äiti") || _t.includes("mamma") || _t.includes("mummi")) return "äidille, mummille tai anopille — kenelle tahansa elämäsi tärkeälle naiselle";
-    if (_t.includes("isä") || _t.includes("iskä") || _t.includes("ukki")) return "isälle, ukille tai sedälle — miehelle joka rakastaa sopivan ronskia huumoria";
+    if (_t.includes("äiti") || _t.includes("mamma") || _t.includes("mummi")) return "äidille, mummille tai anopille, kenelle tahansa elämäsi tärkeälle naiselle";
+    if (_t.includes("isä") || _t.includes("iskä") || _t.includes("ukki")) return "isälle, ukille tai sedälle, miehelle joka arvostaa sopivan ronskia huumoria";
     if (_t.includes("kala")) return "kalastusta harrastavalle isälle, sedälle tai kaverille";
     if (_t.includes("eläke") || _t.includes("museo")) return "eläkkeelle jäävälle työkaverille tai juuri eläköityneelle läheiselle";
     if (_t.includes("polttari") || _t.includes("morsian") || _t.includes("sulhanen")) return "polttariporukalle, morsiamelle tai sulhaselle";
-    if (_t.includes("vauva") || product.category === "bodyt") return "vauvalle ja vanhemmille — turvallinen ja söpö lahja";
-    if (product.category === "mukit") return "kahvinjuojalle, työkaverille tai itsellesi aamukahvia varten";
-    return "kaverille, perheenjäsenelle tai työkaverille — tai vaikka itsellesi";
+    if (_t.includes("vauva") || product.category === "bodyt") return "vauvalle ja vanhemmille";
+    return "kaverille, perheenjäsenelle tai työkaverille, tai vaikka itsellesi";
   })();
   const occasion = (() => {
     if (_t.includes("äiti")) return "äitienpäivään, äidin syntymäpäiviin ja ihan vaan kiitokseksi";
     if (_t.includes("isä")) return "isänpäivään, isän syntymäpäiviin ja jouluksi";
     if (_t.includes("eläke")) return "eläkejuhliin ja läksiäisiin";
     if (_t.includes("polttari")) return "polttareihin ja häihin";
-    if (_t.includes("joulu")) return "jouluksi, pikkujouluihin ja kalenterin täytteeksi";
-    if (product.category === "bodyt") return "vauvanristiäisiin, ristiäislahjaksi ja vauvanpäiville";
+    if (_t.includes("joulu")) return "jouluksi ja pikkujouluihin";
+    if (product.category === "bodyt") return "ristiäisiin ja vauvan syntymän kunniaksi";
     return "syntymäpäiviin, jouluun, pikkujouluihin ja yllätyslahjaksi";
   })();
-  const whyFunny = `${product.name} on hauska, koska se yhdistää tutun arkitilanteen ja yllättävän tekstin — juuri sellaisen lahjan, joka jää muistiin pidemmäksi aikaa kuin tavallinen lahja.`;
+  const whyFunny = `${cleanProductName(product.name)} on hauska, koska se yhdistää tutun arkitilanteen ja yllättävän tekstin. Sellainen lahja jää mieleen ja päätyy oikeasti käyttöön.`;
 
-  // Kasvatetaan FAQ:t AI-vastauksia varten
   const faqs: FaqItem[] = [
     ...productFaqs,
-    { q: "Kenelle tämä tuote sopii?", a: `Tämä ${categoryName.toLowerCase().replace(/t$/, "")} sopii ${audience}.` },
-    { q: "Mihin tilanteeseen tämä on hyvä lahja?", a: `${product.name} sopii ${occasion}.` },
-    { q: "Miksi tämä on hauska lahja?", a: whyFunny },
+    { q: "Kenelle tämä tuote sopii?", a: `Tämä ${PRODUCT_TYPE_LABEL[product.category] ?? categoryName.toLowerCase()} sopii ${audience}.` },
+    { q: "Mihin tilanteeseen tämä on hyvä lahja?", a: `Se sopii ${occasion}.` },
   ];
 
   return { faqs, audience, occasion, whyFunny };

@@ -37,7 +37,7 @@ function categoriesWithProducts(products: Product[]) {
 function factsSection(products: Product[]): string {
   const cats = categoriesWithProducts(products);
   return `## Kauppa
-Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita suomalaisella huumorilla. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta (print-on-demand, painopalvelu EU-alueella).
+Huumorikauppa.fi on helsinkiläinen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita suomalaisella huumorilla. Jokainen tuote painetaan tilauksesta (print-on-demand) painokumppaneiden painotaloissa ulkomailla. Tuotteita ei paineta Suomessa.
 - Sijainti: ${ORGANIZATION.addressLocality}, Suomi
 - Y-tunnus: ${ORGANIZATION.legalId}
 - Kieli: suomi
@@ -46,16 +46,17 @@ Huumorikauppa.fi on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lah
 ${cats.map((c) => `- ${c.name}: ${SITE_URL}/kategoria/${c.slug}`).join("\n")}
 
 Mukeja ei tällä hetkellä myydä.
-Suosittuja teemoja ovat ammattihuumori, kalastus, eläkeläishuumori sekä syntymäpäivä- ja juhlavuositeemat.
+Teemoja ovat esimerkiksi ammattihuumori, kalastus, eläkeläishuumori sekä syntymäpäivä- ja juhlavuositeemat. Osaan tuotteista voi tilata oman tekstin tai kuvatoiveen (enintään 200 merkkiä).
 
 ## Toimitus
-- Toimitamme vain Suomeen (myös Ahvenanmaalle).
+- Toimitamme vain Suomeen, Postin tai Matkahuollon kautta.
 - Toimitusaika on ${days} arkipäivää tilauksesta.
-- Toimituskulut ovat ${fee}. Yli ${SHIPPING.freeThresholdEur} € tilaukset toimitetaan ilman toimituskuluja.
+- Toimituskulut ovat ${fee}. ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen.
+- Joulu 2026: tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.
 - Noutoa ei ole.
 
 ## Maksutavat
-Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Hinnat sisältävät arvonlisäveron (ALV 25,5 %).
+Visa, Mastercard ja muut yleisimmät maksutavat (toimitusehdot). Maksu tehdään tilauksen yhteydessä. Hinnat sisältävät arvonlisäveron (ALV 25,5 %).
 
 ## Palautukset
 - Kuluttajansuojalain mukainen ${RETURNS.days} päivän peruutusoikeus tuotteen vastaanottamisesta.
@@ -92,7 +93,7 @@ function giftLinks(): string {
 export function buildLlmsTxt(products: Product[]): string {
   return withoutDashes(`# Huumorikauppa.fi
 
-> Suomalainen verkkokauppa: hauskat t-paidat, hupparit ja muut huumorituotteet. Toimitus Suomeen ${days} arkipäivässä, ilmainen yli ${SHIPPING.freeThresholdEur} € tilauksiin, ${RETURNS.days} päivän palautusoikeus.
+> Suomalainen verkkokauppa: hauskat t-paidat, hupparit ja muut huumorituotteet. Toimitus Suomeen ${days} arkipäivässä, ilmainen ${SHIPPING.freeThresholdEur} eurosta alkaen, ${RETURNS.days} päivän peruutusoikeus.
 
 ${factsSection(products)}
 

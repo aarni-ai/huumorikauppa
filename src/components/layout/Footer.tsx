@@ -83,7 +83,7 @@ export function Footer() {
             <span className="font-display text-xl text-secondary">KAUPPA</span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja koko perheelle.
+            Hauskoja t-paitoja, huppareita ja muita lahjoja suomalaisella huumorilla koko perheelle.
           </p>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
             <span className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 shrink-0" /> Helsinki, Suomi</span>

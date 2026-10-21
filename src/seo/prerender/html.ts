@@ -45,6 +45,8 @@ export interface PrerenderPage {
   h1: string;
   /** Hinta tuotesivulla (näytetään H1:n alla). */
   price?: number;
+  /** Tuotekuvat kuvaavine alt-teksteineen (tuotesivu). */
+  images?: { src: string; alt: string }[];
   intro?: string[];
   sections?: PrerenderSection[];
   productsHeading?: string;
@@ -158,6 +160,9 @@ export function renderStaticBody(page: PrerenderPage, nav: SiteNav): string {
   }
   parts.push(`<h1>${escapeHtml(page.h1)}</h1>`);
   if (typeof page.price === "number") parts.push(`<p>Hinta ${escapeHtml(formatPriceFi(page.price))}</p>`);
+  for (const img of page.images ?? []) {
+    parts.push(`<img src="${escapeAttr(img.src)}" alt="${escapeAttr(img.alt)}" width="600" height="600" loading="lazy">`);
+  }
   if (page.contentHtml) {
     parts.push(page.contentHtml);
   } else {

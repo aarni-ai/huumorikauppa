@@ -9,6 +9,7 @@ import { categories } from "@/data/products";
 import { sortSizes } from "@/lib/sortSizes";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { proxiedImage } from "@/lib/imageProxy";
+import { productImageAlt } from "@/lib/productNames";
 import { ProductRating } from "@/components/ProductRating";
 import { getForcedColor } from "@/lib/productPriority";
 
@@ -130,7 +131,7 @@ export function ProductCard({ product }: ProductCardProps) {
   useEffect(() => {
     if (canUseHover && hoverImage) {
       const img = new Image();
-      img.src = proxiedImage(hoverImage);
+      img.src = proxiedImage(hoverImage, { width: 480 });
     }
   }, [canUseHover, hoverImage]);
 
@@ -216,8 +217,8 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Image with hover swap */}
       <div className="relative aspect-square bg-[#F4F4F4] overflow-hidden rounded-md">
         <img
-          src={proxiedImage(displayImage) || displayImage}
-          alt={`Hauska ${categoryLabel} – ${product.name} | Huumorikauppa`}
+          src={proxiedImage(displayImage, { width: 480 }) || displayImage}
+          alt={productImageAlt(product, { url: displayImage })}
           className={`w-full h-full object-cover transition-transform duration-500 ${canUseHover ? "group-hover:scale-105" : ""}`}
           loading="lazy"
           decoding="async"

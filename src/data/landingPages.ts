@@ -14,6 +14,7 @@
  */
 import type { Product } from "@/types/product";
 import { getPriorityRank } from "@/lib/productPriority";
+import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 
@@ -62,10 +63,11 @@ export interface LandingPageDef {
 const lower = (p: LandingProduct) => `${p.name} ${p.slug}`.toLowerCase();
 
 /**
- * Mukeja ei myydä. Osa mukeista on tuotedatassa väärässä kategoriassa (esim. t-paidat, nimessä
- * "Muki"/"Kahvimuki"), joten laskeutumissivut jättävät ne pois nimen perusteella.
+ * Mukeja ei myydä. Tuotetasoinen sääntö (onPiilotettuTuote) piilottaa myös väärässä kategoriassa
+ * olevat mukit; lisäksi varmistetaan nimen perusteella ("kahvikuppi").
  */
-export const looksLikeMug = (p: LandingProduct) => /muki|kahvikuppi/.test(lower(p));
+export const looksLikeMug = (p: LandingProduct) =>
+  onPiilotettuTuote(p as Parameters<typeof onPiilotettuTuote>[0]) || /muki|kahvikuppi/.test(lower(p));
 
 /** Kaupunkituotteet (kuvauksessa #kaupunki:Nimi). */
 export const isCityProduct = (p: LandingProduct) => (p.description ?? "").includes("#kaupunki:");

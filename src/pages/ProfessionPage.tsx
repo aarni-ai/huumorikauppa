@@ -168,7 +168,7 @@ const ProfessionPage = () => {
             </h2>
             <p>
               Ammattilahjat toimivat parhaiten silloin kun ne tunnistuvat — ne viittaavat ammatilliseen arkeen,
-              sisäpiirihuumoriin tai työn todellisuuteen. Paita tai muki jossa on {profession.nameAllative} suunnattu
+              sisäpiirihuumoriin tai työn todellisuuteen. Paita tai huppari jossa on {profession.nameAllative} suunnattu
               teksti ei jää kaapin pohjalle, vaan päätyy aktiiviseen käyttöön ja saa aina positiivista huomiota.
             </p>
           </section>
@@ -194,7 +194,6 @@ const ProfessionPage = () => {
             <h2 className="font-display text-2xl text-foreground mb-3">Top tuotevalinnat</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>T-paidat:</strong> päivittäinen käyttö, näkyvä huumori – vitsi kulkee töissä mukana.</li>
-              <li><strong>Mukit:</strong> kestää vuosia, näkyy joka kahvitauolla – muistetaan aina.</li>
               <li><strong>Hupparit:</strong> mukava arkilahja jota käytetään oikeasti.</li>
             </ul>
           </section>

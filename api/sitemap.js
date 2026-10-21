@@ -107,6 +107,16 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  "hauskat-joululahjaideat-miehelle-2026",
+  "pikkujoululahja-alle-20-euroa",
+  "lahja-miehelle-jolla-on-kaikki",
+  "elakelahja-joka-naurattaa",
+  "mita-ostaa-tyokaverille-jouluksi",
+  "joululahja-isalle-hauskat-ideat",
+  "salaisen-joulupukin-lahja-10-20-30-euroa",
+  "hauska-lahja-teinille-jouluksi",
+  "lahja-kalastajalle-metsastajalle-mokkeilijalle",
+  "joululahjan-viimeiset-tilauspaivat-2026",
   "20-hauskinta-t-paitaa-2026",
   "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat",
   "hauskat-mukit-toimistoon-ja-lahjaksi",
@@ -161,7 +171,7 @@ async function fetchAllProducts() {
   for (let i = 0; i < 10; i++) {
     const to = from + pageSize - 1;
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,updated_at&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -175,7 +185,8 @@ async function fetchAllProducts() {
     if (!res.ok) break;
     const batch = await res.json();
     if (!Array.isArray(batch) || batch.length === 0) break;
-    out.push(...batch);
+    // Mukit väärässä kategoriassa (src/lib/hiddenCategories.ts MUKI_TUNNISTE).
+    out.push(...batch.filter((p) => !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
     if (batch.length < pageSize) break;
     from += pageSize;
   }

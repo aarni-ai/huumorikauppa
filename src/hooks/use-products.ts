@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/types/product";
-import { onPiilotettu } from "@/lib/hiddenCategories";
+import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 
 /** Piilotettujen kategorioiden tuotteiden slugit (tuotesivu ohjaa ne /kaikki-tuotteet). */
 export const piilotetutSlugit = new Set<string>();
@@ -27,7 +27,7 @@ async function fetchProducts(): Promise<Product[]> {
     .filter((p) => (p as { is_active?: boolean }).is_active !== false)
     // Myynnistä piilotetut kategoriat (src/lib/hiddenCategories.ts, mukit 21.10.2026).
     .filter((p) => {
-      if (!onPiilotettu(p.category)) return true;
+      if (!onPiilotettuTuote(p)) return true;
       piilotetutSlugit.add(p.slug);
       return false;
     })

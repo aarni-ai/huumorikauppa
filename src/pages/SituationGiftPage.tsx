@@ -108,8 +108,8 @@ const SituationGiftPage = () => {
   // 3-step gift decision logic — appended only, never replaces existing copy
   const decisionSteps = [
     `1. Mieti vastaanottaja: harrastus, ammatti tai sisäpiirin vitsi (${situation.h1.toLowerCase()}).`,
-    "2. Valitse tuotemuoto: paita arkikäyttöön, muki työpöydälle, huppari rentoon päivään.",
-    "3. Tarkista koko ja toimitusaika – tilaa 7 arkipäivää ennen lahjapäivää.",
+    "2. Valitse tuotemuoto: t-paita arkikäyttöön, huppari kylmille päiville tai personoitava tuote omalla tekstillä.",
+    "3. Tarkista koko ja toimitusaika: toimitus kestää 3-10 arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen lahjapäivää.",
   ];
 
   // FAQ enhancement layer — only adds if guide has fewer than 5 FAQs
@@ -238,7 +238,6 @@ const SituationGiftPage = () => {
             <h2 className="font-display text-2xl text-foreground mb-3">Top-valinnat – miksi nämä toimivat</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>T-paidat:</strong> näkyvä huumori, päivittäinen käyttö – vitsi kulkee mukana.</li>
-              <li><strong>Mukit:</strong> kestää vuosia, näkyy joka kahvitauolla työpaikalla.</li>
               <li><strong>Hupparit:</strong> mukava, pidetty asuste – arvostetaan myös arkilahjana.</li>
             </ul>
           </section>

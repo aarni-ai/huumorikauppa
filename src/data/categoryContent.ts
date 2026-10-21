@@ -6,7 +6,6 @@ import { getPriorityRank } from "@/lib/productPriority";
 export const CATEGORY_H1: Record<string, string> = {
   "t-paidat": "Hauskat t-paidat",
   "hupparit": "Hauskat hupparit",
-  "mukit": "Hauskat mukit ja kahvikupit",
   "tarrat": "Hauskat tarrat",
   "bodyt": "Hauskat bodyt pienimmille",
   "peitot": "Hauskat peitot",
@@ -20,41 +19,36 @@ export const CATEGORY_H1: Record<string, string> = {
 // Category-specific H2 text sections for richer SEO
 export const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]> = {
   "t-paidat": [
-    { h2: "Miksi hauska t-paita on paras lahja?", text: "Hauskat t-paidat ja huumoripaidat ovat lahjoja jotka naurattavat, ilahduttavat ja tulevat oikeasti käyttöön. Ne sopivat syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia huumoripaitoja – meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
-    { h2: "Suosituimmat huumoripaidat ja hauskat t-paidat", text: "Valikoimamme suosituimpia huumoripaitoja ovat setähuumoripaidat, eläkeläispaidat, ammattihuumoripaidat ja meemipaidat. Kaikissa hauskoissa t-paidoissa on laadukas DTG-painatus ja mukava istuvuus koissa XS–3XL." },
+    { h2: "Miksi hauska t-paita on hyvä lahja?", text: "Hauskat t-paidat ja huumoripaidat ovat lahjoja jotka naurattavat, ilahduttavat ja tulevat oikeasti käyttöön. Ne sopivat syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia huumoripaitoja - meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
+    { h2: "Huumoripaidat ja hauskat t-paidat", text: "Valikoimastamme löydät muun muassa setähuumoripaitoja, eläkeläispaitoja, ammattihuumoripaitoja ja meemipaitoja. Kaikissa hauskoissa t-paidoissa on laadukas DTG-painatus ja mukava istuvuus koissa XS-3XL." },
   ],
   "hupparit": [
-    { h2: "Miksi hauska huppari on paras lahja?", text: "Hauska huppari yhdistää lämmön ja huumorin. Se on käytännöllinen, mukava ja hauska – täydellinen lahja kenelle tahansa. Valikoimastamme löydät meemihuppareita, setähuumorihuppareita ja sarkastisia tekstihuppareita." },
-    { h2: "Suosituimmat huumorihupparit", text: "Suosituimpia huppareitamme ovat 'Maailman paras' -sarjan hupparit, kalastushupparit ja eläkehuumorihupparit. Laadukas materiaali ja kestävä painatus." },
-  ],
-  "mukit": [
-    { h2: "Hauskat kahvikupit – suomalainen aamuklassikko", text: "Hauska kahvikuppi tekee jokaisesta aamuhetkestä paremman. Suomalaiset rakastavat kahvia – ja rakastavat vielä enemmän kahvia hauskasta kupista jossa lukee jotain osuvaa. Valikoimastamme löydät hauskat kahvikupit ammattilaisille, setähuumoria arvostaville, eläkeläisille ja kaikille kahvinjuojille." },
-    { h2: "Miksi hauska muki on paras lahja?", text: "Hauska muki on edullinen, käytännöllinen ja ilahduttaa joka aamu. Se sopii työkavereille, perheenjäsenille ja ystäville – ja budjettiin alle 20 €. Suosituimpia ovat toimistomukit, ammattilaismukit ja sarkastiset tekstimukit." },
-    { h2: "Suosituimmat huumorimukit", text: "Valikoimamme suosituimpia ovat ammattihuumorimukit (Mersumies, Audimies), setähuumorimukit ja eläkemukit. Kaikki mukimme ovat keraamia, astianpesukoneenkestäviä ja 330 ml tilavuudeltaan." },
+    { h2: "Miksi hauska huppari on hyvä lahja?", text: "Hauska huppari yhdistää lämmön ja huumorin. Se on käytännöllinen, mukava ja hauska lahja kenelle tahansa. Valikoimastamme löydät meemihuppareita, setähuumorihuppareita ja sarkastisia tekstihuppareita." },
+    { h2: "Huumorihupparit", text: "Valikoimastamme löydät muun muassa 'Maailman paras' -sarjan huppareita, kalastushuppareita ja eläkehuumorihuppareita. Laadukas materiaali ja kestävä painatus." },
   ],
   "tarrat": [
     { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Laadukkaat vinyl-tarramme sopivat läppäriin, vesipulloon, autoon ja jääkaappiin. Ne kestävät säätä, vettä ja kulutusta. Tarrat ovat myös erinomainen pieni lahja tai lisä isomman paketin oheen." },
   ],
   "bodyt": [
-    { h2: "Miksi hauska body on paras vauvalahja?", text: "Hauska body on takuuvarma lahja vauvalle ja vanhemmille. Se naurattaa koko perhettä ja on samalla pehmeä ja turvallinen. Bodymme ovat 100% puuvillaa ja konepestäviä." },
+    { h2: "Miksi hauska body on hyvä vauvalahja?", text: "Hauska body on ilahduttava lahja vauvalle ja vanhemmille. Se naurattaa koko perhettä ja on samalla pehmeä ja turvallinen. Bodymme ovat 100% puuvillaa ja konepestäviä." },
   ],
   "peitot": [
     { h2: "Miksi hauska peitto on yllättävä lahja?", text: "Laadukas peitto hauskalla tekstillä pitää lämpimänä ja hymyilyttää. Se on yllättävä ja ikimuistoinen lahja syntymäpäiviin, jouluun tai eläkejuhliin." },
   ],
   "pipot": [
-    { h2: "Miksi hauska pipo on paras talvilahja?", text: "Hauska pipo yhdistää käytännöllisyyden ja huumorin – se pitää pään lämpimänä ja tunnelman korkealla. Laadukkaat materiaalit ja hauska brodeeraus tekevät pipostamme täydellisen talvilahjan." },
+    { h2: "Miksi hauska pipo on hyvä talvilahja?", text: "Hauska pipo yhdistää käytännöllisyyden ja huumorin: se pitää pään lämpimänä ja tunnelman korkealla. Laadukkaat materiaalit ja hauska brodeeraus tekevät pipostamme mukavan talvilahjan." },
   ],
   "laukut": [
-    { h2: "Miksi hauska kangaskassi on paras lahja?", text: "Hauska kangaskassi on ekologinen, käytännöllinen ja hauska – kolme ominaisuutta jotka tekevät siitä täydellisen lahjan. Kassimme sopivat arkikäyttöön, ostoksille ja kaikkialle muuallekin." },
+    { h2: "Miksi hauska kangaskassi on hyvä lahja?", text: "Hauska kangaskassi on ekologinen, käytännöllinen ja hauska, kolme ominaisuutta jotka tekevät siitä hyvän lahjan. Kassimme sopivat arkikäyttöön, ostoksille ja kaikkialle muuallekin." },
   ],
   "seinataulut": [
-    { h2: "Miksi hauska seinätaulu on paras sisustus?", text: "Hauska seinätaulu piristää kodin seinät ja tuo hymyn huulille joka päivä. Taulumme sopivat olohuoneeseen, makuuhuoneeseen, toimistoon ja WC:hen." },
+    { h2: "Miksi hauska seinätaulu sopii sisustukseen?", text: "Hauska seinätaulu piristää kodin seinät ja tuo hymyn huulille joka päivä. Taulumme sopivat olohuoneeseen, makuuhuoneeseen, toimistoon ja WC:hen." },
   ],
   "koristeet": [
     { h2: "Miksi hauska koriste on hyvä lahja?", text: "Hauska koriste tuo huumoria kodin jokaiseen nurkkaan. Se on yllättävä ja persoonallinen lahja joka sopii syntymäpäiviin, tupaantuliaisiin ja jouluun." },
   ],
   "pitkahihaiset": [
-    { h2: "Miksi pitkähihainen on paras valinta?", text: "Pitkähihainen hauska paita on erinomainen valinta syksylle ja keväälle. Se toimii myös kerrostettuna takin alla talvella. Laadukas materiaali ja kestävä painatus." },
+    { h2: "Miksi valita pitkähihainen?", text: "Pitkähihainen hauska paita on erinomainen valinta syksylle ja keväälle. Se toimii myös kerrostettuna takin alla talvella. Laadukas materiaali ja kestävä painatus." },
   ],
 };
 
@@ -63,7 +57,7 @@ function isCustomTextProduct(name: string, description: string): boolean {
   return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
 }
 
-// Kategoriakohtaiset "kielletyt" avainsanat tuotenimessä — estää esim. mukin näkymisen T-paidat-sivulla,
+// Kategoriakohtaiset "kielletyt" avainsanat tuotenimessä - estää esim. mukin näkymisen T-paidat-sivulla,
 // jos tuotteen kategoria on virheellisesti tallennettu.
 const CATEGORY_EXCLUDE_NAME_KEYWORDS: Record<string, string[]> = {
   "t-paidat":      ["muki", "kuppi", "huppari", "pipo", "tarra", "kassi", "laukku", "peitto", "taulu", "body"],

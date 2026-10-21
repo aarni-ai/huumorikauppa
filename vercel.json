@@ -122,6 +122,21 @@
       "statusCode": 301
     },
     {
+      "source": "/tuote/hauska-kahvimuki-baristalle-teen-taidetta-joka-paiva",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/tuote/kouvola-suomen-keskilapsi-kaikki-tuntee-hauska-kahvimuki",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/tuote/30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
       "source": "/kategoria/mukit",
       "destination": "/kaikki-tuotteet",
       "statusCode": 301

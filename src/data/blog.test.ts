@@ -1,0 +1,156 @@
+import { describe, it, expect } from "vitest";
+import fs from "fs";
+import path from "path";
+import { blogPosts } from "./blog";
+import { jouluOppaat2026 } from "./blogJoulu2026";
+import { categories } from "./products";
+import { situationGifts } from "./situationGifts";
+import { professions } from "./professions";
+import { hobbies } from "./hobbies";
+import { municipalities } from "./municipalities";
+import { dialects } from "./dialects";
+import { PIILOTETUT_KATEGORIAT } from "@/lib/hiddenCategories";
+// Aktiivisten (is_active != false), myynnissä olevien tuotteiden slugit, haettu Supabasesta 21.10.2026.
+// Ei mukeja. Päivitä, kun tuotevalikoima muuttuu.
+import productSlugs from "@/test/fixtures/productSlugs.json";
+import type { BlogPost } from "@/types/blog";
+import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
+import { LANDING_PATHS, LANDING_REDIRECTS } from "./landingRoutes";
+import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
+
+const DASHES = /[–—]/; // en dash, em dash
+const HEDGES = /(?<!\p{L})(saattaa|saattavat|ehkä|todennäköisesti|pyrimme)(?!\p{L})/iu;
+
+// Staattiset reitit suoraan App.tsx:stä, jotta testi seuraa reitityksen muutoksia.
+const appSource = fs.readFileSync(path.resolve(__dirname, "../App.tsx"), "utf8");
+const staticRoutes = new Set(
+  [...appSource.matchAll(/<Route path="([^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((p) => !p.includes(":") && p !== "*"),
+);
+// Laskeutumissivujen reitit generoidaan App.tsx:ssä LANDING_PATHS-listasta.
+for (const p of [...LANDING_PATHS, CHRISTMAS_DEADLINE_PATH]) staticRoutes.add(p);
+
+const dynamicRoutes: Record<string, Set<string>> = {
+  kategoria: new Set(categories.map((c) => c.slug).filter((s) => !PIILOTETUT_KATEGORIAT.includes(s))),
+  tuote: new Set(productSlugs as string[]),
+  blogi: new Set(blogPosts.map((p) => p.slug)),
+  lahjat: new Set(situationGifts.map((s) => s.slug)),
+  ammatti: new Set(professions.map((p) => p.slug)),
+  harrastus: new Set(hobbies.map((h) => h.slug)),
+  kaupunki: new Set(municipalities.map((m) => m.slug)),
+  murre: new Set(dialects.map((d) => d.slug)),
+};
+
+function resolves(href: string): boolean {
+  const clean = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
+  // 301-ohjattuun polkuun ei linkitetä: linkin pitää osoittaa suoraan lopulliseen sivuun.
+  if (LANDING_REDIRECTS[clean] || LANDING_REDIRECTS[decodeURIComponent(clean)]) return false;
+  if (staticRoutes.has(clean)) return true;
+  const m = clean.match(/^\/([^/]+)\/([^/]+)$/);
+  return !!m && !!dynamicRoutes[m[1]]?.has(decodeURIComponent(m[2]));
+}
+
+function internalLinks(post: BlogPost): string[] {
+  const fromContent = [...post.content.matchAll(/\]\((\/[^)\s]*)\)/g)].map((m) => m[1]);
+  const fromProducts = (post.productLinks ?? []).map((p) => `/tuote/${p.slug}`);
+  return [...fromContent, ...fromProducts];
+}
+
+/** Kaikki näkyvä teksti: otsikot, metat, sisältö ja FAQ. */
+function allText(post: BlogPost): string {
+  const faq = (post.faq ?? []).flatMap((f) => [f.q, f.a]);
+  return [post.title, post.metaTitle, post.metaDescription, post.excerpt, post.content, ...post.tags, ...faq].join("\n");
+}
+
+function wordCount(md: string): number {
+  return md
+    .replace(/\]\([^)]*\)/g, "]")
+    .replace(/[#*[\]]/g, " ")
+    .split(/\s+/)
+    .filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+}
+
+describe("blogi: kaikki artikkelit", () => {
+  it("slugit ovat yksilöllisiä", () => {
+    const slugs = blogPosts.map((p) => p.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("title-tagit ovat yksilöllisiä", () => {
+    const titles = blogPosts.map((p) => p.metaTitle);
+    expect(new Set(titles).size).toBe(titles.length);
+  });
+
+  it.each(blogPosts.map((p) => [p.slug, p] as const))("%s: jokainen sisäinen linkki osuu olemassa olevaan sivuun", (_slug, post) => {
+    const broken = internalLinks(post).filter((href) => !resolves(href));
+    expect(broken).toEqual([]);
+  });
+});
+
+describe("blogi: joulun 2026 oppaat", () => {
+  it("oppaita on 10 ja ne ovat mukana blogPosts-listassa", () => {
+    expect(jouluOppaat2026).toHaveLength(10);
+    for (const post of jouluOppaat2026) expect(blogPosts).toContain(post);
+  });
+
+  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: tekstisäännöt ja SEO-rajat", (_slug, post) => {
+    const text = allText(post);
+    expect(text).not.toMatch(DASHES);
+    expect(text).not.toMatch(HEDGES);
+    expect(text.toLowerCase()).not.toMatch(/\bmuki/);
+    expect(post.metaTitle.length).toBeLessThan(60);
+    expect(post.metaDescription.length).toBeLessThan(155);
+    const words = wordCount(post.content);
+    expect(words).toBeGreaterThanOrEqual(1000);
+    expect(words).toBeLessThanOrEqual(1500);
+  });
+
+  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: linkitys ja FAQ", (_slug, post) => {
+    const links = internalLinks(post);
+    const products = new Set(links.filter((l) => l.startsWith("/tuote/")));
+    const pages = new Set(links.filter((l) => !l.startsWith("/tuote/")));
+    expect(products.size).toBeGreaterThanOrEqual(4);
+    expect(products.size).toBeLessThanOrEqual(10);
+    expect(pages.size).toBeGreaterThanOrEqual(4);
+    expect(pages.size).toBeLessThanOrEqual(8);
+    expect(links.some((l) => l.includes("mukit"))).toBe(false);
+
+    const faq = post.faq ?? [];
+    expect(faq.length).toBeGreaterThanOrEqual(3);
+    expect(faq.length).toBeLessThanOrEqual(5);
+    for (const f of faq) expect(f.a).toMatch(/^[^.?!]+[.!]/); // alkaa suoralla yhden lauseen vastauksella
+  });
+
+  it("joulun toimituslupaus on kaikissa sama: 20.11.2026", () => {
+    for (const post of jouluOppaat2026) {
+      const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
+      for (const d of dates) expect(["20.11.2026", "24.12.2026", "8.11.2026"]).toContain(d);
+    }
+  });
+});
+
+describe("blogi: rakenteinen data", () => {
+  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: Article + FAQPage", (_slug, post) => {
+    const ld = buildBlogPostJsonLd(post, post.faq ?? []);
+    const [article, faq] = ld["@graph"] as Record<string, unknown>[];
+    expect(article["@type"]).toBe("Article");
+    expect(article.headline).toBe(post.title);
+    expect(article.description).toBe(post.metaDescription);
+    expect(article.datePublished).toBe("2026-10-21");
+    expect(article.dateModified).toBe(post.updatedAt);
+    expect(article.author).toMatchObject({ "@type": "Organization", name: "Huumorikauppa" });
+    expect(article.publisher).toMatchObject({ "@type": "Organization", name: "Huumorikauppa", logo: { "@type": "ImageObject" } });
+    expect(article.mainEntityOfPage).toMatchObject({ "@id": `https://huumorikauppa.fi/blogi/${post.slug}` });
+    expect("image" in article).toBe(Boolean(post.image));
+    expect(faq["@type"]).toBe("FAQPage");
+    expect((faq.mainEntity as unknown[]).length).toBe(post.faq!.length);
+  });
+
+  it("kuva lisätään Articleen absoluuttisena URLina, kun artikkelilla on kuva", () => {
+    const ld = buildBlogPostJsonLd({ ...jouluOppaat2026[0], image: "/images/hero-banner.png" }, []);
+    const graph = ld["@graph"] as Record<string, unknown>[];
+    expect(graph).toHaveLength(1);
+    expect(graph[0].image).toEqual(["https://huumorikauppa.fi/images/hero-banner.png"]);
+  });
+});
