@@ -280,6 +280,46 @@ const PAGE_META: Record<string, PageMeta> = {
 
 // Blog post metadata (slug without /blogi/ prefix)
 const BLOG_META: Record<string, PageMeta> = {
+  'hauskat-joululahjaideat-miehelle-2026': {
+    title: "50 hauskaa joululahjaideaa miehelle 2026 | Huumorikauppa",
+    description: "Hauska joululahja miehelle: 50 ideaa harrastuksen, työn, iän ja huumorintajun mukaan. Lisäksi vinkit koon valintaan ja tilaamiseen ajoissa.",
+  },
+  'pikkujoululahja-alle-20-euroa': {
+    title: "Pikkujoululahja alle 20 €: näin valitset | Huumorikauppa",
+    description: "Pikkujoululahja alle 20 euroa: valintakriteerit, ideat eri porukoille, toimituskulujen huomioiminen ja yhteistilauksen vinkit.",
+  },
+  'lahja-miehelle-jolla-on-kaikki': {
+    title: "Lahja miehelle jolla on kaikki: jouluideat | Huumorikauppa",
+    description: "Lahja miehelle jolla on jo kaikkea: viisi tapaa löytää idea, kysymyslista ideointiin ja personoidut lahjat, joita hän ei osta itse.",
+  },
+  'elakelahja-joka-naurattaa': {
+    title: "Eläkelahja joka naurattaa: ideat ja vinkit | Huumorikauppa",
+    description: "Hauska eläkelahja: millainen huumori toimii, mitä välttää, ideat työkavereiden yhteislahjaksi ja vinkit lahjan antamiseen eläkejuhlissa.",
+  },
+  'mita-ostaa-tyokaverille-jouluksi': {
+    title: "Mitä ostaa työkaverille jouluksi? Ideat | Huumorikauppa",
+    description: "Joululahja työkaverille: kenelle ostaa, paljonko käyttää, mikä huumori sopii työpaikalle ja ideat eri työkavereille.",
+  },
+  'joululahja-isalle-hauskat-ideat': {
+    title: "Hauska joululahja isälle: ideat 2026 | Huumorikauppa",
+    description: "Hauska joululahja isälle: ideat isätyypin mukaan, lasten piirustus paitaan, isänpäivän ja joulun lahjojen yhteensovitus ja tilausaikataulu.",
+  },
+  'salaisen-joulupukin-lahja-10-20-30-euroa': {
+    title: "Salaisen joulupukin lahja 10, 20 ja 30 € | Huumorikauppa",
+    description: "Salaisen joulupukin lahja 10, 20 tai 30 eurolla: ideat jokaiselle budjetille, arvonnan pelisäännöt ja vinkit toimituskulujen huomioimiseen.",
+  },
+  'hauska-lahja-teinille-jouluksi': {
+    title: "Hauska joululahja teinille: ideat ja vinkit | Huumorikauppa",
+    description: "Hauska joululahja teinille: mikä huumori toimii 13-19-vuotiaalle, mitä välttää, ideat harrastusten mukaan ja vinkit oman tekstin lahjaan.",
+  },
+  'lahja-kalastajalle-metsastajalle-mokkeilijalle': {
+    title: "Lahja kalastajalle, metsästäjälle, mökille | Huumorikauppa",
+    description: "Hauska joululahja kalastajalle, metsästäjälle tai mökkeilijälle: miksi välinelahja on riski, ideat lajin mukaan ja porukan yhteinen paita.",
+  },
+  'joululahjan-viimeiset-tilauspaivat-2026': {
+    title: "Joululahjan viimeinen tilauspäivä 2026 | Huumorikauppa",
+    description: "Joululahjat 2026: tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon. Näin suunnittelet tilauksen ja palautukset.",
+  },
   '20-hauskinta-t-paitaa-2026': {
     title: '20 Hauskinta T-paitaa 2026 – Parhaat Valinnat | Huumorikauppa.fi',
     description: 'Etsitkö hauskaa t-paitaa? Listasimme 20 parasta huumori-t-paitaa 2026! Kaikille sopivat koot. Tilaa nyt, nopea toimitus.',

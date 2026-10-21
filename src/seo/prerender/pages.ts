@@ -1,3 +1,4 @@
+import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
 /**
  * Esirenderöitävien sivujen rakentaja. Käyttää samoja datalähteitä kuin React-sivut
  * (src/data/*, src/seo/*), jotta raaka HTML ja selaimessa näkyvä sivu vastaavat toisiaan.
@@ -447,23 +448,8 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
           : []),
       ],
       faqs,
-      jsonLd: [
-        {
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: post.title,
-          description: post.metaDescription,
-          url: `${SITE_URL}${path}`,
-          datePublished: post.publishedAt,
-          dateModified: post.updatedAt,
-          author: { "@id": ORGANIZATION_ID },
-          publisher: { "@id": ORGANIZATION_ID },
-          mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}${path}` },
-          inLanguage: "fi",
-          keywords: post.tags.join(", "),
-        },
-        buildFaqJsonLd(faqs),
-      ],
+      // Sama Article + FAQPage -graafi kuin selaimessa (src/lib/blogJsonLd.ts).
+      jsonLd: [buildBlogPostJsonLd(post, faqs)],
     };
   });
 }

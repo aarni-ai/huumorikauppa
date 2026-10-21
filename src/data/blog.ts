@@ -1,6 +1,8 @@
 import { BlogPost } from "@/types/blog";
+import { jouluOppaat2026 } from "./blogJoulu2026";
 
 export const blogPosts: BlogPost[] = [
+  ...jouluOppaat2026,
   {
     slug: "20-hauskinta-t-paitaa-2026",
     title: "20 hauskinta t-paitaa vuonna 2026 – Meemipaidat, vitsipaidat ja huumoripaidat",
@@ -709,7 +711,6 @@ Eläkeläisen aamu alkaa kahvilla – ja hauska muki tekee siitä entistä nauti
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
     productLinks: [
-      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – klassikko eläkelahja" },
       { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – työvuosien jälkeen 'amattimies'" },
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – yhteislahja työkavereilta" },
       { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari – eläkkeelle jäävälle äidille" },
@@ -1078,7 +1079,6 @@ Pyöreät vuodet ovat erityisiä – ja ne ansaitsevat erityisen lahjan. Mutta m
     relatedCategories: ["t-paidat", "hupparit", "mukit"],
     productLinks: [
       { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – klassikko 40v miehelle" },
-      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – 60v miehelle" },
       { slug: "kalamies-t-paita", label: "KALAMIES | T-Paita – kalastusta harrastavalle" },
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – setähuumoria" },
       { slug: "ice-aatanat-paita", label: "ICE AATANA | T-Paita – meemihenkinen lahja miehelle" },
@@ -1161,7 +1161,6 @@ Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydän
     productLinks: [
       { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari – 40v naiselle/äidille" },
       { slug: "maailman-paras-aiti-t-paita", label: "Maailman paras ÄITI | T-Paita" },
-      { slug: "personoitava-kahvimuki-aidille-superaiti", label: "Personoitava Kahvimuki Äidille – Superäiti" },
       { slug: "maailman-paras-aiti-palkinnon-voittaja-huppari", label: "Maailman paras äiti -palkinnon voittaja | Huppari" },
       { slug: "minulla-ei-ole-alkoholiongelmaa-t-paita", label: "Sarkasmihenkinen t-paita 30v naiselle" },
     ],
@@ -1325,9 +1324,7 @@ Hauska muki tai paita on hyvä läksiäislahja. Se jää muistoksi yhteisistä a
 - 3–10 arkipäivän toimitus`,
     relatedCategories: ["mukit", "tarrat", "t-paidat"],
     productLinks: [
-      { slug: "hauska-kahvimuki-etatyontekijalle-virallinen-pyjama-ammattilainen", label: "Hauska Kahvimuki Etätyöntekijälle – Virallinen Pyjama-Ammattilainen" },
       { slug: "hauska-t-paita-tyokaverillle-selvian-tyokaverit-auttaa", label: "Hauska T-Paita Työkaverille – 'Selviän, työkaverit auttaa'" },
-      { slug: "100-elakalainen-kahvikuppi", label: "100% eläkäläinen | Kahvikuppi – eläkkeelle jäävälle työkaverille" },
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – tiimin yhteishenkilö" },
       { slug: "amatimies-t-paita", label: "Amatimies | T-Paita – kiitoslahja pomolle" },
     ],
@@ -1521,8 +1518,6 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa – ja nörttihuumori on oma la
     content: "## Hauskat valmistujaislahjat – ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä – vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** – hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** – valitse huumori joka sopii valmistujaan\n- **Edullinen** – hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** – paita, muki tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** – Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Hauska muki** – Edullinen mutta hauska ylioppilaan lahja.\n\n**Meemihuppari** – Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** – Koodihuumoripaita tai -muki.\n\n**Opettajan lahja** – Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus – muki + paita + tarra-arkki.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska muki** (12–18 €)\n- **Tarra-arkki** (8–15 €)\n- **Hauska pipo** (15–20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 2 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus yli 79 € tilauksiin\n- 3–10 arkipäivän toimitus\n- 14 päivän palautusoikeus",
     relatedCategories: ["t-paidat", "mukit", "hupparit"],
     productLinks: [
-      { slug: "personoitava-kahvimuki-valmistuvalle-nimi-valmistunut-vuosi", label: "Personoitava Kahvimuki Valmistuvalle – Nimi & valmistunut-vuosi" },
-      { slug: "jyvaskyla-opiskelija-joka-ei-koskaan-valmistunut-hauska-kahvimuki", label: "Opiskelija joka ei koskaan valmistunut | Kahvimuki" },
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita – yhteislahja kaveriporukalta" },
       { slug: "ice-aatanat-paita", label: "ICE AATANA | T-Paita – meemihenkinen ylioppilaslahja" },
       { slug: "maailman-paras-aiti-t-paita", label: "Maailman paras äiti -paita – valmistuvan äidiltä" },
