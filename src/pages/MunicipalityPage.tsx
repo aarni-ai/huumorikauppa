@@ -138,7 +138,7 @@ const MunicipalityPage = () => {
             Suosituimmat {municipality.name}-aiheiset tekstit
           </h2>
           <p className="text-muted-foreground text-sm mb-4">
-            {municipality.identity} — kaupunki-identiteetti paidan tai mukin tekstissä.
+            {municipality.identity} — kaupunki-identiteetti paidan tai hupparin tekstissä.
           </p>
           <ul className="space-y-2">
             {municipality.shirtTexts.map((text, i) => (
@@ -159,7 +159,7 @@ const MunicipalityPage = () => {
             <p>
               Paikallinen identiteetti on vahva — ihmiset ovat ylpeitä kotiseudustaan. Hauska lahja jossa
               näkyy {municipality.name}-identiteetti tekee lahjan persoonalliseksi ja muistettavaksi.
-              Paita, muki tai huppari jossa on kotipaikkaviittaus on lahja joka puhuttelee.
+              Paita tai huppari, jossa on kotipaikkaviittaus, on lahja joka puhuttelee.
             </p>
           </section>
           <section>

@@ -1,3 +1,5 @@
+import { cleanProductName } from "@/lib/productNames";
+
 // Deterministic per-product SEO copy generator.
 // Produces UNIQUE long-form Finnish content per product so that product pages
 // (and the Google Merchant feed) are not flagged as thin/duplicate.
@@ -12,8 +14,8 @@ export interface ProductCopyInput {
 }
 
 export interface ProductCopy {
-  longDescription: string;        // 150–300 sanaa, uniikki
-  shortDescription: string;       // 150–160 merkkiä, meta/feed
+  longDescription: string;        // 150-300 sanaa, uniikki
+  shortDescription: string;       // 150-160 merkkiä, meta/feed
   audience: string;
   occasions: string;
   whyFunny: string;
@@ -22,13 +24,12 @@ export interface ProductCopy {
   care: string;
   scenarios: string[];            // 3 short bullets
   giftUseCases: string[];         // 3 short bullets
-  feedDescription: string;        // 300–500 merkkiä Google-feediin
+  feedDescription: string;        // 300-500 merkkiä Google-feediin
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
   "t-paidat": "t-paita",
   "hupparit": "huppari",
-  "mukit": "muki",
   "tarrat": "tarra",
   "bodyt": "vauvan body",
   "peitot": "peitto",
@@ -42,7 +43,6 @@ const CATEGORY_LABEL: Record<string, string> = {
 const CATEGORY_PLURAL: Record<string, string> = {
   "t-paidat": "t-paitoja",
   "hupparit": "huppareita",
-  "mukit": "mukeja",
   "tarrat": "tarroja",
   "bodyt": "bodyja",
   "peitot": "peittoja",
@@ -54,9 +54,8 @@ const CATEGORY_PLURAL: Record<string, string> = {
 };
 
 const CATEGORY_MATERIAL: Record<string, string> = {
-  "t-paidat": "100 % puuvillaa (180 g/m²), pehmeä ja hengittävä. Sopii arkikäyttöön ja kestää useita pesuja menettämättä muotoaan.",
-  "hupparit": "Pehmeä puuvilla-polyesterisekoite (80/20, ~280 g/m²) sisältä fleecepintaisena. Lämmin, mukava ja kestävä.",
-  "mukit": "Korkealaatuista AAA-luokan keramiikkaa, tilavuus 325 ml (11 oz). Konepesu- ja mikroaaltouunin kestävä.",
+  "t-paidat": "Puuvillapaita, tarkka materiaali ja paino ovat tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja kokotaulukossa on mitat senttimetreinä.",
+  "hupparit": "Pehmeä puuvilla-polyesterisekoite, tarkka koostumus on tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja kokotaulukossa on mitat senttimetreinä.",
   "tarrat": "Kestävä vinyylimateriaali UV- ja vesisuojattuna. Pysyy kirkkaana läppärissä, vesipullossa, autossa ja jääkaapissa vuosia.",
   "bodyt": "100 % puuvillaa, pehmeää ja hengittävää vauvan iholle. Painonapit haaroissa, hellävarainen kaulus.",
   "peitot": "Pehmeä polyesterifleece, lämmin ja kevyt. Soveltuu sohva- tai vuodepeitoksi.",
@@ -68,9 +67,8 @@ const CATEGORY_MATERIAL: Record<string, string> = {
 };
 
 const CATEGORY_CARE: Record<string, string> = {
-  "t-paidat": "Konepesu max 30 °C nurinpäin, ei valkaisua, silitys nurjalta puolelta keskilämmöllä.",
-  "hupparit": "Konepesu max 30 °C nurinpäin, ei kuivausrumpua, ei silitystä painatuksen päältä.",
-  "mukit": "Konepesun ja mikroaaltouunin kestävä. Vältä metallisia kuluttavia aineita.",
+  "t-paidat": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua. Tarkka hoito-ohje on tuotekuvauksessa.",
+  "hupparit": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua. Tarkka hoito-ohje on tuotekuvauksessa.",
   "tarrat": "Pyyhi puhdas, kuiva pinta ennen liimausta. Vältä jatkuvaa hankausta.",
   "bodyt": "Konepesu max 40 °C, ei valkaisua, silitys keskilämmöllä nurjalta puolelta.",
   "peitot": "Konepesu max 30 °C, ei valkaisua, ei kuivausrumpua.",
@@ -96,9 +94,8 @@ function pickAudience(text: string, category: string): string {
   if (t.includes("kaljaa") || t.includes("alkoholi")) return "ystäväporukalle ja iltojen pelastajalle";
   if (t.includes("nörtti") || t.includes("it ")) return "IT-alan ammattilaiselle tai nörttihuumorin ystävälle";
   if (t.includes("auto") || t.includes("mersu") || t.includes("audi") || t.includes("bemari")) return "autoharrastajalle ja konekulkupelin ystävälle";
-  if (category === "mukit") return "kahvinjuojalle, työkaverille tai itsellesi aamukahvia varten";
-  if (category === "bodyt") return "vauvalle ja vanhemmille — turvallinen ja söpö lahja";
-  return "kaverille, perheenjäsenelle, työkaverille — tai itsellesi";
+  if (category === "bodyt") return "vauvalle ja vanhemmille";
+  return "kaverille, perheenjäsenelle, työkaverille tai itsellesi";
 }
 
 function pickOccasions(text: string, category: string): string {
@@ -121,20 +118,20 @@ function categoryPlural(category: string): string {
 }
 
 function whyFunnyFor(name: string): string {
-  return `${name} naurattaa, koska se yhdistää tunnistettavan arkitilanteen ja juuri sopivasti yliampuvan tekstin. Se on lahja, jonka vastaanottaja muistaa pidempään kuin tavallisen kahvipaketin — ja jota hän oikeasti käyttää.`;
+  return `${cleanProductName(name)} naurattaa, koska se yhdistää tunnistettavan arkitilanteen ja juuri sopivasti yliampuvan tekstin. Sellaisen lahjan saaja muistaa, ja sitä myös käytetään.`;
 }
 
 function whyBuyFor(name: string, category: string): string {
   const noun = categoryNoun(category);
-  return `Asiakkaamme ostavat ${name.toLowerCase()} -${noun}n koska se on edullinen, laadukas ja juuri sopivan hauska. Se sopii lahjaksi, jonka antaja näyttää hyvältä ja vastaanottaja hymyilee. Painatus on tehty kestävällä menetelmällä, joka kestää useita pesuja menettämättä väriään.`;
+  return `${cleanProductName(name)} on ${noun}, jonka teksti tekee lahjasta henkilökohtaisen. Tuote painetaan tilauksesta ja toimitetaan 3-10 arkipäivässä, ja 79 euron tilauksista alkaen toimitus on ilmainen.`;
 }
 
 function scenariosFor(name: string, category: string): string[] {
   const noun = categoryNoun(category);
   const items = [
-    `Yllätyslahjaksi syntymäpäivään — paketin avaaja nauraa ja muistaa hetken pitkään.`,
-    `Pikkujouluihin tai polttareihin — koko porukka tunnistaa vitsin heti.`,
-    `Joululahjaksi sukulaiselle, jolle "ei keksi mitään" — tämä ${noun} pelastaa joulun.`,
+    `Yllätyslahjaksi syntymäpäivään: paketin avaaja nauraa ja muistaa hetken pitkään.`,
+    `Pikkujouluihin tai polttareihin: koko porukka tunnistaa vitsin heti.`,
+    `Joululahjaksi sukulaiselle, jolle "ei keksi mitään": tämä ${noun} ratkaisee asian.`,
     `Itselle piristykseksi tylsään maanantaiaamuun.`,
     `Lahjaksi työkaverille läksiäisissä tai eläkejuhlissa.`,
   ];
@@ -146,9 +143,9 @@ function scenariosFor(name: string, category: string): string[] {
 function giftUseCasesFor(category: string): string[] {
   const noun = categoryNoun(category);
   return [
-    `Hauska ${noun} on aina turvallinen valinta — ei mene roskiin.`,
-    `Pakkaa kauniiseen lahjapakkaukseen ja lisää oma korttiviesti.`,
-    `Yhdistä sopivaan lisälahjaan (esim. lahjakortti tai kahvipaketti) ja saat täydellisen kombon.`,
+    `Hauska ${noun} päätyy käyttöön eikä jää kaapin perälle.`,
+    `Lisää pakettiin oma korttiviesti, joka jatkaa vitsiä.`,
+    `Jouluksi: tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
   ];
 }
 
@@ -157,7 +154,7 @@ export function truncateAtWord(text: string, max: number): string {
   if (text.length <= max) return text;
   const cut = text.slice(0, max - 1);
   const lastSpace = cut.lastIndexOf(" ");
-  return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:–—-]+$/, "")}…`;
+  return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:\u2013\u2014-]+$/, "")}…`;
 }
 
 /**
@@ -177,16 +174,16 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
   const giftUseCases = giftUseCasesFor(p.category);
 
   const longDescription = [
-    `${name} on hauska ${noun}, joka on suunniteltu Suomessa ja painettu kestävällä menetelmällä EU:ssa. Se sopii ${audience} — kenelle tahansa, joka arvostaa rentoa suomalaista huumoria.`,
-    `Tämä ${noun} on suosittu lahjavalinta, kun etsit jotain ${occasions}. ${whyFunny}`,
+    `${cleanProductName(name)} on hauska ${noun}, joka painetaan tilauksesta. Se sopii ${audience}, kenelle tahansa, joka arvostaa rentoa suomalaista huumoria.`,
+    `Tämä ${noun} on lahjavalinta, kun etsit jotain ${occasions}. ${whyFunny}`,
     `Materiaali: ${material} Hoito-ohjeet: ${care}`,
     `${whyBuy}`,
   ].join("\n\n");
 
-  const feedDescription = `${name} – hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3–10 arkipäivässä, ilmainen yli 79 € tilauksiin, 14 pv palautusoikeus. Painettu EU:ssa, suomalainen design.`.slice(0, 4900);
+  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
 
   const shortDescription = truncateAtWord(
-    `${name} – hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3–10 arkipäivässä, ilmainen yli 79 €.`,
+    `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen.`,
     158,
   );
 
@@ -214,8 +211,20 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
  */
 export function isGenericDescription(d?: string): boolean {
   if (!d) return true;
-  const t = d.trim().toLowerCase();
+  const t = sanitizeProductDescription(d).toLowerCase();
   if (t.length < 60) return true;
   if (t.startsWith("hauska tuote huumorikaupasta")) return true;
   return false;
+}
+
+/**
+ * Poistaa tietokannan tuotekuvauksista lauseet, joiden väitteet eivät pidä paikkaansa
+ * (painopaikka, vanha 60 € toimitusraja, mukit). Tietokantaa ei voi muokata, joten korjaus tehdään tässä.
+ */
+const FALSE_CLAIM_SENTENCE =
+  /[^.!?\n]*(painettu eu:ssa|painettu suomessa|painetaan suomessa|yli 60 €|\bmuki|mukissa|kahvimuki)[^.!?\n]*[.!?]?/gi;
+
+export function sanitizeProductDescription(d?: string | null): string {
+  if (!d) return "";
+  return d.replace(FALSE_CLAIM_SENTENCE, "").replace(/[ \t]{2,}/g, " ").trim();
 }

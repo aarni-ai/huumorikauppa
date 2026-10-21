@@ -17,16 +17,16 @@ export const STATIC_PAGE_META = {
   "/": {
     title: "Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi",
     description:
-      "Hauskat t-paidat, hupparit, tarrat ja muut huumorituotteet suomalaisella huumorilla. Toimitus 3-10 arkipäivässä, ilmainen yli 79 € tilauksiin.",
+      "Hauskat t-paidat, hupparit ja muut huumorituotteet suomalaisella huumorilla. Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen.",
     h1: "Hauskat lahjat ja huumorituotteet",
     name: "Etusivu",
     intro:
-      "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, tarroja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta. Toimitamme koko Suomeen 3-10 arkipäivässä, ja yli 79 € tilaukset toimitetaan ilman toimituskuluja.",
+      "Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen 3-10 arkipäivässä, ja 79 euron tilauksista alkaen toimitus on ilmainen.",
   },
   "/kaikki-tuotteet": {
     title: "Kaikki hauskat tuotteet | Huumorikauppa.fi",
     description:
-      "Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit, tarrat, pipot ja muut huumorilahjat. Ilmainen toimitus yli 79 € tilauksiin.",
+      "Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit ja muut huumorilahjat. Ilmainen toimitus 79 euron tilauksista alkaen.",
     h1: "Kaikki hauskat tuotteet",
     name: "Kaikki tuotteet",
     intro:
@@ -43,10 +43,10 @@ export const STATIC_PAGE_META = {
   "/usein-kysytyt-kysymykset": {
     title: "Usein kysytyt kysymykset | Huumorikauppa.fi",
     description:
-      "Vastaukset yleisimpiin kysymyksiin toimituksesta, palautuksista, maksamisesta ja custom-painatuksista Huumorikaupassa.",
+      "Vastaukset kysymyksiin toimituksesta, joulun tilausajasta, palautuksista, maksutavoista ja oman tekstin tilaamisesta Huumorikaupassa.",
     h1: "Usein kysytyt kysymykset",
     name: "Usein kysytyt kysymykset",
-    intro: "Vastaukset yleisimpiin kysymyksiin.",
+    intro: "Lyhyet vastaukset toimituksesta, joulun aikatauluista, palautuksista, maksamisesta ja omasta tekstistä.",
   },
   "/toimitusehdot": {
     title: "Toimitusehdot | Huumorikauppa.fi",
@@ -86,7 +86,7 @@ export const STATIC_PAGE_META = {
   "/tietoa-meista": {
     title: "Tietoa meistä | Huumorikauppa.fi",
     description:
-      "Huumorikauppa on suomalainen verkkokauppa, joka suunnittelee hauskoja t-paitoja, huppareita, tarroja ja muita tuotteita suomalaisella huumorilla.",
+      "Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita tuotteita suomalaisella huumorilla.",
     h1: "Tietoa meistä",
     name: "Tietoa meistä",
   },

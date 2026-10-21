@@ -34,7 +34,7 @@ const processSteps = [
   {
     number: "03",
     title: "Painatus",
-    body: "EU-kumppanimme käyttää DTG- (suorapainatus kankaalle) ja sublimaatiotekniikkaa. Tilaukset painetaan tilauksesta – ei turhaa varastoa, ei pitkiä kuljetusketjuja Aasiasta.",
+    body: "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, esimerkiksi DTG- tai DTF-tekniikalla. Varastoon ei painata tuotteita etukäteen.",
   },
   {
     number: "04",
@@ -44,8 +44,7 @@ const processSteps = [
 ];
 
 const materials = [
-  { label: "T-paidat & hupparit", detail: "Rengaskehrätty 100 % puuvilla tai 80/20 puuvilla-polyesterisekoite. Koot S–3XL." },
-  { label: "Mukit", detail: "Korkealaatuinen keramiikka, 330 ml. Astianpesukoneenkestävä sublimaatiopainatus." },
+  { label: "T-paidat & hupparit", detail: "Materiaali on kerrottu jokaisen tuotteen kuvauksessa, esimerkiksi 100 % puuvilla tai puuvilla-polyesterisekoite. Koot näet tuotesivulta." },
   { label: "Tarrat", detail: "Kestävä UV-suojattu vinyyli. Vedenkestävä, sopii ulkokäyttöön." },
   { label: "Peitot", detail: "Pehmeä fleece, 150×200 cm. Painatus koko peittoalueelle." },
   { label: "Seinätaulut", detail: "Puiset kehykset, laadukas kangas. Valmiina ripustamiseen." },
@@ -54,7 +53,7 @@ const materials = [
 const trustPoints = [
   { icon: Truck, title: "Nopea toimitus", body: "3–10 arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli 79 € tilauksiin." },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
-  { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard, Klarna, MobilePay, Apple Pay, Google Pay. Maksut suojattu SSL-salauksella." },
+  { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard ja muut yleisimmät maksutavat. Maksu tehdään suojatulla maksusivulla." },
   { icon: Flag, title: "Suomalainen yritys", body: "Rekisteröity Helsinki, Finland. Y-tunnus 3583677-2. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä." },
   { icon: Mail, title: "Aito asiakaspalvelu", body: "Vastaamme 1–2 arkipäivässä. Ei chatbottia – aito ihminen lukee viestisi ja auttaa." },
   { icon: MapPin, title: "Tunnettu ja vahvistettu", body: "Rekisteröity Wikidataan (Q139915256). Arvostelut Google Merchant Centerissä." },
@@ -87,7 +86,7 @@ const AboutPage = () => {
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3">Tietoa meistä</h1>
         <p className="text-lg text-muted-foreground mb-8">
           Huumorikauppa on suomalainen verkkokauppa, joka uskoo, että parhaat lahjat naurattavat.
-          Suunnittelemme hauskoja t-paitoja, huppareita, mukeja, tarroja ja muita tuotteita, joissa on
+          Myymme hauskoja t-paitoja, huppareita ja muita tuotteita, joissa on
           aitoa suomalaista huumoria – ei kopioitua, ei käännettyä.
         </p>
 
@@ -170,8 +169,8 @@ const AboutPage = () => {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-3">
-            Painatus tapahtuu EU-kumppanillamme DTG- tai sublimaatiotekniikalla. Tuotteet toimitetaan
-            tilauksesta – ei turhaa varastoa, ei pitkiä kuljetusketjuja kaukaa.
+            Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa.
+            Varastoon ei painata tuotteita etukäteen.
           </p>
         </section>
 

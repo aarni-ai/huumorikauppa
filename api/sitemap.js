@@ -1,5 +1,5 @@
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
-import { onPiilotettu } from "./_lib/piilotetut.js";
+import { onPiilotettuTuote } from "./_lib/piilotetut.js";
 import PAKETIT from "./_lib/paketit-data.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
@@ -59,6 +59,16 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  "hauskat-joululahjaideat-miehelle-2026",
+  "pikkujoululahja-alle-20-euroa",
+  "lahja-miehelle-jolla-on-kaikki",
+  "elakelahja-joka-naurattaa",
+  "mita-ostaa-tyokaverille-jouluksi",
+  "joululahja-isalle-hauskat-ideat",
+  "salaisen-joulupukin-lahja-10-20-30-euroa",
+  "hauska-lahja-teinille-jouluksi",
+  "lahja-kalastajalle-metsastajalle-mokkeilijalle",
+  "joululahjan-viimeiset-tilauspaivat-2026",
   "20-hauskinta-t-paitaa-2026",
   "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat",
   "hauskat-mukit-toimistoon-ja-lahjaksi",
@@ -106,9 +116,9 @@ function toW3CDate(date) {
 }
 
 async function fetchAllProducts() {
-  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin ennen:
-  // kaikki paitsi piilotetut kategoriat (mukit), uusimmin päivitetty ensin.
-  const rivit = (await kaikkiTuotteet()).filter((p) => !onPiilotettu(p.category));
+  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin
+  // kaupassa: piilotetut kategoriat ja mukit väärässä kategoriassa pois (api/_lib/piilotetut.js), uusin ensin.
+  const rivit = (await kaikkiTuotteet()).filter((p) => !onPiilotettuTuote(p));
   return rivit
     .map((p) => ({ slug: p.slug, updated_at: p.updated_at }))
     .sort((x, y) => String(y.updated_at || "").localeCompare(String(x.updated_at || "")));

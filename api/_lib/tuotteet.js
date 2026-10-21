@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { onTietokanta, sql } from "./db.js";
-import { onPiilotettu } from "./piilotetut.js";
+import { onPiilotettuTuote } from "./piilotetut.js";
 import { heikoinKate } from "./kate.js";
 
 const VALIMUISTI_MS = 5 * 60 * 1000;
@@ -46,7 +46,7 @@ export async function kaikkiTuotteet() {
  * Myynnissä olevat: ei luonnoksia (is_active false), ei piilotettuja kategorioita (mukit) eikä tuotteita, joiden
  * tunnettu kate on alle 40 % (api/_lib/kate.js). Tuntematon kate ei piilota (kassa estää ostamisen).
  */
-export const myynnissa = (p) => p.is_active !== false && !onPiilotettu(p.category) && heikoinKate(p).sallittu !== false;
+export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false;
 
 export async function naytettavatTuotteet() {
   return (await kaikkiTuotteet()).filter(myynnissa);
