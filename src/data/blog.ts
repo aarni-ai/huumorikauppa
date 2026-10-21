@@ -1,6 +1,8 @@
 import { BlogPost } from "@/types/blog";
+import { jouluOppaat2026 } from "./blogJoulu2026";
 
 export const blogPosts: BlogPost[] = [
+  ...jouluOppaat2026,
   {
     slug: "20-hauskinta-t-paitaa-2026",
     title: "20 hauskinta t-paitaa vuonna 2026 – Meemipaidat, vitsipaidat ja huumoripaidat",
