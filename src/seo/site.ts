@@ -21,6 +21,8 @@ export const SITE_NAME = "Huumorikauppa";
 
 export const ORGANIZATION = {
   name: SITE_NAME,
+  /** Yritys, jonka nimissä kauppaa pidetään (AboutPage.tsx, Yritystiedot). */
+  legalName: "Inteller",
   legalId: "3583677-2", // Y-tunnus (index.html, llms.txt)
   email: "huumorikauppa@gmail.com",
   addressLocality: "Helsinki",
