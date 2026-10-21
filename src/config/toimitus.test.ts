@@ -24,15 +24,8 @@ const SALLITUT = [
   /^src\/data\/arvostelut-arkisto\.ts$/,
 ];
 
-/**
- * TODO(toimitus-config): toisen agentin työn alla olevat tiedostot. Poista listalta, kun
- * muutokset on yhdistetty ja tiedostot lukevat arvot src/config/toimitus.ts:stä.
- */
-const VALIAIKAISESTI_OHITETUT = [
-  "src/components/layout/Header.tsx",
-  "src/components/ChristmasDeadlineBanner.tsx",
-  "src/data/landingPages.ts",
-];
+/** Väliaikaisesti ohitettavat tiedostot (tyhjä: kaikki lukevat arvot src/config/toimitus.ts:stä). */
+const VALIAIKAISESTI_OHITETUT: string[] = [];
 
 /** Rivikohtainen poikkeus perustelulla (esim. tietokannan vanhan tekstin siivous). */
 const RIVIPOIKKEUS = "toimitus-grep: sallittu";

@@ -18,6 +18,7 @@ import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { FATHERS_DAY_LAST_ORDER_TEXT, FATHERS_DAY_TEXT } from "./campaignSchedule";
 import { LANDING_REDIRECTS } from "./landingRoutes";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 export { LANDING_PATHS, LANDING_REDIRECTS, NOT_CREATED_LANDINGS, CHRISTMAS_MENU, FATHERS_DAY_MENU } from "./landingRoutes";
 
@@ -220,7 +221,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska joululahja on t-paita, huppari tai personoitu tuote, jonka teksti osuu saajan omaan elämään: ikään, ammattiin, harrastukseen tai perheen sisäpiirin vitsiin. Tällä sivulla on koko joulun valikoima, ja alla olevista lahjaoppaista rajaat sen saajan tai budjetin mukaan.",
       `Tuotteet painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa ja kuljetetaan sieltä Suomeen, joten joulutilauksella on takaraja. ${D}`,
-      "Jos saajan koko on epävarma, valitse huppari: väljä istuvuus ei haittaa hupparissa samalla tavalla kuin t-paidassa. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja, joten useamman lahjan tilaaminen kerralla kannattaa.",
+      `Jos saajan koko on epävarma, valitse huppari: väljä istuvuus ei haittaa hupparissa samalla tavalla kuin t-paidassa. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, joten useamman lahjan tilaaminen kerralla kannattaa.`,
     ],
     faqs: [
       {
@@ -276,7 +277,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska joululahja miehelle on huppari tai t-paita, jonka teksti kertoo jotain hänestä itsestään: kalastus, kalju, kotitalon isäntä tai lapsenlasten ukki.",
       "Jouluna huppari on käytännöllisempi kuin t-paita, koska sitä käytetään talvella sisällä ja ulkona. Siksi tällä sivulla hupparit näkyvät ensin. Jos mies on isä tai isoisä, isän ja papan joululahjasivuilla valikoima on rajattu tarkemmin.",
-      `${D} Yli 79 euron tilaukset, esimerkiksi kaksi hupparia, toimitetaan ilman toimituskuluja.`,
+      `${D} Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset, esimerkiksi kaksi hupparia, toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -557,7 +558,7 @@ export const landingPages: LandingPageDef[] = [
     h1: "Hauska joululahja työkaverille",
     intro: [
       "Hauska joululahja työkaverille on toimistohuumoria, joka naurattaa koko työporukkaa eikä osu kehenkään henkilökohtaisesti: palaverit, lounastauko, etätyö ja tiimityö.",
-      "Paitojen tekstit, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko, nauravat työlle eivätkä työkaverille. Jos lahjoja ostetaan koko tiimille, yli 79 euron tilaus toimitetaan ilman toimituskuluja.",
+      `Paitojen tekstit, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko, nauravat työlle eivätkä työkaverille. Jos lahjoja ostetaan koko tiimille, yli ${ILMAINEN_RAJA_TEKSTI} euron tilaus toimitetaan ilman toimituskuluja.`,
       `Jos lahjat jaetaan pikkujouluissa, katso myös pikkujoululahjat ja salaisen joulupukin lahjat. ${D}`,
     ],
     faqs: [
@@ -571,7 +572,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Voiko lahjat tilata koko tiimille kerralla?",
-        a: "Voi. Lisää tuotteet ja koot samaan ostoskoriin. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+        a: `Voi. Lisää tuotteet ja koot samaan ostoskoriin. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
       {
         q: "Mitä huumoria kannattaa välttää työkaverin lahjassa?",
@@ -756,7 +757,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä toimitus maksaa?",
-        a: "Alle 79 euron tilauksissa toimitus maksaa 6,90 euroa, ja yli 79 euron tilaukset toimitetaan ilman toimituskuluja. Useampi pieni lahja samassa tilauksessa jakaa toimituskulun.",
+        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Useampi pieni lahja samassa tilauksessa jakaa toimituskulun.`,
       },
     ],
     related: ["/joululahja-alle-50-euroa", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/joululahja-kaverille"],
@@ -775,7 +776,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Alle 50 eurolla saat hauskan hupparin, joka on talvella t-paitaa käytännöllisempi joululahja, tai t-paidan ja pienen lisälahjan yhdessä.",
       "Hupparit, peitot, seinätaulut ja lippikset maksavat 30 ja 50 euron välillä, ja ne näkyvät tällä sivulla ensin. 50 euron budjettiin mahtuvat myös t-paita ja koriste yhdessä.",
-      `Kahden hupparin tilaus ylittää 79 euron rajan, jolloin toimitus on ilmainen. ${D}`,
+      `Kahden hupparin tilaus ylittää ${ILMAINEN_RAJA_TEKSTI} euron rajan, jolloin toimitus on ilmainen. ${D}`,
     ],
     faqs: [
       {
@@ -788,7 +789,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Saako ilmaisen toimituksen?",
-        a: "Yli 79 euron tilaukset toimitetaan ilman toimituskuluja, eli kaksi hupparia samassa tilauksessa ylittää rajan.",
+        a: `Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, eli kaksi hupparia samassa tilauksessa ylittää rajan.`,
       },
       {
         q: "Milloin joululahja on viimeistään tilattava?",
@@ -811,7 +812,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska pikkujoululahja on lahja, joka naurattaa koko porukkaa, kun se avataan muiden edessä: toimistohuumoria, yhteinen vitsi tai pikkujouluaiheinen huppari.",
       "Jos lahjanvaihdossa on 5 tai 10 euron hintaraja, siihen mahtuu tarra, johon saa oman tekstin. Ilman tiukkaa hintarajaa sopivat koriste ja toimistohuumorin t-paidat, kuten Tärkeintä työssä on lounastauko.",
-      "Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlaa.",
+      `Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlaa.`,
     ],
     faqs: [
       {
@@ -824,7 +825,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa pikkujoululahja pitää tilata?",
-        a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen pikkujouluja.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen pikkujouluja.`,
       },
       {
         q: "Mikä sopii lahjaksi tuntemattomalle työkaverille?",
@@ -879,12 +880,12 @@ export const landingPages: LandingPageDef[] = [
     group: "tuotteet",
     title: "Hauskat t-paidat miehille ja naisille | Huumorikauppa",
     description:
-      "Hauskat t-paidat suomalaisella huumorilla: meemit, ikävuodet, ammatit, harrastukset ja kotikaupunki. Myös oma teksti. Toimitus 3-10 arkipäivässä.",
+      `Hauskat t-paidat suomalaisella huumorilla: meemit, ikävuodet, ammatit, harrastukset ja kotikaupunki. Myös oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat t-paidat",
     intro: [
       "Hauska t-paita on paita, jonka painatus on vitsi: Huumorikaupan valikoimassa on meemejä, ikävuosipaitoja, ammatti- ja harrastuspaitoja sekä kotikaupunkiaiheisia paitoja.",
       "Miehille valikoimassa ovat esimerkiksi Isäntä, Amatimies ja Kalju, naisille slay queen ja Super äiskä. Kaupunkipaidoissa on omat mallinsa yli 50 paikkakunnalle, ja Oma teksti/kuva -paitaan kirjoitat itse painettavan tekstin.",
-      "Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa. Toimitusaika Suomeen on 3-10 arkipäivää, ja yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+      `Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa. Toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -901,7 +902,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kauanko toimitus kestää?",
-        a: `Toimitusaika on 3-10 arkipäivää tilauksesta. ${D}`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. ${D}`,
       },
     ],
     related: ["/hauskat-hupparit", "/meemipaidat", "/setamiespaidat", "/suomalainen-huumori-paidat", "/ammattipaidat"],
@@ -919,7 +920,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska huppari on huppari, jonka painatus on vitsi: valikoimassa on eläkeläis- ja ikävuosihuppareita, meemejä, äiti- ja isäaiheisia huppareita sekä kotikaupunkihuppareita.",
       "Huppari on talven lahjoista käytännöllinen, koska sitä käytetään sisällä ja ulkona, ja väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. Kaupunkihuppareissa paikkakuntalainen selviää mistä vain.",
-      `Hupparit painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa ja toimitetaan Suomeen 3-10 arkipäivässä. ${D}`,
+      `Hupparit painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa ja toimitetaan Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${D}`,
     ],
     faqs: [
       {
@@ -949,7 +950,7 @@ export const landingPages: LandingPageDef[] = [
     group: "tuotteet",
     title: "Meemipaidat: hauskat meemi t-paidat | Huumorikauppa",
     description:
-      "Meemipaidat ja -hupparit suomalaisista meemeistä: se oli tonnin seteli, oispa kaljaa, Saatanan Tunarit, ICE AATANA ja Kalju. Toimitus 3-10 arkipäivässä.",
+      `Meemipaidat ja -hupparit suomalaisista meemeistä: se oli tonnin seteli, oispa kaljaa, Saatanan Tunarit, ICE AATANA ja Kalju. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Meemipaidat",
     intro: [
       "Meemipaita on t-paita tai huppari, johon on painettu tunnettu meemi tai lausahdus, kuten se oli tonnin seteli, oispa kaljaa tai ois viisaampi häipyy täält.",
@@ -984,7 +985,7 @@ export const landingPages: LandingPageDef[] = [
     group: "tuotteet",
     title: "Suomalainen huumori t-paidat ja hupparit | Huumorikauppa",
     description:
-      "T-paidat ja hupparit suomalaisella huumorilla: Saatanan Tunarit, Suomi Finland, Isäntä, avantouinti ja pilkkiminen. Toimitus 3-10 arkipäivässä.",
+      `T-paidat ja hupparit suomalaisella huumorilla: Saatanan Tunarit, Suomi Finland, Isäntä, avantouinti ja pilkkiminen. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Suomalainen huumori paidoissa",
     intro: [
       "Suomalainen huumori t-paidassa tarkoittaa tekstiä, joka nojaa suomalaiseen arkeen: kirosanat, talon isäntä, avantouinti, pilkkiminen ja oispa kaljaa.",
@@ -1023,7 +1024,7 @@ export const landingPages: LandingPageDef[] = [
     group: "tuotteet",
     title: "Setämiespaidat ja äijäpaidat | Huumorikauppa",
     description:
-      "Setämiespaidat ja äijäpaidat: Kalju, Isäntä, Amatimies, Museokamaa ja Jos iskä ei osaa korjata sitä. T-paidat ja hupparit, toimitus 3-10 arkipäivässä.",
+      `Setämiespaidat ja äijäpaidat: Kalju, Isäntä, Amatimies, Museokamaa ja Jos iskä ei osaa korjata sitä. T-paidat ja hupparit, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Setämiespaidat",
     intro: [
       "Setämiespaita on t-paita tai huppari, jonka teksti nauraa keski-ikäisen miehen omille jutuille: kalju, talon isäntä, kaiken itse korjaaminen ja grillin vartiointi.",
@@ -1060,12 +1061,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 40-vuotiaalle miehelle | Huumorikauppa",
     description:
-      "40 v lahja miehelle: 40v-paidat ja -hupparit kuten 40v ei vanha, vintage ja 40 vuotta, henkisesti 18. Toimitus 3-10 arkipäivässä, ilmainen yli 79 €.",
+      `40 v lahja miehelle: 40v-paidat ja -hupparit kuten 40v ei vanha, vintage ja 40 vuotta, henkisesti 18. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
     h1: "Hauskat lahjat 40-vuotiaalle miehelle",
     intro: [
       "Hauska lahja 40-vuotiaalle miehelle on 40v-paita tai -huppari, jonka teksti kääntää ikävuodet vitsiksi, kuten 40v ei vanha, vintage tai 40v kunnossa niinku 20v.",
       "40-vuotistekstit tekevät iästä vitsin aiheen ilman loukkausta: ne kehuvat tai liioittelevat. Jos syntymäpäiväsankari on isä, sopivat myös isä-aiheiset paidat, ja harrastajalle harrastuspaidat.",
-      "Juhliin tilaa ajoissa, sillä toimitusaika on 3-10 arkipäivää tilauksesta.",
+      `Juhliin tilaa ajoissa, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
     ],
     faqs: [
       {
@@ -1078,7 +1079,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa lahja pitää tilata?",
-        a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
       {
         q: "Onko 40-vuotiaalle naiselle omia paitoja?",
@@ -1095,12 +1096,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 50-vuotiaalle miehelle | Huumorikauppa",
     description:
-      "50 v lahja miehelle: 50v-paidat ja -hupparit kuten 50v puoli vuosisataa, ei naarmuakaan ja Museokamaa. Toimitus 3-10 arkipäivässä.",
+      `50 v lahja miehelle: 50v-paidat ja -hupparit kuten 50v puoli vuosisataa, ei naarmuakaan ja Museokamaa. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat 50-vuotiaalle miehelle",
     intro: [
       "Hauska lahja 50-vuotiaalle miehelle on 50v-paita tai -huppari, jossa puoli vuosisataa on vitsin aihe, kuten 50v puoli vuosisataa, ei naarmuakaan tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Museokamaa sopii 50-vuotiaalle, joka nauraa jo itselleen vanhana mallina, ja 50 vuotta nuori juhlijalle, joka ei koe ikäänsä.",
-      "50-vuotislahjaksi huppari on t-paitaa näyttävämpi, ja yli 79 euron tilaukset toimitetaan ilman toimituskuluja. Toimitusaika on 3-10 arkipäivää.",
+      `50-vuotislahjaksi huppari on t-paitaa näyttävämpi, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1117,7 +1118,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa tilaus pitää tehdä?",
-        a: "Toimitusaika on 3-10 arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
     ],
     related: ["/lahjat/40-vuotiaalle-miehelle", "/lahjat/60-vuotiaalle-miehelle", "/syntymapaivalahjat", "/setamiespaidat"],
@@ -1130,12 +1131,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 60-vuotiaalle miehelle | Huumorikauppa",
     description:
-      "60 v lahja miehelle: 60v-paidat ja -hupparit kuten 60v takuu mennyt, toimii silti ja 60 vuotta nuori ja nokkela. Toimitus 3-10 arkipäivässä.",
+      `60 v lahja miehelle: 60v-paidat ja -hupparit kuten 60v takuu mennyt, toimii silti ja 60 vuotta nuori ja nokkela. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat 60-vuotiaalle miehelle",
     intro: [
       "Hauska lahja 60-vuotiaalle miehelle on 60v-paita tai -huppari, jonka teksti kehuu kokemusta tai liioittelee kuntoa, kuten 60v takuu mennyt, toimii silti.",
       "Valikoimassa on useita 60-vuotisaiheita, ja useimmista on sekä t-paita että huppari. Jos 60-vuotias on jäämässä eläkkeelle, eläkelahjoissa ovat Olen eläkkeellä ja muut eläketekstit.",
-      "60-vuotislahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on 3-10 arkipäivää.",
+      `60-vuotislahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1152,7 +1153,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kauanko toimitus kestää?",
-        a: "3-10 arkipäivää tilauksesta. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+        a: `${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
     ],
     related: ["/lahjat/60-vuotiaalle-naiselle", "/lahjat/50-vuotiaalle-miehelle", "/lahjat/70-vuotiaalle", "/elakelahjat"],
@@ -1165,12 +1166,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 70-vuotiaalle | Huumorikauppa",
     description:
-      "70 v lahja miehelle tai naiselle: 70 vuotta, mitä siitä -paita, ukki- ja pappa-paidat sekä eläkeläisen hupparit. Toimitus 3-10 arkipäivässä.",
+      `70 v lahja miehelle tai naiselle: 70 vuotta, mitä siitä -paita, ukki- ja pappa-paidat sekä eläkeläisen hupparit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat 70-vuotiaalle",
     intro: [
       "Hauska lahja 70-vuotiaalle on paita, jossa ikä on sivuseikka, kuten 70 vuotta, mitä siitä, tai eläkepäivistä nauttiva teksti, kuten Eläkkeellä, kiireinen tekemään ei mitään.",
       "70-vuotiaalle isälle tai isoisälle sopivat ukki- ja pappa-paidat sekä Museokamaa. Eläkeläistekstit eivät ole sukupuolisidonnaisia, joten ne käyvät myös 70-vuotiaalle naiselle.",
-      "Jos juhlija kalastaa tai mökkeilee, harrastuspaidat ovat sivulla Hauskat lahjat harrastajalle. Toimitusaika on 3-10 arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+      `Jos juhlija kalastaa tai mökkeilee, harrastuspaidat ovat sivulla Hauskat lahjat harrastajalle. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
     ],
     faqs: [
       {
@@ -1200,12 +1201,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 50-vuotiaalle naiselle | Huumorikauppa",
     description:
-      "50 v lahja naiselle: 50 ja hopeanhohtoinen (vain hiukset), 50 vuotta nuori ja muut 50v-paidat ja -hupparit sekä Super äiskä. Toimitus 3-10 arkipäivässä.",
+      `50 v lahja naiselle: 50 ja hopeanhohtoinen (vain hiukset), 50 vuotta nuori ja muut 50v-paidat ja -hupparit sekä Super äiskä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat 50-vuotiaalle naiselle",
     intro: [
       "Hauska lahja 50-vuotiaalle naiselle on 50v-paita tai -huppari, jonka teksti kehuu, kuten 50 vuotta nuori tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Naiselle valittu ikävitsi toimii, kun se on hänen puolellaan: tekstit kuten 50v puoli vuosisataa, ei naarmuakaan nauravat iälle eivätkä ulkonäölle. Äidille 50-vuotislahjaksi sopii myös Super äiskä -huppari.",
-      "Huppari on t-paitaa näyttävämpi juhlalahja. Toimitusaika on 3-10 arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+      `Huppari on t-paitaa näyttävämpi juhlalahja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
     ],
     faqs: [
       {
@@ -1222,7 +1223,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa lahja pitää tilata?",
-        a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
     ],
     related: ["/lahjat/60-vuotiaalle-naiselle", "/hauskat-lahjat-naiselle", "/syntymapaivalahjat", "/lahjat/50-vuotiaalle-miehelle"],
@@ -1240,7 +1241,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska lahja 60-vuotiaalle naiselle on 60v-paita tai -huppari, jonka teksti korostaa mieltä eikä vuosia, kuten 60v mutta sydän kuin 20v tai 60 vuotta nuori ja nokkela.",
       "Jos 60-vuotias on äiti tai isoäiti, lahjaksi sopii myös omalla tekstillä painettu peitto, seinätaulu tai koriste, johon kirjoitetaan lasten tai lastenlasten tervehdys.",
-      "Eläkkeelle jäävälle 60-vuotiaalle sopivat myös eläkelahjat. Toimitusaika on 3-10 arkipäivää tilauksesta.",
+      `Eläkkeelle jäävälle 60-vuotiaalle sopivat myös eläkelahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
     ],
     faqs: [
       {
@@ -1257,7 +1258,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa lahja pitää tilata?",
-        a: "Toimitusaika on 3-10 arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
     ],
     related: ["/lahjat/60-vuotiaalle-miehelle", "/lahjat/50-vuotiaalle-naiselle", "/elakelahjat", "/lahjat/isoaidille"],
@@ -1270,12 +1271,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat eläkelahjat miehelle ja naiselle | Huumorikauppa",
     description:
-      "Eläkelahja huumorilla: Olen eläkkeellä, 100% Eläkeläinen ja Eläkeläinen, aamuherätys vapaaehtoinen -paidat ja hupparit. Toimitus 3-10 arkipäivässä.",
+      `Eläkelahja huumorilla: Olen eläkkeellä, 100% Eläkeläinen ja Eläkeläinen, aamuherätys vapaaehtoinen -paidat ja hupparit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat eläkelahjat",
     intro: [
       "Hauska eläkelahja on paita tai huppari, joka juhlii vapautta työstä, kuten Olen eläkkeellä, Eläkkeellä, kiireinen tekemään ei mitään tai 40 vuotta töitä, nyt ikuinen viikonloppu.",
-      "Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
-      "Eläkejuhliin tilaa vähintään kaksi viikkoa etukäteen, sillä toimitusaika on 3-10 arkipäivää.",
+      `Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Eläkejuhliin tilaa vähintään kaksi viikkoa etukäteen, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1410,7 +1411,7 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja veljelle | Huumorikauppa",
     description:
-      "Lahja veljelle syntymäpäiväksi tai jouluksi: meemipaidat, Kalju, oispa kaljaa sekä pelaajan ja kuntosalin paidat ja hupparit. Toimitus 3-10 arkipäivässä.",
+      `Lahja veljelle syntymäpäiväksi tai jouluksi: meemipaidat, Kalju, oispa kaljaa sekä pelaajan ja kuntosalin paidat ja hupparit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat veljelle",
     intro: [
       "Hauska lahja veljelle on paita, joka nauraa hänen jutuilleen niin kuin vain sisarus voi: kalju, kuntosalilla ohitettu jalkapäivä tai loputon pelaaminen.",
@@ -1480,12 +1481,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja kaverille tai ystävälle | Huumorikauppa",
     description:
-      "Hauska lahja kaverille tai ystävälle: meemipaidat kuten oispa kaljaa ja Saatanan Tunarit, ystävä-koriste ja oma teksti. Toimitus 3-10 arkipäivässä.",
+      `Hauska lahja kaverille tai ystävälle: meemipaidat kuten oispa kaljaa ja Saatanan Tunarit, ystävä-koriste ja oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauska lahja kaverille",
     intro: [
       "Hauska lahja kaverille on paita tai pikkulahja, jonka vitsi on teidän: meemi, jota toistatte, tai lausahdus, jonka vain te ymmärrätte.",
       "Ystävälle sopii keraaminen ystävä-koriste, ja oman sisäpiirin vitsin saat painettua Oma teksti/kuva -tuotteeseen. Pyöreitä vuosia täyttävälle kaverille on ikävuosipaitoja syntymäpäivälahjoissa.",
-      "Aikuisten kaveriporukoissa toimivat oispa kaljaa ja Alkoholi tappaa hitaasti. Jos lahja annetaan nuoremmalle, valitse meemi ilman alkoholia. Toimitusaika on 3-10 arkipäivää.",
+      `Aikuisten kaveriporukoissa toimivat oispa kaljaa ja Alkoholi tappaa hitaasti. Jos lahja annetaan nuoremmalle, valitse meemi ilman alkoholia. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1520,7 +1521,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Työkaverille sopii lahjaksi toimistohuumorin paita, jonka teksti nauraa työlle eikä työkaverille, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko.",
       "Ammatin mukaan valittu paita osuu tarkemmin: asiakaspalvelijalle, myyntimiehelle ja etätöitä tekevälle on omat tekstinsä, ja muut ammatit löytyvät ammattipaidoista. Pitkän uran tehneelle sopii personoitava Alalla X vuotta -paita.",
-      "Läksiäisiin eläkkeelle jäävälle sopivat eläkelahjat. Koko työporukan tilaus yli 79 eurolla toimitetaan ilman toimituskuluja.",
+      `Läksiäisiin eläkkeelle jäävälle sopivat eläkelahjat. Koko työporukan tilaus yli ${ILMAINEN_RAJA_TEKSTI} eurolla toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -1537,7 +1538,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Voiko lahjat tilata usealle kerralla?",
-        a: "Voi. Lisää tuotteet samaan ostoskoriin. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+        a: `Voi. Lisää tuotteet samaan ostoskoriin. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
     ],
     related: ["/joululahja-tyokaverille", "/ammattipaidat", "/elakelahjat", "/lahjat/pomolle"],
@@ -1643,12 +1644,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat lahjat miehelle | Huumorikauppa",
     description:
-      "Hauska lahja miehelle: Isäntä-, Kalju-, Amatimies- ja kalastuspaidat sekä hupparit isälle, kaverille, puolisolle ja isoisälle. Toimitus 3-10 arkipäivässä.",
+      `Hauska lahja miehelle: Isäntä-, Kalju-, Amatimies- ja kalastuspaidat sekä hupparit isälle, kaverille, puolisolle ja isoisälle. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat miehelle",
     intro: [
       "Hauska lahja miehelle on paita tai huppari, jonka teksti liittyy hänen harrastukseensa tai rooliinsa, kuten Isäntä, Kalju, KALAMIES tai Museokamaa.",
       "Valitse ensin, kenelle lahja on: isälle sopivat iskä- ja isäntätekstit, puolisolle I love my girlfriend -paita ja isoisälle ukki- ja pappa-paidat. Jokaiselle on oma, tarkemmin rajattu lahjasivunsa.",
-      "Miehelle, jolla on jo kaikkea, valitse personoitava paita. Toimitusaika on 3-10 arkipäivää, ja yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+      `Miehelle, jolla on jo kaikkea, valitse personoitava paita. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -1684,12 +1685,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat lahjat naiselle | Huumorikauppa",
     description:
-      "Hauska lahja naiselle: Super äiskä, slay queen, äiti- ja ikävuosipaidat sekä omalla tekstillä painettu peitto tai taulu. Toimitus 3-10 arkipäivässä.",
+      `Hauska lahja naiselle: Super äiskä, slay queen, äiti- ja ikävuosipaidat sekä omalla tekstillä painettu peitto tai taulu. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat naiselle",
     intro: [
       "Hauska lahja naiselle on tuote, jonka teksti on hänen puolellaan: Super äiskä äidille, slay queen ystävälle tai 40 ja fabulous pyöreitä vuosia täyttävälle.",
       "Huumorilahja naiselle onnistuu, kun vitsi kehuu tai liioittelee eikä koske ulkonäköä. Perheen oman jutun saat Oma teksti/kuva -tuotteeseen, jota on peittona, seinätauluna, koristeena ja vaatteina.",
-      "Rajatummat oppaat on tehty äidille, vaimolle, siskolle ja isoäidille. Toimitusaika on 3-10 arkipäivää.",
+      `Rajatummat oppaat on tehty äidille, vaimolle, siskolle ja isoäidille. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1725,12 +1726,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat syntymäpäivälahjat | Huumorikauppa",
     description:
-      "Hauska syntymäpäivälahja 30-, 40-, 50-, 60- tai 70-vuotiaalle: ikävuosipaidat ja -hupparit miehelle ja naiselle. Toimitus 3-10 arkipäivässä.",
+      `Hauska syntymäpäivälahja 30-, 40-, 50-, 60- tai 70-vuotiaalle: ikävuosipaidat ja -hupparit miehelle ja naiselle. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat syntymäpäivälahjat",
     intro: [
       "Hauska syntymäpäivälahja on ikävuosipaita tai -huppari, jossa juhlijan uusi ikä on vitsinä: 30 ja liian vanha tyhmyyksiin (teen ne silti), 40v ei vanha, vintage tai 60v takuu mennyt, toimii silti.",
       "Ikävuosipaitoja on 30-, 40-, 50-, 60- ja 70-vuotiaille. Valitse teksti juhlijan luonteen mukaan: itseironinen juhlija nauraa selkävaivoille, toinen arvostaa kehua kuten 50 vuotta nuori.",
-      "Synttärilahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on 3-10 arkipäivää.",
+      `Synttärilahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1747,7 +1748,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa synttärilahja pitää tilata?",
-        a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
     ],
     related: [
@@ -1766,12 +1767,12 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat lahjat harrastajalle | Huumorikauppa",
     description:
-      "Lahja kalastajalle, metsästäjälle, mökkeilijälle, pelaajalle tai golfaajalle: harrastuspaidat ja -hupparit huumorilla. Toimitus 3-10 arkipäivässä.",
+      `Lahja kalastajalle, metsästäjälle, mökkeilijälle, pelaajalle tai golfaajalle: harrastuspaidat ja -hupparit huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat harrastajalle",
     intro: [
       "Hauska lahja harrastajalle on paita tai huppari, jonka vitsi on lajin sisäpiiriä: kalastajalle Kala pääsi tällä kertaa, metsästäjälle Ei ole kiire, olen metsässä ja pelaajalle Just One More Level.",
       "Valikoimassa on paidat kalastukseen, pilkkimiseen, metsästykseen, mökkeilyyn, golfiin, juoksuun, kuntosalille, pyöräilyyn, lumilautailuun, retkeilyyn, avantouintiin, grillaamiseen, valokuvaukseen ja kitaransoittoon sekä koiranomistajille. Kuhunkin lajiin on yksi tai muutama malli, joten ne on koottu yhdelle sivulle.",
-      `Jos harrastusta ei löydy listalta, personoitavaan Harrastusmestari-paitaan kirjoitat lajin itse. Toimitusaika on 3-10 arkipäivää. ${D}`,
+      `Jos harrastusta ei löydy listalta, personoitavaan Harrastusmestari-paitaan kirjoitat lajin itse. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. ${D}`,
     ],
     faqs: [
       {
@@ -1806,7 +1807,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska ammattipaita on t-paita tai huppari, jonka vitsi tulee ammatin arjesta, kuten sähköasentajan Ei kosketa märkänä tai koodarin Ei se ole bugi, se on feature.",
       "Valikoimassa on paidat sähköasentajalle, putkimiehelle, rakennusmiehelle, maanviljelijälle, poliisille, palomiehelle, kokille, parturille, siivoojalle, linja-autonkuljettajalle, myyntimiehelle, asiakaspalvelijalle ja koodarille. Opettajalle ja hoitajalle ei ole omaa mallia, joten heille sopii personoitava Alalla X vuotta- tai työsankari-paita omalla tekstillä.",
-      "Ammattipaita on lahja valmistuneelle, työkaverille tai pitkän uran tehneelle. Toimitusaika on 3-10 arkipäivää.",
+      `Ammattipaita on lahja valmistuneelle, työkaverille tai pitkän uran tehneelle. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
