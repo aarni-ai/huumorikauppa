@@ -4,23 +4,31 @@ import { useState, useRef } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { Input } from "@/components/ui/input";
+import { CHRISTMAS_MENU } from "@/data/landingRoutes";
 
 type CategoryItem = { slug: string; name: string; emoji: string; description: string };
 
 function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]; otherCats: CategoryItem[]; onClose: () => void }) {
   const [otherOpen, setOtherOpen] = useState(false);
+  const [xmasOpen, setXmasOpen] = useState(false);
   return (
     <nav className="md:hidden border-t border-border bg-background pb-4">
       <Link to="/kaikki-tuotteet" onClick={onClose} className="block px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
         Kaikki tuotteet
       </Link>
-      <Link
-        to="/lahjat/joulu"
-        onClick={onClose}
-        className="block px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+      <button
+        onClick={() => setXmasOpen(prev => !prev)}
+        aria-expanded={xmasOpen}
+        className="w-full flex items-center justify-between px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
       >
-        Kesälahjat
-      </Link>
+        Joululahjat
+        <ChevronDown className={`h-4 w-4 transition-transform ${xmasOpen ? "rotate-180" : ""}`} />
+      </button>
+      {xmasOpen && CHRISTMAS_MENU.map(item => (
+        <Link key={item.href} to={item.href} onClick={onClose} className="block px-8 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          {item.label}
+        </Link>
+      ))}
       {mainCats.map(cat => (
         <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           {cat.name}
@@ -74,6 +82,16 @@ export function Header() {
     dropdownTimeout.current = setTimeout(() => setDropdownOpen(false), 150);
   };
 
+  const [xmasOpen, setXmasOpen] = useState(false);
+  const xmasTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openXmas = () => {
+    if (xmasTimeout.current) clearTimeout(xmasTimeout.current);
+    setXmasOpen(true);
+  };
+  const closeXmas = () => {
+    xmasTimeout.current = setTimeout(() => setXmasOpen(false), 150);
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       {/* Premium multi-signal trust strip */}
@@ -124,12 +142,35 @@ export function Header() {
               {cat.name}
             </Link>
           ))}
-          <Link
-            to="/lahjat/joulu"
-            className="px-3 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors rounded-lg"
+          {/* "Joululahjat" dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={openXmas}
+            onMouseLeave={closeXmas}
           >
-            Kesälahjat
-          </Link>
+            <button
+              className="px-3 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors rounded-lg flex items-center gap-1"
+              onClick={() => setXmasOpen(prev => !prev)}
+              aria-expanded={xmasOpen}
+            >
+              Joululahjat
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${xmasOpen ? "rotate-180" : ""}`} />
+            </button>
+            {xmasOpen && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-lg py-2 min-w-[240px] z-50">
+                {CHRISTMAS_MENU.map(item => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setXmasOpen(false)}
+                    className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* "Muut tuotteet" dropdown */}
           <div

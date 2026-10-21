@@ -1,4 +1,5 @@
 import { situationGifts } from "@/data/situationGifts";
+import { LANDING_REDIRECTS } from "@/data/landingRoutes";
 
 export interface SiteLink {
   path: string;
@@ -18,15 +19,16 @@ export const giftHubLinks: SiteLink[] = [
   { path: "/syntymapaivalahjat",        label: "Syntymäpäivälahjat",      emoji: "🎂", tags: ["synttäri", "lahjat"] },
   { path: "/elakelahjat",              label: "Eläkelahjat",              emoji: "🎓", tags: ["eläke", "lahjat"] },
   { path: "/lahja-kaverille",          label: "Lahja kaverille",          emoji: "🤝", tags: ["kaveri", "lahjat"] },
-  { path: "/lahja-tyokaverille",       label: "Lahja työkaverille",       emoji: "💼", tags: ["työkaveri", "lahjat"] },
   { path: "/hauskat-t-paidat",         label: "Hauskat t-paidat",         emoji: "👕", tags: ["t-paita"] },
   { path: "/hauskat-hupparit",         label: "Hauskat hupparit",         emoji: "🧥", tags: ["huppari"] },
   { path: "/lahja-miehelle",           label: "Lahja miehelle",           emoji: "🎯", tags: ["miehelle", "lahjat"] },
   { path: "/haalarimerkit",            label: "Haalarimerkit",            emoji: "📌", tags: ["opiskelija"] },
 ];
 
-/** /lahjat/:slug routes built from the shared situationGifts data */
-export const situationGiftLinks: SiteLink[] = situationGifts.map((s) => ({
+/** /lahjat/:slug routes built from the shared situationGifts data (yhdistetyt sivut ohjautuvat uuteen polkuun) */
+export const situationGiftLinks: SiteLink[] = situationGifts
+  .filter((s) => !LANDING_REDIRECTS[`/lahjat/${s.slug}`])
+  .map((s) => ({
   path: `/lahjat/${s.slug}`,
   label: s.h1,
   emoji: s.emoji,
@@ -45,7 +47,6 @@ export const footerGiftLinks: SiteLink[] = [
   ...giftHubLinks,
   { path: "/lahjat/miehelle",             label: "Lahjat miehelle",           emoji: "🧔", tags: [] },
   { path: "/lahjat/naiselle",             label: "Lahjat naiselle",           emoji: "💁‍♀️", tags: [] },
-  { path: "/lahjat/alle-20-euroa",        label: "Lahjat alle 20 €",          emoji: "💸", tags: [] },
   { path: "/lahjat/alle-30-euroa",        label: "Lahjat alle 30 €",          emoji: "🪙", tags: [] },
   { path: "/lahjat/valmistujaisiin",      label: "Valmistujaislahjat",        emoji: "🎓", tags: [] },
   { path: "/lahjat/polttareihin",         label: "Lahjat polttareihin",       emoji: "🎉", tags: [] },
@@ -53,10 +54,10 @@ export const footerGiftLinks: SiteLink[] = [
   { path: "/lahjat/syntymapaivasankarille", label: "Synttärilahjat",          emoji: "🎂", tags: [] },
   { path: "/lahjat/50-vuotiaalle-miehelle", label: "Lahjat 50v miehelle",    emoji: "🎂", tags: [] },
   { path: "/lahjat/60-vuotiaalle-miehelle", label: "Lahjat 60v miehelle",    emoji: "🥳", tags: [] },
-  { path: "/lahjat/kalastajalle",         label: "Lahjat kalastajalle",       emoji: "🎣", tags: [] },
-  { path: "/lahjat/kahvinystavalle",      label: "Lahjat kahvinjuojalle",     emoji: "☕", tags: [] },
-  { path: "/lahjat/saunaan",             label: "Saunalahjat",               emoji: "🧖", tags: [] },
-  { path: "/lahjat/opettajalle",         label: "Lahjat opettajalle",        emoji: "🍎", tags: [] },
+  { path: "/lahjat/harrastajalle",        label: "Lahjat harrastajalle",      emoji: "🎣", tags: [] },
+  { path: "/joululahja-tyokaverille",     label: "Joululahja työkaverille",   emoji: "🎄", tags: [] },
+  { path: "/suomalainen-huumori-paidat", label: "Suomalainen huumori",       emoji: "🇫🇮", tags: [] },
+  { path: "/ammattipaidat",              label: "Ammattipaidat",             emoji: "🛠️", tags: [] },
 ];
 
 /**
