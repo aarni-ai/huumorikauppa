@@ -99,6 +99,14 @@ const PAGE_META: Record<string, PageMeta> = {
     title: 'Usein kysytyt kysymykset | Huumorikauppa.fi',
     description: 'Vastaukset yleisimpiin kysymyksiin toimituksesta, palautusoikeudesta, koosta ja tilaamisesta.',
   },
+  '/lahjakortti': {
+    title: 'Lahjakortti | Huumorikauppa.fi',
+    description: 'Digitaalinen lahjakortti Huumorikauppaan: 25, 50, 75 tai 100 €. Koodi sähköpostilla heti maksun jälkeen, voimassa 24 kuukautta.',
+  },
+  '/paketit': {
+    title: 'Paketit: t-paita ja huppari samalla tekstillä | Huumorikauppa.fi',
+    description: 'Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla.',
+  },
   '/toimitusehdot': {
     title: 'Toimitusehdot | Huumorikauppa.fi',
     description: 'Huumorikaupan toimitusehdot. Toimitus 3–10 arkipäivässä, ilmainen toimitus yli 79 € tilauksiin.',

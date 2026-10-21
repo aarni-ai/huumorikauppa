@@ -1,5 +1,6 @@
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { onPiilotettu } from "./_lib/piilotetut.js";
+import PAKETIT from "./_lib/paketit-data.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -36,6 +37,9 @@ const STATIC_PAGES = [
   { loc: "/elakelahjat", changefreq: "weekly", priority: "0.7" },
   { loc: "/lahja-kaverille", changefreq: "weekly", priority: "0.7" },
   { loc: "/lahja-tyokaverille", changefreq: "weekly", priority: "0.7" },
+  { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
+  { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
+  ...PAKETIT.map((p) => ({ loc: `/paketit/${p.slug}`, changefreq: "weekly", priority: "0.6" })),
 ];
 
 const SITUATION_GIFT_SLUGS = [
