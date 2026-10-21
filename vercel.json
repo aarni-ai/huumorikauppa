@@ -77,6 +77,31 @@
       "statusCode": 301
     },
     {
+      "source": "/lahjat/iso%c3%a4idille",
+      "destination": "/lahjat/isoaidille",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/insin%c3%b6ori",
+      "destination": "/ammatti/insinoori",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/maanviljelij%c3%a4",
+      "destination": "/ammatti/maanviljelija",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/yloj%c3%a4rvi",
+      "destination": "/kaupunki/ylojarvi",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/lemp%c3%a4%c3%a4l%c3%a4",
+      "destination": "/kaupunki/lempaala",
+      "statusCode": 301
+    },
+    {
       "source": "/lahjat/iso%C3%A4idille",
       "destination": "/lahjat/isoaidille",
       "statusCode": 301
