@@ -186,6 +186,9 @@ describe("Lahjakortti: kassa", () => {
     expect(osittain).toMatchObject({ total: 31.8, gift_card_amount: 30, amount_due: 1.8, gift_card_code: "HK-AAAA-BBBB-CCCC" });
     const kokonaan = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 100 } });
     expect(kokonaan).toMatchObject({ gift_card_amount: 31.8, amount_due: 0 });
+    // Stripen minimi 0,50 €: 31,50 €:n saldolla jäisi 0,30 €, joten kortilta käytetään 31,30 €
+    const pieni = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 31.5 } });
+    expect(pieni).toMatchObject({ gift_card_amount: 31.3, amount_due: 0.5 });
   });
   it("lahjakortilla ei voi ostaa lahjakortteja", () => {
     expect(() => laskeTilaus(pyynto([kortti(50)]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 100 } })).toThrow(/ei voi ostaa lahjakortteja/);

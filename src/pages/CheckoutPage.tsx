@@ -221,7 +221,9 @@ const CheckoutPage = () => {
   const shippingFree = tila.ilmainen;
   const shippingCost = tila.toimitus;
   const grandTotal = Math.round((totalPrice - discountAmount - bundleDiscount + shippingCost) * 100) / 100;
-  const giftCardUse = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
+  // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
+  const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
+  const giftCardUse = grandTotal - giftCardRaw > 0 && grandTotal - giftCardRaw < 0.5 ? Math.max(0, grandTotal - 0.5) : giftCardRaw;
   const amountDue = Math.round((grandTotal - giftCardUse) * 100) / 100;
 
   if (items.length === 0) {

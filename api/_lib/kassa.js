@@ -21,6 +21,7 @@ export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
 export const OLETUSKOODIT = { HUUMORI5: { type: "percent", value: 5 }, PALAA10: { type: "percent", value: 10 } };
 
 const sentit = (x) => Math.round(x * 100);
+const STRIPE_MINIMI_SENTIT = 50;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -112,7 +113,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const tuotteetYht = fyysiset.reduce((s, r) => s + r.unit_cents * r.quantity, 0) / 100;
   const korttienSumma = kortit.reduce((s, r) => s + r.unit_cents * r.quantity, 0) / 100;
   const total = Math.round((tuotteetYht + korttienSumma + toimitus) * 100) / 100;
-  const lahjakortilla = lisat.lahjakortti ? kaytettavaSumma(lisat.lahjakortti.saldo, total) : 0;
+  let lahjakortilla = lisat.lahjakortti ? kaytettavaSumma(lisat.lahjakortti.saldo, total) : 0;
+  // Stripen pienin veloitus on 0,50 €: jos lahjakortin jälkeen jäisi vähemmän, lahjakortilta käytetään sen verran vähemmän.
+  const jaa = Math.round((total - lahjakortilla) * 100);
+  if (jaa > 0 && jaa < STRIPE_MINIMI_SENTIT) lahjakortilla = Math.max(0, Math.round(total * 100) - STRIPE_MINIMI_SENTIT) / 100;
   return {
     rivit: stripeRivit,
     subtotal: Math.round((valisumma + korttienSumma) * 100) / 100,
