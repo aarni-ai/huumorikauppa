@@ -564,7 +564,7 @@ export const professions: Profession[] = [
     categories: ["t-paidat", "mukit", "hupparit"],
   },
   {
-    slug: "insinöori",
+    slug: "insinoori",
     name: "Insinööri",
     nameAllative: "insinöörille",
     sector: "tekniikka",
@@ -590,7 +590,7 @@ export const professions: Profession[] = [
     categories: ["t-paidat", "mukit", "hupparit"],
   },
   {
-    slug: "maanviljelijä",
+    slug: "maanviljelija",
     name: "Maanviljelijä",
     nameAllative: "maanviljelijälle",
     sector: "maatalous",

@@ -17,6 +17,111 @@
       "permanent": true
     },
     {
+      "source": "/lahjat/alle-20-euroa",
+      "destination": "/lahjat/alle-30-euroa",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/kalastajalle",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/metsastajalle",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/kalastus",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/videopelit",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/kahvinystavalle",
+      "destination": "/lahjat/tyokaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/saunaan",
+      "destination": "/suomalainen-huumori-paidat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/opettajalle",
+      "destination": "/ammattipaidat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/hoitajalle",
+      "destination": "/ammattipaidat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahja-tyokaverille",
+      "destination": "/lahjat/tyokaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/joulu",
+      "destination": "/joululahjat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/isoäidille",
+      "destination": "/lahjat/isoaidille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/iso%C3%A4idille",
+      "destination": "/lahjat/isoaidille",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/insinöori",
+      "destination": "/ammatti/insinoori",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/insin%C3%B6ori",
+      "destination": "/ammatti/insinoori",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/maanviljelijä",
+      "destination": "/ammatti/maanviljelija",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/maanviljelij%C3%A4",
+      "destination": "/ammatti/maanviljelija",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/ylojärvi",
+      "destination": "/kaupunki/ylojarvi",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/yloj%C3%A4rvi",
+      "destination": "/kaupunki/ylojarvi",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/lempäälä",
+      "destination": "/kaupunki/lempaala",
+      "statusCode": 301
+    },
+    {
+      "source": "/kaupunki/lemp%C3%A4%C3%A4l%C3%A4",
+      "destination": "/kaupunki/lempaala",
+      "statusCode": 301
+    },
+    {
       "source": "/kategoria/mukit",
       "destination": "/kaikki-tuotteet",
       "statusCode": 301

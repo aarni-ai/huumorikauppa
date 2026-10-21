@@ -117,7 +117,7 @@ export const dialects: Dialect[] = [
       },
     ],
     relatedSlugs: ["savon-murre", "stadin-slangi"],
-    municipalities: ["tampere", "pirkkala", "ylojärvi", "nokia"],
+    municipalities: ["tampere", "pirkkala", "ylojarvi", "nokia"],
   },
   {
     slug: "turunmurre",
