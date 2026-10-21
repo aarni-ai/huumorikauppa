@@ -5,7 +5,7 @@
  * Käyttö: tuotesivun "Toimitusarvio: perillä viimeistään <päivä>" ja "Ehtii jouluksi" -merkki, sekä
  * joulunViimeisetTilauspaivat() muille sivuille (esim. joululahjasivu).
  */
-import { TOIMITUSPROFIILIT, OLETUSALUE, JOULU_RAJA, JOULUSESONKI_ALKAA, type ToimitusAlue, type ToimitusProfiili } from "@/config/toimitusajat";
+import { JOULU_VIIMEINEN_TILAUSPAIVA, TOIMITUSPROFIILIT, OLETUSALUE, JOULU_RAJA, JOULUSESONKI_ALKAA, type ToimitusAlue, type ToimitusProfiili } from "@/config/toimitusajat";
 
 export type Paiva = string; // "YYYY-MM-DD"
 
@@ -128,6 +128,7 @@ export const joulunRaja = (paiva: Paiva): Paiva => `${paiva.slice(0, 4)}-${JOULU
 export function ehtiiJouluksi(tilauspaiva: Paiva, profiili: ToimitusProfiili | ToimitusAlue = OLETUSALUE): boolean {
   const vuosi = tilauspaiva.slice(0, 4);
   if (tilauspaiva < `${vuosi}-${JOULUSESONKI_ALKAA}`) return false;
+  if (typeof profiili === "string" && tilauspaiva > `${vuosi}-${JOULU_VIIMEINEN_TILAUSPAIVA[profiili]}`) return false;
   const raja = joulunRaja(tilauspaiva);
   if (tilauspaiva > raja) return false;
   return toimitusarvio(tilauspaiva, profiili).viimeistaan <= raja;
@@ -138,7 +139,9 @@ export function joulunViimeinenTilauspaiva(vuosi: number, profiili: ToimitusProf
   const raja = `${vuosi}-${JOULU_RAJA}`;
   let d = raja;
   while (toimitusarvio(d, profiili).viimeistaan > raja) d = lisaaPaivia(d, -1);
-  return d;
+  // Printifyn takaraja (src/config/toimitusajat.ts) ei saa jäädä ylittämättä.
+  const katto = typeof profiili === "string" ? `${vuosi}-${JOULU_VIIMEINEN_TILAUSPAIVA[profiili]}` : null;
+  return katto && katto < d ? katto : d;
 }
 
 /** Joulun viimeiset tilauspäivät kaikille toimitusalueille (muiden sivujen käyttöön). */

@@ -50,16 +50,17 @@ describe("Arkipäivälaskenta", () => {
 
 describe("Joulu", () => {
   it("viimeiset tilauspäivät 2026", () => {
-    expect(joulunViimeinenTilauspaiva(2026, "us")).toBe("2026-11-30");
-    expect(joulunViimeinenTilauspaiva(2026, "eu")).toBe("2026-12-06");
-    expect(joulunViimeisetTilauspaivat(2026)).toEqual({ eu: "2026-12-06", us: "2026-11-30" });
+    // Laskettu arvio olisi 30.11. (us) ja 6.12. (eu), mutta Printifyn takarajat (src/config/toimitusajat.ts) rajaavat.
+    expect(joulunViimeinenTilauspaiva(2026, "us")).toBe("2026-11-20");
+    expect(joulunViimeinenTilauspaiva(2026, "eu")).toBe("2026-11-27");
+    expect(joulunViimeisetTilauspaivat(2026)).toEqual({ eu: "2026-11-27", us: "2026-11-20" });
   });
   it("Ehtii jouluksi vain, kun myöhäisin arvio on viimeistään 23.12.", () => {
     expect(ehtiiJouluksi("2026-10-21", "us")).toBe(true);
-    expect(ehtiiJouluksi("2026-11-30", "us")).toBe(true);
-    expect(ehtiiJouluksi("2026-12-01", "us")).toBe(false);
-    expect(ehtiiJouluksi("2026-12-04", "eu")).toBe(true);
-    expect(ehtiiJouluksi("2026-12-07", "eu")).toBe(false);
+    expect(ehtiiJouluksi("2026-11-20", "us")).toBe(true);
+    expect(ehtiiJouluksi("2026-11-21", "us")).toBe(false);
+    expect(ehtiiJouluksi("2026-11-27", "eu")).toBe(true);
+    expect(ehtiiJouluksi("2026-11-28", "eu")).toBe(false);
   });
   it("ei koskaan joulun jälkeen eikä ennen sesonkia", () => {
     expect(ehtiiJouluksi("2026-12-24", "eu")).toBe(false);

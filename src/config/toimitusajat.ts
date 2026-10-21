@@ -25,6 +25,14 @@ export const TOIMITUSPROFIILIT: Record<ToimitusAlue, ToimitusProfiili> = {
 /** Kun painotaloa ei tiedetä, käytetään hitainta profiilia. */
 export const OLETUSALUE: ToimitusAlue = "us";
 
+/**
+ * Joulun viimeinen tilauspäivä enintään (kuukausi-päivä), alueittain. Printifyn 2025 Eurooppa-takarajat miinus 7 päivää
+ * Suomen kuljetusta varten (seo/toimitusajat.md): Monster Digital, MWW ja Print Clever 27.11. -> 20.11.; OPT OnDemand
+ * ja Jondo 4.-5.12. -> 27.11. Laskettu arvio ei voi olla tätä myöhäisempi. Sama 20.11. on luvattu tuotannon UKK:ssa.
+ * Päivitä, kun Printify julkaisee vuoden 2026 takarajat (printify.com/network-fulfillment-status).
+ */
+export const JOULU_VIIMEINEN_TILAUSPAIVA: Record<ToimitusAlue, string> = { us: "11-20", eu: "11-27" };
+
 /** Joulun raja: paketti perillä viimeistään tänä päivänä (kuukausi-päivä). */
 export const JOULU_RAJA = "12-23";
 /** "Ehtii jouluksi" -merkki näytetään aikaisintaan tästä päivästä alkaen (kuukausi-päivä). */
