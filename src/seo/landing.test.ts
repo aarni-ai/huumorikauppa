@@ -1,0 +1,260 @@
+import { describe, expect, it } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import snapshot from "@/test/fixtures/products-snapshot.json";
+import { categories } from "@/data/products";
+import { onPiilotettu } from "@/lib/hiddenCategories";
+import {
+  CHRISTMAS_MENU,
+  LANDING_MIN_PRODUCTS,
+  LANDING_PATHS,
+  LANDING_REDIRECTS,
+  NOT_CREATED_LANDINGS,
+  getLandingPage,
+  landingPages,
+  looksLikeMug,
+  selectLandingProducts,
+} from "@/data/landingPages";
+import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/christmas";
+import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
+import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
+import { renderPageHtml } from "./prerender/html";
+
+const ROOT = path.resolve(__dirname, "../..");
+const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
+
+/** Tuotedatan tilannekuva (Supabase, 21.10.2026): sama suodatus kuin kaupassa. */
+const products = normalizeProducts(snapshot as unknown as ProductRow[]);
+const pages = buildPrerenderPages({ products });
+const byPath = new Map(pages.map((p) => [p.path, p]));
+const nav = buildSiteNav(products);
+const TEMPLATE = read("index.html");
+const landingSet = new Set(landingPages.map((p) => p.path));
+
+function pageTexts(p: (typeof landingPages)[number]): string[] {
+  return [p.title, p.description, p.h1, p.name, ...p.intro, ...p.faqs.flatMap((f) => [f.q, f.a])];
+}
+
+const BANNED = [
+  /\bparas\b/i,
+  /\bparhaa?t\b/i,
+  /\bparhaan\b/i,
+  /\bparasta\b/i,
+  /suomen johtava/i,
+  /suomen hauskin/i,
+  /suosituin/i,
+  /painet\w* suomessa/i,
+  /\bmuki/i,
+  /\behkä\b/i,
+  /\bsaattaa\b/i,
+  /mahdollisesti/i,
+];
+
+describe("landing pages: data and copy rules", () => {
+  it("has at least 40 unique landing pages and the light route list matches", () => {
+    expect(landingPages.length).toBeGreaterThanOrEqual(40);
+    expect(new Set(landingPages.map((p) => p.path)).size).toBe(landingPages.length);
+    expect([...LANDING_PATHS]).toEqual(landingPages.map((p) => p.path));
+  });
+
+  it.each(landingPages.map((p) => [p.path, p] as const))("%s: title, description, h1, intro and FAQ", (_path, p) => {
+    expect(p.title.length).toBeLessThan(60);
+    expect(p.description.length).toBeLessThan(155);
+    expect(p.description.length).toBeGreaterThan(70);
+    expect(p.h1.length).toBeGreaterThan(5);
+    expect(p.intro.length).toBeGreaterThanOrEqual(2);
+    expect(p.intro.length).toBeLessThanOrEqual(3);
+    expect(p.faqs.length).toBeGreaterThanOrEqual(4);
+    expect(p.faqs.length).toBeLessThanOrEqual(6);
+    for (const text of pageTexts(p)) {
+      expect(text).not.toMatch(/[–—]/);
+      for (const re of BANNED) expect(text, `${re}`).not.toMatch(re);
+    }
+  });
+
+  it("titles, descriptions, H1s and first intro sentences are unique", () => {
+    for (const key of ["title", "description", "h1"] as const) {
+      const values = landingPages.map((p) => p[key]);
+      expect(new Set(values).size, key).toBe(values.length);
+    }
+    const firstSentences = landingPages.map((p) => p.intro[0].split(/[.:]/)[0]);
+    expect(new Set(firstSentences).size).toBe(firstSentences.length);
+    // Kappaleet eivät toistu sivulta toiselle (ei templaattikopioita)
+    const paragraphs = landingPages.flatMap((p) => p.intro);
+    expect(new Set(paragraphs).size).toBe(paragraphs.length);
+  });
+
+  it("only promises the one Christmas date (20.11.2026); the only other date is Father's Day", () => {
+    const all = landingPages.flatMap(pageTexts).join("\n");
+    const dates = new Set(all.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? []);
+    expect([...dates].sort()).toEqual(["20.11.2026", "8.11.2026"]);
+    const deadline = [christmasDeadlinePage.title, christmasDeadlinePage.description, ...christmasDeadlinePage.intro,
+      ...christmasDeadlinePage.sections.flatMap((s) => [s.heading, ...s.paragraphs]),
+      ...christmasDeadlinePage.faqs.flatMap((f) => [f.q, f.a])].join("\n");
+    expect(new Set(deadline.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g))).toEqual(new Set(["20.11.2026"]));
+    expect(deadline).not.toMatch(/[–—]/);
+    expect(christmasDeadlinePage.title.length).toBeLessThan(60);
+    expect(christmasDeadlinePage.description.length).toBeLessThan(155);
+    expect(CHRISTMAS_DEADLINE_PROMISE).toBe(
+      "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.",
+    );
+  });
+
+  it("links to at least 3 other landing pages and to a visible category", () => {
+    const catSlugs = new Set<string>(categories.filter((c) => !onPiilotettu(c.slug)).map((c) => c.slug));
+    for (const p of landingPages) {
+      const related = p.related.filter((r) => r !== p.path);
+      expect(related.length, p.path).toBeGreaterThanOrEqual(3);
+      for (const r of related) expect(landingSet.has(r), `${p.path} -> ${r}`).toBe(true);
+      expect(p.categories.length, p.path).toBeGreaterThan(0);
+      for (const c of p.categories) expect(catSlugs.has(c), `${p.path} -> ${c}`).toBe(true);
+    }
+  });
+
+  it("merged and dropped pages are not landing pages and point to existing pages", () => {
+    for (const [from, to] of Object.entries({ ...LANDING_REDIRECTS, ...NOT_CREATED_LANDINGS })) {
+      expect(landingSet.has(from), from).toBe(false);
+      expect(to, from).toMatch(/^\/[a-z0-9/-]+$/);
+    }
+    for (const to of Object.values(NOT_CREATED_LANDINGS)) expect(landingSet.has(to), to).toBe(true);
+  });
+
+  it("Christmas menu links only to real pages", () => {
+    for (const item of CHRISTMAS_MENU) {
+      expect(landingSet.has(item.href) || item.href === CHRISTMAS_DEADLINE_PATH, item.href).toBe(true);
+    }
+  });
+});
+
+describe("landing pages: products (snapshot of the live catalog)", () => {
+  it("snapshot is filtered like the shop (no drafts, no mugs)", () => {
+    expect(products.length).toBeGreaterThan(400);
+    expect(products.some((p) => p.category === "mukit")).toBe(false);
+  });
+
+  it.each(landingPages.map((p) => [p.path, p] as const))("%s has at least 8 fitting products", (_path, p) => {
+    const list = selectLandingProducts(p, products);
+    expect(list.length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    for (const item of list) {
+      expect(item.category).not.toBe("mukit");
+      expect(looksLikeMug(item), item.slug).toBe(false);
+    }
+  });
+
+  it("price pages respect their budget", () => {
+    for (const [pagePath, max] of [["/lahjat/alle-30-euroa", 30], ["/joululahja-alle-50-euroa", 50], ["/salainen-joulupukki-lahja", 30]] as const) {
+      const list = selectLandingProducts(getLandingPage(pagePath)!, products);
+      expect(list.every((p) => p.price <= max), pagePath).toBe(true);
+    }
+  });
+
+  it("teen page has no alcohol or swearing", () => {
+    const list = selectLandingProducts(getLandingPage("/joululahja-teinille")!, products);
+    for (const p of list) expect(p.name.toLowerCase(), p.slug).not.toMatch(/kalja|alkoholi|saatana|aatana/);
+  });
+});
+
+describe("landing pages: prerendered HTML", () => {
+  it.each(landingPages.map((p) => [p.path] as const))("%s renders full HTML without JS", (pagePath) => {
+    const page = byPath.get(pagePath)!;
+    expect(page).toBeTruthy();
+    const html = renderPageHtml(TEMPLATE, page, nav);
+    const def = getLandingPage(pagePath)!;
+    expect(html).toContain(`<link rel="canonical" href="https://huumorikauppa.fi${pagePath}" />`);
+    expect(html.match(/<h1[\s>]/g)?.length).toBe(1);
+    expect(html).toContain(`<title>${def.title.replace(/&/g, "&amp;")}</title>`);
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html).toContain('"@type":"ItemList"');
+    expect(html).toContain('"@type":"FAQPage"');
+    const productLinks = html.match(/href="\/tuote\//g) ?? [];
+    expect(productLinks.length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    const landingLinks = new Set(
+      [...html.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1]).filter((h) => h !== pagePath && landingSet.has(h)),
+    );
+    expect(landingLinks.size).toBeGreaterThanOrEqual(3);
+    expect(html).toMatch(/href="\/kategoria\/[a-z-]+"/);
+    expect(html).not.toContain("/kategoria/mukit");
+  });
+
+  it("superseded and redirected paths are not prerendered", () => {
+    for (const from of Object.keys(LANDING_REDIRECTS)) expect(byPath.has(from), from).toBe(false);
+    for (const from of Object.keys(NOT_CREATED_LANDINGS)) expect(byPath.has(from), from).toBe(false);
+  });
+
+  it("Christmas deadline page is prerendered with FAQ and links to the gift guides", () => {
+    const page = byPath.get(CHRISTMAS_DEADLINE_PATH)!;
+    const html = renderPageHtml(TEMPLATE, page, nav);
+    expect(html).toContain(CHRISTMAS_DEADLINE_PROMISE);
+    expect(html).toContain('"@type":"FAQPage"');
+    expect(html).toContain('href="/joululahjat"');
+    expect(html).toContain('href="/joululahja-isalle"');
+  });
+
+  it("no page links to the hidden mug category", () => {
+    for (const p of pages) {
+      const html = renderPageHtml(TEMPLATE, p, nav);
+      expect(html, p.path).not.toContain('href="/kategoria/mukit"');
+    }
+  });
+});
+
+describe("routing, sitemap and redirects", () => {
+  const sitemap = read("api/sitemap.js");
+  const vercel = JSON.parse(read("vercel.json")) as { redirects: { source: string; destination: string; statusCode?: number; permanent?: boolean }[] };
+
+  it("App.tsx routes every landing page and the deadline page", () => {
+    const app = read("src/App.tsx");
+    expect(app).toContain("LANDING_PATHS.map");
+    expect(app).toContain("LANDING_REDIRECTS");
+    expect(app).toContain("path={CHRISTMAS_DEADLINE_PATH}");
+  });
+
+  it("sitemap lists every landing page, the deadline page and no redirected path", () => {
+    const listed = sitemap.slice(sitemap.indexOf("const LANDING_PATHS"), sitemap.indexOf("];", sitemap.indexOf("const LANDING_PATHS")));
+    for (const p of LANDING_PATHS) expect(listed, p).toContain(`"${p}"`);
+    expect(sitemap).toContain('"/joulun-viimeiset-tilauspaivat"');
+    for (const from of Object.keys(LANDING_REDIRECTS)) {
+      const slug = from.split("/").pop()!;
+      expect(sitemap, from).not.toContain(`"${from}"`);
+      expect(sitemap, from).not.toMatch(new RegExp(`"${slug}"`));
+    }
+    expect(sitemap).not.toMatch(/[äöå]"/);
+    expect(sitemap).toContain('"ylojarvi"');
+    expect(sitemap).toContain('"lempaala"');
+    // Oma tausta: luonnokset rajataan omasta tuotelähteestä (is_active !== false).
+    expect(sitemap).toContain("p.is_active !== false");
+  });
+
+  it("vercel.json has a 301 for every merged page and both raw and encoded umlaut paths", () => {
+    for (const [from, to] of Object.entries(LANDING_REDIRECTS)) {
+      const sources = [from];
+      if (/[^\x20-\x7e]/.test(from)) sources.push(encodeURI(from));
+      for (const source of sources) {
+        const rule = vercel.redirects.find((r) => r.source === source);
+        expect(rule, source).toBeTruthy();
+        expect(rule!.destination).toBe(to);
+        expect(rule!.statusCode ?? (rule!.permanent ? 308 : 0)).toBe(301);
+      }
+    }
+  });
+
+  it("no source file links to /kategoria/mukit", () => {
+    const files = [
+      "src/pages/Index.tsx",
+      "src/pages/OfficeNotesPage.tsx",
+      "src/components/layout/Header.tsx",
+      "src/data/milestoneHighlights.ts",
+      "src/data/landingPages.ts",
+      "src/data/landingRoutes.ts",
+    ];
+    for (const f of files) expect(read(f), f).not.toContain("/kategoria/mukit");
+    // Footer listaa kategoriat datasta: piilotetut suodatetaan pois.
+    expect(read("src/components/layout/Footer.tsx")).toContain("onPiilotettu");
+  });
+
+  it("content-graph slugs are ASCII", async () => {
+    const { professions } = await import("@/data/professions");
+    const { municipalities } = await import("@/data/municipalities");
+    for (const s of [...professions, ...municipalities].map((x) => x.slug)) expect(s).toMatch(/^[a-z0-9-]+$/);
+  });
+});

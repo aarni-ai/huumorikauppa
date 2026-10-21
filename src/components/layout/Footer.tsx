@@ -3,6 +3,7 @@ import { Mail, MapPin, Instagram, Truck, RotateCcw, Shield, Flag } from "lucide-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/data/products";
+import { onPiilotettu } from "@/lib/hiddenCategories";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -108,7 +109,7 @@ export function Footer() {
             <Link to="/kaikki-tuotteet" className="hover:text-foreground transition-colors">Kaikki tuotteet</Link>
             <Link to="/paketit" className="hover:text-foreground transition-colors">Paketit</Link>
             <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>
-            {categories.map(cat => (
+            {categories.filter(cat => !onPiilotettu(cat.slug)).map(cat => (
               <Link key={cat.slug} to={`/kategoria/${cat.slug}`} className="hover:text-foreground transition-colors">
                 {cat.name}
               </Link>

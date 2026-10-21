@@ -12,7 +12,7 @@ function proxyAvailable(): boolean {
   return PROXY_HOSTS.has(window.location.hostname);
 }
 
-export function proxiedImage(url?: string | null, opts: { absolute?: boolean } = {}): string {
+export function proxiedImage(url?: string | null, opts: { absolute?: boolean; width?: number } = {}): string {
   if (!url) return '';
   if (url.includes('/api/img?u=')) return url;          // already proxied
   let host = '';
@@ -20,5 +20,6 @@ export function proxiedImage(url?: string | null, opts: { absolute?: boolean } =
   if (host !== PRINTIFY_HOST) return url;                 // already crawlable host -> leave as is
   if (!proxyAvailable()) return url;                      // preview/dev: use direct URL
   const base = opts.absolute ? SITE_URL : '';
-  return `${base}/api/img?u=${encodeURIComponent(url)}`;
+  // width: pienempi kuva listoihin (api/img.js pyöristää sallittuun leveyteen 320-1600).
+  return `${base}/api/img?u=${encodeURIComponent(url)}${opts.width ? `&w=${opts.width}` : ''}`;
 }

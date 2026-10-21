@@ -15,6 +15,8 @@ import { PIILOTETUT_KATEGORIAT } from "@/lib/hiddenCategories";
 import productSlugs from "@/test/fixtures/productSlugs.json";
 import type { BlogPost } from "@/types/blog";
 import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
+import { LANDING_PATHS, LANDING_REDIRECTS } from "./landingRoutes";
+import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
 
 const DASHES = /[–—]/; // en dash, em dash
 const HEDGES = /(?<!\p{L})(saattaa|saattavat|ehkä|todennäköisesti|pyrimme)(?!\p{L})/iu;
@@ -26,6 +28,8 @@ const staticRoutes = new Set(
     .map((m) => m[1])
     .filter((p) => !p.includes(":") && p !== "*"),
 );
+// Laskeutumissivujen reitit generoidaan App.tsx:ssä LANDING_PATHS-listasta.
+for (const p of [...LANDING_PATHS, CHRISTMAS_DEADLINE_PATH]) staticRoutes.add(p);
 
 const dynamicRoutes: Record<string, Set<string>> = {
   kategoria: new Set(categories.map((c) => c.slug).filter((s) => !PIILOTETUT_KATEGORIAT.includes(s))),
@@ -40,6 +44,8 @@ const dynamicRoutes: Record<string, Set<string>> = {
 
 function resolves(href: string): boolean {
   const clean = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
+  // 301-ohjattuun polkuun ei linkitetä: linkin pitää osoittaa suoraan lopulliseen sivuun.
+  if (LANDING_REDIRECTS[clean] || LANDING_REDIRECTS[decodeURIComponent(clean)]) return false;
   if (staticRoutes.has(clean)) return true;
   const m = clean.match(/^\/([^/]+)\/([^/]+)$/);
   return !!m && !!dynamicRoutes[m[1]]?.has(decodeURIComponent(m[2]));

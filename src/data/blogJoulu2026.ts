@@ -45,7 +45,7 @@ Harrastus on varma osuma, koska siitä mies puhuu muutenkin. Paita tai huppari o
 - **9. Pelaajalle:** "Just one more level" on hyvä lahja pelaajalle, joka lupaa tulla nukkumaan kohta.
 - **10. Valokuvaajalle:** "Hetki kiinni, muisti vapaana" sopii miehelle, jonka puhelimessa on kymmenentuhatta kuvaa.
 
-Lisää lajikohtaisia ideoita löydät esimerkiksi [kalastusaiheisista tuotteista](/harrastus/kalastus).
+Lisää lajikohtaisia ideoita löydät esimerkiksi [harrastajan lahjoista](/lahjat/harrastajalle).
 
 ## Grilli, mökki ja ulkoilu (ideat 11-18)
 
@@ -187,7 +187,7 @@ Paidan kanssa koko on kuitenkin arvaus. Jos et tiedä saajan kokoa, liitä mukaa
 
 ### Työpaikan pikkujoulut
 
-Työpaikalla turvallinen linja on työhön liittyvä huumori, joka koskee kaikkia: palaverit, lounastauot, etätyö ja kahvinkeitin. Vältä vitsejä, jotka koskevat yksittäisen ihmisen ulkonäköä tai ikää. Lisää ajatuksia saat oppaasta [hauskat pikkujoululahjat työkavereille](/blogi/hauskat-pikkujoululahjat-tyokavereille) ja sivulta [lahja työkaverille](/lahja-tyokaverille).
+Työpaikalla turvallinen linja on työhön liittyvä huumori, joka koskee kaikkia: palaverit, lounastauot, etätyö ja kahvinkeitin. Vältä vitsejä, jotka koskevat yksittäisen ihmisen ulkonäköä tai ikää. Lisää ajatuksia saat oppaasta [hauskat pikkujoululahjat työkavereille](/blogi/hauskat-pikkujoululahjat-tyokavereille) ja sivulta [joululahja työkaverille](/joululahja-tyokaverille).
 
 ### Kaveriporukka
 
@@ -256,7 +256,7 @@ Kun nämä kuusi asiaa ovat kunnossa, lahja toimii riippumatta siitä, kenelle s
 
 ## Tilaa ajoissa
 
-Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [lahjoja alle 20 eurolla](/lahjat/alle-20-euroa).`,
+Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
     faq: [
       { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: "Alle 20 eurolla toimivat tuotteet, joissa ei ole kokoa, kuten tarra omalla tekstillä (4,99 €) tai kuusenkoriste omalla kuvalla (19,90 €). Ne sopivat myös saajalle, jota et tunne hyvin." },
       { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: "Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on 6,90 €, ja 79 eurosta alkaen ilmainen, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa." },
@@ -418,7 +418,7 @@ Byrokraattinen sävy on hauska, koska eläkkeelle jääminen on myös paperityö
 
 ### Harrastukset, joille on nyt aikaa
 
-Moni eläkkeelle jäävä on odottanut, että pääsee kalaan, mökille tai golfkentälle arkipäivänä. Lahja, joka viittaa tulevaan harrastukseen, on samalla toivotus hyvistä vuosista. Katso esimerkiksi [kalastajan tuotteet](/harrastus/kalastus), jos eläkkeelle jäävä on puhunut järvestä koko viime kevään.
+Moni eläkkeelle jäävä on odottanut, että pääsee kalaan, mökille tai golfkentälle arkipäivänä. Lahja, joka viittaa tulevaan harrastukseen, on samalla toivotus hyvistä vuosista. Katso esimerkiksi [harrastajan lahjat](/lahjat/harrastajalle), jos eläkkeelle jäävä on puhunut järvestä koko viime kevään.
 
 ## Mitä kannattaa välttää
 
@@ -437,7 +437,7 @@ Eläkelahja annetaan usein työyhteisön puolesta. Yhteislahjassa on kolme vaihe
 
 **3. Lisää henkilökohtainen osa.** Yhteislahjaan sopii hyvin [seinätaulu omalla kuvalla](/tuote/oma-tekstikuva-seinataulu): tiimikuva, kuva työpisteestä tai kuvakollaasi vuosien varrelta. Painetun lahjan rinnalle kortti, johon jokainen kirjoittaa yhden muiston, tekee kokonaisuudesta lämpimän.
 
-Tätä kirjoitettaessa huppari maksaa 49,90 € ja seinätaulu 39,90 €, joten yhteishinta on 89,80 €. Toimitus on silloin ilmainen, koska 79 euron raja ylittyy. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahja-tyokaverille).
+Tätä kirjoitettaessa huppari maksaa 49,90 € ja seinätaulu 39,90 €, joten yhteishinta on 89,80 €. Toimitus on silloin ilmainen, koska 79 euron raja ylittyy. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
 
 ## Näin annat lahjan eläkejuhlissa
 
@@ -647,7 +647,7 @@ Kun nämä ovat kunnossa, lahja ilahduttaa eikä aiheuta kenellekään paineita 
 - **Tilaa yhdessä:** Jos useampi kollega ostaa samasta kaupasta, yksi tilaus säästää toimituskulut. Toimitus on 6,90 €, ja 79 eurosta alkaen ilmainen.
 - **Tilaa ajoissa:** Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026.
 
-Lisää ideoita löydät sivuilta [lahja työkaverille](/lahja-tyokaverille), [lahja kollegalle](/lahjat/kollegalle) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
+Lisää ideoita löydät sivuilta [joululahja työkaverille](/joululahja-tyokaverille), [lahja kollegalle](/lahjat/kollegalle) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
     faq: [
       { q: "Paljonko joululahjaan työkaverille kannattaa käyttää?", a: "Tavallinen summa on 5-25 euroa. Jos työpaikalla on arvonta, noudata sovittua hintarajaa, jotta kukaan ei koe painetta vastata kalliimmalla." },
       { q: "Pitääkö työkavereille ostaa joululahja?", a: "Työkavereille ei tarvitse ostaa joululahjaa, ellei työpaikalla ole yhteistä tapaa, kuten lahja-arvontaa. Lähimmälle kollegalle pieni lahja on kuitenkin mukava ele." },
@@ -703,7 +703,7 @@ Jos isäsi kertoo samat vitsit joka joulupöydässä ja nauraa niille eniten its
 
 ### Harrastaja
 
-Kalastava, metsästävä tai golfaava isä on helppo: valitse lahja hänen lajistaan. Esimerkiksi [kalastusaiheiset tuotteet](/harrastus/kalastus) kattavat sekä kesän heittokalastajat että talven pilkkijät.
+Kalastava, metsästävä tai golfaava isä on helppo: valitse lahja hänen lajistaan. Esimerkiksi [harrastajan lahjat](/lahjat/harrastajalle) kattavat sekä kesän heittokalastajat että talven pilkkijät.
 
 ### Tuore pappa
 
@@ -849,7 +849,7 @@ Kahdellakymmenellä eurolla saat lahjan, jonka saaja muistaa joka joulu. [Kuusen
 - teksti "Salainen joulupukki 2026" ja porukan nimi
 - saajan lemmikin kuva ja nimi
 
-Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjaksi. Selaa kaikki [koristeet](/kategoria/koristeet) tai katso koottu valikoima [lahjat alle 20 euroa](/lahjat/alle-20-euroa).
+Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjaksi. Selaa kaikki [koristeet](/kategoria/koristeet) tai katso koottu valikoima [salaisen joulupukin lahjat](/salainen-joulupukki-lahja).
 
 ## 30 euron budjetti
 
@@ -961,7 +961,7 @@ Hauska lahja teinille onnistuu, kun huumori lähtee nuoren omasta maailmasta: h�
 
 ### Pelaajalle
 
-Pelaavalle nuorelle [Just one more level -paita](/tuote/hauska-t-paita-pelaajalle-just-one-more-level) on vitsi, jota hän itse käyttää. Teksti on englanniksi, mikä sopii pelikulttuuriin. Lisää pelaajille sopivia tuotteita löydät sivulta [videopelaajan lahjat](/harrastus/videopelit).
+Pelaavalle nuorelle [Just one more level -paita](/tuote/hauska-t-paita-pelaajalle-just-one-more-level) on vitsi, jota hän itse käyttää. Teksti on englanniksi, mikä sopii pelikulttuuriin. Lisää pelaajille sopivia tuotteita löydät sivulta [harrastajan lahjat](/lahjat/harrastajalle).
 
 ### Lumilautailijalle ja laskettelijalle
 
@@ -1091,7 +1091,7 @@ Kalastaja on suomalaisen huumorin kestosuosikki, koska kalastukseen kuuluu tarin
 - **Työn ja harrastuksen vertailijalle:** [Huonokin päivä kalassa on parempi kuin hyvä päivä töissä -huppari](/tuote/huonokin-paiva-kalassa-on-parempi-kuin-hyva-paiva-toissa-huppari) kertoo prioriteetit selvästi. Huppari sopii myös syksyn ja kevään kylmille aamuille veneessä.
 - **Pilkkijälle:** [Jää kantaa, pilkki tulee](/tuote/hauska-t-paita-pilkkijalle-jaa-kantaa-pilkki-tulee) on talvikalastajan paita. Joululahjana se on ajankohtainen, koska pilkkikausi alkaa, kun jäät vahvistuvat.
 
-Valintavinkki: kysy itseltäsi, onko hän kesän heittokalastaja vai talven pilkkijä. Jos molempia, huppari on monikäyttöisempi kuin t-paita. Lisää ideoita löydät sivuilta [lahja kalastajalle](/lahjat/kalastajalle) ja [kalastuksen tuotteet](/harrastus/kalastus).
+Valintavinkki: kysy itseltäsi, onko hän kesän heittokalastaja vai talven pilkkijä. Jos molempia, huppari on monikäyttöisempi kuin t-paita. Lisää ideoita löydät sivuilta [lahjat harrastajalle](/lahjat/harrastajalle) ja [joululahja miehelle, jolla on kaikki](/joululahja-miehelle-jolla-on-kaikki).
 
 ## Metsästäjälle
 
@@ -1100,7 +1100,7 @@ Metsästäjän huumori on hiljaisempaa kuin kalastajan. Jahdissa tärkeintä on 
 - **Rauhallinen metsämies:** [Ei ole kiire, olen metsässä -huppari](/tuote/hauska-huppari-metsastajalle-ei-ole-kiire-olen-metsassa) kertoo jahtikauden tunnelman. Huppari on lämmin lisäkerros passipaikalle ja metsästysmajan iltoihin.
 - **Jahtiporukan oma paita:** Monella metsästysseuralla ja jahtiporukalla on oma nimi, tunnus tai sisäpiirin vitsi. [T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on hauska yhteislahja koko porukalle. Lisää paitaan seuran nimi ja vuosiluku, niin siitä tulee muisto kaudesta.
 
-Huomioi, että metsästyksessä turvallisuusvaatetus on oma asiansa. Huumoripaita on lahja jahtimajalle, nuotiolle ja kotiin, ei korvaa näkyvyysvaatteita metsässä. Lisää ideoita on sivuilla [lahja metsästäjälle](/lahjat/metsastajalle) ja [metsästyksen tuotteet](/harrastus/metsastys).
+Huomioi, että metsästyksessä turvallisuusvaatetus on oma asiansa. Huumoripaita on lahja jahtimajalle, nuotiolle ja kotiin, ei korvaa näkyvyysvaatteita metsässä. Lisää ideoita on sivuilla [lahjat harrastajalle](/lahjat/harrastajalle) ja [metsästyksen tuotteet](/harrastus/metsastys).
 
 ## Mökkeilijälle
 
@@ -1110,7 +1110,7 @@ Mökkeilijälle mökki ei ole paikka vaan elämäntapa. Hän laskee viikkoja kev
 - **Muisto mökiltä:** [Peitto omalla kuvalla](/tuote/oma-tekstikuva-peitto) on lahja, joka lämmittää talvella kotisohvalla ja kesällä laiturilla. Valitse kuva mökin rannasta, auringonlaskusta tai perheen yhteisestä juhannuksesta.
 - **Retkeilevälle mökkeilijälle:** [GPS ei tarvita, eksytään tarkoituksella -huppari](/tuote/hauska-huppari-retkeilijalle-gps-ei-tarvita-eksytaan-tarkoituksella) sopii mökkeilijälle, joka lähtee metsään marjaan ja palaa eri reittiä. Lisää retkeilijän ideoita on sivulla [retkeilyn tuotteet](/harrastus/retkily).
 
-Jos mökkeilijän mökillä on sauna, katso myös [saunaan sopivat lahjat](/lahjat/saunaan). Lisää mökkiaiheisia vinkkejä löydät oppaasta [hauska lahja mökkiläiselle](/blogi/hauska-lahja-mokkilaiselle).
+Jos mökkeilijän mökillä on sauna, katso myös [suomalaisen huumorin paidat](/suomalainen-huumori-paidat). Lisää mökkiaiheisia vinkkejä löydät oppaasta [hauska lahja mökkiläiselle](/blogi/hauska-lahja-mokkilaiselle).
 
 ## Kun et tiedä harrastuksesta mitään
 
@@ -1207,7 +1207,7 @@ Kiireen välttää, kun teet lahjat kolmessa vaiheessa.
 
 ### Vaihe 1: lahjalista
 
-Kirjoita lista kaikista, joille ostat lahjan. Lisää jokaisen nimen viereen yksi sana, joka kuvaa häntä: harrastus, ammatti tai elämänvaihe. Tämä sana on usein jo lahjaidea. Kalastajalle sopii kalastuspaita, kuten [KALAMIES-t-paita](/tuote/kalamies-t-paita), ja työkavereiden juhliin [Pikkujoulut muistetaan vuosia -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia). Ideoita listan täydentämiseen löydät sivuilta [joululahjat](/joululahjat) ja [hauskat joululahjat](/lahjat/joulu).
+Kirjoita lista kaikista, joille ostat lahjan. Lisää jokaisen nimen viereen yksi sana, joka kuvaa häntä: harrastus, ammatti tai elämänvaihe. Tämä sana on usein jo lahjaidea. Kalastajalle sopii kalastuspaita, kuten [KALAMIES-t-paita](/tuote/kalamies-t-paita), ja työkavereiden juhliin [Pikkujoulut muistetaan vuosia -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia). Ideoita listan täydentämiseen löydät sivuilta [joululahjat](/joululahjat) ja [joululahja isälle](/joululahja-isalle).
 
 ### Vaihe 2: koot ja tekstit
 

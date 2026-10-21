@@ -12,6 +12,9 @@ import { AddToCartDrawer } from "./components/AddToCartDrawer";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
+import { ChristmasDeadlineBanner } from "@/components/ChristmasDeadlineBanner";
+import { LANDING_PATHS, LANDING_REDIRECTS } from "@/data/landingRoutes";
+import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
 // Eager: homepage (LCP critical)
 import Index from "./pages/Index";
@@ -90,6 +93,8 @@ const ProfessionPage = lazyWithRetry(() => import("./pages/ProfessionPage"));
 const MunicipalityPage = lazyWithRetry(() => import("./pages/MunicipalityPage"));
 const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
 const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
+const LandingPage = lazyWithRetry(() => import("./pages/LandingPage"));
+const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
 // doesn't trigger a full-page reload loop that blanks the site.
@@ -128,6 +133,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <Header />
+          <ChristmasDeadlineBanner />
           <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -150,20 +156,19 @@ const App = () => (
               <Route path="/blogi" element={<BlogIndex />} />
               <Route path="/blogi/:slug" element={<BlogPost />} />
               <Route path="/aitienpaiva" element={<MothersDayPage />} />
-              <Route path="/hauskat-lahjat-miehelle" element={<GiftCategoryPage />} />
-              <Route path="/hauskat-lahjat-naiselle" element={<GiftCategoryPage />} />
               <Route path="/polttari-lahjat" element={<GiftCategoryPage />} />
-              <Route path="/isanpaiva-lahjat" element={<GiftCategoryPage />} />
               {/* 301-redirect: vanha äitienpäiväsivu → uusi /aitienpaiva */}
               <Route path="/aitienpaiva-lahjat" element={<MothersDayRedirect />} />
-              <Route path="/joululahjat" element={<GiftCategoryPage />} />
-              <Route path="/syntymapaivalahjat" element={<GiftCategoryPage />} />
-              <Route path="/elakelahjat" element={<GiftCategoryPage />} />
-              <Route path="/lahja-kaverille" element={<GiftCategoryPage />} />
-              <Route path="/lahja-tyokaverille" element={<GiftCategoryPage />} />
-              <Route path="/hauskat-t-paidat" element={<GiftCategoryPage />} />
-              <Route path="/hauskat-hupparit" element={<GiftCategoryPage />} />
               <Route path="/lahja-miehelle" element={<GiftCategoryPage />} />
+              {/* Laskeutumissivut (src/data/landingPages.ts): staattiset polut voittavat /lahjat/:slug-reitin */}
+              {LANDING_PATHS.map((path) => (
+                <Route key={path} path={path} element={<LandingPage />} />
+              ))}
+              <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
+              {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
+              {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (
+                <Route key={from} path={from} element={<Navigate to={to} replace />} />
+              ))}
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/haalarimerkit" element={<HaalarimerkkiPage />} />
               <Route path="/opiskelijan-haalarimerkit" element={<HaalarimerkkiPage />} />

@@ -14,6 +14,14 @@ import { hobbies } from "@/data/hobbies";
 import { municipalities } from "@/data/municipalities";
 import { dialects } from "@/data/dialects";
 import { blogPosts } from "@/data/blog";
+import {
+  landingPages,
+  LANDING_GRID_LIMIT,
+  LANDING_REDIRECTS,
+  selectLandingProducts,
+} from "@/data/landingPages";
+import { CHRISTMAS_MENU } from "@/data/landingRoutes";
+import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
@@ -25,6 +33,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
+import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
 import {
   SITE_FAQS,
   DEFAULT_BLOG_FAQS,
@@ -84,23 +93,19 @@ export function normalizeProducts(rows: ProductRow[]): Product[] {
     }));
 }
 
-/** Gift-reitit, jotka App.tsx ohjaa GiftCategoryPage-komponentille. */
+/**
+ * Gift-reitit, jotka App.tsx ohjaa GiftCategoryPage-komponentille. Laskeutumissivuiksi siirretyt
+ * (src/data/landingPages.ts) ja uudelleenohjatut (/lahja-tyokaverille) eivät ole tässä.
+ */
 export const GIFT_ROUTE_SLUGS = [
-  "hauskat-lahjat-miehelle",
-  "hauskat-lahjat-naiselle",
   "polttari-lahjat",
-  "isanpaiva-lahjat",
-  "joululahjat",
-  "syntymapaivalahjat",
-  "elakelahjat",
-  "lahja-kaverille",
-  "lahja-tyokaverille",
-  "hauskat-t-paidat",
-  "hauskat-hupparit",
   "lahja-miehelle",
   "haalarimerkit",
   "opiskelijan-haalarimerkit",
 ] as const;
+
+/** Polut, jotka laskeutumissivu tai uudelleenohjaus korvaa (ei esirenderöidä vanhalla sisällöllä). */
+const SUPERSEDED_PATHS = new Set<string>([...landingPages.map((p) => p.path), ...Object.keys(LANDING_REDIRECTS)]);
 
 /** Sivut, joiden sisältö renderöidään React-komponentista (scripts/prerender.mjs). */
 export const COMPONENT_PAGES = {
@@ -228,14 +233,12 @@ function buildHome(products: Product[]): PrerenderPage {
         links: stockedCategories(products).map((c) => ({ href: `/kategoria/${c.slug}`, label: c.name })),
       },
       {
-        heading: "Lahjaideat",
-        links: giftCategories
-          .filter((g) => (GIFT_ROUTE_SLUGS as readonly string[]).includes(g.slug))
-          .map((g) => ({ href: `/${g.slug}`, label: g.name })),
+        heading: "Joululahjat",
+        links: CHRISTMAS_MENU.map((m) => ({ href: m.href, label: m.label })),
       },
       {
-        heading: "Lahjat tilanteen mukaan",
-        links: situationGifts.slice(0, 16).map((s) => ({ href: `/lahjat/${s.slug}`, label: s.h1 })),
+        heading: "Lahjaideat",
+        links: landingPages.filter((p) => p.group !== "joulu").map((p) => ({ href: p.path, label: p.h1 })),
       },
     ],
     productsHeading: "Suosittuja tuotteita",
@@ -284,7 +287,7 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
 
 function buildGiftPages(products: Product[]): PrerenderPage[] {
   return giftCategories
-    .filter((g) => (GIFT_ROUTE_SLUGS as readonly string[]).includes(g.slug))
+    .filter((g) => (GIFT_ROUTE_SLUGS as readonly string[]).includes(g.slug) && !SUPERSEDED_PATHS.has(`/${g.slug}`))
     .map((g) => {
       const path = `/${g.slug}`;
       const list = products.filter((p) => g.filterFn(p));
@@ -319,7 +322,9 @@ function buildMothersDay(products: Product[]): PrerenderPage {
 }
 
 function buildSituationPages(products: Product[]): PrerenderPage[] {
-  return situationGifts.map((s) => {
+  return situationGifts
+    .filter((s) => !SUPERSEDED_PATHS.has(`/lahjat/${s.slug}`))
+    .map((s) => {
     const path = `/lahjat/${s.slug}`;
     const list = filterProductsForSituation(products, s).slice(0, 24);
     const guide = generateGiftGuideContent(s);
@@ -382,7 +387,9 @@ function buildContentGraphPages(products: Product[]): PrerenderPage[] {
   };
   return [
     ...professions.map((p) => buildContentGraphPage("ammatti", p, pick(p.keywords))),
-    ...hobbies.map((h) => buildContentGraphPage("harrastus", h, pick(h.keywords))),
+    ...hobbies
+      .filter((h) => !SUPERSEDED_PATHS.has(`/harrastus/${h.slug}`))
+      .map((h) => buildContentGraphPage("harrastus", h, pick(h.keywords))),
     ...municipalities.map((m) =>
       buildContentGraphPage(
         "kaupunki",
@@ -473,6 +480,52 @@ function buildComponentPages(componentHtml: BuildOptions["componentHtml"] = {}):
   });
 }
 
+/** Laskeutumissivut (src/data/landingPages.ts). */
+export function buildLandingPages(products: Product[]): PrerenderPage[] {
+  return landingPages.map((page) => {
+    const list = selectLandingProducts(page, products);
+    const shown = list.slice(0, LANDING_GRID_LIMIT);
+    const related = landingRelatedLinks(page);
+    const extra = page.extraLinks ?? [];
+    return {
+      path: page.path,
+      title: page.title,
+      description: page.description,
+      h1: page.h1,
+      ogImage: productImage(list[0]?.images[0]),
+      breadcrumbs: landingBreadcrumbs(page),
+      intro: page.intro,
+      sections: [
+        { heading: "Lisää lahjaideoita", links: [...related, ...extra] },
+        { heading: "Tuotekategoriat", links: landingCategoryLinks(page) },
+      ],
+      productsHeading: list.length > shown.length ? `Tuotteet (${shown.length} / ${list.length})` : `Tuotteet (${list.length})`,
+      products: toPrerenderProducts(shown),
+      faqs: page.faqs,
+      jsonLd: buildLandingJsonLd(page, list),
+    };
+  });
+}
+
+/** /joulun-viimeiset-tilauspaivat */
+export function buildChristmasDeadlinePage(): PrerenderPage {
+  const page = christmasDeadlinePage;
+  return {
+    path: page.path,
+    title: page.title,
+    description: page.description,
+    h1: page.h1,
+    breadcrumbs: [HOME, crumb("Joululahjat", "/joululahjat"), crumb(page.name, page.path)],
+    intro: page.intro,
+    sections: [
+      ...page.sections.map((s) => ({ heading: s.heading, paragraphs: s.paragraphs })),
+      { heading: "Joululahjaoppaat", links: page.links },
+    ],
+    faqs: page.faqs,
+    jsonLd: [buildFaqJsonLd(page.faqs)],
+  };
+}
+
 export function buildProductPage(product: Product, all: Product[]): PrerenderPage {
   const path = `/tuote/${product.slug}`;
   const category = categories.find((c) => c.slug === product.category);
@@ -543,6 +596,8 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     buildAllProducts(products),
     ...buildCategoryPages(products),
     ...buildGiftPages(products),
+    ...buildLandingPages(products),
+    buildChristmasDeadlinePage(),
     buildMothersDay(products),
     ...buildSituationPages(products),
     ...buildContentGraphPages(products),

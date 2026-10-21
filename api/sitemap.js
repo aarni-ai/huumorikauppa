@@ -1,6 +1,7 @@
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { onPiilotettuTuote } from "./_lib/piilotetut.js";
 import PAKETIT from "./_lib/paketit-data.js";
+import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -27,27 +28,81 @@ const STATIC_PAGES = [
   { loc: "/palautusehdot", changefreq: "monthly", priority: "0.3" },
   { loc: "/tietosuojakaytanto", changefreq: "monthly", priority: "0.3" },
   { loc: "/yhteystiedot", changefreq: "monthly", priority: "0.5" },
-  { loc: "/hauskat-lahjat-miehelle", changefreq: "weekly", priority: "0.8" },
-  { loc: "/hauskat-lahjat-naiselle", changefreq: "weekly", priority: "0.8" },
   { loc: "/polttari-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/isanpaiva-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/aitienpaiva-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/joululahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/syntymapaivalahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/elakelahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/lahja-kaverille", changefreq: "weekly", priority: "0.7" },
-  { loc: "/lahja-tyokaverille", changefreq: "weekly", priority: "0.7" },
+  { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
+  { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
   ...PAKETIT.map((p) => ({ loc: `/paketit/${p.slug}`, changefreq: "weekly", priority: "0.6" })),
 ];
 
+/**
+ * Laskeutumissivut. Pidä samana kuin src/data/landingRoutes.ts:n LANDING_PATHS
+ * (src/seo/sitemap.test.ts tarkistaa).
+ */
+const LANDING_PATHS = [
+  "/joululahjat",
+  "/lahjat/joululahjaksi-miehelle",
+  "/lahjat/joululahjaksi-naiselle",
+  "/joululahja-miehelle-jolla-on-kaikki",
+  "/joululahja-isalle",
+  "/joululahja-aidille",
+  "/joululahja-vaimolle",
+  "/joululahja-kaverille",
+  "/joululahja-tyokaverille",
+  "/lahjat/pomolle",
+  "/joululahja-mummolle",
+  "/joululahja-papalle",
+  "/joululahja-teinille",
+  "/lahjat/alle-30-euroa",
+  "/joululahja-alle-50-euroa",
+  "/lahjat/pikkujouluihin",
+  "/salainen-joulupukki-lahja",
+  "/hauskat-t-paidat",
+  "/hauskat-hupparit",
+  "/meemipaidat",
+  "/suomalainen-huumori-paidat",
+  "/setamiespaidat",
+  "/lahjat/40-vuotiaalle-miehelle",
+  "/lahjat/50-vuotiaalle-miehelle",
+  "/lahjat/60-vuotiaalle-miehelle",
+  "/lahjat/70-vuotiaalle",
+  "/lahjat/50-vuotiaalle-naiselle",
+  "/lahjat/60-vuotiaalle-naiselle",
+  "/elakelahjat",
+  "/lahjat/isoisalle",
+  "/lahjat/isoaidille",
+  "/lahjat/siskolle",
+  "/lahjat/veljelle",
+  "/lahjat/puolisolle",
+  "/lahja-kaverille",
+  "/lahjat/tyokaverille",
+  "/isanpaiva-lahjat",
+  "/hauskat-lahjat-miehelle",
+  "/hauskat-lahjat-naiselle",
+  "/syntymapaivalahjat",
+  "/lahjat/harrastajalle",
+  "/ammattipaidat",
+];
+
+/**
+ * Muut /lahjat/-sivut (src/data/situationGifts.ts), joita laskeutumissivu ei korvaa. Yhdistetyt
+ * sivut (opettajalle, hoitajalle, kalastajalle, metsastajalle, kahvinystavalle, alle-20-euroa,
+ * saunaan, joulu) ovat 301-ohjauksia eivätkä kuulu sivukarttaan.
+ */
 const SITUATION_GIFT_SLUGS = [
-  "50-vuotiaalle-miehelle", "60-vuotiaalle-miehelle", "40-vuotiaalle-miehelle", "30-vuotiaalle-miehelle",
-  "50-vuotiaalle-naiselle", "60-vuotiaalle-naiselle", "polttareihin", "tyokaverille", "opettajalle",
-  "hoitajalle", "rakennusmiehelle", "kalastajalle", "metsastajalle", "kahvinystavalle", "isoaidille",
-  "isoisalle", "syntymapaivasankarille", "muutoiset", "ystavalle", "siskolle", "veljelle", "vauvalle",
-  "joululahjaksi-miehelle", "joululahjaksi-naiselle",
+  "30-vuotiaalle-miehelle", "polttareihin", "rakennusmiehelle", "syntymapaivasankarille", "muutoiset",
+  "ystavalle", "vauvalle", "huumorilahjat",
+];
+
+/** Kaupunkisivut, joilla on omat kaupunkituotteet (src/data/municipalities.ts, ASCII-slugit). */
+const CITY_SLUGS = [
+  "helsinki", "espoo", "tampere", "vantaa", "oulu", "turku", "jyvaskyla", "lahti", "kuopio", "joensuu",
+  "rovaniemi", "vaasa", "seinajoki", "pori", "hameenlinna", "mikkeli", "kokkola", "lappeenranta", "imatra",
+  "kotka", "kouvola", "porvoo", "salo", "savonlinna", "hyvinkaa", "jarvenpaa", "kerava", "rauma", "kajaani",
+  "lohja", "tornio", "kemi", "nokia", "riihimaki", "raisio", "kaarina", "naantali", "ylojarvi", "kangasala",
+  "iisalmi", "varkaus", "heinola", "lempaala", "pirkkala", "forssa", "lieksa", "valkeakoski", "akaa",
+  "orimattila", "harjavalta", "nummela",
 ];
 
 const CATEGORIES = [
@@ -116,9 +171,9 @@ function toW3CDate(date) {
 }
 
 async function fetchAllProducts() {
-  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin
-  // kaupassa: piilotetut kategoriat ja mukit väärässä kategoriassa pois (api/_lib/piilotetut.js), uusin ensin.
-  const rivit = (await kaikkiTuotteet()).filter((p) => !onPiilotettuTuote(p));
+  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin kaupassa ja
+  // mainissa: ei luonnoksia, ei piilotettuja (mukit, myös väärässä kategoriassa), ei ohjattuja kaksoiskappaleita.
+  const rivit = (await kaikkiTuotteet()).filter((p) => p.is_active !== false && !onPiilotettuTuote(p) && !OHJATUT_TUOTESLUGIT.has(p.slug));
   return rivit
     .map((p) => ({ slug: p.slug, updated_at: p.updated_at }))
     .sort((x, y) => String(y.updated_at || "").localeCompare(String(x.updated_at || "")));
@@ -165,6 +220,24 @@ export default async function handler(req, res) {
   </url>`
     );
 
+    const landingUrls = LANDING_PATHS.map(
+      (loc) => `  <url>
+    <loc>${escapeXml(SITE + loc)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`
+    );
+
+    const cityUrls = CITY_SLUGS.map(
+      (slug) => `  <url>
+    <loc>${escapeXml(SITE + "/kaupunki/" + slug)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>`
+    );
+
     const situationUrls = SITUATION_GIFT_SLUGS.map(
       (slug) => `  <url>
     <loc>${escapeXml(SITE + "/lahjat/" + slug)}</loc>
@@ -176,7 +249,7 @@ export default async function handler(req, res) {
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...staticUrls, ...categoryUrls, ...situationUrls, ...productUrls, ...blogUrls].join("\n")}
+${[...staticUrls, ...landingUrls, ...categoryUrls, ...situationUrls, ...cityUrls, ...productUrls, ...blogUrls].join("\n")}
 </urlset>`;
 
     res.setHeader("Content-Type", "application/xml; charset=utf-8");

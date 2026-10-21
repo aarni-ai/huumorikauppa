@@ -14,6 +14,8 @@ import { onPiilotettu } from "@/lib/hiddenCategories";
 import type { Product } from "@/types/product";
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_URL, formatPriceFi } from "./site";
 import { GIFT_ROUTE_SLUGS } from "./prerender/pages";
+import { landingPages, LANDING_REDIRECTS } from "@/data/landingPages";
+import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/christmas";
 
 const fee = formatPriceFi(SHIPPING.feeEur);
 
@@ -80,10 +82,12 @@ const KEY_PAGES = [
 ] as const;
 
 function giftLinks(): string {
-  return giftCategories
-    .filter((g) => (GIFT_ROUTE_SLUGS as readonly string[]).includes(g.slug))
-    .map((g) => `- ${g.name}: ${SITE_URL}/${g.slug}`)
-    .join("\n");
+  return [
+    ...landingPages.map((p) => `- ${p.h1}: ${SITE_URL}${p.path}`),
+    ...giftCategories
+      .filter((g) => (GIFT_ROUTE_SLUGS as readonly string[]).includes(g.slug))
+      .map((g) => `- ${g.name}: ${SITE_URL}/${g.slug}`),
+  ].join("\n");
 }
 
 export function buildLlmsTxt(products: Product[]): string {
@@ -95,6 +99,9 @@ ${factsSection(products)}
 
 ## Tärkeimmät sivut
 ${KEY_PAGES.map(([name, path]) => `- ${name}: ${SITE_URL}${path === "/" ? "/" : path}`).join("\n")}
+
+## Joulu 2026
+${CHRISTMAS_DEADLINE_PROMISE} Lisätiedot: ${SITE_URL}${CHRISTMAS_DEADLINE_PATH}
 
 ## Lahjaideat
 ${giftLinks()}
@@ -121,7 +128,10 @@ export function buildLlmsFullTxt(products: Product[]): string {
   return withoutDashes(`${buildLlmsTxt(products).trimEnd()}
 
 ## Lahjaoppaat tilanteen mukaan
-${situationGifts.map((s) => `- ${s.h1}: ${SITE_URL}/lahjat/${encodeURI(s.slug)}`).join("\n")}
+${situationGifts
+  .filter((s) => !landingPages.some((p) => p.path === `/lahjat/${s.slug}`) && !LANDING_REDIRECTS[`/lahjat/${s.slug}`])
+  .map((s) => `- ${s.h1}: ${SITE_URL}/lahjat/${encodeURI(s.slug)}`)
+  .join("\n")}
 
 ## Blogi
 ${posts.map((p) => `- ${p.title}: ${SITE_URL}/blogi/${p.slug}\n  ${p.excerpt}`).join("\n")}

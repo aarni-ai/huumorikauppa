@@ -23,6 +23,8 @@ import { createServer, loadEnv } from "vite";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const SHELL_FILE = "spa-shell.html";
+const NOT_FOUND_FILE = "404.html";
+const PRODUCT_SLUGS_FILE = "product-slugs.json";
 // Vain ASCII-polut: ääkkösiä sisältävien tiedostonimien URL-dekoodaus Vercelin
 // tiedostojärjestelmässä ei ole taattu, joten ne jäävät SPA-kuoren + middlewaren varaan.
 const SAFE_SEGMENT = /^[A-Za-z0-9-]+$/;
@@ -138,6 +140,29 @@ async function main() {
     const home = metaMod.STATIC_PAGE_META["/"];
     const shell = htmlMod.renderShellHtml(template, nav, { title: home.title, description: home.description });
     await fs.writeFile(path.join(DIST, SHELL_FILE), shell);
+    // 404-sivu tuntemattomille tuotesivuille (middleware.ts palauttaa sen tilakoodilla 404).
+    await fs.writeFile(path.join(DIST, NOT_FOUND_FILE), htmlMod.renderNotFoundHtml(template, nav));
+    // Buildin tuntemat tuoteslugit: middleware.ts ei kysy näitä erikseen Supabaselta.
+    if (products.length > 0) {
+      await fs.writeFile(path.join(DIST, PRODUCT_SLUGS_FILE), JSON.stringify(products.map((p) => p.slug)));
+    }
+
+    // Laskeutumissivujen tuotemäärät: alle 8 sopivaa tuotetta tarkoittaa, että sivu pitäisi
+    // yhdistää (src/data/landingPages.ts). Ei kaadeta buildia, koska tuotedata elää.
+    if (products.length > 0) {
+      const landingMod = await vite.ssrLoadModule("/src/data/landingPages.ts");
+      const thin = landingMod.landingPages
+        .map((p) => [p.path, landingMod.selectLandingProducts(p, products).length])
+        .filter(([, n]) => n < landingMod.LANDING_MIN_PRODUCTS);
+      if (thin.length > 0) {
+        log(
+          `VAROITUS: laskeutumissivuilla alle ${landingMod.LANDING_MIN_PRODUCTS} tuotetta: ` +
+            thin.map(([p, n]) => `${p} (${n})`).join(", "),
+        );
+      } else {
+        log(`Laskeutumissivuja ${landingMod.landingPages.length}, kaikilla vähintään ${landingMod.LANDING_MIN_PRODUCTS} tuotetta.`);
+      }
+    }
 
     const seen = new Set();
     let written = 0;

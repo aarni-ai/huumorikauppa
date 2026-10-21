@@ -239,9 +239,9 @@ const Index = () => {
                       {[
                         { to: "/lahjat/miehelle",        label: "Miehelle" },
                         { to: "/lahjat/naiselle",        label: "Naiselle" },
-                        { to: "/lahja-tyokaverille",     label: "Työkavereille" },
+                        { to: "/lahjat/tyokaverille",    label: "Työkavereille" },
                         { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
-                        { to: "/lahjat/joulu",           label: "Kesälahjat" },
+                        { to: "/joululahjat",            label: "Joululahjat" },
                       ].map((g) => (
                         <Link
                           key={g.to}
