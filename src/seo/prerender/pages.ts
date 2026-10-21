@@ -17,7 +17,10 @@ import { blogPosts } from "@/data/blog";
 import { onPiilotettu } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
-import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
+import { generateProductCopy, isGenericDescription, sanitizeProductDescription, truncateAtWord } from "@/lib/productCopy";
+import { getProductContent } from "@/data/productContent";
+import { isCustomTextProduct } from "@/lib/customProduct";
+import { productImageAlt } from "@/lib/productNames";
 import { proxiedImage } from "@/lib/imageProxy";
 import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
@@ -29,6 +32,7 @@ import {
   buildCategoryFaqs,
   buildGiftCategoryFaqs,
   buildProductFaqs,
+  mergeFaqs,
   mergeSituationFaqs,
 } from "../pageFaqs";
 import {
@@ -54,6 +58,7 @@ export interface ProductRow {
   is_active?: boolean | null;
   is_featured?: boolean | null;
   humor_type?: string | null;
+  variants?: Record<string, unknown> | null;
 }
 
 /** Sama suodatus kuin use-products.ts: luonnokset (is_active === false) ja piilotetut kategoriat pois. */
@@ -72,7 +77,7 @@ export function normalizeProducts(rows: ProductRow[]): Product[] {
       stock: typeof p.stock === "number" ? p.stock : 0,
       description: p.description ?? "",
       images: (p.images ?? []).filter(Boolean),
-      variants: {},
+      variants: (p.variants as Record<string, unknown> | null) ?? {},
       is_featured: !!p.is_featured,
       is_new: false,
       is_gift_idea: false,
@@ -179,7 +184,7 @@ function stockedCategories(products: Product[]) {
   return visibleCategories().filter((c) => used.has(c.slug));
 }
 
-const DELIVERY_FACTS = `Toimitus koko Suomeen ${SHIPPING.deliveryBusinessDaysMin}-${SHIPPING.deliveryBusinessDaysMax} arkipäivässä. Toimituskulut ${formatPriceFi(SHIPPING.feeEur)}, yli ${SHIPPING.freeThresholdEur} € tilaukset ilman toimituskuluja. ${RETURNS.days} päivän palautusoikeus.`;
+const DELIVERY_FACTS = `Toimitus koko Suomeen ${SHIPPING.deliveryBusinessDaysMin}-${SHIPPING.deliveryBusinessDaysMax} arkipäivässä tilauksesta, Postin tai Matkahuollon kautta. Toimituskulut ${formatPriceFi(SHIPPING.feeEur)}, ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen. ${RETURNS.days} päivän peruutusoikeus (ei koske personoituja tuotteita). Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`;
 
 export function buildSiteNav(products: Product[] = []): SiteNav {
   const main: LinkItem[] = [
@@ -253,7 +258,7 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
     const list = selectCategoryProducts(products, category.slug);
     const faqs = buildCategoryFaqs(category.name);
     const description =
-      category.seoDescription || `${category.description}. Ilmainen toimitus yli 79 € tilauksiin!`;
+      category.seoDescription || `${category.description}. Ilmainen toimitus 79 euron tilauksista alkaen.`;
     return {
       path,
       title: category.seoTitle || `${h1} | Huumorikauppa.fi`,
@@ -480,16 +485,28 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
     price: product.price,
     description: product.description,
   });
-  const description = isGenericDescription(product.description) ? copy.longDescription : product.description;
+  // Sama järjestys kuin ProductPage: käsin kirjoitettu kuvaus > siistitty tietokannan kuvaus > generoitu.
+  const override = getProductContent(product.slug);
+  const description = override
+    ? override.description
+    : isGenericDescription(product.description)
+      ? copy.longDescription
+      : sanitizeProductDescription(product.description);
   const images = product.images.map((img) => productImage(img)).filter((x): x is string => !!x);
-  const { faqs } = buildProductFaqs(product, categoryName);
+  const { faqs: genericFaqs } = buildProductFaqs(product, categoryName, { isCustom: isCustomTextProduct(product) });
+  const faqs = mergeFaqs(override?.faqs ?? [], genericFaqs);
+  const imageAlts = product.images.slice(0, 4).flatMap((img, i) => {
+    const src = productImage(img);
+    return src ? [{ src, alt: productImageAlt(product, { url: img, index: i }) }] : [];
+  });
   const related = all.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 8);
   return {
     path,
     title: `${product.name} | Huumorikauppa`,
-    description: copy.shortDescription,
+    description: override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription,
     h1: product.name,
     price: product.price,
+    images: imageAlts,
     ogType: "product",
     ogImage: images[0],
     breadcrumbs: [HOME, crumb(categoryName, `/kategoria/${product.category}`), crumb(product.name, path)],

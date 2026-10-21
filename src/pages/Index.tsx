@@ -58,7 +58,6 @@ const CAROUSEL_SLUGS = [
   "maailman-paras-aiti-huppari",
   "ice-aatanahuppari",
   "amatimies-t-paita",
-  "mersumies-kahvikuppi",
   "saatanan-tunarit-huppari",
 ];
 
@@ -145,7 +144,7 @@ const Index = () => {
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
           <img
             src="/images/hero-banner.png?v=5"
-            alt="Huumorikauppa – Hauskat t-paidat, hupparit ja mukit"
+            alt="Huumorikauppa: hauskat t-paidat ja hupparit"
             className="w-full h-auto object-cover object-center block md:hidden"
             width={800}
             height={800}
@@ -155,7 +154,7 @@ const Index = () => {
           />
           <img
             src="/images/hero-banner-wide.png?v=5"
-            alt="Huumorikauppa – Hauskat t-paidat, hupparit ja mukit"
+            alt="Huumorikauppa: hauskat t-paidat ja hupparit"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
             width={1200}
             height={600}
@@ -272,7 +271,7 @@ const Index = () => {
           </Link>
         </div>
         <p className="text-muted-foreground text-sm mb-6 max-w-xl">
-          Hauskoja t-paitoja, huppareita ja mukeja omalle kotiseudulle – yli 50 kaupunkia.
+          Hauskoja t-paitoja ja huppareita omalle kotiseudulle, yli 50 kaupunkia.
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
           {municipalities.slice(0, 18).map(m => (
@@ -345,10 +344,10 @@ const Index = () => {
             Miksi Huumorikauppa?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            <TrustCard icon={<Users className="h-5 w-5" />} title="Tyytyväisiä asiakkaita" desc="Sadat suomalaiset ovat löytäneet meiltä hauskimmat tuotteet – ja palaavat aina uudelleen." />
+            <TrustCard icon={<Users className="h-5 w-5" />} title="Suomalaista huumoria" desc="Tekstit ammateista, harrastuksista, eläkkeestä ja ikävuosista suomeksi." />
             <TrustCard icon={<Heart className="h-5 w-5" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
-            <TrustCard icon={<Star className="h-5 w-5" />} title="Täydellinen lahja" desc="Vuoden paras lahja itselle tai läheiselle. Hauskuus taattu!" />
-            <TrustCard icon={<ThumbsUp className="h-5 w-5" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai mukiin? Teemme myös custom-painatuksia – ota yhteyttä!" />
+            <TrustCard icon={<Star className="h-5 w-5" />} title="Lahja, joka naurattaa" desc="Hauska paita tai huppari itselle tai läheiselle. Jouluksi: tilaa viimeistään pe 20.11.2026." />
+            <TrustCard icon={<ThumbsUp className="h-5 w-5" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai hupparin selkään? Kirjoita se personoitavan tuotteen sivulla, enintään 200 merkkiä." />
           </div>
         </div>
       </section>
@@ -455,20 +454,20 @@ const Index = () => {
       <section className="container py-10 md:py-12 border-t border-border">
         <article className="max-w-2xl mx-auto">
           <h2 className="font-display text-xl md:text-2xl text-foreground mb-5 text-center">
-            Huumorikauppa.fi – Suomen hauskin lahjakauppa
+            Huumorikauppa.fi: hauskat lahjat suomalaisella huumorilla
           </h2>
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
               Etsitkö lahjaa, joka oikeasti naurattaa? Huumorikauppa on suomalainen verkkokauppa,
-              josta löydät hauskat t-paidat, hupparit, mukit ja tarrat – kaikki suunniteltu
-              kotimaisella sydämellä ja vinolla huumorilla. Tuotteemme sopivat täydellisesti
+              josta löydät hauskat t-paidat, hupparit ja muut lahjat suomalaisella
+              ja vinolla huumorilla. Tuotteemme sopivat
               syntymäpäiviin, isänpäivään, työkavereille tai vain piristämään ihan tavallista
               keskiviikkoa.
             </p>
             <p>
-              Tilaaminen on helppoa, toimitus nopea ja yli 79 € tilauksiin saat ilmaisen
-              toimituksen. Jokainen paita ja muki painetaan tilauksesta, joten saat juuri sen
-              tuotteen jonka valitsit – ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
+              Toimitusaika on 3-10 arkipäivää tilauksesta, ja 79 euron tilauksista alkaen
+              toimitus on ilmainen. Jokainen paita ja huppari painetaan tilauksesta, joten saat juuri sen
+              tuotteen jonka valitsit, ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
               henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-foreground hover:underline">huumorikauppa@gmail.com</a>.
               Tervetuloa nauramaan!
             </p>

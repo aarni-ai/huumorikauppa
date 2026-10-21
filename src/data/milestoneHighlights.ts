@@ -34,16 +34,12 @@ const ELAKE = [
   "virallisesti-tyoton-epavirallisesti-vapaa-t-paita",
   "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita",
   "elakelainen-aamuheratys-vapaaehtoinen-t-paita",
-  "elakkeella-kiireinen-tekemaan-ei-mitaan-muki",
-  "virallisesti-tyoton-epavirallisesti-vapaa-muki",
 ];
 const AGE50 = [
   "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
   "50-ja-paras-vasta-tulossa-t-paita",
   "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
   "50-vuotta-nuori-t-paita",
-  "50-ja-paras-vasta-tulossa-muki",
-  "50-ja-hopeanhohtoinen-vain-hiukset-muki",
 ];
 // Tasapainoinen poikkileikkaus (miehet/naiset/eläke) yleisille lahjaoppaille.
 const MIX = [
@@ -78,8 +74,7 @@ export function selectMilestoneHighlights(slug: string): MilestoneHighlight | nu
 
   if (mies && nainen) return { title: "Hauskat syntymäpäivälahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
   if (has("muki", "kahvi", "toimisto", "tyokave", "työkave", "pomo", "alle-20")) {
-    // Mukit poistuivat myynnistä 21.10.2026: näytetään yleinen poikkileikkaus mukinostojen sijaan.
-    return { title: "Hauskat lahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
+    return { title: "Hauskat merkkipäivälahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
   }
   if (has("eläke", "elake", "elakkeel")) return { title: "Hauskat eläkelahjat", slugs: ELAKE, ctaLink: "/elakelahjat", ctaLabel: "Katso kaikki eläkelahjat" };
   if (has("50-vuotia", "50v")) return { title: "Hauskat 50-vuotislahjat", slugs: AGE50, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki lahjaideat" };
