@@ -1,4 +1,4 @@
-import { SITE_URL } from "./site";
+import { SITE_URL } from "./site.js";
 
 /**
  * Onko HTML build-vaiheessa esirenderöity juuri tälle polulle? Esirenderöidyssä sivussa on

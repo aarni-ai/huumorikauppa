@@ -13,10 +13,10 @@
  * canonical), ja päästää pyynnön silloin suoraan staattiseen tiedostoon. Injektointia
  * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
-import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData';
-import { onPiilotettu } from './src/lib/hiddenCategories';
-import { proxiedImage } from './src/lib/imageProxy';
-import { isPrerenderedHtml } from './src/seo/prerenderDetect';
+import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
+import { onPiilotettu } from './src/lib/hiddenCategories.js';
+import { proxiedImage } from './src/lib/imageProxy.js';
+import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 
 export const config = {
   matcher: [

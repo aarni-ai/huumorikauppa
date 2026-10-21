@@ -6,7 +6,7 @@
  *
  * Riippuvuudeton tiedosto (vain suhteelliset importit), jotta Edge-middleware voi käyttää sitä.
  */
-import { ORGANIZATION, RETURNS, SHIPPING, SITE_NAME, SITE_URL, absoluteUrl } from "./site";
+import { ORGANIZATION, RETURNS, SHIPPING, SITE_NAME, SITE_URL, absoluteUrl } from "./site.js";
 
 export type JsonLd = Record<string, unknown>;
 
