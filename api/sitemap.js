@@ -53,6 +53,16 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  "hauskat-joululahjaideat-miehelle-2026",
+  "pikkujoululahja-alle-20-euroa",
+  "lahja-miehelle-jolla-on-kaikki",
+  "elakelahja-joka-naurattaa",
+  "mita-ostaa-tyokaverille-jouluksi",
+  "joululahja-isalle-hauskat-ideat",
+  "salaisen-joulupukin-lahja-10-20-30-euroa",
+  "hauska-lahja-teinille-jouluksi",
+  "lahja-kalastajalle-metsastajalle-mokkeilijalle",
+  "joululahjan-viimeiset-tilauspaivat-2026",
   "20-hauskinta-t-paitaa-2026",
   "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat",
   "hauskat-mukit-toimistoon-ja-lahjaksi",
