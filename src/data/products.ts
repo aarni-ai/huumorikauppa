@@ -70,20 +70,20 @@ Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. 
     slug: "tarrat",
     name: "Tarrat",
     emoji: "🏷️",
-    description: "Hauskat tarrat ovat edullisin tapa tuoda huumoria arkeen. Käytä kannettavassa, vesipullossa tai anna äitienpäivälisuksi muun lahjan kylkeen. Hinnat lähtevät alle kymmenestä eurosta.",
-    seoTitle: "Hauskat Tarrat - Huumoritarrat | Huumorikauppa.fi",
-    seoDescription: "Hauskat tarrat läppäriin, vesipulloon ja autoon. Edullinen lahja tai lisuke - alle 10 €. Nopea toimitus koko Suomeen. 🏷️",
-    seoText: `## Hauskat tarrat - meemitarrat ja tarra-arkit
+    description: "Tee oma tarra omalla tekstillä tai kuvalla. Tarra leikataan kuvion muotoon, ja sen saa viidessä koossa 2 x 2 tuumasta 6 x 6 tuumaan sekä läpinäkyvänä.",
+    seoTitle: "Hauskat tarrat ja oma tekstitarra | Huumorikauppa.fi",
+    seoDescription: "Tee hauska tarra omalla tekstillä tai kuvalla. Kuvion muotoon leikattu tarra läppäriin, vesipulloon tai lahjan kylkeen. Koot 2-6 tuumaa.",
+    seoText: `## Hauskat tarrat omalla tekstillä
 
-Huumorikaupan hauskat tarrat sopivat läppäriin, vesipulloon, autoon, jääkaappiin ja kaikkialle muuallekin. Laadukkaat vinyl-tarrat kestävät säätä, vettä ja kulutusta - ne pysyvät paikallaan vuosia.
+Huumorikaupan tarrassa on sinun oma tekstisi tai kuvasi. Kirjoita sisäpiirivitsi, lempilausahdus tai kaverin nimi, niin tarra painetaan juuri siitä. Tarra leikataan kuvion muotoon, joten reunoille ei jää ylimääräistä taustaa.
 
-## Mihin hauskoja tarroja voi käyttää?
+## Koot
 
-Hauskat tarrat ovat monipuolisia: koristele läppärisi kansi, personoi vesipullosi, lisää asennetta autosi takapuskuriin tai piristä jääkaappisi ovea. Tarrat ovat myös erinomainen pieni lahja tai lisä isomman lahjan oheen.
+Tarran saa koossa 2 x 2, 3 x 3, 4 x 4 tai 6 x 6 tuumaa (noin 5, 7,5, 10 ja 15 cm) sekä läpinäkyvänä versiona. Pieni koko sopii puhelimen kuoreen ja vesipulloon, isompi läppärin kanteen.
 
-## Tarrat lahjaksi
+## Tarra lahjaksi
 
-Tarra-arkki on edullinen ja hauska lahja tai lisä mihin tahansa tilaukseen. Erityisesti nuoret ja opiskelijat arvostavat hauskoja tarroja. Valikoimasta löytyy esimerkiksi meemitarroja, sarkasmitarroja ja ammattihuumoritarroja. Ilmainen toimitus yli 79 € tilauksiin.`,
+Oma tekstitarra on pieni lahja tai lisä isomman lahjan kylkeen. Se sopii esimerkiksi hauskan t-paidan tai hupparin pariksi samaan tilaukseen.`,
   },
   {
     slug: "bodyt",

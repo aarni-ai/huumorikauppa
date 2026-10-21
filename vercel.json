@@ -172,6 +172,16 @@
       "statusCode": 301
     },
     {
+      "source": "/tarrat",
+      "destination": "/kategoria/tarrat",
+      "statusCode": 301
+    },
+    {
+      "source": "/hupparit",
+      "destination": "/kategoria/hupparit",
+      "statusCode": 301
+    },
+    {
       "source": "/kategoria/mukit",
       "destination": "/kaikki-tuotteet",
       "statusCode": 301
