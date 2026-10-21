@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
+import { PaymentIcons } from "@/components/PaymentIcons";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
 type Step = "details" | "shipping" | "payment";
@@ -331,8 +332,9 @@ const CheckoutPage = () => {
               <div className="bg-muted/50 border border-border rounded-lg p-6 text-center space-y-4">
                 <Lock className="h-10 w-10 text-primary mx-auto" />
                 <p className="text-sm text-muted-foreground">
-                  Sinut ohjataan turvalliselle maksusivulle. Tuemme Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay.
+                  Sinut ohjataan Stripen maksusivulle. Voit maksaa Visa- tai Mastercard-kortilla.
                 </p>
+                <PaymentIcons className="justify-center" />
                 <Button 
                   size="lg" 
                   onClick={handlePayment}
