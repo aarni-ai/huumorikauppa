@@ -24,24 +24,78 @@ const STATIC_PAGES = [
   { loc: "/palautusehdot", changefreq: "monthly", priority: "0.3" },
   { loc: "/tietosuojakaytanto", changefreq: "monthly", priority: "0.3" },
   { loc: "/yhteystiedot", changefreq: "monthly", priority: "0.5" },
-  { loc: "/hauskat-lahjat-miehelle", changefreq: "weekly", priority: "0.8" },
-  { loc: "/hauskat-lahjat-naiselle", changefreq: "weekly", priority: "0.8" },
   { loc: "/polttari-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/isanpaiva-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/aitienpaiva-lahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/joululahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/syntymapaivalahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/elakelahjat", changefreq: "weekly", priority: "0.7" },
-  { loc: "/lahja-kaverille", changefreq: "weekly", priority: "0.7" },
-  { loc: "/lahja-tyokaverille", changefreq: "weekly", priority: "0.7" },
+  { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
+  { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
 ];
 
+/**
+ * Laskeutumissivut. Pidä samana kuin src/data/landingRoutes.ts:n LANDING_PATHS
+ * (src/seo/sitemap.test.ts tarkistaa).
+ */
+const LANDING_PATHS = [
+  "/joululahjat",
+  "/lahjat/joululahjaksi-miehelle",
+  "/lahjat/joululahjaksi-naiselle",
+  "/joululahja-miehelle-jolla-on-kaikki",
+  "/joululahja-isalle",
+  "/joululahja-aidille",
+  "/joululahja-vaimolle",
+  "/joululahja-kaverille",
+  "/joululahja-tyokaverille",
+  "/lahjat/pomolle",
+  "/joululahja-mummolle",
+  "/joululahja-papalle",
+  "/joululahja-teinille",
+  "/lahjat/alle-30-euroa",
+  "/joululahja-alle-50-euroa",
+  "/lahjat/pikkujouluihin",
+  "/salainen-joulupukki-lahja",
+  "/hauskat-t-paidat",
+  "/hauskat-hupparit",
+  "/meemipaidat",
+  "/suomalainen-huumori-paidat",
+  "/setamiespaidat",
+  "/lahjat/40-vuotiaalle-miehelle",
+  "/lahjat/50-vuotiaalle-miehelle",
+  "/lahjat/60-vuotiaalle-miehelle",
+  "/lahjat/70-vuotiaalle",
+  "/lahjat/50-vuotiaalle-naiselle",
+  "/lahjat/60-vuotiaalle-naiselle",
+  "/elakelahjat",
+  "/lahjat/isoisalle",
+  "/lahjat/isoaidille",
+  "/lahjat/siskolle",
+  "/lahjat/veljelle",
+  "/lahjat/puolisolle",
+  "/lahja-kaverille",
+  "/lahjat/tyokaverille",
+  "/isanpaiva-lahjat",
+  "/hauskat-lahjat-miehelle",
+  "/hauskat-lahjat-naiselle",
+  "/syntymapaivalahjat",
+  "/lahjat/harrastajalle",
+  "/ammattipaidat",
+];
+
+/**
+ * Muut /lahjat/-sivut (src/data/situationGifts.ts), joita laskeutumissivu ei korvaa. Yhdistetyt
+ * sivut (opettajalle, hoitajalle, kalastajalle, metsastajalle, kahvinystavalle, alle-20-euroa,
+ * saunaan, joulu) ovat 301-ohjauksia eivätkä kuulu sivukarttaan.
+ */
 const SITUATION_GIFT_SLUGS = [
-  "50-vuotiaalle-miehelle", "60-vuotiaalle-miehelle", "40-vuotiaalle-miehelle", "30-vuotiaalle-miehelle",
-  "50-vuotiaalle-naiselle", "60-vuotiaalle-naiselle", "polttareihin", "tyokaverille", "opettajalle",
-  "hoitajalle", "rakennusmiehelle", "kalastajalle", "metsastajalle", "kahvinystavalle", "isoaidille",
-  "isoisalle", "syntymapaivasankarille", "muutoiset", "ystavalle", "siskolle", "veljelle", "vauvalle",
-  "joululahjaksi-miehelle", "joululahjaksi-naiselle",
+  "30-vuotiaalle-miehelle", "polttareihin", "rakennusmiehelle", "syntymapaivasankarille", "muutoiset",
+  "ystavalle", "vauvalle", "huumorilahjat",
+];
+
+/** Kaupunkisivut, joilla on omat kaupunkituotteet (src/data/municipalities.ts, ASCII-slugit). */
+const CITY_SLUGS = [
+  "helsinki", "espoo", "tampere", "vantaa", "oulu", "turku", "jyvaskyla", "lahti", "kuopio", "joensuu",
+  "rovaniemi", "vaasa", "seinajoki", "pori", "hameenlinna", "mikkeli", "kokkola", "lappeenranta", "imatra",
+  "kotka", "kouvola", "porvoo", "salo", "savonlinna", "hyvinkaa", "jarvenpaa", "kerava", "rauma", "kajaani",
+  "lohja", "tornio", "kemi", "nokia", "riihimaki", "raisio", "kaarina", "naantali", "ylojarvi", "kangasala",
+  "iisalmi", "varkaus", "heinola", "lempaala", "pirkkala", "forssa", "lieksa", "valkeakoski", "akaa",
+  "orimattila", "harjavalta", "nummela",
 ];
 
 const CATEGORIES = [
@@ -117,7 +171,7 @@ async function fetchAllProducts() {
   for (let i = 0; i < 10; i++) {
     const to = from + pageSize - 1;
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at&category=neq.mukit&order=updated_at.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -180,6 +234,24 @@ export default async function handler(req, res) {
   </url>`
     );
 
+    const landingUrls = LANDING_PATHS.map(
+      (loc) => `  <url>
+    <loc>${escapeXml(SITE + loc)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`
+    );
+
+    const cityUrls = CITY_SLUGS.map(
+      (slug) => `  <url>
+    <loc>${escapeXml(SITE + "/kaupunki/" + slug)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>`
+    );
+
     const situationUrls = SITUATION_GIFT_SLUGS.map(
       (slug) => `  <url>
     <loc>${escapeXml(SITE + "/lahjat/" + slug)}</loc>
@@ -191,7 +263,7 @@ export default async function handler(req, res) {
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...staticUrls, ...categoryUrls, ...situationUrls, ...productUrls, ...blogUrls].join("\n")}
+${[...staticUrls, ...landingUrls, ...categoryUrls, ...situationUrls, ...cityUrls, ...productUrls, ...blogUrls].join("\n")}
 </urlset>`;
 
     res.setHeader("Content-Type", "application/xml; charset=utf-8");

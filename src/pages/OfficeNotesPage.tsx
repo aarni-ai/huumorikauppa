@@ -158,6 +158,7 @@ const OfficeNotesPage = () => {
             <Link to="/lahjat/tyokaverille" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎁 Lahjat työkaverille</Link>
             <Link to="/lahjat/pomolle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">👔 Lahjat pomolle</Link>
             <Link to="/lahjat/pikkujouluihin" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎄 Pikkujouluihin</Link>
+            <Link to="/joululahja-tyokaverille" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎄 Joululahja työkaverille</Link>
             <Link to="/suomalaiset-tyopaikkameemit-top-50" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">😂 Työpaikkameemit TOP 50</Link>
           </div>
         </section>

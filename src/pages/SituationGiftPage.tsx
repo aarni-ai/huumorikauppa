@@ -18,6 +18,7 @@ import { categories } from "@/data/products";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
+import { resolveLandingRedirect } from "@/data/landingPages";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -271,7 +272,7 @@ const SituationGiftPage = () => {
             {popularHubs.map(s => (
               <Link
                 key={s.slug}
-                to={`/lahjat/${s.slug}`}
+                to={resolveLandingRedirect(`/lahjat/${s.slug}`)}
                 className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
               >
                 {s.emoji} {s.h1}
@@ -320,7 +321,7 @@ const SituationGiftPage = () => {
             {otherSituations.map(s => (
               <Link
                 key={s.slug}
-                to={`/lahjat/${s.slug}`}
+                to={resolveLandingRedirect(`/lahjat/${s.slug}`)}
                 className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
               >
                 {s.emoji} {s.h1.replace(/^Hauskat lahjat /, "")}

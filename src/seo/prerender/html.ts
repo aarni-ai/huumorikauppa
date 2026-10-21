@@ -324,3 +324,27 @@ export function renderShellHtml(template: string, nav: SiteNav, meta: { title: s
   const body = `<div data-prerender="true"><header><p><a href="/">Huumorikauppa</a></p><nav aria-label="Päävalikko">${renderLinks(nav.main)}</nav></header><footer><nav aria-label="Asiakaspalvelu">${renderLinks(nav.footer)}</nav></footer></div>`;
   return injectRoot(html, body);
 }
+
+/**
+ * 404-sivu (dist/404.html). middleware.ts palauttaa sen tilakoodilla 404 tuntemattomille
+ * tuotesivuille. Ei canonicalia, robots noindex. React käynnistyy normaalisti ja näyttää
+ * reitin oman "ei löydy" -näkymän.
+ */
+export function renderNotFoundHtml(template: string, nav: SiteNav): string {
+  let html = applyHead(template, {
+    title: "Sivua ei löytynyt | Huumorikauppa",
+    description: "Etsimääsi sivua tai tuotetta ei löytynyt. Selaa kaikkia tuotteita tai joululahjaoppaita.",
+    canonical: null,
+  });
+  const noindex = '<meta name="robots" content="noindex, follow" />';
+  html = /<meta name="robots"[^>]*>/.test(html)
+    ? html.replace(/<meta name="robots"[^>]*>/, () => noindex)
+    : html.replace("</head>", () => `  ${noindex}\n</head>`);
+  html = html.replace(/<meta name="googlebot"[^>]*>/, () => '<meta name="googlebot" content="noindex, follow" />');
+  const body =
+    `<div data-prerender="true"><header><p><a href="/">Huumorikauppa</a></p><nav aria-label="Päävalikko">${renderLinks(nav.main)}</nav></header>` +
+    `<main><h1>Sivua ei löytynyt</h1><p>Etsimääsi sivua tai tuotetta ei löytynyt. Se on voitu poistaa myynnistä.</p>` +
+    `<ul><li><a href="/kaikki-tuotteet">Kaikki tuotteet</a></li><li><a href="/joululahjat">Joululahjat</a></li><li><a href="/">Etusivu</a></li></ul></main>` +
+    `<footer><nav aria-label="Asiakaspalvelu">${renderLinks(nav.footer)}</nav></footer></div>`;
+  return injectRoot(html, body);
+}

@@ -318,6 +318,7 @@ const ProductPage = () => {
   if (!product) {
     return (
       <div className="container py-20 text-center">
+        <SEOHead title="Tuotetta ei löydy | Huumorikauppa" description="Etsimääsi tuotetta ei löytynyt. Selaa kaikkia tuotteita." noindex={true} />
         <h1 className="font-display text-3xl text-foreground mb-4">Tuotetta ei löydy 😅</h1>
         <Link to="/" className="text-primary hover:underline">Takaisin etusivulle →</Link>
       </div>

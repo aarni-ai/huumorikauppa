@@ -88,7 +88,7 @@ export const municipalities: Municipality[] = [
       { q: "Mikä on hauska lahja tamperelaiselle?", a: "Hauska lahja tamperelaiselle on Tampere-teemainen huumoripaita tai -huppari. 'Tampere: Suomen paras kaupunki' osuu aina oikeaan." },
       { q: "Mistä saa tamperelaisille sopivia lahjoja?", a: "Huumorikauppa.fi:stä löydät tamperelaisen huumoripaidat ja -hupparit. Nopea toimitus Pirkanmaalle." },
     ],
-    neighbors: ["nokia", "ylojärvi", "kangasala", "pirkkala", "lempäälä"],
+    neighbors: ["nokia", "ylojarvi", "kangasala", "pirkkala", "lempaala"],
     dialect: "tamperelainen",
   },
   {
@@ -790,7 +790,7 @@ export const municipalities: Municipality[] = [
     faqs: [
       { q: "Mikä on hauska lahja nokialaiselle?", a: "Hauska lahja nokialaiselle on Nokia-teemainen huumoripaita tai -huppari. 'Ei se puhelin' on aina hauska." },
     ],
-    neighbors: ["tampere", "ylöjärvi", "pirkkala"],
+    neighbors: ["tampere", "ylojarvi", "pirkkala"],
   },
   {
     slug: "riihimaki",
@@ -885,7 +885,7 @@ export const municipalities: Municipality[] = [
     neighbors: ["raisio", "turku", "masku"],
   },
   {
-    slug: "ylojärvi",
+    slug: "ylojarvi",
     name: "Ylöjärvi",
     region: "Pirkanmaa",
     emoji: "🏡",
@@ -928,7 +928,7 @@ export const municipalities: Municipality[] = [
     faqs: [
       { q: "Mikä on hauska lahja kangasalalaiselle?", a: "Hauska lahja kangasalalaiselle on Kangasala-teemainen huumoripaita tai -huppari." },
     ],
-    neighbors: ["tampere", "lempäälä", "pälkäne"],
+    neighbors: ["tampere", "lempaala", "pälkäne"],
   },
   {
     slug: "iisalmi",
@@ -1002,7 +1002,7 @@ export const municipalities: Municipality[] = [
     neighbors: ["lahti", "sysmä", "hartola"],
   },
   {
-    slug: "lempäälä",
+    slug: "lempaala",
     name: "Lempäälä",
     region: "Pirkanmaa",
     emoji: "🚗",
@@ -1045,7 +1045,7 @@ export const municipalities: Municipality[] = [
     faqs: [
       { q: "Mikä on hauska lahja pirkkalalainen?", a: "Hauska lahja pirkkalalainen on Pirkkala-teemainen huumoripaita tai -huppari." },
     ],
-    neighbors: ["tampere", "nokia", "ylöjärvi"],
+    neighbors: ["tampere", "nokia", "ylojarvi"],
   },
   {
     slug: "forssa",
@@ -1114,7 +1114,7 @@ export const municipalities: Municipality[] = [
     faqs: [
       { q: "Mikä on hauska lahja valkeakoskelaiselle?", a: "Hauska lahja valkeakoskelaiselle on Valkeakoski-teemainen huumoripaita tai -huppari." },
     ],
-    neighbors: ["tampere", "lempäälä", "akaa"],
+    neighbors: ["tampere", "lempaala", "akaa"],
   },
   {
     slug: "akaa",
@@ -1137,7 +1137,7 @@ export const municipalities: Municipality[] = [
     faqs: [
       { q: "Mikä on hauska lahja akaaalaiselle?", a: "Hauska lahja akaaalaiselle on Akaa-teemainen huumoripaita tai -huppari." },
     ],
-    neighbors: ["tampere", "valkeakoski", "lempäälä"],
+    neighbors: ["tampere", "valkeakoski", "lempaala"],
   },
   {
     slug: "orimattila",
