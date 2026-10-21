@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Printer, Share2, Coffee, Users, Briefcase, Calendar } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
@@ -96,8 +97,8 @@ const OfficeNotesPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskimmat työpaikkalaput 2026 – tulosta ja jaa | Huumorikauppa"
-        description="Tulostettavat ja jaettavat työpaikkalaput 2026: pomo-vitsit, kollegavitsit, palaverit ja kahvikulttuuri. Suomalaista toimistohuumoria valmiina käyttöön."
+        title={STATIC_PAGE_META["/hauskimmat-tyopaikkalaput-2026"].title}
+        description={STATIC_PAGE_META["/hauskimmat-tyopaikkalaput-2026"].description}
         canonical={url}
         jsonLd={jsonLd}
         breadcrumbs={[

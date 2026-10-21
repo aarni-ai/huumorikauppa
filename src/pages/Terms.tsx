@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const Terms = () => {
@@ -7,8 +8,8 @@ const Terms = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Toimitusehdot & palautukset | Huumorikauppa.fi"
-        description="Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus, palautukset ja reklamaatiot. Turvallinen verkkokauppa."
+        title={STATIC_PAGE_META["/toimitusehdot"].title}
+        description={STATIC_PAGE_META["/toimitusehdot"].description}
         canonical="https://huumorikauppa.fi/toimitusehdot"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },

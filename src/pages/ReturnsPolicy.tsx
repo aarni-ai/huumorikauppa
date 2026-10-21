@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const ReturnsPolicy = () => {
@@ -7,8 +8,8 @@ const ReturnsPolicy = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Palautus- ja peruutusehdot | Huumorikauppa.fi"
-        description="Huumorikaupan palautus- ja peruutusehdot: 14 päivän peruutusoikeus, palautusprosessi, hyvitykset ja reklamaatiot. Kuluttajansuojalain mukainen palveluohjeistus."
+        title={STATIC_PAGE_META["/palautusehdot"].title}
+        description={STATIC_PAGE_META["/palautusehdot"].description}
         canonical="https://huumorikauppa.fi/palautusehdot"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },

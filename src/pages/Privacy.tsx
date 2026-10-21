@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const Privacy = () => {
@@ -7,8 +8,8 @@ const Privacy = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Tietosuojaseloste | Huumorikauppa.fi"
-        description="Huumorikaupan tietosuojakäytäntö: miten keräämme, käytämme ja suojaamme henkilötietojasi GDPR:n mukaisesti."
+        title={STATIC_PAGE_META["/tietosuojakaytanto"].title}
+        description={STATIC_PAGE_META["/tietosuojakaytanto"].description}
         canonical="https://huumorikauppa.fi/tietosuojakaytanto"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },

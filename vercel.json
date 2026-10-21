@@ -1598,7 +1598,7 @@
     },
     {
       "source": "/((?!.*\\.(?:xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
-      "destination": "/index.html"
+      "destination": "/spa-shell.html"
     }
   ]
 }

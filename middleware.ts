@@ -6,7 +6,17 @@
  * Product data is fetched live from Supabase REST API so the middleware
  * stays correct as the catalog grows without any code changes.
  * Falls through transparently for human visitors.
+ *
+ * Build-vaiheen esirenderöinti (scripts/prerender.mjs) kirjoittaa useimmille reiteille
+ * valmiin dist/<reitti>/index.html:n, jossa on jo oikeat metat, JSON-LD ja sisältö kaikille
+ * user agenteille. Middleware tarkistaa ensin, onko reitti esirenderöity (sivulla on oma
+ * canonical), ja päästää pyynnön silloin suoraan staattiseen tiedostoon. Injektointia
+ * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
+import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
+import { onPiilotettu } from './src/lib/hiddenCategories.js';
+import { proxiedImage } from './src/lib/imageProxy.js';
+import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 
 export const config = {
   matcher: [
@@ -26,6 +36,7 @@ interface PageMeta {
 // ── Supabase dynamic product fetch ───────────────────────────────────────────
 
 interface SupabaseProduct {
+  id: string;
   slug: string;
   name: string;
   description: string;
@@ -42,7 +53,7 @@ async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null>
   if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,name,description,images,price,category,stock&limit=1`,
+      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=id,slug,name,description,images,price,category,stock&limit=1`,
       {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         signal: AbortSignal.timeout(4000),
@@ -50,7 +61,10 @@ async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null>
     );
     if (!res.ok) return null;
     const data: SupabaseProduct[] = await res.json();
-    return data[0] ?? null;
+    const product = data[0] ?? null;
+    // Myynnistä piilotetut kategoriat (mukit) eivät saa tuotemetoja.
+    if (product && onPiilotettu(product.category)) return null;
+    return product;
   } catch {
     return null;
   }
@@ -605,6 +619,24 @@ export default async function middleware(request: Request): Promise<Response | u
   const url = new URL(request.url);
   const path = url.pathname;
 
+  // 1) Haetaan reitin oma HTML. Esirenderöidyllä reitillä se on staattinen tiedosto, jossa on
+  //    jo sivun oma canonical: päästetään pyyntö silloin läpi koskematta (ei tuplatageja).
+  //    Muuten vastaus on SPA-kuori (vercel.json-rewrite), johon metat injektoidaan alla.
+  let baseHtml: string;
+  try {
+    const baseResponse = await fetch(new Request(url.origin + path, {
+      headers: { 'x-bot-inject': 'true' },
+      redirect: 'manual',
+    }));
+    if (!baseResponse.ok) return undefined;
+    baseHtml = await baseResponse.text();
+  } catch {
+    return undefined;
+  }
+  if (isPrerenderedHtml(baseHtml, path)) {
+    return undefined;
+  }
+
   let meta: PageMeta | undefined;
   let productData: (SupabaseProduct & { categoryName: string }) | undefined;
   let pageSchemas: object[] = [];
@@ -746,13 +778,7 @@ export default async function middleware(request: Request): Promise<Response | u
   }
 
   try {
-    const baseRequest = new Request(url.origin + '/', {
-      headers: { 'x-bot-inject': 'true' },
-    });
-    const baseResponse = await fetch(baseRequest);
-    if (!baseResponse.ok) return undefined;
-
-    let html = await baseResponse.text();
+    let html = baseHtml;
 
     const canonical = `https://huumorikauppa.fi${path}`;
     const safeTitle = escapeHtml(meta.title);
@@ -806,64 +832,25 @@ export default async function middleware(request: Request): Promise<Response | u
     // Inject product JSON-LD for /tuote/ pages
     if (productData) {
       const pd = productData;
-      const priceValidUntil = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-      const availability = pd.stock > 0
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock";
-      const productSchema = {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": pd.name,
-        "description": pd.description,
-        "image": pd.images,
-        "sku": pd.slug,
-        "mpn": pd.slug,
-        "brand": { "@type": "Brand", "name": "Huumorikauppa" },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "4",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "url": `https://huumorikauppa.fi/tuote/${pd.slug}`,
-          "priceCurrency": "EUR",
-          "price": pd.price.toFixed(2),
-          "availability": availability,
-          "itemCondition": "https://schema.org/NewCondition",
-          "priceValidUntil": priceValidUntil,
-          "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
-          "shippingDetails": {
-            "@type": "OfferShippingDetails",
-            "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "EUR" },
-            "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
-            "deliveryTime": {
-              "@type": "ShippingDeliveryTime",
-              "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-              "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY" }
-            }
-          },
-          "hasMerchantReturnPolicy": {
-            "@type": "MerchantReturnPolicy",
-            "applicableCountry": "FI",
-            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-            "merchantReturnDays": 14,
-            "returnMethod": "https://schema.org/ReturnByMail",
-            "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
-          }
-        }
-      };
-      const breadcrumbSchema = {
-        "@context": "https://schema.org/",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Etusivu", "item": "https://huumorikauppa.fi/" },
-          { "@type": "ListItem", "position": 2, "name": pd.categoryName, "item": `https://huumorikauppa.fi/kategoria/${pd.category}` },
-          { "@type": "ListItem", "position": 3, "name": pd.name, "item": `https://huumorikauppa.fi/tuote/${pd.slug}` }
-        ]
-      };
+      // Sama Product + Offer -rakenne kuin esirenderöinnissä ja ProductPagessa (src/seo/structuredData.ts).
+      const images = (pd.images || [])
+        .filter(Boolean)
+        .map((img) => proxiedImage(img.startsWith('http') ? img : `https://huumorikauppa.fi${img}`, { absolute: true }));
+      const productSchema = buildProductJsonLd({
+        id: pd.id,
+        slug: pd.slug,
+        name: pd.name,
+        description: pd.description,
+        images,
+        price: Number(pd.price),
+        stock: pd.stock,
+        categoryName: pd.categoryName,
+      });
+      const breadcrumbSchema = buildBreadcrumbJsonLd([
+        { name: 'Etusivu', url: 'https://huumorikauppa.fi/' },
+        { name: pd.categoryName, url: `https://huumorikauppa.fi/kategoria/${pd.category}` },
+        { name: pd.name, url: `https://huumorikauppa.fi/tuote/${pd.slug}` },
+      ]);
       html = injectJsonLd(html, productSchema, breadcrumbSchema);
 
       // Update og:image, og:image:alt, og:type for product pages

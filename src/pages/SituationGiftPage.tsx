@@ -13,6 +13,7 @@ import {
 } from "@/data/situationGifts";
 import type { SituationGift } from "@/data/situationGifts";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
+import { mergeSituationFaqs } from "@/seo/pageFaqs";
 import { categories } from "@/data/products";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 import { blogPosts } from "@/data/blog";
@@ -111,14 +112,7 @@ const SituationGiftPage = () => {
   ];
 
   // FAQ enhancement layer — only adds if guide has fewer than 5 FAQs
-  const extraFaqs = [
-    { q: "Voiko lahjan saada nimettömänä?", a: "Kyllä – emme lähetä lähettäjän tietoja paketin mukana, joten yllätyslahja pysyy yllätyksenä." },
-    { q: "Mitä jos koko on väärä?", a: "Vaihdamme tai palautamme tuotteen 14 päivän sisällä – pidä alkuperäinen pakkaus mukana." },
-    { q: "Soveltuuko tämä lahjaksi viime hetkellä?", a: "Tilaa arkena ennen klo 12, niin tilaus lähtee yleensä samana päivänä. Toimitus 3–10 arkipäivää." },
-  ];
-  const mergedFaqs = guide.faqs.length < 5
-    ? [...guide.faqs, ...extraFaqs.slice(0, 5 - guide.faqs.length)]
-    : guide.faqs;
+  const mergedFaqs = mergeSituationFaqs(guide.faqs);
 
   // SEO title alternates (suggestions only — primary title remains unchanged)
   const targetForTitle = situation.h1.replace(/^Hauskat lahjat\s*/i, "");
