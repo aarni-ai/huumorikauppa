@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { trackPurchaseOnce } from "@/lib/analytics";
+import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 interface OrderInfo {
   id: string;
@@ -273,7 +274,7 @@ const OrderConfirmation = () => {
         <h3 className="font-display text-lg text-foreground">Mitä seuraavaksi?</h3>
         <ul className="space-y-2 text-sm text-muted-foreground">
           <li>📧 Saat tilausvahvistuksen sähköpostiin</li>
-          <li>📦 Toimitus 3–10 arkipäivää</li>
+          <li>📦 Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</li>
           <li>🔄 14 päivän vaihto- ja palautusoikeus</li>
         </ul>
       </div>

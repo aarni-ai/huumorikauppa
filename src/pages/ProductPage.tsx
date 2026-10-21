@@ -29,6 +29,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 import { getProductReviews, getProductRating } from "@/lib/productReviews";
 import { ProductRating } from "@/components/ProductRating";
 import { CityProductsSection } from "@/components/CityProductsSection";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
 
 function parseDescription(description: string) {
@@ -783,7 +784,7 @@ const ProductPage = () => {
             </Button>
 
             <p className="text-xs text-muted-foreground text-center">
-              Ilmainen toimitus yli 79 € · 14 pv palautusoikeus · Klarna &amp; MobilePay
+              Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € · 14 pv palautusoikeus · Klarna &amp; MobilePay
             </p>
 
             {/* Share */}
@@ -798,7 +799,7 @@ const ProductPage = () => {
 
             {/* Trust badges — desktop only (mobile trust strip is directly below CTA) */}
             <div className="hidden md:grid grid-cols-3 gap-3 pt-4 border-t border-border">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 79 €</div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground"><Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu</div>
             </div>

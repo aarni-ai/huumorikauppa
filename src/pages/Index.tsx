@@ -21,6 +21,7 @@ import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Frag
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
 
@@ -173,7 +174,7 @@ const Index = () => {
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
               <Truck className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
-            Ilmainen toimitus yli 79 €
+            Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €
           </div>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
@@ -465,7 +466,7 @@ const Index = () => {
               keskiviikkoa.
             </p>
             <p>
-              Toimitusaika on 3-10 arkipäivää tilauksesta, ja 79 euron tilauksista alkaen
+              Toimitusaika on {TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja {ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
               toimitus on ilmainen. Jokainen paita ja huppari painetaan tilauksesta, joten saat juuri sen
               tuotteen jonka valitsit, ilman ylituotantoa. Jos jokin meni pieleen, vastaamme
               henkilökohtaisesti osoitteessa <a href="mailto:huumorikauppa@gmail.com" className="text-foreground hover:underline">huumorikauppa@gmail.com</a>.

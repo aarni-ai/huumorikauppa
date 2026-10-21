@@ -1,3 +1,5 @@
+import { TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+
 export interface Dialect {
   slug: string;
   name: string;
@@ -25,7 +27,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja stadin slangipuhujalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat stadin slangilla: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja stadin slangilla",
-    tldr: "Hauska lahja stadin slangipuhujalle on huumoripaita tai -huppari stadin slangilla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja stadin slangipuhujalle on huumoripaita tai -huppari stadin slangilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Stadin slangi on Helsingin oma kieli - sekoitus suomea, ruotsia ja katukulttuuria. Hauska slangipuhujalahja tunnistaa kaupunki-identiteetin hauskalla tavalla.",
     characterTraits: ["suorapuheinen", "kaupunkilainen", "trendiherkkä"],
     expressions: [
@@ -62,7 +64,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja savolaiselle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat savon murteella: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja savolaiselle",
-    tldr: "Hauska lahja savolaiselle on huumoripaita tai -huppari savon murteella. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja savolaiselle on huumoripaita tai -huppari savon murteella. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Savolaiset puhuvat omaan tahtiinsa - hitaasti, perusteellisesti ja aina pointin kanssa. Hauska savomieslahja tunnistaa murteen ja identiteetin.",
     characterTraits: ["rauhallinen", "humoristinen", "viisas"],
     expressions: [
@@ -98,7 +100,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja tamperelaiselle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat tamperelaiselle murteella: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja tamperelaiselle murteella",
-    tldr: "Hauska lahja tamperelaiselle on huumoripaita tai -huppari tamperelaisen identiteetin vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja tamperelaiselle on huumoripaita tai -huppari tamperelaisen identiteetin vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Tamperelainen on ylpeä kotiseudustaan - Suomen sisäisimmästä kaupungista. Hauska tamperelaislahjä tunnistaa mustamakkaran ja Tammelan faniuden.",
     characterTraits: ["ylpeä", "rehellinen", "humoristinen"],
     expressions: [
@@ -127,7 +129,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja turkulaiselle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat turun murteella: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja turkulaiselle murteella",
-    tldr: "Hauska lahja turkulaiselle on huumoripaita tai -huppari Turku-identiteetin vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja turkulaiselle on huumoripaita tai -huppari Turku-identiteetin vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Turkulainen puhuu selkeästi ja on ylpeä kaupunkinsa historiasta. Hauska turkulaislahja tunnistaa tämän ylpeyden hauskalla tavalla.",
     characterTraits: ["historiallinen", "ylpeä", "merenrantainen"],
     expressions: [
@@ -157,7 +159,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja eteläpohjanmaalaiselle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat eteläpohjalaiselle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja eteläpohjalaiselle",
-    tldr: "Hauska lahja eteläpohjalaiselle on huumoripaita tai -huppari pohjalaisuuden vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja eteläpohjalaiselle on huumoripaita tai -huppari pohjalaisuuden vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Eteläpohjalainen sanoo asian suoraan - ei ylimääräistä sanaa. Hauska pohjalaislahjä tunnistaa murteen ja arvomaailman.",
     characterTraits: ["suorapuheinen", "rehellinen", "periksiantamaton"],
     expressions: [
@@ -187,7 +189,7 @@ export const dialects: Dialect[] = [
     seoTitle: "Hauska lahja lappalaiselle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat lapin murteella: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lappalaiselle",
-    tldr: "Hauska lahja lappalaiselle on huumoripaita tai -huppari lappilaisen identiteetin vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lappalaiselle on huumoripaita tai -huppari lappilaisen identiteetin vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lappalainen elää lähellä luontoa - ja sitä pidemmälle pohjoiseen, sitä vapaampi olo. Hauska lappilaislahja tunnistaa ainutlaatuisen kulttuurin.",
     characterTraits: ["rauhallinen", "luonnollinen", "kestävä"],
     expressions: [

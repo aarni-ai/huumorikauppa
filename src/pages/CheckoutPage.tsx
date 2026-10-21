@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
 type Step = "details" | "shipping" | "payment";
 
@@ -176,8 +177,9 @@ const CheckoutPage = () => {
   };
 
   const discountAmount = appliedDiscount ? totalPrice * (appliedDiscount.percent / 100) : 0;
-  const shippingFree = totalPrice >= 79;
-  const shippingCost = shippingFree ? 0 : 6.90;
+  // Näyttöarvo; kassa (create-checkout) laskee veloitettavan toimitusmaksun samalla säännöllä.
+  const shippingFree = totalPrice >= ILMAINEN_TOIMITUS_RAJA;
+  const shippingCost = shippingFree ? 0 : TOIMITUSMAKSU;
   const grandTotal = totalPrice - discountAmount + shippingCost;
 
   if (items.length === 0) {
@@ -308,7 +310,7 @@ const CheckoutPage = () => {
 
               <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground space-y-1">
                 <p className="font-medium text-foreground">Toimitustapa:</p>
-                <p>📦 Posti – kotiinkuljetus (3-10 arkipäivää)</p>
+                <p>📦 Posti – kotiinkuljetus ({TOIMITUSAIKA_TEKSTI} arkipäivää)</p>
                 <p>{shippingFree ? "✅ Ilmainen toimitus!" : `Toimituskulut: ${shippingCost.toFixed(2)} €`}</p>
               </div>
 

@@ -8,8 +8,9 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
-const FREE_SHIPPING = 79;
+const FREE_SHIPPING = ILMAINEN_TOIMITUS_RAJA;
 
 const CartPage = () => {
   usePrerenderReady();
@@ -17,7 +18,7 @@ const CartPage = () => {
   const { data: allProducts = [] } = useProducts();
 
   const shippingFree = totalPrice >= FREE_SHIPPING;
-  const shippingCost = shippingFree ? 0 : 6.90;
+  const shippingCost = shippingFree ? 0 : TOIMITUSMAKSU;
   const shippingGap = Math.max(0, FREE_SHIPPING - totalPrice);
   const shippingProgress = Math.min(100, (totalPrice / FREE_SHIPPING) * 100);
 
@@ -193,7 +194,7 @@ const CartPage = () => {
               <p>
                 AliExpress-tuotteiden toimitusaika on n. 2–4 viikkoa.
                 {items.some((i) => i.product.supplier !== "aliexpress")
-                  ? " Muut tuotteesi (3–10 arkipäivää) toimitetaan eri paketissa eri aikataululla."
+                  ? ` Muut tuotteesi (${TOIMITUSAIKA_TEKSTI} arkipäivää) toimitetaan eri paketissa eri aikataululla.`
                   : ""}
               </p>
             </div>
@@ -215,7 +216,7 @@ const CartPage = () => {
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
-            <p>🚚 Toimitus 3–10 arkipäivää</p>
+            <p>🚚 Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</p>
             <p>↩️ 14 pv palautusoikeus</p>
           </div>
         </div>

@@ -8,6 +8,7 @@
  * sen jälkeen tarkennus. Ei ajatusviivoja, ei todistamattomia superlatiiveja, ei arvailevia ilmaisuja.
  */
 import { PRODUCT_TYPE_LABEL, cleanProductName } from "@/lib/productNames";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 export interface FaqItem {
   q: string;
@@ -18,14 +19,14 @@ export interface FaqItem {
 export const CHRISTMAS_DEADLINE_TEXT =
   "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
 
-const DELIVERY_SHORT = "Toimitusaika on 3-10 arkipäivää tilauksesta.";
-const SHIPPING_COST = "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen.";
+const DELIVERY_SHORT = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
+const SHIPPING_COST = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
 
 /** /usein-kysytyt-kysymykset (näkyvä UKK ja FAQPage-JSON-LD samasta listasta). */
 export const SITE_FAQS: FaqItem[] = [
   {
     q: "Mistä saa hauskan joululahjan nopeasti?",
-    a: `Huumorikauppa.fi:stä saat hauskan joululahjan kotiovelle 3-10 arkipäivässä tilauksesta. ${CHRISTMAS_DEADLINE_TEXT} Valikoimassa on t-paitoja ja huppareita esimerkiksi ammatti-, harrastus-, eläke- ja ikävuositeemoilla sekä tuotteita, joihin voit tilata oman tekstin.`,
+    a: `Huumorikauppa.fi:stä saat hauskan joululahjan kotiovelle ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. ${CHRISTMAS_DEADLINE_TEXT} Valikoimassa on t-paitoja ja huppareita esimerkiksi ammatti-, harrastus-, eläke- ja ikävuositeemoilla sekä tuotteita, joihin voit tilata oman tekstin.`,
   },
   {
     q: "Ehtiikö tilaus jouluksi?",

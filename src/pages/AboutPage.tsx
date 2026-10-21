@@ -4,6 +4,7 @@ import { ORGANIZATION_ID } from "@/seo/structuredData";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Truck, RotateCcw, Shield, Flag, Mail, MapPin, CheckCircle2 } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -16,7 +17,7 @@ const aboutJsonLd = {
 const stats = [
   { value: "200+", label: "tuotetta valikoimassa" },
   { value: "14 pv", label: "palautusoikeus" },
-  { value: "3–10", label: "arkipäivää toimitusaika" },
+  { value: TOIMITUSAIKA_TEKSTI, label: "arkipäivää toimitusaika" },
   { value: "100 %", label: "suomalainen yritys" },
 ];
 
@@ -39,7 +40,7 @@ const processSteps = [
   {
     number: "04",
     title: "Toimitus",
-    body: "Posti toimittaa suoraan osoitteeseesi 3–10 arkipäivässä. Ilmainen toimitus yli 79 € tilauksiin. Jokainen tilaus on seurattavissa koko matkan ajan.",
+    body: `Posti toimittaa suoraan osoitteeseesi ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin. Jokainen tilaus on seurattavissa koko matkan ajan.`,
   },
 ];
 
@@ -51,7 +52,7 @@ const materials = [
 ];
 
 const trustPoints = [
-  { icon: Truck, title: "Nopea toimitus", body: "3–10 arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli 79 € tilauksiin." },
+  { icon: Truck, title: "Nopea toimitus", body: `${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
   { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard ja muut yleisimmät maksutavat. Maksu tehdään suojatulla maksusivulla." },
   { icon: Flag, title: "Suomalainen yritys", body: "Rekisteröity Helsinki, Finland. Y-tunnus 3583677-2. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä." },
@@ -197,7 +198,7 @@ const AboutPage = () => {
             {[
               "Aitoa suomalaista huumoria – emme käännä vitsejä englannista",
               "Laadukkaat materiaalit ja kestävä painatus",
-              "Nopea toimitus 3–10 arkipäivässä koko Suomeen",
+              `Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen`,
               "Henkilökohtainen asiakaspalvelu, joka vastaa 1–2 arkipäivässä",
               "14 päivän palautusoikeus ilman selittelyjä",
               "Tuhansia tyytyväisiä asiakkaita ja todelliset arvostelut",

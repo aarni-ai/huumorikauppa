@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { proxiedImage } from "@/lib/imageProxy";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 // Finnish Mother's Day 2026 = Sunday May 10, 2026 (2nd Sunday of May)
 const MOTHERS_DAY = new Date("2026-05-10T00:00:00+03:00");
@@ -45,7 +46,7 @@ const FAQS = [
   },
   {
     q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
-    a: "Tilaa viimeistään kaksi viikkoa ennen äitienpäivää, koska toimitusaika on 3-10 arkipäivää tilauksesta.",
+    a: `Tilaa viimeistään kaksi viikkoa ennen äitienpäivää, koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
   },
   {
     q: "Mikä on hauska lahja äidille?",
@@ -53,7 +54,7 @@ const FAQS = [
   },
   {
     q: "Toimitetaanko äitienpäiväksi?",
-    a: "Kyllä: toimitusaika on 3-10 arkipäivää tilauksesta koko Suomeen. 79 euron tilauksista alkaen toimitus on ilmainen, ja tuotteilla on 14 päivän peruutusoikeus (ei koske personoituja tuotteita).",
+    a: `Kyllä: toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta koko Suomeen. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, ja tuotteilla on 14 päivän peruutusoikeus (ei koske personoituja tuotteita).`,
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
@@ -218,8 +219,8 @@ const MothersDayPage = () => {
         <p>
           <strong>Äitienpäivälahjaksi hauska huppari tai t-paita on yllättävä ja lämmin valinta.</strong>{" "}
           Huumorikauppa.fi:n äitienpäivätuotteet, kuten hupparit ja t-paidat, toimitetaan
-          3-10 arkipäivässä tilauksesta koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
-          ja 79 euron tilauksista alkaen toimitus on ilmainen.
+          {TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
+          ja {ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.
         </p>
         <p>
           Toimituksen suositus: Hauska äitienpäivälahja jää mieleen, etenkin silloin kun teksti
@@ -230,7 +231,7 @@ const MothersDayPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-10 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen</div>
@@ -312,11 +313,11 @@ const MothersDayPage = () => {
             <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
             oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>hauska äitienpäivälahja</strong> sekä
             kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
-            kelpaavan. Kaikki tuotteet painetaan tilauksesta ja toimitetaan 3-10 arkipäivässä tilauksesta,
+            kelpaavan. Kaikki tuotteet painetaan tilauksesta ja toimitetaan {TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta,
             joten tilaa viimeistään kaksi viikkoa ennen äitienpäivää.
           </p>
           <p>
-            <strong>Ilmainen toimitus yli 79 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            <strong>Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
             kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se oikea{" "}
             <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
             koko vuoden.

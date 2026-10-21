@@ -53,6 +53,7 @@ import {
   type JsonLd,
 } from "../structuredData";
 import type { LinkItem, PrerenderPage, PrerenderProduct, SiteNav } from "./html";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
 /** Supabasen products-rivi siinä muodossa kuin REST palauttaa sen. */
 export interface ProductRow {
@@ -262,7 +263,7 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
     const list = selectCategoryProducts(products, category.slug);
     const faqs = buildCategoryFaqs(category.name);
     const description =
-      category.seoDescription || `${category.description}. Ilmainen toimitus 79 euron tilauksista alkaen.`;
+      category.seoDescription || `${category.description}. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`;
     return {
       path,
       title: category.seoTitle || `${h1} | Huumorikauppa.fi`,

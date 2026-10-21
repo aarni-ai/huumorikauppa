@@ -1,3 +1,5 @@
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
+
 export interface FAQ {
   q: string;
   a: string;
@@ -8,7 +10,7 @@ export interface FAQ {
  * Terms.tsx ja ReturnsPolicy.tsx. Ei ajatusviivoja eikä todistamattomia superlatiiveja.
  */
 
-const DELIVERY = "Toimitusaika on 3-10 arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen se on ilmainen.";
+const DELIVERY = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.`;
 const RETURNS = "Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita palautuksesta osoitteeseen huumorikauppa@gmail.com, niin saat palautusohjeet. Personoituja tuotteita peruutusoikeus ei koske.";
 const PAYMENT = "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.";
 const CUSTOM = "Saa niihin tuotteisiin, joiden nimessä on Oma teksti/kuva tai Personoitava. Kirjoitat tekstin tai kuvatoiveen tuotesivun kenttään (enintään 200 merkkiä), ja toive kulkee tilauksen mukana.";
@@ -64,7 +66,7 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
   ],
   "isanpaiva-lahjat": [
     { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita tai huppari, joka liittyy isän harrastukseen tai ammattiin, tai esimerkiksi \"Jos iskä ei osaa korjata sitä...\" -teksti." },
-    { q: "Milloin isänpäivälahja pitää tilata?", a: "Tilaa viimeistään kaksi viikkoa ennen isänpäivää (marraskuun toinen sunnuntai), koska toimitusaika on 3-10 arkipäivää." },
+    { q: "Milloin isänpäivälahja pitää tilata?", a: `Tilaa viimeistään kaksi viikkoa ennen isänpäivää (marraskuun toinen sunnuntai), koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     { q: "Miten valitsen oikean koon isänpäivälahjaan?", a: "Vertaa tuotesivun kokotaulukon mittoja isän hyvin istuvaan paitaan. Väljä koko on varmempi valinta kuin liian pieni." },
     { q: "Voiko isänpäivälahjan palauttaa?", a: RETURNS },
   ],
@@ -78,7 +80,7 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Mikä on hauska syntymäpäivälahja huumorin ystävälle?", a: "Hauska syntymäpäivälahja on t-paita tai huppari, jossa on ikävuoteen sopiva teksti, kuten \"40v - ei vanha, vintage\" tai \"60v - takuu mennyt, toimii silti\"." },
     { q: "Sopiiko huumoripaita syntymäpäivälahjaksi?", a: "Sopii: hauska paita on henkilökohtainen lahja, joka päätyy käyttöön." },
     { q: "Miten valitsen oikean koon syntymäpäivälahjaan?", a: "Vertaa tuotesivun kokotaulukon mittoja saajan hyvin istuvaan paitaan. Väljä koko on varmempi valinta kuin liian pieni." },
-    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa." },
+    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa.` },
   ],
   "polttari-lahjat": [
     { q: "Millaisia polttaripaitoja on tarjolla?", a: "Polttareihin sopivat personoitavat t-paidat ja hupparit, joihin kirjoitat porukan oman tekstin tuotesivun kenttään." },
@@ -90,19 +92,19 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Mikä on hauska eläkelahja?", a: "Hauska eläkelahja on t-paita tai huppari eläketeemalla, kuten \"Olen eläkkeellä\" tai \"100% Eläkeläinen\"." },
     { q: "Sopiiko huumoripaita eläkkeelle jäävälle työkaverille?", a: "Sopii: hauska paita on työporukan yhteinen tapa toivottaa hyvää eläkettä." },
     { q: "Miten valitsen oikean koon eläkelahjaan?", a: "Vertaa tuotesivun kokotaulukon mittoja saajan hyvin istuvaan paitaan. Väljä koko on varmempi valinta kuin liian pieni." },
-    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen eläkejuhlia." },
+    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen eläkejuhlia.` },
   ],
   "lahja-kaverille": [
     { q: "Mikä on hauska lahja kaverille?", a: "Hauska lahja kaverille on t-paita tai huppari, joka liittyy kaverin harrastukseen tai luonteeseen." },
     { q: "Sopiiko huumoripaita kaverin synttärilahjaksi?", a: "Sopii: hauska paita on henkilökohtainen lahja, joka päätyy käyttöön." },
     { q: "Miten valitsen oikean koon kaverille?", a: "Vertaa tuotesivun kokotaulukon mittoja kaverin hyvin istuvaan paitaan." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa." },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa.` },
   ],
   "lahja-tyokaverille": [
     { q: "Mikä on hauska lahja työkaverille?", a: "Hauska lahja työkaverille on t-paita tai huppari työpaikkahuumorilla, esimerkiksi \"Tämäkin olisi voinut olla sähköposti\"." },
     { q: "Sopiiko huumoripaita työkaverin läksiäislahjaksi?", a: "Sopii: hauska paita on muisto yhteisistä vuosista, ja eläkkeelle jäävälle on omia eläketeemoja." },
     { q: "Miten valitsen oikean koon työkaverin lahjaksi?", a: "Jos kokoa ei tiedä, vertaa tuotesivun kokotaulukkoa ja valitse mieluummin väljä koko." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen läksiäisiä." },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen läksiäisiä.` },
   ],
   "hauskat-t-paidat": [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "Materiaali on kerrottu jokaisen t-paidan tuotekuvauksessa, ja useat t-paidat ovat 100 % puuvillaa." },

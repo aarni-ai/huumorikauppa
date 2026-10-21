@@ -4,6 +4,7 @@
  */
 import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { landingPages } from "./landingPages";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
 
@@ -50,7 +51,7 @@ export const christmasDeadlinePage = {
     },
     {
       q: "Mitä toimitus maksaa?",
-      a: "Alle 79 euron tilauksissa toimitus maksaa 6,90 euroa. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+      a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     },
   ],
   /** Joululahjaoppaat. */

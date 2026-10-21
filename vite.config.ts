@@ -2,6 +2,20 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import type { Plugin } from "vite";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "./src/config/toimitus";
+
+/** index.html:n %TOIMITUS...%-paikat täytetään toimitusehtojen konfiguraatiosta (src/config/toimitus.ts). */
+function toimitusehdotHtml(): Plugin {
+  const arvot: Record<string, string> = { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI };
+  return {
+    name: "toimitusehdot-html",
+    transformIndexHtml: {
+      order: "pre",
+      handler: (html) => html.replace(/%(ILMAINEN_RAJA_TEKSTI|TOIMITUSAIKA_TEKSTI|TOIMITUSMAKSU_TEKSTI)%/g, (_m, k: string) => arvot[k]),
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,7 +27,7 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [toimitusehdotHtml(), react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

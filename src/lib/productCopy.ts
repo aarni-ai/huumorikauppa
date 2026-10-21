@@ -1,4 +1,5 @@
 import { cleanProductName } from "@/lib/productNames";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 // Deterministic per-product SEO copy generator.
 // Produces UNIQUE long-form Finnish content per product so that product pages
@@ -123,7 +124,7 @@ function whyFunnyFor(name: string): string {
 
 function whyBuyFor(name: string, category: string): string {
   const noun = categoryNoun(category);
-  return `${cleanProductName(name)} on ${noun}, jonka teksti tekee lahjasta henkilökohtaisen. Tuote painetaan tilauksesta ja toimitetaan 3-10 arkipäivässä, ja 79 euron tilauksista alkaen toimitus on ilmainen.`;
+  return `${cleanProductName(name)} on ${noun}, jonka teksti tekee lahjasta henkilökohtaisen. Tuote painetaan tilauksesta ja toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
 }
 
 function scenariosFor(name: string, category: string): string[] {
@@ -180,10 +181,10 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
     `${whyBuy}`,
   ].join("\n\n");
 
-  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
+  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
 
   const shortDescription = truncateAtWord(
-    `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen.`,
+    `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
     158,
   );
 
@@ -219,10 +220,10 @@ export function isGenericDescription(d?: string): boolean {
 
 /**
  * Poistaa tietokannan tuotekuvauksista lauseet, joiden väitteet eivät pidä paikkaansa
- * (painopaikka, vanha 60 € toimitusraja, mukit). Tietokantaa ei voi muokata, joten korjaus tehdään tässä.
+ * (painopaikka, vanha toimitusraja, mukit). Tietokantaa ei voi muokata, joten korjaus tehdään tässä.
  */
 const FALSE_CLAIM_SENTENCE =
-  /[^.!?\n]*(painettu eu:ssa|painettu suomessa|painetaan suomessa|yli 60 €|\bmuki|mukissa|kahvimuki)[^.!?\n]*[.!?]?/gi;
+  /[^.!?\n]*(painettu eu:ssa|painettu suomessa|painetaan suomessa|yli 60 €|\bmuki|mukissa|kahvimuki)[^.!?\n]*[.!?]?/gi; // toimitus-grep: sallittu (tietokannan vanha teksti siivotaan)
 
 export function sanitizeProductDescription(d?: string | null): string {
   if (!d) return "";

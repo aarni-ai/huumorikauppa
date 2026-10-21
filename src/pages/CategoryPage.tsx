@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 // Blog posts relevant to each category — hub & spoke internal linking
 const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
@@ -98,7 +99,7 @@ const CategoryPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle || `${h1Text} | Huumorikauppa.fi`}
-        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli 79 € tilauksiin!`}
+        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
@@ -108,7 +109,7 @@ const CategoryPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-8 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
@@ -138,8 +139,8 @@ const CategoryPage = () => {
           <p>
             <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
-            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus 3–10 arkipäivässä koko Suomeen,
-            ilmainen yli 79 € tilauksiin.
+            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen,
+            ilmainen yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin.
           </p>
         </div>
 
@@ -149,7 +150,7 @@ const CategoryPage = () => {
             <CheckCircle className="h-3.5 w-3.5" /> Varastossa
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-            <Truck className="h-3.5 w-3.5" /> Toimitus 3–10 arkipäivässä
+            <Truck className="h-3.5 w-3.5" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">
             <Star className="h-3.5 w-3.5 fill-yellow-500" /> 4.8/5 arvosana

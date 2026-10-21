@@ -4,6 +4,7 @@ import { useProducts } from "@/hooks/use-products";
 import { BlogProductCard } from "@/components/BlogInlineProducts";
 import { guideRecommendations } from "@/data/guideRecommendations";
 import { Product } from "@/types/product";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 interface GuideProductRecommendationsProps {
   guideSlug: string;
@@ -62,7 +63,7 @@ export function GuideProductRecommendations({ guideSlug }: GuideProductRecommend
         ))}
       </div>
       <p className="text-xs text-muted-foreground mt-4 mb-3">
-        Ilmainen toimitus yli 79 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
+        Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
       </p>
       {cta && (
         <Link

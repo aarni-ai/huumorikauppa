@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ILMAINEN_RAJA_TEKSTI } from "../config/toimitus";
 
 const NAMES = [
   "Anna H.", "Tepe", "Veetu", "Marja-Leena H.", "Reijo T.", "Mika L.",
@@ -58,7 +59,7 @@ const REVIEWS = [
   { text: "toimitus todella nopea", stars: 5 },
   { text: "paketti saapui salamannopeasti ja paidat olivat täsmälleen toivotunlaisia", stars: 5 },
   { text: "hauskat vaateet ja hauska muki tuli postissa :D kiva paikka ostaa!", stars: 5 },
-  { text: "Printti paidoissa laadukas + ilmainen toimitus yli 79 € tilauksiin.", stars: 5 },
+  { text: `Printti paidoissa laadukas + ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`, stars: 5 },
   { text: "hyvä meininki :D", stars: 5 },
   { text: "asiakaspalvelu ystävällistä ja koonvaihto isompaan suju helposti", stars: 5 },
   { text: "tilaus helppo ja paketti saapui kotiovelle joutuisasti", stars: 5 },
