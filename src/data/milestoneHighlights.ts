@@ -4,7 +4,7 @@
 // aiheeseen sopivan tuotejoukon (tai null, jos aihe ei sovi: tarrat, vauva, lemmikit, sauna,
 // kalastus jne.). Slug on luotettavampi aiheen ilmaisin kuin tagit (joissa on ristiinmyyntiä).
 
-// --- Tuotepoolit (t-paidat hero-tuotteina, mukit omana poolina) ---
+// --- Tuotepoolit (t-paidat hero-tuotteina) ---
 const MEN = [
   "30v-selka-alkaa-jo-rusahdella-t-paita",
   "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita",
@@ -45,16 +45,6 @@ const AGE50 = [
   "50-ja-paras-vasta-tulossa-muki",
   "50-ja-hopeanhohtoinen-vain-hiukset-muki",
 ];
-const MUGS = [
-  "30v-selka-alkaa-jo-rusahdella-muki",
-  "40-vuotta-henkisesti-18-muki",
-  "50-ja-paras-vasta-tulossa-muki",
-  "60v-takuu-mennyt-toimii-silti-muki",
-  "40v-henkisesti-18-tyylilla-40-muki",
-  "50-ja-hopeanhohtoinen-vain-hiukset-muki",
-  "60-vuotta-nuori-ja-nokkela-muki",
-  "virallisesti-tyoton-epavirallisesti-vapaa-muki",
-];
 // Tasapainoinen poikkileikkaus (miehet/naiset/eläke) yleisille lahjaoppaille.
 const MIX = [
   "30v-selka-alkaa-jo-rusahdella-t-paita",
@@ -88,7 +78,8 @@ export function selectMilestoneHighlights(slug: string): MilestoneHighlight | nu
 
   if (mies && nainen) return { title: "Hauskat syntymäpäivälahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
   if (has("muki", "kahvi", "toimisto", "tyokave", "työkave", "pomo", "alle-20")) {
-    return { title: "Hauskat merkkipäivämukit", slugs: MUGS, ctaLink: "/kategoria/mukit", ctaLabel: "Katso kaikki mukit" };
+    // Mukit poistuivat myynnistä 21.10.2026: näytetään yleinen poikkileikkaus mukinostojen sijaan.
+    return { title: "Hauskat lahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
   }
   if (has("eläke", "elake", "elakkeel")) return { title: "Hauskat eläkelahjat", slugs: ELAKE, ctaLink: "/elakelahjat", ctaLabel: "Katso kaikki eläkelahjat" };
   if (has("50-vuotia", "50v")) return { title: "Hauskat 50-vuotislahjat", slugs: AGE50, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki lahjaideat" };
