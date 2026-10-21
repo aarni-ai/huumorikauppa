@@ -7,6 +7,7 @@ import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 import { MilestoneProductHighlights } from "@/components/MilestoneProductHighlights";
 import { BlogInlineProducts } from "@/components/BlogInlineProducts";
+import { buildBlogPostJsonLd, blogImageUrl } from "@/lib/blogJsonLd";
 
 function renderContent(content: string, articleSlug: string) {
   const lines = content.split("\n");
@@ -152,41 +153,11 @@ const BlogPost = () => {
     .filter(Boolean)
     .slice(0, 2);
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.title,
-    "description": post.metaDescription,
-    "url": `https://huumorikauppa.fi/blogi/${post.slug}`,
-    "datePublished": post.publishedAt,
-    "dateModified": post.updatedAt,
-    "author": {
-      "@type": "Organization",
-      "name": "Huumorikauppa",
-      "url": "https://huumorikauppa.fi",
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Huumorikauppa",
-      "url": "https://huumorikauppa.fi",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huumorikauppa.fi/favicon.ico",
-      },
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://huumorikauppa.fi/blogi/${post.slug}`,
-    },
-    "inLanguage": "fi",
-    "keywords": post.tags.join(", "),
-  };
-
   // Per-post FAQ overrides the generic set when the post defines its own.
   const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : [
     {
       q: "Mistä löydän hauskoja lahjaideoita?",
-      a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
+      a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
     },
     {
       q: "Kuinka nopeasti tilaus toimitetaan?",
@@ -202,20 +173,7 @@ const BlogPost = () => {
     },
   ];
 
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": blogFaqs.map(f => ({
-      "@type": "Question",
-      "name": f.q,
-      "acceptedAnswer": { "@type": "Answer", "text": f.a },
-    })),
-  };
-
-  const combinedJsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [articleJsonLd, faqJsonLd],
-  };
+  const combinedJsonLd = buildBlogPostJsonLd(post, blogFaqs);
 
   return (
     <div className="min-h-screen">
@@ -224,6 +182,10 @@ const BlogPost = () => {
         description={post.metaDescription}
         canonical={`https://huumorikauppa.fi/blogi/${post.slug}`}
         jsonLd={combinedJsonLd}
+        ogType="article"
+        ogImage={blogImageUrl(post.image)}
+        articlePublishedTime={post.publishedAt}
+        articleModifiedTime={post.updatedAt}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
           { name: "Blogi", url: "https://huumorikauppa.fi/blogi" },
