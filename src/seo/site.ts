@@ -14,7 +14,7 @@ import {
   TOIMITUSAIKA_MAX_ARKIPAIVAA,
   TOIMITUSAIKA_MIN_ARKIPAIVAA,
   TOIMITUSMAKSU,
-} from "../config/toimitus";
+} from "../config/toimitus.js";
 
 export const SITE_URL = "https://huumorikauppa.fi";
 export const SITE_NAME = "Huumorikauppa";
