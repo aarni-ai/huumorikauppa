@@ -16,9 +16,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { buildProductJsonLd } from "@/seo/structuredData";
-import { buildProductFaqs } from "@/seo/pageFaqs";
+import { buildProductFaqs, mergeFaqs } from "@/seo/pageFaqs";
+import { getProductContent } from "@/data/productContent";
+import { productImageAlt } from "@/lib/productNames";
 import { Skeleton } from "@/components/ui/skeleton";
-import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
+import { generateProductCopy, isGenericDescription, sanitizeProductDescription, truncateAtWord } from "@/lib/productCopy";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
@@ -337,8 +339,14 @@ const ProductPage = () => {
 
   const categoryName = category?.name || product.category;
 
+  // Käsin kirjoitettu kuvaus (src/data/productContent.ts) ohittaa tietokannan kuvauksen; esirenderöinti käyttää samaa.
+  const contentOverride = getProductContent(product.slug);
   const useGeneratedDescription = isGenericDescription(product.description);
-  const effectiveDescription = useGeneratedDescription ? seoCopy.longDescription : product.description;
+  const effectiveDescription = contentOverride
+    ? contentOverride.description
+    : useGeneratedDescription
+      ? seoCopy.longDescription
+      : sanitizeProductDescription(product.description);
 
   const handleAddToCart = () => {
     if (needsSize) {
@@ -414,7 +422,9 @@ const ProductPage = () => {
     categoryName,
   });
 
-  const { faqs: productFaqsExtended, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName);
+  const { faqs: genericProductFaqs, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName, { isCustom });
+  // Tuotekohtaiset UKK:t ensin, yleiset perään ilman päällekkäisiä kysymyksiä (sama lista näkyvään UKK:hon ja FAQPage-JSON-LD:hen).
+  const productFaqsExtended = mergeFaqs(contentOverride?.faqs ?? [], genericProductFaqs);
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -443,7 +453,9 @@ const ProductPage = () => {
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
-  const metaDesc = seoCopy.shortDescription;
+  const metaDesc = contentOverride
+    ? truncateAtWord(contentOverride.description.replace(/\s+/g, " "), 155)
+    : seoCopy.shortDescription;
 
   return (
     <div className="min-h-screen">
@@ -536,7 +548,7 @@ const ProductPage = () => {
                   <img
                     key={`m-${selectedColor}-${i}`}
                     src={proxiedImage(img) || img}
-                    alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – ${categoryName} kuva ${i + 1}`}
+                    alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
                     className="w-full aspect-[4/3] md:aspect-square object-cover shrink-0 snap-start"
                     style={{ scrollSnapAlign: "start" }}
                     width={600}
@@ -569,7 +581,7 @@ const ProductPage = () => {
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden hidden md:block">
               <img
                 src={proxiedImage(currentImages[activeImage] || currentImages[0]) || "/placeholder.svg"}
-                alt={`${product.name}${selectedColor ? ' – ' + selectedColor : ''} – Osta ${categoryName} Huumorikaupasta`}
+                alt={productImageAlt(product, { url: currentImages[activeImage] || currentImages[0], index: activeImage, color: selectedColor })}
                 className="w-full h-full object-cover"
                 width={600}
                 height={600}
@@ -593,7 +605,7 @@ const ProductPage = () => {
                   >
                     <img
                       src={proxiedImage(img) || img}
-                      alt={`${product.name}${selectedColor ? ' ' + selectedColor : ''} – ${categoryName} kuva ${i + 1} | Huumorikauppa`}
+                      alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
                       className="w-full h-full object-cover"
                       loading="lazy"
                       width={64}
@@ -810,6 +822,7 @@ const ProductPage = () => {
             <h2 className="font-display text-lg text-foreground mb-2">Hoito-ohjeet 🧺</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.care}</p>
           </div>
+          {!contentOverride && (<>
           <div className="rounded-xl border border-border bg-card/50 p-6">
             <h2 className="font-display text-lg text-foreground mb-2">Tositilanteita 🎬</h2>
             <ul className="space-y-1.5 text-sm text-muted-foreground">
@@ -827,9 +840,10 @@ const ProductPage = () => {
             </ul>
           </div>
           <div className="md:col-span-2 rounded-xl border border-border bg-card/50 p-6">
-            <h2 className="font-display text-lg text-foreground mb-2">Miksi asiakkaamme ostavat tämän 💚</h2>
+            <h2 className="font-display text-lg text-foreground mb-2">Miksi tämä lahjaksi 💚</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.whyBuy}</p>
           </div>
+          </>)}
         </section>
 
         {/* Internal links: gift guide + category */}
@@ -870,8 +884,8 @@ const ProductPage = () => {
           </section>
         )}
 
-        {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen */}
-        <section className="mt-8 max-w-3xl">
+        {/* GEO/AI: Kenelle / Miksi / Mihin tilanteeseen (käsin kirjoitetussa kuvauksessa nämä on jo kerrottu) */}
+        {!contentOverride && <section className="mt-8 max-w-3xl">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Lahjavinkki 💡</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -889,7 +903,7 @@ const ProductPage = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
 
         {/* Customer Reviews */}
         <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
