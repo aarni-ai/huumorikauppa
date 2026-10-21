@@ -5,6 +5,7 @@ import { blogPosts } from "@/data/blog";
 import { municipalities } from "@/data/municipalities";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
+import { HOME_FAQS } from "@/seo/pageFaqs";
 import {
   Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield,
   ChevronLeft, ChevronRight, Flag,
@@ -14,6 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -114,36 +116,12 @@ const Index = () => {
     .filter(cat => cat.count > 0)
     .sort((a, b) => b.count - a.count);
 
-  const orgJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Huumorikauppa",
-    "url": "https://huumorikauppa.fi",
-    "logo": "https://huumorikauppa.fi/favicon.ico",
-    "description": "Suomen hauskin verkkokauppa – hauskoja t-paitoja, huppareita, mukeja ja tarroja.",
-    "address": { "@type": "PostalAddress", "addressLocality": "Helsinki", "addressCountry": "FI" },
-    "email": "huumorikauppa@gmail.com",
-    "sameAs": [
-      "https://www.wikidata.org/wiki/Q139915256",
-      "https://www.instagram.com/huumorikauppa_fi",
-      "https://www.tiktok.com/@huumorikauppa",
-      "https://www.youtube.com/@huumorikauppa",
-      "https://www.facebook.com/profile.php?id=61584153329326"
-    ],
-    "identifier": {
-      "@type": "PropertyValue",
-      "propertyID": "Finnish Business ID (Y-tunnus)",
-      "value": "3583677-2"
-    }
-  };
-
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi"
-        description={`Löydä Suomen hauskin lahja! T-paitoja, huppareita, mukeja, tarroja. Yli ${Math.floor((allProducts.length || 700) / 50) * 50} tuotetta, nopea toimitus. Tilaa helposti!`}
+        title={STATIC_PAGE_META["/"].title}
+        description={STATIC_PAGE_META["/"].description}
         canonical="https://huumorikauppa.fi"
-        jsonLd={orgJsonLd}
         ogImage="https://huumorikauppa.fi/images/hero-banner-wide.png"
       />
 
@@ -221,7 +199,7 @@ const Index = () => {
 
 
 
-      <h1 className="sr-only">Huumorikauppa.fi – Suomen hauskin lahjakauppa</h1>
+      <h1 className="sr-only">{STATIC_PAGE_META["/"].h1}</h1>
 
       {isLoading ? (
         <section className="container py-10">
@@ -452,13 +430,7 @@ const Index = () => {
             Usein kysyttyä
           </h2>
           <div className="space-y-2">
-            {[
-              { q: "Mikä on Huumorikauppa?", a: "Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja t-paitoja, huppareita, mukeja, tarroja ja muita huumorituotteita. Designit suunnitellaan Suomessa ja jokainen tuote painetaan tilauksesta." },
-              { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Toimitamme tilaukset PostNordin kautta. Toimitusaika on tyypillisesti 3–10 arkipäivää. Saat sähköpostiisi seurantakoodin kun paketti on lähetetty." },
-              { q: "Mikä on hauska lahja miehelle?", a: "Suosituimmat hauskat lahjat miehelle ovat huumorit-paidat, hupparit, kahvimukit ja meemitarrat. Katso valikoima kategoriasta hauskat lahjat miehelle." },
-              { q: "Mikä on hauska lahja naiselle?", a: "Naisille suosituimpia ovat hauskat tekstihupparit, kahvimukit, kangaskassit ja meemipaidat. Katso lahjaideoita kategoriasta hauskat lahjat naiselle." },
-              { q: "Onko toimitus ilmainen?", a: "Toimitus on ilmainen yli 79 euron tilauksille. Alle 79 euron tilauksille toimitusmaksu on 6,90 €." },
-            ].map((item, i) => (
+            {HOME_FAQS.map((item, i) => (
               <details
                 key={i}
                 className="group rounded-xl border border-border bg-card px-5 py-4"

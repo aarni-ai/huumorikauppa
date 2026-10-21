@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Share2, Copy, Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
@@ -99,8 +100,8 @@ const WorkplaceMemesPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Suomalaiset työpaikkameemit – TOP 50 (2026) | Huumorikauppa"
-        description="50 osuvinta suomalaista työpaikkameemiä: palaverit, kahvihuone, etätyö ja pomon klassikot. Jaa kollegoille ja naura yhdessä."
+        title={STATIC_PAGE_META["/suomalaiset-tyopaikkameemit-top-50"].title}
+        description={STATIC_PAGE_META["/suomalaiset-tyopaikkameemit-top-50"].description}
         canonical={url}
         jsonLd={jsonLd}
         breadcrumbs={[

@@ -1,14 +1,17 @@
+# Huumorikauppa.fi
+#
+# Huom: robots.txt:ssä botti noudattaa vain sitä ryhmää, joka nimeää sen tarkimmin.
+# Nimetyt botit eivät siis peri "User-agent: *" -ryhmän estoja, joten jokaisessa
+# ryhmässä on samat säännöt. /api/img on sallittu, koska tuotekuvat (og:image ja
+# Product-rakenteinen data) tarjoillaan sen kautta.
+
+# Hakukoneet
 User-agent: Googlebot
-Allow: /
-
 User-agent: Googlebot-Image
-Allow: /
-
 User-agent: AdsBot-Google
+User-agent: Bingbot
 Allow: /
-
-User-agent: *
-Allow: /
+Allow: /api/img
 Disallow: /admin
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
@@ -19,29 +22,40 @@ Disallow: /haku
 Disallow: /tili/
 Disallow: /api/
 
-# AI Crawlers — opt-in for GEO
+# Tekoälyhaut ja -avustajat (GEO): sallittu
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: anthropic-ai
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
 User-agent: Google-Extended
 Allow: /
+Allow: /api/img
+Disallow: /admin
+Disallow: /ostoskori
+Disallow: /tilausvahvistus
+Disallow: /tilaus-vahvistettu
+Disallow: /kassa
+Disallow: /checkout/
+Disallow: /haku
+Disallow: /tili/
+Disallow: /api/
 
-User-agent: ClaudeBot
+# Muut botit
+User-agent: *
 Allow: /
-
-User-agent: anthropic-ai
-Allow: /
+Allow: /api/img
+Disallow: /admin
+Disallow: /ostoskori
+Disallow: /tilausvahvistus
+Disallow: /tilaus-vahvistettu
+Disallow: /kassa
+Disallow: /checkout/
+Disallow: /haku
+Disallow: /tili/
+Disallow: /api/
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml

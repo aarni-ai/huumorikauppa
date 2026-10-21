@@ -152,6 +152,14 @@ function giftUseCasesFor(category: string): string[] {
   ];
 }
 
+/** Lyhentää tekstin enintään max merkkiin sanarajalta (ei katkaista sanaa kesken). */
+export function truncateAtWord(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:–—-]+$/, "")}…`;
+}
+
 /**
  * Generate the full unique copy block for a product.
  */
@@ -177,7 +185,10 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
 
   const feedDescription = `${name} – hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus 3–10 arkipäivässä, ilmainen yli 79 € tilauksiin, 14 pv palautusoikeus. Painettu EU:ssa, suomalainen design.`.slice(0, 4900);
 
-  const shortDescription = `${name} – hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3–10 arkipäivässä, ilmainen yli 79 €.`.slice(0, 158);
+  const shortDescription = truncateAtWord(
+    `${name} – hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus 3–10 arkipäivässä, ilmainen yli 79 €.`,
+    158,
+  );
 
   // help linter / future use
   void plural;

@@ -1,6 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { onPiilotettu } from "@/lib/hiddenCategories";
 import { categories } from "@/data/products";
+import { CATEGORY_H1, CATEGORY_H2_SECTIONS, selectCategoryProducts } from "@/data/categoryContent";
+import { buildCategoryFaqs } from "@/seo/pageFaqs";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag, Star, CheckCircle } from "lucide-react";
@@ -9,38 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
-import { getPriorityRank } from "@/lib/productPriority";
-
-function isCustomTextProduct(name: string, description: string): boolean {
-  const t = (name + ' ' + description).toLowerCase();
-  return t.includes('oma teksti') || t.includes('oma kuva') || t.includes('custom text') || t.includes('personoi');
-}
-
-// Kategoriakohtaiset "kielletyt" avainsanat tuotenimessä — estää esim. mukin näkymisen T-paidat-sivulla,
-// jos tuotteen kategoria on virheellisesti tallennettu.
-const CATEGORY_EXCLUDE_NAME_KEYWORDS: Record<string, string[]> = {
-  "t-paidat":      ["muki", "kuppi", "huppari", "pipo", "tarra", "kassi", "laukku", "peitto", "taulu", "body"],
-  "hupparit":      ["muki", "kuppi", "t-paita", "tpaita", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
-  "mukit":         ["t-paita", "tpaita", "huppari", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
-  "pitkahihaiset": ["muki", "kuppi", "huppari", "pipo", "tarra", "kassi", "peitto", "taulu", "body"],
-};
-
-function matchesCategoryStrictly(name: string, slug: string | undefined): boolean {
-  if (!slug) return true;
-  const banned = CATEGORY_EXCLUDE_NAME_KEYWORDS[slug];
-  if (!banned) return true;
-  const n = name.toLowerCase();
-  return !banned.some(k => n.includes(k));
-}
-
-// Printify folded/flat mockups look like packaged shirts. Push them to the bottom.
-function isFoldedImage(url?: string): boolean {
-  if (!url) return false;
-  return /camera_label=(folded|flat)/i.test(url);
-}
-function garmentSortWeight(p: { images?: string[] }): number {
-  return isFoldedImage(p.images?.[0]) ? 1 : 0;
-}
 
 // Blog posts relevant to each category — hub & spoke internal linking
 const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
@@ -57,78 +27,11 @@ const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
   "pitkahihaiset":  ["20-hauskinta-t-paitaa-2026", "miksi-hauska-paita-paras-lahja"],
 };
 
-// Category-specific H1 overrides
-const CATEGORY_H1: Record<string, string> = {
-  "t-paidat": "Hauskat t-paidat",
-  "hupparit": "Hauskat hupparit",
-  "mukit": "Hauskat mukit ja kahvikupit",
-  "tarrat": "Hauskat tarrat",
-  "bodyt": "Hauskat bodyt pienimmille",
-  "peitot": "Hauskat peitot",
-  "pipot": "Hauskat pipot",
-  "laukut": "Hauskat laukut ja kassit",
-  "seinataulut": "Hauskat seinätaulut",
-  "koristeet": "Hauskat koristeet",
-  "pitkahihaiset": "Hauskat pitkähihaiset paidat",
-};
-
-// Category-specific H2 text sections for richer SEO
-const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]> = {
-  "t-paidat": [
-    { h2: "Miksi hauska t-paita on paras lahja?", text: "Hauskat t-paidat ja huumoripaidat ovat lahjoja jotka naurattavat, ilahduttavat ja tulevat oikeasti käyttöön. Ne sopivat syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia huumoripaitoja – meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
-    { h2: "Suosituimmat huumoripaidat ja hauskat t-paidat", text: "Valikoimamme suosituimpia huumoripaitoja ovat setähuumoripaidat, eläkeläispaidat, ammattihuumoripaidat ja meemipaidat. Kaikissa hauskoissa t-paidoissa on laadukas DTG-painatus ja mukava istuvuus koissa XS–3XL." },
-  ],
-  "hupparit": [
-    { h2: "Miksi hauska huppari on paras lahja?", text: "Hauska huppari yhdistää lämmön ja huumorin. Se on käytännöllinen, mukava ja hauska – täydellinen lahja kenelle tahansa. Valikoimastamme löydät meemihuppareita, setähuumorihuppareita ja sarkastisia tekstihuppareita." },
-    { h2: "Suosituimmat huumorihupparit", text: "Suosituimpia huppareitamme ovat 'Maailman paras' -sarjan hupparit, kalastushupparit ja eläkehuumorihupparit. Laadukas materiaali ja kestävä painatus." },
-  ],
-  "mukit": [
-    { h2: "Hauskat kahvikupit – suomalainen aamuklassikko", text: "Hauska kahvikuppi tekee jokaisesta aamuhetkestä paremman. Suomalaiset rakastavat kahvia – ja rakastavat vielä enemmän kahvia hauskasta kupista jossa lukee jotain osuvaa. Valikoimastamme löydät hauskat kahvikupit ammattilaisille, setähuumoria arvostaville, eläkeläisille ja kaikille kahvinjuojille." },
-    { h2: "Miksi hauska muki on paras lahja?", text: "Hauska muki on edullinen, käytännöllinen ja ilahduttaa joka aamu. Se sopii työkavereille, perheenjäsenille ja ystäville – ja budjettiin alle 20 €. Suosituimpia ovat toimistomukit, ammattilaismukit ja sarkastiset tekstimukit." },
-    { h2: "Suosituimmat huumorimukit", text: "Valikoimamme suosituimpia ovat ammattihuumorimukit (Mersumies, Audimies), setähuumorimukit ja eläkemukit. Kaikki mukimme ovat keraamia, astianpesukoneenkestäviä ja 330 ml tilavuudeltaan." },
-  ],
-  "tarrat": [
-    { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Laadukkaat vinyl-tarramme sopivat läppäriin, vesipulloon, autoon ja jääkaappiin. Ne kestävät säätä, vettä ja kulutusta. Tarrat ovat myös erinomainen pieni lahja tai lisä isomman paketin oheen." },
-  ],
-  "bodyt": [
-    { h2: "Miksi hauska body on paras vauvalahja?", text: "Hauska body on takuuvarma lahja vauvalle ja vanhemmille. Se naurattaa koko perhettä ja on samalla pehmeä ja turvallinen. Bodymme ovat 100% puuvillaa ja konepestäviä." },
-  ],
-  "peitot": [
-    { h2: "Miksi hauska peitto on yllättävä lahja?", text: "Laadukas peitto hauskalla tekstillä pitää lämpimänä ja hymyilyttää. Se on yllättävä ja ikimuistoinen lahja syntymäpäiviin, jouluun tai eläkejuhliin." },
-  ],
-  "pipot": [
-    { h2: "Miksi hauska pipo on paras talvilahja?", text: "Hauska pipo yhdistää käytännöllisyyden ja huumorin – se pitää pään lämpimänä ja tunnelman korkealla. Laadukkaat materiaalit ja hauska brodeeraus tekevät pipostamme täydellisen talvilahjan." },
-  ],
-  "laukut": [
-    { h2: "Miksi hauska kangaskassi on paras lahja?", text: "Hauska kangaskassi on ekologinen, käytännöllinen ja hauska – kolme ominaisuutta jotka tekevät siitä täydellisen lahjan. Kassimme sopivat arkikäyttöön, ostoksille ja kaikkialle muuallekin." },
-  ],
-  "seinataulut": [
-    { h2: "Miksi hauska seinätaulu on paras sisustus?", text: "Hauska seinätaulu piristää kodin seinät ja tuo hymyn huulille joka päivä. Taulumme sopivat olohuoneeseen, makuuhuoneeseen, toimistoon ja WC:hen." },
-  ],
-  "koristeet": [
-    { h2: "Miksi hauska koriste on hyvä lahja?", text: "Hauska koriste tuo huumoria kodin jokaiseen nurkkaan. Se on yllättävä ja persoonallinen lahja joka sopii syntymäpäiviin, tupaantuliaisiin ja jouluun." },
-  ],
-  "pitkahihaiset": [
-    { h2: "Miksi pitkähihainen on paras valinta?", text: "Pitkähihainen hauska paita on erinomainen valinta syksylle ja keväälle. Se toimii myös kerrostettuna takin alla talvella. Laadukas materiaali ja kestävä painatus." },
-  ],
-};
-
 const CategoryPage = () => {
   const { slug } = useParams();
   const category = categories.find(c => c.slug === slug);
   const { data: allProducts = [], isLoading } = useProducts();
-  const categoryProducts = allProducts.filter(
-    p => p.category === slug && matchesCategoryStrictly(p.name, slug)
-  );
-  const nonCustomProducts = categoryProducts.filter(p => !isCustomTextProduct(p.name, p.description));
-  const products = (nonCustomProducts.length > 0 ? nonCustomProducts : categoryProducts)
-    .sort((a, b) => {
-      // Priority best-sellers absolutely first
-      const pr = getPriorityRank(a) - getPriorityRank(b);
-      if (pr !== 0) return pr;
-      // Then push folded/flat mockups to the bottom
-      return garmentSortWeight(a) - garmentSortWeight(b);
-    });
+  const products = selectCategoryProducts(allProducts, slug);
 
   if (onPiilotettu(slug)) return <Navigate to="/kaikki-tuotteet" replace />;
 
@@ -178,43 +81,15 @@ const CategoryPage = () => {
   };
 
   // FAQ JSON-LD — quotable answers for AI Overviews / ChatGPT / Perplexity
-  const catLower = category.name.toLowerCase();
-  const catSingular = catLower.replace(/t$/, "");
+  const categoryFaqs = buildCategoryFaqs(category.name);
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": `Kuinka nopeasti ${catLower} toimitetaan?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Yli 79 € tilauksiin toimitus on ilmainen. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee." },
-      },
-      {
-        "@type": "Question",
-        "name": `Voiko ${catLower} palauttaa?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautus tapahtuu omalla kustannuksellasi. Rahat palautetaan 5–7 arkipäivässä." },
-      },
-      {
-        "@type": "Question",
-        "name": `Sopiiko hauska ${catSingular} lahjaksi?`,
-        "acceptedAnswer": { "@type": "Answer", "text": `Ehdottomasti. Hauskat ${catLower} ovat yksi suosituimmista huumorilahjaideoista — täydellisiä syntymäpäiviin, jouluun, isänpäivään, äitienpäivään, polttareihin, valmistujaisiin ja työkavereille.` },
-      },
-      {
-        "@type": "Question",
-        "name": `Minkälaisesta materiaalista ${catLower} ovat tehty?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Käytämme laadukkaita materiaaleja — t-paidat ja hupparit 100% puuvillaa tai puuvilla-polyesteri-sekoitteita, mukit keraamia, tarrat kestävää vinyyliä. Kaikki painatetaan EU:ssa." },
-      },
-      {
-        "@type": "Question",
-        "name": `Saako ${catLower} omalla tekstillä?`,
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com." },
-      },
-      {
-        "@type": "Question",
-        "name": "Voiko maksaa Klarnalla tai Apple Paylla?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Kyllä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit myös ostaa nyt ja maksaa myöhemmin." },
-      },
-    ],
+    "mainEntity": categoryFaqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
   };
 
   const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
@@ -374,32 +249,7 @@ const CategoryPage = () => {
         <section className="mt-12 max-w-3xl">
           <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Usein kysyttyä – {category.name}</h2>
           <div className="space-y-4">
-            {[
-              {
-                q: `Kuinka nopeasti ${category.name.toLowerCase()} toimitetaan?`,
-                a: "Toimitamme tilaukset 3–10 arkipäivässä koko Suomeen PostNordin kautta. Ilmainen toimitus yli 79 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee."
-              },
-              {
-                q: `Voiko ${category.name.toLowerCase()} palauttaa?`,
-                a: "Kyllä. Sinulla on 14 päivää aikaa palauttaa tuotteet ilman syytä. Palautus tapahtuu omalla kustannuksellasi. Rahat palautetaan 5–7 arkipäivässä."
-              },
-              {
-                q: `Sopiiko hauska ${category.name.toLowerCase().replace(/t$/, "")} lahjaksi?`,
-                a: `Ehdottomasti. Hauskat ${category.name.toLowerCase()} ovat suosittuja lahjoja syntymäpäiviin, jouluun, isänpäivään, äitienpäivään, polttareihin, valmistujaisiin ja työkavereille.`
-              },
-              {
-                q: `Minkälaisesta materiaalista ${category.name.toLowerCase()} ovat tehty?`,
-                a: "Käytämme laadukkaita materiaaleja — t-paidat ja hupparit 100% puuvillaa tai puuvilla-polyesteri-sekoitteita, mukit keraamia, tarrat kestävää vinyyliä. Kaikki painatetaan EU:ssa."
-              },
-              {
-                q: `Saako ${category.name.toLowerCase()} omalla tekstillä?`,
-                a: "Kyllä! Osasta tuotteitamme löytyy custom-vaihtoehto, johon voit kirjoittaa oman tekstin. Lisäksi teemme custom-painatuksia tilauksesta — ota yhteyttä huumorikauppa@gmail.com."
-              },
-              {
-                q: "Voiko maksaa Klarnalla tai Appla Paylla?",
-                a: "Kyllä. Hyväksymme Visa, Mastercard, Apple Pay, Google Pay ja Klarna. Klarnalla voit myös ostaa nyt ja maksaa myöhemmin."
-              },
-            ].map((faq, i) => (
+            {categoryFaqs.map((faq, i) => (
               <details key={i} className="group border border-border rounded-lg">
                 <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors">
                   {faq.q}

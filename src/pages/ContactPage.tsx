@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { ORGANIZATION_ID } from "@/seo/structuredData";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,16 +16,7 @@ const contactJsonLd = {
   "@type": "ContactPage",
   "name": "Ota yhteyttä – Huumorikauppa",
   "url": "https://huumorikauppa.fi/yhteystiedot",
-  "mainEntity": {
-    "@type": "Organization",
-    "name": "Huumorikauppa",
-    "email": "huumorikauppa@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Helsinki",
-      "addressCountry": "FI"
-    }
-  }
+  "mainEntity": { "@id": ORGANIZATION_ID }
 };
 
 const ContactPage = () => {
@@ -46,8 +39,8 @@ const ContactPage = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Ota yhteyttä – Asiakaspalvelu | Huumorikauppa.fi"
-        description="Ota yhteyttä Huumorikaupan asiakaspalveluun. Vastaamme 1–2 arkipäivässä. Sähköposti: huumorikauppa@gmail.com. Helsinki, Suomi."
+        title={STATIC_PAGE_META["/yhteystiedot"].title}
+        description={STATIC_PAGE_META["/yhteystiedot"].description}
         canonical="https://huumorikauppa.fi/yhteystiedot"
         jsonLd={contactJsonLd}
         breadcrumbs={[
