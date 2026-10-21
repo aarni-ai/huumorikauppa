@@ -92,3 +92,42 @@ create table if not exists kv (
   value text,
   updated_at timestamptz default now()
 );
+
+-- Kasvu (kasvu-oma-tausta): lahjakortit ja pakettialennus. Kaikki lauseet voi ajaa uudelleen.
+-- Lahjakorttitilaus ei mene Printifyyn: printify_status 'ei_tarvita'.
+alter table orders drop constraint if exists orders_printify_status_check;
+alter table orders add constraint orders_printify_status_check
+  check (printify_status in ('ei_lahetetty', 'luotu', 'tuotannossa', 'lahetetty', 'virhe', 'ei_tarvita'));
+alter table orders add column if not exists bundle_discount numeric(10,2) not null default 0;
+alter table orders add column if not exists gift_card_code text;
+alter table orders add column if not exists gift_card_amount numeric(10,2) not null default 0;
+alter table orders add column if not exists gift_card_charged_at timestamptz;
+
+-- Digitaaliset lahjakortit: koodi luodaan maksun jälkeen jokaiselle ostetulle kappaleelle (order_id, item_index,
+-- unit_index), saldo vähenee käytön mukaan. Voimassa 24 kuukautta.
+create table if not exists gift_cards (
+  code text primary key,
+  initial_value numeric(10,2) not null check (initial_value > 0),
+  balance numeric(10,2) not null check (balance >= 0),
+  order_id uuid references orders(id) on delete set null,
+  item_index integer not null default 0,
+  unit_index integer not null default 0,
+  buyer_email text not null,
+  recipient_email text,
+  recipient_name text,
+  message text,
+  expires_at timestamptz not null,
+  emailed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create unique index if not exists gift_cards_order_unit on gift_cards (order_id, item_index, unit_index);
+
+-- Lahjakortin käytöt (tilaus, summa). Yksi käyttö per tilaus.
+create table if not exists gift_card_redemptions (
+  id bigserial primary key,
+  code text not null references gift_cards(code),
+  order_id uuid not null unique references orders(id) on delete cascade,
+  amount numeric(10,2) not null check (amount > 0),
+  created_at timestamptz not null default now()
+);

@@ -42,7 +42,8 @@ export function tilausRunko(tilaus) {
   return {
     external_id: tilaus.id,
     label: `Huumorikauppa #${tilaus.id.slice(0, 8).toUpperCase()}`,
-    line_items: (tilaus.items || []).map((i) => ({ product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
+    // Lahjakortit (type "giftcard") eivät ole Printify-tuotteita.
+    line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i) => ({ product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
     shipping_method: 1,
     is_printify_express: false,
     is_economy_shipping: false,

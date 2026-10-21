@@ -10,6 +10,11 @@
 import { sql, kirjaaTapahtuma } from "./db.js";
 import * as P from "./printify.js";
 import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js";
+import { onLahjakortti } from "./lahjakortti.js";
+import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
+
+/** Printifyyn menevät rivit (lahjakortit eivät mene). */
+export const printifyRivit = (items) => (items || []).filter((i) => !onLahjakortti(i));
 
 /** Uudelleenyrityksen viive yrityskerran mukaan: 15 min, 30 min, 1 h, 2 h, sitten 4 h välein. */
 export function seuraavaYritys(yrityksia, nyt = new Date()) {
@@ -19,7 +24,7 @@ export function seuraavaYritys(yrityksia, nyt = new Date()) {
 
 /** Puuttuuko jokin Printify-tieto riveiltä. */
 export function puuttuvatVariantit(items) {
-  return (items || []).filter((i) => !i.printify_product_id || typeof i.variant_id !== "number").map((i) => i.name);
+  return printifyRivit(items).filter((i) => !i.printify_product_id || typeof i.variant_id !== "number").map((i) => i.name);
 }
 
 /** Hälytetäänkö: ensimmäinen virhe tai edellisestä hälytyksestä yli 24 h. */
@@ -58,7 +63,12 @@ export async function lahetaPrintifyyn(tilausId) {
   const [tilaus] = await sql()`select * from orders where id = ${tilausId}`;
   if (!tilaus) return { ok: false, vaihe: "haku", viesti: "tilausta ei löydy" };
   if (tilaus.status !== "maksettu") return { ok: false, vaihe: "tila", viesti: `tilaus ${tilaus.status}` };
-  if (["tuotannossa", "lahetetty"].includes(tilaus.printify_status)) return { ok: true, jo: true };
+  if (["tuotannossa", "lahetetty", "ei_tarvita"].includes(tilaus.printify_status)) return { ok: true, jo: true };
+  if (printifyRivit(tilaus.items).length === 0) {
+    // Pelkkiä lahjakortteja: ei Printify-tilausta.
+    await sql()`update orders set printify_status = 'ei_tarvita', updated_at = now() where id = ${tilaus.id}`;
+    return { ok: true, ei_tarvita: true };
+  }
   if (!P.onPrintify()) return virhe(tilaus, "avain", "PRINTIFY_API_KEY tai PRINTIFY_SHOP_ID puuttuu");
 
   const puuttuu = puuttuvatVariantit(tilaus.items);
@@ -103,12 +113,27 @@ export async function kasitteleMaksu(session) {
     await halytys("Maksettu tilaus puuttuu tietokannasta", [`Tilaus ${tilausId}`, `Stripe-session ${session.id}`]);
     return null;
   }
+  await jalkikasittely(tilaus);
+  return tilaus.id;
+}
+
+/**
+ * Maksetun tilauksen jatko (Stripe-maksu tai kokonaan lahjakortilla maksettu): lahjakortin veloitus, vahvistusviesti,
+ * ostettujen lahjakorttien koodit ja Printify-siirto. Jokainen vaihe on idempotentti.
+ */
+export async function jalkikasittely(tilaus) {
+  if (tilaus.gift_card_code && !tilaus.gift_card_charged_at) await veloitaLahjakortti(tilaus);
   if (!tilaus.confirmation_email_sent_at) {
     const v = vahvistusViesti(tilaus);
     const r = await laheta({ to: tilaus.customer_email, ...v });
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });
   }
+  try {
+    await toimitaLahjakortit(tilaus);
+  } catch (e) {
+    await kirjaaTapahtuma(tilaus.id, "lahjakortti_virhe", { virhe: String(e?.message || e) });
+    await halytys(`Lahjakortin luonti epäonnistui tilaukselle #${tilausnumero(tilaus.id)}`, [String(e?.message || e), "Valvonta yrittää uudelleen."]);
+  }
   await lahetaPrintifyyn(tilaus.id);
-  return tilaus.id;
 }

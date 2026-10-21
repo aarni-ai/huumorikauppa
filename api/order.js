@@ -8,14 +8,18 @@ import { onStripe, stripe } from "./_lib/stripe.js";
 import { kasitteleMaksu } from "./_lib/tilaus.js";
 import { laheta, vahvistusViesti } from "./_lib/sahkoposti.js";
 
-const haeTilaus = async (sessionId) => (await sql()`select * from orders where stripe_session_id = ${sessionId}`)[0];
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// Kokonaan lahjakortilla maksettu tilaus (ei Stripe-sessiota) haetaan tilauksen id:llä (?order_id=, UUID).
+const haeTilaus = async (sessionId) => UUID_RE.test(sessionId)
+  ? (await sql()`select * from orders where id = ${sessionId} and stripe_session_id is null and gift_card_amount > 0`)[0]
+  : (await sql()`select * from orders where stripe_session_id = ${sessionId}`)[0];
 
 export default async function handler(req, res) {
   if (!onTietokanta()) return res.status(200).json({ found: false, syy: "ei käytössä" });
-  const sessionId = req.method === "GET" ? req.query.session_id : req.body?.sessionId;
-  if (!sessionId || typeof sessionId !== "string" || !sessionId.startsWith("cs_")) return res.status(400).json({ error: "session_id puuttuu" });
+  const sessionId = req.method === "GET" ? req.query.session_id || req.query.order_id : req.body?.sessionId || req.body?.orderId;
+  if (!sessionId || typeof sessionId !== "string" || !(sessionId.startsWith("cs_") || UUID_RE.test(sessionId))) return res.status(400).json({ error: "session_id puuttuu" });
   let tilaus = await haeTilaus(sessionId);
-  if ((!tilaus || tilaus.status === "odottaa_maksua") && onStripe()) {
+  if ((!tilaus || tilaus.status === "odottaa_maksua") && onStripe() && sessionId.startsWith("cs_")) {
     try {
       const session = await stripe().checkout.sessions.retrieve(sessionId);
       if (session.payment_status === "paid") {

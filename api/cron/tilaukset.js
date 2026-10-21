@@ -2,6 +2,8 @@
  * Vercel Cron, tunnin välein (vercel.json). Authorization: Bearer CRON_SECRET (Vercel lähettää sen itse).
  *  1. Paikkaus: Stripen maksetut sessiot 72 h ajalta, joita ei ole merkitty maksetuiksi (webhook jäi tulematta).
  *  2. Uudelleenyritys: maksetut tilaukset, joita ei ole saatu Printifyn tuotantoon (ei_lahetetty, luotu, virhe).
+ *  2b. Lahjakortit: maksetut tilaukset, joiden lahjakortteja ei ole luotu tai lähetetty, tai joiden lahjakorttiosuutta
+ *     ei ole veloitettu kortilta.
  *  3. Seuranta: tuotannossa olevien Printify-tila; lähetyksestä seurantakoodi ja viesti asiakkaalle.
  *     Printifyn on-hold tai has-issues tuotannossa olevalla tilauksella: hälytys omistajalle.
  *  4. Päivän yhteenveto omistajalle kerran päivässä klo 7 Suomen aikaa (jumissa olevat mukana).
@@ -12,6 +14,7 @@ import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, lahetaPrintifyyn, halytetaanko } from "../_lib/tilaus.js";
 import { haeTilaus, lahetys, onPrintify } from "../_lib/printify.js";
 import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA } from "../_lib/sahkoposti.js";
+import { toimitaLahjakortit, veloitaLahjakortti } from "../_lib/lahjakortti-db.js";
 
 const helsinki = (d = new Date()) => {
   const o = Object.fromEntries(new Intl.DateTimeFormat("fi-FI", { timeZone: "Europe/Helsinki", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hourCycle: "h23" }).formatToParts(d).map((p) => [p.type, p.value]));
@@ -46,6 +49,23 @@ export default async function handler(req, res) {
     if (kuiva) { loki.push(`yritys ${id}`); continue; }
     const r = await lahetaPrintifyyn(id);
     loki.push(`yritys #${tilausnumero(id)}: ${r.ok ? "tuotannossa" : `${r.vaihe}: ${r.viesti}`}`);
+  }
+
+  // 2b. Lahjakortit
+  const kortitTekematta = await db`select o.* from orders o where o.status = 'maksettu' and o.paid_at > now() - interval '30 days'
+    and (
+      (select coalesce(sum((e->>'quantity')::int), 0) from jsonb_array_elements(o.items) e where e->>'type' = 'giftcard')
+        > (select count(*) from gift_cards g where g.order_id = o.id)
+      or exists (select 1 from gift_cards g where g.order_id = o.id and g.emailed_at is null)
+      or (o.gift_card_code is not null and o.gift_card_amount > 0 and o.gift_card_charged_at is null
+        and not exists (select 1 from order_events v where v.order_id = o.id and v.kind = 'lahjakortti_saldo_ei_riita'))
+    )
+    order by o.paid_at limit 20`;
+  for (const t of kortitTekematta) {
+    loki.push(`lahjakortit #${tilausnumero(t.id)}`);
+    if (kuiva) continue;
+    if (t.gift_card_code && !t.gift_card_charged_at) await veloitaLahjakortti(t);
+    await toimitaLahjakortit(t);
   }
 
   // 3. Seuranta

@@ -45,10 +45,31 @@ export function vahvistusViesti(tilaus) {
     .map((i) => `<tr><td style="padding:4px 0">${i.quantity} × ${esc(i.name)}${i.size ? `, ${esc(i.size)}` : ""}${i.color ? `, ${esc(i.color)}` : ""}</td><td style="text-align:right">${eur(i.unit_price * i.quantity)}</td></tr>`)
     .join("");
   const nro = tilausnumero(tilaus.id);
+  const fyysisia = (tilaus.items || []).some((i) => i.type !== "giftcard");
+  const lahjakortilla = Number(tilaus.gift_card_amount) > 0
+    ? `<tr><td>Maksettu lahjakortilla</td><td style="text-align:right">-${eur(tilaus.gift_card_amount)}</td></tr>`
+    : "";
+  const loppu = fyysisia
+    ? "Tuotteet painetaan tilauksesta. Saat seurantalinkin sähköpostiisi, kun paketti lähtee."
+    : "Lahjakorttien koodit tulevat erillisessä viestissä.";
   return {
     subject: `Tilausvahvistus #${nro} - Huumorikauppa`,
-    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr></table><p>Tuotteet painetaan tilauksesta. Saat seurantalinkin sähköpostiisi, kun paketti lähtee.</p>`),
-    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)}. Saat seurantalinkin, kun paketti lähtee.`,
+    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr>${lahjakortilla}</table><p>${loppu}</p>`),
+    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)}. ${loppu}`,
+  };
+}
+
+/** Lahjakortin viesti ostajalle tai saajalle (kortti: { code, initial_value, expires_at, recipient_email, recipient_name, message }). */
+export function lahjakorttiViesti(kortti, { saajalle = false, ostaja = "" } = {}) {
+  const voimassa = new Date(kortti.expires_at).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" });
+  const alku = saajalle
+    ? `<h2>Sait lahjakortin Huumorikauppaan${kortti.recipient_name ? `, ${esc(kortti.recipient_name)}` : ""}!</h2>${ostaja ? `<p>Lähettäjä: ${esc(ostaja)}</p>` : ""}`
+    : `<h2>Lahjakorttisi on valmis</h2><p>Tässä ostamasi lahjakortin koodi.${kortti.recipient_email ? ` Lähetimme sen myös osoitteeseen ${esc(kortti.recipient_email)}.` : ""}</p>`;
+  const viesti = kortti.message ? `<p style="padding:12px;background:#f4f4f0;border-radius:8px">${esc(kortti.message)}</p>` : "";
+  return {
+    subject: saajalle ? "Sait lahjakortin Huumorikauppaan" : `Lahjakorttisi ${eur(kortti.initial_value)} - Huumorikauppa`,
+    html: kehys(`${alku}${viesti}<p style="font-size:22px;letter-spacing:2px"><b>${esc(kortti.code)}</b></p><p>Arvo: <b>${eur(kortti.initial_value)}</b><br>Voimassa ${voimassa} asti.</p><p>Näin käytät: valitse tuotteet osoitteessa <a href="https://huumorikauppa.fi">huumorikauppa.fi</a> ja kirjoita koodi kassalla kenttään "Lahjakortin koodi". Lahjakorttia voi käyttää useaan tilaukseen, kunnes saldo on käytetty. Sitä ei voi vaihtaa rahaksi.</p>`),
+    text: `Lahjakortti Huumorikauppaan: ${kortti.code}. Arvo ${eur(kortti.initial_value)}, voimassa ${voimassa} asti. Kirjoita koodi kassalla kenttään "Lahjakortin koodi". Voi käyttää useaan tilaukseen, ei vaihdeta rahaksi.`,
   };
 }
 
