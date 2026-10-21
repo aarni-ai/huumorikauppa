@@ -15,6 +15,15 @@ export interface Product {
   is_gift_idea: boolean;
   supplier?: string;
   aliexpress_url?: string;
+  /** "giftcard" lahjakortilla (api/_lib/lahjakortti.js). */
+  type?: string;
+}
+
+/** Lahjakortin saaja (valinnainen): koodi lähetetään myös saajalle. */
+export interface GiftCardDetails {
+  recipientEmail?: string;
+  recipientName?: string;
+  message?: string;
 }
 
 export interface CartItem {
@@ -23,4 +32,7 @@ export interface CartItem {
   selectedSize?: string;
   selectedColor?: string;
   customText?: string;
+  /** Oma rivitunnus (lahjakortit: jokainen saaja omalla rivillään). */
+  lineId?: string;
+  giftCard?: GiftCardDetails;
 }
