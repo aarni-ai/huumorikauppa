@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 21.10.2026.
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 21.10.2026 (ilta: konversio ja isänpäivä).
 
 ## Tilanne lyhyesti
 
@@ -26,6 +26,94 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 21.10. ilta: konversio, isänpäivä ja toimituslinja
+
+Tavoite: konversio 0,2 %:sta vähintään 1 %:iin ja isänpäivän myynti.
+
+**Tuotannossa (tarkistettu curlilla tavallisella, Googlebot- ja tyhjällä User-Agentilla):**
+- Isänpäivä: /isanpaivalahja (44 tuotetta, ideat isän tyypin mukaan) ja /hauska-isanpaivalahja (21 tuotetta,
+  isävitsit). Päällekkäiset /isanpaiva-lahjat ja /lahjat/isanpaiva ohjataan 301:llä /hauska-isanpaivalahja-sivulle.
+  Isänpäivä-valikko työpöydällä ja mobiilissa.
+- Kausibanneri (src/data/campaignSchedule.ts, Suomen aika): isänpäivä 28.10.2026 klo 23.59.59 asti ("Tilaa
+  viimeistään keskiviikkona 28.10.2026"), 29.10. alkaen joulun viimeinen tilauspäivä 20.11.2026, 21.11. alkaen piilossa.
+  Vaihtuu itsestään myös avoimella sivulla. Testattu vaihtohetket.
+- Tuotesivu: toimitusaika ja -hinta suoraan hinnan alla, 14 päivän palautusoikeus (personoiduille tuotteille oikea
+  poikkeusteksti), "Lisää koriin" ensinäkymässä 360x740 ja 390x844, täysleveä pääkuva (srcset 480/800/1200),
+  kiinteä ostopalkki mobiilissa, evästeilmoitus ohut palkki eikä koko ruudun ikkuna.
+- Maksutavat: vain Visa ja Mastercard. Kassa (create-checkout) ei rajaa maksutapoja, joten muita ei luvata;
+  Klarna, MobilePay, Apple Pay ja Google Pay poistettu alatunnisteesta, tuotesivulta ja kassasta.
+- Alatunniste: Huumorikauppa (Inteller), Y-tunnus 3583677-2, Helsinki, huumorikauppa@gmail.com, ehdot.
+- Kokoapu jokaiselle vaatteelle: keksityt senttimitat poistettu. Mittataulukko näytetään vain, jos tuotteen omassa
+  kuvauksessa on mitat; muuten koot ja mittausohje. Yhdelläkään 484 vaatteesta ei ole mittoja kuvauksessa.
+- Arviot: kaikki ennen ensimmäistä tilausta (25.3.2026) päivätyt ja päiväämättömät arviot piilotettu (64 tuotearviota,
+  59 karusellin arviota, 3 äitienpäiväsivun arviota) ja siirretty tiedostoon src/data/arvostelut-arkisto.ts
+  palautusohjeineen. Väitteet "4.8/5 (200+ arvostelua)" ja "Tuhansia tyytyväisiä asiakkaita" poistettu. Rakenteisessa
+  datassa ei ole aggregateRatingia eikä Review-objekteja (testi valvoo).
+- Toimitusehdot yhdessä tiedostossa src/config/toimitus.ts (noin 390 tekstiä 40 tiedostossa lukee sen). Testi
+  estää kovakoodatut toimitushinnat. Mainissa 6,90 € / ilmainen 79 €:sta, koska nykyinen kassa veloittaa niin.
+- Tarrat-kategoria: tosiasiaan perustuva teksti (oma teksti- tai kuvatarra, koot), /tarrat ja /hupparit 301.
+- Suorituskyky: hero-kuva 2,6 Mt PNG -> WebP 37-258 kt (srcset), fontit eivät estä renderöintiä, tuotekuvan preload,
+  tuotesivu hakee oman tuotteensa ennen koko luetteloa.
+
+**Lighthouse mobiili, tuotanto, 3 ajon mediaani:**
+
+| Sivu | Suorituskyky | Saavutettavuus | Parhaat käytännöt | SEO | LCP | FCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|
+| Etusivu ennen | 56 | 87 | 79 | 100 | 25,8 s | 6,3 s | 74 ms | 0 |
+| Etusivu jälkeen | 81 | 90 | 100 | 100 | 3,8 s | 3,4 s | 119 ms | 0 |
+| Tuotesivu ennen | 58 | 85 | 79 | 100 | 12,3 s | 7,5 s | 0 ms | 0 |
+| Tuotesivu jälkeen | 68 | 89 | 100 | 100 | 7,3 s | 4,1 s | 70 ms | 0,035 |
+
+Tuotesivu: /tuote/saatanan-tunarit-t-paita. Tuotesivun LCP on yhä Printifyn kuva kuvaproxyn kautta; seuraava askel on
+näyttää esirenderöity sisältö heti (nyt piilossa JavaScriptin latautumiseen asti).
+
+**Miksi tarrat ja hupparit puuttuivat Googlesta:**
+1. 21.10. asti jokaisen osoitteen HTML:ssä oli etusivun canonical (`https://huumorikauppa.fi/`) ja etusivun title.
+   Google tulkitsi kategoriasivut etusivun kaksoiskappaleiksi. Korjattu esirenderöinnillä (5fb0063): sivuilla on
+   nyt oma canonical, title ja sisältö kaikille käyttäjäagenteille, ja ne ovat sivukartassa.
+2. Tarrat-kategoriassa on vain yksi myynnissä oleva tuote (oma teksti/kuva -tarra), ja sivun teksti lupasi
+   valikoimaa ja kestoväitteitä, joita ei ollut. Ohut sivu ei nouse. Teksti korjattu; uudet tarrat tulevat
+   skriptillä scripts/printify-uudet-tuotteet.mjs (oma-tausta, 10 tarraa alle 20 €).
+3. Hupparit (164 tuotetta) kilpaili samasta hausta laskeutumissivun /hauskat-hupparit kanssa; molemmilla on nyt oma
+   canonical ja ne linkittävät toisiinsa.
+Omistaja: Search Consolessa URL-tarkistus ja indeksointipyyntö /kategoria/tarrat ja /kategoria/hupparit.
+
+**oma-tausta-haarassa (testisivu https://huumorikauppa-five.vercel.app, noindex):**
+- Kaikki yllä oleva yhdistetty, 449 testiä läpi, tarkistettu curlilla.
+- Toimitus 5,90 €, ilmainen 60 €:sta: kassa (api/_lib/vakiot.js), sivuston tekstit, rakenteinen data ja
+  Merchant-syöte (testisivun syötteessä 5.90 EUR). Testi varmistaa, että kassa, syöte ja tekstit ovat samat.
+- Uusien tuotteiden skripti scripts/printify-uudet-tuotteet.mjs: tekstilistasta Printify-tuotteet EU-painotaloille
+  (10 joulupaitaa ja -hupparia, 10 tarraa alle 20 €), hinta 40 %:n katesäännöllä, tuodaan kauppaan piilotettuina.
+  Ei ajettu (Printify-avain puuttuu). Ohje KAYTTOONOTTO.md kohta 11.
+- Huomio katteesta: 5,90 € / 60 € laskee katetta. 34,90 € t-paidan nettokate 15,93 € -> 15,15 € (46,6 %); noin
+  50 € hinnoiteltu tuote, jonka Printify-kulut ovat noin 26 €, putoaa alle 40 %:n ja katesääntö estää sen myynnin.
+  Katetarkistus (GitHub Actions) näyttää nämä, kun Printify-kulut on tuotu.
+
+**Isänpäivän toimituslupaus:** 28.10. viimeinen tilauspäivä on omistajan päätös. Printifyn tuotanto (2-5 arkipäivää)
+ja kuljetus Suomeen (Yhdysvaltain painotaloista 7-12 arkipäivää) eivät aina ehdi 8.11. mennessä. EU-painotalojen
+tuotteilla ehtii. Päivä on yhdessä paikassa (src/data/campaignSchedule.ts), jos sitä halutaan aikaistaa.
+
+## inteller.info (sähköposti aarni@inteller.info)
+
+Selvitetty RDAP:lla ja dig:llä 21.10.2026:
+- Rekisteröijä GoDaddy.com, LLC. Rekisteröity 4.12.2025, **voimassa 4.12.2026 asti**. Tila: siirto-, poisto-,
+  päivitys- ja uusimislukko (clientRenewProhibited: uusiminen vaatii GoDaddyn tilin).
+- Nimipalvelimet Cloudflare (weston.ns.cloudflare.com, gracie.ns.cloudflare.com).
+- MX: Google Workspace (aspmx.l.google.com + alt1-4), SPF include:_spf.google.com. Posti oli Google Workspacessa;
+  aiemmin Zoho (TXT-vahvistus jäljellä).
+- Lovable-, Vercel- ja Cloudflare-tilit ovat todennäköisesti tällä osoitteella, joten osoitteen palautus on kiireellinen.
+
+Omistajan seuraava askel (maksuton reitti):
+1. Kirjaudu GoDaddyyn (salasanan palautus puhelinnumerolla tai varasähköpostilla). Uusi domain ennen 4.12.2026.
+2. Jos Cloudflare-tili aukeaa toista kautta: Cloudflare Email Routing (ilmainen) -> lähetä aarni@inteller.info
+   Gmailiin. Cloudflare vaihtaa MX-tietueet itse.
+3. Jos Cloudflare ei aukea: vaihda GoDaddyssa nimipalvelimet GoDaddyn omiin ja käytä GoDaddyn ilmaista
+   sähköpostin edelleenlähetystä. Huom: tämä katkaisee Cloudflaren kautta kulkevat tietueet (A-tietueet
+   tarkistettava ensin).
+4. Kun posti kulkee: palauta Lovable-, Vercel- ja Cloudflare-tilien salasanat ja vaihda tilien sähköposti
+   osoitteeseen, joka ei riipu yhdestä domainista.
+5. Google Workspace (jos tilaus jäi maksamatta): palautus vaatii DNS-pääsyn TXT-vahvistukseen.
+
 ## Uudet ja uudistetut sivut
 
 Joululahjat: /joululahjat, /joululahja-miehelle-jolla-on-kaikki, /joululahja-isalle, /joululahja-aidille,
@@ -38,7 +126,7 @@ Tuotteet ja teemat: /meemipaidat, /suomalainen-huumori-paidat, /setamiespaidat, 
 Lahjat: /lahjat/isoaidille, /lahjat/harrastajalle, /lahjat/40-vuotiaalle-miehelle, /lahjat/50-vuotiaalle-miehelle,
 /lahjat/60-vuotiaalle-miehelle, /lahjat/70-vuotiaalle, /lahjat/50-vuotiaalle-naiselle, /lahjat/60-vuotiaalle-naiselle,
 /elakelahjat, /lahjat/isoisalle, /lahjat/siskolle, /lahjat/veljelle, /lahjat/puolisolle, /lahja-kaverille,
-/lahjat/tyokaverille, /isanpaiva-lahjat, /hauskat-lahjat-miehelle, /hauskat-lahjat-naiselle, /syntymapaivalahjat.
+/lahjat/tyokaverille, /isanpaivalahja, /hauska-isanpaivalahja, /hauskat-lahjat-miehelle, /hauskat-lahjat-naiselle, /syntymapaivalahjat.
 Blogi: /blogi/hauskat-joululahjaideat-miehelle-2026, /blogi/pikkujoululahja-alle-20-euroa,
 /blogi/lahja-miehelle-jolla-on-kaikki, /blogi/elakelahja-joka-naurattaa, /blogi/mita-ostaa-tyokaverille-jouluksi,
 /blogi/joululahja-isalle-hauskat-ideat, /blogi/salaisen-joulupukin-lahja-10-20-30-euroa,
@@ -69,10 +157,12 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 3. **Shopping-kampanja** jaettuna custom_label_1 = joulu ja product_type mukaan, budjetti katteen mukaan.
 4. **Joulutuotteet:** joulupaidat, jouluhupparit ja vauvan joulubody EU-painotaloihin (kysyntä ilman tarjontaa).
 5. **Alle 20 € tuotteet** pikkujouluihin ja salaiseen joulupukkiin (nyt vain tarrat ja koristeet).
-6. **Maksutavat:** footer ja kassa mainitsevat Klarnan ja MobilePayn, ehdot eivät. Tarkista Stripestä ja yhtenäistä.
+6. **Maksutavat:** nyt vain Visa ja Mastercard. Jos Stripen Dashboardissa on päällä muita (MobilePay, Klarna), lisää ne ehtoihin ja PaymentIcons-komponenttiin.
 7. **Tuotenimet:** tietokannan nimissä on ajatusviivoja (393 titleä); korjaus oman taustan tietokannassa.
 8. **Middleware-metat** yhdestä lähteestä (osa ei-esirenderöityjen sivujen bottimetoista on kömpelöitä).
-9. Blogiartikkeleihin kuvat; tuotesivun pääkuvalle srcset.
+9. Blogiartikkeleihin kuvat. Tuotteiden kuvauksiin mittataulukot (tai blueprint-tieto tietokantaan), jotta kokoapu näyttää mitat.
+10. **Esirenderöity sisältö näkyviin heti** (nyt piilossa JS:n latautumiseen asti): tuotesivun LCP 7,3 s -> tavoite alle 2,5 s.
+11. **Arviot:** kerää todelliset arviot tilausten jälkeen (Google-asiakasarviot ovat käytössä); palauta arkistosta vain todennettavat.
 
 ## Muutokset
 
@@ -87,3 +177,7 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 21.10. | Kuvat: kuvaproxy palauttaa WebP:n tukeville selaimille (Vary: Accept), korttikuvat 480 px, CDN-välimuisti 7 pv. Mitattu tuotannossa: pääkuva 53,4 kt -> 21,5 kt (WebP), korttikuva 53,4 kt -> 4,1 kt. Ilman WebP-tukea ja Googlebot-Imagelle JPEG kuten ennen. | main 23bc65d | Nopeampi LCP ja vähemmän siirrettävää listasivuilla (Core Web Vitals) | srcset tuotesivun pääkuvalle |
 | 21.10. | 42 laskeutumissivua, Joululahjat-valikko, /joulun-viimeiset-tilauspaivat + banneri (näkyy 20.11.2026 asti), oikea 404 tuntemattomille tuotteille, ASCII-osoitteet ä/ö-sivuille (301), sivukarttaan laskeutumis- ja kaupunkisivut. | main 31c7c81 | Ostoaikeiset joulu- ja vastaanottajahaut | Lisää joulutuotteita, alle 20 € valikoima |
 | 21.10. | Bottien metatiedoista pois ajatusviivat, superlatiivit ja virheväitteet; sivukartta ja syöte ilman ohjautuvia tuotekaksoiskappaleita (652 + 484 linkkiä, kaikki 200). | main 5ce880e | Siistit hakutulokset, ei 308-linkkejä Merchantissa | |
+| 21.10. | Isänpäivä: /isanpaivalahja ja /hauska-isanpaivalahja, 301 vanhoilta, valikko, kausibanneri (isänpäivä 28.10. asti, joulu 29.10.-20.11.). | main 66e8881, c1d12e4 | Isänpäivän ostoaikeiset haut, banneri ohjaa ostamaan ennen takarajaa | Isänpäivän jälkeen sivut jäävät (ikivihreä sisältö) |
+| 21.10. | Tarrat-kategorian teksti tosiasioiden mukaan, /tarrat ja /hupparit 301. | main 36d552d | Ohut ja virheellinen sivu korjattu | Lisää tarroja (skripti valmis) |
+| 21.10. | Konversio: toimitusehdot yhdestä tiedostosta, arviot arkistoon, tuotesivu mobiili edellä, kokoapu, alatunnisteen kauppiastiedot, vain taatut maksutavat, suorituskyky (Lighthouse etusivu 56 -> 81, tuotesivu 58 -> 68). | main d794550-7c6c523, 026e0b4 | Ostopolku lyhyempi ja luotettavampi; LCP 25,8 s -> 3,8 s etusivulla | Esirenderöity sisältö näkyviin heti |
+| 21.10. | oma-tausta: toimitus 5,90 € / ilmainen 60 €:sta (kassa, syöte, tekstit), uusien tuotteiden Printify-skripti (ei ajettu). | oma-tausta 10d6a11, cf9f98c | Valmis domainin siirtoon | Printify-avain, sitten skripti --toteuta --raja 1 |
