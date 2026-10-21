@@ -5,13 +5,22 @@ const ALLOWED_HOSTS = new Set([
   'pfy-prod-automaton-cache.s3.us-east-2.amazonaws.com',
 ]);
 
-async function transcodeWithSharp(inputBuffer) {
+// Sallitut leveydet (?w=), ettei välimuisti pirstoudu. Oletus 1600 (syöte ja tuotesivun pääkuva).
+export const LEVEYDET = [320, 480, 640, 800, 1200, 1600];
+export function valitseLeveys(w) {
+  const n = Number(w);
+  if (!Number.isFinite(n) || n <= 0) return 1600;
+  return LEVEYDET.find((x) => x >= n) ?? 1600;
+}
+/** WebP, jos selain kertoo tukevansa sitä (Accept), muuten JPEG. Vary: Accept erottaa välimuistissa. */
+export const haluaaWebp = (accept) => /image\/webp/i.test(String(accept || ''));
+
+async function transcodeWithSharp(inputBuffer, leveys = 1600, webp = false) {
   const { default: sharp } = await import('sharp');
-  return sharp(inputBuffer)
+  const kuva = sharp(inputBuffer)
     .flatten({ background: '#ffffff' })
-    .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: 85, mozjpeg: true })
-    .toBuffer();
+    .resize({ width: leveys, height: leveys, fit: 'inside', withoutEnlargement: true });
+  return webp ? kuva.webp({ quality: 80 }).toBuffer() : kuva.jpeg({ quality: 85, mozjpeg: true }).toBuffer();
 }
 
 async function transcodeWithWsrv(target) {
@@ -45,11 +54,14 @@ export default async function handler(req, res) {
     const inputBuffer = Buffer.from(await upstream.arrayBuffer());
     const ct = (upstream.headers.get('content-type') || 'image/jpeg').toLowerCase();
 
-    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400');
+    res.setHeader('Vary', 'Accept');
+    const leveys = valitseLeveys(req.query.w);
+    const webp = haluaaWebp(req.headers?.accept);
 
     try {
-      const out = await transcodeWithSharp(inputBuffer);
-      res.setHeader('Content-Type', 'image/jpeg');
+      const out = await transcodeWithSharp(inputBuffer, leveys, webp);
+      res.setHeader('Content-Type', webp ? 'image/webp' : 'image/jpeg');
       return res.status(200).send(out);
     } catch (err) {
       console.error('sharp transcode FAILED, trying wsrv.nl fallback:', err);
