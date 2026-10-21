@@ -8,6 +8,7 @@ import { useProducts } from "@/hooks/use-products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { findHobby, hobbies } from "@/data/hobbies";
 import { situationGifts } from "@/data/situationGifts";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
 const HobbyPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -79,7 +80,7 @@ const HobbyPage = () => {
 
   const popularSituations = situationGifts
     .filter((s) =>
-      ["syntymapaivasankarille", "miehelle", "naiselle", "isanpaiva"].includes(s.slug)
+      ["syntymapaivasankarille", "miehelle", "naiselle"].includes(s.slug)
     )
     .slice(0, 4);
 
@@ -95,7 +96,7 @@ const HobbyPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>

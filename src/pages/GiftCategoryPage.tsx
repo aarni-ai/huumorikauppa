@@ -10,6 +10,7 @@ import { SEOGiftContent, SEOTargetGroupContent, SEOLongTailContent } from "@/com
 
 import { giftCategories, getGiftCategory } from "@/data/giftCategories";
 import { buildGiftCategoryFaqs } from "@/seo/pageFaqs";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 export { giftCategories, getGiftCategory };
 
@@ -84,7 +85,7 @@ const GiftCategoryPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
@@ -108,8 +109,8 @@ const GiftCategoryPage = () => {
           <p>
             <strong>{category.h1}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ persoonallista vaihtoehtoa — täydellisiä
-            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus 3–10
-            arkipäivässä koko Suomeen, ilmainen yli 79 € tilauksiin.
+            silloin, kun haluat antaa lahjan joka oikeasti naurattaa ja jää mieleen. Toimitus {TOIMITUSAIKA_TEKSTI}
+            arkipäivässä koko Suomeen, ilmainen yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin.
           </p>
         </div>
 

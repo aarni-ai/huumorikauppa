@@ -12,7 +12,7 @@ import { AddToCartDrawer } from "./components/AddToCartDrawer";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
-import { ChristmasDeadlineBanner } from "@/components/ChristmasDeadlineBanner";
+import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { LANDING_PATHS, LANDING_REDIRECTS } from "@/data/landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
@@ -133,7 +133,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <Header />
-          <ChristmasDeadlineBanner />
+          <SeasonalBanner />
           <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />

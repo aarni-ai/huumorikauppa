@@ -9,11 +9,20 @@
  * myös Vercelin middlewaressa ja build-skripteissä.
  */
 
+import {
+  ILMAINEN_TOIMITUS_RAJA,
+  TOIMITUSAIKA_MAX_ARKIPAIVAA,
+  TOIMITUSAIKA_MIN_ARKIPAIVAA,
+  TOIMITUSMAKSU,
+} from "../config/toimitus";
+
 export const SITE_URL = "https://huumorikauppa.fi";
 export const SITE_NAME = "Huumorikauppa";
 
 export const ORGANIZATION = {
   name: SITE_NAME,
+  /** Yritys, jonka nimissä kauppaa pidetään (AboutPage.tsx, Yritystiedot). */
+  legalName: "Inteller",
   legalId: "3583677-2", // Y-tunnus (index.html, llms.txt)
   email: "huumorikauppa@gmail.com",
   addressLocality: "Helsinki",
@@ -30,14 +39,14 @@ export const ORGANIZATION = {
   ],
 } as const;
 
-/** Toimitus ja palautus (Terms.tsx: "Toimitusaika on 3–10 arkipäivää tilauksesta. Yli 79 € ... Alle 79 € ... 6,90 €"). */
+/** Toimitus (arvot: src/config/toimitus.ts, sama sääntö kuin kassalla ja Terms.tsx:ssä). */
 export const SHIPPING = {
   country: "FI",
-  feeEur: 6.9,
-  freeThresholdEur: 79,
+  feeEur: TOIMITUSMAKSU,
+  freeThresholdEur: ILMAINEN_TOIMITUS_RAJA,
   /** Kokonaistoimitusaika tilauksesta, arkipäivinä. */
-  deliveryBusinessDaysMin: 3,
-  deliveryBusinessDaysMax: 10,
+  deliveryBusinessDaysMin: TOIMITUSAIKA_MIN_ARKIPAIVAA,
+  deliveryBusinessDaysMax: TOIMITUSAIKA_MAX_ARKIPAIVAA,
 } as const;
 
 export const RETURNS = {

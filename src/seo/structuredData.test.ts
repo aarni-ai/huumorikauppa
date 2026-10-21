@@ -9,6 +9,7 @@ import {
   serializeJsonLd,
   shippingFeeForPrice,
 } from "./structuredData";
+import { TOIMITUSMAKSU, ILMAINEN_TOIMITUS_RAJA } from "@/config/toimitus";
 import { isPrerenderedHtml } from "./prerenderDetect";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +82,7 @@ describe("buildProductJsonLd", () => {
     const ship = p.offers.shippingDetails;
     expect(ship["@type"]).toBe("OfferShippingDetails");
     expect(ship.shippingDestination.addressCountry).toBe("FI");
-    expect(ship.shippingRate).toEqual({ "@type": "MonetaryAmount", value: "6.90", currency: "EUR" });
+    expect(ship.shippingRate).toEqual({ "@type": "MonetaryAmount", value: TOIMITUSMAKSU.toFixed(2), currency: "EUR" });
     expect(ship.deliveryTime.transitTime).toMatchObject({ minValue: 3, maxValue: 10, unitCode: "DAY" });
     const expensive = buildProductJsonLd({ ...product, price: 89.9 }) as Node;
     expect(expensive.offers.shippingDetails.shippingRate.value).toBe("0.00");
@@ -105,9 +106,9 @@ describe("buildProductJsonLd", () => {
 });
 
 describe("shippingFeeForPrice", () => {
-  it("is free from 79 EUR", () => {
-    expect(shippingFeeForPrice(78.9)).toBe(6.9);
-    expect(shippingFeeForPrice(79)).toBe(0);
+  it("is free from the free-shipping threshold", () => {
+    expect(shippingFeeForPrice(ILMAINEN_TOIMITUS_RAJA - 0.1)).toBe(TOIMITUSMAKSU);
+    expect(shippingFeeForPrice(ILMAINEN_TOIMITUS_RAJA)).toBe(0);
   });
 });
 

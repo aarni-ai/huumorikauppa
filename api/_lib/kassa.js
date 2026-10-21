@@ -1,6 +1,6 @@
 /**
  * Kassan laskenta (puhdas, testattava). Samat säännöt kuin vanhassa create-checkoutissa: hinta palvelimelta,
- * toimitus 6,90 € alle 79 €:n tilauksiin, prosentti- tai euroalennus. Uutta: tuote, jonka Printify-varianttia
+ * toimitus (vakiot.js) alle ilmaisen toimituksen rajan jäävissä tilauksissa, prosentti- tai euroalennus. Uutta: tuote, jonka Printify-varianttia
  * ei löydy, tai myynnistä piilotettu tuote hylätään ennen maksua.
  *
  * Lisäksi (kasvu-oma-tausta):

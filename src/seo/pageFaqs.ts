@@ -3,11 +3,12 @@
  * (scripts/prerender.mjs), jotta staattinen HTML ja selaimessa näkyvä sivu pysyvät samoina.
  *
  * Faktalähteet: Terms.tsx (toimitusehdot), ReturnsPolicy.tsx (palautusehdot), src/seo/site.ts,
- * create-checkout (toimituskulut, oma teksti), ProductPage (oma teksti, kokotaulukko).
+ * create-checkout (toimituskulut, oma teksti), ProductPage (oma teksti, kokoapu).
  * Säännöt: jokainen vastaus alkaa yhdellä suoralla vastauslauseella (enintään noin 25 sanaa),
  * sen jälkeen tarkennus. Ei ajatusviivoja, ei todistamattomia superlatiiveja, ei arvailevia ilmaisuja.
  */
 import { PRODUCT_TYPE_LABEL, cleanProductName } from "@/lib/productNames";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 export interface FaqItem {
   q: string;
@@ -18,14 +19,14 @@ export interface FaqItem {
 export const CHRISTMAS_DEADLINE_TEXT =
   "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
 
-const DELIVERY_SHORT = "Toimitusaika on 3-10 arkipäivää tilauksesta.";
-const SHIPPING_COST = "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen.";
+const DELIVERY_SHORT = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
+const SHIPPING_COST = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
 
 /** /usein-kysytyt-kysymykset (näkyvä UKK ja FAQPage-JSON-LD samasta listasta). */
 export const SITE_FAQS: FaqItem[] = [
   {
     q: "Mistä saa hauskan joululahjan nopeasti?",
-    a: `Huumorikauppa.fi:stä saat hauskan joululahjan kotiovelle 3-10 arkipäivässä tilauksesta. ${CHRISTMAS_DEADLINE_TEXT} Valikoimassa on t-paitoja ja huppareita esimerkiksi ammatti-, harrastus-, eläke- ja ikävuositeemoilla sekä tuotteita, joihin voit tilata oman tekstin.`,
+    a: `Huumorikauppa.fi:stä saat hauskan joululahjan kotiovelle ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. ${CHRISTMAS_DEADLINE_TEXT} Valikoimassa on t-paitoja ja huppareita esimerkiksi ammatti-, harrastus-, eläke- ja ikävuositeemoilla sekä tuotteita, joihin voit tilata oman tekstin.`,
   },
   {
     q: "Ehtiikö tilaus jouluksi?",
@@ -57,7 +58,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Voinko vaihtaa väärän koon?",
-    a: "Erillistä vaihtoa ei ole, mutta voit palauttaa tuotteen 14 päivän peruutusoikeudella ja tilata oikean koon uutena tilauksena. Palautus tehdään palautusehtojen mukaan sähköpostilla huumorikauppa@gmail.com. Tarkista ennen tilausta tuotesivun kokotaulukko, niin vaihtoa ei tarvita.",
+    a: "Erillistä vaihtoa ei ole, mutta voit palauttaa tuotteen 14 päivän peruutusoikeudella ja tilata oikean koon uutena tilauksena. Palautus tehdään palautusehtojen mukaan sähköpostilla huumorikauppa@gmail.com. Tarkista ennen tilausta tuotesivun kokoapu, niin vaihtoa ei tarvita.",
   },
   {
     q: "Mitä maksutapoja voin käyttää?",
@@ -85,7 +86,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Miten tiedän, mikä koko sopii?",
-    a: "Katso tuotesivun kokotaulukko, jossa on rinnan, vyötärön ja lantion mitat senttimetreinä. Vertaa mittoja paitaan, joka istuu hyvin. Tuotteen saatavilla olevat koot ja värit näet tuotesivulla.",
+    a: "Mittaa hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Tuotteen saatavilla olevat koot ja värit näet tuotesivulla.",
   },
   {
     q: "Miten paita tai huppari pestään?",

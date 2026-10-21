@@ -163,7 +163,7 @@ export function buildCollectionPageJsonLd(opts: {
   };
 }
 
-/** Toimituskulu yhden tuotteen tilaukselle (Terms.tsx: ilmainen yli 79 €, muuten 6,90 €). */
+/** Toimituskulu yhden tuotteen tilaukselle (src/config/toimitus.ts, sama sääntö kuin kassalla). */
 export function shippingFeeForPrice(price: number): number {
   return price >= SHIPPING.freeThresholdEur ? 0 : SHIPPING.feeEur;
 }
@@ -180,7 +180,7 @@ export function buildOfferShippingDetails(price: number): JsonLd {
       "@type": "DefinedRegion",
       addressCountry: SHIPPING.country,
     },
-    // Kaupan ehdot ilmoittavat vain kokonaistoimitusajan (3–10 arkipäivää tilauksesta),
+    // Kaupan ehdot ilmoittavat vain kokonaistoimitusajan (src/config/toimitus.ts),
     // joten käsittely- ja kuljetusaikaa ei jaeta keksityillä luvuilla.
     deliveryTime: {
       "@type": "ShippingDeliveryTime",

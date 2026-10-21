@@ -6,6 +6,7 @@
  * (seo/toimitusajat.md). Sama päivä koskee kaikkia tuotteita, koska tuotekohtaista painotaloa ei
  * tiedetä. Älä lupaa missään muuta päivää.
  */
+import { CHRISTMAS_ORDER_END_UTC_MS } from "./campaignSchedule";
 
 /** Ihmiselle näytettävä lupaus sellaisenaan. */
 export const CHRISTMAS_DEADLINE_PROMISE =
@@ -17,10 +18,10 @@ export const CHRISTMAS_DEADLINE_SHORT = "pe 20.11.2026";
 export const CHRISTMAS_DEADLINE_PATH = "/joulun-viimeiset-tilauspaivat";
 
 /**
- * Bannerin näkyvyyden takaraja: 20.11.2026 klo 23.59.59 Suomen aikaa. Marraskuussa Suomessa on
- * normaaliaika (UTC+2), joten 23.59.59 paikallista aikaa = 21.59.59 UTC.
+ * Joulun tilausajan takaraja: 20.11.2026 klo 23.59.59 Suomen aikaa (= 21.59.59 UTC). Päivämäärä
+ * on bannerin aikataulun kanssa samassa tiedostossa (src/data/campaignSchedule.ts).
  */
-export const CHRISTMAS_DEADLINE_END_UTC_MS = Date.UTC(2026, 10, 20, 21, 59, 59, 999);
+export const CHRISTMAS_DEADLINE_END_UTC_MS = CHRISTMAS_ORDER_END_UTC_MS;
 
 /** Näytetäänkö joulun tilauspäivän banneri annettuna hetkenä. */
 export function isBeforeChristmasDeadline(nowMs: number): boolean {

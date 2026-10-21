@@ -2,6 +2,7 @@
  * Lahjasivujen (GiftCategoryPage) data. Siirretty sivukomponentista, jotta myös build-vaiheen
  * esirenderöinti (scripts/prerender.mjs) voi käyttää samaa lähdettä.
  */
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
 export interface GiftCategory {
   slug: string;
   name: string;
@@ -15,21 +16,21 @@ export interface GiftCategory {
 }
 
 export const TLDR_TEXTS: Record<string, string> = {
-  "hauskat-lahjat-miehelle": "Hauska lahja miehelle on huumoripaita tai -huppari joka liittyy hänen harrastukseensa tai ammattiinsa. Valikoimassa on esimerkiksi kalamies- ja ammattimiesteemoja. Kaikki tuotteet painetaan tilauksesta, ja toimitus tapahtuu 3-10 arkipäivässä.",
-  "hauskat-lahjat-naiselle": "Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska t-paita tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan tilauksesta, toimitus 3-10 arkipäivässä.",
+  "hauskat-lahjat-miehelle": `Hauska lahja miehelle on huumoripaita tai -huppari joka liittyy hänen harrastukseensa tai ammattiinsa. Valikoimassa on esimerkiksi kalamies- ja ammattimiesteemoja. Kaikki tuotteet painetaan tilauksesta, ja toimitus tapahtuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "hauskat-lahjat-naiselle": `Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska t-paita tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan tilauksesta, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "lahja-miehelle": "Lahjaideat miehelle: huumoripaita tai -huppari ammatista, harrastuksesta tai luonteenpiirteestä. Valikoimassa on myös 50-vuotis- ja eläkkeellelähtöteemoja. Huumorikaupasta löydät yli 75 hauskaa lahjaideaa miehille kaikkiin tilanteisiin.",
-  "hauskat-t-paidat": "Hauskat t-paidat ovat 100 % puuvillaa, ja ne painetaan tilauksesta. Valikoimassa yli 30 vitsipainatusta: ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus 3-10 arkipäivässä.",
-  "hauskat-hupparit": "Hauskat hupparit ovat lämpimiä ja korkealaatuisia, ja ne painetaan tilauksesta. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus 3-10 arkipäivässä.",
+  "hauskat-t-paidat": `Hauskat t-paidat ovat 100 % puuvillaa, ja ne painetaan tilauksesta. Valikoimassa yli 30 vitsipainatusta: ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "hauskat-hupparit": `Hauskat hupparit ovat lämpimiä ja korkealaatuisia, ja ne painetaan tilauksesta. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita tai -huppari joka liittyy isän harrastukseen tai ammattiin. Valikoimassa on esimerkiksi kalamies- ja 'Maailman paras pappa' -teemoja. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
   "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Teemoina esimerkiksi kalamies, äijä ja eläkeläinen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.",
-  "syntymapaivaLahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus 3-10 arkipäivässä.",
-  "syntymapaivalahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus 3-10 arkipäivässä.",
+  "syntymapaivaLahjat": `Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "syntymapaivalahjat": `Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "polttari-lahjat": "Polttarilahja ja ryhmäpaidat: hauskat t-paidat polttariporukalle naimisiin menevälle. Räätälöitäviä tekstipaitoja ja yhteishenkipainatuksia. Tilaa hyvissä ajoin koko ryhmälle.",
   "elakelahjat": "Hauska eläkelahja eläkkeelle jäävälle työkaverille tai läheiselle. Valikoimassa on esimerkiksi 'Olen eläkkeellä'- ja '100 % eläkeläinen' -teemoja. T-paitoja ja huppareita. Tilaa nyt.",
   "lahja-kaverille": "Hauska lahja kaverille: huumoripaita tai -huppari kaverin harrastuksesta tai persoonallisuudesta. Sopii synttäreille, kihlauksiin tai vain piristämään arkea.",
   "lahja-tyokaverille": "Hauska lahja työkaverille: huumoripaita tai -huppari suomalaisesta työpaikkahuumorista. Esimerkiksi '100 % eläkeläinen' -paita on hauska valinta. Sopii työkaverin lähtöön tai syntymäpäivään.",
-  "haalarimerkit": "Haalarimerkit opiskelijalle: räätälöitäviä ja valmiita malleja kaikkiin haalareihin, reppuihin ja laukkuihin. Sopivat kiltajuhliin ja haalaripäiviin. Toimitus 3-10 arkipäivässä.",
-  "opiskelijan-haalarimerkit": "Opiskelijan haalarimerkit personoivat haalarit persoonallisiksi. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille. Toimitus 3-10 arkipäivässä.",
+  "haalarimerkit": `Haalarimerkit opiskelijalle: räätälöitäviä ja valmiita malleja kaikkiin haalareihin, reppuihin ja laukkuihin. Sopivat kiltajuhliin ja haalaripäiviin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "opiskelijan-haalarimerkit": `Opiskelijan haalarimerkit personoivat haalarit persoonallisiksi. Valmiita malleja ja räätälöitäviä vaihtoehtoja kiltajärjestöille. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
 };
 
 export const giftCategories: GiftCategory[] = [
@@ -74,9 +75,9 @@ Miehelle jolla on jo kaikkea, hauska paita tai huppari on hyvä lahja: se on jot
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus yli 79 € tilauksiin
+- Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
 - 14 päivän palautusoikeus
-- 3-10 arkipäivän toimitus koko Suomeen
+- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus koko Suomeen
 - 100% suomalainen yritys`,
     relatedBlogSlugs: ["parhaat-hauskat-lahjat-miehelle", "hauskat-isanpaivalahjat-opas", "mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", "lahja-miehelle-30v-40v-50v-60v"],
   },
@@ -115,9 +116,9 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus yli 79 € tilauksiin
+- Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
 - 14 päivän palautusoikeus
-- 3-10 arkipäivän toimitus koko Suomeen
+- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus koko Suomeen
 - Lahjapaketointimahdollisuus`,
     relatedBlogSlugs: ["hauskat-lahjat-naiselle-opas", "hauska-aitienpaivalahja-opas", "lahja-naiselle-30v-40v-50v-60v"],
   },
@@ -154,8 +155,8 @@ Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: huppareita,
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
-- Ilmainen toimitus yli 79 € tilauksiin
-- 3-10 arkipäivän toimitus
+- Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
+- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
 - Ryhmätilaukset helposti - lisää eri koot koriin`,
     relatedBlogSlugs: ["parhaat-polttaripaidat-ja-polttarilahjat-2026"],
   },
@@ -196,7 +197,7 @@ Isänpäivä on marraskuun toinen sunnuntai. Se on päivä jolloin isä ansaitse
 
 ## Tilaa isänpäivälahja ajoissa
 
-Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme 3-10 arkipäivässä koko Suomeen.`,
+Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen.`,
     relatedBlogSlugs: ["hauskat-isanpaivalahjat-opas", "parhaat-hauskat-lahjat-miehelle"],
   },
   {
@@ -243,7 +244,7 @@ Tilaa viimeistään 2 viikkoa ennen äitienpäivää.`,
     emoji: "🎄",
     h1: "Hauskat Joululahjat",
     seoTitle: "Hauskat joululahjat 2026 | Huumorikauppa.fi",
-    seoDescription: "Hauskat joululahjat 2026! Yllättävät ideat koko perheelle. Tilaa ajoissa, toimitus 3-10 arkipäivässä. 🎄",
+    seoDescription: `Hauskat joululahjat 2026! Yllättävät ideat koko perheelle. Tilaa ajoissa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä. 🎄`,
     filterFn: (p) => {
       return p.category === "t-paidat" || p.category === "hupparit" || 
              p.category === "mukit" || p.category === "tarrat" || 
@@ -274,7 +275,7 @@ Hauska tarra-arkki tai pipo sopii pikkujoululahjaksi työkavereille.
 
 ## Milloin tilata joululahjat?
 
-Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Toimitamme 3-10 arkipäivässä.`,
+Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     relatedBlogSlugs: ["parhaat-joululahjat-ja-pikkujoululahjat-2026"],
   },
   {

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { TOIMITUS, ILMAINEN_TOIMITUS_RAJA } from "../../api/_lib/vakiot.js";
 import { readFileSync } from "node:fs";
 import { laskeTilaus, KassaVirhe } from "../../api/_lib/kassa.js";
 import { laskePaketinKate, paketinHeikoinKate } from "../../api/_lib/kate.js";
@@ -21,9 +22,13 @@ const huppari = {
   printify_product_id: "pf-h", created_at: "2026-01-02",
   variants: { variant_map: { "Musta|M": 11 }, costs: { "11": 1500 }, shipping_cents: 400 },
 };
-const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2000 }, shipping_cents: 600 } };
+// Kulu 19,00 (ei 20,00): 5,90 €:n toimitusmaksulla 20,00 €:n kululla yksittäinen huppari jäisi alle 40 %:n katteen
+// (39,1 %) eikä olisi myynnissä, jolloin testi ei pääsisi paketin katevahtiin. Paketti jää silti alle rajan (30,5 %).
+const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 1900 }, shipping_cents: 600 } };
 const kallisPaita = { ...paita, id: "t2", slug: "kallis-t-paita" };
 const tuntematon = { ...huppari, id: "h3", slug: "tuntematon-huppari", variants: { variant_map: { "Musta|M": 13 } } };
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const toimitusSummalle = (summa: number) => (summa >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS);
 const tuotteet = [paita, huppari, kallisHuppari, kallisPaita, tuntematon];
 const paketit = [
   { slug: "oispa-kaljaa-t-paita-ja-huppari", tuotteet: ["oispa-kaljaa-t-paita", "oispa-kaljaa-huppari"], alennus_prosentti: 10 },
@@ -64,10 +69,13 @@ describe("Paketit: muodostus", () => {
 
 describe("Paketit: kate ja alennus", () => {
   it("paketin kate alennuksen jälkeen", () => {
-    // 74,80 * 0,9 + 6,90 = 74,22; alv 0 59,14; kulut 7 + 4 + 15 + 4 = 30; Stripe 1,36 -> 27,78 (47 %)
+    // 74,80 >= raja: ei toimitusmaksua. 74,80 * 0,9 = 67,32; alv 0 53,64; kulut 7 + 4 + 15 + 4 = 30; Stripe 1,26 -> 22,38 (41,7 %)
+    expect(74.8).toBeGreaterThanOrEqual(ILMAINEN_TOIMITUS_RAJA);
     const k = laskePaketinKate([{ tuote: paita, varianttiId: 1 }, { tuote: huppari, varianttiId: 11 }], 10);
     expect(k.tunnettu).toBe(true);
-    expect(k.nettokate).toBe(27.78);
+    const maksettu = 74.8 * 0.9;
+    expect(k.nettokate).toBe(r2(maksettu / 1.255 - 30 - (maksettu * 0.015 + 0.25)));
+    expect(k.nettokate).toBe(22.38);
     expect(k.sallittu).toBe(true);
     expect(laskePaketinKate([{ tuote: kallisPaita, varianttiId: 1 }, { tuote: kallisHuppari, varianttiId: 12 }], 10).sallittu).toBe(false);
     expect(laskePaketinKate([{ tuote: paita, varianttiId: 1 }, { tuote: tuntematon, varianttiId: 13 }], 10).tunnettu).toBe(false);
@@ -81,8 +89,20 @@ describe("Paketit: kate ja alennus", () => {
     expect(molemmat.bundle_discount).toBe(7.48);
     expect(molemmat.rivit.map((r: { unit_cents: number }) => r.unit_cents)).toEqual([2241, 4491]);
     expect(molemmat.rivit.every((r: { paketti?: string }) => r.paketti === "oispa-kaljaa-t-paita-ja-huppari")).toBe(true);
-    expect(molemmat.shipping).toBe(6.9); // raja lasketaan ennen alennusta, 74,80 < 79
-    expect(molemmat.total).toBe(74.22);
+    expect(molemmat.shipping).toBe(toimitusSummalle(74.8));
+    expect(molemmat.total).toBe(r2(74.8 * 0.9 + toimitusSummalle(74.8)));
+  });
+  it("toimitusmaksun raja lasketaan ennen alennusta", () => {
+    // Välisumma ylittää rajan, mutta alennettu summa jää sen alle: toimitus on silti ilmainen.
+    const valisumma = r2(ILMAINEN_TOIMITUS_RAJA * 1.05);
+    const halpaHuppari = { ...huppari, id: "h4", slug: "halpa-huppari", price: r2(valisumma - paita.price), variants: { variant_map: { "Musta|M": 14 }, costs: { "14": 1000 }, shipping_cents: 400 } };
+    // Kulut 7 + 4 + 10 + 4 = 25: paketin kate ~47 %, joten alennus myönnetään.
+    expect(r2(valisumma * 0.9)).toBeLessThan(ILMAINEN_TOIMITUS_RAJA);
+    const jono = [paita, halpaHuppari];
+    const pk = [{ slug: "oispa-kaljaa-t-paita-ja-halpa-huppari", tuotteet: ["oispa-kaljaa-t-paita", "halpa-huppari"], alennus_prosentti: 10 }];
+    const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita"), t("halpa-huppari")]), jono, null, { paketit: pk });
+    expect(r.bundle_discount).toBeGreaterThan(0);
+    expect(r.shipping).toBe(0);
   });
   it("vain parit saavat alennuksen, ylimääräinen kappale täyteen hintaan", () => {
     const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita", 2), t("oispa-kaljaa-huppari")]), tuotteet, null, { paketit });
@@ -94,7 +114,7 @@ describe("Paketit: kate ja alennus", () => {
   it("katevahti: alle 40 % tai tuntematon kulu, ei alennusta", () => {
     const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit });
     expect(r.bundle_discount).toBe(0);
-    expect(r.total).toBe(74.8 + 6.9);
+    expect(r.total).toBe(r2(74.8 + toimitusSummalle(74.8)));
     const m = new Map([[paita.slug, paita], [tuntematon.slug, tuntematon]]);
     const s = sovellaPaketit(
       [{ slug: paita.slug, quantity: 1, unit_cents: 2490, variant_id: 1 }, { slug: tuntematon.slug, quantity: 1, unit_cents: 4990, variant_id: 13 }],
@@ -172,9 +192,9 @@ describe("Lahjakortti: kassa", () => {
   });
   it("lahjakortti ei kerrytä ilmaisen toimituksen rajaa eikä saa alennuskoodia", () => {
     const r = laskeTilaus(pyynto([kortti(100), t("oispa-kaljaa-t-paita")]), tuotteet, { type: "percent", value: 10 });
-    expect(r.shipping).toBe(6.9);
+    expect(r.shipping).toBe(TOIMITUS);
     expect(r.discount).toBe(2.49);
-    expect(r.total).toBe(100 + 22.41 + 6.9);
+    expect(r.total).toBe(r2(100 + 22.41 + TOIMITUS));
     const runko = tilausRunko({ id: "abcdef12-0000", customer_email: "a@b.fi", shipping_address: osoite, items: r.rivit });
     expect(runko.line_items).toEqual([{ product_id: "pf-t", variant_id: 1, quantity: 1 }]);
   });
@@ -183,12 +203,13 @@ describe("Lahjakortti: kassa", () => {
   });
   it("lahjakortilla maksu: osittain ja kokonaan", () => {
     const osittain = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 30 } });
-    expect(osittain).toMatchObject({ total: 31.8, gift_card_amount: 30, amount_due: 1.8, gift_card_code: "HK-AAAA-BBBB-CCCC" });
+    const summa = r2(24.9 + TOIMITUS);
+    expect(osittain).toMatchObject({ total: summa, gift_card_amount: 30, amount_due: r2(summa - 30), gift_card_code: "HK-AAAA-BBBB-CCCC" });
     const kokonaan = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 100 } });
-    expect(kokonaan).toMatchObject({ gift_card_amount: 31.8, amount_due: 0 });
-    // Stripen minimi 0,50 €: 31,50 €:n saldolla jäisi 0,30 €, joten kortilta käytetään 31,30 €
-    const pieni = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 31.5 } });
-    expect(pieni).toMatchObject({ gift_card_amount: 31.3, amount_due: 0.5 });
+    expect(kokonaan).toMatchObject({ gift_card_amount: summa, amount_due: 0 });
+    // Stripen minimi 0,50 €: saldolla (summa - 0,30) jäisi 0,30 €, joten kortilta käytetään summa - 0,50 €
+    const pieni = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita")]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: r2(summa - 0.3) } });
+    expect(pieni).toMatchObject({ gift_card_amount: r2(summa - 0.5), amount_due: 0.5 });
   });
   it("lahjakortilla ei voi ostaa lahjakortteja", () => {
     expect(() => laskeTilaus(pyynto([kortti(50)]), tuotteet, null, { lahjakortti: { koodi: "HK-AAAA-BBBB-CCCC", saldo: 100 } })).toThrow(/ei voi ostaa lahjakortteja/);

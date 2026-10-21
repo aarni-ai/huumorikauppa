@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, valitseSuositukset, arvioiPakettialennus } from "@/lib/ostoskori";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
+import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const CartPage = () => {
   usePrerenderReady();
@@ -222,7 +223,7 @@ const CartPage = () => {
               <p>
                 AliExpress-tuotteiden toimitusaika on n. 2–4 viikkoa.
                 {items.some((i) => i.product.supplier !== "aliexpress")
-                  ? " Muut tuotteesi (3–10 arkipäivää) toimitetaan eri paketissa eri aikataululla."
+                  ? ` Muut tuotteesi (${TOIMITUSAIKA_TEKSTI} arkipäivää) toimitetaan eri paketissa eri aikataululla.`
                   : ""}
               </p>
             </div>
@@ -244,7 +245,7 @@ const CartPage = () => {
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
-            <p>🚚 Toimitus 3–10 arkipäivää</p>
+            <p>🚚 Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</p>
             <p>↩️ 14 pv palautusoikeus</p>
           </div>
         </div>

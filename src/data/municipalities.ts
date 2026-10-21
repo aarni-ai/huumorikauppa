@@ -1,3 +1,5 @@
+import { TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+
 export interface Municipality {
   slug: string;
   name: string;
@@ -24,7 +26,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Helsinki-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Helsinki-lahjat: huumoripaita tai -huppari helsinkiläiselle. 'Stadi elää' ja 'Ruuhka-aika Helsingissä: aina' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja helsinkiläiselle",
-    tldr: "Hauska lahja helsinkiläiselle on huumoripaita tai -huppari Helsinki-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja helsinkiläiselle on huumoripaita tai -huppari Helsinki-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Helsinki on Suomen sydän - täynnä elämää, ruuhkia ja Stockmannin hulluja päiviä. Hauska Helsinki-lahja tunnistaa pääkaupungin ainutlaatuisen identiteetin ja Stadihengen.",
     identity: "Pääkaupunki, stadi, startup-kaupunki, Suomen suurin",
     shirtTexts: [
@@ -36,7 +38,7 @@ export const municipalities: Municipality[] = [
     ],
     faqs: [
       { q: "Mikä on hauska lahja helsinkiläiselle?", a: "Hauska lahja helsinkiläiselle on paita tai huppari Helsinki-teemalla. Tilaa Huumorikauppa.fi:stä." },
-      { q: "Mistä saa hauskoja Helsinki-lahjoja?", a: "Huumorikauppa.fi:stä löydät Helsinki-aiheiset huumoripaidat ja -hupparit. Toimitus 3-10 arkipäivässä koko Suomeen." },
+      { q: "Mistä saa hauskoja Helsinki-lahjoja?", a: `Huumorikauppa.fi:stä löydät Helsinki-aiheiset huumoripaidat ja -hupparit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen.` },
       { q: "Mitä lahjaideoita sopii helsinkiläiselle?", a: "Helsinki-teemaiset huumoripaidat ja -hupparit ovat suosittuja lahjoja helsinkiläiselle. Personoitavat versiot ovat erityisen pidettyjä." },
     ],
     neighbors: ["espoo", "vantaa", "porvoo"],
@@ -50,7 +52,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Espoo-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Espoo-lahjat espoolaiselle: huumoripaita tai -huppari. 'Espoo: Helsinki ilman Helsinkiä' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja espoolaiselle",
-    tldr: "Hauska lahja espoolaiselle on huumoripaita tai -huppari Espoo-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja espoolaiselle on huumoripaita tai -huppari Espoo-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Espoo on Suomen toiseksi suurin kaupunki - teknologian, lähiöiden ja omaperäisen identiteetin kaupunki. Hauska Espoo-lahja tunnistaa espoolaisen ainutlaatuisen hengen.",
     identity: "Teknologiakeskus, Piilaakso Suomessa, Aalto-yliopisto",
     shirtTexts: [
@@ -62,7 +64,7 @@ export const municipalities: Municipality[] = [
     ],
     faqs: [
       { q: "Mikä on hauska lahja espoolaiselle?", a: "Hauska lahja espoolaiselle on paita tai huppari Espoo-teemalla." },
-      { q: "Mistä saa espoolaisia lahjoja?", a: "Huumorikauppa.fi:stä löydät espoolaiset huumorilahjat. Toimitusaika on 3-10 arkipäivää tilauksesta." },
+      { q: "Mistä saa espoolaisia lahjoja?", a: `Huumorikauppa.fi:stä löydät espoolaiset huumorilahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.` },
     ],
     neighbors: ["helsinki", "vantaa", "lohja", "kirkkonummi"],
   },
@@ -74,7 +76,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Tampere-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Tampere-lahjat tamperelaiselle: huumoripaita tai -huppari. 'Tampere - Suomen paras kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja tamperelaiselle",
-    tldr: "Hauska lahja tamperelaiselle on huumoripaita tai -huppari Tampere-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja tamperelaiselle on huumoripaita tai -huppari Tampere-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Tampere on Suomen kolmanneksi suurin kaupunki, Pirkkalanpohjan helmi ja tamperelaisten ylpeyden aihe. Mansen huumori on ainutlaatuista - suoraa, rehtiä ja itsestä nauraa.",
     identity: "Manse, Suomen kolmanneksi suurin, teollisuuskaupunki",
     shirtTexts: [
@@ -99,7 +101,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Vantaa-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Vantaa-lahjat vantaalaiselle: huumoripaita tai -huppari. 'Made in Vantaa' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja vantaalaiselle",
-    tldr: "Hauska lahja vantaalaiselle on huumoripaita tai -huppari Vantaa-teemalla. Lentokenttähuumori ja kaupunkilaisidentiteetti sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja vantaalaiselle on huumoripaita tai -huppari Vantaa-teemalla. Lentokenttähuumori ja kaupunkilaisidentiteetti sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Vantaa on lentokenttäkaupunki - neljännes Suomen lentomatkustajista lähtee täältä. Hauska Vantaa-lahja tunnistaa vantaalaisen ainutlaatuisen identiteetin.",
     identity: "Lentokenttäkaupunki, Uusimaa, Suomen neljänneksi suurin",
     shirtTexts: [
@@ -122,7 +124,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Oulu-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Oulu-lahjat oululaiselle: huumoripaita tai -huppari. 'Oulu: teknologian pääkaupunki - pakkasessa' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja oululaiselle",
-    tldr: "Hauska lahja oululaiselle on huumoripaita tai -huppari Oulu-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja oululaiselle on huumoripaita tai -huppari Oulu-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Oulu on Pohjois-Suomen suurin kaupunki - teknologian, pakkastalvien ja pohjoisen sisukkuuden kaupunki. Hauska Oulu-lahja tunnistaa oululaisen kovuuden ja ylpeyden.",
     identity: "Teknologia, Nokia, Pohjois-Suomen pääkaupunki",
     shirtTexts: [
@@ -146,7 +148,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Turku-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Turku-lahjat turkulaiselle: huumoripaita tai -huppari. 'Turku: Suomen vanhin kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja turkulaiselle",
-    tldr: "Hauska lahja turkulaiselle on huumoripaita tai -huppari Turku-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja turkulaiselle on huumoripaita tai -huppari Turku-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Turku on Suomen vanhin kaupunki ja entinen pääkaupunki - turkulaiset muistavat sen edelleen. Hauska Turku-lahja tunnistaa turkulaisen ainutlaatuisen identiteetin ja murteen.",
     identity: "Vanhin kaupunki, entinen pääkaupunki, Varsinais-Suomi",
     shirtTexts: [
@@ -171,7 +173,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Jyväskylä-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Jyväskylä-lahjat jyväskyläläiselle: huumoripaita tai -huppari. 'Made in Jyväskylä' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja jyväskyläläiselle",
-    tldr: "Hauska lahja jyväskyläläiselle on huumoripaita tai -huppari Jyväskylä-teemalla. Opiskelijahuumori ja Keski-Suomen henki sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja jyväskyläläiselle on huumoripaita tai -huppari Jyväskylä-teemalla. Opiskelijahuumori ja Keski-Suomen henki sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Jyväskylä on Keski-Suomen pääkaupunki ja Suomen suurin yliopistokaupunki suhteessa asukasmäärään. Hauska Jyväskylä-lahja tunnistaa jyvässkyläläisen opiskelijan ja kaupunkilaisen hengen.",
     identity: "Yliopistokaupunki, Keski-Suomi, Alvar Aalto",
     shirtTexts: [
@@ -194,7 +196,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Lahti-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Lahti-lahjat lahtelaiselle: huumoripaita tai -huppari. 'Lahti: MM-hiihtäjien kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lahtelaiselle",
-    tldr: "Hauska lahja lahtelaiselle on huumoripaita tai -huppari Lahti-teemalla. Hiihtovitsit ja Päijät-Hämeen henki sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lahtelaiselle on huumoripaita tai -huppari Lahti-teemalla. Hiihtovitsit ja Päijät-Hämeen henki sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lahti on hiihtämisen pyhäkkö - MM-kisat, hyppyrimäet ja talviurheiluperinteet. Hauska Lahti-lahja tunnistaa lahtelaisen urheilullisen identiteetin.",
     identity: "Hiihtäminen, MM-kisat, Päijät-Häme",
     shirtTexts: [
@@ -217,7 +219,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kuopio-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kuopio-lahjat kuopiolaiselle: huumoripaita tai -huppari. 'Kuopio: savon sydän' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kuopiolaiselle",
-    tldr: "Hauska lahja kuopiolaiselle on huumoripaita tai -huppari Kuopio-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kuopiolaiselle on huumoripaita tai -huppari Kuopio-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kuopio on Pohjois-Savon suurin kaupunki - savon sydän, kalakukon kotipaikka ja Kallaveden helmi. Hauska Kuopio-lahja tunnistaa kuopiolaisen savalaisen huumorin.",
     identity: "Savo, kalakukko, Kallavesi, Pohjois-Savon pääkaupunki",
     shirtTexts: [
@@ -241,7 +243,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Joensuu-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Joensuu-lahjat joensuulaiselle: huumoripaita tai -huppari. 'Joensuu: Karjalan sydän' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja joensuulaiselle",
-    tldr: "Hauska lahja joensuulaiselle on huumoripaita tai -huppari Joensuu-teemalla. Karjala-teema ja metsähuumori sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja joensuulaiselle on huumoripaita tai -huppari Joensuu-teemalla. Karjala-teema ja metsähuumori sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Joensuu on Pohjois-Karjalan pääkaupunki - metsien, Pielisen ja karjalaisen hengen kaupunki. Hauska Joensuu-lahja tunnistaa joensuulaisen karjalaisen ylpeyden.",
     identity: "Pohjois-Karjala, Karjala, metsäteollisuus",
     shirtTexts: [
@@ -264,7 +266,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Rovaniemi-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Rovaniemi-lahjat rovaniemeläiselle: huumoripaita tai -huppari. 'Rovaniemi: Joulupukin naapuri' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja rovaniemeläiselle",
-    tldr: "Hauska lahja rovaniemeläiselle on huumoripaita tai -huppari Rovaniemi-teemalla. Joulupukki- ja Lappi-vitsit sopivat erinomaisesti. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja rovaniemeläiselle on huumoripaita tai -huppari Rovaniemi-teemalla. Joulupukki- ja Lappi-vitsit sopivat erinomaisesti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Rovaniemi on Lapin pääkaupunki - Joulupukin kotipaikka, napapiirin kaupunki ja revontulikaupunki. Hauska Rovaniemi-lahja on myös loistava matkamuisto.",
     identity: "Lappi, Joulupukki, napapiiri, revontulet",
     shirtTexts: [
@@ -288,7 +290,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Vaasa-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Vaasa-lahjat vaasalaiselle: huumoripaita tai -huppari. 'Vaasa: kaksikielinen ja ylpeä' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja vaasalaiselle",
-    tldr: "Hauska lahja vaasalaiselle on huumoripaita tai -huppari Vaasa-teemalla. Kaksikielisyyshuumori ja energiahuumori sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja vaasalaiselle on huumoripaita tai -huppari Vaasa-teemalla. Kaksikielisyyshuumori ja energiahuumori sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Vaasa on Pohjanmaan pääkaupunki - kaksikielinen, energiateknologian edelläkävijä ja Pohjanmaan helmi. Hauska Vaasa-lahja tunnistaa vaasalaisen ainutlaatuisen identiteetin.",
     identity: "Kaksikielinen, Pohjanmaa, energiateknologia",
     shirtTexts: [
@@ -312,7 +314,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Seinäjoki-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Seinäjoki-lahjat seinäjokelaiselle: huumoripaita tai -huppari. 'Seinäjoki: Provinssirock ja tasainen maasto' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja seinäjokelaiselle",
-    tldr: "Hauska lahja seinäjokelaiselle on huumoripaita tai -huppari Seinäjoki-teemalla. Provinssirock ja pohjanmaalaishuumori sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja seinäjokelaiselle on huumoripaita tai -huppari Seinäjoki-teemalla. Provinssirock ja pohjanmaalaishuumori sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Seinäjoki on Etelä-Pohjanmaan pääkaupunki - Provinssirockin, tango-Finlandian ja pohjanmaalaisen suoruuden kaupunki. Hauska Seinäjoki-lahja tunnistaa paikallisen hengen.",
     identity: "Provinssirock, Etelä-Pohjanmaa, tango",
     shirtTexts: [
@@ -336,7 +338,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Pori-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Pori-lahjat porilaiselle: huumoripaita tai -huppari. 'Pori: Jazz ja joki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja porilaiselle",
-    tldr: "Hauska lahja porilaiselle on huumoripaita tai -huppari Pori-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja porilaiselle on huumoripaita tai -huppari Pori-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Pori on Satakuntalainen jazzkaupunki - Pori Jazzin kotipaikka ja Kokemäenjoen rannalla. Hauska Pori-lahja tunnistaa porilaisen ainutlaatuisen hengen.",
     identity: "Pori Jazz, Satakunta, Kokemäenjoki",
     shirtTexts: [
@@ -359,7 +361,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Hämeenlinna-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Hämeenlinna-lahjat hämeenlinnalaiselle: huumoripaita tai -huppari. 'Made in Hämeenlinna' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja hämeenlinnalaiselle",
-    tldr: "Hauska lahja hämeenlinnalaiselle on huumoripaita tai -huppari Hämeenlinna-teemalla. Sibeliushuumori ja linna-vitsit sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja hämeenlinnalaiselle on huumoripaita tai -huppari Hämeenlinna-teemalla. Sibeliushuumori ja linna-vitsit sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Hämeenlinna on Kanta-Hämeen pääkaupunki - Sibeliuksen synnyinkaupunki ja Hämeen linnan kotipaikka. Hauska Hämeenlinna-lahja tunnistaa hämeenlinnalaisen ylpeyden.",
     identity: "Sibelius, Hämeen linna, Kanta-Häme",
     shirtTexts: [
@@ -382,7 +384,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Mikkeli-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Mikkeli-lahjat mikkeliläiselle: huumoripaita tai -huppari. 'Made in Mikkeli' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja mikkeliläiselle",
-    tldr: "Hauska lahja mikkeliläiselle on huumoripaita tai -huppari Mikkeli-teemalla. Saimaa-vitsit ja Etelä-Savo-huumori sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja mikkeliläiselle on huumoripaita tai -huppari Mikkeli-teemalla. Saimaa-vitsit ja Etelä-Savo-huumori sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Mikkeli on Etelä-Savon pääkaupunki - Saimaan portilla, sotahistorian kaupunki. Hauska Mikkeli-lahja tunnistaa mikkeliläisen identiteetin.",
     identity: "Etelä-Savo, Saimaa, sotahistoria",
     shirtTexts: [
@@ -406,7 +408,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kokkola-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kokkola-lahjat kokkolalaiselle: huumoripaita tai -huppari. 'Made in Kokkola' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kokkolalaiselle",
-    tldr: "Hauska lahja kokkolalaiselle on huumoripaita tai -huppari Kokkola-teemalla. Pohjanmaalaishuumori sopii hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kokkolalaiselle on huumoripaita tai -huppari Kokkola-teemalla. Pohjanmaalaishuumori sopii hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kokkola on Keski-Pohjanmaan suurin kaupunki - satama, kaksikielisyys ja pohjanmaalainen henki. Hauska Kokkola-lahja tunnistaa kokkolalaisen identiteetin.",
     identity: "Keski-Pohjanmaa, satama, kaksikielinen",
     shirtTexts: [
@@ -429,7 +431,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Lappeenranta-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Lappeenranta-lahjat lappeenrantalaiselle: huumoripaita tai -huppari. 'Made in Lappeenranta' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lappeenrantalaiselle",
-    tldr: "Hauska lahja lappeenrantalaiselle on huumoripaita tai -huppari Lappeenranta-teemalla. Saimaa ja Venäjä-naapuruusvitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lappeenrantalaiselle on huumoripaita tai -huppari Lappeenranta-teemalla. Saimaa ja Venäjä-naapuruusvitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lappeenranta on Etelä-Karjalan pääkaupunki - Saimaan rannalla, Venäjän naapurina ja linnoituksen kaupunki. Hauska Lappeenranta-lahja tunnistaa paikallisen identiteetin.",
     identity: "Etelä-Karjala, Saimaa, Venäjän raja, linnoitus",
     shirtTexts: [
@@ -452,7 +454,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Imatra-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Imatra-lahjat imatralaiselle: huumoripaita tai -huppari. 'Made in Imatra' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja imatralaiselle",
-    tldr: "Hauska lahja imatralaiselle on huumoripaita tai -huppari Imatra-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja imatralaiselle on huumoripaita tai -huppari Imatra-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Imatra on Etelä-Karjalan kosken kaupunki - Imatrankosken, teollisuuden ja karjalaisen hengen kaupunki. Hauska Imatra-lahja tunnistaa imatralaisen identiteetin.",
     identity: "Etelä-Karjala, Imatrankoski, teollisuus",
     shirtTexts: [
@@ -475,7 +477,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kotka-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kotka-lahjat kotkalaiselle: huumoripaita tai -huppari. 'Kotka: merikaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kotkalaiselle",
-    tldr: "Hauska lahja kotkalaiselle on huumoripaita tai -huppari Kotka-teemalla. Merihuumori ja saaristovitsit sopivat hyvin. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kotkalaiselle on huumoripaita tai -huppari Kotka-teemalla. Merihuumori ja saaristovitsit sopivat hyvin. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kotka on Kymenlaakson merikaupunki - sataman, lohenkalastuksen ja merikulttuurin kaupunki. Hauska Kotka-lahja tunnistaa kotkaisen identiteetin.",
     identity: "Kymenlaakso, merikaupunki, satama, lohi",
     shirtTexts: [
@@ -498,7 +500,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kouvola-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kouvola-lahjat kouvolalaiselle: huumoripaita tai -huppari. 'Made in Kouvola' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kouvolalaiselle",
-    tldr: "Hauska lahja kouvolalaiselle on huumoripaita tai -huppari Kouvola-teemalla. Rautatiehuumori ja Kymenlaakso-vitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kouvolalaiselle on huumoripaita tai -huppari Kouvola-teemalla. Rautatiehuumori ja Kymenlaakso-vitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kouvola on Kymenlaakson rautatiesolmukohta - metsäteollisuuden, moottoriteiden ja suomalaisten mielestä Suomen keskilapsen kaupunki. Hauska Kouvola-lahja tunnistaa tämän.",
     identity: "Kymenlaakso, rautatiet, metsäteollisuus",
     shirtTexts: [
@@ -521,7 +523,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Porvoo-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Porvoo-lahjat porvoolaiselle: huumoripaita tai -huppari. 'Made in Porvoo' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja porvoolaiselle",
-    tldr: "Hauska lahja porvoolaiselle on huumoripaita tai -huppari Porvoo-teemalla. Vanhakaupunki- ja turistivitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja porvoolaiselle on huumoripaita tai -huppari Porvoo-teemalla. Vanhakaupunki- ja turistivitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Porvoo on Uudenmaan vanhakaupunki - punaisten rantamakasiinien, turistien ja idyllisen hengen kaupunki. Hauska Porvoo-lahja tunnistaa porvoolaisen ainutlaatuisuuden.",
     identity: "Vanhakaupunki, Uusimaa, turistikaupunki, punainen ranta",
     shirtTexts: [
@@ -544,7 +546,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Salo-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Salo-lahjat salolaiselle: huumoripaita tai -huppari. 'Salo: entinen Nokian kaupunki - selviytyi' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja salolaiselle",
-    tldr: "Hauska lahja salolaiselle on huumoripaita tai -huppari Salo-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja salolaiselle on huumoripaita tai -huppari Salo-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Salo on entinen Nokian pääkonttorikaupunki - selviytyi Nokian kaatumisesta ja rakentaa uutta tulevaisuutta. Hauska Salo-lahja tunnistaa savolaisen sisu.",
     identity: "Varsinais-Suomi, Nokia, selviytymistarina",
     shirtTexts: [
@@ -567,7 +569,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Savonlinna-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Savonlinna-lahjat savonlinnalaiselle: huumoripaita tai -huppari. 'Made in Savonlinna' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja savonlinnalaiselle",
-    tldr: "Hauska lahja savonlinnalaiselle on huumoripaita tai -huppari Savonlinna-teemalla. Oopperajuhlat ja Olavinlinna ovat tunnettuja. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja savonlinnalaiselle on huumoripaita tai -huppari Savonlinna-teemalla. Oopperajuhlat ja Olavinlinna ovat tunnettuja. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Savonlinna on oopperajuhlien ja Olavinlinnan kaupunki - Saimaan sylissä, kesäisenä kukoistava kulttuurikaupunki. Hauska Savonlinna-lahja tunnistaa paikallisen hengen.",
     identity: "Etelä-Savo, oopperajuhlat, Olavinlinna, Saimaa",
     shirtTexts: [
@@ -591,7 +593,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Hyvinkää-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Hyvinkää-lahjat hyvinkääläiselle: huumoripaita tai -huppari. 'Made in Hyvinkää' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja hyvinkääläiselle",
-    tldr: "Hauska lahja hyvinkääläiselle on huumoripaita tai -huppari Hyvinkää-teemalla. Junahuumori sopii kaupungille. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja hyvinkääläiselle on huumoripaita tai -huppari Hyvinkää-teemalla. Junahuumori sopii kaupungille. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Hyvinkää on Uudenmaan rautatiekaupunki - Kone Oyj:n kotipaikka ja historiallisen rautatiemiljöön kaupunki. Hauska Hyvinkää-lahja tunnistaa paikallisen hengen.",
     identity: "Uusimaa, Kone Oyj, rautatiet",
     shirtTexts: [
@@ -614,7 +616,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Järvenpää-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Järvenpää-lahjat järvenpääläiselle: huumoripaita tai -huppari. 'Made in Järvenpää' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja järvenpääläiselle",
-    tldr: "Hauska lahja järvenpääläiselle on huumoripaita tai -huppari Järvenpää-teemalla. Sibelius-Ainola ja järvihuumori sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja järvenpääläiselle on huumoripaita tai -huppari Järvenpää-teemalla. Sibelius-Ainola ja järvihuumori sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Järvenpää on Uudenmaan järvenrantakaupunki - Sibeliuksen Ainolan ja Tuusulanjärven kaupunki. Hauska Järvenpää-lahja tunnistaa järvenpääläisen identiteetin.",
     identity: "Uusimaa, Sibelius, Ainola, Tuusulanjärvi",
     shirtTexts: [
@@ -637,7 +639,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kerava-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kerava-lahjat keravaislaiselle: huumoripaita tai -huppari. 'Made in Kerava' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja keravaislaiselle",
-    tldr: "Hauska lahja keravaislaiselle on huumoripaita tai -huppari Kerava-teemalla. Lähijunahuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja keravaislaiselle on huumoripaita tai -huppari Kerava-teemalla. Lähijunahuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kerava on Uudenmaan lähiökaupunki - nopein juna Helsinkiin ja oman identiteetin kaupunki. Hauska Kerava-lahja tunnistaa keravaisen hengen.",
     identity: "Uusimaa, lähiökaupunki, junarata Helsinki",
     shirtTexts: [
@@ -660,7 +662,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Rauma-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Rauma-lahjat raumalaiselle: huumoripaita tai -huppari. 'Rauma: Raumanmurre ja UNESCO' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja raumalaiselle",
-    tldr: "Hauska lahja raumalaiselle on huumoripaita tai -huppari Rauma-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja raumalaiselle on huumoripaita tai -huppari Rauma-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Rauma on Satakuntalainen vanha kaupunki - raumanmurteen, UNESCO-perintökohteen ja pitsinnypläyksen kaupunki. Hauska Rauma-lahja tunnistaa raumaisen identiteetin.",
     identity: "Satakunta, Raumanmurre, UNESCO, pitsinnypläys",
     shirtTexts: [
@@ -683,7 +685,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kajaani-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kajaani-lahjat kajaanilaiselle: huumoripaita tai -huppari. 'Made in Kajaani' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kajaanilaiselle",
-    tldr: "Hauska lahja kajaanilaiselle on huumoripaita tai -huppari Kajaani-teemalla. Kainuun henki ja pohjoinen sisukkuus sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kajaanilaiselle on huumoripaita tai -huppari Kajaani-teemalla. Kainuun henki ja pohjoinen sisukkuus sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kajaani on Kainuun pääkaupunki - kaukana etelästä mutta ei unohdettu. Hauska Kajaani-lahja tunnistaa kajaanilaisen identiteetin ja Kainuun hengen.",
     identity: "Kainuu, Kajaaninjoki, pohjoinen",
     shirtTexts: [
@@ -706,7 +708,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Lohja-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Lohja-lahjat lohjalaiselle: huumoripaita tai -huppari. 'Made in Lohja' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lohjalaiselle",
-    tldr: "Hauska lahja lohjalaiselle on huumoripaita tai -huppari Lohja-teemalla. Omenat, järvet ja uusimaalaishuumori sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lohjalaiselle on huumoripaita tai -huppari Lohja-teemalla. Omenat, järvet ja uusimaalaishuumori sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lohja on Uudenmaan omenien ja järvien kaupunki - tunnettu Lohjanjärvestä ja omenatarhoistaan. Hauska Lohja-lahja tunnistaa lohjalaisen ainutlaatuisuuden.",
     identity: "Uusimaa, Lohjanärvi, omenat",
     shirtTexts: [
@@ -729,7 +731,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Tornio-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Tornio-lahjat torniolaiselle: huumoripaita tai -huppari. 'Tornio: Ruotsin naapuri' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja torniolaiselle",
-    tldr: "Hauska lahja torniolaiselle on huumoripaita tai -huppari Tornio-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja torniolaiselle on huumoripaita tai -huppari Tornio-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Tornio on Lapin rajakaupunki - Ruotsin Haaparannan naapuri, rajajoki ja kaksoiskaupunki. Hauska Tornio-lahja tunnistaa torniolaisen identiteetin.",
     identity: "Lappi, Ruotsin raja, Haaparanta, Tornionjoki",
     shirtTexts: [
@@ -753,7 +755,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kemi-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kemi-lahjat kemiläiselle: huumoripaita tai -huppari. 'Kemi: Lumen kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kemiläiselle",
-    tldr: "Hauska lahja kemiläiselle on huumoripaita tai -huppari Kemi-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kemiläiselle on huumoripaita tai -huppari Kemi-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kemi on Lapin satama- ja lumikaupunki - SnowCastle of Kemiin ja lumilinnoituksiin tunnettu kaupunki. Hauska Kemi-lahja tunnistaa kemiläisen identiteetin.",
     identity: "Lappi, SnowCastle, metsäteollisuus, Perämeri",
     shirtTexts: [
@@ -777,7 +779,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Nokia-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Nokia-lahjat nokialaiselle: huumoripaita tai -huppari. 'Nokia: ei se puhelin - kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja nokialaiselle",
-    tldr: "Hauska lahja nokialaiselle on huumoripaita tai -huppari Nokia-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja nokialaiselle on huumoripaita tai -huppari Nokia-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Nokia on Pirkanmaalainen kaupunki - ei se puhelin, vaan Emäkosken viereinen kaupunki. Hauska Nokia-lahja tunnistaa nokialaisen ainutlaatuisen identiteetin.",
     identity: "Pirkanmaa, Emäkoski, ei Nokia-puhelin",
     shirtTexts: [
@@ -800,7 +802,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Riihimäki-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Riihimäki-lahjat riihimäkeläiselle: huumoripaita tai -huppari. 'Made in Riihimäki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja riihimäkeläiselle",
-    tldr: "Hauska lahja riihimäkeläiselle on huumoripaita tai -huppari Riihimäki-teemalla. Rautatiehuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja riihimäkeläiselle on huumoripaita tai -huppari Riihimäki-teemalla. Rautatiehuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Riihimäki on Kanta-Hämeen rautatiekaupunki - Suomen rautatiehistorian tärkeä solmukohta ja aseiden perintökaupunki. Hauska Riihimäki-lahja tunnistaa paikallisen hengen.",
     identity: "Kanta-Häme, rautatiet, Suomen Ase- ja Sotahistoriallinen museo",
     shirtTexts: [
@@ -823,7 +825,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Raisio-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Raisio-lahjat raisiolaiselle: huumoripaita tai -huppari. 'Made in Raisio' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja raisiolaiselle",
-    tldr: "Hauska lahja raisiolaiselle on huumoripaita tai -huppari Raisio-teemalla. Turun naapurihuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja raisiolaiselle on huumoripaita tai -huppari Raisio-teemalla. Turun naapurihuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Raisio on Varsinais-Suomen Turun naapuri - Benecolinsa tunnettu kaupunki. Hauska Raisio-lahja tunnistaa raisiolaisen ainutlaatuisuuden.",
     identity: "Varsinais-Suomi, Turku naapuri, Benecol",
     shirtTexts: [
@@ -846,7 +848,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kaarina-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kaarina-lahjat kaarinalainen: huumoripaita tai -huppari. 'Made in Kaarina' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kaarinalainen",
-    tldr: "Hauska lahja kaarinalainen on huumoripaita tai -huppari Kaarina-teemalla. Turun naapuruushuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kaarinalainen on huumoripaita tai -huppari Kaarina-teemalla. Turun naapuruushuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kaarina on Varsinais-Suomen Turun naapuri - merenläheinen kaupunki joka on ylpeästi oma. Hauska Kaarina-lahja tunnistaa kaarinaisen identiteetin.",
     identity: "Varsinais-Suomi, Turku naapuri, meri",
     shirtTexts: [
@@ -869,7 +871,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Naantali-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Naantali-lahjat naantalalaiselle: huumoripaita tai -huppari. 'Naantali: Muumimaailma ja kesäloma' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja naantalilaiselle",
-    tldr: "Hauska lahja naantalilaiselle on huumoripaita tai -huppari Naantali-teemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja naantalilaiselle on huumoripaita tai -huppari Naantali-teemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Naantali on Varsinais-Suomen kesäkaupunki - Muumimaailman kotipaikka, saariston helmi ja kesäloman symboli. Hauska Naantali-lahja tunnistaa paikallisen identiteetin.",
     identity: "Varsinais-Suomi, Muumimaailma, Kultaranta, kesä",
     shirtTexts: [
@@ -892,7 +894,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Ylöjärvi-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Ylöjärvi-lahjat ylöjärveläiselle: huumoripaita tai -huppari. 'Made in Ylöjärvi' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja ylöjärveläiselle",
-    tldr: "Hauska lahja ylöjärveläiselle on huumoripaita tai -huppari Ylöjärvi-teemalla. Tampereen naapuruusvitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja ylöjärveläiselle on huumoripaita tai -huppari Ylöjärvi-teemalla. Tampereen naapuruusvitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Ylöjärvi on Pirkanmaan Tampereen naapuri - kasvava lähiökaupunki omalla identiteetillä. Hauska Ylöjärvi-lahja tunnistaa ylöjärveläisen hengen.",
     identity: "Pirkanmaa, Tampereen naapuri",
     shirtTexts: [
@@ -915,7 +917,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Kangasala-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Kangasala-lahjat kangasalalaiselle: huumoripaita tai -huppari. 'Made in Kangasala' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kangasalalaiselle",
-    tldr: "Hauska lahja kangasalalaiselle on huumoripaita tai -huppari Kangasala-teemalla. Järvi- ja luontohuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kangasalalaiselle on huumoripaita tai -huppari Kangasala-teemalla. Järvi- ja luontohuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kangasala on Pirkanmaan järvien kaupunki - harjanteita, järviä ja mäntymetsien kaupunki. Hauska Kangasala-lahja tunnistaa kangasalaisen identiteetin.",
     identity: "Pirkanmaa, järvet, Havisevanjärvi",
     shirtTexts: [
@@ -938,7 +940,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Iisalmi-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Iisalmi-lahjat iisalmelaiselle: huumoripaita tai -huppari. 'Made in Iisalmi' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja iisalmelaiselle",
-    tldr: "Hauska lahja iisalmelaiselle on huumoripaita tai -huppari Iisalmi-teemalla. Savon murre ja järvivitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja iisalmelaiselle on huumoripaita tai -huppari Iisalmi-teemalla. Savon murre ja järvivitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Iisalmi on Pohjois-Savon kaupunki - salmen ja savon sydämessä. Hauska Iisalmi-lahja tunnistaa iisalmelaisen savalaisen identiteetin.",
     identity: "Pohjois-Savo, Iisalmi, savolaishuumori",
     shirtTexts: [
@@ -962,7 +964,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Varkaus-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Varkaus-lahjat varkaalaiselle: huumoripaita tai -huppari. 'Made in Varkaus' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja varkaalaiselle",
-    tldr: "Hauska lahja varkaalaiselle on huumoripaita tai -huppari Varkaus-teemalla. Teollisuushuumori ja Savo-vitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja varkaalaiselle on huumoripaita tai -huppari Varkaus-teemalla. Teollisuushuumori ja Savo-vitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Varkaus on Pohjois-Savon teollisuuskaupunki - selluteollisuuden ja savolaisen hengen kaupunki. Hauska Varkaus-lahja tunnistaa varkaalaisen identiteetin.",
     identity: "Pohjois-Savo, teollisuus, sellu",
     shirtTexts: [
@@ -986,7 +988,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Heinola-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Heinola-lahjat heinolalaiselle: huumoripaita tai -huppari. 'Made in Heinola' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja heinolalaiselle",
-    tldr: "Hauska lahja heinolalaiselle on huumoripaita tai -huppari Heinola-teemalla. Kymijoki- ja Päijät-Häme-vitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja heinolalaiselle on huumoripaita tai -huppari Heinola-teemalla. Kymijoki- ja Päijät-Häme-vitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Heinola on Päijät-Hämeen matkailukaupunki - Kymijoen varrella, luonnon helmassa. Hauska Heinola-lahja tunnistaa heinolalaisen identiteetin.",
     identity: "Päijät-Häme, Kymijoki, matkailu",
     shirtTexts: [
@@ -1009,7 +1011,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Lempäälä-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Lempäälä-lahjat lempääläläiselle: huumoripaita tai -huppari. 'Made in Lempäälä' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lempääläläiselle",
-    tldr: "Hauska lahja lempääläläiselle on huumoripaita tai -huppari Lempäälä-teemalla. Moottoritiehuumori ja Pirkanmaa-vitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lempääläläiselle on huumoripaita tai -huppari Lempäälä-teemalla. Moottoritiehuumori ja Pirkanmaa-vitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lempäälä on Pirkanmaan kasvava lähiökaupunki - moottoritien varrella, Tampereen naapurissa. Hauska Lempäälä-lahja tunnistaa lempääläläisen identiteetin.",
     identity: "Pirkanmaa, moottoritie, Tampereen naapuri",
     shirtTexts: [
@@ -1032,7 +1034,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Pirkkala-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Pirkkala-lahjat pirkkalalainen: huumoripaita tai -huppari. 'Made in Pirkkala' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja pirkkalalainen",
-    tldr: "Hauska lahja pirkkalalainen on huumoripaita tai -huppari Pirkkala-teemalla. Lentoasemahuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja pirkkalalainen on huumoripaita tai -huppari Pirkkala-teemalla. Lentoasemahuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Pirkkala on Pirkanmaan lentoasemakaupunki - Tampereen lentoaseman kotipaikka ja kasvava Tampereen naapuri. Hauska Pirkkala-lahja tunnistaa pirkkalalaisen identiteetin.",
     identity: "Pirkanmaa, lentoasema, Tampereen naapuri",
     shirtTexts: [
@@ -1055,7 +1057,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Forssa-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Forssa-lahjat forssalaiselle: huumoripaita tai -huppari. 'Forssa: tekstiiliteollisuuden henki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja forssalaiselle",
-    tldr: "Hauska lahja forssalaiselle on huumoripaita tai -huppari Forssa-teemalla. Tekstiiliteollisuushuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja forssalaiselle on huumoripaita tai -huppari Forssa-teemalla. Tekstiiliteollisuushuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Forssa on Kanta-Hämeen tekstiilikaupunki - historiallinen teollisuusilme ja forssan henki. Hauska Forssa-lahja tunnistaa forssalaisen identiteetin.",
     identity: "Kanta-Häme, tekstiiliteollisuus",
     shirtTexts: [
@@ -1078,7 +1080,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Lieksa-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Lieksa-lahjat lieksalaiselle: huumoripaita tai -huppari. 'Lieksa: Pielisen rannalla' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lieksalaiselle",
-    tldr: "Hauska lahja lieksalaiselle on huumoripaita tai -huppari Lieksa-teemalla. Pielinen ja Karjala-vitsit sopivat. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lieksalaiselle on huumoripaita tai -huppari Lieksa-teemalla. Pielinen ja Karjala-vitsit sopivat. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lieksa on Pohjois-Karjalan Pielisen kaupunki - metsien ja suurimman sisäjärvemme rantakaupunki. Hauska Lieksa-lahja tunnistaa lieksalaisen identiteetin.",
     identity: "Pohjois-Karjala, Pielinen, metsäteollisuus",
     shirtTexts: [
@@ -1101,7 +1103,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Valkeakoski-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Valkeakoski-lahjat valkeakoskelaiselle: huumoripaita tai -huppari. 'Valkeakoski: teollisuuskaupunki ja kosket' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja valkeakoskelaiselle",
-    tldr: "Hauska lahja valkeakoskelaiselle on huumoripaita tai -huppari Valkeakoski-teemalla. Koskihuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja valkeakoskelaiselle on huumoripaita tai -huppari Valkeakoski-teemalla. Koskihuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Valkeakoski on Pirkanmaan teollisuuskaupunki - kosken ja paperiteollisuuden kaupunki. Hauska Valkeakoski-lahja tunnistaa valkeakoskelaisen identiteetin.",
     identity: "Pirkanmaa, koski, paperiteollisuus",
     shirtTexts: [
@@ -1124,7 +1126,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Akaa-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Akaa-lahjat akaaalaiselle: huumoripaita tai -huppari. 'Akaa: pieni mutta ylpeä' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja akaaalaiselle",
-    tldr: "Hauska lahja akaaalaiselle on huumoripaita tai -huppari Akaa-teemalla. Pirkanmaalaishuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja akaaalaiselle on huumoripaita tai -huppari Akaa-teemalla. Pirkanmaalaishuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Akaa on Pirkanmaan pieni mutta ylpeä kaupunki - rakennettu useista entisistä kunnista. Hauska Akaa-lahja tunnistaa akaaalaisen identiteetin.",
     identity: "Pirkanmaa, pieni mutta ylpeä",
     shirtTexts: [
@@ -1147,7 +1149,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Orimattila-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Orimattila-lahjat orimattilalaiselle: huumoripaita tai -huppari. 'Orimattila: marjat ja maaseutu' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja orimattilalaiselle",
-    tldr: "Hauska lahja orimattilalaiselle on huumoripaita tai -huppari Orimattila-teemalla. Maaseutuhuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja orimattilalaiselle on huumoripaita tai -huppari Orimattila-teemalla. Maaseutuhuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Orimattila on Päijät-Hämeen maaseutukaupunki - marjojen, maanviljelyn ja maaseudun kaupunki. Hauska Orimattila-lahja tunnistaa orimattilalaisen identiteetin.",
     identity: "Päijät-Häme, maaseutu, marjat",
     shirtTexts: [
@@ -1170,7 +1172,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Harjavalta-lahja: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat Harjavalta-lahjat harjavaltalainen: huumoripaita tai -huppari. 'Harjavalta: kuparin kaupunki' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja harjavaltalainen",
-    tldr: "Hauska lahja harjavaltalainen on huumoripaita tai -huppari Harjavalta-teemalla. Teollisuushuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja harjavaltalainen on huumoripaita tai -huppari Harjavalta-teemalla. Teollisuushuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Harjavalta on Satakunnan kupariteollisuuden kaupunki. Hauska Harjavalta-lahja tunnistaa harjavaltalaiseen identiteettiin.",
     identity: "Satakunta, kupari, teollisuus",
     shirtTexts: [
@@ -1193,7 +1195,7 @@ export const municipalities: Municipality[] = [
     seoTitle: "Hauska Nummela-lahja: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat Nummela-lahjat nummelalainen: huumoripaita tai -huppari. 'Nummela: Vihdin sydän' - tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja nummelalainen",
-    tldr: "Hauska lahja nummelalainen on huumoripaita tai -huppari Nummela-teemalla. Uudenmaan lähiöhuumori sopii. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja nummelalainen on huumoripaita tai -huppari Nummela-teemalla. Uudenmaan lähiöhuumori sopii. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Nummela on Uudenmaan Vihdin kirkonkylä - kasvava lähiötaajama Helsingistä länteen. Hauska Nummela-lahja tunnistaa nummelalaisen identiteetin.",
     identity: "Uusimaa, Vihti, lähiö",
     shirtTexts: [

@@ -1,4 +1,5 @@
 import type { Product } from "@/types/product";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 export interface SituationGift {
   slug: string;
@@ -261,7 +262,7 @@ export const situationGifts: SituationGift[] = [
     h1: "Hauskat lahjat miehelle",
     emoji: "🧔",
     seoTitle: "Hauskat lahjat miehelle 2026-75+ ideaa | Huumorikauppa.fi",
-    seoDescription: "Hauskat lahjat miehelle: paidat, hupparit ja peitot. Kaverille, isälle, puolisolle. Ilmainen toimitus yli 79 € 🎁",
+    seoDescription: `Hauskat lahjat miehelle: paidat, hupparit ja peitot. Kaverille, isälle, puolisolle. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € 🎁`,
     intro: "Etsitkö hauskaa lahjaa miehelle? Olipa kyseessä kaveri, isä, puoliso, veli tai työkaveri, kokosimme hauskat lahjat miehelle yhteen paikkaan.",
     keywords: ["mies", "isä", "iskä", "kaveri", "veli", "setä", "ukki", "pappa", "kalamies"],
     categories: ["t-paidat", "hupparit"],
@@ -291,7 +292,7 @@ export const situationGifts: SituationGift[] = [
     h1: "Hauskat joululahjat - Top-ideat 2026",
     emoji: "🎄",
     seoTitle: "Hauskat joululahjat 2026: ideat kuusen alle | Huumorikauppa",
-    seoDescription: "Hauskat joululahjat koko perheelle. Paidat, hupparit ja koristeet kuusen alle. Tilaa ajoissa, toimitus 3-10 arkipäivässä 🎄",
+    seoDescription: `Hauskat joululahjat koko perheelle. Paidat, hupparit ja koristeet kuusen alle. Tilaa ajoissa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä 🎄`,
     intro: "Joululahjat huumorilla ovat aina osumatarkka valinta. Kokosimme joulun lahjaideoita sekä miehelle, naiselle, lapselle että työkaverille.",
     keywords: ["joulu", "pikkujoulu", "lahja", "kuusi"],
     categories: ["t-paidat", "hupparit", "koristeet"],
@@ -301,7 +302,7 @@ export const situationGifts: SituationGift[] = [
     h1: "Hauskat isänpäivälahjat",
     emoji: "👨",
     seoTitle: "Hauskat isänpäivälahjat 2026 | Huumorikauppa.fi",
-    seoDescription: "Isänpäivälahjat huumorilla: paidat ja hupparit isälle. Ilmainen toimitus yli 79 €. Tilaa ajoissa 👨",
+    seoDescription: `Isänpäivälahjat huumorilla: paidat ja hupparit isälle. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} €. Tilaa ajoissa 👨`,
     intro: "Isänpäivälahja huumorilla on aina hyvä valinta. Hauska paita tai huppari saa isän hymyilemään koko päivän.",
     keywords: ["isä", "iskä", "isänpäivä", "ukki", "pappa", "setä"],
     categories: ["t-paidat", "hupparit"],
@@ -311,7 +312,7 @@ export const situationGifts: SituationGift[] = [
     h1: "Hauskat äitienpäivälahjat",
     emoji: "🌷",
     seoTitle: "Hauskat äitienpäivälahjat 2026 | Huumorikauppa.fi",
-    seoDescription: "Äitienpäivälahjat huumorilla: paidat, hupparit ja peitot äidille. Toimitus 3-10 arkipäivässä 🌷",
+    seoDescription: `Äitienpäivälahjat huumorilla: paidat, hupparit ja peitot äidille. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä 🌷`,
     intro: "Äitienpäivälahjaksi hauska paita tai huppari on aina mieluinen yllätys. Kokosimme hauskat äitienpäivälahjat helposti yhteen.",
     keywords: ["äiti", "aiti", "mummi", "äitienpäivä", "anoppi"],
     categories: ["t-paidat", "peitot"],
@@ -442,7 +443,7 @@ export const situationGifts: SituationGift[] = [
     emoji: "☀️",
     seoTitle: "Hauskat juhannuslahjat 2026 | Huumorikauppa.fi",
     seoDescription: "Hauskat juhannuslahjat ja kesälahjat 2026! Paidat, tarrat ja mökkihuumori. Sopii myös mökinomistajalle 🔥",
-    intro: "Juhannus on suomalaisen kesän kohokohta: kokko, mökki, sauna ja hauskat lahjat. Toimitusaika on 3-10 arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen juhannusta.",
+    intro: `Juhannus on suomalaisen kesän kohokohta: kokko, mökki, sauna ja hauskat lahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen juhannusta.`,
     keywords: ["juhannus", "kesä", "mökki", "sauna", "kokko", "kesämökki"],
     categories: ["t-paidat", "tarrat"],
   },

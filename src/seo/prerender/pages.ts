@@ -5,6 +5,7 @@ import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
  *
  * Ajetaan buildissa scripts/prerender.mjs:n kautta (Viten ssrLoadModule), testataan vitestillä.
  */
+import { PRODUCT_IMAGE_SIZES, defaultColorImages, productImageSources } from "@/lib/productImages";
 import { categories } from "@/data/products";
 import { CATEGORY_H1, CATEGORY_H2_SECTIONS, selectCategoryProducts } from "@/data/categoryContent";
 import { giftCategories } from "@/data/giftCategories";
@@ -53,6 +54,7 @@ import {
   type JsonLd,
 } from "../structuredData";
 import type { LinkItem, PrerenderPage, PrerenderProduct, SiteNav } from "./html";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
 /** Supabasen products-rivi siinä muodossa kuin REST palauttaa sen. */
 export interface ProductRow {
@@ -198,6 +200,7 @@ export function buildSiteNav(products: Product[] = []): SiteNav {
     { href: "/hauskat-lahjat-miehelle", label: "Lahjat miehelle" },
     { href: "/hauskat-lahjat-naiselle", label: "Lahjat naiselle" },
     { href: "/joululahjat", label: "Joululahjat" },
+    { href: "/isanpaivalahja", label: "Isänpäivälahjat" },
     { href: "/blogi", label: "Blogi" },
   ];
   const footer: LinkItem[] = [
@@ -261,7 +264,7 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
     const list = selectCategoryProducts(products, category.slug);
     const faqs = buildCategoryFaqs(category.name);
     const description =
-      category.seoDescription || `${category.description}. Ilmainen toimitus 79 euron tilauksista alkaen.`;
+      category.seoDescription || `${category.description}. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`;
     return {
       path,
       title: category.seoTitle || `${h1} | Huumorikauppa.fi`,
@@ -553,6 +556,8 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
     return src ? [{ src, alt: productImageAlt(product, { url: img, index: i }) }] : [];
   });
   const related = all.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 8);
+  // Pääkuva samalla valinnalla ja srcsetillä kuin ProductPage (oletusvärin ensimmäinen kuva).
+  const mainImage = productImageSources(defaultColorImages(product)[0]);
   return {
     path,
     title: `${product.name} | Huumorikauppa`,
@@ -562,6 +567,7 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
     images: imageAlts,
     ogType: "product",
     ogImage: images[0],
+    preloadImage: mainImage.srcSet ? { href: mainImage.src, srcset: mainImage.srcSet, sizes: PRODUCT_IMAGE_SIZES } : undefined,
     breadcrumbs: [HOME, crumb(categoryName, `/kategoria/${product.category}`), crumb(product.name, path)],
     sections: [
       { paragraphs: description.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean) },

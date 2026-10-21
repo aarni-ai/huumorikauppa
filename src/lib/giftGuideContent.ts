@@ -1,4 +1,5 @@
 import type { SituationGift } from "@/data/situationGifts";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 export interface GiftGuideContent {
   intro: string;
@@ -19,7 +20,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
   const t = topic.toLowerCase();
   const intro =
     `${s.intro} Tähän oppaaseen on koottu Huumorikaupan ideoita ${t}, kaikki suomalaisella huumorilla. ` +
-    `Jokainen tuote painetaan tilauksesta ja toimitetaan koko Suomeen 3-10 arkipäivässä.`;
+    `Jokainen tuote painetaan tilauksesta ja toimitetaan koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`;
 
   const whyChoose =
     `Miksi valita hauska lahja? Lahja, joka naurattaa, jää mieleen paremmin kuin persoonaton tavara. ` +
@@ -29,7 +30,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
   const howToChoose =
     `Kuinka valita oikea lahja ${t}? Aloita miettimällä vastaanottajan harrastuksia, ammattia ja sisäpiirin vitsejä. ` +
     `Mitä tarkemmin osut hänen elämäänsä, sitä paremmin lahja toimii. Jos mikään valmis teksti ei osu, valitse personoitava tuote ja kirjoita oma teksti. ` +
-    `Muista myös koko: tuotesivun kokotaulukossa on mitat senttimetreinä, ja saatavilla olevat koot näet jokaisen tuotteen kohdalta.`;
+    `Muista myös koko: tuotesivun kokoavussa näet saatavilla olevat koot ja ohjeen mittojen ottamiseen.`;
 
   const popular =
     `Toimivimmissa teksteissä yhdistyy tunnistettava arkitilanne ja juuri sopivasti yliampuva sanavalinta. ` +
@@ -37,7 +38,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     `Selaa alla olevia ideoita: jokaisen tuotteen sivulla on materiaali-, koko- ja hoitotiedot.`;
 
   const shippingTrust =
-    `Toimitusaika on 3-10 arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen se on ilmainen. ` +
+    `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ` +
     `Sinulla on 14 päivän peruutusoikeus, ja voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. ` +
     `Asiakaspalvelu vastaa sähköposteihin 1-2 arkipäivässä.`;
 
@@ -48,7 +49,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     },
     {
       q: `Kuinka nopeasti tilaus saapuu?`,
-      a: `Toimitusaika on 3-10 arkipäivää tilauksesta. Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen se on ilmainen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
+      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
     },
     {
       q: `Voinko palauttaa tuotteen, jos lahja ei sovi?`,

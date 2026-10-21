@@ -6,6 +6,7 @@ import { categories } from "@/data/products";
 import { onPiilotettu } from "@/lib/hiddenCategories";
 import {
   CHRISTMAS_MENU,
+  FATHERS_DAY_MENU,
   LANDING_MIN_PRODUCTS,
   LANDING_PATHS,
   LANDING_REDIRECTS,
@@ -84,10 +85,16 @@ describe("landing pages: data and copy rules", () => {
     expect(new Set(paragraphs).size).toBe(paragraphs.length);
   });
 
-  it("only promises the one Christmas date (20.11.2026); the only other date is Father's Day", () => {
+  it("only promises the one Christmas date (20.11.2026); the only other dates are Father's Day and its last order day", () => {
     const all = landingPages.flatMap(pageTexts).join("\n");
     const dates = new Set(all.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? []);
-    expect([...dates].sort()).toEqual(["20.11.2026", "8.11.2026"]);
+    expect([...dates].sort()).toEqual(["20.11.2026", "28.10.2026", "8.11.2026"]);
+    // Isänpäivän tilauspäivä (src/data/campaignSchedule.ts) vain isänpäiväsivuilla
+    for (const p of landingPages) {
+      if (pageTexts(p).join("\n").includes("28.10.2026")) {
+        expect(["/isanpaivalahja", "/hauska-isanpaivalahja"], p.path).toContain(p.path);
+      }
+    }
     const deadline = [christmasDeadlinePage.title, christmasDeadlinePage.description, ...christmasDeadlinePage.intro,
       ...christmasDeadlinePage.sections.flatMap((s) => [s.heading, ...s.paragraphs]),
       ...christmasDeadlinePage.faqs.flatMap((f) => [f.q, f.a])].join("\n");
@@ -174,6 +181,24 @@ describe("landing pages: prerendered HTML", () => {
     expect(landingLinks.size).toBeGreaterThanOrEqual(3);
     expect(html).toMatch(/href="\/kategoria\/[a-z-]+"/);
     expect(html).not.toContain("/kategoria/mukit");
+  });
+
+  it("Father's Day: menu, merged old pages and links between the two new pages", () => {
+    const hrefs = FATHERS_DAY_MENU.map((m) => m.href);
+    expect(hrefs.slice(0, 2)).toEqual(["/isanpaivalahja", "/hauska-isanpaivalahja"]);
+    for (const h of hrefs) expect(landingSet.has(h), h).toBe(true);
+    expect(LANDING_REDIRECTS["/isanpaiva-lahjat"]).toBe("/hauska-isanpaivalahja");
+    expect(LANDING_REDIRECTS["/lahjat/isanpaiva"]).toBe("/hauska-isanpaivalahja");
+    const general = getLandingPage("/isanpaivalahja")!;
+    const humor = getLandingPage("/hauska-isanpaivalahja")!;
+    expect(general.related).toContain("/hauska-isanpaivalahja");
+    expect(humor.related).toContain("/isanpaivalahja");
+    for (const p of [general, humor]) {
+      expect(p.related).toContain("/joululahja-isalle");
+      expect(p.related).toContain("/lahjat/isoisalle");
+      expect(selectLandingProducts(p, products).length, p.path).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    }
+    expect(getLandingPage("/joululahja-isalle")!.related).toEqual(expect.arrayContaining(["/isanpaivalahja", "/hauska-isanpaivalahja"]));
   });
 
   it("superseded and redirected paths are not prerendered", () => {

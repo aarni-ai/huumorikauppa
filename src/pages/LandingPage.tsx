@@ -17,6 +17,7 @@ import {
 } from "@/seo/landing";
 import { SITE_URL } from "@/seo/site";
 import NotFound from "./NotFound";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const chip =
   "inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors";
@@ -59,7 +60,7 @@ const LandingPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Toimitus 3-10 arkipäivää, ilmainen yli 79 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 päivän peruutusoikeus</div>
           {page.group === "joulu" && (
             <Link to={CHRISTMAS_DEADLINE_PATH} className="flex items-center gap-2 hover:text-foreground">

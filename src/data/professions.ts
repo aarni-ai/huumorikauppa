@@ -1,3 +1,5 @@
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+
 export interface Profession {
   slug: string;
   name: string;
@@ -24,9 +26,9 @@ export const professions: Profession[] = [
     sector: "terveydenhuolto",
     emoji: "🩺",
     seoTitle: "Hauska lahja sairaanhoitajalle | Huumorikauppa.fi",
-    seoDescription: "Hauskat lahjat sairaanhoitajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus 3-10 arkipäivässä.",
+    seoDescription: `Hauskat lahjat sairaanhoitajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauska lahja sairaanhoitajalle",
-    tldr: "Hauska lahja sairaanhoitajalle on huumoripaita tai -huppari jossa on hoitoalan vitsit. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja sairaanhoitajalle on huumoripaita tai -huppari jossa on hoitoalan vitsit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Sairaanhoitajat tekevät Suomen vaativinta työtä - ympäri vuorokauden, usein ilman kiitosta. Hauska lahja sairaanhoitajalle on se, joka saa hänet nauramaan pitkän vuoron jälkeen. Huumoripaita tai huppari hoitoalan vitseillä osuu aina oikeaan.",
     keywords: ["sairaanhoitaja", "hoitaja", "hoito", "sairaala", "vuoro", "potilas", "terveys", "nurse"],
     shirtTexts: [
@@ -51,7 +53,7 @@ export const professions: Profession[] = [
       },
       {
         q: "Kuinka nopeasti lahja toimitetaan?",
-        a: "Toimitusaika on 3-10 arkipäivää tilauksesta. Toimitus on ilmainen 79 euron tilauksista alkaen.",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
     ],
     relatedSlugs: ["lahihoitaja", "laakari", "hammaslaakari", "fysioterapeutti"],
@@ -66,7 +68,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja lähihoitajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat lähihoitajalle: huumoripaita tai huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja lähihoitajalle",
-    tldr: "Hauska lahja lähihoitajalle on huumoripaita tai -huppari arjen sankaruudesta. Tilaa Huumorikauppa.fi:stä, toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lähihoitajalle on huumoripaita tai -huppari arjen sankaruudesta. Tilaa Huumorikauppa.fi:stä, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lähihoitaja on arjen supersankari - hoitaa, tukee ja pitää huolen kaikista. Hauska lahja lähihoitajalle on tapa sanoa kiitos huumorilla.",
     keywords: ["lähihoitaja", "hoitaja", "hoito", "kotihoito", "vanhus", "asuminen"],
     shirtTexts: [
@@ -77,7 +79,7 @@ export const professions: Profession[] = [
     faqs: [
       {
         q: "Mikä on hyvä lahja lähihoitajalle?",
-        a: "Hauska lahja lähihoitajalle on huumoripaita tai -huppari jossa tunnistetaan arjen haasteet huumorilla. Toimitus 3-10 arkipäivässä.",
+        a: `Hauska lahja lähihoitajalle on huumoripaita tai -huppari jossa tunnistetaan arjen haasteet huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
       },
       {
         q: "Sopiiko huumoripaita lahjaksi lähihoitajalle?",
@@ -94,9 +96,9 @@ export const professions: Profession[] = [
     sector: "terveydenhuolto",
     emoji: "👨‍⚕️",
     seoTitle: "Hauska lahja lääkärille: paita ja huppari | Huumorikauppa",
-    seoDescription: "Hauskat lahjat lääkärille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus 3-10 arkipäivässä.",
+    seoDescription: `Hauskat lahjat lääkärille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauska lahja lääkärille",
-    tldr: "Hauska lahja lääkärille on huumoripaita tai -huppari lääketieteen vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja lääkärille on huumoripaita tai -huppari lääketieteen vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Lääkärit tekevät päätöksiä joilla on väliä - ja silti osaavat nauraa itselleen. Hauska lääkärilahja on paras tapa sanoa kiitos pitkästä koulutuksesta ja raskaasta työstä.",
     keywords: ["lääkäri", "tohtori", "lääkintä", "diagnoosi", "potilas", "sairaala", "terveys", "doctor"],
     shirtTexts: [
@@ -125,9 +127,9 @@ export const professions: Profession[] = [
     sector: "opetus",
     emoji: "📚",
     seoTitle: "Hauska lahja opettajalle: paita ja huppari | Huumorikauppa",
-    seoDescription: "Hauskat lahjat opettajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus 3-10 arkipäivässä.",
+    seoDescription: `Hauskat lahjat opettajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauska lahja opettajalle",
-    tldr: "Hauska lahja opettajalle on huumoripaita tai -huppari jossa viitataan kesälomaan, oppilaisiin tai opettajan arkeen. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja opettajalle on huumoripaita tai -huppari jossa viitataan kesälomaan, oppilaisiin tai opettajan arkeen. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Opettaja kasvattaa tulevat sukupolvet - usein ilman sen suurempaa kiitosta. Hauska lahja opettajalle on tapa sanoa arvostuksestasi hauskalla tavalla.",
     keywords: ["opettaja", "koulu", "oppilas", "luokka", "kesäloma", "opetus", "kasvatus", "teacher"],
     shirtTexts: [
@@ -162,7 +164,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja sähköasentajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat sähköasentajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja sähköasentajalle",
-    tldr: "Hauska lahja sähköasentajalle on huumoripaita tai -huppari sähköalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja sähköasentajalle on huumoripaita tai -huppari sähköalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Sähköasentaja pitää valot päällä - kirjaimellisesti. Hauska lahja sähköasentajalle on paras tapa tunnustaa alan tärkeys huumorilla.",
     keywords: ["sähköasentaja", "sähkömies", "sähkö", "asennus", "virta", "kaapeli", "johto", "electrician"],
     shirtTexts: [
@@ -193,7 +195,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja putkimiehelle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat putkimiehelle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja putkimiehelle",
-    tldr: "Hauska lahja putkimiehelle on huumoripaita tai -huppari putki- ja LVI-alan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja putkimiehelle on huumoripaita tai -huppari putki- ja LVI-alan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Putkimies löytää tien läpi - kirjaimellisesti seinänkin läpi. Hauska putkimieslahja tunnistaa ammatillisen taidon hauskalla tavalla.",
     keywords: ["putkimies", "putkiasentaja", "putki", "viemäri", "LVI", "vesi", "plumber"],
     shirtTexts: [
@@ -224,7 +226,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja rakennusmiehelle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat rakennusmiehelle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja rakennusmiehelle",
-    tldr: "Hauska lahja rakennusmiehelle on huumoripaita tai -huppari rakennusalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja rakennusmiehelle on huumoripaita tai -huppari rakennusalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Rakennusmies rakentaa Suomen - talo kerrallaan. Hauska lahja rakennusmiehelle on osuva tapa tunnistaa fyysinen ja taidokas työ.",
     keywords: ["rakennusmies", "raksamies", "rakentaja", "rakennus", "betoni", "talo", "kirvesmies", "builder"],
     shirtTexts: [
@@ -251,7 +253,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja hitsaajalle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat hitsaajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja hitsaajalle",
-    tldr: "Hauska lahja hitsaajalle on huumoripaita tai -huppari hitsausalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja hitsaajalle on huumoripaita tai -huppari hitsausalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Hitsaaja yhdistää metallit - ja kirjaimellisesti pitää rakenteet kasassa. Hauska hitsaajalahja tunnistaa ammatillisen taidon.",
     keywords: ["hitsaaja", "hitsaus", "metalli", "teräs", "kipinä", "welder"],
     shirtTexts: [
@@ -277,7 +279,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja koodarille: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat koodarille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja koodarille",
-    tldr: "Hauska lahja koodarille on huumoripaita tai -huppari IT-alan sisäpiirihuumorilla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja koodarille on huumoripaita tai -huppari IT-alan sisäpiirihuumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Koodari rakentaa digitaalisen maailman - usein bugien keskellä. Hauska koodari-lahja osuu IT-alan sisäpiirihuumoriin joka on vain ammattilaisten ymmärryksissä.",
     keywords: ["koodari", "ohjelmoija", "it", "koodi", "bugi", "feature", "git", "developer", "programmer", "softa", "full stack", "backend", "frontend"],
     shirtTexts: [
@@ -309,7 +311,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja rekkakuljettajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat rekkakuljettajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja rekkakuljettajalle",
-    tldr: "Hauska lahja rekkakuljettajalle on huumoripaita tai -huppari tieliikenteen vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja rekkakuljettajalle on huumoripaita tai -huppari tieliikenteen vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Rekkakuljettaja pitää Suomen logistiikan pyörissä - tien päällä viikkoja kerrallaan. Hauska lahja rekkakuljettajalle tunnistaa tämän ainutlaatuisen ammatin.",
     keywords: ["rekka", "rekkamies", "rekkakuljettaja", "kuljettaja", "truck", "auto", "tie", "liikenne"],
     shirtTexts: [
@@ -335,7 +337,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja baarimikkolle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat baarimikkolle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja baarimikkolle",
-    tldr: "Hauska lahja baarimikkolle on huumoripaita tai -huppari baariteemalähteillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja baarimikkolle on huumoripaita tai -huppari baariteemalähteillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Baarimikko kuuntelee, sekoittaa juomia ja pitää tunnelman yllä - usein samaan aikaan. Hauska baarimikkolahja tunnistaa tämän monikäyttöisen ammatin.",
     keywords: ["baarimikko", "baari", "juoma", "cocktail", "olut", "pubi", "bartender", "last call"],
     shirtTexts: [
@@ -361,7 +363,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja kokille: paita ja huppari | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat kokille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kokille",
-    tldr: "Hauska lahja kokille on huumoripaita tai -huppari keittiöalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kokille on huumoripaita tai -huppari keittiöalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kokki pitää maailman nälkää loitolla - keittiössä joka on oma valtakunta. Hauska kokkilahja tunnistaa keittiöntaidon huumorilla.",
     keywords: ["kokki", "chef", "keittiö", "ruoka", "ruoanlaitto", "ravintola", "cook"],
     shirtTexts: [
@@ -388,7 +390,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja kirjanpitäjälle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat kirjanpitäjälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kirjanpitäjälle",
-    tldr: "Hauska lahja kirjanpitäjälle on huumoripaita tai -huppari talousalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kirjanpitäjälle on huumoripaita tai -huppari talousalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kirjanpitäjä pitää numerot järjestyksessä - se ei ole helppoa. Hauska lahja kirjanpitäjälle tunnistaa laskenta-alan sisäpiirihuumoria.",
     keywords: ["kirjanpitäjä", "kirjanpito", "taloushallinto", "excel", "tilinpäätös", "audit", "accountant"],
     shirtTexts: [
@@ -415,7 +417,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja myyntimiehelle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat myyntimiehelle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja myyntimiehelle",
-    tldr: "Hauska lahja myyntimiehelle on huumoripaita tai -huppari myyntialan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja myyntimiehelle on huumoripaita tai -huppari myyntialan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Myyntimies ei ota ei vastaukseksi - ja siinä on koko pointti. Hauska myyntilahja tunnistaa ammatillisen sinnikkyyden hauskalla tavalla.",
     keywords: ["myyjä", "myyntimies", "myynti", "kaupat", "asiakas", "quota", "sales"],
     shirtTexts: [
@@ -442,7 +444,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja poliisille: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat poliisille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja poliisille",
-    tldr: "Hauska lahja poliisille on huumoripaita tai -huppari poliisin arjen vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja poliisille on huumoripaita tai -huppari poliisin arjen vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Poliisi ylläpitää järjestystä - myös juhlapyhiä. Hauska poliisilahjä tunnistaa ammatillisen arvokkuuden huumorilla.",
     keywords: ["poliisi", "poliisi", "laki", "järjestys", "cop", "police"],
     shirtTexts: [
@@ -468,7 +470,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja palomiehelle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat palomiehelle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja palomiehelle",
-    tldr: "Hauska lahja palomiehelle on huumoripaita tai -huppari pelastusalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja palomiehelle on huumoripaita tai -huppari pelastusalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Palomies sammuttaa tulipaloja ja pelastaa henkiä - usein samaan aikaan. Hauska palomieslahja tunnistaa ammatin sankaruuden hauskalla tavalla.",
     keywords: ["palomies", "palolaitos", "tulipalo", "pelastus", "sammutus", "firefighter"],
     shirtTexts: [
@@ -494,7 +496,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja yrittäjälle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat yrittäjälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja yrittäjälle",
-    tldr: "Hauska lahja yrittäjälle on huumoripaita tai -huppari yrittäjyyden vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja yrittäjälle on huumoripaita tai -huppari yrittäjyyden vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Yrittäjä ei nukahda lomalla - koska lomaa ei oikein ole. Hauska yrittäjälahja tunnistaa yrittäjyyden todellisuuden hauskalla tavalla.",
     keywords: ["yrittäjä", "yrittäjyys", "yritys", "startup", "oma pomo", "entrepreneur"],
     shirtTexts: [
@@ -520,7 +522,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja fysioterapeutille | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat fysioterapeutille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja fysioterapeutille",
-    tldr: "Hauska lahja fysioterapeutille on huumoripaita tai -huppari kuntoutuksen vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja fysioterapeutille on huumoripaita tai -huppari kuntoutuksen vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Fysioterapeutti saa muut liikkumaan - omasta selästä ei lupauksia. Hauska lahja fysioterapeutille tunnistaa ammatillisen huumorin.",
     keywords: ["fysioterapeutti", "fysikaalinenhoito", "kuntoutus", "venyttely", "selkä", "liike", "physio"],
     shirtTexts: [
@@ -546,7 +548,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja hammaslääkärille | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat hammaslääkärille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja hammaslääkärille",
-    tldr: "Hauska lahja hammaslääkärille on huumoripaita tai -huppari hammashoidon vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja hammaslääkärille on huumoripaita tai -huppari hammashoidon vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Hammaslääkäri on se ammattilainen jota pelätään - ja rakastetaan hampaiden kanssa. Hauska lahja hammaslääkärille osuu ammatilliseen sisäpiirihuumoriin.",
     keywords: ["hammaslääkäri", "hammas", "hammashoito", "dentisti", "paikka", "implantti", "dentist"],
     shirtTexts: [
@@ -572,7 +574,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja insinöörille: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat insinöörille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja insinöörille",
-    tldr: "Hauska lahja insinöörille on huumoripaita tai -huppari tekniikka-alan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja insinöörille on huumoripaita tai -huppari tekniikka-alan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Insinööri ratkaisee ongelmat - laskurin kanssa. Hauska insinöörilahja tunnistaa teknisen ajattelun huumorilla.",
     keywords: ["insinööri", "insinöori", "tekniikka", "laskenta", "rakennus", "prosessi", "engineer"],
     shirtTexts: [
@@ -598,7 +600,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja maanviljelijälle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat maanviljelijälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja maanviljelijälle",
-    tldr: "Hauska lahja maanviljelijälle on huumoripaita tai -huppari maatalouden vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja maanviljelijälle on huumoripaita tai -huppari maatalouden vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Maanviljelijä ruokkii Suomen - usein sääoloista huolimatta. Hauska maanviljelijälahja tunnistaa tämän tärkeän ammatin hauskalla tavalla.",
     keywords: ["maanviljelijä", "maatila", "traktori", "pelto", "vilja", "lehmä", "farmer", "maatalous"],
     shirtTexts: [
@@ -624,7 +626,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja psykologille: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat psykologille: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja psykologille",
-    tldr: "Hauska lahja psykologille on huumoripaita tai -huppari psykologian vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja psykologille on huumoripaita tai -huppari psykologian vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Psykologi ymmärtää kaikkia - paitsi ehkä itseään. Hauska psykologilahja tunnistaa alan sisäpiirihuumoria.",
     keywords: ["psykologi", "terapia", "mielenasiat", "mieliharjailu", "psykologia", "therapist"],
     shirtTexts: [
@@ -650,7 +652,7 @@ export const professions: Profession[] = [
     seoTitle: "Hauska lahja siivoojalle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat siivoojalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja siivoojalle",
-    tldr: "Hauska lahja siivoojalle on huumoripaita tai -huppari siivousalan vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja siivoojalle on huumoripaita tai -huppari siivousalan vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Siivoja pitää maailman siistinä - usein huomaamattomasti. Hauska siivousalahja tunnistaa tämän välttämättömän työn.",
     keywords: ["siivoja", "siivous", "puhtaus", "siivoustyö", "cleaner"],
     shirtTexts: [

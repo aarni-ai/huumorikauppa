@@ -3,6 +3,7 @@ import { Gift, ArrowRight } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
 import { selectMilestoneHighlights } from "@/data/milestoneHighlights";
 import { Product } from "@/types/product";
+import { proxiedImage } from "@/lib/imageProxy";
 
 interface MilestoneProductHighlightsProps {
   articleSlug: string;
@@ -44,7 +45,7 @@ export function MilestoneProductHighlights({ articleSlug }: MilestoneProductHigh
           >
             <Link to={`/tuote/${p.slug}`} aria-label={p.name} className="block aspect-square bg-muted overflow-hidden group">
               <img
-                src={p.images[0] || "/placeholder.svg"}
+                src={proxiedImage(p.images[0], { width: 480 }) || "/placeholder.svg"}
                 alt={p.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"

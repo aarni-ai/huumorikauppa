@@ -4,6 +4,7 @@
  *
  * Säännöt: title alle 60 merkkiä, ei ajatusviivoja, ei todistamattomia superlatiiveja.
  */
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
 export interface StaticPageMeta {
   title: string;
   description: string;
@@ -17,20 +18,20 @@ export const STATIC_PAGE_META = {
   "/": {
     title: "Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi",
     description:
-      "Hauskat t-paidat, hupparit ja muut huumorituotteet suomalaisella huumorilla. Toimitus 3-10 arkipäivässä, ilmainen 79 eurosta alkaen.",
+      `Hauskat t-paidat, hupparit ja muut huumorituotteet suomalaisella huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
     h1: "Hauskat lahjat ja huumorituotteet",
     name: "Etusivu",
     intro:
-      "Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen 3-10 arkipäivässä, ja 79 euron tilauksista alkaen toimitus on ilmainen.",
+      `Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`,
   },
   "/kaikki-tuotteet": {
     title: "Kaikki hauskat tuotteet | Huumorikauppa.fi",
     description:
-      "Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit ja muut huumorilahjat. Ilmainen toimitus 79 euron tilauksista alkaen.",
+      `Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit ja muut huumorilahjat. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
     h1: "Kaikki hauskat tuotteet",
     name: "Kaikki tuotteet",
     intro:
-      "Kaikki Huumorikaupan tuotteet yhdellä sivulla. Tuotteet painetaan tilauksesta ja toimitetaan koko Suomeen 3-10 arkipäivässä.",
+      `Kaikki Huumorikaupan tuotteet yhdellä sivulla. Tuotteet painetaan tilauksesta ja toimitetaan koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   },
   "/blogi": {
     title: "Blogi: lahjavinkit ja hauskat ideat | Huumorikauppa.fi",
@@ -51,7 +52,7 @@ export const STATIC_PAGE_META = {
   "/toimitusehdot": {
     title: "Toimitusehdot | Huumorikauppa.fi",
     description:
-      "Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus 3-10 arkipäivässä, toimituskulut 6,90 € ja ilmainen toimitus yli 79 € tilauksiin.",
+      `Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, toimituskulut ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
     h1: "Toimitusehdot ja palautukset",
     name: "Toimitusehdot",
   },
@@ -107,7 +108,7 @@ export const STATIC_PAGE_META = {
   "/aitienpaiva": {
     title: "Hauskat äitienpäivälahjat äidille 2026 | Huumorikauppa",
     description:
-      "Hauskat äitienpäivälahjat 2026: paidat, hupparit ja muut lahjat, jotka äiti muistaa. Toimitus 3-10 arkipäivässä koko Suomeen.",
+      `Hauskat äitienpäivälahjat 2026: paidat, hupparit ja muut lahjat, jotka äiti muistaa. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen.`,
     h1: "Hauskat äitienpäivälahjat 2026",
     name: "Äitienpäivälahjat",
   },

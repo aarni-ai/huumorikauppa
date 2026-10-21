@@ -9,6 +9,7 @@ import { GuideProductRecommendations } from "@/components/GuideProductRecommenda
 import { MilestoneProductHighlights } from "@/components/MilestoneProductHighlights";
 import { BlogInlineProducts } from "@/components/BlogInlineProducts";
 import { buildBlogPostJsonLd, blogImageUrl } from "@/lib/blogJsonLd";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 function renderContent(content: string, articleSlug: string) {
   const lines = content.split("\n");
@@ -277,7 +278,7 @@ const BlogPost = () => {
               )}
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              Ilmainen toimitus yli 79 € tilauksiin · 14 pv palautusoikeus · Toimitus 3–10 arkipäivässä
+              Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
             </p>
           </section>
         )}

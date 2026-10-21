@@ -100,6 +100,16 @@
       "statusCode": 301
     },
     {
+      "source": "/isanpaiva-lahjat",
+      "destination": "/hauska-isanpaivalahja",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/isanpaiva",
+      "destination": "/hauska-isanpaivalahja",
+      "statusCode": 301
+    },
+    {
       "source": "/lahjat/isoäidille",
       "destination": "/lahjat/isoaidille",
       "statusCode": 301
@@ -187,6 +197,16 @@
     {
       "source": "/tuote/30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki",
       "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/tarrat",
+      "destination": "/kategoria/tarrat",
+      "statusCode": 301
+    },
+    {
+      "source": "/hupparit",
+      "destination": "/kategoria/hupparit",
       "statusCode": 301
     },
     {

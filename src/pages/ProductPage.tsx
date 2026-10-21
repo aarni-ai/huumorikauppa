@@ -12,8 +12,13 @@ import { Badge } from "@/components/ui/badge";
 import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { ToimitusarvioRivi } from "@/components/ToimitusarvioRivi";
 import { Textarea } from "@/components/ui/textarea";
-import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ShoppingCart, Share2, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
+import { PurchaseFacts } from "@/components/PurchaseFacts";
+import { SizeGuide } from "@/components/SizeGuide";
+import { PaymentIcons } from "@/components/PaymentIcons";
+import { isClothingCategory } from "@/lib/sizeChart";
+import { PRODUCT_IMAGE_SIZES, productImageSources } from "@/lib/productImages";
+import { formatPriceFi } from "@/seo/site";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
 import { buildProductJsonLd } from "@/seo/structuredData";
@@ -27,8 +32,7 @@ import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 
-import { getProductReviews, getProductRating } from "@/lib/productReviews";
-import { ProductRating } from "@/components/ProductRating";
+import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
 
 
@@ -199,13 +203,6 @@ function ProductDescription({ description, expanded, onToggle }: { description: 
 }
 
 
-const sizeGuide = [
-  { size: "S", chest: "88–92", waist: "72–76", hip: "88–92" },
-  { size: "M", chest: "96–100", waist: "80–84", hip: "96–100" },
-  { size: "L", chest: "104–108", waist: "88–92", hip: "104–108" },
-  { size: "XL", chest: "112–116", waist: "96–100", hip: "112–116" },
-  { size: "XXL", chest: "120–124", waist: "104–108", hip: "120–124" },
-];
 
 const NO_SIZE_CATEGORIES = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
 
@@ -232,17 +229,31 @@ const ProductPage = () => {
 
   const addToCartBtnRef = useRef<HTMLButtonElement>(null);
   const variantSectionRef = useRef<HTMLDivElement>(null);
-  const [showStickyBar, setShowStickyBar] = useState(false);
+  const stickyEndRef = useRef<HTMLDivElement>(null);
+  const [buttonOutOfView, setButtonOutOfView] = useState(false);
+  const [pageEndReached, setPageEndReached] = useState(false);
+  // Kiinteä ostopalkki näkyy vain, kun sivun oma Lisää koriin -painike ei ole näkyvissä, ja
+  // piiloutuu tuotesisällön lopussa, jottei se peitä alatunnistetta.
+  const showStickyBar = buttonOutOfView && !pageEndReached;
 
   useEffect(() => {
     const el = addToCartBtnRef.current;
-    if (!el) return;
+    const end = stickyEndRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
-      ([entry]) => setShowStickyBar(!entry.isIntersecting),
-      { threshold: 0, rootMargin: "0px 0px -80px 0px" }
+      // Palkki näkyy myös, jos painike on vain osittain näkyvissä (esim. kaksirivinen tuotenimi).
+      ([entry]) => setButtonOutOfView(entry.intersectionRatio < 1),
+      { threshold: [0, 1] }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    const endObserver = end
+      ? new IntersectionObserver(([entry]) => setPageEndReached(entry.isIntersecting || entry.boundingClientRect.top < 0), { threshold: 0 })
+      : null;
+    if (end) endObserver?.observe(end);
+    return () => {
+      observer.disconnect();
+      endObserver?.disconnect();
+    };
   }, [product?.id]);
 
   const variantImages = useMemo(() => {
@@ -330,7 +341,11 @@ const ProductPage = () => {
   const hideSize = NO_SIZE_CATEGORIES.includes(product.category);
   const hasSizes = !hideSize && product.variants.sizes && product.variants.sizes.length > 1;
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
-  const uniqueColors = [...new Set((product.variants.colors || []) as string[])];
+  // Oletusväri ensin, jotta valittu väri näkyy mobiilin vaakarivin alussa.
+  const defaultColor = product.variants.default_color as string | undefined;
+  const uniqueColors = [...new Set((product.variants.colors || []) as string[])].sort(
+    (a, b) => Number(b === defaultColor) - Number(a === defaultColor),
+  );
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
@@ -412,7 +427,9 @@ const ProductPage = () => {
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
   // Product + Offer (toimitus, palautusehdot) samasta rakentajasta kuin esirenderöinti.
-  // Ei aggregateRatingia: productReviews.ts:n arviot eivät ole todennettuja asiakasarvioita.
+  // Ei aggregateRatingia eikä Reviewta: arvioita ei ole todennetusta lähteestä (src/data/arvostelut-arkisto.ts).
+  const productReviews = getProductReviews(product);
+
   const productJsonLd = buildProductJsonLd({
     id: product.id,
     slug: product.slug,
@@ -494,11 +511,7 @@ const ProductPage = () => {
         productPrice={product.price.toFixed(2)}
       />
       <div className="container pt-2 pb-6 md:py-10">
-        {/* Mobile: compact back link */}
-        <Link to={`/kategoria/${product.category}`} className="md:hidden inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-3">
-          ← {category?.name || product.category}
-        </Link>
-        {/* Desktop: full breadcrumb */}
+        {/* Desktop: full breadcrumb (mobiilissa kategorialinkki on sivun alaosassa, jotta osto mahtuu ensinäkymään) */}
         <nav aria-label="Murupolku" className="hidden md:flex text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
@@ -509,64 +522,69 @@ const ProductPage = () => {
           <span className="text-foreground">{product.name}</span>
         </nav>
 
-        {/* MOBILE ONLY: name + rating + price above gallery for above-the-fold visibility */}
-        <div className="md:hidden mb-3 space-y-1.5">
-          <h1 className="font-display text-2xl text-foreground leading-tight">{product.name}</h1>
-          <div className="flex items-center justify-between gap-3">
-            <ProductRating
-              product={{ id: product.id, name: product.name, category: product.category }}
-              size="sm"
-              onClick={() => document.getElementById("asiakasarviot")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            />
-            <div className="flex items-center gap-2 shrink-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12">
+          {/* MOBILE ONLY: nimi, hinta ja toimitus/palautus ennen kuvaa. Ensinäkymässä 360x740 ja 390x844
+              näkyvät hinta, värit, koot ja Lisää koriin -painike. */}
+          <div className="md:hidden mb-2">
+            <h1 className="font-display text-xl text-foreground leading-tight line-clamp-2">{product.name}</h1>
+            <div className="flex items-baseline gap-2 mt-0.5">
               {hasDiscount && (
-                <span className="text-sm text-muted-foreground line-through">{product.original_price!.toFixed(2)} €</span>
+                <span className="text-sm text-muted-foreground line-through">{formatPriceFi(product.original_price!)}</span>
               )}
               <span className={`text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                {product.price.toFixed(2)} €
+                {formatPriceFi(product.price)}
               </span>
               {hasDiscount && (
                 <Badge className="bg-destructive text-destructive-foreground text-xs font-bold">-{discountPercent}%</Badge>
               )}
             </div>
+            {hasDiscount && (
+              <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
+            )}
+            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} compact className="mt-1" />
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Images */}
           <div className="space-y-3">
-            {/* Mobile: swipeable scroll-snap gallery */}
-            <div className="md:hidden">
+            {/* Mobile: koko näytön levyinen pyyhkäistävä galleria */}
+            <div className="md:hidden -mx-4 relative">
               <div
-                className="relative flex overflow-x-auto snap-x snap-mandatory rounded-lg bg-muted scrollbar-hide"
-                style={{ scrollSnapType: "x mandatory" }}
+                className="flex overflow-x-auto snap-x snap-mandatory bg-muted"
+                style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none" }}
                 onScroll={(e) => {
                   const el = e.currentTarget;
                   const idx = Math.round(el.scrollLeft / el.clientWidth);
                   if (idx !== activeImage) setActiveImage(idx);
                 }}
               >
-                {currentImages.map((img, i) => (
-                  <img
-                    key={`m-${selectedColor}-${i}`}
-                    src={proxiedImage(img) || img}
-                    alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
-                    className="w-full aspect-[4/3] md:aspect-square object-cover shrink-0 snap-start"
-                    style={{ scrollSnapAlign: "start" }}
-                    width={600}
-                    height={600}
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                ))}
-                <div className="absolute top-3 left-3 flex flex-col gap-1 pointer-events-none">
-                  {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
-                  {hasDiscount && (
-                    <Badge className="bg-destructive text-destructive-foreground font-bold">-{discountPercent}%</Badge>
-                  )}
-                </div>
+                {currentImages.map((img, i) => {
+                  const { src, srcSet } = productImageSources(img);
+                  return (
+                    <img
+                      key={`m-${selectedColor}-${i}`}
+                      src={src}
+                      srcSet={srcSet}
+                      sizes={PRODUCT_IMAGE_SIZES}
+                      alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
+                      className="w-full shrink-0 snap-start aspect-square object-cover max-h-[calc(100svh-492px)] min-h-[220px]"
+                      style={{ scrollSnapAlign: "start" }}
+                      width={800}
+                      height={800}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      {...({ fetchpriority: i === 0 ? "high" : "auto" } as Record<string, string>)}
+                      decoding={i === 0 ? "sync" : "async"}
+                    />
+                  );
+                })}
+              </div>
+              <div className="absolute top-3 left-4 flex flex-col gap-1 pointer-events-none">
+                {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
+                {hasDiscount && (
+                  <Badge className="bg-destructive text-destructive-foreground font-bold">-{discountPercent}%</Badge>
+                )}
               </div>
               {currentImages.length > 1 && (
-                <div className="flex justify-center gap-1.5 mt-3">
+                <div className="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 pointer-events-none" aria-hidden="true">
                   {currentImages.map((_, i) => (
                     <span
                       key={i}
@@ -581,13 +599,21 @@ const ProductPage = () => {
 
             {/* Desktop: main image + thumbnails */}
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden hidden md:block">
-              <img
-                src={proxiedImage(currentImages[activeImage] || currentImages[0]) || "/placeholder.svg"}
-                alt={productImageAlt(product, { url: currentImages[activeImage] || currentImages[0], index: activeImage, color: selectedColor })}
-                className="w-full h-full object-cover"
-                width={600}
-                height={600}
-              />
+              {(() => {
+                const mainUrl = currentImages[activeImage] || currentImages[0];
+                const { src, srcSet } = productImageSources(mainUrl);
+                return (
+                  <img
+                    src={src}
+                    srcSet={srcSet}
+                    sizes={PRODUCT_IMAGE_SIZES}
+                    alt={productImageAlt(product, { url: mainUrl, index: activeImage, color: selectedColor })}
+                    className="w-full h-full object-cover"
+                    width={800}
+                    height={800}
+                  />
+                );
+              })()}
               <div className="absolute top-3 left-3 flex flex-col gap-1">
                 {product.is_gift_idea && <Badge className="bg-secondary text-secondary-foreground font-bold">LAHJAIDEA 🎁</Badge>}
                 {hasDiscount && (
@@ -606,7 +632,7 @@ const ProductPage = () => {
                     }`}
                   >
                     <img
-                      src={proxiedImage(img) || img}
+                      src={proxiedImage(img, { width: 320 }) || img}
                       alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
                       className="w-full h-full object-cover"
                       loading="lazy"
@@ -620,29 +646,19 @@ const ProductPage = () => {
           </div>
 
           {/* Product info */}
-          <div className="space-y-5">
-            {/* Desktop only: name/rating/price — on mobile these are shown above the gallery */}
+          <div className="space-y-2.5 md:space-y-5 mt-2 md:mt-0">
+            {/* Desktop only: name/price/facts — on mobile these are shown above the gallery */}
             <div className="hidden md:block">
               <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">{product.name}</h1>
-              <div className="mb-2">
-                <ProductRating
-                  product={{ id: product.id, name: product.name, category: product.category }}
-                  size="md"
-                  onClick={() => {
-                    const el = document.getElementById("asiakasarviot");
-                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                />
-              </div>
               <div>
                 <div className="flex items-center gap-3">
                   {hasDiscount && (
                     <span className="text-xl text-muted-foreground line-through">
-                      {product.original_price!.toFixed(2)} €
+                      {formatPriceFi(product.original_price!)}
                     </span>
                   )}
                   <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                    {product.price.toFixed(2)} €
+                    {formatPriceFi(product.price)}
                   </span>
                   {hasDiscount && (
                     <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
@@ -650,36 +666,35 @@ const ProductPage = () => {
                 </div>
                 {hasDiscount && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    Alin hinta 30 päivän ajalta: {product.original_price!.toFixed(2)} €
+                    Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}
                   </p>
                 )}
+                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} className="mt-2 text-sm" />
               </div>
             </div>
 
-            <DeliveryBadge supplier={product.supplier} className="w-fit" />
             <ToimitusarvioRivi product={product} />
-
-            {product.is_featured && (
-              <Badge className="bg-accent text-accent-foreground font-bold w-fit">🔥 Suosittu tuote</Badge>
-            )}
-            {product.stock <= 10 && product.stock > 0 && (
-              <div className="flex items-center gap-2 bg-destructive/10 text-destructive rounded-md px-3 py-2">
-                <span className="text-sm font-bold">🔥 Vain {product.stock} kpl jäljellä – tilaa ennen kuin loppuu!</span>
-              </div>
-            )}
 
             {/* Color + size selector — ref used by sticky bar scroll-to */}
             {hasColors && (
               <div ref={variantSectionRef}>
-                <label className="text-sm font-medium text-foreground mb-2 block">
+                <span className="text-xs md:text-sm font-medium text-foreground mb-1 md:mb-2 block">
                   Väri{selectedColor ? `: ${selectedColor}` : ""}
-                </label>
-                <div className="flex flex-wrap gap-2">
+                </span>
+                <div
+                  className="flex gap-2 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
+                  style={{ scrollbarWidth: "none" }}
+                  role="radiogroup"
+                  aria-label="Väri"
+                >
                   {uniqueColors.map((color: string) => (
                     <button
                       key={color}
+                      type="button"
+                      role="radio"
+                      aria-checked={selectedColor === color}
                       onClick={() => handleColorSelect(color)}
-                      className={`px-4 py-3 min-h-[44px] rounded-md border text-sm font-medium transition-colors ${
+                      className={`shrink-0 px-3 md:px-4 h-9 md:h-11 rounded-md border text-sm font-medium transition-colors ${
                         selectedColor === color
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border text-foreground hover:border-primary/50"
@@ -692,52 +707,34 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Size selector with modal size chart */}
+            {/* Size selector + kokoapu */}
             {hasSizes && (
               <div ref={!hasColors ? variantSectionRef : undefined}>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-foreground">Koko</label>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <button className="text-xs text-primary hover:underline flex items-center gap-1">
-                        <Ruler className="h-3 w-3" /> Kokotaulukko
-                      </button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-card border-border max-w-sm">
-                      <DialogHeader>
-                        <DialogTitle className="font-display text-foreground">Kokotaulukko (cm)</DialogTitle>
-                      </DialogHeader>
-                      <div className="overflow-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-border text-muted-foreground">
-                              <th className="py-2 text-left">Koko</th>
-                              <th className="py-2 text-left">Rinta</th>
-                              <th className="py-2 text-left">Vyötärö</th>
-                              <th className="py-2 text-left">Lantio</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {sizeGuide.map(row => (
-                              <tr key={row.size} className="border-b border-border/50">
-                                <td className="py-2 font-medium text-foreground">{row.size}</td>
-                                <td className="py-2 text-muted-foreground">{row.chest}</td>
-                                <td className="py-2 text-muted-foreground">{row.waist}</td>
-                                <td className="py-2 text-muted-foreground">{row.hip}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                <div className="flex items-center justify-between mb-1 md:mb-2 min-h-[20px]">
+                  <span className="text-xs md:text-sm font-medium text-foreground">Koko{selectedSize ? `: ${selectedSize}` : ""}</span>
+                  {isClothingCategory(product.category) && (
+                    <SizeGuide
+                      category={product.category}
+                      sizes={sortSizes(product.variants.sizes!)}
+                      description={product.description}
+                      isCustom={isCustom}
+                    />
+                  )}
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div
+                  className="flex gap-2 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
+                  style={{ scrollbarWidth: "none" }}
+                  role="radiogroup"
+                  aria-label="Koko"
+                >
                   {sortSizes(product.variants.sizes!).map((size: string) => (
                     <button
                       key={size}
+                      type="button"
+                      role="radio"
+                      aria-checked={selectedSize === size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-3 min-h-[44px] rounded-md border text-sm font-medium transition-colors ${
+                      className={`shrink-0 min-w-[44px] px-3 md:px-4 h-9 md:h-11 rounded-md border text-sm font-medium transition-colors ${
                         selectedSize === size
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border text-foreground hover:border-primary/50"
@@ -769,40 +766,37 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Quantity */}
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">Määrä</label>
-              <div className="flex items-center gap-3">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold">−</button>
-                <span className="text-lg font-bold text-foreground w-8 text-center">{quantity}</span>
-                <button onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} className="w-10 h-10 rounded-md border border-border text-foreground hover:bg-muted flex items-center justify-center font-bold">+</button>
+            {/* Määrä + Lisää koriin samalla rivillä */}
+            <div className="flex items-stretch gap-3">
+              <div className="flex items-center rounded-md border border-border shrink-0" role="group" aria-label="Määrä">
+                <button type="button" aria-label="Vähennä määrää" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-12 text-foreground hover:bg-muted flex items-center justify-center font-bold">−</button>
+                <span className="text-base font-bold text-foreground w-7 text-center" aria-live="polite">{quantity}</span>
+                <button type="button" aria-label="Lisää määrää" onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} className="w-10 h-12 text-foreground hover:bg-muted flex items-center justify-center font-bold">+</button>
               </div>
+              <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="flex-1 h-12 bg-primary text-primary-foreground font-bold text-base md:text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+                <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
+              </Button>
             </div>
 
-            {/* Add to cart */}
-            <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="w-full bg-primary text-primary-foreground font-bold text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
-              <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
-            </Button>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <PaymentIcons iconClassName="h-4 w-auto" />
+              <span>Korttimaksu Stripen maksusivulla</span>
+            </div>
 
-            <p className="text-xs text-muted-foreground text-center">
-              Ilmainen toimitus yli 79 € · 14 pv palautusoikeus · Klarna &amp; MobilePay
-            </p>
+            <DeliveryBadge supplier={product.supplier} className="w-fit" />
+
+            {product.is_featured && (
+              <Badge className="bg-accent text-accent-foreground font-bold w-fit">🔥 Suosittu tuote</Badge>
+            )}
 
             {/* Share */}
             <div className="flex items-center gap-3 pt-2">
               <span className="text-sm text-muted-foreground flex items-center gap-1"><Share2 className="h-4 w-4" /> Jaa:</span>
-              <a href={`https://wa.me/?text=${encodeURIComponent(product.name + " – " + shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline flex items-center gap-1">
+              <a href={`https://wa.me/?text=${encodeURIComponent(product.name + " " + shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
               <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">Facebook</a>
               <button onClick={handleCopyLink} className="text-sm text-primary hover:underline flex items-center gap-1"><Copy className="h-4 w-4" /> Kopioi</button>
-            </div>
-
-            {/* Trust badges — desktop only (mobile trust strip is directly below CTA) */}
-            <div className="hidden md:grid grid-cols-3 gap-3 pt-4 border-t border-border">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Truck className="h-4 w-4 text-primary shrink-0" /> Ilmainen toimitus yli 79 €</div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><RotateCcw className="h-4 w-4 text-primary shrink-0" /> 14 pv palautusoikeus</div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Shield className="h-4 w-4 text-primary shrink-0" /> Turvallinen maksu</div>
             </div>
           </div>
         </div>
@@ -908,12 +902,12 @@ const ProductPage = () => {
           </div>
         </section>}
 
-        {/* Customer Reviews */}
-        <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
+        {/* Customer Reviews: vain todennetut, päivätyt arviot (src/lib/productReviews.ts). Ei osiota, jos arvioita ei ole. */}
+        {productReviews.length > 0 && <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
             {(() => {
-              const reviews = getProductReviews(product);
+              const reviews = productReviews;
               const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
               return (
                 <div className="space-y-4">
@@ -950,7 +944,7 @@ const ProductPage = () => {
               );
             })()}
           </div>
-        </section>
+        </section>}
 
         {/* Product FAQ */}
         <section className="mt-8 max-w-3xl">
@@ -1008,6 +1002,8 @@ const ProductPage = () => {
           allProducts={allProducts}
           currentProductId={product.id}
         />
+        {/* Ostopalkin piilotusraja: tästä alaspäin palkki ei peitä sisältöä. */}
+        <div ref={stickyEndRef} aria-hidden="true" className="h-px" />
       </div>
 
       {/* Sticky mobile add-to-cart bar */}
@@ -1019,15 +1015,16 @@ const ProductPage = () => {
       >
         <div className="flex items-center gap-3 p-3">
           <img
-            src={proxiedImage(product.images[0]) || "/placeholder.svg"}
+            src={proxiedImage(currentImages[0] || product.images[0], { width: 320 }) || "/placeholder.svg"}
             alt=""
             className="w-12 h-12 rounded-md object-cover bg-muted shrink-0"
             width={48}
             height={48}
+            loading="lazy"
           />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
-            <p className="text-sm font-bold text-primary">{product.price.toFixed(2)} €</p>
+            <p className="text-sm font-bold text-primary">{formatPriceFi(product.price)}</p>
           </div>
           <Button
             onClick={(needsSize && !selectedSize) || (needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}

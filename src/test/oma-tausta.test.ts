@@ -5,6 +5,7 @@ import { laskeKate, heikoinKate } from "../../api/_lib/kate.js";
 import { printifyVariantti, myynnissa } from "../../api/_lib/tuotteet.js";
 import { seuraavaYritys, puuttuvatVariantit, halytetaanko } from "../../api/_lib/tilaus.js";
 import { tilausRunko } from "../../api/_lib/printify.js";
+import { TOIMITUS, ILMAINEN_TOIMITUS_RAJA } from "../../api/_lib/vakiot.js";
 import { PIILOTETUT_KATEGORIAT as PALVELIN } from "../../api/_lib/piilotetut.js";
 import { PIILOTETUT_KATEGORIAT as SELAIN } from "@/lib/hiddenCategories";
 
@@ -32,10 +33,11 @@ describe("Printify-variantti", () => {
 });
 
 describe("Kassa", () => {
-  it("laskee hinnan palvelimen tiedoista, toimitus alle 79 €", () => {
+  it("laskee hinnan palvelimen tiedoista, toimitus rajan alle", () => {
     const t = laskeTilaus(pyynto([{ id: "p1", quantity: 1, size: "M", color: "Musta", price: 1 }]), tuotteet, null);
-    expect(t.total).toBe(41.8);
-    expect(t.shipping).toBe(6.9);
+    expect(34.9).toBeLessThan(ILMAINEN_TOIMITUS_RAJA);
+    expect(t.total).toBe(Math.round((34.9 + TOIMITUS) * 100) / 100);
+    expect(t.shipping).toBe(TOIMITUS);
     expect(t.rivit[0]).toMatchObject({ variant_id: 11, printify_product_id: "pf1", unit_cents: 3490 });
   });
   it("ilmainen toimitus ja prosenttialennus", () => {
@@ -55,10 +57,10 @@ describe("Kassa", () => {
 
 describe("Katesääntö 40 %", () => {
   it("laskee nettokatteen: (hinta + toimitus) alv 0 - tuotekulu - toimitus - Stripe", () => {
-    // (34,90 + 6,90) / 1,255 = 33,31; Stripe 41,80 * 1,5 % + 0,25 = 0,88; 33,31 - 12,00 - 4,50 - 0,88 = 15,93
+    // (34,90 + toimitusmaksu) / 1,255 - tuotekulu 12,00 - toimituskulu 4,50 - Stripe (maksettu * 1,5 % + 0,25); maksuna 40,80 (5,90): 15,15
     const k = laskeKate(paita, 11);
-    expect(k).toMatchObject({ tunnettu: true, nettokate: 15.93, sallittu: true });
-    expect(k.kate).toBeCloseTo(0.478, 3);
+    expect(k).toMatchObject({ tunnettu: true, nettokate: 15.15, sallittu: true });
+    expect(k.kate).toBeCloseTo(0.466, 3);
   });
   it("alle 40 % estää kassalla ja piilottaa listasta", () => {
     const halpa = { ...paita, id: "p4", slug: "halpa", variants: { ...paita.variants, costs: { "11": 1800, "12": 1800, "13": 1800 } } };
@@ -72,8 +74,9 @@ describe("Katesääntö 40 %", () => {
     expect(myynnissa(tuntematon)).toBe(true);
     expect(() => laskeTilaus(pyynto([{ id: "p5", quantity: 1, size: "M", color: "Musta" }]), [tuntematon], null)).toThrow(/hintaa ei voitu vahvistaa/);
   });
-  it("ilmainen toimitus yli 79 €", () => {
+  it("ilmainen toimitus rajan ylittävällä hinnalla", () => {
     const kallis = { ...paita, price: 89.9 };
+    expect(kallis.price).toBeGreaterThanOrEqual(ILMAINEN_TOIMITUS_RAJA);
     // 89,90 / 1,255 = 71,63; Stripe 1,60; 71,63 - 12 - 4,50 - 1,60 = 53,53
     expect(laskeKate(kallis, 11).nettokate).toBe(53.53);
   });

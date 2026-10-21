@@ -1,14 +1,16 @@
 /**
  * Merchant-syötteen lisäkentät (21.10.2026). Toimii syötteen jokaiselle <item>-lohkolle:
- *  - g:shipping: hinta kassan säännöllä (6,90 €, ilmainen 79 €:sta), aiemmin syötteessä aina 0,00 € (ristiriita kassan kanssa)
+ *  - g:shipping: hinta kassan säännöllä (src/config/toimitus.ts), aiemmin syötteessä aina 0,00 € (ristiriita kassan kanssa)
  *  - g:shipping_label: ilmainen_toimitus | vakiotoimitus
  *  - g:product_type: suomenkielinen tuotetyyppi Google-kategoriasta
  *  - g:identifier_exists: no (omat painotuotteet, ei GTIN:iä)
  *  - g:custom_label_1: sesonki (joulu 1.10.-24.12., muuten ympari_vuoden)
  *  - g:custom_label_0: kateluokka (kate_yli_50 | kate_40_50), vain jos kate tunnetaan (oma tausta, Printify-kulut)
  */
-export const ILMAINEN_RAJA = 79;
-export const TOIMITUS = 6.9;
+// Peili: src/config/toimitus.ts (ILMAINEN_TOIMITUS_RAJA, TOIMITUSMAKSU). src/config/toimitus.test.ts
+// kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
+export const ILMAINEN_RAJA = 60;
+export const TOIMITUS = 5.9;
 
 const TUOTETYYPIT = [
   [/T-Shirts/, "Vaatteet > T-paidat"],

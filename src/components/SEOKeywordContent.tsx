@@ -50,7 +50,7 @@ export function SEOProductsContent() {
         100% puuvilla t-paita, ekologinen t-paita, luomu t-paita, kierrätyspuuvilla paita, eettinen paita, kestävä paita. Paksu t-paita, ohut t-paita, hengittävä paita, laadukas kangas paita, pehmeä paita. Regular fit paita, slim fit paita, loose fit paita, oversize printtipaita. Iso koko paita 3xl, iso koko paita 4xl, plus size t-paita.
       </p>
       <p>
-        Premium t-paita, design printti paita, digipainatus paita, silkkipaino paita. Nopea toimitus paita, ilmainen toimitus paita, suomesta toimitus paita. Klarna maksu paita, mobilepay paita. Trendipaita 2025, suosituin paita, myydyin paita, paras laatu paita, paras hinta paita.
+        Premium t-paita, design printti paita, digipainatus paita, silkkipaino paita. Nopea toimitus paita, ilmainen toimitus paita, suomesta toimitus paita. Trendipaita 2025, suosituin paita, myydyin paita, paras laatu paita, paras hinta paita.
       </p>
     </section>
   );
@@ -110,7 +110,7 @@ export function SEOBuyingContent() {
         Osta myydyin paita, osta uusi paita, osta uutuus paita, osta printtipaita nopeasti, osta paita nopea toimitus. Osta paita ilmainen toimitus, osta paita alennus, osta paita tarjous, osta paita kampanja. Osta paita verkosta, osta paita verkkokaupasta, osta paita helposti, osta paita ilman rekisteröitymistä.
       </p>
       <p>
-        Osta paita mobilepay, osta paita klarna, osta paita laskulla, osta paita osamaksulla, osta paita turvallisesti, osta paita suomesta, osta paita nopeasti kotiin. Osta paita lahjaksi, osta paita synttärilahjaksi, osta paita joululahjaksi, osta paita isänpäiväksi, osta paita äitienpäiväksi.
+        Osta paita korttimaksulla, osta paita turvallisesti, osta paita suomesta, osta paita nopeasti kotiin. Osta paita lahjaksi, osta paita synttärilahjaksi, osta paita joululahjaksi, osta paita isänpäiväksi, osta paita äitienpäiväksi.
       </p>
       <p>
         Osta paita ystävälle, osta paita työporukalle, osta paita tiimille, osta paita yritykselle, osta paita painatuksella, osta paita omalla tekstillä, osta paita omalla kuvalla.

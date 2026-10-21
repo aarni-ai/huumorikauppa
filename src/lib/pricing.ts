@@ -1,7 +1,7 @@
 /**
  * Retail price for a dropship product from its cost.
  *
- * Rule: sell = max(cost × 3, 6.90 €), then rounded UP to the nearest X.90.
+ * Rule: sell = max(cost × 3, 6,9 EUR minimum price), then rounded UP to the nearest X.90.
  * Used by the AliExpress CSV import (a per-product manual override is allowed).
  */
 export function computeSellPrice(costEur: number): number {

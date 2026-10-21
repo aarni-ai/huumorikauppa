@@ -32,7 +32,10 @@ async function fetchProducts(): Promise<Product[]> {
       piilotetutSlugit.add(p.slug);
       return false;
     })
-    .map((p) => {
+    .map(mapProduct);
+}
+
+function mapProduct(p: ProductRow): Product {
     const price = Number(p.price);
     return {
       id: p.id,
@@ -52,7 +55,23 @@ async function fetchProducts(): Promise<Product[]> {
       supplier: (p as { supplier?: string }).supplier ?? "printify",
       aliexpress_url: (p as { aliexpress_url?: string }).aliexpress_url ?? undefined,
     };
-  });
+}
+
+/**
+ * Yksi tuote slugilla. Tuotesivu ei odota koko luetteloa (satoja rivejä): pääkuva ja ostopainike
+ * renderöidään heti tämän pienen haun jälkeen. Sama suodatus kuin fetchProducts.
+ */
+async function fetchProductBySlug(slug: string): Promise<Product | null> {
+  const res = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Tuotteen haku epäonnistui (${res.status})`);
+  const row: ProductRow | null = await res.json();
+  if (!row || (row as { is_active?: boolean }).is_active === false) return null;
+  if (onPiilotettuTuote(row)) {
+    piilotetutSlugit.add(row.slug);
+    return null;
+  }
+  return mapProduct(row);
 }
 
 export function useProducts() {
@@ -65,6 +84,15 @@ export function useProducts() {
 
 export function useProduct(slug: string | undefined) {
   const { data: products, ...rest } = useProducts();
-  const product = products?.find((p) => p.slug === slug);
-  return { product, products, ...rest };
+  const single = useQuery({
+    queryKey: ["product", slug],
+    queryFn: () => fetchProductBySlug(slug!),
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+  });
+  const product = products?.find((p) => p.slug === slug) ?? single.data ?? undefined;
+  // Ladataan, kunnes tuote löytyy tai molemmat haut ovat valmiita (yksittäishaun virheessä luettelo ratkaisee).
+  const isLoading =
+    !product && (single.isLoading ? true : single.isError ? rest.isLoading : single.data === undefined && rest.isLoading);
+  return { product, products, ...rest, isLoading };
 }

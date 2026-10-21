@@ -54,6 +54,14 @@ export interface PrerenderPage {
   faqs?: { q: string; a: string }[];
   /** Valmiiksi renderöity sisältö (esim. ehtosivut), korvaa intro/sections-osat. */
   contentHtml?: string;
+  /** LCP-kuvan preload (tuotesivun pääkuva): sama src/srcset/sizes kuin Reactin <img>. */
+  preloadImage?: PreloadImage;
+}
+
+export interface PreloadImage {
+  href: string;
+  srcset?: string;
+  sizes?: string;
 }
 
 export function escapeHtml(value: string): string {
@@ -240,6 +248,20 @@ export interface HeadOptions {
   breadcrumbJsonLd?: JsonLd | null;
   /** Etusivun hero-kuvien preload vain etusivulle. */
   keepHeroPreload?: boolean;
+  preloadImage?: PreloadImage;
+}
+
+/** <link rel=preload> LCP-kuvalle. Lisätään heti viewportin jälkeen, jotta selain löytää sen ensimmäisenä. */
+export function preloadImageTag(img: PreloadImage): string {
+  const attrs = [
+    `rel="preload"`,
+    `as="image"`,
+    `href="${escapeAttr(img.href)}"`,
+    img.srcset ? `imagesrcset="${escapeAttr(img.srcset)}"` : "",
+    img.sizes ? `imagesizes="${escapeAttr(img.sizes)}"` : "",
+    `fetchpriority="high"`,
+  ].filter(Boolean);
+  return `<link ${attrs.join(" ")} />`;
 }
 
 export function applyHead(template: string, opts: HeadOptions): string {
@@ -267,7 +289,13 @@ export function applyHead(template: string, opts: HeadOptions): string {
     html = html.replace(/\s*<meta property="og:image:(width|height)"[^>]*>/g, "");
   }
   if (!opts.keepHeroPreload) {
-    html = html.replace(/\s*<link rel="preload" as="image" href="\/images\/hero-banner[^>]*>/g, "");
+    html = html.replace(/\s*<link rel="preload" as="image"[^>]*data-hero-preload[^>]*>/g, "");
+  }
+  if (opts.preloadImage) {
+    const tag = preloadImageTag(opts.preloadImage);
+    html = /<meta name="viewport"[^>]*>/.test(html)
+      ? html.replace(/(<meta name="viewport"[^>]*>)/, (m) => `${m}\n    ${tag}`)
+      : html.replace("</head>", () => `  ${tag}\n</head>`);
   }
   const scripts = [jsonLdScript(buildSiteJsonLd(), "seo-site-jsonld", false)];
   if (opts.pageJsonLd) scripts.push(jsonLdScript(opts.pageJsonLd, "seo-jsonld", true));
@@ -294,6 +322,7 @@ export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteN
     pageJsonLd: combineJsonLd(page.jsonLd),
     breadcrumbJsonLd: page.breadcrumbs.length > 1 ? buildBreadcrumbJsonLd(page.breadcrumbs) : null,
     keepHeroPreload: page.path === "/",
+    preloadImage: page.preloadImage,
   });
   return injectRoot(html, renderStaticBody(page, nav));
 }

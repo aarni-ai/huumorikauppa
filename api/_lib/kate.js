@@ -5,7 +5,7 @@
  *   nettokate      = myynti alv 0 - Printifyn tuotekulu - Printifyn toimituskulu - Stripe (1,5 % + 0,25 € maksetusta)
  *   kate %         = nettokate / myynti alv 0
  *
- * Laskenta yhden kappaleen tilauksena (pahin tapaus: toimitusmaksu 6,90 € alle 79 €:n tilauksissa, Printifyn
+ * Laskenta yhden kappaleen tilauksena (pahin tapaus: toimitusmaksu (vakiot.js) rajan alle jäävissä tilauksissa, Printifyn
  * ensimmäisen kappaleen toimituskulu). Printifyn kulut ovat tuoterivillä (variants.costs: variant_id -> sentit,
  * variants.shipping_cents: Suomen toimitus ensimmäiselle kappaleelle), ja ne haetaan Printifystä
  * (scripts/printify-tuonti.mjs --kulut). Tuntematon kulu: tuotetta ei voi ostaa (kassa), mutta se näkyy listassa,
@@ -22,7 +22,7 @@ export const ILMAINEN_RAJA = ILMAINEN_TOIMITUS_RAJA;
 
 /**
  * Tuotteen variantin kate. Palauttaa { tunnettu, nettokate, kate, sallittu }.
- * asetukset: { toimitusmaksu, ilmainenRaja } (oletus: kaupan nykyiset 6,90 € / 79 €); uusien tuotteiden hinnoittelu
+ * asetukset: { toimitusmaksu, ilmainenRaja } (oletus: api/_lib/vakiot.js); uusien tuotteiden hinnoittelu
  * (scripts/printify-uudet-tuotteet.mjs) laskee myös suunnitellulla toimitusmaksulla.
  */
 export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TOIMITUSMAKSU, ilmainenRaja = ILMAINEN_RAJA } = {}) {

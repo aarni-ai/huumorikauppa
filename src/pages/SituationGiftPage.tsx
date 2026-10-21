@@ -19,6 +19,7 @@ import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 import { resolveLandingRedirect } from "@/data/landingPages";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const SituationGiftPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -109,7 +110,7 @@ const SituationGiftPage = () => {
   const decisionSteps = [
     `1. Mieti vastaanottaja: harrastus, ammatti tai sisäpiirin vitsi (${situation.h1.toLowerCase()}).`,
     "2. Valitse tuotemuoto: t-paita arkikäyttöön, huppari kylmille päiville tai personoitava tuote omalla tekstillä.",
-    "3. Tarkista koko ja toimitusaika: toimitus kestää 3-10 arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen lahjapäivää.",
+    `3. Tarkista koko ja toimitusaika: toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen lahjapäivää.`,
   ];
 
   // FAQ enhancement layer — only adds if guide has fewer than 5 FAQs
@@ -146,7 +147,7 @@ const SituationGiftPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>

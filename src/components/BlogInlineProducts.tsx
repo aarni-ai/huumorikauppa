@@ -66,7 +66,7 @@ export function BlogProductCard({ product }: { product: Product }) {
     >
       <div className="aspect-square bg-muted overflow-hidden">
         <img
-          src={proxiedImage(product.images[0]) || "/placeholder.svg"}
+          src={proxiedImage(product.images[0], { width: 480 }) || "/placeholder.svg"}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"

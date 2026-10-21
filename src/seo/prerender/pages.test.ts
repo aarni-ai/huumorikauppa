@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { GIFT_ROUTE_SLUGS, buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./pages";
 import { STATIC_PAGE_META, type StaticPageMeta } from "../staticPageMeta";
+import { TOIMITUSMAKSU_TEKSTI, ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { buildLlmsFullTxt, buildLlmsTxt } from "../llms";
 
 const rows: ProductRow[] = [
@@ -125,8 +126,8 @@ describe("llms.txt", () => {
   const full = buildLlmsFullTxt(products);
   it("states delivery, returns and contact facts without dashes", () => {
     expect(short).toContain("3-10 arkipäivää");
-    expect(short).toContain("6,90 €");
-    expect(short).toContain("79 euron tilauksista alkaen toimitus on ilmainen");
+    expect(short).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
+    expect(short).toContain(`${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen`);
     expect(short).toContain("14 päivän peruutusoikeus");
     expect(short).toContain("huumorikauppa@gmail.com");
     expect(short).toContain("Mukeja ei tällä hetkellä myydä.");

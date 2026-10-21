@@ -7,11 +7,16 @@ import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { buildFaqJsonLd } from "@/seo/structuredData";
 import { cleanProductName, productImageAlt } from "@/lib/productNames";
 import { sanitizeProductDescription } from "@/lib/productCopy";
+import { TOIMITUSMAKSU_TEKSTI, ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import fixture from "./fixtures/visible-product-slugs.json";
 
 const SRC = path.resolve(__dirname, "..");
 const DATA_FILES = [
-  ...fs.readdirSync(path.join(SRC, "data")).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).map((f) => path.join(SRC, "data", f)),
+  // arvostelut-arkisto.ts on poistettujen arvioiden arkisto, jota sovellus ei näytä (alkuperäinen teksti säilytetään).
+  ...fs
+    .readdirSync(path.join(SRC, "data"))
+    .filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "arvostelut-arkisto.ts")
+    .map((f) => path.join(SRC, "data", f)),
   path.join(SRC, "seo/pageFaqs.ts"),
   path.join(SRC, "seo/staticPageMeta.ts"),
 ];
@@ -89,8 +94,8 @@ describe("UKK (AEO)", () => {
     }
     const text = SITE_FAQS.map((f) => f.a).join(" ");
     expect(text).toContain("20.11.2026");
-    expect(text).toContain("6,90 €");
-    expect(text).toContain("79 euron tilauksista alkaen");
+    expect(text).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
+    expect(text).toContain(`${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen`);
     expect(text).toContain("200 merkkiä");
     expect(text).toContain("huumorikauppa@gmail.com");
   });

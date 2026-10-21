@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { toimitusTila, valitseSuositukset, suoraLisays, fyysinenSumma, arvioiPakettialennus, paketinTiedot, PAKETTIMAARITYKSET } from "@/lib/ostoskori";
+import { TOIMITUSMAKSU, ILMAINEN_TOIMITUS_RAJA } from "@/config/toimitus";
 import { lahjakorttiTuote } from "../../api/_lib/lahjakortti.js";
 import type { Product } from "@/types/product";
 
@@ -20,30 +21,31 @@ const oma = tuote("oma-tekstikuva-t-paita", 24.9, "t-paidat", { name: "Oma tekst
 const halpaKate = tuote("halpa-huppari", 49.9, "hupparit", {
   variants: { variant_map: { "Musta|M": 7 }, costs: { "7": 3000 }, shipping_cents: 900 },
 });
+const r2 = (n: number) => Math.round(n * 100) / 100;
 const kaikki = [paita, huppari, muutPaita, muuHuppari, pipo, tarra, muki, oma, halpaKate];
 
 describe("Ilmainen toimitus", () => {
   it("puuttuva summa ja edistyminen", () => {
     const t = toimitusTila([rivi(paita)]);
-    expect(t).toMatchObject({ summa: 24.9, puuttuu: 54.1, ilmainen: false, toimitus: 6.9 });
-    expect(t.edistyminen).toBeCloseTo(31.52, 1);
+    expect(t).toMatchObject({ summa: 24.9, puuttuu: r2(ILMAINEN_TOIMITUS_RAJA - 24.9), ilmainen: false, toimitus: TOIMITUSMAKSU });
+    expect(t.edistyminen).toBeCloseTo((24.9 / ILMAINEN_TOIMITUS_RAJA) * 100, 1);
     expect(toimitusTila([rivi(paita), rivi(huppari, 2)])).toMatchObject({ ilmainen: true, puuttuu: 0, toimitus: 0 });
   });
-  it("tasan 79 € on ilmainen", () => {
-    expect(toimitusTila([rivi(tuote("x", 79))]).ilmainen).toBe(true);
-    expect(toimitusTila([rivi(tuote("x", 78.99))]).puuttuu).toBe(0.01);
+  it("tasan rajan suuruinen summa on ilmainen", () => {
+    expect(toimitusTila([rivi(tuote("x", ILMAINEN_TOIMITUS_RAJA))]).ilmainen).toBe(true);
+    expect(toimitusTila([rivi(tuote("x", ILMAINEN_TOIMITUS_RAJA - 0.01))]).puuttuu).toBe(0.01);
   });
   it("lahjakortit eivät kerrytä rajaa, pelkät lahjakortit ilman toimitusta", () => {
     const kortti = lahjakorttiTuote(100) as Product;
     expect(fyysinenSumma([rivi(kortti), rivi(paita)])).toBe(24.9);
-    expect(toimitusTila([rivi(kortti), rivi(paita)]).puuttuu).toBe(54.1);
+    expect(toimitusTila([rivi(kortti), rivi(paita)]).puuttuu).toBe(r2(ILMAINEN_TOIMITUS_RAJA - 24.9));
     expect(toimitusTila([rivi(kortti)])).toMatchObject({ vainLahjakortteja: true, toimitus: 0, puuttuu: 0 });
   });
 });
 
 describe("Suositukset", () => {
   it("lähin hinta, joka täyttää puuttuvan summan, ja sama teema ensin", () => {
-    // Korissa paita 24,90 -> puuttuu 54,10. Saman teeman huppari (49,90) ensin, sitten muut.
+    // Korissa paita 24,90 -> puuttuu raja - 24,90 (huppari 49,90 täyttää sen). Saman teeman huppari (49,90) ensin, sitten muut.
     const s = valitseSuositukset([rivi(paita)], kaikki, 4);
     expect(s[0].product.slug).toBe("oispa-kaljaa-huppari");
     expect(s[0].samaTeema).toBe(true);
@@ -51,8 +53,8 @@ describe("Suositukset", () => {
     expect(s.length).toBeLessThanOrEqual(4);
   });
   it("puuttuvan summan ylittävä hinta ennen vajaaksi jäävää", () => {
-    // Korissa huppari 49,90 -> puuttuu 29,10: pipo 32,90 (ylittää 3,80) ennen paitaa 24,90 (vajaa 4,20 * 3)
-    const s = valitseSuositukset([rivi(muuHuppari)], [pipo, paita, tarra], 4);
+    // Korissa tuote, jonka hinta jättää puuttumaan 29,10 (raja - 29,10): pipo 32,90 (ylittää 3,80) ennen paitaa 24,90 (vajaa 4,20 * 3)
+    const s = valitseSuositukset([rivi(tuote("saunassa-huppari", r2(ILMAINEN_TOIMITUS_RAJA - 29.1), "hupparit"))], [pipo, paita, tarra], 4);
     expect(s.map((x) => x.product.slug)).toEqual(["talvi-pipo", "oispa-kaljaa-t-paita", "tarra-x"]);
   });
   it("ei piilotettuja kategorioita, personoitavia, alle 40 %:n katetta eikä korissa olevia", () => {

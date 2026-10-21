@@ -17,6 +17,7 @@ import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredD
 import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from './src/config/toimitus.js';
 
 export const config = {
   matcher: [
@@ -90,7 +91,7 @@ async function fetchCategoryProducts(
 const PAGE_META: Record<string, PageMeta> = {
   '/': {
     title: 'Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi',
-    description: 'Hauskat lahjat: t-paitoja, huppareita ja tarroja hauskalla tekstillä. Yli 700 tuotetta, nopea toimitus, ilmainen yli 79 €.',
+    description: `Hauskat lahjat: t-paitoja, huppareita ja tarroja hauskalla tekstillä. Yli 700 tuotetta, nopea toimitus, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
   },
   '/kaikki-tuotteet': {
     title: 'Kaikki hauskat tuotteet | Huumorikauppa.fi',
@@ -122,7 +123,7 @@ const PAGE_META: Record<string, PageMeta> = {
   },
   '/toimitusehdot': {
     title: 'Toimitusehdot | Huumorikauppa.fi',
-    description: 'Huumorikaupan toimitusehdot. Toimitus 3-10 arkipäivässä, ilmainen toimitus yli 79 € tilauksiin.',
+    description: `Huumorikaupan toimitusehdot. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
   },
   '/palautusehdot': {
     title: 'Palautusehdot | Huumorikauppa.fi',
@@ -207,10 +208,6 @@ const PAGE_META: Record<string, PageMeta> = {
   '/polttari-lahjat': {
     title: 'Polttarilahjat - Hauskat Ideat Polttareihin | Huumorikauppa.fi',
     description: 'Hauskat polttarilahjat morsiamelle ja sulhaselle. Yhteiset polttaripaidat koko porukalle. Tilaa nyt!',
-  },
-  '/isanpaiva-lahjat': {
-    title: 'Isänpäivälahjat - Hauskat Ideat Isälle | Huumorikauppa.fi',
-    description: 'Hauskat isänpäivälahjat isälle, isoisälle ja sedälle. Ammattihuumori- ja harrastusteemaiset tuotteet. Tilaa ajoissa!',
   },
   '/aitienpaiva-lahjat': {
     title: 'Äitienpäivälahjat - Hauskat Ideat Äidille | Huumorikauppa.fi',
@@ -480,7 +477,6 @@ const GIFT_CATEGORY_CATS: Record<string, string[]> = {
   '/hauskat-t-paidat':        ['t-paidat'],
   '/hauskat-hupparit':        ['hupparit'],
   '/lahja-miehelle':          ['t-paidat', 'hupparit', 'mukit'],
-  '/isanpaiva-lahjat':        ['t-paidat', 'hupparit', 'mukit'],
   '/joululahjat':             ['t-paidat', 'hupparit', 'mukit'],
   '/syntymapaivalahjat':      ['t-paidat', 'hupparit', 'mukit'],
   '/elakelahjat':             ['t-paidat', 'hupparit', 'mukit'],
@@ -496,43 +492,43 @@ const CATEGORY_FAQS: Record<string, Array<{q: string; a: string}>> = {
   't-paidat': [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paitamme ovat 100 % puuvillaa tai puuvilla-polyesteri-sekoitteita. Materiaali on pehmeä ihoa vasten ja kestää useita pesuja muuttumatta. Koot XS-3XL." },
     { q: "Onko t-paidat painetaan tilauksesta?", a: "Kyllä, kaikki t-paitamme painetaan tilauksesta tilauksesta DTG-tekniikalla (Direct-to-Garment), joka tuottaa kirkkaan ja kestävän painatuksen." },
-    { q: "Kuinka nopeasti tilaus toimitetaan?", a: "Tilaukset toimitetaan 3-10 arkipäivässä koko Suomeen Posti tai Matkahuoltoin kautta. Ilmainen toimitus yli 79 € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee." },
+    { q: "Kuinka nopeasti tilaus toimitetaan?", a: `Tilaukset toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen Posti tai Matkahuoltoin kautta. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee.` },
     { q: "Voiko t-paidan palauttaa?", a: "Kyllä, standardituotteilla on 14 päivän palautusoikeus. Palautus on helppo - ota yhteyttä asiakaspalveluumme, saat ohjeet sähköpostitse." },
   ],
   'hupparit': [
     { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Hupparimme ovat pehmeää puuvilla-polyesteri-sekoitetta (80/20). Materiaali on lämmin, pehmeä ja kestää useita pesuja. Koot S-3XL." },
     { q: "Onko hupparit painetaan tilauksesta?", a: "Kyllä, kaikki hupparimme painetaan tilauksesta tilauksesta DTG-tekniikalla." },
-    { q: "Kuinka nopeasti huppari toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää koko Suomeen. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti huppari toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko hupparin palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme saadaksesi palautusohjeet." },
   ],
   'mukit': [
     { q: "Onko mukit konepesun kestäviä?", a: "Kyllä, kaikki mukimme kestävät konepesua. Suosittelemme pesemään matalalla lämpötilalla (40°C) painatuksen säilymiseksi pidempään." },
     { q: "Minkä kokoisia mukit ovat?", a: "Mukimme ovat standardi 11 oz (noin 325 ml) -kokoisia. Sopivat aamukahviin tai teehen." },
-    { q: "Kuinka nopeasti muki toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti muki toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko mukin palauttaa?", a: "Kyllä, 14 päivän palautusoikeus kaikille tuotteille. Ota yhteyttä asiakaspalveluumme." },
   ],
   'tarrat': [
     { q: "Onko tarrat ulkokäyttöön sopivia?", a: "Kyllä, tarramme ovat laadukasta vinyyliä joka kestää kosteutta, UV-valoa ja lämpötilavaihteluita. Sopivat autoon, vesipulloon, läppäriin ja ulkokäyttöön." },
     { q: "Kuinka kauan tarrat kestävät?", a: "Ulkokäytössä laadukkaiden tarramme elinikä on 2-5 vuotta olosuhteista riippuen. Sisäkäytössä huomattavasti pidempään." },
-    { q: "Kuinka nopeasti tarrat toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti tarrat toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko tarrat palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'pipot': [
     { q: "Minkälaisesta materiaalista pipot ovat?", a: "Pipomme ovat pehmeää akryyli-materiaalia, joka on lämmin, joustava ja helppohoitoinen. Brodeeraus kestää pesua." },
     { q: "Sopiiko pipo lahjaksi?", a: "Ehdottomasti! Hauska pipo on loistava joululahja, syntymäpäivälahja tai pikkujoululahja työkavereille." },
-    { q: "Kuinka nopeasti pipo toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti pipo toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko pipon palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'lippikset': [
     { q: "Minkälaisesta materiaalista lippikset ovat?", a: "Lippiksemme ovat laadukkaasta puuvilla- tai polyesteri-materiaalista. Brodeeraus on kestävä ja pysyy siistinä." },
     { q: "Sopiiko lippis lahjaksi?", a: "Kyllä, hauska lippis on erinomainen lahja erityisesti kesällä. Sopii syntymäpäiviin, polttareihin ja muihin juhliin." },
-    { q: "Kuinka nopeasti lippis toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti lippis toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko lippiksen palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'haalarimerkit': [
     { q: "Sopivatko haalarimerkit kaikille haalareille?", a: "Kyllä, haalarimerkkimme sopivat kaikkiin haalareihin, laukkuihin ja reppuihin. Kiinnitys tapahtuu turvallisesti neulalla." },
     { q: "Voiko haalarimerkkejä tilata omalla tekstillä?", a: "Kyllä, tarjoamme myös räätälöityjä haalarimerkkejä. Ota yhteyttä asiakaspalveluumme tilausta varten." },
-    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Sopivatko haalarimerkit lahjaksi?", a: "Ehdottomasti! Haalarimerkit ovat loistava lahja opiskelijalle kiltajuhliin tai tupaantuliaisiin." },
   ],
 };
@@ -557,12 +553,6 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
     { q: "Miten valitsen oikean koon lahjaksi?", a: "L on miesten yleisin koko. Epävarma? Valitse yksi koko ylöspäin - löysä istuvuus on turvallisempi." },
     { q: "Voiko tuotteen paketoida lahjapakettiin?", a: "Lahjapakettia ei tarjota tällä hetkellä, mutta tilausvahvistus sopii lahjasaatteeksi." },
   ],
-  '/isanpaiva-lahjat': [
-    { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita, huppari tai pipo joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras isä' -teemat." },
-    { q: "Milloin viimeistään pitää tilata isänpäivälahja?", a: "Tilaa viimeistään 2 viikkoa ennen isänpäivää (marraskuun toinen sunnuntai). Toimitusaika on 3-10 arkipäivää." },
-    { q: "Miten valitsen oikean koon isänpäivälahjaan?", a: "L on miesten yleisin koko. Jos isä on isokokoinen, valitse XL tai XXL. Kokoopas on jokaisen tuotteen sivulla." },
-    { q: "Voiko isänpäivälahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
-  ],
   '/joululahjat': [
     { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },
     { q: "Milloin viimeistään tilata joululahja?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja toimitusajan mukaan." },
@@ -573,7 +563,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
     { q: "Mikä on hauska syntymäpäivälahja huumorin ystävälle?", a: "Huumoripaita, -huppari tai -muki on hauska syntymäpäivälahja. Suosituimpia ovat '100 % Eläkeläinen' ja ammattihuumori ikääntyvälle juhlijalle." },
     { q: "Sopiiko huumoripaita syntymäpäivälahjaan?", a: "Ehdottomasti! Hauska paita on yllättävä, persoonallinen ja tulee oikeasti käyttöön." },
     { q: "Miten valitsen oikean koon syntymäpäivälahjaan?", a: "L on yleisin koko miehille, M naisille. Epävarma? Yksi koko ylöspäin on turvallisempi." },
-    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa hyvissä ajoin jos synttäripäivä lähestyy." },
+    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Tilaa hyvissä ajoin jos synttäripäivä lähestyy.` },
   ],
   '/polttari-lahjat': [
     { q: "Mitkä ovat suosituimmat polttaripaidat?", a: "Suosituimpia ovat 'Game Over', 'Viimeinen vapaa ilta' ja personoidut polttaripaidat koko porukalle." },
@@ -585,19 +575,19 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
     { q: "Mikä on hauska eläkelahja?", a: "'Olen eläkkeellä' ja '100 % eläkeläinen' -teemat ovat suosituimpia eläkelahja-ideoita. T-paidat, hupparit ja mukit sopivat hyvin." },
     { q: "Sopiiko huumoripaita eläkkeelle jäävälle työkavereille?", a: "Kyllä - hauska eläkelahja on työtovereiden perinteinen tapa toivottaa työkaveri hyvää eläkettä." },
     { q: "Miten valitsen oikean koon eläkelahjaan?", a: "L on miesten ja M naisten yleisin koko. Epävarma? Valitse yksi ylöspäin." },
-    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa ajoissa ennen eläkejuhlia." },
+    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Tilaa ajoissa ennen eläkejuhlia.` },
   ],
   '/lahja-kaverille': [
     { q: "Mikä on hauska lahja kaverille?", a: "Hauska lahja kaverille on huumoripaita, -huppari tai -muki kaverin harrastuksesta tai persoonallisuudesta. Alle 30 € saat loistavan lahjan." },
     { q: "Sopiiko huumoripaita kaverin synttärilahjaksi?", a: "Ehdottomasti! Hauska paita on yllättävä, persoonallinen ja tulee oikeasti käyttöön." },
     { q: "Miten valitsen oikean koon kaverille?", a: "Tiedät kaverin koon parhaiten. Epävarma? Valitse yksi koko ylöspäin." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa hyvissä ajoin ennen synttäreitä." },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Tilaa hyvissä ajoin ennen synttäreitä.` },
   ],
   '/lahja-tyokaverille': [
     { q: "Mikä on hauska lahja työkavereille?", a: "'No niin' -muki ja '100 % eläkeläinen' -paita ovat suosituimpia työkaverilahjoja. Ne sopivat työkaverin lähtöön tai syntymäpäivään." },
     { q: "Sopiiko huumoripaita työkaverin läksiäislahjaksi?", a: "Kyllä - hauska paita tai muki on oivallinen muisto yhteisistä vuosista." },
     { q: "Miten valitsen oikean koon työkaverin lahjaksi?", a: "Jos et tiedä kokoa, L tai M on turvallinen valinta. Muki tai tarra ovat hyviä koottomia vaihtoehtoja." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Tilaa hyvissä ajoin ennen läksiäisiä." },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Tilaa hyvissä ajoin ennen läksiäisiä.` },
   ],
   '/hauskat-t-paidat': [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paitamme ovat 100 % puuvillaa, painetaan tilauksesta DTG-tekniikalla." },
@@ -614,13 +604,13 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   '/haalarimerkit': [
     { q: "Sopivatko haalarimerkit kaikille haalareille?", a: "Kyllä, merkkimme sopivat kaikkiin haalareihin, reppuihin ja laukkuihin. Kiinnitys neulalla." },
     { q: "Voiko haalarimerkkejä tilata omalla tekstillä?", a: "Kyllä! Räätälöityjä merkkejä tilauksesta. Ota yhteyttä asiakaspalveluumme." },
-    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Ilmainen toimitus yli 79 € tilauksiin." },
+    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Sopivatko haalarimerkit lahjaksi opiskelijalle?", a: "Ehdottomasti! Haalarimerkit ovat loistava lahja opiskelijalle kiltajuhliin tai tupaantuliaisiin." },
   ],
   '/opiskelijan-haalarimerkit': [
     { q: "Mitä haalarimerkit ovat?", a: "Haalarimerkit ovat pieniä brodeerattuja tai painettuja merkkejä jotka kiinnitetään haalariin tai reppuun. Ne ovat perinteinen tapa personoida opiskelijan haalarit." },
     { q: "Voiko haalarimerkkejä tilata omalla tekstillä tai logolla?", a: "Kyllä! Tarjoamme räätälöityjä haalarimerkkejä kiltajärjestöille ja yksityishenkilöille. Kysy tarjous asiakaspalvelusta." },
-    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: "Toimitusaika on 3-10 arkipäivää. Suuret ryhmätilaukset voivat kestää pidempään." },
+    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Suuret ryhmätilaukset voivat kestää pidempään.` },
     { q: "Sopivatko haalarimerkit lahjaksi?", a: "Ehdottomasti! Haalarimerkit ovat oivallinen lahja opiskelijalle tai kiltatapahtumaan." },
   ],
 };
@@ -814,7 +804,7 @@ export default async function middleware(request: Request): Promise<Response | u
     const slug = path.slice('/lahjat/'.length).replace(/\/$/, '');
     meta = {
       title: `${slug.replace(/-/g, ' ')} - Hauska lahja | Huumorikauppa.fi`,
-      description: 'Hauskat lahjat ja tuotteet Huumorikaupasta. Nopea toimitus, ilmainen yli 79 €.',
+      description: `Hauskat lahjat ja tuotteet Huumorikaupasta. Nopea toimitus, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
     };
   }
 

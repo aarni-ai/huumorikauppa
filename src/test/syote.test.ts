@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { TOIMITUS, ILMAINEN_TOIMITUS_RAJA } from "../../api/_lib/vakiot.js";
 import { lisaaKentat, sesonki } from "../../api/_lib/syote-lisakentat.js";
 
 const item = (hinta: string) => `<item>
@@ -13,10 +14,10 @@ const item = (hinta: string) => `<item>
     </item>`;
 
 describe("Merchant-syötteen lisäkentät", () => {
-  it("toimitus kassan säännöllä: 6,90 € alle 79 €, ilmainen 79 €:sta", () => {
-    expect(lisaaKentat(item("24.90"))).toMatch(/<g:price>6\.90 EUR<\/g:price>\s*<\/g:shipping>/);
+  it("toimitus kassan säännöllä: toimitusmaksu rajan alle, ilmainen rajasta alkaen", () => {
+    expect(lisaaKentat(item("24.90"))).toMatch(new RegExp(`<g:price>${TOIMITUS.toFixed(2).replace(".", "\\.")} EUR</g:price>\\s*</g:shipping>`));
     expect(lisaaKentat(item("24.90"))).toContain("<g:shipping_label>vakiotoimitus</g:shipping_label>");
-    expect(lisaaKentat(item("79.00"))).toMatch(/<g:price>0\.00 EUR<\/g:price>\s*<\/g:shipping>/);
+    expect(lisaaKentat(item(ILMAINEN_TOIMITUS_RAJA.toFixed(2)))).toMatch(/<g:price>0\.00 EUR<\/g:price>\s*<\/g:shipping>/);
   });
   it("product_type, identifier_exists ja sesonki; kateluokka vain kun kate tunnetaan", () => {
     const x = lisaaKentat(item("24.90"), { nyt: new Date("2026-11-15T00:00:00Z") });

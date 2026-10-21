@@ -1,80 +1,12 @@
 import { Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { isPublishableReview } from "@/lib/productReviews";
 
-const NAMES = [
-  "Anna H.", "Tepe", "Veetu", "Marja-Leena H.", "Reijo T.", "Mika L.",
-  "Anna87", "Sanna", "Sanni", "Jukka P.", "Tiina K.", "Mikko S.",
-  "Laura M.", "Petri V.", "Heikki R.", "Emilia J.", "Tomi", "Riikka",
-  "Antti K.", "Jenni S.", "Ville", "Kaisa M.", "Juha-Pekka", "Elina",
-  "Markku T.", "Henna", "Tommi L.", "Päivi K.", "Aki", "Noora S.",
-  "Jarmo H.", "Susanna", "Kimmo", "Outi V.", "Matias", "Johanna R.",
-  "Samuli", "Katja P.", "Jari M.", "Tuija", "Aleksi", "Minna K.",
-  "Pasi T.", "Anu", "Harri V.", "Leena", "Jesse", "Niina M.",
-  "Riku", "Maija S.", "Tapio", "Kirsi L.", "Arttu", "Helena T.",
-  "Esa P.", "Pirjo", "Lauri", "Tanja K.", "Ilkka", "Saija",
-];
-
-const REVIEWS = [
-  { text: "toimitus ruotsiin hoitui todella ripeästi. tuote vastasi täysin sitä mitä odotin", stars: 5 },
-  { text: "Toimitus tuli todella nopeasti, peukkua ylös!", stars: 5 },
-  { text: "asiakaspalvelu oli aivan mahtavaa olen todella tyytyväinen kaikkeen!", stars: 5 },
-  { text: "Vaihto sujui asiakaspalvelun kanssa todella mutkattomasti ja ystävällisesti.", stars: 5 },
-  { text: "siistit tuotteet, laadukkaita paitoja ja muita hauskoja meemijuttuja. tää vaikuttaa tosi lupaavalta paikalta huumorihankintoihin", stars: 5 },
-  { text: "paketti tuli perille todella nopeasti", stars: 5 },
-  { text: "Lähetys saapui ripeästi ja täysin ongelmitta.", stars: 5 },
-  { text: "tuote kiva palvelu erinomaista tasoa!", stars: 5 },
-  { text: "Toimitus oli nopea ja hupparin laatu näytti heti hyvältä.", stars: 5 },
-  { text: "täältä löytyy loistavia lahjaideoita haha", stars: 4 },
-  { text: "Erittäin tyytyväinen! Aluksi Suomi/Ruotsi ei ollut valikoimassa, mutta sähköpostilla asia korjaantui salamannopeasti. Poika oli innoissaan uudesta mukistaan 😊👍", stars: 5 },
-  { text: "tuote laadukas ja toimitus ripeä", stars: 5 },
-  { text: "kaikki sujui juuri niin kuin oli luvattu ja tuotekin oli täysin ok", stars: 5 },
-  { text: "Toimitus hoitui todella nopeasti.", stars: 5 },
-  { text: "paketti tuli tosi nopeast perille", stars: 5 },
-  { text: "Tuotteen laatu hyvä ja istuvuus just sopiva. Toimituksen seuranta oli tosin vähän epäselvä.", stars: 4 },
-  { text: "nopea toimitus + laadukkaat materiaalit paidoissa. paidat on herättäny paljon naurua ympärillä", stars: 5 },
-  { text: "ei mitää moitittavaa, toimitus nopea ja muutenkin kaikki ok", stars: 5 },
-  { text: "Tilaus saapui todella nopeasti, kiitos siitä!", stars: 5 },
-  { text: "palvelu oli todella ystävällistä ja hyvää 😊", stars: 5 },
-  { text: "tuote oli juuri niin hyvä kuin toivoin", stars: 5 },
-  { text: "Toimitus luotettavaa ja nopeaa.", stars: 5 },
-  { text: "paketti tuli perille ripeästi", stars: 5 },
-  { text: "homma meni luvatusti ehdottomasti suosittelen", stars: 5 },
-  { text: "Kaikki toimi kuten pitikin, huppari oli aivan huippu ja toimitus tuli nopeasti.", stars: 5 },
-  { text: "tää on parasta ikinä!!", stars: 5 },
-  { text: "Tää on selkeästi paras meemikauppa! Palvelu sujuvaa, hinta-laatusuhde loistava ja uusi juomapeli aivan huikea.", stars: 5 },
-  { text: "kaikki pelasi just niin ku pitää", stars: 5 },
-  { text: "tilasin capybara-hupparin, laatu erinomainen koko täydellinen itselle ja printtikin onnistunu. asiakaspalvelu ansaitsee isot kiitokset!", stars: 5 },
-  { text: "asiakaspalvelu tuotteiden laatu ja hinta-laatusuhde kaikki täysi kymppi 😊", stars: 5 },
-  { text: "Asiakaspalvelu oli aivan uskomattoman hyvää!", stars: 5 },
-  { text: "laatu tuntuu hyvältä toimitus ripeää ja koko osu nappiin", stars: 5 },
-  { text: "maksu hoitu helposti, toimitus toimi moitteetta ja sain tosi kivan kassin", stars: 5 },
-  { text: "kiva kassi ja vielä kotiinkuljetuksella", stars: 4 },
-  { text: "Toimitus nopea ja tuotteet laadukkaita.", stars: 5 },
-  { text: "Ei mitään valittamista. Tuotteet lähtivät vähän eri aikoihin, mutta kokonaisuus saapui sovitussa ajassa.", stars: 4 },
-  { text: "tilaaminen helppoa toimitus nopea tuote laadukas ja valikoima monipuolinen", stars: 5 },
-  { text: "tuotteet juuri sellaisia kuin piti ja valmistus + toimitus ripeää", stars: 5 },
-  { text: "Tilasin ~50 € hupparin – laatu hyvä, mukava päällä. Voin suositella muillekin!", stars: 5 },
-  { text: "asiakaspalvelu erinomaista! tilattu paita oli aluksi liian pieni mutta tilanne hoidettiin nopeasti ja joustavasti", stars: 5 },
-  { text: "toimitus todella nopea", stars: 5 },
-  { text: "paketti saapui salamannopeasti ja paidat olivat täsmälleen toivotunlaisia", stars: 5 },
-  { text: "hauskat vaateet ja hauska muki tuli postissa :D kiva paikka ostaa!", stars: 5 },
-  { text: "Printti paidoissa laadukas + ilmainen toimitus yli 79 € tilauksiin.", stars: 5 },
-  { text: "hyvä meininki :D", stars: 5 },
-  { text: "asiakaspalvelu ystävällistä ja koonvaihto isompaan suju helposti", stars: 5 },
-  { text: "tilaus helppo ja paketti saapui kotiovelle joutuisasti", stars: 5 },
-  { text: "Tuote täsmäsi täysin kuvaukseen.", stars: 5 },
-  { text: "laadukkaat vaatteet selkeät tiedot ja nopea toimitus. tilannu jo koko perheelle täältä!", stars: 5 },
-  { text: "kaikki meni just niin ku pitikin", stars: 5 },
-  { text: "sivusto selkeä ja toimitus nopea. ei moitittavaa", stars: 5 },
-  { text: "tilaaminen helppoa paketit saapuivat sujuvasti. tuotteet laadukkaita", stars: 5 },
-  { text: "nopea ja kelpo kokemus", stars: 4 },
-  { text: "Tilaus hoitui mutkattomasti ja tuote saapui ehjänä perille.", stars: 5 },
-  { text: "kaikki toimi luvatusti ei viivästyksiä eikä muita ongelmia", stars: 5 },
-  { text: "tuote ok mutta toimitus kesti harmillisen kauan (12 päivää)", stars: 4 },
-  { text: "ei mitään ongelmia siis positiivinen kokemus :)", stars: 5 },
-  { text: "Valmistaa hyviä vaatteita ja verkkopalvelu toimii todella hyvin.", stars: 5 },
-  { text: "paketti tuli juuri sellaisena kuin pitikin", stars: 5 },
-];
+// Etusivun arviokaruselli näyttää vain todennetut, päivätyt arviot (ks. src/lib/productReviews.ts).
+// Aiemmat päiväämättömät arviot ja niihin satunnaisesti liitetyt nimet ovat tiedostossa
+// src/data/arvostelut-arkisto.ts (ei sovelluksen käytössä). Tyhjä lista piilottaa koko osion.
+type CarouselReview = { name: string; text: string; stars: number; date: string };
+const VERIFIED_REVIEWS: CarouselReview[] = [];
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -85,7 +17,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const shuffledReviews = shuffle(REVIEWS.slice(0, 20).map((r, i) => ({ ...r, name: NAMES[i % NAMES.length] })));
+const shuffledReviews = shuffle(VERIFIED_REVIEWS.filter(isPublishableReview).slice(0, 20));
 
 export function ReviewsCarousel() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -152,6 +84,8 @@ export function ReviewsCarousel() {
 
   const items = isMobileLike ? shuffledReviews.slice(0, 10) : [...shuffledReviews, ...shuffledReviews];
 
+  if (shuffledReviews.length === 0) return null;
+
   return (
     <section ref={sectionRef} className="py-12 md:py-16 overflow-hidden">
       <div className="container mb-8">
@@ -180,7 +114,7 @@ export function ReviewsCarousel() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
-            <p className="text-xs font-medium text-foreground">– {review.name}</p>
+            <p className="text-xs font-medium text-foreground">{review.name} · {review.date}</p>
           </div>
         ))}
       </div>

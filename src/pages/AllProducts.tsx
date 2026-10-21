@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOTargetGroupContent, SEOCustomContent } from "@/components/SEOKeywordContent";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { getPriorityRank } from "@/lib/productPriority";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
 function isCustomTextProduct(name: string, description: string): boolean {
   const t = (name + ' ' + description).toLowerCase();
@@ -62,7 +63,7 @@ const AllProducts = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli 79 €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-2"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>

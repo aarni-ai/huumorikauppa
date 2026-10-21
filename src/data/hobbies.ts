@@ -1,3 +1,5 @@
+import { TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+
 export interface Hobby {
   slug: string;
   name: string;
@@ -24,9 +26,9 @@ export const hobbies: Hobby[] = [
     nameAllative: "kalastajalle",
     emoji: "🎣",
     seoTitle: "Hauska lahja kalastajalle: paita ja huppari | Huumorikauppa",
-    seoDescription: "Hauskat lahjat kalastajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus 3-10 arkipäivässä.",
+    seoDescription: `Hauskat lahjat kalastajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauska lahja kalastajalle",
-    tldr: "Hauska lahja kalastajalle on huumoripaita tai -huppari kalastuksen vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kalastajalle on huumoripaita tai -huppari kalastuksen vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kalastaja löytää rauhallisuuden vedenrannalta - ja tarinat kasvavat joka kerrontakerralla. Hauska lahja kalastajalle osuu harrastuksen sisäpiirihuumoriin joka ei vanhene.",
     keywords: ["kalastus", "kalastaja", "kala", "mato", "viehe", "onki", "vene", "järvi", "hauki", "ahven", "fishing"],
     shirtTexts: [
@@ -62,7 +64,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja metsästäjälle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat metsästäjälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja metsästäjälle",
-    tldr: "Hauska lahja metsästäjälle on huumoripaita tai -huppari metsästysteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja metsästäjälle on huumoripaita tai -huppari metsästysteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Metsästäjä nousee ennen aurinkoa ja palaa metsästä - toisinaan tyhjin käsin, mutta aina hyvällä mielellä. Hauska metsästäjälahja tunnistaa harrastuksen ainutlaatuisen kulttuurin.",
     keywords: ["metsästys", "metsästäjä", "hirvi", "poro", "riista", "ase", "koira", "katraus", "hunting"],
     shirtTexts: [
@@ -89,7 +91,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja golfaajalle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat golfaajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja golfaajalle",
-    tldr: "Hauska lahja golfaajalle on huumoripaita tai -huppari golfteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja golfaajalle on huumoripaita tai -huppari golfteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Golfaaja kävelee 18 reikää - ja kertoo niistä puoli tuntia enemmän. Hauska golflahja tunnistaa harrastuksen sisäpiirihuumoria.",
     keywords: ["golf", "golfaaja", "birdie", "bogey", "eagle", "par", "fairway", "green", "caddie"],
     shirtTexts: [
@@ -116,7 +118,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja juoksijalle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat juoksijalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja juoksijalle",
-    tldr: "Hauska lahja juoksijalle on huumoripaita tai -huppari juoksuteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja juoksijalle on huumoripaita tai -huppari juoksuteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Juoksija ei tarvitse selitystä miksi juoksee - se kuuluu elämäntapaan. Hauska juoksijalahja tunnistaa harrastuksen omistautumisen ja absurditeetin.",
     keywords: ["juokseminen", "juoksija", "maraton", "juoksu", "treeni", "harjoitus", "runner", "marathon"],
     shirtTexts: [
@@ -143,7 +145,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja kuntosaliharrastajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat kuntosaliharrastajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kuntosaliharrastajalle",
-    tldr: "Hauska lahja kuntosaliharrastajalle on huumoripaita tai -huppari treeniaiheella. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kuntosaliharrastajalle on huumoripaita tai -huppari treeniaiheella. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kuntosaliharrastaja tietää mikä päivä on jalkapäivä - ja ohittaa sen joskus. Hauska treenilahjä tunnistaa salielämän todellisuuden.",
     keywords: ["kuntosali", "sali", "treeni", "gym", "lihaskasvatus", "fitness", "bodaus", "workout"],
     shirtTexts: [
@@ -171,7 +173,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja saunaharrastajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat saunaharrastajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja saunaharrastajalle",
-    tldr: "Hauska lahja saunaharrastajalle on huumoripaita tai -huppari saunateemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja saunaharrastajalle on huumoripaita tai -huppari saunateemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Sauna on suomalaisen sielun koti - siellä puhutaan tai ollaan hiljaa, molemmat ovat oikein. Hauska saunalahja on klassinen ja aikaton.",
     keywords: ["sauna", "löyly", "kiuas", "saunaviikko", "lauteet", "saunaolut", "avantouinti"],
     shirtTexts: [
@@ -198,7 +200,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja pyöräilijälle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat pyöräilijälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja pyöräilijälle",
-    tldr: "Hauska lahja pyöräilijälle on huumoripaita tai -huppari pyöräilyteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja pyöräilijälle on huumoripaita tai -huppari pyöräilyteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Pyöräilijä löytää reitin joka kaikesta huolimatta menee ylämäkeen. Hauska pyöräilylahja tunnistaa harrastuksen rehellisyyden.",
     keywords: ["pyöräily", "pyöräilijä", "maantïepyörä", "mtb", "pyörä", "cycling", "bike"],
     shirtTexts: [
@@ -224,7 +226,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja koiranomistajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat koiranomistajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja koiranomistajalle",
-    tldr: "Hauska lahja koiranomistajalle on huumoripaita tai -huppari koirateemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja koiranomistajalle on huumoripaita tai -huppari koirateemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Koiranomistaja rakastaa koiraansa enemmän kuin useimpia ihmisiä - ja se on täysin hyväksyttävää. Hauska koiralahja tunnistaa tämän erityisen siteen.",
     keywords: ["koira", "koiranomistaja", "lemmikki", "tassu", "haukkuminen", "koiranulkoilutus", "dog"],
     shirtTexts: [
@@ -251,7 +253,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja kissanomistajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat kissanomistajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja kissanomistajalle",
-    tldr: "Hauska lahja kissanomistajalle on huumoripaita tai -huppari kissateemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja kissanomistajalle on huumoripaita tai -huppari kissateemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Kissanomistaja tietää totuuden: kissaa ei omisteta - kissa omistaa sinut. Hauska kissalahja tunnistaa tämän realistisen suhteen.",
     keywords: ["kissa", "kissanomistaja", "kisu", "katti", "lemmikki", "cat"],
     shirtTexts: [
@@ -277,7 +279,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja pelaajalle: paita ja huppari | Huumorikauppa",
     seoDescription: "Hauskat lahjat pelaajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja pelaajalle",
-    tldr: "Hauska lahja pelaajalle on huumoripaita tai -huppari pelimaailman vitseillä. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja pelaajalle on huumoripaita tai -huppari pelimaailman vitseillä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Pelaaja ei lopu kesken - vain tallentaa pelin. Hauska pelaajalahja tunnistaa gaming-kulttuurin sisäpiirihuumoria.",
     keywords: ["pelaaja", "videopelit", "peli", "gaming", "console", "pc", "game over", "level up"],
     shirtTexts: [
@@ -304,7 +306,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja ruoanlaittoharrastajalle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat ruoanlaittoharrastajalle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja ruoanlaittoharrastajalle",
-    tldr: "Hauska lahja ruoanlaittoharrastajalle on huumoripaita tai -huppari keittiöteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja ruoanlaittoharrastajalle on huumoripaita tai -huppari keittiöteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Ruoanlaittoharrastaja ei vain tee ruokaa - hän luo taidetta. Hauska keittiölahja tunnistaa harrastuksen luovuuden.",
     keywords: ["ruoanlaitto", "keittiö", "resepti", "maku", "kokkaus", "cooking"],
     shirtTexts: [
@@ -330,7 +332,7 @@ export const hobbies: Hobby[] = [
     seoTitle: "Hauska lahja retkeilijälle | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat retkeilijälle: huumoripaita tai -huppari. Tilaa Huumorikauppa.fi:stä.",
     h1: "Hauska lahja retkeilijälle",
-    tldr: "Hauska lahja retkeilijälle on huumoripaita tai -huppari retkeilyteemalla. Toimitus 3-10 arkipäivässä.",
+    tldr: `Hauska lahja retkeilijälle on huumoripaita tai -huppari retkeilyteemalla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     intro: "Retkeilijä löytää tien joka ei ole kartalla - ja se on koko pointti. Hauska retkeilylahja tunnistaa luontosuhteen huumorilla.",
     keywords: ["retkeily", "retkeilijä", "vaellus", "luonto", "teltta", "rinkka", "hiking", "camping"],
     shirtTexts: [
