@@ -88,7 +88,7 @@ export function selectMilestoneHighlights(slug: string): MilestoneHighlight | nu
 
   if (mies && nainen) return { title: "Hauskat syntymäpäivälahjat", slugs: MIX, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki hauskat lahjat" };
   if (has("muki", "kahvi", "toimisto", "tyokave", "työkave", "pomo", "alle-20")) {
-    return { title: "Hauskat merkkipäivämukit", slugs: MUGS, ctaLink: "/kategoria/mukit", ctaLabel: "Katso kaikki mukit" };
+    return { title: "Hauskat merkkipäivämukit", slugs: MUGS, ctaLink: "/lahjat/tyokaverille", ctaLabel: "Katso lahjat työkaverille" };
   }
   if (has("eläke", "elake", "elakkeel")) return { title: "Hauskat eläkelahjat", slugs: ELAKE, ctaLink: "/elakelahjat", ctaLabel: "Katso kaikki eläkelahjat" };
   if (has("50-vuotia", "50v")) return { title: "Hauskat 50-vuotislahjat", slugs: AGE50, ctaLink: "/kaikki-tuotteet", ctaLabel: "Katso kaikki lahjaideat" };
