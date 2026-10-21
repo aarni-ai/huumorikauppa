@@ -1,5 +1,7 @@
 import { merchantSyote } from './_lib/syote.js';
 import { naytettavatTuotteet } from './_lib/tuotteet.js';
+import { heikoinKate } from './_lib/kate.js';
+import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
 
 const SITE = 'https://huumorikauppa.fi';
 
@@ -56,9 +58,13 @@ function dropHiddenItems(xml) {
 export default async function handler(req, res) {
   try {
     // Oma tausta (21.10.2026): syöte omasta tuotelähteestä (tietokanta tai tilannekuva), ei Supabasesta.
-    // naytettavatTuotteet jättää pois luonnokset ja piilotetut kategoriat (mukit); dropHiddenItems varmistaa.
-    const raw = merchantSyote(await naytettavatTuotteet());
-    const xml = sanitizeFeed(dropHiddenItems(raw));
+    // naytettavatTuotteet jättää pois luonnokset, piilotetut kategoriat (mukit) ja alle 40 %:n katteen tuotteet.
+    // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki, kateluokka kun kulut
+    // tunnetaan): api/_lib/syote-lisakentat.js
+    const tuotteet = await naytettavatTuotteet();
+    const kateIdlle = new Map(tuotteet.map((p) => [String(p.id), heikoinKate(p).kate]));
+    const raw = merchantSyote(tuotteet);
+    const xml = lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)), (id) => kateIdlle.get(id) ?? null);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(
