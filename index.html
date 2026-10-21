@@ -37,9 +37,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Preload LCP hero images -->
-    <link rel="preload" as="image" href="/images/hero-banner.png?v=5" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="/images/hero-banner-wide.png?v=5" media="(min-width: 768px)" fetchpriority="high" />
+    <!-- Fontit ei-blokkaavasti: preload + asynkroninen tyylitiedosto (display=swap), vain käytetyt painot -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" /></noscript>
+
+    <!-- Etusivun LCP-kuva (sama srcset/sizes kuin src/pages/Index.tsx). Esirenderöinti poistaa tämän muilta sivuilta. -->
+    <link rel="preload" as="image" href="/images/hero-banner-800.webp" imagesrcset="/images/hero-banner-480.webp 480w, /images/hero-banner-800.webp 800w, /images/hero-banner-1200.webp 1200w, /images/hero-banner-1672.webp 1672w" imagesizes="(min-width: 1400px) 890px, (min-width: 1024px) 65vw, (min-width: 768px) 75vw, calc(100vw - 32px)" type="image/webp" fetchpriority="high" data-hero-preload />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

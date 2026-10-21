@@ -23,6 +23,11 @@ import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
+/** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
+const HERO_SRC = "/images/hero-banner-800.webp";
+const HERO_SRCSET = [480, 800, 1200, 1672].map((w) => `/images/hero-banner-${w}.webp ${w}w`).join(", ");
+const HERO_SIZES = "(min-width: 1400px) 890px, (min-width: 1024px) 65vw, (min-width: 768px) 75vw, calc(100vw - 32px)";
+
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
 
 function isCustomTextProduct(name: string, description: string): boolean {
@@ -134,7 +139,7 @@ const Index = () => {
         >
           <Sun className="h-4 w-4 shrink-0 opacity-90" />
           <span className="text-sm font-semibold">
-            Löydä hauskin lahja meiltä — tilaa nyt, saat nopeasti!
+            Löydä hauska lahja meiltä. Tilaa nyt.
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>
@@ -143,25 +148,18 @@ const Index = () => {
       {/* HERO BANNER IMAGE */}
       <section className="container pb-2 md:pb-1 pt-3">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
+          {/* LCP-kuva: WebP-koot public/images/hero-banner-*.webp (sama srcset/sizes kuin index.html:n preload). */}
           <img
-            src="/images/hero-banner.png?v=5"
+            src={HERO_SRC}
+            srcSet={HERO_SRCSET}
+            sizes={HERO_SIZES}
             alt="Huumorikauppa: hauskat t-paidat ja hupparit"
-            className="w-full h-auto object-cover object-center block md:hidden"
-            width={800}
-            height={800}
+            className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center block mx-auto"
+            width={1672}
+            height={941}
             {...{ fetchpriority: "high" } as any}
             loading="eager"
-            decoding="sync"
-          />
-          <img
-            src="/images/hero-banner-wide.png?v=5"
-            alt="Huumorikauppa: hauskat t-paidat ja hupparit"
-            className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center hidden md:block mx-auto"
-            width={1200}
-            height={600}
-            {...{ fetchpriority: "high" } as any}
-            loading="eager"
-            decoding="sync"
+            decoding="async"
           />
         </Link>
       </section>

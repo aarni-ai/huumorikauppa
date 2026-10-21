@@ -39,7 +39,7 @@ export function InlineProductCard({ product }: InlineProductCardProps) {
         aria-hidden="true"
       >
         <img
-          src={proxiedImage(product.images[0]) || "/placeholder.svg"}
+          src={proxiedImage(product.images[0], { width: 320 }) || "/placeholder.svg"}
           alt={product.name}
           className="w-20 h-20 rounded-lg object-cover bg-muted"
           loading="lazy"

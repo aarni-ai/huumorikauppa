@@ -15,7 +15,7 @@ const TEMPLATE = `<!doctype html>
     <title>Vanha otsikko</title>
     <meta name="description" content="Vanha kuvaus">
     <link rel="canonical" href="https://huumorikauppa.fi/" />
-    <link rel="preload" as="image" href="/images/hero-banner.png?v=5" />
+    <link rel="preload" as="image" href="/images/hero-banner-800.webp" imagesrcset="/images/hero-banner-480.webp 480w" fetchpriority="high" data-hero-preload />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://huumorikauppa.fi" />
     <meta property="og:title" content="Vanha">
@@ -91,8 +91,8 @@ describe("renderPageHtml", () => {
   });
 
   it("drops the homepage hero preload on other pages", () => {
-    expect(html).not.toContain("hero-banner.png");
-    expect(renderPageHtml(TEMPLATE, { ...page, path: "/", breadcrumbs: [] }, nav)).toContain("hero-banner.png");
+    expect(html).not.toContain("hero-banner-800.webp");
+    expect(renderPageHtml(TEMPLATE, { ...page, path: "/", breadcrumbs: [] }, nav)).toContain("hero-banner-800.webp");
   });
 
   it("adds a noscript style so the static content is visible without JavaScript", () => {
