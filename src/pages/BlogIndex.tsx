@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { blogPosts } from "@/data/blog";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
@@ -34,8 +35,8 @@ const BlogIndex = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Blogi – Lahjavinkit & hauskat ideat 2025 | Huumorikauppa.fi"
-        description="Huumorikaupan blogi: lahjaideoita, tuotevinkkejä ja huumoria. Löydä parhaat hauskat lahjat miehelle, naiselle ja kaverille."
+        title={STATIC_PAGE_META["/blogi"].title}
+        description={STATIC_PAGE_META["/blogi"].description}
         canonical="https://huumorikauppa.fi/blogi"
         jsonLd={blogListJsonLd}
         breadcrumbs={[

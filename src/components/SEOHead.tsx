@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+import { buildBreadcrumbJsonLd, buildSiteJsonLd } from "@/seo/structuredData";
+
+export const SITE_JSONLD_ID = "seo-site-jsonld";
 
 interface BreadcrumbItem {
   name: string;
@@ -62,6 +65,20 @@ export function SEOHead({
   productPrice,
 }: SEOHeadProps) {
   useEffect(() => {
+    // Build-vaiheessa esirenderöidyn sivun omat JSON-LD-tagit (data-prerender-head) koskevat
+    // vain ensimmäistä ladattua sivua. React hallitsee ne tästä eteenpäin.
+    document.querySelectorAll("script[data-prerender-head]").forEach((el) => el.remove());
+
+    // Sivustonlaajuinen Organization + WebSite JSON-LD. Esirenderöidyssä HTML:ssä se on jo
+    // valmiina (sama id), muuten (dev, ei-esirenderöity reitti) lisätään se tässä.
+    if (!document.getElementById(SITE_JSONLD_ID)) {
+      const siteScript = document.createElement("script");
+      siteScript.id = SITE_JSONLD_ID;
+      siteScript.type = "application/ld+json";
+      siteScript.textContent = JSON.stringify(buildSiteJsonLd());
+      document.head.appendChild(siteScript);
+    }
+
     // Title
     document.title = title;
 
@@ -136,16 +153,7 @@ export function SEOHead({
     if (breadcrumbs && breadcrumbs.length > 0) {
       const existingBc = document.getElementById("seo-breadcrumb-jsonld");
       if (existingBc) existingBc.remove();
-      const bcJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": breadcrumbs.map((item, i) => ({
-          "@type": "ListItem",
-          "position": i + 1,
-          "name": item.name,
-          "item": item.url,
-        })),
-      };
+      const bcJsonLd = buildBreadcrumbJsonLd(breadcrumbs);
       const script = document.createElement("script");
       script.id = "seo-breadcrumb-jsonld";
       script.type = "application/ld+json";

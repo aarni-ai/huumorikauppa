@@ -16,6 +16,8 @@ import { ShoppingCart, Share2, Ruler, Truck, RotateCcw, Shield, Copy, MessageCir
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
+import { buildProductJsonLd } from "@/seo/structuredData";
+import { buildProductFaqs } from "@/seo/pageFaqs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { generateProductCopy, isGenericDescription } from "@/lib/productCopy";
 import { isCustomTextProduct } from "@/lib/customProduct";
@@ -400,108 +402,20 @@ const ProductPage = () => {
 
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
-  const productReviewsForSchema = getProductReviews({ id: product.id, name: product.name, category: product.category });
-  const avgRatingForSchema = productReviewsForSchema.reduce((s, r) => s + r.stars, 0) / productReviewsForSchema.length;
+  // Product + Offer (toimitus, palautusehdot) samasta rakentajasta kuin esirenderöinti.
+  // Ei aggregateRatingia: productReviews.ts:n arviot eivät ole todennettuja asiakasarvioita.
+  const productJsonLd = buildProductJsonLd({
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    description: effectiveDescription,
+    images: allProductImages.map((img) => toProxiedImage(img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`)),
+    price: product.price,
+    stock: product.stock,
+    categoryName,
+  });
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "description": effectiveDescription.slice(0, 5000),
-    "image": allProductImages.map(img => {
-      const abs = img.startsWith("http") ? img : `https://huumorikauppa.fi${img}`;
-      return toProxiedImage(abs);
-    }),
-    "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
-    "sku": product.slug,
-    "mpn": product.id,
-    "brand": { "@type": "Brand", "name": "Huumorikauppa" },
-    "category": categoryName,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": avgRatingForSchema.toFixed(1),
-      "reviewCount": String(productReviewsForSchema.length),
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": product.price.toFixed(2),
-      "priceCurrency": "EUR",
-      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "itemCondition": "https://schema.org/NewCondition",
-      "seller": { "@type": "Organization", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
-      "url": `https://huumorikauppa.fi/tuote/${product.slug}`,
-      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-      ...(hasDiscount && product.original_price ? {
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "price": product.price.toFixed(2),
-          "priceCurrency": "EUR",
-          "valueAddedTaxIncluded": true
-        }
-      } : {}),
-      "shippingDetails": {
-        "@type": "OfferShippingDetails",
-        "shippingRate": {
-          "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "EUR"
-        },
-        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "FI" },
-        "deliveryTime": {
-          "@type": "ShippingDeliveryTime",
-          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-          "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY" }
-        }
-      },
-      "hasMerchantReturnPolicy": {
-        "@type": "MerchantReturnPolicy",
-        "applicableCountry": "FI",
-        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-        "merchantReturnDays": 14,
-        "returnMethod": "https://schema.org/ReturnByMail",
-        "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
-      }
-    }
-  };
-
-  const productFaqs = [
-    { q: "Onko tämä hyvä lahja?", a: `${product.name} on erinomainen lahja syntymäpäiviin, jouluksi tai ihan vaan piristykseksi. Hauskuus taattu!` },
-    { q: "Kuinka nopeasti saan tilauksen?", a: "Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 79 € tilaukset toimitetaan ilmaiseksi." },
-    { q: "Voinko palauttaa tuotteen?", a: "Kyllä! Sinulla on 14 päivän palautusoikeus." },
-  ];
-
-  // GEO/AI: heuristinen "Kenelle sopii / Miksi hauska / Mihin tilanteeseen"
-  const _t = (product.name + " " + product.description).toLowerCase();
-  const audience = (() => {
-    if (_t.includes("äiti") || _t.includes("mamma") || _t.includes("mummi")) return "äidille, mummille tai anopille — kenelle tahansa elämäsi tärkeälle naiselle";
-    if (_t.includes("isä") || _t.includes("iskä") || _t.includes("ukki")) return "isälle, ukille tai sedälle — miehelle joka rakastaa sopivan ronskia huumoria";
-    if (_t.includes("kala")) return "kalastusta harrastavalle isälle, sedälle tai kaverille";
-    if (_t.includes("eläke") || _t.includes("museo")) return "eläkkeelle jäävälle työkaverille tai juuri eläköityneelle läheiselle";
-    if (_t.includes("polttari") || _t.includes("morsian") || _t.includes("sulhanen")) return "polttariporukalle, morsiamelle tai sulhaselle";
-    if (_t.includes("vauva") || product.category === "bodyt") return "vauvalle ja vanhemmille — turvallinen ja söpö lahja";
-    if (product.category === "mukit") return "kahvinjuojalle, työkaverille tai itsellesi aamukahvia varten";
-    return "kaverille, perheenjäsenelle tai työkaverille — tai vaikka itsellesi";
-  })();
-  const occasion = (() => {
-    if (_t.includes("äiti")) return "äitienpäivään, äidin syntymäpäiviin ja ihan vaan kiitokseksi";
-    if (_t.includes("isä")) return "isänpäivään, isän syntymäpäiviin ja jouluksi";
-    if (_t.includes("eläke")) return "eläkejuhliin ja läksiäisiin";
-    if (_t.includes("polttari")) return "polttareihin ja häihin";
-    if (_t.includes("joulu")) return "jouluksi, pikkujouluihin ja kalenterin täytteeksi";
-    if (product.category === "bodyt") return "vauvanristiäisiin, ristiäislahjaksi ja vauvanpäiville";
-    return "syntymäpäiviin, jouluun, pikkujouluihin ja yllätyslahjaksi";
-  })();
-  const whyFunny = `${product.name} on hauska, koska se yhdistää tutun arkitilanteen ja yllättävän tekstin — juuri sellaisen lahjan, joka jää muistiin pidemmäksi aikaa kuin tavallinen lahja.`;
-
-  // Kasvatetaan FAQ:t AI-vastauksia varten
-  const productFaqsExtended = [
-    ...productFaqs,
-    { q: "Kenelle tämä tuote sopii?", a: `Tämä ${categoryName.toLowerCase().replace(/t$/, "")} sopii ${audience}.` },
-    { q: "Mihin tilanteeseen tämä on hyvä lahja?", a: `${product.name} sopii ${occasion}.` },
-    { q: "Miksi tämä on hauska lahja?", a: whyFunny },
-  ];
+  const { faqs: productFaqsExtended, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName);
 
   const faqJsonLd = {
     "@context": "https://schema.org",

@@ -3,6 +3,7 @@ import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOTargetGroupContent, SEOCustomContent } from "@/components/SEOKeywordContent";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
@@ -50,8 +51,8 @@ const AllProducts = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Kaikki hauskat tuotteet – T-paidat, hupparit, mukit ja paljon muuta | Huumorikauppa.fi"
-        description="Selaa kaikkia Huumorikaupan tuotteita: hauskoja t-paitoja, huppareita, mukeja ja tarroja. Ilmainen toimitus yli 79 € tilauksiin!"
+        title={STATIC_PAGE_META["/kaikki-tuotteet"].title}
+        description={STATIC_PAGE_META["/kaikki-tuotteet"].description}
         canonical="https://huumorikauppa.fi/kaikki-tuotteet"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },

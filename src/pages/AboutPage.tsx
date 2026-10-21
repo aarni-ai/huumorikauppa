@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { ORGANIZATION_ID } from "@/seo/structuredData";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Truck, RotateCcw, Shield, Flag, Mail, MapPin, CheckCircle2 } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
@@ -8,34 +10,7 @@ const aboutJsonLd = {
   "@type": "AboutPage",
   name: "Tietoa meistä – Huumorikauppa",
   url: "https://huumorikauppa.fi/tietoa-meista",
-  mainEntity: {
-    "@type": "Organization",
-    name: "Huumorikauppa",
-    url: "https://huumorikauppa.fi",
-    logo: "https://huumorikauppa.fi/favicon.ico",
-    email: "huumorikauppa@gmail.com",
-    foundingDate: "2024",
-    foundingLocation: {
-      "@type": "Place",
-      address: { "@type": "PostalAddress", addressLocality: "Helsinki", addressCountry: "FI" },
-    },
-    description:
-      "Huumorikauppa on 100 % suomalainen verkkokauppa, joka tekee hauskoja t-paitoja, huppareita, mukeja ja muita lahjoja suomalaisella huumorilla.",
-    sameAs: [
-      "https://www.wikidata.org/wiki/Q139915256",
-      "https://www.instagram.com/huumorikauppa_fi",
-      "https://www.tiktok.com/@huumorikauppa",
-      "https://www.youtube.com/@huumorikauppa",
-      "https://www.facebook.com/profile.php?id=61584153329326",
-    ],
-    identifier: {
-      "@type": "PropertyValue",
-      propertyID: "Finnish Business ID (Y-tunnus)",
-      value: "3583677-2",
-    },
-    numberOfEmployees: { "@type": "QuantitativeValue", value: "2" },
-    knowsAbout: ["Finnish humor", "Print-on-demand", "E-commerce", "Gift products"],
-  },
+  mainEntity: { "@id": ORGANIZATION_ID },
 };
 
 const stats = [
@@ -90,8 +65,8 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Tietoa meistä – Suomalainen huumorikauppa | Huumorikauppa.fi"
-        description="Huumorikauppa on 100 % suomalainen verkkokauppa. Tutustu tarinaamme, tuotantoon, materiaaleihin ja siihen, miksi tuhannet suomalaiset valitsevat meidät lahjakaupakseen."
+        title={STATIC_PAGE_META["/tietoa-meista"].title}
+        description={STATIC_PAGE_META["/tietoa-meista"].description}
         canonical="https://huumorikauppa.fi/tietoa-meista"
         jsonLd={aboutJsonLd}
         breadcrumbs={[

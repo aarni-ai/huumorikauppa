@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
@@ -144,8 +145,8 @@ const MothersDayPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Hauskat Äitienpäivälahjat 2026 | Huumorikauppa.fi"
-        description="Älä osta kukkia – osta jotain mitä äiti oikeasti muistaa. Hauskat äitienpäivälahjat 2026: paidat, hupparit, mukit. Nopea toimitus koko Suomeen."
+        title={STATIC_PAGE_META["/aitienpaiva"].title}
+        description={STATIC_PAGE_META["/aitienpaiva"].description}
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
         ogImage={proxiedImage(baseProducts[0]?.images[0], { absolute: true }) || "https://huumorikauppa.fi/images/hero-banner-wide.png"}

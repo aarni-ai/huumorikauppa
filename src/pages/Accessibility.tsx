@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
+import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 
 const Accessibility = () => {
@@ -7,8 +8,8 @@ const Accessibility = () => {
   return (
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
-        title="Saavutettavuusseloste | Huumorikauppa.fi"
-        description="Huumorikauppa.fi-verkkokaupan saavutettavuusseloste. Sitoudumme WCAG 2.1 AA -tason saavutettavuuteen."
+        title={STATIC_PAGE_META["/saavutettavuusseloste"].title}
+        description={STATIC_PAGE_META["/saavutettavuusseloste"].description}
         canonical="https://huumorikauppa.fi/saavutettavuusseloste"
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },

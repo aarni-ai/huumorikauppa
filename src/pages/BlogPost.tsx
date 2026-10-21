@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
+import { DEFAULT_BLOG_FAQS } from "@/seo/pageFaqs";
 import { categories } from "@/data/products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
@@ -183,24 +184,7 @@ const BlogPost = () => {
   };
 
   // Per-post FAQ overrides the generic set when the post defines its own.
-  const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : [
-    {
-      q: "Mistä löydän hauskoja lahjaideoita?",
-      a: "Huumorikauppa.fi tarjoaa yli 200 hauskaa lahjaa: t-paitoja, huppareita, mukeja, tarroja ja sisustustuotteita. Selaa kategorioita tai lue muita blogiartikkeleita lisävinkkejä varten.",
-    },
-    {
-      q: "Kuinka nopeasti tilaus toimitetaan?",
-      a: "Toimitamme tilaukset koko Suomeen yleensä 3–10 arkipäivässä. Yli 79 € tilauksiin toimitus on ilmainen.",
-    },
-    {
-      q: "Voinko palauttaa tuotteen?",
-      a: "Kyllä. Tuotteilla on 14 päivän palautusoikeus. Personoituja tuotteita ei kuitenkaan voi palauttaa.",
-    },
-    {
-      q: "Onko Huumorikauppa suomalainen yritys?",
-      a: "Kyllä, Huumorikauppa.fi on 100 % suomalainen verkkokauppa. Asiakaspalvelu toimii suomeksi.",
-    },
-  ];
+  const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : DEFAULT_BLOG_FAQS;
 
   const faqJsonLd = {
     "@context": "https://schema.org",
