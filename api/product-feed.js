@@ -1,5 +1,7 @@
 const SUPABASE_FEED_URL =
   'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
+import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
+
 const SITE = 'https://huumorikauppa.fi';
 
 // Any host that may serve a product image. Everything matched here gets
@@ -64,7 +66,8 @@ export default async function handler(req, res) {
     }
     const raw = await upstream.text();
     // Mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts): pudotetaan Drinkware > Mugs -tuotteet.
-    const xml = sanitizeFeed(dropHiddenItems(raw));
+    // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki): api/_lib/syote-lisakentat.js
+    const xml = lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)));
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(
