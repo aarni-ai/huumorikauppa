@@ -14,7 +14,15 @@ const ROOT = path.resolve(__dirname, "../..");
 const KIELLETYT = /(?<![\d,.])(6,90|6\.90|79 ?€|79 ?&euro;|79 ?euro|5,90|60 ?€)/;
 
 /** Sallitut: testit, fixturet, Supabase-funktiot (kassa) ja itse konfiguraatio. */
-const SALLITUT = [/\.test\.[jt]sx?$/, /\/test\//, /fixtures\//, /^supabase\/functions\//, /^src\/config\/toimitus\.ts$/];
+const SALLITUT = [
+  /\.test\.[jt]sx?$/,
+  /\/test\//,
+  /fixtures\//,
+  /^supabase\/functions\//,
+  /^src\/config\/toimitus\.ts$/,
+  // Poistettujen arvioiden arkisto (ei sovelluksen käytössä): asiakkaan alkuperäinen teksti säilytetään.
+  /^src\/data\/arvostelut-arkisto\.ts$/,
+];
 
 /**
  * TODO(toimitus-config): toisen agentin työn alla olevat tiedostot. Poista listalta, kun

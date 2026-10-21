@@ -26,7 +26,7 @@ import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 
-import { getProductReviews, getProductRating } from "@/lib/productReviews";
+import { getProductReviews } from "@/lib/productReviews";
 import { ProductRating } from "@/components/ProductRating";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
@@ -412,7 +412,9 @@ const ProductPage = () => {
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
   // Product + Offer (toimitus, palautusehdot) samasta rakentajasta kuin esirenderöinti.
-  // Ei aggregateRatingia: productReviews.ts:n arviot eivät ole todennettuja asiakasarvioita.
+  // Ei aggregateRatingia eikä Reviewta: arvioita ei ole todennetusta lähteestä (src/data/arvostelut-arkisto.ts).
+  const productReviews = getProductReviews(product);
+
   const productJsonLd = buildProductJsonLd({
     id: product.id,
     slug: product.slug,
@@ -907,12 +909,12 @@ const ProductPage = () => {
           </div>
         </section>}
 
-        {/* Customer Reviews */}
-        <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
+        {/* Customer Reviews: vain todennetut, päivätyt arviot (src/lib/productReviews.ts). Ei osiota, jos arvioita ei ole. */}
+        {productReviews.length > 0 && <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
             {(() => {
-              const reviews = getProductReviews(product);
+              const reviews = productReviews;
               const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
               return (
                 <div className="space-y-4">
@@ -949,7 +951,7 @@ const ProductPage = () => {
               );
             })()}
           </div>
-        </section>
+        </section>}
 
         {/* Product FAQ */}
         <section className="mt-8 max-w-3xl">

@@ -5,7 +5,7 @@ import { CATEGORY_H1, CATEGORY_H2_SECTIONS, selectCategoryProducts } from "@/dat
 import { buildCategoryFaqs } from "@/seo/pageFaqs";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
-import { Truck, RotateCcw, Shield, Flag, Star, CheckCircle } from "lucide-react";
+import { Truck, RotateCcw, Shield, Flag, CheckCircle } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
@@ -113,10 +113,6 @@ const CategoryPage = () => {
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
-          <div className="flex items-center gap-1.5">
-            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-            <span>4.8/5 <span className="hidden md:inline">(200+ arvostelua)</span></span>
-          </div>
         </div>
       </section>
 
@@ -151,9 +147,6 @@ const CategoryPage = () => {
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
             <Truck className="h-3.5 w-3.5" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
-          </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">
-            <Star className="h-3.5 w-3.5 fill-yellow-500" /> 4.8/5 arvosana
           </span>
         </div>
 

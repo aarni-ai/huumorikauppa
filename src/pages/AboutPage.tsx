@@ -201,7 +201,6 @@ const AboutPage = () => {
               `Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen`,
               "Henkilökohtainen asiakaspalvelu, joka vastaa 1–2 arkipäivässä",
               "14 päivän palautusoikeus ilman selittelyjä",
-              "Tuhansia tyytyväisiä asiakkaita ja todelliset arvostelut",
             ].map((point) => (
               <li key={point} className="flex items-start gap-2 text-sm text-muted-foreground">
                 <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />

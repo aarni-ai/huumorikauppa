@@ -11,7 +11,11 @@ import fixture from "./fixtures/visible-product-slugs.json";
 
 const SRC = path.resolve(__dirname, "..");
 const DATA_FILES = [
-  ...fs.readdirSync(path.join(SRC, "data")).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).map((f) => path.join(SRC, "data", f)),
+  // arvostelut-arkisto.ts on poistettujen arvioiden arkisto, jota sovellus ei näytä (alkuperäinen teksti säilytetään).
+  ...fs
+    .readdirSync(path.join(SRC, "data"))
+    .filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts") && f !== "arvostelut-arkisto.ts")
+    .map((f) => path.join(SRC, "data", f)),
   path.join(SRC, "seo/pageFaqs.ts"),
   path.join(SRC, "seo/staticPageMeta.ts"),
 ];

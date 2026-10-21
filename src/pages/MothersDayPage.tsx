@@ -6,7 +6,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Truck, RotateCcw, Shield, Flag, Heart, Star, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
+import { Truck, RotateCcw, Shield, Flag, Heart, Gift, Coffee, Shirt, Sparkles } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { proxiedImage } from "@/lib/imageProxy";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
@@ -62,11 +62,6 @@ const FAQS = [
   },
 ];
 
-const REVIEWS = [
-  { name: "Marjut H.", text: "tilasin äidille mukin ja se nauroi puoli tuntia. Paras lahja koskaan!", rating: 5 },
-  { name: "Petri S.", text: "huppari mummille viime jouluna — käyttää joka päivä. tilaan nyt äitienpäiväksi paidan.", rating: 5 },
-  { name: "Sanna K.", text: "Anoppi tykkäsi! ja se ei tykkää yleensä mistään 😅 nopea toimitus", rating: 5 },
-];
 
 function useCountdown(target: Date) {
   const [now, setNow] = useState(() => new Date());
@@ -377,28 +372,7 @@ const MothersDayPage = () => {
         </div>
       </section>
 
-      {/* SOCIAL PROOF */}
-      <section className="bg-muted/40 border-y border-border py-12 md:py-16">
-        <div className="container max-w-5xl">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground text-center mb-2">
-            Suomalaiset rakastavat Huumorikauppaa ❤️
-          </h2>
-          <p className="text-center text-muted-foreground mb-8">Yli 200 tyytyväistä asiakasarvostelua</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {REVIEWS.map((r, i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-5">
-                <div className="flex items-center gap-0.5 mb-2 text-yellow-500">
-                  {Array.from({ length: r.rating }).map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-sm text-foreground mb-3 leading-relaxed">"{r.text}"</p>
-                <div className="text-xs text-muted-foreground font-medium">— {r.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Arvio-osio poistettu 21.10.2026: arviot eivät olleet todennettavia (src/data/arvostelut-arkisto.ts). */}
 
       {/* FOOTER URGENCY CTA */}
       <section
