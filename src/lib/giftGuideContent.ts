@@ -10,57 +10,57 @@ export interface GiftGuideContent {
 }
 
 /**
- * Deterministic 600–1000 word Finnish gift-guide content per situation.
+ * Deterministic Finnish gift-guide content per situation.
  * Used by SituationGiftPage to give every /lahjat/* landing page unique,
  * Helpful-Content-compliant copy without LLM calls.
  */
 export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
   const topic = s.h1.replace(/^Hauskat lahjat /i, "").replace(/^Hauskat /i, "");
+  const t = topic.toLowerCase();
   const intro =
-    `${s.intro} Olemme koonneet tähän oppaaseen Huumorikaupan parhaat ideat ${topic.toLowerCase()} – kaikki suomalaisella huumorilla, laadukkailla materiaaleilla ja nopealla toimituksella. ` +
-    `Jokainen tuote on suunniteltu Suomessa ja painettu kestävällä menetelmällä EU:ssa, joten lahjasi näyttää hyvältä myös vuosien käytön jälkeen.`;
+    `${s.intro} Tähän oppaaseen on koottu Huumorikaupan ideoita ${t}, kaikki suomalaisella huumorilla. ` +
+    `Jokainen tuote painetaan tilauksesta ja toimitetaan koko Suomeen 3-10 arkipäivässä.`;
 
   const whyChoose =
-    `Miksi valita hauska lahja? Tutkimusten mukaan lahjat, jotka herättävät tunteita, jäävät paremmin mieleen kuin kalliit mutta persoonattomat lahjat. ` +
-    `Hauska t-paita, muki tai huppari ei mene roskiin – se otetaan käyttöön ja siitä puhutaan vielä vuosien päästä. ` +
-    `Tämä on erityisen tärkeää silloin kun haluat näyttää välittäväsi ilman, että käytät satoja euroja. Huumorikaupan ${topic.toLowerCase()} -valikoima on suunniteltu juuri tähän tarkoitukseen.`;
+    `Miksi valita hauska lahja? Lahja, joka naurattaa, jää mieleen paremmin kuin persoonaton tavara. ` +
+    `Hauska t-paita tai huppari otetaan käyttöön, ja sen teksti herättää keskustelua vielä juhlien jälkeenkin. ` +
+    `Näin voit näyttää välittäväsi ilman, että käytät satoja euroja.`;
 
   const howToChoose =
-    `Kuinka valita oikea lahja ${topic.toLowerCase()}? Aloita miettimällä vastaanottajan harrastuksia, ammattia ja sisäpiirin vitsejä. ` +
-    `Mitä tarkemmin osut hänen elämäänsä, sitä paremmin lahja toimii. Käytä alla olevaa valikoimaa inspiraationa ja yhdistä mielellään ` +
-    `kaksi tuotetta (esimerkiksi paita + muki) saadaksesi täydellisen yhdistelmän. Muista myös koko: t-paitamme ja hupparimme löytyvät kokoluokissa XS–3XL, ` +
-    `joten jokaiselle löytyy istuva malli.`;
+    `Kuinka valita oikea lahja ${t}? Aloita miettimällä vastaanottajan harrastuksia, ammattia ja sisäpiirin vitsejä. ` +
+    `Mitä tarkemmin osut hänen elämäänsä, sitä paremmin lahja toimii. Jos mikään valmis teksti ei osu, valitse personoitava tuote ja kirjoita oma teksti. ` +
+    `Muista myös koko: tuotesivun kokotaulukossa on mitat senttimetreinä, ja saatavilla olevat koot näet jokaisen tuotteen kohdalta.`;
 
   const popular =
-    `Suosituimmat tuotteet tässä kategoriassa ovat sellaisia, joissa yhdistyy tunnistettava arkitilanne ja juuri sopivasti yliampuva teksti. ` +
-    `Setähuumori, ammattikuntahuumori ja klassiset suomalaiset sanonnat toimivat lähes aina. ` +
-    `Selaa alla olevia ${topic.toLowerCase()} -ideoita – jokainen tuote sisältää tarkat materiaali- ja hoito-ohjeet sekä asiakkaiden oikeat arvostelut.`;
+    `Toimivimmissa teksteissä yhdistyy tunnistettava arkitilanne ja juuri sopivasti yliampuva sanavalinta. ` +
+    `Setähuumori, ammattikuntahuumori ja tutut suomalaiset sanonnat ovat hyviä lähtökohtia. ` +
+    `Selaa alla olevia ideoita: jokaisen tuotteen sivulla on materiaali-, koko- ja hoitotiedot.`;
 
   const shippingTrust =
-    `Toimitamme kaikki tilaukset 3–10 arkipäivässä ympäri Suomen. Yli 79 € tilaukset toimitetaan ilmaiseksi. ` +
-    `Tarjoamme 14 päivän palautusoikeuden ilman selittelyjä, ja maksaminen on aina turvallista (Visa, Mastercard, Klarna, MobilePay, Apple Pay, Google Pay). ` +
-    `Olemme 100 % suomalainen yritys ja asiakaspalvelumme vastaa sähköposteihin 1–2 arkipäivässä.`;
+    `Toimitusaika on 3-10 arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen se on ilmainen. ` +
+    `Sinulla on 14 päivän peruutusoikeus, ja voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. ` +
+    `Asiakaspalvelu vastaa sähköposteihin 1-2 arkipäivässä.`;
 
   const faqs: { q: string; a: string }[] = [
     {
-      q: `Mikä on paras lahja ${topic.toLowerCase()}?`,
-      a: `Paras hauska lahja ${topic.toLowerCase()} on sellainen, joka osuu vastaanottajan harrastukseen, ammattiin tai sisäpiirin vitseihin. Huumorikaupan suosituimmat valinnat ovat persoonallinen t-paita, hauska muki tai pehmeä huppari – kaikki tuotteet sopivat juuri tähän tarkoitukseen.`,
+      q: `Mikä on hyvä lahja ${t}?`,
+      a: `Hyvä hauska lahja ${t} osuu vastaanottajan harrastukseen, ammattiin tai sisäpiirin vitseihin. Valikoimassa on t-paitoja ja huppareita valmiilla teksteillä sekä personoitavia tuotteita omalle tekstille.`,
     },
     {
       q: `Kuinka nopeasti tilaus saapuu?`,
-      a: `Toimitamme kaikki tilaukset 3–10 arkipäivässä Suomessa. Tilaukset yli 79 € lähetetään ilmaiseksi. Voit valita Postin pakettiautomaatin tai noutopisteen, joten paketti odottaa sinua sopivassa paikassa.`,
+      a: `Toimitusaika on 3-10 arkipäivää tilauksesta. Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen se on ilmainen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
     },
     {
       q: `Voinko palauttaa tuotteen, jos lahja ei sovi?`,
-      a: `Kyllä. Sinulla on 14 päivän palautusoikeus ilman selittelyjä. Personoituja tuotteita (omalla tekstillä) ei voi palauttaa, koska ne valmistetaan tilauksesta.`,
+      a: `Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Personoituja tuotteita (omalla tekstillä) peruutusoikeus ei koske, koska ne valmistetaan asiakkaan toiveiden mukaan.`,
     },
     {
-      q: `Onko tuotteet valmistettu Suomessa?`,
-      a: `Tuotteet on suunniteltu Suomessa ja painettu kestävällä DTG- tai sublimaatio-menetelmällä luotettavalla EU-painokumppanilla. Käytämme korkealaatuisia materiaaleja, jotka kestävät pesun jälkeen pesun.`,
+      q: `Missä tuotteet painetaan?`,
+      a: `Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa. Materiaali ja hoito-ohje on kerrottu jokaisen tuotteen kuvauksessa.`,
     },
     {
-      q: `Saako tilaukseen lahjapaketoinnin?`,
-      a: `Tuotteet pakataan huolellisesti ja ne sopivat lahjaksi sellaisenaan. Jos tarvitset erillistä lahjapaketointia, ota yhteyttä asiakaspalveluumme tilauksen jälkeen.`,
+      q: `Voiko lahjan lähettää suoraan saajalle?`,
+      a: `Voi: valitse kassalla "Toimitetaan eri vastaanottajalle kuin maksaja" ja kirjoita vastaanottajan nimi ja osoite. Erillistä lahjapaketointia ei ole.`,
     },
   ];
 

@@ -152,13 +152,12 @@ const OfficeNotesPage = () => {
           <h2 className="font-display text-2xl text-foreground mb-3">Vie vitsi seinältä lahjaksi 🎁</h2>
           <p className="text-muted-foreground mb-4">
             Jos joku näistä lapuista kuvaa kollegaasi liiankin tarkasti, se on merkki – sama vitsi näyttää vielä
-            paremmalta mukissa, paidassa tai hupparissa.
+            paremmalta paidassa tai hupparissa.
           </p>
           <div className="flex flex-wrap gap-2">
             <Link to="/lahjat/tyokaverille" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎁 Lahjat työkaverille</Link>
             <Link to="/lahjat/pomolle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">👔 Lahjat pomolle</Link>
             <Link to="/lahjat/pikkujouluihin" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎄 Pikkujouluihin</Link>
-            <Link to="/kategoria/mukit" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">☕ Hauskat mukit</Link>
             <Link to="/suomalaiset-tyopaikkameemit-top-50" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">😂 Työpaikkameemit TOP 50</Link>
           </div>
         </section>

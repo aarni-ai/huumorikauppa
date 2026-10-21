@@ -168,7 +168,7 @@ const HobbyPage = () => {
             </h2>
             <p>
               Harrastuspohjainen lahja on aina henkilökohtainen. Se osoittaa että tiedät vastaanottajasi
-              intohimon — ja se tekee lahjasta muistettavan. Huumoripaita tai -muki {hobby.namePossessive}{" "}
+              intohimon — ja se tekee lahjasta muistettavan. Huumoripaita tai -huppari {hobby.namePossessive}{" "}
               teemalla ei jää kaapin pohjalle, vaan päätyy aktiiviseen käyttöön.
             </p>
           </section>
@@ -194,7 +194,6 @@ const HobbyPage = () => {
             <h2 className="font-display text-2xl text-foreground mb-3">Top tuotevalinnat</h2>
             <ul className="list-disc pl-5 space-y-1">
               <li><strong>T-paidat:</strong> harrastushuumori päivittäisessä käytössä – vitsi kulkee harrastuksessa mukana.</li>
-              <li><strong>Mukit:</strong> kestää vuosia, näkyy joka kahvitauolla – palauttaa mieleen hyvän hetken.</li>
               <li><strong>Hupparit:</strong> mukava ja käytännöllinen – arvostetaan arkilahjana.</li>
             </ul>
           </section>

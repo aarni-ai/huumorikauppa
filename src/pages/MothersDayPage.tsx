@@ -33,7 +33,6 @@ type FilterKey = "all" | "mukit" | "t-paidat" | "hupparit" | "tarrat";
 
 const FILTERS: { key: FilterKey; label: string; emoji: string }[] = [
   { key: "all", label: "Kaikki", emoji: "🌸" },
-  { key: "mukit", label: "Mukit", emoji: "☕" },
   { key: "t-paidat", label: "T-paidat", emoji: "👕" },
   { key: "hupparit", label: "Hupparit", emoji: "🧥" },
   { key: "tarrat", label: "Tarrat", emoji: "🏷️" },
@@ -46,15 +45,15 @@ const FAQS = [
   },
   {
     q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
-    a: "Tilaa viimeistään 5. toukokuuta niin ehdit varmasti. Toimitamme 3–10 arkipäivässä koko Suomeen.",
+    a: "Tilaa viimeistään kaksi viikkoa ennen äitienpäivää, koska toimitusaika on 3-10 arkipäivää tilauksesta.",
   },
   {
-    q: "Mikä on paras hauska lahja äidille?",
-    a: "Suosituimpia ovat hupparit ja t-paidat hauskoilla teksteillä — äiti käyttää niitä ja muistaa lahjan aina. Myös hauskat mukit ovat aina varma valinta.",
+    q: "Mikä on hauska lahja äidille?",
+    a: "Hauska lahja äidille on huppari tai t-paita, jonka teksti on äidin näköinen, kuten \"Maailman paras äiti\" tai \"Super äiskä\". Sellainen lahja päätyy käyttöön.",
   },
   {
     q: "Toimitetaanko äitienpäiväksi?",
-    a: "Kyllä! Toimitamme 3–10 arkipäivässä koko Suomeen. Yli 79 € tilauksiin toimitus on ilmainen, ja kaikilla tuotteilla on 14 päivän palautusoikeus.",
+    a: "Kyllä: toimitusaika on 3-10 arkipäivää tilauksesta koko Suomeen. 79 euron tilauksista alkaen toimitus on ilmainen, ja tuotteilla on 14 päivän peruutusoikeus (ei koske personoituja tuotteita).",
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",
@@ -107,7 +106,7 @@ const MothersDayPage = () => {
     "@type": "CollectionPage",
     "name": "Hauskat Äitienpäivälahjat 2026",
     "description":
-      "Suomen parhaat hauskat äitienpäivälahjat. T-paitoja, huppareita, mukeja ja tarroja äitienpäivälahjaksi.",
+      "Hauskat äitienpäivälahjat: t-paitoja, huppareita ja muita lahjoja äidille.",
     "url": "https://huumorikauppa.fi/aitienpaiva",
     "provider": {
       "@type": "Organization",
@@ -218,13 +217,13 @@ const MothersDayPage = () => {
       <section className="sr-only" aria-hidden="false">
         <p>
           <strong>Äitienpäivälahjaksi hauska huppari tai t-paita on yllättävä ja lämmin valinta.</strong>{" "}
-          Huumorikauppa.fi:n äitienpäivä-tuotteet — hupparit, t-paidat, mukit ja tarrat — toimitetaan
-          nopeasti 3–10 arkipäivässä koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
-          ja yli 79 € tilauksiin toimitus on ilmainen.
+          Huumorikauppa.fi:n äitienpäivätuotteet, kuten hupparit ja t-paidat, toimitetaan
+          3-10 arkipäivässä tilauksesta koko Suomeen. Äitienpäivä 2026 on sunnuntaina <strong>10. toukokuuta</strong>,
+          ja 79 euron tilauksista alkaen toimitus on ilmainen.
         </p>
         <p>
-          Toimituksen suositus: Hauska äitienpäivälahja jää mieleen vuosiksi — etenkin silloin kun teksti
-          on äidin näköistä. Suosituin valinta on "Maailman paras äiti" -huppari tai persoonallinen kahvimuki.
+          Toimituksen suositus: Hauska äitienpäivälahja jää mieleen, etenkin silloin kun teksti
+          on äidin näköistä, kuten "Maailman paras äiti" -huppari tai omalla tekstillä personoitu paita.
         </p>
       </section>
 
@@ -304,22 +303,21 @@ const MothersDayPage = () => {
       <section className="container py-8 md:py-12 max-w-3xl">
         <div className="text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
           <p>
-            Etsitkö parasta <strong>äitienpäivälahjaa</strong> vuodelle 2026? Olet oikeassa paikassa.
-            Huumorikauppa on Suomen suurin valikoima hauskoja äitienpäivälahjoja — paitoja, huppareita,
-            mukeja ja tarroja, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
+            Etsitkö hauskaa <strong>äitienpäivälahjaa</strong> vuodelle 2026? Huumorikaupasta löydät
+            hauskoja äitienpäivälahjoja, kuten paitoja ja huppareita, joissa on persoonaa enemmän kuin keskivertokukkakimpussa. Äitienpäivä
             2026 on sunnuntaina <strong>10. toukokuuta</strong>, ja jos haluat antaa lahjan jonka äiti
             oikeasti muistaa, kannattaa unohtaa rutiininomaiset valinnat.
           </p>
           <p>
             <strong>Hauska lahja äidille</strong> jää mieleen vuosiksi — etenkin silloin kun siinä on
-            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>paras äitienpäivälahja</strong> sekä
+            oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>hauska äitienpäivälahja</strong> sekä
             kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
-            kelpaavan. Kaikki tuotteet painetaan Suomessa ja toimitetaan nopeasti 3–10 arkipäivässä —
-            ehdit siis varmasti ajoissa, jos tilaat viimeistään 5.5.2026.
+            kelpaavan. Kaikki tuotteet painetaan tilauksesta ja toimitetaan 3-10 arkipäivässä tilauksesta,
+            joten tilaa viimeistään kaksi viikkoa ennen äitienpäivää.
           </p>
           <p>
             <strong>Ilmainen toimitus yli 79 € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
-            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se täydellinen{" "}
+            kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se oikea{" "}
             <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
             koko vuoden.
           </p>
@@ -331,12 +329,12 @@ const MothersDayPage = () => {
         <h2 className="font-display text-2xl md:text-3xl text-foreground text-center mb-2">
           Lahjaopas budjetin mukaan 🎁
         </h2>
-        <p className="text-center text-muted-foreground mb-8">Löydä täydellinen lahja jokaiseen budjettiin</p>
+        <p className="text-center text-muted-foreground mb-8">Lahjat jokaiseen budjettiin</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
           <GiftGuideCard
             icon={<Coffee className="h-6 w-6" />}
             title="Alle 20 €"
-            desc="Hauskat mukit ja tarrat — edulliset mutta mieleenpainuvat."
+            desc="Tarrat ja muut edulliset lahjat, jotka jäävät mieleen."
             count={cheap.length}
             link="#tuotteet"
             tone="rose"
