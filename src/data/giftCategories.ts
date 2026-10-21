@@ -21,7 +21,7 @@ export const TLDR_TEXTS: Record<string, string> = {
   "hauskat-t-paidat": "Hauskat t-paidat ovat 100 % puuvillaa, painettu Suomessa. Valikoimassa yli 30 vitsipainatusta — ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus 3–10 arkipäivässä.",
   "hauskat-hupparit": "Hauskat hupparit ovat lämpimiä ja korkealaatuisia, painettu Suomessa. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus 3–10 arkipäivässä.",
   "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita, -huppari tai -muki joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras pappa' -teemat. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
-  "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai muki suomalaisesta ammattihuumorista. Suosittuja teemoja ovat kalamies, äijä ja eläkeläinen. Tilaa viimeistään 14.12. saadaksesi tuotteen ennen joulua.",
+  "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Suosittuja teemoja ovat kalamies, äijä ja eläkeläinen. Tilaa viimeistään perjantaina 20.11.2026, niin lahja ehtii perille jouluaattoon mennessä.",
   "syntymapaivaLahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–10 arkipäivässä.",
   "syntymapaivalahjat": "Syntymäpäivälahja huumorin ystävälle: huumoripaita, -huppari tai -muki ikääntyvälle juhlijalle. Suosituimpia ovat '100 % eläkeläinen'- ja '50v'-teemat sekä ammattihuumori. Tilaa nopeasti, toimitus 3–10 arkipäivässä.",
   "polttari-lahjat": "Polttarilahja ja ryhmäpaidat: hauskat t-paidat polttariporukalle naimisiin menevälle. Räätälöitäviä tekstipaitoja ja yhteishenkipainatuksia. Tilaa hyvissä ajoin koko ryhmälle.",
@@ -242,7 +242,7 @@ Tilaa viimeistään 2 viikkoa ennen äitienpäivää.`,
     name: "Hauskat Joululahjat",
     emoji: "🎄",
     h1: "Hauskat Joululahjat",
-    seoTitle: "Joululahjat 2026 – Parhaat hauskat ideat | Huumorikauppa.fi",
+    seoTitle: "Hauskat joululahjat 2026 | Huumorikauppa.fi",
     seoDescription: "Parhaat joululahjat 2026! Hauskat ja yllättävät ideat koko perheelle. Osta ajoissa – nopea toimitus. 🎄",
     filterFn: (p) => {
       return p.category === "t-paidat" || p.category === "hupparit" || 
