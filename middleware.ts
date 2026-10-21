@@ -604,6 +604,98 @@ function injectJsonLd(html: string, ...schemas: object[]): string {
   return html.replace('</head>', `  ${tags}\n</head>`);
 }
 
+// ── Unknown products: real 404 ───────────────────────────────────────────────
+
+export type ProductStatus = 'known' | 'missing' | 'hidden' | 'unknown';
+
+export function productSlugFromPath(path: string): string {
+  const raw = path.slice('/tuote/'.length).replace(/\/+$/, '');
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
+/** Buildissa kirjoitettu lista myynnissä olevista tuoteslugeista (scripts/prerender.mjs). */
+let knownSlugsCache: { at: number; slugs: Set<string> | null } | null = null;
+const KNOWN_SLUGS_TTL_MS = 5 * 60 * 1000;
+
+async function knownProductSlugs(origin: string): Promise<Set<string> | null> {
+  if (knownSlugsCache && Date.now() - knownSlugsCache.at < KNOWN_SLUGS_TTL_MS) return knownSlugsCache.slugs;
+  let slugs: Set<string> | null = null;
+  try {
+    const res = await fetch(`${origin}/product-slugs.json`, {
+      headers: { 'x-bot-inject': 'true' },
+      signal: AbortSignal.timeout(2000),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) slugs = new Set(data.filter((s): s is string => typeof s === 'string'));
+    }
+  } catch {
+    slugs = null;
+  }
+  knownSlugsCache = { at: Date.now(), slugs };
+  return slugs;
+}
+
+/**
+ * known = myynnissä (tai ei voitu tarkistaa -> 'unknown', jolloin pyyntö päästetään läpi),
+ * missing = slugia ei ole tai tuote on luonnos, hidden = piilotettu kategoria (mukit).
+ */
+export async function productStatus(origin: string, slug: string): Promise<ProductStatus> {
+  if (!slug || slug.includes('/')) return 'missing';
+  const known = await knownProductSlugs(origin);
+  if (known?.has(slug)) return 'known';
+  // Buildin jälkeen lisätyt tuotteet: tarkistetaan Supabasesta.
+  if (!SUPABASE_URL || !SUPABASE_KEY) return 'unknown';
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,category,is_active&limit=1`,
+      {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        signal: AbortSignal.timeout(4000),
+      }
+    );
+    if (!res.ok) return 'unknown';
+    const rows: Array<{ slug: string; category: string; is_active?: boolean | null }> = await res.json();
+    if (!Array.isArray(rows)) return 'unknown';
+    const row = rows[0];
+    if (!row || row.is_active === false) return 'missing';
+    if (onPiilotettu(row.category)) return 'hidden';
+    return 'known';
+  } catch {
+    return 'unknown';
+  }
+}
+
+const FALLBACK_404_HTML =
+  '<!doctype html><html lang="fi"><head><meta charset="utf-8"><meta name="robots" content="noindex, follow">' +
+  '<title>Sivua ei löytynyt | Huumorikauppa</title></head><body><h1>Sivua ei löytynyt</h1>' +
+  '<p><a href="/kaikki-tuotteet">Kaikki tuotteet</a></p></body></html>';
+
+async function notFoundResponse(origin: string): Promise<Response> {
+  let body = FALLBACK_404_HTML;
+  try {
+    const res = await fetch(`${origin}/404.html`, {
+      headers: { 'x-bot-inject': 'true' },
+      signal: AbortSignal.timeout(2000),
+    });
+    if (res.ok) body = await res.text();
+  } catch {
+    // käytetään varasivua
+  }
+  return new Response(body, {
+    status: 404,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'X-Robots-Tag': 'noindex',
+      'Cache-Control': 'public, max-age=0, s-maxage=300',
+    },
+  });
+}
+
 // ── Main middleware ───────────────────────────────────────────────────────────
 
 export default async function middleware(request: Request): Promise<Response | undefined> {
@@ -611,13 +703,20 @@ export default async function middleware(request: Request): Promise<Response | u
     return undefined;
   }
 
+  const url = new URL(request.url);
+  const path = url.pathname;
+
+  // Tuntematon tuote -> oikea 404 (ei pehmeää 404:ää SPA-kuorella). Koskee kaikkia user agenteja.
+  if (path.startsWith('/tuote/')) {
+    const status = await productStatus(url.origin, productSlugFromPath(path));
+    if (status === 'missing') return notFoundResponse(url.origin);
+    if (status === 'hidden') return Response.redirect(`${url.origin}/kaikki-tuotteet`, 301);
+  }
+
   const ua = request.headers.get('user-agent') || '';
   if (!BOT_REGEX.test(ua)) {
     return undefined;
   }
-
-  const url = new URL(request.url);
-  const path = url.pathname;
 
   // 1) Haetaan reitin oma HTML. Esirenderöidyllä reitillä se on staattinen tiedosto, jossa on
   //    jo sivun oma canonical: päästetään pyyntö silloin läpi koskematta (ei tuplatageja).
