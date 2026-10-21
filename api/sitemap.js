@@ -117,7 +117,7 @@ async function fetchAllProducts() {
   for (let i = 0; i < 10; i++) {
     const to = from + pageSize - 1;
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,updated_at&category=neq.mukit&order=updated_at.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at&category=neq.mukit&order=updated_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -131,7 +131,8 @@ async function fetchAllProducts() {
     if (!res.ok) break;
     const batch = await res.json();
     if (!Array.isArray(batch) || batch.length === 0) break;
-    out.push(...batch);
+    // Mukit väärässä kategoriassa (src/lib/hiddenCategories.ts MUKI_TUNNISTE).
+    out.push(...batch.filter((p) => !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
     if (batch.length < pageSize) break;
     from += pageSize;
   }

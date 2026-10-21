@@ -8,3 +8,17 @@ export const PIILOTETUT_KATEGORIAT: readonly string[] = ["mukit"];
 
 export const onPiilotettu = (category: string | undefined | null): boolean =>
   !!category && PIILOTETUT_KATEGORIAT.includes(category);
+
+/** Muki nimen, osoitteen tai koon perusteella (kolme mukia on tietokannassa t-paidat-kategoriassa, koko 11oz). */
+export const MUKI_TUNNISTE = /\bmuki\b|kahvimuki|-muki$/i;
+
+/**
+ * Tuotetasoinen piilotus: piilotettu kategoria tai muki muussa kategoriassa. Käytä tätä aina, kun tuoterivi on
+ * käytettävissä (listat, kori, esirenderöinti, sivukartta, syöte, middleware).
+ */
+export function onPiilotettuTuote(p: { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown }): boolean {
+  if (onPiilotettu(p.category)) return true;
+  if (MUKI_TUNNISTE.test(`${p.slug ?? ""} ${p.name ?? ""}`)) return true;
+  const koot = (p.variants as { sizes?: unknown } | null | undefined)?.sizes;
+  return Array.isArray(koot) && koot.some((k) => typeof k === "string" && /^\d+oz$/i.test(k));
+}

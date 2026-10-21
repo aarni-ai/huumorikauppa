@@ -14,7 +14,7 @@
  * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
 import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
-import { onPiilotettu } from './src/lib/hiddenCategories.js';
+import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 
@@ -63,7 +63,7 @@ async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null>
     const data: SupabaseProduct[] = await res.json();
     const product = data[0] ?? null;
     // Myynnistä piilotetut kategoriat (mukit) eivät saa tuotemetoja.
-    if (product && onPiilotettu(product.category)) return null;
+    if (product && onPiilotettuTuote(product)) return null;
     return product;
   } catch {
     return null;

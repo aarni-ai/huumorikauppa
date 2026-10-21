@@ -14,7 +14,7 @@ import { hobbies } from "@/data/hobbies";
 import { municipalities } from "@/data/municipalities";
 import { dialects } from "@/data/dialects";
 import { blogPosts } from "@/data/blog";
-import { onPiilotettu } from "@/lib/hiddenCategories";
+import { onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { generateProductCopy, isGenericDescription, sanitizeProductDescription, truncateAtWord } from "@/lib/productCopy";
@@ -65,7 +65,7 @@ export interface ProductRow {
 export function normalizeProducts(rows: ProductRow[]): Product[] {
   return rows
     .filter((p) => p.is_active !== false)
-    .filter((p) => !onPiilotettu(p.category))
+    .filter((p) => !onPiilotettuTuote(p))
     .filter((p) => !!p.slug && !!p.name)
     .map((p) => ({
       id: p.id,
