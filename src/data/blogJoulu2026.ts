@@ -681,7 +681,7 @@ Isänpäivää vietetään marraskuun toisena sunnuntaina, vuonna 2026 se on 8.1
 - **Isänpäivänä hauska ja kevyt:** paita tai huppari, joka naurattaa heti avattaessa.
 - **Jouluna henkilökohtainen ja pysyvä:** personoitu tuote, jossa on perheen oma kuva tai teksti.
 
-Näin lahjat eivät kilpaile keskenään, ja kumpikin on oma juttunsa. Isänpäivän ideoita löydät sivulta [isänpäivälahjat](/isanpaiva-lahjat) ja oppaasta [hauskat isänpäivälahjat](/blogi/hauskat-isanpaivalahjat-opas).
+Näin lahjat eivät kilpaile keskenään, ja kumpikin on oma juttunsa. Isänpäivän ideoita löydät sivulta [isänpäivälahjat](/isanpaivalahja) ja oppaasta [hauskat isänpäivälahjat](/blogi/hauskat-isanpaivalahjat-opas).
 
 ## Ideat isätyypin mukaan
 
@@ -784,7 +784,7 @@ Isän kokoa ei kannata kysyä suoraan, jos lahja on yllätys. Kysy sen sijaan ä
 
 Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos haluat antaa sekä isänpäivä- että joululahjan, tilaa ne samalla kertaa hyvissä ajoin ennen isänpäivää. Joululahjoille lupaamme toimituksen jouluaattoon mennessä, kun tilaus on tehty viimeistään perjantaina 20.11.2026.
 
-Lisää valmiita ideoita löydät sivuilta [isänpäivän lahjaideat](/lahjat/isanpaiva), [joululahjat miehelle](/lahjat/joululahjaksi-miehelle) ja [hupparit](/kategoria/hupparit).`,
+Lisää valmiita ideoita löydät sivuilta [isänpäivän lahjaideat](/isanpaivalahja), [joululahjat miehelle](/lahjat/joululahjaksi-miehelle) ja [hupparit](/kategoria/hupparit).`,
     faq: [
       { q: "Mikä on hauska joululahja isälle?", a: "Hauska joululahja isälle liittyy hänen rooliinsa perheessä tai harrastukseensa. Esimerkiksi korjaajaisälle sopii \"Jos iskä ei osaa korjata sitä\" -huppari ja grillaajalle grillimestarin paita." },
       { q: "Miten sovitan isänpäivä- ja joululahjan yhteen?", a: "Anna isänpäivänä kevyt ja hauska lahja ja jouluna henkilökohtainen, esimerkiksi personoitu tuote perheen kuvalla. Isänpäivä on vuonna 2026 sunnuntaina 8.11." },

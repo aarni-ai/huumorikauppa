@@ -198,6 +198,7 @@ export function buildSiteNav(products: Product[] = []): SiteNav {
     { href: "/hauskat-lahjat-miehelle", label: "Lahjat miehelle" },
     { href: "/hauskat-lahjat-naiselle", label: "Lahjat naiselle" },
     { href: "/joululahjat", label: "Joululahjat" },
+    { href: "/isanpaivalahja", label: "Isänpäivälahjat" },
     { href: "/blogi", label: "Blogi" },
   ];
   const footer: LinkItem[] = [

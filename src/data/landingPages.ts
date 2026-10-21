@@ -16,9 +16,10 @@ import type { Product } from "@/types/product";
 import { getPriorityRank } from "@/lib/productPriority";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
+import { FATHERS_DAY_LAST_ORDER_TEXT, FATHERS_DAY_TEXT } from "./campaignSchedule";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 
-export { LANDING_PATHS, LANDING_REDIRECTS, NOT_CREATED_LANDINGS, CHRISTMAS_MENU } from "./landingRoutes";
+export { LANDING_PATHS, LANDING_REDIRECTS, NOT_CREATED_LANDINGS, CHRISTMAS_MENU, FATHERS_DAY_MENU } from "./landingRoutes";
 
 export const LANDING_MIN_PRODUCTS = 8;
 /** Tuoteruudukossa ja ItemListissä näytetään enintään näin monta tuotetta. */
@@ -185,6 +186,20 @@ const SALAINEN_PUKKI = all(
   maxPrice(30),
   not(inCategory("bodyt")),
   any(TYO, inCategory("tarrat", "koristeet")),
+);
+/** Isänpäivälahja isän tyypin mukaan: kalastaja, mökkeilijä, grillaaja, eläkeläinen, isoisä, nuori isä, työmies. */
+const ISA_TYYPIT = any(
+  ISA,
+  PAPPA,
+  theme(/eläkeläi/, /eläkkeellä/),
+  theme(/kalamies/, /kalassa/, /kalastaja/, /pilkkijä/, /metsästäjä/),
+  theme(/mökkeilijä/, /grillimest/),
+  theme(/rakennusmie/, /sähköasentaja/, /sähkömie/, /putkimie/, /maanviljelijä/),
+);
+/** Hauska isänpäivälahja: isän oma vitsi ja setähuumori (ei alkoholivitsejä lasten lahjaksi). */
+const ISA_VITSIT = all(
+  any(ISA, SETA, theme(/kala pääsi/, /huonokin päivä kalassa/, /museokamaa/, /elävä legenda/)),
+  not(theme(/alkoholi/, /oispa kaljaa/)),
 );
 const ANY_AGE = all(any(age(30), age(40), age(50), age(60), age(70)), not(workYears));
 
@@ -398,7 +413,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Sopiiko sama lahja isänpäivään?",
-        a: "Sopii. Isänpäivä on sunnuntaina 8.11.2026, ja isänpäivän valikoima on sivulla Hauskat isänpäivälahjat.",
+        a: "Sopii. Isänpäivä on sunnuntaina 8.11.2026, ja isänpäivän ideat ovat sivuilla Isänpäivälahja isän tyypin mukaan ja Hauska isänpäivälahja.",
       },
       {
         q: "Mitä jos en tiedä isän kokoa?",
@@ -406,7 +421,8 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: [
-      "/isanpaiva-lahjat",
+      "/isanpaivalahja",
+      "/hauska-isanpaivalahja",
       "/joululahja-papalle",
       "/joululahja-miehelle-jolla-on-kaikki",
       "/setamiespaidat",
@@ -1032,7 +1048,7 @@ export const landingPages: LandingPageDef[] = [
         a: "On. Kalju, Isäntä, Amatimies ja Museokamaa ovat saatavilla myös hupparina.",
       },
     ],
-    related: ["/joululahja-isalle", "/hauskat-lahjat-miehelle", "/meemipaidat", "/lahjat/50-vuotiaalle-miehelle"],
+    related: ["/joululahja-isalle", "/hauska-isanpaivalahja", "/hauskat-lahjat-miehelle", "/meemipaidat", "/lahjat/50-vuotiaalle-miehelle"],
     categories: ["t-paidat", "hupparit"],
     filter: SETA,
   },
@@ -1314,7 +1330,7 @@ export const landingPages: LandingPageDef[] = [
         a: "KALAMIES-paidan tai Huonokin päivä kalassa -paidan. Lisää harrastuspaitoja on sivulla Hauskat lahjat harrastajalle.",
       },
     ],
-    related: ["/joululahja-papalle", "/lahjat/70-vuotiaalle", "/elakelahjat", "/lahjat/isoaidille"],
+    related: ["/joululahja-papalle", "/isanpaivalahja", "/lahjat/70-vuotiaalle", "/elakelahjat", "/lahjat/isoaidille"],
     categories: ["t-paidat", "hupparit"],
     filter: any(PAPPA_ALL, theme(/lempinimi/)),
   },
@@ -1529,39 +1545,97 @@ export const landingPages: LandingPageDef[] = [
     filter: TYO,
   },
   {
-    path: "/isanpaiva-lahjat",
-    name: "Isänpäivälahjat",
+    path: "/isanpaivalahja",
+    name: "Isänpäivälahja",
     group: "lahjat",
-    title: "Hauskat isänpäivälahjat 2026 | Huumorikauppa",
+    title: "Isänpäivälahja 2026: ideat joka isälle | Huumorikauppa",
     description:
-      "Isänpäivälahja huumorilla: Isäntä-, Amatimies-, Kalju- ja iskä-paidat sekä hupparit. Isänpäivä on sunnuntaina 8.11.2026, toimitus 3-10 arkipäivässä.",
-    h1: "Hauskat isänpäivälahjat",
+      "Isänpäivälahja kalastajalle, mökkeilijälle, grillaajalle, eläkeläiselle, isoisälle, nuorelle isälle tai työmiehelle. Isänpäivä on su 8.11.2026.",
+    h1: "Isänpäivälahja isän tyypin mukaan",
     intro: [
-      "Hauska isänpäivälahja on paita tai huppari, jossa isän oma rooli on vitsinä: Isäntä, Amatimies tai Jos iskä ei osaa korjata sitä.",
-      "Isänpäivä on sunnuntaina 8.11.2026. Toimitusaika on 3-10 arkipäivää tilauksesta, joten tilaa heti, kun lahja on valittu.",
-      `Jos isä on jo isoisä, ukki- ja pappa-paidat ovat papan lahjasivulla. Sama lahja käy myös jouluksi: ${D.charAt(0).toLowerCase()}${D.slice(1)}`,
+      "Isänpäivälahjaksi sopii paita tai huppari, jonka teksti osuu isän omaan juttuun: kalastajalle KALAMIES, mökkeilijälle Mökki on terapiaa, grillaajalle Grillimestari ja eläkeläiselle Olen eläkkeellä.",
+      "Isoisälle valitse pappa- tai ukki-paita, nuorelle isälle personoitava isä-paita tai Jos iskä ei osaa korjata sitä -huppari. Työmiehelle on oman alan paitoja sähköasentajalle, putkimiehelle, rakennusmiehelle ja maanviljelijälle.",
+      `Isänpäivä on ${FATHERS_DAY_TEXT}. Tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}, niin lahja ehtii perille isänpäiväksi.`,
+    ],
+    faqs: [
+      {
+        q: "Mikä on hyvä isänpäivälahja?",
+        a: "Paita tai huppari, jonka teksti liittyy isän harrastukseen, työhön tai elämänvaiheeseen. Kalastajalle KALAMIES tai Kala pääsi tällä kertaa, mökkeilijälle Mökki on terapiaa ja eläkeläiselle Olen eläkkeellä.",
+      },
+      {
+        q: "Mitä antaa isänpäivänä isoisälle?",
+        a: "Pappa- tai ukki-paidan tai -hupparin, josta näkee heti, keneltä lahja tulee. Lisää ideoita on sivulla Hauskat lahjat isoisälle.",
+      },
+      {
+        q: "Mikä isänpäivälahja sopii nuorelle isälle?",
+        a: "Personoitava isä-paita, johon kirjoitat oman tekstin, esimerkiksi lapsen nimen. Toinen vaihtoehto on Jos iskä ei osaa korjata sitä, joka sopii kaiken itse korjaavalle isälle.",
+      },
+      {
+        q: "Mitä antaa isälle, jolla on jo kaikkea?",
+        a: "Personoitavan paidan omalla tekstillä tai harrastuspaidan. Kalastus-, metsästys-, grilli- ja mökkipaidat on koottu sivulle Hauskat lahjat harrastajalle.",
+      },
+      {
+        q: "Milloin isänpäivälahja pitää tilata?",
+        a: `Isänpäivä on ${FATHERS_DAY_TEXT}. Tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}, niin lahja on perillä isänpäiväksi.`,
+      },
+    ],
+    related: [
+      "/hauska-isanpaivalahja",
+      "/joululahja-isalle",
+      "/lahjat/isoisalle",
+      "/lahjat/harrastajalle",
+      "/elakelahjat",
+      "/ammattipaidat",
+    ],
+    categories: ["t-paidat", "hupparit"],
+    extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }],
+    filter: ISA_TYYPIT,
+  },
+  {
+    path: "/hauska-isanpaivalahja",
+    name: "Hauska isänpäivälahja",
+    group: "lahjat",
+    title: "Hauska isänpäivälahja: isävitsit paidassa | Huumorikauppa",
+    description:
+      "Hauska isänpäivälahja setähuumorilla: Kalju-, Isäntä-, Amatimies- ja Museokamaa-paidat sekä iskä-vitsit hupparissa. Isänpäivä on su 8.11.2026.",
+    h1: "Hauska isänpäivälahja",
+    intro: [
+      "Hauska isänpäivälahja on paita tai huppari, jossa on isän oma vitsi: Kalju, Isäntä, Amatimies, Museokamaa tai Tässä talossa asuu yksi pomo.",
+      "Setähuumori toimii, kun isä nauraa vitsille itse. Kaljulle isälle sopii Kalju, kaiken itse korjaavalle Jos iskä ei osaa korjata sitä ja kalajuttujen kertojalle Kala pääsi tällä kertaa tai Huonokin päivä kalassa on parempi kuin hyvä päivä töissä.",
+      `Isänpäiväksi ${FATHERS_DAY_TEXT} tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}. Jos haluat valita lahjan isän harrastuksen tai elämänvaiheen mukaan, katso sivu Isänpäivälahja isän tyypin mukaan.`,
     ],
     faqs: [
       {
         q: "Mikä on hauska isänpäivälahja?",
-        a: "Paita tai huppari isän omasta roolista, esimerkiksi Isäntä, Amatimies, Kalju tai Jos iskä ei osaa korjata sitä.",
+        a: "Paita tai huppari, jossa on isän oma vitsi, esimerkiksi Kalju, Isäntä, Amatimies tai Museokamaa.",
       },
       {
-        q: "Milloin isänpäivä on vuonna 2026?",
-        a: "Sunnuntaina 8.11.2026, marraskuun toisena sunnuntaina.",
+        q: "Mitä setähuumori tarkoittaa?",
+        a: "Kuivaa ja itseironista huumoria, jossa vitsi kohdistuu kertojaan itseensä: kaljuun, ikään, grillitaitoihin tai siihen, että isä korjaa kaiken itse. Lisää tällaisia paitoja on sivulla Setämiespaidat.",
       },
       {
-        q: "Mikä on isänpäivälahja isälle, jolla on kaikkea?",
-        a: "Personoitava isä-paita, johon kirjoitat oman tekstin. Muut personoitavat tuotteet ovat sivulla Joululahja miehelle, jolla on kaikki.",
+        q: "Mikä paita sopii isälle, joka kertoo isävitsejä?",
+        a: "Paita, jonka teksti on itsessään isävitsi, kuten Museokamaa, Kalju tai Grillimestari, sää ei estä. Isä saa vitsin mukaansa joka kerta, kun pukee paidan päälle.",
       },
       {
-        q: "Kauanko toimitus kestää?",
-        a: "3-10 arkipäivää tilauksesta. Yli 79 euron tilaukset toimitetaan ilman toimituskuluja.",
+        q: "Loukkaako kalju- tai ikävitsi isää?",
+        a: "Ei, kun isä vitsailee asiasta itsekin. Jos et ole varma, valitse vitsi isän harrastuksesta, esimerkiksi Kala pääsi tällä kertaa.",
+      },
+      {
+        q: "Milloin hauska isänpäivälahja pitää tilata?",
+        a: `Viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}. Isänpäivä on ${FATHERS_DAY_TEXT}.`,
       },
     ],
-    related: ["/joululahja-isalle", "/setamiespaidat", "/joululahja-papalle", "/hauskat-lahjat-miehelle"],
+    related: [
+      "/isanpaivalahja",
+      "/setamiespaidat",
+      "/joululahja-isalle",
+      "/lahjat/isoisalle",
+      "/hauskat-lahjat-miehelle",
+    ],
     categories: ["t-paidat", "hupparit"],
-    filter: ISA,
+    extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }],
+    filter: ISA_VITSIT,
   },
   {
     path: "/hauskat-lahjat-miehelle",

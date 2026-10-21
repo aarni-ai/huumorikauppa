@@ -35,9 +35,24 @@ describe("LandingPage (client)", () => {
     expect(screen.getByText(/Hauska joululahja isälle on paita tai huppari/)).toBeInTheDocument();
     expect(screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.startsWith("/tuote/")).length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText("Mikä on hauska joululahja isälle?")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Hauskat isänpäivälahjat" })).toHaveAttribute("href", "/isanpaiva-lahjat");
+    expect(screen.getByRole("link", { name: "Isänpäivälahja isän tyypin mukaan" })).toHaveAttribute("href", "/isanpaivalahja");
+    expect(screen.getByRole("link", { name: "Hauska isänpäivälahja" })).toHaveAttribute("href", "/hauska-isanpaivalahja");
     expect(document.title).toBe("Hauska joululahja isälle 2026 | Huumorikauppa");
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe("https://huumorikauppa.fi/joululahja-isalle");
+  });
+
+  it.each([
+    ["/isanpaivalahja", "Isänpäivälahja isän tyypin mukaan", "/hauska-isanpaivalahja"],
+    ["/hauska-isanpaivalahja", "Hauska isänpäivälahja", "/isanpaivalahja"],
+  ])("renders the Father's Day page %s", (path, h1, sibling) => {
+    renderAt(path, <LandingPage />);
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { level: 1, name: h1 })).toBeInTheDocument();
+    expect(screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.startsWith("/tuote/")).length).toBeGreaterThanOrEqual(8);
+    expect(screen.getAllByRole("link").some((a) => a.getAttribute("href") === sibling)).toBe(true);
+    expect(screen.getAllByRole("link").some((a) => a.getAttribute("href") === "/joululahja-isalle")).toBe(true);
+    expect(screen.getAllByRole("link").some((a) => a.getAttribute("href") === "/lahjat/isoisalle")).toBe(true);
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`https://huumorikauppa.fi${path}`);
   });
 
   it("renders the Christmas deadline page", () => {

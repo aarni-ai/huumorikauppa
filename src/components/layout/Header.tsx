@@ -4,13 +4,14 @@ import { useState, useRef } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { Input } from "@/components/ui/input";
-import { CHRISTMAS_MENU } from "@/data/landingRoutes";
+import { CHRISTMAS_MENU, FATHERS_DAY_MENU } from "@/data/landingRoutes";
 
 type CategoryItem = { slug: string; name: string; emoji: string; description: string };
 
 function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]; otherCats: CategoryItem[]; onClose: () => void }) {
   const [otherOpen, setOtherOpen] = useState(false);
   const [xmasOpen, setXmasOpen] = useState(false);
+  const [dadOpen, setDadOpen] = useState(false);
   return (
     <nav className="md:hidden border-t border-border bg-background pb-4">
       <Link to="/kaikki-tuotteet" onClick={onClose} className="block px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -25,6 +26,19 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
         <ChevronDown className={`h-4 w-4 transition-transform ${xmasOpen ? "rotate-180" : ""}`} />
       </button>
       {xmasOpen && CHRISTMAS_MENU.map(item => (
+        <Link key={item.href} to={item.href} onClick={onClose} className="block px-8 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          {item.label}
+        </Link>
+      ))}
+      <button
+        onClick={() => setDadOpen(prev => !prev)}
+        aria-expanded={dadOpen}
+        className="w-full flex items-center justify-between px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+      >
+        Isänpäivä
+        <ChevronDown className={`h-4 w-4 transition-transform ${dadOpen ? "rotate-180" : ""}`} />
+      </button>
+      {dadOpen && FATHERS_DAY_MENU.map(item => (
         <Link key={item.href} to={item.href} onClick={onClose} className="block px-8 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           {item.label}
         </Link>
@@ -90,6 +104,16 @@ export function Header() {
   };
   const closeXmas = () => {
     xmasTimeout.current = setTimeout(() => setXmasOpen(false), 150);
+  };
+
+  const [dadOpen, setDadOpen] = useState(false);
+  const dadTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openDad = () => {
+    if (dadTimeout.current) clearTimeout(dadTimeout.current);
+    setDadOpen(true);
+  };
+  const closeDad = () => {
+    dadTimeout.current = setTimeout(() => setDadOpen(false), 150);
   };
 
   return (
@@ -163,6 +187,36 @@ export function Header() {
                     key={item.href}
                     to={item.href}
                     onClick={() => setXmasOpen(false)}
+                    className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* "Isänpäivä" dropdown (ikivihreä sisältö, jää valikkoon isänpäivän jälkeen) */}
+          <div
+            className="relative"
+            onMouseEnter={openDad}
+            onMouseLeave={closeDad}
+          >
+            <button
+              className="px-3 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors rounded-lg flex items-center gap-1"
+              onClick={() => setDadOpen(prev => !prev)}
+              aria-expanded={dadOpen}
+            >
+              Isänpäivä
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${dadOpen ? "rotate-180" : ""}`} />
+            </button>
+            {dadOpen && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-lg py-2 min-w-[260px] z-50">
+                {FATHERS_DAY_MENU.map(item => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setDadOpen(false)}
                     className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     {item.label}

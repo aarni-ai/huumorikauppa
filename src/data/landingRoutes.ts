@@ -39,7 +39,8 @@ export const LANDING_PATHS: readonly string[] = [
   "/lahjat/puolisolle",
   "/lahja-kaverille",
   "/lahjat/tyokaverille",
-  "/isanpaiva-lahjat",
+  "/isanpaivalahja",
+  "/hauska-isanpaivalahja",
   "/hauskat-lahjat-miehelle",
   "/hauskat-lahjat-naiselle",
   "/syntymapaivalahjat",
@@ -66,6 +67,9 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   // Päällekkäiset sivut (sama hakuaikomus kuin laskeutumissivulla)
   "/lahja-tyokaverille": "/lahjat/tyokaverille",
   "/lahjat/joulu": "/joululahjat",
+  // Isänpäivä: sama hakuaikomus ("hauskat isänpäivälahjat") kuin /hauska-isanpaivalahja
+  "/isanpaiva-lahjat": "/hauska-isanpaivalahja",
+  "/lahjat/isanpaiva": "/hauska-isanpaivalahja",
   // Ääkköset slugeissa -> ASCII
   "/lahjat/isoäidille": "/lahjat/isoaidille",
   "/ammatti/insinöori": "/ammatti/insinoori",
@@ -86,6 +90,14 @@ export const NOT_CREATED_LANDINGS: Record<string, string> = {
   "/sauna-t-paidat": "/suomalainen-huumori-paidat",
   "/lahjat/mokkeilijalle": "/lahjat/harrastajalle",
 };
+
+/** Isänpäivä-valikko (Header, työpöytä ja mobiili). Ikivihreä: jää valikkoon myös isänpäivän jälkeen. */
+export const FATHERS_DAY_MENU: { href: string; label: string }[] = [
+  { href: "/isanpaivalahja", label: "Isänpäivälahja isän tyypin mukaan" },
+  { href: "/hauska-isanpaivalahja", label: "Hauska isänpäivälahja" },
+  { href: "/joululahja-isalle", label: "Joululahja isälle" },
+  { href: "/lahjat/isoisalle", label: "Lahja isoisälle" },
+];
 
 /** Joululahjat-valikko (Header, työpöytä ja mobiili). */
 export const CHRISTMAS_MENU: { href: string; label: string }[] = [

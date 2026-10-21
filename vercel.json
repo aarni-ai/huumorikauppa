@@ -72,6 +72,16 @@
       "statusCode": 301
     },
     {
+      "source": "/isanpaiva-lahjat",
+      "destination": "/hauska-isanpaivalahja",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/isanpaiva",
+      "destination": "/hauska-isanpaivalahja",
+      "statusCode": 301
+    },
+    {
       "source": "/lahjat/isoäidille",
       "destination": "/lahjat/isoaidille",
       "statusCode": 301

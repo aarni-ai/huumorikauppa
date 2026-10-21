@@ -210,10 +210,6 @@ const PAGE_META: Record<string, PageMeta> = {
     title: 'Polttarilahjat - Hauskat Ideat Polttareihin | Huumorikauppa.fi',
     description: 'Hauskat polttarilahjat morsiamelle ja sulhaselle. Yhteiset polttaripaidat koko porukalle. Tilaa nyt!',
   },
-  '/isanpaiva-lahjat': {
-    title: 'Isänpäivälahjat - Hauskat Ideat Isälle | Huumorikauppa.fi',
-    description: 'Hauskat isänpäivälahjat isälle, isoisälle ja sedälle. Ammattihuumori- ja harrastusteemaiset tuotteet. Tilaa ajoissa!',
-  },
   '/aitienpaiva-lahjat': {
     title: 'Äitienpäivälahjat - Hauskat Ideat Äidille | Huumorikauppa.fi',
     description: 'Hauskat äitienpäivälahjat äidille ja mummille. Persoonalliset lahjat jotka muistetaan. Nopea toimitus.',
@@ -482,7 +478,6 @@ const GIFT_CATEGORY_CATS: Record<string, string[]> = {
   '/hauskat-t-paidat':        ['t-paidat'],
   '/hauskat-hupparit':        ['hupparit'],
   '/lahja-miehelle':          ['t-paidat', 'hupparit', 'mukit'],
-  '/isanpaiva-lahjat':        ['t-paidat', 'hupparit', 'mukit'],
   '/joululahjat':             ['t-paidat', 'hupparit', 'mukit'],
   '/syntymapaivalahjat':      ['t-paidat', 'hupparit', 'mukit'],
   '/elakelahjat':             ['t-paidat', 'hupparit', 'mukit'],
@@ -558,12 +553,6 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
     { q: "Sopiiko huumoripaita lahjaksi 50-vuotiaalle?", a: "Ehdottomasti. Suosituimpia ovat '100 % Eläkeläinen', 'Museo-kappale' ja ammattihuumori. Hauska paita on aina yllättävä ja muistettava lahja." },
     { q: "Miten valitsen oikean koon lahjaksi?", a: "L on miesten yleisin koko. Epävarma? Valitse yksi koko ylöspäin - löysä istuvuus on turvallisempi." },
     { q: "Voiko tuotteen paketoida lahjapakettiin?", a: "Lahjapakettia ei tarjota tällä hetkellä, mutta tilausvahvistus sopii lahjasaatteeksi." },
-  ],
-  '/isanpaiva-lahjat': [
-    { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita, huppari tai pipo joka liittyy isän harrastukseen tai ammattiin. Suosituimpia ovat kalamies-, Mersumies- ja 'Maailman paras isä' -teemat." },
-    { q: "Milloin viimeistään pitää tilata isänpäivälahja?", a: "Tilaa viimeistään 2 viikkoa ennen isänpäivää (marraskuun toinen sunnuntai). Toimitusaika on 3-10 arkipäivää." },
-    { q: "Miten valitsen oikean koon isänpäivälahjaan?", a: "L on miesten yleisin koko. Jos isä on isokokoinen, valitse XL tai XXL. Kokoopas on jokaisen tuotteen sivulla." },
-    { q: "Voiko isänpäivälahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   '/joululahjat': [
     { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },

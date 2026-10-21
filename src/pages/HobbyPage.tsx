@@ -79,7 +79,7 @@ const HobbyPage = () => {
 
   const popularSituations = situationGifts
     .filter((s) =>
-      ["syntymapaivasankarille", "miehelle", "naiselle", "isanpaiva"].includes(s.slug)
+      ["syntymapaivasankarille", "miehelle", "naiselle"].includes(s.slug)
     )
     .slice(0, 4);
 
