@@ -30,7 +30,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
   const howToChoose =
     `Kuinka valita oikea lahja ${t}? Aloita miettimällä vastaanottajan harrastuksia, ammattia ja sisäpiirin vitsejä. ` +
     `Mitä tarkemmin osut hänen elämäänsä, sitä paremmin lahja toimii. Jos mikään valmis teksti ei osu, valitse personoitava tuote ja kirjoita oma teksti. ` +
-    `Muista myös koko: tuotesivun kokotaulukossa on mitat senttimetreinä, ja saatavilla olevat koot näet jokaisen tuotteen kohdalta.`;
+    `Muista myös koko: tuotesivun kokoavussa näet saatavilla olevat koot ja ohjeen mittojen ottamiseen.`;
 
   const popular =
     `Toimivimmissa teksteissä yhdistyy tunnistettava arkitilanne ja juuri sopivasti yliampuva sanavalinta. ` +

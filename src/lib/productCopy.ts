@@ -55,8 +55,8 @@ const CATEGORY_PLURAL: Record<string, string> = {
 };
 
 const CATEGORY_MATERIAL: Record<string, string> = {
-  "t-paidat": "Puuvillapaita, tarkka materiaali ja paino ovat tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja kokotaulukossa on mitat senttimetreinä.",
-  "hupparit": "Pehmeä puuvilla-polyesterisekoite, tarkka koostumus on tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja kokotaulukossa on mitat senttimetreinä.",
+  "t-paidat": "Puuvillapaita, tarkka materiaali ja paino ovat tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja tuotesivun kokoavusta näet koon valinnan ohjeet.",
+  "hupparit": "Pehmeä puuvilla-polyesterisekoite, tarkka koostumus on tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja tuotesivun kokoavusta näet koon valinnan ohjeet.",
   "tarrat": "Kestävä vinyylimateriaali UV- ja vesisuojattuna. Pysyy kirkkaana läppärissä, vesipullossa, autossa ja jääkaapissa vuosia.",
   "bodyt": "100 % puuvillaa, pehmeää ja hengittävää vauvan iholle. Painonapit haaroissa, hellävarainen kaulus.",
   "peitot": "Pehmeä polyesterifleece, lämmin ja kevyt. Soveltuu sohva- tai vuodepeitoksi.",

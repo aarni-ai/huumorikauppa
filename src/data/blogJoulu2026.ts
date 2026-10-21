@@ -117,7 +117,7 @@ Kun mikään valmis teksti ei osu, tee oma. Personoitu lahja on se, jota ei voi 
 
 ## Koko ja malli: vältä vaihtorumba
 
-Vaatelahjan iso riski on väärä koko. Ota mitta paidasta, jota hän käyttää eniten: leveys kainaloiden alta ja pituus olkasaumasta helmaan. Vertaa mittoja tuotesivun kokotaulukkoon, älä pelkkään kokomerkintään, koska eri valmistajien koot eroavat toisistaan.
+Vaatelahjan iso riski on väärä koko. Ota mitta paidasta, jota hän käyttää eniten: leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com ja vertaa niitä, älä pelkkään kokomerkintään, koska eri valmistajien koot eroavat toisistaan.
 
 Talvella huppari on usein t-paitaa käytännöllisempi joululahja, koska sitä käytetään heti. T-paita taas on hyvä valinta, jos hän pukeutuu kerroksittain tai viettää paljon aikaa kuntosalilla ja mökillä. Selaa molempia: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat).
 
@@ -129,7 +129,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä 
     faq: [
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
       { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa 24,90 € ja huppari 49,90 € tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
-      { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja vertaa niitä tuotesivun kokotaulukkoon. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
+      { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
       { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneillamme." },
     ],
   },
@@ -582,7 +582,7 @@ Jos hintaraja on matala, [tarra omalla tekstillä](/tuote/oma-tekstikuva-tarra) 
 
 Joskus esihenkilö tai tiimi haluaa antaa saman lahjan kaikille. Silloin yhteinen paita on hauska vaihtoehto, koska se toimii myös tiimikuvassa, messuilla ja virkistyspäivänä. [Personoitava työsankari-paita](/tuote/personoitava-t-paita-nimi-legendaarinen-tyosankari) on hyvä pohja: jokaisen paitaan tulee oma nimi, ja kokonaisuus kertoo, että jokainen on tiimille tärkeä.
 
-Tiimitilauksessa kerää ensin kaikkien koot. Pyydä jokaista tarkistamaan koko tuotesivun kokotaulukosta, älä arvaa. Viiden t-paidan tilaus (124,50 €) ylittää ${ILMAINEN_RAJA_TEKSTI} euron rajan, joten toimitus on ilmainen.
+Tiimitilauksessa kerää ensin kaikkien koot. Pyydä jokaista tarkistamaan saatavilla olevat koot tuotesivun kokoavusta, älä arvaa. Viiden t-paidan tilaus (124,50 €) ylittää ${ILMAINEN_RAJA_TEKSTI} euron rajan, joten toimitus on ilmainen.
 
 ## Lahja pomolle
 
@@ -779,7 +779,7 @@ Hauska joululahja isälle lähtee hänen roolistaan perheessä: korjaaja, grilla
 
 ## Koko oikein ensimmäisellä kerralla
 
-Isän kokoa ei kannata kysyä suoraan, jos lahja on yllätys. Kysy sen sijaan äidiltä tai puolisolta, tai katso isän suosikkipaidan pesulappua seuraavalla vierailulla. Vertaa mittoja tuotesivun kokotaulukkoon. Hupparissa kannattaa huomioida, pitääkö isä väljästä vai istuvasta mallista: väljää suosivalle sopii koko suurempi kuin hänen tavallinen t-paitansa.
+Isän kokoa ei kannata kysyä suoraan, jos lahja on yllätys. Kysy sen sijaan äidiltä tai puolisolta, tai katso isän suosikkipaidan pesulappua seuraavalla vierailulla. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Hupparissa kannattaa huomioida, pitääkö isä väljästä vai istuvasta mallista: väljää suosivalle sopii koko suurempi kuin hänen tavallinen t-paitansa.
 
 ## Tilaa ajoissa
 
@@ -997,7 +997,7 @@ Tarrat ovat nuorille luonteva lisälahja, koska ne päätyvät läppäriin, puhe
 - **Vanhempien vitsit teinistä:** "Herää ennen kahtatoista" ei naurata häntä itseään.
 - **Alkoholi- ja aikuishuumori:** Vaikka nuori olisi 18, perheen joulussa annettu lahja näkyy myös isovanhemmille ja sisaruksille.
 - **Liian lapsellinen tyyli:** 15-vuotias ei halua lahjaa, joka sopisi 10-vuotiaalle. Valitse mieluummin aikuisempi kuin lapsellisempi vaihtoehto.
-- **Väärä koko:** Nuori kasvaa nopeasti. Tarkista koko hänen tämänhetkisestä suosikkivaatteestaan ja vertaa sitä tuotesivun kokotaulukkoon.
+- **Väärä koko:** Nuori kasvaa nopeasti. Tarkista koko hänen tämänhetkisestä suosikkivaatteestaan ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com.
 
 ## Ikäryhmittäin: 13-15 ja 16-19
 
@@ -1159,7 +1159,7 @@ Kalastajalle, metsästäjälle ja mökkeilijälle hauska lahja toimii välinelah
 
 ## Koko ja käyttö
 
-Ulkoilijan vaatteessa koko on tärkeä, koska paitaa käytetään usein muiden vaatteiden alla tai päällä. Huppari välikerroksena voi olla koon tavallista isompi, jos sen päälle tulee vielä takki. T-paita taas valitaan normaalin koon mukaan. Tarkista mitat aina tuotesivun kokotaulukosta.
+Ulkoilijan vaatteessa koko on tärkeä, koska paitaa käytetään usein muiden vaatteiden alla tai päällä. Huppari välikerroksena voi olla koon tavallista isompi, jos sen päälle tulee vielä takki. T-paita taas valitaan normaalin koon mukaan. Kysy tuotteen mitat aina sähköpostilla huumorikauppa@gmail.com.
 
 ## Porukan yhteinen tilaus
 
@@ -1212,7 +1212,7 @@ Kirjoita lista kaikista, joille ostat lahjan. Lisää jokaisen nimen viereen yks
 
 ### Vaihe 2: koot ja tekstit
 
-Vaatelahjassa koko on tärkeä yksityiskohta. Selvitä koot ennen tilausta: katso saajan suosikkipaidan pesulappu, kysy puolisolta tai mittaa tutun paidan leveys ja pituus. Vertaa mittoja tuotesivun kokotaulukkoon.
+Vaatelahjassa koko on tärkeä yksityiskohta. Selvitä koot ennen tilausta: katso saajan suosikkipaidan pesulappu, kysy puolisolta tai mittaa tutun paidan leveys ja pituus. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com.
 
 Jos teet personoidun lahjan, kirjoita teksti valmiiksi ja tarkista oikeinkirjoitus kahteen kertaan. Personoitu tuote painetaan juuri sellaisena kuin sen kirjoitat. Jos käytät omaa kuvaa, valitse terävä ja hyvin valaistu kuva.
 
@@ -1297,7 +1297,7 @@ Kun lahja on menossa toiselle paikkakunnalle, varaa aikaa myös sen viemiseen ta
 ## Muistilista
 
 - Tee lahjalista ja kirjoita jokaiselle yksi kuvaava sana.
-- Selvitä vaatekoot ja vertaa niitä kokotaulukkoon.
+- Selvitä vaatekoot ja tarkista saatavilla olevat koot tuotesivun kokoavusta.
 - Kirjoita personoitujen lahjojen tekstit valmiiksi ja tarkista ne.
 - Tee kaikki tilaukset kerralla, viimeistään perjantaina 20.11.2026.
 - Avaa paketti heti saapumisen jälkeen ja tarkista sisältö.
