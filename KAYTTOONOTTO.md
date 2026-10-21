@@ -249,6 +249,87 @@ yhteenveto näkyy Actionsin lokissa. Kaikki työnkulut voi ajaa heti: Actions > 
 
 Huom: niin kauan kuin kaikkien tuotteiden Printify-kulut ovat tuntemattomat, katetarkistus raportoi ne joka viikko.
 
+## 11. Uudet tuotteet tekstilistasta (EU-painotalot)
+
+`scripts/printify-uudet-tuotteet.mjs` tekee tekstilistasta uusia Printify-tuotteita EU-painotaloille: t-paidat,
+hupparit, tarrat (Kiss-Cut Stickers) ja keraamiset joulukoristeet. Listat ovat kansiossa `data/uudet-tuotteet/`
+(`joulupaidat.json` 10 joulupaitaa, `alle-20.json` 10 alle 20 €:n tarraa). Uuden listan voi tehdä kopioimalla toisen:
+jokaisella tuotteella on painorivit, tyyppi, värit, valinnainen hinta, tagit ja teema, ja otsikko ja kuvaus tulevat
+listan pohjista. Ajatusviivoja (en- ja em-viiva) ei hyväksytä, eikä otsikkoa, jonka kauppa luokittelisi väärään kategoriaan.
+
+Skripti ei koskaan julkaise mitään: tuotteet luodaan Printifyyn, ja kauppaan ne tuodaan vain piilotettuina
+(is_active false), kunnes hyväksyt ne.
+
+**Mitä tarvitaan.** Printify-avain ja kaupan tunnus kohdasta 3 (`PRINTIFY_API_KEY`, `PRINTIFY_SHOP_ID`). Avaimella
+pitää olla myös oikeudet **uploads.read** ja **uploads.write** (kuvien lataus): jos kohdan 3 avaimesta ne puuttuvat,
+tee uusi avain, jossa ovat kohdan 3 oikeudet ja nämä kaksi, ja vaihda se Verceliin (`npx vercel env add
+PRINTIFY_API_KEY production`, korvaa vanha). Kuvat tehdään koneella Pythonilla ja Pillowlla (`pip3 install pillow`).
+Kauppaan tuonti ja hyväksyntä tarvitsevat `DATABASE_URL`:n (kohta 1).
+
+**Hinta.** Pienin x,90 €:n hinta, jolla nettokate on vähintään 40 % (sama kaava kuin kassalla, `api/_lib/kate.js`),
+yhden kappaleen tilauksena: Printifyn tuotekulu (kallein valittu variantti) ja Suomen toimituskulu sekä asiakkaan
+toimitusmaksu. Hinta ei ole koskaan alle kategorian pohjahinnan (paita 34,90 €, huppari 64,90 €, koriste 24,90 €,
+tarra 7,90 €). Oletuksena lasketaan **suunnitellulla toimitusmaksulla 5,90 €, ilmainen 60 €:sta**. Kauppa perii nyt
+**6,90 € ja ilmainen toimitus alkaa 79 €:sta** (`api/_lib/vakiot.js`). Suunnitellulla maksulla laskettu hinta täyttää
+aina myös nykyisen säännön, ja ajo näyttää katteen molemmilla. Nykyisellä maksulla laskeminen:
+`--toimitusmaksu 6,90 --ilmainen-raja 79`. `alle-20.json`-listan tuotteet saavat maksaa enintään 19,90 €: jos
+40 %:n kate tai pohjahinta vaatii enemmän, tuote raportoidaan "ei toteutettavissa" eikä sitä luoda (hintaa ei
+koskaan lasketa katerajan alle; koristeet ja paidat eivät mahdu tähän rajaan pohjahintojen takia).
+
+Printify kertoo tuotekulun vasta, kun tuote on luotu. Kuiva-ajo käyttää siksi arviota (merkitty "ARVIO"), ja
+toteutus lukee luodun tuotteen oikeat kulut ja päivittää hinnan niiden mukaan. Jos alle 20 €:n tuote osoittautuu
+oikeilla kuluilla liian kalliiksi, se jää Printifyyn hinnalla, joka täyttää katteen, merkitään kirjaukseen tilalla
+`yli-enimmaishinnan` eikä sitä tuoda kauppaan (poista se Printifystä käsin, jos et halua sitä).
+
+**1. Kuiva-ajo** (ei kirjoita mitään). Näyttää jokaisesta tuotteesta painotalon ja maan, blueprintin, variantit,
+kulut, hinnan, katteen ja kuvatiedostot (`data/uudet-tuotteet/kuvat/`, voit katsoa ne ennen luontia):
+
+```
+set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs
+```
+
+Ilman avainta ajo käyttää viimeksi haettua katalogia (`data/uudet-tuotteet/.katalogi-valimuisti.json`) tai
+esimerkkikatalogia (`katalogi-esimerkki.json`, keksityt painotalot ja hinnat) ja sanoo sen ensimmäisellä rivillä.
+Vain yksi lista: `--lista data/uudet-tuotteet/alle-20.json`.
+
+**2. Koeajo yhdellä tuotteella:**
+
+```
+set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs --toteuta --raja 1
+```
+
+Tarkista Printifyssä (My products > uusin): teksti ja sen paikka mockupissa jokaisella värillä (tummissa valkoinen,
+vaaleissa musta teksti), värit ja koot, hinta ja painotalo. Tuote ei ole julkaistu, eikä sen kuulu olla.
+
+**3. Kaikki ja tuonti kauppaan piilotettuina:**
+
+```
+set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs --toteuta --tuo && npx tsx scripts/printify-tuonti.mjs --kulut
+```
+
+Jälkimmäinen komento hakee Printifyn mockup-kuvat (ne valmistuvat Printifyssä vasta luonnin jälkeen) ja kulut
+uusille riveille. Älä aja tuontia valinnalla `--hinnat`: se palauttaisi paitojen ja huppareiden hinnaksi kiinteän
+pohjahinnan, vaikka kate vaatisi enemmän (katesääntö piilottaa silloin tuotteen myynnistä).
+
+Skripti kirjaa luodut tiedostoon `data/uudet-tuotteet/luotu-<päivä>.json` ja ohittaa seuraavalla ajolla tekstit,
+jotka on jo luotu (sama teksti ja tuotetyyppi), joten keskeytyneen ajon voi ajaa uudelleen. Muut valinnat:
+`--blueprint tyyppi=id` ja `--painotalo tyyppi=id|nimi` pakottavat valinnan (esim. `--painotalo huppari=OPT`),
+`--ei-kuvia` jättää kuiva-ajossa kuvat tekemättä.
+
+**4. Hyväksyntä myyntiin.** Katso piilotetut tuotteet Printifyssä tai kirjauksesta, ja julkaise kaupassa kaikki tämän
+skriptin tuomat tai vain valitut (Printify-tunnukset pilkulla eroteltuina):
+
+```
+set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs --hyvaksy kaikki
+```
+
+```
+set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs --hyvaksy 6712abc,6712abd
+```
+
+Hyväksyntä tarkistaa ensin, että kulut ovat tiedossa, kate on vähintään 40 % ja tuotteella on kuvat; muuten se kertoo
+syyn eikä julkaise. Tuotteet näkyvät kaupassa noin 5 minuutin kuluessa (tuotelistan välimuisti).
+
 ## Mitä jää vielä Lovable Cloudiin
 
 Uutiskirjeen tilaus (MailerLite), hylätyn ostoskorin muistutus ja palautus, ylläpitopaneelin kirjautuminen ja

@@ -39,3 +39,7 @@ Thumbs.db
 scripts/*.local.js
 scripts/*.local.ts
 *.local.sh
+
+# Uudet tuotteet: renderöidyt kuvat ja Printify-katalogin välimuisti (scripts/printify-uudet-tuotteet.mjs)
+data/uudet-tuotteet/kuvat/
+data/uudet-tuotteet/.katalogi-valimuisti.json

@@ -329,6 +329,63 @@ def make_design_image(vitsin_teksti: str, product_type: str) -> bytes:
     return raw
 
 
+def render_text_png(lines: list, W: int, H: int, text_color=(17, 17, 17, 255), font_path: str = "",
+                    width_ratio: float = 0.8, height_ratio: float = 0.6, top_ratio=None) -> bytes:
+    """
+    Läpinäkyvä PNG annetuista riveistä painoalueen koossa (W×H). Rivit pidetään sellaisinaan (ei uudelleenrivitystä).
+    Fontti skaalataan niin, että leveimmän rivin leveys <= width_ratio·W ja tekstilohkon korkeus <= height_ratio·H.
+    top_ratio=None keskittää pystysuunnassa, muuten lohkon yläreuna on kohdassa top_ratio·H (paidan rintakehä).
+    Käyttää samoja apufunktioita kuin make_design_image (auto_fit_font, get_font, Anton-fontti).
+    Kutsutaan scripts/printify-uudet-tuotteet.mjs:stä komennolla `python3 promptaa.py render ...`.
+    """
+    from PIL import Image, ImageDraw
+
+    lines = [l for l in (lines or []) if l.strip()] or [" "]
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    font, font_size = auto_fit_font(draw, lines, font_path, int(W * width_ratio))
+
+    def block(font, size):
+        line_h = _text_h(draw, "ÄÖg", font)
+        spacing = max(int(size * 0.15), 4)
+        return line_h, spacing, len(lines) * line_h + (len(lines) - 1) * spacing
+
+    line_h, spacing, block_h = block(font, font_size)
+    while block_h > H * height_ratio and font_size > 20:
+        font_size = int(font_size * 0.95)
+        font = get_font(font_size, font_path)
+        line_h, spacing, block_h = block(font, font_size)
+
+    start_y = int(H * top_ratio) if top_ratio is not None else (H - block_h) // 2
+    for i, line in enumerate(lines):
+        # textbbox:n yläreunan siirtymä (Anton piirtää ascentin yläpuolelle tyhjää)
+        bb = draw.textbbox((0, 0), line, font=font)
+        x = (W - (bb[2] - bb[0])) // 2 - bb[0]
+        y = start_y + i * (line_h + spacing) - draw.textbbox((0, 0), "ÄÖg", font=font)[1]
+        draw.text((x, y), line, font=font, fill=text_color)
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    return buf.getvalue()
+
+
+def _hex_rgba(s: str) -> tuple:
+    s = s.lstrip("#")
+    return (int(s[0:2], 16), int(s[2:4], 16), int(s[4:6], 16), 255)
+
+
+def cmd_render(args):
+    """python promptaa.py render --lines-json '["RIVI 1","RIVI 2"]' --w 3600 --h 4800 --out kuva.png"""
+    font_path = args.font if args.font and os.path.exists(args.font) else download_google_font("Anton")
+    raw = render_text_png(
+        json.loads(args.lines_json), args.w, args.h, _hex_rgba(args.color), font_path,
+        args.width_ratio, args.height_ratio, args.top_ratio,
+    )
+    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+    Path(args.out).write_bytes(raw)
+    print(json.dumps({"out": args.out, "bytes": len(raw), "w": args.w, "h": args.h}))
+
+
 def _placeholder_png() -> bytes:
     """Minimaalinen 1×1 läpinäkyvä PNG jos Pillow puuttuu."""
     return base64.b64decode(
@@ -742,9 +799,23 @@ def main():
     p_cr.add_argument("--category", default=None,
                       help="Vain tietty kategoria: ammattihuumori | harrastukset | tyopaikka | personoitavat | kaupunkituotteet")
 
+    # render (scripts/printify-uudet-tuotteet.mjs)
+    p_rd = sub.add_parser("render", help="Renderöi tekstirivit läpinäkyväksi PNG:ksi painoalueen koossa")
+    p_rd.add_argument("--lines-json", required=True, help='Rivit JSON-listana, esim. ["NO NIIN"]')
+    p_rd.add_argument("--w", type=int, required=True)
+    p_rd.add_argument("--h", type=int, required=True)
+    p_rd.add_argument("--out", required=True)
+    p_rd.add_argument("--color", default="#111111")
+    p_rd.add_argument("--font", default="", help="TTF-polku (oletus: Anton)")
+    p_rd.add_argument("--width-ratio", type=float, default=0.8)
+    p_rd.add_argument("--height-ratio", type=float, default=0.6)
+    p_rd.add_argument("--top-ratio", type=float, default=None)
+
     args = parser.parse_args()
 
-    if args.cmd == "shops":
+    if args.cmd == "render":
+        cmd_render(args)
+    elif args.cmd == "shops":
         cmd_shops()
     elif args.cmd == "blueprints":
         cmd_blueprints(search=args.search)

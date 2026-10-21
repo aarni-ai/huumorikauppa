@@ -1,0 +1,24 @@
+{
+  "nimi": "Pikkulahjat alle 20 €",
+  "enimmaishinta": "19,90",
+  "oletukset": {
+    "tyyppi": "tarra",
+    "koot": ["3x3", "4x4"],
+    "kategoria": "Pikkulahjat",
+    "tagit": ["Pikkulahja", "Lahjaidea", "Joulukalenteri"],
+    "otsikko": "{teksti} | {tuote} lahjaksi",
+    "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkulahjaksi, joulupakettiin tai työkaverille: läppärin kanteen, vihkoon tai jääkaapin oveen. Tarra leikataan tekstin muotoon."
+  },
+  "tuotteet": [
+    { "rivit": ["ÄLÄ PUHU MULLE", "ENNEN KAHVIA"] },
+    { "rivit": ["SISU LOPPUI", "JO TAMMIKUUSSA"] },
+    { "rivit": ["TÄMÄ PALAVERI", "OLISI VOINUT OLLA", "SÄHKÖPOSTI"] },
+    { "rivit": ["HILJAA.", "INTROVERTTI", "LATAA."] },
+    { "rivit": ["NO NIIN."] },
+    { "rivit": ["JOO EI."] },
+    { "rivit": ["SAUNA KORJAA", "MELKEIN KAIKEN"] },
+    { "rivit": ["MÖKILLÄ", "EI OLE KIIRE"] },
+    { "rivit": ["LUPAAN OLLA", "TEHOKAS", "HUOMENNA."] },
+    { "rivit": ["MIINUS 25?", "TAKKI AUKI."] }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "nimi": "Joulupaidat 2026",
+  "enimmaishinta": null,
+  "oletukset": {
+    "tyyppi": "t-paita",
+    "varit": ["Black", "Red", "White"],
+    "kategoria": "Joulu",
+    "tagit": ["Joululahja", "Hauska joulupaita", "Pikkujoulut"],
+    "otsikko": "{teksti} | {tuote} jouluun",
+    "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun, pikkujouluihin ja aattoon, kun jouluneule ei ihan riitä. Teksti painetaan tilauksesta, joten jokainen kappale tehdään juuri sinulle. Hyvä lahja kinkun ja piparin ystävälle."
+  },
+  "tuotteet": [
+    { "rivit": ["TÄÄLLÄ VAIN", "KINKUN TAKIA"] },
+    { "rivit": ["KILTTI.", "SUURIN PIIRTEIN."], "varit": ["Black", "Red", "Navy"] },
+    { "rivit": ["PIPARI.", "GLÖGI.", "PÄIKKÄRIT.", "TOISTA."], "varit": ["Black", "Red", "Forest Green"] },
+    { "rivit": ["KINKKUKOOMASSA", "ÄLÄ HÄIRITSE"], "otsikkoteksti": "Kinkkukoomassa, älä häiritse", "tyyppi": "huppari", "varit": ["Black", "Navy", "Sport Grey"] },
+    { "rivit": ["TONTTU VALVOO.", "MINÄ EN."], "varit": ["Black", "Navy"] },
+    { "rivit": ["JOULURAUHA ALKAA", "KUN VIERAAT LÄHTEE"], "otsikkoteksti": "Joulurauha alkaa, kun vieraat lähtee" },
+    { "rivit": ["VIRALLINEN", "PIPARINMAISTAJA"], "varit": ["Black", "Red", "Forest Green"] },
+    { "rivit": ["LAHJAT OSTETTU", "AATONAATTONA", "KLO 17.55"], "varit": ["Black", "White"] },
+    { "rivit": ["LUMITYÖT EIVÄT KUULU", "TOIMENKUVAANI"], "tyyppi": "huppari", "varit": ["Black", "Navy", "Sport Grey"], "tagit": ["Joululahja", "Talvi", "Toimistohuumori"] },
+    { "rivit": ["JOULUPUKKI TIETÄÄ.", "ÄITI TIETÄÄ", "ENEMMÄN."], "tyyppi": "huppari", "varit": ["Black", "Red", "Forest Green"], "tagit": ["Joululahja", "Lahja äidille", "Hauska joulupaita"] }
+  ]
+}

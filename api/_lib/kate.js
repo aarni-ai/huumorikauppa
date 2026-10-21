@@ -20,8 +20,12 @@ import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
 export const TOIMITUSMAKSU = TOIMITUS;
 export const ILMAINEN_RAJA = ILMAINEN_TOIMITUS_RAJA;
 
-/** Tuotteen variantin kate. Palauttaa { tunnettu, nettokate, kate, sallittu }. */
-export function laskeKate(tuote, varianttiId = null) {
+/**
+ * Tuotteen variantin kate. Palauttaa { tunnettu, nettokate, kate, sallittu }.
+ * asetukset: { toimitusmaksu, ilmainenRaja } (oletus: kaupan nykyiset 6,90 € / 79 €); uusien tuotteiden hinnoittelu
+ * (scripts/printify-uudet-tuotteet.mjs) laskee myös suunnitellulla toimitusmaksulla.
+ */
+export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TOIMITUSMAKSU, ilmainenRaja = ILMAINEN_RAJA } = {}) {
   const hinta = Number(tuote?.price);
   const kulut = tuote?.variants?.costs || {};
   const toimitus = tuote?.variants?.shipping_cents;
@@ -30,7 +34,7 @@ export function laskeKate(tuote, varianttiId = null) {
   if (!Number.isFinite(hinta) || typeof kulu !== "number" || typeof toimitus !== "number") {
     return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
   }
-  const toimitusmaksu = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUSMAKSU;
+  const toimitusmaksu = hinta >= ilmainenRaja ? 0 : maksu;
   const maksettu = hinta + toimitusmaksu;
   const myyntiAlv0 = maksettu / (1 + ALV);
   const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
