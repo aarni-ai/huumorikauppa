@@ -10,18 +10,26 @@ import { fileURLToPath } from "node:url";
 import { onTietokanta, sql } from "./db.js";
 import { onPiilotettuTuote } from "./piilotetut.js";
 import { heikoinKate } from "./kate.js";
+import { kaikkiPoissa, liitaSaatavuusTiedosto } from "./saatavuus.js";
 
 const VALIMUISTI_MS = 5 * 60 * 1000;
 let valimuisti = null;
 
-function tilannekuva() {
+function lueJson(suhteellinen, osat) {
   // Moduulin sijainnista (vercel.json includeFiles säilyttää polun), varalla työhakemisto.
-  for (const polku of [fileURLToPath(new URL("../../data/products-snapshot.json", import.meta.url)), join(process.cwd(), "data", "products-snapshot.json")]) {
+  for (const polku of [fileURLToPath(new URL(suhteellinen, import.meta.url)), join(process.cwd(), ...osat)]) {
     try {
       return JSON.parse(readFileSync(polku, "utf8"));
     } catch { /* seuraava */ }
   }
-  throw new Error("data/products-snapshot.json puuttuu");
+  return null;
+}
+
+function tilannekuva() {
+  const rivit = lueJson("../../data/products-snapshot.json", ["data", "products-snapshot.json"]);
+  if (!rivit) throw new Error("data/products-snapshot.json puuttuu");
+  // Mainin generoima saatavuustiedosto (scripts/printify-saatavuus.mjs), jos se on mukana; muuten ei muutosta.
+  return liitaSaatavuusTiedosto(rivit, lueJson("../../src/data/printify-saatavuus.json", ["src", "data", "printify-saatavuus.json"]));
 }
 
 /** Kaikki tuoterivit (myös piilotetut ja luonnokset). */
@@ -43,10 +51,11 @@ export async function kaikkiTuotteet() {
 }
 
 /**
- * Myynnissä olevat: ei luonnoksia (is_active false), ei piilotettuja kategorioita (mukit) eikä tuotteita, joiden
- * tunnettu kate on alle 40 % (api/_lib/kate.js). Tuntematon kate ei piilota (kassa estää ostamisen).
+ * Myynnissä olevat: ei luonnoksia (is_active false), ei piilotettuja kategorioita (mukit), ei tuotteita, joiden
+ * tunnettu kate on alle 40 % (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole saatavilla
+ * (api/_lib/saatavuus.js). Tuntematon kate ei piilota (kassa estää ostamisen).
  */
-export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false;
+export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false && !kaikkiPoissa(p);
 
 export async function naytettavatTuotteet() {
   return (await kaikkiTuotteet()).filter(myynnissa);

@@ -131,3 +131,9 @@ create table if not exists gift_card_redemptions (
   amount numeric(10,2) not null check (amount > 0),
   created_at timestamptz not null default now()
 );
+
+-- Varianttien saatavuus (saatavuus-oma). Päivittäinen Printify-tarkistus (api/_lib/saatavuus.js) kirjoittaa
+-- variant_map-avaimet ("Väri|Koko"), joita ei voi juuri nyt valmistaa. /api/products piilottaa ne ja kassa hylkää ne.
+-- Kaikki lauseet voi ajaa uudelleen.
+alter table products add column if not exists unavailable_variants jsonb not null default '[]'::jsonb;
+alter table products add column if not exists availability_checked_at timestamptz;

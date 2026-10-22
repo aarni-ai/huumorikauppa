@@ -238,7 +238,7 @@ myöhemmin painotalokohtaisiksi.
 | Työnkulku | Milloin | Salaisuudet |
 |---|---|---|
 | Linkkitarkistus (`linkkitarkistus.yml`) | maanantaisin | ei tarvita |
-| Saatavuus (`saatavuus.yml`) | päivittäin | ei tarvita |
+| Saatavuus (`saatavuus.yml`) | päivittäin | sivut ja kassa: ei tarvita; varianttien saatavuus: `CRON_SECRET` (kohta 12) |
 | Katetarkistus (`katetarkistus.yml`) | maanantaisin | `RESEND_API_KEY` (sähköposti), valinnainen `DATABASE_URL` |
 
 Lisää salaisuudet: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > **New repository
@@ -329,6 +329,31 @@ set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs -
 
 Hyväksyntä tarkistaa ensin, että kulut ovat tiedossa, kate on vähintään 40 % ja tuotteella on kuvat; muuten se kertoo
 syyn eikä julkaise. Tuotteet näkyvät kaupassa noin 5 minuutin kuluessa (tuotelistan välimuisti).
+
+## 12. Varianttien saatavuus (Printify)
+
+Kerran päivässä (`saatavuus.yml`, työ `variantit`) GitHub kutsuu suojattua osoitetta
+`/api/cron/tilaukset?tehtava=saatavuus` (`CRON_SECRET`, kohta 6). Se hakee Printifystä jokaisen myynnissä olevan
+tuotteen (5 hakua sekunnissa, 429-vastauksella uusi yritys) ja painotalon katalogin ja merkitsee tuoteriville
+(`unavailable_variants`) väri/koko-yhdistelmät, joita ei voi juuri nyt valmistaa (pois käytöstä, loppu tai poistunut
+valikoimasta). Yksi kutsu tarkistaa noin 35 sekunnin erän; työ toistaa kutsua, kunnes kaikki on tarkistettu.
+
+- Tuotesivu ja listat (`/api/products`) eivät näytä värejä ja kokoja, joilla ei ole yhtään saatavaa yhdistelmää.
+- Kassa hylkää saatavuudettoman yhdistelmän ennen maksua ("Valitsemaasi kokoa tai väriä ei voi juuri nyt valmistaa.
+  Valitse toinen koko tai väri.") ja tarkistaa korin tuotteet vielä Printifystä (enintään 3 s, virheessä käytetään
+  päivän tietoa).
+- Tuote, jonka yksikään variantti ei ole saatavilla, piilotetaan (`is_active` false) ja palautetaan myyntiin, kun jokin
+  variantti palaa. Käsin piilotettuihin ei kosketa.
+- Muutoksista tulee yksi yhteenveto sähköpostiin (`OMISTAJA_EMAIL`), vain jos jotain muuttui.
+
+Uudet sarakkeet tulevat ajamalla `node scripts/aja-schema.mjs` uudelleen (kohta 2, turvallinen ajaa monta kertaa).
+Käsiajo: Actions > Saatavuus > **Run workflow**, tai komentoriviltä (lisää `&kuiva=1`, niin mitään ei tallenneta):
+
+```
+curl -H "Authorization: Bearer $CRON_SECRET" "https://huumorikauppa.fi/api/cron/tilaukset?tehtava=saatavuus"
+```
+
+Vastauksessa `jaljella` kertoo, montako tuotetta on vielä tarkistamatta; aja uudelleen, kunnes se on 0.
 
 ## Mitä jää vielä Lovable Cloudiin
 

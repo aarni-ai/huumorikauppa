@@ -2,10 +2,16 @@
  * GET /api/products: myynnissä olevat tuotteet (sama rivimuoto kuin vanhan taustan products-taulu).
  *   ?slug=x  yksi tuote (myös piilotettu, jotta middleware ja ohjaukset tietävät sen)
  *   ?category=a,b&limit=20&fields=slug,name,images,price  kevyt lista (middleware)
+ * Rivien variants ilman saatavuudettomia yhdistelmiä (api/_lib/saatavuus.js karsiVariantit), lista unavailable_variants.
  */
 import { kaikkiTuotteet, naytettavatTuotteet, lahde } from "./_lib/tuotteet.js";
+import { karsiVariantit } from "./_lib/saatavuus.js";
 
-const valitse = (p, kentat) => (kentat ? Object.fromEntries(kentat.map((k) => [k, p[k]])) : p);
+// Saatavuudettomat väri/koko-yhdistelmät pois (variants.variant_map, colors, sizes); lista kentässä unavailable_variants.
+const valitse = (p, kentat) => {
+  const k = karsiVariantit(p);
+  return kentat ? Object.fromEntries(kentat.map((x) => [x, k[x]])) : k;
+};
 
 export default async function handler(req, res) {
   try {

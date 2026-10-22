@@ -4,12 +4,17 @@ const API = "https://api.printify.com/v1";
 export const onPrintify = () => !!(process.env.PRINTIFY_API_KEY && process.env.PRINTIFY_SHOP_ID);
 
 async function kutsu(polku, init = {}) {
+  return kutsuApi(`/shops/${process.env.PRINTIFY_SHOP_ID}${polku}`, init);
+}
+
+/** Kutsu mihin tahansa Printify-polkuun (myös /catalog). aikaraja ms, oletus 25 s. */
+async function kutsuApi(polku, init = {}, aikaraja = 25000) {
   if (!onPrintify()) return { ok: false, status: 0, data: null, virhe: "Printify-avain puuttuu (PRINTIFY_API_KEY, PRINTIFY_SHOP_ID)" };
   try {
-    const res = await fetch(`${API}/shops/${process.env.PRINTIFY_SHOP_ID}${polku}`, {
+    const res = await fetch(`${API}${polku}`, {
       ...init,
       headers: { Authorization: `Bearer ${process.env.PRINTIFY_API_KEY}`, "Content-Type": "application/json", ...(init.headers || {}) },
-      signal: AbortSignal.timeout(25000),
+      signal: AbortSignal.timeout(aikaraja),
     });
     const teksti = await res.text();
     let data = null;
@@ -18,6 +23,16 @@ async function kutsu(polku, init = {}) {
   } catch (e) {
     return { ok: false, status: 0, data: null, virhe: `Printify-yhteys: ${e?.message || e}` };
   }
+}
+
+/** Kaupan tuote (variants[].is_enabled, is_available, blueprint_id, print_provider_id). */
+export function haeTuote(printifyTuoteId, { aikaraja = 25000 } = {}) {
+  return kutsuApi(`/shops/${process.env.PRINTIFY_SHOP_ID}/products/${encodeURIComponent(printifyTuoteId)}.json`, { method: "GET" }, aikaraja);
+}
+
+/** Painotalon katalogivariantit (myös loppuneet). Puuttuva variantti on poistunut valikoimasta. */
+export function haeKatalogiVariantit(blueprintId, providerId) {
+  return kutsuApi(`/catalog/blueprints/${encodeURIComponent(blueprintId)}/print_providers/${encodeURIComponent(providerId)}/variants.json?show-out-of-stock=1`, { method: "GET" });
 }
 
 /** Luo tilaus (Printifyssä tila on-hold, kunnes send_to_production onnistuu). */

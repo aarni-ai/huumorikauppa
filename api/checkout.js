@@ -13,6 +13,8 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
+import { onPrintify, haeTuote } from "./_lib/printify.js";
+import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
 import { tarkistaLahjakortti, normalisoiKoodi } from "./_lib/lahjakortti.js";
 import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita } from "./_lib/lahjakortti-db.js";
@@ -70,7 +72,10 @@ export default async function handler(req, res) {
   }
   let tilausId = null;
   try {
-    const laskettu = laskeTilaus(pyynto, await kaikkiTuotteet(), await alennus(pyynto.discountCode), {
+    // Saatavuus: tallennettu päivittäinen tieto, täydennettynä tuoreella Printify-haulla (3 s, virheessä tallennettu).
+    let tuotteet = await kaikkiTuotteet();
+    if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
+    const laskettu = laskeTilaus(pyynto, tuotteet, await alennus(pyynto.discountCode), {
       paketit: PAKETIT,
       lahjakortti: await lahjakortti(pyynto.giftCardCode),
     });

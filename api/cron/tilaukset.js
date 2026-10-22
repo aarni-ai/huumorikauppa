@@ -8,12 +8,17 @@
  *     Printifyn on-hold tai has-issues tuotannossa olevalla tilauksella: hälytys omistajalle.
  *  4. Päivän yhteenveto omistajalle kerran päivässä klo 7 Suomen aikaa (jumissa olevat mukana).
  * ?kuiva=1 listaa vain, mitä tehtäisiin.
+ *
+ * ?tehtava=saatavuus: Printify-varianttien saatavuustarkistus (api/_lib/saatavuus.js) yhtenä eränä (noin 35 s, 5
+ * kutsua sekunnissa). GitHub Actions (saatavuus.yml) kutsuu kerran päivässä uudelleen, kunnes vastauksen jaljella on 0.
+ * Erillinen tehtävä samassa funktiossa, koska Vercel Hobby rajaa funktioiden ja Vercel Cronien määrää.
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, lahetaPrintifyyn, halytetaanko } from "../_lib/tilaus.js";
-import { haeTilaus, lahetys, onPrintify } from "../_lib/printify.js";
-import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA } from "../_lib/sahkoposti.js";
+import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit } from "../_lib/printify.js";
+import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti } from "../_lib/sahkoposti.js";
+import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "../_lib/lahjakortti-db.js";
 
 const helsinki = (d = new Date()) => {
@@ -27,6 +32,23 @@ export default async function handler(req, res) {
   const kuiva = req.query.kuiva === "1";
   const loki = [];
   const db = sql();
+
+  if (req.query.tehtava === "saatavuus") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu", jaljella: 0 });
+    const kurista = teeKuristin();
+    const r = await ajaSaatavuus(pgVarasto(db), {
+      haeTuote: kurista((id) => haeTuote(id, { aikaraja: 10000 })),
+      haeKatalogi: kurista(haeKatalogiVariantit),
+      kuiva,
+      ilmoita: async (muutokset, virheet) => {
+        if (!onSahkoposti()) return { ok: false, eiKaytossa: true };
+        const rivit = muutosRivit(muutokset);
+        const lisa = virheet.length ? [`Tarkistusvirheitä viimeisessä erässä: ${virheet.length} (esim. ${virheet[0]})`] : [];
+        return halytys(`Tuotteiden saatavuus muuttui (${muutokset.length} tuotetta)`, [...rivit.slice(0, 200), ...(rivit.length > 200 ? [`... ja ${rivit.length - 200} riviä lisää`] : []), ...lisa]);
+      },
+    });
+    return res.status(200).json({ ok: true, kuiva, ...r });
+  }
 
   // 1. Paikkaus Stripestä
   if (onStripe()) {

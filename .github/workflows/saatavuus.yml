@@ -1,6 +1,8 @@
 # Päivittäinen saatavuustarkistus (scripts/saatavuus.mjs): GET /, /kategoria/t-paidat ja /kassa (200) sekä
 # POST /api/checkout tyhjällä rungolla (JSON-vastaus; 5xx on virhe, paitsi dokumentoitu 503 not_configured).
 # Ei tarvitse salaisuuksia. Valinnainen muuttuja KAUPPA_URL, oletus https://huumorikauppa.fi.
+# Toinen työ (variantit): Printify-varianttien saatavuus, /api/cron/tilaukset?tehtava=saatavuus CRON_SECRETillä
+# (sama salaisuus kuin tilausvalvonta.yml). Yksi kutsu tarkistaa erän (noin 35 s); toistetaan, kunnes jaljella on 0.
 # Ajastetut työnkulut ajetaan vain oletushaarasta (main).
 name: Saatavuus
 
@@ -27,3 +29,25 @@ jobs:
         env:
           KAUPPA_URL: ${{ vars.KAUPPA_URL || 'https://huumorikauppa.fi' }}
         run: node scripts/saatavuus.mjs --url "$KAUPPA_URL"
+
+  variantit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Tarkista Printify-varianttien saatavuus
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          KAUPPA_URL: ${{ vars.KAUPPA_URL || 'https://huumorikauppa.fi' }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then echo "CRON_SECRET puuttuu, ohitetaan"; exit 0; fi
+          for kierros in $(seq 1 15); do
+            koodi=$(curl -sS -o vastaus.json -w '%{http_code}' --max-time 90 \
+              -H "Authorization: Bearer $CRON_SECRET" "$KAUPPA_URL/api/cron/tilaukset?tehtava=saatavuus")
+            echo "Erä $kierros: HTTP $koodi"
+            head -c 1500 vastaus.json; echo
+            if [ "$koodi" = "503" ]; then echo "Ei käytössä tässä ympäristössä (Printify tai tietokanta puuttuu), ohitetaan"; exit 0; fi
+            [ "$koodi" = "200" ] || exit 1
+            jaljella=$(jq -r '.jaljella // 0' vastaus.json)
+            [ "$jaljella" = "0" ] && exit 0
+          done
+          echo "Tarkistus jäi kesken (jaljella $jaljella), jatkuu huomenna"
