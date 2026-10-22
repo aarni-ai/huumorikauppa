@@ -13,6 +13,7 @@ const a = createAvailability({
   summary: null,
 });
 const koot = ["S", "M", "L", "3XL", "4XL", "5XL"];
+const P = { slug: "paita" };
 
 describe("variantAvailability", () => {
   it("avain samassa muodossa kuin variant_map", () => {
@@ -20,23 +21,41 @@ describe("variantAvailability", () => {
     expect(variantKey(undefined, "L")).toBe("|L");
   });
   it("yksittäinen yhdistelmä", () => {
-    expect(a.isVariantAvailable("paita", "Musta", "5XL")).toBe(false);
-    expect(a.isVariantAvailable("paita", "Musta", "4XL")).toBe(true);
-    expect(a.isVariantAvailable("tuntematon", "Musta", "5XL")).toBe(true);
-    expect(a.isVariantAvailable("tarra", undefined, "10cm")).toBe(false);
-    expect(a.isVariantAvailable("loppu", "Musta", "M")).toBe(false);
+    expect(a.isVariantAvailable(P, "Musta", "5XL")).toBe(false);
+    expect(a.isVariantAvailable(P, "Musta", "4XL")).toBe(true);
+    expect(a.isVariantAvailable({ slug: "tuntematon" }, "Musta", "5XL")).toBe(true);
+    expect(a.isVariantAvailable({ slug: "tarra" }, undefined, "10cm")).toBe(false);
+    expect(a.isVariantAvailable({ slug: "loppu" }, "Musta", "M")).toBe(false);
   });
   it("koot värin mukaan ja värit, joilla on koko", () => {
-    expect(a.availableSizes("paita", "Keltainen", koot)).toEqual(["S", "M", "L"]);
-    expect(a.availableSizes("paita", "Musta", koot)).toEqual(["S", "M", "L", "3XL", "4XL"]);
-    expect(a.availableColors("paita", ["Musta", "Valkoinen", "Keltainen"], ["S", "M", "L"])).toEqual(["Musta", "Keltainen"]);
-    expect(a.availableColors("paita", ["Musta"], [])).toEqual(["Musta"]);
+    expect(a.availableSizes(P, "Keltainen", koot)).toEqual(["S", "M", "L"]);
+    expect(a.availableSizes(P, "Musta", koot)).toEqual(["S", "M", "L", "3XL", "4XL"]);
+    expect(a.availableColors(P, ["Musta", "Valkoinen", "Keltainen"], ["S", "M", "L"])).toEqual(["Musta", "Keltainen"]);
+    expect(a.availableColors(P, ["Musta"], [])).toEqual(["Musta"]);
   });
   it("kokonaan valmistamaton tuote", () => {
-    expect(a.isFullyUnavailable("loppu")).toBe(true);
-    expect(a.isFullyUnavailable("paita")).toBe(false);
-    expect(a.hasAvailableVariant("paita", ["Valkoinen"], ["S", "M", "L"])).toBe(false);
-    expect(a.hasAvailableVariant("paita", ["Valkoinen", "Musta"], ["S"])).toBe(true);
+    expect(a.isFullyUnavailable({ slug: "loppu" })).toBe(true);
+    expect(a.isFullyUnavailable(P)).toBe(false);
+    expect(a.hasAvailableVariant({ slug: "paita", variants: { colors: ["Valkoinen"], sizes: ["S", "M", "L"] } })).toBe(false);
+    expect(a.hasAvailableVariant({ slug: "paita", variants: { colors: ["Valkoinen", "Musta"], sizes: ["S"] } })).toBe(true);
+  });
+  it("variant_map-aukko on valmistamaton ilman JSON-dataa", () => {
+    const vari = { slug: "x", variants: { colors: ["Musta", "Keltainen"], sizes: ["S", "3XL"], variant_map: { "Musta|S": 1, "Musta|3XL": 2, "Keltainen|S": 3 } } };
+    expect(a.isVariantAvailable(vari, "Keltainen", "3XL")).toBe(false);
+    expect(a.isVariantAvailable(vari, "Musta", "3XL")).toBe(true);
+    expect(a.availableSizes(vari, "Keltainen", ["S", "3XL"])).toEqual(["S"]);
+    // Ilman väriä "|Koko"
+    const tarra = { slug: "t", variants: { sizes: ["5cm", "10cm"], variant_map: { "|5cm": 1 } } };
+    expect(a.availableSizes(tarra, undefined, ["5cm", "10cm"])).toEqual(["5cm"]);
+    expect(a.isFullyUnavailable(tarra)).toBe(false);
+    // Ilman kokoa "Väri|"
+    const juliste = { slug: "j", variants: { colors: ["Valkoinen", "Musta"], variant_map: { "Valkoinen|": 1 } } };
+    expect(a.availableColors(juliste, ["Valkoinen", "Musta"], [])).toEqual(["Valkoinen"]);
+    // Kaikki aukkoja = kokonaan valmistamaton
+    expect(a.isFullyUnavailable({ slug: "k", variants: { colors: ["Musta"], sizes: ["S"], variant_map: { "Musta|M": 1 } } })).toBe(true);
+    // Tyhjä tai puuttuva kartta ei piilota mitään
+    expect(a.isVariantAvailable({ slug: "e", variants: { variant_map: {} } }, "Musta", "S")).toBe(true);
+    expect(a.isFullyUnavailable({ slug: "e", variants: { colors: ["Musta"], sizes: ["S"] } })).toBe(false);
   });
   it("syötteen moduuli vastaa JSON-dataa (generaattori kirjoittaa molemmat)", () => {
     expect([...KOKONAAN_EI_SAATAVILLA].sort()).toEqual([...(data.kokonaan_ei_saatavilla ?? [])].sort());

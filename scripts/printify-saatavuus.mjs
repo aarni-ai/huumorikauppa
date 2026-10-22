@@ -16,7 +16,8 @@
  *   --pakota       kirjoita, vaikka turvaraja (yli 25 % tuotteista kokonaan valmistamattomia) ylittyy
  *
  * Yhdistelmä on valmistamaton, kun
- *   1. avain "Väri|Koko" puuttuu tuotteen variants.variant_map:sta (kassa ei löydä Printify-varianttia), tai
+ *   1. avain "Väri|Koko" puuttuu tuotteen variants.variant_map:sta (kassa ei löydä Printify-varianttia; kauppa
+ *      päättelee tämän itse, joten JSONiin näitä ei kirjoiteta, vain summary.ei_kartassa ja kokonaan-lista), tai
  *   2. Printify-tuotteen (GET /v1/shops/{shop}/products/{id}.json) variantti puuttuu, is_enabled = false tai
  *      is_available = false (ensisijainen signaali), tai
  *   3. variantti puuttuu print providerin katalogista (GET /v1/catalog/blueprints/{bp}/print_providers/{pp}/
@@ -216,6 +217,7 @@ export async function buildSaatavuus({ rows, printifyGet, shopId, now = () => ne
 
   const products = {};
   const kokonaan = [];
+  const top = [];
   const syyLaskuri = {};
   const virheet = [];
   const ilmanTuotetta = [];
@@ -260,9 +262,14 @@ export async function buildSaatavuus({ rows, printifyGet, shopId, now = () => ne
     }
     for (const s of Object.values(syyt)) syyLaskuri[s] = (syyLaskuri[s] ?? 0) + 1;
     unavailableVariants += unavailable.length;
-    if (unavailable.length > 0) {
+    if (unavailable.length > 0) top.push([row.slug, unavailable.length]);
+    // JSONiin vain kartassa olevat avaimet: kartan aukot (ei_kartassa) kauppa päättelee itse tuotteen variant_map:sta
+    // (src/lib/variantAvailability.ts), joten tiedosto pysyy pienenä.
+    const kartta = row.variants?.variant_map ?? {};
+    const jsonAvaimet = unavailable.filter((k) => typeof kartta[k] === "number");
+    if (jsonAvaimet.length > 0) {
       products[row.slug] = {
-        unavailable,
+        unavailable: jsonAvaimet,
         printify_product_id: ppid,
         provider_id: printifyProduct?.print_provider_id ?? null,
       };
@@ -281,10 +288,12 @@ export async function buildSaatavuus({ rows, printifyGet, shopId, now = () => ne
       checked_products: checkedProducts,
       checked_variants: checkedVariants,
       unavailable_variants: unavailableVariants,
+      ei_kartassa: syyLaskuri.ei_kartassa ?? 0,
       tila: printifyGet ? "printify" : "vain-kartta",
     },
   };
-  return { data, raportti: { syyLaskuri, virheet, ilmanTuotetta, copyOf, shopProductCount: shopProducts.length } };
+  top.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  return { data, raportti: { syyLaskuri, top: top.slice(0, 15), virheet, ilmanTuotetta, copyOf, shopProductCount: shopProducts.length } };
 }
 
 export function renderJsModule(data) {
@@ -301,15 +310,13 @@ function tulostaRaportti(data, raportti) {
   const s = data.summary;
   console.log(`Tila: ${s.tila}`);
   console.log(`Tarkistettu: ${s.checked_products} tuotetta, ${s.checked_variants} yhdistelmää`);
-  console.log(`Valmistamattomia yhdistelmiä: ${s.unavailable_variants} (${Object.keys(data.products).length} tuotteessa)`);
+  console.log(`Valmistamattomia yhdistelmiä: ${s.unavailable_variants}, joista kartan aukkoja ${s.ei_kartassa} (päätellään kaupassa variant_map:sta)`);
+  console.log(`JSONiin Printify-syyn vuoksi: ${Object.values(data.products).reduce((n, p) => n + p.unavailable.length, 0)} yhdistelmää ${Object.keys(data.products).length} tuotteessa`);
   console.log(`Kokonaan valmistamattomia tuotteita: ${data.kokonaan_ei_saatavilla.length}`);
   for (const slug of data.kokonaan_ei_saatavilla) console.log(`  - ${slug}`);
   console.log("Syyt:", JSON.stringify(raportti.syyLaskuri));
-  const top = Object.entries(data.products)
-    .sort((a, b) => b[1].unavailable.length - a[1].unavailable.length)
-    .slice(0, 15);
-  console.log("Top 15 (valmistamattomia yhdistelmiä):");
-  for (const [slug, p] of top) console.log(`  ${String(p.unavailable.length).padStart(4)}  ${slug}`);
+  console.log("Top 15 (valmistamattomia yhdistelmiä, kaikki syyt):");
+  for (const [slug, n] of raportti.top) console.log(`  ${String(n).padStart(4)}  ${slug}`);
   if (raportti.ilmanTuotetta.length) {
     console.log(`Ei Printify-tuotetta (ei id:tä eikä yksiselitteistä osumaa): ${raportti.ilmanTuotetta.length}`);
     for (const slug of raportti.ilmanTuotetta) console.log(`  - ${slug}`);

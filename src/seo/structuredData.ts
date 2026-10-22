@@ -34,6 +34,8 @@ export interface ProductForSchema {
   price: number;
   stock?: number | null;
   categoryName?: string;
+  /** Tuotteen variants (colors, sizes, variant_map) saatavuuden tarkistukseen; puuttuessa vain generaattorin lista. */
+  variants?: unknown;
 }
 
 function merchantReturnPolicy(): JsonLd {
@@ -209,7 +211,7 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
   const url = `${SITE_URL}/tuote/${product.slug}`;
   // Yksi Offer koko tuotteelle: InStock vain, jos vähintään yksi koko/väri on Printifyn valmistettavissa
   // (src/lib/variantAvailability.ts). Valmistamattomat koot eivät näy tarjouksessa, koska kokoja ei listata.
-  const outOfStock = (typeof product.stock === "number" && product.stock <= 0) || isFullyUnavailable(product.slug);
+  const outOfStock = (typeof product.stock === "number" && product.stock <= 0) || isFullyUnavailable({ slug: product.slug, variants: product.variants });
   const description = (product.description || product.name).slice(0, 5000);
   return {
     "@context": "https://schema.org",

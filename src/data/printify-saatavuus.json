@@ -1,6 +1,12 @@
 {
-  "generated_at": null,
+  "generated_at": "2026-10-22T08:25:02.747Z",
   "products": {},
   "kokonaan_ei_saatavilla": [],
-  "summary": null
+  "summary": {
+    "checked_products": 783,
+    "checked_variants": 18714,
+    "unavailable_variants": 8342,
+    "ei_kartassa": 8342,
+    "tila": "vain-kartta"
+  }
 }

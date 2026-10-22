@@ -90,7 +90,7 @@ describe("printify-saatavuus: koko ajo mockatulla fetchillä", () => {
       rivi("paita", "P1", ["Musta", "Valkoinen"], ["S", "5XL"], { "Musta|S": 11, "Musta|5XL": 12, "Valkoinen|S": 13, "Valkoinen|5XL": 14 }),
       rivi("poistettu", "P404", ["Musta"], ["S"], { "Musta|S": 11 }),
       rivi("ilman-id", null, [], ["10cm"], { "|10cm": 77 }),
-      rivi("kunnossa", "P3", ["Musta"], ["S"], { "Musta|S": 11 }),
+      rivi("kunnossa", "P3", ["Musta", "Keltainen"], ["S"], { "Musta|S": 11 }),
     ];
     const fetchImpl = mockPrintify({
       "/shops/9/products.json?limit=50&page=1": { current_page: 1, last_page: 2, data: [
@@ -121,7 +121,9 @@ describe("printify-saatavuus: koko ajo mockatulla fetchillä", () => {
       poistettu: { unavailable: ["Musta|S"], printify_product_id: "P404", provider_id: null },
     });
     expect(data.kokonaan_ei_saatavilla).toEqual(["ilman-id", "poistettu"]);
-    expect(data.summary).toEqual({ checked_products: 4, checked_variants: 7, unavailable_variants: 4, tila: "printify" });
+    // "kunnossa": Keltainen|S puuttuu kartasta -> lasketaan, mutta ei JSONiin (kauppa päättelee kartasta)
+    expect(data.summary).toEqual({ checked_products: 4, checked_variants: 8, unavailable_variants: 5, ei_kartassa: 1, tila: "printify" });
+    expect(raportti.top[0]).toEqual(["paita", 2]);
     expect(raportti.copyOf).toEqual([{ id: "COPY", title: "Copy of Paita", visible: false, published: false, linked: false }]);
     // Katalogi haetaan kerran per blueprint/provider
     const urls = fetchImpl.mock.calls.map((c) => c[0] as string);
@@ -148,7 +150,9 @@ describe("printify-saatavuus: koko ajo mockatulla fetchillä", () => {
       printifyGet: null,
       shopId: "9",
     });
-    expect(data.products.p.unavailable).toEqual(["Keltainen|3XL"]);
+    expect(data.products).toEqual({});
+    expect(data.summary.ei_kartassa).toBe(1);
+    expect(data.kokonaan_ei_saatavilla).toEqual([]);
     expect(data.summary.tila).toBe("vain-kartta");
   });
 });

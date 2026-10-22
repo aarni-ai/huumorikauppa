@@ -1,7 +1,13 @@
 /**
- * Printify-saatavuus: koko/väri-yhdistelmät, joita tuotteen print provider ei pysty valmistamaan.
- * Data: src/data/printify-saatavuus.json, jonka scripts/printify-saatavuus.mjs generoi Printifyn rajapinnasta.
- * Tyhjä data (products: {}) = kaikki yhdistelmät näytetään kuten ennenkin.
+ * Printify-saatavuus: koko/väri-yhdistelmät, joita ei voi tilata.
+ *
+ * Kaksi lähdettä:
+ *   1. Tuotteen oma variants.variant_map: jos kartta ei ole tyhjä eikä siinä ole avainta "Väri|Koko"
+ *      ("|Koko" ilman väriä, "Väri|" ilman kokoa), kassa ei löydä Printify-varianttia, joten yhdistelmä
+ *      on valmistamaton. Tähän ei tarvita erillistä dataa.
+ *   2. src/data/printify-saatavuus.json (scripts/printify-saatavuus.mjs): kartassa olevat variantit, joita
+ *      Printify ei valmista (ei käytössä, ei saatavilla, ei providerin katalogissa), sekä kokonaan
+ *      valmistamattomat tuotteet (kaikki syyt mukaan lukien kartan aukot).
  *
  * Riippuvuudeton tiedosto (vain suhteelliset importit .js-päätteellä ja JSON import-attribuutilla), jotta
  * Edge-middleware (hiddenCategories.ts) ja Node-ajo voivat käyttää sitä ilman Viten aliaksia.
@@ -21,8 +27,22 @@ export interface SaatavuusData {
   summary?: unknown;
 }
 
-/** Sama avainmuoto kuin variants.variant_map: "Väri|Koko", ilman väriä "|Koko". */
+/** Tuote tai sen osa: slug ja variants (colors, sizes, variant_map). Kumpikin voi puuttua. */
+export interface SaatavuusKohde {
+  slug?: string | null;
+  variants?: unknown;
+}
+
+/** Sama avainmuoto kuin variants.variant_map: "Väri|Koko", ilman väriä "|Koko", ilman kokoa "Väri|". */
 export const variantKey = (color?: string | null, size?: string | null): string => `${color ?? ""}|${size ?? ""}`;
+
+function variantMapOf(p: SaatavuusKohde | null | undefined): Record<string, unknown> | null {
+  const map = (p?.variants as { variant_map?: unknown } | null | undefined)?.variant_map;
+  if (!map || typeof map !== "object" || Array.isArray(map)) return null;
+  return Object.keys(map).length > 0 ? (map as Record<string, unknown>) : null;
+}
+
+const listOf = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : []);
 
 export function createAvailability(data: SaatavuusData) {
   const unavailable = new Map<string, Set<string>>();
@@ -31,32 +51,42 @@ export function createAvailability(data: SaatavuusData) {
   }
   const kokonaan = new Set(data?.kokonaan_ei_saatavilla ?? []);
 
-  const isVariantAvailable = (slug: string | null | undefined, color?: string | null, size?: string | null): boolean => {
-    if (!slug) return true;
-    if (kokonaan.has(slug)) return false;
-    const set = unavailable.get(slug);
-    return !set || !set.has(variantKey(color, size));
+  const isVariantAvailable = (p: SaatavuusKohde | null | undefined, color?: string | null, size?: string | null): boolean => {
+    const slug = p?.slug;
+    if (slug && kokonaan.has(slug)) return false;
+    const key = variantKey(color, size);
+    const map = variantMapOf(p);
+    if (map && !(key in map)) return false;
+    const set = slug ? unavailable.get(slug) : undefined;
+    return !set || !set.has(key);
   };
 
-  /** Valitulle värille valmistettavat koot (järjestys säilyy). Ilman väriä avain on "|Koko". */
-  const availableSizes = (slug: string | null | undefined, color: string | null | undefined, sizes: readonly string[]): string[] =>
-    sizes.filter((s) => isVariantAvailable(slug, color, s));
+  /** Valitulle värille valmistettavat koot (järjestys säilyy). */
+  const availableSizes = (p: SaatavuusKohde | null | undefined, color: string | null | undefined, sizes: readonly string[]): string[] =>
+    sizes.filter((s) => isVariantAvailable(p, color, s));
 
-  /** Värit, joilla on vähintään yksi valmistettava koko (tai kokoton yhdistelmä, jos kokoja ei ole). */
-  const availableColors = (slug: string | null | undefined, colors: readonly string[], sizes: readonly string[] = []): string[] =>
-    colors.filter((c) => (sizes.length > 0 ? availableSizes(slug, c, sizes).length > 0 : isVariantAvailable(slug, c, "")));
+  /** Värit, joilla on vähintään yksi valmistettava koko (tai kokoton yhdistelmä "Väri|", jos kokoja ei ole). */
+  const availableColors = (p: SaatavuusKohde | null | undefined, colors: readonly string[], sizes: readonly string[] = []): string[] =>
+    colors.filter((c) => (sizes.length > 0 ? availableSizes(p, c, sizes).length > 0 : isVariantAvailable(p, c, "")));
 
-  /** Onko tuotteella yhtään valmistettavaa yhdistelmää annetuista väreistä ja koista. */
-  const hasAvailableVariant = (slug: string | null | undefined, colors: readonly string[] = [], sizes: readonly string[] = []): boolean => {
-    if (!slug) return true;
-    if (kokonaan.has(slug)) return false;
-    const cs = colors.length > 0 ? colors : [""];
-    const ss = sizes.length > 0 ? sizes : [""];
-    return cs.some((c) => ss.some((s) => isVariantAvailable(slug, c, s)));
+  /** Onko tuotteella yhtään valmistettavaa yhdistelmää omista väreistään ja koistaan. */
+  const hasAvailableVariant = (p: SaatavuusKohde | null | undefined): boolean => {
+    if (p?.slug && kokonaan.has(p.slug)) return false;
+    const v = p?.variants as { colors?: unknown; sizes?: unknown } | null | undefined;
+    const cs = listOf(v?.colors);
+    const ss = listOf(v?.sizes);
+    return (cs.length > 0 ? cs : [""]).some((c) => (ss.length > 0 ? ss : [""]).some((s) => isVariantAvailable(p, c, s)));
   };
 
-  /** Tuote, jonka mitään yhdistelmää ei voi valmistaa: piilotetaan kuten myynnistä poistetut. */
-  const isFullyUnavailable = (slug: string | null | undefined): boolean => !!slug && kokonaan.has(slug);
+  /**
+   * Tuote, jonka mitään yhdistelmää ei voi valmistaa: piilotetaan kuten myynnistä poistetut.
+   * Generaattorin lista aina; lisäksi tuotteen omista varianteista, kun ne ovat mukana.
+   */
+  const isFullyUnavailable = (p: SaatavuusKohde | null | undefined): boolean => {
+    if (!p) return false;
+    if (p.slug && kokonaan.has(p.slug)) return true;
+    return variantMapOf(p) !== null && !hasAvailableVariant(p);
+  };
 
   return { isVariantAvailable, availableSizes, availableColors, hasAvailableVariant, isFullyUnavailable };
 }

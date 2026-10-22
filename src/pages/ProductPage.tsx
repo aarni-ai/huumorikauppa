@@ -264,7 +264,7 @@ const ProductPage = () => {
   const sellableColors = useMemo(
     () =>
       product
-        ? availableColors(product.slug, (product.variants.colors || []) as string[], (product.variants.sizes || []) as string[])
+        ? availableColors(product, (product.variants.colors || []) as string[], (product.variants.sizes || []) as string[])
         : [],
     [product],
   );
@@ -281,7 +281,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     // Värin vaihto: koko, jota ei valmisteta uudella värillä, poistetaan valinnasta.
-    if (product && selectedSize && !isVariantAvailable(product.slug, selectedColor, selectedSize)) {
+    if (product && selectedSize && !isVariantAvailable(product, selectedColor, selectedSize)) {
       setSelectedSize(undefined);
     }
   }, [product, selectedColor, selectedSize]);
@@ -363,7 +363,7 @@ const ProductPage = () => {
   );
   // Valitulla värillä valmistettavat koot; valmistamattomat yhdistelmät eivät näy valitsimessa.
   const allSizes = (product.variants.sizes || []) as string[];
-  const sellableSizes = availableSizes(product.slug, selectedColor, sortSizes(allSizes));
+  const sellableSizes = availableSizes(product, selectedColor, sortSizes(allSizes));
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
@@ -401,11 +401,11 @@ const ProductPage = () => {
       document.getElementById("custom-text-input")?.focus();
       return;
     }
-    const size = hideSize ? (availableSizes(product.slug, selectedColor, allSizes)[0] ?? allSizes[0]) : selectedSize;
+    const size = hideSize ? (availableSizes(product, selectedColor, allSizes)[0] ?? allSizes[0]) : selectedSize;
     const tarkistettavaKoko = size ?? (allSizes.length === 1 ? allSizes[0] : undefined);
     if (
       (tarkistettavaKoko !== undefined || allSizes.length === 0) &&
-      !isVariantAvailable(product.slug, selectedColor, tarkistettavaKoko)
+      !isVariantAvailable(product, selectedColor, tarkistettavaKoko)
     ) {
       toast({ title: "Tätä kokoa ei valmisteta valitulla värillä. Valitse toinen koko tai väri.", variant: "destructive" });
       return;
@@ -465,6 +465,7 @@ const ProductPage = () => {
     price: product.price,
     stock: product.stock,
     categoryName,
+    variants: product.variants,
   });
 
   const { faqs: genericProductFaqs, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName, { isCustom });

@@ -5,7 +5,7 @@
  * ja vercel.json:n mukiohjaukset.
  *
  * Lisäksi piilotetaan tuotteet, joiden yhtään koko/väri-yhdistelmää Printify ei pysty valmistamaan
- * (src/data/printify-saatavuus.json, kokonaan_ei_saatavilla; generaattori scripts/printify-saatavuus.mjs).
+ * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json).
  */
 import { isFullyUnavailable } from "./variantAvailability.js";
 
@@ -23,7 +23,7 @@ export const MUKI_TUNNISTE = /\bmuki\b|kahvimuki|-muki$/i;
  */
 export function onPiilotettuTuote(p: { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown }): boolean {
   if (onPiilotettu(p.category)) return true;
-  if (isFullyUnavailable(p.slug)) return true;
+  if (isFullyUnavailable(p)) return true;
   if (MUKI_TUNNISTE.test(`${p.slug ?? ""} ${p.name ?? ""}`)) return true;
   const koot = (p.variants as { sizes?: unknown } | null | undefined)?.sizes;
   return Array.isArray(koot) && koot.some((k) => typeof k === "string" && /^\d+oz$/i.test(k));
