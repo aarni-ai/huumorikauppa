@@ -7,6 +7,7 @@
  * Riippuvuudeton tiedosto (vain suhteelliset importit), jotta Edge-middleware voi käyttää sitä.
  */
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_NAME, SITE_URL, absoluteUrl } from "./site.js";
+import { isFullyUnavailable } from "../lib/variantAvailability.js";
 
 export type JsonLd = Record<string, unknown>;
 
@@ -206,7 +207,9 @@ export function buildOfferShippingDetails(price: number): JsonLd {
 
 export function buildProductJsonLd(product: ProductForSchema): JsonLd {
   const url = `${SITE_URL}/tuote/${product.slug}`;
-  const outOfStock = typeof product.stock === "number" && product.stock <= 0;
+  // Yksi Offer koko tuotteelle: InStock vain, jos vähintään yksi koko/väri on Printifyn valmistettavissa
+  // (src/lib/variantAvailability.ts). Valmistamattomat koot eivät näy tarjouksessa, koska kokoja ei listata.
+  const outOfStock = (typeof product.stock === "number" && product.stock <= 0) || isFullyUnavailable(product.slug);
   const description = (product.description || product.name).slice(0, 5000);
   return {
     "@context": "https://schema.org",
