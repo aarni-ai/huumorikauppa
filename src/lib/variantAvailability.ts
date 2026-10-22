@@ -9,10 +9,10 @@
  *      Printify ei valmista (ei käytössä, ei saatavilla, ei providerin katalogissa), sekä kokonaan
  *      valmistamattomat tuotteet (kaikki syyt mukaan lukien kartan aukot).
  *
- * Riippuvuudeton tiedosto (vain suhteelliset importit .js-päätteellä ja JSON import-attribuutilla), jotta
- * Edge-middleware (hiddenCategories.ts) ja Node-ajo voivat käyttää sitä ilman Viten aliaksia.
+ * Data luetaan generoidusta JS-moduulista (api/_lib/printify-saatavuus.js, sama sisältö kuin JSON-tiedostossa),
+ * koska JSON-import ei käänny Vercelin middleware-buildissa. Vain suhteelliset importit .js-päätteellä.
  */
-import saatavuusData from "../data/printify-saatavuus.json" with { type: "json" };
+import { SAATAVUUS_DATA as saatavuusData } from "../../api/_lib/printify-saatavuus.js";
 
 export interface SaatavuusTuote {
   unavailable: string[];

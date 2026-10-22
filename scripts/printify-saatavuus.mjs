@@ -302,6 +302,8 @@ export function renderJsModule(data) {
     "// Sama data kuin src/data/printify-saatavuus.json (kokonaan valmistamattomat tuotteet) syötteen ja sivukartan käyttöön.",
     `export const SAATAVUUS_GENERATED_AT = ${JSON.stringify(data.generated_at ?? null)};`,
     `export const KOKONAAN_EI_SAATAVILLA = new Set(${JSON.stringify(data.kokonaan_ei_saatavilla ?? [], null, 2)});`,
+    "/** Koko data kaupan apufunktiolle (src/lib/variantAvailability.ts); JS-moduuli toimii Vitessä, middlewaressa ja Nodessa. */",
+    `export const SAATAVUUS_DATA = ${JSON.stringify(data, null, 2)};`,
     "",
   ].join("\n");
 }
