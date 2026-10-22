@@ -7,7 +7,7 @@ import {
 import { haeTuote, haeKatalogiVariantit } from "../../api/_lib/printify.js";
 import { laskeTilaus, KassaVirhe } from "../../api/_lib/kassa.js";
 import { myynnissa } from "../../api/_lib/tuotteet.js";
-import { isVariantAvailable, availableSizes, unavailableKeys } from "@/lib/variantAvailability";
+import { isVariantAvailable, availableSizes } from "@/lib/variantAvailability";
 
 type Rivi = Record<string, unknown> & { id: string; slug: string };
 
@@ -107,7 +107,7 @@ describe("/api/products: karsinta", () => {
     expect(isVariantAvailable(p, "Musta", "S")).toBe(false);
     expect(isVariantAvailable(p, "Valkoinen", "S")).toBe(true);
     expect(availableSizes(p, "Musta", ["S", "M"])).toEqual(["M"]);
-    expect(unavailableKeys({}).size).toBe(0);
+    expect(isVariantAvailable({}, "Musta", "S")).toBe(true);
   });
 });
 

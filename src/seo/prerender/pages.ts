@@ -588,6 +588,7 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
         price: product.price,
         stock: product.stock,
         categoryName,
+        variants: product.variants,
       }),
       buildFaqJsonLd(faqs),
     ],

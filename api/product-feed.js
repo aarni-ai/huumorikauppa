@@ -3,6 +3,7 @@ import { naytettavatTuotteet } from './_lib/tuotteet.js';
 import { heikoinKate } from './_lib/kate.js';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
+import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
 
 const SITE = 'https://huumorikauppa.fi';
 
@@ -52,12 +53,16 @@ function sanitizeFeed(xml) {
 
 // Myynnistä piilotetut kategoriat syötteen Google-kategoriana (merchant-feed: mukit -> ...Drinkware > Mugs).
 const HIDDEN_GOOGLE_CATEGORY = /Drinkware (?:&gt;|>) Mugs/;
-function dropHiddenItems(xml) {
+export function dropHiddenItems(xml) {
   // Myös muut mukit (väärässä kategoriassa, tunnistus nimestä tai osoitteesta kuten src/lib/hiddenCategories.ts).
   const muki = (item) => /<g:link>[^<]*-muki<\/g:link>|<g:title>[^<]*\b(?:Muki|kahvimuki)\b/i.test(item);
   // Ohjatut kaksoiskappaleet (vercel.json) pois: syötteen linkki ei saa ohjautua muualle.
-  const ohjattu = (item) => OHJATUT_TUOTESLUGIT.has(((item.match(/<g:link>[^<]*\/tuote\/([^<]+)<\/g:link>/) || [])[1]) || '');
-  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) ? '' : item));
+  const slugOf = (item) => ((item.match(/<g:link>[^<]*\/tuote\/([^<]+)<\/g:link>/) || [])[1]) || '';
+  const ohjattu = (item) => OHJATUT_TUOTESLUGIT.has(slugOf(item));
+  // Syöte on tuotetasoinen (ei item_group_id): pois tuotteet, joiden yhtään kokoa/väriä Printify ei valmista
+  // (api/_lib/printify-saatavuus.js, generaattori scripts/printify-saatavuus.mjs).
+  const eiValmisteta = (item) => KOKONAAN_EI_SAATAVILLA.has(slugOf(item));
+  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) || eiValmisteta(item) ? '' : item));
 }
 
 export default async function handler(req, res) {

@@ -3,7 +3,12 @@
  * Yksi lähde: tuotelistat, tuote- ja kategoriasivut, ostoskori, navigaatio, sivukartta ja Merchant-syöte
  * käyttävät tätä. Mukisivut ohjautuvat 301:llä /kaikki-tuotteet (vercel.json). Palautus: poista kategoria listalta
  * ja vercel.json:n mukiohjaukset.
+ *
+ * Lisäksi piilotetaan tuotteet, joiden yhtään koko/väri-yhdistelmää Printify ei pysty valmistamaan
+ * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json).
  */
+import { isFullyUnavailable } from "./variantAvailability.js";
+
 export const PIILOTETUT_KATEGORIAT: readonly string[] = ["mukit"];
 
 export const onPiilotettu = (category: string | undefined | null): boolean =>
@@ -18,6 +23,7 @@ export const MUKI_TUNNISTE = /\bmuki\b|kahvimuki|-muki$/i;
  */
 export function onPiilotettuTuote(p: { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown }): boolean {
   if (onPiilotettu(p.category)) return true;
+  if (isFullyUnavailable(p)) return true;
   if (MUKI_TUNNISTE.test(`${p.slug ?? ""} ${p.name ?? ""}`)) return true;
   const koot = (p.variants as { sizes?: unknown } | null | undefined)?.sizes;
   return Array.isArray(koot) && koot.some((k) => typeof k === "string" && /^\d+oz$/i.test(k));

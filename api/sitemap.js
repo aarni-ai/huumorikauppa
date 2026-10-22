@@ -2,6 +2,7 @@ import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { onPiilotettuTuote } from "./_lib/piilotetut.js";
 import PAKETIT from "./_lib/paketit-data.js";
 import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
+import { KOKONAAN_EI_SAATAVILLA } from "./_lib/printify-saatavuus.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -174,7 +175,7 @@ function toW3CDate(date) {
 async function fetchAllProducts() {
   // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin kaupassa ja
   // mainissa: ei luonnoksia, ei piilotettuja (mukit, myös väärässä kategoriassa), ei ohjattuja kaksoiskappaleita.
-  const rivit = (await kaikkiTuotteet()).filter((p) => p.is_active !== false && !onPiilotettuTuote(p) && !OHJATUT_TUOTESLUGIT.has(p.slug));
+  const rivit = (await kaikkiTuotteet()).filter((p) => p.is_active !== false && !onPiilotettuTuote(p) && !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug));
   return rivit
     .map((p) => ({ slug: p.slug, updated_at: p.updated_at }))
     .sort((x, y) => String(y.updated_at || "").localeCompare(String(x.updated_at || "")));

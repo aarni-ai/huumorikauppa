@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
+import { availableColors, availableSizes, isVariantAvailable } from "@/lib/variantAvailability";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DeliveryBadge } from "@/components/DeliveryBadge";
@@ -260,16 +261,31 @@ const ProductPage = () => {
     return (product?.variants?.variant_images as Record<string, string[]>) || {};
   }, [product]);
 
+  // Printifyn valmistettavat värit (src/lib/variantAvailability.ts): väri näkyy, jos sillä on vähintään yksi koko.
+  const sellableColors = useMemo(
+    () =>
+      product
+        ? availableColors(product, (product.variants.colors || []) as string[], (product.variants.sizes || []) as string[])
+        : [],
+    [product],
+  );
+
   useEffect(() => {
-    if (product && !selectedColor) {
+    if (!product) return;
+    // Oletusvalinta on aina valmistettava väri; valmistamaton valinta vaihdetaan.
+    if (!selectedColor || !sellableColors.includes(selectedColor)) {
       const defaultColor = product.variants.default_color as string | undefined;
-      if (defaultColor && product.variants.colors?.includes(defaultColor)) {
-        setSelectedColor(defaultColor);
-      } else if (product.variants.colors?.[0]) {
-        setSelectedColor(product.variants.colors[0]);
-      }
+      const next = defaultColor && sellableColors.includes(defaultColor) ? defaultColor : sellableColors[0];
+      if (next && next !== selectedColor) setSelectedColor(next);
     }
-  }, [product, selectedColor]);
+  }, [product, selectedColor, sellableColors]);
+
+  useEffect(() => {
+    // Värin vaihto: koko, jota ei valmisteta uudella värillä, poistetaan valinnasta.
+    if (product && selectedSize && !isVariantAvailable(product, selectedColor, selectedSize)) {
+      setSelectedSize(undefined);
+    }
+  }, [product, selectedColor, selectedSize]);
 
   const currentImages = useMemo(() => {
     if (selectedColor) {
@@ -343,9 +359,12 @@ const ProductPage = () => {
   const hasColors = product.variants.colors && product.variants.colors.length > 0;
   // Oletusväri ensin, jotta valittu väri näkyy mobiilin vaakarivin alussa.
   const defaultColor = product.variants.default_color as string | undefined;
-  const uniqueColors = [...new Set((product.variants.colors || []) as string[])].sort(
+  const uniqueColors = [...new Set(sellableColors)].sort(
     (a, b) => Number(b === defaultColor) - Number(a === defaultColor),
   );
+  // Valitulla värillä valmistettavat koot; valmistamattomat yhdistelmät eivät näy valitsimessa.
+  const allSizes = (product.variants.sizes || []) as string[];
+  const sellableSizes = availableSizes(product, selectedColor, sortSizes(allSizes));
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
@@ -383,7 +402,15 @@ const ProductPage = () => {
       document.getElementById("custom-text-input")?.focus();
       return;
     }
-    const size = hideSize ? product.variants.sizes?.[0] : selectedSize;
+    const size = hideSize ? (availableSizes(product, selectedColor, allSizes)[0] ?? allSizes[0]) : selectedSize;
+    const tarkistettavaKoko = size ?? (allSizes.length === 1 ? allSizes[0] : undefined);
+    if (
+      (tarkistettavaKoko !== undefined || allSizes.length === 0) &&
+      !isVariantAvailable(product, selectedColor, tarkistettavaKoko)
+    ) {
+      toast({ title: "Tätä kokoa ei valmisteta valitulla värillä. Valitse toinen koko tai väri.", variant: "destructive" });
+      return;
+    }
     addItem(product, quantity, size, selectedColor, isCustom ? customText.trim() : undefined);
   };
 
@@ -439,6 +466,7 @@ const ProductPage = () => {
     price: product.price,
     stock: product.stock,
     categoryName,
+    variants: product.variants,
   });
 
   const { faqs: genericProductFaqs, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName, { isCustom });
@@ -727,7 +755,7 @@ const ProductPage = () => {
                   role="radiogroup"
                   aria-label="Koko"
                 >
-                  {sortSizes(product.variants.sizes!).map((size: string) => (
+                  {sellableSizes.map((size: string) => (
                     <button
                       key={size}
                       type="button"
