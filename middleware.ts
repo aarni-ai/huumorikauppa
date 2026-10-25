@@ -15,6 +15,7 @@
  */
 import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
 import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
+import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from './src/config/toimitus.js';
@@ -732,6 +733,9 @@ export default async function middleware(request: Request): Promise<Response | u
 
   // Tuntematon tuote -> oikea 404 (ei pehmeää 404:ää SPA-kuorella). Koskee kaikkia user agenteja.
   if (path.startsWith('/tuote/')) {
+    // Lovable-synkronoinnin kaksoiskappale ("...-0d6670") -> perusrivi (api/_lib/kaksoiskappaleet.js).
+    const perus = kaksoiskappaleenPerusslug(productSlugFromPath(path));
+    if (perus) return Response.redirect(`${url.origin}/tuote/${perus}`, 301);
     const status = await productStatus(url.origin, productSlugFromPath(path));
     if (status === 'missing') return notFoundResponse(url.origin);
     if (status === 'hidden') return Response.redirect(`${url.origin}/kaikki-tuotteet`, 301);

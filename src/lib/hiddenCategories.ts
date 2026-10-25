@@ -5,9 +5,11 @@
  * ja vercel.json:n mukiohjaukset.
  *
  * Lisäksi piilotetaan tuotteet, joiden yhtään koko/väri-yhdistelmää Printify ei pysty valmistamaan
- * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json).
+ * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json), sekä Lovable-
+ * synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
  */
 import { isFullyUnavailable } from "./variantAvailability.js";
+import { onKaksoiskappaleTaiTestikopio } from "../../api/_lib/kaksoiskappaleet.js";
 
 export const PIILOTETUT_KATEGORIAT: readonly string[] = ["mukit"];
 
@@ -23,6 +25,7 @@ export const MUKI_TUNNISTE = /\bmuki\b|kahvimuki|-muki$/i;
  */
 export function onPiilotettuTuote(p: { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown }): boolean {
   if (onPiilotettu(p.category)) return true;
+  if (onKaksoiskappaleTaiTestikopio(p.slug)) return true;
   if (isFullyUnavailable(p)) return true;
   if (MUKI_TUNNISTE.test(`${p.slug ?? ""} ${p.name ?? ""}`)) return true;
   const koot = (p.variants as { sizes?: unknown } | null | undefined)?.sizes;
