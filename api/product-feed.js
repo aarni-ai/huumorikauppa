@@ -2,6 +2,7 @@ const SUPABASE_FEED_URL =
   'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
+import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
 import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
 
 const SITE = 'https://huumorikauppa.fi';
@@ -61,7 +62,9 @@ export function dropHiddenItems(xml) {
   // Syöte on tuotetasoinen (ei item_group_id): pois tuotteet, joiden yhtään kokoa/väriä Printify ei valmista
   // (api/_lib/printify-saatavuus.js, generaattori scripts/printify-saatavuus.mjs).
   const eiValmisteta = (item) => KOKONAAN_EI_SAATAVILLA.has(slugOf(item));
-  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) || eiValmisteta(item) ? '' : item));
+  // Lovable-synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
+  const kaksoiskappale = (item) => onKaksoiskappaleTaiTestikopio(slugOf(item));
+  return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) || eiValmisteta(item) || kaksoiskappale(item) ? '' : item));
 }
 
 export default async function handler(req, res) {

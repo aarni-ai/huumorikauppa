@@ -1,5 +1,6 @@
 import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "./_lib/printify-saatavuus.js";
+import { onKaksoiskappaleTaiTestikopio } from "./_lib/kaksoiskappaleet.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -189,7 +190,7 @@ async function fetchAllProducts() {
     const batch = await res.json();
     if (!Array.isArray(batch) || batch.length === 0) break;
     // Mukit väärässä kategoriassa (src/lib/hiddenCategories.ts MUKI_TUNNISTE).
-    out.push(...batch.filter((p) => !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
+    out.push(...batch.filter((p) => !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !onKaksoiskappaleTaiTestikopio(p.slug) && !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
     if (batch.length < pageSize) break;
     from += pageSize;
   }
