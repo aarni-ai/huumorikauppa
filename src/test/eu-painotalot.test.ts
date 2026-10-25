@@ -36,12 +36,14 @@ describe("EU-maat", () => {
 });
 
 describe("säännöt ja nimiresoluutio", () => {
-  it("t-paita siirtyy vain Monster Digitalilta", () => {
+  it("t-paita siirtyy Monster Digitalilta ja Printify Choicelta", () => {
     expect(valitseSaanto("t-paidat", "Monster Digital")?.painotalo).toBe("OPT OnDemand");
+    expect(valitseSaanto("t-paidat", "Printify Choice")?.blueprint).toMatchObject({ sama: true });
+    expect(valitseSaanto("hupparit", "Printify Choice")).toBeNull();
     expect(valitseSaanto("t-paidat", "SwiftPOD")).toBeNull();
     expect(valitseSaanto("mukit", "Anything")?.painotalo).toBe("OPT OnDemand");
     expect(valitseSaanto("hupparit", "Monster Digital")).toBeNull();
-    expect(SIIRTOSAANNOT.map((s) => s.kategoria)).toEqual(["mukit", "t-paidat", "bodyt", "koristeet", "peitot", "seinataulut"]);
+    expect(SIIRTOSAANNOT.map((s) => s.kategoria)).toEqual(["mukit", "t-paidat", "t-paidat", "bodyt", "koristeet", "peitot", "seinataulut"]);
   });
   it("painotalo: osamerkkijono, täsmällinen nimi ratkaisee moniselitteisyyden", () => {
     expect(valitsePainotalo(painotalot, "opt ondemand")).toMatchObject({ ok: true, painotalo: { id: 30 } });

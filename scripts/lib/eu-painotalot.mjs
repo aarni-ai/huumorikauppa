@@ -38,7 +38,10 @@ export function normalisoi(s) {
  */
 export const SIIRTOSAANNOT = [
   { kategoria: "mukit", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["ceramic mug", "(eu)"], suosi: ["{koko}", "11oz"] } },
-  { kategoria: "t-paidat", lahdePainotalo: "Monster Digital", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["gildan", "64000"] } },
+  { kategoria: "t-paidat", lahdePainotalo: "Monster Digital", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["softstyle", "64000"], suosi: ["unisex"] } },
+  // 22.10.2026: Printify Choice (US) -paidat samalle blueprintille OPT OnDemandille (Suomeen halvempi kulu + toimitus,
+  // KATTEET.md: kate noin 10 % -> 24 % hinnalla 24,90 €). Choice-hupparit jäävät: Textildruck Europalla kate heikompi.
+  { kategoria: "t-paidat", lahdePainotalo: "Printify Choice", painotalo: "OPT OnDemand", blueprint: { sama: true, sisaltaa: [] } },
   { kategoria: "bodyt", painotalo: "Textildruck Europa", blueprint: { sisaltaa: ["babybugz", "bz10"] } },
   { kategoria: "koristeet", painotalo: "Harrier", blueprint: { sisaltaa: ["ceramic ornament"] } },
   { kategoria: "peitot", painotalo: "MWW On Demand", blueprint: { sama: true, sisaltaa: ["blanket"] } },

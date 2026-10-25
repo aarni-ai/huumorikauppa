@@ -49,11 +49,21 @@ const odota = (ms) => new Promise((r) => setTimeout(r, ms));
 // ---------- HTTP: 429/5xx uusitaan porrastetusti ----------
 async function api(polku, { method = "GET", body } = {}) {
   for (let yritys = 1; ; yritys++) {
-    const res = await fetch(`${API}${polku}`, {
-      method,
-      headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json", "User-Agent": "huumorikauppa-eu-siirto" },
-      body: body ? JSON.stringify(body) : undefined,
-    });
+    let res;
+    try {
+      res = await fetch(`${API}${polku}`, {
+        method,
+        headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json", "User-Agent": "huumorikauppa-eu-siirto" },
+        body: body ? JSON.stringify(body) : undefined,
+        signal: AbortSignal.timeout(60000),
+      });
+    } catch (e) {
+      // Verkkovirhe: GET uusitaan; POST ei, ettei Printifyyn synny kaksoiskappaletta.
+      if (method !== "GET" || yritys >= 6) throw e;
+      console.warn(`  verkkovirhe ${method} ${polku} (${e.cause?.code || e.name}), uusi yritys (${yritys}/5)`);
+      await odota(2000 * yritys);
+      continue;
+    }
     if ((res.status === 429 || res.status >= 500) && yritys < 6) {
       const ra = Number(res.headers.get("retry-after"));
       const ms = ra > 0 ? ra * 1000 : Math.min(60000, 2000 * 2 ** (yritys - 1));
@@ -208,7 +218,14 @@ for (const lista of tuotteet) {
   if (!toteuta) continue;
 
   const runko = uusiTuoteRunko(vanha, kohde.blueprint.id, kohde.painotalo.id, yhdistetyt, print_areas);
-  const luotu = await api(`/shops/${SHOP}/products.json`, { method: "POST", body: runko });
+  let luotu;
+  try {
+    luotu = await api(`/shops/${SHOP}/products.json`, { method: "POST", body: runko });
+  } catch (e) {
+    // Esim. "Provided images do not exist": vanhan tuotteen kuva on poistettu Printifystä. Ohitetaan tuote, ajo jatkuu.
+    ohita(`luonti epäonnistui: ${String(e.message).slice(0, 200)}`);
+    continue;
+  }
   console.log(`  LUOTU ${luotu.id}`);
   const rivi = {
     vanhaId: vanha.id, uusiId: luotu.id, title: vanha.title, kategoria,
