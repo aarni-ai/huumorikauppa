@@ -46,7 +46,7 @@ npx vercel env add DATABASE_URL production
 Hakee muuttujat paikalliseen `.env.local`-tiedostoon (ei commitoida), luo taulut ja tuo 781 tuotetta tilannekuvasta:
 
 ```
-npx vercel env pull .env.local && set -a && . ./.env.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs
+npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs
 ```
 
 ## 3. Printify
@@ -54,8 +54,11 @@ npx vercel env pull .env.local && set -a && . ./.env.local && set +a && node scr
 Printify > oikea yläkulma > My profile > Connections > API tokens > **Generate**. Nimi "huumorikauppa", oikeudet:
 shops.read, products.read, products.write, orders.read, orders.write, print_providers.read, catalog.read. Kopioi token.
 
+Tehty 22.10.2026: avain on Vercelissä (`PRINTIFY_API_KEY`, `PRINTIFY_SHOP_ID` = 26630629) ja paikallisesti
+tiedostossa `.env.printify.local`. Skriptit: `set -a; . ./.env.printify.local; set +a`. Uusi avain samalla tavalla:
+
 ```
-npx vercel env add PRINTIFY_API_KEY production
+cd ~/huumorikauppa && read -s "K?Printify-token: " && echo && printf '%s' "$K" | npx vercel env add PRINTIFY_API_KEY production --force && printf 'PRINTIFY_API_KEY=%s\nPRINTIFY_SHOP_ID=26630629\n' "$K" > .env.printify.local && chmod 600 .env.printify.local && unset K && echo tallennettu
 ```
 
 Kaupan tunnus: komento kysyy tokenin piilotettuna ja näyttää kauppojen `id`- ja `title`-kentät. Ota Huumorikaupan `id`.
@@ -71,7 +74,7 @@ npx vercel env add PRINTIFY_SHOP_ID production
 Printifyn kulut katesääntöä varten (40 %:n raja tarvitsee tuote- ja toimituskulut; ilman niitä kassa ei ota maksua):
 
 ```
-npx vercel env pull .env.local && set -a && . ./.env.local && set +a && npx tsx scripts/printify-tuonti.mjs --kulut
+npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && npx tsx scripts/printify-tuonti.mjs --kulut
 ```
 
 Tarkistus: mitkä tuotteet Printifyyn on luotu 21.10.2026 (noin 280 kaupunkimukia). Komento vain listaa:
@@ -88,16 +91,23 @@ tulevat aina piilotettuina (is_active false), ellei tuontia ajeta valinnalla `--
 Stripe > Developers > API keys > **Create restricted key**. Oikeudet: Checkout Sessions = Write, Payment Intents =
 Read, kaikki muut None. Aloita testitilassa (Test mode -kytkin ylhäällä, avain `rk_test_...`).
 
+Tallenna avain yhdellä komennolla sekä Verceliin että paikalliseen tiedostoon `.env.stripe.local` (git ei ota
+tiedostoa mukaan). Komento kysyy avaimen piilotettuna: liitä se ja paina Enter. Arvo ei näy ruudulla eikä jää
+komentohistoriaan.
+
 ```
-npx vercel env add STRIPE_SECRET_KEY production
+cd ~/huumorikauppa && read -s "K?Stripe-avain (rk_...): " && echo && printf '%s' "$K" | npx vercel env add STRIPE_SECRET_KEY production && printf 'STRIPE_SECRET_KEY=%s\n' "$K" > .env.stripe.local && chmod 600 .env.stripe.local && unset K && echo tallennettu
 ```
+
+Vercel tallentaa avaimen salaisena, eikä sitä voi ladata takaisin (`vercel env pull` kirjoittaa paikalle
+`[SENSITIVE]`). Paikalliset skriptit lukevat siksi avaimen tiedostosta: `set -a; . ./.env.stripe.local; set +a`.
 
 Webhook: Stripe > Developers > Webhooks > **Add endpoint**. Testivaiheessa osoite
 `https://huumorikauppa-five.vercel.app/api/stripe-webhook`. Valitse tapahtumat `checkout.session.completed`,
 `checkout.session.async_payment_succeeded`, `checkout.session.expired` > Add endpoint > Signing secret > Reveal.
 
 ```
-npx vercel env add STRIPE_WEBHOOK_SECRET production
+cd ~/huumorikauppa && read -s "K?Webhookin signing secret (whsec_...): " && echo && printf '%s' "$K" | npx vercel env add STRIPE_WEBHOOK_SECRET production && printf 'STRIPE_WEBHOOK_SECRET=%s\n' "$K" >> .env.stripe.local && unset K && echo tallennettu
 ```
 
 Älä vielä koske vanhaan Lovable-webhookiin (`...supabase.co/functions/v1/stripe-webhook`), se poistetaan kohdassa 9.
@@ -213,7 +223,7 @@ Lahjakortit, paketit, ostoskorin suositukset, toimitusarvio ja kolme valvontaa G
 `db/schema.sql` on turvallinen ajaa uudelleen:
 
 ```
-npx vercel env pull .env.local && set -a && . ./.env.local && set +a && node scripts/aja-schema.mjs
+npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs
 ```
 
 **Lahjakortit** (`/lahjakortti`, 25/50/75/100 €): ei Printifyä eikä toimitusmaksua; koodi luodaan maksun jälkeen ja
