@@ -43,11 +43,23 @@ npx vercel env add DATABASE_URL production
 
 ## 2. Taulut ja tuotteet
 
-Hakee muuttujat paikalliseen `.env.local`-tiedostoon (ei commitoida), luo taulut ja tuo 781 tuotetta tilannekuvasta:
+Kun kanta on luotu, komennot tässä järjestyksessä (yksi rivi; `.env.local` ei commitoida). Printify-avain (kohta 3)
+tarvitaan EU-siirtoihin, kuluihin ja tarkistukseen:
 
 ```
-npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs
+npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs && node scripts/printify-eu-painotalot.mjs --paivita-kanta && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
 ```
+
+1. `aja-schema.mjs` luo taulut (turvallinen ajaa uudelleen).
+2. `tuo-tuotteet.mjs` tuo 781 tuotetta tilannekuvasta ja siirtää EU-kopion saaneet rivit uusiin Printify-tuotteisiin
+   (`data/eu-siirto-*.json`). Slug, nimi, hinta, näkyvyys ja kuvaus säilyvät. Ilman Printify-avainta rivit jäävät
+   vanhoihin tuotteisiin (tilattavissa) ja skripti neuvoo ajamaan vaiheen 3 myöhemmin.
+3. `--paivita-kanta` vie kaikki kirjatut EU-siirrot kantaan. Idempotentti: jo siirretyt ohitetaan.
+4. `printify-tuonti.mjs --kulut` hakee kulut katesääntöä varten. Vanhoja tuotteita, joilla on EU-kopio, ei tuoda, eikä
+   EU-kopiosta synny kaksoisriviä (`nimi-1a2b3c`).
+5. `tarkista-tilattavuus.mjs` tarkistaa, että jokaisen aktiivisen tuotteen jokainen `variant_map`-variantti on
+   Printify-tuotteessa käytössä ja saatavilla. Listaa tilaamattomat yhdistelmät syineen ja päättyy koodiin 1, jos niitä
+   on. Varoittaa myös riveistä, jotka osoittavat yhä vanhaan tuotteeseen.
 
 ## 3. Printify
 
@@ -71,10 +83,11 @@ read -s -p "Printify-token: " K && echo && curl -s https://api.printify.com/v1/s
 npx vercel env add PRINTIFY_SHOP_ID production
 ```
 
-Printifyn kulut katesääntöä varten (40 %:n raja tarvitsee tuote- ja toimituskulut; ilman niitä kassa ei ota maksua):
+Printifyn kulut katesääntöä varten (40 %:n raja tarvitsee tuote- ja toimituskulut; ilman niitä kassa ei ota maksua).
+Ensimmäisellä kerralla ne tulevat kohdan 2 komennossa; myöhemmin hintojen muuttuessa, ja sen jälkeen tarkistus:
 
 ```
-npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && npx tsx scripts/printify-tuonti.mjs --kulut
+npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
 ```
 
 Tarkistus: mitkä tuotteet Printifyyn on luotu 21.10.2026 (noin 280 kaupunkimukia). Komento vain listaa:
@@ -154,7 +167,7 @@ Printifyssä näkyy uusi tilaus tuotannossa (peru se Printifyssä heti, jos et h
 info@seniorituki.fi saa hälytyksen, jos jokin epäonnistuu. Kun testi on ok, vaihda Stripe-avain ja webhook
 tuotantotilaan (kohta 4 uudelleen Live mode -tilassa).
 
-## 8. EU-painotalot (ei ajettu vielä)
+## 8. EU-painotalot (siirrot ajettu 23.-25.10.2026, kanta päivitetään kohdassa 2)
 
 `scripts/printify-eu-painotalot.mjs` siirtää EU:n ulkopuolella tehtävät tuotteet EU-painotaloihin ja säilyttää kuvan
 sijainnin, koon ja kulman: mukit OPT OnDemand Ceramic Mug (EU), Monster Digitalin paidat OPT OnDemand Gildan 64000,
@@ -179,6 +192,11 @@ kaikki, ja kulut päivitetään katesääntöä varten:
 ```
 set -a && . ./.env.local && set +a && npx tsx scripts/printify-eu-painotalot.mjs --toteuta && npx tsx scripts/printify-tuonti.mjs --kulut
 ```
+
+Jos siirrot ajettiin ennen kuin kanta oli olemassa (23.-25.10.2026 noin 570 tuotetta, kirjaukset `data/eu-siirto-*.json`),
+kanta päivitetään kohdan 2 järjestyksessä: `tuo-tuotteet.mjs`, `printify-eu-painotalot.mjs --paivita-kanta`,
+`printify-tuonti.mjs --kulut`, `tarkista-tilattavuus.mjs`. `--paivita-kanta` ei luo Printifyyn mitään ja on
+turvallinen ajaa uudelleen.
 
 Valinnat: `--vain <Printify-id>` yksi tuote, `--julkaise` julkaisee uudet tuotteet Printifyssä (ei tarvita, koska
 kauppa tilaa tuote- ja varianttitunnuksella), `--poista-vanhat-julkaisusta` poistaa vanhat julkaisusta (vanhoja ei

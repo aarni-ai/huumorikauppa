@@ -10,9 +10,13 @@
  * Käyttää vanhan taustan muunnoslogiikkaa sellaisenaan (supabase/functions/_shared/printify-sync.ts: kategoriat,
  * variant_map, hintapohjat, kuvajärjestys). Olemassa olevien tuotteiden hinta, näkyvyys ja kuvaus säilyvät
  * (vain Printify-tunnukset, variantit ja kuvat päivittyvät), ellei anneta --hinnat.
+ * EU-siirrot (data/eu-siirto-*.json, scripts/lib/eu-kanta.mjs): vanhaa Printify-tuotetta, jolla on EU-kopio, ei tuoda;
+ * EU-kopio päivittää vanhan tuotteen rivin (slug, nimi, hinta, näkyvyys ja kuvaus säilyvät) eikä luo kaksoisriviä.
  *   PRINTIFY_API_KEY=... PRINTIFY_SHOP_ID=... DATABASE_URL=... npx tsx scripts/printify-tuonti.mjs [--kuiva] [--hinnat]
  */
 import postgres from "postgres";
+import { fileURLToPath } from "node:url";
+import { lueEuSiirrot, postgresKanta, tuoPrintifysta } from "./lib/eu-kanta.mjs";
 
 globalThis.Deno = { env: { get: (k) => process.env[k] } };
 const { fetchAllPrintifyProducts, buildProductRow } = await import("../supabase/functions/_shared/printify-sync.ts");
@@ -52,27 +56,9 @@ async function kulutRivi(p) {
   const costs = Object.fromEntries((p.variants || []).filter((v) => v.is_enabled).map((v) => [String(v.id), v.cost]));
   return { costs, shipping_cents: await suomenToimitus(p.blueprint_id, p.print_provider_id) };
 }
-const olemassa = sql ? await sql`select slug, printify_product_id from products` : [];
-const slugit = olemassa.map((r) => r.slug);
-const byPrintify = new Map(olemassa.filter((r) => r.printify_product_id).map((r) => [r.printify_product_id, r.slug]));
-let uusia = 0, paivitetty = 0, ohitettu = 0;
-for (const p of tuotteet) {
-  const rivi = buildProductRow(p, slugit);
-  if (!rivi) { ohitettu++; continue; }
-  if (kulut) Object.assign(rivi.variants, await kulutRivi(p));
-  const vanhaSlug = byPrintify.get(rivi.printify_product_id);
-  if (kuiva) { vanhaSlug ? paivitetty++ : uusia++; continue; }
-  if (vanhaSlug) {
-    await sql`update products set printify_product_id = ${rivi.printify_product_id}, variants = ${sql.json(rivi.variants)},
-      images = ${sql.json(rivi.images)}, updated_at = now() ${hinnat ? sql`, price = ${rivi.price}` : sql``} where slug = ${vanhaSlug}`;
-    paivitetty++;
-  } else {
-    await sql`insert into products (name, slug, category, humor_type, price, stock, description, images, variants, printify_product_id, supplier, is_active)
-      values (${rivi.name}, ${rivi.slug}, ${rivi.category}, ${rivi.humor_type ?? null}, ${rivi.price}, ${rivi.stock ?? 99}, ${rivi.description ?? null},
-        ${sql.json(rivi.images)}, ${sql.json(rivi.variants)}, ${rivi.printify_product_id}, 'printify', ${julkaise}) on conflict (slug) do nothing`;
-    slugit.push(rivi.slug);
-    uusia++;
-  }
-}
-console.log(`Printify: ${tuotteet.length} tuotetta. Uusia ${uusia}, päivitetty ${paivitetty}, ohitettu ${ohitettu}${kuiva ? " (kuiva-ajo)" : ""}.`);
+const siirrot = lueEuSiirrot(fileURLToPath(new URL("../data", import.meta.url)));
+const t = await tuoPrintifysta({ tuotteet, kanta: sql ? postgresKanta(sql) : null, siirrot, buildProductRow, kulutRivi, hinnat, kulut, julkaise, kuiva });
+console.log(`Printify: ${tuotteet.length} tuotetta. Uusia ${t.uusia}, päivitetty ${t.paivitetty}, vanha rivi siirretty EU-kopioon ${t.korvattu}, ` +
+  `ohitettu vanhana (EU-kopio korvaa) ${t.ohitettuSiirretty}, ohitettu ${t.ohitettu}${kuiva ? " (kuiva-ajo)" : ""}.`);
+if (t.poistetut.length) console.log(`Poistettu EU-kopion kaksoisrivit: ${t.poistetut.join(", ")}`);
 if (sql) await sql.end();
