@@ -13,6 +13,9 @@
  *   --poista-vanhat-julkaisusta vanhat tuotteet POST unpublish.json (niitä EI koskaan poisteta).
  *   --raja N                    käsittele enintään N siirrettävää tuotetta (koeajo).
  *   --vain <printify-id>        käsittele vain tämä tuote.
+ *   --paivita-kanta             ei siirrä mitään: päivittää kaikkien jo kirjattujen siirtojen (data/eu-siirto-*.json)
+ *                               kantarivit (printify_product_id = vanhaId) EU-kopioon kuten --toteuta. Tarvitsee
+ *                               DATABASE_URL:n. Idempotentti: jo päivitetyt ohitetaan ilman Printify-hakuja.
  *
  * Säännöt ja puhdas logiikka: scripts/lib/eu-painotalot.mjs. Kategoria: buildProductRow (printify-sync.ts),
  * varalla vanhan blueprintin nimi. Jo siirretyt (data/eu-siirto-*.json) ohitetaan, joten ajon voi toistaa.
@@ -22,8 +25,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   onEU, painotalonMaa, valitseSaanto, valitsePainotalo, valitseBlueprint, tuotteenKoko, yhdistaVariantit,
-  uudetPrintAreat, uusiTuoteRunko, suomenToimitus, uudetDbVariantit,
+  uudetPrintAreat, uusiTuoteRunko, suomenToimitus,
 } from "./lib/eu-painotalot.mjs";
+import { lueEuSiirrot, paivitaSiirrotKantaan, postgresKanta, siirraRivitEuKopioon } from "./lib/eu-kanta.mjs";
 
 globalThis.Deno ??= { env: { get: (k) => process.env[k] } };
 const { buildProductRow } = await import("../supabase/functions/_shared/printify-sync.ts");
@@ -36,6 +40,7 @@ const julkaise = lippu("--julkaise");
 const poistaVanhatJulkaisusta = lippu("--poista-vanhat-julkaisusta");
 const raja = arvo("--raja") ? Number(arvo("--raja")) : Infinity;
 const vain = arvo("--vain");
+const paivitaKannat = lippu("--paivita-kanta");
 
 const API = "https://api.printify.com/v1";
 const KEY = process.env.PRINTIFY_API_KEY;
@@ -139,28 +144,37 @@ function joSiirretyt() {
 
 const pvm = new Date().toISOString().slice(0, 10);
 const kirjausPolku = path.join(dataKansio, `eu-siirto-${pvm}.json`);
-const kirjaus = existsSync(kirjausPolku) ? JSON.parse(readFileSync(kirjausPolku, "utf8")) : { paiva: pvm, siirrot: [] };
+const kirjaus = !paivitaKannat && existsSync(kirjausPolku) ? JSON.parse(readFileSync(kirjausPolku, "utf8")) : { paiva: pvm, siirrot: [] };
 const tallennaKirjaus = () => { mkdirSync(dataKansio, { recursive: true }); writeFileSync(kirjausPolku, JSON.stringify(kirjaus, null, 2) + "\n"); };
 
 let sql = null;
 const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-if (toteuta && dbUrl) {
+if ((toteuta || paivitaKannat) && dbUrl) {
   const { default: postgres } = await import("postgres");
   sql = postgres(dbUrl, { ssl: /@(localhost|127\.0\.0\.1)[:/]/.test(dbUrl) ? false : "require", max: 1, prepare: false });
 }
 
 async function paivitaKanta(vanhaId, uusi) {
-  const rivit = await sql`select slug, variants from products where printify_product_id = ${vanhaId}`;
-  if (!rivit.length) return "ei riviä kannassa";
-  const rakennettu = buildProductRow(uusi, []);
-  if (!rakennettu) return "buildProductRow ei tunnistanut uutta tuotetta, kantaa ei päivitetty";
-  const shipping = await toimitus(uusi.blueprint_id, uusi.print_provider_id);
-  for (const r of rivit) {
-    const variants = uudetDbVariantit(r.variants, rakennettu, uusi, shipping);
-    await sql`update products set printify_product_id = ${uusi.id}, variants = ${sql.json(variants)},
-      ${rakennettu.images.length ? sql`images = ${sql.json(rakennettu.images)},` : sql``} updated_at = now() where slug = ${r.slug}`;
-  }
-  return `päivitetty ${rivit.map((r) => r.slug).join(", ")}`;
+  const shippingCents = await toimitus(uusi.blueprint_id, uusi.print_provider_id);
+  const r = await siirraRivitEuKopioon(postgresKanta(sql), vanhaId, uusi, { buildProductRow, shippingCents });
+  if (r.tila === "ei-rivia") return "ei riviä kannassa";
+  if (r.tila === "ei-tunnistettu") return "buildProductRow ei tunnistanut uutta tuotetta, kantaa ei päivitetty";
+  return `päivitetty ${r.slugit.join(", ")}${r.poistetut.length ? `, poistettu kaksoisrivi ${r.poistetut.join(", ")}` : ""}`;
+}
+
+// ---------- --paivita-kanta: jo kirjatut siirrot kantaan (ei luo mitään Printifyyn) ----------
+if (paivitaKannat) {
+  if (!sql) { console.error("--paivita-kanta tarvitsee DATABASE_URL:n."); process.exit(1); }
+  const siirrot = lueEuSiirrot(dataKansio);
+  console.log(`Kirjattuja siirtoja ${siirrot.vanhaan.size} (${siirrot.tiedostot.join(", ") || "ei kirjauksia"}).`);
+  const t = await paivitaSiirrotKantaan({
+    kanta: postgresKanta(sql), siirrot, buildProductRow, toimitus, loki: console.log,
+    haeTuote: (id) => api(`/shops/${SHOP}/products/${id}.json`).catch((e) => (/HTTP 404/.test(e.message) ? null : Promise.reject(e))),
+  });
+  console.log(`Kanta: päivitetty ${t.paivitetty} riviä, jo EU-kopiossa ${t.jo}, ei riviä kannassa ${t.eiRivia}, virheitä ${t.virheet.length}` +
+    `${t.poistetut.length ? `, poistettu kaksoisrivejä ${t.poistetut.length}` : ""}.`);
+  await sql.end();
+  process.exit(t.virheet.length ? 1 : 0);
 }
 
 // ---------- Ajo ----------
