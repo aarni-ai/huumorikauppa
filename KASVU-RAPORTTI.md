@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 21.10.2026 (ilta: konversio ja isänpäivä).
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 25.10.2026 (Printify-avain, EU-siirto, saatavuus, tilausten juurisyy).
 
 ## Tilanne lyhyesti
 
@@ -25,6 +25,56 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
   digitaalinen lahjakortti, tuotesivun toimitusarvio ja "Ehtii jouluksi" -merkki (Printifyn takarajojen mukaan).
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
+
+## 22.-25.10.: Printify-avain, saatavuus, EU-siirto ja tilaukset
+
+Printify-avain toimii (kauppa 26630629), Vercelissä ja paikallisesti tiedostossa .env.printify.local.
+
+**Saatavuus (tuotannossa, tarkistettu curlilla kolmella User-Agentilla):**
+- 22.10.: kaupan valitsimista piilotettu 8 342 väri- ja kokoyhdistelmää 421 tuotteessa, joille ei ollut Printify-
+  varianttia (kassa ei olisi voinut lähettää tilausta Printifyyn). Eniten kaupunkipaidoissa (28 kpl/tuote:
+  heather-värit, joista Printifyssä oli käytössä vain S-koko).
+- 25.10.: lisäksi 164 yhdistelmää 32 tuotteessa, joita Printify ei tällä hetkellä valmista (eniten "Maailman paras
+  äiti" -paita 7, hupparit 6/tuote). Yhteensä tarkistettu 812 riviä ja 15 369 yhdistelmää; jokainen tilaamaton
+  yhdistelmä on piilossa (5 542 kartan aukon perusteella, 164 Printifyn saatavuuden perusteella). Kokonaan
+  valmistamattomia tuotteita 0, joten syöte ja sivukartta pysyivät ennallaan.
+- "Lisää koriin" ei lisää yhdistelmää, jota ei valmisteta. Skripti: scripts/printify-saatavuus.mjs.
+
+**EU-siirto (Printify, 23.-25.10.):** 557 tuotetta EU-painotaloihin: 279 t-paitaa (Printify Choice ja Monster
+Digital -> OPT OnDemand, Tšekki, sama blueprint, kuvan asettelu säilyy) ja 278 mukia (-> OPT OnDemand Ceramic Mug EU).
+Vanhat tuotteet jäävät Printifyyn. Ei siirretty: 136 Printify Choice -hupparia (Textildruck Europalla kate heikompi),
+10 tuotetta, joiden alkuperäinen kuva on poistettu Printifystä, sekä tuotteet, joiden kohdepainotalo ei ole EU:ssa
+(Harrier GB, MWW On Demand US, Jondo US).
+
+**Lovable-synkronoinnin kaksoiskappaleet:** Lovablen yöllinen Printify-synkronointi (03.16 UTC) yhdistää samannimiset
+Printify-tuotteet: kaupan perusrivi alkaa osoittaa EU-kopioon (varianttikartta rakennetaan siitä, joten tilattavuus
+säilyy), ja toinen tuote saa uuden aktiivisen rivin slug-päätteellä (esim. ...-t-paita-0d6670). Lisäksi Coworkin
+testikopiot (copy-of-olen-elakkeella-t-paita, ceramic-mug-eu) olivat kaupassa aktiivisina. Korjattu (29c2b69):
+kaksoiskappaleet ja testikopiot piiloon kaikkialta (listat, syöte, sivukartta), 301 perusriviin. Oma tausta: tuonti
+ohittaa vanhat tuotteet ja päivittää perusrivin EU-kopioon (ei kaksoiskappaleita).
+
+**Tilaukset, jotka eivät menneet Printifyyn (selvitetty Printify API:sta):**
+- Satu Valli (Tonnin Seteli T-Paita, 3XL / Musta, tilattu 25.10. klo 21.30 Suomen aikaa): tilaus on Printifyssä,
+  mutta tilassa on-hold eikä sitä ole lähetetty tuotantoon. Tuote (69acb40b, OPT OnDemand) ja variantti 42122 ovat
+  oikein, käytössä ja saatavilla, eikä tuotetta siirretty EU-siirrossa. Syy: Lovable-taustan tunnettu vika
+  (submitPrintifyOrder luo tilauksen ja send_to_production epäonnistuu hiljaa, ILMAN-SUPABASEA.md juurisyy 1).
+- Noora Saira (Tonnin Seteli T-Paita, S / Musta, 24.10.): tilaus on Printifyssä ja toimitettu (lähetetty tuotantoon
+  25.10., seurantakoodi olemassa). Tilaus on tehty erilliseen kopiotuotteeseen (sittemmin poistettu), eli käsin
+  (Cowork). Kaupan variantti (Musta|S = 38164) oli oikein.
+- Niina Yläoutinen (22.10.): tilausta ei löydy Printifystä lainkaan. Lovable-tausta ei luonut sitä; syytä ei näe
+  ilman Lovablen lokeja tai tilaustaulua (anon-avaimella ei pääsyä). Tilaus oli ennen EU-siirtoa, joten siirto ei
+  vaikuttanut siihen.
+- Johtopäätös: vika on Lovable-taustassa, ei main-haaran frontendissä (tuote- ja varianttitunnukset oikein) eikä
+  EU-siirrossa. Pysyvä korjaus on oma tausta (kassa tarkistaa variantin, Printify-siirto uusii epäonnistuneet ja
+  hälyttää). Cowork hoitaa nämä kolme tilausta.
+
+**Katteet (oma-tausta: KATTEET.md, scripts/katteet.mjs):** T-paidat 24,90 €: kate 11,2 % -> 27,1 % EU-siirrossa
+(nettokate 2,82 € -> 6,88 €). Hupparit 49,90 €: 9,8 %. Kaikki myynnissä olevat: 10,3 % -> 20,6 %. Yksikään tuote ei
+yllä 40 %:iin nykyhinnoilla; kalleimmalla koolla 40 % vaatii t-paidalle 38,90 € ja hupparille 89,90 €. Printify
+veloittaa lisäksi arvonlisäveron, jos tilillä ei ole ALV-tunnusta.
+
+**Mukit:** EU-painotalolla (OPT OnDemand, kulu 5,88 € + toimitus 10,39 €) hinnalla 16,90 € ja toimitusmaksulla
+6,90 € kate on 11,0 % (nettokate 2,09 €). Alle 40 %, joten mukit pysyvät piilossa. 40 % vaatisi hinnan 28,90 €.
 
 ## 21.10. ilta: konversio, isänpäivä ja toimituslinja
 
@@ -181,3 +231,7 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 21.10. | Tarrat-kategorian teksti tosiasioiden mukaan, /tarrat ja /hupparit 301. | main 36d552d | Ohut ja virheellinen sivu korjattu | Lisää tarroja (skripti valmis) |
 | 21.10. | Konversio: toimitusehdot yhdestä tiedostosta, arviot arkistoon, tuotesivu mobiili edellä, kokoapu, alatunnisteen kauppiastiedot, vain taatut maksutavat, suorituskyky (Lighthouse etusivu 56 -> 81, tuotesivu 58 -> 68). | main d794550-7c6c523, 026e0b4 | Ostopolku lyhyempi ja luotettavampi; LCP 25,8 s -> 3,8 s etusivulla | Esirenderöity sisältö näkyviin heti |
 | 21.10. | oma-tausta: toimitus 5,90 € / ilmainen 60 €:sta (kassa, syöte, tekstit), uusien tuotteiden Printify-skripti (ei ajettu). | oma-tausta 10d6a11, cf9f98c | Valmis domainin siirtoon | Printify-avain, sitten skripti --toteuta --raja 1 |
+| 22.10. | Printify-saatavuus: 8 342 kartattomat yhdistelmää piiloon, lisää koriin estää valmistamattoman. | main 3259ac3, c140559, 63ea96a | Ei tilauksia, joita Printify ei voi valmistaa | Päivittäinen tarkistus omassa taustassa |
+| 23.-25.10. | EU-siirto: 557 tuotetta (279 t-paitaa, 278 mukia) OPT OnDemandille. | oma-tausta (data/eu-siirto-*.json) | T-paitojen kate 11 % -> 27 %, nopeampi toimitus | Hinnoittelu 40 %:n katteeseen (omistaja) |
+| 25.10. | Lovable-synkronoinnin kaksoiskappaleet ja testikopiot piiloon, 301 perusriviin. | main 29c2b69 | Ei kaksoislistauksia eikä testituotteita kaupassa | |
+| 25.10. | Saatavuus Printifyn mukaan: 164 yhdistelmää 32 tuotteessa piiloon. | main 6d4a543 | Kaikki näkyvät yhdistelmät tilattavissa | Uusi ajo Lovable-synkronoinnin jälkeen |
