@@ -2175,9 +2175,9 @@ Eläkkeelle jääminen on juhlimisen arvoinen asia, ja **huumorilahjat**, kuten 
 
 Mutta kun lähtökahvit on juotu, pulla syöty ja työhuoneen avain palautettu, alkaa oikea arki. Ja siinä arjessa tärkeintä ei ole se, montako vitsipaitaa kaapissa on, vaan se, että ikääntyvän läheisen elämä sujuu **turvallisesti ja itsenäisesti**, mahdollisimman pitkään kotona.
 
-Kun huumorilahjat on jaettu ja arki alkaa, on hyvä varmistaa, että ikääntyvän läheisen arki sujuu turvallisesti ja itsenäisesti. Laadukkaat ja luotettavat [apuvälineet vanhuksille](https://seniorituki.fi) sekä arjen hyvinvointituotteet löytyvät kotimaisesta [Seniorituki.fi-verkkokaupasta](https://seniorituki.fi).
+Kun huumorilahjat on jaettu ja arki alkaa, kannattaa kysyä tuoreelta eläkeläiseltä, mitä hän oikeasti tarvitsee. Toive liittyy usein harrastukseen, mökkiin tai pihatöihin, ja käytännöllinen lahja kertoo, että hänestä välitetään myös juhlan jälkeen. Hyvä lahja voi olla myös yhteistä aikaa: kahvitreffit, kalareissu tai apu kotitöissä.
 
-Yhdistelmä toimii: **huumorilahja juhlaan, käytännön apuvälineet arkeen.** Näin tuore vapaaherra saa nauraa lähtökahveilla ja elää turvallista, itsenäistä arkea vielä pitkään senkin jälkeen, kun lottoarvonta on käyty läpi tarkkaan - uudelleen.
+Yhdistelmä toimii: **huumorilahja juhlaan, käytännöllinen lahja arkeen.** Näin tuore vapaaherra saa nauraa lähtökahveilla ja elää turvallista, itsenäistä arkea vielä pitkään senkin jälkeen, kun lottoarvonta on käyty läpi tarkkaan - uudelleen.
 
 ## Yhteenveto: paras eläkelahja 2026
 
