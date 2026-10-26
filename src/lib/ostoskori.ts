@@ -4,11 +4,10 @@
  * aina kassalla palvelimella.
  */
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "../../api/_lib/vakiot.js";
-import { heikoinKate, paketinHeikoinKate } from "../../api/_lib/kate.js";
-import { teemaRunko, onPersonoitava } from "../../api/_lib/paketit.js";
+import { paketinHeikoinKate } from "../../api/_lib/kate.js";
+import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
-import { onPiilotettu } from "@/lib/hiddenCategories";
 import type { CartItem, Product } from "@/types/product";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
@@ -56,65 +55,23 @@ export function toimitusTila(items: Rivi[]): ToimitusTila {
   };
 }
 
-/** Variantti, jonka voi lisätä koriin ilman valintaa (vain yksi koko/väri-yhdistelmä). Muuten null. */
-export function suoraLisays(product: Product): { size?: string; color?: string } | null {
-  if (onPersonoitava(product)) return null;
-  const avaimet = Object.keys(product.variants?.variant_map || {});
-  if (avaimet.length !== 1) return null;
-  const [color, size] = avaimet[0].split("|");
-  return { color: color || undefined, size: size || undefined };
-}
-
 export interface Suositus {
   product: Product;
   suoraan: { size?: string; color?: string } | null;
   samaTeema: boolean;
 }
 
+/** Variantti, jonka voi lisätä koriin ilman valintaa (vain yksi koko/väri-yhdistelmä). Muuten null. */
+export const suoraLisays = (product: Product): { size?: string; color?: string } | null => suoraLisaysJs(product);
+
 /**
- * 3-4 suositusta, jotka täyttävät ilmaisen toimituksen puuttuvan summan. Ehdokkaat: myynnissä olevat (ei piilotettuja
- * kategorioita, ei tunnetusti alle 20 %:n katetta, ei personoitavia eikä lahjakortteja), ei jo korissa. Järjestys:
- * hinta lähellä puuttuvaa summaa (summan ylittävä parempi kuin vajaaksi jäävä), etusijalla sama teema, sitten sama
- * huumorityyppi tai kategoria kuin korin tuotteilla.
+ * 3-4 suositusta, jotka täyttävät ilmaisen toimituksen puuttuvan summan (logiikka api/_lib/suositukset.js, sama kuin
+ * /api/products?suositukset=<slug>).
  */
-export function valitseSuositukset(items: Rivi[], tuotteet: Product[], maara = 4): Suositus[] {
-  const { puuttuu } = toimitusTila(items);
-  const fyysiset = items.filter((i) => !onLahjakortti(i));
-  const korissa = new Set(fyysiset.map((i) => i.product.id));
-  const teemat = new Set(fyysiset.map((i) => teemaRunko(i.product.slug)));
-  const kategoriat = new Set(fyysiset.map((i) => i.product.category));
-  const huumori = new Set(fyysiset.map((i) => i.product.humor_type).filter(Boolean));
-  const ehdokkaat = tuotteet.filter(
-    (p) =>
-      !korissa.has(p.id) &&
-      !onPiilotettu(p.category) &&
-      !onLahjakortti({ product: p }) &&
-      !onPersonoitava(p) &&
-      Number(p.price) > 0 &&
-      heikoinKate(p).sallittu !== false,
-  );
-  const pisteet = (p: Product) => {
-    let s = 0;
-    if (puuttuu > 0) s += p.price >= puuttuu ? p.price - puuttuu : (puuttuu - p.price) * 3;
-    if (teemat.has(teemaRunko(p.slug))) s -= 15;
-    if (p.humor_type && huumori.has(p.humor_type)) s -= 2;
-    if (kategoriat.has(p.category)) s -= 3;
-    return s;
-  };
-  const jarjestetty = ehdokkaat
-    .map((p) => ({ p, s: pisteet(p) }))
-    .sort((a, b) => a.s - b.s || a.p.slug.localeCompare(b.p.slug));
-  const valitut: Suositus[] = [];
-  const kaytetytTeemat = new Set<string>();
-  for (const { p } of jarjestetty) {
-    const teema = teemaRunko(p.slug);
-    if (kaytetytTeemat.has(teema)) continue;
-    kaytetytTeemat.add(teema);
-    valitut.push({ product: p, suoraan: suoraLisays(p), samaTeema: teemat.has(teema) });
-    if (valitut.length >= maara) break;
-  }
-  return valitut;
-}
+export const valitseSuositukset = (items: Rivi[], tuotteet: Product[], maara = 4): Suositus[] => valitseJs(items, tuotteet, maara);
+
+/** Tuotesivun "Usein ostetaan yhdessä": saman teeman pari ensin, sitten ilmaisen toimituksen täyttävät. */
+export const ostetaanYhdessa = (tuote: Product, tuotteet: Product[], maara = 4): Suositus[] => ostetaanYhdessaJs(tuote, tuotteet, maara);
 
 /** Paketin tuotteet ja hinnat. Alennus luvataan vain, jos jokainen varianttiyhdistelmä täyttää paketin 30 %:n katesäännön. */
 export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {

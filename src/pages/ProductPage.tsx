@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { categories } from "@/data/products";
 import { useProduct, piilotetutSlugit } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
+import { ostetaanYhdessa } from "@/lib/ostoskori";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
@@ -447,8 +448,11 @@ const ProductPage = () => {
       .slice(0, 4);
   })();
 
+  // Usein ostetaan yhdessä: saman teeman pari ensin, sitten ilmaisen toimituksen täyttävät (api/_lib/suositukset.js).
+  const yhdessaProducts = ostetaanYhdessa(product, allProducts, 4).map((s) => s.product);
+  const yhdessaIdt = new Set(yhdessaProducts.map((p) => p.id));
   const relatedProducts = allProducts
-    .filter(p => p.category === product.category && p.id !== product.id)
+    .filter(p => p.category === product.category && p.id !== product.id && !yhdessaIdt.has(p.id))
     .slice(0, 4);
 
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
@@ -1007,6 +1011,17 @@ const ProductPage = () => {
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Samalla teemalla eri tuotteina 🎯</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {themeProducts.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {yhdessaProducts.length > 0 && (
+          <section className="mt-16" data-testid="usein-yhdessa">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Usein ostetaan yhdessä</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {yhdessaProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
