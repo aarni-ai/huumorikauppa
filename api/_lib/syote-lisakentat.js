@@ -11,6 +11,14 @@
  */
 import { KATELUOKAT, MYYDYIMMAT } from "./kateluokat.js";
 
+/** Kate (0-1) -> custom_label_0 (samat rajat kuin scripts/generoi-kateluokat.mjs). */
+export function kateluokka(kate) {
+  if (kate < 0.2) return "kate-alle-20";
+  if (kate < 0.3) return "kate-20-30";
+  if (kate < 0.4) return "kate-30-40";
+  return "kate-yli-40";
+}
+
 // Peili: src/config/toimitus.ts (ILMAINEN_TOIMITUS_RAJA, TOIMITUSMAKSU). src/config/toimitus.test.ts
 // kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
 export const ILMAINEN_RAJA = 79;
@@ -45,7 +53,7 @@ const slugLinkista = (item) => (item.match(/<g:link>[^<]*\/tuote\/([^<?#/]+)/) |
  * @param opts.kateluokat slug -> kateluokka (oletus api/_lib/kateluokat.js)
  * @param opts.myydyimmat myydyimpien slugit (oletus api/_lib/kateluokat.js)
  */
-export function lisaaKentat(item, { nyt = new Date(), kateluokat = KATELUOKAT, myydyimmat = MYYDYIMMAT } = {}) {
+export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = KATELUOKAT, myydyimmat = MYYDYIMMAT } = {}) {
   const hinta = parseFloat(kentta(item, "price") || "0");
   const toimitus = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUS;
   const gkat = (kentta(item, "google_product_category") || "").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
@@ -64,11 +72,17 @@ export function lisaaKentat(item, { nyt = new Date(), kateluokat = KATELUOKAT, m
   lisaa("identifier_exists", "no");
   lisaa("custom_label_1", sesonki(nyt));
   const slug = slugLinkista(item);
-  lisaa("custom_label_0", Object.prototype.hasOwnProperty.call(kateluokat, slug) ? kateluokat[slug] : null);
+  // Oma tausta: elävä kate tietokannan Printify-kuluista (opts.kate), muuten generoitu kateluokka (kateluokat.js).
+  lisaa("custom_label_0", typeof kate === "number" ? kateluokka(kate) : Object.prototype.hasOwnProperty.call(kateluokat, slug) ? kateluokat[slug] : null);
   lisaa("custom_label_2", myydyimmat.has(slug) ? "myydyin" : "muut");
   return lisat.length ? out.replace(/\s*<\/item>$/, `\n${lisat.join("\n")}\n    </item>`) : out;
 }
 
-export function lisaaKentatSyotteeseen(xml, nyt = new Date(), opts = {}) {
-  return xml.replace(/<item>[\s\S]*?<\/item>/g, (item) => lisaaKentat(item, { ...opts, nyt }));
+/**
+ * @param toinen Date (main) tai funktio tuote-id -> kate 0-1 (oma tausta). Kumpikin muoto käy.
+ */
+export function lisaaKentatSyotteeseen(xml, toinen = new Date(), opts = {}) {
+  const kateIdlle = typeof toinen === "function" ? toinen : () => null;
+  const nyt = toinen instanceof Date ? toinen : opts.nyt ?? new Date();
+  return xml.replace(/<item>[\s\S]*?<\/item>/g, (item) => lisaaKentat(item, { ...opts, nyt, kate: kateIdlle(kentta(item, "id")) }));
 }
