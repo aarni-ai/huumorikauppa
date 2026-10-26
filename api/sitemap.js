@@ -129,6 +129,13 @@ const BLOG_SLUGS = [
   "hauskimmat-elakelahjat-selviytymisopas",
   "kaupunkipaita-idea-kotiseudulle",
   "kaupunkituotteet-hauska-lahja-kotiseutuylpealle",
+  // 26.10.2026: joulun lisäoppaat (src/data/blogJoulu2026Lisa.ts).
+  "hauska-joululahja-naiselle",
+  "joululahja-aidille-hauskat-ideat",
+  "joululahja-papalle-ja-ukille",
+  "joululahja-elakelaiselle",
+  "joululahja-kaverille-alle-30-euroa",
+  "joululahja-veljelle",
   "hauskat-joululahjaideat-miehelle-2026",
   "pikkujoululahja-alle-20-euroa",
   "lahja-miehelle-jolla-on-kaikki",
