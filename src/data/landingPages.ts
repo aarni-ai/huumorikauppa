@@ -157,7 +157,7 @@ const TEINI = theme(
   /slay queen/, /(?<![a-zåäö])pelaaja/, /lumilautailija/, /swedish/, /tonnin seteli/, /maailman mestarit/,
   /viisaampi häipyy/,
 );
-const PUOLISO = any(theme(/my girlfriend/, /my boyfriend/, /lempinimi/), OMA_KOTIIN, all(OMA_TEKSTI, inCategory("hupparit")));
+const PUOLISO = any(theme(/my girlfriend/, /my boyfriend/, /lempinimi/), OMA_KOTIIN, all(OMA_TEKSTI, inCategory("hupparit", "t-paidat", "pitkahihaiset")));
 const VAIMO = any(theme(/slay queen/, /äiskä/, /äiti/, /fabulous/, /hopeanhohtoinen/, /lempinimi/), OMA_KOTIIN);
 /** Mummolle ja isoäidille: oma tervehdys kotiin tai vaatteeseen ja eläkeläishuumori. */
 const MUMMO = any(
@@ -369,7 +369,7 @@ export const landingPages: LandingPageDef[] = [
       "Joululahja miehelle, jolla on jo kaikkea: personoitu paita, huppari, peitto tai taulu hänen omalla tekstillään. Tilaa viimeistään pe 20.11.2026.",
     h1: "Joululahja miehelle, jolla on kaikki",
     intro: [
-      "Miehelle, jolla on jo kaikkea, kannattaa antaa tuote, jota ei voi ostaa valmiina: personoitu paita, huppari, peitto tai seinätaulu hänen nimellään, lempinimellään tai teidän omalla vitsillänne.",
+      "Miehelle, jolla on jo kaikkea, kannattaa antaa tuote, jota ei voi ostaa valmiina: personoitu paita tai huppari hänen nimellään, lempinimellään tai teidän omalla vitsillänne.",
       "Valmiita personoitavia pohjia ovat esimerkiksi Elävä legenda, Kapteeni, Harrastusmestari ja Alalla X vuotta, joihin vaihdat oman tekstin. Vapaampi vaihtoehto on Oma teksti/kuva, johon kirjoitat tuotesivulla haluamasi tekstin tai kuvatoiveen.",
       `Personoitu tuote tehdään vasta tilauksesi tekstin pohjalta, joten varaa aikaa. ${D}`,
     ],
@@ -462,7 +462,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska joululahja äidille on äiti-aiheinen huppari tai t-paita, esimerkiksi Super äiskä, jota hän käyttää kotona ja ulkona koko talven.",
       "T-paita on hupparia edullisempi, ja huppari on lämpimämpi talvilahja. Jos haluat lahjaan perheen oman jutun, valitse Oma teksti/kuva -tuote ja kirjoita tuotesivulla teksti tai kuvatoive.",
-      `Äidille, jolla on jo kaikkea, omalla tekstillä painettu peitto tai seinätaulu on lahja, jota hänellä ei vielä ole. ${D}`,
+      `Äidille, jolla on jo kaikkea, omalla tekstillä painettu paita tai huppari on lahja, jota hänellä ei vielä ole. ${D}`,
     ],
     faqs: [
       {
@@ -507,7 +507,7 @@ export const landingPages: LandingPageDef[] = [
     faqs: [
       {
         q: "Mikä on hyvä joululahja vaimolle?",
-        a: "Personoitu tuote teidän omalla tekstillänne, esimerkiksi peitto tai seinätaulu, tai valmis teksti kuten slay queen tai Super äiskä.",
+        a: "Personoitu paita tai huppari teidän omalla tekstillänne, tai valmis teksti kuten slay queen tai Super äiskä.",
       },
       {
         q: "Millainen huumori sopii vaimon lahjaan?",
@@ -652,7 +652,7 @@ export const landingPages: LandingPageDef[] = [
     faqs: [
       {
         q: "Mikä on hyvä joululahja mummolle?",
-        a: "Tuote, jossa on lastenlasten oma teksti, kuten omalla tekstillä painettu peitto tai seinätaulu. Eläkkeellä olevalle mummolle sopivat myös eläkeläisaiheiset paidat.",
+        a: "Tuote, jossa on lastenlasten oma teksti, kuten omalla tekstillä painettu paita tai huppari. Eläkkeellä olevalle mummolle sopivat myös eläkeläisaiheiset paidat.",
       },
       {
         q: "Mitä antaa mummolle, jolla on jo kaikkea?",
@@ -1312,7 +1312,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on 60 v lahja äidille?",
-        a: "60-vuotishuppari tai omalla tekstillä painettu peitto tai seinätaulu, jossa on lasten tervehdys.",
+        a: "60-vuotishuppari tai omalla tekstillä painettu paita, jossa on lasten tervehdys.",
       },
       {
         q: "Sopivatko 60v-paidat myös miehelle?",
@@ -1512,7 +1512,7 @@ export const landingPages: LandingPageDef[] = [
     h1: "Hauskat lahjat puolisolle, tyttöystävälle ja poikaystävälle",
     intro: [
       "Hauska lahja poikaystävälle on I love my girlfriend -paita ja tyttöystävälle I love my boyfriend -paita tai -huppari: saaja pukee päälleen tekstin, joka kertoo, kenen kanssa hän on.",
-      "Pitkään yhdessä olleille sopii omalla tekstillä painettu tuote, esimerkiksi peitto tai seinätaulu, jossa on teidän oma lausahduksenne. Personoitavaan Lempinimi-paitaan painetaan nimi, jota vain sinä käytät.",
+      "Pitkään yhdessä olleille sopii omalla tekstillä painettu paita tai huppari, jossa on teidän oma lausahduksenne. Personoitavaan Lempinimi-paitaan painetaan nimi, jota vain sinä käytät.",
       `${D}`,
     ],
     faqs: [
