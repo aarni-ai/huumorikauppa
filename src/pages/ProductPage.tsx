@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet-async";
 import { categories } from "@/data/products";
 import { useProduct, piilotetutSlugit } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
-import { ostetaanYhdessa } from "@/lib/ostoskori";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
@@ -36,6 +35,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 
 import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
+import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 
 
 function parseDescription(description: string) {
@@ -448,11 +448,8 @@ const ProductPage = () => {
       .slice(0, 4);
   })();
 
-  // Usein ostetaan yhdessä: saman teeman pari ensin, sitten ilmaisen toimituksen täyttävät (api/_lib/suositukset.js).
-  const yhdessaProducts = ostetaanYhdessa(product, allProducts, 4).map((s) => s.product);
-  const yhdessaIdt = new Set(yhdessaProducts.map((p) => p.id));
   const relatedProducts = allProducts
-    .filter(p => p.category === product.category && p.id !== product.id && !yhdessaIdt.has(p.id))
+    .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
@@ -833,6 +830,9 @@ const ProductPage = () => {
           </div>
         </div>
 
+        {/* Sopii yhteen: täydentävät tuotteet ostoalueen alla (src/lib/recommendations.ts) */}
+        <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl" />
+
         {/* Product description */}
         <section className="mt-12">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8 max-w-3xl">
@@ -1017,21 +1017,10 @@ const ProductPage = () => {
           </section>
         )}
 
-        {yhdessaProducts.length > 0 && (
-          <section className="mt-16" data-testid="usein-yhdessa">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Usein ostetaan yhdessä</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {yhdessaProducts.map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Saatat myös tykätä 😍</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Lisää samasta kategoriasta</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {relatedProducts.map(p => (
                 <ProductCard key={p.id} product={p} />

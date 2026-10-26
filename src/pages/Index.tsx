@@ -21,6 +21,7 @@ import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Frag
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
+import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 /** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
@@ -112,6 +113,12 @@ const Index = () => {
       .sort((a, b) => getPriorityRank(a) - getPriorityRank(b))
       .slice(0, 16);
   })();
+
+  // Tonnin seteli -nosto: t-paidat ensin, enintään 4 (sama suodatin kuin laskeutumissivulla).
+  const tonninSeteliProducts = allProducts
+    .filter((p) => TONNIN_SETELI(p) && p.category !== "mukit")
+    .sort((a, b) => Number(b.category === "t-paidat") - Number(a.category === "t-paidat"))
+    .slice(0, 4);
 
   const categoriesWithProducts = categories
     .map(cat => ({
@@ -212,6 +219,21 @@ const Index = () => {
           {carouselProducts.length > 0 && (
             <HeroCarousel products={carouselProducts} />
           )}
+
+          {/* NOSTO: se oli tonnin seteli (laskeutumissivu /tonnin-seteli-paita) */}
+          <ProductSection
+            title="Se oli tonnin seteli"
+            linkTo={TONNIN_SETELI_PATH}
+            products={tonninSeteliProducts}
+            intro={
+              <>
+                Meemi rahasta, joka vain katosi, t-paitana ja huppareina.{" "}
+                <Link to="/tuote/tonnin-seteli-t-paita" className="text-primary hover:underline">Tonnin Seteli -t-paita</Link>
+                {" "}tai{" "}
+                <Link to={TONNIN_SETELI_PATH} className="text-primary hover:underline">kaikki tonnin seteli -paidat</Link>.
+              </>
+            }
+          />
 
           {categoriesWithProducts.map(cat => {
             const catProducts = allProducts
@@ -638,16 +660,17 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   );
 }
 
-function ProductSection({ title, linkTo, products }: { title: string; linkTo: string; products: import("@/types/product").Product[] }) {
+function ProductSection({ title, linkTo, products, intro }: { title: string; linkTo: string; products: import("@/types/product").Product[]; intro?: React.ReactNode }) {
   if (products.length === 0) return null;
   return (
     <section className="container py-10 md:py-14">
-      <div className="flex items-center justify-between mb-6">
+      <div className={`flex items-center justify-between ${intro ? "mb-2" : "mb-6"}`}>
         <h2 className="font-display text-2xl md:text-3xl text-foreground">{title}</h2>
         <Link to={linkTo} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium whitespace-nowrap flex items-center gap-1">
           Näytä kaikki <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
+      {intro && <p className="text-sm text-muted-foreground mb-6 max-w-xl">{intro}</p>}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
         {products.map(product => (
           <ProductCard key={product.id} product={product} />

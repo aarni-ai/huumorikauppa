@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
+    "validoi:tuotedata": "node scripts/validoi-tuotedata.mjs",
     "test:watch": "vitest"
   },
   "dependencies": {

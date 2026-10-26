@@ -95,6 +95,20 @@ const LandingPage = () => {
           ))}
         </div>
 
+        {page.spotlight && (
+          <aside className="max-w-3xl mb-8 rounded-xl border border-primary/30 bg-primary/5 p-4 md:p-5" aria-label={page.spotlight.heading}>
+            <h2 className="font-display text-lg text-foreground mb-1">{page.spotlight.heading}</h2>
+            <p className="text-sm text-muted-foreground mb-3">{page.spotlight.text}</p>
+            <div className="flex flex-wrap gap-2">
+              {page.spotlight.links.map((l) => (
+                <Link key={l.href} to={l.href} className={chip}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
+
         <h2 className="font-display text-xl text-foreground mb-4">
           Tuotteet{!isLoading && products.length > 0 ? ` (${products.length})` : ""}
         </h2>

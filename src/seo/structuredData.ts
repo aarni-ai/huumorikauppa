@@ -8,6 +8,7 @@
  */
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_NAME, SITE_URL, absoluteUrl } from "./site.js";
 import { isFullyUnavailable } from "../lib/variantAvailability.js";
+import { isCustomTextProduct } from "../lib/customProduct.js";
 
 export type JsonLd = Record<string, unknown>;
 
@@ -36,6 +37,26 @@ export interface ProductForSchema {
   categoryName?: string;
   /** Tuotteen variants (colors, sizes, variant_map) saatavuuden tarkistukseen; puuttuessa vain generaattorin lista. */
   variants?: unknown;
+  /** Personoitu tuote (oma teksti/kuva): ei palautusoikeutta. Puuttuessa päätellään nimestä ja kuvauksesta. */
+  personalised?: boolean;
+}
+
+/**
+ * Hinnan voimassaolo Googlen Merchant listings -tietoja varten: seuraavan vuoden viimeinen päivä.
+ * Lasketaan rakennus- tai pyyntöhetkellä, joten päivä ei vanhene niin kauan kuin sivusto rakennetaan
+ * vähintään kerran vuodessa.
+ */
+export function priceValidUntil(now: Date = new Date()): string {
+  return `${now.getUTCFullYear() + 1}-12-31`;
+}
+
+/** Personoidut tuotteet valmistetaan asiakkaan toiveiden mukaan, eikä niillä ole peruutusoikeutta (ReturnsPolicy.tsx). */
+function noReturnsPolicy(): JsonLd {
+  return {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: SHIPPING.country,
+    returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+  };
 }
 
 function merchantReturnPolicy(): JsonLd {
@@ -183,14 +204,19 @@ export function buildOfferShippingDetails(price: number): JsonLd {
       "@type": "DefinedRegion",
       addressCountry: SHIPPING.country,
     },
-    // Kaupan ehdot ilmoittavat vain kokonaistoimitusajan (src/config/toimitus.ts),
-    // joten käsittely- ja kuljetusaikaa ei jaeta keksityillä luvuilla.
+    // Käsittely + kuljetus = kaupan ehtojen kokonaistoimitusaika (src/config/toimitus.ts).
     deliveryTime: {
       "@type": "ShippingDeliveryTime",
+      handlingTime: {
+        "@type": "QuantitativeValue",
+        minValue: SHIPPING.handlingBusinessDaysMin,
+        maxValue: SHIPPING.handlingBusinessDaysMax,
+        unitCode: "DAY",
+      },
       transitTime: {
         "@type": "QuantitativeValue",
-        minValue: SHIPPING.deliveryBusinessDaysMin,
-        maxValue: SHIPPING.deliveryBusinessDaysMax,
+        minValue: SHIPPING.transitBusinessDaysMin,
+        maxValue: SHIPPING.transitBusinessDaysMax,
         unitCode: "DAY",
       },
       businessDays: {
@@ -213,6 +239,7 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
   // (src/lib/variantAvailability.ts). Valmistamattomat koot eivät näy tarjouksessa, koska kokoja ei listata.
   const outOfStock = (typeof product.stock === "number" && product.stock <= 0) || isFullyUnavailable({ slug: product.slug, variants: product.variants });
   const description = (product.description || product.name).slice(0, 5000);
+  const personalised = product.personalised ?? isCustomTextProduct({ name: product.name, description: product.description || "" });
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -231,9 +258,10 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
       priceCurrency: "EUR",
       availability: outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
-      seller: { "@id": ORGANIZATION_ID },
+      priceValidUntil: priceValidUntil(),
+      seller: { "@type": "Organization", "@id": ORGANIZATION_ID, name: ORGANIZATION.name },
       shippingDetails: buildOfferShippingDetails(product.price),
-      hasMerchantReturnPolicy: merchantReturnPolicy(),
+      hasMerchantReturnPolicy: personalised ? noReturnsPolicy() : merchantReturnPolicy(),
     },
   };
 }

@@ -1,10 +1,10 @@
 // GENEROITU: scripts/printify-saatavuus.mjs kirjoittaa tämän tiedoston. Älä muokkaa käsin.
 // Sama data kuin src/data/printify-saatavuus.json (kokonaan valmistamattomat tuotteet) syötteen ja sivukartan käyttöön.
-export const SAATAVUUS_GENERATED_AT = "2026-10-25T20:55:26.790Z";
+export const SAATAVUUS_GENERATED_AT = "2026-10-26T03:53:00.717Z";
 export const KOKONAAN_EI_SAATAVILLA = new Set([]);
 /** Koko data kaupan apufunktiolle (src/lib/variantAvailability.ts); JS-moduuli toimii Vitessä, middlewaressa ja Nodessa. */
 export const SAATAVUUS_DATA = {
-  "generated_at": "2026-10-25T20:55:26.790Z",
+  "generated_at": "2026-10-26T03:53:00.717Z",
   "products": {
     "100-elakelainen-huppari": {
       "unavailable": [
@@ -365,10 +365,10 @@ export const SAATAVUUS_DATA = {
   },
   "kokonaan_ei_saatavilla": [],
   "summary": {
-    "checked_products": 812,
-    "checked_variants": 15369,
-    "unavailable_variants": 5706,
-    "ei_kartassa": 5542,
+    "checked_products": 820,
+    "checked_variants": 13263,
+    "unavailable_variants": 4002,
+    "ei_kartassa": 3838,
     "tila": "printify"
   }
 };

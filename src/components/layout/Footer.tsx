@@ -11,17 +11,20 @@ import { footerGiftLinks } from "@/config/internalLinks";
 import { PaymentIcons, PAYMENT_METHODS_TEXT } from "@/components/PaymentIcons";
 import { ORGANIZATION } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
+import { onMarketingConsent, openConsentSettings } from "@/lib/consent";
 
 export function Footer() {
   const [footerEmail, setFooterEmail] = useState("");
   const [footerSubmitted, setFooterSubmitted] = useState(false);
   const { toast } = useToast();
 
-  // Google Customer Reviews -merkki. Ladataan vasta sivun latauduttua ja selaimen ollessa joutilas
-  // (n. 250 kt skriptejä), jotta se ei kilpaile tuotekuvan ja ostopainikkeen kanssa.
+  // Google Customer Reviews -merkki. Ladataan vain markkinointisuostumuksella (src/lib/consent.ts) ja vasta
+  // sivun latauduttua selaimen ollessa joutilas (n. 250 kt skriptejä), jotta se ei kilpaile tuotekuvan ja
+  // ostopainikkeen kanssa.
   useEffect(() => {
     if (typeof window === "undefined") return;
     let cancelled = false;
+    let stopWaiting: (() => void) | undefined;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const start = () => {
       timer = setTimeout(() => {
@@ -31,10 +34,13 @@ export function Footer() {
         else loadWidget();
       }, 3000);
     };
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
+    stopWaiting = onMarketingConsent(() => {
+      if (document.readyState === "complete") start();
+      else window.addEventListener("load", start, { once: true });
+    });
     return () => {
       cancelled = true;
+      stopWaiting?.();
       if (timer) clearTimeout(timer);
       window.removeEventListener("load", start);
     };
@@ -208,6 +214,7 @@ export function Footer() {
               <Link to="/toimitusehdot" className="underline hover:text-foreground">Toimitusehdot</Link>
               <Link to="/palautusehdot" className="underline hover:text-foreground">Palautusehdot</Link>
               <Link to="/tietosuojakaytanto" className="underline hover:text-foreground">Tietosuojakäytäntö</Link>
+              <button type="button" onClick={openConsentSettings} className="underline hover:text-foreground">Evästeasetukset</button>
             </nav>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">

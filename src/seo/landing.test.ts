@@ -283,3 +283,50 @@ describe("routing, sitemap and redirects", () => {
     for (const s of [...professions, ...municipalities].map((x) => x.slug)) expect(s).toMatch(/^[a-z0-9-]+$/);
   });
 });
+
+describe("tonnin seteli -laskeutumissivu", () => {
+  const page = getLandingPage("/tonnin-seteli-paita")!;
+  const TONNI_SLUGS = ["tonnin-seteli-t-paita", "se-oli-tonnin-seteli-t-paita", "tonnin-seteli-huppari", "se-oli-tonnin-seteli-huppari"];
+
+  it("näyttää kaikki tonnin seteli -tuotteet ensin, ei mukia, vähintään 8 tuotetta", () => {
+    expect(page).toBeTruthy();
+    const list = selectLandingProducts(page, products);
+    expect(list.length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    expect(new Set(list.slice(0, 4).map((p) => p.slug))).toEqual(new Set(TONNI_SLUGS));
+    expect(list.some((p) => p.slug === "tonnin-seteli-kahvikuppi")).toBe(false);
+    for (const p of list) expect(looksLikeMug(p), p.slug).toBe(false);
+  });
+
+  it("ensimmäinen virke kertoo, mikä vitsi on, ja sivu linkittää tuotesivuille", () => {
+    expect(page.intro[0]).toMatch(/^Se oli tonnin seteli on suomalainen meemilausahdus/);
+    expect(page.faqs.length).toBeGreaterThanOrEqual(4);
+    expect(page.faqs.length).toBeLessThanOrEqual(5);
+    expect((page.extraLinks ?? []).map((l) => l.href)).toEqual(
+      expect.arrayContaining(["/tuote/tonnin-seteli-t-paita", "/tuote/se-oli-tonnin-seteli-t-paita"]),
+    );
+    const html = renderPageHtml(TEMPLATE, byPath.get(page.path)!, nav);
+    for (const slug of TONNI_SLUGS) expect(html).toContain(`href="/tuote/${slug}"`);
+  });
+
+  it("joulusivut nostavat sivun ja tuotteet (nosto ja linkki)", () => {
+    for (const path of ["/joululahjat", "/joululahja-isalle", "/joululahja-miehelle-jolla-on-kaikki"]) {
+      const p = getLandingPage(path)!;
+      expect(p.related, path).toContain("/tonnin-seteli-paita");
+      expect(p.spotlight?.links.map((l) => l.href), path).toContain("/tonnin-seteli-paita");
+      expect(p.spotlight!.text).not.toMatch(/[–—]/);
+      for (const re of BANNED) expect(p.spotlight!.text, `${path} ${re}`).not.toMatch(re);
+      const html = renderPageHtml(TEMPLATE, byPath.get(path)!, nav);
+      expect(html, path).toContain('href="/tonnin-seteli-paita"');
+      expect(html, path).toContain('href="/tuote/tonnin-seteli-t-paita"');
+    }
+    // /joululahjat näyttää tuotteet myös omassa listassaan
+    const xmas = selectLandingProducts(getLandingPage("/joululahjat")!, products).map((p) => p.slug);
+    for (const slug of TONNI_SLUGS) expect(xmas).toContain(slug);
+  });
+
+  it("etusivu nostaa sivun ja t-paidan", () => {
+    const index = read("src/pages/Index.tsx");
+    expect(index).toContain("TONNIN_SETELI_PATH");
+    expect(index).toContain('/tuote/tonnin-seteli-t-paita');
+  });
+});

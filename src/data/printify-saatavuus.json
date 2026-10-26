@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25T20:55:26.790Z",
+  "generated_at": "2026-10-26T03:53:00.717Z",
   "products": {
     "100-elakelainen-huppari": {
       "unavailable": [
@@ -360,10 +360,10 @@
   },
   "kokonaan_ei_saatavilla": [],
   "summary": {
-    "checked_products": 812,
-    "checked_variants": 15369,
-    "unavailable_variants": 5706,
-    "ei_kartassa": 5542,
+    "checked_products": 820,
+    "checked_variants": 13263,
+    "unavailable_variants": 4002,
+    "ei_kartassa": 3838,
     "tila": "printify"
   }
 }

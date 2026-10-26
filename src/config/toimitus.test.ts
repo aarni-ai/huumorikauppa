@@ -67,6 +67,9 @@ describe("toimitusehdot yhdessä konfiguraatiossa", () => {
     expect(SHIPPING.freeThresholdEur).toBe(toimitus.ILMAINEN_TOIMITUS_RAJA);
     expect(SHIPPING.deliveryBusinessDaysMin).toBe(toimitus.TOIMITUSAIKA_MIN_ARKIPAIVAA);
     expect(SHIPPING.deliveryBusinessDaysMax).toBe(toimitus.TOIMITUSAIKA_MAX_ARKIPAIVAA);
+    expect(SHIPPING.handlingBusinessDaysMin + SHIPPING.transitBusinessDaysMin).toBe(toimitus.TOIMITUSAIKA_MIN_ARKIPAIVAA);
+    expect(SHIPPING.handlingBusinessDaysMax + SHIPPING.transitBusinessDaysMax).toBe(toimitus.TOIMITUSAIKA_MAX_ARKIPAIVAA);
+    expect(SHIPPING.transitBusinessDaysMin).toBeGreaterThan(0);
   });
 
   it("src/, api/, middleware.ts, public/ ja index.html eivät sisällä kovakoodattuja toimitusarvoja", () => {

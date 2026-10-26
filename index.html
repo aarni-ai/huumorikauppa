@@ -22,13 +22,48 @@
     <meta name="geo.position" content="60.1699;24.9384" />
     <meta name="ICBM" content="60.1699, 24.9384" />
 
-    <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FJ58JNKGK"></script>
+    <!-- Google Consent Mode v2 + GA4 (G-8FJ58JNKGK). Oletuksena kaikki kielletty, eikä gtag.js:ää ladata
+         ennen kuin käyttäjä hyväksyy analytiikan (src/lib/consent.ts, src/components/layout/CookieConsent.tsx).
+         Tallennettu valinta luetaan avaimesta huumorikauppa-cookies, joten palaavalla kävijällä skripti latautuu heti. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8FJ58JNKGK');
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      (function () {
+        var GA_ID = 'G-8FJ58JNKGK';
+        var loaded = false;
+        window.hkApplyConsent = function (c) {
+          gtag('consent', 'update', {
+            analytics_storage: c.analytics ? 'granted' : 'denied',
+            ad_storage: c.marketing ? 'granted' : 'denied',
+            ad_user_data: c.marketing ? 'granted' : 'denied',
+            ad_personalization: c.marketing ? 'granted' : 'denied'
+          });
+          if (c.analytics && !loaded) {
+            loaded = true;
+            gtag('js', new Date());
+            gtag('config', GA_ID);
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+            document.head.appendChild(s);
+          }
+        };
+        try {
+          var raw = localStorage.getItem('huumorikauppa-cookies');
+          var c = null;
+          if (raw === 'accepted') c = { analytics: true, marketing: false };
+          else if (raw && raw.charAt(0) === '{') c = JSON.parse(raw);
+          if (c && (c.analytics || c.marketing)) window.hkApplyConsent({ analytics: !!c.analytics, marketing: !!c.marketing });
+        } catch (e) {}
+      })();
     </script>
 
     <!-- Preconnect to external domains for faster loading -->

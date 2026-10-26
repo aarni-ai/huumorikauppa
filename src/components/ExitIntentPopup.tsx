@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, X, ArrowRight } from "lucide-react";
 import { productAlt } from "@/lib/seoAlt";
 import { proxiedImage } from "@/lib/imageProxy";
+import { ILMAINEN_TOIMITUS_RAJA } from "@/config/toimitus";
 
 const SESSION_KEY = "huumorikauppa-exit-intent-shown";
 
@@ -59,7 +60,7 @@ export function ExitIntentPopup() {
 
   if (items.length === 0) return null;
 
-  const shippingGap = 60 - totalPrice;
+  const shippingGap = ILMAINEN_TOIMITUS_RAJA - totalPrice;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>

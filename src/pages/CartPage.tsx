@@ -8,7 +8,8 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
-import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, valitseSuositukset, arvioiPakettialennus } from "@/lib/ostoskori";
+import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus } from "@/lib/ostoskori";
+import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
@@ -25,8 +26,6 @@ const CartPage = () => {
   const shippingGap = tila.puuttuu;
   const shippingProgress = tila.edistyminen;
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
-
-  const upsellProducts = useMemo(() => valitseSuositukset(items, allProducts, 4), [allProducts, items]);
 
   if (items.length === 0) {
     return (
@@ -140,47 +139,14 @@ const CartPage = () => {
             </div>
           ))}
 
-          {/* Suositukset: täyttävät ilmaisen toimituksen puuttuvan summan (src/lib/ostoskori.ts) */}
-          {upsellProducts.length > 0 && !tila.vainLahjakortteja && (
-            <div className="mt-6 pt-6 border-t border-border">
-              <p className="text-sm font-semibold text-foreground mb-3">
-                {shippingFree ? "Samaan pakettiin:" : `Näillä ${eur(shippingGap)} täyttyy ja toimitus on ilmainen:`}
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {upsellProducts.map(({ product: p, suoraan }) => (
-                  <div
-                    key={p.id}
-                    className="group rounded-lg border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden flex flex-col"
-                  >
-                    <Link to={`/tuote/${p.slug}`}>
-                      <img
-                        src={proxiedImage(p.images[0]) || "/placeholder.svg"}
-                        alt={p.name}
-                        className="w-full aspect-square object-cover bg-muted"
-                        loading="lazy"
-                        width={200}
-                        height={200}
-                      />
-                    </Link>
-                    <div className="p-2 flex flex-col gap-1 flex-1">
-                      <Link to={`/tuote/${p.slug}`} className="text-xs font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">{p.name}</Link>
-                      <p className="text-xs font-bold text-primary">{eur(p.price)}</p>
-                      <div className="mt-auto pt-1">
-                        {suoraan ? (
-                          <Button size="sm" variant="outline" className="w-full h-8 text-xs" onClick={() => addItem(p, 1, suoraan.size, suoraan.color)}>
-                            <Plus className="h-3 w-3 mr-1" /> Lisää koriin
-                          </Button>
-                        ) : (
-                          <Button asChild size="sm" variant="outline" className="w-full h-8 text-xs">
-                            <Link to={`/tuote/${p.slug}`}>Valitse koko ja väri</Link>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
+          {!tila.vainLahjakortteja && (
+          <ComplementaryProducts
+            base={items.map((i) => i.product)}
+            all={allProducts}
+            title={shippingFree ? "Täydennä tilaus" : `Täydennä tilaus: ${shippingGap.toFixed(2).replace(".", ",")} € ilmaiseen toimitukseen`}
+            className="mt-6 pt-6 border-t border-border"
+          />
           )}
         </div>
 
