@@ -7,6 +7,91 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Tilauskohtaiset katteet (Printify, 1.6.2026 alkaen)
+
+Päivitetty 2026-10-26 skriptillä `scripts/tilauskatteet.mjs` (Printify-kaupan kaikki tilaukset 1.6.2026 alkaen, perutut pois).
+Myynti = kaupan nykyinen hinta (Supabase, printify_product_id; EU-kopiolle siirtokirjauksen kautta; varalla nimellä) x kpl +
+toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu
+(total_price + total_shipping + total_tax) - Stripe 1,5 % + 0,25 €. Printifyn alv (total_tax, 25,5 % ilman ALV-tunnusta)
+on todellinen kulu, koska sitä ei saa vähennettyä; luvut ilman sitä alempana vertailuksi.
+Oletus: Printifyn summat ovat tilin valuutassa ja ne luetaan euroina (kuten muualla tässä tiedostossa). Jos tili on dollareissa, kulut ovat noin 13 % euromääriä suurempia (ajo `--kurssi 0.87`).
+Asiakkaasta vain etunimi ja sukunimen alkukirjain. Hinta (P) = kaupasta ei löytynyt tuotetta, käytetty Printifyn
+vähittäishintaa (metadata.price). Tyyppi manual = luotu Printifyn hallinnassa (voi olla korvaus tai uudelleenlähetys,
+jolloin todellista myyntiä ei ole).
+
+| Pvm | Asiakas | Tuotteet | Painotalo | Hinta sis. toimitus | Myynti alv 0 | Printify sis. alv | Printify ilman alv | Nettokate | Kate % |
+|---|---|---|---|--:|--:|--:|--:|--:|--:|
+| 4.6.2026 | (poistettu) | 1 x Mersumies \| Kahvikuppi (11oz / Black), 14,90 € | #274 CZ | 21,80 € | 17,37 € | 22,18 € | 17,68 € | -5,39 € | -31,0 % |
+| 12.6.2026 (manual) | (poistettu) | 1 x Maailman Paras Ystävä ornament \| Ceramic Ornament (Circle / One Size), 19,90 € | Imagine Your Photos US **EI EU** | 26,80 € | 21,35 € | 19,72 € | 15,71 € | 0,98 € | 4,6 % |
+| 29.6.2026 | (poistettu) | 1 x Olen eläkkeellä \| T-Paita (Dark Heather / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,16 € | 16,07 € | 4,45 € | 17,6 % |
+| 29.6.2026 | (poistettu) | 1 x Saatanan Tunarit \| T-Paita (Sport Grey / M), 24,90 € | #417 LV | 31,80 € | 25,34 € | 19,68 € | 15,69 € | 4,93 € | 19,5 % |
+| 20.7.2026 | (poistettu) | 1 x maailman paras ÄITI \| Huppari (Light Pink / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 44,41 € | 35,39 € | -0,25 € | -0,6 % |
+| 28.7.2026 | (poistettu) | 1 x ICE AATANA｜T-Paita (White / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,64 € | 16,45 € | 3,97 € | 15,7 % |
+| 5.8.2026 | (poistettu) | 1 x Tonnin Seteli \| T-Paita (Black / 5XL), 24,90 € | OPT OnDemand CZ | 31,80 € | 25,34 € | 22,36 € | 17,82 € | 2,25 € | 8,9 % |
+| 20.8.2026 | (poistettu) | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
+| 8.9.2026 | Johanna L. | 1 x 40v – henkisesti 18, tyylillä 40 \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
+| 28.9.2026 | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 45,64 € | 36,37 € | -1,48 € | -3,3 % |
+| 9.10.2026 | Liisa K. | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
+| 17.10.2026 | Tero H. | 1 x Tonnin Seteli \| T-Paita (S / White), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
+| 21.10.2026 (manual) | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 36,37 € | 36,37 € | 7,79 € | 17,2 % |
+| 21.10.2026 (manual) | Tiina K. | 1 x Ceramic Mug (EU) (11oz), 9,80 € | OPT OnDemand CZ | 16,70 € | 13,31 € | 28,71 € | 22,88 € | -15,90 € | -119,5 % |
+| 24.10.2026 | Noora S. | 1 x Tonnin Seteli \| T-Paita (S / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
+| 25.10.2026 | Satu V. | 1 x Tonnin Seteli \| T-Paita (3XL / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,59 € | 16,41 € | 4,02 € | 15,9 % |
+| 26.10.2026 | Niina Y. | 1 x 60v – kokenut, ei vanha \| T-Paita (M / Graphite Heather), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
+| **Yhteensä** | 17 tilausta | | | 570,50 € | 454,58 € | 468,82 € | 381,00 € | -27,06 € | -6,0 % |
+
+- Tilauksia 17, myynti sis. alv 570,50 €, ilman alv:tä 454,58 €, Stripe 12,82 €.
+- Printifyn kulut sis. Printifyn alv 468,82 €: nettokate -27,06 € (-6,0 %).
+- Printifyn kulut ilman alv:tä 381,00 €: nettokate 60,76 € (13,4 %).
+
+Huomiot:
+
+- 4.6.2026 (poistettu): tappiollinen (nettokate -5,39 €).
+- 12.6.2026 (poistettu): Maailman Paras Ystävä ornament | Ceramic Ornament painettiin EU:n ulkopuolella (Imagine Your Photos, US).
+- 20.7.2026 (poistettu): tappiollinen (nettokate -0,25 €).
+- 20.8.2026 (poistettu): 40 vuotta töitä, nyt ikuinen viikonloppu | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
+- 20.8.2026 (poistettu): tappiollinen (nettokate -18,36 €).
+- 8.9.2026 Johanna L.: 40v – henkisesti 18, tyylillä 40 | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
+- 8.9.2026 Johanna L.: tappiollinen (nettokate -18,36 €).
+- 28.9.2026 Johanna H.: tappiollinen (nettokate -1,48 €).
+- 9.10.2026 Liisa K.: 40 vuotta töitä, nyt ikuinen viikonloppu | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
+- 9.10.2026 Liisa K.: tappiollinen (nettokate -18,36 €).
+- 21.10.2026 Tiina K.: tappiollinen (nettokate -15,90 €).
+- Kaupan tuotteista 125/820 osoittaa yhä EU-siirron vanhaan (EU:n ulkopuoliseen) Printify-tuotteeseen (printify_product_id = siirtokirjauksen vanhaId), esim. 100-akaalaista-verta-hauska-t-paita-0d6670, 100-harjavaltalaista-verta-hauska-t-paita-0d673b, 100-nummelalaista-verta-hauska-t-paita-0e8b16. Näiden tilaukset painetaan edelleen vanhalla painotalolla, kunnes kaupan rivi vaihdetaan EU-kopioon.
+
+Printify Premium (34,99 €/kk, -20 % vain tuotekulusta, ei toimituksesta eikä verosta):
+
+- Edelliset 30 pv (8 tilausta): tuotekulut 106,50 €, alennus brutto 21,30 €, nettosäästö -13,69 € (ei kannata, raja 35 € bruttoalennusta / 30 pv).
+- 1.6.2026 alkaen (17 tilausta, noin 4,9 x 30 pv): tuotekulut 197,66 €, alennus brutto 39,53 €, maksut 174,95 € (5 kk), nettosäästö -135,42 €.
+
+<!-- käsin: alku (skripti säilyttää) -->
+### Liisan muki (9.10.2026): miksi tappiollinen ja miksi painettu Yhdysvalloissa
+
+- Tilaus: Liisa K., 9.10.2026, Printify-tilaus kaupan API:n kautta (Huumorikauppa-label), yksi rivi:
+  "40 vuotta töitä, nyt ikuinen viikonloppu | Muki" (11oz), Printify-tuote `6a40cc43d97be4f10b11b463`, blueprint 68
+  (Mug 11oz, Generic brand), print_provider_id 1 = **SPOKE Custom Products, Norcross GA, US**.
+- Painotalo ei ollut Printify Choice (id 99, reititysverkko, joka valitsee painotalon tilauskohtaisesti), vaan kiinteä
+  yhdysvaltalainen painotalo: sekä tuotteen print_provider_id (nyt edelleen 1, tuote luotu 28.6.2026) että tilausrivin
+  print_provider_id (1, metadata.country "United States") osoittavat SPOKEen. Printify ei siis reitittänyt tilausta
+  väärin: tuote itse oli US-painotalolla.
+- Kulut: tuote 6,44 + toimitus Yhdysvalloista Suomeen 24,69 + Printifyn alv 7,93 = **39,06** (tilin valuutassa).
+  Ilmoitettu 33,98 € = 39,06 x 0,87, eli Printify-tili on todennäköisesti dollareissa ja tämän osion eurot ovat
+  yläarvioita (ajo `--kurssi 0.87` antaa euromäärät). Myynti kaupan nykyhinnalla 19,90 + 6,90 = 26,80 € (alv 0
+  21,35 €); ilmoitettu 23,80 € viittaa alennukseen tai vanhaan hintaan (Stripeä ei voitu tarkistaa). Kummallakin
+  luvulla Printifyn kulu ylittää koko myynnin.
+- Miksi US: EU-siirtoa ei ollut tilaushetkellä. Ensimmäinen siirto tehtiin 23.10.2026 (data/eu-siirto-2026-10-23.json):
+  siinä mukista luotiin EU-kopio `6adac408e4dd88219a0b0b7a` (OPT OnDemand, CZ, blueprint 441), mutta kirjauksessa
+  `julkaistu: false` ja `kanta: null`. Elävän kaupan (Lovable/Supabase) rivi osoittaa **yhä** vanhaan US-tuotteeseen,
+  joten seuraava mukitilaus painettaisiin taas Yhdysvalloissa. Sama koskee 125/820 kaupan tuotetta (Huomiot yllä).
+- Sama tuote ja sisartuote ("40v – henkisesti 18, tyylillä 40 | Muki", sama SPOKE-blueprint) tuottivat 20.8., 8.9. ja
+  9.10. kolme tappiota, kukin noin -18,36 € (euroiksi luettuna).
+- Korjaus: (1) kaupan printify_product_id EU-kopioihin (scripts/printify-eu-painotalot.mjs --paivita-kanta, vaatii
+  kannan kirjoitusoikeuden; Lovable-kaupassa käsin) tai US-tuotteet pois myynnistä; (2) omassa taustassa tilausvahti
+  (api/_lib/tilausvahti.js) pysäyttää ennen send_to_productionia jokaisen tilauksen, jonka painotalo on EU:n
+  ulkopuolella (Printify Choice vain, jos tilausrivi kertoo EU-maan) tai jonka Printify-kulu ylittää myynnin alv 0,
+  ja hälyttää omistajalle heti.
+<!-- käsin: loppu -->
+
 ## EU-siirto: ennen ja jälkeen (25.10.2026)
 
 Ennen = 22.10.2026, kaikki tuotteet vanhoilla painotaloilla. Jälkeen = EU-siirron kopioiden todelliset kulut
