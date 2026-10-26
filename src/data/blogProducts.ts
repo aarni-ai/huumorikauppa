@@ -272,7 +272,7 @@ export const BLOG_PRODUCT_THEMES = {
     name: "Suomalainen huumori",
     heading: "Hauskat lahjat saunojalle",
     filters: [SAUNA, SUOMI],
-    related: ["/lahjat/harrastajalle", "/hauskat-lahjat-miehelle", "/kategoria/peitot"],
+    related: ["/lahjat/harrastajalle", "/hauskat-lahjat-miehelle", "/hauskat-hupparit"],
   },
   juhannus: {
     href: "/suomalainen-huumori-paidat",
@@ -317,23 +317,23 @@ export const BLOG_PRODUCT_THEMES = {
   tarrat: {
     href: "/meemipaidat",
     name: "Meemipaidat",
-    heading: "Hauskat tarrat ja meemituotteet",
+    heading: "Hauskat meemituotteet",
     filters: [inCategory("tarrat"), MEEMI],
-    related: ["/kategoria/tarrat", "/lahjat/alle-30-euroa", "/suomalainen-huumori-paidat"],
+    related: ["/kategoria/koristeet", "/lahjat/alle-30-euroa", "/suomalainen-huumori-paidat"],
   },
   vauva: {
     href: "/hauskat-t-paidat",
     name: "Hauskat t-paidat",
     heading: "Hauskat lahjat vauvalle ja vanhemmille",
     filters: [inCategory("bodyt"), ISA_AITI],
-    related: ["/kategoria/bodyt", "/isanpaivalahja", "/hauskat-lahjat-naiselle"],
+    related: ["/hauskat-hupparit", "/isanpaivalahja", "/hauskat-lahjat-naiselle"],
   },
   seinataulut: {
     href: "/hauskat-t-paidat",
     name: "Hauskat t-paidat",
-    heading: "Hauskat seinätaulut ja lahjat kotiin",
+    heading: "Hauskat koristeet ja lahjat kotiin",
     filters: [inCategory("seinataulut", "koristeet", "peitot")],
-    related: ["/kategoria/seinataulut", "/kategoria/koristeet", "/syntymapaivalahjat"],
+    related: ["/kategoria/koristeet", "/hauskat-hupparit", "/syntymapaivalahjat"],
   },
   pipot: {
     href: "/hauskat-hupparit",
@@ -345,9 +345,9 @@ export const BLOG_PRODUCT_THEMES = {
   peitot: {
     href: "/hauskat-hupparit",
     name: "Hauskat hupparit",
-    heading: "Hauskat peitot ja hupparit",
+    heading: "Hauskat hupparit",
     filters: [inCategory("peitot"), getLandingPage("/hauskat-hupparit")!.filter],
-    related: ["/kategoria/peitot", "/joululahjat", "/syntymapaivalahjat"],
+    related: ["/hauskat-t-paidat", "/joululahjat", "/syntymapaivalahjat"],
   },
   laukut: {
     href: "/hauskat-t-paidat",

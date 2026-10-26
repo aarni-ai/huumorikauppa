@@ -34,7 +34,6 @@ export const CATEGORY_FAQS: Record<string, FAQ[]> = {
     { q: "Mitä maksutapoja voin käyttää?", a: PAYMENT },
   ],
   "tarrat": [
-    { q: "Saako tarran omalla tekstillä?", a: CUSTOM },
     { q: "Kuinka nopeasti tarrat toimitetaan?", a: DELIVERY },
     { q: "Voiko tarrat palauttaa?", a: RETURNS },
   ],

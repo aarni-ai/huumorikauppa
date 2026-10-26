@@ -87,39 +87,23 @@ Tarra on pieni lahja tai lisä isomman lahjan kylkeen. Se sopii esimerkiksi haus
     slug: "bodyt",
     name: "Vauvabodyt",
     emoji: "👶",
-    description: "Pienimmille huumoriharrastajille",
-    seoTitle: "Hauskat vauvan bodyt - Vauvalahjat | Huumorikauppa.fi",
-    seoDescription: "Hauskat bodyt pienimmille! Ilahduttava vauvalahja. Pehmeä materiaali. Nopea toimitus. Tilaa nyt! 👶",
-    seoText: `## Hauskat vauvabodyt - pienimmille huumoriharrastajille
+    description: "Lahjoja vauvaperheelle",
+    seoTitle: "Hauskat vauvalahjat | Huumorikauppa.fi",
+    seoDescription: "Hauskat lahjat vauvaperheelle. Huumorikauppa.fi.",
+    seoText: `## Hauskat vauvalahjat
 
-Hauskat vauvabodyt ovat ilahduttava lahja vauvalle ja vanhemmille! Huumorikaupan bodyt yhdistävät söpöyden ja huumorin, ja ne sopivat lahjaksi baby showeriin, kastelahjaksi tai vauvan syntymäpäiväksi.
-
-## Hauska vauvalahja
-
-Hauska vauvabody on lahja joka naurattaa vanhempia ja ihastuttaa kaikkia vauvan vierailijoita. Tekstivaihtoehtoja ovat mm. "Isän pieni apulainen", "Äidin supersankari" ja muut perheteemaiset huumorit. Body on myös käytännöllinen lahja - vauvat tarvitsevat aina lisää vaatteita!
-
-## Laatu ja turvallisuus
-
-Vauvabodymme ovat valmistettu pehmeästä, ihoa hellivästä materiaalista. Ne ovat helppohoitoisia ja kestävät konepesun. Koot vaihtelevat vastasyntyneestä 18 kuukauden ikäiseen asti. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin ja 14 päivän palautusoikeus.`,
+Hauska lahja ilahduttaa vauvaperhettä ja naurattaa vanhempia. Huumorikaupan valikoimasta löytyy hauskoja lahjoja vanhemmille, esimerkiksi t-paitoja ja huppareita.`,
   },
   {
     slug: "peitot",
     name: "Peitot",
     emoji: "🛏️",
-    description: "Lämpimiä ja hauskoja peittoja",
-    seoTitle: "Hauskat peitot - Huumoripeitot | Huumorikauppa.fi",
-    seoDescription: "Hauska peitto lahjaksi tai itselle! Laadukas ja hauska - pitää lämpimänä ja hymyilyttää. Tilaa nyt. 🛋️",
-    seoText: `## Hauskat peitot - huumoria sohvannurkkaan
+    description: "Lämpimiä ja hauskoja lahjoja",
+    seoTitle: "Hauskat lämpimät lahjat | Huumorikauppa.fi",
+    seoDescription: "Hauskat lämpimät lahjat sohvailuun. Huumorikauppa.fi.",
+    seoText: `## Hauskat lämpimät lahjat
 
-Hauskat peitot tuovat huumoria ja lämpöä kotiin. Huumorikaupan pehmeät peitot hauskalla painatuksella sopivat sohvalle, sänkyyn ja telkkarin eteen.
-
-## Hauska peitto lahjaksi
-
-Peitto on ylellinen ja käytännöllinen lahja joka ilahduttaa pitkään. Hauska painatus tekee siitä persoonallisen ja ainutlaatuisen lahjan syntymäpäiviin, jouluun tai tupaantuliaisiin. Valikoimasta löytyy esimerkiksi meemipeittoja ja sarkastisia tekstipeittoja.
-
-## Materiaalit ja hoito
-
-Peittomme ovat pehmeää ja lämmintä materiaalia, joka tuntuu ihanan pehmeältä ihoa vasten. Ne kestävät konepesun ja säilyttävät pehmeytensä ja painatuksensa pitkään. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+Huumorikaupan hupparit ja pitkähihaiset sopivat sohvalle, sänkyyn ja telkkarin eteen. Hauska teksti tuo huumoria arkeen.`,
   },
   {
     slug: "pipot",
@@ -163,20 +147,12 @@ Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raska
     slug: "seinataulut",
     name: "Seinätaulut",
     emoji: "🖼️",
-    description: "Taulut ja julisteet seinälle",
-    seoTitle: "Hauskat seinätaulut - Huumorisisustus | Huumorikauppa.fi",
-    seoDescription: "Hauskat seinätaulut kodin sisustukseen! Piristä seinät huumorilla. Nopea toimitus koko Suomeen. 🖼️",
-    seoText: `## Hauskat seinätaulut ja julisteet - huumoria kodin seinälle
+    description: "Hauskaa sisustusta kotiin",
+    seoTitle: "Hauska sisustus | Huumorikauppa.fi",
+    seoDescription: "Hauskoja lahjoja kodin sisustukseen. Huumorikauppa.fi.",
+    seoText: `## Hauska sisustus
 
-Hauska seinätaulu piristää jokaista huonetta. Huumorikaupan valikoimasta löydät hauskoja julisteita ja tauluja jotka sopivat olohuoneeseen, makuuhuoneeseen, toimistoon, mieskämppään ja mihin tahansa tilaan joka kaipaa persoonallisuutta.
-
-## Seinätaulu lahjaksi
-
-Hauska seinätaulu on erinomainen lahja tupaantuliaisiin, syntymäpäiviin tai jouluun. Se on persoonallinen ja hauska sisustusesine joka muistuttaa antajasta joka päivä. Valikoimasta löytyy esimerkiksi meemijulisteita, sarkastisia lainauksia ja ammattihuumoritauluja.
-
-## Koot ja materiaalit
-
-Seinätaulumme ovat saatavilla useissa eri ko'oissa. Laadukas painatus kestää vuosia haalistumatta. Taulut toimitetaan valmiina ripustettavaksi. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+Hauska koriste piristää kotia. Katso koristeet-kategoriasta hauskoja lahjoja tupaantuliaisiin, syntymäpäiviin ja jouluun.`,
   },
   {
     slug: "koristeet",

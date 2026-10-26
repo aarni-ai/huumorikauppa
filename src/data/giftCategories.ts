@@ -151,7 +151,7 @@ Morsiamen paita, kaason paidat ja "Team Bride" -paidat. Morsiamen paita erottuu 
 
 ## Polttarilahjat sulhaselle ja morsiamelle
 
-Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: huppareita, tarroja ja pipoja.
+Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: huppareita, koristeita ja pipoja.
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
