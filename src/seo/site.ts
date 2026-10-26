@@ -11,6 +11,10 @@
 
 import {
   ILMAINEN_TOIMITUS_RAJA,
+  KASITTELYAIKA_MAX_ARKIPAIVAA,
+  KASITTELYAIKA_MIN_ARKIPAIVAA,
+  KULJETUSAIKA_MAX_ARKIPAIVAA,
+  KULJETUSAIKA_MIN_ARKIPAIVAA,
   TOIMITUSAIKA_MAX_ARKIPAIVAA,
   TOIMITUSAIKA_MIN_ARKIPAIVAA,
   TOIMITUSMAKSU,
@@ -47,6 +51,11 @@ export const SHIPPING = {
   /** Kokonaistoimitusaika tilauksesta, arkipäivinä. */
   deliveryBusinessDaysMin: TOIMITUSAIKA_MIN_ARKIPAIVAA,
   deliveryBusinessDaysMax: TOIMITUSAIKA_MAX_ARKIPAIVAA,
+  /** Käsittely (painatus) ja kuljetus arkipäivinä; summat = kokonaistoimitusaika. */
+  handlingBusinessDaysMin: KASITTELYAIKA_MIN_ARKIPAIVAA,
+  handlingBusinessDaysMax: KASITTELYAIKA_MAX_ARKIPAIVAA,
+  transitBusinessDaysMin: KULJETUSAIKA_MIN_ARKIPAIVAA,
+  transitBusinessDaysMax: KULJETUSAIKA_MAX_ARKIPAIVAA,
 } as const;
 
 export const RETURNS = {

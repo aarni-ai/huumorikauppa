@@ -74,7 +74,10 @@ describe("buildProductJsonLd", () => {
     expect(p.offers.priceCurrency).toBe("EUR");
     expect(p.offers.availability).toBe("https://schema.org/InStock");
     expect(p.offers.url).toBe(p.url);
-    expect(p.offers.seller).toEqual({ "@id": ORGANIZATION_ID });
+    expect(p.offers.seller).toEqual({ "@type": "Organization", "@id": ORGANIZATION_ID, name: "Huumorikauppa" });
+    expect(p.offers.itemCondition).toBe("https://schema.org/NewCondition");
+    expect(p.offers.priceValidUntil).toMatch(/^\d{4}-12-31$/);
+    expect(Number(p.offers.priceValidUntil.slice(0, 4))).toBe(new Date().getUTCFullYear() + 1);
   });
 
   it("ships to Finland with the shop's rates and delivery window", () => {
@@ -82,7 +85,12 @@ describe("buildProductJsonLd", () => {
     expect(ship["@type"]).toBe("OfferShippingDetails");
     expect(ship.shippingDestination.addressCountry).toBe("FI");
     expect(ship.shippingRate).toEqual({ "@type": "MonetaryAmount", value: "6.90", currency: "EUR" });
-    expect(ship.deliveryTime.transitTime).toMatchObject({ minValue: 3, maxValue: 10, unitCode: "DAY" });
+    const { handlingTime, transitTime } = ship.deliveryTime;
+    expect(handlingTime).toMatchObject({ "@type": "QuantitativeValue", unitCode: "DAY" });
+    expect(transitTime).toMatchObject({ "@type": "QuantitativeValue", unitCode: "DAY" });
+    // Käsittely + kuljetus = kaupan lupaama 3-10 arkipäivää.
+    expect(handlingTime.minValue + transitTime.minValue).toBe(3);
+    expect(handlingTime.maxValue + transitTime.maxValue).toBe(10);
     const expensive = buildProductJsonLd({ ...product, price: 89.9 }) as Node;
     expect(expensive.offers.shippingDetails.shippingRate.value).toBe("0.00");
   });
@@ -96,6 +104,17 @@ describe("buildProductJsonLd", () => {
       returnMethod: "https://schema.org/ReturnByMail",
       returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
     });
+  });
+
+  it("does not allow returns for personalised products", () => {
+    const custom = buildProductJsonLd({ ...product, name: "Oma teksti | T-Paita", description: "Paita omalla tekstillä." }) as Node;
+    expect(custom.offers.hasMerchantReturnPolicy).toEqual({
+      "@type": "MerchantReturnPolicy",
+      applicableCountry: "FI",
+      returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+    });
+    const flagged = buildProductJsonLd({ ...product, personalised: true }) as Node;
+    expect(flagged.offers.hasMerchantReturnPolicy.returnPolicyCategory).toBe("https://schema.org/MerchantReturnNotPermitted");
   });
 
   it("marks sold out products OutOfStock", () => {

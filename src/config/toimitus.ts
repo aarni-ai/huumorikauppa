@@ -23,6 +23,16 @@ export const ILMAINEN_TOIMITUS_RAJA = 79;
 export const TOIMITUSAIKA_MIN_ARKIPAIVAA = 3;
 export const TOIMITUSAIKA_MAX_ARKIPAIVAA = 10;
 
+/**
+ * Kokonaistoimitusajan jako rakenteista dataa varten (Googlen OfferShippingDetails vaatii
+ * handlingTime + transitTime). Käsittely = painatus tilauksen pohjalta, kuljetus = Posti tai
+ * Matkahuolto. Summat vastaavat yllä olevaa 3-10 arkipäivän lupausta (toimitus.test.ts).
+ */
+export const KASITTELYAIKA_MIN_ARKIPAIVAA = 1;
+export const KASITTELYAIKA_MAX_ARKIPAIVAA = 4;
+export const KULJETUSAIKA_MIN_ARKIPAIVAA = TOIMITUSAIKA_MIN_ARKIPAIVAA - KASITTELYAIKA_MIN_ARKIPAIVAA;
+export const KULJETUSAIKA_MAX_ARKIPAIVAA = TOIMITUSAIKA_MAX_ARKIPAIVAA - KASITTELYAIKA_MAX_ARKIPAIVAA;
+
 /** Euromäärä suomalaisittain ilman €-merkkiä: 6.9 -> "6,90", 79 -> "79". */
 export function euroluku(summa: number): string {
   return Number.isInteger(summa) ? String(summa) : summa.toFixed(2).replace(".", ",");
