@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
+import { revealApp } from "@/lib/prerenderPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
@@ -71,6 +72,11 @@ const CAROUSEL_SLUGS = [
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
   const { toast } = useToast();
+  // Esirenderöity esikatselu (src/main.tsx) vaihtuu sovellukseen ennen ensimmäistä maalausta: sama
+  // näkymä kuin esikatselussa (hero ja latausnäkymät), tuotteet täydentyvät haun jälkeen.
+  useLayoutEffect(() => {
+    revealApp();
+  }, []);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
 

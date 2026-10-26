@@ -186,8 +186,8 @@ async function main() {
       }
     }
 
-    // Tuotesivujen näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
-    const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderProductPreview.tsx");
+    // Tuote- ja etusivun näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
+    const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderPreview.tsx");
     let previews = 0;
     const previewFailures = [];
     const originalConsoleError = console.error;
@@ -207,13 +207,22 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
+      const homePage = pages.find((p) => p.path === "/");
+      if (homePage) {
+        try {
+          homePage.previewHtml = previewMod.renderHomePreview();
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`/ (${err.message})`);
+        }
+      }
     } finally {
       console.error = originalConsoleError;
     }
     if (previewFailures.length > 0) {
-      log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} tuotesivulla: ${previewFailures.slice(0, 5).join(", ")}`);
+      log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} sivulla: ${previewFailures.slice(0, 5).join(", ")}`);
     }
-    log(`Tuotesivujen esikatselu: ${previews} sivua.`);
+    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut + etusivu).`);
 
     const seen = new Set();
     let written = 0;

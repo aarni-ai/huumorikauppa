@@ -1,7 +1,7 @@
 /**
- * Tuotesivun esirenderöity esikatselu (src/seo/prerender/renderProductPreview.tsx): src/main.tsx
+ * Tuote- ja etusivun esirenderöity esikatselu (src/seo/prerender/renderPreview.tsx): src/main.tsx
  * käynnistää Reactin piilotettuun #rootiin ja rekisteröi tähän vaihtofunktion, jota ProductPage
- * kutsuu layout-efektissä heti, kun tuote on renderöity. Vaihto tapahtuu ennen seuraavaa maalausta,
+ * (kun tuote on renderöity) ja Index (ensimmäisessä renderöinnissä) kutsuvat layout-efektissä. Vaihto tapahtuu ennen seuraavaa maalausta,
  * joten esikatselu ja sovellus eivät näy päällekkäin eikä välissä näy tyhjää.
  */
 let reveal: (() => void) | null = null;

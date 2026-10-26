@@ -219,7 +219,7 @@ function toProxiedImage(url: string): string {
 
 /**
  * previewOnly: vain ensinäkymän osa (nimi, hinta, kuvat, valinnat, ostopainike). Käytössä tuotesivun
- * esirenderöidyssä esikatselussa (src/seo/prerender/renderProductPreview.tsx).
+ * esirenderöidyssä esikatselussa (src/seo/prerender/renderPreview.tsx).
  */
 const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const { slug } = useParams();
