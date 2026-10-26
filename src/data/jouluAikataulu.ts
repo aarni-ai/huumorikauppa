@@ -4,8 +4,8 @@
  *
  * Datalähde: scripts/joulu-aikataulu.mjs (Printifyn toteutuneet tilaukset 3-10/2026, 22 ei-peruutettua
  * tilausta, ajettu 26.10.2026). Pahin havaittu tuotanto (2) + kuljetus (13) + puskuri (2) = 17
- * arkipäivää antaa t-paidoille ja huppareille 30.11.2026, muille tyypeille 1.12.-8.12.2026; peitoista
- * ei ole toimitusdataa. Havainnot ovat joulusesongin ulkopuolelta, ja tarroja lukuun ottamatta jokaisella tyypillä on tulostaja
+ * arkipäivää ennen 23. joulukuuta antaa t-paidoille ja huppareille 30.11.2026, muille tyypeille
+ * 11-16 arkipäivää eli vielä myöhemmän päivän; peitoista ei ole toimitusdataa. Havainnot ovat joulusesongin ulkopuolelta, ja tarroja lukuun ottamatta jokaisella tyypillä on tulostaja
  * ilman toimitusdataa, joten käytetään sivuston yhteistä 20.11.2026 (Printifyn joulusesongin cutoffit,
  * seo/toimitusajat.md). Mikään päivä ei saa olla sitä myöhäisempi.
  * Testi varmistaa, ettei mikään päivä ylitä CHRISTMAS_ORDER_END_UTC_MS:ää.

@@ -14,7 +14,6 @@ import {
 import { categories } from "./products";
 import { christmasDeadlinePage } from "./christmasDeadlinePage";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
-// @ts-expect-error: .mjs-skripti ilman tyyppejä
 import { isFiBusinessDay, latestOrderDate, weekdaysBetween } from "../../scripts/joulu-aikataulu.mjs";
 
 /** Suomen aika marraskuussa on UTC+2. */
@@ -26,7 +25,7 @@ afterEach(() => {
 
 describe("joulun takarajat tuotetyypeittäin", () => {
   it("avaimet ovat kategorioiden slugeja, eikä yksikään päivä ylitä sivuston lupausta 20.11.2026", () => {
-    const slugs = new Set(categories.map((c) => c.slug));
+    const slugs = new Set<string>(categories.map((c) => c.slug));
     for (const k of Object.keys(JOULU_TILAUSPAIVAT)) expect(slugs.has(k), k).toBe(true);
     expect(JOULU_MYOHAISIN_END_UTC_MS).toBeLessThanOrEqual(JOULU_SIVUSTON_END_UTC_MS);
     for (const iso of Object.values(JOULU_TILAUSPAIVAT)) expect(iso).toMatch(/^2026-1[12]-\d{2}$/);
