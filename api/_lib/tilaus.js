@@ -12,6 +12,8 @@ import * as P from "./printify.js";
 import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js";
 import { onLahjakortti } from "./lahjakortti.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
+import { pgMarkkinointi } from "./markkinointi-db.js";
+import { normalisoiEmail } from "./markkinointi.js";
 
 /** Printifyyn menevät rivit (lahjakortit eivät mene). */
 export const printifyRivit = (items) => (items || []).filter((i) => !onLahjakortti(i));
@@ -128,6 +130,12 @@ export async function jalkikasittely(tilaus) {
     const r = await laheta({ to: tilaus.customer_email, ...v });
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });
+  }
+  try {
+    // Keskeneräisen tilauksen muistutukset loppuvat, kun samalla osoitteella maksetaan (valvonta tarkistaa myös).
+    await pgMarkkinointi(sql()).lopetaKoriMaksettuna(normalisoiEmail(tilaus.customer_email), tilaus.id);
+  } catch (e) {
+    console.error("muistutusten lopetus:", e?.message || e);
   }
   try {
     await toimitaLahjakortit(tilaus);

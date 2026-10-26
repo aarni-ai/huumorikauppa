@@ -115,3 +115,32 @@ export function paketinHeikoinKate(tuotteet, alennusProsentti = 0) {
   kayLapi(0, []);
   return heikoin || { tunnettu: false, nettokate: null, kate: null, sallittu: null };
 }
+
+/**
+ * Koko tilauksen kate alennusten jälkeen (ensitilauksen koodi). Sama kaava: maksettu = rivien maksettavat hinnat +
+ * toimitusmaksu, kulut = Printifyn tuotekulu + Suomen toimituskulu jokaiselle kappaleelle (lisäkappaleen halvempaa
+ * toimitusta ei tunneta, joten arvio on varovainen).
+ * @param osat [{ tuote, varianttiId, maara, yksikkohinta }] yksikkohinta euroina alennuksen jälkeen
+ * @param toimitusmaksu asiakkaan maksama toimitus euroina
+ * Palauttaa { tunnettu, nettokate, kate, sallittu } (sallittu = kate >= raja, oletus ALENNUS_KATE_RAJA).
+ */
+export function laskeTilauksenKate(osat, toimitusmaksu = 0, raja = ALENNUS_KATE_RAJA) {
+  if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
+  let maksettu = toimitusmaksu;
+  let kulut = 0;
+  for (const { tuote, varianttiId, maara = 1, yksikkohinta } of osat) {
+    const id = varianttiId ?? Object.values(tuote?.variants?.variant_map || {})[0];
+    const kulu = (tuote?.variants?.costs || {})[String(id)];
+    const toimitus = tuote?.variants?.shipping_cents;
+    if (typeof kulu !== "number" || typeof toimitus !== "number" || !Number.isFinite(Number(yksikkohinta))) {
+      return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
+    }
+    maksettu += Number(yksikkohinta) * maara;
+    kulut += ((kulu + toimitus) / 100) * maara;
+  }
+  const myyntiAlv0 = maksettu / (1 + ALV);
+  const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
+  const nettokate = myyntiAlv0 - kulut - stripe;
+  const kate = myyntiAlv0 > 0 ? nettokate / myyntiAlv0 : -1;
+  return { tunnettu: true, nettokate: Math.round(nettokate * 100) / 100, kate: Math.round(kate * 1000) / 1000, sallittu: kate >= raja };
+}

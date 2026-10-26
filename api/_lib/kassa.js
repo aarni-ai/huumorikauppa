@@ -11,9 +11,12 @@
  * - Saatavuus (api/_lib/saatavuus.js): variantti, joka on tuoterivin unavailable_variants-listassa (päivittäinen
  *   Printify-tarkistus, kassalla tuoreella haulla täydennettynä), hylätään ennen maksua.
  * - Lahjakortilla maksu: tarkistettu saldo vähennetään maksettavasta (lahjakortti { koodi, saldo }).
+ * - Ensitilauksen koodi (alennus.ensitilaus, api/_lib/markkinointi.js): hyväksytään vain, jos koko tilauksen kate
+ *   alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js ALENNUS_KATE_RAJA).
+ * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
-import { laskeKate } from "./kate.js";
+import { laskeKate, laskeTilauksenKate } from "./kate.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
@@ -92,6 +95,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
       custom_text: teksti(it.customText, 200),
       image: typeof it.image === "string" && /^https?:\/\//.test(it.image) ? it.image : null,
       quantity: it.quantity, unit_price: hinta, printify_product_id: p.printify_product_id, variant_id: variantti,
+      kulu_sentit: p.variants?.costs?.[String(variantti)] ?? null, toimitus_sentit: p.variants?.shipping_cents ?? null,
     });
   }
   if (lisat.lahjakortti && lahjakortit.length) {
@@ -106,6 +110,13 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const toimitus = rivit.length === 0 || valisumma >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS;
   // Rivikohtainen hinta sentteinä kuten Stripe veloittaa.
   let fyysiset = rivit.map((r) => ({ ...r, unit_cents: Math.max(0, Math.round(sentit(r.unit_price) * (1 - prosentti / 100) * suhde)) }));
+  if (alennus?.ensitilaus && fyysiset.length) {
+    const kate = laskeTilauksenKate(
+      fyysiset.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 })),
+      toimitus,
+    );
+    if (!kate.sallittu) throw new KassaVirhe("Ensitilauksen alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
+  }
   let pakettiAlennus = 0;
   if (!alennus && lisat.paketit?.length) {
     const p = sovellaPaketit(fyysiset, bySlug, lisat.paketit);

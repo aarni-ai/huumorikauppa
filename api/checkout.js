@@ -20,13 +20,30 @@ import { tarkistaLahjakortti, normalisoiKoodi } from "./_lib/lahjakortti.js";
 import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita } from "./_lib/lahjakortti-db.js";
 import { jalkikasittely } from "./_lib/tilaus.js";
 import PAKETIT from "./_lib/paketit-data.js";
+import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
+import { tarkistaEnsitilausKoodi, normalisoiEmail, kelpaaEmail } from "./_lib/markkinointi.js";
 
-async function alennus(koodi) {
+/**
+ * Alennuskoodi: discount_codes-taulu, ensitilauksen koodi (TERVE-..., api/_lib/markkinointi.js: sama sähköposti,
+ * ei aiempia maksettuja tilauksia, koodia ei ole käytetty) tai oletuskoodit. Ensitilauksen koodin virhe keskeyttää
+ * kassan selkeällä viestillä; tuntematon muu koodi ohitetaan kuten ennen.
+ */
+async function alennus(koodi, email) {
   if (!koodi) return null;
   const k = String(koodi).trim().toUpperCase();
   if (onTietokanta()) {
     const [r] = await sql()`select discount_type, discount_value, is_active from discount_codes where upper(code) = ${k}`;
     if (r) return r.is_active ? { type: r.discount_type, value: Number(r.discount_value) } : null;
+    if (k.startsWith("TERVE-")) {
+      const store = pgMarkkinointi(sql());
+      const t = tarkistaEnsitilausKoodi({
+        tilaaja: await store.haeTilaajaKoodilla(k), email,
+        aiempiaTilauksia: kelpaaEmail(email) ? await store.maksettujaTilauksia(normalisoiEmail(email)) : 0,
+        koodiKaytetty: await store.koodiKaytetty(k),
+      });
+      if (!t.ok) throw new KassaVirhe(t.virhe, "discount_invalid");
+      return t.alennus;
+    }
   }
   return OLETUSKOODIT[k] ?? null;
 }
@@ -67,6 +84,19 @@ export default async function handler(req, res) {
     }
   }
 
+  if (pyynto.action === "alennuskoodi") {
+    // Kassasivun koodikenttä: { ok, percent } tai { ok: false, error }. Lopullinen tarkistus tehdään maksun alussa.
+    try {
+      const a = await alennus(pyynto.code, pyynto.email);
+      if (a?.type === "percent") return res.status(200).json({ ok: true, code: String(pyynto.code).trim().toUpperCase(), percent: a.value });
+      return res.status(200).json({ ok: false, error: "Virheellinen alennuskoodi." });
+    } catch (e) {
+      if (e instanceof KassaVirhe) return res.status(200).json({ ok: false, error: e.message });
+      console.error("alennuskoodi:", e?.message || e);
+      return res.status(200).json({ ok: false, error: "Koodin tarkistus epäonnistui. Yritä hetken kuluttua uudelleen." });
+    }
+  }
+
   if (!onStripe() || !onTietokanta()) {
     return res.status(503).json({ ok: false, error: "Kassa ei ole vielä käytössä tässä ympäristössä.", diagnostics: { error_stage: "not_configured" } });
   }
@@ -75,7 +105,7 @@ export default async function handler(req, res) {
     // Saatavuus: tallennettu päivittäinen tieto, täydennettynä tuoreella Printify-haulla (3 s, virheessä tallennettu).
     let tuotteet = await kaikkiTuotteet();
     if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
-    const laskettu = laskeTilaus(pyynto, tuotteet, await alennus(pyynto.discountCode), {
+    const laskettu = laskeTilaus(pyynto, tuotteet, await alennus(pyynto.discountCode, pyynto.customerEmail), {
       paketit: PAKETIT,
       lahjakortti: await lahjakortti(pyynto.giftCardCode),
     });
