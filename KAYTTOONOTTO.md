@@ -24,6 +24,7 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 7 | Testitilaus | testiosoite | - |
 | 8 | EU-painotalot (valinnainen, ennen joulua) | Printify | - |
 | 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Cloudflare, Stripe | - |
+| 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
 ## 1. Tietokanta (Neon, ilmainen)
 
