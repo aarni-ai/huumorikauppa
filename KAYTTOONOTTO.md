@@ -28,18 +28,14 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 
 ## 1. Tietokanta (Neon, ilmainen)
 
-Vercel > Projects > huumorikauppa > Storage > Create Database > Neon > valitse **Free** > Connect to project
-(Production ja Preview). Vercel lisää `DATABASE_URL`:n itse. Tarkista Päätteessä, että muuttuja on olemassa:
+neon.tech > **Sign up** (Google- tai GitHub-tunnuksella) > Create project: nimi `huumorikauppa`, Postgres-versio
+oletus, alue **AWS Europe Central (Frankfurt)** > Create. Plan: **Free** (ei maksukorttia). Projektin etusivulla
+**Connect** > valitse **Pooled connection** > kopioi connection string (`postgresql://...`).
+
+Tallenna se yhdellä komennolla sekä Verceliin että paikalliseen tiedostoon `.env.database.local`:
 
 ```
-npx vercel env ls | grep -E "DATABASE_URL|POSTGRES_URL"
-```
-
-Jos haluat mieluummin oman Supabase-projektin ilmaistasolla (supabase.com > New project > Free > Settings > Database >
-Connection string, Transaction pooler), aseta osoite itse:
-
-```
-npx vercel env add DATABASE_URL production
+cd ~/huumorikauppa && read -s "K?Neon connection string: " && echo && printf '%s' "$K" | npx vercel env add DATABASE_URL production && printf 'DATABASE_URL=%s\n' "$K" > .env.database.local && chmod 600 .env.database.local && unset K && echo tallennettu
 ```
 
 ## 2. Taulut ja tuotteet
@@ -48,7 +44,7 @@ Kun kanta on luotu, komennot tässä järjestyksessä (yksi rivi; `.env.local` e
 tarvitaan EU-siirtoihin, kuluihin ja tarkistukseen:
 
 ```
-npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs && node scripts/printify-eu-painotalot.mjs --paivita-kanta && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
+cd ~/huumorikauppa && set -a && . ./.env.database.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs && node scripts/tuo-tuotteet.mjs && node scripts/printify-eu-painotalot.mjs --paivita-kanta && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
 ```
 
 1. `aja-schema.mjs` luo taulut (turvallinen ajaa uudelleen).
@@ -88,7 +84,7 @@ Printifyn kulut katesääntöä varten (myynnin raja 20 %, `api/_lib/kate.js` KA
 Ensimmäisellä kerralla ne tulevat kohdan 2 komennossa; myöhemmin hintojen muuttuessa, ja sen jälkeen tarkistus:
 
 ```
-npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
+cd ~/huumorikauppa && set -a && . ./.env.database.local && . ./.env.printify.local && set +a && node scripts/printify-tuonti.mjs --kulut && node scripts/tarkista-tilattavuus.mjs
 ```
 
 Tarkistus: mitkä tuotteet Printifyyn on luotu 21.10.2026 (noin 280 kaupunkimukia). Komento vain listaa:
@@ -128,20 +124,16 @@ cd ~/huumorikauppa && read -s "K?Webhookin signing secret (whsec_...): " && echo
 
 ## 5. Sähköposti (Resend)
 
-resend.com > Sign up > Domains > **Add Domain** `huumorikauppa.fi` > lisää Resendin näyttämät DNS-tietueet
-Cloudflareen (Cloudflare > huumorikauppa.fi > DNS > Add record) > Verify. Sitten API Keys > **Create API Key**
-(Sending access).
+resend.com > **Sign up** > Free-taso (3 000 viestiä/kk, 100/pv, ei maksukorttia). API Keys > **Create API Key**:
+nimi `huumorikauppa`, Permission **Sending access** > Add > kopioi avain (`re_...`).
 
 ```
-npx vercel env add RESEND_API_KEY production
+cd ~/huumorikauppa && read -s "K?Resend-avain (re_...): " && echo && printf '%s' "$K" | npx vercel env add RESEND_API_KEY production && printf 'RESEND_API_KEY=%s\n' "$K" > .env.resend.local && chmod 600 .env.resend.local && unset K && echo tallennettu
 ```
 
-Lähettäjä (oletus `Huumorikauppa <tilaukset@huumorikauppa.fi>`) ja hälytysten vastaanottaja (oletus info@seniorituki.fi)
-tarvitsee asettaa vain, jos ne halutaan muuttaa:
-
-```
-npx vercel env add EMAIL_FROM production
-```
+Lähetysosoite `tilaukset@huumorikauppa.fi` vaatii domainin vahvistuksen Resendissä (Domains > Add Domain, DNS-tietueet).
+Se tehdään domainin siirron yhteydessä (kohta 9). Siihen asti Resend lähettää vain tilin omaan osoitteeseen, joten
+asiakasviestit eivät vielä lähde.
 
 ## 6. Ajastimen salaisuus
 
@@ -150,7 +142,7 @@ uudelleen, hakee seurantakoodit, lähettää muistutukset ja arviopyynnöt sekä
 raja), ja GitHub Actions (`.github/workflows/tilausvalvonta.yml`, ilmainen) tunnin välein. Sama salaisuus molempiin:
 
 ```
-S=$(openssl rand -hex 32) && printf %s "$S" | npx vercel env add CRON_SECRET production && printf %s "$S" | pbcopy && unset S && echo "Kopioitu leikepöydälle"
+cd ~/huumorikauppa && S=$(openssl rand -hex 32) && printf %s "$S" | npx vercel env add CRON_SECRET production && printf 'CRON_SECRET=%s\n' "$S" > .env.cron.local && chmod 600 .env.cron.local && printf %s "$S" | pbcopy && unset S && echo "tallennettu, kopioitu leikepöydälle"
 ```
 
 Liitä leikepöydän arvo GitHubiin: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions >
@@ -242,7 +234,7 @@ Lahjakortit, paketit, ostoskorin suositukset, toimitusarvio ja kolme valvontaa G
 `db/schema.sql` on turvallinen ajaa uudelleen:
 
 ```
-npx vercel env pull .env.local --environment=production --yes && set -a && . ./.env.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs
+cd ~/huumorikauppa && set -a && . ./.env.database.local && . ./.env.printify.local && set +a && node scripts/aja-schema.mjs
 ```
 
 **Lahjakortit** (`/lahjakortti`, 25/50/75/100 €): ei Printifyä eikä toimitusmaksua; koodi luodaan maksun jälkeen ja
