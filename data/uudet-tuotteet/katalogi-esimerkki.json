@@ -3617,14 +3617,21 @@
    }
   },
   "tarra": {
-   "oletus": 220,
+   "oletus": 389,
    "koot": {
-    "4x4": 260,
-    "6x6": 380
+    "4x4": 450,
+    "5x5": 540,
+    "6x6": 650
    }
   },
   "koriste": {
    "oletus": 750
+  },
+  "juliste": {
+   "oletus": 709
+  },
+  "kassi": {
+   "oletus": 900
   }
  }
 }

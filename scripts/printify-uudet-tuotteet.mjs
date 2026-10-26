@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Uudet tekstituotteet (t-paita, huppari, tarra, koriste) Printifyyn EU-painotaloille tekstilistasta.
+ * Uudet tekstituotteet (t-paita, huppari, tarra, koriste, juliste, kangaskassi) Printifyyn EU-painotaloille tekstilistasta.
  * Oletuksena KUIVA-AJO: näyttää jokaisesta tuotteesta painotalon, blueprintin, hinnan, kate-arvion ja kuvat, ei
  * kirjoita Printifyyn eikä kantaan. Ilman avainta käytetään välimuistia tai esimerkkikatalogia (keksitty, kerrotaan).
  *
@@ -11,8 +11,13 @@
  *   --raja N                  luo / suunnittele enintään N tuotetta (koeajo: --toteuta --raja 1).
  *   --tuo                     (--toteuta kanssa) tuo luodut tuotteet kauppaan PIILOTETTUINA (is_active false), DATABASE_URL.
  *   --hyvaksy <id,...|kaikki> julkaise kaupassa aiemmin tuodut (is_active true), jos kate on tunnettu ja vähintään myynnin raja (api/_lib/kate.js KATE_RAJA, 20 %).
- *   --toimitusmaksu 5,90      asiakkaan toimitusmaksu hinnoittelussa (oletus suunniteltu 5,90 €; kauppa perii nyt 6,90 €).
- *   --ilmainen-raja 60        ilmainen toimitus tästä tilaussummasta (oletus suunniteltu 60 €; kaupassa nyt 79 €).
+ *   --hintamalli live|suunniteltu  live = nykyinen kauppa: synkronoi Printify-tuotteet öisin aktiivisina, t-paidat aina
+ *                             24,90 € ja hupparit 49,90 €, muut Printifyn hinnalla, toimitus 6,90 € alle 79 €. suunniteltu
+ *                             (oletus) = oma tausta: 5,90 € / 60 € ja kategorian pohjahinnat.
+ *   --kateraja 30             vaadittu kate prosentteina (oletus 40, api/_lib/kate.js). Kate näytetään myös Printifyn
+ *                             ALV:n (25,5 % kulusta ja toimituksesta, jos tilillä ei ole ALV-tunnusta) kanssa.
+ *   --toimitusmaksu 5,90      asiakkaan toimitusmaksu hinnoittelussa (oletus hintamallista).
+ *   --ilmainen-raja 60        ilmainen toimitus tästä tilaussummasta (oletus hintamallista).
  *   --blueprint tyyppi=id     pakota blueprint (esim. koriste=1234). --painotalo tyyppi=id|nimi pakota painotalo.
  *   --katalogi <tiedosto>     käytä katalogitiedostoa Printifyn sijaan (myös avaimen kanssa).
  *   --ei-kuvia                kuiva-ajossa ei renderöidä kuvia (vain tiedostonimet).
@@ -29,7 +34,7 @@ import { fileURLToPath } from "node:url";
 globalThis.Deno ??= { env: { get: (k) => process.env[k] } };
 const {
   parseLista, kasitteleTuote, kirjausRivi, lueKirjaukset, joLuodut, TiedostoKatalogi, LiveKatalogi, teeApi, lukuEuroina,
-  euroa, prosenttia, TUOTETYYPIT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA,
+  euroa, prosenttia, TUOTETYYPIT, HINTAMALLIT, KATE_RAJA,
 } = await import("./lib/uudet-tuotteet.mjs");
 
 const argv = process.argv.slice(2);
@@ -40,8 +45,12 @@ const toteuta = lippu("--toteuta");
 const tuo = lippu("--tuo");
 const hyvaksy = arvo("--hyvaksy");
 const raja = arvo("--raja") ? Number(arvo("--raja")) : Infinity;
-const toimitusmaksu = arvo("--toimitusmaksu") != null ? lukuEuroina(arvo("--toimitusmaksu")) : SUUNNITELTU_TOIMITUSMAKSU;
-const ilmainenRaja = arvo("--ilmainen-raja") != null ? lukuEuroina(arvo("--ilmainen-raja")) : SUUNNITELTU_ILMAINEN_RAJA;
+const hintamalli = HINTAMALLIT[arvo("--hintamalli") || "suunniteltu"];
+if (!hintamalli) { console.error(`--hintamalli: ${Object.keys(HINTAMALLIT).join(" | ")}`); process.exit(1); }
+const kateraja = arvo("--kateraja") != null ? Number(String(arvo("--kateraja")).replace(",", ".")) / 100 : KATE_RAJA;
+if (!(kateraja > 0 && kateraja < 1)) { console.error("--kateraja: prosentti väliltä 1-99, esim. 30"); process.exit(1); }
+const toimitusmaksu = arvo("--toimitusmaksu") != null ? lukuEuroina(arvo("--toimitusmaksu")) : hintamalli.toimitusmaksu;
+const ilmainenRaja = arvo("--ilmainen-raja") != null ? lukuEuroina(arvo("--ilmainen-raja")) : hintamalli.ilmainenRaja;
 if (!Number.isFinite(toimitusmaksu) || !Number.isFinite(ilmainenRaja)) { console.error("--toimitusmaksu / --ilmainen-raja: anna luku, esim. 5,90"); process.exit(1); }
 if (tuo && !toteuta) { console.error("--tuo toimii vain --toteuta kanssa (tuo juuri luodut)."); process.exit(1); }
 
@@ -173,8 +182,8 @@ async function tuoKantaan(r) {
 // ---------- Ajo ----------
 console.log(`Uudet tuotteet ${toteuta ? "(TOTEUTUS: luo Printifyyn, ei julkaise)" : "(kuiva-ajo, ei kirjoita Printifyyn eikä kantaan)"}`);
 console.log(`Katalogi: ${katalogi.lahde}`);
-console.log(`Hinnoittelu: toimitusmaksu ${euroa(toimitusmaksu)}, ilmainen ${euroa(ilmainenRaja)} alkaen, kate >= 40 %, ei alle kategorian pohjahinnan.`);
-console.log(`  (kauppa perii nyt 6,90 € ja ilmainen alkaa 79 €:sta; kate näytetään myös niillä)`);
+console.log(`Hinnoittelu (malli ${hintamalli.nimi}): toimitusmaksu ${euroa(toimitusmaksu)}, ilmainen ${euroa(ilmainenRaja)} alkaen, kate >= ${prosenttia(kateraja)}${Object.keys(hintamalli.pohjahinnat).length ? ", ei alle kategorian pohjahinnan" : ""}${Object.keys(hintamalli.kiinteat).length ? `, kiinteät kauppahinnat ${Object.entries(hintamalli.kiinteat).map(([k, v]) => `${k} ${euroa(v)}`).join(", ")}` : ""}.`);
+console.log(`  (kate näytetään myös Printifyn ALV:n kanssa: kulu ja toimitus x 1,255, jos tilillä ei ole ALV-tunnusta)`);
 
 const luodut = joLuodut(lueKirjaukset(kansio));
 const yhteenveto = { suunniteltu: 0, luotu: 0, "yli-enimmaishinnan": 0, ohitettu: 0, jo: 0, virhe: 0 };
@@ -195,7 +204,7 @@ for (const polku of listaPolut) {
     let r;
     try {
       r = await kasitteleTuote(tuote, {
-        katalogi, enimmaishinta: lista.enimmaishinta, toimitusmaksu, ilmainenRaja, ohitukset, renderoi, kuvaKansio,
+        katalogi, enimmaishinta: lista.enimmaishinta, toimitusmaksu, ilmainenRaja, ohitukset, renderoi, kuvaKansio, kateraja, hintamalli,
         luoKuvat: !lippu("--ei-kuvia"), toteuta, api, shopId: SHOP, lueTiedosto: (p) => readFileSync(p),
       });
     } catch (e) {
@@ -211,17 +220,19 @@ for (const polku of listaPolut) {
     }
     const h = r.hinnoittelu;
     if (h?.kulu != null) {
-      const kulut = r.kulut.length ? `${euroa(Math.min(...r.kulut) / 100)}${Math.min(...r.kulut) !== Math.max(...r.kulut) ? `...${euroa(Math.max(...r.kulut) / 100)}` : ""}` : "?";
+      const kk = r.oikeatKulut && Object.keys(r.oikeatKulut).length ? Object.values(r.oikeatKulut) : r.kulut;
+      const kulut = kk.length ? `${euroa(Math.min(...kk) / 100)}${Math.min(...kk) !== Math.max(...kk) ? `...${euroa(Math.max(...kk) / 100)}` : ""}` : "?";
       console.log(`  kulut:     tuote ${kulut}${r.kulutArvio ? " (ARVIO)" : " (Printify)"}, toimitus Suomeen ${euroa(r.toimitusSentit / 100)}`);
     }
     if (h?.hinta != null) {
-      console.log(`  hinta:     ${euroa(h.hinta)} (${h.peruste}${h.pohja ? `, pohja ${euroa(h.pohja)}` : ""}), kate ${prosenttia(h.kate)} / nettokate ${euroa(h.nettokate)}; nykyisellä 6,90 €/79 €: ${prosenttia(h.kateNyt)}`);
+      console.log(`  hinta:     ${euroa(h.hinta)} (${h.peruste}${h.pohja ? `, pohja ${euroa(h.pohja)}` : ""}), kate ${prosenttia(h.kate)} / nettokate ${euroa(h.nettokate)}; Printifyn ALV:n kanssa ${prosenttia(h.kateAlv)} / ${euroa(h.nettokateAlv)}`);
       if (h.varoitus) console.log(`  HUOM:      ${h.varoitus}`);
     }
     for (const k of r.kuvat || []) console.log(`  kuva:      ${suht(k.polku)} (${r.painoalue.width}×${r.painoalue.height}${r.painoalue.katalogista ? "" : ", oletuskoko"}, ${r.painoalue.position}, teksti ${k.vari}${k.tuotevarit.length ? ` ${k.tuotevarit.join(", ")}` : ""})${lippu("--ei-kuvia") && !toteuta ? " [ei renderöity]" : ""}`);
+    if (r.poistettuKaytosta?.length) console.log(`  ei saatavilla, poistettu käytöstä: ${r.poistettuKaytosta.join(", ")}`);
     if (r.hintaPaivitetty) console.log(`  hinta päivitetty Printifyn oikeilla kuluilla: ${euroa(r.hintaPaivitetty.arvio)} -> ${euroa(r.hintaPaivitetty.oikea)}`);
     if (r.syy) console.log(`  ${r.tila === "ohitettu" ? "OHITETAAN" : "HUOM"}: ${r.syy}`);
-    if (r.syy?.startsWith("ei toteutettavissa") || r.tila === "yli-enimmaishinnan") eiToteutettavissa.push(`${r.teksti} (${r.tyyppi}): ${r.syy}`);
+    if (r.syy?.startsWith("ei toteutettavissa") || r.tila === "yli-enimmaishinnan" || r.tila === "ohitettu") eiToteutettavissa.push(`${r.teksti} (${r.tyyppi}): ${r.syy}`);
     yhteenveto[r.tila]++;
     if (r.printify_id) {
       console.log(`  LUOTU Printifyyn: ${r.printify_id}`);
@@ -242,7 +253,7 @@ for (const polku of listaPolut) {
 tallennaValimuisti();
 
 console.log(`\nYhteenveto: ${Object.entries(yhteenveto).filter(([, n]) => n).map(([k, n]) => `${k} ${n}`).join(", ") || "ei mitään"}${kasitelty >= raja ? ` (raja ${raja})` : ""}.`);
-if (eiToteutettavissa.length) { console.log("Ei toteutettavissa listan hintarajalla:"); for (const e of eiToteutettavissa) console.log(`  - ${e}`); }
+if (eiToteutettavissa.length) { console.log("Ei toteutettavissa (EU-painotalo, kate tai hintaraja):"); for (const e of eiToteutettavissa) console.log(`  - ${e}`); }
 if (!toteuta) console.log(`Kuiva-ajo: mitään ei luotu.${katalogi instanceof TiedostoKatalogi ? " Hinnat ja painotalot ovat suuntaa antavia (ei Printify-avainta)." : " Kulut ovat arvioita, kunnes tuote on luotu; --toteuta tarkistaa hinnan oikeilla kuluilla."}`);
 else console.log(`Kirjaus: ${suht(kirjausPolku)}. Tuotteita EI julkaistu. ${tuo ? "Kauppaan tuodut ovat piilossa: hyväksy --hyvaksy." : "Tuo kauppaan piilotettuina: --tuo (tai printify-tuonti.mjs)."}`);
 if (sql) await sql.end();

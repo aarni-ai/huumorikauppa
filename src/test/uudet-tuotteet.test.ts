@@ -5,7 +5,8 @@ import path from "node:path";
 import {
   parseLista, hinnoittele, ylosX90, idempotenssiAvain, lueKirjaukset, joLuodut, kirjausRivi, otsikkoTeksti, normArvo,
   valitseVariantit, ratkaiseKohde, kasitteleTuote, TiedostoKatalogi, LiveKatalogi, teeApi, tekstivariRyhmat, VIIVA,
-  KATEGORIAN_POHJAHINNAT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA,
+  KATEGORIAN_POHJAHINNAT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA, HINTAMALLIT, suomenToimitusVarianteille,
+  blueprintEhdokkaat, kateAlvilla,
 } from "../../scripts/lib/uudet-tuotteet.mjs";
 import { laskeKate, HINNOITTELU_KATE, KATE_RAJA as MYYNNIN_RAJA } from "../../api/_lib/kate.js";
 
@@ -328,5 +329,78 @@ describe("luonti mockatulla Printify-rajapinnalla", () => {
     expect(r.tila).toBe("ohitettu");
     expect(r.syy).toMatch(/ei toteutettavissa: kategorian koristeet pohjahinta 24,90 €/);
     expect(kutsut).toEqual([]);
+  });
+});
+
+describe("live-hintamalli, kateraja 30 % ja EU-tyypit (26.10.2026)", () => {
+  const live = HINTAMALLIT.live;
+  const liveArgs = { toimitusmaksu: live.toimitusmaksu, ilmainenRaja: live.ilmainenRaja, pohjahinnat: live.pohjahinnat, kiinteat: live.kiinteat, kateraja: 0.3 };
+
+  it("live: 6,90 € / 79 €, t-paita 24,90 € ja huppari 49,90 € kiinteät, muut Printifyn hinnalla ilman pohjahintaa", () => {
+    expect(live).toMatchObject({ toimitusmaksu: 6.9, ilmainenRaja: 79, pohjahinnat: {}, kiinteat: { "t-paidat": 24.9, hupparit: 49.9 } });
+    // Juliste OPT OnDemand: kulu 7,09 €, toimitus 8,49 € (oikeat luvut 26.10.2026) -> 22,90 €, ei seinätaulujen 49,90 €:n pohjaa.
+    const j = hinnoittele({ kulut: { 1: 709 }, toimitusSentit: 849, kategoria: "seinataulut", ...liveArgs });
+    expect(j.ok).toBe(true);
+    expect(j.hinta).toBe(22.9);
+    expect(j.peruste).toBe("30 %:n kate");
+    expect(j.kate).toBeGreaterThanOrEqual(0.3);
+    expect(kateHinnalla(21.9, 709, 849, { toimitusmaksu: 6.9, ilmainenRaja: 79 }).kate).toBeLessThan(0.3);
+  });
+
+  it("kiinteä hinta: t-paita ei yllä 30 %:iin 24,90 €:lla, raportoidaan lukuineen", () => {
+    const t = hinnoittele({ kulut: { 1: 993 }, toimitusSentit: 849, kategoria: "t-paidat", ...liveArgs });
+    expect(t.ok).toBe(false);
+    expect(t.eiToteutettavissa).toBe(true);
+    expect(t.hinta).toBe(24.9);
+    expect(t.kate).toBeLessThan(0.3);
+    expect(t.syy).toMatch(/kiinteällä hinnalla 24,90 € kate .* < 30 %:n raja/);
+  });
+
+  it("tarra 3,5\": 30 % vaatii 11,90 €, joten 9,90 €:n enimmäishinnalla ei toteutettavissa", () => {
+    const t = hinnoittele({ kulut: { 1: 389 }, toimitusSentit: 559, kategoria: "tarrat", enimmaishinta: 9.9, ...liveArgs });
+    expect(t.ok).toBe(false);
+    expect(t.hinta).toBe(11.9);
+    expect(t.syy).toMatch(/30 %:n kate vaatii 11,90 €, yli enimmäishinnan 9,90 €/);
+  });
+
+  it("Printifyn ALV (25,5 % kulusta ja toimituksesta) laskee katetta", () => {
+    const ilman = kateHinnalla(22.9, 709, 849, { toimitusmaksu: 6.9, ilmainenRaja: 79 });
+    const alv = kateAlvilla(2290, 709, 849, { toimitusmaksu: 6.9, ilmainenRaja: 79 });
+    expect(alv.kate).toBeLessThan(ilman.kate);
+    expect(kateHinnalla(22.9, Math.round(709 * 1.255), Math.round(849 * 1.255), { toimitusmaksu: 6.9, ilmainenRaja: 79 }).kate).toBe(alv.kate);
+    expect(hinnoittele({ kulut: { 1: 709 }, toimitusSentit: 849, kategoria: "seinataulut", ...liveArgs }).kateAlv).toBe(alv.kate);
+  });
+
+  it("Suomen toimitus varianttikohtaisesta profiilista, suurin valituista", () => {
+    const shipping = { profiles: [
+      { variant_ids: [1, 2], countries: ["FI", "SE"], first_item: { cost: 849 } },
+      { variant_ids: [3], countries: ["FI"], first_item: { cost: 929 } },
+      { variant_ids: [1, 2, 3], countries: ["REST_OF_THE_WORLD"], first_item: { cost: 1319 } },
+    ] };
+    expect(suomenToimitusVarianteille(shipping, [1])).toBe(849);
+    expect(suomenToimitusVarianteille(shipping, [1, 3])).toBe(929);
+    expect(suomenToimitusVarianteille(shipping, [4])).toBe(null);
+    // Tyhjä variant_ids = kaikki variantit.
+    expect(suomenToimitusVarianteille({ profiles: [{ variant_ids: [], countries: ["FI"], first_item: { cost: 490 } }] }, [7])).toBe(490);
+  });
+
+  it("tarra: Kiss-Cut ensin, sitten EU:ssa tehtävä Square Vinyl Stickers", () => {
+    const bps = [{ id: 476, title: "Square Vinyl Stickers" }, { id: 400, title: "Kiss-Cut Stickers" }, { id: 5372, title: "Kiss-Cut Sticker Sheet" }];
+    expect(blueprintEhdokkaat(bps, { nimet: ["Kiss-Cut Stickers", "Square Vinyl Stickers"] }).map((b) => b.id)).toEqual([400, 476]);
+  });
+
+  it("listat tonnin-seteli ja ika-elake-kaupunki: ei virheitä, juliste seinätauluksi, tuotekohtainen enimmäishinta", () => {
+    const tonni = parseLista(lue("tonnin-seteli.json"), { tiedosto: "tonnin-seteli" });
+    const muut = parseLista(lue("ika-elake-kaupunki.json"), { tiedosto: "ika-elake-kaupunki" });
+    expect(tonni.virheet).toEqual([]);
+    expect(muut.virheet).toEqual([]);
+    expect(muut.tuotteet).toHaveLength(10);
+    const kaikki = [...tonni.tuotteet, ...muut.tuotteet];
+    for (const t of kaikki) {
+      expect(t.enimmaishinta).toBe(t.tyyppi === "tarra" ? 9.9 : 24.9);
+      expect(`${t.otsikko} ${t.kuvaus}`).not.toMatch(/[–—]|painettu suomessa|painetaan suomessa/i);
+    }
+    expect(new Set(kaikki.map((t) => t.kuvaus)).size).toBe(kaikki.length); // jokaisella oma kuvaus
+    expect(tonni.tuotteet.find((t) => t.tyyppi === "juliste")!.otsikko).toBe("Se oli tonnin seteli | Juliste (poster)");
   });
 });
