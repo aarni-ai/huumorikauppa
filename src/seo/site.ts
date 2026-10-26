@@ -26,7 +26,7 @@ export const SITE_NAME = "Huumorikauppa";
 
 /**
  * Kaupan pitäjä lasketaan moduulin latautuessa (src/config/yritys.ts): build ennen 1.11.2026
- * tuottaa Intellerin tiedot, build tai selain sen jälkeen Uusiku Oy:n tiedot.
+ * tuottaa aiemman pitäjän tiedot, build tai selain sen jälkeen Uusiku Oy:n tiedot.
  */
 const YRITYS = yritystiedot();
 
