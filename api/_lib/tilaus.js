@@ -13,6 +13,7 @@ import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js"
 import { onLahjakortti } from "./lahjakortti.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
 import { pgMarkkinointi } from "./markkinointi-db.js";
+import { onTuotannossa } from "./valvonta.js";
 import { normalisoiEmail } from "./markkinointi.js";
 
 /** Printifyyn menevät rivit (lahjakortit eivät mene). */
@@ -81,13 +82,18 @@ export async function lahetaPrintifyyn(tilausId) {
     const r = await P.luoTilaus(P.tilausRunko(tilaus));
     if (!r.ok || !r.data?.id) return virhe(tilaus, "luonti", r.virhe || "Printify ei palauttanut tilausnumeroa");
     printifyId = r.data.id;
-    await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', updated_at = now() where id = ${tilaus.id}`;
+    await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', printify_created_at = now(), updated_at = now() where id = ${tilaus.id}`;
     tilaus.printify_order_id = printifyId;
     await kirjaaTapahtuma(tilaus.id, "printify_luotu", { printifyId });
   }
 
   const t = await P.lahetaTuotantoon(printifyId);
-  if (!t.ok) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe");
+  if (!t.ok) {
+    // Jos Printify on jo ottanut tilauksen tuotantoon (esim. edellinen yritys onnistui, mutta vastaus katosi),
+    // send_to_production palauttaa virheen: tarkistetaan tila ennen kuin merkitään virheeksi.
+    const tila = await P.haeTilaus(printifyId);
+    if (!(tila.ok && onTuotannossa(tila.data?.status))) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe");
+  }
   await sql()`update orders set printify_status = 'tuotannossa', printify_error = null, next_retry_at = null,
     sent_to_production_at = now(), updated_at = now() where id = ${tilaus.id}`;
   await kirjaaTapahtuma(tilaus.id, "printify_tuotannossa", { printifyId });
