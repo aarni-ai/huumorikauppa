@@ -88,6 +88,51 @@ describe("blogi: kaikki artikkelit", () => {
   });
 });
 
+describe("blogi: ei ostokehotuksia myynnistä poistettuihin kategorioihin", () => {
+  // relatedCategories näkyy BlogPost-sivulla "Osta tämä lahja Huumorikaupasta" -kortteina.
+  it.each(blogPosts.map((p) => [p.slug, p] as const))("%s", (_slug, post) => {
+    for (const c of post.relatedCategories) expect(["peitot", "seinataulut", "tarrat", "bodyt"]).not.toContain(c);
+  });
+});
+
+describe("blogi: palautetut artikkelit ja niiden uudet vastinparit", () => {
+  // 04596ec vaihtoi neljän artikkelin aiheen samassa osoitteessa. Alkuperäiset aiheet palautettiin ja uudet aiheet
+  // julkaistiin omissa osoitteissaan. Myynnistä poistettuja tuotteita (peitto, seinätaulu, tarra, body) ei luvata.
+  const parit: [string, string][] = [
+    ["hauskat-peitot-lahjaksi", "hauskat-hupparit-lahjaksi"],
+    ["hauskat-seinataulut-sisusta-huumorilla", "hauskat-koristeet-lahjaksi"],
+    ["hauska-vauvalahja-parhaat-bodyt", "lahja-tuoreille-vanhemmille"],
+  ];
+  const post = (slug: string) => blogPosts.find((p) => p.slug === slug)!;
+
+  it.each(parit)("%s <-> %s: molemmat olemassa ja linkittävät toisiinsa", (vanha, uusi) => {
+    expect(post(vanha)).toBeDefined();
+    expect(post(uusi)).toBeDefined();
+    expect(internalLinks(post(vanha))).toContain(`/blogi/${uusi}`);
+    expect(internalLinks(post(uusi))).toContain(`/blogi/${vanha}`);
+  });
+
+  it("palautetut aiheet ovat alkuperäiset", () => {
+    expect(post("hauskat-peitot-lahjaksi").title).toMatch(/peitto/i);
+    expect(post("hauskat-seinataulut-sisusta-huumorilla").title).toMatch(/seinätaulu/i);
+    expect(post("hauska-vauvalahja-parhaat-bodyt").title).toMatch(/body/i);
+    expect(post("parhaat-hauskat-tarrat-lappariin").title).toMatch(/tarra/i);
+  });
+
+  it.each([...parit.flat(), "parhaat-hauskat-tarrat-lappariin"])("%s: ei myyntilupauksia poistetuista tuotteista, SEO-rajat", (slug) => {
+    const p = post(slug);
+    const text = allText(p);
+    expect(text).not.toMatch(DASHES);
+    expect(text).not.toMatch(HEDGES);
+    expect(text).not.toMatch(/tilaa nyt|bodymme|taulujamme|tilaa (peitto|seinätaulu|tarr|body)/i);
+    expect(text).not.toMatch(/€|\beuroa?\b(?! tilauksista)/);
+    for (const href of internalLinks(p)) expect(href).not.toMatch(/\/kategoria\/(peitot|seinataulut|tarrat|bodyt)$|\/tuote\/oma-tekstikuva-(peitto|seinataulu|tarra|vauvantaaperon-body)/);
+    for (const c of p.relatedCategories) expect(["peitot", "seinataulut", "tarrat", "bodyt"]).not.toContain(c);
+    expect(p.metaTitle.length).toBeLessThan(60);
+    expect(p.metaDescription.length).toBeLessThan(155);
+  });
+});
+
 describe("blogi: joulun 2026 oppaat", () => {
   it("oppaita on 10 ja ne ovat mukana blogPosts-listassa", () => {
     expect(jouluOppaat2026).toHaveLength(10);

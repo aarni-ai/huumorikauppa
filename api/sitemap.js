@@ -118,6 +118,23 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  // 27.10.2026: puuttuneet artikkelit (testi src/test/sitemap-blogi.test.ts vertaa blogidataan).
+  "hauska-lahja-helsinkilaiselle",
+  "hauska-lahja-juhannukseen-2026",
+  "hauska-lahja-kaverille",
+  "hauska-lahja-mokkilaiselle",
+  "hauska-lahja-pomolle",
+  "hauska-lahja-tamperelaiselle",
+  "hauskat-lahjat-alle-30-euroa",
+  "hauskat-lahjat-kissaihmiselle",
+  "hauskat-lahjat-koiraihmiselle",
+  "hauskat-lahjat-teinipojalle-ja-tytolle",
+  "hauskat-laukut-kangaskassit",
+  "hauskat-pikkujoululahjat-tyokavereille",
+  "hauskat-valmistujaislahjat-2026",
+  "hauskimmat-elakelahjat-selviytymisopas",
+  "kaupunkipaita-idea-kotiseudulle",
+  "kaupunkituotteet-hauska-lahja-kotiseutuylpealle",
   "hauskat-joululahjaideat-miehelle-2026",
   "pikkujoululahja-alle-20-euroa",
   "lahja-miehelle-jolla-on-kaikki",
@@ -158,6 +175,9 @@ const BLOG_SLUGS = [
   "hauskat-peitot-lahjaksi",
   "hauska-lahja-opettajalle",
   "hauska-lahja-urheilijalle",
+  "hauskat-hupparit-lahjaksi",
+  "hauskat-koristeet-lahjaksi",
+  "lahja-tuoreille-vanhemmille",
 ];
 
 function escapeXml(s) {

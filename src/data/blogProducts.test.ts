@@ -93,6 +93,29 @@ describe("blogiartikkelien tuotenostot", () => {
     expect(getBlogProductTheme("20-hauskinta-t-paitaa-2026").related).toContain("/tonnin-seteli-paita");
   });
 
+  it("palautetut ja uudet artikkelit (peitto, seinätaulu, body, tarra) nostavat vain myynnissä olevia tuotteita", () => {
+    // Peitot, seinätaulut, tarrat ja bodyt poistettiin myynnistä 26.10.2026 (tietokannassa is_active = false).
+    const POISTETUT = ["peitot", "seinataulut", "tarrat", "bodyt"];
+    const odotetut: Record<string, string> = {
+      "hauskat-peitot-lahjaksi": "peitot",
+      "hauskat-hupparit-lahjaksi": "peitot",
+      "hauskat-seinataulut-sisusta-huumorilla": "seinataulut",
+      "hauskat-koristeet-lahjaksi": "seinataulut",
+      "hauska-vauvalahja-parhaat-bodyt": "vauva",
+      "lahja-tuoreille-vanhemmille": "vauva",
+      "parhaat-hauskat-tarrat-lappariin": "tarrat",
+    };
+    for (const [slug, teema] of Object.entries(odotetut)) {
+      expect(BLOG_POST_THEMES[slug], slug).toBe(teema);
+      const list = selectBlogProducts(getBlogProductTheme(slug), products);
+      expect(list.length, slug).toBeGreaterThanOrEqual(3);
+      for (const p of list) expect(POISTETUT, `${slug}: ${p.slug}`).not.toContain(p.category);
+    }
+    for (const t of Object.values(BLOG_PRODUCT_THEMES)) {
+      for (const href of [t.href, ...t.related]) expect(href).not.toMatch(/\/kategoria\/(peitot|seinataulut|tarrat|bodyt)$/);
+    }
+  });
+
   it("keskimmäinen lohko tulee kahden osion jälkeen", () => {
     expect(blogMidInsertLine("## A\nx\n## B\ny\n## C\nz")).toBe(4);
     expect(blogMidInsertLine("## A\nx\n## B\ny")).toBe(2);

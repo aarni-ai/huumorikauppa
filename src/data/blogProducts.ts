@@ -7,6 +7,7 @@
  * BLOG_POST_THEMES (artikkelin slug -> teema). Artikkeli, jota ei ole kartassa, saa DEFAULT_THEMEn.
  *
  * Tuotesääntö: vain myynnissä olevat ja tilattavat tuotteet (ei piilotettuja, ei mukeja, ei
+ * myynnistä poistettuja peittoja, seinätauluja, tarroja tai bodyja: niiden kategorioita ei käytetä suodattimina, ei
  * Printifyn valmistamattomia). Suodattimet täyttävät paikat järjestyksessä; jos aiheen tuotteita on
  * vähän, loput täytetään kohdesivun suodattimella ja lopuksi hauskoilla t-paidoilla, jotta lohkot
  * ovat aina täynnä (CLS 0: varattu koko vastaa lopullista).
@@ -318,21 +319,21 @@ export const BLOG_PRODUCT_THEMES = {
     href: "/meemipaidat",
     name: "Meemipaidat",
     heading: "Hauskat meemituotteet",
-    filters: [inCategory("tarrat"), MEEMI],
+    filters: [MEEMI],
     related: ["/kategoria/koristeet", "/lahjat/alle-30-euroa", "/suomalainen-huumori-paidat"],
   },
   vauva: {
     href: "/hauskat-t-paidat",
     name: "Hauskat t-paidat",
     heading: "Hauskat lahjat vauvalle ja vanhemmille",
-    filters: [inCategory("bodyt"), ISA_AITI],
+    filters: [ISA_AITI],
     related: ["/hauskat-hupparit", "/isanpaivalahja", "/hauskat-lahjat-naiselle"],
   },
   seinataulut: {
     href: "/hauskat-t-paidat",
     name: "Hauskat t-paidat",
     heading: "Hauskat koristeet ja lahjat kotiin",
-    filters: [inCategory("seinataulut", "koristeet", "peitot")],
+    filters: [inCategory("koristeet")],
     related: ["/kategoria/koristeet", "/hauskat-hupparit", "/syntymapaivalahjat"],
   },
   pipot: {
@@ -346,7 +347,7 @@ export const BLOG_PRODUCT_THEMES = {
     href: "/hauskat-hupparit",
     name: "Hauskat hupparit",
     heading: "Hauskat hupparit",
-    filters: [inCategory("peitot"), getLandingPage("/hauskat-hupparit")!.filter],
+    filters: [getLandingPage("/hauskat-hupparit")!.filter],
     related: ["/hauskat-t-paidat", "/joululahjat", "/syntymapaivalahjat"],
   },
   laukut: {
@@ -427,6 +428,9 @@ export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
   "hauskat-valmistujaislahjat": "ammatti",
   "hauskat-pipot-suomi": "pipot",
   "hauskat-peitot-lahjaksi": "peitot",
+  "hauskat-hupparit-lahjaksi": "peitot",
+  "hauskat-koristeet-lahjaksi": "seinataulut",
+  "lahja-tuoreille-vanhemmille": "vauva",
   "hauska-lahja-opettajalle": "opettaja",
   "hauska-lahja-urheilijalle": "urheilija",
   "hauskat-laukut-kangaskassit": "laukut",
