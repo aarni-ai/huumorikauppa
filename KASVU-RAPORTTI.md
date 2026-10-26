@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 26.10.2026 (keskiostos, Tonnin seteli, rakenteinen data, evästeet, uudet tuotteet, hinnat).
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (tilauskatteet, tappioesto, EU-painotalot, blogit, ALV-linjaus).
 
 ## Tilanne lyhyesti
 
@@ -25,6 +25,42 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
   digitaalinen lahjakortti, tuotesivun toimitusarvio ja "Ehtii jouluksi" -merkki (Printifyn takarajojen mukaan).
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
+
+## 26.-27.10.: tilauskatteet, tappioesto, EU-painotalot, blogit
+
+**Katteen laskentaperuste:** Tmi Inteller on ALV-rekisterissä (FI35836772), joten Printifyn veloittama ALV
+vähennetään eikä ole kulu. Kaikki katteet (KATTEET.md, tilausvahti, aamuyhteenveto) lasketaan Printify-kululla
+ilman ALV:tä. T-paidat 24,90 €: kate 28,5 % (7,22 €), hupparit 49,90 €: 10,6 % (4,80 €). Kumpikaan ei ylitä 30 %:a.
+
+**Tuotannossa (tarkistettu curlilla kolmella User-Agentilla ja selaimella, ostoskoriin lisäys toimii):**
+- Tappioesto: 301 varianttia, joissa Printify-kulu toimitettuna on suurempi kuin myynti ilman ALV:tä miinus Stripe,
+  piilotettu valitsimista. Kokonaan pois myynnistä (301-ohjaus, ei syötteessä eikä sivukartassa): oma teksti -peitto,
+  -seinätaulu, -tarra ja -body sekä kaksi tappiollista paitaa. Merchant-syötteessä 474 tuotetta. Sivujen, UKK:n ja
+  blogien tekstit päivitetty, ettei niissä luvata piilotettuja tuotteita.
+- Blogit: 56 artikkeliin aiheeseen sopivat tuotekortit tekstin keskelle ja loppuun, "Katso tuotteet" -painike ja
+  linkit laskeutumissivuille, myös esirenderöityyn HTML:ään (571 tuotelinkkiä). Search Consolen blogien
+  tuotelistavirhe korjattu: kortit olivat Product-mikrodataa ilman offers-kenttää; nyt ItemList, validaattori 56/56.
+- Nopeus: tuotesivun LCP 7,1 s -> 3,5 s (Mumbain reunalta mitattuna). Riski: heti julkaisun jälkeen kylmällä
+  välimuistilla sivun vaihto esikatselusta oikeaksi sivuksi voi kestää yli 5 s (havaittu kerran neljästä).
+
+**Tilaukset (Printify):** Niinan tilaus lähetetty tuotantoon 26.10. (6adf04009ca30bc3fe08c777, kulu 10,10 + 3,49
+toimitus + 3,47 ALV, painotalo 417 Liettua, arvio lähtö 27.-29.10.). Tilauskohtaiset katteet 1.6.2026 alkaen
+(17 tilausta): myynti alv 0 454,58 €, Printify ilman ALV:tä 381,00 €, nettokate 60,76 € (13,4 %), keskimäärin
+3,57 € tilausta kohden. Liisan muki (9.10.) painettiin Yhdysvalloissa, koska tuote oli kiinteästi SPOKE (US)
+-painotalolla; kolme samanlaista mukitilausta tekivät tappiota. Printify Premium ei kannata nyt (30 pv
+bruttoalennus 21,30 €, maksu 34,99 €).
+
+**EU-painotalot:** lisäksi 132 hupparia Printify Choicelta Textildruck Europalle (heikoimman koon kate 9,0 % -> 15,8 %)
+ja 3 mukia OPT:lle. Lovablen yösynkronointi kuitenkin palauttaa kaupan rivit vanhoihin tuotteisiin (virhe
+printify-sync.ts:ssä: tunnus-kartta luetaan kerran ennen silmukkaa), joten elävän kaupan tilaukset menevät yhä
+vanhoille painotaloille (156 näkyvää riviä, Choice voi reitittää myös Yhdysvaltoihin). Korjaus vaatii Lovablen
+tietokannan muutoksen tai vanhojen Printify-tuotteiden poiston (omistajan päätös). Oma tausta tuo EU-kopiot oikein.
+
+**Oma tausta (oma-tausta-haara):** tilausvahti ennen tuotantoa: EU:n ulkopuolinen painotalo tai kulu yli myynnin
+ilman ALV:tä pysäyttää tilauksen ja hälyttää heti. Aamuyhteenvedossa toteutunut kate ja Premium-laskuri.
+
+**Gelato:** hintoja ei saatu (sivut palauttavat 403, katalogi vaatii tilin). KATTEET.md:ssä rajahinnat, joilla
+Gelato olisi Printifyä parempi.
 
 ## 26.10.: keskiostos, Tonnin seteli, rakenteinen data, evästeet, uudet tuotteet
 
@@ -299,3 +335,7 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 26.10. | Rakenteinen data (481/481 validi), Consent Mode v2, syötteen kateluokat ja myydyimmät. | main ba19d66-815c007 | Search Consolen tuotevirheet, GDPR | Search Consolen tarkistus 1-2 viikon päästä |
 | 26.10. | Nopeus: tuotesivun esirenderöity sisältö näkyviin heti, tuoterivi upotettuna (ensimmäinen versio peruttiin). | main 593dd04 | Tuotesivu LCP 7,1 s -> 3,5 s, suorituskyky 69 -> 83 | Staattiset pääkuvat, middleware |
 | 26.10. | 13 uutta tuotetta Printifyyn (12 julistetta, 1 tarra), kate 31-33 %. | oma-tausta 4800fae | Uusia tuotteita yli 30 %:n katteella | Tarkista hinnat ja kategoria synkronoinnin jälkeen |
+| 26.10. | Blogit: tuotekortit, Katso tuotteet, laskeutumissivulinkit; blogien tuotelistojen rakenteinen data korjattu. | main 0edaf37 | 950 klikkausta/kk blogeista ostopolulle | Seuraa blogien konversiota |
+| 26.10. | Nopeus uudelleen (korjattu esikatselu). | main 593dd04 | Tuotesivu LCP 7,1 -> 3,5 s, perf 69 -> 83 | Staattiset pääkuvat |
+| 27.10. | Tappioesto: 301 tappiollista varianttia ja 6 tuotetta piiloon, tekstit päivitetty. | main 029e2dc, 35db534 | Ei tappiollisia myyntejä | Hinnat ja EU-kopioiden käyttöönotto Lovablessa |
+| 27.10. | Katteet ilman Printifyn ALV:tä (ALV-rekisteri). | oma-tausta | Oikea katekuva | |
