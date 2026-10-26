@@ -121,6 +121,7 @@ describe("vanhat tunnisteet ja Seniorituki", () => {
       "scripts",
       "supabase",
       ":!src/config/yritys.ts",
+      ":!api/_lib/yritys.js",
       ":!src/config/yritys.test.ts",
     ]);
     expect(osumat).toEqual([]);
