@@ -4,8 +4,9 @@
  *   1. jokaisen rivin painotalo on EU:ssa (katalogin /catalog/print_providers/{id}.json location.country, varalla
  *      tilausrivin metadata.country). Printify Choice (id 99) on reititysverkko, joka valitsee painotalon tilauskohtaisesti:
  *      se hyväksytään vain, jos tilausrivi itse kertoo EU-maan.
- *   2. Printifyn kokonaiskulu (total_price + total_shipping + total_tax) ei ylitä tilauksen myyntiä ilman alv:tä
- *      ((total - ostetut lahjakortit) / 1,255).
+ *   2. Printifyn kulu ilman alv:tä (total_price + total_shipping) ei ylitä tilauksen myyntiä ilman alv:tä
+ *      ((total - ostetut lahjakortit) / 1,255). Tmi Inteller on ALV-rekisterissä (FI35836772): Printifyn veloittama alv
+ *      (total_tax) vähennetään ALV-ilmoituksessa, joten se ei ole kulu.
  * Jos jompikumpi ei täyty, tilausta ei lähetetä tuotantoon: tila 'pysaytetty', hälytys omistajalle heti, eikä valvonta
  * yritä uudelleen (omistaja päättää: lähettää Printifyn hallinnasta tuotantoon tai peruu).
  * Puhdas moduuli: Printify-haku annetaan parametrina (testit mockaavat fetchin).
@@ -16,13 +17,16 @@ import { maaKoodi, onEU } from "./eu.js";
 export const PRINTIFY_CHOICE_ID = 99;
 const r2 = (x) => Math.round(x * 100) / 100;
 
-/** Printify-tilauksen kulut euroina (sentit / 100; tilin valuutta oletetaan euroksi). null, jos summia ei ole. */
+/**
+ * Printify-tilauksen kulut euroina (sentit / 100; tilin valuutta oletetaan euroksi). null, jos summia ei ole.
+ * kulu = ilman alv:tä (vähennettävä, 27.10.2026 omistajan linjaus); kuluSisAlv vain tiedoksi.
+ */
 export function printifyKulut(o) {
   const n = (x) => (typeof x === "number" && Number.isFinite(x) ? x : null);
   const hinta = n(o?.total_price), toimitus = n(o?.total_shipping);
   if (hinta === null || toimitus === null) return null;
   const vero = n(o?.total_tax) ?? 0;
-  return { kulu: r2((hinta + toimitus + vero) / 100), kuluIlmanAlv: r2((hinta + toimitus) / 100), tuotteet: r2(hinta / 100), toimitus: r2(toimitus / 100), vero: r2(vero / 100) };
+  return { kulu: r2((hinta + toimitus) / 100), kuluIlmanAlv: r2((hinta + toimitus) / 100), kuluSisAlv: r2((hinta + toimitus + vero) / 100), tuotteet: r2(hinta / 100), toimitus: r2(toimitus / 100), vero: r2(vero / 100) };
 }
 
 /** Oman tilauksen myynti (sis. alv) ilman ostettuja lahjakortteja ja sama ilman alv:tä. */

@@ -183,7 +183,7 @@ async function tuoKantaan(r) {
 console.log(`Uudet tuotteet ${toteuta ? "(TOTEUTUS: luo Printifyyn, ei julkaise)" : "(kuiva-ajo, ei kirjoita Printifyyn eikä kantaan)"}`);
 console.log(`Katalogi: ${katalogi.lahde}`);
 console.log(`Hinnoittelu (malli ${hintamalli.nimi}): toimitusmaksu ${euroa(toimitusmaksu)}, ilmainen ${euroa(ilmainenRaja)} alkaen, kate >= ${prosenttia(kateraja)}${Object.keys(hintamalli.pohjahinnat).length ? ", ei alle kategorian pohjahinnan" : ""}${Object.keys(hintamalli.kiinteat).length ? `, kiinteät kauppahinnat ${Object.entries(hintamalli.kiinteat).map(([k, v]) => `${k} ${euroa(v)}`).join(", ")}` : ""}.`);
-console.log(`  (kate näytetään myös Printifyn ALV:n kanssa: kulu ja toimitus x 1,255, jos tilillä ei ole ALV-tunnusta)`);
+console.log(`  (kate ilman Printifyn ALV:tä: Tmi Inteller on ALV-rekisterissä ja vähentää sen)`);
 
 const luodut = joLuodut(lueKirjaukset(kansio));
 const yhteenveto = { suunniteltu: 0, luotu: 0, "yli-enimmaishinnan": 0, ohitettu: 0, jo: 0, virhe: 0 };
@@ -225,7 +225,7 @@ for (const polku of listaPolut) {
       console.log(`  kulut:     tuote ${kulut}${r.kulutArvio ? " (ARVIO)" : " (Printify)"}, toimitus Suomeen ${euroa(r.toimitusSentit / 100)}`);
     }
     if (h?.hinta != null) {
-      console.log(`  hinta:     ${euroa(h.hinta)} (${h.peruste}${h.pohja ? `, pohja ${euroa(h.pohja)}` : ""}), kate ${prosenttia(h.kate)} / nettokate ${euroa(h.nettokate)}; Printifyn ALV:n kanssa ${prosenttia(h.kateAlv)} / ${euroa(h.nettokateAlv)}`);
+      console.log(`  hinta:     ${euroa(h.hinta)} (${h.peruste}${h.pohja ? `, pohja ${euroa(h.pohja)}` : ""}), kate ${prosenttia(h.kate)} / nettokate ${euroa(h.nettokate)}`);
       if (h.varoitus) console.log(`  HUOM:      ${h.varoitus}`);
     }
     for (const k of r.kuvat || []) console.log(`  kuva:      ${suht(k.polku)} (${r.painoalue.width}×${r.painoalue.height}${r.painoalue.katalogista ? "" : ", oletuskoko"}, ${r.painoalue.position}, teksti ${k.vari}${k.tuotevarit.length ? ` ${k.tuotevarit.join(", ")}` : ""})${lippu("--ei-kuvia") && !toteuta ? " [ei renderöity]" : ""}`);

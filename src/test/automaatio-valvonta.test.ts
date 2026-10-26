@@ -244,7 +244,7 @@ describe("Tilausvahti ennen send_to_productionia", () => {
     const r = await lahetaPrintifyyn(kanta.orders[0].id);
     expect(r).toMatchObject({ ok: false, vaihe: "pysaytetty" });
     const o = kanta.orders[0];
-    expect(o).toMatchObject({ printify_status: "pysaytetty", printify_order_id: "pf-tilaus-1", next_retry_at: null, printify_cost: 39.06 });
+    expect(o).toMatchObject({ printify_status: "pysaytetty", printify_order_id: "pf-tilaus-1", next_retry_at: null, printify_cost: 31.13 });
     expect(String(o.printify_error)).toMatch(/SPOKE Custom Products EU:n ulkopuolella \(US\)/);
     expect(String(o.printify_error)).toMatch(/ylittää myynnin ilman alv:tä 20,56 €/);
     expect(tuotantoon(kutsut)).toHaveLength(0);
@@ -252,7 +252,7 @@ describe("Tilausvahti ennen send_to_productionia", () => {
     expect(h).toHaveLength(1);
     expect(h[0].body!.subject).toMatch(/pysäytetty ennen Printifyn tuotantoa/);
     expect(String(h[0].body!.text)).toMatch(/Tilaus: 11111111-2222-3333-4444-555555555555/);
-    expect(String(h[0].body!.text)).toMatch(/Printifyn kulu 39,06 €/);
+    expect(String(h[0].body!.text)).toMatch(/Printifyn kulu 31,13 €/);
     expect(String(h[0].body!.text)).toMatch(/Valvonta ei yritä uudelleen/);
     expect(kanta.events.some((e) => e.kind === "printify_pysaytetty")).toBe(true);
     // Valvonnan uusi yritys: ei Printify-kutsuja, ei hälytystä.
@@ -263,10 +263,10 @@ describe("Tilausvahti ennen send_to_productionia", () => {
 
   it("EU-painotalo, mutta Printify-kulu yli myynnin alv 0: pysäytetään", async () => {
     kanta.orders.push(tilaus({ status: "maksettu" }));
-    const kutsut = verkko({ kulut: { total_price: 1500, total_shipping: 900, total_tax: 612 } });
+    const kutsut = verkko({ kulut: { total_price: 1700, total_shipping: 900, total_tax: 663 } });
     await lahetaPrintifyyn(kanta.orders[0].id);
     expect(kanta.orders[0].printify_status).toBe("pysaytetty");
-    expect(String(kanta.orders[0].printify_error)).toMatch(/Printifyn kulu 30,12 € .* ylittää myynnin ilman alv:tä 24,54 €/);
+    expect(String(kanta.orders[0].printify_error)).toMatch(/Printifyn kulu 26,00 € .* ylittää myynnin ilman alv:tä 24,54 €/);
     expect(tuotantoon(kutsut)).toHaveLength(0);
   });
 

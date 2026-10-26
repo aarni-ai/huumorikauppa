@@ -38,7 +38,7 @@ describe("Tilausvahti: painotalon maa", () => {
   });
   it("kulut, myynti ja tulos", async () => {
     const o = { total_price: 644, total_shipping: 2469, total_tax: 793, line_items: [{ print_provider_id: 1, metadata: { title: "Muki", country: "United States" } }] };
-    expect(printifyKulut(o)).toEqual({ kulu: 39.06, kuluIlmanAlv: 31.13, tuotteet: 6.44, toimitus: 24.69, vero: 7.93 });
+    expect(printifyKulut(o)).toEqual({ kulu: 31.13, kuluIlmanAlv: 31.13, kuluSisAlv: 39.06, tuotteet: 6.44, toimitus: 24.69, vero: 7.93 });
     expect(printifyKulut({ total_price: null })).toBeNull();
     expect(tilauksenMyynti({ total: 76.8, items: [{ type: "giftcard", unit_price: 50, quantity: 1 }] })).toEqual({ myynti: 26.8, myyntiAlv0: 21.35 });
     const t = await tarkistaEnnenTuotantoa(o, { total: 26.8, items: [] }, { haePainotalo: hae });
@@ -90,7 +90,7 @@ describe("Päivän yhteenveto: toteutunut kate ja pysäytetyt", () => {
     expect(teksti).toMatch(/#A0000000 30,80 €, kate 6,44 € \| toteutunut: Printify 18,42 €, myynti alv 0 24,54 €, kate 5,41 €/);
     expect(teksti).toMatch(/#B0000000 30,80 €, kate 6,44 € \| Printify-kulu ei tiedossa/);
     expect(teksti).toMatch(/#C0000000 .* \| PYSÄYTETTY/);
-    expect(teksti).toMatch(/Eilen toteutunut \(Printifyn todellinen kulu 2\/3 tilauksesta\): myynti alv 0 49,08 €, Printify 57,48 € \(sis. Printifyn alv\), kate -9,82 €; kaikki tilaukset \(muilta arvio\) -3,38 €/);
+    expect(teksti).toMatch(/Eilen toteutunut \(Printifyn todellinen kulu 2\/3 tilauksesta\): myynti alv 0 49,08 €, Printify 57,48 € \(ilman alv:tä\), kate -9,82 €; kaikki tilaukset \(muilta arvio\) -3,38 €/);
     expect(teksti).toMatch(/Pysäytetty ennen tuotantoa \(tilausvahti, odottaa päätöstäsi\): 1\n {2}#C0000000 30,80 €: tilausvahti: Muki/);
     expect(teksti).toMatch(/Kuukauden toteutunut \(Printifyn todellinen kulu 2\/3/);
     expect(teksti).toMatch(/Suositus: ota Printify Premium käyttöön \(säästö 5,01 € \/ 30 pv\)/);
@@ -102,7 +102,7 @@ describe("Päivän yhteenveto: toteutunut kate ja pysäytetyt", () => {
     const tallenna = vi.fn(async () => {});
     const lista: Rivi[] = [t("a", { printify_order_id: "p1" }), t("b", { printify_order_id: "p2", printify_cost: 1, printify_product_cost: 1 }), t("c"), t("d", { printify_order_id: "p4" })];
     expect(await taydennaKulut(lista, { haeTilaus, tallenna, max: 1 })).toBe(1);
-    expect(lista[0]).toMatchObject({ printify_cost: 39.06, printify_cost_ex_tax: 31.13, printify_product_cost: 6.44 });
+    expect(lista[0]).toMatchObject({ printify_cost: 31.13, printify_cost_ex_tax: 31.13, printify_product_cost: 6.44 });
     expect(lista[3].printify_cost).toBeUndefined();
     expect(tallenna).toHaveBeenCalledTimes(1);
   });
@@ -127,14 +127,14 @@ describe("Tilauskatteet-skripti: laskenta", () => {
     expect(h({ product_id: "poistettu", metadata: { title: "Tonnin Seteli｜T-Paita" } })).toMatchObject({ hinta: 24.9, lahde: "nimi" });
     expect(h({ product_id: "x", metadata: { title: "Muu", price: 1490 } })).toEqual({ hinta: 14.9, lahde: "printify", slug: null });
   });
-  it("tilauksen kate: toimitusmaksu alle 79 €, alv, Stripe, Printifyn alv mukana ja ilman", () => {
-    const l = laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 39.06, kuluIlmanAlv: 31.13 });
-    expect(l).toMatchObject({ tuotteet: 19.9, toimitus: 6.9, maksettu: 26.8, myyntiAlv0: 21.35, stripe: 0.65, kulu: 39.06, kate: -18.36, kateIlmanAlv: -10.43 });
-    expect(l.kateProsentti).toBeCloseTo(-0.86, 2);
-    expect(laskeTilaus([{ hinta: 49.9, quantity: 2 }], { kulu: 50, kuluIlmanAlv: 40 }).toimitus).toBe(0);
-    expect(laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 39.06, kuluIlmanAlv: 31.13 }, { kurssi: 0.87 }).kulu).toBe(33.98);
+  it("tilauksen kate: toimitusmaksu alle 79 €, alv, Stripe, Printifyn alv vähennetään (ei kulu)", () => {
+    const l = laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 31.13, kuluIlmanAlv: 31.13, kuluSisAlv: 39.06 });
+    expect(l).toMatchObject({ tuotteet: 19.9, toimitus: 6.9, maksettu: 26.8, myyntiAlv0: 21.35, stripe: 0.65, kulu: 31.13, alv: 7.93, kate: -10.43, kateIlmanAlv: -10.43 });
+    expect(l.kateProsentti).toBeCloseTo(-0.488, 2);
+    expect(laskeTilaus([{ hinta: 49.9, quantity: 2 }], { kulu: 40, kuluIlmanAlv: 40, kuluSisAlv: 50 }).toimitus).toBe(0);
+    expect(laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 31.13, kuluIlmanAlv: 31.13, kuluSisAlv: 39.06 }, { kurssi: 0.87 }).kulu).toBe(27.08);
     const y = yhteensa([{ luvut: l }, { luvut: l }]);
-    expect(y).toMatchObject({ tilauksia: 2, maksettu: 53.6, kulu: 78.12, kate: -36.72 });
+    expect(y).toMatchObject({ tilauksia: 2, maksettu: 53.6, kulu: 62.26, alv: 15.86, kate: -20.86 });
   });
   it("osion korvaus säilyttää käsin kirjoitetun lohkon, ensimmäinen ajo ennen ensimmäistä ##-otsikkoa", () => {
     const alku = "# Katteet\n\nJohdanto\n\n## Muu\n\nx\n";
@@ -146,9 +146,9 @@ describe("Tilauskatteet-skripti: laskenta", () => {
     expect(toka).not.toContain("taulu 1");
   });
   it("Markdown: ei henkilötietoja, EI EU -merkintä, putkimerkki suojattu", () => {
-    const l = laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 39.06, kuluIlmanAlv: 31.13 });
+    const l = laskeTilaus([{ hinta: 19.9, quantity: 1 }], { kulu: 31.13, kuluIlmanAlv: 31.13, kuluSisAlv: 39.06 });
     const md = markdown([{ pvm: "9.10.2026", tyyppi: "api", asiakas: "Liisa K.", luvut: l, rivit: [{ title: "Muki | X", variant: "11oz", quantity: 1, hinta: 19.9, lahde: "tuote", painotalo: { nimi: "SPOKE Custom Products", maa: "US", eu: false } }] }], { paiva: "2026-10-26", alkaen: "1.6.2026" });
-    expect(md).toContain("| 9.10.2026 | Liisa K. | 1 x Muki \\| X (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |");
+    expect(md).toContain("| 9.10.2026 | Liisa K. | 1 x Muki \\| X (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 31,13 € | 7,93 € | -10,43 € | -48,8 % |");
     expect(md).not.toMatch(/[–—]/);
   });
 });

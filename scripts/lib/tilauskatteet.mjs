@@ -3,7 +3,8 @@
  * Ei verkkoa. Kaava kuten api/_lib/kate.js, mutta Printifyn todellisilla tilauskuluilla:
  *   maksettu      = kaupan hinnat x kpl + toimitusmaksu (6,90 €, jos tuotteet alle 79 €)
  *   myynti alv 0  = maksettu / 1,255
- *   nettokate     = myynti alv 0 - Printify (total_price + total_shipping + total_tax) - Stripe (1,5 % + 0,25 €)
+ *   nettokate     = myynti alv 0 - Printify ilman alv:tä (total_price + total_shipping) - Stripe (1,5 % + 0,25 €)
+ *   Printifyn alv (total_tax) vähennetään ALV-ilmoituksessa (Tmi Inteller, FI35836772), joten se ei ole kulu.
  */
 import { ALV, STRIPE_PROSENTTI, STRIPE_KIINTEA } from "../../api/_lib/kate.js";
 
@@ -86,10 +87,11 @@ export function laskeTilaus(rivit, kulut, { toimitusmaksu = 6.9, ilmainenRaja = 
   const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
   const kulu = kulut.kulu * kurssi;
   const kuluIlmanAlv = kulut.kuluIlmanAlv * kurssi;
+  const alv = ((kulut.kuluSisAlv ?? kulut.kulu) - kulut.kuluIlmanAlv) * kurssi;
   const kate = myyntiAlv0 - kulu - stripe;
   const kateIlmanAlv = myyntiAlv0 - kuluIlmanAlv - stripe;
   return {
-    tuotteet, toimitus, maksettu, myyntiAlv0: r2(myyntiAlv0), stripe: r2(stripe), kulu: r2(kulu), kuluIlmanAlv: r2(kuluIlmanAlv),
+    tuotteet, toimitus, maksettu, myyntiAlv0: r2(myyntiAlv0), stripe: r2(stripe), kulu: r2(kulu), kuluIlmanAlv: r2(kuluIlmanAlv), alv: r2(alv),
     kate: r2(kate), kateProsentti: myyntiAlv0 > 0 ? kate / myyntiAlv0 : null,
     kateIlmanAlv: r2(kateIlmanAlv), kateIlmanAlvProsentti: myyntiAlv0 > 0 ? kateIlmanAlv / myyntiAlv0 : null,
   };
@@ -99,8 +101,8 @@ export function laskeTilaus(rivit, kulut, { toimitusmaksu = 6.9, ilmainenRaja = 
 export function yhteensa(tilaukset) {
   const s = tilaukset.reduce((a, t) => ({
     maksettu: a.maksettu + t.luvut.maksettu, myyntiAlv0: a.myyntiAlv0 + t.luvut.myyntiAlv0, stripe: a.stripe + t.luvut.stripe,
-    kulu: a.kulu + t.luvut.kulu, kuluIlmanAlv: a.kuluIlmanAlv + t.luvut.kuluIlmanAlv, kate: a.kate + t.luvut.kate, kateIlmanAlv: a.kateIlmanAlv + t.luvut.kateIlmanAlv,
-  }), { maksettu: 0, myyntiAlv0: 0, stripe: 0, kulu: 0, kuluIlmanAlv: 0, kate: 0, kateIlmanAlv: 0 });
+    kulu: a.kulu + t.luvut.kulu, kuluIlmanAlv: a.kuluIlmanAlv + t.luvut.kuluIlmanAlv, alv: a.alv + (t.luvut.alv || 0), kate: a.kate + t.luvut.kate, kateIlmanAlv: a.kateIlmanAlv + t.luvut.kateIlmanAlv,
+  }), { maksettu: 0, myyntiAlv0: 0, stripe: 0, kulu: 0, kuluIlmanAlv: 0, alv: 0, kate: 0, kateIlmanAlv: 0 });
   const out = Object.fromEntries(Object.entries(s).map(([k, v]) => [k, r2(v)]));
   return { tilauksia: tilaukset.length, ...out, kateProsentti: s.myyntiAlv0 > 0 ? s.kate / s.myyntiAlv0 : null, kateIlmanAlvProsentti: s.myyntiAlv0 > 0 ? s.kateIlmanAlv / s.myyntiAlv0 : null };
 }
@@ -113,9 +115,9 @@ export function markdown(tilaukset, { paiva, alkaen, kurssi = 1, huomiot = [] } 
   const otsikko = [
     `Päivitetty ${paiva} skriptillä \`scripts/tilauskatteet.mjs\` (Printify-kaupan kaikki tilaukset ${alkaen} alkaen, perutut pois).`,
     "Myynti = kaupan nykyinen hinta (Supabase, printify_product_id; EU-kopiolle siirtokirjauksen kautta; varalla nimellä) x kpl +",
-    "toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu",
-    "(total_price + total_shipping + total_tax) - Stripe 1,5 % + 0,25 €. Printifyn alv (total_tax, 25,5 % ilman ALV-tunnusta)",
-    "on todellinen kulu, koska sitä ei saa vähennettyä; luvut ilman sitä alempana vertailuksi.",
+    "toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu ilman",
+    "alv:tä (total_price + total_shipping) - Stripe 1,5 % + 0,25 €. Printifyn veloittama alv (total_tax, 25,5 %) vähennetään",
+    "ALV-ilmoituksessa (Tmi Inteller on ALV-rekisterissä, FI35836772), joten se ei ole kulu; sarake vain tiedoksi.",
     kurssi === 1
       ? "Oletus: Printifyn summat ovat tilin valuutassa ja ne luetaan euroina (kuten muualla tässä tiedostossa). Jos tili on dollareissa, kulut ovat noin 13 % euromääriä suurempia (ajo `--kurssi 0.87`)."
       : `Printifyn summat muunnettu kertoimella ${kurssi} (tilin valuutta -> euro).`,
@@ -124,19 +126,19 @@ export function markdown(tilaukset, { paiva, alkaen, kurssi = 1, huomiot = [] } 
     "jolloin todellista myyntiä ei ole).",
   ];
   const taulu = [
-    "| Pvm | Asiakas | Tuotteet | Painotalo | Hinta sis. toimitus | Myynti alv 0 | Printify sis. alv | Printify ilman alv | Nettokate | Kate % |",
+    "| Pvm | Asiakas | Tuotteet | Painotalo | Hinta sis. toimitus | Myynti alv 0 | Printify ilman alv | Printifyn alv (vähennetään) | Nettokate | Kate % |",
     "|---|---|---|---|--:|--:|--:|--:|--:|--:|",
     ...tilaukset.map((t) => {
       const tuotteet = t.rivit.map((r) => `${r.quantity} x ${solu(r.title)}${r.variant ? ` (${solu(r.variant)})` : ""}, ${eur(r.hinta ?? 0)}${r.lahde === "printify" ? " (P)" : ""}`).join("; ");
       const talot = [...new Set(t.rivit.map((r) => `${solu(r.painotalo.nimi)} ${r.painotalo.maa || "?"}${r.painotalo.eu ? "" : " **EI EU**"}`))].join("; ");
-      return `| ${t.pvm}${t.tyyppi && t.tyyppi !== "api" ? ` (${t.tyyppi})` : ""} | ${solu(t.asiakas)} | ${tuotteet} | ${talot} | ${eur(t.luvut.maksettu)} | ${eur(t.luvut.myyntiAlv0)} | ${eur(t.luvut.kulu)} | ${eur(t.luvut.kuluIlmanAlv)} | ${eur(t.luvut.kate)} | ${t.luvut.kateProsentti == null ? "-" : pros(t.luvut.kateProsentti)} |`;
+      return `| ${t.pvm}${t.tyyppi && t.tyyppi !== "api" ? ` (${t.tyyppi})` : ""} | ${solu(t.asiakas)} | ${tuotteet} | ${talot} | ${eur(t.luvut.maksettu)} | ${eur(t.luvut.myyntiAlv0)} | ${eur(t.luvut.kuluIlmanAlv)} | ${eur(t.luvut.alv ?? 0)} | ${eur(t.luvut.kate)} | ${t.luvut.kateProsentti == null ? "-" : pros(t.luvut.kateProsentti)} |`;
     }),
-    `| **Yhteensä** | ${y.tilauksia} tilausta | | | ${eur(y.maksettu)} | ${eur(y.myyntiAlv0)} | ${eur(y.kulu)} | ${eur(y.kuluIlmanAlv)} | ${eur(y.kate)} | ${y.kateProsentti == null ? "-" : pros(y.kateProsentti)} |`,
+    `| **Yhteensä** | ${y.tilauksia} tilausta | | | ${eur(y.maksettu)} | ${eur(y.myyntiAlv0)} | ${eur(y.kuluIlmanAlv)} | ${eur(y.alv ?? 0)} | ${eur(y.kate)} | ${y.kateProsentti == null ? "-" : pros(y.kateProsentti)} |`,
   ];
   const summat = [
     `- Tilauksia ${y.tilauksia}, myynti sis. alv ${eur(y.maksettu)}, ilman alv:tä ${eur(y.myyntiAlv0)}, Stripe ${eur(y.stripe)}.`,
-    `- Printifyn kulut sis. Printifyn alv ${eur(y.kulu)}: nettokate ${eur(y.kate)} (${y.kateProsentti == null ? "-" : pros(y.kateProsentti)}).`,
-    `- Printifyn kulut ilman alv:tä ${eur(y.kuluIlmanAlv)}: nettokate ${eur(y.kateIlmanAlv)} (${y.kateIlmanAlvProsentti == null ? "-" : pros(y.kateIlmanAlvProsentti)}).`,
+    `- Printifyn kulut ilman alv:tä ${eur(y.kuluIlmanAlv)}: nettokate ${eur(y.kate)} (${y.kateProsentti == null ? "-" : pros(y.kateProsentti)}), keskimäärin ${eur(y.tilauksia ? y.kate / y.tilauksia : 0)} tilausta kohden.`,
+    `- Printifyn veloittama alv ${eur(y.alv ?? 0)} vähennetään ALV-ilmoituksessa (ei kulu).`,
   ];
   return [...otsikko, "", ...taulu, "", ...summat, ...(huomiot.length ? ["", "Huomiot:", "", ...huomiot.map((h) => `- ${h}`)] : [])].join("\n");
 }

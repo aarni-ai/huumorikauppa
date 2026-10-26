@@ -100,7 +100,8 @@ export function tilauksenKate(tilaus, tuotteetSlugilla = new Map()) {
 
 /**
  * Toteutunut kate Printifyn todellisella kululla (orders.printify_cost, tallennetaan tilausvahdissa ennen tuotantoa tai
- * yhteenvedossa jälkikäteen): myynti alv 0 - Printifyn kulu (sis. Printifyn alv) - Stripe. null, jos kulua ei tiedetä.
+ * yhteenvedossa jälkikäteen): myynti alv 0 - Printifyn kulu ilman alv:tä (alv vähennetään, Tmi Inteller ALV-rekisterissä) - Stripe.
+ * null, jos kulua ei tiedetä.
  */
 export function toteutunutKate(tilaus) {
   if (tilaus.printify_cost == null || tilaus.printify_cost === "") return null;
@@ -158,7 +159,7 @@ export function yhteenveto({ nyt = new Date(), eilen, kk, jumissa, pysaytetyt = 
   };
   const toteutunutYhteensa = (alku, lista, x) => {
     if (!lista.length) return `${alku}: ei tilauksia`;
-    const perus = `${alku} (Printifyn todellinen kulu ${x.n}/${lista.length} tilauksesta): myynti alv 0 ${eur(x.myyntiAlv0)}, Printify ${eur(x.kulu)} (sis. Printifyn alv), kate ${eur(x.kate)}`;
+    const perus = `${alku} (Printifyn todellinen kulu ${x.n}/${lista.length} tilauksesta): myynti alv 0 ${eur(x.myyntiAlv0)}, Printify ${eur(x.kulu)} (ilman alv:tä), kate ${eur(x.kate)}`;
     return x.n === lista.length ? perus : `${perus}; kaikki tilaukset (muilta arvio) ${eur(x.yhteensa)}`;
   };
   const rivit = [

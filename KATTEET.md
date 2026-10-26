@@ -1,5 +1,31 @@
 # Katteet Printifyn todellisilla kuluilla
 
+**Laskentaperuste (27.10.2026):** Tmi Inteller on ALV-rekisterissä (FI35836772). Printifyn veloittama arvonlisävero
+vähennetään ALV-ilmoituksessa, joten kaikki katteet lasketaan Printify-kululla ilman ALV:tä (Printifyn
+verollinen summa / 1,255 = tuote + toimitus ilman veroriviä). Katalogin tuote- ja toimituskulut ovat valmiiksi ilman
+ALV:tä. Myynnin ALV (25,5 %) vähennetään myyntihinnasta. Oman taustan katesääntö: myynti estetään alle 20 %:n
+katteella, paketit ja alennuskoodit vain, jos kate pysyy vähintään 30 %:ssa.
+
+**Kate tuoteryhmittäin nykyhinnoilla** (toimitusmaksu 6,90 € alle 79 €, yhden kappaleen tilaus, heikoin koko,
+EU-siirron jälkeiset kulut; mediaani tuoteryhmän sisällä):
+
+| Tuoteryhmä | Tuotteita | Hinta | Nettokate € | Kate % | Yli 30 % | Yli 40 % |
+|---|---|---|---|---|---|---|
+| T-paidat | 310 | 24,90 € | 7,22 € | 28,5 % | ei | ei |
+| Hupparit | 163 | 49,90 € | 4,80 € | 10,6 % | ei | ei |
+| Koristeet | 2 | 19,90 € | 3,00 € | 14,1 % | ei | ei |
+| Pitkähihaiset | 1 | 39,90 € | 1,82 € | 4,9 % | ei | ei |
+| Pipot | 1 | 39,90 € | 1,78 € | 4,8 % | ei | ei |
+| Bodyt | 1 | 24,90 € | -2,49 € | -9,8 % | ei | ei |
+| Seinätaulut | 1 | 39,90 € | -0,47 € | -1,3 % | ei | ei |
+| Peitot | 1 | 34,90 € | -23,13 € | -69,4 % | ei | ei |
+| Tarrat (oma teksti) | 1 | 4,99 € | -7,84 € | -82,8 % | ei | ei |
+| Uudet julisteet (12) | 12 | 22,90 € | 7,47 € | 31,5 % | kyllä | ei |
+| Uusi tarra (Se oli tonnin seteli) | 1 | 11,90 € | 4,97 € | 33,2 % | kyllä | ei |
+| Kaikki myynnissä olevat (ennen uusia) | 481 | | 5,89 € (ka) | 20,6 % (ka) | | |
+
+Toteutuneet tilaukset 1.6.2026 alkaen (alla): 17 tilausta, nettokate 60,76 € (13,4 %), keskimäärin 3,57 € tilausta kohden.
+
 Päivitetty 2026-10-25 skriptillä `scripts/katteet.mjs` (Printify-kauppa 26630629). Kaava api/_lib/kate.js: myynti alv 0 =
 (hinta + toimitusmaksu) / 1,255; nettokate = myynti alv 0 - Printifyn tuotekulu - Suomen toimituskulu (1. kappale) -
 Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variantti (yleensä suurin koko). Raja 40 %.
@@ -11,52 +37,50 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 
 Päivitetty 2026-10-26 skriptillä `scripts/tilauskatteet.mjs` (Printify-kaupan kaikki tilaukset 1.6.2026 alkaen, perutut pois).
 Myynti = kaupan nykyinen hinta (Supabase, printify_product_id; EU-kopiolle siirtokirjauksen kautta; varalla nimellä) x kpl +
-toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu
-(total_price + total_shipping + total_tax) - Stripe 1,5 % + 0,25 €. Printifyn alv (total_tax, 25,5 % ilman ALV-tunnusta)
-on todellinen kulu, koska sitä ei saa vähennettyä; luvut ilman sitä alempana vertailuksi.
+toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu ilman
+alv:tä (total_price + total_shipping) - Stripe 1,5 % + 0,25 €. Printifyn veloittama alv (total_tax, 25,5 %) vähennetään
+ALV-ilmoituksessa (Tmi Inteller on ALV-rekisterissä, FI35836772), joten se ei ole kulu; sarake vain tiedoksi.
 Oletus: Printifyn summat ovat tilin valuutassa ja ne luetaan euroina (kuten muualla tässä tiedostossa). Jos tili on dollareissa, kulut ovat noin 13 % euromääriä suurempia (ajo `--kurssi 0.87`).
 Asiakkaasta vain etunimi ja sukunimen alkukirjain. Hinta (P) = kaupasta ei löytynyt tuotetta, käytetty Printifyn
 vähittäishintaa (metadata.price). Tyyppi manual = luotu Printifyn hallinnassa (voi olla korvaus tai uudelleenlähetys,
 jolloin todellista myyntiä ei ole).
 
-| Pvm | Asiakas | Tuotteet | Painotalo | Hinta sis. toimitus | Myynti alv 0 | Printify sis. alv | Printify ilman alv | Nettokate | Kate % |
+| Pvm | Asiakas | Tuotteet | Painotalo | Hinta sis. toimitus | Myynti alv 0 | Printify ilman alv | Printifyn alv (vähennetään) | Nettokate | Kate % |
 |---|---|---|---|--:|--:|--:|--:|--:|--:|
-| 4.6.2026 | (poistettu) | 1 x Mersumies \| Kahvikuppi (11oz / Black), 14,90 € | #274 CZ | 21,80 € | 17,37 € | 22,18 € | 17,68 € | -5,39 € | -31,0 % |
-| 12.6.2026 (manual) | (poistettu) | 1 x Maailman Paras Ystävä ornament \| Ceramic Ornament (Circle / One Size), 19,90 € | Imagine Your Photos US **EI EU** | 26,80 € | 21,35 € | 19,72 € | 15,71 € | 0,98 € | 4,6 % |
-| 29.6.2026 | (poistettu) | 1 x Olen eläkkeellä \| T-Paita (Dark Heather / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,16 € | 16,07 € | 4,45 € | 17,6 % |
-| 29.6.2026 | (poistettu) | 1 x Saatanan Tunarit \| T-Paita (Sport Grey / M), 24,90 € | #417 LV | 31,80 € | 25,34 € | 19,68 € | 15,69 € | 4,93 € | 19,5 % |
-| 20.7.2026 | (poistettu) | 1 x maailman paras ÄITI \| Huppari (Light Pink / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 44,41 € | 35,39 € | -0,25 € | -0,6 % |
-| 28.7.2026 | (poistettu) | 1 x ICE AATANA｜T-Paita (White / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,64 € | 16,45 € | 3,97 € | 15,7 % |
-| 5.8.2026 | (poistettu) | 1 x Tonnin Seteli \| T-Paita (Black / 5XL), 24,90 € | OPT OnDemand CZ | 31,80 € | 25,34 € | 22,36 € | 17,82 € | 2,25 € | 8,9 % |
-| 20.8.2026 | (poistettu) | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
-| 8.9.2026 | Johanna L. | 1 x 40v – henkisesti 18, tyylillä 40 \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
-| 28.9.2026 | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 45,64 € | 36,37 € | -1,48 € | -3,3 % |
-| 9.10.2026 | Liisa K. | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 39,06 € | 31,13 € | -18,36 € | -86,0 % |
-| 17.10.2026 | Tero H. | 1 x Tonnin Seteli \| T-Paita (S / White), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
-| 21.10.2026 (manual) | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 36,37 € | 36,37 € | 7,79 € | 17,2 % |
-| 21.10.2026 (manual) | Tiina K. | 1 x Ceramic Mug (EU) (11oz), 9,80 € | OPT OnDemand CZ | 16,70 € | 13,31 € | 28,71 € | 22,88 € | -15,90 € | -119,5 % |
-| 24.10.2026 | Noora S. | 1 x Tonnin Seteli \| T-Paita (S / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
-| 25.10.2026 | Satu V. | 1 x Tonnin Seteli \| T-Paita (3XL / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 20,59 € | 16,41 € | 4,02 € | 15,9 % |
-| 26.10.2026 | Niina Y. | 1 x 60v – kokenut, ei vanha \| T-Paita (M / Graphite Heather), 24,90 € | #417 LV | 31,80 € | 25,34 € | 17,06 € | 13,59 € | 7,55 € | 29,8 % |
-| **Yhteensä** | 17 tilausta | | | 570,50 € | 454,58 € | 468,82 € | 381,00 € | -27,06 € | -6,0 % |
+| 4.6.2026 | (poistettu) | 1 x Mersumies \| Kahvikuppi (11oz / Black), 14,90 € | #274 CZ | 21,80 € | 17,37 € | 17,68 € | 4,50 € | -0,89 € | -5,1 % |
+| 12.6.2026 (manual) | (poistettu) | 1 x Maailman Paras Ystävä ornament \| Ceramic Ornament (Circle / One Size), 19,90 € | Imagine Your Photos US **EI EU** | 26,80 € | 21,35 € | 15,71 € | 4,01 € | 4,99 € | 23,4 % |
+| 29.6.2026 | (poistettu) | 1 x Olen eläkkeellä \| T-Paita (Dark Heather / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 16,07 € | 4,09 € | 8,54 € | 33,7 % |
+| 29.6.2026 | (poistettu) | 1 x Saatanan Tunarit \| T-Paita (Sport Grey / M), 24,90 € | #417 LV | 31,80 € | 25,34 € | 15,69 € | 3,99 € | 8,92 € | 35,2 % |
+| 20.7.2026 | (poistettu) | 1 x maailman paras ÄITI \| Huppari (Light Pink / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 35,39 € | 9,02 € | 8,77 € | 19,4 % |
+| 28.7.2026 | (poistettu) | 1 x ICE AATANA｜T-Paita (White / XL), 24,90 € | #417 LV | 31,80 € | 25,34 € | 16,45 € | 4,19 € | 8,16 € | 32,2 % |
+| 5.8.2026 | (poistettu) | 1 x Tonnin Seteli \| T-Paita (Black / 5XL), 24,90 € | OPT OnDemand CZ | 31,80 € | 25,34 € | 17,82 € | 4,54 € | 6,79 € | 26,8 % |
+| 20.8.2026 | (poistettu) | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 31,13 € | 7,93 € | -10,43 € | -48,8 % |
+| 8.9.2026 | Johanna L. | 1 x 40v – henkisesti 18, tyylillä 40 \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 31,13 € | 7,93 € | -10,43 € | -48,8 % |
+| 28.9.2026 | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 36,37 € | 9,27 € | 7,79 € | 17,2 % |
+| 9.10.2026 | Liisa K. | 1 x 40 vuotta töitä, nyt ikuinen viikonloppu \| Muki (11oz), 19,90 € | SPOKE Custom Products US **EI EU** | 26,80 € | 21,35 € | 31,13 € | 7,93 € | -10,43 € | -48,8 % |
+| 17.10.2026 | Tero H. | 1 x Tonnin Seteli \| T-Paita (S / White), 24,90 € | #417 LV | 31,80 € | 25,34 € | 13,59 € | 3,47 € | 11,02 € | 43,5 % |
+| 21.10.2026 (manual) | Johanna H. | 1 x Tonnin Seteli \| Huppari (Black / L), 49,90 € | Textildruck Europa DE | 56,80 € | 45,26 € | 36,37 € | 0,00 € | 7,79 € | 17,2 % |
+| 21.10.2026 (manual) | Tiina K. | 1 x Ceramic Mug (EU) (11oz), 9,80 € | OPT OnDemand CZ | 16,70 € | 13,31 € | 22,88 € | 5,83 € | -10,07 € | -75,7 % |
+| 24.10.2026 | Noora S. | 1 x Tonnin Seteli \| T-Paita (S / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 13,59 € | 3,47 € | 11,02 € | 43,5 % |
+| 25.10.2026 | Satu V. | 1 x Tonnin Seteli \| T-Paita (3XL / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 16,41 € | 4,18 € | 8,20 € | 32,4 % |
+| 26.10.2026 | Niina Y. | 1 x 60v – kokenut, ei vanha \| T-Paita (M / Graphite Heather), 24,90 € | #417 LV | 31,80 € | 25,34 € | 13,59 € | 3,47 € | 11,02 € | 43,5 % |
+| **Yhteensä** | 17 tilausta | | | 570,50 € | 454,58 € | 381,00 € | 87,82 € | 60,76 € | 13,4 % |
 
 - Tilauksia 17, myynti sis. alv 570,50 €, ilman alv:tä 454,58 €, Stripe 12,82 €.
-- Printifyn kulut sis. Printifyn alv 468,82 €: nettokate -27,06 € (-6,0 %).
-- Printifyn kulut ilman alv:tä 381,00 €: nettokate 60,76 € (13,4 %).
+- Printifyn kulut ilman alv:tä 381,00 €: nettokate 60,76 € (13,4 %), keskimäärin 3,57 € tilausta kohden.
+- Printifyn veloittama alv 87,82 € vähennetään ALV-ilmoituksessa (ei kulu).
 
 Huomiot:
 
-- 4.6.2026 (poistettu): tappiollinen (nettokate -5,39 €).
+- 4.6.2026 (poistettu): tappiollinen (nettokate -0,89 €).
 - 12.6.2026 (poistettu): Maailman Paras Ystävä ornament | Ceramic Ornament painettiin EU:n ulkopuolella (Imagine Your Photos, US).
-- 20.7.2026 (poistettu): tappiollinen (nettokate -0,25 €).
 - 20.8.2026 (poistettu): 40 vuotta töitä, nyt ikuinen viikonloppu | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
-- 20.8.2026 (poistettu): tappiollinen (nettokate -18,36 €).
+- 20.8.2026 (poistettu): tappiollinen (nettokate -10,43 €).
 - 8.9.2026 Johanna L.: 40v – henkisesti 18, tyylillä 40 | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
-- 8.9.2026 Johanna L.: tappiollinen (nettokate -18,36 €).
-- 28.9.2026 Johanna H.: tappiollinen (nettokate -1,48 €).
+- 8.9.2026 Johanna L.: tappiollinen (nettokate -10,43 €).
 - 9.10.2026 Liisa K.: 40 vuotta töitä, nyt ikuinen viikonloppu | Muki painettiin EU:n ulkopuolella (SPOKE Custom Products, US).
-- 9.10.2026 Liisa K.: tappiollinen (nettokate -18,36 €).
-- 21.10.2026 Tiina K.: tappiollinen (nettokate -15,90 €).
+- 9.10.2026 Liisa K.: tappiollinen (nettokate -10,43 €).
+- 21.10.2026 Tiina K.: tappiollinen (nettokate -10,07 €).
 - Kaupan tuotteista 125/820 osoittaa yhä EU-siirron vanhaan (EU:n ulkopuoliseen) Printify-tuotteeseen (printify_product_id = siirtokirjauksen vanhaId), esim. 100-akaalaista-verta-hauska-t-paita-0d6670, 100-harjavaltalaista-verta-hauska-t-paita-0d673b, 100-nummelalaista-verta-hauska-t-paita-0e8b16. Näiden tilaukset painetaan edelleen vanhalla painotalolla, kunnes kaupan rivi vaihdetaan EU-kopioon.
 
 Printify Premium (34,99 €/kk, -20 % vain tuotekulusta, ei toimituksesta eikä verosta):
@@ -110,10 +134,10 @@ Ennen = 22.10.2026, kaikki tuotteet vanhoilla painotaloilla. Jälkeen = EU-siirr
   MWW On Demand US, Jondo US).
 - Yksikään tuote ei yllä 40 %:iin nykyhinnoilla. Kalleimmalla koolla (kulu + toimitus suurin) 40 % vaatii
   t-paidalle 38,90 € (OPT OnDemand, kulu 12,22 € + toimitus 8,49 €) ja hupparille 89,90 € (Printify Choice,
-  25,66 € + 15,59 €; yli 79 €:n tilaus on toimitusmaksuton). Hinnoittelu on omistajan päätös; katesääntö (oma tausta) estää myynnin
-  alle 40 %:n, joten hinnat on nostettava ennen domainin siirtoa tai sääntöä muutettava.
-- Printify veloittaa tilauksista arvonlisäveron (25,5 %), jos tilillä ei ole ALV-tunnusta. Kulut yllä ovat ilman
-  sitä. ALV-tunnuksen lisäys Printifyn tilille (Settings > Billing) poistaa veloituksen.
+  25,66 € + 15,59 €; yli 79 €:n tilaus on toimitusmaksuton). Hinnoittelu on omistajan päätös; oman taustan katesääntö estää myynnin
+  alle 20 %:n katteella.
+- Printify veloittaa tilauksista arvonlisäveron (25,5 %). Se vähennetään ALV-ilmoituksessa (Tmi Inteller,
+  FI35836772), joten kulut yllä ovat ilman sitä.
 
 ## Mukit EU-painotalolla
 
@@ -135,22 +159,21 @@ enintään 51,90 €, mukit enintään 19,90 €. Vastaavan tuotteen korkein tav
 piilossa (16,90-19,90 €:lla kate alle 20 %). Kate = mediaanituote, heikoin koko, yhden kappaleen tilaus,
 EU-siirron jälkeiset kulut.
 
-| Kategoria | Hinta | Kate, Printify ilman ALV:tä (ALV-tunnus Printifyssä) | Kate, Printify ALV 25,5 % | Toimitus 5,90/60, ilman ALV:tä | Toimitus 5,90/60, ALV |
-|---|---|---|---|---|---|
-| T-paidat (310) | 24,90 € | 28,5 % / 7,22 € | 11,0 % / 2,79 € | 26,2 % / 6,44 € | 8,2 % / 2,01 € |
-| Hupparit (163) | 51,90 € | 13,6 % / 6,36 € | -7,8 % / -3,68 € | 12,1 % / 5,58 € | -9,7 % / -4,46 € |
-| Koristeet (2) | 19,90 € | 22,8 % / 4,87 € | 3,9 % / 0,84 € | 19,9 % | 0,3 % |
-| Pitkähihaiset, pipot (1+1) | 39,90 € | 4,8-4,9 % | alle 0 % | alle 5 % | alle 0 % |
+| Kategoria | Hinta | Kate, toimitus 6,90/79 | Kate, toimitus 5,90/60 |
+|---|---|---|---|
+| T-paidat (310) | 24,90 € | 28,5 % / 7,22 € | 26,2 % / 6,44 € |
+| Hupparit (163) | 51,90 € | 13,6 % / 6,36 € | 12,1 % / 5,58 € |
+| Koristeet (2) | 19,90 € | 22,8 % / 4,87 € | 19,9 % |
+| Pitkähihaiset, pipot (1+1) | 39,90 € | 4,8-4,9 % | alle 5 % |
 
-Johtopäätökset:
-1. **ALV-tunnus Printifyyn on suurin yksittäinen tekijä**: t-paidan kate 11 % -> 28,5 %. Ilman sitä mikään
-   kategoria ei yllä 20 %:iin.
-2. 30 %:n tavoite ei täyty yhdelläkään kategorialla kilpailijoiden hintakaton alla, kun tilauksessa on yksi tuote.
-   T-paidat ovat lähimpänä (28,5 %). Usean tuotteen tilauksessa Printifyn lisäkappaleen toimitus on halvempi kuin
-   ensimmäisen, joten kate nousee keskiostoksen kasvaessa.
-3. Hupparit: Printify Choice (US) kulu 23,77 € + toimitus 15,59 €. 51,90 €:lla kate 13,6 %, joten oman taustan uusi
-   katesääntö (myynti estetään alle 20 %:n katteella) estäisi kaikki hupparit. Vaihtoehdot: halvempi EU-painotalo
-   hupparille (selvitettävä katalogista), hinta yli kilpailijakaton, tai hupparit pois myynnistä domainin siirrossa.
+Johtopäätökset (Printify-kulu ilman ALV:tä, joka vähennetään):
+1. 30 %:n tavoite ei täyty t-paidoilla eikä hupparilla kilpailijoiden hintakaton alla, kun tilauksessa on yksi
+   tuote. T-paidat ovat lähimpänä (28,5 %, 30 % vaatisi 25,90 €). Usean tuotteen tilauksessa Printifyn
+   lisäkappaleen toimitus on halvempi kuin ensimmäisen, joten kate nousee keskiostoksen kasvaessa.
+2. Hupparit: Printify Choice kulu 23,77 € + toimitus 15,59 €. 51,90 €:lla kate 13,6 %, joten oman taustan
+   katesääntö (alle 20 %) estäisi hupparit. Vaihtoehdot: halvempi EU-painotalo, hinta yli kilpailijakaton, tai
+   hupparit pois myynnistä domainin siirrossa.
+3. Uudet julisteet (31,5 %) ja tonnin seteli -tarra (33,2 %) ylittävät 30 %.
 4. Oman taustan katesääntö muutettu 20 %:iin (haara oma-tausta), paketin ja ensitilausalennuksen raja 30 %.
 
 ## Kategorioittain (keskimääräinen heikoimman variantin kate)
