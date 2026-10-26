@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (Uusiku Oy 1.11.2026, tilauskatteet, tappioesto, EU-painotalot, blogit).
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
 ## Tilanne lyhyesti
 
@@ -26,13 +26,57 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10.: uusi tausta valmis Stripeä vaille, joulumyynti, syöte
+
+**Uusi tausta (testisivu huumorikauppa-five.vercel.app, tietokanta Neon Frankfurt):**
+- Taulut luotu (11), 781 tuotetta tuotu ja aktiivisina, kaikki 692 EU-siirtoa kytketty (0 riviä vanhoissa
+  tuotteissa), Printify-kulut kaikilla riveillä, tilattavuus tarkistettu: 162 varianttia, joita Printify ei nyt
+  valmista, piilotettu. Tuotesivut ja /api/products lukevat tietokantaa. Ajettiin kertaluontoisella, CRON_SECRETillä
+  suojatulla tehtävällä, joka poistettiin käytön jälkeen.
+- Korjattu: päivittäinen saatavuustarkistus kaatui oikeaa tietokantaa vasten (JSON koodattiin kahdesti).
+- CRON_SECRET luotu Verceliin ja tiedostoon .env.cron.local. RESEND_API_KEY ei ole Vercelissä (Resend-integraatio
+  ei ole lisännyt sitä). Puuttuvat avaimet: STRIPE_SECRET_KEY ja STRIPE_WEBHOOK_SECRET (Uusiku Oy:n uusi Stripe),
+  RESEND_API_KEY. Tarkka go-live-lista KAYTTOONOTTO.md:ssä.
+
+**Yritysvaihto (korjaus):** 1.11. ajastettu vaihto poistettu (GitHub Actions -työnkulku ja paikallinen ajastin).
+Myyjä vaihtuu Uusiku Oy:ksi vain ympäristömuuttujalla MYYJA=uusiku, joka asetetaan samassa julkaisussa kuin Uusiku Oy:n
+Stripe ja uusi tausta. Tuotannossa näkyy Inteller (tarkistettu), eikä mikään vaihdu 1.11.
+
+**Joulu (tuotannossa):**
+- Viimeinen tilauspäivä tilaushistoriasta (22 tilausta): pahin havaittu tuotanto + kuljetus + 2 arkipäivän puskuri
+  antaisi t-paidoille ja hupparille 30.11., mutta kaikille painotaloille ei ole toimitusdataa ja data on sesongin
+  ulkopuolelta, joten kaikki tuotetyypit pysyvät 20.11.2026:ssa (ei lupausta, jota data ei tue).
+  "Tilaa viimeistään pe 20.11.2026, niin ehtii jouluksi" tuotesivulla hinnan alla, ostoskorissa ja etusivulla;
+  poistuu automaattisesti 20.11. klo 23.59. Havainto: yksi kesän tilaus kesti ovelle noin 16 arkipäivää, yli
+  sivuston lupauksen 3-10 arkipäivää.
+- Joululahjasivut: uusi /joululahja-elakelaiselle; /joululahjat linkittää kaikkiin alasivuihin (miehelle, naiselle,
+  työkaverille, isälle, äidille, eläkeläiselle, alle 30 €) ja takaisin. Sivukartta ja llms.txt päivitetty.
+- 6 uutta blogiartikkelia: /blogi/hauska-joululahja-naiselle, /blogi/joululahja-aidille-hauskat-ideat,
+  /blogi/joululahja-papalle-ja-ukille, /blogi/joululahja-elakelaiselle, /blogi/joululahja-kaverille-alle-30-euroa,
+  /blogi/joululahja-veljelle (tuotekortit, UKK + FAQPage). Vanhojen URLien aiheet ennallaan.
+
+**Merchant-syöte (tuotannossa):** 2197 virhettä -> 0 (vaatteilta puuttui color, size, gender ja age_group
+maksuttomia listauksia varten; 309 virheellistä Google-kategoriaa). Lisäksi otsikoiden ajatusviivat ja kuvausten
+sisäiset #kaupunki-tagit siivottu. Validaattori: scripts/validoi-syote.mjs. Jäljellä varoitus: syöte on
+tuotetasoinen (koko "S/M/L/XL/2XL"); varianttitasoinen syöte vaatisi Lovable-lähteen muutoksen.
+
+**Keskiostos (laskelma KATTEET.md, toteutus uuteen taustaan):** paras katteen kannalta on "2 tuotetta -5 %" nykyisellä
+toimituksella 6,90 € / ilmainen 79 €:sta: jokainen ostoskorityyppi pysyy plussalla (heikoin 0,21 €). Ilmaisen
+toimituksen raja 50-69 € tai 5,90 € / 60 € ja -10 % tekisivät osasta koreja tappiollisia (paita + huppari). Arvioitu
+vaikutus +2-5 €/kk nykyisellä ja +4-10 €/kk tuplaliikenteellä. Uuden taustan toimitusehdot palautettiin 6,90 € / 79 €.
+
+**Uudet tuotteet:** 15 joulu- ja eläkeläispaitaa Printifyyn Textildruck Europalle (Saksa), 24,90 €, kate 31,7 %
+(Kinkkukooma alkaa klo 14, Joulupukin virallinen testaaja, Eläkkeellä. Kiireinen silti jne.). Hupparit ja mukit eivät
+yllä 30 %:iin kilpailijoiden hintakaton alla (paras huppari Atelier Katanga 23,6 % 51,90 €:lla, muki 20,8 %), joten
+niitä ei luotu. Havainto: Textildruckin paita (31,7 %) on katteeltaan parempi kuin nykyinen OPT-paita (28,5 %).
+
 ## 27.10.: kauppa siirtyy Uusiku Oy:lle 1.11.2026
 
 - Yritystiedot yhdestä lähteestä (api/_lib/yritys.js, src/config/yritys.ts): Uusiku Oy, Y-tunnus 3653666-7,
   ALV-numero FI36536667, Capellan puistotie 21, 00580 Helsinki (YTJ, avoindata.prh.fi, haettu 27.10.2026),
   huumorikauppa@gmail.com. Vaihto tapahtuu 1.11.2026 klo 00.00 Suomen aikaa: selaimessa heti, esirenderöidyssä
   HTML:ssä ajastetulla uudelleenrakennuksella (GitHub Actions .github/workflows/yritysvaihto.yml 31.10. klo 22.05 UTC
-  ja varalla paikallinen ajastus 22.15 UTC). Tuotannossa nyt, ennen vaihtoa näkyy Inteller.
+  ja varalla paikallinen ajastus 22.15 UTC). KORJATTU 27.10.: ajastus poistettu, vaihto MYYJA-muuttujalla (yllä).
 - Päivitetyt kohdat: alatunniste (myös ALV-numero ja osoite), toimitusehdot (myyjä ja myyjän yhteystiedot),
   tietosuojaseloste (rekisterinpitäjä), Tietoa meistä, yhteystiedot, UKK, rakenteinen data (Organization: legalName,
   taxID, vatID, osoite), llms.txt. Oman taustan tilausvahvistus ja kaikki sähköpostit: myyjän tiedot alatunnisteessa ja
@@ -372,3 +416,7 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 27.10. | Tappioesto: 301 tappiollista varianttia ja 6 tuotetta piiloon, tekstit päivitetty. | main 029e2dc, 35db534 | Ei tappiollisia myyntejä | Hinnat ja EU-kopioiden käyttöönotto Lovablessa |
 | 27.10. | Katteet ilman Printifyn ALV:tä (ALV-rekisteri). | oma-tausta | Oikea katekuva | |
 | 27.10. | Yritystiedot Uusiku Oy:lle 1.11.2026 (ajastettu), Seniorituki-mainos pois, ALV-erittely sähköposteihin. | main cd97f18-32b7da2, yritys-js; oma-tausta | Oikeat myyjän tiedot 1.11. alkaen | Stripe, Merchant Center ja Lovable-viestit omistajalta |
+| 27.10. | Yritysvaihto MYYJA-muuttujalla, 1.11. ajastus poistettu. | main fb12077 | Ei vaihtoa ennen Uusiku Oy:n Stripeä | MYYJA=uusiku go-livessä |
+| 27.10. | Merchant-syöte 2197 -> 0 virhettä. | main 049d3b6 | Maksuttomat Google-listaukset | Seuraa Merchant Centeriä |
+| 27.10. | 6 joulublogia, /joululahja-elakelaiselle, jouluaikataulu tuotesivulle, koriin ja etusivulle. | main b25f9e8, 4ea1967 | Joulun hakuliikenne ja konversio | |
+| 27.10. | Uusi tausta: kanta täytetty, korialennus -5 %, 15 uutta paitaa (31,7 %). | oma-tausta | Valmis go-liveen Stripeä vaille | Stripe-avaimet |
