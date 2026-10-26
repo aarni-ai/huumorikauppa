@@ -38,6 +38,36 @@ OPT OnDemand Ceramic Mug (EU): tuotekulu 5,88 €, toimitus Suomeen 10,39 €. H
 
 Alle 40 %, joten mukit pysyvät piilossa. 40 %:n kate vaatisi hinnan 28,90 € (toimitus 6,90 €).
 
+## Hintaehdotus 26.10.2026 (ei julkaistu)
+
+**Kilpailijat** (Shopify-tuotesyötteet 26.10.2026, kaikki tuotteet): Meemirotta t-paidat 24,99 € (256 tuotetta, kaikki
+koot samaan hintaan), hupparit 37,99-49,99 € (mediaani 49,99 €), mukit 14,99-18,99 €. Stuntman t-paidat mediaani
+22,00 €, 90 % enintään 24,90 € (kalliimmat ovat paita + body -paketteja 41,90 €), hupparit mediaani 44,90 €, 90 %
+enintään 51,90 €, mukit enintään 19,90 €. Vastaavan tuotteen korkein tavanomainen hinta: t-paita 24,99 €, huppari
+51,90 €, muki 19,90 €.
+
+**Ehdotus:** t-paidat 24,90 € (ennallaan, kilpailijoiden katossa), hupparit 49,90 € -> 51,90 €, muut ennallaan. Mukit
+piilossa (16,90-19,90 €:lla kate alle 20 %). Kate = mediaanituote, heikoin koko, yhden kappaleen tilaus,
+EU-siirron jälkeiset kulut.
+
+| Kategoria | Hinta | Kate, Printify ilman ALV:tä (ALV-tunnus Printifyssä) | Kate, Printify ALV 25,5 % | Toimitus 5,90/60, ilman ALV:tä | Toimitus 5,90/60, ALV |
+|---|---|---|---|---|---|
+| T-paidat (310) | 24,90 € | 28,5 % / 7,22 € | 11,0 % / 2,79 € | 26,2 % / 6,44 € | 8,2 % / 2,01 € |
+| Hupparit (163) | 51,90 € | 13,6 % / 6,36 € | -7,8 % / -3,68 € | 12,1 % / 5,58 € | -9,7 % / -4,46 € |
+| Koristeet (2) | 19,90 € | 22,8 % / 4,87 € | 3,9 % / 0,84 € | 19,9 % | 0,3 % |
+| Pitkähihaiset, pipot (1+1) | 39,90 € | 4,8-4,9 % | alle 0 % | alle 5 % | alle 0 % |
+
+Johtopäätökset:
+1. **ALV-tunnus Printifyyn on suurin yksittäinen tekijä**: t-paidan kate 11 % -> 28,5 %. Ilman sitä mikään
+   kategoria ei yllä 20 %:iin.
+2. 30 %:n tavoite ei täyty yhdelläkään kategorialla kilpailijoiden hintakaton alla, kun tilauksessa on yksi tuote.
+   T-paidat ovat lähimpänä (28,5 %). Usean tuotteen tilauksessa Printifyn lisäkappaleen toimitus on halvempi kuin
+   ensimmäisen, joten kate nousee keskiostoksen kasvaessa.
+3. Hupparit: Printify Choice (US) kulu 23,77 € + toimitus 15,59 €. 51,90 €:lla kate 13,6 %, joten oman taustan uusi
+   katesääntö (myynti estetään alle 20 %:n katteella) estäisi kaikki hupparit. Vaihtoehdot: halvempi EU-painotalo
+   hupparille (selvitettävä katalogista), hinta yli kilpailijakaton, tai hupparit pois myynnistä domainin siirrossa.
+4. Oman taustan katesääntö muutettu 20 %:iin (haara oma-tausta), paketin ja ensitilausalennuksen raja 30 %.
+
 ## Kategorioittain (keskimääräinen heikoimman variantin kate)
 
 | Kategoria | Tuotteita | Kate 6,90/79 | Kate 5,90/60 | Alle 40 % (6,90/79) | Alle 40 % (5,90/60) |
