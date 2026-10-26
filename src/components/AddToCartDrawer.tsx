@@ -13,7 +13,8 @@ import { proxiedImage } from "@/lib/imageProxy";
 export function AddToCartDrawer() {
   const { lastAddedItem, clearLastAdded, totalItems, totalPrice } =
     useCartContext();
-  const { data: allProducts = [] } = useProducts();
+  // Lisämyyntisuositukset tarvitaan vasta, kun koriin on lisätty jotain: ei luettelohakua sivun latauksessa.
+  const { data: allProducts = [] } = useProducts({ enabled: !!lastAddedItem });
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
