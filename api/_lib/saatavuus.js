@@ -234,8 +234,10 @@ export async function ajaSaatavuus(varasto, { haeTuote, haeKatalogi = null, ilmo
 
 /** Postgres-toteutus (api/_lib/db.js sql()). */
 export function pgVarasto(db) {
+  // db.json: postgres.js sarjallistaa jsonb-parametrin itse; JSON.stringify(...)::jsonb koodasi taulukon kahdesti
+  // (merkkijonoskalaari, "cannot extract elements from a scalar"), ja saatavuustehtävä kaatui oikeaa kantaa vasten.
   const vanhentunut = (idt) => db`printify_product_id is not null
-    and (is_active is not false or id::text in (select jsonb_array_elements_text(${JSON.stringify(idt)}::jsonb)))
+    and (is_active is not false or id::text in (select jsonb_array_elements_text(${db.json((idt || []).map(String))})))
     and (availability_checked_at is null or availability_checked_at < now() - interval '20 hours')`;
   return {
     tarkistettavat: (idt, raja) => db`select id, slug, name, variants, printify_product_id, is_active, unavailable_variants

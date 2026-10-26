@@ -16,7 +16,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { uudetDbVariantit } from "./eu-painotalot.mjs";
+import { suomenToimitus, uudetDbVariantit } from "./eu-painotalot.mjs";
 
 /** Kaikki kirjatut siirrot: vanhaan (vanhaId -> kirjaus) ja uuteen (uusiId -> kirjaus). Rikkinäinen tiedosto ohitetaan. */
 export function lueEuSiirrot(dataKansio, { varoita = (v) => console.warn(v) } = {}) {
@@ -183,4 +183,80 @@ export async function tuoPrintifysta({ tuotteet, kanta, siirrot, buildProductRow
     }
   }
   return t;
+}
+
+// ---------- Tilannekuva ja Printify-haut (tuo-tuotteet.mjs, printify-tuonti.mjs) ----------
+
+export const TILANNEKUVA_SARAKKEET = ["id", "name", "slug", "category", "humor_type", "price", "stock", "description", "images", "variants",
+  "is_featured", "is_new", "is_gift_idea", "is_active", "supplier", "aliexpress_url", "origin_country", "printify_product_id", "created_at", "updated_at"];
+const EU_SARAKKEET = new Set(["printify_product_id", "variants", "images", "id", "slug"]);
+
+/**
+ * Tilannekuvan rivit kantaan (upsert slugin mukaan). Turvallinen ajaa uudelleen ja erissä: uusinta-ajo ei palauta jo
+ * EU-kopioon siirrettyä riviä vanhaan tuotteeseen (printify_product_id, variants, images, id ja slug säilyvät).
+ * sql: postgres.js-yhteys. Palauttaa tuotujen rivien määrän.
+ */
+export async function tuoTilannekuvaRivit(sql, rivit, siirrot) {
+  const nykyiset = new Map((await sql`select slug, printify_product_id from products`).map((r) => [r.slug, String(r.printify_product_id ?? "")]));
+  const sarakkeet = TILANNEKUVA_SARAKKEET;
+  let n = 0;
+  for (const r of rivit) {
+    const arvot = Object.fromEntries(sarakkeet.map((k) => [k, ["images", "variants"].includes(k) ? sql.json(r[k] ?? (k === "images" ? [] : {})) : r[k] ?? null]));
+    const euRivi = String(siirrot.uuteen.get(nykyiset.get(r.slug))?.vanhaId ?? "") === String(r.printify_product_id ?? "-");
+    const paivitettavat = sarakkeet.filter((k) => (euRivi ? !EU_SARAKKEET.has(k) : k !== "id" && k !== "slug"));
+    await sql`insert into products ${sql(arvot, sarakkeet)} on conflict (slug) do update set ${sql(arvot, paivitettavat)}`;
+    n++;
+  }
+  return n;
+}
+
+/**
+ * Printify-haut uusinnalla (429/5xx porrastetusti, 404 -> null) ja Suomen toimituskulu välimuistissa.
+ *   haeTuote(id), toimitus(bp, pp) -> sentit tai null (suomenToimitus), kulutRivi(p) -> { costs, shipping_cents }.
+ */
+export function printifyHaut({ apiKey, shopId, fetchImpl = fetch, odota = (ms) => new Promise((r) => setTimeout(r, ms)) }) {
+  const hae = async (polku) => {
+    for (let yritys = 1; ; yritys++) {
+      const res = await fetchImpl(`https://api.printify.com/v1${polku}`, { headers: { Authorization: `Bearer ${apiKey}`, "User-Agent": "huumorikauppa-tuonti" } });
+      if ((res.status === 429 || res.status >= 500) && yritys < 6) { await odota(2000 * 2 ** (yritys - 1)); continue; }
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error(`Printify HTTP ${res.status} ${polku}`);
+      return res.json();
+    }
+  };
+  const toimitukset = new Map();
+  /** Suomen toimitusprofiili: { eka, lisa } sentteinä (ensimmäinen ja lisäkappale) tai null. */
+  const profiili = (bp, pp) => {
+    if (!toimitukset.has(`${bp}/${pp}`)) {
+      toimitukset.set(`${bp}/${pp}`, hae(`/catalog/blueprints/${bp}/print_providers/${pp}/shipping.json`).then((j) => {
+        const prof = j?.profiles || [];
+        const fi = prof.find((x) => (x.countries || []).includes("FI")) || prof.find((x) => (x.countries || []).includes("REST_OF_THE_WORLD"));
+        return { eka: suomenToimitus(j), lisa: fi?.additional_items?.cost ?? null };
+      }).catch(() => ({ eka: null, lisa: null })));
+    }
+    return toimitukset.get(`${bp}/${pp}`);
+  };
+  const toimitus = async (bp, pp) => (await profiili(bp, pp)).eka;
+  // Korialennuksen katevahti (api/_lib/korialennus.js) tarvitsee lisäkappaleen toimituksen ja painotalon.
+  const kulutRivi = async (p) => {
+    const { eka, lisa } = await profiili(p.blueprint_id, p.print_provider_id);
+    return {
+      costs: Object.fromEntries((p.variants || []).filter((v) => v.is_enabled).map((v) => [String(v.id), v.cost])),
+      shipping_cents: eka,
+      shipping_additional_cents: lisa,
+      print_provider_id: p.print_provider_id ?? null,
+    };
+  };
+  return {
+    hae,
+    haeTuote: (id) => hae(`/shops/${shopId}/products/${id}.json`),
+    /** Yksi sivu kaupan tuotteita (limit 50): { tuotteet, viimeinen }. */
+    async tuotesivu(sivu) {
+      const d = await hae(`/shops/${shopId}/products.json?page=${sivu}&limit=50`);
+      const tuotteet = Array.isArray(d) ? d : d?.data || [];
+      return { tuotteet, viimeinen: !tuotteet.length || tuotteet.length < 50 || (d?.last_page ? sivu >= d.last_page : false) };
+    },
+    toimitus,
+    kulutRivi,
+  };
 }
