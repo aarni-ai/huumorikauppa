@@ -183,7 +183,7 @@ async function tuoKantaan(r) {
 console.log(`Uudet tuotteet ${toteuta ? "(TOTEUTUS: luo Printifyyn, ei julkaise)" : "(kuiva-ajo, ei kirjoita Printifyyn eikä kantaan)"}`);
 console.log(`Katalogi: ${katalogi.lahde}`);
 console.log(`Hinnoittelu (malli ${hintamalli.nimi}): toimitusmaksu ${euroa(toimitusmaksu)}, ilmainen ${euroa(ilmainenRaja)} alkaen, kate >= ${prosenttia(kateraja)}${Object.keys(hintamalli.pohjahinnat).length ? ", ei alle kategorian pohjahinnan" : ""}${Object.keys(hintamalli.kiinteat).length ? `, kiinteät kauppahinnat ${Object.entries(hintamalli.kiinteat).map(([k, v]) => `${k} ${euroa(v)}`).join(", ")}` : ""}.`);
-console.log(`  (kate ilman Printifyn ALV:tä: Tmi Inteller on ALV-rekisterissä ja vähentää sen)`);
+console.log(`  (kate ilman Printifyn ALV:tä: kaupan pitäjä on ALV-rekisterissä ja vähentää sen)`);
 
 const luodut = joLuodut(lueKirjaukset(kansio));
 const yhteenveto = { suunniteltu: 0, luotu: 0, "yli-enimmaishinnan": 0, ohitettu: 0, jo: 0, virhe: 0 };

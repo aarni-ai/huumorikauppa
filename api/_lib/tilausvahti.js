@@ -5,7 +5,7 @@
  *      tilausrivin metadata.country). Printify Choice (id 99) on reititysverkko, joka valitsee painotalon tilauskohtaisesti:
  *      se hyväksytään vain, jos tilausrivi itse kertoo EU-maan.
  *   2. Printifyn kulu ilman alv:tä (total_price + total_shipping) ei ylitä tilauksen myyntiä ilman alv:tä
- *      ((total - ostetut lahjakortit) / 1,255). Tmi Inteller on ALV-rekisterissä (FI35836772): Printifyn veloittama alv
+ *      ((total - ostetut lahjakortit) / 1,255). kaupan pitäjä on ALV-rekisterissä (1.11.2026 alkaen Uusiku Oy, FI36536667): Printifyn veloittama alv
  *      (total_tax) vähennetään ALV-ilmoituksessa, joten se ei ole kulu.
  * Jos jompikumpi ei täyty, tilausta ei lähetetä tuotantoon: tila 'pysaytetty', hälytys omistajalle heti, eikä valvonta
  * yritä uudelleen (omistaja päättää: lähettää Printifyn hallinnasta tuotantoon tai peruu).

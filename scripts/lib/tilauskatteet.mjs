@@ -4,7 +4,7 @@
  *   maksettu      = kaupan hinnat x kpl + toimitusmaksu (6,90 €, jos tuotteet alle 79 €)
  *   myynti alv 0  = maksettu / 1,255
  *   nettokate     = myynti alv 0 - Printify ilman alv:tä (total_price + total_shipping) - Stripe (1,5 % + 0,25 €)
- *   Printifyn alv (total_tax) vähennetään ALV-ilmoituksessa (Tmi Inteller, FI35836772), joten se ei ole kulu.
+ *   Printifyn alv (total_tax) vähennetään ALV-ilmoituksessa (1.11.2026 alkaen Uusiku Oy, FI36536667), joten se ei ole kulu.
  */
 import { ALV, STRIPE_PROSENTTI, STRIPE_KIINTEA } from "../../api/_lib/kate.js";
 
@@ -117,7 +117,7 @@ export function markdown(tilaukset, { paiva, alkaen, kurssi = 1, huomiot = [] } 
     "Myynti = kaupan nykyinen hinta (Supabase, printify_product_id; EU-kopiolle siirtokirjauksen kautta; varalla nimellä) x kpl +",
     "toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu ilman",
     "alv:tä (total_price + total_shipping) - Stripe 1,5 % + 0,25 €. Printifyn veloittama alv (total_tax, 25,5 %) vähennetään",
-    "ALV-ilmoituksessa (Tmi Inteller on ALV-rekisterissä, FI35836772), joten se ei ole kulu; sarake vain tiedoksi.",
+    "ALV-ilmoituksessa (kaupan pitäjä on ALV-rekisterissä, 1.11.2026 alkaen Uusiku Oy, FI36536667), joten se ei ole kulu; sarake vain tiedoksi.",
     kurssi === 1
       ? "Oletus: Printifyn summat ovat tilin valuutassa ja ne luetaan euroina (kuten muualla tässä tiedostossa). Jos tili on dollareissa, kulut ovat noin 13 % euromääriä suurempia (ajo `--kurssi 0.87`)."
       : `Printifyn summat muunnettu kertoimella ${kurssi} (tilin valuutta -> euro).`,

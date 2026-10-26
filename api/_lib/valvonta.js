@@ -100,7 +100,7 @@ export function tilauksenKate(tilaus, tuotteetSlugilla = new Map()) {
 
 /**
  * Toteutunut kate Printifyn todellisella kululla (orders.printify_cost, tallennetaan tilausvahdissa ennen tuotantoa tai
- * yhteenvedossa jälkikäteen): myynti alv 0 - Printifyn kulu ilman alv:tä (alv vähennetään, Tmi Inteller ALV-rekisterissä) - Stripe.
+ * yhteenvedossa jälkikäteen): myynti alv 0 - Printifyn kulu ilman alv:tä (alv vähennetään, kaupan pitäjä ALV-rekisterissä) - Stripe.
  * null, jos kulua ei tiedetä.
  */
 export function toteutunutKate(tilaus) {

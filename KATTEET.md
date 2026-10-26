@@ -1,10 +1,30 @@
 # Katteet Printifyn todellisilla kuluilla
 
-**Laskentaperuste (27.10.2026):** Tmi Inteller on ALV-rekisterissä (FI35836772). Printifyn veloittama arvonlisävero
-vähennetään ALV-ilmoituksessa, joten kaikki katteet lasketaan Printify-kululla ilman ALV:tä (Printifyn
-verollinen summa / 1,255 = tuote + toimitus ilman veroriviä). Katalogin tuote- ja toimituskulut ovat valmiiksi ilman
-ALV:tä. Myynnin ALV (25,5 %) vähennetään myyntihinnasta. Oman taustan katesääntö: myynti estetään alle 20 %:n
-katteella, paketit ja alennuskoodit vain, jos kate pysyy vähintään 30 %:ssa.
+**Laskentaperuste (27.10.2026, päivitetty):** kauppa siirtyy Tmi Intelleriltä Uusiku Oy:lle 1.11.2026 (Y-tunnus
+3653666-7, ALV FI36536667). Uusiku Oy on ALV-rekisterissä, joten Printifyn veloittama arvonlisävero vähennetään
+jatkossa Uusiku Oy:n ALV-ilmoituksessa. Kaikki katteet lasketaan Printify-kululla ilman ALV:tä (Printifyn verollinen
+summa / 1,255 = tuote + toimitus ilman veroriviä). Katalogin tuote- ja toimituskulut ovat valmiiksi ilman ALV:tä.
+Myynnin ALV (25,5 %) vähennetään myyntihinnasta. Oman taustan katesääntö: myynti estetään alle 20 %:n katteella,
+paketit ja alennuskoodit vain, jos kate pysyy vähintään 30 %:ssa.
+
+**Poistuuko Printifyn ALV, jos Printifyyn annetaan ALV-tunnus FI36536667 (käännetty verovelvollisuus)?**
+Printifyn ohjekeskuksen mukaan ei: Printify perii ALV:n kaikissa EU-maissa, eikä tilauksille myönnetä ALV-vapautusta
+yritysasiakkaallekaan; ALV-rekisteröity yritys hakee veron takaisin omassa ALV-ilmoituksessaan Printifyn
+ALV-laskuilla (help.printify.com: "Does Printify charge VAT?" ja "Can I claim a VAT exemption on orders from
+Printify?", tarkistettu hakutulosten kautta 27.10.2026; sivut eivät avautuneet suoraan). Tilaushistoria vastaa tätä:
+Printify on veloittanut 25,5 % Suomen ALV:n. Käännettyä verovelvollisuutta ei siis saa ALV-tunnuksella.
+Vaihtoehdot katteessa:
+
+| Vaihtoehto | Printify-kulu katteessa | T-paita 24,90 € | Huppari 49,90 € | Tilaukset 1.6. alkaen (17 kpl) |
+|---|---|---|---|---|
+| A. Printify perii ALV:n, Uusiku Oy vähentää sen (nykytilanne) | ilman ALV:tä | 28,5 % / 7,22 € | 10,6 % / 4,80 € | 60,76 € (13,4 %) |
+| B. Käännetty verovelvollisuus (jos Printify sen tarjoaisi) | ilman ALV:tä | 28,5 % / 7,22 € | 10,6 % / 4,80 € | 60,76 € (13,4 %) |
+| Vertailu: ALV ei vähennettävissä | sis. ALV | 11,0 % / 2,79 € | -7,8 % (51,90 €) | -27,06 € (-6,0 %) |
+
+Katteet ovat vaihtoehdoissa A ja B samat; ero on kassavirrassa: vaihtoehdossa A ALV (25,5 % Printify-kuluista,
+1.6.-26.10. yhteensä 87,82 €) maksetaan ensin ja saadaan takaisin ALV-ilmoituksessa. Varmista tilitoimistolta, että
+Printifyn laskuilla (Suomen ALV, ulkomainen myyjä) ALV on vähennettävissä Uusiku Oy:n ilmoituksessa; jos ei, rivi
+"ALV ei vähennettävissä" on todellinen.
 
 **Kate tuoteryhmittäin nykyhinnoilla** (toimitusmaksu 6,90 € alle 79 €, yhden kappaleen tilaus, heikoin koko,
 EU-siirron jälkeiset kulut; mediaani tuoteryhmän sisällä):
@@ -39,7 +59,7 @@ Päivitetty 2026-10-26 skriptillä `scripts/tilauskatteet.mjs` (Printify-kaupan 
 Myynti = kaupan nykyinen hinta (Supabase, printify_product_id; EU-kopiolle siirtokirjauksen kautta; varalla nimellä) x kpl +
 toimitusmaksu 6,90 €, jos tuotteet alle 79 €. Myynti alv 0 = / 1,255. Nettokate = myynti alv 0 - Printifyn kulu ilman
 alv:tä (total_price + total_shipping) - Stripe 1,5 % + 0,25 €. Printifyn veloittama alv (total_tax, 25,5 %) vähennetään
-ALV-ilmoituksessa (Tmi Inteller on ALV-rekisterissä, FI35836772), joten se ei ole kulu; sarake vain tiedoksi.
+ALV-ilmoituksessa (kaupan pitäjä on ALV-rekisterissä, 1.11.2026 alkaen Uusiku Oy, FI36536667), joten se ei ole kulu; sarake vain tiedoksi.
 Oletus: Printifyn summat ovat tilin valuutassa ja ne luetaan euroina (kuten muualla tässä tiedostossa). Jos tili on dollareissa, kulut ovat noin 13 % euromääriä suurempia (ajo `--kurssi 0.87`).
 Asiakkaasta vain etunimi ja sukunimen alkukirjain. Hinta (P) = kaupasta ei löytynyt tuotetta, käytetty Printifyn
 vähittäishintaa (metadata.price). Tyyppi manual = luotu Printifyn hallinnassa (voi olla korvaus tai uudelleenlähetys,
@@ -136,8 +156,8 @@ Ennen = 22.10.2026, kaikki tuotteet vanhoilla painotaloilla. Jälkeen = EU-siirr
   t-paidalle 38,90 € (OPT OnDemand, kulu 12,22 € + toimitus 8,49 €) ja hupparille 89,90 € (Printify Choice,
   25,66 € + 15,59 €; yli 79 €:n tilaus on toimitusmaksuton). Hinnoittelu on omistajan päätös; oman taustan katesääntö estää myynnin
   alle 20 %:n katteella.
-- Printify veloittaa tilauksista arvonlisäveron (25,5 %). Se vähennetään ALV-ilmoituksessa (Tmi Inteller,
-  FI35836772), joten kulut yllä ovat ilman sitä.
+- Printify veloittaa tilauksista arvonlisäveron (25,5 %). Se vähennetään ALV-ilmoituksessa (1.11.2026
+  alkaen Uusiku Oy, FI36536667), joten kulut yllä ovat ilman sitä.
 
 ## EU-kiinteät painotalot (26.10.2026)
 
