@@ -66,7 +66,7 @@ describe("syötteen custom_label_0 ja custom_label_2", () => {
     expect(label(x, 0)).toBe(KATELUOKAT["tonnin-seteli-t-paita"]);
     const sallitut = new Set(["kate-alle-20", "kate-20-30", "kate-30-40", "kate-yli-40"]);
     expect(Object.keys(KATELUOKAT).length).toBeGreaterThan(400);
-    for (const l of Object.values(KATELUOKAT)) expect(sallitut.has(l)).toBe(true);
+    for (const l of Object.values(KATELUOKAT) as string[]) expect(sallitut.has(l)).toBe(true);
   });
 
   it("koko syöte: jokainen item saa custom_label_2:n, eikä kenttiä lisätä kahdesti", () => {
