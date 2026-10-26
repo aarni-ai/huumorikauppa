@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { ShoppingCart, ArrowLeft, ArrowRight, Lock, Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
-import { supabase } from "@/integrations/supabase/client";
+import { Checkbox } from "@/components/ui/checkbox";
+import { SUOSTUMUS_MUISTUTUS } from "../../api/_lib/vakiot.js";
 import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
@@ -45,22 +46,26 @@ const CheckoutPage = () => {
   const onlyGiftCards = tila.vainLahjakortteja;
   const hasGiftCards = items.some((i) => i.product.type === "giftcard");
 
-  // Track abandoned cart when user enters a valid email
+  // Keskeneräisen tilauksen muistutus vain suostumuksella (valintaruutu, ei valmiiksi valittu). Kori tallennetaan
+  // /api/sahkoposti-rajapintaan; valinnan poistaminen poistaa tallennetun korin.
+  const [muistutus, setMuistutus] = useState(false);
+  const muistutusLahetetty = useRef(false);
   useEffect(() => {
     const email = form.email.trim().toLowerCase();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    if (items.length === 0) return;
+    if (!muistutus && !muistutusLahetetty.current) return;
+    const fyysiset = items.filter((i) => i.product.type !== "giftcard");
+    if (muistutus && fyysiset.length === 0) return;
     const t = setTimeout(() => {
-      supabase.functions.invoke("track-abandoned-cart", {
-        body: {
-          email,
-          cartItems: items,
-          cartTotal: items.reduce((s, i) => s + i.product.price * i.quantity, 0),
-        },
-      }).catch(() => { /* best-effort */ });
+      muistutusLahetetty.current = muistutus;
+      fetch("/api/sahkoposti", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "kori", email, suostumus: muistutus, items: fyysiset }),
+      }).catch(() => { /* paras yritys */ });
     }, 1200);
     return () => clearTimeout(t);
-  }, [form.email, items]);
+  }, [form.email, items, muistutus]);
 
   // Auto-apply discount code from ?code= (used by recovery emails)
   useEffect(() => {
@@ -181,14 +186,32 @@ const CheckoutPage = () => {
     }
   };
 
-  const applyDiscount = () => {
+  const applyDiscount = async () => {
     const upper = discountCode.trim().toUpperCase();
+    if (!upper) return;
     const found = VALID_CODES[upper];
     if (found) {
       setAppliedDiscount({ code: upper, ...found });
       toast({ title: `Koodi "${upper}" aktivoitu! ${found.label} 🎉` });
-    } else {
-      toast({ title: "Virheellinen alennuskoodi", variant: "destructive" });
+      return;
+    }
+    // Muut koodit (ensitilauksen koodi, kannan koodit) tarkistetaan palvelimella sähköpostiosoitteen kanssa.
+    try {
+      const vastaus = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "alennuskoodi", code: upper, email: form.email.trim() }),
+      });
+      const data = await vastaus.json().catch(() => null);
+      if (data?.ok && Number(data.percent) > 0) {
+        const label = `${Number(data.percent)} % alennus`;
+        setAppliedDiscount({ code: upper, percent: Number(data.percent), label });
+        toast({ title: `Koodi "${upper}" aktivoitu: ${label}` });
+      } else {
+        toast({ title: data?.error || "Virheellinen alennuskoodi", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Koodin tarkistus epäonnistui", variant: "destructive" });
     }
   };
 
@@ -311,6 +334,15 @@ const CheckoutPage = () => {
                 />
                 {!onlyGiftCards && <p className="text-xs text-muted-foreground mt-1">Tarvitsemme puhelinnumeron toimitusta varten.</p>}
               </div>
+              {!onlyGiftCards && (
+                <div className="flex items-start gap-2">
+                  <Checkbox id="muistutus" checked={muistutus} onCheckedChange={(v) => setMuistutus(v === true)} className="mt-0.5" />
+                  <Label htmlFor="muistutus" className="text-sm font-normal text-muted-foreground leading-snug">
+                    {SUOSTUMUS_MUISTUTUS} Saat enintään kaksi viestiä (tunnin ja vuorokauden kuluttua), ja jokaisessa on peruutuslinkki.{" "}
+                    <Link to="/tietosuojakaytanto" className="underline underline-offset-2">Tietosuojakäytäntö</Link>
+                  </Label>
+                </div>
+              )}
               <Button onClick={() => canProceedToShipping() && setStep(onlyGiftCards ? "payment" : "shipping")} className="bg-primary text-primary-foreground font-bold">
                 {onlyGiftCards ? "Jatka maksuun" : "Jatka toimitustietoihin"} <ArrowRight className="h-4 w-4 ml-2" />
               </Button>

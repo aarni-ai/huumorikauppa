@@ -1,116 +1,141 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { X, Mail, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { ENSITILAUS_ALENNUS_PROSENTTI, SUOSTUMUS_UUTISKIRJE } from "../../api/_lib/vakiot.js";
 
 const STORAGE_KEY = "huumorikauppa-newsletter-dismissed";
 const DELAY_MS = 20000;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function NewsletterPopup() {
+const lue = (k: string) => {
+  try { return localStorage.getItem(k); } catch { return null; }
+};
+const kirjoita = (k: string, v: string) => {
+  try { localStorage.setItem(k, v); } catch { /* yksityinen tila */ }
+};
+
+/**
+ * Uutiskirjeen tilaus (oma tausta, /api/sahkoposti). Suostumus annetaan erillisellä valintaruudulla, jota ei ole
+ * valittu valmiiksi; sama teksti tallentuu suostumuksen kanssa. Ensitilauksen koodi luvataan vain, kun se on käytössä
+ * (api/_lib/vakiot.js ENSITILAUS_ALENNUS_PROSENTTI), ja se lähetetään sähköpostilla.
+ */
+export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [suostumus, setSuostumus] = useState(false);
+  const [lahettaa, setLahettaa] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+  const alennus = ENSITILAUS_ALENNUS_PROSENTTI > 0;
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (dismissed) return;
-
-    const timer = setTimeout(() => {
-      setOpen(true);
-    }, DELAY_MS);
-
+    if (lue(STORAGE_KEY)) return;
+    const timer = setTimeout(() => setOpen(true), viive);
     return () => clearTimeout(timer);
-  }, []);
+  }, [viive]);
 
   const handleDismiss = () => {
     setOpen(false);
-    localStorage.setItem(STORAGE_KEY, "true");
+    kirjoita(STORAGE_KEY, "true");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const osoite = email.trim().toLowerCase();
+    if (!EMAIL_RE.test(osoite)) {
       toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
       return;
     }
-    
-    // Save to database
-    try {
-      const cleanEmail = email.trim().toLowerCase();
-      await supabase.functions.invoke("subscribe-mailerlite", { body: { email: cleanEmail } });
-      await supabase.from("newsletter_subscribers").insert({ email: cleanEmail });
-      await supabase.functions.invoke("notify-store", {
-        body: { email: cleanEmail, type: "newsletter" },
-      });
-    } catch (err) {
-      // Ignore duplicate errors
+    if (!suostumus) {
+      toast({ title: "Hyväksy uutiskirjeen tilaus valintaruudulla", variant: "destructive" });
+      return;
     }
-    
-    setSubmitted(true);
-    localStorage.setItem(STORAGE_KEY, "true");
-    toast({ title: "Kiitos tilauksesta! 🎉", description: `Alennuskoodisi: HUUMORI5 (-5%)` });
-    setTimeout(() => setOpen(false), 3000);
+    setLahettaa(true);
+    try {
+      const vastaus = await fetch("/api/sahkoposti", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "tilaa", email: osoite, suostumus: true, lahde: "popup" }),
+      });
+      const data = await vastaus.json().catch(() => null);
+      if (!vastaus.ok || !data?.ok) throw new Error(data?.error || "Tilaus epäonnistui");
+      setSubmitted(true);
+      kirjoita(STORAGE_KEY, "true");
+      setTimeout(() => setOpen(false), 4000);
+    } catch (err) {
+      toast({ title: "Tilaus epäonnistui", description: err instanceof Error ? err.message : undefined, variant: "destructive" });
+    } finally {
+      setLahettaa(false);
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleDismiss(); }}>
       <DialogContent className="bg-card border-border max-w-[calc(100vw-2rem)] sm:max-w-sm p-0 overflow-hidden gap-0 [&>button]:hidden rounded-xl">
-        {/* Close button */}
         <button
           onClick={handleDismiss}
+          aria-label="Sulje"
           className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-muted hover:bg-muted-foreground/20 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="h-4 w-4" />
         </button>
 
-        {/* Header */}
         <div className="bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 p-6 text-center">
           <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Gift className="h-8 w-8 text-primary" />
+            {alennus ? <Gift className="h-8 w-8 text-primary" /> : <Mail className="h-8 w-8 text-primary" />}
           </div>
-          <h2 className="font-display text-2xl text-foreground">Saat 5% alennuksen! 🎁</h2>
-          <p className="text-sm text-muted-foreground mt-2">
-            Tilaa uutiskirje ja saat alennuskoodin ensimmäiseen tilaukseesi.
-          </p>
+          <DialogTitle className="font-display text-2xl text-foreground">
+            {alennus ? `${ENSITILAUS_ALENNUS_PROSENTTI} % alennus ensimmäisestä tilauksesta` : "Tilaa Huumorikaupan uutiskirje"}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground mt-2">
+            {alennus
+              ? "Tilaa uutiskirje, niin lähetämme alennuskoodin sähköpostiisi."
+              : "Kerromme sähköpostilla uusista tuotteista ja tarjouksista."}
+          </DialogDescription>
         </div>
 
-        {/* Form */}
         <div className="p-6">
           {submitted ? (
-            <div className="text-center space-y-2">
+            <div className="text-center space-y-2" role="status">
               <Mail className="h-10 w-10 text-primary mx-auto" />
-              <p className="font-bold text-foreground">Kiitos! 🎉</p>
+              <p className="font-bold text-foreground">Kiitos!</p>
               <p className="text-sm text-muted-foreground">
-                Alennuskoodisi on: <span className="font-bold text-primary">HUUMORI5</span>
+                {alennus ? "Alennuskoodi on matkalla sähköpostiisi." : "Tilaus on vastaanotettu. Lähetimme vahvistuksen sähköpostiisi."}
               </p>
-              <p className="text-xs text-muted-foreground">Käytä koodi kassalla saadaksesi 5% alennuksen!</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
               <Input
                 type="email"
+                aria-label="Sähköpostiosoite"
                 placeholder="anna@sahkoposti.fi"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-11 bg-muted border-border"
-                autoFocus={window.innerWidth >= 768}
               />
-              <Button
-                type="submit"
-                className="w-full bg-primary text-primary-foreground font-bold h-11 shadow-glow-lime"
-              >
-                Tilaa ja saat 5% alennuksen 🚀
+              <div className="flex items-start gap-2">
+                <Checkbox id="uutiskirje-suostumus" checked={suostumus} onCheckedChange={(v) => setSuostumus(v === true)} className="mt-0.5" />
+                <label htmlFor="uutiskirje-suostumus" className="text-xs text-muted-foreground leading-snug">
+                  {SUOSTUMUS_UUTISKIRJE}{" "}
+                  <Link to="/tietosuojakaytanto" className="underline underline-offset-2 hover:text-foreground" onClick={handleDismiss}>
+                    Tietosuojakäytäntö
+                  </Link>
+                </label>
+              </div>
+              <Button type="submit" disabled={!suostumus || lahettaa} className="w-full bg-primary text-primary-foreground font-bold h-11">
+                {alennus ? "Tilaa ja saat koodin" : "Tilaa uutiskirje"}
               </Button>
               <button
                 type="button"
                 onClick={handleDismiss}
                 className="w-full text-sm font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors py-2"
               >
-                Ei kiitos, en halua alennusta
+                Ei kiitos
               </button>
             </form>
           )}
