@@ -265,6 +265,31 @@ OPT OnDemand Ceramic Mug (EU): tuotekulu 5,88 €, toimitus Suomeen 10,39 €. H
 
 Alle 40 %, joten mukit pysyvät piilossa. 40 %:n kate vaatisi hinnan 28,90 € (toimitus 6,90 €).
 
+## Halvin EU-vaihtoehto: t-paita, huppari, muki (26.10.2026)
+
+Kaikki Printifyn EU-painotalot, joilla on t-paita-, huppari- tai mukiblueprint (katalogi 26.10.2026: OPT OnDemand CZ,
+Textildruck Europa DE, Atelier Katanga FR; Subliminator NL vain AOP-hupparit, toimitus 17,89 € alkaen; muilla
+EU-painotaloilla ei näitä). Kulut mitattu testituotteilla "Copy of EU-hintavertailu <bp>-<pp>" (musta, S-2XL).
+Kate = api/_lib/kate.js, yksi kappale, toimitusmaksu 6,90 € (live) / 5,90 € (oma tausta).
+
+| Vaihtoehto | Kulu | Toimitus FI | Kate hintakatossa (6,90 / 5,90) | 30 % vaatii (6,90 / 5,90) |
+|---|---|---|---|---|
+| **T-paita Textildruck, Gildan 64000 (145)** | 9,28 € (3XL 10,68 €) | 7,29 € | 24,90 €: **31,7 %** / 29,6 % | 24,90 € / 25,90 € |
+| T-paita Textildruck, Gildan 5000 (6) | 9,90 € | 7,29 € | 29,3 % / 27,1 % | 25,90 € / 26,90 € |
+| T-paita OPT, Gildan 64000 (145) | 8,90 € | 8,49 € | 28,5 % / 26,2 % | 25,90 € / 26,90 € |
+| T-paita OPT, Gildan 5000 (6) | 9,07 € (valk. 8,97 €) | 8,49 € | 27,8 % / 25,5 % | 25,90 € / 26,90 € |
+| T-paita Atelier Katanga, Gildan 5000 (6) | 10,23 € | 7,29 € | 28,0 % / 25,7 % | 25,90 € / 26,90 € |
+| T-paita Textildruck, Gildan 2000 (36) | 11,95 € | 7,29 € | 21,2 % / 18,7 % | 29,90 € / 30,90 € |
+| T-paita Textildruck, B&C TU03T (454) | 13,96 € | 7,29 € | 13,3 % / 10,5 % | 32,90 € / 33,90 € |
+| Huppari Atelier Katanga, Gildan 18500 (77) | 23,79 € | 10,89 € | 51,90 €: 23,6 % / 22,3 % | 57,90 € / 58,90 € |
+| Muki Textildruck, Standard 11oz valk. (1016) | 5,91 € | 10,39 € | 19,90 €: 20,6 % / 17,6 % | 23,90 € / 24,90 € |
+| Muki OPT, Ceramic Mug EU 11oz (441) | 5,88 € | 10,39 € | 19,90 €: 20,8 % / 17,8 % | 23,90 € / 24,90 € |
+
+- Muut hupparit (EU-kiinteät painotalot -osio): kulu 25,48-46,11 €, toimitus 10,89 €, kaikki heikompia.
+- Textildruckin 64000: Natural, Sand ja Heather Navy 9,62 € (30,4 %), 3XL 10,68 € (26,2 %); Black L ei saatavilla
+  26.10.2026. Uudet joulu- ja eläkepaidat (data/uudet-tuotteet/joulu-elake-2026.json) tehtiin tälle S-2XL.
+- Kulut ovat Printifyn sentteinä (tilin valuutta, ks. yllä); jos tili on dollareissa, katteet ovat varovaisia.
+
 ## Hintaehdotus 26.10.2026 (ei julkaistu)
 
 **Kilpailijat** (Shopify-tuotesyötteet 26.10.2026, kaikki tuotteet): Meemirotta t-paidat 24,99 € (256 tuotetta, kaikki

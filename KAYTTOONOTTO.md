@@ -344,7 +344,24 @@ pohjahinnan, vaikka kate vaatisi enemmän (katesääntö piilottaa silloin tuott
 Skripti kirjaa luodut tiedostoon `data/uudet-tuotteet/luotu-<päivä>.json` ja ohittaa seuraavalla ajolla tekstit,
 jotka on jo luotu (sama teksti ja tuotetyyppi), joten keskeytyneen ajon voi ajaa uudelleen. Muut valinnat:
 `--blueprint tyyppi=id` ja `--painotalo tyyppi=id|nimi` pakottavat valinnan (esim. `--painotalo huppari=OPT`),
-`--ei-kuvia` jättää kuiva-ajossa kuvat tekemättä.
+`--ei-kuvia` jättää kuiva-ajossa kuvat tekemättä. Saman voi kirjoittaa listaan (oletuksiin tai tuotteelle):
+`"painotalo": "Textildruck Europa", "blueprint": 145`; komentorivi ohittaa listan.
+
+**Joulu ja eläke 2026** (`joulu-elake-2026.json`, 15 t-paitaa). Luotu Printifyyn 26.10.2026 (`luotu-2026-10-26.json`)
+Textildruck Europalle (DE), Gildan Softstyle 64000 (blueprint 145), koot S-2XL: kulu 9,28 €, toimitus Suomeen 7,29 €.
+Nykyinen kauppa tuo ne seuraavana yönä aktiivisina 24,90 €:lla (kate 31,7 % toimitusmaksulla 6,90 €). Uudelleen
+luontia ei tarvita (kirjaus ohittaa ne). Oma tausta: jos tilannekuva (`tuo-tuotteet.mjs`) on otettu ennen niiden
+synkkaa, kohdan 2 `printify-tuonti.mjs --kulut` tuo ne piilotettuina t-paitojen pohjahinnalla 34,90 €. Aseta silloin
+hinta samaksi kuin muilla paidoilla ja hyväksy (tunnukset: `luotu-2026-10-26.json`, lista "Joulu ja eläke 2026"):
+
+```
+set -a && . ./.env.database.local && . ./.env.printify.local && set +a && psql "$DATABASE_URL" -c "update products set price = 24.90 where printify_product_id in ('6adfb9a53f77a7875b0fba8a', '6adfb9c1260c17a8ff05ef05', '6adfb9c7260c17a8ff05ef11', '6adfb9cf260c17a8ff05ef1e', '6adfb9d9250930614e0f78e1', '6adfb9dec392daed65010411', '6adfb9e73f77a7875b0fbabe', '6adfb9ee250930614e0f78ef', '6adfb9fb260c17a8ff05ef31', '6adfba065ea6b5c9cd0aecbd', '6adfba1087d17f67bf09e9e0', '6adfba1987d17f67bf09e9ed', '6adfba27be06878c900359f6', '6adfba3587d17f67bf09ea06', '6adfba43c60cddcb060142a6')" && node scripts/printify-uudet-tuotteet.mjs --hyvaksy 6adfb9a53f77a7875b0fba8a,6adfb9c1260c17a8ff05ef05,6adfb9c7260c17a8ff05ef11,6adfb9cf260c17a8ff05ef1e,6adfb9d9250930614e0f78e1,6adfb9dec392daed65010411,6adfb9e73f77a7875b0fbabe,6adfb9ee250930614e0f78ef,6adfb9fb260c17a8ff05ef31,6adfba065ea6b5c9cd0aecbd,6adfba1087d17f67bf09e9e0,6adfba1987d17f67bf09e9ed,6adfba27be06878c900359f6,6adfba3587d17f67bf09ea06,6adfba43c60cddcb060142a6
+```
+
+Huom: 5,90 €:n
+toimitusmaksulla kate on 29,6 % (yli myynnin rajan 20 %, alle 30 %:n tavoitteen); 30 % vaatisi 25,90 €, joka on yli
+kilpailijoiden hintakaton 24,99 €. Hupparit ja mukit jätettiin pois: millään EU-painotalolla ne eivät yllä 30 %:iin
+kilpailijoiden hintakatossa (luvut listan kentässä `eiToteutettavissa` ja KATTEET.md:ssä).
 
 **4. Hyväksyntä myyntiin.** Katso piilotetut tuotteet Printifyssä tai kirjauksesta, ja julkaise kaupassa kaikki tämän
 skriptin tuomat tai vain valitut (Printify-tunnukset pilkulla eroteltuina):

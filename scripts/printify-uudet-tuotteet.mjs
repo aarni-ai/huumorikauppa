@@ -19,6 +19,7 @@
  *   --toimitusmaksu 5,90      asiakkaan toimitusmaksu hinnoittelussa (oletus hintamallista).
  *   --ilmainen-raja 60        ilmainen toimitus tästä tilaussummasta (oletus hintamallista).
  *   --blueprint tyyppi=id     pakota blueprint (esim. koriste=1234). --painotalo tyyppi=id|nimi pakota painotalo.
+ *                             Listassa sama tuotteittain tai oletuksissa: "blueprint": 145, "painotalo": "Textildruck Europa".
  *   --katalogi <tiedosto>     käytä katalogitiedostoa Printifyn sijaan (myös avaimen kanssa).
  *   --ei-kuvia                kuiva-ajossa ei renderöidä kuvia (vain tiedostonimet).
  *

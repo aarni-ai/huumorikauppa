@@ -51,7 +51,8 @@ const saanto = (kategoria) => SIIRTOSAANNOT.find((s) => s.kategoria === kategori
 export const TUOTETYYPIT = {
   "t-paita": {
     nimi: "T-paita", kategoria: "t-paidat", tagi: "T-paita",
-    blueprint: { sisaltaa: saanto("t-paidat")?.blueprint?.sisaltaa || ["gildan", "64000"] },
+    // suosi: "softstyle 64000" osuu myös naisten malliin (64000L); unisex ensin (tasatilanteessa järjestys ratkaisee).
+    blueprint: { sisaltaa: saanto("t-paidat")?.blueprint?.sisaltaa || ["gildan", "64000"], suosi: ["unisex"] },
     suositut: [saanto("t-paidat")?.painotalo || "OPT OnDemand"],
     oletusVarit: ["Black"], oletusKoot: ["S", "M", "L", "XL", "2XL"],
     asettelu: { leveys: 0.62, korkeus: 0.3, yla: 0.08 }, oletusAlue: { width: 3600, height: 4800 },
@@ -155,7 +156,7 @@ export function kaupanKategoria({ title, tags, description }) {
  * Lista JSONista. Kelpaa { nimi, enimmaishinta, oletukset, tuotteet: [...] } tai pelkkä taulukko.
  * Tuotteen kentät: rivit (painoteksti), tyyppi (t-paita | huppari | tarra | koriste), varit, koot, hinta (ohitus),
  * tagit, kategoria (teema, lisätään tagiksi), otsikko- ja kuvauspohja ({teksti}, {tuote}, {tuote_pienella}, {kategoria}),
- * otsikkoteksti (valinnainen, korvaa riveistä tehdyn). Palauttaa { nimi, enimmaishinta, tuotteet, virheet }.
+ * otsikkoteksti (valinnainen, korvaa riveistä tehdyn), painotalo (valinnainen, id tai nimi), blueprint (valinnainen, id). Palauttaa { nimi, enimmaishinta, tuotteet, virheet }.
  */
 export function parseLista(json, { tiedosto = "lista" } = {}) {
   const lista = Array.isArray(json) ? { tuotteet: json } : json || {};
@@ -212,6 +213,10 @@ export function parseLista(json, { tiedosto = "lista" } = {}) {
     tuotteet.push({
       avain, rivit, teksti: rivit.join(" / "), tyyppi: e.tyyppi, varit, koot, hinta, tagit, kategoria, otsikko, kuvaus,
       lista: lista.nimi || tiedosto, enimmaishinta: omaEnimmais ?? enimmaishinta ?? null,
+      // Listan painotalo (id tai nimi) ja blueprint (id), esim. mitattu halvin EU-vaihtoehto. Komentorivin
+      // --painotalo ja --blueprint ohittavat nämä.
+      painotalo: e.painotalo != null && String(e.painotalo).trim() ? String(e.painotalo).trim() : null,
+      blueprint: e.blueprint != null && String(e.blueprint).trim() ? String(e.blueprint).trim() : null,
     });
   });
   return { nimi: lista.nimi || tiedosto, enimmaishinta: enimmaishinta ?? null, tuotteet, virheet };
@@ -450,7 +455,11 @@ export function blueprintEhdokkaat(blueprintit, saanto) {
     return tarkat.length ? tarkat : lista.filter((b) => normalisoi(b.title).includes(n));
   }
   const osat = (saanto.sisaltaa || []).map(normalisoi);
-  return osat.length ? lista.filter((b) => osat.every((o) => blueprintTeksti(b).includes(o))) : [];
+  const osuvat = osat.length ? lista.filter((b) => osat.every((o) => blueprintTeksti(b).includes(o))) : [];
+  // suosi: nämä sanat sisältävät ensin (vakaa järjestys muuten).
+  const suosi = (saanto.suosi || []).filter((x) => !x.includes("{")).map(normalisoi);
+  const pisteet = (b) => (suosi.some((x) => blueprintTeksti(b).includes(x)) ? 0 : 1);
+  return suosi.length ? [...osuvat].sort((a, b) => pisteet(a) - pisteet(b)) : osuvat;
 }
 
 /**
@@ -564,7 +573,11 @@ export function teeApi({ key, fetchImpl = globalThis.fetch, odota = (ms) => new 
 export async function kasitteleTuote(tuote, ctx) {
   const tyyppi = TUOTETYYPIT[tuote.tyyppi];
   const r = { avain: tuote.avain, teksti: tuote.teksti, tyyppi: tuote.tyyppi, lista: tuote.lista, otsikko: tuote.otsikko };
-  const kohde = await ratkaiseKohde(tuote.tyyppi, ctx.katalogi, tuote, ctx.ohitukset?.[tuote.tyyppi] || {});
+  const ohitus = {
+    ...(tuote.painotalo ? { painotalo: tuote.painotalo } : {}), ...(tuote.blueprint ? { blueprint: tuote.blueprint } : {}),
+    ...(ctx.ohitukset?.[tuote.tyyppi] || {}),
+  };
+  const kohde = await ratkaiseKohde(tuote.tyyppi, ctx.katalogi, tuote, ohitus);
   if (!kohde.ok) return { ...r, tila: "ohitettu", syy: kohde.syy };
   Object.assign(r, {
     painotalo: `${kohde.painotalo.title} (${kohde.maa})`, print_provider_id: Number(kohde.painotalo.id),

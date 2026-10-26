@@ -6,7 +6,7 @@ import {
   parseLista, hinnoittele, ylosX90, idempotenssiAvain, lueKirjaukset, joLuodut, kirjausRivi, otsikkoTeksti, normArvo,
   valitseVariantit, ratkaiseKohde, kasitteleTuote, TiedostoKatalogi, LiveKatalogi, teeApi, tekstivariRyhmat, VIIVA,
   KATEGORIAN_POHJAHINNAT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA, HINTAMALLIT, suomenToimitusVarianteille,
-  blueprintEhdokkaat, kateAlvilla,
+  blueprintEhdokkaat, kateAlvilla, TUOTETYYPIT,
 } from "../../scripts/lib/uudet-tuotteet.mjs";
 import { laskeKate, HINNOITTELU_KATE, KATE_RAJA as MYYNNIN_RAJA } from "../../api/_lib/kate.js";
 
@@ -284,6 +284,19 @@ describe("luonti mockatulla Printify-rajapinnalla", () => {
     renderoi: async () => {}, kuvaKansio: "/tmp/kuvat", luoKuvat: true, toteuta: true, api, shopId: "123", lueTiedosto: () => Buffer.from("png"), ...extra,
   });
 
+  it("listan painotalo ohittaa suosinnan, komentorivin --painotalo ohittaa listan", async () => {
+    const { api } = mockApi(1000);
+    const lista = parseLista({ oletukset: { tyyppi: "t-paita", varit: ["Black"], koot: ["S"], painotalo: "Textildruck Europa" }, tuotteet: [{ rivit: ["TESTI"] }] });
+    expect(lista.virheet).toEqual([]);
+    expect(lista.tuotteet[0].painotalo).toBe("Textildruck Europa");
+    const r = await kasitteleTuote(lista.tuotteet[0], ctx(api, { toteuta: false, luoKuvat: false }));
+    expect(r.painotalo).toMatch(/^Textildruck Europa/);
+    expect(r.peruste).toBe("komentorivin valinta");
+    const cli = await kasitteleTuote(lista.tuotteet[0], ctx(api, { toteuta: false, luoKuvat: false, ohitukset: { "t-paita": { painotalo: "OPT OnDemand" } } }));
+    expect(cli.painotalo).toMatch(/^OPT OnDemand/);
+    expect(parseLista({ tuotteet: [{ tyyppi: "t-paita", rivit: ["X"] }] }).tuotteet[0].painotalo).toBeNull();
+  });
+
   it("kuiva-ajo ei kutsu rajapintaa", async () => {
     const { kutsut, api } = mockApi(1000);
     const t = parseLista(lue("joulupaidat.json")).tuotteet[0];
@@ -387,6 +400,28 @@ describe("live-hintamalli, kateraja 30 % ja EU-tyypit (26.10.2026)", () => {
   it("tarra: Kiss-Cut ensin, sitten EU:ssa tehtävä Square Vinyl Stickers", () => {
     const bps = [{ id: 476, title: "Square Vinyl Stickers" }, { id: 400, title: "Kiss-Cut Stickers" }, { id: 5372, title: "Kiss-Cut Sticker Sheet" }];
     expect(blueprintEhdokkaat(bps, { nimet: ["Kiss-Cut Stickers", "Square Vinyl Stickers"] }).map((b) => b.id)).toEqual([400, 476]);
+  });
+
+  it("t-paita: unisex-malli ennen naisten mallia (molemmissa softstyle 64000)", () => {
+    const bps = [
+      { id: 88, title: "Women's Softstyle Tee", brand: "Gildan", model: "64000L" },
+      { id: 145, title: "Unisex Softstyle T-Shirt", brand: "Gildan", model: "64000" },
+    ];
+    expect(blueprintEhdokkaat(bps, TUOTETYYPIT["t-paita"].blueprint).map((b) => b.id)).toEqual([145, 88]);
+  });
+
+  it("lista joulu-elake-2026: 15 t-paitaa Textildruck Europan blueprintille 145, ei virheitä, ei törmäyksiä", () => {
+    const l = parseLista(lue("joulu-elake-2026.json"), { tiedosto: "joulu-elake-2026" });
+    expect(l.virheet).toEqual([]);
+    expect(l.tuotteet).toHaveLength(15);
+    expect(new Set(l.tuotteet.map((t) => t.otsikko)).size).toBe(15);
+    for (const t of l.tuotteet) {
+      expect(t.tyyppi).toBe("t-paita");
+      expect(t.painotalo).toBe("Textildruck Europa");
+      expect(t.blueprint).toBe("145");
+      expect(t.koot).not.toContain("3XL");
+      expect(VIIVA.test(`${t.otsikko} ${t.kuvaus}`)).toBe(false);
+    }
   });
 
   it("listat tonnin-seteli ja ika-elake-kaupunki: ei virheitä, juliste seinätauluksi, tuotekohtainen enimmäishinta", () => {
