@@ -3,7 +3,6 @@
  * <head>-preloadissa (src/seo/prerender), jotta selain lataa kuvan vain kerran.
  */
 import { proxiedImage } from "./imageProxy";
-import { availableColors } from "./variantAvailability";
 
 /** /api/img-leveydet tuotesivun pääkuvalle (api/img.js pyöristää sallittuun leveyteen). */
 export const PRODUCT_IMAGE_WIDTHS = [480, 800, 1200] as const;
@@ -15,21 +14,11 @@ interface ImageProduct {
   variants?: Record<string, unknown> | null;
 }
 
-/**
- * Oletusväri, jonka kuvat tuotesivu näyttää ensimmäisenä: variants.default_color, jos sitä
- * valmistetaan, muuten ensimmäinen valmistettava väri (src/lib/variantAvailability.ts).
- * Sama valinta ProductPagessa ja esirenderöinnin preloadissa, jotta pääkuva ladataan kerran.
- */
-export function defaultImageColor(product: ImageProduct & { slug?: string | null }): string | undefined {
-  const variants = (product.variants ?? {}) as { colors?: string[]; sizes?: string[]; default_color?: string };
-  const sellable = availableColors(product, variants.colors ?? [], variants.sizes ?? []);
-  return variants.default_color && sellable.includes(variants.default_color) ? variants.default_color : sellable[0];
-}
-
-/** Kuvat oletusvärille (defaultImageColor), kuten ProductPage näyttää ne. */
-export function defaultColorImages(product: ImageProduct & { slug?: string | null }): string[] {
-  const variants = (product.variants ?? {}) as { variant_images?: Record<string, string[]> };
-  const color = defaultImageColor(product);
+/** Kuvat oletusvärille (variants.default_color tai ensimmäinen väri), kuten ProductPage näyttää ne. */
+export function defaultColorImages(product: ImageProduct): string[] {
+  const variants = (product.variants ?? {}) as { colors?: string[]; default_color?: string; variant_images?: Record<string, string[]> };
+  const colors = variants.colors ?? [];
+  const color = variants.default_color && colors.includes(variants.default_color) ? variants.default_color : colors[0];
   const own = color ? (variants.variant_images?.[color] ?? []).filter(Boolean) : [];
   return own.length > 0 ? own : (product.images ?? []).filter(Boolean);
 }

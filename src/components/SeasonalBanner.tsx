@@ -67,11 +67,6 @@ const serverTheme = () => null;
  */
 export function SeasonalBanner() {
   const theme = useSyncExternalStore(subscribe, clientTheme, serverTheme);
-  return <SeasonalBannerView theme={theme} />;
-}
-
-/** Bannerin merkintä annetulle teemalle (myös tuotesivun esirenderöity esikatselu). */
-export function SeasonalBannerView({ theme }: { theme: BannerTheme | null }) {
   if (!theme) return null;
   const c = BANNER_CONTENT[theme];
   return (

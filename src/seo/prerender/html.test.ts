@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   applyHead,
   cleanComponentHtml,
-  deferEntryScripts,
   renderMarkdown,
   renderPageHtml,
   renderShellHtml,
@@ -97,46 +96,7 @@ describe("renderPageHtml", () => {
   });
 
   it("adds a noscript style so the static content is visible without JavaScript", () => {
-    expect(html).toContain("<noscript><style>[data-prerender-visual]{display:none}[data-prerender]{position:static");
-  });
-
-  it("keeps the entry script untouched on pages without a visible preview", () => {
-    const withEntry = TEMPLATE.replace("</head>", '<script type="module" crossorigin src="/assets/index-a.js"></script>\n</head>');
-    expect(renderPageHtml(withEntry, page, nav)).toContain('<script type="module" crossorigin src="/assets/index-a.js"></script>');
-  });
-});
-
-describe("product preview", () => {
-  const VITE_TEMPLATE = TEMPLATE.replace(
-    "</head>",
-    [
-      '    <script type="module" crossorigin src="/assets/index-a.js"></script>',
-      '    <link rel="modulepreload" crossorigin href="/assets/vendor-b.js">',
-      '    <link rel="modulepreload" crossorigin href="/assets/query-c.js">',
-      '    <link rel="stylesheet" crossorigin href="/assets/index-d.css">',
-      "</head>",
-    ].join("\n"),
-  );
-  const preview = '<div data-prerender-visual="true" inert=""><img src="/api/img?u=x&amp;w=800" fetchpriority="high"></div>';
-  const html = renderPageHtml(VITE_TEMPLATE, { ...page, path: "/tuote/x", previewHtml: preview }, nav);
-
-  it("puts the visible preview before the static body inside #root", () => {
-    expect(html).toContain(`<div id="root">${preview}<div data-prerender="true">`);
-    expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
-  });
-
-  it("loads the app JavaScript only after the preview image (no early module script or modulepreload)", () => {
-    expect(html).not.toMatch(/<script type="module"/);
-    expect(html).not.toMatch(/<link rel="modulepreload"/);
-    expect(html).toContain('<link rel="stylesheet" crossorigin href="/assets/index-d.css">');
-    const loader = html.match(/<script>(\(function\(\)\{var d=document[\s\S]*?)<\/script>\s*<\/body>/);
-    expect(loader).not.toBeNull();
-    expect(loader![1]).toContain('s.src="/assets/index-a.js"');
-    expect(loader![1]).toContain('["/assets/vendor-b.js","/assets/query-c.js"]');
-  });
-
-  it("deferEntryScripts leaves HTML without an entry script unchanged", () => {
-    expect(deferEntryScripts(TEMPLATE)).toBe(TEMPLATE);
+    expect(html).toContain("<noscript><style>[data-prerender]{position:static");
   });
 });
 
