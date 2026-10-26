@@ -9,7 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { AddToCartDrawer } from "./components/AddToCartDrawer";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { REVEAL_AFTER_MOUNT_MS, revealApp } from "@/lib/prerenderPreview";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
@@ -123,6 +124,18 @@ function PageFallback() {
   );
 }
 
+/**
+ * Kova varmistus esirenderöidylle esikatselulle: sovellus näytetään viimeistään pian asennuksen
+ * jälkeen riippumatta datasta tai sivun latauksesta, jottei inert-esikatselu jää näkyviin.
+ */
+function PreviewRevealFallback() {
+  useEffect(() => {
+    const t = window.setTimeout(revealApp, REVEAL_AFTER_MOUNT_MS);
+    return () => window.clearTimeout(t);
+  }, []);
+  return null;
+}
+
 const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
@@ -131,6 +144,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PreviewRevealFallback />
           <ScrollToTop />
           <Header />
           <SeasonalBanner />

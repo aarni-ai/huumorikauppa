@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: "es2020",
+    // scripts/prerender.mjs lukee chunkien nimet (tuotesivun ProductPage-chunkin esilataus) ja poistaa manifestin.
+    manifest: true,
     rollupOptions: {
       output: {
         manualChunks: {

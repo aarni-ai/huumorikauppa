@@ -56,6 +56,13 @@ export interface PrerenderPage {
   contentHtml?: string;
   /** LCP-kuvan preload (tuotesivun pääkuva): sama src/srcset/sizes kuin Reactin <img>. */
   preloadImage?: PreloadImage;
+  /** Lisämoduulit, jotka esikatselusivun JS-lataaja esilataa entryn kanssa (esim. ProductPage-chunk). */
+  modulePreloads?: string[];
+  /**
+   * Näkyvä esikatselu ennen staattista runkoa (tuotesivut ja etusivu, src/seo/prerender/renderPreview.tsx).
+   * src/main.tsx näyttää sen, kunnes React-sivu on valmis.
+   */
+  previewHtml?: string;
 }
 
 export interface PreloadImage {
@@ -199,11 +206,12 @@ export function renderStaticBody(page: PrerenderPage, nav: SiteNav): string {
 
 /**
  * Staattinen runko piilotetaan näkyvistä silloin kun JavaScript on käytössä (React korvaa sen
- * heti), jotta sivu ei välähdä tyylittömänä. Ilman JavaScriptiä <noscript>-tyyli näyttää sen.
+ * heti), jotta sivu ei välähdä tyylittömänä. Ilman JavaScriptiä <noscript>-tyyli näyttää sen ja
+ * piilottaa tuotesivun esikatselun (data-prerender-visual), jottei sisältö näy kahdesti.
  */
 export const PRERENDER_STYLE =
   `<style id="prerender-style">[data-prerender]{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>` +
-  `<noscript><style>[data-prerender]{position:static;width:auto;height:auto;margin:0 auto;padding:16px;overflow:visible;clip:auto;white-space:normal;max-width:960px;font-family:system-ui,sans-serif;line-height:1.5}</style></noscript>`;
+  `<noscript><style>[data-prerender-visual]{display:none}[data-prerender]{position:static;width:auto;height:auto;margin:0 auto;padding:16px;overflow:visible;clip:auto;white-space:normal;max-width:960px;font-family:system-ui,sans-serif;line-height:1.5}</style></noscript>`;
 
 function jsonLdScript(data: JsonLd, id: string, prerenderHead: boolean): string {
   return `<script type="application/ld+json" id="${id}"${prerenderHead ? " data-prerender-head" : ""}>${serializeJsonLd(data)}</script>`;
@@ -310,6 +318,44 @@ export function injectRoot(html: string, bodyHtml: string): string {
   return html.replace(marker, () => `<div id="root">${bodyHtml}</div>`);
 }
 
+/** Kuinka kauan sovelluksen JavaScript odottaa esikatselun pääkuvaa ennen latauksen aloittamista. */
+export const ENTRY_DEFER_MAX_MS = 1000;
+
+/**
+ * Sivulla, jolla on näkyvä esikatselu, sovelluksen JavaScript (Viten entry-skripti ja sen
+ * modulepreloadit, yhteensä satoja kilotavuja) ladataan vasta, kun esikatselun pääkuva on maalattu
+ * (tai viimeistään ENTRY_DEFER_MAX_MS:n jälkeen). Näin hidas mobiiliyhteys käyttää kaistan ensin
+ * CSS:ään ja LCP-kuvaan, ja React käynnistyy heti niiden jälkeen. Ilman entry-skriptiä pohja
+ * palautetaan sellaisenaan.
+ */
+export function deferEntryScripts(html: string, extraPreloads: string[] = []): string {
+  const entry = html.match(/\s*<script type="module" crossorigin src="([^"]+)"><\/script>/);
+  if (!entry) return html;
+  const preloads: string[] = [];
+  let out = html.replace(entry[0], "");
+  out = out.replace(/\s*<link rel="modulepreload" crossorigin href="([^"]+)">/g, (_m, href: string) => {
+    preloads.push(href);
+    return "";
+  });
+  for (const href of extraPreloads) if (!preloads.includes(href) && href !== entry[1]) preloads.push(href);
+  // Chromium: odotetaan LCP-merkintää pääkuvalle (kuva on maalattu). Muut selaimet: kuvan load +
+  // kaksi ruudunpäivitystä. Aina viimeistään ENTRY_DEFER_MAX_MS:n jälkeen.
+  const loader =
+    `<script>(function(){var d=document,w=window,done=false,po;function go(){if(done)return;done=true;if(po)po.disconnect();` +
+    `${JSON.stringify(preloads)}.forEach(function(h){var l=d.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;d.head.appendChild(l)});` +
+    `var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(entry[1])};d.head.appendChild(s)}` +
+    `setTimeout(go,${ENTRY_DEFER_MAX_MS});` +
+    `var i=d.querySelector("[data-prerender-visual] img[fetchpriority=high]")||d.querySelector("[data-prerender-visual] img");` +
+    `if(!i){go();return}` +
+    `i.addEventListener("error",go);` +
+    `try{if(w.PerformanceObserver&&PerformanceObserver.supportedEntryTypes.indexOf("largest-contentful-paint")>=0){` +
+    `po=new PerformanceObserver(function(l){l.getEntries().forEach(function(e){if(e.url&&e.url===i.currentSrc)go()})});` +
+    `po.observe({type:"largest-contentful-paint",buffered:true});return}}catch(x){}` +
+    `function later(){requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(go,0)})})}` +
+    `if(i.complete)later();else i.addEventListener("load",later)})()</script>`;
+  return out.replace("</body>", () => `  ${loader}\n  </body>`);
+}
+
 /** Koko sivun HTML pohjasta. */
 export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteNav): string {
   const canonical = absoluteUrl(page.path);
@@ -324,7 +370,8 @@ export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteN
     keepHeroPreload: page.path === "/",
     preloadImage: page.preloadImage,
   });
-  return injectRoot(html, renderStaticBody(page, nav));
+  const full = injectRoot(html, (page.previewHtml ?? "") + renderStaticBody(page, nav));
+  return page.previewHtml ? deferEntryScripts(full, page.modulePreloads) : full;
 }
 
 /**
