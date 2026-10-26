@@ -16,7 +16,7 @@
  */
 import postgres from "postgres";
 import { fileURLToPath } from "node:url";
-import { lueEuSiirrot, postgresKanta, tuoPrintifysta } from "./lib/eu-kanta.mjs";
+import { lueEuSiirrot, postgresKanta, printifyHaut, tuoPrintifysta } from "./lib/eu-kanta.mjs";
 
 globalThis.Deno = { env: { get: (k) => process.env[k] } };
 const { fetchAllPrintifyProducts, buildProductRow } = await import("../supabase/functions/_shared/printify-sync.ts");
@@ -39,23 +39,7 @@ if (luotu) {
   process.exit(0);
 }
 
-// Suomen toimituskulu (ensimmäinen kappale, sentit) painotalokohtaisesti, välimuistissa.
-const toimitusVm = new Map();
-async function suomenToimitus(bp, pp) {
-  const avain = `${bp}/${pp}`;
-  if (!toimitusVm.has(avain)) {
-    const res = await fetch(`https://api.printify.com/v1/catalog/blueprints/${bp}/print_providers/${pp}/shipping.json`, { headers: { Authorization: `Bearer ${process.env.PRINTIFY_API_KEY}` } });
-    const j = res.ok ? await res.json() : null;
-    const profiilit = j?.profiles || [];
-    const fi = profiilit.find((x) => (x.countries || []).includes("FI")) || profiilit.find((x) => (x.countries || []).includes("REST_OF_THE_WORLD"));
-    toimitusVm.set(avain, fi?.first_item?.cost ?? null);
-  }
-  return toimitusVm.get(avain);
-}
-async function kulutRivi(p) {
-  const costs = Object.fromEntries((p.variants || []).filter((v) => v.is_enabled).map((v) => [String(v.id), v.cost]));
-  return { costs, shipping_cents: await suomenToimitus(p.blueprint_id, p.print_provider_id) };
-}
+const { kulutRivi } = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
 const siirrot = lueEuSiirrot(fileURLToPath(new URL("../data", import.meta.url)));
 const t = await tuoPrintifysta({ tuotteet, kanta: sql ? postgresKanta(sql) : null, siirrot, buildProductRow, kulutRivi, hinnat, kulut, julkaise, kuiva });
 console.log(`Printify: ${tuotteet.length} tuotetta. Uusia ${t.uusia}, päivitetty ${t.paivitetty}, vanha rivi siirretty EU-kopioon ${t.korvattu}, ` +

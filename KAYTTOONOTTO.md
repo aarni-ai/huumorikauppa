@@ -26,6 +26,48 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Cloudflare, Stripe | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
+## Go-live: tarkistuslista (tilanne 27.10.2026)
+
+Valmiina Vercel-projektissa `huumorikauppa` (testiosoite huumorikauppa-five.vercel.app): Neon-kanta (DATABASE_URL),
+taulut ja tuotteet (kohta 2 ajettu 27.10.2026, EU-siirrot ja kulut kannassa), PRINTIFY_API_KEY, PRINTIFY_SHOP_ID,
+CRON_SECRET, MARKKINOINTI_SALAISUUS, OMISTAJA_EMAIL. Puuttuu vain Uusiku Oy:n uuden Stripe-tilin `STRIPE_SECRET_KEY`
+ja `STRIPE_WEBHOOK_SECRET` sekä Resend (`RESEND_API_KEY` ei ole asetettu yhteenkään Vercel-ympäristöön).
+Tee kohdat järjestyksessä. Komennot ajetaan kansiossa `~/huumorikauppa`, haara `oma-tausta`.
+
+1. **Resend-avain** (kohta 5): luo avain ja tallenna `RESEND_API_KEY` Verceliin (production).
+2. **Resend-domain**: Resend > Domains > Add Domain `huumorikauppa.fi` (alue EU). Lisää Resendin näyttämät
+   DNS-tietueet (MX ja TXT `send`-alitunnukselle, DKIM-TXT `resend._domainkey`) Domainhotellin hallintapaneeliin
+   (Domainit > huumorikauppa.fi > DNS-asetukset). Paina Resendissä **Verify** ja odota tila Verified. Nykyisiin A-,
+   CNAME- ja MX-tietueisiin ei kosketa. Ilman vahvistusta asiakasviestit (`tilaukset@huumorikauppa.fi`) eivät lähde.
+3. **Stripe-avain** (Uusiku Oy:n uusi tili, Live mode, rajattu avain kuten kohdassa 4): tallenna `STRIPE_SECRET_KEY`.
+4. **Stripe-webhook**: Uusiku Oy:n tilillä Developers > Webhooks > Add endpoint
+   `https://huumorikauppa.fi/api/stripe-webhook`, tapahtumat `checkout.session.completed`,
+   `checkout.session.async_payment_succeeded`, `checkout.session.expired`. Signing secret ->
+   `STRIPE_WEBHOOK_SECRET` (production). Webhook alkaa saada tapahtumia vasta domainin vaihdon (kohta 9) jälkeen;
+   ennen sitä testitilaus käsitellään valvonnan paikkauksella (`/api/cron/tilaukset` hakee maksetut sessiot Stripestä).
+5. **Myyjä samaan julkaisuun**: `printf uusiku | npx vercel env add MYYJA production`. MYYJA luetaan myös buildissa
+   (selaimen yritystiedot, `vite.config.ts` -> `VITE_MYYJA`), joten se on asetettava ennen kohdan 6 julkaisua, ja
+   Stripe-avaimet ja MYYJA menevät käyttöön samassa julkaisussa: kauppa ei saa näyttää Uusiku Oy:tä Intellerin
+   Stripellä eikä päinvastoin (`api/_lib/yritys.js`).
+6. **Julkaisu**: `npx vercel deploy --prod` (testiosoite). Tarkista: `curl -s https://huumorikauppa-five.vercel.app/api/products?slug=tonnin-seteli-t-paita -D - -o /dev/null | grep -i x-tuotelahde`
+   näyttää `tietokanta`, ja sivun alatunnisteessa ja toimitusehdoissa on Uusiku Oy, Y-tunnus 3653666-7.
+7. **GitHub-salaisuus**: `pbcopy < <(cut -d= -f2- .env.cron.local)` kopioi CRON_SECRETin leikepöydälle (ei näy
+   ruudulla). github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > New repository secret,
+   nimi `CRON_SECRET`, liitä arvo > Add secret. (`gh`-komentoa ei ole asennettu, joten tämä tehdään selaimessa.)
+8. **Testitilaus** testiosoitteessa oikealla kortilla pienimmällä tuotteella (kohta 7). Tarkista: Stripessä maksu
+   Uusiku Oy:n tilillä, valvonta (`curl -s -H "Authorization: Bearer $(cut -d= -f2- .env.cron.local)" https://huumorikauppa-five.vercel.app/api/cron/tilaukset`)
+   merkitsee tilauksen maksetuksi ja lähettää sen Printifyyn, vahvistusviesti tulee, ja Printifyssä tilaus on
+   tuotannossa (peru se siellä, jos et halua sitä). Palauta maksu Stripestä.
+9. **Domainin vaihto** (kohta 9, hiljaisena aikana): yhdistä haara mainiin, lisää `huumorikauppa.fi` ja
+   `www.huumorikauppa.fi` tähän Vercel-projektiin (Settings > Domains), lisää Vercelin näyttämä vahvistus-TXT
+   (`_vercel`) Domainhotellin DNS-asetuksiin ja paina Verify. Jos Vercel pyytää muuttamaan A- tai CNAME-tietuetta,
+   muuta se Domainhotellissa Vercelin näyttämään arvoon.
+10. **Vanha webhook pois heti**, kun `curl -s https://huumorikauppa.fi/api/products?limit=1 -o /dev/null -w '%{http_code}'`
+    palauttaa 200: Intellerin Stripe-tili > Webhooks > `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook`
+    (Lovable) > Disable. Muuten vanha tausta voisi käsitellä Intellerin tilin maksuja vielä rinnalla.
+11. **Lopputarkistus**: yksi oikea tilaus domainissa, `curl -sI https://huumorikauppa.fi/sitemap.xml`, GitHub >
+    Actions > Tilausvalvonta > Run workflow (vihreä), seuraavana aamuna päivän yhteenveto sähköpostissa.
+
 ## 1. Tietokanta (Neon, ilmainen)
 
 neon.tech > **Sign up** (Google- tai GitHub-tunnuksella) > Create project: nimi `huumorikauppa`, Postgres-versio
@@ -57,6 +99,16 @@ cd ~/huumorikauppa && set -a && . ./.env.database.local && . ./.env.printify.loc
 5. `tarkista-tilattavuus.mjs` tarkistaa, että jokaisen aktiivisen tuotteen jokainen `variant_map`-variantti on
    Printify-tuotteessa käytössä ja saatavilla. Listaa tilaamattomat yhdistelmät syineen ja päättyy koodiin 1, jos niitä
    on. Varoittaa myös riveistä, jotka osoittavat yhä vanhaan tuotteeseen.
+
+**Ajettu 27.10.2026** Neon-kantaan (Vercel-projekti `huumorikauppa`) Vercel-funktion kautta, koska Marketplace-
+integraation DATABASE_URL on Sensitive eikä sitä saa koneelle (väliaikainen tehtävä, poistettu ajon jälkeen; sama
+kirjastokoodi `scripts/lib/eu-kanta.mjs`). Tulos: taulut 11; tuotu 781 tuotetta (781 aktiivista); EU-siirrot 692/692
+riviä EU-kopioihin, 0 virhettä, vanhaan tuotteeseen osoittavia rivejä 0; kulut: Printifystä 1 521 tuotetta,
+päivitetty 791, ohitettu vanhana (EU-kopio korvaa) 697, uusia piilotettuja rivejä 33 (kannassa nyt 814 riviä, kaikilla
+`variants.costs`); tilattavuus: 781 tuotetta, 8 317 avainta, ei tilattavissa 162 (kaikki `ei_saatavilla`, lähinnä
+huppareiden 3XL-5XL ja muutama t-paidan Hiekka-väri). Saatavuustehtävä (`?tehtava=saatavuus`) ajettiin perään
+loppuun (jaljella 0), joten nämä yhdistelmät on kirjattu `unavailable_variants`-kenttään eivätkä näy kaupassa.
+Uudelleenajo koneelta onnistuu, kun Neonin connection string on `.env.database.local`-tiedostossa (kohta 1).
 
 ## 3. Printify
 
