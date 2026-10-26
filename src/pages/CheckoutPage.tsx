@@ -13,7 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
 import { useProducts } from "@/hooks/use-products";
-import { toimitusTila, arvioiPakettialennus } from "@/lib/ostoskori";
+import { toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
@@ -243,9 +243,12 @@ const CheckoutPage = () => {
   // Lopullinen summa lasketaan palvelimella (api/_lib/kassa.js).
   const discountAmount = appliedDiscount ? Math.round(tila.summa * appliedDiscount.percent) / 100 : 0;
   const bundleDiscount = appliedDiscount ? 0 : arvioiPakettialennus(items, allProducts);
+  // Kahden tuotteen alennus vain ilman alennuskoodia (api/_lib/korialennus.js).
+  const kori = korialennusTila(items, allProducts, !!appliedDiscount);
+  const basketDiscount = kori.alennus;
   const shippingFree = tila.ilmainen;
   const shippingCost = tila.toimitus;
-  const grandTotal = Math.round((totalPrice - discountAmount - bundleDiscount + shippingCost) * 100) / 100;
+  const grandTotal = Math.round((totalPrice - discountAmount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
   // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
   const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
   const giftCardUse = grandTotal - giftCardRaw > 0 && grandTotal - giftCardRaw < 0.5 ? Math.max(0, grandTotal - 0.5) : giftCardRaw;
@@ -526,6 +529,11 @@ const CheckoutPage = () => {
             {bundleDiscount > 0 && (
               <div className="flex justify-between text-primary">
                 <span>Pakettialennus</span><span>-{bundleDiscount.toFixed(2)} €</span>
+              </div>
+            )}
+            {basketDiscount > 0 && (
+              <div className="flex justify-between text-primary">
+                <span>Kahden tuotteen alennus (-{kori.prosentti} %)</span><span>-{basketDiscount.toFixed(2)} €</span>
               </div>
             )}
             <div className="flex justify-between text-muted-foreground">

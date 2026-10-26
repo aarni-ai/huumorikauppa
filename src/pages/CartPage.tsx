@@ -8,7 +8,8 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
-import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus } from "@/lib/ostoskori";
+import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
+import { KorialennusVihje } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
@@ -26,6 +27,7 @@ const CartPage = () => {
   const shippingGap = tila.puuttuu;
   const shippingProgress = tila.edistyminen;
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
+  const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
 
   if (items.length === 0) {
     return (
@@ -169,6 +171,13 @@ const CartPage = () => {
                 <span>-{eur(pakettialennus)}</span>
               </div>
             )}
+            {kori.voimassa && (
+              <div className="flex justify-between text-primary">
+                <span>Kahden tuotteen alennus (-{kori.prosentti} %)</span>
+                <span>-{eur(kori.alennus)}</span>
+              </div>
+            )}
+            {!tila.vainLahjakortteja && <KorialennusVihje tila={kori} />}
             {!shippingFree && (
               <p className="text-xs text-primary font-medium">
                 {eur(shippingGap)} ilmaiseen toimitukseen
@@ -179,7 +188,7 @@ const CartPage = () => {
           <div className="border-t border-border pt-3">
             <div className="flex justify-between text-lg font-bold text-foreground">
               <span>Yhteensä</span>
-              <span className="text-primary">{(totalPrice - pakettialennus + shippingCost).toFixed(2)} €</span>
+              <span className="text-primary">{(totalPrice - pakettialennus - kori.alennus + shippingCost).toFixed(2)} €</span>
             </div>
           </div>
 

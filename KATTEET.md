@@ -265,6 +265,147 @@ OPT OnDemand Ceramic Mug (EU): tuotekulu 5,88 €, toimitus Suomeen 10,39 €. H
 
 Alle 40 %, joten mukit pysyvät piilossa. 40 %:n kate vaatisi hinnan 28,90 € (toimitus 6,90 €).
 
+## Keskiostoksen nosto: laskelma
+
+Laskettu 27.10.2026. Tavoite: nostaa keskiostosta (nyt 28,80 € tuotteita tilausta kohden, lähes kaikki tilaukset
+yksi tuote: 17/17 tilausta 1.6.2026 alkaen) niin, että jokaisen korin kate pysyy positiivisena.
+
+**Kaava** (sama kuin muualla tässä tiedostossa): maksettu = tuotteet alennuksen jälkeen + asiakkaan toimitusmaksu;
+myynti alv 0 = maksettu / 1,255; nettokate = myynti alv 0 - Printifyn tuotekulu (ilman ALV:tä) - Printifyn toimitus -
+Stripe (1,5 % + 0,25 €). Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta (kuten kassa).
+
+**Kulut** (scratchpad katteet-jalkeen.json, EU-siirron jälkeen; heikoin variantti erikseen):
+
+| Tuote | Hinta | Tuotekulu | Painotalo | Printify-toimitus Suomeen: 1. kpl / lisäkpl |
+|---|--:|--:|---|--:|
+| T-paita (275 tuotetta) | 24,90 € | 8,90 € (heikoin 9,93 €) | OPT OnDemand (pp 30, bp 145) | 8,49 / 1,19 |
+| Huppari (132) | 49,90 € | 23,77 € | Printify Choice (pp 99, bp 77) | 15,59 / 10,00 |
+| Huppari (26) | 49,90 € | 30,19 € | Textildruck Europa (pp 26, bp 77) | 10,89 / 2,39 |
+| Juliste A3 (12) | 22,90 € | 7,09 € | OPT OnDemand (pp 30, bp 443) | 8,49 / 1,99 |
+
+Toimitukset haettu 27.10.2026 Printifyn katalogista (GET catalog/blueprints/.../print_providers/.../shipping.json,
+Suomen profiili; Printify Choice: REST_OF_THE_WORLD). Katalogi ilmoittaa summat dollareina; ne luetaan euroina kuten
+muualla tässä tiedostossa (jos tili on dollareissa, todelliset kulut ovat pienemmät). Printify veloittaa toimituksen
+painotaloittain: saman painotalon toinen kappale maksaa lisäkappaleen hinnan, eri painotalojen tuotteet lähtevät
+erikseen (t-paita + huppari = kaksi ensimmäistä kappaletta).
+
+### Korien kate (nettokate € tilausta kohden)
+
+Ilmaisen toimituksen raja ja toimitusmaksu (B):
+
+| Kori (tuotteet €) | A nyky 6,90 / 79 | B 6,90 / 50 | B 6,90 / 60 | B 6,90 / 69 | B 5,90 / 50 | B 5,90 / 60 | B 5,90 / 69 | B 5,90 / 79 |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| 1 t-paita (24,90) | 7,22 | 7,22 | 7,22 | 7,22 | 6,44 | 6,44 | 6,44 | 6,44 |
+| 1 t-paita (heikoin) (24,90) | 6,19 | 6,19 | 6,19 | 6,19 | 5,41 | 5,41 | 5,41 | 5,41 |
+| 2 t-paitaa (49,80) | 16,60 | 16,60 | 16,60 | 16,60 | 15,82 | 15,82 | 15,82 | 15,82 |
+| 3 t-paitaa (74,70) | 25,98 | 20,58 | 20,58 | 20,58 | 20,58 | 20,58 | 20,58 | 25,19 |
+| 1 huppari (Choice) (49,90) | 4,80 | 4,80 | 4,80 | 4,80 | 4,02 | 4,02 | 4,02 | 4,02 |
+| 1 huppari (Textildruck) (49,90) | 3,08 | 3,08 | 3,08 | 3,08 | 2,30 | 2,30 | 2,30 | 2,30 |
+| t-paita + huppari (Choice) (74,80) | 6,87 | 1,48 | 1,48 | 1,48 | 1,48 | 1,48 | 1,48 | 6,09 |
+| t-paita + huppari (Textildruck) (74,80) | 5,15 | -0,24 | -0,24 | -0,24 | -0,24 | -0,24 | -0,24 | 4,37 |
+| 2 huppari (Choice) (99,80) | 4,64 | 4,64 | 4,64 | 4,64 | 4,64 | 4,64 | 4,64 | 4,64 |
+| 2 huppari (Textildruck) (99,80) | 4,11 | 4,11 | 4,11 | 4,11 | 4,11 | 4,11 | 4,11 | 4,11 |
+| t-paita + juliste (47,80) | 16,05 | 16,05 | 16,05 | 16,05 | 15,26 | 15,26 | 15,26 | 15,26 |
+| 1 juliste (22,90) | 7,47 | 7,47 | 7,47 | 7,47 | 6,69 | 6,69 | 6,69 | 6,69 |
+| 2 julistetta (45,80) | 16,29 | 16,29 | 16,29 | 16,29 | 15,51 | 15,51 | 15,51 | 15,51 |
+| huppari (Choice) + juliste (72,80) | 7,12 | 1,73 | 1,73 | 1,73 | 1,73 | 1,73 | 1,73 | 6,34 |
+| 2 t-paitaa + huppari (Choice) (99,70) | 10,86 | 10,86 | 10,86 | 10,86 | 10,86 | 10,86 | 10,86 | 10,86 |
+
+Kahden tuotteen alennus (C, koko tilaus, kun korissa on vähintään 2 tuotetta) ja yhdistelmät (D):
+
+| Kori (tuotteet €) | A nyky 6,90 / 79 | C 2 tuotetta -10 % (6,90 / 79) | C 2 tuotetta -5 % (6,90 / 79) | D 2 tuotetta -10 % + 5,90 / 79 | D 2 tuotetta -10 % + 6,90 / 69 | D 2 tuotetta -5 % + 6,90 / 69 | D 2 tuotetta -5 % + 5,90 / 60 |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| 1 t-paita (24,90) | 7,22 | 7,22 | 7,22 | 6,44 | 7,22 | 7,22 | 6,44 |
+| 1 t-paita (heikoin) (24,90) | 6,19 | 6,19 | 6,19 | 5,41 | 6,19 | 6,19 | 5,41 |
+| 2 t-paitaa (49,80) | 16,60 | 12,71 | 14,65 | 11,92 | 12,71 | 14,65 | 13,87 |
+| 3 t-paitaa (74,70) | 25,98 | 20,14 | 23,05 | 19,35 | 14,74 | 17,66 | 17,66 |
+| 1 huppari (Choice) (49,90) | 4,80 | 4,80 | 4,80 | 4,02 | 4,80 | 4,80 | 4,02 |
+| 1 huppari (Textildruck) (49,90) | 3,08 | 3,08 | 3,08 | 2,30 | 3,08 | 3,08 | 2,30 |
+| t-paita + huppari (Choice) (74,80) | 6,87 | 1,03 | 3,95 | 0,24 | -4,37 | -1,44 | -1,44 |
+| t-paita + huppari (Textildruck) (74,80) | 5,15 | -0,69 | 2,23 | -1,48 | -6,09 | -3,16 | -3,16 |
+| 2 huppari (Choice) (99,80) | 4,64 | -3,16 | 0,74 | -3,16 | -3,16 | 0,74 | 0,74 |
+| 2 huppari (Textildruck) (99,80) | 4,11 | -3,69 | 0,21 | -3,69 | -3,69 | 0,21 | 0,21 |
+| t-paita + juliste (47,80) | 16,05 | 12,31 | 14,18 | 11,53 | 12,31 | 14,18 | 13,39 |
+| 1 juliste (22,90) | 7,47 | 7,47 | 7,47 | 6,69 | 7,47 | 7,47 | 6,69 |
+| 2 julistetta (45,80) | 16,29 | 12,71 | 14,50 | 11,93 | 12,71 | 14,50 | 13,72 |
+| huppari (Choice) + juliste (72,80) | 7,12 | 1,43 | 4,27 | 0,65 | -3,97 | -1,12 | -1,12 |
+| 2 t-paitaa + huppari (Choice) (99,70) | 10,86 | 3,06 | 6,96 | 3,06 | 3,06 | 6,96 | 6,96 |
+
+Huomiot:
+- Ilmainen toimitus alle 79 €:n rajalla tekee t-paita + Textildruck-huppari -korista tappiollisen (-0,24 €), koska
+  kahden painotalon toimitus (8,49 + 10,89 €) jää kauppiaan maksettavaksi. Kaikki rajat 50-69 € hylätään.
+- -10 % kahden tuotteen alennus tekee kahden hupparin korista tappiollisen (-3,16 € ja -3,69 €) ja t-paita +
+  Textildruck-huppari -korista tappiollisen (-0,69 €). Hylätään.
+- -5 % pitää jokaisen korin positiivisena (heikoin kaksi Textildruck-hupparia 0,21 €).
+- Raja 50 € ei vaikuta kahden t-paidan koriin (49,80 €), joten se ei houkuttele lisätuotteeseen t-paidan ostajaa.
+
+### Odotettu kate kuukaudessa
+
+**Oletukset (arvioita, ei mitattua dataa):**
+- Lähtöjakauma (yhden tuotteen tilaukset, sopii nykyiseen 28,80 €:n keskiostokseen): t-paita 75 %, huppari 15 %
+  (Choice 12 %, Textildruck 3 %), juliste tai muu edullinen tuote 10 %. Kahden tuotteen tilauksia nyt 0 %.
+- Tilausten määrä ei muutu tarjouksen takia (vain korin koko).
+- Kahden tuotteen alennus, osuus yhden tuotteen tilauksista, jotka muuttuvat kahden tuotteen tilauksiksi:
+  -10 %: varovainen 8 %, optimistinen 20 %; -5 %: varovainen 4 %, optimistinen 10 %.
+- Ilmaisen toimituksen raja 50-69 €: hupparin ostajista lisää t-paidan varovainen 4 % / optimistinen 10 %, t-paidan
+  ostajista t-paita + huppari 1 % / 3 % (kahden t-paidan kori ei ylitä rajaa 50-69 €), julisteen ostajista 0 %.
+- Volyymi: nyt noin 8 tilausta / 30 pv, vertailuna 16 (2x).
+
+| Vaihtoehto | Kaikki korit > 0 € | Heikoin kori | Kate €/tilaus (varovainen / optimistinen) | Tuotteet €/tilaus (var. / opt.) | €/kk, 8 tilausta (var. / opt.) | €/kk, 16 tilausta (var. / opt.) | Muutos €/kk nykyiseen, 8 / 16 tilausta (var. / opt.) |
+|---|---|---|--:|--:|--:|--:|--:|
+| A nyky 6,90 / 79 | kyllä | 1 huppari (Textildruck) 3,08 | 6,83 / 6,83 | 28,45 / 28,45 | 54,65 / 54,65 | 109,30 / 109,30 | 0,00 / 0,00; 0,00 / 0,00 |
+| B 5,90 / 50 | ei | t-paita + huppari (Textildruck) -0,24 | 6,00 / 5,90 | 28,97 / 29,95 | 47,97 / 47,20 | 95,95 / 94,39 | -6,67 / -7,45; -13,35 / -14,90 |
+| B 5,90 / 60 | ei | t-paita + huppari (Textildruck) -0,24 | 6,00 / 5,90 | 28,97 / 29,95 | 47,97 / 47,20 | 95,95 / 94,39 | -6,67 / -7,45; -13,35 / -14,90 |
+| B 5,90 / 69 | ei | t-paita + huppari (Textildruck) -0,24 | 6,00 / 5,90 | 28,97 / 29,95 | 47,97 / 47,20 | 95,95 / 94,39 | -6,67 / -7,45; -13,35 / -14,90 |
+| B 5,90 / 79 | kyllä | 1 huppari (Textildruck) 2,30 | 6,05 / 6,05 | 28,45 / 28,45 | 48,39 / 48,39 | 96,79 / 96,79 | -6,25 / -6,25; -12,51 / -12,51 |
+| B 6,90 / 50 | ei | t-paita + huppari (Textildruck) -0,24 | 6,77 / 6,65 | 28,97 / 29,95 | 54,14 / 53,22 | 108,29 / 106,43 | -0,50 / -1,43; -1,01 / -2,86 |
+| B 6,90 / 60 | ei | t-paita + huppari (Textildruck) -0,24 | 6,77 / 6,65 | 28,97 / 29,95 | 54,14 / 53,22 | 108,29 / 106,43 | -0,50 / -1,43; -1,01 / -2,86 |
+| B 6,90 / 69 | ei | t-paita + huppari (Textildruck) -0,24 | 6,77 / 6,65 | 28,97 / 29,95 | 54,14 / 53,22 | 108,29 / 106,43 | -0,50 / -1,43; -1,01 / -2,86 |
+| C 2 tuotetta -10 % (6,90 / 79) | ei | 2 huppari (Textildruck) -3,69 | 7,15 / 7,64 | 30,44 / 33,43 | 57,23 / 61,10 | 114,46 / 122,20 | 2,58 / 6,45; 5,16 / 12,90 |
+| C 2 tuotetta -5 % (6,90 / 79) | kyllä | 2 huppari (Textildruck) 0,21 | 7,08 / 7,44 | 29,45 / 30,94 | 56,61 / 59,54 | 113,21 / 119,08 | 1,96 / 4,89; 3,91 / 9,79 |
+| D 2 tuotetta -10 % + 5,90 / 79 | ei | 2 huppari (Textildruck) -3,69 | 6,37 / 6,86 | 30,44 / 33,43 | 50,97 / 54,84 | 101,95 / 109,69 | -3,67 / 0,20; -7,35 / 0,39 |
+| D 2 tuotetta -5 % + 6,90 / 69 | ei | t-paita + huppari (Textildruck) -3,16 | 6,94 / 7,07 | 29,97 / 32,44 | 55,53 / 56,58 | 111,05 / 113,17 | 0,88 / 1,94; 1,76 / 3,87 |
+| D 2 tuotetta -5 % + 5,90 / 60 | ei | t-paita + huppari (Textildruck) -3,16 | 6,17 / 6,33 | 29,97 / 32,44 | 49,39 / 50,66 | 98,79 / 101,32 | -5,25 / -3,99; -10,51 / -7,98 |
+| D 2 tuotetta -10 % + 6,90 / 69 | ei | t-paita + huppari (Textildruck) -6,09 | 6,95 / 7,08 | 30,97 / 34,93 | 55,57 / 56,62 | 111,15 / 113,23 | 0,93 / 1,97; 1,85 / 3,94 |
+
+Kannattavuuden kynnys kahden tuotteen alennukselle (-5 %): jokainen yhden t-paidan tilaus, joka muuttuu kahden
+t-paidan tilaukseksi, tuo 14,65 - 7,22 = 7,43 € lisää; jokainen kahden t-paidan tilaus, joka olisi tullut ilman
+tarjousta, maksaa 16,60 - 14,65 = 1,95 €. Tarjous kannattaa, kun vähintään 21 % alennetuista tilauksista on
+tarjouksen synnyttämiä (1,95 / (7,43 + 1,95)).
+
+### Suositus
+
+**Kahden tuotteen alennus -5 %, toimitus ennallaan 6,90 € alle 79 €.** Ainoa vertailun tarjous, joka nostaa
+odotettua katetta ja pitää jokaisen korin positiivisena:
+- 8 tilausta / kk: +1,96 € (varovainen) ... +4,89 € (optimistinen) kuukaudessa, nettokate 54,65 € -> 56,61-59,54 €.
+- 16 tilausta / kk: +3,91 € ... +9,79 € kuukaudessa, nettokate 109,30 € -> 113,21-119,08 €.
+- Keskiostos (tuotteet) 28,45 € -> 29,45-30,94 €.
+
+Hylätyt: oman taustan aiempi suunnitelma 5,90 € / 60 € (tappiollinen kori, -6,67...-7,45 € / kk 8 tilauksella),
+muut rajat 50-69 € (tappiollinen kori, odotettu kate laskee), -10 % (tappiolliset korit), kaikki yhdistelmät
+(tappiollinen kori). Oman taustan toimitus palautettiin samaksi kuin live-kaupassa (6,90 € / 79 €).
+
+### Toteutus (oma tausta, haara keskiostos oma-taustan päällä)
+
+Tarjous tulee voimaan vasta uuden taustan käyttöönotossa. Live-kaupan kassa (Lovable, main) ei muutu.
+
+- Vakiot `api/_lib/vakiot.js`: `TOIMITUS` 6,9, `ILMAINEN_TOIMITUS_RAJA` 79, `KORIALENNUS_PROSENTTI` 5,
+  `KORIALENNUS_MIN_KPL` 2, `KORIALENNUS_MIN_KATE_EUROA` 0 (katevahdin raja). Sivuston tekstit (`src/config/toimitus.ts`)
+  ja Merchant-syöte (`api/_lib/syote-lisakentat.js`) samat.
+- Palvelin laskee alennuksen (`api/_lib/korialennus.js`, kutsu `api/_lib/kassa.js`): hinnat tuotetaulusta, ei
+  selaimelta. Ei alennuskoodin kanssa, ei lahjakorteille, pakettiriviä ei alenneta toiseen kertaan.
+- Katevahti: alennusta ei anneta, jos tilauksen nettokate alennuksen jälkeen olisi alle 0 € tai alle asetetun rajan.
+  Laskenta käyttää Printifyn todellista toimitusta painotaloittain (`api/_lib/kate.js` `laskeTilauksenNettokate`).
+  Jos tuotteelta puuttuu lisäkappaleen toimitus tai painotalo, jokainen kappale lasketaan ensimmäisen kappaleen
+  hinnalla (varovaisesti). Aja ennen käyttöönottoa `node scripts/printify-tuonti.mjs --kulut`, joka tallentaa
+  `variants.shipping_additional_cents` ja `variants.print_provider_id`.
+- Ostoskori, minikori ja kassasivu: vihje ja edistymispalkki "Lisää toinen tuote, saat -5 %", alennusrivi "Kahden
+  tuotteen alennus (-5 %)" (`src/components/KorialennusVihje.tsx`, `src/lib/ostoskori.ts` `korialennusTila`, sama
+  laskenta kuin kassalla).
+- Oman taustan 20 %:n myyntiraja estää edelleen 49,90 €:n hupparit (kate 10,6 %), joten huppareita sisältävät korit
+  koskevat live-kauppaa; laskelma kattaa ne silti.
+- Testit: `src/test/korialennus.test.ts`.
+
 ## Hintaehdotus 26.10.2026 (ei julkaistu)
 
 **Kilpailijat** (Shopify-tuotesyötteet 26.10.2026, kaikki tuotteet): Meemirotta t-paidat 24,99 € (256 tuotetta, kaikki

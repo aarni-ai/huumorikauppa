@@ -25,7 +25,7 @@ describe("Usein ostetaan yhdessä", () => {
     expect(slugit).not.toContain("halpa-huppari");
   });
   it("puuttuva summa ilmaiseen toimitukseen", () => {
-    expect(puuttuvaSumma([{ product: paita, quantity: 1 }])).toBe(35.1);
+    expect(puuttuvaSumma([{ product: paita, quantity: 1 }])).toBe(54.1);
     expect(puuttuvaSumma([{ product: huppari, quantity: 2 }])).toBe(0);
     expect(valitseSuositukset([], [paita], 4)).toHaveLength(1);
   });

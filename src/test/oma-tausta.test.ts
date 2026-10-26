@@ -57,19 +57,19 @@ describe("Kassa", () => {
 
 describe("Katesääntö 20 %", () => {
   it("laskee nettokatteen: (hinta + toimitus) alv 0 - tuotekulu - toimitus - Stripe", () => {
-    // (34,90 + toimitusmaksu) / 1,255 - tuotekulu 12,00 - toimituskulu 4,50 - Stripe (maksettu * 1,5 % + 0,25); maksuna 40,80 (5,90): 15,15
+    // (34,90 + toimitusmaksu) / 1,255 - tuotekulu 12,00 - toimituskulu 4,50 - Stripe (maksettu * 1,5 % + 0,25); maksuna 41,80: 15,93
     const k = laskeKate(paita, 11);
-    expect(k).toMatchObject({ tunnettu: true, nettokate: 15.15, sallittu: true });
-    expect(k.kate).toBeCloseTo(0.466, 3);
+    expect(k).toMatchObject({ tunnettu: true, nettokate: 15.93, sallittu: true });
+    expect(k.kate).toBeCloseTo(0.478, 3);
   });
   it("alle 20 % estää kassalla ja piilottaa listasta, 20-40 % on myynnissä", () => {
-    // Kulu 18,00: kate 28,1 %, aiemmalla 40 %:n rajalla estetty, nyt myynnissä.
+    // Kulu 18,00: kate 29,8 %, aiemmalla 40 %:n rajalla estetty, nyt myynnissä.
     const keski = { ...paita, id: "p6", slug: "keski", variants: { ...paita.variants, costs: { "11": 1800, "12": 1800, "13": 1800 } } };
-    expect(laskeKate(keski, 11).kate).toBeCloseTo(0.281, 3);
+    expect(laskeKate(keski, 11).kate).toBeCloseTo(0.298, 3);
     expect(laskeKate(keski, 11).sallittu).toBe(true);
     expect(myynnissa(keski)).toBe(true);
-    expect(laskeTilaus(pyynto([{ id: "p6", quantity: 1, size: "M", color: "Musta" }]), [keski], null).total).toBe(40.8);
-    // Kulu 22,00: kate 15,8 %.
+    expect(laskeTilaus(pyynto([{ id: "p6", quantity: 1, size: "M", color: "Musta" }]), [keski], null).total).toBe(41.8);
+    // Kulu 22,00: kate 17,8 %.
     const halpa = { ...paita, id: "p4", slug: "halpa", variants: { ...paita.variants, costs: { "11": 2200, "12": 2200, "13": 2200 } } };
     expect(laskeKate(halpa, 11).sallittu).toBe(false);
     expect(myynnissa(halpa)).toBe(false);

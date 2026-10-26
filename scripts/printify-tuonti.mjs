@@ -4,7 +4,8 @@
  * Uudet tuotteet tuodaan piilotettuina (is_active false), ellei anneta --julkaise: Printifyyn ilmestyneet tuotteet
  * (esim. 21.10.2026 noin 280 kaupunkimukia) eivät tule myyntiin ilman hyväksyntää. Mukit pysyvät piilossa joka
  * tapauksessa (api/_lib/piilotetut.js).
- *   --kulut          Printifyn kulut katesääntöä varten: variants.costs (variantti -> sentit) ja variants.shipping_cents
+ *   --kulut          Printifyn kulut katesääntöä varten: variants.costs (variantti -> sentit), variants.shipping_cents,
+ *                    variants.shipping_additional_cents (lisäkappale) ja variants.print_provider_id
  *                    (Suomeen, ensimmäinen kappale). Ajetaan ennen käyttöönottoa ja aina hintojen muuttuessa.
  *   --luotu VVVV-KK-PP  listaa vain Printify-tuotteet, jotka on luotu sinä päivänä (ei kirjoita mitään).
  * Käyttää vanhan taustan muunnoslogiikkaa sellaisenaan (supabase/functions/_shared/printify-sync.ts: kategoriat,
@@ -39,7 +40,7 @@ if (luotu) {
   process.exit(0);
 }
 
-// Suomen toimituskulu (ensimmäinen kappale, sentit) painotalokohtaisesti, välimuistissa.
+// Suomen toimituskulu painotalokohtaisesti (sentit): ensimmäinen ja lisäkappale, välimuistissa.
 const toimitusVm = new Map();
 async function suomenToimitus(bp, pp) {
   const avain = `${bp}/${pp}`;
@@ -48,13 +49,15 @@ async function suomenToimitus(bp, pp) {
     const j = res.ok ? await res.json() : null;
     const profiilit = j?.profiles || [];
     const fi = profiilit.find((x) => (x.countries || []).includes("FI")) || profiilit.find((x) => (x.countries || []).includes("REST_OF_THE_WORLD"));
-    toimitusVm.set(avain, fi?.first_item?.cost ?? null);
+    toimitusVm.set(avain, { eka: fi?.first_item?.cost ?? null, lisa: fi?.additional_items?.cost ?? null });
   }
   return toimitusVm.get(avain);
 }
+// Korialennuksen katevahti (api/_lib/korialennus.js) tarvitsee lisäkappaleen toimituksen ja painotalon.
 async function kulutRivi(p) {
   const costs = Object.fromEntries((p.variants || []).filter((v) => v.is_enabled).map((v) => [String(v.id), v.cost]));
-  return { costs, shipping_cents: await suomenToimitus(p.blueprint_id, p.print_provider_id) };
+  const { eka, lisa } = await suomenToimitus(p.blueprint_id, p.print_provider_id);
+  return { costs, shipping_cents: eka, shipping_additional_cents: lisa, print_provider_id: p.print_provider_id ?? null };
 }
 const siirrot = lueEuSiirrot(fileURLToPath(new URL("../data", import.meta.url)));
 const t = await tuoPrintifysta({ tuotteet, kanta: sql ? postgresKanta(sql) : null, siirrot, buildProductRow, kulutRivi, hinnat, kulut, julkaise, kuiva });

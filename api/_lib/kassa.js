@@ -13,12 +13,16 @@
  * - Lahjakortilla maksu: tarkistettu saldo vähennetään maksettavasta (lahjakortti { koodi, saldo }).
  * - Ensitilauksen koodi (alennus.ensitilaus, api/_lib/markkinointi.js): hyväksytään vain, jos koko tilauksen kate
  *   alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js ALENNUS_KATE_RAJA).
+ * - Kahden tuotteen alennus (api/_lib/korialennus.js, vakiot.js KORIALENNUS_*): ilman alennuskoodia, kun korissa on
+ *   vähintään kaksi fyysistä tuotetta; koskee pakettiin kuulumattomia rivejä ja annetaan vain, jos tilauksen nettokate
+ *   alennuksen jälkeen pysyy katevahdin rajalla. Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta.
  * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
 import { laskeKate, laskeTilauksenKate } from "./kate.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
+import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
 import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
 
@@ -56,7 +60,8 @@ function lahjakorttiRivi(it) {
  * @param pyynto { items, customerEmail, customerName, shippingAddress, recipientName, discountCode }
  * @param tuotteet kaikki tuoterivit
  * @param alennus { type, value } tai null
- * @param lisat { paketit: pakettimääritykset, lahjakortti: { koodi, saldo } tarkistettu kortti tai null }
+ * @param lisat { paketit: pakettimääritykset, lahjakortti: { koodi, saldo } tarkistettu kortti tai null,
+ *   korialennus: asetukset ({ prosentti, minKpl, minKateEuroa }, oletus vakiot.js) }
  */
 export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const { items, customerEmail, shippingAddress } = pyynto || {};
@@ -123,6 +128,12 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     fyysiset = p.rivit;
     pakettiAlennus = p.alennus;
   }
+  let koriAlennus = 0;
+  if (!alennus && fyysiset.length) {
+    const k = sovellaKorialennus(fyysiset, bySlug, toimitus, lisat.korialennus);
+    fyysiset = k.rivit;
+    koriAlennus = k.alennus;
+  }
   const kortit = lahjakortit.map((r) => ({ ...r, unit_cents: sentit(r.unit_price) }));
   const stripeRivit = [...fyysiset, ...kortit];
   const tuotteetYht = fyysiset.reduce((s, r) => s + r.unit_cents * r.quantity, 0) / 100;
@@ -138,6 +149,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     shipping: toimitus,
     discount: Math.round((valisumma - tuotteetYht) * 100) / 100,
     bundle_discount: Math.round(pakettiAlennus * 100) / 100,
+    basket_discount: Math.round(koriAlennus * 100) / 100,
     total,
     gift_card_code: lisat.lahjakortti && lahjakortilla > 0 ? lisat.lahjakortti.koodi : null,
     gift_card_amount: lahjakortilla,

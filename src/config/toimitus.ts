@@ -4,8 +4,8 @@
  * Arvojen on vastattava sitä, mitä kassa oikeasti veloittaa. Oma tausta (haara oma-tausta):
  * kassa api/_lib/kassa.js lukee arvot tiedostosta api/_lib/vakiot.js, ja Merchant-syöte
  * api/_lib/syote-lisakentat.js samoin. src/config/toimitus.test.ts kaatuu, jos arvot eroavat.
- * main-haaran vanha kassa (Lovable create-checkout) veloittaa yhä 6,90 € / 79 €, joten main pitää
- * arvot 6,90 / 79, kunnes domain siirtyy omaan taustaan. Kaikki sivuston tekstit, UKK:t,
+ * Oma tausta pitää samat arvot kuin main-haaran vanha kassa (Lovable create-checkout): 6,90 € / 79 €
+ * (27.10.2026, KATTEET.md "Keskiostoksen nosto: laskelma"). Kaikki sivuston tekstit, UKK:t,
  * rakenteinen data ja llms.txt lukevat arvot täältä.
  *
  * Tiedosto on tarkoituksella riippuvuudeton (ei "@/"-aliaksia), jotta sitä voi käyttää myös
@@ -13,9 +13,9 @@
  */
 
 /** Toimitusmaksu euroina, kun tilaus jää alle ilmaisen toimituksen rajan. */
-export const TOIMITUSMAKSU = 5.9;
+export const TOIMITUSMAKSU = 6.9;
 /** Tilauksen summa (€), josta alkaen toimitus on ilmainen. */
-export const ILMAINEN_TOIMITUS_RAJA = 60;
+export const ILMAINEN_TOIMITUS_RAJA = 79;
 
 /** Kokonaistoimitusaika tilauksesta arkipäivinä (Terms.tsx kohta 4). */
 export const TOIMITUSAIKA_MIN_ARKIPAIVAA = 3;

@@ -8,6 +8,8 @@ import { paketinHeikoinKate } from "../../api/_lib/kate.js";
 import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
+import { sovellaPaketit } from "../../api/_lib/paketit.js";
+import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL } from "../../api/_lib/korialennus.js";
 import type { CartItem, Product } from "@/types/product";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
@@ -24,6 +26,7 @@ export interface Paketti {
 export const PAKETTIMAARITYKSET = PAKETIT as Paketti[];
 
 type Rivi = Pick<CartItem, "product" | "quantity">;
+type KoriRivi = Rivi & Pick<CartItem, "selectedSize" | "selectedColor">;
 
 const pyorista = (x: number) => Math.round(x * 100) / 100;
 
@@ -109,4 +112,48 @@ export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennus
     kpl.set(b, (kpl.get(b) || 0) - parit);
   }
   return alennus / 100;
+}
+
+export { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL };
+
+export interface KorialennusTila {
+  /** Fyysisiä tuotteita korissa (kpl). */
+  kpl: number;
+  /** Montako tuotetta puuttuu alennuksesta (0, kun ehto täyttyy). */
+  puuttuu: number;
+  prosentti: number;
+  /** Arvioitu alennus euroina (0, jos ei voimassa). */
+  alennus: number;
+  /** true: alennus on mukana arviossa. */
+  voimassa: boolean;
+  /** Miksi alennusta ei ole: null, "kpl", "pois", "koodi", "ei_rivia" (kaikki paketissa), "kulu", "kate" (katevahti). */
+  syy: string | null;
+}
+
+/**
+ * Kahden tuotteen alennuksen arvio korille: sama laskenta kuin kassalla (api/_lib/korialennus.js, pakettialennus
+ * ensin). Rivin variantti valitun koon ja värin mukaan, muuten kallein variantti (varovainen arvio). Palvelin laskee
+ * lopullisen alennuksen.
+ */
+export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennuskoodi = false, paketit: Paketti[] = PAKETTIMAARITYKSET): KorialennusTila {
+  const fyysiset = items.filter((i) => !onLahjakortti(i));
+  const kpl = fyysiset.reduce((s, i) => s + i.quantity, 0);
+  const pohja = { kpl, puuttuu: Math.max(0, KORIALENNUS_MIN_KPL - kpl), prosentti: KORIALENNUS_PROSENTTI, alennus: 0, voimassa: false };
+  if (!(KORIALENNUS_PROSENTTI > 0)) return { ...pohja, syy: "pois" };
+  if (alennuskoodi) return { ...pohja, syy: "koodi" };
+  if (kpl < KORIALENNUS_MIN_KPL) return { ...pohja, syy: "kpl" };
+  const bySlug = new Map<string, Product>(tuotteet.map((p) => [p.slug, p]));
+  for (const i of fyysiset) if (!bySlug.has(i.product.slug)) bySlug.set(i.product.slug, i.product);
+  const rivit = fyysiset.map((i) => {
+    const p = bySlug.get(i.product.slug) as Product;
+    const kartta = (p.variants?.variant_map || {}) as Record<string, number>;
+    const suora = kartta[`${(i.selectedColor || "").trim()}|${(i.selectedSize || "").trim()}`];
+    return {
+      slug: p.slug, quantity: i.quantity, unit_cents: Math.round(p.price * 100),
+      variant_id: typeof suora === "number" ? suora : kalleinVariantti(p),
+    };
+  });
+  const paketoitu = sovellaPaketit(rivit, bySlug, paketit).rivit;
+  const k = sovellaKorialennus(paketoitu, bySlug, toimitusTila(items).toimitus);
+  return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy };
 }

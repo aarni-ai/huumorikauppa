@@ -21,8 +21,8 @@ export function kateluokka(kate) {
 
 // Peili: src/config/toimitus.ts (ILMAINEN_TOIMITUS_RAJA, TOIMITUSMAKSU). src/config/toimitus.test.ts
 // kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
-export const ILMAINEN_RAJA = 60;
-export const TOIMITUS = 5.9;
+export const ILMAINEN_RAJA = 79;
+export const TOIMITUS = 6.9;
 
 const TUOTETYYPIT = [
   [/T-Shirts/, "Vaatteet > T-paidat"],

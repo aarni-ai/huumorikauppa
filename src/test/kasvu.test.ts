@@ -22,9 +22,11 @@ const huppari = {
   printify_product_id: "pf-h", created_at: "2026-01-02",
   variants: { variant_map: { "Musta|M": 11 }, costs: { "11": 1500 }, shipping_cents: 400 },
 };
-// Kulu 24,00 + toimitus 6,00: yksittäinen huppari on myynnissä (kate 30,1 %, raja 20 %), mutta paketti t-paidan kanssa
-// jää 10 %:n alennuksella alle pakettirajan 30 % (21,2 %), joten testi pääsee paketin katevahtiin.
-const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2400 }, shipping_cents: 600 } };
+// Kulu 27,00 + toimitus 6,00: yksittäinen huppari on myynnissä (kate 24,7 %, raja 20 %), mutta paketti t-paidan kanssa
+// jää 10 %:n alennuksella alle pakettirajan 30 % (23,3 %), joten testi pääsee paketin katevahtiin.
+const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2700 }, shipping_cents: 600 } };
+// Pakettitestit ilman kahden tuotteen alennusta (api/_lib/korialennus.js, omat testit src/test/korialennus.test.ts).
+const eiKorialennusta = { prosentti: 0 };
 const kallisPaita = { ...paita, id: "t2", slug: "kallis-t-paita" };
 const tuntematon = { ...huppari, id: "h3", slug: "tuntematon-huppari", variants: { variant_map: { "Musta|M": 13 } } };
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -77,13 +79,13 @@ describe("Paketit: muodostus", () => {
 
 describe("Paketit: kate ja alennus", () => {
   it("paketin kate alennuksen jälkeen", () => {
-    // 74,80 >= raja: ei toimitusmaksua. 74,80 * 0,9 = 67,32; alv 0 53,64; kulut 7 + 4 + 15 + 4 = 30; Stripe 1,26 -> 22,38 (41,7 %)
-    expect(74.8).toBeGreaterThanOrEqual(ILMAINEN_TOIMITUS_RAJA);
+    // 74,80 < raja: toimitusmaksu 6,90. 74,80 * 0,9 + 6,90 = 74,22; alv 0 59,14; kulut 7 + 4 + 15 + 4 = 30; Stripe 1,36 -> 27,78 (47,0 %)
+    expect(74.8).toBeLessThan(ILMAINEN_TOIMITUS_RAJA);
     const k = laskePaketinKate([{ tuote: paita, varianttiId: 1 }, { tuote: huppari, varianttiId: 11 }], 10);
     expect(k.tunnettu).toBe(true);
-    const maksettu = 74.8 * 0.9;
+    const maksettu = 74.8 * 0.9 + TOIMITUS;
     expect(k.nettokate).toBe(r2(maksettu / 1.255 - 30 - (maksettu * 0.015 + 0.25)));
-    expect(k.nettokate).toBe(22.38);
+    expect(k.nettokate).toBe(27.78);
     expect(k.sallittu).toBe(true);
     expect(laskePaketinKate([{ tuote: kallisPaita, varianttiId: 1 }, { tuote: kallisHuppari, varianttiId: 12 }], 10).sallittu).toBe(false);
     expect(laskePaketinKate([{ tuote: paita, varianttiId: 1 }, { tuote: tuntematon, varianttiId: 13 }], 10).tunnettu).toBe(false);
@@ -113,14 +115,14 @@ describe("Paketit: kate ja alennus", () => {
     expect(r.shipping).toBe(0);
   });
   it("vain parit saavat alennuksen, ylimääräinen kappale täyteen hintaan", () => {
-    const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita", 2), t("oispa-kaljaa-huppari")]), tuotteet, null, { paketit });
+    const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita", 2), t("oispa-kaljaa-huppari")]), tuotteet, null, { paketit, korialennus: eiKorialennusta });
     const rivit = r.rivit.map((x: { slug: string; quantity: number; unit_cents: number }) => [x.slug, x.quantity, x.unit_cents]);
     expect(rivit).toEqual([["oispa-kaljaa-t-paita", 1, 2241], ["oispa-kaljaa-t-paita", 1, 2490], ["oispa-kaljaa-huppari", 1, 4491]]);
     expect(r.shipping).toBe(0);
     expect(r.total).toBe(92.22);
   });
   it("katevahti: paketin kate alle 30 % tai tuntematon kulu, ei alennusta", () => {
-    const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit });
+    const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit, korialennus: eiKorialennusta });
     expect(r.bundle_discount).toBe(0);
     expect(r.total).toBe(r2(74.8 + toimitusSummalle(74.8)));
     const m = new Map([[paita.slug, paita], [tuntematon.slug, tuntematon]]);
@@ -132,8 +134,8 @@ describe("Paketit: kate ja alennus", () => {
   });
   it("alennuksen valinta kuluista: suurin 10..5 %, jolla kate >= 30 %, muuten pois käytöstä", () => {
     expect(valitsePakettialennus([paita, huppari])).toMatchObject({ alennus: 10 });
-    // Huppari 20,00 + 6,00: 10 % -> 28,7 %, 9 % -> 29,4 %, 8 % -> 30,2 %.
-    const keskiHuppari = { ...huppari, variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2000 }, shipping_cents: 600 } };
+    // Huppari 23,70 + 6,00 (toimitusmaksu 6,90, välisumma alle rajan): 10 % -> 28,9 %, 9 % -> 29,6 %, 8 % -> 30,2 %.
+    const keskiHuppari = { ...huppari, variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2370 }, shipping_cents: 600 } };
     expect(valitsePakettialennus([paita, keskiHuppari])).toMatchObject({ alennus: 8 });
     expect(paketinHeikoinKate([paita, keskiHuppari], 9).sallittu).toBe(false);
     expect(valitsePakettialennus([kallisPaita, kallisHuppari])).toMatchObject({ alennus: null });

@@ -1,8 +1,24 @@
 /**
  * Kassan vakiot ilman riippuvuuksia (selain ja palvelin käyttävät samoja). api/_lib/kassa.js vie nämä edelleen.
  */
-export const ILMAINEN_TOIMITUS_RAJA = 60;
-export const TOIMITUS = 5.9;
+/**
+ * Toimitusmaksu ja ilmaisen toimituksen raja (27.10.2026: samat kuin live-kaupassa). Aiempi oman taustan
+ * suunnitelma (pienempi maksu, raja 60 euroa) hylättiin: t-paita + huppari (Textildruck) jäisi ilmaisella toimituksella
+ * tappiolliseksi ja odotettu kate kuukaudessa laskisi (KATTEET.md, "Keskiostoksen nosto: laskelma").
+ */
+export const ILMAINEN_TOIMITUS_RAJA = 79;
+export const TOIMITUS = 6.9;
+
+/**
+ * Kahden tuotteen alennus (korialennus): kun korissa on vähintään KORIALENNUS_MIN_KPL fyysistä tuotetta eikä
+ * alennuskoodia käytetä, palvelin (api/_lib/korialennus.js) alentaa pakettiin kuulumattomia rivejä
+ * KORIALENNUS_PROSENTTI prosenttia. Alennus jätetään antamatta, jos tilauksen nettokate alennuksen jälkeen olisi alle
+ * KORIALENNUS_MIN_KATE_EUROA (katevahti; 0 = ei koskaan tappiollista tilausta). -10 % hylättiin: kaksi hupparia ja
+ * t-paita + Textildruck-huppari jäisivät tappiolle (KATTEET.md). 0 = pois käytöstä.
+ */
+export const KORIALENNUS_PROSENTTI = 5;
+export const KORIALENNUS_MIN_KPL = 2;
+export const KORIALENNUS_MIN_KATE_EUROA = 0;
 
 /**
  * Ensitilauksen alennus uutiskirjeen tilaajalle (prosenttia, 0 = pois käytöstä). Asetetaan niin, että tyypillisen

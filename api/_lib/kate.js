@@ -144,3 +144,65 @@ export function laskeTilauksenKate(osat, toimitusmaksu = 0, raja = ALENNUS_KATE_
   const kate = myyntiAlv0 > 0 ? nettokate / myyntiAlv0 : -1;
   return { tunnettu: true, nettokate: Math.round(nettokate * 100) / 100, kate: Math.round(kate * 1000) / 1000, sallittu: kate >= raja };
 }
+
+/**
+ * Printifyn toimituskulu tilaukselle (sentit). Printify veloittaa painotaloittain: kunkin painotalon kalleimman
+ * ensimmäisen kappaleen hinta (variants.shipping_cents) ja muille saman painotalon kappaleille lisäkappaleen hinta
+ * (variants.shipping_additional_cents). Tuote, jolta puuttuu painotalo (variants.print_provider_id) tai lisäkappaleen
+ * hinta, lasketaan varovaisesti: jokainen kappale ensimmäisen kappaleen hinnalla omana lähetyksenään.
+ * @param osat [{ tuote, maara }]
+ * Palauttaa sentit tai null, jos jonkin tuotteen toimituskulua ei tunneta.
+ */
+export function printifyToimitusSentit(osat) {
+  const ryhmat = new Map();
+  let erikseen = 0;
+  for (const { tuote, maara = 1 } of osat) {
+    const v = tuote?.variants || {};
+    const eka = v.shipping_cents;
+    if (typeof eka !== "number") return null;
+    const lisa = v.shipping_additional_cents;
+    const pp = v.print_provider_id;
+    if (typeof lisa !== "number" || pp === undefined || pp === null) {
+      erikseen += eka * maara;
+      continue;
+    }
+    if (!ryhmat.has(pp)) ryhmat.set(pp, []);
+    for (let i = 0; i < maara; i++) ryhmat.get(pp).push({ eka, lisa });
+  }
+  let summa = erikseen;
+  for (const kappaleet of ryhmat.values()) {
+    kappaleet.sort((a, b) => b.eka - a.eka);
+    summa += kappaleet[0].eka + kappaleet.slice(1).reduce((s, k) => s + k.lisa, 0);
+  }
+  return summa;
+}
+
+/**
+ * Tilauksen nettokate alennusten jälkeen todellisella Printify-toimituksella (painotaloittain ensimmäinen ja
+ * lisäkappale, printifyToimitusSentit). Korialennuksen katevahti (api/_lib/korialennus.js).
+ * @param osat [{ tuote, varianttiId, maara, yksikkohinta }] yksikkohinta euroina alennuksen jälkeen
+ * @param toimitusmaksu asiakkaan maksama toimitus euroina
+ * Palauttaa { tunnettu, nettokate, kate }.
+ */
+export function laskeTilauksenNettokate(osat, toimitusmaksu = 0) {
+  if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, kate: null };
+  let maksettu = toimitusmaksu;
+  let tuotekulut = 0;
+  for (const { tuote, varianttiId, maara = 1, yksikkohinta } of osat) {
+    const id = varianttiId ?? Object.values(tuote?.variants?.variant_map || {})[0];
+    const kulu = (tuote?.variants?.costs || {})[String(id)];
+    if (typeof kulu !== "number" || !Number.isFinite(Number(yksikkohinta))) return { tunnettu: false, nettokate: null, kate: null };
+    maksettu += Number(yksikkohinta) * maara;
+    tuotekulut += kulu * maara;
+  }
+  const toimitus = printifyToimitusSentit(osat);
+  if (toimitus === null) return { tunnettu: false, nettokate: null, kate: null };
+  const myyntiAlv0 = maksettu / (1 + ALV);
+  const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
+  const nettokate = myyntiAlv0 - (tuotekulut + toimitus) / 100 - stripe;
+  return {
+    tunnettu: true,
+    nettokate: Math.round(nettokate * 100) / 100,
+    kate: myyntiAlv0 > 0 ? Math.round((nettokate / myyntiAlv0) * 1000) / 1000 : -1,
+  };
+}

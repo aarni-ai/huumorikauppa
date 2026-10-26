@@ -8,10 +8,12 @@ import { useEffect, useState } from "react";
 import { productAlt } from "@/lib/seoAlt";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { FreeShippingProgress } from "@/components/FreeShippingProgress";
+import { KorialennusVihje } from "@/components/KorialennusVihje";
+import { korialennusTila } from "@/lib/ostoskori";
 import { proxiedImage } from "@/lib/imageProxy";
 
 export function AddToCartDrawer() {
-  const { lastAddedItem, clearLastAdded, totalItems, totalPrice } =
+  const { lastAddedItem, clearLastAdded, totalItems, totalPrice, items } =
     useCartContext();
   // Lisämyyntisuositukset tarvitaan vasta, kun koriin on lisätty jotain: ei luettelohakua sivun latauksessa.
   const { data: allProducts = [] } = useProducts({ enabled: !!lastAddedItem });
@@ -81,6 +83,7 @@ export function AddToCartDrawer() {
                 </span>
               </div>
               <FreeShippingProgress total={totalPrice} className="pt-1" />
+              <KorialennusVihje tila={korialennusTila(items, allProducts)} className="pt-2" />
             </div>
 
             {/* Actions */}
