@@ -1,19 +1,6 @@
 /**
- * Kaupan pitäjän yritystiedot (ainoa lähde). Kauppa siirtyy Tmi Intelleriltä Uusiku Oy:lle
- * 1.11.2026 klo 00.00 Suomen aikaa. Tiedot: YTJ (avoindata.prh.fi), haettu 27.10.2026.
- *
- * Data ja funktiot ovat tiedostossa api/_lib/yritys.js (tavallinen JS, jotta myös api-funktiot ja sähköpostit
- * käyttävät samaa lähdettä); tämä tiedosto lisää tyypit.
- *
- * Vaihto tapahtuu kahdessa paikassa:
- * - Selaimessa: src/seo/site.ts laskee ORGANIZATIONin moduulin latautuessa, joten
- *   1.11.2026 jälkeen avattu sivu näyttää Uusiku Oy:n tiedot.
- * - Esirenderöidyssä HTML:ssä ja llms.txt:ssä: buildin hetki ratkaisee. Ajastettu
- *   GitHub Actions -työnkulku (.github/workflows/yritysvaihto.yml) käynnistää uuden buildin
- *   vaihdon jälkeen.
- *
- * Testeissä ja build-skripteissä hetken voi asettaa ympäristömuuttujalla YRITYS_NYT
- * (ISO-aikaleima), esim. YRITYS_NYT=2026-11-01T00:00:00+02:00 npm run build.
+ * Kaupan pitäjän yritystiedot: tyypit api/_lib/yritys.js:n päälle. Vaihto Inteller -> Uusiku Oy ympäristömuuttujalla
+ * MYYJA=uusiku vasta Uusiku Oy:n Stripe-tilin ja uuden taustan käyttöönotossa (KAYTTOONOTTO.md).
  */
 
 export interface Yritystiedot {
@@ -35,14 +22,13 @@ export interface Yritystiedot {
 
 import * as Y from "../../api/_lib/yritys.js";
 
-export const YRITYS_VAIHTO: string = Y.YRITYS_VAIHTO;
 /** Historiallinen: kaupan pitäjä 31.10.2026 asti. */
 export const INTELLER: Yritystiedot = Y.INTELLER as Yritystiedot;
 /** Kaupan pitäjä 1.11.2026 alkaen. */
 export const UUSIKU: Yritystiedot = Y.UUSIKU as Yritystiedot;
-/** Nykyhetki; YRITYS_NYT-ympäristömuuttuja (vain Node) ohittaa sen testeissä ja buildissa. */
-export const nykyhetki: () => Date = Y.nykyhetki;
+/** "uusiku" tai "inteller" ympäristömuuttujan MYYJA mukaan. */
+export const valittuMyyja: () => "uusiku" | "inteller" = Y.valittuMyyja as () => "uusiku" | "inteller";
 /** Kaupan pitäjän tiedot annettuna hetkenä. */
-export const yritystiedot: (nyt?: Date) => Yritystiedot = Y.yritystiedot as (nyt?: Date) => Yritystiedot;
+export const yritystiedot: (myyja?: "uusiku" | "inteller") => Yritystiedot = Y.yritystiedot as (myyja?: "uusiku" | "inteller") => Yritystiedot;
 /** "Capellan puistotie 21, 00580 Helsinki" tai pelkkä paikkakunta, jos katuosoitetta ei ole. */
 export const postiosoite: (y: Yritystiedot) => string = Y.postiosoite;

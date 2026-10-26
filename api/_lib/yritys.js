@@ -1,12 +1,13 @@
 /**
  * Kaupan pitäjän yritystiedot (ainoa lähde, tavallinen JS: api-funktiot, middleware ja sivusto käyttävät samaa).
- * Kauppa siirtyy Tmi Intelleriltä Uusiku Oy:lle 1.11.2026 klo 00.00 Suomen aikaa. Tiedot: YTJ (avoindata.prh.fi),
- * haettu 27.10.2026. Tyypit ja sivuston käyttö: src/config/yritys.ts. Testeissä ja build-skripteissä hetken voi
- * asettaa ympäristömuuttujalla YRITYS_NYT (ISO-aikaleima).
+ * Kauppa siirtyy Tmi Intelleriltä Uusiku Oy:lle vasta, kun Uusiku Oy:n Stripe-tili ja uusi tausta otetaan käyttöön
+ * (Stripe-tiliä ei voi siirtää). Vaihto tehdään ympäristömuuttujalla MYYJA=uusiku samassa käyttöönotossa
+ * (KAYTTOONOTTO.md); ilman sitä sivuilla näkyy Inteller. Ei päivämäärään sidottua vaihtoa.
+ * Tiedot: YTJ (avoindata.prh.fi), haettu 27.10.2026. Tyypit ja sivuston käyttö: src/config/yritys.ts.
+ *
+ * Selaimessa arvo tulee buildista (vite.config.ts määrittelee import.meta.env.VITE_MYYJA muuttujasta MYYJA),
+ * palvelimella ja buildissa suoraan process.env.MYYJA:sta.
  */
-
-/** 1.11.2026 00.00 Europe/Helsinki (UTC+2, talviaika alkaa 25.10.2026). */
-export const YRITYS_VAIHTO = "2026-10-31T22:00:00Z";
 
 const EMAIL = "huumorikauppa@gmail.com";
 
@@ -36,21 +37,23 @@ export const UUSIKU = {
   email: EMAIL,
 };
 
-const VAIHTO_MS = Date.parse(YRITYS_VAIHTO);
-
-/** Nykyhetki; YRITYS_NYT-ympäristömuuttuja (vain Node) ohittaa sen testeissä ja buildissa. */
-export function nykyhetki() {
-  const ohitus = globalThis.process?.env?.YRITYS_NYT;
-  if (ohitus) {
-    const d = new Date(ohitus);
-    if (!Number.isNaN(d.getTime())) return d;
+/** "uusiku" tai "inteller" (oletus). MYYJA tai VITE_MYYJA Nodessa, import.meta.env.VITE_MYYJA selaimessa. */
+export function valittuMyyja() {
+  const env = globalThis.process?.env;
+  let arvo = env?.MYYJA ?? env?.VITE_MYYJA;
+  if (arvo == null) {
+    try {
+      arvo = import.meta.env.VITE_MYYJA;
+    } catch {
+      arvo = undefined;
+    }
   }
-  return new Date();
+  return String(arvo ?? "").trim().toLowerCase() === "uusiku" ? "uusiku" : "inteller";
 }
 
-/** Kaupan pitäjän tiedot annettuna hetkenä. */
-export function yritystiedot(nyt = nykyhetki()) {
-  return nyt.getTime() >= VAIHTO_MS ? UUSIKU : INTELLER;
+/** Kaupan pitäjän tiedot (oletus: ympäristömuuttujan MYYJA mukaan). */
+export function yritystiedot(myyja = valittuMyyja()) {
+  return myyja === "uusiku" ? UUSIKU : INTELLER;
 }
 
 /** "Capellan puistotie 21, 00580 Helsinki" tai pelkkä paikkakunta, jos katuosoitetta ei ole. */

@@ -20,6 +20,10 @@ function toimitusehdotHtml(): Plugin {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   publicDir: 'public',
+  // Myyjä (api/_lib/yritys.js): MYYJA=uusiku Vercelissä vaihtaa yritystiedot Uusiku Oy:ksi myös selaimessa.
+  define: {
+    "import.meta.env.VITE_MYYJA": JSON.stringify(process.env.MYYJA || process.env.VITE_MYYJA || ""),
+  },
   server: {
     host: "::",
     port: 8080,
