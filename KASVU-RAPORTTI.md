@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (tilauskatteet, tappioesto, EU-painotalot, blogit, ALV-linjaus).
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (Uusiku Oy 1.11.2026, tilauskatteet, tappioesto, EU-painotalot, blogit).
 
 ## Tilanne lyhyesti
 
@@ -25,6 +25,26 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
   digitaalinen lahjakortti, tuotesivun toimitusarvio ja "Ehtii jouluksi" -merkki (Printifyn takarajojen mukaan).
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
+
+## 27.10.: kauppa siirtyy Uusiku Oy:lle 1.11.2026
+
+- Yritystiedot yhdestä lähteestä (api/_lib/yritys.js, src/config/yritys.ts): Uusiku Oy, Y-tunnus 3653666-7,
+  ALV-numero FI36536667, Capellan puistotie 21, 00580 Helsinki (YTJ, avoindata.prh.fi, haettu 27.10.2026),
+  huumorikauppa@gmail.com. Vaihto tapahtuu 1.11.2026 klo 00.00 Suomen aikaa: selaimessa heti, esirenderöidyssä
+  HTML:ssä ajastetulla uudelleenrakennuksella (GitHub Actions .github/workflows/yritysvaihto.yml 31.10. klo 22.05 UTC
+  ja varalla paikallinen ajastus 22.15 UTC). Tuotannossa nyt, ennen vaihtoa näkyy Inteller.
+- Päivitetyt kohdat: alatunniste (myös ALV-numero ja osoite), toimitusehdot (myyjä ja myyjän yhteystiedot),
+  tietosuojaseloste (rekisterinpitäjä), Tietoa meistä, yhteystiedot, UKK, rakenteinen data (Organization: legalName,
+  taxID, vatID, osoite), llms.txt. Oman taustan tilausvahvistus ja kaikki sähköpostit: myyjän tiedot alatunnisteessa ja
+  ALV-erittely (sisältää ALV 25,5 %).
+- Seniorituki: mainos poistettu eläkelahja-artikkelista; testi estää maininnat sivustolla. Oman taustan
+  hälytysosoite siirretty koodista Vercelin ympäristömuuttujaan OMISTAJA_EMAIL (hälytykset menevät samaan osoitteeseen).
+- Ei vaihdettavissa tästä repositoriosta (omistaja): Stripen yritysnimi ja kuitit, Lovablen tilausviestit,
+  Google Merchant Center ja Business Profile, Printifyn laskutustiedot, Wikidata (Q139915256).
+- KATTEET.md: Printify perii ALV:n EU:ssa myös yritysasiakkailta, joten ALV-tunnuksella ei saa käännettyä
+  verovelvollisuutta (Printifyn ohjekeskus). Uusiku Oy vähentää Printifyn ALV:n; katteet ovat samat kuin
+  käännetyllä verovelvollisuudella, ero on kassavirrassa (ALV maksetaan ensin, noin 18 €/kk nykyisellä myynnillä).
+  Vähennysoikeus Printifyn laskuista kannattaa varmistaa tilitoimistolta.
 
 ## 26.-27.10.: tilauskatteet, tappioesto, EU-painotalot, blogit
 
@@ -351,3 +371,4 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 26.10. | Nopeus uudelleen (korjattu esikatselu). | main 593dd04 | Tuotesivu LCP 7,1 -> 3,5 s, perf 69 -> 83 | Staattiset pääkuvat |
 | 27.10. | Tappioesto: 301 tappiollista varianttia ja 6 tuotetta piiloon, tekstit päivitetty. | main 029e2dc, 35db534 | Ei tappiollisia myyntejä | Hinnat ja EU-kopioiden käyttöönotto Lovablessa |
 | 27.10. | Katteet ilman Printifyn ALV:tä (ALV-rekisteri). | oma-tausta | Oikea katekuva | |
+| 27.10. | Yritystiedot Uusiku Oy:lle 1.11.2026 (ajastettu), Seniorituki-mainos pois, ALV-erittely sähköposteihin. | main cd97f18-32b7da2, yritys-js; oma-tausta | Oikeat myyjän tiedot 1.11. alkaen | Stripe, Merchant Center ja Lovable-viestit omistajalta |
