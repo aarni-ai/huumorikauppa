@@ -1,9 +1,11 @@
 /**
  * Sähköposti Resendillä (RESEND_API_KEY, lähettäjä EMAIL_FROM, esim. "Huumorikauppa <tilaukset@huumorikauppa.fi>",
- * domain vahvistettava Resendissä). Omistajan hälytykset osoitteeseen OMISTAJA_EMAIL (oletus info@seniorituki.fi).
+ * domain vahvistettava Resendissä). Omistajan hälytykset osoitteeseen OMISTAJA_EMAIL (Vercelin ympäristömuuttuja; oletus huumorikauppa@gmail.com).
  * Ilman avainta viesti kirjataan lokiin eikä mitään lähetetä.
  */
-export const OMISTAJA = () => process.env.OMISTAJA_EMAIL || "info@seniorituki.fi";
+import { yritystiedot, postiosoite } from "./yritys.js";
+
+export const OMISTAJA = () => process.env.OMISTAJA_EMAIL || "huumorikauppa@gmail.com";
 export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
 
 /** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
@@ -38,8 +40,14 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const eur = (x) => `${Number(x).toFixed(2).replace(".", ",")} €`;
 export const tilausnumero = (id) => String(id).slice(0, 8).toUpperCase();
 
+/** Myyjän tiedot viestin alatunnisteeseen (src/config/yritys.ts: 1.11.2026 alkaen Uusiku Oy). */
+export function myyjaRivi(nyt = new Date()) {
+  const y = yritystiedot(nyt);
+  return `${y.legalName}, Y-tunnus ${y.businessId}, ALV-numero ${y.vatId}, ${postiosoite(y)}, ${y.email}`;
+}
+
 function kehys(sisalto) {
-  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;line-height:1.5">${sisalto}<p style="color:#666;font-size:13px;margin-top:28px">Kysyttävää? Vastaa tähän viestiin, niin autamme.<br>Huumorikauppa.fi</p></div>`;
+  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;line-height:1.5">${sisalto}<p style="color:#666;font-size:13px;margin-top:28px">Kysyttävää? Vastaa tähän viestiin, niin autamme.<br>Huumorikauppa.fi</p><p style="color:#888;font-size:12px">${esc(myyjaRivi())}</p></div>`;
 }
 
 export function vahvistusViesti(tilaus) {
@@ -56,8 +64,8 @@ export function vahvistusViesti(tilaus) {
     : "Lahjakorttien koodit tulevat erillisessä viestissä.";
   return {
     subject: `Tilausvahvistus #${nro} - Huumorikauppa`,
-    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr>${lahjakortilla}</table><p>${loppu}</p>`),
-    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)}. ${loppu}`,
+    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr><tr><td style="color:#666">Sisältää ALV 25,5 %</td><td style="text-align:right;color:#666">${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}</td></tr>${lahjakortilla}</table><p>${loppu}</p>`),
+    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)} (sisältää ALV 25,5 % ${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}). ${loppu}\n\n${myyjaRivi()}`,
   };
 }
 

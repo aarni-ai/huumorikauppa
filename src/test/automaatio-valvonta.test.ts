@@ -170,7 +170,7 @@ describe("Maksettu tilaus menee Printifyyn ja tuotantoon", () => {
     expect(kutsut.filter((k) => k.url.endsWith("/orders.json")).length).toBe(1);
   });
 
-  it("on-hold: send_to_production epäonnistuu, hälytys heti osoitteeseen info@seniorituki.fi, uusinta viiveellä onnistuu", async () => {
+  it("on-hold: send_to_production epäonnistuu, hälytys heti osoitteeseen huumorikauppa@gmail.com, uusinta viiveellä onnistuu", async () => {
     kanta.orders.push(tilaus());
     let kutsut = verkko({ tuotanto: [500] });
     await kasitteleMaksu(session);
@@ -178,7 +178,7 @@ describe("Maksettu tilaus menee Printifyyn ja tuotantoon", () => {
     expect(o).toMatchObject({ status: "maksettu", printify_status: "luotu", printify_order_id: "pf-tilaus-1", printify_attempts: 1 });
     expect(String(o.printify_error)).toMatch(/^send_to_production: Printify 500/);
     expect((o.next_retry_at as Date).getTime()).toBeGreaterThan(Date.now() + 14 * 60000);
-    const halytykset = kutsut.filter((k) => k.url === "https://api.resend.com/emails" && (k.body!.to as string[])[0] === "info@seniorituki.fi");
+    const halytykset = kutsut.filter((k) => k.url === "https://api.resend.com/emails" && (k.body!.to as string[])[0] === "huumorikauppa@gmail.com");
     expect(halytykset).toHaveLength(1);
     expect(halytykset[0].body!.subject).toMatch(/ei mennyt Printifyn tuotantoon/);
     // Uusinta (valvonta): sama Printify-tilaus, ei uutta luontia.
@@ -227,7 +227,7 @@ describe("Maksettu tilaus menee Printifyyn ja tuotantoon", () => {
 });
 
 describe("Tilausvahti ennen send_to_productionia", () => {
-  const halytykset = (kutsut: Kutsu[]) => kutsut.filter((k) => k.url === "https://api.resend.com/emails" && (k.body!.to as string[])[0] === "info@seniorituki.fi");
+  const halytykset = (kutsut: Kutsu[]) => kutsut.filter((k) => k.url === "https://api.resend.com/emails" && (k.body!.to as string[])[0] === "huumorikauppa@gmail.com");
   const tuotantoon = (kutsut: Kutsu[]) => kutsut.filter((k) => k.url.endsWith("/send_to_production.json"));
 
   it("EU-painotalo ja kulu alle myynnin alv 0: tuotantoon, todellinen kulu talteen", async () => {
@@ -378,13 +378,13 @@ describe("Päivän yhteenveto", () => {
     };
     const laheta = vi.fn(async (_v: Record<string, unknown>) => ({ ok: true }));
     // Talviaika: 04:00 UTC = 6, 05:00 UTC = 7.
-    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "info@seniorituki.fi", nyt: new Date("2026-12-01T04:00:00Z") })).lahetetty).toBe(false);
-    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "info@seniorituki.fi", nyt: new Date("2026-12-01T05:00:00Z") })).lahetetty).toBe(true);
+    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "huumorikauppa@gmail.com", nyt: new Date("2026-12-01T04:00:00Z") })).lahetetty).toBe(false);
+    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "huumorikauppa@gmail.com", nyt: new Date("2026-12-01T05:00:00Z") })).lahetetty).toBe(true);
     expect(haut[0].map((d) => d.toISOString())).toEqual(["2026-11-29T22:00:00.000Z", "2026-11-30T22:00:00.000Z"]);
     expect(haut[1][0].toISOString()).toBe("2026-11-30T22:00:00.000Z"); // kuun alku
-    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "info@seniorituki.fi", nyt: new Date("2026-12-01T05:30:00Z") })).syy).toBe("jo lähetetty tänään");
+    expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "huumorikauppa@gmail.com", nyt: new Date("2026-12-01T05:30:00Z") })).syy).toBe("jo lähetetty tänään");
     expect(laheta).toHaveBeenCalledTimes(1);
-    expect(laheta.mock.calls[0][0]).toMatchObject({ to: "info@seniorituki.fi", subject: "[Huumorikauppa] Päivän yhteenveto 1.12.2026" });
+    expect(laheta.mock.calls[0][0]).toMatchObject({ to: "huumorikauppa@gmail.com", subject: "[Huumorikauppa] Päivän yhteenveto 1.12.2026" });
     expect((await ajaYhteenveto(store, { laheta, vastaanottaja: "x", nyt: new Date("2026-12-02T10:00:00Z"), pakota: true })).lahetetty).toBe(true);
     // Kesäaika: 04:00 UTC = 7.
     kv.clear();

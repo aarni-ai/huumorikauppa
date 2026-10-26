@@ -4,7 +4,7 @@
  *   node scripts/katetarkistus.mjs [--url https://huumorikauppa.fi]
  * Tuotteet: tietokannasta (DATABASE_URL tai POSTGRES_URL), muuten sivuston /api/products. Kate api/_lib/kate.js
  * (heikoin variantti). Jos jokin näkyvä tuote on alle myynnin rajan (20 %) tai sen kulut ovat tuntemattomat, yhteenveto lähetetään
- * sähköpostilla osoitteeseen OMISTAJA_EMAIL (oletus info@seniorituki.fi) Resendillä (RESEND_API_KEY). Ilman avainta
+ * sähköpostilla osoitteeseen OMISTAJA_EMAIL (Vercelin ympäristömuuttuja; oletus huumorikauppa@gmail.com) Resendillä (RESEND_API_KEY). Ilman avainta
  * työ päättyy virheeseen ja tulostaa yhteenvedon. Huom: /api/products palauttaa vain myynnissä olevat, joten alle 20 %:n
  * tuotteet (jotka kauppa on jo piilottanut) näkyvät vain tietokantatilassa.
  */

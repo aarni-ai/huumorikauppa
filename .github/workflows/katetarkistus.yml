@@ -1,5 +1,5 @@
 # Viikoittainen katetarkistus (scripts/katetarkistus.mjs, laskenta api/_lib/kate.js): jos jokin näkyvä tuote on alle
-# 20 % (myynnin raja) tai sen Printify-kulut ovat tuntemattomat, yhteenveto sähköpostilla osoitteeseen info@seniorituki.fi.
+# 20 % (myynnin raja) tai sen Printify-kulut ovat tuntemattomat, yhteenveto sähköpostilla osoitteeseen OMISTAJA_EMAIL.
 # Salaisuudet (Settings > Secrets and variables > Actions), molemmat valinnaisia:
 #   DATABASE_URL    tuotteet suoraan tietokannasta (näkee myös jo piilotetut alle 20 %:n tuotteet);
 #                   ilman sitä tuotteet haetaan sivuston /api/products-rajapinnasta
@@ -37,6 +37,6 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           KAUPPA_URL: ${{ vars.KAUPPA_URL || 'https://huumorikauppa.fi' }}
-          OMISTAJA_EMAIL: ${{ vars.OMISTAJA_EMAIL || 'info@seniorituki.fi' }}
+          OMISTAJA_EMAIL: ${{ vars.OMISTAJA_EMAIL || 'huumorikauppa@gmail.com' }}
           EMAIL_FROM: ${{ vars.EMAIL_FROM }}
         run: node scripts/katetarkistus.mjs --url "$KAUPPA_URL"
