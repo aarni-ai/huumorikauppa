@@ -1,4 +1,6 @@
-// GA4 helper — uses the direct gtag.js snippet already loaded in index.html (G-8FJ58JNKGK).
+// GA4 helper: gtag-funktio määritellään index.html:ssä (Consent Mode v2). gtag.js (G-8FJ58JNKGK) ladataan
+// vasta analytiikkasuostumuksen jälkeen, ja tapahtumat lähetetään vain suostumuksella (src/lib/consent.ts).
+import { hasAnalyticsConsent } from "./consent";
 
 type GtagFn = (...args: unknown[]) => void;
 interface GAWindow {
@@ -8,6 +10,7 @@ interface GAWindow {
 
 function sendEvent(name: string, params: Record<string, unknown>) {
   if (typeof window === "undefined") return;
+  if (!hasAnalyticsConsent()) return;
   const w = window as unknown as GAWindow;
   const gtagType = typeof w.gtag;
   const hasDataLayer = !!w.dataLayer;
@@ -62,6 +65,7 @@ export function trackPurchaseOnce(params: {
 }) {
   if (typeof window === "undefined") return;
   if (!params.transaction_id) return;
+  if (!hasAnalyticsConsent()) return;
   try {
     const sent = JSON.parse(localStorage.getItem(PURCHASE_KEY) || "[]") as string[];
     if (sent.includes(params.transaction_id)) return;

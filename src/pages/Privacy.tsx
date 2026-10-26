@@ -53,7 +53,7 @@ const Privacy = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">6. Evästeet</h2>
-          <p>Käytämme evästeitä verkkosivuston toiminnan varmistamiseksi ja käyttökokemuksen parantamiseksi. Voit hallita evästeasetuksia selaimesi asetuksista.</p>
+          <p>Välttämättömät evästeet ja selaimen tallennus pitävät ostoskorin ja kassan toiminnassa. Analytiikka (Google Analytics) ja markkinointi (Google-asiakasarvostelujen merkki ja kysely) otetaan käyttöön vain suostumuksellasi: niiden skriptejä ei ladata ennen kuin hyväksyt ne. Voit muuttaa tai perua suostumuksesi milloin tahansa sivun alalaidan Evästeasetukset-linkistä.</p>
         </section>
 
         <section>

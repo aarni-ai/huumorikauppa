@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { trackPurchaseOnce } from "@/lib/analytics";
+import { hasMarketingConsent } from "@/lib/consent";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 interface OrderInfo {
@@ -94,6 +95,12 @@ const OrderConfirmation = () => {
         });
       });
     };
+
+    // Google-asiakasarvostelujen kysely ladataan vain markkinointisuostumuksella (src/lib/consent.ts).
+    if (!hasMarketingConsent()) {
+      setOptInRendered(true);
+      return;
+    }
 
     // Inject Google platform script if not already present
     const existing = document.querySelector<HTMLScriptElement>(
