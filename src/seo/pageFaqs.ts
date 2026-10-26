@@ -38,7 +38,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Voiko tuotteeseen tilata oman tekstin?",
-    a: "Voi: Oma teksti/kuva -tuotteisiin kirjoitat haluamasi tekstin tai kuvatoiveen tuotesivun kenttään ennen kuin lisäät tuotteen koriin. Kenttään mahtuu 200 merkkiä, ja toive kulkee tilauksen mukana painoon asti. Personoitavia tuotteita ovat esimerkiksi t-paita, huppari, pitkähihainen paita, vauvan body, lippis, tarra, peitto ja seinätaulu. Asiakkaan toiveiden mukaan valmistetuilla tuotteilla ei ole 14 päivän peruutusoikeutta, mutta virheellisen tuotteen korvaamme uudella tai hyvitämme.",
+    a: "Voi: Oma teksti/kuva -tuotteisiin kirjoitat haluamasi tekstin tai kuvatoiveen tuotesivun kenttään ennen kuin lisäät tuotteen koriin. Kenttään mahtuu 200 merkkiä, ja toive kulkee tilauksen mukana painoon asti. Personoitavia tuotteita ovat esimerkiksi t-paita, huppari, pitkähihainen paita, lippis ja koriste. Asiakkaan toiveiden mukaan valmistetuilla tuotteilla ei ole 14 päivän peruutusoikeutta, mutta virheellisen tuotteen korvaamme uudella tai hyvitämme.",
   },
   {
     q: "Paljonko toimitus maksaa?",

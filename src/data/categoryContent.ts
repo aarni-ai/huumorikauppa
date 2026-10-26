@@ -27,13 +27,13 @@ export const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]
     { h2: "Huumorihupparit", text: "Valikoimastamme löydät muun muassa 'Maailman paras' -sarjan huppareita, kalastushuppareita ja eläkehuumorihuppareita. Laadukas materiaali ja kestävä painatus." },
   ],
   "tarrat": [
-    { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Laadukkaat vinyl-tarramme sopivat läppäriin, vesipulloon, autoon ja jääkaappiin. Ne kestävät säätä, vettä ja kulutusta. Tarrat ovat myös erinomainen pieni lahja tai lisä isomman paketin oheen." },
+    { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Hauskat tarrat sopivat läppäriin, vesipulloon ja lahjan kylkeen. Tarra on myös pieni lahja tai lisä isomman paketin oheen." },
   ],
   "bodyt": [
-    { h2: "Miksi hauska body on hyvä vauvalahja?", text: "Hauska body on ilahduttava lahja vauvalle ja vanhemmille. Se naurattaa koko perhettä ja on samalla pehmeä ja turvallinen. Bodymme ovat 100% puuvillaa ja konepestäviä." },
+    { h2: "Miksi hauska body on hyvä vauvalahja?", text: "Hauska lahja ilahduttaa vauvaperhettä. Se naurattaa koko perhettä." },
   ],
   "peitot": [
-    { h2: "Miksi hauska peitto on yllättävä lahja?", text: "Laadukas peitto hauskalla tekstillä pitää lämpimänä ja hymyilyttää. Se on yllättävä ja ikimuistoinen lahja syntymäpäiviin, jouluun tai eläkejuhliin." },
+    { h2: "Miksi hauska lämmin lahja ilahduttaa?", text: "Hauska lahja pitää lämpimänä ja hymyilyttää. Se sopii syntymäpäiviin, jouluun tai eläkejuhliin." },
   ],
   "pipot": [
     { h2: "Miksi hauska pipo on hyvä talvilahja?", text: "Hauska pipo yhdistää käytännöllisyyden ja huumorin: se pitää pään lämpimänä ja tunnelman korkealla. Laadukkaat materiaalit ja hauska brodeeraus tekevät pipostamme mukavan talvilahjan." },
@@ -42,7 +42,7 @@ export const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]
     { h2: "Miksi hauska kangaskassi on hyvä lahja?", text: "Hauska kangaskassi on ekologinen, käytännöllinen ja hauska, kolme ominaisuutta jotka tekevät siitä hyvän lahjan. Kassimme sopivat arkikäyttöön, ostoksille ja kaikkialle muuallekin." },
   ],
   "seinataulut": [
-    { h2: "Miksi hauska seinätaulu sopii sisustukseen?", text: "Hauska seinätaulu piristää kodin seinät ja tuo hymyn huulille joka päivä. Taulumme sopivat olohuoneeseen, makuuhuoneeseen, toimistoon ja WC:hen." },
+    { h2: "Miksi hauska sisustus sopii kotiin?", text: "Hauska sisustus piristää kotia ja tuo hymyn huulille joka päivä." },
   ],
   "koristeet": [
     { h2: "Miksi hauska koriste on hyvä lahja?", text: "Hauska koriste tuo huumoria kodin jokaiseen nurkkaan. Se on yllättävä ja persoonallinen lahja joka sopii syntymäpäiviin, tupaantuliaisiin ja jouluun." },

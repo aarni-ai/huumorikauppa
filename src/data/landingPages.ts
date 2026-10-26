@@ -157,7 +157,7 @@ const TEINI = theme(
   /slay queen/, /(?<![a-zåäö])pelaaja/, /lumilautailija/, /swedish/, /tonnin seteli/, /maailman mestarit/,
   /viisaampi häipyy/,
 );
-const PUOLISO = any(theme(/my girlfriend/, /my boyfriend/, /lempinimi/), OMA_KOTIIN, all(OMA_TEKSTI, inCategory("hupparit")));
+const PUOLISO = any(theme(/my girlfriend/, /my boyfriend/, /lempinimi/), OMA_KOTIIN, all(OMA_TEKSTI, inCategory("hupparit", "t-paidat", "pitkahihaiset")));
 const VAIMO = any(theme(/slay queen/, /äiskä/, /äiti/, /fabulous/, /hopeanhohtoinen/, /lempinimi/), OMA_KOTIIN);
 /** Mummolle ja isoäidille: oma tervehdys kotiin tai vaatteeseen ja eläkeläishuumori. */
 const MUMMO = any(
@@ -240,7 +240,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä joululahjoja saa alle 30 eurolla?",
-        a: "T-paidat, vauvan body, koristeet ja tarrat mahtuvat alle 30 euron budjettiin. Hupparit ovat kalliimpia, ja ne löytyvät alle 50 euron joululahjoista.",
+        a: "T-paidat ja koristeet mahtuvat alle 30 euron budjettiin. Hupparit ovat kalliimpia, ja ne löytyvät alle 50 euron joululahjoista.",
       },
       {
         q: "Voiko joululahjan palauttaa?",
@@ -324,11 +324,11 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat joululahjat naiselle 2026 | Huumorikauppa",
     description:
-      "Joululahja naiselle: Super äiskä, slay queen ja ikävuosipaidat, hupparit sekä omalla tekstillä painettu peitto tai taulu. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja naiselle: Super äiskä, slay queen ja ikävuosipaidat, hupparit sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
     h1: "Hauskat joululahjat naiselle",
     intro: [
       "Hauska joululahja naiselle on tuote, jonka teksti sopii hänen elämäntilanteeseensa: äidille Super äiskä -huppari, ystävälle slay queen ja pyöreitä vuosia täyttävälle ikävuosipaita.",
-      "Jos haluat lahjaan perheen oman jutun, valitse Oma teksti/kuva -tuote ja kirjoita teksti tai kuvatoive tuotesivulla. Samaa tuotetta on peittona, seinätauluna, koristeena, hupparina ja paitana.",
+      "Jos haluat lahjaan perheen oman jutun, valitse Oma teksti/kuva -tuote ja kirjoita teksti tai kuvatoive tuotesivulla. Samaa tuotetta on koristeena, hupparina, pitkähihaisena ja paitana.",
       `${D} Tarkemmin rajatut oppaat äidille, vaimolle ja mummolle löydät sivun alalaidasta.`,
     ],
     faqs: [
@@ -366,10 +366,10 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Joululahja miehelle, jolla on kaikki | Huumorikauppa",
     description:
-      "Joululahja miehelle, jolla on jo kaikkea: personoitu paita, huppari, peitto tai taulu hänen omalla tekstillään. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja miehelle, jolla on jo kaikkea: personoitu paita, huppari tai koriste hänen omalla tekstillään. Tilaa viimeistään pe 20.11.2026.",
     h1: "Joululahja miehelle, jolla on kaikki",
     intro: [
-      "Miehelle, jolla on jo kaikkea, kannattaa antaa tuote, jota ei voi ostaa valmiina: personoitu paita, huppari, peitto tai seinätaulu hänen nimellään, lempinimellään tai teidän omalla vitsillänne.",
+      "Miehelle, jolla on jo kaikkea, kannattaa antaa tuote, jota ei voi ostaa valmiina: personoitu paita tai huppari hänen nimellään, lempinimellään tai teidän omalla vitsillänne.",
       "Valmiita personoitavia pohjia ovat esimerkiksi Elävä legenda, Kapteeni, Harrastusmestari ja Alalla X vuotta, joihin vaihdat oman tekstin. Vapaampi vaihtoehto on Oma teksti/kuva, johon kirjoitat tuotesivulla haluamasi tekstin tai kuvatoiveen.",
       `Personoitu tuote tehdään vasta tilauksesi tekstin pohjalta, joten varaa aikaa. ${D}`,
     ],
@@ -380,7 +380,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Millaisia personoitavia tuotteita on?",
-        a: "T-paitoja valmiilla pohjilla, kuten Elävä legenda, Kapteeni, Harrastusmestari ja Lempinimi, sekä Oma teksti/kuva -tuotteita paitana, hupparina, peittona ja seinätauluna.",
+        a: "T-paitoja valmiilla pohjilla, kuten Elävä legenda, Kapteeni, Harrastusmestari ja Lempinimi, sekä Oma teksti/kuva -tuotteita paitana, hupparina ja pitkähihaisena.",
       },
       {
         q: "Kuinka teksti lisätään?",
@@ -457,12 +457,12 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja äidille 2026 | Huumorikauppa",
     description:
-      "Joululahja äidille: Super äiskä- ja äiti-aiheiset hupparit ja t-paidat sekä omalla tekstillä painettu peitto tai taulu. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja äidille: Super äiskä- ja äiti-aiheiset hupparit ja t-paidat sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
     h1: "Hauska joululahja äidille",
     intro: [
       "Hauska joululahja äidille on äiti-aiheinen huppari tai t-paita, esimerkiksi Super äiskä, jota hän käyttää kotona ja ulkona koko talven.",
       "T-paita on hupparia edullisempi, ja huppari on lämpimämpi talvilahja. Jos haluat lahjaan perheen oman jutun, valitse Oma teksti/kuva -tuote ja kirjoita tuotesivulla teksti tai kuvatoive.",
-      `Äidille, jolla on jo kaikkea, omalla tekstillä painettu peitto tai seinätaulu on lahja, jota hänellä ei vielä ole. ${D}`,
+      `Äidille, jolla on jo kaikkea, omalla tekstillä painettu paita tai huppari on lahja, jota hänellä ei vielä ole. ${D}`,
     ],
     faqs: [
       {
@@ -475,7 +475,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä antaa äidille, jolla on kaikkea?",
-        a: "Omalla tekstillä painetun tuotteen, esimerkiksi peiton tai seinätaulun. Kirjoitat tekstin tai kuvatoiveen tuotesivulla.",
+        a: "Omalla tekstillä painetun tuotteen, esimerkiksi paidan, hupparin tai koristeen. Kirjoitat tekstin tai kuvatoiveen tuotesivulla.",
       },
       {
         q: "Ehtiikö lahja jouluaatoksi?",
@@ -497,17 +497,17 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja vaimolle 2026 | Huumorikauppa",
     description:
-      "Joululahja vaimolle: slay queen- ja äiskä-hupparit, ikävuosipaidat ja omalla tekstillä painettu peitto tai taulu. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja vaimolle: slay queen- ja äiskä-hupparit, ikävuosipaidat ja omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
     h1: "Hauska joululahja vaimolle",
     intro: [
-      "Hyvä joululahja vaimolle on tuote, jossa on teidän oma juttunne: omalla tekstillä painettu peitto, seinätaulu tai koriste, tai valmis teksti kuten slay queen.",
+      "Hyvä joululahja vaimolle on tuote, jossa on teidän oma juttunne: omalla tekstillä painettu huppari, paita tai koriste, tai valmis teksti kuten slay queen.",
       "Jos vaimo on lasten äiti, Super äiskä -huppari on lahja, jonka voi antaa myös lasten nimissä. Pyöreitä vuosia täyttävälle sopii ikävuosipaita, esimerkiksi 40 ja fabulous tai 50 ja hopeanhohtoinen (vain hiukset).",
       `Huumorilahja vaimolle toimii, kun vitsi on hänen kanssaan eikä hänen kustannuksellaan: valitse teksti, jonka hän pukisi itsekin päälleen. ${D}`,
     ],
     faqs: [
       {
         q: "Mikä on hyvä joululahja vaimolle?",
-        a: "Personoitu tuote teidän omalla tekstillänne, esimerkiksi peitto tai seinätaulu, tai valmis teksti kuten slay queen tai Super äiskä.",
+        a: "Personoitu paita tai huppari teidän omalla tekstillänne, tai valmis teksti kuten slay queen tai Super äiskä.",
       },
       {
         q: "Millainen huumori sopii vaimon lahjaan?",
@@ -537,11 +537,11 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja kaverille 2026 | Huumorikauppa",
     description:
-      "Joululahja kaverille: se oli tonnin seteli, oispa kaljaa ja Saatanan Tunarit -paidat sekä koristeet ja tarrat. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja kaverille: se oli tonnin seteli, oispa kaljaa ja Saatanan Tunarit -paidat sekä koristeet. Tilaa viimeistään pe 20.11.2026.",
     h1: "Hauska joululahja kaverille",
     intro: [
       "Hauska joululahja kaverille on paita tai pikkulahja, jonka vitsi on teille yhteinen: meemi, lausahdus tai juttu, jota kukaan muu ei ymmärrä.",
-      "Pieneksi joululahjaksi kaverille sopivat koriste ja tarra, isommaksi t-paita tai huppari. Valmiita tekstejä ovat esimerkiksi se oli tonnin seteli ja oispa kaljaa, ja oman sisäpiirin vitsin saat Oma teksti/kuva -tuotteeseen.",
+      "Pieneksi joululahjaksi kaverille sopii koriste, isommaksi t-paita tai huppari. Valmiita tekstejä ovat esimerkiksi se oli tonnin seteli ja oispa kaljaa, ja oman sisäpiirin vitsin saat Oma teksti/kuva -tuotteeseen.",
       `Jos annatte lahjat pikkujouluissa, katso myös pikkujoululahjat. ${D}`,
     ],
     faqs: [
@@ -551,7 +551,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on pieni joululahja kaverille?",
-        a: "Koriste tai tarra. Ne ovat t-paitaa edullisempia, ja Oma teksti/kuva -tarraan saa oman vitsin.",
+        a: "Koriste. Se on t-paitaa edullisempi, ja Oma teksti/kuva -koristeeseen saa oman vitsin.",
       },
       {
         q: "Mitä antaa läheisimmälle ystävälle?",
@@ -586,7 +586,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on pieni joululahja työkaverille?",
-        a: "Koriste tai tarra on t-paitaa edullisempi. Tarraan saa oman tekstin, esimerkiksi tiimin sisäisen vitsin.",
+        a: "Koriste on t-paitaa edullisempi. Siihen saa oman tekstin, esimerkiksi tiimin sisäisen vitsin.",
       },
       {
         q: "Voiko lahjat tilata koko tiimille kerralla?",
@@ -642,21 +642,21 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja mummolle 2026 | Huumorikauppa",
     description:
-      "Joululahja mummolle: omalla tekstillä painettu peitto, seinätaulu tai koriste sekä eläkeläisen huumoripaidat ja hupparit. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja mummolle: omalla tekstillä painettu koriste sekä eläkeläisen huumoripaidat ja hupparit. Tilaa viimeistään pe 20.11.2026.",
     h1: "Joululahja mummolle",
     intro: [
-      "Hyvä joululahja mummolle on tuote, jossa on lastenlasten oma tervehdys: omalla tekstillä painettu peitto, seinätaulu tai koriste.",
+      "Hyvä joululahja mummolle on tuote, jossa on lastenlasten oma tervehdys: omalla tekstillä painettu huppari, paita tai koriste.",
       "Eläkkeellä olevalle mummolle sopivat myös eläkeläishuumorin paidat ja hupparit, kuten Eläkeläinen, aamuherätys vapaaehtoinen tai Eläkkeellä, kiireinen tekemään ei mitään. Tekstit eivät ole sukupuolisidonnaisia.",
       `Oma teksti/kuva -tuotteissa kirjoitat tuotesivulla tekstin tai kuvatoiveen, esimerkiksi lastenlasten nimet. ${D}`,
     ],
     faqs: [
       {
         q: "Mikä on hyvä joululahja mummolle?",
-        a: "Tuote, jossa on lastenlasten oma teksti, kuten omalla tekstillä painettu peitto tai seinätaulu. Eläkkeellä olevalle mummolle sopivat myös eläkeläisaiheiset paidat.",
+        a: "Tuote, jossa on lastenlasten oma teksti, kuten omalla tekstillä painettu paita tai huppari. Eläkkeellä olevalle mummolle sopivat myös eläkeläisaiheiset paidat.",
       },
       {
         q: "Mitä antaa mummolle, jolla on jo kaikkea?",
-        a: "Personoidun tuotteen. Peittoa tai seinätaulua lastenlasten nimillä ei ole valmiina kenelläkään.",
+        a: "Personoidun tuotteen. Lastenlasten nimillä ei ole valmiita tuotteita, joten oma teksti on hyvä valinta.",
       },
       {
         q: "Sopivatko eläkeläispaidat naisille?",
@@ -753,25 +753,25 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat lahjat ja joululahjat alle 30 € | Huumorikauppa",
     description:
-      "Hauskat lahjat alle 30 eurolla: t-paidat, vauvan body, koristeet ja tarrat, myös alle 10 ja 20 euron lahjat. Jouluksi tilaa viimeistään pe 20.11.2026.",
+      "Hauskat lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. Jouluksi tilaa viimeistään pe 20.11.2026.",
     h1: "Hauskat lahjat alle 30 euroa",
     intro: [
-      "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan, vauvan bodyn, koristeen tai tarran: kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
-      "Alle 20 euron lahjaksi sopivat koriste ja tarra, ja alle 10 euron rajaan mahtuu tarra, johon saa oman tekstin. Alle 10 ja alle 20 euron lahjat on koottu tälle samalle sivulle.",
+      "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan tai koristeen: kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
+      "Alle 20 euron lahjaksi sopii koriste. Alle 20 euron lahjat on koottu tälle samalle sivulle.",
       `Pieni joululahja miehelle tai naiselle löytyy t-paidoista: valitse teksti saajan iän, ammatin tai harrastuksen mukaan. ${D}`,
     ],
     faqs: [
       {
         q: "Mitä hauskaa saa alle 30 eurolla?",
-        a: "T-paidan, vauvan bodyn, koristeen tai tarran. Kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
+        a: "T-paidan tai koristeen. Kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
       },
       {
         q: "Löytyykö hauska lahja alle 20 euroa?",
-        a: "Koriste ja tarra maksavat alle 20 euroa, ja niihin saa myös oman tekstin.",
+        a: "Koriste maksaa alle 20 euroa, ja siihen saa myös oman tekstin.",
       },
       {
         q: "Onko alle 10 euron joululahjoja?",
-        a: "Alle 10 euron lahjoista valikoimassa on tarra, johon kirjoitat oman tekstin tuotesivulla.",
+        a: "Alle 20 euron lahjoja ovat koristeet, joihin kirjoitat oman tekstin tuotesivulla.",
       },
       {
         q: "Mitä toimitus maksaa?",
@@ -789,11 +789,11 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja alle 50 euroa | Huumorikauppa",
     description:
-      "Joululahja alle 50 eurolla: hauskat hupparit, t-paidat sekä omalla tekstillä painettu peitto, seinätaulu tai lippis. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja alle 50 eurolla: hauskat hupparit ja t-paidat sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
     h1: "Hauskat joululahjat alle 50 euroa",
     intro: [
       "Alle 50 eurolla saat hauskan hupparin, joka on talvella t-paitaa käytännöllisempi joululahja, tai t-paidan ja pienen lisälahjan yhdessä.",
-      "Hupparit, peitot, seinätaulut ja lippikset maksavat 30 ja 50 euron välillä, ja ne näkyvät tällä sivulla ensin. 50 euron budjettiin mahtuvat myös t-paita ja koriste yhdessä.",
+      "Hupparit maksavat 30 ja 50 euron välillä, ja ne näkyvät tällä sivulla ensin. 50 euron budjettiin mahtuvat myös t-paita ja koriste yhdessä.",
       `Kahden hupparin tilaus ylittää ${ILMAINEN_RAJA_TEKSTI} euron rajan, jolloin toimitus on ilmainen. ${D}`,
     ],
     faqs: [
@@ -803,7 +803,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä muuta kuin vaatteita saa alle 50 eurolla?",
-        a: "Omalla tekstillä painetun peiton, seinätaulun, lippiksen tai koristeen.",
+        a: "Omalla tekstillä painetun koristeen.",
       },
       {
         q: "Saako ilmaisen toimituksen?",
@@ -825,21 +825,21 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat pikkujoululahjat 2026 | Huumorikauppa",
     description:
-      "Pikkujoululahja työkaverille tai kaveriporukkaan: toimistohuumorin paidat, pikkujouluhuppari, koriste ja omalla tekstillä painettava tarra.",
+      "Pikkujoululahja työkaverille tai kaveriporukkaan: toimistohuumorin paidat, pikkujouluhuppari ja koriste.",
     h1: "Hauskat pikkujoululahjat",
     intro: [
       "Hauska pikkujoululahja on lahja, joka naurattaa koko porukkaa, kun se avataan muiden edessä: toimistohuumoria, yhteinen vitsi tai pikkujouluaiheinen huppari.",
-      "Jos lahjanvaihdossa on 5 tai 10 euron hintaraja, siihen mahtuu tarra, johon saa oman tekstin. Ilman tiukkaa hintarajaa sopivat koriste ja toimistohuumorin t-paidat, kuten Tärkeintä työssä on lounastauko.",
+      "Pieneen lahjanvaihtoon sopii koriste. Isompaan sopivat toimistohuumorin t-paidat, kuten Tärkeintä työssä on lounastauko.",
       `Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlaa.`,
     ],
     faqs: [
       {
         q: "Mikä on hauska pikkujoululahja?",
-        a: "Lahja, joka naurattaa koko porukkaa avattaessa: toimistohuumorin paita, Pikkujoulut muistetaan vuosia -huppari tai oma vitsi tarrassa.",
+        a: "Lahja, joka naurattaa koko porukkaa avattaessa: toimistohuumorin paita, Pikkujoulut muistetaan vuosia -huppari tai oma vitsi koristeessa.",
       },
       {
-        q: "Löytyykö pikkujoululahja 5 tai 10 euron rajalla?",
-        a: "Oma teksti/kuva -tarra mahtuu 5 ja 10 euron hintarajaan. Muut tuotteet ovat sitä kalliimpia.",
+        q: "Löytyykö edullinen pikkujoululahja?",
+        a: "Koriste on t-paitaa edullisempi, ja siihen saa oman tekstin.",
       },
       {
         q: "Kuinka ajoissa pikkujoululahja pitää tilata?",
@@ -860,25 +860,25 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Salaisen joulupukin lahja: hauskat ideat | Huumorikauppa",
     description:
-      "Salaisen joulupukin lahja, kun et tunne saajaa: työelämähuumorin t-paidat, koriste ja omalla tekstillä painettava tarra, kaikki alle 30 euroa.",
+      "Salaisen joulupukin lahja, kun et tunne saajaa: työelämähuumorin t-paidat ja koriste, kaikki alle 30 euroa.",
     h1: "Salaisen joulupukin lahja",
     intro: [
-      "Salaisen joulupukin lahjaksi sopii tuote, joka toimii kenelle tahansa: työelämää koskeva huumoripaita, koriste tai tarra, jonka vitsi ei vaadi saajan tuntemista.",
-      "Jos et tiedä saajan kokoa, valitse koriste tai tarra, joissa kokoa ei tarvita. 10 euron hintarajaan mahtuu tarra ja 20 euron rajaan myös koriste.",
+      "Salaisen joulupukin lahjaksi sopii tuote, joka toimii kenelle tahansa: työelämää koskeva huumoripaita tai koriste, jonka vitsi ei vaadi saajan tuntemista.",
+      "Jos et tiedä saajan kokoa, valitse koriste, jossa kokoa ei tarvita.",
       `Tämän sivun t-paidoissa teksti koskee työtä tai arkea eikä saajaa itseään, esimerkiksi Tärkeintä työssä on lounastauko, ja kaikki tuotteet maksavat enintään 30 euroa. ${D}`,
     ],
     faqs: [
       {
         q: "Mikä on hyvä salaisen joulupukin lahja?",
-        a: "Tuote, jonka vitsi toimii saajasta riippumatta, kuten työelämähuumorin t-paita, koriste tai tarra.",
+        a: "Tuote, jonka vitsi toimii saajasta riippumatta, kuten työelämähuumorin t-paita tai koriste.",
       },
       {
-        q: "Mitä saa salaisen joulupukin 10 euron budjetilla?",
-        a: "Oma teksti/kuva -tarran. Muut tuotteet maksavat yli 10 euroa.",
+        q: "Mitä saa salaisen joulupukin pienellä budjetilla?",
+        a: "Koristeen. Se on t-paitaa edullisempi.",
       },
       {
         q: "Entä jos en tiedä saajan kokoa?",
-        a: "Valitse koriste tai tarra. Niissä ei ole kokoja.",
+        a: "Valitse koriste. Siinä ei ole kokoa.",
       },
       {
         q: "Sopiiko lahja työpaikan arvontaan?",
@@ -1298,11 +1298,11 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 60-vuotiaalle naiselle | Huumorikauppa",
     description:
-      "60 v lahja naiselle tai äidille: 60v-paidat ja -hupparit kuten 60v mutta sydän kuin 20v sekä omalla tekstillä painettu peitto tai taulu.",
+      "60 v lahja naiselle tai äidille: 60v-paidat ja -hupparit kuten 60v mutta sydän kuin 20v sekä omalla tekstillä painettu koriste.",
     h1: "Hauskat lahjat 60-vuotiaalle naiselle",
     intro: [
       "Hauska lahja 60-vuotiaalle naiselle on 60v-paita tai -huppari, jonka teksti korostaa mieltä eikä vuosia, kuten 60v mutta sydän kuin 20v tai 60 vuotta nuori ja nokkela.",
-      "Jos 60-vuotias on äiti tai isoäiti, lahjaksi sopii myös omalla tekstillä painettu peitto, seinätaulu tai koriste, johon kirjoitetaan lasten tai lastenlasten tervehdys.",
+      "Jos 60-vuotias on äiti tai isoäiti, lahjaksi sopii myös omalla tekstillä painettu huppari, paita tai koriste, johon kirjoitetaan lasten tai lastenlasten tervehdys.",
       `Eläkkeelle jäävälle 60-vuotiaalle sopivat myös eläkelahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
     ],
     faqs: [
@@ -1312,7 +1312,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on 60 v lahja äidille?",
-        a: "60-vuotishuppari tai omalla tekstillä painettu peitto tai seinätaulu, jossa on lasten tervehdys.",
+        a: "60-vuotishuppari tai omalla tekstillä painettu paita, jossa on lasten tervehdys.",
       },
       {
         q: "Sopivatko 60v-paidat myös miehelle?",
@@ -1403,21 +1403,21 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja isoäidille | Huumorikauppa",
     description:
-      "Lahja isoäidille: omalla tekstillä painettu peitto, seinätaulu tai koriste sekä eläkeläisen paidat ja hupparit. Sopii joululahjaksi ja syntymäpäiville.",
+      "Lahja isoäidille: omalla tekstillä painettu koriste sekä eläkeläisen paidat ja hupparit. Sopii joululahjaksi ja syntymäpäiville.",
     h1: "Hauskat lahjat isoäidille",
     intro: [
-      "Hauska lahja isoäidille on tuote, jossa on lastenlasten oma tervehdys, kuten omalla tekstillä painettu peitto, seinätaulu tai koriste.",
+      "Hauska lahja isoäidille on tuote, jossa on lastenlasten oma tervehdys, kuten omalla tekstillä painettu huppari, paita tai koriste.",
       "Valmiita mummo- tai isoäiti-tekstejä valikoimassa ei ole. Siksi tälle sivulle on koottu Oma teksti/kuva -tuotteet, joihin kirjoitetaan oma teksti tai kuvatoive, sekä eläkeläisaiheiset paidat, jotka sopivat isoäidille yhtä hyvin kuin isoisälle.",
       `Syntymäpäivälahjaksi tilaa vähintään kaksi viikkoa etukäteen. ${D}`,
     ],
     faqs: [
       {
         q: "Mikä on hauska lahja isoäidille?",
-        a: "Omalla tekstillä painettu tuote, kuten peitto tai seinätaulu, jossa on lastenlasten tervehdys.",
+        a: "Omalla tekstillä painettu tuote, kuten huppari tai koriste, jossa on lastenlasten tervehdys.",
       },
       {
         q: "Mikä on hauska joululahja isoäidille?",
-        a: `Peitto tai koriste lastenlasten tekstillä. ${D}`,
+        a: `Koriste tai huppari lastenlasten tekstillä. ${D}`,
       },
       {
         q: "Kuinka teksti lisätään?",
@@ -1438,11 +1438,11 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja siskolle | Huumorikauppa",
     description:
-      "Lahja siskolle syntymäpäiväksi tai jouluksi: slay queen- ja ikävuosipaidat, hupparit sekä sisarusten oma vitsi tarrassa tai paidassa.",
+      "Lahja siskolle syntymäpäiväksi tai jouluksi: slay queen- ja ikävuosipaidat, hupparit sekä sisarusten oma vitsi koristeessa tai paidassa.",
     h1: "Hauskat lahjat siskolle",
     intro: [
       "Hauska lahja siskolle on paita tai pikkulahja, jossa on sisarusten oma vitsi tai teksti, jonka sisko pukisi itse päälleen, kuten slay queen.",
-      "Syntymäpäivälahjaksi siskolle sopii ikävuosipaita, jos hän täyttää pyöreitä, esimerkiksi 30v paranen iän myötä kuin viini tai 40 ja fabulous. Lapsuuden sisäpiirin vitsin saat Oma teksti/kuva -tarraan, -koristeeseen tai -paitaan.",
+      "Syntymäpäivälahjaksi siskolle sopii ikävuosipaita, jos hän täyttää pyöreitä, esimerkiksi 30v paranen iän myötä kuin viini tai 40 ja fabulous. Lapsuuden sisäpiirin vitsin saat Oma teksti/kuva -koristeeseen tai -paitaan.",
       `Jos sisko on äiti, sopii myös Super äiskä -huppari. ${D}`,
     ],
     faqs: [
@@ -1456,7 +1456,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Löytyykö pieni lahja siskolle?",
-        a: "Tarra ja koriste ovat t-paitaa edullisempia, ja niihin saa oman tekstin.",
+        a: "Koriste on t-paitaa edullisempi, ja siihen saa oman tekstin.",
       },
       {
         q: "Ehtiikö lahja jouluksi?",
@@ -1512,7 +1512,7 @@ export const landingPages: LandingPageDef[] = [
     h1: "Hauskat lahjat puolisolle, tyttöystävälle ja poikaystävälle",
     intro: [
       "Hauska lahja poikaystävälle on I love my girlfriend -paita ja tyttöystävälle I love my boyfriend -paita tai -huppari: saaja pukee päälleen tekstin, joka kertoo, kenen kanssa hän on.",
-      "Pitkään yhdessä olleille sopii omalla tekstillä painettu tuote, esimerkiksi peitto tai seinätaulu, jossa on teidän oma lausahduksenne. Personoitavaan Lempinimi-paitaan painetaan nimi, jota vain sinä käytät.",
+      "Pitkään yhdessä olleille sopii omalla tekstillä painettu paita tai huppari, jossa on teidän oma lausahduksenne. Personoitavaan Lempinimi-paitaan painetaan nimi, jota vain sinä käytät.",
       `${D}`,
     ],
     faqs: [
@@ -1557,11 +1557,11 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on hauska lahja ystävälle?",
-        a: "Ystävä-aiheinen keraaminen koriste tai oma teksti paidassa tai tarrassa.",
+        a: "Ystävä-aiheinen keraaminen koriste tai oma teksti paidassa tai koristeessa.",
       },
       {
         q: "Mikä on edullinen lahja kaverille?",
-        a: "Tarra ja koriste ovat t-paitaa edullisempia. Alle 30 euron lahjat on koottu sivulle Hauskat lahjat alle 30 euroa.",
+        a: "Koriste on t-paitaa edullisempi. Alle 30 euron lahjat on koottu sivulle Hauskat lahjat alle 30 euroa.",
       },
       {
         q: "Mikä sopii kaverin synttärilahjaksi?",
@@ -1747,11 +1747,11 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauskat lahjat naiselle | Huumorikauppa",
     description:
-      `Hauska lahja naiselle: Super äiskä, slay queen, äiti- ja ikävuosipaidat sekä omalla tekstillä painettu peitto tai taulu. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+      `Hauska lahja naiselle: Super äiskä, slay queen, äiti- ja ikävuosipaidat sekä omalla tekstillä painettu koriste. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat naiselle",
     intro: [
       "Hauska lahja naiselle on tuote, jonka teksti on hänen puolellaan: Super äiskä äidille, slay queen ystävälle tai 40 ja fabulous pyöreitä vuosia täyttävälle.",
-      "Huumorilahja naiselle onnistuu, kun vitsi kehuu tai liioittelee eikä koske ulkonäköä. Perheen oman jutun saat Oma teksti/kuva -tuotteeseen, jota on peittona, seinätauluna, koristeena ja vaatteina.",
+      "Huumorilahja naiselle onnistuu, kun vitsi kehuu tai liioittelee eikä koske ulkonäköä. Perheen oman jutun saat Oma teksti/kuva -tuotteeseen, jota on koristeena ja vaatteina.",
       `Rajatummat oppaat on tehty äidille, vaimolle, siskolle ja isoäidille. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [

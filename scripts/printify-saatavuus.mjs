@@ -296,6 +296,30 @@ export async function buildSaatavuus({ rows, printifyGet, shopId, now = () => ne
   return { data, raportti: { syyLaskuri, top: top.slice(0, 15), virheet, ilmanTuotetta, copyOf, shopProductCount: shopProducts.length } };
 }
 
+/**
+ * Tappiolliset variantit (data/tappio-variantit.json, scripts/tappiotarkistus.mjs oma-tausta-haarassa: Printifyn kulu
+ * toimitettuna > myynti ilman alv:tä - Stripe) piilotetaan samalla tavalla kuin valmistamattomat. Tuote, jonka kaikki
+ * variant_map-yhdistelmät ovat piilossa, menee kokonaan_ei_saatavilla-listaan (pois listoista, syötteestä, sivukartasta).
+ */
+export function yhdistaTappio(data, rows, tappio) {
+  if (!tappio || typeof tappio !== "object") return data;
+  const products = { ...data.products };
+  const kokonaan = new Set(data.kokonaan_ei_saatavilla ?? []);
+  let lisatty = 0;
+  for (const row of rows) {
+    const avaimet = Array.isArray(tappio[row.slug]) ? tappio[row.slug] : [];
+    if (!avaimet.length) continue;
+    const vanha = products[row.slug] ?? { unavailable: [], printify_product_id: row.printify_product_id ?? null, provider_id: null };
+    const yhdessa = [...new Set([...(vanha.unavailable ?? []), ...avaimet])].sort();
+    lisatty += yhdessa.length - (vanha.unavailable ?? []).length;
+    products[row.slug] = { ...vanha, unavailable: yhdessa };
+    const kartta = Object.keys(row?.variants?.variant_map ?? {});
+    if (kartta.length > 0 && kartta.every((k) => yhdessa.includes(k))) kokonaan.add(row.slug);
+  }
+  const sorted = Object.fromEntries(Object.entries(products).sort(([a], [b]) => a.localeCompare(b)));
+  return { ...data, products: sorted, kokonaan_ei_saatavilla: [...kokonaan].sort(), summary: { ...data.summary, tappio_variantit: lisatty } };
+}
+
 export function renderJsModule(data) {
   return [
     "// GENEROITU: scripts/printify-saatavuus.mjs kirjoittaa tämän tiedoston. Älä muokkaa käsin.",
@@ -359,9 +383,19 @@ async function main() {
     supabaseKey: process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY,
   });
   console.log(`Aktiivisia tuotteita: ${rows.length}`);
-  const printifyGet = vainKartta ? null : createPrintifyClient({ apiKey });
-  const { data, raportti } = await buildSaatavuus({ rows, printifyGet, shopId });
-  tulostaRaportti(data, raportti);
+  const tappioPolku = path.join(ROOT, "data/tappio-variantit.json");
+  const tappio = await fs.readFile(tappioPolku, "utf8").then(JSON.parse).catch(() => null);
+  let data;
+  if (process.argv.includes("--vain-tappio")) {
+    // Ei Printify-kutsuja: nykyiseen saatavuustiedostoon yhdistetään vain tappiolliset variantit.
+    data = yhdistaTappio(JSON.parse(await fs.readFile(JSON_OUT, "utf8")), rows, tappio);
+  } else {
+    const printifyGet = vainKartta ? null : createPrintifyClient({ apiKey });
+    const built = await buildSaatavuus({ rows, printifyGet, shopId });
+    tulostaRaportti(built.data, built.raportti);
+    data = yhdistaTappio(built.data, rows, tappio);
+  }
+  if (tappio) console.log(`Tappiolliset variantit (data/tappio-variantit.json): ${data.summary.tappio_variantit ?? 0} lisätty, kokonaan piilossa ${data.kokonaan_ei_saatavilla.length}`);
 
   if (kuiva) {
     console.log("--kuiva: tiedostoja ei kirjoitettu.");
