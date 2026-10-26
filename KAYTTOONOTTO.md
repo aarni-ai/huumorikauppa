@@ -145,7 +145,7 @@ npx vercel env add EMAIL_FROM production
 ## 6. Ajastimen salaisuus
 
 Valvonta (`/api/cron/tilaukset`): paikkaa webhookilta jääneet maksut, yrittää epäonnistuneet Printify-siirrot
-uudelleen, hakee seurantakoodit ja lähettää päivän yhteenvedon. Vercel Cron ajaa sen kerran päivässä (Hobby-tason
+uudelleen, hakee seurantakoodit, lähettää muistutukset ja arviopyynnöt sekä päivän yhteenvedon (kohta 13). Vercel Cron ajaa sen kerran päivässä (Hobby-tason
 raja), ja GitHub Actions (`.github/workflows/tilausvalvonta.yml`, ilmainen) tunnin välein. Sama salaisuus molempiin:
 
 ```
@@ -252,8 +252,14 @@ Stripe-avaimeen ei tarvita uusia oikeuksia.
 **Paketit** (`/paketit`): määritykset generoidaan tuotteista, kun tuotteet muuttuvat:
 
 ```
-node scripts/generoi-paketit.mjs
+node scripts/generoi-paketit.mjs --kulut katteet.json
 ```
+
+`--kulut` (scripts/katteet.mjs-tuloste, `{ slug, kulu, toimitus }`) valitsee paketeittain suurimman alennuksen
+10..5 %, jolla paketin kate pysyy vähintään 30 %:ssa; muuten paketti jää määrityksiin `kaytossa: false` ja syy
+kommenttina. Tonnin seteli (t-paita + huppari) on aina ensimmäisenä. 26.10.2026 kuluilla yksikään pari ei yllä 30 %:iin
+(t-paita + huppari 74,80 €: kate 5 %:n alennuksella -2,6 %, vaatisi parin hinnaksi noin 111 €), joten kaikki
+pakettialennukset ovat pois käytöstä.
 
 Pakettialennus (5-10 %, paketeittain) annetaan kassalla vain, kun paketin kate alennuksen jälkeen on vähintään 30 %
 (`PAKETTI_KATE_RAJA`). Ennen kuin
@@ -269,6 +275,7 @@ myöhemmin painotalokohtaisiksi.
 | Linkkitarkistus (`linkkitarkistus.yml`) | maanantaisin | ei tarvita |
 | Saatavuus (`saatavuus.yml`) | päivittäin | sivut ja kassa: ei tarvita; varianttien saatavuus: `CRON_SECRET` (kohta 12) |
 | Katetarkistus (`katetarkistus.yml`) | maanantaisin | `RESEND_API_KEY` (sähköposti), valinnainen `DATABASE_URL` |
+| Päivän yhteenveto (`paivayhteenveto.yml`) | päivittäin klo 7 Suomen aikaa | `CRON_SECRET` (kohta 13) |
 
 Lisää salaisuudet: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > **New repository
 secret**. `RESEND_API_KEY` on sama arvo kuin Vercelissä (kohta 5). `DATABASE_URL` (Vercel > Storage > Neon >
@@ -385,7 +392,62 @@ curl -H "Authorization: Bearer $CRON_SECRET" "https://huumorikauppa.fi/api/cron/
 
 Vastauksessa `jaljella` kertoo, montako tuotetta on vielä tarkistamatta; aja uudelleen, kunnes se on 0.
 
+## 13. Automaatio: sähköpostit, valvonta ja päivän yhteenveto (haara automaatio)
+
+Ei uusia maksullisia palveluita: Resendin ilmaistaso (3000 viestiä kuukaudessa, 100 päivässä), GitHub Actions ja
+Vercel Hobby (funktioita nyt 11/12, Vercel Cron edelleen yksi).
+
+**Taulut.** Aja `db/schema.sql` uudelleen ennen käyttöönottoa (kaikki lauseet ovat toistettavia):
+`subscribers` (uutiskirje: suostumuksen aika, teksti ja lähde, ensitilauksen koodi), `email_optouts` (peruutukset),
+`abandoned_carts` (kassan muistutuspyynnöt), `reviews` (arviot, tila `odottaa` ennen julkaisua) sekä tauluun `orders`
+sarakkeet `delivered_at`, `review_email_sent_at`, `printify_created_at` ja `stuck_alert_sent_at`.
+
+```
+psql "$DATABASE_URL" -f db/schema.sql
+```
+
+**Ympäristömuuttujat** (Vercel, kaikki valinnaisia):
+
+| Muuttuja | Oletus | Käyttö |
+|---|---|---|
+| `MARKKINOINTI_SALAISUUS` | `CRON_SECRET` | peruutus-, kori- ja arviolinkkien allekirjoitus; vaihtaminen mitätöi vanhat linkit |
+| `KAUPPA_URL` | `https://huumorikauppa.fi` | linkit sähköposteissa |
+| `MARKKINOINTI_RAJA_AJO` | 20 | markkinointiviestejä enintään yhdessä ajossa |
+| `MARKKINOINTI_RAJA_PAIVA` | 60 | markkinointiviestejä päivässä (40 jää tilausvahvistuksille Resendin 100:n päivärajasta) |
+| `KATE_TAVOITE_KK` | 3000 | kuukauden katetavoite euroina päivän yhteenvedossa |
+
+**Sähköpostit** (`api/_lib/markkinointi.js`, rajapinta `/api/sahkoposti`):
+- Uutiskirje: ponnahdusikkunassa erillinen suostumusruutu (ei valmiiksi valittu) ja tietosuojalinkki. Tervetuloviesti
+  kerran per osoite. Ensitilauksen koodi (`TERVE-XXXXXX`, yksi per osoite, vain ensimmäinen maksettu tilaus samalla
+  osoitteella) on pois käytöstä: `ENSITILAUS_ALENNUS_PROSENTTI = 0` (api/_lib/vakiot.js), koska t-paidan (24,90 €)
+  kate on jo ilman alennusta 26 %. 5 %:n koodi vaatii t-paidan hinnaksi 28,90 € ja 10 %:n 29,90 €. Kassa hylkää koodin
+  silti aina, jos tilauksen kate alennuksen jälkeen jäisi alle 30 %.
+- Keskeneräinen tilaus: kassan ensimmäisessä vaiheessa valinta "Lähetä minulle muistutus, jos tilaus jää kesken"
+  (ei valmiiksi valittu). Muistutus 1 h ja 24 h viimeisestä korin muutoksesta, loppuu kun samalla osoitteella maksetaan.
+- Arviopyyntö kerran per tilaus: 7 pv Printifyn toimituspäivästä, tai 10 pv lähetyksestä, jos toimituspäivää ei tule.
+  Arviot tallentuvat tauluun `reviews` tilaan `odottaa`; sivustolla niitä ei näytetä automaattisesti.
+- Jokaisessa viestissä peruutuslinkki (`/unsubscribe`) ja `List-Unsubscribe` + `List-Unsubscribe-Post` (yhden
+  klikkauksen peruutus). Peruutus lopettaa uutiskirjeen, muistutukset ja arviopyynnöt.
+
+**Valvonta** (`/api/cron/tilaukset`, tunnin välein): maksettu tilaus, joka ei ole Printifyn tuotannossa, yritetään
+uudelleen kasvavin välein (15 min ... 4 h), myös kun Printify palauttaa tilauksen on-holdiin tuotantoon lähetyksen
+jälkeen. Hälytys osoitteeseen info@seniorituki.fi heti ensimmäisestä virheestä ja erikseen, kun tilaus on ollut
+jumissa yli 2 h. Seurantalinkki asiakkaalle, kun Printify ilmoittaa lähetyksen (epäonnistunut viesti yritetään
+uudelleen viikon ajan).
+
+**Ajastukset:**
+
+| Työnkulku | Milloin (UTC) | Tehtävä |
+|---|---|---|
+| `tilausvalvonta.yml` | joka tunti :17 | valvonta, muistutukset, arviopyynnöt, yhteenvedon varmistus klo 9 jälkeen |
+| `paivayhteenveto.yml` | 04:00 ja 05:00 | päivän yhteenveto; lähtee vain, kun Helsingissä on kello 7 (kesä 04, talvi 05), kerran päivässä |
+| Vercel Cron (`vercel.json`) | 05:00 | valvonta kerran päivässä (varalla) |
+
+Yhteenveto: eilisen maksetut tilaukset, myynti ja kate euroina (Printify-kulu tilaushetkeltä), jumissa olevat
+tilaukset, kuukauden kate tavoitteeseen nähden prosentteina ja tarvittava kate päivässä. Käsiajo (lähettää heti, jos
+tänään ei ole lähetetty): Actions > Päivän yhteenveto > **Run workflow**.
+
 ## Mitä jää vielä Lovable Cloudiin
 
-Uutiskirjeen tilaus (MailerLite), hylätyn ostoskorin muistutus ja palautus, ylläpitopaneelin kirjautuminen ja
-sähköpostien peruutuslinkki. Ne lakkaavat toimimasta, jos Lovable sulkee projektin; kauppa ja tilaukset toimivat silti.
+Ylläpitopaneelin kirjautuminen ja MailerLite-synkronointi (uutiskirjeen tilaajat ovat nyt omassa taulussa
+`subscribers`). Uutiskirje, muistutukset, korin palautus, peruutuslinkki ja arviot toimivat omalla taustalla.
