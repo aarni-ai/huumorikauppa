@@ -1017,7 +1017,7 @@ const ProductPage = () => {
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Saatat myös tykätä 😍</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Lisää samasta kategoriasta</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {relatedProducts.map(p => (
                 <ProductCard key={p.id} product={p} />
