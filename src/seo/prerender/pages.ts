@@ -15,6 +15,7 @@ import { hobbies } from "@/data/hobbies";
 import { municipalities } from "@/data/municipalities";
 import { dialects } from "@/data/dialects";
 import { blogPosts } from "@/data/blog";
+import { blogMidInsertLine, blogPageLabel, getBlogProductTheme, selectBlogProducts, splitBlogProducts } from "@/data/blogProducts";
 import {
   landingPages,
   LANDING_GRID_LIMIT,
@@ -448,6 +449,16 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
     const path = `/blogi/${post.slug}`;
     const faqs = post.faq && post.faq.length > 0 ? post.faq : DEFAULT_BLOG_FAQS;
     const linked = (post.productLinks ?? []).filter((l) => bySlug.has(l.slug));
+    // Samat tuotenostot kuin React-sivulla (src/data/blogProducts.ts): keskellä ja lopussa.
+    const theme = getBlogProductTheme(post.slug);
+    const { mid, end } = splitBlogProducts(selectBlogProducts(theme, products));
+    const productLinks = (list: Product[]) =>
+      list.map((p) => ({ href: `/tuote/${p.slug}`, label: p.name, note: formatPriceFi(p.price) }));
+    const cta = { href: theme.href, label: `Katso tuotteet: ${theme.name}` };
+    const lines = post.content.split("\n");
+    const midLine = blogMidInsertLine(post.content);
+    const before = lines.slice(0, midLine).join("\n");
+    const after = lines.slice(midLine).join("\n");
     return {
       path,
       title: post.metaTitle,
@@ -457,14 +468,18 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
       breadcrumbs: [HOME, crumb("Blogi", "/blogi"), crumb(post.title, path)],
       intro: [post.excerpt],
       sections: [
-        { markdown: post.content },
+        { markdown: before },
+        ...(mid.length > 0 ? [{ heading: theme.heading, links: [...productLinks(mid), cta] }] : []),
+        ...(after.trim() ? [{ markdown: after }] : []),
+        ...(end.length > 0 ? [{ heading: theme.heading, links: [...productLinks(end), cta] }] : []),
+        { heading: "Lisää lahjaideoita", links: theme.related.map((href) => ({ href, label: blogPageLabel(href) })) },
         ...(linked.length > 0
           ? [{ heading: "Artikkelissa mainitut tuotteet", links: linked.map((l) => ({ href: `/tuote/${l.slug}`, label: l.label })) }]
           : []),
       ],
       faqs,
-      // Sama Article + FAQPage -graafi kuin selaimessa (src/lib/blogJsonLd.ts).
-      jsonLd: [buildBlogPostJsonLd(post, faqs)],
+      // Sama Article + FAQPage + ItemList -graafi kuin selaimessa (src/lib/blogJsonLd.ts).
+      jsonLd: [buildBlogPostJsonLd(post, faqs, [...mid, ...end.filter((p) => !mid.includes(p))])],
     };
   });
 }
