@@ -321,8 +321,8 @@ export const ENTRY_DEFER_MAX_MS = 2000;
 
 /**
  * Sivulla, jolla on näkyvä esikatselu, sovelluksen JavaScript (Viten entry-skripti ja sen
- * modulepreloadit, yhteensä satoja kilotavuja) ladataan vasta, kun esikatselun pääkuva on maalattu
- * (tai viimeistään ENTRY_DEFER_MAX_MS:n jälkeen). Näin hidas mobiiliyhteys käyttää kaistan ensin
+ * modulepreloadit, yhteensä satoja kilotavuja) ladataan vasta, kun esikatselun pääkuva on ladattu ja
+ * maalattu (tai viimeistään ENTRY_DEFER_MAX_MS:n jälkeen). Näin hidas mobiiliyhteys käyttää kaistan ensin
  * CSS:ään ja LCP-kuvaan, ja React käynnistyy heti niiden jälkeen. Ilman entry-skriptiä pohja
  * palautetaan sellaisenaan.
  */
@@ -335,21 +335,15 @@ export function deferEntryScripts(html: string): string {
     preloads.push(href);
     return "";
   });
-  // Chromium: odotetaan LCP-merkintää pääkuvalle (kuva on maalattu). Muut selaimet: kuvan load +
-  // kaksi ruudunpäivitystä. Aina viimeistään ENTRY_DEFER_MAX_MS:n jälkeen.
   const loader =
-    `<script>(function(){var d=document,w=window,done=false,po;function go(){if(done)return;done=true;if(po)po.disconnect();` +
+    `<script>(function(){var d=document,done=false;function go(){if(done)return;done=true;` +
     `${JSON.stringify(preloads)}.forEach(function(h){var l=d.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;d.head.appendChild(l)});` +
     `var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(entry[1])};d.head.appendChild(s)}` +
-    `setTimeout(go,${ENTRY_DEFER_MAX_MS});` +
+    // Pääkuvan latauksen jälkeen odotetaan vielä yksi ruudunpäivitys, jotta kuva ehtii maalautua.
+    `function later(){requestAnimationFrame(function(){setTimeout(go,0)})}` +
     `var i=d.querySelector("[data-prerender-visual] img[fetchpriority=high]")||d.querySelector("[data-prerender-visual] img");` +
-    `if(!i){go();return}` +
-    `i.addEventListener("error",go);` +
-    `try{if(w.PerformanceObserver&&PerformanceObserver.supportedEntryTypes.indexOf("largest-contentful-paint")>=0){` +
-    `po=new PerformanceObserver(function(l){l.getEntries().forEach(function(e){if(e.url&&e.url===i.currentSrc)go()})});` +
-    `po.observe({type:"largest-contentful-paint",buffered:true});return}}catch(x){}` +
-    `function later(){requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(go,0)})})}` +
-    `if(i.complete)later();else i.addEventListener("load",later)})()</script>`;
+    `if(!i||i.complete){later()}else{i.addEventListener("load",later);i.addEventListener("error",go)}` +
+    `setTimeout(go,${ENTRY_DEFER_MAX_MS})})()</script>`;
   return out.replace("</body>", () => `  ${loader}\n  </body>`);
 }
 
