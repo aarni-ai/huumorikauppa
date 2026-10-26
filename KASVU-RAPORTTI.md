@@ -28,6 +28,18 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 
 ## 26.-27.10.: tilauskatteet, tappioesto, EU-painotalot, blogit
 
+**27.10. lisäksi:**
+- Blogit: peitto-, seinätaulu- ja vauvabody-artikkelit palautettu alkuperäisiin aiheisiinsa samoihin osoitteisiin
+  (myyntilupaukset piilotetuista tuotteista poistettu, ostokehotukset ohjaavat myytäviin tuotteisiin). Uudet aiheet
+  omissa osoitteissaan: /blogi/hauskat-hupparit-lahjaksi, /blogi/hauskat-koristeet-lahjaksi,
+  /blogi/lahja-tuoreille-vanhemmille, "Lue myös" -linkit molempiin suuntiin. Tarra-artikkelin aihe ei ollut vaihtunut.
+- Sivukartta: 16 blogiartikkelia puuttui sivukartasta (esim. hauska-lahja-pomolle, hauskat-valmistujaislahjat-2026).
+  Nyt kaikki 59, ja testi vertaa sivukarttaa blogidataan.
+- Vanhoja Printify-tuotteita ei poisteta (omistajan linjaus): tappioesto ja piilotukset riittävät, kunnes oma tausta on
+  tuotannossa.
+- Havainto: heti julkaisun jälkeen selaintesti on kahdesti seitsemästä jäänyt tuotesivun esikatseluun yli 5 s
+  (kylmä välimuisti). Selvitetään.
+
 **Katteen laskentaperuste:** Tmi Inteller on ALV-rekisterissä (FI35836772), joten Printifyn veloittama ALV
 vähennetään eikä ole kulu. Kaikki katteet (KATTEET.md, tilausvahti, aamuyhteenveto) lasketaan Printify-kululla
 ilman ALV:tä. T-paidat 24,90 €: kate 28,5 % (7,22 €), hupparit 49,90 €: 10,6 % (4,80 €). Kumpikaan ei ylitä 30 %:a.
