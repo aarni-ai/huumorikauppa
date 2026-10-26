@@ -49,6 +49,7 @@ const LANDING_PATHS = [
   "/lahjat/pomolle",
   "/joululahja-mummolle",
   "/joululahja-papalle",
+  "/joululahja-elakelaiselle",
   "/joululahja-teinille",
   "/lahjat/alle-30-euroa",
   "/joululahja-alle-50-euroa",

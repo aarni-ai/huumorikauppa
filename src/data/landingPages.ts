@@ -248,7 +248,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mistä löydän joululahjan tietylle henkilölle?",
-        a: "Sivun alalaidan lahjaoppaissa valikoima on rajattu saajan mukaan: isälle, äidille, vaimolle, kaverille, työkaverille, teinille, mummolle ja papalle.",
+        a: "Sivun alalaidan lahjaoppaissa valikoima on rajattu saajan mukaan: miehelle, naiselle, isälle, äidille, vaimolle, kaverille, työkaverille, teinille, mummolle, papalle ja eläkeläiselle. Budjetin mukaan rajatut sivut ovat alle 30 ja alle 50 euron joululahjat.",
       },
     ],
     related: [
@@ -262,6 +262,7 @@ export const landingPages: LandingPageDef[] = [
       "/joululahja-teinille",
       "/joululahja-mummolle",
       "/joululahja-papalle",
+      "/joululahja-elakelaiselle",
       "/joululahja-miehelle-jolla-on-kaikki",
       "/lahjat/alle-30-euroa",
       "/joululahja-alle-50-euroa",
@@ -308,6 +309,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: [
+      "/joululahjat",
       "/joululahja-isalle",
       "/joululahja-miehelle-jolla-on-kaikki",
       "/joululahja-papalle",
@@ -350,6 +352,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: [
+      "/joululahjat",
       "/joululahja-aidille",
       "/joululahja-vaimolle",
       "/joululahja-mummolle",
@@ -436,6 +439,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: [
+      "/joululahjat",
       "/isanpaivalahja",
       "/hauska-isanpaivalahja",
       "/joululahja-papalle",
@@ -483,6 +487,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: [
+      "/joululahjat",
       "/lahjat/joululahjaksi-naiselle",
       "/joululahja-vaimolle",
       "/joululahja-mummolle",
@@ -597,7 +602,7 @@ export const landingPages: LandingPageDef[] = [
         a: "Ulkonäköön, ikään tai alkoholiin liittyviä vitsejä. Työpaikalle sopivat tekstit, jotka koko porukka voi lukea ääneen.",
       },
     ],
-    related: ["/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/lahjat/pomolle"],
+    related: ["/joululahjat", "/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/lahjat/pomolle"],
     categories: ["t-paidat", "hupparit"],
     filter: any(TYO, all(OMA_TEKSTI, inCategory("tarrat", "koristeet"))),
   },
@@ -712,6 +717,46 @@ export const landingPages: LandingPageDef[] = [
     sort: "hupparit-first",
   },
   {
+    path: "/joululahja-elakelaiselle",
+    name: "Joululahja eläkeläiselle",
+    group: "joulu",
+    title: "Hauska joululahja eläkeläiselle 2026 | Huumorikauppa",
+    description:
+      "Joululahja eläkeläiselle: Olen eläkkeellä, 100% Eläkeläinen ja muut eläkeläishuumorin hupparit ja paidat. Tilaa viimeistään pe 20.11.2026.",
+    h1: "Hauska joululahja eläkeläiselle",
+    intro: [
+      "Hauska joululahja eläkeläiselle on huppari tai paita, joka nauraa eläkepäivien vapaudelle: aamuherätys on vapaaehtoinen ja kalenteri täynnä ei mitään.",
+      "Talvella huppari on eläkeläiselle käytännöllisempi kuin t-paita, joten tällä sivulla hupparit näkyvät ensin. Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeellä olevalle miehelle ja naiselle, mummolle ja papalle.",
+      `Jos saaja jää eläkkeelle vasta ensi vuonna, katso myös eläkelahjat eläkejuhliin. ${D}`,
+    ],
+    faqs: [
+      {
+        q: "Mikä on hauska joululahja eläkeläiselle?",
+        a: "Eläkeläishuumorin huppari tai paita, esimerkiksi Olen eläkkeellä, 100% Eläkeläinen tai Eläkkeellä, kiireinen tekemään ei mitään.",
+      },
+      {
+        q: "Huppari vai t-paita eläkeläiselle jouluksi?",
+        a: "Huppari, jos lahja on käytössä talvella. Väljä istuvuus antaa myös anteeksi, jos koko ei osu täsmälleen. T-paita on edullisempi vaihtoehto.",
+      },
+      {
+        q: "Sopiiko sama lahja eläkkeellä olevalle naiselle ja miehelle?",
+        a: "Sopii. Eläketekstit eivät ole sukupuolisidonnaisia. Mummolle ja papalle on lisäksi omat joululahjasivut.",
+      },
+      {
+        q: "Mitä toimitus maksaa?",
+        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      },
+      {
+        q: "Ehtiikö lahja jouluksi?",
+        a: `${D}`,
+      },
+    ],
+    related: ["/joululahjat", "/joululahja-papalle", "/joululahja-mummolle", "/elakelahjat", "/lahjat/70-vuotiaalle"],
+    categories: ["hupparit", "t-paidat"],
+    filter: all(ELAKE, not(inCategory("bodyt"))),
+    sort: "hupparit-first",
+  },
+  {
     path: "/joululahja-teinille",
     name: "Joululahja teinille",
     group: "joulu",
@@ -778,7 +823,7 @@ export const landingPages: LandingPageDef[] = [
         a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Useampi pieni lahja samassa tilauksessa jakaa toimituskulun.`,
       },
     ],
-    related: ["/joululahja-alle-50-euroa", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/joululahja-kaverille"],
+    related: ["/joululahjat", "/joululahja-alle-50-euroa", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/joululahja-kaverille"],
     categories: ["t-paidat", "koristeet"],
     filter: maxPrice(30),
     sort: "price-desc",
@@ -1358,7 +1403,7 @@ export const landingPages: LandingPageDef[] = [
         a: "Huppari, jonka hinta jaetaan. Siihen voi liittää kortin, jossa on koko työporukan terveiset.",
       },
     ],
-    related: ["/lahjat/70-vuotiaalle", "/lahjat/60-vuotiaalle-miehelle", "/lahjat/tyokaverille", "/joululahja-papalle"],
+    related: ["/joululahja-elakelaiselle", "/lahjat/70-vuotiaalle", "/lahjat/60-vuotiaalle-miehelle", "/lahjat/tyokaverille", "/joululahja-papalle"],
     categories: ["hupparit", "t-paidat"],
     filter: ELAKE,
   },
