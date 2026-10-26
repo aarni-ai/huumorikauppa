@@ -106,9 +106,9 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 
 **Lahja naiselle 40v**: "Maailman paras äiti" -tuotteet, viiniaiheiset t-paidat ja rennot huumorihupparit ovat hyviä lahjoja 40-vuotiaalle naiselle.
 
-**Lahja naiselle 50v** - Laadukkaat peitot, söpöt seinätaulut ja premium-hupparit ilahduttavat 50-vuotiasta naista.
+**Lahja naiselle 50v** - Laadukkaat premium-hupparit ja söpöt huumoripaidat ilahduttavat 50-vuotiasta naista.
 
-**Lahja naiselle 60v**: Eläkeläishuumorituotteet, mukavat peitot ja lämpimät hupparit sopivat hyvin 60-vuotiaalle.
+**Lahja naiselle 60v**: Eläkeläishuumorituotteet, mukavat pitkähihaiset ja lämpimät hupparit sopivat hyvin 60-vuotiaalle.
 
 ## Lahjaideoita naiselle
 
@@ -190,9 +190,9 @@ Isänpäivä on marraskuun toinen sunnuntai. Se on päivä jolloin isä ansaitse
 
 ## Isänpäivälahja budjetin mukaan
 
-- **Alle 20 €**: Hauska tarra-arkki
+- **Alle 20 €**: Hauska koriste
 - **20-30 €** - Hauska t-paita tai pipo
-- **30-50 €** - Hauska huppari tai peitto
+- **30-50 €** - Hauska huppari
 - **Yli 50 €**: Huppari + t-paita -combo
 
 ## Tilaa isänpäivälahja ajoissa
@@ -222,13 +222,13 @@ Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme ${TOIMITUSAIKA_TE
 
 **"Maailman paras äiti" -huppari**: Pehmeä, lämmin ja hauska.
 
-**Hauska peitto äidille**: Lämmin ja hauska lahja sohvailtoihin.
+**Hauska pitkähihainen äidille**: Lämmin ja hauska lahja arkeen.
 
 **Söpö huumoripaita** - Hienovaraisen hauska paita jota äiti käyttää oikeasti.
 
 ## Äitienpäivälahja budjetin mukaan
 
-- **Alle 20 €**: Hauska tarra-arkki
+- **Alle 20 €**: Hauska koriste
 - **20-30 €** - Hauska t-paita
 - **30-50 €** - Hauska huppari
 - **Yli 50 €**: Huppari + t-paita -combo
@@ -264,14 +264,14 @@ Setähuumoripaidat, kalastuspaidat ja meemihupparit ovat hyviä joululahjoja mie
 
 ## Pikkujoululahjat alle 20 € 🎉
 
-Hauska tarra-arkki tai pipo sopii pikkujoululahjaksi työkavereille.
+Hauska koriste tai pipo sopii pikkujoululahjaksi työkavereille.
 
 ## Joululahja budjetin mukaan
 
-- **Alle 10 €** - Tarrat tai joulukoristeet
+- **Alle 10 €** - Joulukoristeet
 - **Alle 20 €**: Hauska pipo
 - **Alle 30 €** - Hauska t-paita
-- **Alle 50 €** - Hauska huppari tai peitto
+- **Alle 50 €** - Hauska huppari
 
 ## Milloin tilata joululahjat?
 
@@ -358,7 +358,7 @@ Kaverin lahja saa olla hauska, typerä ja mieleenpainuva. Sisäpiirin vitsit, me
 
 **Meemipaidat**: Internet-huumori puhuu kaverin kieltä
 **Sarkasmipaidat**: Osuva teksti kaverin makuun
-**Hauska tarra-arkki** - Edullinen ja hauska lisälahja
+**Hauska koriste** - Edullinen ja hauska lisälahja
 **Hauska huppari** - Käytännöllinen ja hauska combo
 
 ## Lahja kaverin synttäreille
@@ -382,7 +382,7 @@ Työkaverin lahja saa olla hauska mutta sopiva. Pikkujoululahja, syntymäpäivä
 
 ## Pikkujoululahjat alle 20 €
 
-**Tarra-arkki** - Meemitarrat läppäriin
+**Hauska koriste** - Edullinen lisälahja
 **Hauska pipo** - Talvipipo hauskalla tekstillä
 
 ## Lahja pomolle ja esimiehelle

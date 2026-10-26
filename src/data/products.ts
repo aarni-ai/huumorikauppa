@@ -72,20 +72,16 @@ Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. 
     slug: "tarrat",
     name: "Tarrat",
     emoji: "🏷️",
-    description: "Tee oma tarra omalla tekstillä tai kuvalla. Tarra leikataan kuvion muotoon, ja sen saa viidessä koossa 2 x 2 tuumasta 6 x 6 tuumaan sekä läpinäkyvänä.",
-    seoTitle: "Hauskat tarrat ja oma tekstitarra | Huumorikauppa.fi",
-    seoDescription: "Tee hauska tarra omalla tekstillä tai kuvalla. Kuvion muotoon leikattu tarra läppäriin, vesipulloon tai lahjan kylkeen. Koot 2-6 tuumaa.",
-    seoText: `## Hauskat tarrat omalla tekstillä
+    description: "Hauskat tarrat läppäriin, vesipulloon ja lahjan kylkeen.",
+    seoTitle: "Hauskat tarrat | Huumorikauppa.fi",
+    seoDescription: "Hauskat tarrat läppäriin, vesipulloon ja lahjan kylkeen. Huumorikauppa.fi.",
+    seoText: `## Hauskat tarrat
 
-Huumorikaupan tarrassa on sinun oma tekstisi tai kuvasi. Kirjoita sisäpiirivitsi, lempilausahdus tai kaverin nimi, niin tarra painetaan juuri siitä. Tarra leikataan kuvion muotoon, joten reunoille ei jää ylimääräistä taustaa.
-
-## Koot
-
-Tarran saa koossa 2 x 2, 3 x 3, 4 x 4 tai 6 x 6 tuumaa (noin 5, 7,5, 10 ja 15 cm) sekä läpinäkyvänä versiona. Pieni koko sopii puhelimen kuoreen ja vesipulloon, isompi läppärin kanteen.
+Hauskat tarrat sopivat läppäriin, vesipulloon ja lahjan kylkeen. Tarra on pieni ja edullinen tapa tuoda huumoria arkeen.
 
 ## Tarra lahjaksi
 
-Oma tekstitarra on pieni lahja tai lisä isomman lahjan kylkeen. Se sopii esimerkiksi hauskan t-paidan tai hupparin pariksi samaan tilaukseen.`,
+Tarra on pieni lahja tai lisä isomman lahjan kylkeen. Se sopii esimerkiksi hauskan t-paidan tai hupparin pariksi.`,
   },
   {
     slug: "bodyt",
