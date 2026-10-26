@@ -39,7 +39,10 @@ function factsSection(products: Product[]): string {
   return `## Kauppa
 Huumorikauppa.fi on helsinkiläinen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita suomalaisella huumorilla. Jokainen tuote painetaan tilauksesta (print-on-demand) painokumppaneiden painotaloissa ulkomailla. Tuotteita ei paineta Suomessa.
 - Sijainti: ${ORGANIZATION.addressLocality}, Suomi
+- Kaupan pitäjä: ${ORGANIZATION.legalName}
 - Y-tunnus: ${ORGANIZATION.legalId}
+- ALV-numero: ${ORGANIZATION.vatID}
+- Postiosoite: ${ORGANIZATION.postalAddress}
 - Kieli: suomi
 
 ## Mitä myymme

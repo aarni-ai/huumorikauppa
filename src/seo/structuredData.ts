@@ -77,6 +77,7 @@ export function buildOrganizationJsonLd(): JsonLd {
     "@type": "Organization",
     "@id": ORGANIZATION_ID,
     name: ORGANIZATION.name,
+    legalName: ORGANIZATION.legalName,
     url: `${SITE_URL}/`,
     logo: {
       "@type": "ImageObject",
@@ -87,9 +88,13 @@ export function buildOrganizationJsonLd(): JsonLd {
     email: ORGANIZATION.email,
     address: {
       "@type": "PostalAddress",
+      ...(ORGANIZATION.streetAddress ? { streetAddress: ORGANIZATION.streetAddress } : {}),
+      ...(ORGANIZATION.postalCode ? { postalCode: ORGANIZATION.postalCode } : {}),
       addressLocality: ORGANIZATION.addressLocality,
       addressCountry: ORGANIZATION.addressCountry,
     },
+    taxID: ORGANIZATION.legalId,
+    vatID: ORGANIZATION.vatID,
     identifier: {
       "@type": "PropertyValue",
       propertyID: "Y-tunnus",
