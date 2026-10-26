@@ -37,7 +37,8 @@ async function fetchProducts(): Promise<Product[]> {
 
 type ProductRow = Tables<"products">;
 
-function mapProduct(p: ProductRow): Product {
+/** Supabase-rivi -> Product (myös esirenderöinti, src/seo/prerender/renderProductPreview.tsx). */
+export function mapProduct(p: ProductRow): Product {
     const price = Number(p.price);
     return {
       id: p.id,

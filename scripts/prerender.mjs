@@ -29,6 +29,22 @@ const PRODUCT_SLUGS_FILE = "product-slugs.json";
 // tiedostojärjestelmässä ei ole taattu, joten ne jäävät SPA-kuoren + middlewaren varaan.
 const SAFE_SEGMENT = /^[A-Za-z0-9-]+$/;
 
+// Supabase-asiakas (src/integrations/supabase/client.ts) viittaa localStorageen jo importissa;
+// tuotesivujen esikatselun renderöinti tuo sen mukanaan. Muistinvarainen korvike buildiin.
+if (typeof globalThis.localStorage === "undefined") {
+  const store = new Map();
+  globalThis.localStorage = {
+    getItem: (k) => (store.has(k) ? store.get(k) : null),
+    setItem: (k, v) => store.set(k, String(v)),
+    removeItem: (k) => store.delete(k),
+    clear: () => store.clear(),
+    key: (i) => [...store.keys()][i] ?? null,
+    get length() {
+      return store.size;
+    },
+  };
+}
+
 function log(msg) {
   console.log(`[prerender] ${msg}`);
 }
@@ -119,6 +135,8 @@ async function main() {
 
     // 1) Tuotteet
     let products = [];
+    /** slug -> Supabase-rivi tuotesivujen esikatselua varten. */
+    const rowsBySlug = new Map();
     const env = readEnv();
     if (!env.url || !env.key) {
       log("VAROITUS: VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY puuttuu, tuotesivuja ei esirenderöidä.");
@@ -126,6 +144,7 @@ async function main() {
       try {
         const rows = await fetchProductRows(env);
         products = pagesMod.normalizeProducts(rows);
+        for (const row of rows) if (row?.slug && !rowsBySlug.has(row.slug)) rowsBySlug.set(row.slug, row);
         log(`Supabase: ${rows.length} riviä, ${products.length} myynnissä olevaa tuotetta.`);
       } catch (err) {
         log(`VAROITUS: tuotteiden haku epäonnistui (${err.message}), tuotesivuja ei esirenderöidä.`);
@@ -166,6 +185,35 @@ async function main() {
         log(`Laskeutumissivuja ${landingMod.landingPages.length}, kaikilla vähintään ${landingMod.LANDING_MIN_PRODUCTS} tuotetta.`);
       }
     }
+
+    // Tuotesivujen näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
+    const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderProductPreview.tsx");
+    let previews = 0;
+    const previewFailures = [];
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+      if (typeof args[0] === "string" && args[0].includes("useLayoutEffect does nothing on the server")) return;
+      originalConsoleError(...args);
+    };
+    try {
+      for (const page of pages) {
+        if (!page.path.startsWith("/tuote/")) continue;
+        const row = rowsBySlug.get(page.path.slice("/tuote/".length));
+        if (!row) continue;
+        try {
+          page.previewHtml = previewMod.renderProductPreview(row);
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`${page.path} (${err.message})`);
+        }
+      }
+    } finally {
+      console.error = originalConsoleError;
+    }
+    if (previewFailures.length > 0) {
+      log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} tuotesivulla: ${previewFailures.slice(0, 5).join(", ")}`);
+    }
+    log(`Tuotesivujen esikatselu: ${previews} sivua.`);
 
     const seen = new Set();
     let written = 0;
