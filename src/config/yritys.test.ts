@@ -1,11 +1,11 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { INTELLER, UUSIKU, YRITYS_VAIHTO, postiosoite, yritystiedot } from "./yritys";
+import { INTELLER, UUSIKU, postiosoite, valittuMyyja, yritystiedot } from "./yritys";
 
 const ROOT = path.resolve(__dirname, "../..");
-const ENNEN = "2026-10-31T21:59:59Z";
-const JALKEEN = "2026-10-31T22:00:00Z";
+const ENNEN = "";
+const JALKEEN = "uusiku";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -13,12 +13,16 @@ afterEach(() => {
 });
 
 describe("yritystiedot()", () => {
-  it("vaihtuu 1.11.2026 klo 00.00 Suomen aikaa", () => {
-    expect(YRITYS_VAIHTO).toBe(JALKEEN);
-    expect(new Date(JALKEEN).toLocaleString("fi-FI", { timeZone: "Europe/Helsinki" })).toBe("1.11.2026 klo 0.00.00");
-    expect(yritystiedot(new Date(ENNEN))).toBe(INTELLER);
-    expect(yritystiedot(new Date(JALKEEN))).toBe(UUSIKU);
-    expect(yritystiedot(new Date("2027-06-01T00:00:00Z"))).toBe(UUSIKU);
+  it("oletus on Inteller; Uusiku Oy vain, kun MYYJA=uusiku (ei päivämäärään sidottua vaihtoa)", () => {
+    vi.stubEnv("MYYJA", "");
+    expect(valittuMyyja()).toBe("inteller");
+    expect(yritystiedot()).toBe(INTELLER);
+    expect(yritystiedot("inteller")).toBe(INTELLER);
+    expect(yritystiedot("uusiku")).toBe(UUSIKU);
+    vi.stubEnv("MYYJA", "Uusiku");
+    expect(yritystiedot()).toBe(UUSIKU);
+    vi.stubEnv("MYYJA", "jotain");
+    expect(yritystiedot()).toBe(INTELLER);
   });
 
   it("Uusiku Oy:n tiedot vastaavat YTJ:tä", () => {
@@ -35,27 +39,25 @@ describe("yritystiedot()", () => {
     expect(postiosoite(INTELLER)).toBe("Helsinki");
   });
 
-  it("YRITYS_NYT ohittaa nykyhetken", () => {
-    vi.stubEnv("YRITYS_NYT", JALKEEN);
-    expect(yritystiedot()).toBe(UUSIKU);
-    vi.stubEnv("YRITYS_NYT", ENNEN);
-    expect(yritystiedot()).toBe(INTELLER);
+  it("ei ajastettua vaihtoa: GitHub Actions -työnkulkua ei ole", async () => {
+    const fs = await import("node:fs");
+    expect(fs.existsSync(path.join(ROOT, ".github/workflows/yritysvaihto.yml"))).toBe(false);
   });
 });
 
-async function lataaHetkella(nyt: string) {
+async function lataaHetkella(myyja: string) {
   vi.resetModules();
-  vi.stubEnv("YRITYS_NYT", nyt);
+  vi.stubEnv("MYYJA", myyja);
   const site = await import("../seo/site");
   const sd = await import("../seo/structuredData");
   return { site, sd };
 }
 
-describe("ORGANIZATION seuraa vaihtoa moduulin latautuessa", () => {
+describe("ORGANIZATION seuraa MYYJA-muuttujaa moduulin latautuessa", () => {
   it.each([
     [ENNEN, INTELLER],
     [JALKEEN, UUSIKU],
-  ])("hetkellä %s", async (nyt, odotettu) => {
+  ])("MYYJA=%s", async (nyt, odotettu) => {
     const { site, sd } = await lataaHetkella(nyt);
     expect(site.ORGANIZATION.legalName).toBe(odotettu.legalName);
     expect(site.ORGANIZATION.legalId).toBe(odotettu.businessId);
@@ -74,8 +76,8 @@ describe("ORGANIZATION seuraa vaihtoa moduulin latautuessa", () => {
     expect(org.address.postalCode).toBe(odotettu.postalCode ?? undefined);
   });
 
-  it("esirenderöidyt ehdot, tietosuoja, yritystiedot ja llms.txt näyttävät Uusiku Oy:n vaihdon jälkeen", async () => {
-    await lataaHetkella("2026-11-01T00:05:00+02:00");
+  it("esirenderöidyt ehdot, tietosuoja, yritystiedot ja llms.txt näyttävät Uusiku Oy:n, kun MYYJA=uusiku", async () => {
+    await lataaHetkella("uusiku");
     const { renderComponentPages } = await import("../seo/prerender/renderComponents");
     const html = await renderComponentPages(() => {});
     for (const reitti of ["/toimitusehdot", "/tietosuojakaytanto", "/tietoa-meista"]) {
