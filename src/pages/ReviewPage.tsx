@@ -9,7 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 
 type OrderProduct = { name: string; quantity: number; reviewed: boolean };
 
-const FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+/** Oma tausta: arviot ja peruutus /api/sahkoposti-rajapinnassa (api/sahkoposti.js). */
+const API = "/api/sahkoposti";
 
 export default function ReviewPage() {
   const [params] = useSearchParams();
@@ -31,7 +32,7 @@ export default function ReviewPage() {
     if (!token) { setError("Linkki ei ole kelvollinen."); setLoading(false); return; }
     (async () => {
       try {
-        const res = await fetch(`${FN_BASE}/get-order-for-review?token=${encodeURIComponent(token)}`);
+        const res = await fetch(`${API}?arvostelu=${encodeURIComponent(token)}`);
         const data = await res.json();
         if (!res.ok) { setError("Linkki on vanhentunut tai virheellinen."); setLoading(false); return; }
         setProducts(data.products || []);
@@ -55,14 +56,14 @@ export default function ReviewPage() {
 
   const handleUnsubscribe = async () => {
     try {
-      const res = await fetch(`${FN_BASE}/submit-review`, {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "unsubscribe", token }),
       });
       if (res.ok) {
         setUnsubscribed(true);
-        toast({ title: "Arviopyynnöt peruttu", description: "Et saa enää arviopyyntöjä tästä tilauksesta." });
+        toast({ title: "Arviopyynnöt peruttu", description: "Et saa enää arviopyyntöjä etkä muita markkinointiviestejä." });
       }
     } catch { /* silent */ }
   };
@@ -79,7 +80,7 @@ export default function ReviewPage() {
     }
     setSubmitting(productName);
     try {
-      const res = await fetch(`${FN_BASE}/submit-review`, {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -92,7 +93,7 @@ export default function ReviewPage() {
         }),
       });
       if (res.ok) {
-        toast({ title: "Kiitos arviostasi! ⭐", description: "Arvio menee tarkistukseen ja näkyy pian sivulla." });
+        toast({ title: "Kiitos arviostasi! ⭐", description: "Arvio menee tarkistukseen ennen julkaisua." });
         setProducts(prev => prev.map(p => p.name === productName ? { ...p, reviewed: true } : p));
       } else if (res.status === 409) {
         toast({ title: "Olet jo arvostellut tämän", variant: "destructive" });

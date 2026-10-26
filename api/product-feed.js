@@ -71,7 +71,7 @@ export function dropHiddenItems(xml) {
 export default async function handler(req, res) {
   try {
     // Oma tausta (21.10.2026): syöte omasta tuotelähteestä (tietokanta tai tilannekuva), ei Supabasesta.
-    // naytettavatTuotteet jättää pois luonnokset, piilotetut kategoriat (mukit) ja alle 40 %:n katteen tuotteet.
+    // naytettavatTuotteet jättää pois luonnokset, piilotetut kategoriat (mukit) ja alle 20 %:n katteen tuotteet.
     // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki, kateluokka kun kulut
     // tunnetaan): api/_lib/syote-lisakentat.js
     const tuotteet = await naytettavatTuotteet();

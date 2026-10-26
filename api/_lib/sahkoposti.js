@@ -6,7 +6,8 @@
 export const OMISTAJA = () => process.env.OMISTAJA_EMAIL || "info@seniorituki.fi";
 export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
 
-export async function laheta({ to, subject, html, text, replyTo }) {
+/** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
+export async function laheta({ to, subject, html, text, replyTo, headers }) {
   if (!onSahkoposti()) {
     console.warn(`[sahkoposti] RESEND_API_KEY puuttuu, ei lähetetty: ${subject}`);
     return { ok: false, virhe: "RESEND_API_KEY puuttuu" };
@@ -22,6 +23,7 @@ export async function laheta({ to, subject, html, text, replyTo }) {
         html,
         text,
         reply_to: replyTo || "huumorikauppa@gmail.com",
+        ...(headers && Object.keys(headers).length ? { headers } : {}),
       }),
       signal: AbortSignal.timeout(15000),
     });

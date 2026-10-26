@@ -12,6 +12,9 @@ import * as P from "./printify.js";
 import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js";
 import { onLahjakortti } from "./lahjakortti.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
+import { pgMarkkinointi } from "./markkinointi-db.js";
+import { onTuotannossa } from "./valvonta.js";
+import { normalisoiEmail } from "./markkinointi.js";
 
 /** Printifyyn menevät rivit (lahjakortit eivät mene). */
 export const printifyRivit = (items) => (items || []).filter((i) => !onLahjakortti(i));
@@ -80,12 +83,19 @@ export async function lahetaPrintifyyn(tilausId) {
     if (!r.ok || !r.data?.id) return virhe(tilaus, "luonti", r.virhe || "Printify ei palauttanut tilausnumeroa");
     printifyId = r.data.id;
     await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', updated_at = now() where id = ${tilaus.id}`;
+    // Erillisenä: jos schema.sql:n uusi sarake puuttuu, Printify-tunnus on silti tallessa (ei kaksoistilausta).
+    await sql()`update orders set printify_created_at = now() where id = ${tilaus.id}`.catch((e) => console.error("printify_created_at:", e?.message));
     tilaus.printify_order_id = printifyId;
     await kirjaaTapahtuma(tilaus.id, "printify_luotu", { printifyId });
   }
 
   const t = await P.lahetaTuotantoon(printifyId);
-  if (!t.ok) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe");
+  if (!t.ok) {
+    // Jos Printify on jo ottanut tilauksen tuotantoon (esim. edellinen yritys onnistui, mutta vastaus katosi),
+    // send_to_production palauttaa virheen: tarkistetaan tila ennen kuin merkitään virheeksi.
+    const tila = await P.haeTilaus(printifyId);
+    if (!(tila.ok && onTuotannossa(tila.data?.status))) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe");
+  }
   await sql()`update orders set printify_status = 'tuotannossa', printify_error = null, next_retry_at = null,
     sent_to_production_at = now(), updated_at = now() where id = ${tilaus.id}`;
   await kirjaaTapahtuma(tilaus.id, "printify_tuotannossa", { printifyId });
@@ -128,6 +138,12 @@ export async function jalkikasittely(tilaus) {
     const r = await laheta({ to: tilaus.customer_email, ...v });
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });
+  }
+  try {
+    // Keskeneräisen tilauksen muistutukset loppuvat, kun samalla osoitteella maksetaan (valvonta tarkistaa myös).
+    await pgMarkkinointi(sql()).lopetaKoriMaksettuna(normalisoiEmail(tilaus.customer_email), tilaus.id);
+  } catch (e) {
+    console.error("muistutusten lopetus:", e?.message || e);
   }
   try {
     await toimitaLahjakortit(tilaus);

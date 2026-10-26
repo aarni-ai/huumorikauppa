@@ -79,9 +79,9 @@ export function tilausRunko(tilaus) {
   };
 }
 
-/** Lähetystiedot Printify-tilauksesta (ensimmäinen lähetys). */
+/** Lähetystiedot Printify-tilauksesta (ensimmäinen lähetys, toimitettu = delivered_at, jos Printify tietää sen). */
 export function lahetys(printifyTilaus) {
   const s = (printifyTilaus?.shipments || [])[0];
   if (!s) return null;
-  return { carrier: s.carrier || null, numero: s.number || null, url: s.url || null };
+  return { carrier: s.carrier || null, numero: s.number || null, url: s.url || null, toimitettu: s.delivered_at || null };
 }

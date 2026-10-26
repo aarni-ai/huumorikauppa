@@ -30,6 +30,9 @@
     "api/stripe-webhook.js": {
       "includeFiles": "data/products-snapshot.json",
       "maxDuration": 60
+    },
+    "api/sahkoposti.js": {
+      "maxDuration": 30
     }
   },
   "redirects": [

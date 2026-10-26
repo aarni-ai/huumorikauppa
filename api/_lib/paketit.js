@@ -3,13 +3,18 @@
  * sekä generointiskripti (scripts/generoi-paketit.mjs) käyttävät samaa logiikkaa.
  *
  * Pakettialennus annetaan palvelimella (api/_lib/kassa.js) vain, kun paketin molemmat tuotteet ovat korissa, mitään
- * alennuskoodia ei käytetä ja paketin nettokate alennuksen jälkeen on vähintään 40 % (api/_lib/kate.js). Jos Printifyn
+ * alennuskoodia ei käytetä ja paketin nettokate alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js PAKETTI_KATE_RAJA). Jos Printifyn
  * kuluja ei tunneta, alennusta ei anneta.
  */
-import { laskePaketinKate } from "./kate.js";
+import { laskePaketinKate, paketinHeikoinKate, PAKETTI_KATE_RAJA } from "./kate.js";
 import { onPiilotettu } from "./piilotetut.js";
 
+/** Oletusalennus, jos kuluja ei tunneta generoitaessa. Kassa antaa alennuksen silti vain 30 %:n katteella. */
 export const PAKETTI_ALENNUS_PROSENTTI = 10;
+/** Sallitut pakettialennukset (suurin ensin): generointi valitsee suurimman, jolla paketin kate pysyy >= 30 %. */
+export const PAKETTI_ALENNUKSET = [10, 9, 8, 7, 6, 5];
+/** Teemat, joiden paketti on aina mukana ja ensimmäisenä (myydyimmät). */
+export const KIINNITETYT_TEEMAT = ["tonnin-seteli"];
 
 /** Tuotetyypin päätteet slugissa (pisin ensin). */
 const PAATTEET = [
@@ -41,10 +46,10 @@ const TYYPPINIMI = { "t-paidat": "T-paita", hupparit: "Huppari", pipot: "Pipo" }
 
 /**
  * Muodostaa paketit tuotelistasta: saman teemarungon tuotteet eri kategorioista (t-paita + huppari tai paita + pipo).
- * Järjestys: suositut (is_featured) ja lahjaideat ensin, sitten pari, joka on ollut myynnissä pisimpään (parin
- * uudemman tuotteen luontipäivä), lopuksi slug. Palauttaa enintään n.
+ * Järjestys: kiinnitetyt teemat (KIINNITETYT_TEEMAT) ensin, sitten suositut (is_featured) ja lahjaideat, sitten pari,
+ * joka on ollut myynnissä pisimpään (parin uudemman tuotteen luontipäivä), lopuksi slug. Palauttaa enintään n.
  */
-export function muodostaPaketit(tuotteet, n = 20, alennus = PAKETTI_ALENNUS_PROSENTTI) {
+export function muodostaPaketit(tuotteet, n = 20, alennus = PAKETTI_ALENNUS_PROSENTTI, { kiinnitetyt = KIINNITETYT_TEEMAT } = {}) {
   const ryhmat = new Map();
   for (const p of tuotteet) {
     if (p.is_active === false || onPiilotettu(p.category) || onPersonoitava(p)) continue;
@@ -64,7 +69,8 @@ export function muodostaPaketit(tuotteet, n = 20, alennus = PAKETTI_ALENNUS_PROS
       const pa = kategoriat.get(a);
       const pb = kategoriat.get(b);
       if (!pa || !pb) continue;
-      const pisteet = (pa.is_featured ? 2 : 0) + (pb.is_featured ? 2 : 0) + (pa.is_gift_idea ? 1 : 0) + (pb.is_gift_idea ? 1 : 0);
+      const pisteet = (kiinnitetyt.includes(runko) ? 100 : 0) +
+        (pa.is_featured ? 2 : 0) + (pb.is_featured ? 2 : 0) + (pa.is_gift_idea ? 1 : 0) + (pb.is_gift_idea ? 1 : 0);
       const vanhin = [pa.created_at, pb.created_at].filter(Boolean).sort()[1] || "";
       paketit.push({
         slug: `${runko}-${TYYPPINIMI[a].toLowerCase()}-ja-${TYYPPINIMI[b].toLowerCase()}`,
@@ -82,9 +88,28 @@ export function muodostaPaketit(tuotteet, n = 20, alennus = PAKETTI_ALENNUS_PROS
 }
 
 /**
+ * Paketin alennus kuluista: suurin PAKETTI_ALENNUKSET-arvo, jolla paketin heikoin kate (kaikki varianttiyhdistelmät)
+ * on vähintään PAKETTI_KATE_RAJA. Palauttaa { alennus, kate } tai { alennus: null, kate, syy }, jos mikään ei riitä tai
+ * kuluja ei tunneta.
+ */
+export function valitsePakettialennus(tuotteetParissa, alennukset = PAKETTI_ALENNUKSET) {
+  for (const a of alennukset) {
+    const k = paketinHeikoinKate(tuotteetParissa, a);
+    if (!k.tunnettu) return { alennus: null, kate: null, syy: "Printifyn kulut tuntemattomat" };
+    if (k.sallittu) return { alennus: a, kate: k.kate };
+  }
+  const pienin = Math.min(...alennukset);
+  const k = paketinHeikoinKate(tuotteetParissa, pienin);
+  return {
+    alennus: null, kate: k.kate,
+    syy: `kate ${pienin} %:n alennuksella ${(k.kate * 100).toFixed(1).replace(".", ",")} %, raja ${Math.round(PAKETTI_KATE_RAJA * 100)} %`,
+  };
+}
+
+/**
  * Pakettialennus kassariveille. Rivit: [{ slug, quantity, unit_price, variant_id, ... }] (vain fyysiset tuotteet).
  * Jakaa rivit niin, että paketteihin kuuluvat kappaleet ovat omina riveinään (paketti, paketti_alennus_prosentti,
- * unit_cents alennettu). Pari muodostetaan vain, jos sen kate alennuksen jälkeen on vähintään 40 %.
+ * unit_cents alennettu). Pari muodostetaan vain, jos sen kate alennuksen jälkeen on vähintään 30 %.
  * Palauttaa uudet rivit (alkuperäiset ennallaan) ja annetun alennuksen euroina.
  * @param rivit kassan rivit (unit_cents sentteinä)
  * @param tuotteetSlugilla Map slug -> tuoterivi (kulut)
@@ -98,7 +123,7 @@ export function sovellaPaketit(rivit, tuotteetSlugilla, paketit) {
   for (const paketti of paketit || []) {
     const [sa, sb] = paketti.tuotteet;
     const pros = Number(paketti.alennus_prosentti) || 0;
-    if (pros <= 0 || pros >= 50) continue;
+    if (paketti.kaytossa === false || pros <= 0 || pros >= 50) continue;
     const ta = tuotteetSlugilla.get(sa);
     const tb = tuotteetSlugilla.get(sb);
     if (!ta || !tb) continue;

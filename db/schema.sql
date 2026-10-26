@@ -137,3 +137,60 @@ create table if not exists gift_card_redemptions (
 -- Kaikki lauseet voi ajaa uudelleen.
 alter table products add column if not exists unavailable_variants jsonb not null default '[]'::jsonb;
 alter table products add column if not exists availability_checked_at timestamptz;
+
+-- Automaatio (26.10.2026): sähköpostimarkkinointi ja valvonta. Kaikki lauseet voi ajaa uudelleen.
+-- Uutiskirjeen tilaajat: suostumuksen aika, teksti ja lähde (lomake). Ensitilauksen koodi yksi per osoite.
+create table if not exists subscribers (
+  email text primary key,                 -- pienillä kirjaimilla
+  consent_at timestamptz not null,
+  consent_text text not null,
+  source text not null,
+  discount_code text unique,
+  discount_percent numeric(5,2),
+  welcome_sent_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Peruutukset (uutiskirje, muistutukset ja arviopyynnöt). Osoitteeseen ei lähetetä markkinointia.
+create table if not exists email_optouts (
+  email text primary key,
+  source text,
+  created_at timestamptz not null default now()
+);
+
+-- Keskeneräiset tilaukset, joista asiakas pyysi kassalla muistutuksen (suostumus). Yksi kori per osoite.
+create table if not exists abandoned_carts (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  items jsonb not null,                   -- [{ slug, name, price, quantity, size, color, customText }]
+  total numeric(10,2) not null default 0,
+  consent_at timestamptz not null,
+  consent_text text not null,
+  source text not null default 'kassa',
+  reminder1_sent_at timestamptz,
+  reminder2_sent_at timestamptz,
+  recovered_order_id uuid references orders(id) on delete set null,
+  stopped_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Arviot arviopyynnön linkistä (tarkistetaan ennen julkaisua).
+create table if not exists reviews (
+  id bigserial primary key,
+  order_id uuid not null references orders(id) on delete cascade,
+  product_name text not null,
+  stars integer not null check (stars between 1 and 5),
+  body text,
+  customer_name text,
+  status text not null default 'odottaa' check (status in ('odottaa', 'julkaistu', 'hylatty')),
+  created_at timestamptz not null default now(),
+  unique (order_id, product_name)
+);
+
+alter table orders add column if not exists delivered_at timestamptz;
+alter table orders add column if not exists review_email_sent_at timestamptz;
+alter table orders add column if not exists printify_created_at timestamptz;
+alter table orders add column if not exists stuck_alert_sent_at timestamptz;
+create index if not exists orders_email on orders (lower(customer_email));

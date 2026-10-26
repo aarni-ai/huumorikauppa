@@ -7,14 +7,21 @@ import {
   valitseVariantit, ratkaiseKohde, kasitteleTuote, TiedostoKatalogi, LiveKatalogi, teeApi, tekstivariRyhmat, VIIVA,
   KATEGORIAN_POHJAHINNAT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA,
 } from "../../scripts/lib/uudet-tuotteet.mjs";
-import { laskeKate } from "../../api/_lib/kate.js";
+import { laskeKate, HINNOITTELU_KATE, KATE_RAJA as MYYNNIN_RAJA } from "../../api/_lib/kate.js";
 
 const DATA = path.resolve(__dirname, "../../data/uudet-tuotteet");
 const lue = (f: string) => JSON.parse(fs.readFileSync(path.join(DATA, f), "utf8"));
 const esimerkki = lue("katalogi-esimerkki.json");
 
 const kateHinnalla = (hinta: number, kulu: number, toimitus: number, asetukset = {}) =>
-  laskeKate({ price: hinta, variants: { costs: { v: kulu }, shipping_cents: toimitus } }, "v", asetukset);
+  laskeKate({ price: hinta, variants: { costs: { v: kulu }, shipping_cents: toimitus } }, "v", { raja: HINNOITTELU_KATE, ...asetukset });
+
+describe("hinnoittelun tavoite ja myynnin raja", () => {
+  it("uudet tuotteet hinnoitellaan 40 %:n katteelle, myynti estetään vasta alle 20 %:n", () => {
+    expect(HINNOITTELU_KATE).toBe(0.4);
+    expect(MYYNNIN_RAJA).toBe(0.2);
+  });
+});
 
 describe("hinta ja kate", () => {
   it("pienin x,90-hinta ylöspäin", () => {

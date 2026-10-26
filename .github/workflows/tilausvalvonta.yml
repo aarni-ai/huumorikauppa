@@ -1,6 +1,7 @@
 # Tilausvalvonta tunnin välein (oma tausta). Vercel Hobby sallii Vercel Cronin vain kerran päivässä, joten tuntiajo
-# tehdään tällä ilmaisella GitHub-ajastuksella. Kutsuu /api/cron/tilaukset (paikkaus, Printify-uusinnat, seuranta,
-# päivän yhteenveto) suojatulla tokenilla. Ajastetut työnkulut ajetaan vain oletushaarasta (main), joten tämä alkaa
+# tehdään tällä ilmaisella GitHub-ajastuksella. Kutsuu /api/cron/tilaukset (paikkaus, Printify-uusinnat ja
+# jumissa-hälytykset, seuranta ja seurantaviestit, keskeneräisen tilauksen muistutukset ja arviopyynnöt, päivän
+# yhteenvedon varmistus) suojatulla tokenilla. Päivän yhteenveto: paivayhteenveto.yml. Ajastetut työnkulut ajetaan vain oletushaarasta (main), joten tämä alkaa
 # toimia, kun oma-tausta on yhdistetty mainiin (KAYTTOONOTTO.md kohta 9).
 # Salaisuus: GitHub > Settings > Secrets and variables > Actions > CRON_SECRET (sama arvo kuin Vercelissä).
 # Valinnainen muuttuja (Variables): KAUPPA_URL, oletus https://huumorikauppa.fi.

@@ -3,7 +3,7 @@ import { TOIMITUS, ILMAINEN_TOIMITUS_RAJA } from "../../api/_lib/vakiot.js";
 import { readFileSync } from "node:fs";
 import { laskeTilaus, KassaVirhe } from "../../api/_lib/kassa.js";
 import { laskePaketinKate, paketinHeikoinKate } from "../../api/_lib/kate.js";
-import { muodostaPaketit, sovellaPaketit, teemaRunko, nimiRunko } from "../../api/_lib/paketit.js";
+import { muodostaPaketit, sovellaPaketit, teemaRunko, nimiRunko, valitsePakettialennus } from "../../api/_lib/paketit.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
 import {
   luoKoodi, normalisoiKoodi, onKelvollinenKoodi, tarkistaLahjakortti, kaytettavaSumma, vahennaSaldo, voimassaAsti,
@@ -22,9 +22,9 @@ const huppari = {
   printify_product_id: "pf-h", created_at: "2026-01-02",
   variants: { variant_map: { "Musta|M": 11 }, costs: { "11": 1500 }, shipping_cents: 400 },
 };
-// Kulu 19,00 (ei 20,00): 5,90 €:n toimitusmaksulla 20,00 €:n kululla yksittäinen huppari jäisi alle 40 %:n katteen
-// (39,1 %) eikä olisi myynnissä, jolloin testi ei pääsisi paketin katevahtiin. Paketti jää silti alle rajan (30,5 %).
-const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 1900 }, shipping_cents: 600 } };
+// Kulu 24,00 + toimitus 6,00: yksittäinen huppari on myynnissä (kate 30,1 %, raja 20 %), mutta paketti t-paidan kanssa
+// jää 10 %:n alennuksella alle pakettirajan 30 % (21,2 %), joten testi pääsee paketin katevahtiin.
+const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2400 }, shipping_cents: 600 } };
 const kallisPaita = { ...paita, id: "t2", slug: "kallis-t-paita" };
 const tuntematon = { ...huppari, id: "h3", slug: "tuntematon-huppari", variants: { variant_map: { "Musta|M": 13 } } };
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -55,10 +55,18 @@ describe("Paketit: muodostus", () => {
       tuotteet: ["oispa-kaljaa-t-paita", "oispa-kaljaa-huppari"], alennus_prosentti: 10,
     }]);
   });
-  it("generoitu tiedosto vastaa tilannekuvaa (aja node scripts/generoi-paketit.mjs)", () => {
+  it("generoitu tiedosto vastaa tilannekuvaa (aja node scripts/generoi-paketit.mjs --kulut ...)", () => {
     const d = JSON.parse(readFileSync("data/products-snapshot.json", "utf8"));
     expect(PAKETIT).toHaveLength(20);
-    expect(muodostaPaketit(d, 20)).toEqual(PAKETIT);
+    const ilmanAlennusta = (p: Record<string, unknown>) => { const { alennus_prosentti, kaytossa, ...muut } = p; return muut; };
+    expect(muodostaPaketit(d, 20).map(ilmanAlennusta)).toEqual(PAKETIT.map(ilmanAlennusta));
+    // Tonnin seteli (t-paita + huppari) ensimmäisenä ja vähintään neljä muuta teemaparia.
+    expect(PAKETIT[0].tuotteet).toEqual(["tonnin-seteli-t-paita", "tonnin-seteli-huppari"]);
+    expect(new Set(PAKETIT.map((p: { teema: string }) => p.teema)).size).toBeGreaterThanOrEqual(5);
+    for (const pk of PAKETIT) {
+      expect(pk.alennus_prosentti).toBeGreaterThanOrEqual(5);
+      expect(pk.alennus_prosentti).toBeLessThanOrEqual(10);
+    }
     const slugit = new Set(d.map((p: { slug: string }) => p.slug));
     for (const pk of PAKETIT) {
       expect(pk.tuotteet.every((s: string) => slugit.has(s))).toBe(true);
@@ -111,7 +119,7 @@ describe("Paketit: kate ja alennus", () => {
     expect(r.shipping).toBe(0);
     expect(r.total).toBe(92.22);
   });
-  it("katevahti: alle 40 % tai tuntematon kulu, ei alennusta", () => {
+  it("katevahti: paketin kate alle 30 % tai tuntematon kulu, ei alennusta", () => {
     const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit });
     expect(r.bundle_discount).toBe(0);
     expect(r.total).toBe(r2(74.8 + toimitusSummalle(74.8)));
@@ -121,6 +129,26 @@ describe("Paketit: kate ja alennus", () => {
       m, [{ slug: "x", tuotteet: [paita.slug, tuntematon.slug], alennus_prosentti: 10 }],
     );
     expect(s.alennus).toBe(0);
+  });
+  it("alennuksen valinta kuluista: suurin 10..5 %, jolla kate >= 30 %, muuten pois käytöstä", () => {
+    expect(valitsePakettialennus([paita, huppari])).toMatchObject({ alennus: 10 });
+    // Huppari 20,00 + 6,00: 10 % -> 28,7 %, 9 % -> 29,4 %, 8 % -> 30,2 %.
+    const keskiHuppari = { ...huppari, variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2000 }, shipping_cents: 600 } };
+    expect(valitsePakettialennus([paita, keskiHuppari])).toMatchObject({ alennus: 8 });
+    expect(paketinHeikoinKate([paita, keskiHuppari], 9).sallittu).toBe(false);
+    expect(valitsePakettialennus([kallisPaita, kallisHuppari])).toMatchObject({ alennus: null });
+    expect(valitsePakettialennus([kallisPaita, kallisHuppari]).syy).toMatch(/^kate 5 %:n alennuksella 2\d,\d %, raja 30 %$/);
+    expect(valitsePakettialennus([paita, tuntematon])).toMatchObject({ alennus: null, syy: "Printifyn kulut tuntemattomat" });
+    // Todellisilla kuluilla 25.10.2026 (t-paita 8,90 + 8,49, huppari 23,77 + 15,59): kate jää alle rajan.
+    const t = { ...paita, variants: { variant_map: { "Musta|M": 1 }, costs: { "1": 890 }, shipping_cents: 849 } };
+    const h = { ...huppari, variants: { variant_map: { "Musta|M": 11 }, costs: { "11": 2377 }, shipping_cents: 1559 } };
+    expect(valitsePakettialennus([t, h])).toMatchObject({ alennus: null });
+    expect(valitsePakettialennus([t, h]).syy).toMatch(/raja 30 %/);
+  });
+  it("pois käytöstä oleva paketti (kaytossa: false) ei anna alennusta", () => {
+    const pois = paketit.map((p) => ({ ...p, kaytossa: false }));
+    const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita"), t("oispa-kaljaa-huppari")]), tuotteet, null, { paketit: pois });
+    expect(r.bundle_discount).toBe(0);
   });
   it("ei yhdistetä alennuskoodiin", () => {
     const r = laskeTilaus(pyynto([t("oispa-kaljaa-t-paita"), t("oispa-kaljaa-huppari")]), tuotteet, { type: "percent", value: 5 }, { paketit });

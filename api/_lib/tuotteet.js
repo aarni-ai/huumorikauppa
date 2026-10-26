@@ -52,7 +52,7 @@ export async function kaikkiTuotteet() {
 
 /**
  * Myynnissä olevat: ei luonnoksia (is_active false), ei piilotettuja kategorioita (mukit), ei tuotteita, joiden
- * tunnettu kate on alle 40 % (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole saatavilla
+ * tunnettu kate on alle 20 % (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole saatavilla
  * (api/_lib/saatavuus.js). Tuntematon kate ei piilota (kassa estää ostamisen).
  */
 export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false && !kaikkiPoissa(p);
