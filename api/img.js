@@ -5,6 +5,12 @@ const ALLOWED_HOSTS = new Set([
   'pfy-prod-automaton-cache.s3.us-east-2.amazonaws.com',
 ]);
 
+/**
+ * Onnistunut muunnos: Printifyn mockup-URL:n sisältö ei muutu (uusi kuva saa uuden URL:n), joten
+ * vastaus on muuttumaton. Reunavälimuisti vuoden, selain 30 päivää. Vary: Accept erottaa WebP/JPEG.
+ */
+export const CACHE_ONNISTUNUT = 'public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=604800, immutable';
+
 // Sallitut leveydet (?w=), ettei välimuisti pirstoudu. Oletus 1600 (syöte ja tuotesivun pääkuva).
 export const LEVEYDET = [320, 480, 640, 800, 1200, 1600];
 export function valitseLeveys(w) {
@@ -54,7 +60,9 @@ export default async function handler(req, res) {
     const inputBuffer = Buffer.from(await upstream.arrayBuffer());
     const ct = (upstream.headers.get('content-type') || 'image/jpeg').toLowerCase();
 
-    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400');
+    // Varakäsittelyt (wsrv.nl, alkuperäiset tavut) välimuistitetaan lyhyesti, ettei tilapäinen
+    // sharp-virhe jää reunavälimuistiin pitkäksi aikaa.
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
     res.setHeader('Vary', 'Accept');
     const leveys = valitseLeveys(req.query.w);
     const webp = haluaaWebp(req.headers?.accept);
@@ -62,6 +70,7 @@ export default async function handler(req, res) {
     try {
       const out = await transcodeWithSharp(inputBuffer, leveys, webp);
       res.setHeader('Content-Type', webp ? 'image/webp' : 'image/jpeg');
+      res.setHeader('Cache-Control', CACHE_ONNISTUNUT);
       return res.status(200).send(out);
     } catch (err) {
       console.error('sharp transcode FAILED, trying wsrv.nl fallback:', err);
