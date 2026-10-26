@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 type Rivi = Record<string, unknown>;
-const kanta = { orders: [] as Rivi[], events: [] as Rivi[], carts: [] as Rivi[] };
+const kanta = { orders: [] as Rivi[], events: [] as Rivi[], carts: [] as Rivi[], puuttuvat: [] as string[] };
 
 /** postgres.js-tyylinen tagged template: sisäkkäiset fragmentit, sql.json, ja ne lauseet, joita tilaus.js käyttää. */
 function teeSql() {
@@ -51,6 +51,7 @@ function teeSql() {
       for (const o of rivit) {
         for (const pari of m[1].split(/,(?![^(]*\))/)) {
           const [k, v] = pari.split(/ = (.+)/);
+          if (kanta.puuttuvat.includes(k.trim())) throw new Error(`column "${k.trim()}" does not exist`);
           o[k.trim()] = arvo(v, p);
         }
       }
@@ -67,16 +68,18 @@ function teeSql() {
     throw new Error(`tuntematon lause: ${teksti}`);
   };
   const sql = (osat: TemplateStringsArray, ...arvot: unknown[]) => {
-    const frag: Frag & PromiseLike<Rivi[]> = {
-      __frag: true, osat: [...osat], arvot,
-      then: (ok, virhe) => {
-        try {
-          const { teksti, parametrit } = litistä(osat, arvot);
-          return Promise.resolve(aja(teksti, parametrit)).then(ok, virhe);
-        } catch (e) {
-          return Promise.reject(e).then(ok, virhe);
-        }
-      },
+    const suorita = () => {
+      try {
+        const { teksti, parametrit } = litistä(osat, arvot);
+        return Promise.resolve(aja(teksti, parametrit));
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    };
+    const frag = {
+      __frag: true as const, osat: [...osat], arvot,
+      then: <A, B>(ok?: (r: Rivi[]) => A, virhe?: (e: unknown) => B) => suorita().then(ok, virhe),
+      catch: <B>(virhe: (e: unknown) => B) => suorita().catch(virhe),
     };
     return frag;
   };
@@ -124,6 +127,7 @@ const session = { id: "cs_test_1", payment_status: "paid", metadata: { order_id:
 beforeEach(() => {
   kanta.orders = [];
   kanta.events = [];
+  kanta.puuttuvat = [];
   kanta.carts = [{ email: "asiakas@esimerkki.fi", recovered_order_id: null }];
   vi.stubEnv("PRINTIFY_API_KEY", "pf_testi");
   vi.stubEnv("PRINTIFY_SHOP_ID", "777");
@@ -170,6 +174,19 @@ describe("Maksettu tilaus menee Printifyyn ja tuotantoon", () => {
     expect(await lahetaPrintifyyn(o.id)).toEqual({ ok: true });
     expect(kanta.orders[0].printify_status).toBe("tuotannossa");
     expect(kutsut.filter((k) => k.url.endsWith("/orders.json"))).toHaveLength(0);
+  });
+
+  it("uusi sarake puuttuu (schema.sql ajamatta): Printify-tunnus tallessa, ei kaksoistilausta", async () => {
+    kanta.puuttuvat = ["printify_created_at"];
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    const kutsut = verkko({ tuotanto: [500] });
+    await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(kanta.orders[0]).toMatchObject({ printify_order_id: "pf-tilaus-1", printify_status: "luotu" });
+    const toinen = verkko({ tuotanto: [200] });
+    await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(kanta.orders[0].printify_status).toBe("tuotannossa");
+    expect(kutsut.filter((k) => k.url.endsWith("/orders.json"))).toHaveLength(1);
+    expect(toinen.filter((k) => k.url.endsWith("/orders.json"))).toHaveLength(0);
   });
 
   it("toinen virhe samana päivänä ei lähetä uutta hälytystä", async () => {

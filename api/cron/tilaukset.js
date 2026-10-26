@@ -110,9 +110,11 @@ export default async function handler(req, res) {
     await toimitaLahjakortit(t);
   }
 
-  // 2c. Jumissa yli 2 h: hälytys kerran per tilaus (uudelleenyritykset jatkuvat kohdassa 2).
+  // 2c. Jumissa yli 2 h: hälytys kerran per tilaus (uudelleenyritykset jatkuvat kohdassa 2). Uudet sarakkeet
+  // (db/schema.sql) puuttuvat, jos skeemaa ei ole ajettu: vaihe ohitetaan eikä muu valvonta kaadu.
   const jumissa = jumissaYli(await db`select * from orders where status = 'maksettu'
-    and printify_status in ('ei_lahetetty', 'luotu', 'virhe') and stuck_alert_sent_at is null order by paid_at limit 50`);
+    and printify_status in ('ei_lahetetty', 'luotu', 'virhe') and stuck_alert_sent_at is null order by paid_at limit 50`
+    .catch((e) => { loki.push(`jumissa-tarkistus: ${e?.message} (aja db/schema.sql)`); return []; }));
   if (jumissa.length) {
     loki.push(`jumissa yli ${JUMISSA_TUNTIA} h: ${jumissa.length}`);
     if (!kuiva) {
@@ -135,7 +137,8 @@ export default async function handler(req, res) {
         loki.push(`lähetetty #${tilausnumero(t.id)}`);
         if (kuiva) continue;
         await db`update orders set printify_status = 'lahetetty', carrier = ${l.carrier}, tracking_number = ${l.numero},
-          tracking_url = ${l.url}, shipped_at = now(), delivered_at = ${l.toimitettu ? new Date(l.toimitettu) : null}, updated_at = now() where id = ${t.id}`;
+          tracking_url = ${l.url}, shipped_at = now(), updated_at = now() where id = ${t.id}`;
+        if (l.toimitettu) await db`update orders set delivered_at = ${new Date(l.toimitettu)} where id = ${t.id}`.catch(() => {});
         await kirjaaTapahtuma(t.id, "lahetetty", l);
         const p = await laheta({ to: t.customer_email, ...lahetysViesti({ ...t, carrier: l.carrier, tracking_number: l.numero, tracking_url: l.url }) });
         if (p.ok) await db`update orders set shipping_email_sent_at = now() where id = ${t.id}`;
@@ -145,7 +148,9 @@ export default async function handler(req, res) {
         const halyta = halytetaanko(t);
         await db`update orders set printify_status = 'luotu', printify_error = ${`Printify ${r.data.status} tuotantoon lähetyksen jälkeen`},
           printify_attempts = ${yrityksia}, next_retry_at = ${seuraavaYritys(yrityksia)}, updated_at = now()
-          ${halyta ? db`, alert_sent_at = now(), stuck_alert_sent_at = now()` : db``} where id = ${t.id}`;
+          ${halyta ? db`, alert_sent_at = now()` : db``} where id = ${t.id}`;
+        // Hälytys on jo lähetetty: kohta 2c ei hälytä samasta tilauksesta uudelleen.
+        if (halyta) await db`update orders set stuck_alert_sent_at = now() where id = ${t.id}`.catch(() => {});
         await kirjaaTapahtuma(t.id, "printify_on_hold", { status: r.data.status });
         if (halyta) {
           await halytys(`Printify-tilaus #${tilausnumero(t.id)} tilassa ${r.data.status}`, [`Printify ${t.printify_order_id}`, `Asiakas ${t.customer_email}`,
@@ -174,7 +179,7 @@ export default async function handler(req, res) {
   }
 
   // 3b. Toimituspäivä arviopyyntöä varten (lähetetty yli 2 pv sitten, ei vielä toimitettu).
-  if (onPrintify() && aikaa()) {
+  if (onPrintify() && aikaa()) try {
     const toimitettavat = await db`select id, printify_order_id from orders where status = 'maksettu' and printify_status = 'lahetetty'
       and delivered_at is null and review_email_sent_at is null and printify_order_id is not null
       and shipped_at < now() - interval '2 days' and shipped_at > now() - interval '30 days' order by shipped_at limit 15`;
@@ -184,6 +189,8 @@ export default async function handler(req, res) {
       const toimitettu = r.ok ? lahetys(r.data)?.toimitettu : null;
       if (toimitettu && !kuiva) await db`update orders set delivered_at = ${new Date(toimitettu)} where id = ${t.id}`;
     }
+  } catch (e) {
+    loki.push(`toimituspäivä: ${e?.message || e}`);
   }
 
   // 4. Markkinointi: muistutukset ja arviopyynnöt (lähetysraja, api/_lib/markkinointi.js).
@@ -200,8 +207,12 @@ export default async function handler(req, res) {
   // 5. Päivän yhteenvedon varmistus: klo 7 ajo jäi tekemättä (GitHub Actionsin viive tai virhe).
   const h = helsinki();
   if (h.tunti >= 9 && (await db`select value from kv where key = ${KV_YHTEENVETO}`)[0]?.value !== h.paiva) {
-    const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet), { laheta, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
-    loki.push(`yhteenveto (myöhässä): ${r.lahetetty ? "lähetetty" : r.syy}`);
+    try {
+      const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet), { laheta, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
+      loki.push(`yhteenveto (myöhässä): ${r.lahetetty ? "lähetetty" : r.syy}`);
+    } catch (e) {
+      loki.push(`yhteenveto: ${e?.message || e}`);
+    }
   }
   return res.status(200).json({ ok: true, kuiva, loki });
 }

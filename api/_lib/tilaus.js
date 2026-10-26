@@ -82,7 +82,9 @@ export async function lahetaPrintifyyn(tilausId) {
     const r = await P.luoTilaus(P.tilausRunko(tilaus));
     if (!r.ok || !r.data?.id) return virhe(tilaus, "luonti", r.virhe || "Printify ei palauttanut tilausnumeroa");
     printifyId = r.data.id;
-    await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', printify_created_at = now(), updated_at = now() where id = ${tilaus.id}`;
+    await sql()`update orders set printify_order_id = ${printifyId}, printify_status = 'luotu', updated_at = now() where id = ${tilaus.id}`;
+    // Erillisenä: jos schema.sql:n uusi sarake puuttuu, Printify-tunnus on silti tallessa (ei kaksoistilausta).
+    await sql()`update orders set printify_created_at = now() where id = ${tilaus.id}`.catch((e) => console.error("printify_created_at:", e?.message));
     tilaus.printify_order_id = printifyId;
     await kirjaaTapahtuma(tilaus.id, "printify_luotu", { printifyId });
   }
