@@ -1,0 +1,66 @@
+# Kaupan pitäjä vaihtuu Uusiku Oy:ksi 1.11.2026 klo 00.00 Suomen aikaa (src/config/yritys.ts).
+# Selain näyttää uudet tiedot automaattisesti, mutta esirenderöity HTML ja llms.txt
+# syntyvät buildissa. Tämä työnkulku puskee mainiin tyhjän commitin heti vaihdon jälkeen,
+# jolloin Vercelin GitHub-integraatio rakentaa sivuston uudelleen.
+#
+# Ajastus: 31.10. klo 22.05 UTC = 1.11. klo 00.05 Helsinki (UTC+2).
+# Vartija: ajastettu ajo tekee jotain vain 31.10.2026 tai 1.11.2026 (UTC; GitHubin ajastus
+# voi viivästyä yli puolenyön), ei seuraavina vuosina. Käsin käynnistys (workflow_dispatch)
+# toimii varasuunnitelmana, jos ajastettu ajo jää väliin.
+name: Yritysvaihto (Uusiku Oy 1.11.2026)
+
+on:
+  schedule:
+    - cron: "5 22 31 10 *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yritysvaihto
+  cancel-in-progress: false
+
+jobs:
+  uudelleenrakennus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tarkista päivämäärä
+        id: vartija
+        run: |
+          paiva="$(date -u +%F)"
+          echo "UTC-päivä: $paiva"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "aja=true" >> "$GITHUB_OUTPUT"
+          elif [ "$paiva" = "2026-10-31" ] || [ "$paiva" = "2026-11-01" ]; then
+            echo "aja=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Ei vaihtopäivä, ohitetaan."
+            echo "aja=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Hae main
+        if: steps.vartija.outputs.aja == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Tyhjä commit ja push
+        if: steps.vartija.outputs.aja == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "Uusiku Oy voimaan 1.11.2026 (ajastettu uudelleenrakennus)"
+          git push origin HEAD:main
+
+      - name: Vercel Deploy Hook (valinnainen)
+        if: steps.vartija.outputs.aja == 'true'
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
+            curl -fsS -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null && echo "Deploy hook kutsuttu."
+          else
+            echo "VERCEL_DEPLOY_HOOK-salaisuutta ei ole, luotetaan GitHub-integraatioon."
+          fi
