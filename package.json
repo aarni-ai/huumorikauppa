@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "validoi:tuotedata": "node scripts/validoi-tuotedata.mjs",
+    "validoi:blogidata": "node scripts/validoi-blogidata.mjs",
     "test:watch": "vitest"
   },
   "dependencies": {
