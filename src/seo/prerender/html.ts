@@ -57,7 +57,7 @@ export interface PrerenderPage {
   /** LCP-kuvan preload (tuotesivun pääkuva): sama src/srcset/sizes kuin Reactin <img>. */
   preloadImage?: PreloadImage;
   /**
-   * Näkyvä esikatselu ennen staattista runkoa (tuotesivut, src/seo/prerender/renderProductPreview.tsx).
+   * Näkyvä esikatselu ennen staattista runkoa (tuotesivut ja etusivu, src/seo/prerender/renderPreview.tsx).
    * src/main.tsx näyttää sen, kunnes React-sivu on valmis.
    */
   previewHtml?: string;
@@ -320,7 +320,7 @@ export function injectRoot(html: string, bodyHtml: string): string {
 export const ENTRY_DEFER_MAX_MS = 2000;
 
 /**
- * Tuotesivulla, jolla on näkyvä esikatselu, sovelluksen JavaScript (Viten entry-skripti ja sen
+ * Sivulla, jolla on näkyvä esikatselu, sovelluksen JavaScript (Viten entry-skripti ja sen
  * modulepreloadit, yhteensä satoja kilotavuja) ladataan vasta, kun esikatselun pääkuva on ladattu ja
  * maalattu (tai viimeistään ENTRY_DEFER_MAX_MS:n jälkeen). Näin hidas mobiiliyhteys käyttää kaistan ensin
  * CSS:ään ja LCP-kuvaan, ja React käynnistyy heti niiden jälkeen. Ilman entry-skriptiä pohja
@@ -341,7 +341,7 @@ export function deferEntryScripts(html: string): string {
     `var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(entry[1])};d.head.appendChild(s)}` +
     // Pääkuvan latauksen jälkeen odotetaan vielä yksi ruudunpäivitys, jotta kuva ehtii maalautua.
     `function later(){requestAnimationFrame(function(){setTimeout(go,0)})}` +
-    `var i=d.querySelector("[data-prerender-visual] img");` +
+    `var i=d.querySelector("[data-prerender-visual] img[fetchpriority=high]")||d.querySelector("[data-prerender-visual] img");` +
     `if(!i||i.complete){later()}else{i.addEventListener("load",later);i.addEventListener("error",go)}` +
     `setTimeout(go,${ENTRY_DEFER_MAX_MS})})()</script>`;
   return out.replace("</body>", () => `  ${loader}\n  </body>`);
