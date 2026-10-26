@@ -5,7 +5,7 @@ import "./index.css";
 import { revealApp, setPreviewReveal } from "./lib/prerenderPreview";
 
 const rootElement = document.getElementById('root')!;
-// Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):
+// Tuotesivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderProductPreview.tsx):
 // siirretään #rootin viereen näkyviin ja React käynnistetään piilotettuun #rootiin. ProductPage
 // kutsuu revealApp()-funktiota, kun tuote on valmis; varmuuden vuoksi vaihto tehdään viimeistään
 // aikakatkaisun jälkeen (esim. jos tuotehaku jumittuu).
