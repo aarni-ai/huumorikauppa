@@ -15,7 +15,7 @@ const NotFound = () => {
     <div className="container py-20 text-center">
       <SEOHead title="Sivua ei löydy – Huumorikauppa" description="Etsimääsi sivua ei löytynyt. Palaa etusivulle ja selaa tuotteita." noindex={true} />
       <h1 className="font-display text-5xl text-foreground mb-4">404 😅</h1>
-      <p className="text-xl text-muted-foreground mb-6">Sivua ei löytynyt – ehkä se myytiin loppuun?</p>
+      <p className="text-xl text-muted-foreground mb-6">Sivua ei löytynyt. Katso kaikki tuotteet alta.</p>
       <Link to="/" className="text-primary hover:underline font-medium text-lg">
         Takaisin etusivulle →
       </Link>
