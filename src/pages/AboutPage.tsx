@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { ORGANIZATION_ID } from "@/seo/structuredData";
+import { ORGANIZATION } from "@/seo/site";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Truck, RotateCcw, Shield, Flag, Mail, MapPin, CheckCircle2 } from "lucide-react";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
@@ -55,7 +56,7 @@ const trustPoints = [
   { icon: Truck, title: "Nopea toimitus", body: `${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
   { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard ja muut yleisimmät maksutavat. Maksu tehdään suojatulla maksusivulla." },
-  { icon: Flag, title: "Suomalainen yritys", body: "Rekisteröity Helsinki, Finland. Y-tunnus 3583677-2. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä." },
+  { icon: Flag, title: "Suomalainen yritys", body: `Kauppaa pitää ${ORGANIZATION.legalName}, ${ORGANIZATION.addressLocality}. Y-tunnus ${ORGANIZATION.legalId}. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä.` },
   { icon: Mail, title: "Aito asiakaspalvelu", body: "Vastaamme 1–2 arkipäivässä. Ei chatbottia – aito ihminen lukee viestisi ja auttaa." },
   { icon: MapPin, title: "Tunnettu ja vahvistettu", body: "Rekisteröity Wikidataan (Q139915256). Arvostelut Google Merchant Centerissä." },
 ];
@@ -215,10 +216,11 @@ const AboutPage = () => {
           <h2 className="font-display text-2xl text-foreground mb-4">Yritystiedot</h2>
           <div className="rounded-xl border border-border bg-card/50 p-5 text-sm space-y-2">
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Brändi</span><span className="text-foreground">Huumorikauppa</span></div>
-            <div className="flex gap-2"><span className="text-muted-foreground w-32">Yritys</span><span className="text-foreground">Inteller</span></div>
-            <div className="flex gap-2"><span className="text-muted-foreground w-32">Y-tunnus</span><span className="text-foreground">3583677-2</span></div>
-            <div className="flex gap-2"><span className="text-muted-foreground w-32">Kotipaikka</span><span className="text-foreground">Helsinki, Suomi</span></div>
-            <div className="flex gap-2"><span className="text-muted-foreground w-32">Sähköposti</span><a href="mailto:huumorikauppa@gmail.com" className="text-primary hover:underline">huumorikauppa@gmail.com</a></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">Yritys</span><span className="text-foreground">{ORGANIZATION.legalName}</span></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">Y-tunnus</span><span className="text-foreground">{ORGANIZATION.legalId}</span></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">ALV-numero</span><span className="text-foreground">{ORGANIZATION.vatID}</span></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">Osoite</span><span className="text-foreground">{ORGANIZATION.postalAddress}, Suomi</span></div>
+            <div className="flex gap-2"><span className="text-muted-foreground w-32">Sähköposti</span><a href={`mailto:${ORGANIZATION.email}`} className="text-primary hover:underline">{ORGANIZATION.email}</a></div>
             <div className="flex gap-2"><span className="text-muted-foreground w-32">Wikidata</span><a href="https://www.wikidata.org/wiki/Q139915256" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Q139915256</a></div>
           </div>
         </section>

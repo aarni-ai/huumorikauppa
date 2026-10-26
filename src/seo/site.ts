@@ -19,18 +19,30 @@ import {
   TOIMITUSAIKA_MIN_ARKIPAIVAA,
   TOIMITUSMAKSU,
 } from "../config/toimitus.js";
+import { postiosoite, yritystiedot } from "../config/yritys.js";
 
 export const SITE_URL = "https://huumorikauppa.fi";
 export const SITE_NAME = "Huumorikauppa";
 
+/**
+ * Kaupan pitäjä lasketaan moduulin latautuessa (src/config/yritys.ts): build ennen 1.11.2026
+ * tuottaa aiemman pitäjän tiedot, build tai selain sen jälkeen Uusiku Oy:n tiedot.
+ */
+const YRITYS = yritystiedot();
+
 export const ORGANIZATION = {
   name: SITE_NAME,
-  /** Yritys, jonka nimissä kauppaa pidetään (AboutPage.tsx, Yritystiedot). */
-  legalName: "Inteller",
-  legalId: "3583677-2", // Y-tunnus (index.html, llms.txt)
-  email: "huumorikauppa@gmail.com",
-  addressLocality: "Helsinki",
-  addressCountry: "FI",
+  /** Yritys, jonka nimissä kauppaa pidetään. */
+  legalName: YRITYS.legalName,
+  legalId: YRITYS.businessId, // Y-tunnus
+  vatID: YRITYS.vatId, // ALV-numero
+  email: YRITYS.email,
+  streetAddress: YRITYS.streetAddress,
+  postalCode: YRITYS.postalCode,
+  addressLocality: YRITYS.addressLocality,
+  addressCountry: YRITYS.addressCountry,
+  /** "Katu 1, 00100 Helsinki" tai pelkkä paikkakunta. */
+  postalAddress: postiosoite(YRITYS),
   /** 256x256 PNG, poimittu favicon.ico:sta. */
   logo: `${SITE_URL}/logo.png`,
   /** Somekanavat, jotka löytyvät reposta (Footer.tsx ja index.html). */

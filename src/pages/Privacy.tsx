@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
+import { ORGANIZATION } from "@/seo/site";
 
 const Privacy = () => {
   usePrerenderReady();
@@ -28,7 +29,12 @@ const Privacy = () => {
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
           <h2 className="font-display text-xl text-foreground">1. Rekisterinpitäjä</h2>
-          <p>Huumorikauppa<br />Helsinki, Suomi<br />huumorikauppa@gmail.com</p>
+          <p>
+            {ORGANIZATION.legalName} (Huumorikauppa)<br />
+            Y-tunnus {ORGANIZATION.legalId}<br />
+            {ORGANIZATION.postalAddress}, Suomi<br />
+            Yhteydenotot tietosuoja-asioissa: {ORGANIZATION.email}
+          </p>
         </section>
 
         <section>
@@ -49,7 +55,7 @@ const Privacy = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">5. Rekisteröidyn oikeudet</h2>
-          <p>Sinulla on oikeus tarkastaa, korjata ja poistaa itseäsi koskevat tiedot. Voit myös vastustaa tietojen käsittelyä ja pyytää tietojen siirtämistä. Ota yhteyttä huumorikauppa@gmail.com.</p>
+          <p>Sinulla on oikeus tarkastaa, korjata ja poistaa itseäsi koskevat tiedot. Voit myös vastustaa tietojen käsittelyä ja pyytää tietojen siirtämistä. Ota yhteyttä {ORGANIZATION.email}.</p>
         </section>
 
         <section>

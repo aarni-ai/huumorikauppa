@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { ORGANIZATION_ID } from "@/seo/structuredData";
+import { ORGANIZATION } from "@/seo/site";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,7 +64,7 @@ const ContactPage = () => {
           <Mail className="h-5 w-5 text-primary mt-0.5" />
           <div>
             <h3 className="font-medium text-foreground text-sm">Sähköposti</h3>
-            <a href="mailto:huumorikauppa@gmail.com" className="text-sm text-primary hover:underline">huumorikauppa@gmail.com</a>
+            <a href={`mailto:${ORGANIZATION.email}`} className="text-sm text-primary hover:underline">{ORGANIZATION.email}</a>
           </div>
         </div>
         <div className="flex items-start gap-3 p-4 rounded-lg border border-border bg-card">
@@ -118,6 +119,10 @@ const ContactPage = () => {
           Lähetä viesti 📧
         </Button>
       </form>
+
+      <p className="mt-6 text-xs text-muted-foreground">
+        Huumorikauppaa pitää {ORGANIZATION.legalName}, Y-tunnus {ORGANIZATION.legalId}, {ORGANIZATION.postalAddress}.
+      </p>
     </div>
   );
 };

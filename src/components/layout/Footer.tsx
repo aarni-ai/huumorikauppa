@@ -115,11 +115,11 @@ export function Footer() {
           <p className="text-sm text-muted-foreground leading-relaxed">
             Hauskoja t-paitoja, huppareita ja muita lahjoja suomalaisella huumorilla koko perheelle.
           </p>
-          {/* Kauppiaan tiedot: AboutPage.tsx (Yritystiedot) ja Terms.tsx (Yhteystiedot). */}
+          {/* Kauppiaan tiedot: src/config/yritys.ts (ORGANIZATION, src/seo/site.ts). */}
           <address className="not-italic flex flex-col gap-1.5 text-sm text-muted-foreground">
             <span className="text-foreground font-medium">{ORGANIZATION.name} ({ORGANIZATION.legalName})</span>
-            <span>Y-tunnus {ORGANIZATION.legalId}</span>
-            <span className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 shrink-0" /> {ORGANIZATION.addressLocality}, Suomi</span>
+            <span>Y-tunnus {ORGANIZATION.legalId} · ALV-numero {ORGANIZATION.vatID}</span>
+            <span className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 shrink-0" /> {ORGANIZATION.postalAddress}, Suomi</span>
             <a href={`mailto:${ORGANIZATION.email}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
               <Mail className="h-3.5 w-3.5 shrink-0" /> {ORGANIZATION.email}
             </a>
