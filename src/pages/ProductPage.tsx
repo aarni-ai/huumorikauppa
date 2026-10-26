@@ -5,7 +5,7 @@ import { categories } from "@/data/products";
 import { useProduct, piilotetutSlugit } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
 import { availableColors, availableSizes, isVariantAvailable } from "@/lib/variantAvailability";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import { PurchaseFacts } from "@/components/PurchaseFacts";
 import { SizeGuide } from "@/components/SizeGuide";
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { isClothingCategory } from "@/lib/sizeChart";
-import { PRODUCT_IMAGE_SIZES, productImageSources } from "@/lib/productImages";
+import { PRODUCT_IMAGE_SIZES, defaultImageColor, productImageSources } from "@/lib/productImages";
 import { formatPriceFi } from "@/seo/site";
 import { ProductCard } from "@/components/ProductCard";
 import { SEOHead } from "@/components/SEOHead";
@@ -31,6 +31,7 @@ import { isCustomTextProduct } from "@/lib/customProduct";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
+import { revealApp } from "@/lib/prerenderPreview";
 
 import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
@@ -216,7 +217,11 @@ function toProxiedImage(url: string): string {
   return proxiedImage(abs, { absolute: true });
 }
 
-const ProductPage = () => {
+/**
+ * previewOnly: vain ensinäkymän osa (nimi, hinta, kuvat, valinnat, ostopainike). Käytössä tuotesivun
+ * esirenderöidyssä esikatselussa (src/seo/prerender/renderProductPreview.tsx).
+ */
+const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const { slug } = useParams();
   const { product, products: allProducts = [], isLoading } = useProduct(slug);
   const { addItem } = useCartContext();
@@ -287,13 +292,16 @@ const ProductPage = () => {
     }
   }, [product, selectedColor, selectedSize]);
 
+  // Ennen kuin oletusväri on asetettu (efekti yllä), kuvat näytetään jo oletusvärille: ensimmäinen
+  // renderöinti käyttää samaa pääkuvaa kuin esirenderöinnin preload (ei turhaa toista latausta).
+  const imageColor = selectedColor ?? (product ? defaultImageColor(product) : undefined);
   const currentImages = useMemo(() => {
-    if (selectedColor) {
-      const variantImgs = (variantImages[selectedColor] || []).filter(Boolean);
+    if (imageColor) {
+      const variantImgs = (variantImages[imageColor] || []).filter(Boolean);
       if (variantImgs.length > 0) return variantImgs;
     }
     return (product?.images || []).filter(Boolean);
-  }, [selectedColor, variantImages, product]);
+  }, [imageColor, variantImages, product]);
 
   useEffect(() => {
     setActiveImage(0);
@@ -324,6 +332,11 @@ const ProductPage = () => {
       .filter(p => p.category === product.category || p.relatedCategories?.includes(product.category))
       .slice(0, 2);
   }, [product]);
+
+  // Esirenderöity esikatselu (src/main.tsx) vaihtuu sovellukseen ennen maalausta, kun tuote on valmis.
+  useLayoutEffect(() => {
+    if (!isLoading && !previewOnly) revealApp();
+  }, [isLoading, previewOnly]);
 
   if (isLoading) {
     return (
@@ -363,8 +376,9 @@ const ProductPage = () => {
     (a, b) => Number(b === defaultColor) - Number(a === defaultColor),
   );
   // Valitulla värillä valmistettavat koot; valmistamattomat yhdistelmät eivät näy valitsimessa.
+  // Ennen oletusvärin asettamista käytetään oletusväriä (imageColor), jotta koot näkyvät heti.
   const allSizes = (product.variants.sizes || []) as string[];
-  const sellableSizes = availableSizes(product, selectedColor, sortSizes(allSizes));
+  const sellableSizes = availableSizes(product, imageColor, sortSizes(allSizes));
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
@@ -827,6 +841,7 @@ const ProductPage = () => {
           </div>
         </div>
 
+        {!previewOnly && (<>
         {/* Sopii yhteen: täydentävät tuotteet ostoalueen alla (src/lib/recommendations.ts) */}
         <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl" />
 
@@ -1033,9 +1048,11 @@ const ProductPage = () => {
         />
         {/* Ostopalkin piilotusraja: tästä alaspäin palkki ei peitä sisältöä. */}
         <div ref={stickyEndRef} aria-hidden="true" className="h-px" />
+        </>)}
       </div>
 
       {/* Sticky mobile add-to-cart bar */}
+      {!previewOnly && (
       <div
         className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)] transition-transform duration-300 ${
           showStickyBar ? "translate-y-0" : "translate-y-full"
@@ -1070,6 +1087,7 @@ const ProductPage = () => {
           </Button>
         </div>
       </div>
+      )}
     </div>
   );
 };
