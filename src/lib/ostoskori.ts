@@ -19,6 +19,8 @@ export interface Paketti {
   teema: string;
   tuotteet: [string, string];
   alennus_prosentti: number;
+  /** false: alennus pois käytöstä (kate alle 30 % generoitaessa, syy paketit-data.js:ssä). */
+  kaytossa?: boolean;
 }
 export const PAKETTIMAARITYKSET = PAKETIT as Paketti[];
 
@@ -120,7 +122,7 @@ export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
   const osat = paketti.tuotteet.map((s) => bySlug.get(s)).filter(Boolean) as Product[];
   if (osat.length !== paketti.tuotteet.length) return null;
   const yhteensa = pyorista(osat.reduce((s, p) => s + p.price, 0));
-  const alennusVoimassa = paketinHeikoinKate(osat, paketti.alennus_prosentti).sallittu === true;
+  const alennusVoimassa = paketti.kaytossa !== false && paketinHeikoinKate(osat, paketti.alennus_prosentti).sallittu === true;
   return {
     paketti,
     tuotteet: osat,
@@ -134,12 +136,12 @@ export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
  * Arvio korin pakettialennuksesta (sama ehto kuin kassalla: molemmat tuotteet korissa, ei alennuskoodia, kate >= 30 %
  * kaikilla variaatioilla). Palvelin laskee lopullisen alennuksen.
  */
-export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennuskoodi = false): number {
+export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennuskoodi = false, paketit: Paketti[] = PAKETTIMAARITYKSET): number {
   if (alennuskoodi) return 0;
   const kpl = new Map<string, number>();
   for (const i of items) if (!onLahjakortti(i)) kpl.set(i.product.slug, (kpl.get(i.product.slug) || 0) + i.quantity);
   let alennus = 0;
-  for (const paketti of PAKETTIMAARITYKSET) {
+  for (const paketti of paketit) {
     const [a, b] = paketti.tuotteet;
     const parit = Math.min(kpl.get(a) || 0, kpl.get(b) || 0);
     if (parit <= 0) continue;
