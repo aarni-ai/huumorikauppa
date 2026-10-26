@@ -24,8 +24,7 @@ describe("Merchant-syötteen lisäkentät", () => {
     expect(x).toContain("<g:identifier_exists>no</g:identifier_exists>");
     expect(x).toContain("<g:custom_label_1>joulu</g:custom_label_1>");
     expect(x).not.toContain("custom_label_0");
-    expect(lisaaKentat(item("24.90"), { kate: 0.55 })).toContain("<g:custom_label_0>kate_yli_50</g:custom_label_0>");
-    expect(lisaaKentat(item("24.90"), { kate: 0.45 })).toContain("<g:custom_label_0>kate_40_50</g:custom_label_0>");
+    expect(x).toContain("<g:custom_label_2>muut</g:custom_label_2>");
   });
   it("sesonki päättyy jouluaattoon", () => {
     expect(sesonki(new Date("2026-12-24T12:00:00Z"))).toBe("joulu");

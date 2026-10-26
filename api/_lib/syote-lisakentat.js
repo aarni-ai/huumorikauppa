@@ -5,8 +5,12 @@
  *  - g:product_type: suomenkielinen tuotetyyppi Google-kategoriasta
  *  - g:identifier_exists: no (omat painotuotteet, ei GTIN:iä)
  *  - g:custom_label_1: sesonki (joulu 1.10.-24.12., muuten ympari_vuoden)
- *  - g:custom_label_0: kateluokka (kate_yli_50 | kate_40_50), vain jos kate tunnetaan (oma tausta, Printify-kulut)
+ *  - g:custom_label_0: kateluokka kate-alle-20 | kate-20-30 | kate-30-40 | kate-yli-40 (api/_lib/kateluokat.js,
+ *    generoitu Printify-kuluista: scripts/generoi-kateluokat.mjs); puuttuu, jos tuotteen katetta ei tunneta
+ *  - g:custom_label_2: myydyin | muut (Printify-tilaukset, api/_lib/kateluokat.js)
  */
+import { KATELUOKAT, MYYDYIMMAT } from "./kateluokat.js";
+
 // Peili: src/config/toimitus.ts (ILMAINEN_TOIMITUS_RAJA, TOIMITUSMAKSU). src/config/toimitus.test.ts
 // kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
 export const ILMAINEN_RAJA = 79;
@@ -34,8 +38,14 @@ export function sesonki(nyt = new Date()) {
 
 const kentta = (item, nimi) => (item.match(new RegExp(`<g:${nimi}>([^<]*)</g:${nimi}>`)) || [])[1];
 
-/** @param item yhden <item>-lohkon XML  @param kate valinnainen kate (0-1) */
-export function lisaaKentat(item, { kate = null, nyt = new Date() } = {}) {
+const slugLinkista = (item) => (item.match(/<g:link>[^<]*\/tuote\/([^<?#/]+)/) || [])[1] || "";
+
+/**
+ * @param item yhden <item>-lohkon XML
+ * @param opts.kateluokat slug -> kateluokka (oletus api/_lib/kateluokat.js)
+ * @param opts.myydyimmat myydyimpien slugit (oletus api/_lib/kateluokat.js)
+ */
+export function lisaaKentat(item, { nyt = new Date(), kateluokat = KATELUOKAT, myydyimmat = MYYDYIMMAT } = {}) {
   const hinta = parseFloat(kentta(item, "price") || "0");
   const toimitus = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUS;
   const gkat = (kentta(item, "google_product_category") || "").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
@@ -53,10 +63,12 @@ export function lisaaKentat(item, { kate = null, nyt = new Date() } = {}) {
   lisaa("product_type", tyyppi.replace(/&/g, "&amp;").replace(/>/g, "&gt;"));
   lisaa("identifier_exists", "no");
   lisaa("custom_label_1", sesonki(nyt));
-  if (typeof kate === "number") lisaa("custom_label_0", kate >= 0.5 ? "kate_yli_50" : "kate_40_50");
+  const slug = slugLinkista(item);
+  lisaa("custom_label_0", Object.prototype.hasOwnProperty.call(kateluokat, slug) ? kateluokat[slug] : null);
+  lisaa("custom_label_2", myydyimmat.has(slug) ? "myydyin" : "muut");
   return lisat.length ? out.replace(/\s*<\/item>$/, `\n${lisat.join("\n")}\n    </item>`) : out;
 }
 
-export function lisaaKentatSyotteeseen(xml, kateIdlle = () => null, nyt = new Date()) {
-  return xml.replace(/<item>[\s\S]*?<\/item>/g, (item) => lisaaKentat(item, { kate: kateIdlle(kentta(item, "id")), nyt }));
+export function lisaaKentatSyotteeseen(xml, nyt = new Date(), opts = {}) {
+  return xml.replace(/<item>[\s\S]*?<\/item>/g, (item) => lisaaKentat(item, { ...opts, nyt }));
 }
