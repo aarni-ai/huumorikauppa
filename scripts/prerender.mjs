@@ -187,7 +187,11 @@ async function main() {
     }
 
     // Tuote- ja etusivun näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
-    const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderPreview.tsx");
+    // Esikatselu on vain nopeutus: jos moduuli ei lataudu, sivut kirjoitetaan ilman sitä.
+    const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderPreview.tsx").catch((err) => {
+      log(`VAROITUS: esikatselumoduuli ei latautunut (${err.message}), sivut ilman esikatselua.`);
+      return null;
+    });
     let previews = 0;
     const previewFailures = [];
     const originalConsoleError = console.error;
@@ -196,7 +200,7 @@ async function main() {
       originalConsoleError(...args);
     };
     try {
-      for (const page of pages) {
+      for (const page of previewMod ? pages : []) {
         if (!page.path.startsWith("/tuote/")) continue;
         const row = rowsBySlug.get(page.path.slice("/tuote/".length));
         if (!row) continue;
@@ -207,7 +211,7 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
-      const homePage = pages.find((p) => p.path === "/");
+      const homePage = previewMod ? pages.find((p) => p.path === "/") : undefined;
       if (homePage) {
         try {
           homePage.previewHtml = previewMod.renderHomePreview();
