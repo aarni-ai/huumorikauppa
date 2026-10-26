@@ -83,7 +83,7 @@ read -s -p "Printify-token: " K && echo && curl -s https://api.printify.com/v1/s
 npx vercel env add PRINTIFY_SHOP_ID production
 ```
 
-Printifyn kulut katesääntöä varten (40 %:n raja tarvitsee tuote- ja toimituskulut; ilman niitä kassa ei ota maksua).
+Printifyn kulut katesääntöä varten (myynnin raja 20 %, `api/_lib/kate.js` KATE_RAJA; raja tarvitsee tuote- ja toimituskulut; ilman niitä kassa ei ota maksua).
 Ensimmäisellä kerralla ne tulevat kohdan 2 komennossa; myöhemmin hintojen muuttuessa, ja sen jälkeen tarkistus:
 
 ```
@@ -201,7 +201,7 @@ turvallinen ajaa uudelleen.
 Valinnat: `--vain <Printify-id>` yksi tuote, `--julkaise` julkaisee uudet tuotteet Printifyssä (ei tarvita, koska
 kauppa tilaa tuote- ja varianttitunnuksella), `--poista-vanhat-julkaisusta` poistaa vanhat julkaisusta (vanhoja ei
 koskaan poisteta). Skripti kirjaa jokaisen siirron tiedostoon `data/eu-siirto-<päivä>.json` ja ohittaa jo siirretyt,
-joten sen voi ajaa uudelleen. Katesääntö tarkistetaan uusilla kuluilla: alle 40 %:n tuotteet poistuvat myynnistä
+joten sen voi ajaa uudelleen. Katesääntö tarkistetaan uusilla kuluilla: alle 20 %:n tuotteet poistuvat myynnistä
 itsestään. Tarkista ennen täyttä ajoa: Jondo-seinätaulut siirtyvät vain, jos Jondolla on sama blueprint; muille
 kuiva-ajo kertoo syyn.
 
@@ -255,7 +255,8 @@ Stripe-avaimeen ei tarvita uusia oikeuksia.
 node scripts/generoi-paketit.mjs
 ```
 
-Pakettialennus (10 %) annetaan kassalla vain, kun paketin kate alennuksen jälkeen on vähintään 40 %. Ennen kuin
+Pakettialennus (5-10 %, paketeittain) annetaan kassalla vain, kun paketin kate alennuksen jälkeen on vähintään 30 %
+(`PAKETTI_KATE_RAJA`). Ennen kuin
 Printifyn kulut on tuotu (kohta 3, `--kulut`), alennusta ei anneta eikä sitä näytetä sivuilla.
 
 **Toimitusarvio** tuotesivulla käyttää varovaisia oletusaikoja (`src/config/toimitusajat.ts`), joita tarkennetaan
@@ -271,7 +272,7 @@ myöhemmin painotalokohtaisiksi.
 
 Lisää salaisuudet: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > **New repository
 secret**. `RESEND_API_KEY` on sama arvo kuin Vercelissä (kohta 5). `DATABASE_URL` (Vercel > Storage > Neon >
-`.env.local`-tiedoston arvo) antaa katetarkistuksen nähdä myös jo piilotetut alle 40 %:n tuotteet; ilman sitä tuotteet
+`.env.local`-tiedoston arvo) antaa katetarkistuksen nähdä myös jo piilotetut alle 20 %:n tuotteet; ilman sitä tuotteet
 haetaan sivuston `/api/products`-rajapinnasta. Ilman `RESEND_API_KEY`:tä katetarkistus päättyy virheeseen ja
 yhteenveto näkyy Actionsin lokissa. Kaikki työnkulut voi ajaa heti: Actions > työnkulku > **Run workflow**.
 
@@ -294,7 +295,8 @@ tee uusi avain, jossa ovat kohdan 3 oikeudet ja nämä kaksi, ja vaihda se Verce
 PRINTIFY_API_KEY production`, korvaa vanha). Kuvat tehdään koneella Pythonilla ja Pillowlla (`pip3 install pillow`).
 Kauppaan tuonti ja hyväksyntä tarvitsevat `DATABASE_URL`:n (kohta 1).
 
-**Hinta.** Pienin x,90 €:n hinta, jolla nettokate on vähintään 40 % (sama kaava kuin kassalla, `api/_lib/kate.js`),
+**Hinta.** Pienin x,90 €:n hinta, jolla nettokate on vähintään 40 % (hinnoittelun tavoite `HINNOITTELU_KATE`;
+myynnin raja on erikseen 20 %; sama kaava kuin kassalla, `api/_lib/kate.js`),
 yhden kappaleen tilauksena: Printifyn tuotekulu (kallein valittu variantti) ja Suomen toimituskulu sekä asiakkaan
 toimitusmaksu. Hinta ei ole koskaan alle kategorian pohjahinnan (paita 34,90 €, huppari 64,90 €, koriste 24,90 €,
 tarra 7,90 €). Oletuksena lasketaan **suunnitellulla toimitusmaksulla 5,90 €, ilmainen 60 €:sta**. Kauppa perii nyt
@@ -355,7 +357,7 @@ set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs -
 set -a && . ./.env.local && set +a && node scripts/printify-uudet-tuotteet.mjs --hyvaksy 6712abc,6712abd
 ```
 
-Hyväksyntä tarkistaa ensin, että kulut ovat tiedossa, kate on vähintään 40 % ja tuotteella on kuvat; muuten se kertoo
+Hyväksyntä tarkistaa ensin, että kulut ovat tiedossa, kate on vähintään myynnin raja 20 % ja tuotteella on kuvat; muuten se kertoo
 syyn eikä julkaise. Tuotteet näkyvät kaupassa noin 5 minuutin kuluessa (tuotelistan välimuisti).
 
 ## 12. Varianttien saatavuus (Printify)

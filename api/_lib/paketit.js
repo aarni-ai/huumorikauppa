@@ -3,7 +3,7 @@
  * sekä generointiskripti (scripts/generoi-paketit.mjs) käyttävät samaa logiikkaa.
  *
  * Pakettialennus annetaan palvelimella (api/_lib/kassa.js) vain, kun paketin molemmat tuotteet ovat korissa, mitään
- * alennuskoodia ei käytetä ja paketin nettokate alennuksen jälkeen on vähintään 40 % (api/_lib/kate.js). Jos Printifyn
+ * alennuskoodia ei käytetä ja paketin nettokate alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js PAKETTI_KATE_RAJA). Jos Printifyn
  * kuluja ei tunneta, alennusta ei anneta.
  */
 import { laskePaketinKate } from "./kate.js";
@@ -84,7 +84,7 @@ export function muodostaPaketit(tuotteet, n = 20, alennus = PAKETTI_ALENNUS_PROS
 /**
  * Pakettialennus kassariveille. Rivit: [{ slug, quantity, unit_price, variant_id, ... }] (vain fyysiset tuotteet).
  * Jakaa rivit niin, että paketteihin kuuluvat kappaleet ovat omina riveinään (paketti, paketti_alennus_prosentti,
- * unit_cents alennettu). Pari muodostetaan vain, jos sen kate alennuksen jälkeen on vähintään 40 %.
+ * unit_cents alennettu). Pari muodostetaan vain, jos sen kate alennuksen jälkeen on vähintään 30 %.
  * Palauttaa uudet rivit (alkuperäiset ennallaan) ja annetun alennuksen euroina.
  * @param rivit kassan rivit (unit_cents sentteinä)
  * @param tuotteetSlugilla Map slug -> tuoterivi (kulut)

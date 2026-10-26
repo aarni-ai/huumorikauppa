@@ -14,14 +14,16 @@ import path from "node:path";
 import {
   SIIRTOSAANNOT, normalisoi, vaihtoehto, variantinOsat, valitsePainotalo, onEU, painotalonMaa, blueprintTeksti, suomenToimitus,
 } from "./eu-painotalot.mjs";
-import { laskeKate, KATE_RAJA } from "../../api/_lib/kate.js";
+import { laskeKate, HINNOITTELU_KATE } from "../../api/_lib/kate.js";
 import { onPiilotettuTuote } from "../../api/_lib/piilotetut.js";
 import { KATEGORIAN_POHJAHINNAT, buildProductRow } from "../../supabase/functions/_shared/printify-sync.ts";
 
 /** Suunniteltu toimitusmaksu (oletus). Kauppa perii nyt 6,90 € ja ilmainen toimitus alkaa 79 €:sta (api/_lib/vakiot.js). */
 export const SUUNNITELTU_TOIMITUSMAKSU = 5.9;
 export const SUUNNITELTU_ILMAINEN_RAJA = 60;
-export { KATEGORIAN_POHJAHINNAT, KATE_RAJA };
+/** Hinnoittelun katetavoite (40 %). Myynnin raja on erikseen api/_lib/kate.js KATE_RAJA (20 %). */
+export const KATE_RAJA = HINNOITTELU_KATE;
+export { KATEGORIAN_POHJAHINNAT };
 
 const saanto = (kategoria) => SIIRTOSAANNOT.find((s) => s.kategoria === kategoria && !s.lahdePainotalo) || SIIRTOSAANNOT.find((s) => s.kategoria === kategoria);
 
@@ -177,7 +179,7 @@ export function ylosX90(euroa) {
 
 function kate(hintaSentit, kuluSentit, toimitusSentit, asetukset) {
   const tuote = { price: hintaSentit / 100, variants: { costs: { v: kuluSentit }, shipping_cents: toimitusSentit } };
-  return laskeKate(tuote, "v", asetukset);
+  return laskeKate(tuote, "v", { raja: HINNOITTELU_KATE, ...asetukset });
 }
 
 /**

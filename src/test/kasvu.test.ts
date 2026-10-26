@@ -22,9 +22,9 @@ const huppari = {
   printify_product_id: "pf-h", created_at: "2026-01-02",
   variants: { variant_map: { "Musta|M": 11 }, costs: { "11": 1500 }, shipping_cents: 400 },
 };
-// Kulu 19,00 (ei 20,00): 5,90 €:n toimitusmaksulla 20,00 €:n kululla yksittäinen huppari jäisi alle 40 %:n katteen
-// (39,1 %) eikä olisi myynnissä, jolloin testi ei pääsisi paketin katevahtiin. Paketti jää silti alle rajan (30,5 %).
-const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 1900 }, shipping_cents: 600 } };
+// Kulu 24,00 + toimitus 6,00: yksittäinen huppari on myynnissä (kate 30,1 %, raja 20 %), mutta paketti t-paidan kanssa
+// jää 10 %:n alennuksella alle pakettirajan 30 % (21,2 %), joten testi pääsee paketin katevahtiin.
+const kallisHuppari = { ...huppari, id: "h2", slug: "kallis-huppari", variants: { variant_map: { "Musta|M": 12 }, costs: { "12": 2400 }, shipping_cents: 600 } };
 const kallisPaita = { ...paita, id: "t2", slug: "kallis-t-paita" };
 const tuntematon = { ...huppari, id: "h3", slug: "tuntematon-huppari", variants: { variant_map: { "Musta|M": 13 } } };
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -111,7 +111,7 @@ describe("Paketit: kate ja alennus", () => {
     expect(r.shipping).toBe(0);
     expect(r.total).toBe(92.22);
   });
-  it("katevahti: alle 40 % tai tuntematon kulu, ei alennusta", () => {
+  it("katevahti: paketin kate alle 30 % tai tuntematon kulu, ei alennusta", () => {
     const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit });
     expect(r.bundle_discount).toBe(0);
     expect(r.total).toBe(r2(74.8 + toimitusSummalle(74.8)));

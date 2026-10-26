@@ -10,7 +10,7 @@
  *   --toteuta                 luo tuotteet Printifyyn (vaatii PRINTIFY_API_KEY ja PRINTIFY_SHOP_ID). Ei julkaise.
  *   --raja N                  luo / suunnittele enintään N tuotetta (koeajo: --toteuta --raja 1).
  *   --tuo                     (--toteuta kanssa) tuo luodut tuotteet kauppaan PIILOTETTUINA (is_active false), DATABASE_URL.
- *   --hyvaksy <id,...|kaikki> julkaise kaupassa aiemmin tuodut (is_active true), jos kate on tunnettu ja >= 40 %.
+ *   --hyvaksy <id,...|kaikki> julkaise kaupassa aiemmin tuodut (is_active true), jos kate on tunnettu ja vähintään myynnin raja (api/_lib/kate.js KATE_RAJA, 20 %).
  *   --toimitusmaksu 5,90      asiakkaan toimitusmaksu hinnoittelussa (oletus suunniteltu 5,90 €; kauppa perii nyt 6,90 €).
  *   --ilmainen-raja 60        ilmainen toimitus tästä tilaussummasta (oletus suunniteltu 60 €; kaupassa nyt 79 €).
  *   --blueprint tyyppi=id     pakota blueprint (esim. koriste=1234). --painotalo tyyppi=id|nimi pakota painotalo.

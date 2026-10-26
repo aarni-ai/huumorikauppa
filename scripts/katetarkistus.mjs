@@ -3,9 +3,9 @@
  * Viikoittainen katetarkistus (GitHub Actions, .github/workflows/katetarkistus.yml).
  *   node scripts/katetarkistus.mjs [--url https://huumorikauppa.fi]
  * Tuotteet: tietokannasta (DATABASE_URL tai POSTGRES_URL), muuten sivuston /api/products. Kate api/_lib/kate.js
- * (heikoin variantti). Jos jokin näkyvä tuote on alle 40 % tai sen kulut ovat tuntemattomat, yhteenveto lähetetään
+ * (heikoin variantti). Jos jokin näkyvä tuote on alle myynnin rajan (20 %) tai sen kulut ovat tuntemattomat, yhteenveto lähetetään
  * sähköpostilla osoitteeseen OMISTAJA_EMAIL (oletus info@seniorituki.fi) Resendillä (RESEND_API_KEY). Ilman avainta
- * työ päättyy virheeseen ja tulostaa yhteenvedon. Huom: /api/products palauttaa vain myynnissä olevat, joten alle 40 %:n
+ * työ päättyy virheeseen ja tulostaa yhteenvedon. Huom: /api/products palauttaa vain myynnissä olevat, joten alle 20 %:n
  * tuotteet (jotka kauppa on jo piilottanut) näkyvät vain tietokantatilassa.
  */
 import { heikoinKate, KATE_RAJA } from "../api/_lib/kate.js";
@@ -69,7 +69,7 @@ async function main() {
   }
   const r = await laheta({
     to: OMISTAJA(),
-    subject: `[Huumorikauppa] Katetarkistus: ${t.alle.length} alle 40 %, ${t.tuntematon.length} tuntematonta`,
+    subject: `[Huumorikauppa] Katetarkistus: ${t.alle.length} alle ${pros(KATE_RAJA)}, ${t.tuntematon.length} tuntematonta`,
     text: teksti,
     html: `<pre style="font-family:monospace;white-space:pre-wrap">${teksti.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c])}</pre>`,
   });

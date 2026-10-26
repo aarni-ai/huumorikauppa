@@ -9,15 +9,16 @@ const p = (slug: string, costs: Record<string, number> | null, extra: Record<str
 });
 
 describe("Katetarkistus", () => {
-  it("löytää alle 40 %:n ja tuntemattomat, ohittaa piilotetut", () => {
+  it("löytää alle 20 %:n ja tuntemattomat, ohittaa piilotetut", () => {
     const t = katevalvonta([
       p("ok", { "1": 1200 }),
-      p("halpa", { "1": 1800 }),
+      p("halpa", { "1": 2200 }),
+      p("keski", { "1": 1800 }),
       p("uusi", null),
       p("muki", { "1": 1800 }, { category: "mukit" }),
       p("luonnos", null, { is_active: false }),
     ]);
-    expect(t.tarkistettu).toBe(3);
+    expect(t.tarkistettu).toBe(4);
     expect(t.alle.map((x: { slug: string }) => x.slug)).toEqual(["halpa"]);
     expect(t.tuntematon.map((x: { slug: string }) => x.slug)).toEqual(["uusi"]);
     expect(yhteenveto(t, "testi")).toMatch(/Alle rajan: 1\. Kulut tuntemattomat \(kassa ei ota maksua\): 1\./);

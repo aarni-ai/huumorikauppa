@@ -7,7 +7,7 @@
  * - Lahjakortit (type "giftcard", api/_lib/lahjakortti.js): ei Printifyä, ei katesääntöä, ei toimitusmaksua, eivät
  *   kerrytä ilmaisen toimituksen rajaa eikä alennuskoodi koske niitä. Pelkkä lahjakorttitilaus ei vaadi osoitetta.
  * - Pakettialennus (api/_lib/paketit.js): kun paketin molemmat tuotteet ovat korissa eikä alennuskoodia käytetä,
- *   ja vain jos paketin kate alennuksen jälkeen on vähintään 40 %.
+ *   ja vain jos paketin kate alennuksen jälkeen on vähintään 30 % (PAKETTI_KATE_RAJA).
  * - Saatavuus (api/_lib/saatavuus.js): variantti, joka on tuoterivin unavailable_variants-listassa (päivittäinen
  *   Printify-tarkistus, kassalla tuoreella haulla täydennettynä), hylätään ennen maksua.
  * - Lahjakortilla maksu: tarkistettu saldo vähennetään maksettavasta (lahjakortti { koodi, saldo }).
@@ -83,7 +83,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
       throw new KassaVirhe(`Valitse koko ja väri uudelleen tuotteelle ${p.name}. Tätä vaihtoehtoa ei voi nyt tilata.`, "missing_variant");
     }
     if (!varianttiSaatavilla(p, variantti)) throw new KassaVirhe(`${EI_SAATAVILLA_VIESTI} Tuote: ${p.name}.`, "variant_unavailable");
-    // Katesääntö: alle 40 % tai tuntematon Printify-kulu -> ei maksua.
+    // Katesääntö: alle 20 % (KATE_RAJA) tai tuntematon Printify-kulu -> ei maksua.
     const kate = laskeKate(p, variantti);
     if (!kate.tunnettu) throw new KassaVirhe(`Tuotteen ${p.name} hintaa ei voitu vahvistaa. Yritä hetken kuluttua uudelleen.`, "unknown_cost");
     if (!kate.sallittu) throw new KassaVirhe(`Tuote ${p.name} ei ole tällä hetkellä tilattavissa.`, "low_margin");

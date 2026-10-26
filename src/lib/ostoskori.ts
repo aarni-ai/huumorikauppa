@@ -71,7 +71,7 @@ export interface Suositus {
 
 /**
  * 3-4 suositusta, jotka täyttävät ilmaisen toimituksen puuttuvan summan. Ehdokkaat: myynnissä olevat (ei piilotettuja
- * kategorioita, ei tunnetusti alle 40 %:n katetta, ei personoitavia eikä lahjakortteja), ei jo korissa. Järjestys:
+ * kategorioita, ei tunnetusti alle 20 %:n katetta, ei personoitavia eikä lahjakortteja), ei jo korissa. Järjestys:
  * hinta lähellä puuttuvaa summaa (summan ylittävä parempi kuin vajaaksi jäävä), etusijalla sama teema, sitten sama
  * huumorityyppi tai kategoria kuin korin tuotteilla.
  */
@@ -114,7 +114,7 @@ export function valitseSuositukset(items: Rivi[], tuotteet: Product[], maara = 4
   return valitut;
 }
 
-/** Paketin tuotteet ja hinnat. Alennus luvataan vain, jos jokainen varianttiyhdistelmä täyttää 40 %:n katesäännön. */
+/** Paketin tuotteet ja hinnat. Alennus luvataan vain, jos jokainen varianttiyhdistelmä täyttää paketin 30 %:n katesäännön. */
 export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
   const bySlug = new Map(tuotteet.map((p) => [p.slug, p]));
   const osat = paketti.tuotteet.map((s) => bySlug.get(s)).filter(Boolean) as Product[];
@@ -131,7 +131,7 @@ export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
 }
 
 /**
- * Arvio korin pakettialennuksesta (sama ehto kuin kassalla: molemmat tuotteet korissa, ei alennuskoodia, kate >= 40 %
+ * Arvio korin pakettialennuksesta (sama ehto kuin kassalla: molemmat tuotteet korissa, ei alennuskoodia, kate >= 30 %
  * kaikilla variaatioilla). Palvelin laskee lopullisen alennuksen.
  */
 export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennuskoodi = false): number {
