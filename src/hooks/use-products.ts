@@ -37,7 +37,7 @@ async function fetchProducts(): Promise<Product[]> {
 
 type ProductRow = Tables<"products">;
 
-/** Supabase-rivi -> Product (myös esirenderöinti, src/seo/prerender/renderPreview.tsx). */
+/** Supabase-rivi -> Product (myös esirenderöinti, src/seo/prerender/renderProductPreview.tsx). */
 export function mapProduct(p: ProductRow): Product {
     const price = Number(p.price);
     return {
@@ -76,32 +76,25 @@ async function fetchProductBySlug(slug: string): Promise<Product | null> {
   return mapProduct(row);
 }
 
-/**
- * Koko tuoteluettelo (satoja rivejä, noin 360 kt). enabled: false jättää haun tekemättä, mutta
- * välimuistissa jo oleva luettelo palautetaan silti.
- */
-export function useProducts(options: { enabled?: boolean } = {}) {
+export function useProducts() {
   return useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
     staleTime: 5 * 60 * 1000,
-    enabled: options.enabled ?? true,
   });
 }
 
 export function useProduct(slug: string | undefined) {
+  const { data: products, ...rest } = useProducts();
   const single = useQuery({
     queryKey: ["product", slug],
     queryFn: () => fetchProductBySlug(slug!),
     enabled: !!slug,
     staleTime: 5 * 60 * 1000,
   });
-  // Luettelo (suositukset sivun alaosassa) haetaan vasta yksittäishaun jälkeen, ettei se kilpaile
-  // kaistasta tuotesivun oman, pienen haun kanssa. Virheessä luettelo toimii varalla.
-  const { data: products, ...rest } = useProducts({ enabled: !slug || single.isFetched || single.isError });
   const product = products?.find((p) => p.slug === slug) ?? single.data ?? undefined;
   // Ladataan, kunnes tuote löytyy tai molemmat haut ovat valmiita (yksittäishaun virheessä luettelo ratkaisee).
   const isLoading =
-    !product && (single.isLoading ? true : single.isError ? rest.isPending : single.data === undefined && rest.isLoading);
+    !product && (single.isLoading ? true : single.isError ? rest.isLoading : single.data === undefined && rest.isLoading);
   return { product, products, ...rest, isLoading };
 }
