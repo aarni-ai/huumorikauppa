@@ -24,6 +24,8 @@ import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
+import { JOULU_TILAUSPAIVAT } from "@/data/jouluAikataulu";
 
 /** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
 const HERO_SRC = "/images/hero-banner-800.webp";
@@ -373,7 +375,9 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
             <TrustCard icon={<Users className="h-5 w-5" />} title="Suomalaista huumoria" desc="Tekstit ammateista, harrastuksista, eläkkeestä ja ikävuosista suomeksi." />
             <TrustCard icon={<Heart className="h-5 w-5" />} title="Helppo tilata" desc="Selkeä kauppa, turvallinen maksu ja toimitus koko Suomeen. Tilaaminen onnistuu kaikilta." />
-            <TrustCard icon={<Star className="h-5 w-5" />} title="Lahja, joka naurattaa" desc="Hauska paita tai huppari itselle tai läheiselle. Jouluksi: tilaa viimeistään pe 20.11.2026." />
+            <TrustCard icon={<Star className="h-5 w-5" />} title="Lahja, joka naurattaa" desc="Hauska paita tai huppari itselle tai läheiselle.">
+              <JouluTakarajaRivi categories={JOULU_ETUSIVU_KATEGORIAT} className="justify-center text-sm text-foreground" />
+            </TrustCard>
             <TrustCard icon={<ThumbsUp className="h-5 w-5" />} title="Custom-painatukset" desc="Haluatko oman tekstin paitaan tai hupparin selkään? Kirjoita se personoitavan tuotteen sivulla, enintään 200 merkkiä." />
           </div>
         </div>
@@ -686,7 +690,10 @@ function ProductSection({ title, linkTo, products, intro }: { title: string; lin
   );
 }
 
-function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+/** Etusivun joulurivi: varhaisin päivä kaikista tuotetyypeistä (koskee mitä tahansa tilausta). */
+const JOULU_ETUSIVU_KATEGORIAT = Object.keys(JOULU_TILAUSPAIVAT);
+
+function TrustCard({ icon, title, desc, children }: { icon: React.ReactNode; title: string; desc: string; children?: React.ReactNode }) {
   return (
     <div className="text-center space-y-3">
       <div className="mx-auto w-12 h-12 bg-muted rounded-xl flex items-center justify-center text-muted-foreground">
@@ -694,6 +701,7 @@ function TrustCard({ icon, title, desc }: { icon: React.ReactNode; title: string
       </div>
       <h3 className="font-semibold text-sm text-foreground">{title}</h3>
       <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+      {children}
     </div>
   );
 }

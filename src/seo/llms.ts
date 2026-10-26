@@ -106,6 +106,12 @@ ${KEY_PAGES.map(([name, path]) => `- ${name}: ${SITE_URL}${path === "/" ? "/" : 
 ## Joulu 2026
 ${CHRISTMAS_DEADLINE_PROMISE} Lisätiedot: ${SITE_URL}${CHRISTMAS_DEADLINE_PATH}
 
+Joululahjaoppaat:
+${landingPages
+  .filter((p) => p.group === "joulu")
+  .map((p) => `- ${p.h1}: ${SITE_URL}${p.path}`)
+  .join("\n")}
+
 ## Lahjaideat
 ${giftLinks()}
 

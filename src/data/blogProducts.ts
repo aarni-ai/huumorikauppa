@@ -109,6 +109,43 @@ export const BLOG_PRODUCT_THEMES = {
     heading: "Hauskat joululahjat työkaverille",
     related: ["/lahjat/pikkujouluihin", "/lahjat/pomolle", "/salainen-joulupukki-lahja"],
   },
+  jouluNainen: {
+    href: "/lahjat/joululahjaksi-naiselle",
+    name: "Joululahjat naiselle",
+    heading: "Hauskat joululahjat naiselle",
+    related: ["/joululahjat", "/hauskat-lahjat-naiselle", "/joululahja-aidille", "/lahjat/siskolle"],
+  },
+  jouluAiti: {
+    href: "/joululahja-aidille",
+    name: "Joululahja äidille",
+    heading: "Hauskat joululahjat äidille",
+    related: ["/joululahja-mummolle", "/lahjat/joululahjaksi-naiselle", "/hauskat-lahjat-naiselle", "/joululahjat"],
+  },
+  jouluPappa: {
+    href: "/joululahja-papalle",
+    name: "Joululahja papalle",
+    heading: "Hauskat joululahjat papalle ja ukille",
+    related: ["/lahjat/isoisalle", "/joululahja-mummolle", "/elakelahjat", "/joululahjat"],
+  },
+  jouluElake: {
+    href: "/elakelahjat",
+    name: "Eläkelahjat",
+    heading: "Hauskat joululahjat eläkeläiselle",
+    filters: [ELAKE],
+    related: ["/joululahja-papalle", "/joululahja-mummolle", "/lahjat/harrastajalle", "/joululahjat"],
+  },
+  jouluKaveri: {
+    href: "/joululahja-kaverille",
+    name: "Joululahja kaverille",
+    heading: "Hauskat joululahjat kaverille",
+    related: ["/lahjat/alle-30-euroa", "/salainen-joulupukki-lahja", "/lahja-kaverille", "/meemipaidat"],
+  },
+  jouluVeli: {
+    href: "/lahjat/veljelle",
+    name: "Lahja veljelle",
+    heading: "Hauskat joululahjat veljelle",
+    related: ["/lahjat/joululahjaksi-miehelle", "/lahjat/siskolle", "/joululahja-teinille", "/joululahjat"],
+  },
   pikkujoulu: {
     href: "/lahjat/pikkujouluihin",
     name: "Pikkujoululahjat",
@@ -390,6 +427,12 @@ export const DEFAULT_THEME: BlogThemeKey = "tpaidat";
 
 /** Artikkelin slug -> teema. */
 export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
+  "hauska-joululahja-naiselle": "jouluNainen",
+  "joululahja-aidille-hauskat-ideat": "jouluAiti",
+  "joululahja-papalle-ja-ukille": "jouluPappa",
+  "joululahja-elakelaiselle": "jouluElake",
+  "joululahja-kaverille-alle-30-euroa": "jouluKaveri",
+  "joululahja-veljelle": "jouluVeli",
   "hauskat-joululahjaideat-miehelle-2026": "jouluMies",
   "pikkujoululahja-alle-20-euroa": "pikkujoulu",
   "lahja-miehelle-jolla-on-kaikki": "jouluKaikki",

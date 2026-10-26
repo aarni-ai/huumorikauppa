@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { blogPosts } from "./blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
+import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -62,6 +63,9 @@ function allText(post: BlogPost): string {
   const faq = (post.faq ?? []).flatMap((f) => [f.q, f.a]);
   return [post.title, post.metaTitle, post.metaDescription, post.excerpt, post.content, ...post.tags, ...faq].join("\n");
 }
+
+/** Joulun 2026 oppaat ja 26.10.2026 julkaistut lisäoppaat: samat teksti-, linkitys- ja FAQ-säännöt. */
+const KAIKKI_JOULU = [...jouluOppaat2026, ...jouluOppaat2026Lisa];
 
 function wordCount(md: string): number {
   return md
@@ -139,7 +143,20 @@ describe("blogi: joulun 2026 oppaat", () => {
     for (const post of jouluOppaat2026) expect(blogPosts).toContain(post);
   });
 
-  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: tekstisäännöt ja SEO-rajat", (_slug, post) => {
+  it("lisäoppaita on 6, ne ovat mukana blogPosts-listassa ja julkaistu 26.10.2026", () => {
+    expect(jouluOppaat2026Lisa).toHaveLength(6);
+    for (const post of jouluOppaat2026Lisa) {
+      expect(blogPosts).toContain(post);
+      expect(post.publishedAt).toBe("2026-10-26");
+    }
+  });
+
+  it("lisäoppaat eivät käytä olemassa olevien artikkelien slugeja", () => {
+    const muut = new Set(blogPosts.filter((p) => !jouluOppaat2026Lisa.includes(p)).map((p) => p.slug));
+    for (const post of jouluOppaat2026Lisa) expect(muut.has(post.slug), post.slug).toBe(false);
+  });
+
+  it.each(KAIKKI_JOULU.map((p) => [p.slug, p] as const))("%s: tekstisäännöt ja SEO-rajat", (_slug, post) => {
     const text = allText(post);
     expect(text).not.toMatch(DASHES);
     expect(text).not.toMatch(HEDGES);
@@ -151,7 +168,7 @@ describe("blogi: joulun 2026 oppaat", () => {
     expect(words).toBeLessThanOrEqual(1500);
   });
 
-  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: linkitys ja FAQ", (_slug, post) => {
+  it.each(KAIKKI_JOULU.map((p) => [p.slug, p] as const))("%s: linkitys ja FAQ", (_slug, post) => {
     const links = internalLinks(post);
     const products = new Set(links.filter((l) => l.startsWith("/tuote/")));
     const pages = new Set(links.filter((l) => !l.startsWith("/tuote/")));
@@ -168,7 +185,7 @@ describe("blogi: joulun 2026 oppaat", () => {
   });
 
   it("joulun toimituslupaus on kaikissa sama: 20.11.2026", () => {
-    for (const post of jouluOppaat2026) {
+    for (const post of KAIKKI_JOULU) {
       const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
       for (const d of dates) expect(["20.11.2026", "24.12.2026", "8.11.2026"]).toContain(d);
     }
@@ -176,13 +193,13 @@ describe("blogi: joulun 2026 oppaat", () => {
 });
 
 describe("blogi: rakenteinen data", () => {
-  it.each(jouluOppaat2026.map((p) => [p.slug, p] as const))("%s: Article + FAQPage", (_slug, post) => {
+  it.each(KAIKKI_JOULU.map((p) => [p.slug, p] as const))("%s: Article + FAQPage", (_slug, post) => {
     const ld = buildBlogPostJsonLd(post, post.faq ?? []);
     const [article, faq] = ld["@graph"] as Record<string, unknown>[];
     expect(article["@type"]).toBe("Article");
     expect(article.headline).toBe(post.title);
     expect(article.description).toBe(post.metaDescription);
-    expect(article.datePublished).toBe("2026-10-21");
+    expect(article.datePublished).toBe(jouluOppaat2026.includes(post) ? "2026-10-21" : "2026-10-26");
     expect(article.dateModified).toBe(post.updatedAt);
     expect(article.author).toMatchObject({ "@type": "Organization", name: "Huumorikauppa" });
     expect(article.publisher).toMatchObject({ "@type": "Organization", name: "Huumorikauppa", logo: { "@type": "ImageObject" } });

@@ -383,6 +383,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const needsSize = hasSizes && !selectedSize;
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
+  // Joulun takaraja vain Printify-tuotteille (AliExpress-toimituksesta ei ole dataa).
+  const jouluKategoriat = product.supplier !== "aliexpress" ? [product.category] : [];
   const hasDiscount = product.original_price && product.original_price > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
@@ -584,7 +586,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {hasDiscount && (
               <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
             )}
-            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} compact className="mt-1" />
+            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
           </div>
 
           {/* Images */}
@@ -712,7 +714,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}
                   </p>
                 )}
-                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} className="mt-2 text-sm" />
+                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
               </div>
             </div>
 

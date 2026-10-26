@@ -2,6 +2,7 @@ import { merchantSyote } from './_lib/syote.js';
 import { naytettavatTuotteet } from './_lib/tuotteet.js';
 import { heikoinKate } from './_lib/kate.js';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
+import { korjaaSyote } from './_lib/syote-korjaukset.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
 import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
@@ -77,7 +78,9 @@ export default async function handler(req, res) {
     const tuotteet = await naytettavatTuotteet();
     const kateIdlle = new Map(tuotteet.map((p) => [String(p.id), heikoinKate(p).kate]));
     const raw = merchantSyote(tuotteet);
-    const xml = lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)), (id) => kateIdlle.get(id) ?? null);
+    // Googlen maksuttomien listausten korjaukset (api/_lib/syote-korjaukset.js) omien tuoterivien variaatiotiedoilla.
+    const variaatiot = new Map(tuotteet.map((p) => [String(p.id), { slug: p.slug, variants: p.variants || {} }]));
+    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)), (id) => kateIdlle.get(id) ?? null), variaatiot);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(
