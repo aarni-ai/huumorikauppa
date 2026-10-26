@@ -1,7 +1,7 @@
 # Huumorikauppa: kasvuraportti
 
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
-kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 25.10.2026 (Printify-avain, EU-siirto, saatavuus, tilausten juurisyy).
+kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 26.10.2026 (keskiostos, Tonnin seteli, rakenteinen data, evästeet, uudet tuotteet, hinnat).
 
 ## Tilanne lyhyesti
 
@@ -25,6 +25,55 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
   digitaalinen lahjakortti, tuotesivun toimitusarvio ja "Ehtii jouluksi" -merkki (Printifyn takarajojen mukaan).
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
+
+## 26.10.: keskiostos, Tonnin seteli, rakenteinen data, evästeet, uudet tuotteet
+
+**Tuotannossa (tarkistettu curlilla kolmella User-Agentilla):**
+- /tonnin-seteli-paita: laskeutumissivu (15 tuotetta, Tonnin Seteli -tuotteet ensin, UKK, BreadcrumbList + ItemList +
+  FAQPage), etusivun nosto heti karusellin jälkeen ja linkkilohkot sivuilla /joululahjat, /joululahja-isalle ja
+  /joululahja-miehelle-jolla-on-kaikki.
+- "Sopii yhteen" -suositukset tuotesivulle, ostoskoriin ja ostoskorin sivupaneeliin (sama teksti toisessa
+  kategoriassa ensin, esim. paita -> samanteemainen huppari). Otsikko ei väitä yhteisostoja, koska ostodataa ei ole.
+  Sivupaneelin aiempi "Muut ostivat myös" poistettu samasta syystä.
+- Korjattu virhe: ostoskorin sivupaneeli ja poistumisikkuna lupasivat ilmaisen toimituksen 60 €:sta, vaikka kassa
+  veloittaa 79 €:iin asti. Nyt kaikki lukevat src/config/toimitus.ts:n ja paneelissa on "X € ilmaiseen toimitukseen".
+- Rakenteinen data: jokaisella tuotteella priceValidUntil, handlingTime + transitTime (yhteensä 3-10 arkipäivää),
+  tyypitetty seller, shippingDetails ja hasMerchantReturnPolicy; personoiduilla tuotteilla MerchantReturnNotPermitted.
+  Validointiskripti (npm run validoi:tuotedata): 481/481 tuotesivua kunnossa (ennen 0/481).
+- Evästeet, Consent Mode v2: Google Analytics, mainossignaalit ja Google-asiakasarviot latautuvat vasta suostumuksen
+  jälkeen (ennen GA latautui heti). Valinnat: hyväksy kaikki, vain välttämättömät, valitse itse (analytiikka /
+  markkinointi). "Evästeasetukset" alatunnisteessa, suostumuksen peruminen poistaa _ga-evästeet. Tarkistettu
+  headless-Chromella: ensikäynnillä ei yhtään pyyntöä Googlen seurantapalveluihin.
+- Merchant-syöte: custom_label_0 kateluokka (kate-20-30: 301, kate-alle-20: 179), custom_label_2 myydyin (Tonnin Seteli
+  -paita ja -huppari, Maailman paras äiti -huppari) / muut. Kampanjaa ei käynnistetty.
+- Asiakastekstit: "Saatat myös tykätä" -> "Lisää samasta kategoriasta", 404-sivun epävarma lause korjattu.
+
+**Nopeus:** tuotesivun esikatselu (esirenderöity sisältö näkyviin heti) julkaistiin ja peruttiin heti: tuotannossa
+tuotesivu jäi esikatselutilaan eikä ostaminen onnistunut (todettu headless-Chromella). Kauppa toimi taas
+peruutuksen jälkeen (ostoskoriin lisäys tarkistettu). Korjaus testataan erillisessä Vercel-esikatselussa ennen
+uutta julkaisua. Lighthouse mobiili tuotannossa ennen: etusivu 78 (LCP 4,0 s), tuotesivu 69 (LCP 7,1 s).
+
+**Uudet tuotteet Printifyyn (OPT OnDemand, Tšekki), tulevat kauppaan Lovablen yösynkronoinnissa:** 12 A3-julistetta
+22,90 € (kate 31,5 %, Printifyn ALV:n kanssa 14,7 %): Se oli tonnin seteli, Tonnin seteli, Olen eläkkeellä, 60v kokenut
+ei vanha, 100 % helsinkiläistä / tamperelaista / turkulaista / oululaista verta, 100 % eläkeläinen, Eläkkeellä
+aamuherätys vapaaehtoinen, 40 vuotta töitä, 60v takuu mennyt; sekä Se oli tonnin seteli -tarra 11,90 € (33,2 %).
+Paidat, hupparit, mukit, koristeet ja kassit eivät täytä 30 %:n katetta tai EU-vaatimusta nykyhinnoilla
+(data/uudet-tuotteet/raportti-2026-10-26.md, haara oma-tausta).
+
+**Oma tausta (haara oma-tausta, testisivu huumorikauppa-five.vercel.app):** katesääntö estää myynnin alle 20 %:n
+katteella; paketit ja ensitilauskoodi vain, jos kate pysyy 30 %:ssa (nykyhinnoilla ei yksikään, joten molemmat
+rakennettu mutta pois päältä). Sähköposti: uutiskirje suostumuksella, hylätyn ostoskorin muistutus 1 h ja 24 h
+(vain suostumuksella), arviopyyntö 7 päivää toimituksesta, peruutuslinkki ja List-Unsubscribe kaikissa. Valvonta:
+on hold -tilaukset uudelleen tuotantoon, hälytys info@seniorituki.fi:hin heti ja jos tilaus ei ole tuotannossa 2 h
+jälkeen, seurantalinkki asiakkaalle, päivän yhteenveto klo 7 Suomen aikaa (eilinen myynti, kate euroina, jumissa
+olevat, kuukauden kate vs 3 000 €).
+
+**Hinnat:** ehdotus KATTEET.md:ssä (haara oma-tausta): kilpailijoiden korkein vastaava hinta t-paita 24,99 €, huppari
+51,90 €. T-paita 24,90 €: kate 28,5 % ilman Printifyn ALV:tä, 11,0 % ALV:n kanssa. Huppari 51,90 €: 13,6 % / -7,8 %.
+ALV-tunnus Printifyyn on suurin yksittäinen katteen parannus.
+
+**Niinan tilaus:** luotu Printifyyn (6adf04009ca30bc3fe08c777, 60v kokenut ei vanha T-Paita, M / Graphite Heather),
+ei lähetetty tuotantoon: tuote 10,10 € + toimitus 10,39 € + Printifyn ALV 25,5 % = noin 25,71 € > 25 €:n raja.
 
 ## 22.-25.10.: Printify-avain, saatavuus, EU-siirto ja tilaukset
 
@@ -235,3 +284,7 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 23.-25.10. | EU-siirto: 557 tuotetta (279 t-paitaa, 278 mukia) OPT OnDemandille. | oma-tausta (data/eu-siirto-*.json) | T-paitojen kate 11 % -> 27 %, nopeampi toimitus | Hinnoittelu 40 %:n katteeseen (omistaja) |
 | 25.10. | Lovable-synkronoinnin kaksoiskappaleet ja testikopiot piiloon, 301 perusriviin. | main 29c2b69 | Ei kaksoislistauksia eikä testituotteita kaupassa | |
 | 25.10. | Saatavuus Printifyn mukaan: 164 yhdistelmää 32 tuotteessa piiloon. | main 6d4a543 | Kaikki näkyvät yhdistelmät tilattavissa | Uusi ajo Lovable-synkronoinnin jälkeen |
+| 26.10. | Tonnin seteli -laskeutumissivu, etusivun ja joulusivujen nostot, Sopii yhteen -suositukset, ilmaisen toimituksen palkki sivupaneeliin (60 €-virhe korjattu). | main 2982658 | Keskiostos, myydyimmän teeman näkyvyys | Seuraa keskiostosta |
+| 26.10. | Rakenteinen data (481/481 validi), Consent Mode v2, syötteen kateluokat ja myydyimmät. | main ba19d66-815c007 | Search Consolen tuotevirheet, GDPR | Search Consolen tarkistus 1-2 viikon päästä |
+| 26.10. | Nopeus: esikatselu julkaistu ja peruttu (tuotesivu jäi esikatseluun). | main f85e532 (peruutus) | Ei vaikutusta | Korjaus testataan esikatselussa |
+| 26.10. | 13 uutta tuotetta Printifyyn (12 julistetta, 1 tarra), kate 31-33 %. | oma-tausta 4800fae | Uusia tuotteita yli 30 %:n katteella | Tarkista hinnat ja kategoria synkronoinnin jälkeen |
