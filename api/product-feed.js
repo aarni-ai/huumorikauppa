@@ -1,11 +1,16 @@
 const SUPABASE_FEED_URL =
   'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
+import { korjaaSyote, haeTuotteet } from './_lib/syote-korjaukset.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
 import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
 
 const SITE = 'https://huumorikauppa.fi';
+const SUPABASE_URL =
+  process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://exhzrrbvipqwhjhjgnxs.supabase.co';
+const SUPABASE_KEY =
+  process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
 // Any host that may serve a product image. Everything matched here gets
 // rewritten to /api/img?u=... so Googlebot only ever sees our domain.
@@ -69,9 +74,11 @@ export function dropHiddenItems(xml) {
 
 export default async function handler(req, res) {
   try {
-    const upstream = await fetch(SUPABASE_FEED_URL, {
-      headers: { 'User-Agent': 'huumorikauppa-feed-proxy' },
-    });
+    // Variaatiotiedot (värit, koot) vaatteiden color/size-kenttiin rinnakkain syötteen kanssa; virheessä tyhjä.
+    const [upstream, tuotteet] = await Promise.all([
+      fetch(SUPABASE_FEED_URL, { headers: { 'User-Agent': 'huumorikauppa-feed-proxy' } }),
+      haeTuotteet({ url: SUPABASE_URL, key: SUPABASE_KEY }),
+    ]);
     if (!upstream.ok) {
       return res
         .status(502)
@@ -80,7 +87,9 @@ export default async function handler(req, res) {
     const raw = await upstream.text();
     // Mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts): pudotetaan Drinkware > Mugs -tuotteet.
     // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki): api/_lib/syote-lisakentat.js
-    const xml = lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)));
+    // Googlen maksuttomien listausten korjaukset (kategoriat, otsikot, vaatteiden color/size/gender/age_group):
+    // api/_lib/syote-korjaukset.js, tarkistus scripts/validoi-syote.mjs.
+    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw))), tuotteet);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(
