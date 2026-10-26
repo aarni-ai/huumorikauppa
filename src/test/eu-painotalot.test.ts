@@ -39,11 +39,13 @@ describe("säännöt ja nimiresoluutio", () => {
   it("t-paita siirtyy Monster Digitalilta ja Printify Choicelta", () => {
     expect(valitseSaanto("t-paidat", "Monster Digital")?.painotalo).toBe("OPT OnDemand");
     expect(valitseSaanto("t-paidat", "Printify Choice")?.blueprint).toMatchObject({ sama: true });
-    expect(valitseSaanto("hupparit", "Printify Choice")).toBeNull();
+    expect(valitseSaanto("hupparit", "Printify Choice")).toMatchObject({ painotalo: "Textildruck Europa", blueprint: { sama: true }, ohitaPaikat: ["neck"] });
+    expect(valitseSaanto("t-paidat", "SPOKE Custom Products")?.blueprint.sisaltaa).toEqual(["ceramic mug", "(eu)"]);
+    expect(valitseSaanto("mukit", "Harrier")?.painotalo).toBe("Textildruck Europa");
     expect(valitseSaanto("t-paidat", "SwiftPOD")).toBeNull();
     expect(valitseSaanto("mukit", "Anything")?.painotalo).toBe("OPT OnDemand");
     expect(valitseSaanto("hupparit", "Monster Digital")).toBeNull();
-    expect(SIIRTOSAANNOT.map((s) => s.kategoria)).toEqual(["mukit", "t-paidat", "t-paidat", "bodyt", "koristeet", "peitot", "seinataulut"]);
+    expect(SIIRTOSAANNOT.map((s) => s.kategoria)).toEqual(["mukit", "mukit", "t-paidat", "t-paidat", "t-paidat", "hupparit", "bodyt", "koristeet", "peitot", "seinataulut"]);
   });
   it("painotalo: osamerkkijono, täsmällinen nimi ratkaisee moniselitteisyyden", () => {
     expect(valitsePainotalo(painotalot, "opt ondemand")).toMatchObject({ ok: true, painotalo: { id: 30 } });
@@ -104,6 +106,23 @@ describe("variantit", () => {
     const { yhdistetyt, pudotetut } = yhdistaVariantit(vanhat, uudet);
     expect(yhdistetyt.map((y) => [y.vanhaId, y.uusiId, y.price, y.is_enabled])).toEqual([[1, 101, 3490, true], [2, 102, 3590, true], [4, 103, 3490, false]]);
     expect(pudotetut).toEqual([{ vanhaId: 3, title: "Sport Grey / M", is_enabled: true }]);
+  });
+  it("kaksi samannimistä väriä (Gildan 18500 Ash): käytössä oleva saa kohteen, sama variant-id ensin", () => {
+    const vanhat2 = [
+      { id: 33345, title: "Ash / S", price: 4990, is_enabled: false },
+      { id: 32870, title: "Ash / S", price: 4990, is_enabled: true },
+    ];
+    const r = yhdistaVariantit(vanhat2, [{ id: 32870, title: "Ash / S", options: { color: "Ash", size: "S" } }]);
+    expect(r.yhdistetyt.map((y) => [y.vanhaId, y.uusiId, y.is_enabled])).toEqual([[32870, 32870, true]]);
+    expect(r.pudotetut).toEqual([{ vanhaId: 33345, title: "Ash / S", is_enabled: false }]);
+    // Eri blueprint (eri id:t): käytössä oleva nimellä ennen pois käytöstä olevaa.
+    const r2 = yhdistaVariantit(vanhat2, [{ id: 900, title: "Ash / S", options: { color: "Ash", size: "S" } }]);
+    expect(r2.yhdistetyt.map((y) => [y.vanhaId, y.uusiId])).toEqual([[32870, 900]]);
+  });
+  it("vauvakoot, Babybugz-värit ja mukin Glossy", () => {
+    expect(variantinOsat({ title: "Heather / 6M" })).toEqual(variantinOsat({ options: { size: "3-6M", color: "Heather Grey Melange" } }));
+    expect(variantinOsat({ title: "Pink / 18M" })).toEqual(variantinOsat({ options: { size: "12-18M", color: "Powder Pink" } }));
+    expect(variantinOsat({ title: "11oz / Black" })).toEqual(variantinOsat({ title: "11oz / Black / Glossy" }));
   });
   it("ainoa variantti yhdistetään vaikka nimi eroaa", () => {
     const r = yhdistaVariantit([{ id: 5, title: "Round", price: 2490, is_enabled: true }], [{ id: 77, title: "Circle", options: { shape: "Circle" } }]);

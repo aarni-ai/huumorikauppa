@@ -30,11 +30,22 @@ export function normalisoi(s) {
  * blueprint.suosi: jos ehdokkaita on useita, suositaan ensimmäistä osumaa näistä (vanhan tuotteen koko ensin).
  */
 export const SIIRTOSAANNOT = [
+  // 26.10.2026: Harrierin (GB) Accent-muki -> Textildruck Europan Two-Tone 11oz (kulu 6,90 + 10,39 € vs 7,91 + 10,39 €).
+  // Ennen yleistä mukisääntöä, koska ensimmäinen osuva sääntö valitaan.
+  { kategoria: "mukit", lahdePainotalo: "Harrier", painotalo: "Textildruck Europa", blueprint: { sisaltaa: ["two-tone coffee mug"] } },
   { kategoria: "mukit", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["ceramic mug", "(eu)"], suosi: ["{koko}", "11oz"] } },
   { kategoria: "t-paidat", lahdePainotalo: "Monster Digital", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["softstyle", "64000"], suosi: ["unisex"] } },
   // 22.10.2026: Printify Choice (US) -paidat samalle blueprintille OPT OnDemandille (Suomeen halvempi kulu + toimitus,
-  // KATTEET.md: kate noin 10 % -> 24 % hinnalla 24,90 €). Choice-hupparit jäävät: Textildruck Europalla kate heikompi.
-  { kategoria: "t-paidat", lahdePainotalo: "Printify Choice", painotalo: "OPT OnDemand", blueprint: { sama: true, sisaltaa: [] } },
+  // KATTEET.md: kate noin 10 % -> 24 % hinnalla 24,90 €).
+  // 26.10.2026: Choicen Garment-Dyed-paita (706) -> Softstyle 64000 kuten Monster Digitalilla (OPT:lla ei 706:ta).
+  { kategoria: "t-paidat", lahdePainotalo: "Printify Choice", painotalo: "OPT OnDemand", blueprint: { sama: true, sisaltaa: ["softstyle", "64000"], suosi: ["unisex"] } },
+  // 26.10.2026: SPOKE-mukit, joiden nimessä "tee" (esim. "teen") luokittuu t-paidaksi, ovat 11oz-mukeja.
+  { kategoria: "t-paidat", lahdePainotalo: "SPOKE", painotalo: "OPT OnDemand", blueprint: { sisaltaa: ["ceramic mug", "(eu)"], suosi: ["{koko}", "11oz"] } },
+  // 26.10.2026: Printify Choice -hupparit (Gildan 18500, reititysverkko, voi painaa Yhdysvalloissa) samalle
+  // blueprintille Textildruck Europalle (DE). Mitattu (KATTEET.md "EU-kiinteät painotalot"): etupaino S-2XL kulu
+  // 24,77-25,48 € + toimitus 10,89 € vs Choice 21,58-23,77 € + 15,59 €; jokainen yhdistetty variantti vähintään yhtä
+  // hyvä. Kaulapaino maksaa Textildruckilla 2,78 € lisää (Choicella ei), jolloin kate heikkenee yli 1 %-yks.: ohitetaan.
+  { kategoria: "hupparit", lahdePainotalo: "Printify Choice", painotalo: "Textildruck Europa", blueprint: { sama: true, sisaltaa: [] }, ohitaPaikat: ["neck"] },
   { kategoria: "bodyt", painotalo: "Textildruck Europa", blueprint: { sisaltaa: ["babybugz", "bz10"] } },
   { kategoria: "koristeet", painotalo: "Harrier", blueprint: { sisaltaa: ["ceramic ornament"] } },
   { kategoria: "peitot", painotalo: "MWW On Demand", blueprint: { sama: true, sisaltaa: ["blanket"] } },
@@ -113,7 +124,12 @@ export function vaihtoehto(s) {
   let t = normalisoi(s).replace(/\bgray\b/g, "grey");
   const nb = t.match(/^nb \((.+)\)$/);
   if (nb) t = nb[1];
-  return { xxl: "2xl", xxxl: "3xl", xxxxl: "4xl", newborn: "0-3m", nb: "0-3m" }[t] || t;
+  // Vauvakoot: SwiftPOD "6M" = Babybugz "3-6M" jne. Värit: Babybugzin nimet SwiftPODin vastaaville. Mukin "Glossy"
+  // (Textildruck Europan Two-Tone) on ainoa pintavaihtoehto, joten se ei erota variantteja.
+  return {
+    xxl: "2xl", xxxl: "3xl", xxxxl: "4xl", newborn: "0-3m", nb: "0-3m", "6m": "3-6m", "12m": "6-12m", "18m": "12-18m",
+    "heather grey melange": "heather", "powder pink": "pink", glossy: "",
+  }[t] ?? t;
 }
 
 /** Variantin vaihtoehdot normalisoituna joukkona: katalogivariantin options-objekti tai "Black / M" -nimi. */
@@ -133,22 +149,36 @@ const avain = (osat) => osat.join("|");
  */
 export function yhdistaVariantit(vanhat, uudet) {
   const uusiAvaimella = new Map();
+  const uusiIdlla = new Map();
   for (const u of uudet || []) {
     const k = avain(variantinOsat(u));
     if (!uusiAvaimella.has(k)) uusiAvaimella.set(k, u);
+    uusiIdlla.set(Number(u.id), u);
+  }
+  // Sama nimi voi esiintyä vanhassa tuotteessa kahdesti (esim. Gildan 18500:n kaksi "Ash"-väriä, joista vain toinen on
+  // käytössä). Järjestys: 1) sama variant-id ja samat vaihtoehdot (sama blueprint), 2) käytössä olevat nimellä,
+  // 3) pois käytöstä olevat nimellä. Näin pois käytöstä oleva kaksoisnimi ei vie käytössä olevan varianttia.
+  const kaytetyt = new Set();
+  const pari = new Map(); // vanha-indeksi -> uusi
+  const lista = vanhat || [];
+  lista.forEach((v, i) => {
+    const u = uusiIdlla.get(Number(v.id));
+    if (u && !kaytetyt.has(u.id) && avain(variantinOsat(u)) === avain(variantinOsat(v))) { kaytetyt.add(u.id); pari.set(i, u); }
+  });
+  for (const vaihe of [true, false]) {
+    lista.forEach((v, i) => {
+      if (pari.has(i) || (v.is_enabled !== false) !== vaihe) return;
+      const u = uusiAvaimella.get(avain(variantinOsat(v)));
+      if (u && !kaytetyt.has(u.id)) { kaytetyt.add(u.id); pari.set(i, u); }
+    });
   }
   const yhdistetyt = [];
   const pudotetut = [];
-  const kaytetyt = new Set();
-  for (const v of vanhat || []) {
-    const u = uusiAvaimella.get(avain(variantinOsat(v)));
-    if (u && !kaytetyt.has(u.id)) {
-      kaytetyt.add(u.id);
-      yhdistetyt.push({ vanhaId: v.id, uusiId: u.id, title: v.title, uusiTitle: u.title, price: v.price, is_enabled: v.is_enabled !== false });
-    } else {
-      pudotetut.push({ vanhaId: v.id, title: v.title, is_enabled: v.is_enabled !== false });
-    }
-  }
+  lista.forEach((v, i) => {
+    const u = pari.get(i);
+    if (u) yhdistetyt.push({ vanhaId: v.id, uusiId: u.id, title: v.title, uusiTitle: u.title, price: v.price, is_enabled: v.is_enabled !== false });
+    else pudotetut.push({ vanhaId: v.id, title: v.title, is_enabled: v.is_enabled !== false });
+  });
   const kaytossa = (vanhat || []).filter((v) => v.is_enabled !== false);
   if (!yhdistetyt.length && kaytossa.length === 1 && (uudet || []).length === 1) {
     const v = kaytossa[0], u = uudet[0];
