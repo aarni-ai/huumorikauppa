@@ -5,8 +5,9 @@
  * - Listat: data/uudet-tuotteet/*.json ({ nimi, enimmaishinta, oletukset, tuotteet: [...] }), parseLista.
  * - Kohde: blueprint nimellä katalogista, painotalo EU-maasta (eu-painotalot.mjs), variantit pyydetyistä väreistä ja
  *   koista, ratkaiseKohde.
- * - Hinta: pienin x,90 €, jolla nettokate >= 40 % (api/_lib/kate.js) suunnitellulla toimitusmaksulla, ei koskaan alle
- *   kategorian pohjahinnan (printify-sync.ts KATEGORIAN_POHJAHINNAT), hinnoittele.
+ * - Hinta: pienin x,90 €, jolla nettokate >= katerajan (oletus 40 %, api/_lib/kate.js), hinnoittele. Hintamalli
+ *   (HINTAMALLIT): "suunniteltu" = oma tausta (5,90 € / 60 €, kategorian pohjahinnat printify-sync.ts), "live" = nykyinen
+ *   kauppa (6,90 € / 79 €, t-paidat aina 24,90 € ja hupparit 49,90 €, muut Printifyn hinnalla).
  * - Idempotenssi: data/uudet-tuotteet/luotu-<pvm>.json, avain = tyyppi + teksti.
  */
 import { readdirSync, readFileSync, existsSync } from "node:fs";
@@ -16,12 +17,26 @@ import {
 } from "./eu-painotalot.mjs";
 import { laskeKate, KATE_RAJA } from "../../api/_lib/kate.js";
 import { onPiilotettuTuote } from "../../api/_lib/piilotetut.js";
+import { catalogVariantUnavailable } from "../printify-saatavuus.mjs";
 import { KATEGORIAN_POHJAHINNAT, buildProductRow } from "../../supabase/functions/_shared/printify-sync.ts";
 
 /** Suunniteltu toimitusmaksu (oletus). Kauppa perii nyt 6,90 € ja ilmainen toimitus alkaa 79 €:sta (api/_lib/vakiot.js). */
 export const SUUNNITELTU_TOIMITUSMAKSU = 5.9;
 export const SUUNNITELTU_ILMAINEN_RAJA = 60;
 export { KATEGORIAN_POHJAHINNAT, KATE_RAJA };
+
+/**
+ * Hintamallit. live = nykyinen kauppa (Lovable-tausta, todennettu 26.10.2026): synkronoi kaikki Printify-tuotteet
+ * öisin aktiivisina; t-paidat aina 24,90 € ja hupparit 49,90 € Printifyn hinnasta riippumatta, muut kategoriat
+ * Printifyn hinnalla (pienin käytössä oleva variantti), toimitusmaksu 6,90 € alle 79 €:n. suunniteltu = oma tausta.
+ */
+export const HINTAMALLIT = {
+  suunniteltu: { nimi: "suunniteltu", toimitusmaksu: SUUNNITELTU_TOIMITUSMAKSU, ilmainenRaja: SUUNNITELTU_ILMAINEN_RAJA, pohjahinnat: KATEGORIAN_POHJAHINNAT, kiinteat: {} },
+  live: { nimi: "live", toimitusmaksu: 6.9, ilmainenRaja: 79, pohjahinnat: {}, kiinteat: { "t-paidat": 24.9, hupparit: 49.9 } },
+};
+
+/** Printifyn arvonlisävero tuotekulusta ja toimituksesta, jos tilillä ei ole ALV-tunnusta. */
+export const PRINTIFY_ALV = 0.255;
 
 const saanto = (kategoria) => SIIRTOSAANNOT.find((s) => s.kategoria === kategoria && !s.lahdePainotalo) || SIIRTOSAANNOT.find((s) => s.kategoria === kategoria);
 
@@ -48,7 +63,8 @@ export const TUOTETYYPIT = {
   },
   tarra: {
     nimi: "Tarra", kategoria: "tarrat", tagi: "Tarra",
-    blueprint: { nimi: "Kiss-Cut Stickers" },
+    // Kiss-Cut Stickersillä ei ole EU-painotaloa (26.10.2026); Square Vinyl Stickers tekee OPT OnDemand (CZ).
+    blueprint: { nimet: ["Kiss-Cut Stickers", "Square Vinyl Stickers"] },
     suositut: [],
     oletusVarit: [], oletusKoot: ["3x3", "4x4"], tekstivari: "#111111",
     asettelu: { leveys: 0.88, korkeus: 0.8, yla: null }, oletusAlue: { width: 1200, height: 1200 },
@@ -59,6 +75,32 @@ export const TUOTETYYPIT = {
     suositut: [saanto("koristeet")?.painotalo || "Harrier"],
     oletusVarit: [], oletusKoot: ["Circle|Round"], tekstivari: "#111111",
     asettelu: { leveys: 0.64, korkeus: 0.5, yla: null }, oletusAlue: { width: 1200, height: 1200 },
+  },
+  juliste: {
+    nimi: "Juliste", kategoria: "seinataulut", tagi: "Juliste",
+    blueprint: { nimi: "Posters (EU)" },
+    suositut: ["OPT OnDemand"],
+    oletusVarit: ["Matte"], oletusKoot: ["11.7x16.5"], tekstivari: "#111111",
+    asettelu: { leveys: 0.8, korkeus: 0.55, yla: null }, oletusAlue: { width: 3510, height: 4950 },
+  },
+  kassi: {
+    nimi: "Kangaskassi", kategoria: "laukut", tagi: "Kangaskassi",
+    blueprint: { nimet: ["Organic Cotton Tote Bag", "Cotton Tote Bag", "Cotton Tote"] },
+    suositut: ["Textildruck Europa"],
+    oletusVarit: ["Black"], oletusKoot: [],
+    asettelu: { leveys: 0.78, korkeus: 0.45, yla: null }, oletusAlue: { width: 2953, height: 3543 },
+  },
+  magneetti: {
+    nimi: "Magneetti", kategoria: null, tagi: "Magneetti",
+    blueprint: { nimet: ["Magnets", "Die-Cut Magnets", "Square Magnet", "Porcelain Magnet, Square"] },
+    suositut: [], oletusVarit: [], oletusKoot: [], tekstivari: "#111111",
+    asettelu: { leveys: 0.8, korkeus: 0.6, yla: null }, oletusAlue: { width: 1200, height: 1200 },
+  },
+  kangastaulu: {
+    nimi: "Kangastaulu", kategoria: "seinataulut", tagi: "Kangastaulu",
+    blueprint: { nimet: ["Stretched Canvas", "Matte Canvas, Stretched, 0.75\"", "Canvas Stretched, 0.75\"", "Classic Canvas"] },
+    suositut: [], oletusVarit: [], oletusKoot: [], tekstivari: "#111111",
+    asettelu: { leveys: 0.8, korkeus: 0.55, yla: null }, oletusAlue: { width: 3600, height: 4800 },
   },
 };
 
@@ -131,9 +173,12 @@ export function parseLista(json, { tiedosto = "lista" } = {}) {
     if (rivit.length > 6) omat.push("enintään 6 riviä");
     if (rivit.some((r) => r.length > 40)) omat.push("rivi yli 40 merkkiä");
     const tyyppi = TUOTETYYPIT[e.tyyppi];
-    if (!tyyppi) omat.push(`tuntematon tyyppi "${e.tyyppi}" (t-paita, huppari, tarra, koriste)`);
+    if (!tyyppi) omat.push(`tuntematon tyyppi "${e.tyyppi}" (${Object.keys(TUOTETYYPIT).join(", ")})`);
     const hinta = lukuEuroina(e.hinta);
     if (Number.isNaN(hinta)) omat.push(`hinta "${e.hinta}" ei ole luku`);
+    // Tuotekohtainen enimmäishinta (kilpailijoiden vertailuhinta) ohittaa listan enimmäishinnan.
+    const omaEnimmais = lukuEuroina(e.enimmaishinta);
+    if (Number.isNaN(omaEnimmais)) omat.push(`enimmaishinta "${e.enimmaishinta}" ei ole luku`);
     const listaksi = (x) => (Array.isArray(x) ? x : x ? [x] : []).map((s) => String(s).trim()).filter(Boolean);
     const varit = e.varit === undefined ? tyyppi?.oletusVarit || [] : listaksi(e.varit);
     const koot = e.koot === undefined ? tyyppi?.oletusKoot || [] : listaksi(e.koot);
@@ -153,7 +198,7 @@ export function parseLista(json, { tiedosto = "lista" } = {}) {
     }
     if (VAARA_VAITE.test(kuvaus)) omat.push("kuvauksessa väite, jonka kauppa poistaa (painopaikka, 60 €, muki)");
     if (otsikko.length > 140) omat.push("otsikko yli 140 merkkiä");
-    if (tyyppi && otsikko) {
+    if (tyyppi && otsikko && tyyppi.kategoria) {
       const k = kaupanKategoria({ title: otsikko, tags: tagit, description: kuvaus });
       if (k !== tyyppi.kategoria) omat.push(`kauppa luokittelisi otsikon "${otsikko}" kategoriaan ${k ?? "ei mitään"}, ei ${tyyppi.kategoria}`);
       if (onPiilotettuTuote({ name: otsikko, slug: slugiksi(otsikko), category: k })) omat.push("otsikko osuu piilotettuun kategoriaan (muki)");
@@ -162,7 +207,10 @@ export function parseLista(json, { tiedosto = "lista" } = {}) {
     if (avain && avaimet.has(avain)) omat.push("sama teksti ja tyyppi on listassa jo aiemmin");
     if (omat.length) { virheet.push(...omat.map((v) => `${nimi} (${rivit.join(" / ") || "?"}): ${v}`)); return; }
     avaimet.add(avain);
-    tuotteet.push({ avain, rivit, teksti: rivit.join(" / "), tyyppi: e.tyyppi, varit, koot, hinta, tagit, kategoria, otsikko, kuvaus, lista: lista.nimi || tiedosto });
+    tuotteet.push({
+      avain, rivit, teksti: rivit.join(" / "), tyyppi: e.tyyppi, varit, koot, hinta, tagit, kategoria, otsikko, kuvaus,
+      lista: lista.nimi || tiedosto, enimmaishinta: omaEnimmais ?? enimmaishinta ?? null,
+    });
   });
   return { nimi: lista.nimi || tiedosto, enimmaishinta: enimmaishinta ?? null, tuotteet, virheet };
 }
@@ -180,6 +228,11 @@ function kate(hintaSentit, kuluSentit, toimitusSentit, asetukset) {
   return laskeKate(tuote, "v", asetukset);
 }
 
+/** Kate, kun Printify veloittaa lisäksi ALV:n (25,5 %) tuotekulusta ja toimituksesta (ei ALV-tunnusta). */
+export function kateAlvilla(hintaSentit, kuluSentit, toimitusSentit, asetukset) {
+  return kate(hintaSentit, Math.round(kuluSentit * (1 + PRINTIFY_ALV)), Math.round(toimitusSentit * (1 + PRINTIFY_ALV)), asetukset);
+}
+
 /**
  * Hinta yhdelle tuotteelle (kaikki variantit samaan hintaan, kuten kaupan products.price). kulut = { variantId: sentit }
  * (suurin kulu ratkaisee), toimitusSentit = Printifyn Suomen toimitus ensimmäiselle kappaleelle.
@@ -189,36 +242,45 @@ function kate(hintaSentit, kuluSentit, toimitusSentit, asetukset) {
  */
 export function hinnoittele({
   kulut, toimitusSentit, kategoria, toimitusmaksu = SUUNNITELTU_TOIMITUSMAKSU, ilmainenRaja = SUUNNITELTU_ILMAINEN_RAJA,
-  enimmaishinta = null, ohitushinta = null, pohjahinnat = KATEGORIAN_POHJAHINNAT,
+  enimmaishinta = null, ohitushinta = null, pohjahinnat = KATEGORIAN_POHJAHINNAT, kateraja = KATE_RAJA, kiinteat = {},
 }) {
   const arvot = Object.values(kulut || {}).filter((c) => typeof c === "number" && c >= 0);
   if (!arvot.length || typeof toimitusSentit !== "number") return { ok: false, syy: "kulut tai toimitus tuntemattomat" };
   const kulu = Math.max(...arvot);
-  const pohja = pohjahinnat[kategoria] ?? 0;
   const asetukset = { toimitusmaksu, ilmainenRaja };
-  const kelpaa = (c) => c >= Math.round(pohja * 100) && kate(c, kulu, toimitusSentit, asetukset).sallittu;
+  const rajaTxt = `${Math.round(kateraja * 100)} %:n`;
+  const katteet = (c) => {
+    const k = kate(c, kulu, toimitusSentit, asetukset);
+    const nyt = kate(c, kulu, toimitusSentit, {});
+    const alv = kateAlvilla(c, kulu, toimitusSentit, asetukset);
+    return { kate: k.kate, nettokate: k.nettokate, kateNyt: nyt.kate, nettokateNyt: nyt.nettokate, kateAlv: alv.kate, nettokateAlv: alv.nettokate };
+  };
+  // Kiinteä kauppahinta (live: t-paidat, hupparit): Printifyn hinnalla ei ole merkitystä, kate lasketaan kauppahinnalla.
+  if (kiinteat[kategoria] != null) {
+    const c = Math.round(kiinteat[kategoria] * 100);
+    const t = { hinta: c / 100, hintaSentit: c, pohja: kiinteat[kategoria], kulu, toimitusSentit, peruste: "kaupan kiinteä hinta", varoitus: null, ...katteet(c) };
+    if (t.kate >= kateraja) return { ok: true, ...t };
+    return { ok: false, eiToteutettavissa: true, ...t, syy: `kaupan kiinteällä hinnalla ${euroa(c / 100)} kate ${prosenttia(t.kate)} < ${rajaTxt} raja` };
+  }
+  const pohja = pohjahinnat[kategoria] ?? 0;
+  const kelpaa = (c) => c >= Math.round(pohja * 100) && kate(c, kulu, toimitusSentit, asetukset).kate >= kateraja;
   let hinta = null;
   for (let c = ylosX90(pohja); c <= 99990; c += 100) if (kelpaa(c)) { hinta = c; break; }
-  if (hinta == null) return { ok: false, syy: "40 %:n katetta ei saavuteta alle 999,90 €:n" };
-  let peruste = hinta === ylosX90(pohja) ? "kategorian pohjahinta" : `${Math.round(KATE_RAJA * 100)} %:n kate`;
+  if (hinta == null) return { ok: false, syy: `${rajaTxt} katetta ei saavuteta alle 999,90 €:n` };
+  let peruste = hinta === ylosX90(pohja) && pohja > 0 ? "kategorian pohjahinta" : `${rajaTxt} kate`;
   let varoitus = null;
   if (ohitushinta != null) {
     const o = Math.round(ohitushinta * 100);
     if (kelpaa(o)) { hinta = o; peruste = "listan hinta"; }
     else varoitus = `listan hinta ${euroa(ohitushinta)} on alle ${o < Math.round(pohja * 100) ? "kategorian pohjahinnan" : "katerajan"}, käytetään ${euroa(hinta / 100)}`;
   }
-  const k = kate(hinta, kulu, toimitusSentit, asetukset);
-  const nyt = kate(hinta, kulu, toimitusSentit, {});
-  const tulos = {
-    ok: true, hinta: hinta / 100, hintaSentit: hinta, pohja, kulu, toimitusSentit, peruste, varoitus,
-    kate: k.kate, nettokate: k.nettokate, kateNyt: nyt.kate, nettokateNyt: nyt.nettokate,
-  };
+  const tulos = { ok: true, hinta: hinta / 100, hintaSentit: hinta, pohja, kulu, toimitusSentit, peruste, varoitus, ...katteet(hinta) };
   if (enimmaishinta != null && hinta > Math.round(enimmaishinta * 100)) {
     return {
       ...tulos, ok: false, eiToteutettavissa: true,
       syy: pohja > enimmaishinta
         ? `kategorian ${kategoria} pohjahinta ${euroa(pohja)} on yli listan enimmäishinnan ${euroa(enimmaishinta)}`
-        : `40 %:n kate vaatii ${euroa(hinta / 100)}, yli listan enimmäishinnan ${euroa(enimmaishinta)}`,
+        : `${rajaTxt} kate vaatii ${euroa(hinta / 100)}, yli enimmäishinnan ${euroa(enimmaishinta)}`,
     };
   }
   return tulos;
@@ -376,6 +438,10 @@ export class LiveKatalogi {
 /** Blueprint-ehdokkaat tyypin säännöllä (tarkka nimi ensin). */
 export function blueprintEhdokkaat(blueprintit, saanto) {
   const lista = blueprintit || [];
+  if (saanto.nimet) {
+    // Useampi tarkka nimi järjestyksessä (esim. tarra: Kiss-Cut, sitten EU:ssa tehtävä Square Vinyl).
+    return saanto.nimet.flatMap((nimi) => lista.filter((b) => normalisoi(b.title) === normalisoi(nimi)));
+  }
   if (saanto.nimi) {
     const n = normalisoi(saanto.nimi);
     const tarkat = lista.filter((b) => normalisoi(b.title) === n);
@@ -383,6 +449,25 @@ export function blueprintEhdokkaat(blueprintit, saanto) {
   }
   const osat = (saanto.sisaltaa || []).map(normalisoi);
   return osat.length ? lista.filter((b) => osat.every((o) => blueprintTeksti(b).includes(o))) : [];
+}
+
+/**
+ * Suomen toimitus (1. kappale, sentit) valituille varianteille: profiili, jonka variant_ids sisältää variantin ja maissa
+ * on FI (muuten REST_OF_THE_WORLD); suurin valituista. Profiilit ilman variant_ids-listaa: eu-painotalot.suomenToimitus.
+ */
+export function suomenToimitusVarianteille(shipping, variantIds = []) {
+  const profiilit = shipping?.profiles || [];
+  // Tyhjä tai puuttuva variant_ids = profiili koskee kaikkia variantteja.
+  if (!variantIds.length || !profiilit.some((p) => Array.isArray(p.variant_ids) && p.variant_ids.length)) return suomenToimitus(shipping);
+  let suurin = null;
+  for (const id of variantIds) {
+    const omat = profiilit.filter((p) => (p.variant_ids || []).map(Number).includes(Number(id)));
+    const p = omat.find((x) => (x.countries || []).includes("FI")) || omat.find((x) => (x.countries || []).includes("REST_OF_THE_WORLD"));
+    const c = p?.first_item?.cost;
+    if (typeof c !== "number") return null; // jokin variantti ei toimitu Suomeen
+    suurin = suurin == null ? c : Math.max(suurin, c);
+  }
+  return suurin;
 }
 
 /**
@@ -395,7 +480,7 @@ export async function ratkaiseKohde(tyyppiAvain, katalogi, { varit = [], koot = 
   const bpt = ohitus.blueprint
     ? kaikki.filter((b) => String(b.id) === String(ohitus.blueprint))
     : blueprintEhdokkaat(kaikki, tyyppi.blueprint).slice(0, 6);
-  if (!bpt.length) return { ok: false, syy: `blueprintia ei löydy (${ohitus.blueprint ? `id ${ohitus.blueprint}` : tyyppi.blueprint.nimi || tyyppi.blueprint.sisaltaa.join(", ")})` };
+  if (!bpt.length) return { ok: false, syy: `blueprintia ei löydy (${ohitus.blueprint ? `id ${ohitus.blueprint}` : tyyppi.blueprint.nimi || (tyyppi.blueprint.nimet || tyyppi.blueprint.sisaltaa).join(", ")})` };
   const ehdokkaat = [], hylatyt = [];
   for (const bp of bpt) {
     let tarjoajat = await katalogi.blueprintinPainotalot(bp.id);
@@ -408,16 +493,17 @@ export async function ratkaiseKohde(tyyppiAvain, katalogi, { varit = [], koot = 
       const tiedot = await katalogi.painotalo(t.id);
       const maa = painotalonMaa(tiedot) || painotalonMaa(t);
       if (!onEU(maa)) { hylatyt.push(`${t.title} (${maa ?? "maa?"})`); continue; }
-      const valinta = valitseVariantit(await katalogi.variantit(bp.id, t.id), { varit, koot });
+      // Vain valmistettavat variantit (katalogi merkitsee loppuneet / poistuneet).
+      const valinta = valitseVariantit((await katalogi.variantit(bp.id, t.id)).filter((v) => !catalogVariantUnavailable(v)), { varit, koot });
       if (!valinta.valitut.length) { hylatyt.push(`${t.title} (${maa}): ei pyydettyjä värejä/kokoja`); continue; }
-      const toimitusSentit = suomenToimitus(await katalogi.toimitus(bp.id, t.id));
+      const toimitusSentit = suomenToimitusVarianteille(await katalogi.toimitus(bp.id, t.id), valinta.valitut.map((v) => v.id));
       if (toimitusSentit == null) { hylatyt.push(`${t.title} (${maa}): ei toimitusta Suomeen`); continue; }
       const n = normalisoi(t.title);
       const suosi = tyyppi.suositut.findIndex((s) => n.includes(normalisoi(s)));
       ehdokkaat.push({ blueprint: bp, painotalo: { id: t.id, title: t.title }, maa, valinta, toimitusSentit, suosi: suosi < 0 ? 99 : suosi });
     }
   }
-  if (!ehdokkaat.length) return { ok: false, syy: `ei EU-painotaloa, joka tekee pyydetyt variantit${hylatyt.length ? ` (hylätty: ${hylatyt.slice(0, 8).join(", ")})` : ""}` };
+  if (!ehdokkaat.length) return { ok: false, syy: `ei EU-painotaloa, joka tekee pyydetyt variantit (blueprintit: ${bpt.map((b) => `${b.title} ${b.id}`).join(", ")})${hylatyt.length ? ` (hylätty: ${hylatyt.slice(0, 12).join(", ")})` : ""}` };
   const puuttuu = (e) => e.valinta.puuttuvatVarit.length + e.valinta.puuttuvatKoot.length;
   ehdokkaat.sort((a, b) => puuttuu(a) - puuttuu(b) || a.suosi - b.suosi || a.toimitusSentit - b.toimitusSentit || Number(a.painotalo.id) - Number(b.painotalo.id));
   const valittu = ehdokkaat[0];
@@ -488,7 +574,12 @@ export async function kasitteleTuote(tuote, ctx) {
   const { kulut, arvioitu } = arvioiKulut(kohde.valinta.valitut, {
     opitut: ctx.katalogi.opitutKulut(kohde.blueprint.id, kohde.painotalo.id), arvio: ctx.katalogi.kuluarvio(tuote.tyyppi),
   });
-  const hintaArgs = { toimitusSentit: kohde.toimitusSentit, kategoria: tyyppi.kategoria, toimitusmaksu: ctx.toimitusmaksu, ilmainenRaja: ctx.ilmainenRaja, enimmaishinta: ctx.enimmaishinta, ohitushinta: tuote.hinta };
+  const malli = ctx.hintamalli || HINTAMALLIT.suunniteltu;
+  const hintaArgs = {
+    toimitusSentit: kohde.toimitusSentit, kategoria: tyyppi.kategoria, toimitusmaksu: ctx.toimitusmaksu, ilmainenRaja: ctx.ilmainenRaja,
+    enimmaishinta: tuote.enimmaishinta ?? ctx.enimmaishinta ?? null, ohitushinta: tuote.hinta, kateraja: ctx.kateraja ?? KATE_RAJA,
+    pohjahinnat: malli.pohjahinnat, kiinteat: malli.kiinteat,
+  };
   const h = hinnoittele({ ...hintaArgs, kulut });
   r.kulutArvio = arvioitu;
   r.kulut = Object.values(kulut);
@@ -519,7 +610,17 @@ export async function kasitteleTuote(tuote, ctx) {
   const luotu = await ctx.api(`/shops/${ctx.shopId}/products.json`, { method: "POST", body: runko });
   if (!luotu?.id) throw new Error("tuotteen luonti ei palauttanut id:tä");
   r.printify_id = String(luotu.id);
-  const tiedot = await ctx.api(`/shops/${ctx.shopId}/products/${luotu.id}.json`);
+  let tiedot = await ctx.api(`/shops/${ctx.shopId}/products/${luotu.id}.json`);
+  // Tilattavuus: käytössä olevat variantit, joita Printify ei nyt valmista (is_available false), poistetaan käytöstä.
+  const eiSaatavilla = new Set((tiedot?.variants || []).filter((v) => v.is_enabled && v.is_available === false).map((v) => Number(v.id)));
+  if (eiSaatavilla.size) {
+    runko.variants = runko.variants.map((v) => (eiSaatavilla.has(v.id) ? { ...v, is_enabled: false } : v));
+    r.poistettuKaytosta = [...eiSaatavilla];
+    if (runko.variants.some((v) => v.is_enabled)) {
+      await ctx.api(`/shops/${ctx.shopId}/products/${luotu.id}.json`, { method: "PUT", body: { variants: runko.variants } });
+      tiedot = await ctx.api(`/shops/${ctx.shopId}/products/${luotu.id}.json`);
+    }
+  }
   const oikeat = Object.fromEntries((tiedot?.variants || []).filter((v) => v.is_enabled && typeof v.cost === "number").map((v) => [String(v.id), v.cost]));
   r.oikeatKulut = oikeat;
   const lopullinen = Object.keys(oikeat).length ? hinnoittele({ ...hintaArgs, kulut: oikeat }) : h;
@@ -529,7 +630,7 @@ export async function kasitteleTuote(tuote, ctx) {
   const uusiSentit = lopullinen.hintaSentit;
   if (uusiSentit && uusiSentit !== h.hintaSentit) {
     await ctx.api(`/shops/${ctx.shopId}/products/${luotu.id}.json`, {
-      method: "PUT", body: { variants: runko.variants.map((v) => ({ id: v.id, price: uusiSentit, is_enabled: true })) },
+      method: "PUT", body: { variants: runko.variants.map((v) => ({ id: v.id, price: uusiSentit, is_enabled: v.is_enabled })) },
     });
     r.hintaPaivitetty = { arvio: h.hinta, oikea: uusiSentit / 100 };
   }
@@ -541,10 +642,13 @@ export async function kasitteleTuote(tuote, ctx) {
 
 /** Kirjausrivi luotu-<pvm>.json-tiedostoon (ei koko Printify-vastausta). */
 export function kirjausRivi(r, aika = new Date().toISOString()) {
+  const h = r.hinnoittelu || {};
   return {
     avain: r.avain, teksti: r.teksti, tyyppi: r.tyyppi, lista: r.lista, otsikko: r.otsikko, tila: r.tila,
-    printify_id: r.printify_id, blueprint_id: r.blueprint_id, print_provider_id: r.print_provider_id, painotalo: r.painotalo,
-    hinta: r.hinta, kate: r.hinnoittelu?.kate ?? null, kateNyt: r.hinnoittelu?.kateNyt ?? null, syy: r.syy ?? null,
+    printify_id: r.printify_id, blueprint_id: r.blueprint_id, blueprint: r.blueprint ?? null, print_provider_id: r.print_provider_id, painotalo: r.painotalo,
+    variantit: r.oikeatKulut ? Object.keys(r.oikeatKulut).map(Number) : null,
+    hinta: r.hinta, kulu_senttia: h.kulu ?? null, toimitus_senttia: r.toimitusSentit ?? null,
+    kate: h.kate ?? null, kateAlv: h.kateAlv ?? null, kateNyt: h.kateNyt ?? null, syy: r.syy ?? null,
     kuvat: (r.kuvat || []).map((k) => ({ tiedosto: path.basename(k.polku), printify_kuva: k.printify_kuva ?? null })),
     tuotu: false, luotu: aika,
   };
