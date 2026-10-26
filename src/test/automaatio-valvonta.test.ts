@@ -266,7 +266,7 @@ describe("Päivän yhteenveto", () => {
     expect(s.kk.kate).toBeCloseTo(19.32, 2);
     expect(s.jaljella).toBe(6); // 26.-31.10.
     expect(s.rivit[0]).toBe("Eilen 25.10.2026: 2 maksettua tilausta, myynti 61,60 € (sis. alv), kate 12,88 €");
-    expect(s.rivit.join("\n")).toMatch(/Jumissa ennen tuotantoa: 1\n  #DDDDDDDD x@y.fi: luotu, send_to_production: Printify 500/);
+    expect(s.rivit.join("\n")).toMatch(/Jumissa ennen tuotantoa: 1\n {2}#DDDDDDDD x@y.fi: luotu, send_to_production: Printify 500/);
     expect(s.rivit.join("\n")).toMatch(/kate 19,32 € \/ tavoite 3000,00 € = 0,6 %/);
     expect(s.rivit.at(-1)).toBe("Tavoitteeseen puuttuu 2980,68 €: 496,78 € katetta päivässä jäljellä olevina 6 päivänä (tänään mukaan lukien)");
     expect(s.rivit.join("\n")).not.toMatch(/[–—]/);
