@@ -152,6 +152,9 @@ const BLOG_SLUGS = [
   "hauskat-peitot-lahjaksi",
   "hauska-lahja-opettajalle",
   "hauska-lahja-urheilijalle",
+  "hauskat-hupparit-lahjaksi",
+  "hauskat-koristeet-lahjaksi",
+  "lahja-tuoreille-vanhemmille",
 ];
 
 function escapeXml(s) {

@@ -145,7 +145,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä 
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["pikkujoululahja", "pikkujoululahja alle 20 euroa", "pikkujoulut", "edullinen lahja", "joulu 2026"],
-    relatedCategories: ["tarrat", "koristeet"],
+    relatedCategories: ["koristeet", "t-paidat"],
     content: `## Mitä 20 euron budjetti oikeasti tarkoittaa
 
 Pikkujoulujen lahjanvaihdossa hintaraja on yleensä 10, 15 tai 20 euroa. Raja ei ole tavoite, vaan katto: sen tarkoitus on, ettei kukaan joudu nolon tilanteeseen ja että jokainen saa jotain samanarvoista. Siksi hyvä pikkujoululahja ei näytä halvalta, mutta ei myöskään selvästi kalliimmalta kuin muiden.
@@ -273,7 +273,7 @@ Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["lahja miehelle jolla on kaikki", "joululahja miehelle", "personoitu lahja", "hauska lahja miehelle", "joulu 2026"],
-    relatedCategories: ["seinataulut", "t-paidat"],
+    relatedCategories: ["t-paidat", "hupparit"],
     content: `## Miksi lahjan keksiminen on niin vaikeaa
 
 Mies, jolla on kaikki, ei oikeasti omista kaikkea. Hänellä on kaikki se, mitä hän tarvitsee, ja hän ostaa sen itse heti kun tarve syntyy. Kun kysyt toiveita, vastaus on "ei mitään" tai "älä nyt turhaan". Siksi tavallinen tarvelahja ei toimi: porakone, villasukat tai uusi lompakko ovat jo kaapissa, ja on vaikea osua juuri siihen merkkiin ja malliin, jota hän käyttää.
@@ -519,7 +519,7 @@ Eläkeläiselle sopivia lahjoja ikävuosien mukaan löydät sivuilta [lahja 60-v
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["joululahja työkaverille", "lahja työkaverille", "pikkujoululahja", "lahja kollegalle", "joulu 2026"],
-    relatedCategories: ["t-paidat", "tarrat"],
+    relatedCategories: ["t-paidat", "hupparit"],
     content: `## Ensin pelisäännöt: kenelle ostaa ja paljonko
 
 Joululahja työkaverille on yksinkertainen, kun pelisäännöt ovat selvät. Ennen kuin mietit lahjaa, selvitä kolme asiaa.
@@ -800,7 +800,7 @@ Lisää valmiita ideoita löydät sivuilta [isänpäivän lahjaideat](/isanpaiva
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["salainen joulupukki", "salaisen joulupukin lahja", "pikkujoululahja", "joululahja alle 20 euroa", "joulu 2026"],
-    relatedCategories: ["tarrat", "koristeet"],
+    relatedCategories: ["koristeet", "t-paidat"],
     content: `## Näin salainen joulupukki toimii
 
 Salaisessa joulupukissa jokainen osallistuja arvotaan ostamaan lahja yhdelle toiselle osallistujalle. Lahjan antaja pysyy salaisena, ja kaikki lahjat avataan yhdessä. Tapa on suosittu työpaikoilla, kaveriporukoissa ja suvun joulussa, koska kenenkään ei tarvitse ostaa lahjaa kaikille.
@@ -932,7 +932,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen joulua
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["joululahja teinille", "hauska lahja teinille", "lahja nuorelle", "joululahja nuorelle", "joulu 2026"],
-    relatedCategories: ["hupparit", "tarrat"],
+    relatedCategories: ["hupparit", "t-paidat"],
     content: `## Miksi teinin lahja on vaikea
 
 Teini-ikäisen lahja on vaikea kahdesta syystä. Ensinnäkin maku muuttuu nopeasti: viime vuoden suosikkimeemi on tänä vuonna noloa. Toiseksi aikuisen ja nuoren huumori eroavat toisistaan, ja lahja, joka naurattaa vanhempaa, voi saada teinin kiusaantumaan.
