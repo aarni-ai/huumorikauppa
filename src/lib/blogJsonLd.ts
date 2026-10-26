@@ -19,8 +19,12 @@ export function blogImageUrl(image: string | undefined): string | undefined {
 /**
  * Blogiartikkelin rakenteinen data: Article + FAQPage samassa @graph-rakenteessa.
  * Yleinen kaikille artikkeleille; kuva lisätään vain, jos artikkelilla on sellainen.
+ *
+ * Artikkelin tuotenostot merkitään ItemListinä, jonka ListItem-kohteilla on vain position ja url
+ * (tuotesivun osoite). Ei Product-kohteita: blogisivulla ei ole tarjoustietoja, ja vajaa Product
+ * (ilman offersia) on Googlen Product snippets -virhe. Täydet Product-tiedot ovat tuotesivuilla.
  */
-export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[]) {
+export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[], products: { slug: string }[] = []) {
   const url = `${SITE}/blogi/${post.slug}`;
   const image = blogImageUrl(post.image);
 
@@ -51,6 +55,19 @@ export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[]) {
   };
 
   const graph: object[] = [article];
+  if (products.length > 0) {
+    graph.push({
+      "@type": "ItemList",
+      "@id": `${url}#tuotteet`,
+      "name": `Tuotteet: ${post.title}`,
+      "numberOfItems": products.length,
+      "itemListElement": products.map((p, i) => ({
+        "@type": "ListItem",
+        "position": i + 1,
+        "url": `${SITE}/tuote/${p.slug}`,
+      })),
+    });
+  }
   if (faqs.length > 0) {
     graph.push({
       "@type": "FAQPage",

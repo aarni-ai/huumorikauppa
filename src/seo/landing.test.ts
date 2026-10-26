@@ -267,7 +267,7 @@ describe("routing, sitemap and redirects", () => {
       "src/pages/Index.tsx",
       "src/pages/OfficeNotesPage.tsx",
       "src/components/layout/Header.tsx",
-      "src/data/milestoneHighlights.ts",
+      "src/data/blogProducts.ts",
       "src/data/landingPages.ts",
       "src/data/landingRoutes.ts",
     ];

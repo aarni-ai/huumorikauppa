@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Gift, ArrowRight } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
-import { BlogProductCard } from "@/components/BlogInlineProducts";
+import { BlogProductCard } from "@/components/BlogProductStrip";
 import { guideRecommendations } from "@/data/guideRecommendations";
 import { Product } from "@/types/product";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";

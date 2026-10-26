@@ -1,3 +1,4 @@
+import { useMemo, type ReactNode } from "react";
 import { useParams, Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
@@ -6,16 +7,25 @@ import { categories } from "@/data/products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
-import { MilestoneProductHighlights } from "@/components/MilestoneProductHighlights";
-import { BlogInlineProducts } from "@/components/BlogInlineProducts";
+import { BlogProductStrip } from "@/components/BlogProductStrip";
+import { useProducts } from "@/hooks/use-products";
+import {
+  BLOG_END_COUNT,
+  BLOG_MID_COUNT,
+  blogMidInsertLine,
+  getBlogProductTheme,
+  selectBlogProducts,
+  splitBlogProducts,
+} from "@/data/blogProducts";
 import { buildBlogPostJsonLd, blogImageUrl } from "@/lib/blogJsonLd";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
-function renderContent(content: string, articleSlug: string) {
+/** Artikkelin teksti; midBlock (tuotenosto) lisätään blogMidInsertLine-riville (kahden osion jälkeen). */
+function renderContent(content: string, midBlock: ReactNode) {
   const lines = content.split("\n");
   const elements: JSX.Element[] = [];
   let listItems: string[] = [];
-  let h2Count = 0;
+  const midLine = blogMidInsertLine(content);
 
   const flushList = () => {
     if (listItems.length > 0) {
@@ -37,6 +47,11 @@ function renderContent(content: string, articleSlug: string) {
     const line = lines[i];
     const trimmed = line.trim();
 
+    if (i === midLine) {
+      flushList();
+      elements.push(<div key="blog-mid-products">{midBlock}</div>);
+    }
+
     if (!trimmed) {
       flushList();
       continue;
@@ -49,18 +64,6 @@ function renderContent(content: string, articleSlug: string) {
           {trimmed.replace("## ", "")}
         </h2>
       );
-      // Inject a theme-matched product strip after the 2nd and 4th subheading.
-      h2Count++;
-      if (h2Count === 1 || h2Count === 2 || h2Count === 4) {
-        elements.push(
-          <BlogInlineProducts
-            key={`inline-${i}`}
-            articleSlug={articleSlug}
-            startIndex={h2Count === 1 ? 0 : h2Count === 2 ? 3 : 6}
-            count={3}
-          />
-        );
-      }
     } else if (trimmed.startsWith("### ")) {
       flushList();
       elements.push(
@@ -80,6 +83,7 @@ function renderContent(content: string, articleSlug: string) {
     }
   }
   flushList();
+  if (midLine >= lines.length) elements.push(<div key="blog-mid-products">{midBlock}</div>);
   return elements;
 }
 
@@ -127,6 +131,12 @@ const BlogPost = () => {
   usePrerenderReady();
   const { slug } = useParams();
   const post = blogPosts.find((p) => p.slug === slug);
+  const { data: allProducts, isError } = useProducts();
+  const productTheme = getBlogProductTheme(slug ?? "");
+  const blogProducts = useMemo(
+    () => (allProducts ? selectBlogProducts(productTheme, allProducts) : null),
+    [allProducts, productTheme],
+  );
 
   if (!post) {
     return (
@@ -158,7 +168,11 @@ const BlogPost = () => {
   // Per-post FAQ overrides the generic set when the post defines its own.
   const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : DEFAULT_BLOG_FAQS;
 
-  const combinedJsonLd = buildBlogPostJsonLd(post, blogFaqs);
+  // Ladattaessa varataan korttien tila; jos haku epäonnistuu, lohkot jätetään pois.
+  const split = blogProducts ? splitBlogProducts(blogProducts) : null;
+  const midProducts = split ? split.mid : isError ? [] : null;
+  const endProducts = split ? split.end : isError ? [] : null;
+  const combinedJsonLd = buildBlogPostJsonLd(post, blogFaqs, split ? [...split.mid, ...split.end.filter((p) => !split.mid.includes(p))] : []);
 
   return (
     <div className="min-h-screen">
@@ -223,7 +237,14 @@ const BlogPost = () => {
           </div>
         </header>
 
-        <div className="text-muted-foreground">{renderContent(post.content, post.slug)}</div>
+        <div className="text-muted-foreground">
+          {renderContent(
+            post.content,
+            <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />,
+          )}
+        </div>
+
+        <BlogProductStrip theme={productTheme} products={endProducts} count={BLOG_END_COUNT} variant="end" />
 
         {/* Hand-picked product links — internal linking to specific products */}
         {post.productLinks && post.productLinks.length > 0 && (
@@ -249,9 +270,6 @@ const BlogPost = () => {
 
         {/* Age-grouped product recommendations (gift guides) */}
         <GuideProductRecommendations guideSlug={post.slug} />
-
-        {/* Milestone product highlights (most popular / relevant articles) */}
-        <MilestoneProductHighlights articleSlug={post.slug} />
 
         {/* Inline product CTA — category cards after article body */}
         {relatedCats.length > 0 && (
