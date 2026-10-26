@@ -9,6 +9,7 @@
  */
 import { PRODUCT_TYPE_LABEL, cleanProductName } from "@/lib/productNames";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { ORGANIZATION } from "./site";
 
 export interface FaqItem {
   q: string;
@@ -82,7 +83,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Mikä on Huumorikauppa?",
-    a: "Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita tuotteita suomalaisella huumorilla. Y-tunnus on 3583677-2, ja asiakaspalvelu toimii suomeksi sähköpostilla huumorikauppa@gmail.com.",
+    a: `Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita tuotteita suomalaisella huumorilla. Kauppaa pitää ${ORGANIZATION.legalName} (Y-tunnus ${ORGANIZATION.legalId}), ja asiakaspalvelu toimii suomeksi sähköpostilla ${ORGANIZATION.email}.`,
   },
   {
     q: "Miten tiedän, mikä koko sopii?",
@@ -146,7 +147,7 @@ export const DEFAULT_BLOG_FAQS: FaqItem[] = [
   },
   {
     q: "Onko Huumorikauppa suomalainen yritys?",
-    a: "Kyllä, Huumorikauppa on helsinkiläinen verkkokauppa (Y-tunnus 3583677-2). Asiakaspalvelu toimii suomeksi.",
+    a: `Kyllä. Huumorikauppa on helsinkiläinen verkkokauppa, jota pitää ${ORGANIZATION.legalName} (Y-tunnus ${ORGANIZATION.legalId}). Asiakaspalvelu toimii suomeksi.`,
   },
 ];
 

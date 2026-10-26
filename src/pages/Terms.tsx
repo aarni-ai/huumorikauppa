@@ -3,6 +3,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { ORGANIZATION } from "@/seo/site";
 
 const Terms = () => {
   usePrerenderReady();
@@ -29,7 +30,7 @@ const Terms = () => {
       <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
         <section>
           <h2 className="font-display text-xl text-foreground">1. Yleistä</h2>
-          <p>Nämä toimitusehdot koskevat Huumorikaupan verkkokaupasta osoitteessa huumorikauppa.fi tehtyjä tilauksia. Tilaamalla tuotteita verkkokaupasta asiakas hyväksyy nämä toimitusehdot.</p>
+          <p>Nämä toimitusehdot koskevat Huumorikaupan verkkokaupasta osoitteessa huumorikauppa.fi tehtyjä tilauksia. Myyjä on {ORGANIZATION.legalName} (Y-tunnus {ORGANIZATION.legalId}). Tilaamalla tuotteita verkkokaupasta asiakas hyväksyy nämä toimitusehdot.</p>
         </section>
 
         <section>
@@ -54,12 +55,18 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">6. Reklamaatiot</h2>
-          <p>Virheellisestä tuotteesta tulee reklamoida viipymättä osoitteeseen huumorikauppa@gmail.com. Liitä viestiin tilausnumero, kuvaus virheestä sekä valokuva.</p>
+          <p>Virheellisestä tuotteesta tulee reklamoida viipymättä osoitteeseen {ORGANIZATION.email}. Liitä viestiin tilausnumero, kuvaus virheestä sekä valokuva.</p>
         </section>
 
         <section>
-          <h2 className="font-display text-xl text-foreground">7. Yhteystiedot</h2>
-          <p>Huumorikauppa<br />Helsinki, Suomi<br />huumorikauppa@gmail.com</p>
+          <h2 className="font-display text-xl text-foreground">7. Myyjän yhteystiedot</h2>
+          <p>
+            {ORGANIZATION.legalName} / Huumorikauppa<br />
+            Y-tunnus {ORGANIZATION.legalId}<br />
+            ALV-numero {ORGANIZATION.vatID}<br />
+            {ORGANIZATION.postalAddress}, Suomi<br />
+            {ORGANIZATION.email}
+          </p>
         </section>
       </div>
     </div>
