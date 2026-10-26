@@ -317,7 +317,7 @@ export function injectRoot(html: string, bodyHtml: string): string {
 }
 
 /** Kuinka kauan sovelluksen JavaScript odottaa esikatselun pääkuvaa ennen latauksen aloittamista. */
-export const ENTRY_DEFER_MAX_MS = 2000;
+export const ENTRY_DEFER_MAX_MS = 1000;
 
 /**
  * Sivulla, jolla on näkyvä esikatselu, sovelluksen JavaScript (Viten entry-skripti ja sen

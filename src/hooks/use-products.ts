@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { Product } from "@/types/product";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
+import { productSeedFor } from "@/lib/prerenderPreview";
 
 /** Piilotettujen kategorioiden tuotteiden slugit (tuotesivu ohjaa ne /kaikki-tuotteet). */
 export const piilotetutSlugit = new Set<string>();
@@ -89,12 +90,26 @@ export function useProducts(options: { enabled?: boolean } = {}) {
   });
 }
 
+/** Esirenderöityyn sivuun upotettu tuoterivi samoilla suodatuksilla kuin fetchProductBySlug. */
+function seededProduct(slug: string | undefined): Product | undefined {
+  const row = productSeedFor(slug) as ProductRow | undefined;
+  if (!row || (row as { is_active?: boolean }).is_active === false || onPiilotettuTuote(row)) return undefined;
+  try {
+    return mapProduct(row);
+  } catch {
+    return undefined;
+  }
+}
+
 export function useProduct(slug: string | undefined) {
   const single = useQuery({
     queryKey: ["product", slug],
     queryFn: () => fetchProductBySlug(slug!),
     enabled: !!slug,
     staleTime: 5 * 60 * 1000,
+    // Upotettu data näytetään heti; updatedAt 0 = vanhentunut, joten haku päivittää sen taustalla.
+    initialData: () => seededProduct(slug),
+    initialDataUpdatedAt: 0,
   });
   // Luettelo (suositukset sivun alaosassa) haetaan vasta yksittäishaun jälkeen, ettei se kilpaile
   // kaistasta tuotesivun oman, pienen haun kanssa. Virheessä luettelo toimii varalla.

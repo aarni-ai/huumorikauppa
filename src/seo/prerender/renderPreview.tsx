@@ -35,12 +35,18 @@ export const PREVIEW_ATTR = "data-prerender-visual";
  * Siistii renderToStringin tuloksen esikatseluksi: H1:t <div>:eiksi, koska data-prerender-runko pitää
  * sivun ainoan H1:n. Tuotesivun H1:illä on font-display-luokka, joka määrää fontin, joten ulkoasu ei muutu.
  */
-export function toPreviewHtml(html: string): string {
+export function toPreviewHtml(html: string, extra = ""): string {
   const body = html.replace(/<(\/?)h1(?=[\s>])/g, "<$1div");
-  return `<div ${PREVIEW_ATTR}="true" inert="">${body}</div>`;
+  return `<div ${PREVIEW_ATTR}="true" inert="">${body}${extra}</div>`;
 }
 
-function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient, nowMs: number): string {
+/** JSON <script>-elementtiin: "<" escapoidaan, ettei sisältö voi sulkea elementtiä. */
+export function productSeedScript(row: unknown): string {
+  const json = JSON.stringify(row).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+  return `<script type="application/json" data-product-seed>${json}</script>`;
+}
+
+function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient, nowMs: number, extra = ""): string {
   const html = renderToString(
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
@@ -56,7 +62,7 @@ function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient
       </QueryClientProvider>
     </HelmetProvider>,
   );
-  return toPreviewHtml(html);
+  return toPreviewHtml(html, extra);
 }
 
 /** Ei hakuja palvelimella: vain annettu data tai latausnäkymä, kuten selaimen ensimmäisessä renderöinnissä. */
@@ -75,6 +81,7 @@ export function renderProductPreview(row: Tables<"products">, nowMs = Date.now()
     </Routes>,
     queryClient,
     nowMs,
+    productSeedScript(row),
   );
 }
 

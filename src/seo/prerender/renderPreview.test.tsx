@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 // Esikatselu ei tee hakuja; Supabase-asiakasta ei tarvita (eikä testissä ole sen ympäristömuuttujia).
 vi.mock("@/integrations/supabase/client", () => ({ supabase: {} }));
-import { renderHomePreview, renderProductPreview, toPreviewHtml } from "./renderPreview";
+import { productSeedScript, renderHomePreview, renderProductPreview, toPreviewHtml } from "./renderPreview";
 import type { Tables } from "@/integrations/supabase/types";
 
 const row = {
@@ -45,6 +45,18 @@ describe("renderProductPreview", () => {
     expect(html).toContain("Testipaita");
     expect(html).toContain("Lisää koriin");
     expect(html).not.toContain("Tuotekuvaus");
+  });
+
+  it("embeds the product row as a JSON seed for the client (no Supabase round trip before reveal)", () => {
+    const seed = html.match(/<script type="application\/json" data-product-seed>([\s\S]*?)<\/script>/);
+    expect(seed).not.toBeNull();
+    expect(JSON.parse(seed![1]).slug).toBe("testipaita-t-paita");
+  });
+
+  it("escapes < in the seed so it cannot close the script element", () => {
+    const out = productSeedScript({ description: "</script><b>" });
+    expect(out).not.toContain("</script><b>");
+    expect(JSON.parse(out.replace(/^<script[^>]*>/, "").replace(/<\/script>$/, "")).description).toBe("</script><b>");
   });
 
   it("shows the default colour's image first as the high-priority (LCP) image, with its sizes", () => {

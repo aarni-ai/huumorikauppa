@@ -2,16 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { revealApp, setPreviewReveal } from "./lib/prerenderPreview";
+import { revealApp, setPreviewReveal, setProductSeed } from "./lib/prerenderPreview";
 
 const rootElement = document.getElementById('root')!;
 // Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):
-// siirretään #rootin viereen näkyviin ja React käynnistetään piilotettuun #rootiin. ProductPage
-// kutsuu revealApp()-funktiota, kun tuote on valmis; varmuuden vuoksi vaihto tehdään viimeistään
-// aikakatkaisun jälkeen (esim. jos tuotehaku jumittuu).
-const PREVIEW_TIMEOUT_MS = 10000;
+// siirretään #rootin viereen näkyviin ja React käynnistetään piilotettuun #rootiin. Vaihto
+// (revealApp, src/lib/prerenderPreview.ts) tapahtuu sivun ensimmäisessä renderöinnissä, viimeistään
+// pian Appin asennuksen jälkeen ja aina viimeistään PREVIEW_TIMEOUT_MS:n kuluttua.
+const PREVIEW_TIMEOUT_MS = 4000;
 const preview = rootElement.querySelector<HTMLElement>(':scope > [data-prerender-visual]');
 if (preview) {
+  const seed = preview.querySelector('script[data-product-seed]');
+  if (seed) {
+    try {
+      setProductSeed(JSON.parse(seed.textContent || 'null'));
+    } catch {
+      // Virheellinen siemen: tuote haetaan tavalliseen tapaan.
+    }
+  }
   rootElement.before(preview);
   rootElement.style.display = 'none';
   setPreviewReveal(() => {
@@ -19,6 +27,10 @@ if (preview) {
     rootElement.style.display = '';
   });
   window.setTimeout(revealApp, PREVIEW_TIMEOUT_MS);
+}
+// Tuotesivun komponentti ladataan rinnakkain sovelluksen käynnistyksen kanssa (sama chunk kuin App.tsx:n lazy).
+if (window.location.pathname.startsWith('/tuote/')) {
+  import('./pages/ProductPage').catch(() => {});
 }
 
 // Build-vaiheen esirenderöity staattinen runko (scripts/prerender.mjs, data-prerender) ja vanha
