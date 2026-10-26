@@ -7,15 +7,8 @@
  * osu yksiselitteisesti, tuote ohitetaan selkeällä syyllä eikä mitään arvata.
  */
 
-/** EU:n jäsenvaltiot (ISO 3166-1 alpha-2), 27 maata. Kreikka myös EL-muodossa (EU:n oma lyhenne). */
-export const EU_MAAT = new Set([
-  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "EL", "HU", "IE",
-  "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE",
-]);
-
-export function onEU(maa) {
-  return EU_MAAT.has(String(maa || "").trim().toUpperCase());
-}
+// EU-maat yhteisestä moduulista (palvelimen tilausvahti käyttää samaa listaa).
+export { EU_MAAT, onEU } from "../../api/_lib/eu.js";
 
 /** Painotalon maa katalogin /catalog/print_providers/{id}.json -vastauksesta. */
 export function painotalonMaa(painotalo) {

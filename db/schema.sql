@@ -95,9 +95,12 @@ create table if not exists kv (
 
 -- Kasvu (kasvu-oma-tausta): lahjakortit ja pakettialennus. Kaikki lauseet voi ajaa uudelleen.
 -- Lahjakorttitilaus ei mene Printifyyn: printify_status 'ei_tarvita'.
+-- Tilausvahti (26.10.2026, api/_lib/tilausvahti.js): 'pysaytetty' = ei lähetetty tuotantoon (EU:n ulkopuolinen painotalo
+-- tai Printifyn kulu yli myynnin alv 0), omistaja päättää. Sama ehto tässä, jotta lauseen uudelleenajo ei hylkää
+-- pysäytettyjä rivejä.
 alter table orders drop constraint if exists orders_printify_status_check;
 alter table orders add constraint orders_printify_status_check
-  check (printify_status in ('ei_lahetetty', 'luotu', 'tuotannossa', 'lahetetty', 'virhe', 'ei_tarvita'));
+  check (printify_status in ('ei_lahetetty', 'luotu', 'tuotannossa', 'lahetetty', 'virhe', 'ei_tarvita', 'pysaytetty'));
 alter table orders add column if not exists bundle_discount numeric(10,2) not null default 0;
 alter table orders add column if not exists gift_card_code text;
 alter table orders add column if not exists gift_card_amount numeric(10,2) not null default 0;
@@ -194,3 +197,9 @@ alter table orders add column if not exists review_email_sent_at timestamptz;
 alter table orders add column if not exists printify_created_at timestamptz;
 alter table orders add column if not exists stuck_alert_sent_at timestamptz;
 create index if not exists orders_email on orders (lower(customer_email));
+
+-- Tilausvahti: Printifyn todellinen kulu euroina (tilauksen haku ennen tuotantoa), päivän yhteenvedon toteutunut kate.
+alter table orders add column if not exists printify_cost numeric(10,2);
+alter table orders add column if not exists printify_cost_ex_tax numeric(10,2);
+-- Printifyn tuotekulu (total_price) euroina: Printify Premium -laskelma (20 % alennus vain tuotekulusta).
+alter table orders add column if not exists printify_product_cost numeric(10,2);

@@ -35,6 +35,11 @@ export function haeKatalogiVariantit(blueprintId, providerId) {
   return kutsuApi(`/catalog/blueprints/${encodeURIComponent(blueprintId)}/print_providers/${encodeURIComponent(providerId)}/variants.json?show-out-of-stock=1`, { method: "GET" });
 }
 
+/** Painotalo katalogista (title, location.country). */
+export function haePainotalo(providerId) {
+  return kutsuApi(`/catalog/print_providers/${encodeURIComponent(providerId)}.json`, { method: "GET" }, 10000);
+}
+
 /** Luo tilaus (Printifyssä tila on-hold, kunnes send_to_production onnistuu). */
 export function luoTilaus(runko) {
   return kutsu("/orders.json", { method: "POST", body: JSON.stringify(runko) });

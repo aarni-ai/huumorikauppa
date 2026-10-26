@@ -4,6 +4,8 @@
  */
 import { ALV, STRIPE_PROSENTTI, STRIPE_KIINTEA } from "./kate.js";
 import { tilausnumero } from "./sahkoposti.js";
+import { tilauksenMyynti, printifyKulut } from "./tilausvahti.js";
+import { premiumSaasto, premiumRivit } from "./premium.js";
 
 export const JUMISSA_TUNTIA = 2;
 export const KK_TAVOITE = () => Number(process.env.KATE_TAVOITE_KK || 3000);
@@ -55,6 +57,12 @@ export function printifyTila(status) {
 /** Onko Printify jo ottanut tilauksen tuotantoon (send_to_production voi palauttaa virheen, jos se on jo lähetetty). */
 export const onTuotannossa = (status) => ["sending-to-production", "in-production", "fulfilled", "partially-fulfilled"].includes(status);
 
+/**
+ * Tilausvahdin pysäyttämä tilaus valvonnassa: "tuotannossa", jos omistaja on lähettänyt sen Printifyn hallinnasta
+ * tuotantoon (tai se on jo lähetetty), muuten null (ei uudelleenyritystä, ei hälytystä).
+ */
+export const pysaytetynSeuranta = (status, lahetetty = false) => (lahetetty || onTuotannossa(status) ? "tuotannossa" : null);
+
 /** Maksetut tilaukset, jotka eivät ole päässeet tuotantoon yli JUMISSA_TUNTIA tunnissa ja joista ei ole vielä hälytetty. */
 export function jumissaYli(tilaukset, nyt = new Date(), tunnit = JUMISSA_TUNTIA) {
   const raja = new Date(nyt).getTime() - tunnit * 3600e3;
@@ -91,10 +99,42 @@ export function tilauksenKate(tilaus, tuotteetSlugilla = new Map()) {
 }
 
 /**
+ * Toteutunut kate Printifyn todellisella kululla (orders.printify_cost, tallennetaan tilausvahdissa ennen tuotantoa tai
+ * yhteenvedossa jälkikäteen): myynti alv 0 - Printifyn kulu (sis. Printifyn alv) - Stripe. null, jos kulua ei tiedetä.
+ */
+export function toteutunutKate(tilaus) {
+  if (tilaus.printify_cost == null || tilaus.printify_cost === "") return null;
+  const kulu = Number(tilaus.printify_cost);
+  if (!Number.isFinite(kulu)) return null;
+  const { myyntiAlv0 } = tilauksenMyynti(tilaus);
+  const maksettu = Number(tilaus.amount_paid) || 0;
+  const stripe = maksettu > 0 ? maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA : 0;
+  const ilman = tilaus.printify_cost_ex_tax == null ? null : Number(tilaus.printify_cost_ex_tax);
+  return { myyntiAlv0, kulu: r2(kulu), kuluIlmanAlv: Number.isFinite(ilman) ? r2(ilman) : null, kate: r2(myyntiAlv0 - kulu - stripe) };
+}
+
+/** Toteutuneet summat listalle: todellinen kulu tiedossa n tilauksesta; yhteensa = toteutunut tai sen puuttuessa arvio. */
+export function toteutuneet(lista, tuotteetSlugilla = new Map()) {
+  return lista.reduce((a, t) => {
+    const tk = toteutunutKate(t);
+    const arvio = tilauksenKate(t, tuotteetSlugilla).kate;
+    if (!tk) return { ...a, yhteensa: r2(a.yhteensa + arvio) };
+    return { n: a.n + 1, myyntiAlv0: r2(a.myyntiAlv0 + tk.myyntiAlv0), kulu: r2(a.kulu + tk.kulu), kate: r2(a.kate + tk.kate), yhteensa: r2(a.yhteensa + tk.kate) };
+  }, { n: 0, myyntiAlv0: 0, kulu: 0, kate: 0, yhteensa: 0 });
+}
+
+/** Printify Premium -laskelma tilausriveistä: tuotekulu (printify_product_cost) niiltä, joilta se tiedetään. */
+export function premiumTilauksista(tilaukset) {
+  const tunnetut = tilaukset.filter((t) => t.printify_product_cost != null && Number.isFinite(Number(t.printify_product_cost)));
+  const summa = tunnetut.reduce((s, t) => s + Number(t.printify_product_cost), 0);
+  return { saasto: premiumSaasto(summa), tunnettu: tunnetut.length, kaikki: tilaukset.length };
+}
+
+/**
  * Päivän yhteenvedon sisältö. eilen = maksetut tilaukset eilen (Helsingin aikaa), kk = kuukauden maksetut tähän asti,
  * jumissa = maksetut, jotka eivät ole tuotannossa, hitaat = tuotannossa yli 10 pv ilman lähetystä.
  */
-export function yhteenveto({ nyt = new Date(), eilen, kk, jumissa, hitaat = 0, tuotteetSlugilla = new Map(), tavoite = KK_TAVOITE() }) {
+export function yhteenveto({ nyt = new Date(), eilen, kk, jumissa, pysaytetyt = [], paivat30 = null, hitaat = 0, tuotteetSlugilla = new Map(), tavoite = KK_TAVOITE() }) {
   const h = helsinki(nyt);
   const eilenPv = lisaaPaiva(h.paiva, -1);
   const summa = (lista) => lista.reduce((a, t) => {
@@ -108,18 +148,36 @@ export function yhteenveto({ nyt = new Date(), eilen, kk, jumissa, hitaat = 0, t
   const puuttuu = Math.max(0, tavoite - m.kate);
   const pros = tavoite > 0 ? (m.kate / tavoite) * 100 : 0;
   const tuntematon = (n) => (n ? ` (kulut puuttuvat ${n} tilauksesta, kate niiltä laskematta)` : "");
+  const premium = paivat30 ? premiumTilauksista(paivat30) : null;
+  const et = toteutuneet(eilen, tuotteetSlugilla);
+  const mt = toteutuneet(kk, tuotteetSlugilla);
+  const toteutunutRivi = (t) => {
+    const tk = toteutunutKate(t);
+    const pys = t.printify_status === "pysaytetty" ? " | PYSÄYTETTY" : "";
+    return tk ? ` | toteutunut: Printify ${eur(tk.kulu)}, myynti alv 0 ${eur(tk.myyntiAlv0)}, kate ${eur(tk.kate)}${pys}` : ` | Printify-kulu ei tiedossa${pys}`;
+  };
+  const toteutunutYhteensa = (alku, lista, x) => {
+    if (!lista.length) return `${alku}: ei tilauksia`;
+    const perus = `${alku} (Printifyn todellinen kulu ${x.n}/${lista.length} tilauksesta): myynti alv 0 ${eur(x.myyntiAlv0)}, Printify ${eur(x.kulu)} (sis. Printifyn alv), kate ${eur(x.kate)}`;
+    return x.n === lista.length ? perus : `${perus}; kaikki tilaukset (muilta arvio) ${eur(x.yhteensa)}`;
+  };
   const rivit = [
     `Eilen ${paivaFi(eilenPv)}: ${eilen.length} maksettua tilausta, myynti ${eur(e.myynti)} (sis. alv), kate ${eur(e.kate)}${tuntematon(e.tuntematon)}`,
-    ...eilen.map((t) => `  #${tilausnumero(t.id)} ${eur(Number(t.total))}, kate ${eur(tilauksenKate(t, tuotteetSlugilla).kate)}`),
+    ...eilen.map((t) => `  #${tilausnumero(t.id)} ${eur(Number(t.total))}, kate ${eur(tilauksenKate(t, tuotteetSlugilla).kate)}${toteutunutRivi(t)}`),
+    toteutunutYhteensa(`Eilen toteutunut`, eilen, et),
+    `Pysäytetty ennen tuotantoa (tilausvahti, odottaa päätöstäsi): ${pysaytetyt.length}`,
+    ...pysaytetyt.map((t) => `  #${tilausnumero(t.id)} ${eur(Number(t.total))}: ${t.printify_error || "pysäytetty"}`),
     `Jumissa ennen tuotantoa: ${jumissa.length}`,
     ...jumissa.map((t) => `  #${tilausnumero(t.id)} ${t.customer_email}: ${t.printify_status}${t.printify_error ? `, ${t.printify_error}` : ""}`),
     `Tuotannossa yli 10 pv ilman lähetystä: ${hitaat}`,
+    ...(premium ? premiumRivit(premium.saasto, premium) : []),
     `Kuukausi ${h.kuukausi}/${h.vuosi} tähän mennessä: kate ${eur(m.kate)} / tavoite ${eur(tavoite)} = ${pros.toFixed(1).replace(".", ",")} %${tuntematon(m.tuntematon)}`,
+    toteutunutYhteensa(`Kuukauden toteutunut`, kk, mt),
     puuttuu > 0
       ? `Tavoitteeseen puuttuu ${eur(puuttuu)}: ${eur(puuttuu / jaljella)} katetta päivässä jäljellä olevina ${jaljella} päivänä (tänään mukaan lukien)`
       : "Kuukauden tavoite on saavutettu.",
   ];
-  return { otsikko: `[Huumorikauppa] Päivän yhteenveto ${paivaFi(h.paiva)}`, rivit, eilen: e, kk: m, jaljella, prosentti: r2(pros) };
+  return { otsikko: `[Huumorikauppa] Päivän yhteenveto ${paivaFi(h.paiva)}`, rivit, eilen: e, kk: m, toteutunut: { eilen: et, kk: mt }, premium: premium?.saasto ?? null, pysaytetyt: pysaytetyt.length, jaljella, prosentti: r2(pros) };
 }
 
 /**
@@ -134,10 +192,20 @@ export async function ajaYhteenveto(store, { laheta, vastaanottaja, nyt = new Da
   const tanaan = paivanAlku(h.paiva);
   const eilen = paivanAlku(lisaaPaiva(h.paiva, -1));
   const kuunAlku = paivanAlku(`${h.paiva.slice(0, 8)}01`);
+  // Printifyn todelliset kulut tilauksille, joilta ne puuttuvat (ennen tilausvahtia tehdyt): eilisille kaikille, kuukauden
+  // muille enintään 20 kerrallaan (tallennetaan, joten seuraavat päivät täydentävät loput).
+  const eilisetRivit = await store.maksetutValilla(eilen, tanaan);
+  if (store.taydennaKulut) await store.taydennaKulut(eilisetRivit, 50, { kuiva });
+  const kkRivit = await store.maksetutValilla(kuunAlku, new Date(nyt));
+  if (store.taydennaKulut) await store.taydennaKulut(kkRivit, 20, { kuiva });
+  const paivat30 = await store.maksetutValilla(new Date(new Date(nyt).getTime() - 30 * 86400e3), new Date(nyt));
+  if (store.taydennaKulut) await store.taydennaKulut(paivat30.filter((t) => t.printify_product_cost == null), 30, { kuiva });
   const sisalto = yhteenveto({
     nyt,
-    eilen: await store.maksetutValilla(eilen, tanaan),
-    kk: await store.maksetutValilla(kuunAlku, new Date(nyt)),
+    paivat30,
+    eilen: eilisetRivit,
+    kk: kkRivit,
+    pysaytetyt: store.pysaytetyt ? await store.pysaytetyt() : [],
     jumissa: await store.jumissa(),
     hitaat: await store.hitaat(),
     tuotteetSlugilla: await store.tuotteetSlugilla(),
@@ -149,9 +217,41 @@ export async function ajaYhteenveto(store, { laheta, vastaanottaja, nyt = new Da
   return { lahetetty: true, sisalto };
 }
 
-/** Postgres-tietovarasto yhteenvedolle. tuotteet = kaikkiTuotteet (kulut varalle, jos riviltä puuttuu). */
-export function pgValvonta(db, tuotteet) {
+/**
+ * Täydentää tilausriveille Printifyn todellisen kulun (printify_cost, printify_cost_ex_tax) Printify-tilauksesta ja
+ * tallentaa sen. haeTilaus(printifyId) -> { ok, data } (api/_lib/printify.js). Muokkaa rivejä paikallaan.
+ */
+export async function taydennaKulut(tilaukset, { haeTilaus, tallenna, max = 20 }) {
+  let haettu = 0;
+  for (const t of tilaukset) {
+    if (haettu >= max) break;
+    if ((t.printify_cost != null && t.printify_product_cost != null) || !t.printify_order_id) continue;
+    haettu++;
+    const r = await haeTilaus(t.printify_order_id).catch(() => null);
+    const k = r?.ok ? printifyKulut(r.data) : null;
+    if (!k) continue;
+    t.printify_cost = k.kulu;
+    t.printify_cost_ex_tax = k.kuluIlmanAlv;
+    t.printify_product_cost = k.tuotteet;
+    if (tallenna) await Promise.resolve(tallenna(t.id, k)).catch((e) => console.error("printify_cost:", e?.message));
+  }
+  return haettu;
+}
+
+/**
+ * Postgres-tietovarasto yhteenvedolle. tuotteet = kaikkiTuotteet (kulut varalle, jos riviltä puuttuu).
+ * haeTilaus (valinnainen): Printify-tilauksen haku todellisia kuluja varten.
+ */
+export function pgValvonta(db, tuotteet, { haeTilaus } = {}) {
   return {
+    taydennaKulut: haeTilaus
+      ? (lista, max, { kuiva = false } = {}) => taydennaKulut(lista, {
+        haeTilaus, max,
+        tallenna: kuiva ? null : (id, k) => db`update orders set printify_cost = ${k.kulu}, printify_cost_ex_tax = ${k.kuluIlmanAlv},
+          printify_product_cost = ${k.tuotteet} where id = ${id}`,
+      })
+      : null,
+    pysaytetyt: async () => db`select * from orders where status = 'maksettu' and printify_status = 'pysaytetty' order by paid_at limit 50`,
     lueKv: async (k) => (await db`select value from kv where key = ${k}`)[0]?.value ?? null,
     kirjoitaKv: async (k, v) => {
       await db`insert into kv (key, value) values (${k}, ${v}) on conflict (key) do update set value = excluded.value, updated_at = now()`;

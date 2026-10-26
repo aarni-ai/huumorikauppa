@@ -3,6 +3,8 @@
  *   status:          odottaa_maksua -> maksettu (tai peruttu)
  *   printify_status: ei_lahetetty -> luotu (Printifyssä, on-hold) -> tuotannossa -> lahetetty
  *                    virhe = viimeisin yritys epäonnistui, next_retry_at kertoo seuraavan yrityksen
+ *                    pysaytetty = tilausvahti esti tuotannon (EU:n ulkopuolinen painotalo tai Printifyn kulu yli myynnin
+ *                    alv 0, api/_lib/tilausvahti.js): ei uudelleenyrityksiä, omistaja päättää
  * Tilaus on "lähetetty Printifyyn" vasta, kun send_to_production onnistuu (tuotannossa). Jos tilauksen luonti,
  * send_to_production tai variantti epäonnistuu, tilaa ei merkitä lähetetyksi: yritetään uudelleen (cron) ja
  * omistajalle lähtee heti sähköposti (kerran per tilaus ja vaihe, uusi hälytys vasta 24 h päästä).
@@ -15,6 +17,7 @@ import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
 import { pgMarkkinointi } from "./markkinointi-db.js";
 import { onTuotannossa } from "./valvonta.js";
 import { normalisoiEmail } from "./markkinointi.js";
+import { tarkistaEnnenTuotantoa, pysaytysRivit } from "./tilausvahti.js";
 
 /** Printifyyn menevät rivit (lahjakortit eivät mene). */
 export const printifyRivit = (items) => (items || []).filter((i) => !onLahjakortti(i));
@@ -58,6 +61,28 @@ async function virhe(tilaus, vaihe, viesti) {
   return { ok: false, vaihe, viesti };
 }
 
+/** Tilausvahdin pysäytys: tila 'pysaytetty', ei uudelleenyritystä, hälytys omistajalle heti. */
+async function pysayta(tilaus, printifyId, v) {
+  const syy = v.syyt.join("; ");
+  const virheteksti = `tilausvahti: ${syy}`.slice(0, 1000);
+  let lisa = [];
+  try {
+    await sql()`update orders set printify_status = 'pysaytetty', printify_error = ${virheteksti},
+      next_retry_at = null, alert_sent_at = now(), updated_at = now() where id = ${tilaus.id}`;
+  } catch (e) {
+    // Tila puuttuu tarkistusehdosta (db/schema.sql ajamatta): ei tuotantoon, uusi tarkistus ja hälytys vuorokauden päästä.
+    await sql()`update orders set printify_error = ${virheteksti}, next_retry_at = ${new Date(Date.now() + 24 * 3600e3)},
+      alert_sent_at = now(), updated_at = now() where id = ${tilaus.id}`;
+    lisa = [`Tilaa 'pysaytetty' ei voitu tallentaa (${e?.message || e}): aja db/schema.sql. Tarkistus toistuu vuorokauden päästä.`];
+  }
+  await kirjaaTapahtuma(tilaus.id, "printify_pysaytetty", {
+    syyt: v.syyt, printifyId, kulu: v.kulut?.kulu ?? null, kuluIlmanAlv: v.kulut?.kuluIlmanAlv ?? null, myyntiAlv0: v.myyntiAlv0,
+    painotalot: v.rivit.map((r) => ({ product_id: r.product_id, providerId: r.providerId, nimi: r.nimi, maa: r.maa, eu: r.eu })),
+  });
+  await halytys(`Tilaus #${tilausnumero(tilaus.id)} pysäytetty ennen Printifyn tuotantoa`, [...pysaytysRivit(tilaus, printifyId, v), ...lisa]);
+  return { ok: false, vaihe: "pysaytetty", viesti: syy };
+}
+
 /**
  * Vie maksetun tilauksen Printifyyn ja tuotantoon. Idempotentti: luo Printify-tilauksen vain kerran
  * (printify_order_id tallennetaan heti) ja lähettää tuotantoon, kunnes se onnistuu.
@@ -67,6 +92,8 @@ export async function lahetaPrintifyyn(tilausId) {
   if (!tilaus) return { ok: false, vaihe: "haku", viesti: "tilausta ei löydy" };
   if (tilaus.status !== "maksettu") return { ok: false, vaihe: "tila", viesti: `tilaus ${tilaus.status}` };
   if (["tuotannossa", "lahetetty", "ei_tarvita"].includes(tilaus.printify_status)) return { ok: true, jo: true };
+  // Tilausvahdin pysäyttämä: omistaja päättää, ei automaattista uutta yritystä.
+  if (tilaus.printify_status === "pysaytetty") return { ok: false, vaihe: "pysaytetty", viesti: tilaus.printify_error || "pysäytetty" };
   if (printifyRivit(tilaus.items).length === 0) {
     // Pelkkiä lahjakortteja: ei Printify-tilausta.
     await sql()`update orders set printify_status = 'ei_tarvita', updated_at = now() where id = ${tilaus.id}`;
@@ -87,6 +114,20 @@ export async function lahetaPrintifyyn(tilausId) {
     await sql()`update orders set printify_created_at = now() where id = ${tilaus.id}`.catch((e) => console.error("printify_created_at:", e?.message));
     tilaus.printify_order_id = printifyId;
     await kirjaaTapahtuma(tilaus.id, "printify_luotu", { printifyId });
+  }
+
+  // Tilausvahti: luotu Printify-tilaus (todelliset kulut ja painotalot) ennen tuotantoa.
+  const luotu = await P.haeTilaus(printifyId);
+  if (!luotu.ok || !luotu.data) return virhe(tilaus, "tilausvahti", luotu.virhe || "Printify-tilauksen haku epäonnistui");
+  if (!onTuotannossa(luotu.data.status)) {
+    const v = await tarkistaEnnenTuotantoa(luotu.data, tilaus, { haePainotalo: P.haePainotalo });
+    if (v.kulut) {
+      await sql()`update orders set printify_cost = ${v.kulut.kulu}, printify_cost_ex_tax = ${v.kulut.kuluIlmanAlv},
+        printify_product_cost = ${v.kulut.tuotteet} where id = ${tilaus.id}`
+        .catch((e) => console.error("printify_cost:", e?.message));
+    }
+    if (v.tulos === "tuntematon") return virhe(tilaus, "tilausvahti", v.syyt.join("; "));
+    if (v.tulos === "pysayta") return pysayta(tilaus, printifyId, v);
   }
 
   const t = await P.lahetaTuotantoon(printifyId);

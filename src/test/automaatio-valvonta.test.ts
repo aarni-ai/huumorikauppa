@@ -95,11 +95,20 @@ vi.mock("../../api/_lib/db.js", () => ({
 }));
 
 const { kasitteleMaksu, lahetaPrintifyyn } = await import("../../api/_lib/tilaus.js");
+const { tyhjennaPainotalot } = await import("../../api/_lib/tilausvahti.js");
 const { printifyTila, onTuotannossa, jumissaYli, tilauksenKate, yhteenveto, ajaYhteenveto, helsinki, paivanAlku } = await import("../../api/_lib/valvonta.js");
 
 type Kutsu = { url: string; method: string; body: Rivi | null };
 /** Printify ja Resend mockattuna. tuotanto: send_to_production-vastausten jono. */
-function verkko({ tuotanto = [200], printifyTilaus = "on-hold" }: { tuotanto?: number[]; printifyTilaus?: string } = {}) {
+type PfRivi = { product_id: string; quantity: number; print_provider_id: number; metadata: { title: string; country: string } };
+const euRivi: PfRivi = { product_id: "pf-p1", quantity: 1, print_provider_id: 30, metadata: { title: "Tonnin seteli | T-paita", country: "Czech Republic" } };
+const PAINOTALOT: Record<number, Rivi> = {
+  30: { id: 30, title: "OPT OnDemand", location: { country: "CZ" } },
+  1: { id: 1, title: "SPOKE Custom Products", location: { country: "US" } },
+  99: { id: 99, title: "Printify Choice", location: { country: "US" } },
+};
+function verkko({ tuotanto = [200], printifyTilaus = "on-hold", rivit = [euRivi], kulut = { total_price: 993, total_shipping: 849, total_tax: 0 } as Rivi | null }:
+  { tuotanto?: number[]; printifyTilaus?: string; rivit?: PfRivi[]; kulut?: Rivi | null } = {}) {
   const kutsut: Kutsu[] = [];
   vi.stubGlobal("fetch", vi.fn(async (url: string, init: { method?: string; body?: string } = {}) => {
     const body = init.body ? JSON.parse(init.body) : null;
@@ -110,7 +119,9 @@ function verkko({ tuotanto = [200], printifyTilaus = "on-hold" }: { tuotanto?: n
       const s = tuotanto.length > 1 ? tuotanto.shift()! : tuotanto[0];
       return new Response(s === 200 ? "{}" : '{"error":"Order is on hold"}', { status: s });
     }
-    if (url.includes("/orders/pf-tilaus-1.json")) return new Response(JSON.stringify({ id: "pf-tilaus-1", status: printifyTilaus }), { status: 200 });
+    if (url.includes("/orders/pf-tilaus-1.json")) return new Response(JSON.stringify({ id: "pf-tilaus-1", status: printifyTilaus, line_items: rivit, ...(kulut || {}) }), { status: 200 });
+    const pt = url.match(/\/catalog\/print_providers\/(\d+)\.json$/);
+    if (pt) return PAINOTALOT[Number(pt[1])] ? new Response(JSON.stringify(PAINOTALOT[Number(pt[1])]), { status: 200 }) : new Response("{}", { status: 404 });
     return new Response("ei löydy", { status: 404 });
   }));
   return kutsut;
@@ -125,6 +136,7 @@ const tilaus = (extra: Rivi = {}): Rivi => ({
 const session = { id: "cs_test_1", payment_status: "paid", metadata: { order_id: "11111111-2222-3333-4444-555555555555" }, amount_total: 3080, payment_intent: "pi_1" };
 
 beforeEach(() => {
+  tyhjennaPainotalot();
   kanta.orders = [];
   kanta.events = [];
   kanta.puuttuvat = [];
@@ -211,6 +223,81 @@ describe("Maksettu tilaus menee Printifyyn ja tuotantoon", () => {
     expect(r).toMatchObject({ ok: false, vaihe: "variantti" });
     expect(kutsut.filter((k) => k.url.includes("printify"))).toHaveLength(0);
     expect(kutsut.filter((k) => k.url === "https://api.resend.com/emails")).toHaveLength(1);
+  });
+});
+
+describe("Tilausvahti ennen send_to_productionia", () => {
+  const halytykset = (kutsut: Kutsu[]) => kutsut.filter((k) => k.url === "https://api.resend.com/emails" && (k.body!.to as string[])[0] === "info@seniorituki.fi");
+  const tuotantoon = (kutsut: Kutsu[]) => kutsut.filter((k) => k.url.endsWith("/send_to_production.json"));
+
+  it("EU-painotalo ja kulu alle myynnin alv 0: tuotantoon, todellinen kulu talteen", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    const kutsut = verkko();
+    expect(await lahetaPrintifyyn(kanta.orders[0].id)).toEqual({ ok: true });
+    expect(kanta.orders[0]).toMatchObject({ printify_status: "tuotannossa", printify_cost: 18.42, printify_cost_ex_tax: 18.42, printify_product_cost: 9.93 });
+    expect(tuotantoon(kutsut)).toHaveLength(1);
+  });
+
+  it("US-painotalo (Liisan muki): ei tuotantoon, tila pysaytetty, hälytys heti, ei uudelleenyritystä", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu", items: [{ name: "Muki", slug: "muki", quantity: 1, unit_price: 19.9, printify_product_id: "pf-muki", variant_id: 33719 }], subtotal: 19.9, shipping: 5.9, total: 25.8 }));
+    const kutsut = verkko({ rivit: [{ product_id: "pf-muki", quantity: 1, print_provider_id: 1, metadata: { title: "Muki", country: "United States" } }], kulut: { total_price: 644, total_shipping: 2469, total_tax: 793 } });
+    const r = await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(r).toMatchObject({ ok: false, vaihe: "pysaytetty" });
+    const o = kanta.orders[0];
+    expect(o).toMatchObject({ printify_status: "pysaytetty", printify_order_id: "pf-tilaus-1", next_retry_at: null, printify_cost: 39.06 });
+    expect(String(o.printify_error)).toMatch(/SPOKE Custom Products EU:n ulkopuolella \(US\)/);
+    expect(String(o.printify_error)).toMatch(/ylittää myynnin ilman alv:tä 20,56 €/);
+    expect(tuotantoon(kutsut)).toHaveLength(0);
+    const h = halytykset(kutsut);
+    expect(h).toHaveLength(1);
+    expect(h[0].body!.subject).toMatch(/pysäytetty ennen Printifyn tuotantoa/);
+    expect(String(h[0].body!.text)).toMatch(/Tilaus: 11111111-2222-3333-4444-555555555555/);
+    expect(String(h[0].body!.text)).toMatch(/Printifyn kulu 39,06 €/);
+    expect(String(h[0].body!.text)).toMatch(/Valvonta ei yritä uudelleen/);
+    expect(kanta.events.some((e) => e.kind === "printify_pysaytetty")).toBe(true);
+    // Valvonnan uusi yritys: ei Printify-kutsuja, ei hälytystä.
+    const toinen = verkko();
+    expect(await lahetaPrintifyyn(o.id)).toMatchObject({ ok: false, vaihe: "pysaytetty" });
+    expect(toinen).toHaveLength(0);
+  });
+
+  it("EU-painotalo, mutta Printify-kulu yli myynnin alv 0: pysäytetään", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    const kutsut = verkko({ kulut: { total_price: 1500, total_shipping: 900, total_tax: 612 } });
+    await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(kanta.orders[0].printify_status).toBe("pysaytetty");
+    expect(String(kanta.orders[0].printify_error)).toMatch(/Printifyn kulu 30,12 € .* ylittää myynnin ilman alv:tä 24,54 €/);
+    expect(tuotantoon(kutsut)).toHaveLength(0);
+  });
+
+  it("Printify Choice: pysäytetään, ellei tilausrivi kerro EU-maata", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    let kutsut = verkko({ rivit: [{ ...euRivi, print_provider_id: 99, metadata: { title: "Paita", country: "United States" } }] });
+    await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(kanta.orders[0].printify_status).toBe("pysaytetty");
+    expect(String(kanta.orders[0].printify_error)).toMatch(/Printify Choice ilman EU-painotaloa/);
+    expect(tuotantoon(kutsut)).toHaveLength(0);
+
+    kanta.orders = [tilaus({ status: "maksettu" })];
+    kutsut = verkko({ rivit: [{ ...euRivi, print_provider_id: 99, metadata: { title: "Paita", country: "Latvia" } }] });
+    expect(await lahetaPrintifyyn(kanta.orders[0].id)).toEqual({ ok: true });
+    expect(tuotantoon(kutsut)).toHaveLength(1);
+  });
+
+  it("painotalon maa ei selviä (ei katalogissa, ei rivillä): tavallinen virhe ja uudelleenyritys, ei pysäytystä", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    const kutsut = verkko({ rivit: [{ ...euRivi, print_provider_id: 417, metadata: { title: "Paita", country: "" } }] });
+    const r = await lahetaPrintifyyn(kanta.orders[0].id);
+    expect(r).toMatchObject({ ok: false, vaihe: "tilausvahti" });
+    expect(kanta.orders[0]).toMatchObject({ printify_status: "luotu", printify_attempts: 1 });
+    expect(tuotantoon(kutsut)).toHaveLength(0);
+  });
+
+  it("katalogista puuttuva painotalo (esim. 417), mutta rivillä EU-maa: tuotantoon", async () => {
+    kanta.orders.push(tilaus({ status: "maksettu" }));
+    const kutsut = verkko({ rivit: [{ ...euRivi, print_provider_id: 417, metadata: { title: "Paita", country: "Latvia" } }] });
+    expect(await lahetaPrintifyyn(kanta.orders[0].id)).toEqual({ ok: true });
+    expect(tuotantoon(kutsut)).toHaveLength(1);
   });
 });
 

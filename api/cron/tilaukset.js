@@ -11,6 +11,8 @@
  *  3. Seuranta: tuotannossa olevien Printify-tila; lähetyksestä seurantakoodi ja viesti asiakkaalle. Jos Printify
  *     näyttää tuotantoon lähetetyn tilauksen on-hold-tilassa, se palautetaan uudelleenyritykseen ja omistaja saa
  *     hälytyksen heti; has-issues tai peruttu: hälytys.
+ *  3c. Tilausvahdin pysäyttämät (printify_status 'pysaytetty'): ei uudelleenyritystä eikä hälytyksiä. Jos omistaja on
+ *     lähettänyt tilauksen Printifyn hallinnasta tuotantoon, tila palautetaan 'tuotannossa' ja seuranta jatkuu.
  *  3b. Toimituspäivä (delivered_at) lähetetyille arviopyyntöä varten.
  *  4. Markkinointi: keskeneräisen tilauksen muistutukset ja arviopyynnöt (api/_lib/markkinointi.js, lähetysraja).
  *  5. Päivän yhteenvedon varmistus: jos klo 7 ajo jäi tekemättä, lähetetään klo 9 jälkeen.
@@ -32,7 +34,7 @@ import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti } 
 import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "../_lib/lahjakortti-db.js";
 import { kaikkiTuotteet } from "../_lib/tuotteet.js";
-import { helsinki, printifyTila, jumissaYli, ajaYhteenveto, pgValvonta, KV_YHTEENVETO, JUMISSA_TUNTIA } from "../_lib/valvonta.js";
+import { helsinki, printifyTila, jumissaYli, ajaYhteenveto, pgValvonta, KV_YHTEENVETO, JUMISSA_TUNTIA, pysaytetynSeuranta } from "../_lib/valvonta.js";
 import { ajaMarkkinointi } from "../_lib/markkinointi.js";
 import { pgMarkkinointi } from "../_lib/markkinointi-db.js";
 
@@ -49,7 +51,7 @@ export default async function handler(req, res) {
   const aikaa = () => Date.now() - alku < AIKARAJA_MS;
 
   if (req.query.tehtava === "yhteenveto") {
-    const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet), { laheta, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva });
+    const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}), { laheta, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva });
     return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [] });
   }
 
@@ -165,6 +167,24 @@ export default async function handler(req, res) {
     }
   }
 
+  // 3c. Pysäytetyt: omistajan päätös Printifyssä (tuotantoon lähetetty) näkyy myös täällä. Ei uudelleenyrityksiä.
+  if (onPrintify() && aikaa()) try {
+    const pysaytetyt = await db`select id, printify_order_id from orders where status = 'maksettu' and printify_status = 'pysaytetty'
+      and printify_order_id is not null order by paid_at limit 20`;
+    for (const t of pysaytetyt) {
+      if (!aikaa()) break;
+      const r = await haeTilaus(t.printify_order_id);
+      if (!r.ok || pysaytetynSeuranta(r.data?.status, !!lahetys(r.data)) !== "tuotannossa") continue;
+      loki.push(`pysäytetty #${tilausnumero(t.id)}: omistaja lähetti tuotantoon`);
+      if (kuiva) continue;
+      await db`update orders set printify_status = 'tuotannossa', printify_error = null, sent_to_production_at = now(), updated_at = now()
+        where id = ${t.id} and printify_status = 'pysaytetty'`;
+      await kirjaaTapahtuma(t.id, "printify_omistaja_lahetti", { status: r.data.status });
+    }
+  } catch (e) {
+    loki.push(`pysäytetyt: ${e?.message || e}`);
+  }
+
   // 3a. Seurantaviesti, jonka lähetys epäonnistui (Resendin virhe): uusi yritys viikon ajan.
   if (onSahkoposti()) {
     const lahettamatta = await db`select * from orders where status = 'maksettu' and printify_status = 'lahetetty'
@@ -208,7 +228,7 @@ export default async function handler(req, res) {
   const h = helsinki();
   if (h.tunti >= 9 && (await db`select value from kv where key = ${KV_YHTEENVETO}`)[0]?.value !== h.paiva) {
     try {
-      const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet), { laheta, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
+      const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}), { laheta, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
       loki.push(`yhteenveto (myöhässä): ${r.lahetetty ? "lähetetty" : r.syy}`);
     } catch (e) {
       loki.push(`yhteenveto: ${e?.message || e}`);
