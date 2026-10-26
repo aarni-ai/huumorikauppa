@@ -4,58 +4,14 @@ import { useProducts } from "@/hooks/use-products";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Check, ArrowRight } from "lucide-react";
-import { useEffect, useState, useMemo } from "react";
-import { Product } from "@/types/product";
+import { useEffect, useState } from "react";
 import { productAlt } from "@/lib/seoAlt";
+import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { FreeShippingProgress } from "@/components/FreeShippingProgress";
 import { proxiedImage } from "@/lib/imageProxy";
 
-const SKIP_WORDS = new Set([
-  "paita", "paidat", "huppari", "hupparit", "muki", "mukit", "tarra", "tarrat",
-  "body", "bodyt", "peitto", "peitot", "pipo", "pipot", "laukku", "laukut",
-  "taulu", "taulut", "koriste", "koristeet", "hauska", "hauskat", "kahvikuppi",
-  "kahvimuki", "maailman", "paras", "pitkähihainen", "t-paita",
-]);
-
-function getUpsellProducts(product: Product, allProducts: Product[]): Product[] {
-  const nameWords = product.name
-    .toLowerCase()
-    .split(/[\s\-–,!?()]+/)
-    .filter((w) => w.length > 3 && !SKIP_WORDS.has(w));
-
-  const crossCategory = allProducts.filter(
-    (p) =>
-      p.id !== product.id &&
-      p.category !== product.category &&
-      nameWords.some((w) => p.name.toLowerCase().includes(w))
-  );
-
-  const sameCategory = allProducts.filter(
-    (p) => p.id !== product.id && p.category === product.category
-  );
-
-  const result: Product[] = [];
-  const seen = new Set<string>();
-
-  for (const p of crossCategory) {
-    if (result.length >= 4) break;
-    if (!seen.has(p.id)) {
-      seen.add(p.id);
-      result.push(p);
-    }
-  }
-  for (const p of sameCategory) {
-    if (result.length >= 4) break;
-    if (!seen.has(p.id)) {
-      seen.add(p.id);
-      result.push(p);
-    }
-  }
-
-  return result;
-}
-
 export function AddToCartDrawer() {
-  const { lastAddedItem, clearLastAdded, totalItems, totalPrice, addItem } =
+  const { lastAddedItem, clearLastAdded, totalItems, totalPrice } =
     useCartContext();
   const { data: allProducts = [] } = useProducts();
   const [open, setOpen] = useState(false);
@@ -68,13 +24,6 @@ export function AddToCartDrawer() {
     setOpen(false);
     setTimeout(() => clearLastAdded(), 300);
   };
-
-  const upsellProducts = useMemo(() => {
-    if (!lastAddedItem) return [];
-    return getUpsellProducts(lastAddedItem.product, allProducts);
-  }, [lastAddedItem, allProducts]);
-
-  const shippingGap = 60 - totalPrice;
 
   return (
     <Sheet
@@ -130,16 +79,7 @@ export function AddToCartDrawer() {
                   {totalPrice.toFixed(2)} €
                 </span>
               </div>
-              {shippingGap > 0 && (
-                <p className="text-xs text-primary font-medium">
-                  🚚 Lisää {shippingGap.toFixed(2)} € → ilmainen toimitus!
-                </p>
-              )}
-              {shippingGap <= 0 && (
-                <p className="text-xs text-primary font-medium">
-                  ✅ Ilmainen toimitus!
-                </p>
-              )}
+              <FreeShippingProgress total={totalPrice} className="pt-1" />
             </div>
 
             {/* Actions */}
@@ -168,39 +108,14 @@ export function AddToCartDrawer() {
               </Button>
             </div>
 
-            {/* Upsell */}
-            {upsellProducts.length > 0 && (
-              <div className="pt-4 border-t border-border">
-                <h3 className="font-display text-base text-foreground mb-3">
-                  Muut ostivat myös 🔥
-                </h3>
-                <div className="space-y-3">
-                  {upsellProducts.slice(0, 3).map((p) => (
-                    <Link
-                      key={p.id}
-                      to={`/tuote/${p.slug}`}
-                      onClick={handleClose}
-                      className="flex gap-3 group hover:bg-muted/50 rounded-lg p-2 -mx-2 transition-colors"
-                    >
-                      <img
-                        src={proxiedImage(p.images[0]) || "/placeholder.svg"}
-                        alt={productAlt(p, "suositeltu lahjavinkki")}
-                        className="w-14 h-14 rounded-md bg-muted object-cover shrink-0"
-                        loading="lazy"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                          {p.name}
-                        </p>
-                        <p className="text-sm font-bold text-primary mt-0.5">
-                          {p.price.toFixed(2)} €
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Sopii yhteen (src/lib/recommendations.ts): ei väitettä yhteisostoista */}
+            <ComplementaryProducts
+              base={[lastAddedItem.product]}
+              all={allProducts}
+              layout="list"
+              onNavigate={handleClose}
+              className="pt-4 border-t border-border"
+            />
           </div>
         )}
       </SheetContent>

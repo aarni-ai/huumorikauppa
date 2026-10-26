@@ -34,6 +34,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 
 import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
+import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 
 
 function parseDescription(description: string) {
@@ -825,6 +826,9 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Sopii yhteen: täydentävät tuotteet ostoalueen alla (src/lib/recommendations.ts) */}
+        <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl" />
 
         {/* Product description */}
         <section className="mt-12">

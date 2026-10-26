@@ -44,3 +44,13 @@ export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €,
 export function toimitusmaksuSummalle(valisumma: number): number {
   return valisumma >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUSMAKSU;
 }
+
+/** Puuttuva summa ilmaiseen toimitukseen ja edistyminen prosentteina (ostoskorin paneelin palkki). */
+export function freeShippingStatus(total: number): { free: boolean; gap: number; progress: number } {
+  const gap = Math.max(0, ILMAINEN_TOIMITUS_RAJA - total);
+  return {
+    free: gap === 0,
+    gap,
+    progress: Math.min(100, Math.max(0, (total / ILMAINEN_TOIMITUS_RAJA) * 100)),
+  };
+}

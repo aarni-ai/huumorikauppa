@@ -7,7 +7,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
-import { useMemo } from "react";
+import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
 const FREE_SHIPPING = ILMAINEN_TOIMITUS_RAJA;
@@ -21,14 +21,6 @@ const CartPage = () => {
   const shippingCost = shippingFree ? 0 : TOIMITUSMAKSU;
   const shippingGap = Math.max(0, FREE_SHIPPING - totalPrice);
   const shippingProgress = Math.min(100, (totalPrice / FREE_SHIPPING) * 100);
-
-  const cartProductIds = new Set(items.map((i) => i.product.id));
-  const upsellProducts = useMemo(() => {
-    const cartCategories = [...new Set(items.map((i) => i.product.category))];
-    return allProducts
-      .filter((p) => !cartProductIds.has(p.id) && cartCategories.includes(p.category))
-      .slice(0, 4);
-  }, [allProducts, items]);
 
   if (items.length === 0) {
     return (
@@ -129,36 +121,13 @@ const CartPage = () => {
             </div>
           ))}
 
-          {/* Upsell */}
-          {upsellProducts.length > 0 && (
-            <div className="mt-6 pt-6 border-t border-border">
-              <p className="text-sm font-semibold text-foreground mb-3">
-                {shippingFree ? "Täydennä lahjaasi:" : `Lisää ${shippingGap.toFixed(2)} € → ilmainen toimitus:`}
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {upsellProducts.map((p) => (
-                  <Link
-                    key={p.id}
-                    to={`/tuote/${p.slug}`}
-                    className="group rounded-lg border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden"
-                  >
-                    <img
-                      src={proxiedImage(p.images[0]) || "/placeholder.svg"}
-                      alt={p.name}
-                      className="w-full aspect-square object-cover bg-muted"
-                      loading="lazy"
-                      width={200}
-                      height={200}
-                    />
-                    <div className="p-2">
-                      <p className="text-xs font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">{p.name}</p>
-                      <p className="text-xs font-bold text-primary mt-0.5">{p.price.toFixed(2)} €</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
+          <ComplementaryProducts
+            base={items.map((i) => i.product)}
+            all={allProducts}
+            title={shippingFree ? "Täydennä tilaus" : `Täydennä tilaus: ${shippingGap.toFixed(2).replace(".", ",")} € ilmaiseen toimitukseen`}
+            className="mt-6 pt-6 border-t border-border"
+          />
         </div>
 
         {/* Summary */}

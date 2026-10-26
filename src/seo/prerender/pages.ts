@@ -499,6 +499,9 @@ export function buildLandingPages(products: Product[]): PrerenderPage[] {
       breadcrumbs: landingBreadcrumbs(page),
       intro: page.intro,
       sections: [
+        ...(page.spotlight
+          ? [{ heading: page.spotlight.heading, paragraphs: [page.spotlight.text], links: page.spotlight.links }]
+          : []),
         { heading: "Lisää lahjaideoita", links: [...related, ...extra] },
         { heading: "Tuotekategoriat", links: landingCategoryLinks(page) },
       ],

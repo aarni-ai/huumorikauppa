@@ -18,8 +18,22 @@ import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { FATHERS_DAY_LAST_ORDER_TEXT, FATHERS_DAY_TEXT } from "./campaignSchedule";
 import { LANDING_REDIRECTS } from "./landingRoutes";
+import {
+  AMMATTI,
+  ELAKE,
+  HARRASTUS,
+  isCityProduct,
+  MEEMI,
+  SETA,
+  SUOMI,
+  SUOMI_MEEMIT,
+  theme,
+  TONNIN_SETELI,
+  TONNIN_SETELI_PATH,
+} from "./themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
+export { isCityProduct, TONNIN_SETELI, TONNIN_SETELI_PATH } from "./themes";
 export { LANDING_PATHS, LANDING_REDIRECTS, NOT_CREATED_LANDINGS, CHRISTMAS_MENU, FATHERS_DAY_MENU } from "./landingRoutes";
 
 export const LANDING_MIN_PRODUCTS = 8;
@@ -58,6 +72,16 @@ export interface LandingPageDef {
   filter: (p: LandingProduct) => boolean;
   /** Järjestys: oletuksena prioriteetti, sitten kaupunkituotteet viimeisenä. */
   sort?: "default" | "hupparit-first" | "price-desc";
+  /** Sivun päätuotteet: suodattimen hyväksymistä nämä näytetään ensin (esim. teemasivun omat tuotteet). */
+  featured?: (p: LandingProduct) => boolean;
+  /** Nosto toiselle sivulle tuotteiden yläpuolella (esim. joulusivulta teemasivulle). */
+  spotlight?: LandingSpotlight;
+}
+
+export interface LandingSpotlight {
+  heading: string;
+  text: string;
+  links: { href: string; label: string }[];
 }
 
 // ── Suodattimen apurit ──────────────────────────────────────────────────────────
@@ -71,14 +95,6 @@ const lower = (p: LandingProduct) => `${p.name} ${p.slug}`.toLowerCase();
 export const looksLikeMug = (p: LandingProduct) =>
   onPiilotettuTuote(p as Parameters<typeof onPiilotettuTuote>[0]) || /muki|kahvikuppi/.test(lower(p));
 
-/** Kaupunkituotteet (kuvauksessa #kaupunki:Nimi). */
-export const isCityProduct = (p: LandingProduct) => (p.description ?? "").includes("#kaupunki:");
-
-/** Nimi tai slug vastaa jotain säännöllistä lauseketta (kaupunkituotteet eivät kuulu teemoihin). */
-const theme =
-  (...patterns: RegExp[]) =>
-  (p: LandingProduct) =>
-    !isCityProduct(p) && patterns.some((re) => re.test(lower(p)));
 
 const any =
   (...fns: ((p: LandingProduct) => boolean)[]) =>
@@ -115,7 +131,6 @@ const PERSONAL_ADULT = all(PERSONAL, not(inCategory("bodyt", "tarrat", "pipot"))
 /** Omalla tekstillä painettavat lahjat kotiin: peitto, seinätaulu, koriste. */
 const OMA_KOTIIN = all(OMA_TEKSTI, inCategory("peitot", "seinataulut", "koristeet"));
 
-const ELAKE = theme(/eläk/, /vapautunut virallisesti/, /ikuinen viikonloppu/, /virallisesti työtön/);
 const ISA = theme(/(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /asuu yksi pomo/, /\bkalju/);
 const AITI = theme(/äiti/, /äiskä/);
 const PAPPA = theme(/\bukki/, /pappa/);
@@ -124,34 +139,11 @@ const MIES = theme(
   /(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /\bkalju/, /kalamies/, /kalassa/, /\bukki/, /pappa/,
   /my girlfriend/, /swedish girls/, /museokamaa/, /asuu yksi pomo/,
 );
-const MEEMI = theme(
-  /oispa kaljaa/, /tonnin seteli/, /ice aatana/, /saatanan tunarit/, /viisaampi häipyy/, /\bkalju/,
-  /amatimies/, /museokamaa/, /alkoholi/, /maailman mestarit/,
-);
-const SUOMI = theme(
-  /suomi finland/, /saatanan tunarit/, /ice aatana/, /oispa kaljaa/, /viisaampi häipyy/, /isäntä/,
-  /amatimies/, /maailman mestarit/, /avantouija/, /pilkkijä/, /kalassa/,
-);
-const SETA = theme(
-  /\bkalju/, /isäntä/, /amatimies/, /museokamaa/, /iskä ei osaa/, /asuu yksi pomo/, /alkoholi/,
-  /grillimest/, /kalamies/, /oispa kaljaa/,
-);
 const TYO = theme(
   /etätö/, /palaveri/, /lounastauko/, /tiimipelaaja/, /työkaveri/, /asiakaspalvelija/, /myyntimieh/,
   /paras pomo/, /työsankari/, /alalla x/, /pikkujoulu/, /kesäloma/,
 );
 const POMO = theme(/pomo/, /palaveri/, /tiimipelaaja/, /työsankari/, /kapteeni/, /alalla x/, /myyntimieh/);
-const HARRASTUS = theme(
-  /(?<![a-zåäö])pelaaja/, /lumilautailija/, /juoksija/, /kitaristi/, /rottaharrastaja/, /koiranomistaja/, /pilkkijä/,
-  /valokuvaaja/, /grillimest/, /avantouija/, /retkeilijä/, /pyöräilijä/, /kuntosali/, /golfaaja/,
-  /mökkeilijä/, /kalastaja/, /metsästäjä/, /kalamies/, /kalassa/, /harrastusmestari/, /autoharrastaja/,
-  /valmentajani/,
-);
-const AMMATTI = theme(
-  /maanviljelijä/, /sähkömie/, /sähköasentaja/, /putkimie/, /poliisi/, /palomie/, /kokille/, /siivooja/,
-  /linja-auto/, /myyntimie/, /asiakaspalvelija/, /parturi/, /rakennusmie/, /koodari/,
-  /ammatin/, /alalla x/, /työsankari/,
-);
 /** Sisäpiirin huumori aikuisille kavereille. */
 const KAVERI = any(
   theme(
@@ -202,11 +194,25 @@ const ISA_VITSIT = all(
   any(ISA, SETA, theme(/kala pääsi/, /huonokin päivä kalassa/, /museokamaa/, /elävä legenda/)),
   not(theme(/alkoholi/, /oispa kaljaa/)),
 );
+const TONNIN_SETELI_TPAITA = "/tuote/tonnin-seteli-t-paita";
+const SE_OLI_TPAITA = "/tuote/se-oli-tonnin-seteli-t-paita";
+
 const ANY_AGE = all(any(age(30), age(40), age(50), age(60), age(70)), not(workYears));
 
 // ── Sivut ───────────────────────────────────────────────────────────────────────
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
+
+/** Joulusivujen nosto tonnin seteli -sivulle: sivu, t-paita ja huppari. */
+const tonninSeteliSpotlight = (text: string): LandingSpotlight => ({
+  heading: "Se oli tonnin seteli -paidat",
+  text,
+  links: [
+    { href: TONNIN_SETELI_PATH, label: "Kaikki tonnin seteli -paidat" },
+    { href: TONNIN_SETELI_TPAITA, label: "Tonnin Seteli -t-paita" },
+    { href: "/tuote/se-oli-tonnin-seteli-huppari", label: "Se oli tonnin seteli -huppari" },
+  ],
+});
 
 export const landingPages: LandingPageDef[] = [
   // ─── Joulu ───
@@ -261,9 +267,13 @@ export const landingPages: LandingPageDef[] = [
       "/joululahja-alle-50-euroa",
       "/lahjat/pikkujouluihin",
       "/salainen-joulupukki-lahja",
+      TONNIN_SETELI_PATH,
     ],
     categories: ["t-paidat", "hupparit"],
     extraLinks: [{ href: "/joulun-viimeiset-tilauspaivat", label: "Joulun viimeiset tilauspäivät" }],
+    spotlight: tonninSeteliSpotlight(
+      "Joululahja kaverille, joka tuntee meemin: se oli tonnin seteli. ja Tonnin Seteli t-paitana ja huppareina.",
+    ),
     filter: (p) => !isCityProduct(p) && p.category !== "bodyt",
   },
   {
@@ -386,8 +396,12 @@ export const landingPages: LandingPageDef[] = [
       "/joululahja-isalle",
       "/lahjat/harrastajalle",
       "/lahjat/50-vuotiaalle-miehelle",
+      TONNIN_SETELI_PATH,
     ],
     categories: ["t-paidat", "hupparit"],
+    spotlight: tonninSeteliSpotlight(
+      "Valmis vitsi personoinnin sijaan: se oli tonnin seteli -paita miehelle, joka muistelee menetettyjä rahojaan joka illanvietossa.",
+    ),
     filter: PERSONAL_ADULT,
   },
   {
@@ -428,8 +442,12 @@ export const landingPages: LandingPageDef[] = [
       "/joululahja-miehelle-jolla-on-kaikki",
       "/setamiespaidat",
       "/lahjat/joululahjaksi-miehelle",
+      TONNIN_SETELI_PATH,
     ],
     categories: ["hupparit", "t-paidat"],
+    spotlight: tonninSeteliSpotlight(
+      "Isälle, joka kertoo joulupöydässä saman tarinan rahasta, joka vain katosi: se oli tonnin seteli -huppari tai -t-paita.",
+    ),
     filter: ISA,
     sort: "hupparit-first",
   },
@@ -544,7 +562,7 @@ export const landingPages: LandingPageDef[] = [
         a: `${D}`,
       },
     ],
-    related: ["/lahja-kaverille", "/lahjat/pikkujouluihin", "/meemipaidat", "/salainen-joulupukki-lahja"],
+    related: ["/lahja-kaverille", "/lahjat/pikkujouluihin", "/meemipaidat", "/salainen-joulupukki-lahja", TONNIN_SETELI_PATH],
     categories: ["t-paidat", "koristeet"],
     filter: KAVERI,
   },
@@ -975,7 +993,7 @@ export const landingPages: LandingPageDef[] = [
         a: "Voi. Oma teksti/kuva -paidassa kirjoitat tekstin tai kuvatoiveen tuotesivulla.",
       },
     ],
-    related: ["/suomalainen-huumori-paidat", "/setamiespaidat", "/hauskat-t-paidat", "/joululahja-kaverille"],
+    related: ["/suomalainen-huumori-paidat", "/setamiespaidat", "/hauskat-t-paidat", "/joululahja-kaverille", TONNIN_SETELI_PATH],
     categories: ["t-paidat", "hupparit"],
     filter: MEEMI,
   },
@@ -1017,6 +1035,50 @@ export const landingPages: LandingPageDef[] = [
       { href: "/kaupunki/oulu", label: "Oulu-paidat" },
     ],
     filter: SUOMI,
+  },
+  {
+    path: TONNIN_SETELI_PATH,
+    name: "Tonnin seteli -paidat",
+    group: "tuotteet",
+    title: "Se oli tonnin seteli -paita ja huppari | Huumorikauppa",
+    description:
+      `Se oli tonnin seteli -paita ja -huppari sekä Tonnin Seteli -paidat meemin tunteville. Koot S-5XL, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    h1: "Se oli tonnin seteli -paidat ja hupparit",
+    intro: [
+      "Se oli tonnin seteli on suomalainen meemilausahdus, jolla surraan liioitellen rahaa, joka vain katosi: tonnin seteliä harva on koskaan nähnyt, ja juuri liioittelu tekee vitsistä hauskan.",
+      "Tekstistä on kaksi versiota. Se oli tonnin seteli. on koko lausahdus pisteen kanssa, ja Tonnin Seteli on lyhyempi teksti. Kummastakin on t-paita ja huppari kooissa S-5XL, ja ne näkyvät listassa ensimmäisinä.",
+      `Samaan sarjaan sopivat muut suomalaiset meemit, kuten oispa kaljaa, Saatanan Tunarit, ICE AATANA ja ois viisaampi häipyy täält. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+    ],
+    faqs: [
+      {
+        q: "Mitä se oli tonnin seteli tarkoittaa?",
+        a: "Se on suomalainen meemilausahdus, jolla muistellaan suureellisesti kadonnutta rahaa. Vitsi on liioittelussa: menetys kuulostaa lopulliselta ja dramaattiselta, vaikka tarina paisuu joka kerta kerrottaessa.",
+      },
+      {
+        q: "Mitä eroa on se oli tonnin seteli- ja Tonnin Seteli -paidoilla?",
+        a: "Teksti. Se oli tonnin seteli. -tuotteissa on koko lausahdus pisteen kanssa, Tonnin Seteli -tuotteissa lyhyempi teksti. Kummastakin on t-paita ja huppari.",
+      },
+      {
+        q: "Kenelle tonnin seteli -paita sopii lahjaksi?",
+        a: "Kaverille, veljelle tai työkaverille, joka tuntee meemin tai muistelee menetettyjä rahojaan joka illanvietossa. Se sopii synttäreille, pikkujouluihin ja joululahjaksi.",
+      },
+      {
+        q: "Mitä kokoja tonnin seteli -paidoissa on?",
+        a: "T-paidat ja hupparit ovat kooissa S-5XL. Tuotesivun kokoapu näyttää valitulle värille saatavilla olevat koot.",
+      },
+      {
+        q: "Ehtiikö tonnin seteli -paita jouluksi?",
+        a: `${D}`,
+      },
+    ],
+    related: ["/meemipaidat", "/suomalainen-huumori-paidat", "/joululahja-kaverille", "/lahjat/veljelle", "/joululahjat"],
+    categories: ["t-paidat", "hupparit"],
+    extraLinks: [
+      { href: TONNIN_SETELI_TPAITA, label: "Tonnin Seteli -t-paita" },
+      { href: SE_OLI_TPAITA, label: "Se oli tonnin seteli -t-paita" },
+    ],
+    filter: any(TONNIN_SETELI, SUOMI_MEEMIT),
+    featured: TONNIN_SETELI,
   },
   {
     path: "/setamiespaidat",
@@ -1863,6 +1925,10 @@ export function selectLandingProducts<T extends LandingProduct>(page: LandingPag
   indexed.sort((a, b) => {
     const city = Number(isCityProduct(a.p)) - Number(isCityProduct(b.p));
     if (city !== 0) return city;
+    if (page.featured) {
+      const f = Number(page.featured(b.p)) - Number(page.featured(a.p));
+      if (f !== 0) return f;
+    }
     if (page.sort === "hupparit-first") {
       const h = (SORT_CATEGORY_HUPPARIT[a.p.category] ?? 1) - (SORT_CATEGORY_HUPPARIT[b.p.category] ?? 1);
       if (h !== 0) return h;
