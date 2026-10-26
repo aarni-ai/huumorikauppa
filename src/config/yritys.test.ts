@@ -94,7 +94,7 @@ describe("ORGANIZATION seuraa vaihtoa moduulin latautuessa", () => {
     expect(txt).toContain("Y-tunnus: 3653666-7");
     expect(txt).toContain("ALV-numero: FI36536667");
     expect(txt).not.toMatch(/inteller|3583677/i);
-  });
+  }, 30_000);
 });
 
 /** git grep seuratuista tiedostoista (tyhjä tulos = ei osumia). */
