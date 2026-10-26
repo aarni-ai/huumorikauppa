@@ -8,6 +8,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
 const FREE_SHIPPING = ILMAINEN_TOIMITUS_RAJA;
@@ -156,6 +157,11 @@ const CartPage = () => {
               <span className="text-primary">{(totalPrice + shippingCost).toFixed(2)} €</span>
             </div>
           </div>
+
+          <JouluTakarajaRivi
+            categories={items.some((i) => i.product.supplier === "aliexpress") ? [] : items.map((i) => i.product.category)}
+            className="text-sm text-foreground"
+          />
 
           {items.some((i) => i.product.supplier === "aliexpress") && (
             <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800 space-y-1">

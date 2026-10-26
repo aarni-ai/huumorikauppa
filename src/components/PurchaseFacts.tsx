@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { RotateCcw, Truck } from "lucide-react";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 
 /**
  * Toimitus- ja palautustiedot heti hinnan alla (tuotesivu). Arvot: src/config/toimitus.ts.
  * Personoiduilla tuotteilla ei ole peruutusoikeutta (ReturnsPolicy.tsx kohta 7).
+ * Joulun takaraja (src/data/jouluAikataulu.ts) näkyy toimitustiedon alla vain ennen takarajaa.
  */
 export function PurchaseFacts({
   isCustom,
   showDeliveryTime = true,
+  jouluKategoriat = [],
   compact = false,
   className = "",
 }: {
@@ -17,6 +20,8 @@ export function PurchaseFacts({
   compact?: boolean;
   /** false, kun tuotteella on oma toimitusaikansa (DeliveryBadge, AliExpress). */
   showDeliveryTime?: boolean;
+  /** Tuotteen kategoria joulun tilauspäivää varten; tyhjä = ei joulurivia (esim. AliExpress). */
+  jouluKategoriat?: readonly string[];
   className?: string;
 }) {
   return (
@@ -28,6 +33,7 @@ export function PurchaseFacts({
           {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta{compact ? "" : " alkaen"}
         </span>
       </li>
+      <JouluTakarajaRivi as="li" categories={jouluKategoriat} className="text-foreground" />
       <li className="flex items-start gap-1.5">
         <RotateCcw className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
         {isCustom ? (
