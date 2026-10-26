@@ -48,10 +48,21 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
   -paita ja -huppari, Maailman paras äiti -huppari) / muut. Kampanjaa ei käynnistetty.
 - Asiakastekstit: "Saatat myös tykätä" -> "Lisää samasta kategoriasta", 404-sivun epävarma lause korjattu.
 
-**Nopeus:** tuotesivun esikatselu (esirenderöity sisältö näkyviin heti) julkaistiin ja peruttiin heti: tuotannossa
-tuotesivu jäi esikatselutilaan eikä ostaminen onnistunut (todettu headless-Chromella). Kauppa toimi taas
-peruutuksen jälkeen (ostoskoriin lisäys tarkistettu). Korjaus testataan erillisessä Vercel-esikatselussa ennen
-uutta julkaisua. Lighthouse mobiili tuotannossa ennen: etusivu 78 (LCP 4,0 s), tuotesivu 69 (LCP 7,1 s).
+**Nopeus:** ensimmäinen versio (esirenderöity tuotesivu näkyviin heti) jäi tuotannossa esikatselutilaan, koska sivu
+odotti tuotetietoja selaimen Supabase-haulta; se peruttiin heti. Korjattu versio upottaa tuoterivin sivuun ja vaihtaa
+oikean sivun esiin heti, testattu Vercel-esikatselussa ja tuotannossa (ostoskoriin lisäys toimii, 4 sivua, tuoreet
+selaimet). Lighthouse mobiili tuotannossa, 3 ajon mediaani:
+
+| Sivu | Suorituskyky | LCP | FCP | TBT | CLS |
+|---|---|---|---|---|---|
+| Etusivu ennen | 78 | 4,0 s | 3,6 s | 62 ms | 0 |
+| Etusivu jälkeen | 80 | 3,7 s | 3,7 s | 20 ms | 0 |
+| Tuotesivu ennen | 69 | 7,1 s | 3,2 s | 59 ms | 0,039 |
+| Tuotesivu jälkeen | 83 | 3,5 s | 3,5 s | 14 ms | 0 |
+
+Tavoite alle 2,5 s ei vielä täyty. Mittauskoneen Vercel-reuna on Mumbai (TTFB noin 0,7 s), joten luku ei vastaa
+suomalaista käyttäjää. Seuraavat askeleet: pääkuvan leveydet staattisiksi tiedostoiksi buildissa (kuvaproxyn
+välimuistin ohilyönti noin 1,8 s), middlewaren kylmäkäynnistys (4,3 s kylmänä) ja pääpaketin blogidata (210 kt) erilleen.
 
 **Uudet tuotteet Printifyyn (OPT OnDemand, Tšekki), tulevat kauppaan Lovablen yösynkronoinnissa:** 12 A3-julistetta
 22,90 € (kate 31,5 %, Printifyn ALV:n kanssa 14,7 %): Se oli tonnin seteli, Tonnin seteli, Olen eläkkeellä, 60v kokenut
@@ -286,5 +297,5 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 25.10. | Saatavuus Printifyn mukaan: 164 yhdistelmää 32 tuotteessa piiloon. | main 6d4a543 | Kaikki näkyvät yhdistelmät tilattavissa | Uusi ajo Lovable-synkronoinnin jälkeen |
 | 26.10. | Tonnin seteli -laskeutumissivu, etusivun ja joulusivujen nostot, Sopii yhteen -suositukset, ilmaisen toimituksen palkki sivupaneeliin (60 €-virhe korjattu). | main 2982658 | Keskiostos, myydyimmän teeman näkyvyys | Seuraa keskiostosta |
 | 26.10. | Rakenteinen data (481/481 validi), Consent Mode v2, syötteen kateluokat ja myydyimmät. | main ba19d66-815c007 | Search Consolen tuotevirheet, GDPR | Search Consolen tarkistus 1-2 viikon päästä |
-| 26.10. | Nopeus: esikatselu julkaistu ja peruttu (tuotesivu jäi esikatseluun). | main f85e532 (peruutus) | Ei vaikutusta | Korjaus testataan esikatselussa |
+| 26.10. | Nopeus: tuotesivun esirenderöity sisältö näkyviin heti, tuoterivi upotettuna (ensimmäinen versio peruttiin). | main 593dd04 | Tuotesivu LCP 7,1 s -> 3,5 s, suorituskyky 69 -> 83 | Staattiset pääkuvat, middleware |
 | 26.10. | 13 uutta tuotetta Printifyyn (12 julistetta, 1 tarra), kate 31-33 %. | oma-tausta 4800fae | Uusia tuotteita yli 30 %:n katteella | Tarkista hinnat ja kategoria synkronoinnin jälkeen |
