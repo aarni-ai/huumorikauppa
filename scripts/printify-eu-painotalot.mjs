@@ -215,6 +215,8 @@ for (const lista of tuotteet) {
 
   const saanto = valitseSaanto(kategoria, vanhaPp?.title);
   if (!saanto) { ohita(`ei siirtosääntöä (kategoria ${kategoria}, painotalo ${vanhaPp?.title ?? "?"})`); continue; }
+  const paikat = (saanto.ohitaPaikat || []).filter((pos) => (vanha.print_areas || []).some((a) => (a.placeholders || []).some((ph) => ph.position === pos && (ph.images || []).length)));
+  if (paikat.length) { ohita(`painopaikka ${paikat.join(", ")}: kohdepainotalolla lisäkulu, kate heikkenisi (sääntö ohitaPaikat)`); continue; }
   const kohde = await ratkaiseKohde(saanto, vanha, vanhaBp);
   if (kohde.syy) { ohita(kohde.syy); continue; }
 
@@ -228,6 +230,12 @@ for (const lista of tuotteet) {
   if (pudotetutPaikat.length) console.log(`    painopaikat joita kohteella ei ole: ${pudotetutPaikat.join(", ")}`);
   if (!yhdistetyt.some((y) => y.is_enabled)) { ohita("yksikään käytössä oleva variantti ei vastaa kohdeblueprintia"); continue; }
   if (!print_areas.length) { ohita("painokuvia ei voitu siirtää (ei yhteisiä painopaikkoja)"); continue; }
+  // Printifyn editorin tekstitasoja (layerType "text") ei voi luoda API:lla: luonti päättyy virheeseen "Provided images
+  // do not exist" (26.10.2026 kokeiltu myös tekstikentillä). Siirto tehdään käsin Printifyssä (Duplicate + painotalo).
+  if ((vanha.print_areas || []).some((a) => (a.placeholders || []).some((ph) => (ph.images || []).some((k) => k.layerType === "text")))) {
+    ohita("tekstitaso (Printifyn editorin teksti), API ei tue: siirrä käsin Printifyssä");
+    continue;
+  }
   laske(kategoria, "siirretaan");
   if (!toteuta) continue;
 

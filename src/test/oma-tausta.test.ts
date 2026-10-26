@@ -75,6 +75,23 @@ describe("Katesääntö 20 %", () => {
     expect(myynnissa(halpa)).toBe(false);
     expect(() => laskeTilaus(pyynto([{ id: "p4", quantity: 1, size: "M", color: "Musta" }]), [halpa], null)).toThrow(KassaVirhe);
   });
+  it("tappiollinen variantti (kulu > myynti alv 0 - Stripe): kassa kieltäytyy ja tuote piilotetaan listasta", () => {
+    // 3XL-tyyppinen tapaus: yksi variantti tappiollinen (kulu 40,00 + toimitus 4,50 > (34,90 + 6,90) / 1,255 - Stripe).
+    const tappio = { ...paita, id: "p7", slug: "tappio", variants: { ...paita.variants, costs: { "11": 1200, "12": 4000, "13": 1200 } } };
+    expect(laskeKate(tappio, 12)).toMatchObject({ tunnettu: true, sallittu: false });
+    expect(laskeKate(tappio, 12).nettokate).toBeLessThan(0);
+    expect(heikoinKate(tappio).nettokate).toBeLessThan(0);
+    expect(myynnissa(tappio)).toBe(false);
+    const virhe = (() => {
+      try { laskeTilaus(pyynto([{ id: "p7", quantity: 1, size: "L", color: "Musta" }]), [tappio], null); } catch (e) { return e; }
+      return null;
+    })();
+    expect(virhe).toBeInstanceOf(KassaVirhe);
+    // Tuotteen heikoin variantti on alle KATE_RAJA:n, joten myynnissa() hylkää jo ennen variantin katetarkistusta
+    // (low_margin); kumpikin estää maksun. Myös kannattava variantti samasta tuotteesta estyy.
+    expect(["hidden_category", "low_margin"]).toContain((virhe as KassaVirhe).vaihe);
+    expect(() => laskeTilaus(pyynto([{ id: "p7", quantity: 1, size: "M", color: "Musta" }]), [tappio], null)).toThrow(KassaVirhe);
+  });
   it("tuntematon kulu: näkyy listassa, mutta kassa ei ota maksua", () => {
     const tuntematon = { ...paita, id: "p5", slug: "uusi", variants: { variant_map: paita.variants.variant_map } };
     expect(heikoinKate(tuntematon).tunnettu).toBe(false);

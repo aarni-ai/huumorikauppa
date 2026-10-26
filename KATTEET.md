@@ -30,6 +30,104 @@ Ennen = 22.10.2026, kaikki tuotteet vanhoilla painotaloilla. Jälkeen = EU-siirr
 - Printify veloittaa tilauksista arvonlisäveron (25,5 %), jos tilillä ei ole ALV-tunnusta. Kulut yllä ovat ilman
   sitä. ALV-tunnuksen lisäys Printifyn tilille (Settings > Billing) poistaa veloituksen.
 
+## EU-kiinteät painotalot (26.10.2026)
+
+Tavoite: yhtään tilausta ei paineta Yhdysvalloissa. Printify Choice (id 99) on reititysverkko (sijainti Miami US;
+API ei kerro reititystä; toteutuneita tilauksia on mennyt sekä US- että LT-painotalolle). Kulut mitattu luomalla
+Printifyyn testituotteet (otsikko "Copy of EU-hintavertailu <bp>-<pp>", yksi variantti käytössä; kaupan synkka tuo ne
+copy-of-riveinä, jotka main piilottaa). Kate = api/_lib/kate.js laskeKate, hinta 49,90 €, toimitusmaksu 6,90 €.
+
+**Hupparit** (Gildan 18500, blueprint 77, Choice: kulu 21,58 € S-XL / 23,77 € 2XL / 25,09-25,66 € 3XL-5XL, toimitus 15,59 €):
+
+| Vaihtoehto (EU) | Kulu (etupaino) | Toimitus FI | Kate S-XL | Kate 2XL | Kate 3XL+ |
+|---|---|---|---|---|---|
+| Printify Choice (nykyinen) | 21,58-25,66 € | 15,59 € | 14,0 % | 9,0 % | 4,8-6,1 % |
+| **Textildruck Europa (DE), 18500** | 24,77-25,48 € (3XL+ 29,49-30,19 €) | 10,89 € | 15,8-17,4 % | 15,8-17,4 % | 5,2 % |
+| Atelier Katanga (FR), 18500 | 23,79 € (3XL+ 31,17 €) | 10,89 € | 19,6 % | 19,6 % | 3,0 % |
+| OPT OnDemand (CZ), AWDis JH001 | 25,93 € (vain S-2XL) | 10,89 € | 14,7 % | 14,7 % | - |
+| Textildruck Europa, AWDis JH001 | 25,73-26,39 € | 10,89 € | 13,7 % | 13,7 % | alle 0 % |
+| OPT OnDemand, Gildan SF500 | 26,49 € (3XL+ 31,76 €) | 10,89 € | 13,5 % | 13,5 % | 1,6 % |
+| Textildruck Europa, B&C WUI24 | 28,88 € | 10,89 € | 8,1 % | 8,1 % | alle 0 % |
+| OPT OnDemand, B&C King / Stanley Stella Cruiser | 34,42 € / 47,04 € | 10,89 € | alle 0 % | alle 0 % | alle 0 % |
+
+- Päätös: **Textildruck Europa** samalla blueprintilla. Jokainen yhdistetty variantti on vähintään yhtä kannattava
+  kuin Choicella tai enintään 0,9 %-yks. heikompi (3XL värillinen 5,2 % vs 6,1 %). Atelier Katangalta puuttuvat Ash,
+  Heather Navy ja Graphite Heather, ja sen 3XL-5XL on 1,8-3,1 %-yks. heikompi. Aiempi mittaus (6,8 %) sisälsi
+  kaulapainon, joka maksaa Textildruckilla 2,78 € lisää (Choicella ei mitään).
+- Siirretty 132 hupparia (data/eu-siirto-2026-10-26.json). Pudotettu 5 varianttia/tuote, joita Textildruckilla ei ole:
+  Heather Navy S/M, Graphite Heather S/M, Heather Sport Royal S. Heikoimman variantin kate keskimäärin 9,0 % -> 15,8 %.
+- Ei siirretty 4 hupparia, joissa on kaulapaino (slay-queen-huppari, super-aiska-huppari,
+  maailman-paras-aiti-palkinnon-voittaja-huppari, saatanan-tunarit-huppari): Textildruckilla heikoin kate -1,1 % vs
+  Choicen 4,8 % (yli 1 %-yks. heikompi).
+
+**Muut:**
+
+| Tuote | Nyt | EU-vaihtoehto | Kate nyt -> EU | Päätös |
+|---|---|---|---|---|
+| 3 SPOKE-mukia (luokka t-paidat, nimessä "teen") | SPOKE (US) 6,44 + 24,69 € | OPT Ceramic Mug EU 5,88 + 10,39 € | -29,7 % -> 30,8 % (24,90 €) | siirretty |
+| 4 Harrier Accent -mukia (14,90-24,90 €) | Harrier (GB) 7,91 + 10,39 € | Textildruck Two-Tone 11oz 6,90 + 10,39 € | parempi 1,01 € | sääntö lisätty, ei siirtynyt (tekstitaso) |
+| Body (Oma Teksti/Kuva) | SwiftPOD (US) 13,61 + 13,49 € | Textildruck BZ10 16,57 + 7,29 € | -13,3 % -> -0,1 % | sääntö (koot 6M->3-6M jne.), ei siirtynyt (tekstitaso) |
+| Choice-/Monster Digital -paidat (6) | 10,10-21,40 + 10,39-13,49 € | OPT Softstyle 64000 | parempi | sääntö, ei siirtynyt (tekstitaso) |
+| District Photo/Choice/Monster Digital -mukit (9) | 5,03-6,08 + 18,49-22,09 € | OPT Ceramic Mug EU | parempi | ei siirtynyt (tekstitaso) |
+| Tarra (Oma Teksti/Kuva, 4,99 €) | SPOKE kiss-cut 1,50 + 14,49 € | OPT Square Vinyl 3,89 + 5,59 € | -89 % -> -14 % | ei siirretty: eri tuote (neliö, ei läpinäkyvää), tappiollinen kummallakin |
+| Koristeet (2), lippis, peitto, seinätaulu | US | ei EU-painotaloa katalogissa (ornament, cap, velveteen blanket, canvas) | - | ei siirretty |
+
+- Tekstitaso: 20 tuotteen kuvassa on Printifyn editorin tekstikerros (layerType "text"). API ei luo niitä
+  ("Provided images do not exist"; kokeiltu myös tekstikentillä), joten siirto tehdään käsin Printifyssä (Duplicate,
+  vaihda painotalo). Siirtoskripti ohittaa ne nyt selkeällä syyllä.
+- Lovablen yösynkka EI osoita perusriviä uuteen kopioon: Printify listaa uusimman ensin, joten EU-kopio saa perusslugin
+  ja päivittää perusrivin, mutta heti perään vanha tuote osuu samaan riviin printify_product_id:llä (kartta luetaan
+  ennen silmukkaa) ja palauttaa sen. Siksi 24 näkyvää t-paitaa osoittaa yhä Choiceen, ja samoin käy 132 hupparille.
+
+## Tappiotarkistus (variantit, joissa kulu > myynti ilman ALV:tä - Stripe)
+
+Ajettu 2026-10-26 EU-siirron jälkeen: `npx tsx scripts/tappiotarkistus.mjs` (ympäristö kuten katteet.mjs). Jokainen aktiivinen
+kauppatuote (Supabase) ja jokainen variant_map-variantti: tappio = laskeKate-nettokate < 0 (tuotekulu + Suomen toimitus,
+1. kappale, vs (hinta + toimitusmaksu) / 1,255 - Stripe). Rivit, joilla on EU-kopio, arvioidaan myös kopion kuluilla ja
+kopion omilla "Väri|Koko"-avaimilla; tulos on yhdiste (varovainen, pätee kumpaan tahansa tuotteeseen rivi yön jälkeen osoittaa).
+Tulos `data/tappio-variantit.json` muodossa { slug: ["Väri|Koko", ...] } (main:n saatavuusdataan).
+
+- Tuotteita 820, variantteja tarkistettu 9426 (nykyinen Printify-tuote) + 1814 (EU-kopio, 260 riviä), kulu tuntematon 0.
+- Tappiollisia variantteja 307, 112 tuotteessa: nykyisellä tuotteella 307, EU-kopiolla 0.
+- EU-kopioissa ei ole 858 rivin nykyistä avainta (pudotetut variantit, esim. hupparien Heather Navy S/M); ne poistuvat rivistä, kun synkka osoittaa kopioon.
+
+| Kategoria | Tuotteita | Variantteja | Tappiollisia variantteja | Tuotteita, joissa tappiollinen variantti |
+|---|---|---|---|---|
+| t-paidat | 337 | 5083 | 104 | 9 |
+| mukit | 311 | 343 | 122 | 98 |
+| hupparit | 164 | 3865 | 17 | 1 |
+| koristeet | 2 | 2 | 0 | 0 |
+| pipot | 1 | 8 | 0 | 0 |
+| peitot | 1 | 3 | 3 | 1 |
+| pitkahihaiset | 1 | 61 | 0 | 0 |
+| seinataulut | 1 | 1 | 1 | 1 |
+| tarrat | 1 | 5 | 5 | 1 |
+| bodyt | 1 | 55 | 55 | 1 |
+
+Tappiolliset muut kuin mukit (mukit ovat piilossa: 98 mukia, kaikki tappiolliset nykyisellä tuotteella, EU-kopiolla 0):
+
+| Tuote | Kategoria | Hinta | Variantteja | Tappiollisia |
+|---|---|---|---|---|
+| oma-tekstikuva-vauvantaaperon-body | bodyt | 24,90 € | 55 | 55 |
+| ice-aatanahuppari | hupparit | 49,90 € | 73 | 17 |
+| oma-tekstikuva-peitto | peitot | 34,90 € | 3 | 3 |
+| oma-tekstikuva-seinataulu | seinataulut | 39,90 € | 1 | 1 |
+| 30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki | t-paidat | 24,90 € | 1 | 1 |
+| hauska-kahvimuki-baristalle-teen-taidetta-joka-paiva | t-paidat | 24,90 € | 1 | 1 |
+| kouvola-suomen-keskilapsi-kaikki-tuntee-hauska-kahvimuki | t-paidat | 24,90 € | 1 | 1 |
+| maailman-paras-aiti-palkinnon-voittaja-t-shirt-t-paita | t-paidat | 24,90 € | 62 | 10 |
+| ois-viisaampi-haipyy-taalt-t-paita | t-paidat | 24,90 € | 56 | 24 |
+| slay-queen-t-paita | t-paidat | 24,90 € | 72 | 13 |
+| super-aiska-t-paita | t-paidat | 24,90 € | 71 | 12 |
+| valmentajani-on-vaarallinen-ihminen-t-paita | t-paidat | 24,90 € | 28 | 28 |
+| yksi-kerta-viela-t-paita | t-paidat | 24,90 € | 14 | 14 |
+| oma-tekstikuva-tarra | tarrat | 4,99 € | 5 | 5 |
+
+- Hupparit: EU-kopioilla (Textildruck Europa) ei yhtään tappiollista varianttia; ice-aatanahuppari (jo ennestään Textildruck Europalla, ei tämän siirron tuote) 3XL-5XL tappiollisia.
+- T-paidat: kolme "t-paidat"-luokan riviä ovat mukeja (SPOKE, piilossa nimen perusteella). Muut tappiolliset ovat tekstitasollisia Choice- ja Monster Digital -paitoja (4XL-5XL tai kaikki Garment-Dyed-variantit), joita ei voitu siirtää API:lla.
+- Oma tausta estää nämä jo: api/_lib/kate.js KATE_RAJA 20 % (myynnissa() piilottaa tuotteen, jonka heikoin variantti on alle rajan, ja kassa hylkää; testi src/test/oma-tausta.test.ts).
+
+
 ## Mukit EU-painotalolla
 
 OPT OnDemand Ceramic Mug (EU): tuotekulu 5,88 €, toimitus Suomeen 10,39 €. Hinnalla 16,90 €:
