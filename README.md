@@ -71,3 +71,17 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Tarkistukset ennen julkaisua
+
+```sh
+npx vitest run                          # yksikkötestit
+npx tsc --noEmit -p tsconfig.app.json   # tyypit
+npm run build                           # Vite + esirenderöinti (dist/)
+npm run validoi:tuotedata               # Product-JSON-LD kaikilla dist/tuote/*/index.html -sivuilla
+npx vercel build --yes                  # middleware.ts kääntyy Vercelin Node-ajoympäristöön
+```
+
+`validoi:tuotedata` tarkistaa Googlen Product snippets- ja Merchant listings -kentät (name, image, description,
+sku, brand, offers: price, priceCurrency, availability, url, itemCondition, priceValidUntil, seller,
+shippingDetails, hasMerchantReturnPolicy) ja palauttaa koodin 1, jos yhdelläkin sivulla on virhe.
