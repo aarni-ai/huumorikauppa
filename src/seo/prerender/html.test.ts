@@ -135,6 +135,11 @@ describe("product preview", () => {
     expect(loader![1]).toContain('["/assets/vendor-b.js","/assets/query-c.js"]');
   });
 
+  it("adds extra module preloads (page chunk) to the loader without duplicates or the entry itself", () => {
+    const out = deferEntryScripts(VITE_TEMPLATE, ["/assets/ProductPage-x.js", "/assets/vendor-b.js", "/assets/index-a.js"]);
+    expect(out).toContain('["/assets/vendor-b.js","/assets/query-c.js","/assets/ProductPage-x.js"]');
+  });
+
   it("deferEntryScripts leaves HTML without an entry script unchanged", () => {
     expect(deferEntryScripts(TEMPLATE)).toBe(TEMPLATE);
   });

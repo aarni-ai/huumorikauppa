@@ -104,6 +104,28 @@ function validate(html, page) {
   if (problems.length > 0) throw new Error(`${page.path}: ${problems.join(", ")}`);
 }
 
+/** Viten manifestista moduulin chunk ja sen staattiset riippuvuudet (/assets/...). Manifesti poistetaan julkisesta dististä. */
+async function readChunkPreloads(src) {
+  const manifestPath = path.join(DIST, ".vite", "manifest.json");
+  try {
+    const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+    const out = [];
+    const visit = (key) => {
+      const chunk = manifest[key];
+      if (!chunk || out.includes(`/${chunk.file}`)) return;
+      out.push(`/${chunk.file}`);
+      for (const dep of chunk.imports ?? []) visit(dep);
+    };
+    visit(src);
+    return out;
+  } catch (err) {
+    log(`VAROITUS: Viten manifestia ei voitu lukea (${err.message}), ei chunk-esilatausta.`);
+    return [];
+  } finally {
+    await fs.rm(path.join(DIST, ".vite"), { recursive: true, force: true });
+  }
+}
+
 async function main() {
   const started = Date.now();
   const templatePath = path.join(DIST, "index.html");
@@ -186,6 +208,10 @@ async function main() {
       }
     }
 
+    // Tuotesivun komponentti-chunk ja sen riippuvuudet Viten manifestista: esikatselusivun JS-lataaja
+    // esilataa ne entryn kanssa, jotta ProductPage on valmis heti sovelluksen käynnistyessä.
+    const productChunks = await readChunkPreloads("src/pages/ProductPage.tsx");
+
     // Tuote- ja etusivun näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
     // Esikatselu on vain nopeutus: jos moduuli ei lataudu, sivut kirjoitetaan ilman sitä.
     const previewMod = await vite.ssrLoadModule("/src/seo/prerender/renderPreview.tsx").catch((err) => {
@@ -206,6 +232,7 @@ async function main() {
         if (!row) continue;
         try {
           page.previewHtml = previewMod.renderProductPreview(row);
+          page.modulePreloads = productChunks;
           previews += 1;
         } catch (err) {
           previewFailures.push(`${page.path} (${err.message})`);

@@ -56,6 +56,8 @@ export interface PrerenderPage {
   contentHtml?: string;
   /** LCP-kuvan preload (tuotesivun pääkuva): sama src/srcset/sizes kuin Reactin <img>. */
   preloadImage?: PreloadImage;
+  /** Lisämoduulit, jotka esikatselusivun JS-lataaja esilataa entryn kanssa (esim. ProductPage-chunk). */
+  modulePreloads?: string[];
   /**
    * Näkyvä esikatselu ennen staattista runkoa (tuotesivut ja etusivu, src/seo/prerender/renderPreview.tsx).
    * src/main.tsx näyttää sen, kunnes React-sivu on valmis.
@@ -326,7 +328,7 @@ export const ENTRY_DEFER_MAX_MS = 1000;
  * CSS:ään ja LCP-kuvaan, ja React käynnistyy heti niiden jälkeen. Ilman entry-skriptiä pohja
  * palautetaan sellaisenaan.
  */
-export function deferEntryScripts(html: string): string {
+export function deferEntryScripts(html: string, extraPreloads: string[] = []): string {
   const entry = html.match(/\s*<script type="module" crossorigin src="([^"]+)"><\/script>/);
   if (!entry) return html;
   const preloads: string[] = [];
@@ -335,6 +337,7 @@ export function deferEntryScripts(html: string): string {
     preloads.push(href);
     return "";
   });
+  for (const href of extraPreloads) if (!preloads.includes(href) && href !== entry[1]) preloads.push(href);
   // Chromium: odotetaan LCP-merkintää pääkuvalle (kuva on maalattu). Muut selaimet: kuvan load +
   // kaksi ruudunpäivitystä. Aina viimeistään ENTRY_DEFER_MAX_MS:n jälkeen.
   const loader =
@@ -368,7 +371,7 @@ export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteN
     preloadImage: page.preloadImage,
   });
   const full = injectRoot(html, (page.previewHtml ?? "") + renderStaticBody(page, nav));
-  return page.previewHtml ? deferEntryScripts(full) : full;
+  return page.previewHtml ? deferEntryScripts(full, page.modulePreloads) : full;
 }
 
 /**
