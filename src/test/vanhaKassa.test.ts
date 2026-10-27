@@ -35,4 +35,18 @@ describe("vanha kassa", () => {
     expect(new RegExp(`^${r.has[0].value}$`).test("huumorikauppa-git-main-aarni-ais-projects.vercel.app")).toBe(true);
     expect(new RegExp(`^${r.has[0].value}$`).test("huumorikauppa-five.vercel.app")).toBe(false);
   });
+
+  it("uutiskirjelomakkeet tallentavat omaan tauluun eivätkä lupaa alennuskoodia, jota kassa ei hyväksy", () => {
+    for (const f of ["src/components/layout/Footer.tsx", "src/pages/Index.tsx"]) {
+      const koodi = fs.readFileSync(path.join(ROOT, f), "utf8");
+      expect(koodi, f).toMatch(/fetch\("\/api\/sahkoposti"/);
+      expect(koodi, f).not.toMatch(/subscribe-mailerlite|HUUMORI5|5 % alennu/);
+    }
+  });
+
+  it("Supabase-asiakas ei kaada sivustoa ilman Lovablen muuttujia", () => {
+    const koodi = fs.readFileSync(path.join(ROOT, "src/integrations/supabase/client.ts"), "utf8");
+    expect(koodi).toMatch(/VITE_SUPABASE_URL \|\| "https:\/\//);
+    expect(koodi).toMatch(/VITE_SUPABASE_PUBLISHABLE_KEY \|\| "/);
+  });
 });

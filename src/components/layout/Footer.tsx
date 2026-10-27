@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { categories } from "@/data/products";
 import { onPiilotettu } from "@/lib/hiddenCategories";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { footerGiftLinks } from "@/config/internalLinks";
 import { PaymentIcons, PAYMENT_METHODS_TEXT } from "@/components/PaymentIcons";
@@ -73,12 +72,15 @@ export function Footer() {
     }
     try {
       const email = footerEmail.trim().toLowerCase();
-      await supabase.functions.invoke("subscribe-mailerlite", { body: { email } });
-      await supabase.from("newsletter_subscribers").insert({ email, is_active: true });
-      await supabase.functions.invoke("notify-store", { body: { email, type: "newsletter" } });
+      // Oma tausta: uutiskirje omaan tauluun (api/sahkoposti.js), ei Lovable Cloudiin. Lomakkeen lähetys on tilaus.
+      await fetch("/api/sahkoposti", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "alatunniste" }),
+      });
     } catch {}
     setFooterSubmitted(true);
-    toast({ title: "Kiitos tilauksesta!", description: "Alennuskoodisi: HUUMORI5 (-5%)" });
+    toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
   };
 
   return (
@@ -168,9 +170,9 @@ export function Footer() {
         {/* Newsletter */}
         <div className="space-y-4">
           <h4 className="text-xs font-semibold text-foreground uppercase tracking-widest">Uutiskirje</h4>
-          <p className="text-sm text-muted-foreground leading-relaxed">Tilaa ja saat 5 % alennuksen ensimmäisestä tilauksestasi.</p>
+          <p className="text-sm text-muted-foreground leading-relaxed">Uudet tuotteet ja sesongin lahjaideat sähköpostiisi.</p>
           {footerSubmitted ? (
-            <p className="text-sm text-foreground font-semibold">Kiitos! Koodisi: HUUMORI5</p>
+            <p className="text-sm text-foreground font-semibold">Kiitos tilauksesta!</p>
           ) : (
             <div className="flex gap-2">
               <Input

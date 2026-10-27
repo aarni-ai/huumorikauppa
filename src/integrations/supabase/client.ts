@@ -2,8 +2,11 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+// Oma tausta (27.10.2026): Lovable Cloudin muuttujia ei ole uudessa Vercel-projektissa. Ilman niitä createClient
+// kaatuisi heti latauksessa ("supabaseUrl is required") ja koko sivusto sen mukana; paikkamerkillä kutsut vain
+// epäonnistuvat (ylläpitopaneeli).
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://ei-kaytossa.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "ei-kaytossa";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
