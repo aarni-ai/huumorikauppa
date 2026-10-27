@@ -56,8 +56,32 @@ HUUMORIKAUPPA. Tili ei ole inteller.info. Valmis sulkuohje on KAYTTOONOTTO.md:ss
 vanha webhook pois päältä ja salaisen avaimen kierto tällä tilillä, kun uusi kassa vastaa domainissa. Sulkemista ei
 ole tehty.
 
-**Avaimet.** STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET ja RESEND_API_KEY eivät olleet Vercelissä klo 19.30 (Helsingin aikaa).
-Tarkistus jatkuu 10 minuutin välein.
+**Avaimet ja kassatesti (klo 20.15).** STRIPE_SECRET_KEY ja STRIPE_WEBHOOK_SECRET tulivat Verceliin klo 20.10, ja
+RESEND_API_KEY puuttuu vielä. Uusi tausta julkaistiin testiosoitteeseen, ja tulokset ovat:
+- Kassa (scripts/kassatesti.mjs) loi live-sessiot kolmelle korille. 1 t-paita: 24,90 € + 6,90 € = 31,80 €.
+  4 t-paitaa: ilmainen toimitus ja kahden tuotteen alennus, 94,64 €. Huppari 3XL: 55,00 € + 6,90 € = 61,90 €.
+- Sessiot syntyvät Stripe-tilille `acct_1UVAUMPNXkES1q9G` ("Huumorikauppa", tiliotemerkintä Huumorikauppa). Se on eri
+  tili kuin Lovablen kassan `acct_1THtN1AhUyocG7PO`.
+- Tilaukset tallentuvat Neoniin (tila odottaa_maksua, rivit, hinnat ja Printify-variantit).
+- Webhook toimii: käyttöönottotesti (`?tehtava=kayttoonottotesti`) vanhensi sessiot Stripen API:lla. Stripe lähetti
+  `checkout.session.expired`-tapahtumat osoitteeseen /api/stripe-webhook, allekirjoitus hyväksyttiin, ja kaikki
+  testitilaukset muuttuivat tilaan peruttu ("session vanheni").
+- Printify-testitilaukset tehtiin kahdelle EU-painotalolle, OPT OnDemand (CZ) ja Textildruck Europa (DE, huppari
+  3XL, kulu 41,08 € ilman ALV:tä). Tilausvahti hyväksyi molemmat, ja molemmat peruttiin ennen tuotantoa (tila
+  canceled). Ensimmäinen peruutus epäonnistui, koska Printify ei peru tilausta, jonka kuluja se vielä laskee.
+  Testi odottaa nyt tilaa on-hold, yrittää uudelleen ja hälyttää, jos peruutus ei onnistu (commit a36002a).
+- Rajatun avaimen oikeudet (Checkout Sessions Write, Payment Intents Read) riittävät session luontiin, hakuun ja
+  vanhennukseen. Lisäoikeuksia ei tarvita.
+- Tilausvahvistus Resendillä on testaamatta, koska RESEND_API_KEY puuttuu. Tarkistus jatkuu 10 minuutin välein.
+- Maksua ei tehty. Maksettu tilaus menee automaattisesti Printifyn tuotantoon, joten ensimmäinen oikea maksu on
+  ensimmäinen oikea tilaus.
+
+Huomioita Stripen hallintaan: kassasivun maksutavat ovat kortti, Link, Bancontact, EPS, MB Way ja Satispay.
+MobilePay ja Klarna eivät ole käytössä (Settings > Payment methods). Julkinen tukisähköposti puuttuu (Settings >
+Public details).
+
+Uutta kassaa ei ole julkaistu huumorikauppa.fi:hin. Julkaisu odottaa Resendin testiä ja Stripe-tilin aktivointia,
+jota rajattu avain ei pysty tarkistamaan.
 
 ## 27.10. ilta: Lovablen kassan tappioesto, Vercel Cron, EU-kopiot, käyttöönoton valmistelu
 
