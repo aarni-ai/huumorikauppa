@@ -1,0 +1,244 @@
+{
+  "nimi": "Ikä, eläke ja kaupungit: julisteet",
+  "enimmaishinta": null,
+  "oletukset": {},
+  "tuotteet": [
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "OLEN",
+        "ELÄKKEELLÄ."
+      ],
+      "kuvaus": "Olen eläkkeellä. Kaksi sanaa isolla mustalla tekstillä A3-julisteessa (29,7 x 42 cm, matta paperi), kehys ei sisälly. Hauska eläkelahja työkavereilta, ja paikka seinällä, josta ei tarvitse enää katsoa kalenteria.",
+      "tagit": [
+        "Eläkelahja",
+        "Eläkeläinen",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Eläkkeelle jäävälle"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "60V KOKENUT,",
+        "EI VANHA"
+      ],
+      "kuvaus": "60v kokenut, ei vanha. Synttäriteksti A3-julisteena (29,7 x 42 cm, matta paperi) 60-vuotispäivän juhlijalle, kehys ei sisälly. Sopii juhlapaikan koristeeksi ja jää päivänsankarin seinälle muistoksi.",
+      "tagit": [
+        "60v lahja",
+        "Syntymäpäivälahja",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Syntymäpäivät"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "100 %",
+        "HELSINKILÄISTÄ",
+        "VERTA"
+      ],
+      "kuvaus": "100 % helsinkiläistä verta. Kotikaupunkiteksti A3-julisteena (29,7 x 42 cm, matta paperi), kehys ei sisälly. Stadilaisen kodin, opiskelijakämpän tai toimiston seinälle, tai lahjaksi Helsingistä pois muuttaneelle.",
+      "tagit": [
+        "Helsinki",
+        "Kaupunkihuumori",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Kaupungit"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "100 %",
+        "TAMPERELAISTA",
+        "VERTA"
+      ],
+      "kuvaus": "100 % tamperelaista verta. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Manselaisen kodin tai opiskelijakämpän seinälle, ja hyvä tuliaislahja Tampereelta pois muuttaneelle.",
+      "tagit": [
+        "Tampere",
+        "Kaupunkihuumori",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Kaupungit"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "100 %",
+        "TURKULAISTA",
+        "VERTA"
+      ],
+      "kuvaus": "100 % turkulaista verta. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Aurajoen kaupungin ylpeys kodin, mökin tai toimiston seinälle, tai muistoksi Turusta kotoisin olevalle ystävälle.",
+      "tagit": [
+        "Turku",
+        "Kaupunkihuumori",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Kaupungit"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "100 %",
+        "OULULAISTA",
+        "VERTA"
+      ],
+      "kuvaus": "100 % oululaista verta. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Pohjoisen kotikaupunkiylpeys seinälle, ja lahja oululaiselle, joka asuu nyt muualla mutta ei ole sitä unohtanut.",
+      "tagit": [
+        "Oulu",
+        "Kaupunkihuumori",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Kaupungit"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "100 %",
+        "ELÄKELÄINEN"
+      ],
+      "kuvaus": "100 % eläkeläinen. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Lyhyt ja selvä teksti tuoreen eläkeläisen kotiin, kesämökille tai harrastushuoneen seinälle.",
+      "tagit": [
+        "Eläkelahja",
+        "Eläkeläinen",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Eläkkeelle jäävälle"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "ELÄKKEELLÄ.",
+        "AAMUHERÄTYS",
+        "VAPAAEHTOINEN."
+      ],
+      "kuvaus": "Eläkkeellä. Aamuherätys vapaaehtoinen. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Läksiäislahja työkavereilta sille, joka on soittanut herätyskelloa viimeisen kerran.",
+      "tagit": [
+        "Eläkelahja",
+        "Läksiäislahja",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Eläkkeelle jäävälle"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "40 VUOTTA TÖITÄ,",
+        "NYT IKUINEN",
+        "VIIKONLOPPU"
+      ],
+      "kuvaus": "40 vuotta töitä, nyt ikuinen viikonloppu. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Hauska eläkejuhlien lahja pitkän työuran tehneelle, ja muisto seinälle siitä, että maanantait ovat ohi.",
+      "tagit": [
+        "Eläkelahja",
+        "Eläkejuhlat",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Eläkkeelle jäävälle"
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "60V",
+        "TAKUU MENNYT,",
+        "TOIMII SILTI"
+      ],
+      "kuvaus": "60v, takuu mennyt, toimii silti. A3-juliste (29,7 x 42 cm, matta paperi), kehys ei sisälly. Synttärijuliste 60-vuotiaalle, jolla huumori pelaa vaikka polvet narisevat. Sopii juhlapaikan seinälle ja jää muistoksi.",
+      "tagit": [
+        "60v lahja",
+        "Syntymäpäivälahja",
+        "Seinätaulu",
+        "Poster"
+      ],
+      "kategoria": "Syntymäpäivät"
+    }
+  ]
+}

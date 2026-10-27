@@ -195,6 +195,14 @@ export async function fetchPrintifyProductById(printifyProductId: string): Promi
 
 // ---------- Build DB row from Printify product ----------
 
+/** Category floor prices (EUR), updated 2026-09-29. Also used by scripts/printify-uudet-tuotteet.mjs. */
+export const KATEGORIAN_POHJAHINNAT: Record<string, number> = {
+  't-paidat': 34.90, 'hupparit': 64.90, 'pitkahihaiset': 39.90, 'bodyt': 29.90, 'mukit': 39.90, 'pipot': 32.90,
+  'laukut': 32.90, 'seinataulut': 49.90, 'peitot': 69.90, 'koristeet': 24.90, 'tarrat': 7.90,
+};
+/** Categories whose import price is set to the floor regardless of the Printify price. */
+export const KIINTEA_POHJAHINTA = new Set(['t-paidat', 'hupparit', 'pitkahihaiset', 'bodyt']);
+
 export interface BuiltProductRow {
   name: string;
   slug: string;
@@ -267,18 +275,11 @@ export function buildProductRow(p: any, existingSlugs: string[] = []): BuiltProd
   }
 
   if (minPrice === Infinity) minPrice = 29.95;
-  // Category floor prices — updated 2026-09-29
-  if (category === 't-paidat') minPrice = 34.90;
-  if (category === 'hupparit') minPrice = 64.90;
-  if (category === 'pitkahihaiset') minPrice = 39.90;
-  if (category === 'bodyt') minPrice = 29.90;
-  if (category === 'mukit') minPrice = Math.max(minPrice, 39.90);
-  if (category === 'pipot') minPrice = Math.max(minPrice, 32.90);
-  if (category === 'laukut') minPrice = Math.max(minPrice, 32.90);
-  if (category === 'seinataulut') minPrice = Math.max(minPrice, 49.90);
-  if (category === 'peitot') minPrice = Math.max(minPrice, 69.90);
-  if (category === 'koristeet') minPrice = Math.max(minPrice, 24.90);
-  if (category === 'tarrat') minPrice = Math.max(minPrice, 7.90);
+  // Category floor prices, updated 2026-09-29 (KATEGORIAN_POHJAHINNAT). Apparel and bodysuits are set to the
+  // floor exactly; the rest are raised to it.
+  if (category in KATEGORIAN_POHJAHINNAT) {
+    minPrice = KIINTEA_POHJAHINTA.has(category) ? KATEGORIAN_POHJAHINNAT[category] : Math.max(minPrice, KATEGORIAN_POHJAHINNAT[category]);
+  }
 
   const variantImages: Record<string, string[]> = {};
   // Image ordering (applies to ALL products):

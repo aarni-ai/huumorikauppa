@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import type { Tables } from "@/integrations/supabase/types";
 import { Product } from "@/types/product";
+import type { Database } from "@/integrations/supabase/types";
+
+type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { productSeedFor } from "@/lib/prerenderPreview";
 
@@ -15,12 +16,11 @@ function getOriginalPrice(_slug: string, _name: string, _category: string, _pric
 }
 
 async function fetchProducts(): Promise<Product[]> {
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) throw error;
+  // Oma tausta (21.10.2026): tuotteet sivuston omasta /api/products-funktiosta (tietokanta tai tilannekuva),
+  // ei enää suoraan Lovable Cloudin Supabasesta. Rivimuoto on sama.
+  const res = await fetch("/api/products");
+  if (!res.ok) throw new Error(`Tuotteiden haku epäonnistui (${res.status})`);
+  const data: ProductRow[] = await res.json();
 
   return (data || [])
     // Hide ONLY explicit drafts (is_active === false, e.g. AliExpress imports awaiting
@@ -36,9 +36,7 @@ async function fetchProducts(): Promise<Product[]> {
     .map(mapProduct);
 }
 
-type ProductRow = Tables<"products">;
-
-/** Supabase-rivi -> Product (myös esirenderöinti, src/seo/prerender/renderPreview.tsx). */
+/** Tuoterivi -> Product (myös esirenderöinti, src/seo/prerender/renderPreview.tsx). */
 export function mapProduct(p: ProductRow): Product {
     const price = Number(p.price);
     return {
@@ -58,6 +56,8 @@ export function mapProduct(p: ProductRow): Product {
       is_gift_idea: p.is_gift_idea,
       supplier: (p as { supplier?: string }).supplier ?? "printify",
       aliexpress_url: (p as { aliexpress_url?: string }).aliexpress_url ?? undefined,
+      // EU-reititys (onPiilotettuTuote) tarvitsee tunnuksen myös listoissa, suosituksissa ja ostoskorissa.
+      printify_product_id: (p as { printify_product_id?: string | null }).printify_product_id ?? null,
     };
 }
 
@@ -66,9 +66,10 @@ export function mapProduct(p: ProductRow): Product {
  * renderöidään heti tämän pienen haun jälkeen. Sama suodatus kuin fetchProducts.
  */
 async function fetchProductBySlug(slug: string): Promise<Product | null> {
-  const { data, error } = await supabase.from("products").select("*").eq("slug", slug).limit(1);
-  if (error) throw error;
-  const row = data?.[0];
+  const res = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Tuotteen haku epäonnistui (${res.status})`);
+  const row: ProductRow | null = await res.json();
   if (!row || (row as { is_active?: boolean }).is_active === false) return null;
   if (onPiilotettuTuote(row)) {
     piilotetutSlugit.add(row.slug);

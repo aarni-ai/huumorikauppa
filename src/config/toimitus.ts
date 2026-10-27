@@ -1,13 +1,11 @@
 /**
  * Toimitusehdot: AINOA paikka toimitusmaksulle, ilmaisen toimituksen rajalle ja toimitusajalle.
  *
- * Arvojen on vastattava sitä, mitä kassa oikeasti veloittaa. Nykyinen kassa
- * (supabase/functions/create-checkout/index.ts) veloittaa 6,90 € alle 79 euron tilauksista ja
- * toimittaa 79 eurosta alkaen ilmaiseksi. Toimitusaika on toimitusehtojen (Terms.tsx) mukainen.
- *
- * Vaihto omaan taustaan (5,90 € / 60 €): muuta alla olevat kaksi arvoa samassa muutoksessa kuin
- * kassan logiikka. Merchant-syötteen peili api/_lib/syote-lisakentat.js on päivitettävä samalla;
- * src/config/toimitus.test.ts kaatuu, jos arvot eroavat. Kaikki sivuston tekstit, UKK:t,
+ * Arvojen on vastattava sitä, mitä kassa oikeasti veloittaa. Oma tausta (haara oma-tausta):
+ * kassa api/_lib/kassa.js lukee arvot tiedostosta api/_lib/vakiot.js, ja Merchant-syöte
+ * api/_lib/syote-lisakentat.js samoin. src/config/toimitus.test.ts kaatuu, jos arvot eroavat.
+ * Oma tausta pitää samat arvot kuin main-haaran vanha kassa (Lovable create-checkout): 6,90 € / 79 €
+ * (27.10.2026, KATTEET.md "Keskiostoksen nosto: laskelma"). Kaikki sivuston tekstit, UKK:t,
  * rakenteinen data ja llms.txt lukevat arvot täältä.
  *
  * Tiedosto on tarkoituksella riippuvuudeton (ei "@/"-aliaksia), jotta sitä voi käyttää myös

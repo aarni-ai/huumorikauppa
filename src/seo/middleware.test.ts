@@ -19,15 +19,19 @@ function siteHandler(supabaseRows: Record<string, unknown[]>): Handler {
   return (url) => {
     if (url.endsWith("/product-slugs.json")) return new Response(JSON.stringify(KNOWN), { status: 200 });
     if (url.endsWith("/404.html")) return new Response('<html><head><meta name="robots" content="noindex, follow" /></head><body>404</body></html>', { status: 200 });
-    if (url.includes("/rest/v1/products")) {
-      const slug = decodeURIComponent(new URL(url).searchParams.get("slug")!.replace(/^eq\./, ""));
-      return new Response(JSON.stringify(supabaseRows[slug] ?? []), { status: 200 });
+    // Oma tausta: middleware tarkistaa tuntemattoman slugin omasta /api/products-funktiosta.
+    if (url.includes("/api/products")) {
+      const slug = decodeURIComponent(new URL(url).searchParams.get("slug")!);
+      const row = (supabaseRows[slug] ?? [])[0];
+      return row ? new Response(JSON.stringify(row), { status: 200 }) : new Response("null", { status: 404 });
     }
     return new Response("<html><head></head><body></body></html>", { status: 200 });
   };
 }
 
 beforeAll(async () => {
+  // Uuden projektin ympäristö: ei välitystä (middleware.ts valitysKohde).
+  process.env.UUSI_TAUSTA = "1";
   vi.stubEnv("VITE_SUPABASE_URL", "https://example.supabase.co");
   vi.stubEnv("VITE_SUPABASE_PUBLISHABLE_KEY", "test-key");
   middleware = (await import("../../middleware")).default;
@@ -68,7 +72,7 @@ describe("middleware: product pages", () => {
   });
 
   it("does not 404 when the product lookup fails", async () => {
-    mockFetch((url) => (url.includes("/rest/v1/") ? new Response("error", { status: 500 }) : siteHandler({})(url)));
+    mockFetch((url) => (url.includes("/api/products") ? new Response("error", { status: 500 }) : siteHandler({})(url)));
     const res = await middleware(new Request("https://huumorikauppa.fi/tuote/jokin-muu", { headers: human }));
     expect(res).toBeUndefined();
   });

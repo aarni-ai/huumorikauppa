@@ -6,10 +6,11 @@ import { CHRISTMAS_MENU, getLandingPage, selectLandingProducts } from "@/data/la
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
 import { buildLlmsTxt } from "./llms";
-import { landingMinimi } from "@/test/euReititysMinimi";
+import { kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
-const products = normalizeProducts(snapshot as unknown as ProductRow[]);
+// Oma tausta: rivit osoittavat kannan tapaan EU-kopioihin (src/test/euReititysMinimi.ts kannanRivit).
+const products = normalizeProducts(kannanRivit(snapshot as unknown as ProductRow[]));
 const pages = new Map(buildPrerenderPages({ products }).map((p) => [p.path, p]));
 const nav = buildSiteNav(products);
 const TEMPLATE = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");

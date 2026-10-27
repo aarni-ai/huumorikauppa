@@ -1,0 +1,3637 @@
+{
+ "_huom": "ESIMERKKIKATALOGI kuiva-ajoon ilman Printify-avainta. Kaikki tunnukset, painotalojen maat, variantit, painoalueet, toimitushinnat ja kulut ovat KEKSITTYJÄ (muoto sama kuin Printifyn katalogi-API:ssa). Oikea ajo hakee tiedot Printifystä. kuluarviot (sentit, EUR) ovat karkeita arvioita, joita käytetään hinnan ennakkolaskentaan myös oikeassa ajossa, kunnes tuotteen todelliset kulut on luettu Printifystä.",
+ "blueprints": [
+  {
+   "id": 9145,
+   "title": "Unisex Softstyle T-Shirt",
+   "brand": "Gildan",
+   "model": "64000"
+  },
+  {
+   "id": 9077,
+   "title": "Unisex Heavy Blend Hooded Sweatshirt",
+   "brand": "Gildan",
+   "model": "18500"
+  },
+  {
+   "id": 9400,
+   "title": "Kiss-Cut Stickers",
+   "brand": "Generic brand",
+   "model": ""
+  },
+  {
+   "id": 9402,
+   "title": "Kiss-Cut Vinyl Decals",
+   "brand": "Generic brand",
+   "model": ""
+  },
+  {
+   "id": 9501,
+   "title": "Ceramic Ornament",
+   "brand": "Generic brand",
+   "model": ""
+  }
+ ],
+ "print_providers": [
+  {
+   "id": 9030,
+   "title": "OPT OnDemand",
+   "location": {
+    "country": "DE"
+   }
+  },
+  {
+   "id": 9026,
+   "title": "Textildruck Europa",
+   "location": {
+    "country": "DE"
+   }
+  },
+  {
+   "id": 9029,
+   "title": "Monster Digital",
+   "location": {
+    "country": "US"
+   }
+  },
+  {
+   "id": 9255,
+   "title": "Harrier",
+   "location": {
+    "country": "CZ"
+   }
+  },
+  {
+   "id": 9700,
+   "title": "Esimerkkipaino (keksitty)",
+   "location": {
+    "country": "PL"
+   }
+  }
+ ],
+ "blueprint_providers": {
+  "9145": [
+   {
+    "id": 9029,
+    "title": "Monster Digital"
+   },
+   {
+    "id": 9026,
+    "title": "Textildruck Europa"
+   },
+   {
+    "id": 9030,
+    "title": "OPT OnDemand"
+   }
+  ],
+  "9077": [
+   {
+    "id": 9029,
+    "title": "Monster Digital"
+   },
+   {
+    "id": 9030,
+    "title": "OPT OnDemand"
+   },
+   {
+    "id": 9026,
+    "title": "Textildruck Europa"
+   }
+  ],
+  "9400": [
+   {
+    "id": 9029,
+    "title": "Monster Digital"
+   },
+   {
+    "id": 9700,
+    "title": "Esimerkkipaino (keksitty)"
+   }
+  ],
+  "9402": [
+   {
+    "id": 9029,
+    "title": "Monster Digital"
+   }
+  ],
+  "9501": [
+   {
+    "id": 9255,
+    "title": "Harrier"
+   }
+  ]
+ },
+ "variants": {
+  "9145/9030": [
+   {
+    "id": 900001,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900002,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900003,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900004,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900005,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900006,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900007,
+    "title": "White / S",
+    "options": {
+     "color": "White",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900008,
+    "title": "White / M",
+    "options": {
+     "color": "White",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900009,
+    "title": "White / L",
+    "options": {
+     "color": "White",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900010,
+    "title": "White / XL",
+    "options": {
+     "color": "White",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900011,
+    "title": "White / 2XL",
+    "options": {
+     "color": "White",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900012,
+    "title": "White / 3XL",
+    "options": {
+     "color": "White",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900013,
+    "title": "Red / S",
+    "options": {
+     "color": "Red",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900014,
+    "title": "Red / M",
+    "options": {
+     "color": "Red",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900015,
+    "title": "Red / L",
+    "options": {
+     "color": "Red",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900016,
+    "title": "Red / XL",
+    "options": {
+     "color": "Red",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900017,
+    "title": "Red / 2XL",
+    "options": {
+     "color": "Red",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900018,
+    "title": "Red / 3XL",
+    "options": {
+     "color": "Red",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900019,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900020,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900021,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900022,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900023,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900024,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900025,
+    "title": "Forest Green / S",
+    "options": {
+     "color": "Forest Green",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900026,
+    "title": "Forest Green / M",
+    "options": {
+     "color": "Forest Green",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900027,
+    "title": "Forest Green / L",
+    "options": {
+     "color": "Forest Green",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900028,
+    "title": "Forest Green / XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900029,
+    "title": "Forest Green / 2XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900030,
+    "title": "Forest Green / 3XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   }
+  ],
+  "9145/9026": [
+   {
+    "id": 900031,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900032,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900033,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900034,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900035,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900036,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900037,
+    "title": "White / S",
+    "options": {
+     "color": "White",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900038,
+    "title": "White / M",
+    "options": {
+     "color": "White",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900039,
+    "title": "White / L",
+    "options": {
+     "color": "White",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900040,
+    "title": "White / XL",
+    "options": {
+     "color": "White",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900041,
+    "title": "White / 2XL",
+    "options": {
+     "color": "White",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900042,
+    "title": "White / 3XL",
+    "options": {
+     "color": "White",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900043,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900044,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900045,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900046,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900047,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900048,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   }
+  ],
+  "9145/9029": [
+   {
+    "id": 900049,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900050,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900051,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900052,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900053,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900054,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900055,
+    "title": "White / S",
+    "options": {
+     "color": "White",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900056,
+    "title": "White / M",
+    "options": {
+     "color": "White",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900057,
+    "title": "White / L",
+    "options": {
+     "color": "White",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900058,
+    "title": "White / XL",
+    "options": {
+     "color": "White",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900059,
+    "title": "White / 2XL",
+    "options": {
+     "color": "White",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900060,
+    "title": "White / 3XL",
+    "options": {
+     "color": "White",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900061,
+    "title": "Red / S",
+    "options": {
+     "color": "Red",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900062,
+    "title": "Red / M",
+    "options": {
+     "color": "Red",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900063,
+    "title": "Red / L",
+    "options": {
+     "color": "Red",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900064,
+    "title": "Red / XL",
+    "options": {
+     "color": "Red",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900065,
+    "title": "Red / 2XL",
+    "options": {
+     "color": "Red",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900066,
+    "title": "Red / 3XL",
+    "options": {
+     "color": "Red",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900067,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900068,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900069,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900070,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900071,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   },
+   {
+    "id": 900072,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 4800
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 4800
+     }
+    ]
+   }
+  ],
+  "9077/9030": [
+   {
+    "id": 900073,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900074,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900075,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900076,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900077,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900078,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900079,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900080,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900081,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900082,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900083,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900084,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900085,
+    "title": "Sport Grey / S",
+    "options": {
+     "color": "Sport Grey",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900086,
+    "title": "Sport Grey / M",
+    "options": {
+     "color": "Sport Grey",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900087,
+    "title": "Sport Grey / L",
+    "options": {
+     "color": "Sport Grey",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900088,
+    "title": "Sport Grey / XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900089,
+    "title": "Sport Grey / 2XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900090,
+    "title": "Sport Grey / 3XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   }
+  ],
+  "9077/9026": [
+   {
+    "id": 900091,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900092,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900093,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900094,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900095,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900096,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900097,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900098,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900099,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900100,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900101,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900102,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900103,
+    "title": "Red / S",
+    "options": {
+     "color": "Red",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900104,
+    "title": "Red / M",
+    "options": {
+     "color": "Red",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900105,
+    "title": "Red / L",
+    "options": {
+     "color": "Red",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900106,
+    "title": "Red / XL",
+    "options": {
+     "color": "Red",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900107,
+    "title": "Red / 2XL",
+    "options": {
+     "color": "Red",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900108,
+    "title": "Red / 3XL",
+    "options": {
+     "color": "Red",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900109,
+    "title": "Sport Grey / S",
+    "options": {
+     "color": "Sport Grey",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900110,
+    "title": "Sport Grey / M",
+    "options": {
+     "color": "Sport Grey",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900111,
+    "title": "Sport Grey / L",
+    "options": {
+     "color": "Sport Grey",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900112,
+    "title": "Sport Grey / XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900113,
+    "title": "Sport Grey / 2XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900114,
+    "title": "Sport Grey / 3XL",
+    "options": {
+     "color": "Sport Grey",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900115,
+    "title": "Forest Green / S",
+    "options": {
+     "color": "Forest Green",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900116,
+    "title": "Forest Green / M",
+    "options": {
+     "color": "Forest Green",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900117,
+    "title": "Forest Green / L",
+    "options": {
+     "color": "Forest Green",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900118,
+    "title": "Forest Green / XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900119,
+    "title": "Forest Green / 2XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900120,
+    "title": "Forest Green / 3XL",
+    "options": {
+     "color": "Forest Green",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   }
+  ],
+  "9077/9029": [
+   {
+    "id": 900121,
+    "title": "Black / S",
+    "options": {
+     "color": "Black",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900122,
+    "title": "Black / M",
+    "options": {
+     "color": "Black",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900123,
+    "title": "Black / L",
+    "options": {
+     "color": "Black",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900124,
+    "title": "Black / XL",
+    "options": {
+     "color": "Black",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900125,
+    "title": "Black / 2XL",
+    "options": {
+     "color": "Black",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900126,
+    "title": "Black / 3XL",
+    "options": {
+     "color": "Black",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900127,
+    "title": "Navy / S",
+    "options": {
+     "color": "Navy",
+     "size": "S"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900128,
+    "title": "Navy / M",
+    "options": {
+     "color": "Navy",
+     "size": "M"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900129,
+    "title": "Navy / L",
+    "options": {
+     "color": "Navy",
+     "size": "L"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900130,
+    "title": "Navy / XL",
+    "options": {
+     "color": "Navy",
+     "size": "XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900131,
+    "title": "Navy / 2XL",
+    "options": {
+     "color": "Navy",
+     "size": "2XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   },
+   {
+    "id": 900132,
+    "title": "Navy / 3XL",
+    "options": {
+     "color": "Navy",
+     "size": "3XL"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 3600,
+      "height": 3000
+     },
+     {
+      "position": "back",
+      "width": 3600,
+      "height": 3000
+     }
+    ]
+   }
+  ],
+  "9400/9700": [
+   {
+    "id": 900133,
+    "title": "2\" × 2\" / White",
+    "options": {
+     "size": "2\" × 2\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 600,
+      "height": 600
+     }
+    ]
+   },
+   {
+    "id": 900134,
+    "title": "3\" × 3\" / White",
+    "options": {
+     "size": "3\" × 3\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 900,
+      "height": 900
+     }
+    ]
+   },
+   {
+    "id": 900135,
+    "title": "4\" × 4\" / White",
+    "options": {
+     "size": "4\" × 4\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900136,
+    "title": "6\" × 6\" / White",
+    "options": {
+     "size": "6\" × 6\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1800,
+      "height": 1800
+     }
+    ]
+   }
+  ],
+  "9400/9029": [
+   {
+    "id": 900137,
+    "title": "2\" × 2\" / White",
+    "options": {
+     "size": "2\" × 2\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 600,
+      "height": 600
+     }
+    ]
+   },
+   {
+    "id": 900138,
+    "title": "3\" × 3\" / White",
+    "options": {
+     "size": "3\" × 3\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 900,
+      "height": 900
+     }
+    ]
+   },
+   {
+    "id": 900139,
+    "title": "4\" × 4\" / White",
+    "options": {
+     "size": "4\" × 4\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900140,
+    "title": "6\" × 6\" / White",
+    "options": {
+     "size": "6\" × 6\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1800,
+      "height": 1800
+     }
+    ]
+   }
+  ],
+  "9402/9029": [
+   {
+    "id": 900141,
+    "title": "2\" × 2\" / White",
+    "options": {
+     "size": "2\" × 2\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 600,
+      "height": 600
+     }
+    ]
+   },
+   {
+    "id": 900142,
+    "title": "3\" × 3\" / White",
+    "options": {
+     "size": "3\" × 3\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 900,
+      "height": 900
+     }
+    ]
+   },
+   {
+    "id": 900143,
+    "title": "4\" × 4\" / White",
+    "options": {
+     "size": "4\" × 4\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900144,
+    "title": "6\" × 6\" / White",
+    "options": {
+     "size": "6\" × 6\"",
+     "type": "White"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1800,
+      "height": 1800
+     }
+    ]
+   }
+  ],
+  "9501/9255": [
+   {
+    "id": 900145,
+    "title": "Circle",
+    "options": {
+     "shape": "Circle"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900146,
+    "title": "Heart",
+    "options": {
+     "shape": "Heart"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900147,
+    "title": "Snowflake",
+    "options": {
+     "shape": "Snowflake"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   },
+   {
+    "id": 900148,
+    "title": "Star",
+    "options": {
+     "shape": "Star"
+    },
+    "placeholders": [
+     {
+      "position": "front",
+      "width": 1200,
+      "height": 1200
+     }
+    ]
+   }
+  ]
+ },
+ "shipping": {
+  "9145/9030": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 490,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 172,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 980,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 490,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9145/9026": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 520,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 182,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1040,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 520,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9145/9029": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 1100,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 385,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 2200,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 1100,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9077/9030": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 720,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 252,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1440,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 720,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9077/9026": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 690,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 241,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1380,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 690,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9077/9029": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 1300,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 455,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 2600,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 1300,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9400/9700": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 350,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 122,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 700,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 350,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9400/9029": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 600,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 210,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1200,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 600,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9402/9029": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 600,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 210,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1200,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 600,
+      "currency": "EUR"
+     }
+    }
+   ]
+  },
+  "9501/9255": {
+   "profiles": [
+    {
+     "variant_ids": [],
+     "countries": [
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IT",
+      "LV",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE"
+     ],
+     "first_item": {
+      "cost": 520,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 182,
+      "currency": "EUR"
+     }
+    },
+    {
+     "variant_ids": [],
+     "countries": [
+      "REST_OF_THE_WORLD"
+     ],
+     "first_item": {
+      "cost": 1040,
+      "currency": "EUR"
+     },
+     "additional_items": {
+      "cost": 520,
+      "currency": "EUR"
+     }
+    }
+   ]
+  }
+ },
+ "kuluarviot": {
+  "t-paita": {
+   "oletus": 1050,
+   "koot": {
+    "2XL": 1250,
+    "3XL": 1450
+   }
+  },
+  "huppari": {
+   "oletus": 2250,
+   "koot": {
+    "2XL": 2450,
+    "3XL": 2650
+   }
+  },
+  "tarra": {
+   "oletus": 389,
+   "koot": {
+    "4x4": 450,
+    "5x5": 540,
+    "6x6": 650
+   }
+  },
+  "koriste": {
+   "oletus": 750
+  },
+  "juliste": {
+   "oletus": 709
+  },
+  "kassi": {
+   "oletus": 900
+  }
+ }
+}

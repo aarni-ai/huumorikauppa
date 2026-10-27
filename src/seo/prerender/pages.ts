@@ -93,6 +93,7 @@ export function normalizeProducts(rows: ProductRow[]): Product[] {
       is_featured: !!p.is_featured,
       is_new: false,
       is_gift_idea: false,
+      printify_product_id: (p as { printify_product_id?: string | null }).printify_product_id ?? null,
     }));
 }
 

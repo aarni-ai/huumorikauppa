@@ -22,7 +22,9 @@ interface OrderInfo {
 
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  // Stripe-maksu: ?session_id=cs_..., kokonaan lahjakortilla maksettu tilaus: ?tilaus=<tilauksen id>.
+  const sessionId = searchParams.get("session_id") || searchParams.get("tilaus");
+  const tunnisteParametri = searchParams.get("session_id") ? "session_id" : "order_id";
   const { clearCart } = useCartContext();
 
   const [order, setOrder] = useState<OrderInfo | null>(null);
@@ -129,19 +131,8 @@ const OrderConfirmation = () => {
 
     const poll = async () => {
       try {
-        const { data, error } = await supabase.functions.invoke("get-order-by-session", {
-          body: undefined,
-          method: "GET",
-          headers: {},
-        } as never);
-        // Workaround: invoke with query string via fetch since invoke doesn't support GET easily
-        // Use direct fetch instead:
-        const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-order-by-session?session_id=${encodeURIComponent(sessionId)}`;
-        const res = await fetch(url, {
-          headers: {
-            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          },
-        });
+        // Oma tausta (21.10.2026): tilaus sivuston omasta /api/order-funktiosta.
+        const res = await fetch(`/api/order?${tunnisteParametri}=${encodeURIComponent(sessionId)}`);
         const json = await res.json();
         if (cancelled) return;
 
@@ -180,10 +171,12 @@ const OrderConfirmation = () => {
     if (!sessionId) return;
     setResending(true);
     try {
-      const { data, error } = await supabase.functions.invoke("resend-order-confirmation", {
-        body: { sessionId },
+      const vastaus = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, action: "resend" }),
       });
-      if (error) throw error;
+      const data = await vastaus.json().catch(() => null);
       if (data?.customerEmailSent) {
         toast({ title: "Vahvistus lähetetty uudelleen! 📧" });
         setEmailSent(true);

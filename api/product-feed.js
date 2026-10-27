@@ -1,17 +1,14 @@
-const SUPABASE_FEED_URL =
-  'https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/merchant-feed';
+import { merchantSyote } from './_lib/syote.js';
+import { naytettavatTuotteet } from './_lib/tuotteet.js';
+import { heikoinKate } from './_lib/kate.js';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
-import { korjaaSyote, haeTuotteet } from './_lib/syote-korjaukset.js';
+import { korjaaSyote } from './_lib/syote-korjaukset.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
-import { onEuReititettySlug } from './_lib/eu-reititys.js';
+import { onEuReititetty, onEuReititettySlug } from './_lib/eu-reititys.js';
 import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
 
 const SITE = 'https://huumorikauppa.fi';
-const SUPABASE_URL =
-  process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://exhzrrbvipqwhjhjgnxs.supabase.co';
-const SUPABASE_KEY =
-  process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
 // Any host that may serve a product image. Everything matched here gets
 // rewritten to /api/img?u=... so Googlebot only ever sees our domain.
@@ -59,7 +56,9 @@ function sanitizeFeed(xml) {
 
 // Myynnistä piilotetut kategoriat syötteen Google-kategoriana (merchant-feed: mukit -> ...Drinkware > Mugs).
 const HIDDEN_GOOGLE_CATEGORY = /Drinkware (?:&gt;|>) Mugs/;
-export function dropHiddenItems(xml) {
+// rivit (valinnainen): slug -> tuoterivi. EU-reititys päätetään silloin rivin printify_product_id:stä: rivi, joka
+// osoittaa EU-kopioon (api/cron/tilaukset.js ?tehtava=eu-siirrot), pysyy syötteessä. Ilman riviä päätös slugista.
+export function dropHiddenItems(xml, rivit = null) {
   // Myös muut mukit (väärässä kategoriassa, tunnistus nimestä tai osoitteesta kuten src/lib/hiddenCategories.ts).
   const muki = (item) => /<g:link>[^<]*-muki<\/g:link>|<g:title>[^<]*\b(?:Muki|kahvimuki)\b/i.test(item);
   // Ohjatut kaksoiskappaleet (vercel.json) pois: syötteen linkki ei saa ohjautua muualle.
@@ -71,28 +70,25 @@ export function dropHiddenItems(xml) {
   // Lovable-synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
   const kaksoiskappale = (item) => onKaksoiskappaleTaiTestikopio(slugOf(item));
   // EU:n ulkopuolella valmistettavat (api/_lib/eu-reititys.js, generaattori scripts/eu-reititys.mjs).
-  const eiEU = (item) => onEuReititettySlug(slugOf(item));
+  const eiEU = (item) => {
+    const rivi = rivit?.get(slugOf(item));
+    return rivi ? onEuReititetty(rivi) : onEuReititettySlug(slugOf(item));
+  };
   return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) || eiValmisteta(item) || kaksoiskappale(item) || eiEU(item) ? '' : item));
 }
 
 export default async function handler(req, res) {
   try {
-    // Variaatiotiedot (värit, koot) vaatteiden color/size-kenttiin rinnakkain syötteen kanssa; virheessä tyhjä.
-    const [upstream, tuotteet] = await Promise.all([
-      fetch(SUPABASE_FEED_URL, { headers: { 'User-Agent': 'huumorikauppa-feed-proxy' } }),
-      haeTuotteet({ url: SUPABASE_URL, key: SUPABASE_KEY }),
-    ]);
-    if (!upstream.ok) {
-      return res
-        .status(502)
-        .send(`Upstream feed error: ${upstream.status}`);
-    }
-    const raw = await upstream.text();
-    // Mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts): pudotetaan Drinkware > Mugs -tuotteet.
-    // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki): api/_lib/syote-lisakentat.js
-    // Googlen maksuttomien listausten korjaukset (kategoriat, otsikot, vaatteiden color/size/gender/age_group):
-    // api/_lib/syote-korjaukset.js, tarkistus scripts/validoi-syote.mjs.
-    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw))), tuotteet);
+    // Oma tausta (21.10.2026): syöte omasta tuotelähteestä (tietokanta tai tilannekuva), ei Supabasesta.
+    // naytettavatTuotteet jättää pois luonnokset, piilotetut kategoriat (mukit) ja alle 20 %:n katteen tuotteet.
+    // Lisäkentät (toimitushinta kassan säännöllä, product_type, identifier_exists, sesonki, kateluokka kun kulut
+    // tunnetaan): api/_lib/syote-lisakentat.js
+    const tuotteet = await naytettavatTuotteet();
+    const kateIdlle = new Map(tuotteet.map((p) => [String(p.id), heikoinKate(p).kate]));
+    const raw = merchantSyote(tuotteet);
+    // Googlen maksuttomien listausten korjaukset (api/_lib/syote-korjaukset.js) omien tuoterivien variaatiotiedoilla.
+    const variaatiot = new Map(tuotteet.map((p) => [String(p.id), { slug: p.slug, variants: p.variants || {} }]));
+    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw, new Map(tuotteet.map((p) => [p.slug, p])))), (id) => kateIdlle.get(id) ?? null), variaatiot);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(

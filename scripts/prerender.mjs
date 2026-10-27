@@ -155,22 +155,19 @@ async function main() {
     const componentsMod = await vite.ssrLoadModule("/src/seo/prerender/renderComponents.tsx");
     const metaMod = await vite.ssrLoadModule("/src/seo/staticPageMeta.ts");
 
-    // 1) Tuotteet
+    // 1) Tuotteet. Oma tausta (oma-tausta-haara): sama lähde kuin kaupalla (api/_lib/tuotteet.js: tietokanta,
+    // jos DATABASE_URL on buildissa, muuten repon tilannekuva), ei Lovable Cloudin Supabasea.
     let products = [];
-    /** slug -> Supabase-rivi tuotesivujen esikatselua varten. */
+    /** slug -> tuoterivi tuotesivujen esikatselua varten. */
     const rowsBySlug = new Map();
-    const env = readEnv();
-    if (!env.url || !env.key) {
-      log("VAROITUS: VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY puuttuu, tuotesivuja ei esirenderöidä.");
-    } else {
-      try {
-        const rows = await fetchProductRows(env);
-        products = pagesMod.normalizeProducts(rows);
-        for (const row of rows) if (row?.slug && !rowsBySlug.has(row.slug)) rowsBySlug.set(row.slug, row);
-        log(`Supabase: ${rows.length} riviä, ${products.length} myynnissä olevaa tuotetta.`);
-      } catch (err) {
-        log(`VAROITUS: tuotteiden haku epäonnistui (${err.message}), tuotesivuja ei esirenderöidä.`);
-      }
+    try {
+      const { kaikkiTuotteet, lahde } = await import("../api/_lib/tuotteet.js");
+      const rows = await kaikkiTuotteet();
+      products = pagesMod.normalizeProducts(rows);
+      for (const row of rows) if (row?.slug && !rowsBySlug.has(row.slug)) rowsBySlug.set(row.slug, row);
+      log(`Tuotteet (${lahde()}): ${rows.length} riviä, ${products.length} myynnissä olevaa tuotetta.`);
+    } catch (err) {
+      log(`VAROITUS: tuotteiden haku epäonnistui (${err.message}), tuotesivuja ei esirenderöidä.`);
     }
 
     // 2) Komponenteista renderöitävät sisältösivut

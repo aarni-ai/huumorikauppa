@@ -186,7 +186,9 @@ export function validateItem(item, opts = {}) {
   if (slug && OHJATUT_TUOTESLUGIT.has(slug)) virhe("ohjattu_tuote", slug);
   if (slug && KOKONAAN_EI_SAATAVILLA.has(slug)) virhe("ei_valmisteta", slug);
   if (slug && onKaksoiskappaleTaiTestikopio(slug)) virhe("kaksoiskappale_tai_testikopio", slug);
-  if (slug && onEuReititettySlug(slug)) virhe("valmistetaan_eu_ulkopuolella", slug);
+  // opts.euReititetty(slug): rivitietoon perustuva päätös (validoi-syote.mjs hakee rivit /api/products-rajapinnasta),
+  // jotta EU-kopioon siirretty rivi ei ole virhe. Oletuksena päätös slugista.
+  if (slug && (opts.euReititetty || onEuReititettySlug)(slug)) virhe("valmistetaan_eu_ulkopuolella", slug);
   return out;
 }
 

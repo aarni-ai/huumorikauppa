@@ -19,7 +19,6 @@ import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { revealApp } from "@/lib/prerenderPreview";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
@@ -89,12 +88,15 @@ const Index = () => {
     }
     try {
       const email = newsletterEmail.trim().toLowerCase();
-      await supabase.functions.invoke("subscribe-mailerlite", { body: { email } });
-      await supabase.from("newsletter_subscribers").insert({ email, is_active: true });
-      await supabase.functions.invoke("notify-store", { body: { email, type: "newsletter" } });
+      // Oma tausta: uutiskirje omaan tauluun (api/sahkoposti.js), ei Lovable Cloudiin. Lomakkeen lähetys on tilaus.
+      await fetch("/api/sahkoposti", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "etusivu" }),
+      });
     } catch {}
     setNewsletterSubmitted(true);
-    toast({ title: "Kiitos!", description: "Alennuskoodisi on HUUMORI5 (-5%)" });
+    toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
   };
 
   // "Kesän suosituimmat" — sekalainen valikoima kaikista tuotteista.
@@ -427,10 +429,10 @@ const Index = () => {
             Tilaa uutiskirje
           </h2>
           <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
-            Tilaa ja saat 5 % alennuskoodin ensimmäiseen tilaukseesi.
+            Uudet tuotteet ja sesongin lahjaideat sähköpostiisi.
           </p>
           {newsletterSubmitted ? (
-            <p className="text-foreground font-semibold">Kiitos! Alennuskoodisi on HUUMORI5</p>
+            <p className="text-foreground font-semibold">Kiitos tilauksesta!</p>
           ) : (
             <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
               <Input

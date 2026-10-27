@@ -20,13 +20,14 @@ import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/chri
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
-import { EU_REITITYS_ALLE_MINIMIN, euPiilotetutTuotteet, landingMinimi } from "@/test/euReititysMinimi";
+import { EU_REITITYS_ALLE_MINIMIN, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
 
 /** Tuotedatan tilannekuva (Supabase, 21.10.2026): sama suodatus kuin kaupassa. */
-const products = normalizeProducts(snapshot as unknown as ProductRow[]);
+// Oma tausta: rivit osoittavat kannan tapaan EU-kopioihin (src/test/euReititysMinimi.ts kannanRivit).
+const products = normalizeProducts(kannanRivit(snapshot as unknown as ProductRow[]));
 const pages = buildPrerenderPages({ products });
 const byPath = new Map(pages.map((p) => [p.path, p]));
 const nav = buildSiteNav(products);
@@ -259,7 +260,8 @@ describe("routing, sitemap and redirects", () => {
     expect(sitemap).not.toMatch(/[äöå]"/);
     expect(sitemap).toContain('"ylojarvi"');
     expect(sitemap).toContain('"lempaala"');
-    expect(sitemap).toContain("is_active=not.is.false");
+    // Oma tausta: luonnokset rajataan omasta tuotelähteestä (is_active !== false).
+    expect(sitemap).toContain("p.is_active !== false");
   });
 
   it("vercel.json has a 301 for every merged page and both raw and encoded umlaut paths", () => {

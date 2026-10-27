@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
-import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 type Status = "loading" | "valid" | "already" | "invalid" | "success" | "error";
@@ -18,11 +17,8 @@ const UnsubscribePage = () => {
       setStatus("invalid");
       return;
     }
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-    fetch(`${supabaseUrl}/functions/v1/handle-email-unsubscribe?token=${token}`, {
-      headers: { apikey: anonKey },
-    })
+    // Oma tausta: /api/sahkoposti. GET vain tarkistaa linkin, peruutus tehdään vasta painikkeesta (POST).
+    fetch(`/api/sahkoposti?peru=${encodeURIComponent(token)}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.valid === true) setStatus("valid");
@@ -36,9 +32,12 @@ const UnsubscribePage = () => {
     if (!token) return;
     setProcessing(true);
     try {
-      const { data } = await supabase.functions.invoke("handle-email-unsubscribe", {
-        body: { token },
+      const vastaus = await fetch("/api/sahkoposti", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "peru", token }),
       });
+      const data = await vastaus.json().catch(() => null);
       if (data?.success) setStatus("success");
       else if (data?.reason === "already_unsubscribed") setStatus("already");
       else setStatus("error");
@@ -63,8 +62,8 @@ const UnsubscribePage = () => {
       {status === "valid" && (
         <>
           <AlertCircle className="h-12 w-12 text-primary mx-auto" />
-          <h1 className="font-display text-2xl text-foreground">Haluatko peruuttaa sähköpostitilauksen?</h1>
-          <p className="text-muted-foreground">Et saa enää sähköpostiviestejä Huumorikaupasta.</p>
+          <h1 className="font-display text-2xl text-foreground">Haluatko peruuttaa sähköpostiviestit?</h1>
+          <p className="text-muted-foreground">Et saa enää uutiskirjettä, muistutuksia etkä arviopyyntöjä. Tilausvahvistukset ja lähetysilmoitukset tulevat edelleen.</p>
           <Button
             onClick={handleUnsubscribe}
             disabled={processing}
@@ -78,8 +77,8 @@ const UnsubscribePage = () => {
       {status === "success" && (
         <>
           <CheckCircle className="h-12 w-12 text-primary mx-auto" />
-          <h1 className="font-display text-2xl text-foreground">Tilaus peruutettu ✅</h1>
-          <p className="text-muted-foreground">Et saa enää sähköpostiviestejä.</p>
+          <h1 className="font-display text-2xl text-foreground">Viestit peruttu</h1>
+          <p className="text-muted-foreground">Et saa enää markkinointiviestejä Huumorikaupasta.</p>
         </>
       )}
 

@@ -1,3 +1,6 @@
+import { kaikkiTuotteet } from "./_lib/tuotteet.js";
+import { onPiilotettuTuote } from "./_lib/piilotetut.js";
+import PAKETIT from "./_lib/paketit-data.js";
 import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "./_lib/printify-saatavuus.js";
 import { onKaksoiskappaleTaiTestikopio } from "./_lib/kaksoiskappaleet.js";
@@ -31,6 +34,9 @@ const STATIC_PAGES = [
   { loc: "/polttari-lahjat", changefreq: "weekly", priority: "0.7" },
   { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
+  { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
+  { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
+  ...PAKETIT.map((p) => ({ loc: `/paketit/${p.slug}`, changefreq: "weekly", priority: "0.6" })),
 ];
 
 /**
@@ -198,33 +204,12 @@ function toW3CDate(date) {
 }
 
 async function fetchAllProducts() {
-  if (!SUPABASE_URL || !SUPABASE_KEY) return [];
-  const out = [];
-  const pageSize = 1000;
-  let from = 0;
-  for (let i = 0; i < 10; i++) {
-    const to = from + pageSize - 1;
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at,printify_product_id&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          Range: `${from}-${to}`,
-          "Range-Unit": "items",
-          Prefer: "count=exact",
-        },
-      }
-    );
-    if (!res.ok) break;
-    const batch = await res.json();
-    if (!Array.isArray(batch) || batch.length === 0) break;
-    // Mukit väärässä kategoriassa (src/lib/hiddenCategories.ts MUKI_TUNNISTE).
-    out.push(...batch.filter((p) => !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !onKaksoiskappaleTaiTestikopio(p.slug) && !onEuReititetty(p) && !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
-    if (batch.length < pageSize) break;
-    from += pageSize;
-  }
-  return out;
+  // Oma tausta (21.10.2026): tuotteet omasta lähteestä (tietokanta tai tilannekuva). Sama rajaus kuin kaupassa ja
+  // mainissa: ei luonnoksia, ei piilotettuja (mukit, myös väärässä kategoriassa), ei ohjattuja kaksoiskappaleita.
+  const rivit = (await kaikkiTuotteet()).filter((p) => p.is_active !== false && !onPiilotettuTuote(p) && !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !onKaksoiskappaleTaiTestikopio(p.slug) && !onEuReititetty(p));
+  return rivit
+    .map((p) => ({ slug: p.slug, updated_at: p.updated_at }))
+    .sort((x, y) => String(y.updated_at || "").localeCompare(String(x.updated_at || "")));
 }
 
 export default async function handler(req, res) {

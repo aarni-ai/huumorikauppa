@@ -1,0 +1,1096 @@
+{
+  "paiva": "2026-10-26",
+  "tuotteet": [
+    {
+      "avain": "tarra|se oli tonnin seteli.",
+      "teksti": "SE OLI / TONNIN SETELI.",
+      "tyyppi": "tarra",
+      "lista": "Tonnin seteli: tarrat ja julisteet",
+      "otsikko": "Se oli tonnin seteli | Tarra",
+      "tila": "yli-enimmaishinnan",
+      "printify_id": "6adf0941f3de969c8d021950",
+      "blueprint_id": 476,
+      "blueprint": "Square Vinyl Stickers Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        65212
+      ],
+      "hinta": 11.9,
+      "kulu_senttia": 389,
+      "toimitus_senttia": 559,
+      "kate": 0.332,
+      "kateAlv": 0.17,
+      "syy": "Oikeat kulut (3,5\": 3,89 €, 5\": 5,40 €, toimitus 5,59 €): 30 %:n kate vaatii 13,90 € (5\") tai 11,90 € (3,5\"), yli enimmäishinnan 9,90 €. Korjattu käsin 26.10.2026: vain 3,5\" käytössä, hinta 11,90 €, kuvaus yhdelle koolle. Ylittää silti hintarajan: päätös orkestroijalle.",
+      "kuvat": [
+        {
+          "tiedosto": "se-oli-tonnin-seteli-tarra-musta-teksti.png",
+          "printify_kuva": "6adf093e22b1becd2444763d"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:03:16.503Z",
+      "korjattu": "2026-10-26"
+    },
+    {
+      "avain": "juliste|se oli tonnin seteli.",
+      "teksti": "SE OLI / TONNIN / SETELI.",
+      "tyyppi": "juliste",
+      "lista": "Tonnin seteli: tarrat ja julisteet",
+      "otsikko": "Se oli tonnin seteli | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf09bc3826cfef7704a9b7",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "se-oli-tonnin-seteli-juliste-musta-teksti.png",
+          "printify_kuva": "6adf09bb939e7adfcb7a08a3"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:05:19.266Z"
+    },
+    {
+      "avain": "juliste|tonnin seteli",
+      "teksti": "TONNIN / SETELI",
+      "tyyppi": "juliste",
+      "lista": "Tonnin seteli: tarrat ja julisteet",
+      "otsikko": "Tonnin seteli | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a20cbae235d9203f59d",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "tonnin-seteli-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a1fed4df51803a2e62b"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:06:57.719Z"
+    },
+    {
+      "avain": "juliste|olen eläkkeellä.",
+      "teksti": "OLEN / ELÄKKEELLÄ.",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "Olen eläkkeellä | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a28cbae235d9203f5a6",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "olen-elakkeella-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a263e3da462e1334118"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:05.112Z"
+    },
+    {
+      "avain": "juliste|60v kokenut, ei vanha",
+      "teksti": "60V KOKENUT, / EI VANHA",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "60v kokenut, ei vanha | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a2eb8038b06cb0d23ee",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "60v-kokenut-ei-vanha-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a2c50671c195db5668a"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:11.384Z"
+    },
+    {
+      "avain": "juliste|100 % helsinkiläistä verta",
+      "teksti": "100 % / HELSINKILÄISTÄ / VERTA",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "100 % helsinkiläistä verta | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a344b1b296a670d2064",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "100-helsinkilaista-verta-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a3250671c195db5668b"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:17.320Z"
+    },
+    {
+      "avain": "juliste|100 % tamperelaista verta",
+      "teksti": "100 % / TAMPERELAISTA / VERTA",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "100 % tamperelaista verta | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a3b3826cfef7704a9f3",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "100-tamperelaista-verta-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a3a3e3da462e133411a"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:24.855Z"
+    },
+    {
+      "avain": "juliste|100 % turkulaista verta",
+      "teksti": "100 % / TURKULAISTA / VERTA",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "100 % turkulaista verta | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a413826cfef7704a9f9",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "100-turkulaista-verta-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a3f170866af0d6198f6"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:30.320Z"
+    },
+    {
+      "avain": "juliste|100 % oululaista verta",
+      "teksti": "100 % / OULULAISTA / VERTA",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "100 % oululaista verta | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a47e0d39c7e000e3be2",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "100-oululaista-verta-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a45cc83b85c64259e48"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:36.320Z"
+    },
+    {
+      "avain": "juliste|100 % eläkeläinen",
+      "teksti": "100 % / ELÄKELÄINEN",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "100 % eläkeläinen | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a4d497cbc44830585f3",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "100-elakelainen-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a4c9297af92b087a362"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:42.837Z"
+    },
+    {
+      "avain": "juliste|eläkkeellä. aamuherätys vapaaehtoinen.",
+      "teksti": "ELÄKKEELLÄ. / AAMUHERÄTYS / VAPAAEHTOINEN.",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "Eläkkeellä. Aamuherätys vapaaehtoinen | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a54cbae235d9203f5d7",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "elakkeella-aamuheratys-vapaaehtoinen-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a520d8b53af3aadefd6"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:49.209Z"
+    },
+    {
+      "avain": "juliste|40 vuotta töitä, nyt ikuinen viikonloppu",
+      "teksti": "40 VUOTTA TÖITÄ, / NYT IKUINEN / VIIKONLOPPU",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "40 vuotta töitä, nyt ikuinen viikonloppu | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a5a3826cfef7704aa19",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "40-vuotta-toita-nyt-ikuinen-viikonloppu-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a5927769407a897a5b4"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:07:55.463Z"
+    },
+    {
+      "avain": "juliste|60v takuu mennyt, toimii silti",
+      "teksti": "60V / TAKUU MENNYT, / TOIMII SILTI",
+      "tyyppi": "juliste",
+      "lista": "Ikä, eläke ja kaupungit: julisteet",
+      "otsikko": "60v takuu mennyt, toimii silti | Juliste (poster)",
+      "tila": "luotu",
+      "printify_id": "6adf0a604b1b296a670d2091",
+      "blueprint_id": 443,
+      "blueprint": "Posters (EU) Generic brand",
+      "print_provider_id": 30,
+      "painotalo": "OPT OnDemand (CZ)",
+      "variantit": [
+        62339
+      ],
+      "hinta": 22.9,
+      "kulu_senttia": 709,
+      "toimitus_senttia": 849,
+      "kate": 0.315,
+      "kateAlv": 0.147,
+      "kateNyt": 0.291,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "60v-takuu-mennyt-toimii-silti-juliste-musta-teksti.png",
+          "printify_kuva": "6adf0a5f170866af0d619911"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T08:08:02.132Z"
+    },
+    {
+      "avain": "t-paita|kinkkukooma alkaa klo 14",
+      "teksti": "KINKKUKOOMA / ALKAA KLO 14",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Kinkkukooma alkaa klo 14 | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9a53f77a7875b0fba8a",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "kinkkukooma-alkaa-klo-14-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9a4ba73dcd5d95511bb"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:35:50.684Z"
+    },
+    {
+      "avain": "t-paita|joulupukin virallinen testaaja",
+      "teksti": "JOULUPUKIN / VIRALLINEN / TESTAAJA",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Joulupukin virallinen testaaja | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9c1260c17a8ff05ef05",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "joulupukin-virallinen-testaaja-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9c06292f7ae43d3c24a"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:18.594Z"
+    },
+    {
+      "avain": "t-paita|tonttu koeajalla",
+      "teksti": "TONTTU / KOEAJALLA",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Tonttu koeajalla | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9c7260c17a8ff05ef11",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "tonttu-koeajalla-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9c625c96b494302066b"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:24.582Z"
+    },
+    {
+      "avain": "t-paita|glögi ensin. sitten joulu.",
+      "teksti": "GLÖGI ENSIN. / SITTEN JOULU.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Glögi ensin. Sitten joulu | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9cf260c17a8ff05ef1e",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "glogi-ensin-sitten-joulu-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9ceaf527d919ef77f9e"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:32.697Z"
+    },
+    {
+      "avain": "t-paita|piparivaras. ei todisteita.",
+      "teksti": "PIPARIVARAS. / EI TODISTEITA.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Piparivaras. Ei todisteita | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9d9250930614e0f78e1",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "piparivaras-ei-todisteita-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9d850058942e78f4a91"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:42.581Z"
+    },
+    {
+      "avain": "t-paita|joulustressi? en tunne.",
+      "teksti": "JOULUSTRESSI? / EN TUNNE.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Joulustressi? En tunne | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9dec392daed65010411",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "joulustressi-en-tunne-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9dde9502d97de8d2c9c"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:47.867Z"
+    },
+    {
+      "avain": "t-paita|laatikko vastaava",
+      "teksti": "LAATIKKO / VASTAAVA",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Laatikkovastaava | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9e73f77a7875b0fbabe",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "laatikko-vastaava-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9e506c616d664439c61"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:36:56.806Z"
+    },
+    {
+      "avain": "t-paita|paketointi ei ole vahvuuteni.",
+      "teksti": "PAKETOINTI / EI OLE / VAHVUUTENI.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Paketointi ei ole vahvuuteni | T-paita jouluun",
+      "tila": "luotu",
+      "printify_id": "6adfb9ee250930614e0f78ef",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38160,
+        38164,
+        38166,
+        38174,
+        38178,
+        38180,
+        38188,
+        38194,
+        38202,
+        38206,
+        38208,
+        38216,
+        38220,
+        38222
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "paketointi-ei-ole-vahvuuteni-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9ed9d6010d25ad59e4e"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:37:04.485Z"
+    },
+    {
+      "avain": "t-paita|eläkkeellä. kiireinen silti.",
+      "teksti": "ELÄKKEELLÄ. / KIIREINEN SILTI.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Eläkkeellä. Kiireinen silti | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfb9fb260c17a8ff05ef31",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "elakkeella-kiireinen-silti-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfb9f847c5552b56a67ebe"
+        },
+        {
+          "tiedosto": "elakkeella-kiireinen-silti-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfb9f9008f830b4c11f99b"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:37:16.183Z"
+    },
+    {
+      "avain": "t-paita|eläkeläinen. kaikki päivät ovat lauantaita.",
+      "teksti": "ELÄKELÄINEN. / KAIKKI PÄIVÄT / OVAT LAUANTAITA.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Eläkeläinen. Kaikki päivät ovat lauantaita | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba065ea6b5c9cd0aecbd",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "elakelainen-kaikki-paivat-ovat-lauantaita-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba03b07334e71466ce83"
+        },
+        {
+          "tiedosto": "elakelainen-kaikki-paivat-ovat-lauantaita-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba0403413a8a5425f54e"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:37:27.280Z"
+    },
+    {
+      "avain": "t-paita|herätyskello eläkkeellä myös.",
+      "teksti": "HERÄTYSKELLO / ELÄKKEELLÄ MYÖS.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Herätyskello eläkkeellä myös | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba1087d17f67bf09e9e0",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "heratyskello-elakkeella-myos-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba0d078f0c2a3cb69ff8"
+        },
+        {
+          "tiedosto": "heratyskello-elakkeella-myos-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba0e6464c86c67a1ace7"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:37:37.248Z"
+    },
+    {
+      "avain": "t-paita|työt loppui. mökki ei.",
+      "teksti": "TYÖT LOPPUI. / MÖKKI EI.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Työt loppui. Mökki ei | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba1987d17f67bf09e9ed",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "tyot-loppui-mokki-ei-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba1724698db1ea01b977"
+        },
+        {
+          "tiedosto": "tyot-loppui-mokki-ei-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba18e0ff78ab1626ec98"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:37:46.643Z"
+    },
+    {
+      "avain": "t-paita|kokenut eläkeläinen. neuvoja ilmaiseksi.",
+      "teksti": "KOKENUT ELÄKELÄINEN. / NEUVOJA ILMAISEKSI.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Kokenut eläkeläinen. Neuvoja ilmaiseksi | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba27be06878c900359f6",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "kokenut-elakelainen-neuvoja-ilmaiseksi-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba244c71839a35476e88"
+        },
+        {
+          "tiedosto": "kokenut-elakelainen-neuvoja-ilmaiseksi-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba262ae6e825399ff2a7"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:38:00.744Z"
+    },
+    {
+      "avain": "t-paita|maanantai on nyt vain sana.",
+      "teksti": "MAANANTAI ON / NYT VAIN SANA.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Maanantai on nyt vain sana | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba3587d17f67bf09ea06",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "maanantai-on-nyt-vain-sana-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba33645a2d830395fbcb"
+        },
+        {
+          "tiedosto": "maanantai-on-nyt-vain-sana-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba347d89564e07187980"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:38:15.141Z"
+    },
+    {
+      "avain": "t-paita|palkka loppui. päikkärit jatkuu.",
+      "teksti": "PALKKA LOPPUI. / PÄIKKÄRIT JATKUU.",
+      "tyyppi": "t-paita",
+      "lista": "Joulu ja eläke 2026",
+      "otsikko": "Palkka loppui. Päikkärit jatkuu | T-paita eläkeläiselle",
+      "tila": "luotu",
+      "printify_id": "6adfba43c60cddcb060142a6",
+      "blueprint_id": 145,
+      "blueprint": "Unisex Softstyle T-Shirt Gildan 64000",
+      "print_provider_id": 26,
+      "painotalo": "Textildruck Europa (DE)",
+      "variantit": [
+        38158,
+        38162,
+        38164,
+        38172,
+        38176,
+        38178,
+        38186,
+        38190,
+        38200,
+        38204,
+        38206,
+        38214,
+        38218,
+        38220
+      ],
+      "hinta": 24.9,
+      "kulu_senttia": 928,
+      "toimitus_senttia": 729,
+      "kate": 0.317,
+      "kateAlv": 0.15,
+      "kateNyt": 0.296,
+      "syy": null,
+      "kuvat": [
+        {
+          "tiedosto": "palkka-loppui-paikkarit-jatkuu-t-paita-valkoinen-teksti.png",
+          "printify_kuva": "6adfba40382e60fed8633f5a"
+        },
+        {
+          "tiedosto": "palkka-loppui-paikkarit-jatkuu-t-paita-musta-teksti.png",
+          "printify_kuva": "6adfba419d6010d25ad59e53"
+        }
+      ],
+      "tuotu": false,
+      "luotu": "2026-10-26T20:38:28.607Z"
+    }
+  ]
+}

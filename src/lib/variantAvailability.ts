@@ -32,6 +32,8 @@ export interface SaatavuusData {
 export interface SaatavuusKohde {
   slug?: string | null;
   variants?: unknown;
+  /** Oma tausta: päivittäisen Printify-tarkistuksen tulos tuoterivillä (api/_lib/saatavuus.js). */
+  unavailable_variants?: unknown;
 }
 
 /** Sama avainmuoto kuin variants.variant_map: "Väri|Koko", ilman väriä "|Koko", ilman kokoa "Väri|". */
@@ -58,6 +60,7 @@ export function createAvailability(data: SaatavuusData) {
     const key = variantKey(color, size);
     const map = variantMapOf(p);
     if (map && !(key in map)) return false;
+    if (listOf(p?.unavailable_variants).includes(key)) return false;
     const set = slug ? unavailable.get(slug) : undefined;
     return !set || !set.has(key);
   };

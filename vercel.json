@@ -2,9 +2,51 @@
   "functions": {
     "api/img.js": {
       "includeFiles": "node_modules/{sharp,@img/sharp-linux-x64,@img/sharp-libvips-linux-x64}/**/*"
+    },
+    "api/products.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/checkout.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/sitemap.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/product-feed.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/cron/tilaukset.js": {
+      "includeFiles": "data/{products-snapshot.json,eu-siirto-*.json}",
+      "maxDuration": 60
+    },
+    "api/order.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/stripe-webhook.js": {
+      "includeFiles": "data/products-snapshot.json",
+      "maxDuration": 60
+    },
+    "api/sahkoposti.js": {
+      "maxDuration": 30
     }
   },
   "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*aarni-ais-projects\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://huumorikauppa.fi/$1",
+      "permanent": false
+    },
     {
       "source": "/(.*)",
       "has": [
@@ -1733,6 +1775,42 @@
     }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "x-huumorikauppa-proxy"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Huumorikauppa-Valitetty",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ],
+      "missing": [
+        {
+          "type": "header",
+          "key": "x-huumorikauppa-proxy"
+        }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [

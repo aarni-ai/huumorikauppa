@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import * as toimitus from "./toimitus";
 import { ILMAINEN_RAJA, TOIMITUS } from "../../api/_lib/syote-lisakentat.js";
+import * as vakiot from "../../api/_lib/vakiot.js";
 import { SHIPPING } from "../seo/site";
 
 const ROOT = path.resolve(__dirname, "../..");
@@ -49,6 +50,11 @@ describe("toimitusehdot yhdessä konfiguraatiossa", () => {
     expect(toimitus.toimitusmaksuSummalle(toimitus.ILMAINEN_TOIMITUS_RAJA)).toBe(0);
     expect(toimitus.toimitusmaksuSummalle(toimitus.ILMAINEN_TOIMITUS_RAJA - 0.01)).toBe(toimitus.TOIMITUSMAKSU);
     expect(toimitus.TOIMITUSAIKA_TEKSTI).toBe("3-10");
+  });
+
+  it("kassan vakiot (api/_lib/vakiot.js) ovat samat", () => {
+    expect(vakiot.TOIMITUS).toBe(toimitus.TOIMITUSMAKSU);
+    expect(vakiot.ILMAINEN_TOIMITUS_RAJA).toBe(toimitus.ILMAINEN_TOIMITUS_RAJA);
   });
 
   it("Merchant-syötteen peili (api/_lib/syote-lisakentat.js) on samat arvot", () => {

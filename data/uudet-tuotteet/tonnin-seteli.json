@@ -1,0 +1,90 @@
+{
+  "nimi": "Tonnin seteli: tarrat ja julisteet",
+  "enimmaishinta": null,
+  "oletukset": {
+    "kategoria": "Meemit"
+  },
+  "tuotteet": [
+    {
+      "tyyppi": "tarra",
+      "koot": [
+        "3.5x3.5"
+      ],
+      "enimmaishinta": "9,90",
+      "otsikko": "{teksti} | Tarra",
+      "rivit": [
+        "SE OLI",
+        "TONNIN SETELI."
+      ],
+      "kuvaus": "Se oli tonnin seteli. Suomalaisen meemin koko lausahdus neliön muotoisena vinyylitarrana läppärin kanteen, vesipulloon tai muistikirjaan. Koko 8,9 x 8,9 cm. Pieni lahja kaverille, joka muistelee kadonneita rahojaan joka illanvietossa.",
+      "tagit": [
+        "Tonnin seteli",
+        "Suomalainen meemi",
+        "Pikkulahja"
+      ]
+    },
+    {
+      "tyyppi": "tarra",
+      "koot": [
+        "3.5x3.5"
+      ],
+      "enimmaishinta": "9,90",
+      "otsikko": "{teksti} | Tarra",
+      "rivit": [
+        "TONNIN",
+        "SETELI"
+      ],
+      "kuvaus": "Tonnin seteli. Lyhyt versio tutusta meemistä neliön muotoisena vinyylitarrana. Koko 8,9 x 8,9 cm. Sopii läppärin kanteen, puhelimen kuoreen tai joulupaketin koristeeksi meemin tuntevalle.",
+      "tagit": [
+        "Tonnin seteli",
+        "Suomalainen meemi",
+        "Pikkulahja"
+      ]
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "SE OLI",
+        "TONNIN",
+        "SETELI."
+      ],
+      "kuvaus": "Se oli tonnin seteli. Meemin koko lausahdus isolla mustalla tekstillä A3-kokoisessa julisteessa (29,7 x 42 cm, matta paperi). Kehys ei sisälly. Sopii kämpän, toimiston tai kaveriporukan kerhohuoneen seinälle muistuttamaan rahasta, joka vain katosi.",
+      "tagit": [
+        "Tonnin seteli",
+        "Suomalainen meemi",
+        "Seinätaulu",
+        "Poster"
+      ]
+    },
+    {
+      "tyyppi": "juliste",
+      "varit": [
+        "Matte"
+      ],
+      "koot": [
+        "11.7x16.5"
+      ],
+      "enimmaishinta": "24,90",
+      "otsikko": "{teksti} | Juliste (poster)",
+      "rivit": [
+        "TONNIN",
+        "SETELI"
+      ],
+      "kuvaus": "Tonnin seteli. Lyhyt meemiteksti pelkistetysti A3-julisteena (29,7 x 42 cm, matta paperi), kehys ei sisälly. Hauska lahja meemin tuntevalle ystävälle tai veljelle, ja keskustelunavaus olohuoneen seinälle.",
+      "tagit": [
+        "Tonnin seteli",
+        "Suomalainen meemi",
+        "Seinätaulu",
+        "Poster"
+      ]
+    }
+  ]
+}

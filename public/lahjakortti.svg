@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Huumorikaupan lahjakortti">
+  <rect width="400" height="400" fill="#f4f4f0"/>
+  <rect x="40" y="105" width="320" height="190" rx="18" fill="#1a1a1a"/>
+  <rect x="40" y="185" width="320" height="22" fill="#c6f432"/>
+  <rect x="300" y="105" width="22" height="190" fill="#c6f432"/>
+  <text x="70" y="160" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#ffffff">LAHJAKORTTI</text>
+  <text x="70" y="262" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#ffffff">Huumorikauppa.fi</text>
+</svg>

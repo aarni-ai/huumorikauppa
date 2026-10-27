@@ -21,11 +21,47 @@ import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from './src/config/toimitus.js';
 
+// Kaikki polut: vanhan Vercel-projektin välitys (alla) koskee myös tiedostoja. Muuten tiedostot ohitetaan heti
+// (TIEDOSTO, sama rajaus kuin ennen välitystä).
 export const config = {
-  matcher: [
-    '/((?!favicon.ico|robots.txt|sitemap.xml|product-feed.xml|llms.txt|_vercel|.*\\.(?:js|css|png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|otf|map|json|xml|txt)).*)',
-  ],
+  matcher: ['/(.*)'],
 };
+
+const TIEDOSTO = /^\/(?:favicon\.ico|robots\.txt|sitemap\.xml|product-feed\.xml|llms\.txt|_vercel(?:\/.*)?|.*\.(?:js|css|png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|otf|map|json|xml|txt))$/;
+
+/**
+ * Välitys vanhasta Vercel-projektista uuteen (27.10.2026). huumorikauppa.fi on vanhassa projektissa (tiimi
+ * aarni-ais-projects), joka rakentaa GitHubin mainin, eikä domainia voi siirtää ilman DNS-muutosta. Uuden projektin
+ * ympäristössä on UUSI_TAUSTA=1 (production); kaikkialla muualla (vanha projekti, uuden projektin preview) jokainen
+ * pyyntö välitetään uuden projektin tuotantoon. Otsake x-huumorikauppa-proxy kertoo uudelle projektille julkisen
+ * osoitteen: uudelleenohjaukset sinne, eikä vercel.app-osoitteiden noindex-otsaketta (vercel.json) lisätä.
+ * Poistetaan, kun domain on siirretty uuteen projektiin (KAYTTOONOTTO.md kohta 9).
+ */
+export const UUSI_TUOTANTO = 'https://huumorikauppa-five.vercel.app';
+export const PROXY_OTSAKE = 'x-huumorikauppa-proxy';
+
+export function valitysKohde(requestUrl: string, uusiTausta: string | undefined): string | null {
+  if (uusiTausta === '1') return null;
+  const url = new URL(requestUrl);
+  if (url.origin === UUSI_TUOTANTO) return null;
+  return UUSI_TUOTANTO + url.pathname + url.search;
+}
+
+function valita(kohde: string, julkinen: string): Response {
+  return new Response(null, {
+    headers: {
+      'x-middleware-rewrite': kohde,
+      'x-middleware-override-headers': PROXY_OTSAKE,
+      [`x-middleware-request-${PROXY_OTSAKE}`]: julkinen,
+    },
+  });
+}
+
+/** Julkinen osoite: välitetyssä pyynnössä otsakkeesta (vain huumorikauppa.fi), muuten pyynnön oma. */
+export function julkinenOrigin(request: Request, url: URL): string {
+  const v = request.headers.get(PROXY_OTSAKE);
+  return v && /^https:\/\/(www\.)?huumorikauppa\.fi$/.test(v) ? v : url.origin;
+}
 
 const BOT_REGEX =
   /googlebot|storebot-google|google-inspectiontool|apis-google|bingbot|slurp|duckduckbot|baiduspider|yandexbot|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|anthropic-ai|perplexitybot|perplexity-user|google-extended|applebot|applebot-extended|ccbot|bytespider|cohere-ai|amazonbot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|semrushbot|ahrefsbot|mj12bot|rogerbot/i;
@@ -50,25 +86,22 @@ interface SupabaseProduct {
   variants?: unknown;
 }
 
-const SUPABASE_URL: string = (typeof process !== 'undefined' && (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL)) || '';
-const SUPABASE_KEY: string = (typeof process !== 'undefined' && (process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY)) || '';
+
+// Oma tausta (21.10.2026): tuotetiedot saman sivuston /api/products-funktiosta (tietokanta tai tilannekuva),
+// ei enää Supabasesta. ORIGIN asetetaan jokaisen pyynnön alussa.
+let ORIGIN = 'https://huumorikauppa.fi';
 
 async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null> {
-  if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=id,slug,name,description,images,price,category,stock,variants&limit=1`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-        signal: AbortSignal.timeout(4000),
-      }
+      `${ORIGIN}/api/products?slug=${encodeURIComponent(slug)}&fields=id,slug,name,description,images,price,category,stock,variants`,
+      { signal: AbortSignal.timeout(4000) }
     );
     if (!res.ok) return null;
-    const data: SupabaseProduct[] = await res.json();
-    const product = data[0] ?? null;
+    const product: SupabaseProduct | null = await res.json();
     // Myynnistä piilotetut kategoriat (mukit) eivät saa tuotemetoja.
     if (product && onPiilotettuTuote(product)) return null;
-    return product;
+    return product ?? null;
   } catch {
     return null;
   }
@@ -78,18 +111,11 @@ async function fetchCategoryProducts(
   categories: string[],
   limit = 20
 ): Promise<Array<{ slug: string; name: string; image: string; price: number }>> {
-  if (!SUPABASE_URL || !SUPABASE_KEY || categories.length === 0) return [];
-  const filter =
-    categories.length === 1
-      ? `category=eq.${categories[0]}`
-      : `category=in.(${categories.join(',')})`;
+  if (categories.length === 0) return [];
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?${filter}&select=slug,name,images,price&order=created_at.desc&limit=${limit}`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-        signal: AbortSignal.timeout(4000),
-      }
+      `${ORIGIN}/api/products?category=${encodeURIComponent(categories.join(','))}&fields=slug,name,images,price&limit=${limit}`,
+      { signal: AbortSignal.timeout(4000) }
     );
     if (!res.ok) return [];
     const data: Array<{ slug: string; name: string; images: string[]; price: number }> = await res.json();
@@ -125,6 +151,14 @@ const PAGE_META: Record<string, PageMeta> = {
   '/usein-kysytyt-kysymykset': {
     title: 'Usein kysytyt kysymykset | Huumorikauppa.fi',
     description: 'Vastaukset yleisimpiin kysymyksiin toimituksesta, palautusoikeudesta, koosta ja tilaamisesta.',
+  },
+  '/lahjakortti': {
+    title: 'Lahjakortti | Huumorikauppa.fi',
+    description: 'Digitaalinen lahjakortti Huumorikauppaan: 25, 50, 75 tai 100 €. Koodi sähköpostilla heti maksun jälkeen, voimassa 24 kuukautta.',
+  },
+  '/paketit': {
+    title: 'Paketit: t-paita ja huppari samalla tekstillä | Huumorikauppa.fi',
+    description: 'Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla.',
   },
   '/toimitusehdot': {
     title: 'Toimitusehdot | Huumorikauppa.fi',
@@ -681,20 +715,15 @@ export async function productStatus(origin: string, slug: string): Promise<Produ
   if (!slug || slug.includes('/')) return 'missing';
   const known = await knownProductSlugs(origin);
   if (known?.has(slug)) return 'known';
-  // Buildin jälkeen lisätyt tuotteet: tarkistetaan Supabasesta.
-  if (!SUPABASE_URL || !SUPABASE_KEY) return 'unknown';
+  // Buildin jälkeen lisätyt tuotteet: oma tausta (/api/products, tietokanta tai tilannekuva), ei Supabasea.
   try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,name,category,is_active,variants,printify_product_id&limit=1`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-        signal: AbortSignal.timeout(4000),
-      }
-    );
+    const res = await fetch(`${origin}/api/products?slug=${encodeURIComponent(slug)}&fields=slug,name,category,is_active,variants,printify_product_id`, {
+      headers: { 'x-bot-inject': 'true' },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (res.status === 404) return 'missing';
     if (!res.ok) return 'unknown';
-    const rows: Array<{ slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown; printify_product_id?: string | null }> = await res.json();
-    if (!Array.isArray(rows)) return 'unknown';
-    const row = rows[0];
+    const row: { slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown; printify_product_id?: string | null } | null = await res.json();
     if (!row || row.is_active === false) return 'missing';
     if (onPiilotettuTuote(row)) return 'hidden';
     return 'known';
@@ -732,12 +761,18 @@ async function notFoundResponse(origin: string): Promise<Response> {
 // ── Main middleware ───────────────────────────────────────────────────────────
 
 export default async function middleware(request: Request): Promise<Response | undefined> {
+  const kohde = valitysKohde(request.url, process.env.UUSI_TAUSTA);
+  if (kohde) return valita(kohde, new URL(request.url).origin);
   if (request.headers.get('x-bot-inject') === 'true') {
     return undefined;
   }
 
   const url = new URL(request.url);
   const path = url.pathname;
+  if (TIEDOSTO.test(path)) return undefined;
+  ORIGIN = url.origin;
+  // Uudelleenohjaukset julkiseen osoitteeseen (välitetty pyyntö: huumorikauppa.fi, ei vercel.app).
+  const julkinen = julkinenOrigin(request, url);
 
   // Tuntematon tuote -> oikea 404 (ei pehmeää 404:ää SPA-kuorella). Koskee kaikkia user agenteja.
   if (path.startsWith('/tuote/')) {
@@ -745,11 +780,11 @@ export default async function middleware(request: Request): Promise<Response | u
     const perus = kaksoiskappaleenPerusslug(productSlugFromPath(path));
     // EU:n ulkopuolella valmistettava tuote -> sen näkyvä EU-kopio (api/_lib/eu-reititys.js).
     const euKohde = euOhjausKohde(perus ?? productSlugFromPath(path));
-    if (euKohde) return Response.redirect(`${url.origin}/tuote/${encodeURIComponent(euKohde)}`, 301);
-    if (perus) return Response.redirect(`${url.origin}/tuote/${perus}`, 301);
+    if (euKohde) return Response.redirect(`${julkinen}/tuote/${encodeURIComponent(euKohde)}`, 301);
+    if (perus) return Response.redirect(`${julkinen}/tuote/${perus}`, 301);
     const status = await productStatus(url.origin, productSlugFromPath(path));
-    if (status === 'missing') return notFoundResponse(url.origin);
-    if (status === 'hidden') return Response.redirect(`${url.origin}/kaikki-tuotteet`, 301);
+    if (status === 'missing') return notFoundResponse(julkinen);
+    if (status === 'hidden') return Response.redirect(`${julkinen}/kaikki-tuotteet`, 301);
   }
 
   const ua = request.headers.get('user-agent') || '';
