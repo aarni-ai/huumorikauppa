@@ -26,6 +26,93 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.-28.10. pitkä ajo: joulu- ja isänpäivämyynti, konversio, keskiostos
+
+**Resend ja ilmoitukset.** RESEND_API_KEY on Vercelissä (ilmainen suunnitelma), OMISTAJA_EMAIL on nyt
+huumorikauppa@gmail.com. Resend-domain huumorikauppa.fi on vahvistamatta, koska DNS-tietueet puuttuvat (DKIM ja muut
+KAYTTOONOTTO.md:n riveillä 11-13). Siihen asti Resend lähettää vain tilin omaan osoitteeseen flyapeg@gmail.com, joten
+omistajan ilmoitukset menevät sinne. Asiakas saa Stripen kuitin (receipt_email), kunnes SAHKOPOSTI_VAHVISTETTU=1.
+
+**Ensimmäisen oikean tilauksen valvonta.** Jokaisesta maksetusta tilauksesta lähtee heti ilmoitus omistajalle
+(tilaus.js ilmoitaOmistajalle): summa, tuotteet, toimitus ja Printify-tila. Jos tilaus ei ole tuotannossa, viestissä
+lukee "POIKKEAMA". Ilmoitustesti meni perille. `?tehtava=maksetut` näyttää maksetut tilaukset painotaloineen ilman
+henkilötietoja. Oikeita maksettuja tilauksia ei vielä ole (28.10. klo 0).
+
+**Etusivu.** Kesän ALE-kuva on korvattu joulun pääkuvalla, jossa ovat oikeat hinnat suoraan rajapinnasta (t-paidat
+24,90 €, hupparit alkaen 49,99 €) eikä päivämääriä tai alennuksia. Kuva tehdään skriptillä `scripts/etusivun-kuva.py`.
+Sivustolla ei ole yliviivattuja hintoja (original_price tyhjä kaikilla), eikä ALE-merkintöjä ole.
+
+**Automaattiset tilauspäivät.** Päivät lasketaan toteutuneista toimitusajoista (src/data/campaignSchedule.ts):
+pahin tuotanto 2 + kuljetus 13 + puskuri 2 = 17 arkipäivää. Laskennassa pyhät ohitetaan.
+- Isänpäivä: lahjan pitää olla perillä pe 6.11., joten viimeinen tilauspäivä oli ke 14.10.2026. Isänpäiväsivut sanovat
+  nyt "Painettu lahja ei enää ehdi perille isänpäiväksi", eikä vanhaa 28.10.-lupausta näy.
+- Joulu: laskettu päivä on 30.11., mutta Printifyn sesonkiraja rajaa sen pe 20.11.2026:een.
+- Palkki vaihtuu itsestään (isänpäivästä jouluun 15.10.) ja katoaa joulun tilausajan jälkeen.
+- Kaikki 129 käsin kirjoitettua joulupäivää käyttävät nyt samaa lähdettä. Tilausajan jälkeen tekstit muuttuvat
+  päivämäärättömiksi seuraavassa julkaisussa (selaimessa heti).
+
+**Konversio.**
+- Mobiilin latausaika (Lighthouse, mediaani 3 ajosta):
+  - Tuotesivun LCP on livenä 1,9 s.
+  - Ostoskorin ja kassan LCP oli 3,6-3,9 s.
+  - Korjaukset: etusivu pois pääpaketista (640 kt -> 257 kt), ostoskorin ja kassan esilataus ja CLS-korjaus (0,047 -> 0,001).
+  - Paikallisesti mitattuna kassan LCP 3,20 -> 2,96 s.
+- Stripe-kassassa ovat päällä kortti, Apple Pay, Google Pay, MobilePay, Klarna ja Link. Testisessiossa näkyivät
+  kortti, MobilePay, Apple Pay, Google Pay ja Link. Klarna näytetään ostajan sijainnin mukaan, eikä sitä tarjottu
+  Suomen ulkopuolelta tehdyssä testissä.
+- Tuotesivulla ja ostoskorissa näkyvät nyt maksutapakuvakkeet (yksi lista, src/config/maksutavat.ts) ja teksti
+  "Toimitus 6,90 €, ilmainen 79 eurosta".
+
+**Keskiostos.** Ostoskorin mittari "Lisää X € ilmaiseen toimitukseen" ehdottaa tarraa tai julistetta (mukeja ei
+ehdoteta, koska ne eivät ole myynnissä) vain, jos koko korin kate pysyy positiivisena. Kate lasketaan samoin kuin
+kassalla. Laskelma on KATTEET.md:ssä ("Ilmaisen toimituksen mittari ja lisätuote 28.10.2026").
+- Arvio: +1,2...+6,6 €/kk oletetulla 3-8 %:n tarttumisella.
+- Varaus: huppari- ja t-paita+huppari-korissa julisteen lisääminen laskee nykyisillä kulutiedoilla katetta
+  (1,32-4,76 €), vaikka kate pysyy positiivisena. Syy: tuoteriveiltä puuttuu painotalo- ja lisäkappaletieto.
+
+**Uudet tuotteet.** Printifyssä on 20 uutta paitaa (Textildruck Europa DE) ja 5 hupparia (Atelier Katanga FR).
+Teemat: joulu 6, pikkujoulu 4, isänpäivä 5 ja eläkeläiset 5.
+- Paidat 24,90 €, kate 8,04 € (31,7 %) jokaisessa koossa.
+- Hupparit 49,99 € / 3XL 55,00 €, kate vähintään 6,08 € (12,3 %).
+- Kaikki 25 on kaupassa ja oikeilla lahjasivuilla (joululahjat, isänpäivä, eläkeläiset, pikkujoulut).
+- Lisäksi palautettiin 15 Lovablen synkronoimaa paitaa, 12 julistetta ja tarra. Kaupassa on nyt 525 tuotetta.
+
+**Uudet sivut.**
+- /ryhmatilaukset: 5+ kpl, yhteydenotto huumorikauppa@gmail.com, ei hintalupauksia.
+- 8 uutta artikkelia: isänpäivälahja isoisälle, lahja ensimmäiseksi isänpäiväksi, pikkujoulujen lahjapeli,
+  pikkujoulupaidat porukalle, joululahja poikaystävälle, joululahja anopille ja appiukolle, joululahja siskolle ja
+  isänpäivälahja viime hetkellä.
+- Viimeinen (viime hetken isänpäivälahja) odottaa julkaisua, koska se suosittelee sähköpostilla heti tulevaa
+  lahjakorttia. Lahjakorttien myynti on suljettu kassalla, kunnes oma sähköposti toimii; muuten ostaja ei saisi koodia.
+- Ehdotetut aiheet pikkujoululahja alle 20 €, joululahja eläkkeelle jäävälle, lahja isoisälle ja salainen joulupukki
+  olivat jo olemassa.
+
+**Uutiskirje.** Tervetuloviesti on olemassa (ei alennuskoodia, ensitilausalennus 0 %). Ostoskorimuistutus on nyt yksi
+viesti 24 tunnin kuluttua, ilman alennuskoodia. Tietosuojaseloste on päivitetty. Viestit lähtevät, kun Resend-domain
+on vahvistettu.
+
+**Vanha kassa.** KAYTTOONOTTO.md:ssä on ohje vanhan tilin `acct_1THtN1AhUyocG7PO` webhookin poistamiseksi käytöstä
+(Disable). Sen saa tehdä vasta ensimmäisen oikean uuden kassan tilauksen jälkeen. Tiliä ei suljeta eikä avaimia
+kierretä avoimen riita-asian (3.11.) vuoksi.
+
+**Poikkeamat.**
+1. Sivusto oli alhaalla 23.13-23.16 (MIDDLEWARE_INVOCATION_FAILED). Syy: middleware tuotiin ilman tiedostopäätteitä
+   (Vercel ajaa middlewaren ilman niputusta). Korjattu .js-päätteillä, ja korjaus testattiin preview-julkaisulla
+   ennen tuotantoa.
+2. Joululahjasivujen metakuvauksissa näkyi hetken `${JOULU_META}`. Korjattu, ja testi estää toistumisen.
+3. Kassatesti tunnisti väärin Stripen uuden `/g/pay/`-osoitteen. Korjattu (kassa toimi koko ajan).
+Jokainen julkaisu tarkistettiin kolmella User-Agentilla.
+
+**Arvio katevaikutuksesta.** Historia: 22 tilausta 3-10/2026 (noin 4 kk:ssa), nettokate keskimäärin 3,57 € tilaukselta.
+- Uusi kassa ja hinnat nostavat katetta tilausta kohden: t-paitatilaus +1,52 € (5,70 -> 7,22 €), hupparitilaus
+  +2,42 € (7,13 -> 9,55 €).
+- Tappiolliset korit poistuvat, ja kassa estää alle rajan jäävät variantit.
+- Joulusesongin oletuksella 10-20 tilausta/kk vaikutus on noin +15...+50 €/kk tilausta kohden nousseesta katteesta.
+- Jos uudet tuotteet, artikkelit ja konversiokorjaukset tuovat 3-8 lisätilausta/kk, se tuo noin +25...+65 €/kk.
+- Yhteensä noin +40...+115 €/kk sesongin aikana. Tämä on oletuksiin perustuva arvio, ei mittaus.
+- 3 000 €/kk tavoite vaatii noin 350-400 tilausta kuukaudessa nykyisellä katteella. Ratkaiseva tekijä on liikenne
+  (mainonta, haku), ei enää kassa.
+
 ## 28.10. yö: Resend asennettu, etusivun kesän ALE-kuva pois
 
 **Resend:** asennettu CLI:llä Vercelin integraatiosta projektiin huumorikauppa (Production), ilmainen suunnitelma
