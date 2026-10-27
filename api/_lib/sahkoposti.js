@@ -109,8 +109,12 @@ export async function halytys(otsikko, rivit) {
   // Ennen kuin huumorikauppa.fi on vahvistettu Resendissä (DNS), omistajan viestit Resendin testilähettäjältä
   // (toimii vain Resend-tilin omaan osoitteeseen; muuten virhe kirjataan kuten ennen).
   if (!r.ok && /domain is not verified/i.test(r.virhe || "")) {
-    const varalla = await laheta({ ...viesti, from: "Huumorikauppa <onboarding@resend.dev>" });
-    return varalla.ok ? varalla : { ok: false, virhe: `${r.virhe}; testilähettäjä: ${varalla.virhe}` };
+    const from = "Huumorikauppa <onboarding@resend.dev>";
+    let varalla = await laheta({ ...viesti, from });
+    // Testilähettäjä toimii vain Resend-tilin omaan osoitteeseen, jonka Resend kertoo virheessä.
+    const oma = /own email address \(([^)\s]+@[^)\s]+)\)/.exec(varalla.virhe || "")?.[1];
+    if (!varalla.ok && oma) varalla = await laheta({ ...viesti, from, to: oma, subject: `${viesti.subject} (huumorikauppa@gmail.com, kunnes domain vahvistetaan)` });
+    return varalla.ok ? { ...varalla, vastaanottaja: oma || viesti.to } : { ok: false, virhe: `${r.virhe}; testilähettäjä: ${varalla.virhe}` };
   }
   return r;
 }

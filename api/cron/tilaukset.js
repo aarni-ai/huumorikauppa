@@ -203,7 +203,7 @@ export default async function handler(req, res) {
   // Omistajan ilmoituksen testi (OMISTAJA_EMAIL): sama reitti kuin uuden tilauksen ilmoitus (halytys).
   if (req.query.tehtava === "ilmoitustesti") {
     const r = await halytys("Testi: uuden tilauksen ilmoitus", ["Tämä on testiviesti. Oikea ilmoitus lähtee, kun maksu tulee."]);
-    return res.status(200).json({ ok: r.ok, vastaanottaja: OMISTAJA(), virhe: r.ok ? null : r.virhe });
+    return res.status(200).json({ ok: r.ok, vastaanottaja: r.vastaanottaja || OMISTAJA(), virhe: r.ok ? null : r.virhe });
   }
 
   if (req.query.tehtava === "eu-siirrot") {
