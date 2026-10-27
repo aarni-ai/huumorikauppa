@@ -49,9 +49,11 @@ import { helsinki, printifyTila, jumissaYli, ajaYhteenveto, pgValvonta, KV_YHTEE
 import { ajaMarkkinointi } from "../_lib/markkinointi.js";
 import { pgMarkkinointi } from "../_lib/markkinointi-db.js";
 import { katevalvonta, yhteenveto as kateYhteenveto, katetarkistusAihe, htmlEsi } from "../_lib/katevalvonta.js";
-import { ajaEuSiirrot } from "../_lib/eu-siirrot.js";
-import { postgresKanta, printifyHaut } from "../../scripts/lib/eu-kanta.mjs";
-import { buildProductRow } from "../_lib/printify-sync.generated.js";
+import { ajaEuSiirrot, euSiirtoKansio } from "../_lib/eu-siirrot.js";
+import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
+import { buildProductRow, fetchPrintifyProductById } from "../_lib/printify-sync.generated.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 // Vercelin funktioraja 60 s: valinnaiset vaiheet (3b, 4) jäävät seuraavaan ajoon, jos aikaa on kulunut yli tämän.
 const AIKARAJA_MS = 40000;
@@ -168,6 +170,31 @@ export default async function handler(req, res) {
       tulos.webhook.push({ id: x.id.slice(0, 8), status: n?.status, tapahtumat: tap.map((e) => e.kind + (e.details?.syy ? ` (${e.details.syy})` : "")) });
     }
     return res.status(200).json({ ok: true, kuiva, ...tulos });
+  }
+
+  // Lovablessa myynnissä olleet, omasta kaupasta puuttuneet tuotteet (data/lovable-aktiiviset-2026-10-27.json):
+  // Printifystä kuluineen kantaan (scripts/lib/eu-kanta.mjs tuoPrintifysta), sitten näkyviin Lovablen slugilla ja hinnalla.
+  if (req.query.tehtava === "tuo-aktiiviset") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
+    const data = JSON.parse(readFileSync(join(euSiirtoKansio() || join(process.cwd(), "data"), "lovable-aktiiviset-2026-10-27.json"), "utf8"));
+    const { kulutRivi } = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
+    const siirrot = lueEuSiirrot(euSiirtoKansio());
+    const tulos = [];
+    for (const t of data.tuotteet) {
+      if (!aikaa()) { tulos.push({ slug: t.slug, tila: "aika loppui, aja uudelleen" }); continue; }
+      const id = String(t.printify_product_id);
+      const pf = await fetchPrintifyProductById(id);
+      if (!pf) { tulos.push({ slug: t.slug, tila: "ei Printifyssä" }); continue; }
+      const r = kuiva ? null : await tuoPrintifysta({ tuotteet: [pf], kanta: postgresKanta(db), siirrot, buildProductRow, kulutRivi, kulut: true, julkaise: false });
+      let rivi = (await db`select id, slug, price, is_active from products where printify_product_id = ${id}`)[0];
+      if (rivi && !kuiva) {
+        const vapaa = rivi.slug === t.slug || !(await db`select 1 from products where slug = ${t.slug}`).length;
+        rivi = (await db`update products set is_active = true, price = ${t.lovable_price}, slug = ${vapaa ? t.slug : rivi.slug}, updated_at = now()
+          where id = ${rivi.id} returning slug, price, is_active`)[0];
+      }
+      tulos.push({ slug: t.slug, tuonti: r ? { uusia: r.uusia, paivitetty: r.paivitetty, ohitettu: r.ohitettu + r.ohitettuSiirretty } : null, rivi: rivi ?? null });
+    }
+    return res.status(200).json({ ok: true, kuiva, tulos });
   }
 
   if (req.query.tehtava === "eu-siirrot") {
