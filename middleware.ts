@@ -20,7 +20,6 @@ import { euOhjausKohde } from './api/_lib/eu-reititys.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from './src/config/toimitus.js';
-import { jouluLause, jouluLaskentaLause, jouluMetaLause, jouluOpasMeta } from './src/data/tilauspaivat.js';
 
 // Kaikki polut: vanhan Vercel-projektin välitys (alla) koskee myös tiedostoja. Muuten tiedostot ohitetaan heti
 // (TIEDOSTO, sama rajaus kuin ennen välitystä).
@@ -255,7 +254,7 @@ const PAGE_META: Record<string, PageMeta> = {
   },
   '/joululahjat': {
     title: 'Joululahjat 2026 - Hauskat Ideat Koko Perheelle | Huumorikauppa.fi',
-    description: `Hauskat joululahjat 2026 koko perheelle. ${jouluMetaLause()}`,
+    description: 'Hauskat joululahjat 2026 koko perheelle. Tilaa viimeistään 20.11.2026, niin lahja ehtii perille jouluaattoon mennessä.',
   },
   '/elakelahjat': {
     title: 'Eläkeläislahjat - Hauskat muistot eläkkeelle siirtyvälle | Huumorikauppa.fi',
@@ -353,7 +352,7 @@ const BLOG_META: Record<string, PageMeta> = {
   },
   'joululahjan-viimeiset-tilauspaivat-2026': {
     title: "Joululahjan viimeinen tilauspäivä 2026 | Huumorikauppa",
-    description: jouluOpasMeta(),
+    description: "Joululahjat 2026: tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon. Näin suunnittelet tilauksen ja palautukset.",
   },
   '20-hauskinta-t-paitaa-2026': {
     title: '20 hauskaa t-paitaa 2026 | Huumorikauppa.fi',
@@ -373,7 +372,7 @@ const BLOG_META: Record<string, PageMeta> = {
   },
   'parhaat-joululahjat-ja-pikkujoululahjat-2026': {
     title: 'Joululahjat 2026 - Hauskat ideat koko perheelle | Huumorikauppa.fi',
-    description: `Hauskat joululahjaideat 2026 koko perheelle. ${jouluMetaLause()}`,
+    description: 'Hauskat joululahjaideat 2026 koko perheelle. Tilaa viimeistään 20.11.2026, niin lahja ehtii jouluaattoon mennessä.',
   },
   'parhaat-hauskat-lahjat-miehelle': {
     title: 'Hauskat lahjat miehelle - 25 ideaa | Huumorikauppa.fi',
@@ -595,7 +594,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   ],
   '/joululahjat': [
     { q: "Mikä on hauska joululahja huumorin ystävälle?", a: "Hauska joululahja on t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Suosituimpia ovat kalamies-, äijä- ja eläkeläisteemat." },
-    { q: "Milloin viimeistään tilata joululahja?", a: `${jouluLause()} ${jouluLaskentaLause()}` },
+    { q: "Milloin viimeistään tilata joululahja?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja toimitusajan mukaan." },
     { q: "Miten valitsen oikean koon joululahjaksi?", a: "L on yleisimmin sopiva koko miehille. Epävarma? Valitse yksi koko ylöspäin." },
     { q: "Voiko joululahjan palauttaa?", a: "Kyllä, 14 päivän palautusoikeus." },
   ],
