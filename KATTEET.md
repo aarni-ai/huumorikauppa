@@ -486,6 +486,70 @@ Tarjous tulee voimaan vasta uuden taustan käyttöönotossa. Live-kaupan kassa (
   koskevat live-kauppaa; laskelma kattaa ne silti.
 - Testit: `src/test/korialennus.test.ts`.
 
+## Ilmaisen toimituksen mittari ja lisätuote 28.10.2026
+
+**Toteutus:** ostoskorin mittari "Lisää X € ilmaiseen toimitukseen" ehdottaa korille, joka jää alle ilmaisen
+toimituksen rajan (79 €), yhtä lisätuotetta, joka kuroo puuttuvan summan parhaiten umpeen (`api/_lib/lisatuote.js`,
+`src/lib/lisatarra.ts` `valitseMittarinLisa`, `src/components/MittarinLisatuote.tsx`, lisäys yhdellä painalluksella).
+
+- Ehdokkaat: tarrat (Se oli tonnin seteli -tarra 11,90 €, ei personoitavia) ja julisteet (seinataulut, slug päättyy
+  `-juliste-poster`, 22,90 €). Mukit eivät ole koskaan ehdokkaita (piilotettu kategoria ja mukin tunniste).
+- Järjestys: ensin rajan ylittävät (pienin ylitys), sitten lähimmäs rajaa vievät; tasatilanteessa sama teema kuin
+  korissa, sitten suurempi nettokate.
+- Katevahti: ehdotus vain, jos koko korin nettokate lisätuotteen kanssa on yli 0 € (`LISATUOTE_MIN_KATE_EUROA`).
+  Laskenta kuten kassa: toimitusmaksu alennusta edeltävästä summasta, pakettialennus, kahden tuotteen alennus -5 %
+  (lisätuote tekee yhden tuotteen korista kahden tuotteen korin) ja Printifyn toimitus painotaloittain
+  (`laskeTilauksenNettokate`). Tuntematon kulu: ei ehdotusta.
+- Hupparisääntö säilyy: hupparikoriin ei ehdoteta tarraa. Rajan ylittäneen korin "Lisää tarra" -rivi
+  (`TarraLisamyynti`) näytetään vain, kun toimitus on jo ilmainen, ja sekin vain positiivisella katteella.
+
+**Kulut** (tuoterivit GET /api/products 28.10.2026): t-paita 8,90 € + toimitus 8,49 €, huppari (Tonnin seteli,
+49,99 €) 25,48 € + 10,89 €, tarra 3,89 € + 5,59 € (lisäkappale 0,10 €, OPT pp 30), juliste 7,09 € + 9,29 €
+(lisäkappale 1,99 €, OPT pp 30). T-paitojen ja huppareiden tuoteriveiltä puuttuvat `print_provider_id` ja
+`shipping_additional_cents`, joten katevahti laskee ne varovaisesti erillisinä lähetyksinä (A). Printify laskuttaa
+kuitenkin painotaloittain: t-paita (OPT) ja juliste lähtevät samassa lähetyksessä, huppari (Textildruck) erikseen (B).
+Varovainen laskenta muuttuu todelliseksi, kun `node scripts/printify-tuonti.mjs --kulut` tallentaa puuttuvat kentät.
+
+**Korin nettokate ilman lisätuotetta ja ehdotetun lisätuotteen kanssa** (toimitus 6,90 € alle 79 €, kahden tuotteen
+alennus -5 %, Stripe 1,5 % + 0,25 €):
+
+| Kori (tuotteet €) | Ehdotus | Puuttuu ennen / jälkeen | Kate ilman (A / B) | Kate lisätuotteen kanssa (A / B) | Muutos A | Muutos B |
+|---|---|--:|--:|--:|--:|--:|
+| 1 t-paita (24,90) | juliste 22,90 € | 54,10 / 31,20 € | 7,22 / 7,22 | 6,88 / 14,18 | -0,34 | +6,96 |
+| 2 t-paitaa (49,80) | juliste 22,90 € | 29,20 / 6,30 € | 7,36 / 14,66 | 7,99 / 22,59 | +0,63 | +7,93 |
+| 1 huppari (49,99) | juliste 22,90 € | 29,01 / 6,11 € | 7,86 / 7,86 | 6,54 / 6,54 | -1,32 | -1,32 |
+| t-paita + huppari (74,89) | juliste 22,90 € (tarra estetty hupparisäännöllä) | 4,11 / 0 € (ilmainen toimitus) | 7,01 / 7,01 | 2,25 / 9,55 | -4,76 | +2,54 |
+
+Vertailuksi tarra samoihin koreihin (A / B): 1 t-paita 5,61 / 11,10, 2 t-paitaa 6,72 / 19,51; hupparikoreihin tarraa
+ei ehdoteta (1 huppari 5,27, t-paita + huppari 0,98 / 6,47). Jokainen ehdotettu kori pysyy positiivisena myös
+varovaisella laskennalla (heikoin t-paita + huppari + juliste 2,25 €).
+
+Huomiot:
+- Lisätuote tekee yhden tuotteen korista kahden tuotteen korin, joten -5 % koskee myös alkuperäistä tuotetta.
+- Hupparikorissa juliste laskee katetta 1,32 €, koska juliste lähtee eri painotalosta (9,29 €) ja hupparikin saa -5 %.
+  Kate pysyy positiivisena, joten sääntö sallii ehdotuksen. Jos katteen laskua ei haluta, nosta
+  `LISATUOTE_MIN_KATE_EUROA` tai lisää ehto "kate ei laske".
+- t-paita + huppari: juliste ylittää rajan, kauppa menettää 6,90 €:n toimitusmaksun. Todellisella laskutuksella (B)
+  kate silti nousee (+2,54 €), varovaisella laskennalla (A) se laskee (-4,76 €).
+
+**Odotettu vaikutus kuukaudessa (arvio, ei mitattua dataa).** Oletukset:
+- **Oletus, ei mitattu:** lisätuotteen lisää koriin 3 % (varovainen) tai 8 % (optimistinen) niistä tilauksista, joiden
+  korissa ehdotus näkyy. Tilausten määrä ei muutu ehdotuksen takia.
+- Korijakauma (oletus, nykyiseen 28,80 €:n keskiostokseen sopiva): 1 t-paita 70 %, 2 t-paitaa 5 %, 1 huppari 15 %,
+  t-paita + huppari 3 %, muut 7 % (ei laskettu mukaan).
+- Volyymi: 8 tilausta / 30 pv, vertailuna 16.
+- Painotettu katteen muutos lisättyä tuotetta kohden: A -0,55 € (0,70 x -0,34 + 0,05 x 0,63 + 0,15 x -1,32 + 0,03 x -4,76),
+  B +5,15 € (0,70 x 6,96 + 0,05 x 7,93 + 0,15 x -1,32 + 0,03 x 2,54).
+
+| Laskenta | 8 tilausta, 3 % | 8 tilausta, 8 % | 16 tilausta, 3 % | 16 tilausta, 8 % |
+|---|--:|--:|--:|--:|
+| B Printifyn laskutus painotaloittain (odotettu) | +1,24 €/kk | +3,29 €/kk | +2,47 €/kk | +6,59 €/kk |
+| A varovainen (katevahdin laskenta nykyisillä tuoteriveillä) | -0,13 €/kk | -0,35 €/kk | -0,26 €/kk | -0,70 €/kk |
+
+Tuotteiden myynti kasvaa 22,90 € lisättyä julistetta kohden ennen alennusta (3 %: +0,64 €, 8 %: +1,70 € tilausta
+kohden). Vaikutus on pieni ja riippuu lisäysosuudesta, joka on oletus. Mittaa osuus tilauksista, joissa juliste tai
+tarra on t-paidan tai hupparin kanssa (tilaukset-taulu), ja päivitä oletus mitatulla osuudella.
+
 ## Halvin EU-vaihtoehto: t-paita, huppari, muki (26.10.2026)
 
 Kaikki Printifyn EU-painotalot, joilla on t-paita-, huppari- tai mukiblueprint (katalogi 26.10.2026: OPT OnDemand CZ,

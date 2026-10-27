@@ -12,6 +12,8 @@ import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennus
 import { KorialennusVihje } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
+import { MittarinLisatuote } from "@/components/MittarinLisatuote";
+import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
@@ -56,7 +58,7 @@ const CartPage = () => {
           <div className="flex items-center gap-2 mb-2">
             <Truck className="h-4 w-4 text-primary shrink-0" />
             <p className="text-sm text-foreground">
-              <span className="font-bold text-primary">{eur(shippingGap)}</span> ilmaiseen toimitukseen
+              Lisää <span className="font-bold text-primary">{eur(shippingGap)}</span> ilmaiseen toimitukseen
             </p>
           </div>
           <div
@@ -73,6 +75,8 @@ const CartPage = () => {
             />
           </div>
           <p className="text-xs text-muted-foreground mt-1">{eur(tila.summa)} / {ILMAINEN_TOIMITUS_RAJA} €{tila.summa !== totalPrice ? " (lahjakortit eivät kerrytä rajaa)" : ""}</p>
+          {/* Lisätuote, joka kuroo puuttuvan summan umpeen (src/lib/lisatarra.ts, KATTEET.md 28.10.2026) */}
+          <MittarinLisatuote items={items} kaikki={allProducts} className="mt-3" />
         </div>
       ) : (
         <div className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 flex items-center gap-2">
@@ -143,7 +147,8 @@ const CartPage = () => {
             </div>
           ))}
 
-          <TarraLisamyynti kori={items.map((i) => i.product)} kaikki={allProducts} />
+          {/* Rajan alittavassa korissa lisätuotetta ehdottaa mittari (MittarinLisatuote). */}
+          {shippingFree && !tila.vainLahjakortteja && <TarraLisamyynti kori={items} kaikki={allProducts} />}
 
           {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
           {!tila.vainLahjakortteja && (
@@ -226,6 +231,8 @@ const CartPage = () => {
               Jatka kassalle <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
+
+          <MaksuJaToimitus center />
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
