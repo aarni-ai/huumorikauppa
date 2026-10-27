@@ -760,9 +760,34 @@ async function notFoundResponse(origin: string): Promise<Response> {
 
 // ── Main middleware ───────────────────────────────────────────────────────────
 
+/**
+ * Rajapinta ja muut kuin GET/HEAD-pyynnöt välitetään fetchillä: x-middleware-rewrite ei vie pyynnön runkoa
+ * (kassan POST saapui tyhjänä 27.10.2026). Otsakkeet (myös User-Agent ja Origin) ja runko kulkevat sellaisinaan.
+ */
+async function valitaFetch(request: Request, kohde: string, julkinen: string): Promise<Response> {
+  const otsakkeet = new Headers(request.headers);
+  otsakkeet.delete('host');
+  otsakkeet.set(PROXY_OTSAKE, julkinen);
+  const runko = request.method === 'GET' || request.method === 'HEAD' ? undefined : await request.arrayBuffer();
+  const vastaus = await fetch(kohde, { method: request.method, headers: otsakkeet, body: runko, redirect: 'manual' });
+  const ulos = new Headers(vastaus.headers);
+  // fetch purkaa pakkauksen: alkuperäinen koodaus ja pituus eivät enää päde.
+  ulos.delete('content-encoding');
+  ulos.delete('content-length');
+  const sijainti = ulos.get('location');
+  if (sijainti?.startsWith(UUSI_TUOTANTO)) ulos.set('location', julkinen + sijainti.slice(UUSI_TUOTANTO.length));
+  return new Response(vastaus.body, { status: vastaus.status, statusText: vastaus.statusText, headers: ulos });
+}
+
+export const fetchValitys = (method: string, polku: string): boolean =>
+  (method !== 'GET' && method !== 'HEAD') || polku.startsWith('/api/');
+
 export default async function middleware(request: Request): Promise<Response | undefined> {
   const kohde = valitysKohde(request.url, process.env.UUSI_TAUSTA);
-  if (kohde) return valita(kohde, new URL(request.url).origin);
+  if (kohde) {
+    const julkinen = new URL(request.url).origin;
+    return fetchValitys(request.method, new URL(request.url).pathname) ? valitaFetch(request, kohde, julkinen) : valita(kohde, julkinen);
+  }
   if (request.headers.get('x-bot-inject') === 'true') {
     return undefined;
   }
