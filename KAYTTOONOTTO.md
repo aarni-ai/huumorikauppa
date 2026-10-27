@@ -265,6 +265,20 @@ joten sen voi ajaa uudelleen. Katesääntö tarkistetaan uusilla kuluilla: alle 
 itsestään. Tarkista ennen täyttä ajoa: Jondo-seinätaulut siirtyvät vain, jos Jondolla on sama blueprint; muille
 kuiva-ajo kertoo syyn.
 
+**27.10.2026: EU-reitityksen piilottamat 35 riviä.** 24:llä oli EU-kopio (23.10.). Loput 11: luotu 8
+(`data/eu-siirto-2026-10-27.json`: 4 t-paitaa OPT OnDemand CZ, 4 hupparia Textildruck Europa DE) valinnoilla
+`--tekstitasot-kuviksi --pudota-paikat neck --vain <id,...>`. Tekstitasot piirrettiin PNG:ksi (Pillow, Google Fonts
+-fontit `tools/printify-merkkipaiva/renderer/fonts`) samaan kohtaan ja kokoon; Printify Choicen kaulaetiketti jätettiin
+pois (Textildruck laskuttaa sen erikseen). Ei tehty 3: keraamiset koristeet (2) ja lippis, koska Printifyn
+katalogissa ei ole niille EU-painotaloa. Kanta päivitetään julkaisun jälkeen funktiolla (DATABASE_URL on Sensitive):
+
+```
+S=$(cut -d= -f2- .env.cron.local); curl -s -m 90 -H "Authorization: Bearer $S" "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=eu-siirrot&kuiva=1"; curl -s -m 90 -H "Authorization: Bearer $S" "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=eu-siirrot"; unset S
+```
+
+Vastauksen `euReititys` kertoo piilotettujen rivien tilan (`euKopiossa` 32, `vanhassa` vain 3 yllä mainittua).
+Idempotentti; jos `kesken` > 0, aja uudelleen. Perään `?tehtava=saatavuus` (siirto tyhjentää `unavailable_variants`).
+
 ## 9. Domain ja vanhan webhookin poisto samalla hetkellä
 
 Tee nämä peräkkäin samalla istunnolla (noin 15 min), ettei sama maksu mene Printifyyn kahdesti eikä tilaus jää

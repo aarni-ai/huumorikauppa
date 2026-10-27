@@ -30,6 +30,10 @@
  *
  * ?tehtava=katetarkistus: näkyvien tuotteiden katevalvonta (api/_lib/katevalvonta.js) maanantaisin; yhteenveto
  * sähköpostilla omistajalle, jos jokin tuote on alle myynnin rajan tai kulut ovat tuntemattomat.
+ *
+ * ?tehtava=eu-siirrot: kirjatut EU-painotalosiirrot (data/eu-siirto-*.json) kantaan, kulut mukaan (api/_lib/eu-siirrot.js,
+ * sama kirjastokoodi kuin scripts/printify-eu-painotalot.mjs --paivita-kanta). Idempotentti; ajetaan käsin julkaisun
+ * jälkeen (ei Vercel Cronissa). Vastaus kertoo, osoittavatko EU-reitityksen piilottamat rivit EU-kopioihin.
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
@@ -43,6 +47,9 @@ import { helsinki, printifyTila, jumissaYli, ajaYhteenveto, pgValvonta, KV_YHTEE
 import { ajaMarkkinointi } from "../_lib/markkinointi.js";
 import { pgMarkkinointi } from "../_lib/markkinointi-db.js";
 import { katevalvonta, yhteenveto as kateYhteenveto, katetarkistusAihe, htmlEsi } from "../_lib/katevalvonta.js";
+import { ajaEuSiirrot } from "../_lib/eu-siirrot.js";
+import { postgresKanta, printifyHaut } from "../../scripts/lib/eu-kanta.mjs";
+import { buildProductRow } from "../_lib/printify-sync.generated.js";
 
 // Vercelin funktioraja 60 s: valinnaiset vaiheet (3b, 4) jäävät seuraavaan ajoon, jos aikaa on kulunut yli tämän.
 const AIKARAJA_MS = 40000;
@@ -100,6 +107,13 @@ export default async function handler(req, res) {
     const huomioita = t.alle.length + t.tuntematon.length;
     const r = huomioita && !kuiva && onSahkoposti() ? await laheta({ to: OMISTAJA(), subject: katetarkistusAihe(t), text: teksti, html: htmlEsi(teksti) }) : null;
     return res.status(200).json({ ok: true, kuiva, tarkistettu: t.tarkistettu, alle: t.alle.length, tuntematon: t.tuntematon.length, lahetetty: !!r?.ok, virhe: r && !r.ok ? r.virhe : null });
+  }
+
+  if (req.query.tehtava === "eu-siirrot") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
+    const haut = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
+    const r = await ajaEuSiirrot({ kanta: postgresKanta(db), haut, buildProductRow, kuiva, aikaa });
+    return res.status(r.ok ? 200 : 500).json(r);
   }
 
   // 1. Paikkaus Stripestä

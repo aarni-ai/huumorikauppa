@@ -56,6 +56,8 @@ export function mapProduct(p: ProductRow): Product {
       is_gift_idea: p.is_gift_idea,
       supplier: (p as { supplier?: string }).supplier ?? "printify",
       aliexpress_url: (p as { aliexpress_url?: string }).aliexpress_url ?? undefined,
+      // EU-reititys (onPiilotettuTuote) tarvitsee tunnuksen myös listoissa, suosituksissa ja ostoskorissa.
+      printify_product_id: (p as { printify_product_id?: string | null }).printify_product_id ?? null,
     };
 }
 

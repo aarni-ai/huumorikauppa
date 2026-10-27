@@ -5,7 +5,7 @@ import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
 import { korjaaSyote } from './_lib/syote-korjaukset.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
-import { onEuReititettySlug } from './_lib/eu-reititys.js';
+import { onEuReititetty, onEuReititettySlug } from './_lib/eu-reititys.js';
 import { KOKONAAN_EI_SAATAVILLA } from './_lib/printify-saatavuus.js';
 
 const SITE = 'https://huumorikauppa.fi';
@@ -56,7 +56,9 @@ function sanitizeFeed(xml) {
 
 // Myynnistä piilotetut kategoriat syötteen Google-kategoriana (merchant-feed: mukit -> ...Drinkware > Mugs).
 const HIDDEN_GOOGLE_CATEGORY = /Drinkware (?:&gt;|>) Mugs/;
-export function dropHiddenItems(xml) {
+// rivit (valinnainen): slug -> tuoterivi. EU-reititys päätetään silloin rivin printify_product_id:stä: rivi, joka
+// osoittaa EU-kopioon (api/cron/tilaukset.js ?tehtava=eu-siirrot), pysyy syötteessä. Ilman riviä päätös slugista.
+export function dropHiddenItems(xml, rivit = null) {
   // Myös muut mukit (väärässä kategoriassa, tunnistus nimestä tai osoitteesta kuten src/lib/hiddenCategories.ts).
   const muki = (item) => /<g:link>[^<]*-muki<\/g:link>|<g:title>[^<]*\b(?:Muki|kahvimuki)\b/i.test(item);
   // Ohjatut kaksoiskappaleet (vercel.json) pois: syötteen linkki ei saa ohjautua muualle.
@@ -68,7 +70,10 @@ export function dropHiddenItems(xml) {
   // Lovable-synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
   const kaksoiskappale = (item) => onKaksoiskappaleTaiTestikopio(slugOf(item));
   // EU:n ulkopuolella valmistettavat (api/_lib/eu-reititys.js, generaattori scripts/eu-reititys.mjs).
-  const eiEU = (item) => onEuReititettySlug(slugOf(item));
+  const eiEU = (item) => {
+    const rivi = rivit?.get(slugOf(item));
+    return rivi ? onEuReititetty(rivi) : onEuReititettySlug(slugOf(item));
+  };
   return xml.replace(/\s*<item>[\s\S]*?<\/item>/g, (item) => (HIDDEN_GOOGLE_CATEGORY.test(item) || muki(item) || ohjattu(item) || eiValmisteta(item) || kaksoiskappale(item) || eiEU(item) ? '' : item));
 }
 
@@ -83,7 +88,7 @@ export default async function handler(req, res) {
     const raw = merchantSyote(tuotteet);
     // Googlen maksuttomien listausten korjaukset (api/_lib/syote-korjaukset.js) omien tuoterivien variaatiotiedoilla.
     const variaatiot = new Map(tuotteet.map((p) => [String(p.id), { slug: p.slug, variants: p.variants || {} }]));
-    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw)), (id) => kateIdlle.get(id) ?? null), variaatiot);
+    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw, new Map(tuotteet.map((p) => [p.slug, p])))), (id) => kateIdlle.get(id) ?? null), variaatiot);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(

@@ -20,7 +20,7 @@
       "maxDuration": 60
     },
     "api/cron/tilaukset.js": {
-      "includeFiles": "data/products-snapshot.json",
+      "includeFiles": "data/{products-snapshot.json,eu-siirto-*.json}",
       "maxDuration": 60
     },
     "api/order.js": {

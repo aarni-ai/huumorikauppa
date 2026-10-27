@@ -74,7 +74,21 @@ if (verkko) {
   }
 }
 
-const { items, tulokset } = validateFeed(xml, { taxonomy, sitemapSlugs });
+// Oma tausta: tuoterivit (printify_product_id) /api/products-rajapinnasta, jotta EU-kopioon siirretty rivi ei ole
+// virhe (api/_lib/eu-reititys.js onEuReititetty). Ilman rajapintaa (vanha tausta) päätös tehdään slugista.
+let euReititetty;
+if (verkko && /^https?:\/\//.test(lahde)) {
+  try {
+    const r = await fetch(`${new URL(lahde).origin}/api/products?fields=slug,printify_product_id`, { headers: { "User-Agent": UA } });
+    const rivit = r.ok && /json/.test(r.headers.get("content-type") || "") ? await r.json() : null;
+    if (Array.isArray(rivit) && rivit.some((x) => x?.printify_product_id)) {
+      const { onEuReititetty, onEuReititettySlug } = await import("../api/_lib/eu-reititys.js");
+      const kartta = new Map(rivit.map((x) => [x.slug, x]));
+      euReititetty = (slug) => (kartta.has(slug) ? onEuReititetty(kartta.get(slug)) : onEuReititettySlug(slug));
+    }
+  } catch { /* ei rajapintaa: slug-päätös */ }
+}
+const { items, tulokset } = validateFeed(xml, { taxonomy, sitemapSlugs, euReititetty });
 
 if (verkko && items.length) {
   const kohteet = items.map((item, k) => ({ item, k })).slice(0, otos || items.length);

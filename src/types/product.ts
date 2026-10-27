@@ -17,6 +17,12 @@ export interface Product {
   aliexpress_url?: string;
   /** "giftcard" lahjakortilla (api/_lib/lahjakortti.js). */
   type?: string;
+  /**
+   * Printify-tuote, johon rivi osoittaa (oma tausta, /api/products). EU-reititys (api/_lib/eu-reititys.js) päättää
+   * näkyvyyden tästä: EU-kopioon siirretty rivi näkyy, vaikka slug on piilotettujen listalla. Ilman tunnusta päätös
+   * tehdään slugista.
+   */
+  printify_product_id?: string | null;
 }
 
 /** Lahjakortin saaja (valinnainen): koodi lähetetään myös saajalle. */

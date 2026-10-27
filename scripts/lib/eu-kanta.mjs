@@ -74,7 +74,7 @@ export function postgresKanta(sql) {
  * Siirtää rivit, joiden printify_product_id = vanhaId, EU-kopioon `uusi` (Printify-tuoteobjekti). Idempotentti:
  * toisella kerralla vanhalla id:llä ei ole rivejä. Palauttaa { tila, slugit, poistetut }.
  */
-export async function siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductRow, shippingCents = null }) {
+export async function siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductRow, shippingCents = null, lisaVariantit = null }) {
   const rivit = await kanta.rivitTuotteelle(String(vanhaId));
   if (!rivit.length) return { tila: "ei-rivia", slugit: [], poistetut: [] };
   const rakennettu = buildProductRow(uusi, []);
@@ -83,7 +83,9 @@ export async function siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductR
   for (const r of rivit) {
     const kentat = {
       printify_product_id: String(uusi.id),
-      variants: uudetDbVariantit(r.variants, rakennettu, uusi, shippingCents),
+      // lisaVariantit: printifyHaut().kulutRivi (lisäkappaleen toimitus ja painotalo korialennuksen katevahtiin), jotta
+      // vanhan painotalon arvot eivät jää riville.
+      variants: { ...uudetDbVariantit(r.variants, rakennettu, uusi, shippingCents), ...(lisaVariantit || {}) },
       // Vanhan painotalon saatavuustieto ei koske uutta tuotetta; päivittäinen tarkistus täyttää sen uudelleen.
       unavailable_variants: [],
     };
@@ -105,9 +107,12 @@ export async function siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductR
  * Kaikki kirjatut siirrot kantaan (tuo-tuotteet.mjs ja --paivita-kanta). Printifystä haetaan vain ne EU-kopiot, joiden
  * vanhalla id:llä on vielä rivejä, joten uusinta-ajo ei tee mitään.
  *   haeTuote(uusiId) -> Printify-tuote tai null; toimitus(bp, pp) -> Suomen toimituskulu sentteinä tai null.
+ *   kulutRivi(p) (valinnainen, printifyHaut) -> { costs, shipping_cents, shipping_additional_cents, print_provider_id }:
+ *     kulut samalla kertaa kuin printify-tuonti.mjs --kulut.
+ *   aikaa() (valinnainen): false -> loput jätetään seuraavaan ajoon (kesken-laskuri), esim. Vercelin funktioraja.
  */
-export async function paivitaSiirrotKantaan({ kanta, siirrot, haeTuote, toimitus, buildProductRow, loki = () => {} }) {
-  const tulos = { paivitetty: 0, jo: 0, eiRivia: 0, poistetut: [], virheet: [] };
+export async function paivitaSiirrotKantaan({ kanta, siirrot, haeTuote, toimitus, kulutRivi = null, buildProductRow, loki = () => {}, aikaa = () => true }) {
+  const tulos = { paivitetty: 0, jo: 0, eiRivia: 0, kesken: 0, poistetut: [], virheet: [] };
   const ids = new Set((await kanta.rivit()).map((r) => String(r.printify_product_id ?? "")));
   for (const s of siirrot.vanhaan.values()) {
     const vanhaId = String(s.vanhaId);
@@ -117,11 +122,13 @@ export async function paivitaSiirrotKantaan({ kanta, siirrot, haeTuote, toimitus
       else tulos.eiRivia++;
       continue;
     }
+    if (!aikaa()) { tulos.kesken++; continue; }
     try {
       const uusi = await haeTuote(uusiId);
       if (!uusi) throw new Error(`EU-kopiota ${uusiId} ei löydy Printifystä`);
-      const shippingCents = await toimitus(uusi.blueprint_id, uusi.print_provider_id);
-      const r = await siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductRow, shippingCents });
+      const kulut = kulutRivi ? await kulutRivi(uusi) : null;
+      const shippingCents = kulut ? kulut.shipping_cents : await toimitus(uusi.blueprint_id, uusi.print_provider_id);
+      const r = await siirraRivitEuKopioon(kanta, vanhaId, uusi, { buildProductRow, shippingCents, lisaVariantit: kulut });
       if (r.tila !== "paivitetty") throw new Error(`${r.tila} (${s.title})`);
       tulos.paivitetty += r.slugit.length;
       tulos.poistetut.push(...r.poistetut);
@@ -153,8 +160,8 @@ export async function tuoPrintifysta({ tuotteet, kanta, siirrot, buildProductRow
     const vanhaId = siirrot.uuteen.has(id) ? String(siirrot.uuteen.get(id).vanhaId) : null;
     if (vanhaId && byPrintify.has(vanhaId)) {
       if (!kuiva) {
-        const { shipping_cents } = await kulutRivi(p);
-        const r = await siirraRivitEuKopioon(kanta, vanhaId, p, { buildProductRow, shippingCents: shipping_cents });
+        const k = await kulutRivi(p);
+        const r = await siirraRivitEuKopioon(kanta, vanhaId, p, { buildProductRow, shippingCents: k.shipping_cents, lisaVariantit: kulut ? k : null });
         if (r.tila !== "paivitetty") { t.ohitettu++; continue; }
         t.poistetut.push(...r.poistetut);
         for (const s of r.poistetut) slugit.splice(slugit.indexOf(s), 1);
