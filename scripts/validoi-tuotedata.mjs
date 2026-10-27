@@ -23,12 +23,20 @@ function toimitusaika() {
   return { min: num("TOIMITUSAIKA_MIN_ARKIPAIVAA"), max: num("TOIMITUSAIKA_MAX_ARKIPAIVAA") };
 }
 
+/** Toimitusmaksu ja ilmaisen toimituksen raja samasta konfiguraatiosta. */
+function toimitusmaksu() {
+  const src = fs.readFileSync(path.join(ROOT, "src/config/toimitus.ts"), "utf8");
+  const num = (name) => Number(src.match(new RegExp(`export const ${name} = ([\\d.]+)`))?.[1]);
+  return { fee: num("TOIMITUSMAKSU"), freeThreshold: num("ILMAINEN_TOIMITUS_RAJA") };
+}
+
 if (!fs.existsSync(tuoteDir)) {
   console.error(`Tuotesivuja ei löydy: ${tuoteDir}. Aja ensin npm run build.`);
   process.exit(1);
 }
 
 const expectedDeliveryDays = toimitusaika();
+const expectedShipping = toimitusmaksu();
 const slugs = fs.readdirSync(tuoteDir).filter((s) => fs.existsSync(path.join(tuoteDir, s, "index.html"))).sort();
 let failed = 0;
 let personalisedCount = 0;
@@ -40,7 +48,7 @@ for (const slug of slugs) {
   jsonLdBlocks += extractJsonLd(html).length;
   const product = extractJsonLd(html).flatMap((b) => (b.data ? flattenNodes(b.data) : [])).find((n) => n["@type"] === "Product");
   const personalised = product ? looksPersonalised(product.name, product.description) : undefined;
-  const { errors, personalised: notPermitted } = validateProductPage(html, { expectedDeliveryDays, personalised });
+  const { errors, personalised: notPermitted } = validateProductPage(html, { expectedDeliveryDays, expectedShipping, personalised });
   if (product && !personalised && notPermitted) errors.push("MerchantReturnNotPermitted tuotteella, joka ei ole personoitu");
   if (notPermitted) personalisedCount++;
   if (errors.length) {

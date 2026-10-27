@@ -13,7 +13,7 @@
  * canonical), ja päästää pyynnön silloin suoraan staattiseen tiedostoon. Injektointia
  * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
-import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
+import { buildBreadcrumbJsonLd, buildProductJsonLd, serializeJsonLd } from './src/seo/structuredData.js';
 import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
@@ -46,6 +46,7 @@ interface SupabaseProduct {
   price: number;
   category: string;
   stock: number;
+  variants?: unknown;
 }
 
 const SUPABASE_URL: string = (typeof process !== 'undefined' && (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL)) || '';
@@ -55,7 +56,7 @@ async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null>
   if (!SUPABASE_URL || !SUPABASE_KEY) return null;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=id,slug,name,description,images,price,category,stock&limit=1`,
+      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=id,slug,name,description,images,price,category,stock,variants&limit=1`,
       {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         signal: AbortSignal.timeout(4000),
@@ -630,7 +631,7 @@ function escapeHtml(str: string): string {
 
 function injectJsonLd(html: string, ...schemas: object[]): string {
   const tags = schemas
-    .map(s => `<script type="application/ld+json">\n${JSON.stringify(s, null, 2)}\n</script>`)
+    .map(s => `<script type="application/ld+json">\n${serializeJsonLd(s)}\n</script>`)
     .join('\n  ');
   return html.replace('</head>', `  ${tags}\n</head>`);
 }
@@ -978,6 +979,7 @@ export default async function middleware(request: Request): Promise<Response | u
         price: Number(pd.price),
         stock: pd.stock,
         categoryName: pd.categoryName,
+        variants: pd.variants,
       });
       const breadcrumbSchema = buildBreadcrumbJsonLd([
         { name: 'Etusivu', url: 'https://huumorikauppa.fi/' },

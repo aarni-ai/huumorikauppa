@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { serializeJsonLd } from "@/seo/structuredData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
@@ -135,7 +136,7 @@ const SituationGiftPage = () => {
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: serializeJsonLd({
             "@context": "https://schema.org",
             "@type": "WebPage",
             url: canonical,

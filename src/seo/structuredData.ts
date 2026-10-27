@@ -276,6 +276,22 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
  * tuotekuvauksen "</script>" ei voi katkaista tagia.
  */
 export function serializeJsonLd(data: unknown): string {
-  return JSON.stringify(data)
+  return JSON.stringify(poistaPitkatViivat(data))
     .replace(/</g, "\\u003c");
+}
+
+/**
+ * Korvaa ajatus- ja lukuvälivivat (U+2013, U+2014) tavallisella yhdysmerkillä kaikista JSON-LD:n
+ * merkkijonoista. Tuotenimet tulevat tietokannasta muodossa "Made in Espoo – hauska t-paita";
+ * rakenteiseen dataan ja hakutuloksiin ne menevät muodossa "Made in Espoo - hauska t-paita".
+ */
+export function poistaPitkatViivat<T>(data: T): T {
+  if (typeof data === "string") return data.replace(/[\u2013\u2014]/g, "-") as T;
+  if (Array.isArray(data)) return data.map((v) => poistaPitkatViivat(v)) as T;
+  if (data && typeof data === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(data as Record<string, unknown>)) out[k] = poistaPitkatViivat(v);
+    return out as T;
+  }
+  return data;
 }
