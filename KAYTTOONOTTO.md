@@ -26,6 +26,52 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Domainhotelli, Stripe | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
+## Tilanne 27.10.2026 klo 21: uusi kassa käytössä huumorikauppa.fi:ssä
+
+**Uusi tausta ja kassa ovat käytössä osoitteessa huumorikauppa.fi ilman DNS-muutosta.** Domain on yhä vanhassa
+Vercel-projektissa (tiimi aarni-ais-projects), joka rakentaa GitHubin mainin. Mainin `middleware.ts` välittää siellä
+jokaisen pyynnön uuden projektin tuotantoon (`huumorikauppa-five.vercel.app`, tiimi flyapeg-2135s-projects):
+sivut ja tiedostot Vercelin rewritellä, rajapinta ja POST-pyynnöt fetchillä (runko mukana). Uudessa projektissa on
+`UUSI_TAUSTA=1`, joten se ei välitä. Välitetyt pyynnöt saavat otsakkeen `x-huumorikauppa-proxy`; uusi projekti ei
+lisää niihin vercel.app-osoitteiden noindex-otsaketta, ja middlewaren uudelleenohjaukset menevät huumorikauppa.fi:hin.
+Tarkistus: `curl -sI https://huumorikauppa.fi/ | grep -i x-huumorikauppa-valitetty` (1 = välitys päällä).
+
+- Kassa: Stripe-tili `acct_1UVAUMPNXkES1q9G` (Uusiku Oy), avain "Full access except sensitive operations",
+  webhook `https://huumorikauppa-five.vercel.app/api/stripe-webhook`. Paluu maksun jälkeen huumorikauppa.fi:hin.
+- Kuitti: ilman Resendiä kassa asettaa `receipt_email`, jolloin Stripe lähettää kuitin live-tilassa
+  sähköpostiasetuksista riippumatta (api/checkout.js). Kun RESEND_API_KEY on käytössä, oma tilausvahvistus korvaa sen.
+- Julkaisu uuteen projektiin: `scripts/julkaise-uusi.sh` (vercel.json + ajastukset `vercel.crons.json`). Ajastukset
+  ovat erillään, koska vanha projekti rakentaa saman vercel.json-tiedoston, ja tunnin välein ajettavat ajastukset
+  estäisivät julkaisun, jos vanha tiimi on Hobby-tasolla. **Mainiin pushaaminen ei julkaise uutta projektia**: aja
+  `scripts/julkaise-uusi.sh` mainista (vanha projekti julkaisee välityksen itse GitHubista).
+- Lovablen kassa: sivusto ei kutsu sitä enää (ei `create-checkout`-kutsuja tuotannon JavaScriptissä). Vanhan kassan
+  Stripe-tili `acct_1THtN1AhUyocG7PO` on ennallaan (ei kosketa).
+
+**Domainin siirto uuteen projektiin (ei kiireellinen, välitys toimii):**
+1. Vercelin vahvistustietueet (`_vercel` TXT, alla rivit 14-15) DNS:ään. Nimipalvelimet ovat Cloudflaressa
+   (`aria.ns.cloudflare.com`, `huxley.ns.cloudflare.com`). Cloudflare-tilin omistajaa ei voi päätellä DNS:stä eikä
+   Vercelistä. Lovablen domainyhteys on aikanaan kirjoittanut tietueita (DMARC-raportit lovable.dev:iin), joten tili on
+   todennäköisesti se, jolla Lovablen domainyhteys hyväksyttiin: kokeile dash.cloudflare.com > Forgot password
+   osoitteilla flyapeg@gmail.com, huumorikauppa@gmail.com ja flyapegt@gmail.com. Jos tiliä ei löydy: vaihda
+   nimipalvelimet Domainhotellissa (rekisteröijä Planeetta Internet Oy) Domainhotellin omiin ja lisää tietueet alla
+   olevan taulukon mukaan.
+2. Kun Vercel on vahvistanut domainin uudelle projektille, poista välitys: `middleware.ts` (valitysKohde,
+   valita, valitaFetch) ja ajastukset takaisin `vercel.json`-tiedostoon, sitten `scripts/julkaise-uusi.sh`.
+3. Webhookin osoitteeksi voi silloin vaihtaa `https://huumorikauppa.fi/api/stripe-webhook` (nykyinen toimii myös).
+
+**Resend:** Vercel CLI on kirjautunut käyttäjänä **flyapeg@gmail.com** (tunnus flyapeg-2135, tiimi
+flyapeg-2135s-projects). Integraatio vaatii ehtojen hyväksynnän selaimessa:
+1. Kirjaudu https://vercel.com/login > "Continue with Email" > flyapeg@gmail.com (kirjautumislinkki tulee siihen
+   postilaatikkoon) tai "Continue with Google" samalla Google-tilillä flyapeg@gmail.com.
+2. Avaa https://vercel.com/flyapeg-2135s-projects/~/integrations/accept-terms/resend?source=cli
+3. Lue ehdot, paina **Accept** / **Continue**, valitse tiimi flyapeg-2135s-projects ja projekti `huumorikauppa`
+   (Production), paina **Install** / **Connect**.
+4. Kerro, kun valmis: ajan `npx vercel integration add resend`, julkaisen (`scripts/julkaise-uusi.sh`), lisään
+   domainin Resendiin (`?tehtava=resend-domain`) ja kirjaan DKIM-arvon taulukon riville 13.
+
+Vaihtoehto ilman Vercelin selainkirjautumista: tili resend.com:iin, API Keys > Create (Sending access), ja tallennus:
+`cd ~/huumorikauppa && read -s "K?Resend-avain: " && echo && printf '%s' "$K" | npx vercel env add RESEND_API_KEY production && unset K`
+
 ## Go-live: tarkistuslista (tilanne 27.10.2026 illalla)
 
 Valmiina Vercel-projektissa `huumorikauppa` (Pro, testiosoite huumorikauppa-five.vercel.app): Neon-kanta ja tuotteet

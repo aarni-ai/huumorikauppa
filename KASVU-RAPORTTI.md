@@ -26,6 +26,46 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10. klo 20.30-21.00: uusi kassa käyttöön huumorikauppa.fi:ssä
+
+**Uusi tausta ja Uusiku Oy:n kassa ovat käytössä osoitteessa huumorikauppa.fi.** oma-tausta on yhdistetty mainiin
+(b52fd31). DNS:ää ei muutettu. Vanha Vercel-projekti, jossa domain on, rakentaa mainin ja välittää jokaisen pyynnön
+uuteen projektiin (`middleware.ts`, KAYTTOONOTTO.md "Tilanne 27.10.2026 klo 21").
+
+Testit uudella Stripe-avaimella (Full access except sensitive operations):
+- Live-kassa luo sessiot Uusiku Oy:n tilille `acct_1UVAUMPNXkES1q9G` huumorikauppa.fi:n kautta. Summat: 1 t-paita
+  31,80 €, 4 t-paitaa 94,64 € (ilmainen toimitus, kahden tuotteen alennus), huppari 3XL 61,90 €, tarra 18,80 €.
+  Paluuosoitteet ovat `https://huumorikauppa.fi/tilaus-vahvistettu` ja `/kassa`.
+- Tilaukset tallentuvat Neoniin. Webhook toimii: sessiot vanhennettiin Stripen API:lla, Stripe lähetti
+  `checkout.session.expired` ja tilaukset muuttuivat tilaan peruttu.
+- Printify-testitilaukset EU-painotaloille (Textildruck Europa DE, OPT OnDemand CZ) pitoon, tilausvahti ok, ja
+  peruutus ennen tuotantoa (tila canceled).
+- Kuitti: ilman Resendiä kassa asettaa `receipt_email`, jolloin Stripe lähettää kuitin live-tilassa
+  sähköpostiasetuksista riippumatta. Stripen asetusta (Customer emails > Successful payments) ei tarvitse kytkeä.
+- Tuotanto tarkistettiin kolmella User-Agentilla: etusivu, tuotesivut, tarra, kassa ja ostoskori 200, Uusiku Oy
+  näkyy, ei noindexiä, canonical huumorikauppa.fi. Tuotannon JavaScriptissä ei ole Lovablen kassakutsuja.
+- Palautuneet: koot 3XL-5XL ja lisämyynnin tarra (tappiolista tyhjä), MYYJA=uusiku (Uusiku Oy kaikilla sivuilla).
+
+**Kassakatko 20.34-20.53.** Ensimmäinen välitysversio käytti vain Vercelin rewriteä, joka ei vie POST-pyynnön runkoa.
+Kassa vastasi "Ostoskori on tyhjä", eikä maksua voinut aloittaa noin 20 minuuttiin. Korjaus (185100b): rajapinta ja
+POST-pyynnöt välitetään fetchillä. Tarkistettu huumorikauppa.fi:n kautta kaikilla neljällä korilla.
+
+**Puuttuneet tuotteet tuotu.** Uudesta kaupasta puuttui 28 Lovablessa myynnissä ollutta tuotetta: 15 tänään
+synkronoitua joulu- ja eläkeläispaitaa (eivät olleet Neonissa), 12 julistetta ja tarra (passiivisia, julisteet
+väärällä hinnalla 49,90 €). Ne tuotiin Printifystä kuluineen ja aktivoitiin Lovablen slugilla ja hinnalla
+(`?tehtava=tuo-aktiiviset`, data/lovable-aktiiviset-2026-10-27.json). Kaupassa on nyt 500 tuotetta: 323 t-paitaa,
+163 hupparia, 12 julistetta, tarra ja koriste. Mukit, EU-testikopiot ja kaksoiskappaleet pysyvät piilossa.
+
+**Muut muutokset:** ajastukset `vercel.crons.json`-tiedostossa ja uuden projektin julkaisu `scripts/julkaise-uusi.sh`.
+Syy: vanha projekti rakentaa saman vercel.json-tiedoston, eikä sen tasoa tiedetä. Käyttöönottotesti
+`?tehtava=kayttoonottotesti` ja kassatesti ovat ajettavissa milloin tahansa.
+
+**Resend:** Vercel CLI on kirjautunut käyttäjänä flyapeg@gmail.com (flyapeg-2135). Integraation lisäys CLI:llä vaatii
+ehtojen hyväksynnän selaimessa. Ohje on KAYTTOONOTTO.md:ssä.
+
+**Domain:** nimipalvelimet ovat Cloudflaressa, eikä tilin omistajaa voi päätellä DNS:stä, Vercelistä tai
+sähköpostista. Välitys toimii, joten siirto ei ole kiireellinen. Vaihtoehdot ovat KAYTTOONOTTO.md:ssä.
+
 ## 27.10. myöhäisilta: hupparien hinta, DNS Domainhotelliin, vanhan kassan Stripe-tili
 
 **Hupparien hinta (oma tausta, haara oma-tausta, commitit bc0dd60 ja 85835ed).** Päätös oli S-2XL 52,90 € ja
