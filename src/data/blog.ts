@@ -2,6 +2,7 @@ import { BlogPost } from "@/types/blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "./tilauspaivat";
 
 export const blogPosts: BlogPost[] = [
   ...jouluOppaat2026Lisa,
@@ -286,7 +287,7 @@ Joulu on Suomen suurin lahjanantosesonki. Hauska joululahja naurattaa, ilahdutta
 
 ## Tilaa joululahjat Huumorikaupasta
 
-Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.
+${jouluLause()}
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä

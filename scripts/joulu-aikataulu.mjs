@@ -27,9 +27,9 @@
  *      tilauspäivä on myöhäisin arkipäivä, josta tämä arkipäivämäärä (Suomen arkipäivät,
  *      pyhät pois) ehtii perille 23.12.2026.
  *   5. Data on ohut, jos jollakin tyypin tulostajalla ei ole yhtään toimitettua tilausta tai
- *      toimitettuja havaintoja on alle 3. Silloin käytetään sivuston nykyistä 20.11.2026.
- *   6. Lopullinen päivä = min(datan päivä, 20.11.2026). Havainnot ovat joulusesongin
- *      ulkopuolelta, ja 20.11.2026 perustuu Printifyn joulusesongin cutoffeihin
+ *      toimitettuja havaintoja on alle 3. Silloin käytetään sivuston nykyistä joulun enimmäispäivää (campaignSchedule.ts).
+ *   6. Lopullinen päivä = min(datan päivä, joulun enimmäispäivä). Havainnot ovat joulusesongin
+ *      ulkopuolelta, ja enimmäispäivä perustuu Printifyn joulusesongin cutoffeihin
  *      (seo/toimitusajat.md), joten myöhäisempää päivää ei luvata.
  *
  * Tuloste ei sisällä henkilötietoja (ei nimiä, osoitteita eikä tilausnumeroita).

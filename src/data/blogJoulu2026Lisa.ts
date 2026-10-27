@@ -1,5 +1,6 @@
 import { BlogPost } from "@/types/blog";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "./tilauspaivat";
 
 /**
  * Joulusesongin 2026 lisäoppaat (julkaistu 26.10.2026): hakuaikomukset, joita jouluOppaat2026
@@ -10,7 +11,7 @@ import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 const TOIMITUS = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.`;
 const TOIMITUS_FAQ = {
   q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?",
-  a: "Tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneillamme.",
+  a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.`,
 };
 
 export const jouluOppaat2026Lisa: BlogPost[] = [
@@ -112,7 +113,7 @@ Kokoa lahjat samaan tilaukseen, niin toimitusmaksu maksetaan vain kerran. Tarkis
 
 Tätä kirjoitettaessa t-paidat maksavat 24,90 €, hupparit 49,90 € ja koristeet 19,90 €. ${TOIMITUS} Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
-Tuotteet painetaan tilauksesta painokumppaneillamme, joten ne eivät lähde hyllystä. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme, joten ne eivät lähde hyllystä. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja naiselle?", a: "Hyvä hauska joululahja liittyy naisen omaan ikään, harrastukseen tai teidän yhteiseen vitsiinne. Esimerkiksi koiraihmiselle koira-aiheinen paita ja kotikokille keittiöaiheinen paita osuvat, koska vitsi koskee hänen arkeaan." },
       { q: "Mitä antaa naiselle, jolla on jo kaikkea?", a: "Anna personoitu lahja omalla tekstillä tai kuvalla. Sellaista ei ole hänellä valmiina, koska teksti on teidän oma." },
@@ -221,7 +222,7 @@ Tätä kirjoitettaessa t-paidat maksavat 24,90 €, hupparit 49,90 € ja korist
 
 ## Tilaa ajoissa
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä joululahja äidille?", a: "Hyvä joululahja äidille on lahja, jota hän käyttää arjessa, kuten äitiaiheinen huppari. Jos haluat perheen oman jutun, valitse tuote, johon kirjoitat tekstin itse." },
       { q: "Mitä antaa äidille, jolla on jo kaikkea?", a: "Anna personoitu lahja, esimerkiksi kuusenkoriste lasten nimillä ja vuosiluvulla. Samanlaista ei ole hänellä valmiina." },
@@ -346,7 +347,7 @@ Papalle huppari on usein t-paitaa käytännöllisempi, koska talvella sitä käy
 
 Tätä kirjoitettaessa t-paidat maksavat 24,90 €, hupparit 49,90 € ja koristeet 19,90 €. ${TOIMITUS}
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat). Mummolle löydät ideat sivulta [joululahja mummolle](/joululahja-mummolle).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat). Mummolle löydät ideat sivulta [joululahja mummolle](/joululahja-mummolle).`,
     faq: [
       { q: "Mikä on hauska joululahja papalle?", a: "Hauska joululahja papalle on pappa- tai ukkiteksti paidassa tai hupparissa, tai eläkepäiviin liittyvä huumoripaita kuten Museokamaa. Kalastavalle papalle sopii kalastusaiheinen paita." },
       { q: "Mitä antaa papalle, jolla on jo kaikkea?", a: "Anna lahja, jossa on lastenlasten oma tervehdys, kuten kuusenkoriste lastenlasten nimillä. Sellaista hänellä ei ole valmiina." },
@@ -463,7 +464,7 @@ Eläkeläiselle väljä malli on usein mieluisampi. Ota mitta hänen eniten käy
 
 Tätä kirjoitettaessa t-paidat maksavat 24,90 €, pitkähihaiset 39,90 € ja hupparit 49,90 €. ${TOIMITUS}
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
       { q: "Mikä on hyvä joululahja eläkeläiselle?", a: "Hyvä joululahja eläkeläiselle liittyy hänen nykyiseen arkeensa tai harrastukseensa, kuten eläkepäivien huumoripaita tai mökkihuppari. Lahja on käytännöllinen ja helppo ottaa vastaan." },
       { q: "Mitä eroa on eläkelahjalla ja joululahjalla eläkeläiselle?", a: "Eläkelahja annetaan työuran päättyessä, ja joululahja annetaan ihmiselle, joka on jo eläkkeellä. Joululahjan vitsi koskee siksi vapaata arkea ja harrastuksia eikä työstä luopumista." },
@@ -588,7 +589,7 @@ Jos kaveri asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitte
 
 ## Tilaa ajoissa
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
       { q: "Mikä on hyvä joululahja kaverille alle 30 eurolla?", a: "Hyvä joululahja kaverille alle 30 eurolla on meemipaita tai personoitu paita, jossa on teidän yhteinen vitsinne. Tätä kirjoitettaessa t-paidat maksavat 24,90 €." },
       { q: "Mitä antaa kaverille, joka ei käytä tekstipaitoja?", a: "Anna koriste, esimerkiksi kuusenkoriste omalla tekstillä tai kuvalla. Se ei vaadi kokoa, ja se on esillä joka joulu." },
@@ -712,7 +713,7 @@ Veljen koko on helpompi selvittää kuin moni luulee: kysy vanhemmilta tai puoli
 
 Tätä kirjoitettaessa t-paidat maksavat 24,90 € ja hupparit 49,90 €. ${TOIMITUS}
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
       { q: "Mikä on hauska joululahja veljelle?", a: "Hauska joululahja veljelle liittyy hänen harrastukseensa tai teidän sisarusten omaan vitsiinne. Esimerkiksi pelaajalle pelipaita ja salilla kävijälle salihuumorin paita osuvat." },
       { q: "Mitä antaa veljelle, jolla on jo kaikkea?", a: "Anna personoitu paita, johon kirjoitat hänen suvussa käytetyn lempinimensä. Sellaista hänellä ei ole valmiina." },

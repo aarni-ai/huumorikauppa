@@ -39,7 +39,7 @@ export function useJouluTakaraja(categories: readonly (string | null | undefined
   return active ? candidate : null;
 }
 
-/** "Tilaa viimeistään pe 20.11.2026, niin ehtii jouluksi." tai ei mitään. */
+/** Tilauspäivälause (JOULU_PAIVA_LYHYT, src/data/tilauspaivat.ts) tai ei mitään. */
 export function JouluTakarajaRivi({
   categories,
   className = "",

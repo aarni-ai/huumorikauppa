@@ -1,5 +1,6 @@
 import { cleanProductName } from "@/lib/productNames";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "@/data/tilauspaivat";
 
 // Deterministic per-product SEO copy generator.
 // Produces UNIQUE long-form Finnish content per product so that product pages
@@ -146,7 +147,7 @@ function giftUseCasesFor(category: string): string[] {
   return [
     `Hauska ${noun} päätyy käyttöön eikä jää kaapin perälle.`,
     `Lisää pakettiin oma korttiviesti, joka jatkaa vitsiä.`,
-    `Jouluksi: tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
+    jouluLause(),
   ];
 }
 

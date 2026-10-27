@@ -84,12 +84,12 @@ export function viimeinenTilauspaiva(perillaIso: string, n: number = TOIMITUS_PA
 const ESSIIVI = ["sunnuntaina", "maanantaina", "tiistaina", "keskiviikkona", "torstaina", "perjantaina", "lauantaina"];
 const LYHYT = ["su", "ma", "ti", "ke", "to", "pe", "la"];
 const osat = (iso: string) => iso.split("-").map(Number) as [number, number, number];
-/** "perjantaina 20.11.2026" */
+/** Muoto: viikonpäivä sijamuodossa ja päivämäärä pisteillä. */
 export const paivaTeksti = (iso: string): string => {
   const [y, m, d] = osat(iso);
   return `${ESSIIVI[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${d}.${m}.${y}`;
 };
-/** "pe 20.11.2026" */
+/** Muoto: viikonpäivän lyhenne ja päivämäärä. */
 export const paivaLyhyt = (iso: string): string => {
   const [y, m, d] = osat(iso);
   return `${LYHYT[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${d}.${m}.${y}`;

@@ -20,7 +20,7 @@ export const CHRISTMAS_DEADLINE_SHORT = JOULU_PAIVA_LYHYT;
 export const CHRISTMAS_DEADLINE_PATH = "/joulun-viimeiset-tilauspaivat";
 
 /**
- * Joulun tilausajan takaraja: 20.11.2026 klo 23.59.59 Suomen aikaa (= 21.59.59 UTC). Päivämäärä
+ * Joulun tilausajan takaraja: viimeisen tilauspäivän klo 23.59.59 Suomen aikaa. Päivämäärä
  * on bannerin aikataulun kanssa samassa tiedostossa (src/data/campaignSchedule.ts).
  */
 export const CHRISTMAS_DEADLINE_END_UTC_MS = CHRISTMAS_ORDER_END_UTC_MS;

@@ -18,6 +18,7 @@ import type { BlogPost } from "@/types/blog";
 import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
 import { LANDING_PATHS, LANDING_REDIRECTS } from "./landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
+import { JOULU_PAIVA_LYHYT } from "./tilauspaivat";
 
 const DASHES = /[–—]/; // en dash, em dash
 const HEDGES = /(?<!\p{L})(saattaa|saattavat|ehkä|todennäköisesti|pyrimme)(?!\p{L})/iu;
@@ -184,10 +185,10 @@ describe("blogi: joulun 2026 oppaat", () => {
     for (const f of faq) expect(f.a).toMatch(/^[^.?!]+[.!]/); // alkaa suoralla yhden lauseen vastauksella
   });
 
-  it("joulun toimituslupaus on kaikissa sama: 20.11.2026", () => {
+  it("joulun toimituslupaus on kaikissa sama (lasketusta päivästä)", () => {
     for (const post of KAIKKI_JOULU) {
       const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
-      for (const d of dates) expect(["20.11.2026", "24.12.2026", "8.11.2026"]).toContain(d);
+      for (const d of dates) expect([JOULU_PAIVA_LYHYT.split(" ")[1], "24.12.2026", "8.11.2026"]).toContain(d);
     }
   });
 });

@@ -7,6 +7,7 @@ import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { buildFaqJsonLd } from "@/seo/structuredData";
 import { cleanProductName, productImageAlt } from "@/lib/productNames";
 import { sanitizeProductDescription } from "@/lib/productCopy";
+import { jouluVastaus } from "@/data/tilauspaivat";
 import { TOIMITUSMAKSU_TEKSTI, ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import fixture from "./fixtures/visible-product-slugs.json";
 
@@ -40,7 +41,7 @@ describe("data-, UKK- ja metatiedostot", () => {
     expect(text).not.toMatch(FALSE_PRINT_CLAIM);
   });
 
-  it("ainoa joulun tilauspäivä on 20.11.2026", () => {
+  it("ainoa joulun tilauspäivä on laskettu (tilauspaivat.ts)", () => {
     for (const file of DATA_FILES) {
       const text = fs.readFileSync(file, "utf8");
       // 6.12. (itsenäisyyspäivä) ja 24.12. (jouluaatto, toimituksen takaraja) ovat sallittuja; joulukuun
@@ -93,7 +94,7 @@ describe("UKK (AEO)", () => {
       expect(qs).toContain(q);
     }
     const text = SITE_FAQS.map((f) => f.a).join(" ");
-    expect(text).toContain("20.11.2026");
+    expect(text).toContain(jouluVastaus());
     expect(text).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
     expect(text).toContain(`${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen`);
     expect(text).toContain("200 merkkiä");

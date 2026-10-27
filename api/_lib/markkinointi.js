@@ -163,7 +163,7 @@ const minuuttia = (a, b) => (new Date(a).getTime() - new Date(b).getTime()) / 60
 
 /** Muistutuksen vaihe korille hetkellä nyt: 1, 2 tai null. Ajat viimeisimmästä korin muutoksesta. */
 export function muistutusVaihe(kori, nyt = new Date()) {
-  // 28.10.2026: yksi muistutus vuorokauden kuluttua (vaihe 2), ei tunnin muistutusta eikä alennuskoodia.
+  // Yksi muistutus vuorokauden kuluttua (vaihe 2), ei tunnin muistutusta eikä alennuskoodia.
   if (kori.stopped_at || kori.recovered_order_id || kori.reminder1_sent_at || kori.reminder2_sent_at) return null;
   const ika = minuuttia(nyt, kori.updated_at || kori.created_at);
   if (ika > KORI_VANHENEE_PV * 24 * 60) return null;

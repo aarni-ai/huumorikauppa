@@ -1,4 +1,5 @@
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
+import { jouluLause } from "./tilauspaivat";
 
 export interface FAQ {
   q: string;
@@ -14,7 +15,7 @@ const DELIVERY = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilaukses
 const RETURNS = "Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita palautuksesta osoitteeseen huumorikauppa@gmail.com, niin saat palautusohjeet. Personoituja tuotteita peruutusoikeus ei koske.";
 const PAYMENT = "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.";
 const CUSTOM = "Saa niihin tuotteisiin, joiden nimessä on Oma teksti/kuva tai Personoitava. Kirjoitat tekstin tai kuvatoiveen tuotesivun kenttään (enintään 200 merkkiä), ja toive kulkee tilauksen mukana.";
-const CHRISTMAS = "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
+const CHRISTMAS = `${jouluLause()}`;
 
 export const CATEGORY_FAQS: Record<string, FAQ[]> = {
   "t-paidat": [

@@ -17,7 +17,7 @@ import { getPriorityRank } from "@/lib/productPriority";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { FATHERS_DAY_TEXT } from "./campaignSchedule";
-import { isanpaivaLause } from "./tilauspaivat";
+import { isanpaivaLause, jouluMetaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import {
   AMMATTI,
@@ -204,6 +204,8 @@ const ANY_AGE = all(any(age(30), age(40), age(50), age(60), age(70)), not(workYe
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
 
+const JOULU_META = jouluMetaLause();
+
 /** Joulusivujen nosto tonnin seteli -sivulle: sivu, t-paita ja huppari. */
 const tonninSeteliSpotlight = (text: string): LandingSpotlight => ({
   heading: "Se oli tonnin seteli -paidat",
@@ -223,7 +225,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat joululahjat 2026 | Huumorikauppa",
     description:
-      "Hauskat joululahjat paitoina ja huppareina isälle, äidille, kaverille ja työkaverille. Tilaa viimeistään pe 20.11.2026, niin lahja ehtii jouluaattoon.",
+      "Hauskat joululahjat paitoina ja huppareina isälle, äidille, kaverille ja työkaverille. ${JOULU_META}",
     h1: "Hauskat joululahjat 2026",
     intro: [
       "Hauska joululahja on t-paita, huppari tai personoitu tuote, jonka teksti osuu saajan omaan elämään: ikään, ammattiin, harrastukseen tai perheen sisäpiirin vitsiin. Tällä sivulla on koko joulun valikoima, ja alla olevista lahjaoppaista rajaat sen saajan tai budjetin mukaan.",
@@ -284,7 +286,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat joululahjat miehelle 2026 | Huumorikauppa",
     description:
-      "Joululahja miehelle huumorilla: Isäntä-, KALAMIES-, Amatimies- ja Kalju-paidat sekä hupparit. Tilaa viimeistään pe 20.11.2026, niin lahja ehtii jouluksi.",
+      "Joululahja miehelle huumorilla: Isäntä-, KALAMIES-, Amatimies- ja Kalju-paidat sekä hupparit. ${JOULU_META}",
     h1: "Hauskat joululahjat miehelle",
     intro: [
       "Hauska joululahja miehelle on huppari tai t-paita, jonka teksti kertoo jotain hänestä itsestään: kalastus, kalju, kotitalon isäntä tai lapsenlasten ukki.",
@@ -327,7 +329,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat joululahjat naiselle 2026 | Huumorikauppa",
     description:
-      "Joululahja naiselle: Super äiskä, slay queen ja ikävuosipaidat, hupparit sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja naiselle: Super äiskä, slay queen ja ikävuosipaidat, hupparit sekä omalla tekstillä painettu koriste. ${JOULU_META}",
     h1: "Hauskat joululahjat naiselle",
     intro: [
       "Hauska joululahja naiselle on tuote, jonka teksti sopii hänen elämäntilanteeseensa: äidille Super äiskä -huppari, ystävälle slay queen ja pyöreitä vuosia täyttävälle ikävuosipaita.",
@@ -370,7 +372,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Joululahja miehelle, jolla on kaikki | Huumorikauppa",
     description:
-      "Joululahja miehelle, jolla on jo kaikkea: personoitu paita, huppari tai koriste hänen omalla tekstillään. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja miehelle, jolla on jo kaikkea: personoitu paita, huppari tai koriste hänen omalla tekstillään. ${JOULU_META}",
     h1: "Joululahja miehelle, jolla on kaikki",
     intro: [
       "Miehelle, jolla on jo kaikkea, kannattaa antaa tuote, jota ei voi ostaa valmiina: personoitu paita tai huppari hänen nimellään, lempinimellään tai teidän omalla vitsillänne.",
@@ -414,7 +416,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja isälle 2026 | Huumorikauppa",
     description:
-      "Joululahja isälle huumorilla: Isäntä-, Amatimies-, Kalju- ja iskä-paidat sekä hupparit. Myös isälle, jolla on jo kaikkea. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja isälle huumorilla: Isäntä-, Amatimies-, Kalju- ja iskä-paidat sekä hupparit. Myös isälle, jolla on jo kaikkea. ${JOULU_META}",
     h1: "Hauska joululahja isälle",
     intro: [
       "Hauska joululahja isälle on paita tai huppari, jossa isän oma rooli on tekstinä: talon isäntä, kaiken itse korjaava iskä tai kotitalouden pomo.",
@@ -462,7 +464,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja äidille 2026 | Huumorikauppa",
     description:
-      "Joululahja äidille: Super äiskä- ja äiti-aiheiset hupparit ja t-paidat sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja äidille: Super äiskä- ja äiti-aiheiset hupparit ja t-paidat sekä omalla tekstillä painettu koriste. ${JOULU_META}",
     h1: "Hauska joululahja äidille",
     intro: [
       "Hauska joululahja äidille on äiti-aiheinen huppari tai t-paita, esimerkiksi Super äiskä, jota hän käyttää kotona ja ulkona koko talven.",
@@ -503,7 +505,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja vaimolle 2026 | Huumorikauppa",
     description:
-      "Joululahja vaimolle: slay queen- ja äiskä-hupparit, ikävuosipaidat ja omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja vaimolle: slay queen- ja äiskä-hupparit, ikävuosipaidat ja omalla tekstillä painettu koriste. ${JOULU_META}",
     h1: "Hauska joululahja vaimolle",
     intro: [
       "Hyvä joululahja vaimolle on tuote, jossa on teidän oma juttunne: omalla tekstillä painettu huppari, paita tai koriste, tai valmis teksti kuten slay queen.",
@@ -543,7 +545,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja kaverille 2026 | Huumorikauppa",
     description:
-      "Joululahja kaverille: se oli tonnin seteli, oispa kaljaa ja Saatanan Tunarit -paidat sekä koristeet. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja kaverille: se oli tonnin seteli, oispa kaljaa ja Saatanan Tunarit -paidat sekä koristeet. ${JOULU_META}",
     h1: "Hauska joululahja kaverille",
     intro: [
       "Hauska joululahja kaverille on paita tai pikkulahja, jonka vitsi on teille yhteinen: meemi, lausahdus tai juttu, jota kukaan muu ei ymmärrä.",
@@ -578,7 +580,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja työkaverille 2026 | Huumorikauppa",
     description:
-      "Joululahja työkaverille toimistohuumorilla: palaveri-, lounastauko-, etätyö- ja tiimipelaaja-paidat sekä pienet lahjat. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja työkaverille toimistohuumorilla: palaveri-, lounastauko-, etätyö- ja tiimipelaaja-paidat sekä pienet lahjat. ${JOULU_META}",
     h1: "Hauska joululahja työkaverille",
     intro: [
       "Hauska joululahja työkaverille on toimistohuumoria, joka naurattaa koko työporukkaa eikä osu kehenkään henkilökohtaisesti: palaverit, lounastauko, etätyö ja tiimityö.",
@@ -648,7 +650,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja mummolle 2026 | Huumorikauppa",
     description:
-      "Joululahja mummolle: omalla tekstillä painettu koriste sekä eläkeläisen huumoripaidat ja hupparit. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja mummolle: omalla tekstillä painettu koriste sekä eläkeläisen huumoripaidat ja hupparit. ${JOULU_META}",
     h1: "Joululahja mummolle",
     intro: [
       "Hyvä joululahja mummolle on tuote, jossa on lastenlasten oma tervehdys: omalla tekstillä painettu huppari, paita tai koriste.",
@@ -687,7 +689,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja papalle ja ukille | Huumorikauppa",
     description:
-      "Joululahja papalle tai ukille: ukki- ja pappa-paidat, eläkeläisen hupparit, Museokamaa ja kalastusaiheiset paidat. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja papalle tai ukille: ukki- ja pappa-paidat, eläkeläisen hupparit, Museokamaa ja kalastusaiheiset paidat. ${JOULU_META}",
     h1: "Hauska joululahja papalle",
     intro: [
       "Hauska joululahja papalle on paita tai huppari, jossa lukee ukki tai pappa, tai teksti hänen harrastuksestaan ja eläkepäivistään.",
@@ -723,7 +725,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja eläkeläiselle 2026 | Huumorikauppa",
     description:
-      "Joululahja eläkeläiselle: Olen eläkkeellä, 100% Eläkeläinen ja muut eläkeläishuumorin hupparit ja paidat. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja eläkeläiselle: Olen eläkkeellä, 100% Eläkeläinen ja muut eläkeläishuumorin hupparit ja paidat. ${JOULU_META}",
     h1: "Hauska joululahja eläkeläiselle",
     intro: [
       "Hauska joululahja eläkeläiselle on huppari tai paita, joka nauraa eläkepäivien vapaudelle: aamuherätys on vapaaehtoinen ja kalenteri täynnä ei mitään.",
@@ -763,7 +765,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja teinille 2026 | Huumorikauppa",
     description:
-      "Joululahja teinille: meemipaidat kuten se oli tonnin seteli ja slay queen sekä pelaajan ja lumilautailijan paidat. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja teinille: meemipaidat kuten se oli tonnin seteli ja slay queen sekä pelaajan ja lumilautailijan paidat. ${JOULU_META}",
     h1: "Hauska joululahja teinille",
     intro: [
       "Hauska joululahja teinille on meemi tai lausahdus, jonka hän tunnistaa itse, esimerkiksi se oli tonnin seteli, slay queen tai pelaajan Just One More Level.",
@@ -799,7 +801,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauskat lahjat ja joululahjat alle 30 € | Huumorikauppa",
     description:
-      "Hauskat lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. Jouluksi tilaa viimeistään pe 20.11.2026.",
+      "Hauskat lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. ${JOULU_META}",
     h1: "Hauskat lahjat alle 30 euroa",
     intro: [
       "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan tai koristeen: kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
@@ -835,7 +837,7 @@ export const landingPages: LandingPageDef[] = [
     group: "joulu",
     title: "Hauska joululahja alle 50 euroa | Huumorikauppa",
     description:
-      "Joululahja alle 50 eurolla: hauskat hupparit ja t-paidat sekä omalla tekstillä painettu koriste. Tilaa viimeistään pe 20.11.2026.",
+      "Joululahja alle 50 eurolla: hauskat hupparit ja t-paidat sekä omalla tekstillä painettu koriste. ${JOULU_META}",
     h1: "Hauskat joululahjat alle 50 euroa",
     intro: [
       "Alle 50 eurolla saat hauskan hupparin, joka on talvella t-paitaa käytännöllisempi joululahja, tai t-paidan ja pienen lisälahjan yhdessä.",
@@ -979,7 +981,7 @@ export const landingPages: LandingPageDef[] = [
     group: "tuotteet",
     title: "Hauskat hupparit miehille ja naisille | Huumorikauppa",
     description:
-      "Hauskat hupparit suomalaisella huumorilla: eläkeläis-, ikävuosi-, meemi- ja kaupunkihupparit sekä oma teksti. Tilaa jouluksi viimeistään pe 20.11.2026.",
+      "Hauskat hupparit suomalaisella huumorilla: eläkeläis-, ikävuosi-, meemi- ja kaupunkihupparit sekä oma teksti. ${JOULU_META}",
     h1: "Hauskat hupparit",
     intro: [
       "Hauska huppari on huppari, jonka painatus on vitsi: valikoimassa on eläkeläis- ja ikävuosihuppareita, meemejä, äiti- ja isäaiheisia huppareita sekä kotikaupunkihuppareita.",
