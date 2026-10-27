@@ -53,6 +53,41 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Hupparien hinta 27.10.2026 (oma tausta)
+
+**Päätös:** S-2XL 52,90 € ja 3XL+ 59,90 €, mutta korkeintaan kilpailijoiden korkein hinta, jos kate pysyy
+positiivisena. Hupparien katesääntö silloin 10 %.
+
+**Kilpailijat** (Shopify-tuotesyötteet products.json, haettu 27.10.2026, painetut hupparit; tyhjät merkkituotteet,
+bändituotteet, vetoketjuhupparit ja hupparimekot pois):
+
+| Kauppa | Hupparit | S-2XL | 3XL+ |
+|---|---|---|---|
+| Meemirotta | 173 | 49,99 € (kaikki) | 49,99 € (kaikki) |
+| Stuntman, huumorihupparit ("HUPPARI - ...") | 105 | 42,90-44,90 € | 44,90-49,90 € |
+| Stuntman, Speed Kings -sarja (oma painatus) | 8 | 49,00 € | 55,00 € |
+| Stuntman, Moto-hupparit | 9 | | 53,90 € |
+| **Korkein** | | **49,99 € (Meemirotta)** | **55,00 € (Stuntman)** |
+
+Päätetyt hinnat ylittäisivät kilpailijoiden tason, joten käytössä korkein kilpailijan hinta: **S-2XL 49,99 €,
+3XL+ 55,00 €** (api/_lib/kokohinnat.js). Hinta riippuu koosta: tuotesivu näyttää valitun koon hinnan, kori ja kassa
+veloittavat saman (palvelin laskee hinnan itse). Katesääntö hupparille 10 % (api/_lib/kate.js KATE_RAJAT), muille 20 %.
+Alle rajan jäävä koko piilotetaan, muut koot jäävät myyntiin.
+
+**Kate** (kaikki 164 hupparia, 2 988 varianttia Printifyn kuluilla ilman ALV:tä, yhden kappaleen tilaus, toimitusmaksu
+6,90 €, Stripe 1,5 % + 0,25 €):
+
+| Hinnat | S-2XL kate (min / mediaani) | 3XL+ kate (min / mediaani) | Alle 10 % | Alle 0 % | Tuotteita kaikki koot >= 10 % |
+|---|---|---|---|---|---|
+| Nykyinen 49,90 € kaikille | 11,1 % / 17,2 % (5,01 € / 7,79 €) | 0,7 % / 6,8 % (0,30 € / 3,08 €) | 338 | 0 | 132 |
+| **Käytössä 49,99 € / 55,00 €** | **11,2 % / 17,3 % (5,08 € / 7,86 €)** | **8,7 % / 14,3 % (4,28 € / 7,06 €)** | **11** | **0** | **163** |
+| Päätös 52,90 € / 59,90 € | 15,4 % / 21,3 % (7,35 € / 10,13 €) | 15,2 % / 20,5 % (8,12 € / 10,90 €) | 0 | 0 | 164 |
+
+Kate on positiivinen kaikissa varianteissa. Alle 10 %: vain ICE AATANA -hupparin 11 kokoa 3XL-5XL (kulu 32,97 €, kate
+8,7 %), jotka piilotetaan; tuote on myynnissä koissa S-2XL. Testisivulla myynnissä 163 hupparia (oli 0), molemmat
+Tonnin seteli -hupparit (tonnin-seteli-huppari, se-oli-tonnin-seteli-huppari) kaikissa saatavissa koissa S-5XL.
+Ero päätökseen: mediaanikate noin 2,30-3,80 € pienempi hupparia kohden, hinta kilpailijoiden tasolla.
+
 ## Tilauskohtaiset katteet (Printify, 1.6.2026 alkaen)
 
 Päivitetty 2026-10-26 skriptillä `scripts/tilauskatteet.mjs` (Printify-kaupan kaikki tilaukset 1.6.2026 alkaen, perutut pois).
