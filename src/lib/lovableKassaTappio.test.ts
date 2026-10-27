@@ -9,6 +9,10 @@ const LOVABLE_KASSA_TAPPIO = DATA as Record<string, string[]>;
  * lisätä koriin. Lista koskee vain mainia; oma-tausta-haarassa se on tyhjä.
  */
 describe("Lovablen kassan tappiolliset variantit", () => {
+  it("oma tausta: lista on tyhjä (oma kassa ja katesääntö)", () => {
+    expect(Object.keys(LOVABLE_KASSA_TAPPIO)).toEqual([]);
+  });
+
   const rivit = Object.entries(LOVABLE_KASSA_TAPPIO);
 
   it("jokainen listan variantti on piilossa", () => {
@@ -36,12 +40,8 @@ describe("Lovablen kassan tappiolliset variantit", () => {
 });
 
 describe("ostoskori", () => {
-  it("tunnistaa tappiollisen koon, ei muita", async () => {
+  it("ei poista mitään koosta", async () => {
     const { onTappioVariantti } = await import("@/hooks/use-cart");
-    const [slug, avaimet] = Object.entries(LOVABLE_KASSA_TAPPIO).find(([, a]) => a.some((x) => x.includes("XL")))!;
-    const [vari, koko] = avaimet.find((x) => x.includes("XL"))!.split("|");
-    expect(onTappioVariantti({ slug }, koko, vari)).toBe(true);
-    expect(onTappioVariantti({ slug }, "M", vari)).toBe(false);
-    expect(onTappioVariantti({ slug: "ei-listalla" }, koko, vari)).toBe(false);
+    expect(onTappioVariantti({ slug: "ice-aatanahuppari" }, "3XL", "Musta")).toBe(false);
   });
 });
