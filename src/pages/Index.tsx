@@ -27,8 +27,8 @@ import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { JOULU_TILAUSPAIVAT } from "@/data/jouluAikataulu";
 
 /** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
-const HERO_SRC = "/images/etusivu-hero-800.webp";
-const HERO_SRCSET = [480, 800, 1200, 1672].map((w) => `/images/etusivu-hero-${w}.webp ${w}w`).join(", ");
+const HERO_SRC = "/images/etusivu-joulu-800.webp";
+const HERO_SRCSET = [480, 800, 1200, 1672].map((w) => `/images/etusivu-joulu-${w}.webp ${w}w`).join(", ");
 const HERO_SIZES = "(min-width: 1400px) 890px, (min-width: 1024px) 65vw, (min-width: 768px) 75vw, calc(100vw - 32px)";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
@@ -144,7 +144,7 @@ const Index = () => {
         title={STATIC_PAGE_META["/"].title}
         description={STATIC_PAGE_META["/"].description}
         canonical="https://huumorikauppa.fi"
-        ogImage="https://huumorikauppa.fi/images/etusivu-hero.png"
+        ogImage="https://huumorikauppa.fi/images/etusivu-joulu.png"
       />
 
       {/* SEASONAL BANNER */}
@@ -164,13 +164,13 @@ const Index = () => {
 
       {/* HERO BANNER IMAGE */}
       <section className="container pb-2 md:pb-1 pt-3">
-        <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
-          {/* LCP-kuva: WebP-koot public/images/etusivu-hero-*.webp (28.10.2026: ei hintoja eikä kampanjaa) (sama srcset/sizes kuin index.html:n preload). */}
+        <Link to="/joululahjat" className="block overflow-hidden rounded-2xl">
+          {/* LCP-kuva: WebP-koot public/images/etusivu-joulu-*.webp (scripts/etusivun-kuva.py: oikeat hinnat rajapinnasta, ei päivämääriä eikä alennuksia) (sama srcset/sizes kuin index.html:n preload). */}
           <img
             src={HERO_SRC}
             srcSet={HERO_SRCSET}
             sizes={HERO_SIZES}
-            alt="Huumorikauppa: hauskat t-paidat ja hupparit"
+            alt="Hauskat joululahjat: t-paidat 24,90 € ja hupparit alkaen 49,99 €"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center block mx-auto"
             width={1672}
             height={941}
