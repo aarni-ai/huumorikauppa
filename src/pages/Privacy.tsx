@@ -45,7 +45,7 @@ const Privacy = () => {
         <section>
           <h2 className="font-display text-xl text-foreground">3. Tietojen käyttötarkoitus</h2>
           <p>Henkilötietoja käytetään tilausten käsittelyyn, toimittamiseen ja asiakaspalveluun. Suostumuksellasi tietoja voidaan käyttää myös markkinointiviestintään (uutiskirje).</p>
-          <p>Sähköpostiviestit: uutiskirjeen tilauksesta tallennamme sähköpostiosoitteen, suostumuksen ajankohdan ja lomakkeen, jolla tilasit. Jos valitset kassalla muistutuksen keskeneräisestä tilauksesta, tallennamme sähköpostiosoitteen ja ostoskorin sisällön ja lähetämme enintään kaksi muistutusta; muistutukset loppuvat, kun tilaus maksetaan. Tilauksen jälkeen lähetämme yhden arviopyynnön. Jokaisessa viestissä on peruutuslinkki, ja peruutus koskee kaikkia näitä viestejä. Viestit lähetetään Resend-palvelun kautta.</p>
+          <p>Sähköpostiviestit: uutiskirjeen tilauksesta tallennamme sähköpostiosoitteen, suostumuksen ajankohdan ja lomakkeen, jolla tilasit. Jos valitset kassalla muistutuksen keskeneräisestä tilauksesta, tallennamme sähköpostiosoitteen ja ostoskorin sisällön ja lähetämme yhden muistutuksen vuorokauden kuluttua. Muistutusta ei lähetetä, jos tilaus on jo maksettu. Tilauksen jälkeen lähetämme yhden arviopyynnön. Jokaisessa viestissä on peruutuslinkki, ja peruutus koskee kaikkia näitä viestejä. Viestit lähetetään Resend-palvelun kautta.</p>
         </section>
 
         <section>

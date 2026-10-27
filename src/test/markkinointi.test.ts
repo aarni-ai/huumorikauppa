@@ -221,19 +221,19 @@ describe("Keskeneräisen tilauksen muistutus", () => {
     expect(s.korit.size).toBe(0);
     expect((await tallennaKori(s, { email: "a@b.fi", items: [], suostumus: true })).ok).toBe(false);
   });
-  it("1 h ja 24 h, sitten ei enää", async () => {
+  it("yksi muistutus 24 h kuluttua, ei tunnin muistutusta", async () => {
     const s = muistiVarasto();
     const viestit = resendMock();
     await tallennaKori(s, { email: "a@b.fi", items, suostumus: true }, { nyt: T0 });
-    expect((await ajaMarkkinointi(s, { laheta, nyt: min(30) })).lahetetty).toBe(0);
-    expect((await ajaMarkkinointi(s, { laheta, nyt: min(61) })).lahetetty).toBe(1);
-    expect(viestit[0].subject).toMatch(/Tilauksesi jäi kesken/);
-    expect(String(viestit[0].html)).toContain("/palauta-kori?token=");
-    expect((await ajaMarkkinointi(s, { laheta, nyt: min(120) })).lahetetty).toBe(0);
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(61) })).lahetetty).toBe(0);
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(23 * 60) })).lahetetty).toBe(0);
     expect((await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 1) })).lahetetty).toBe(1);
-    expect(viestit[1].subject).toMatch(/yhä tallessa/);
+    expect(viestit[0].subject).toMatch(/yhä tallessa/);
+    expect(String(viestit[0].html)).toContain("/palauta-kori?token=");
+    expect(String(viestit[0].html)).toContain("ainoa muistutus");
+    expect(String(viestit[0].html)).not.toMatch(/alennuskoodi/i);
     expect((await ajaMarkkinointi(s, { laheta, nyt: min(48 * 60) })).lahetetty).toBe(0);
-    expect(viestit).toHaveLength(2);
+    expect(viestit).toHaveLength(1);
     expect(muistutusVaihe({ updated_at: T0, created_at: T0 }, min(8 * 24 * 60))).toBeNull();
   });
   it("maksettu tilaus lopettaa muistutukset", async () => {
@@ -241,7 +241,7 @@ describe("Keskeneräisen tilauksen muistutus", () => {
     const viestit = resendMock();
     await tallennaKori(s, { email: "a@b.fi", items, suostumus: true }, { nyt: T0 });
     s.tilaukset.push({ id: "o1", customer_email: "A@b.fi", status: "maksettu", paid_at: min(20).toISOString() });
-    const r = await ajaMarkkinointi(s, { laheta, nyt: min(61) });
+    const r = await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 1) });
     expect(r.lahetetty).toBe(0);
     expect(s.korit.get("a@b.fi")!.recovered_order_id).toBe("o1");
     expect(viestit).toHaveLength(0);
@@ -251,26 +251,26 @@ describe("Keskeneräisen tilauksen muistutus", () => {
     const viestit = resendMock();
     await tallennaKori(s, { email: "a@b.fi", items, suostumus: true }, { nyt: T0 });
     await peruViestit(s, "a@b.fi", { nyt: min(10) });
-    expect((await ajaMarkkinointi(s, { laheta, nyt: min(61) })).lahetetty).toBe(0);
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 1) })).lahetetty).toBe(0);
     expect(viestit).toHaveLength(0);
   });
   it("lähetysraja: ajo- ja päiväraja, loput seuraavaan ajoon", async () => {
     const s = muistiVarasto();
     resendMock();
     for (const e of ["a@b.fi", "b@b.fi", "c@b.fi"]) await tallennaKori(s, { email: e, items, suostumus: true }, { nyt: T0 });
-    const r = await ajaMarkkinointi(s, { laheta, nyt: min(61), rajat: { ajo: 2, paiva: 60 } });
+    const r = await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 1), rajat: { ajo: 2, paiva: 60 } });
     expect(r).toMatchObject({ lahetetty: 2, ohitettu: 1 });
-    expect(s.kv.get("markkinointi_lahetetty_2026-10-26")).toBe("2");
-    const r2 = await ajaMarkkinointi(s, { laheta, nyt: min(70), rajat: { ajo: 20, paiva: 2 } });
+    expect(s.kv.get("markkinointi_lahetetty_2026-10-27")).toBe("2");
+    const r2 = await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 10), rajat: { ajo: 20, paiva: 2 } });
     expect(r2).toMatchObject({ lahetetty: 0, ohitettu: 1 });
-    const r3 = await ajaMarkkinointi(s, { laheta, nyt: min(70), rajat: { ajo: 20, paiva: 3 } });
+    const r3 = await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 10), rajat: { ajo: 20, paiva: 3 } });
     expect(r3.lahetetty).toBe(1);
   });
   it("Resendin virhe: ei merkitä lähetetyksi", async () => {
     const s = muistiVarasto();
     resendMock(500);
     await tallennaKori(s, { email: "a@b.fi", items, suostumus: true }, { nyt: T0 });
-    const r = await ajaMarkkinointi(s, { laheta, nyt: min(61) });
+    const r = await ajaMarkkinointi(s, { laheta, nyt: min(24 * 60 + 1) });
     expect(r.lahetetty).toBe(0);
     expect(s.korit.get("a@b.fi")!.reminder1_sent_at).toBeNull();
   });

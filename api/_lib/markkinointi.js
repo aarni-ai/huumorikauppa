@@ -4,7 +4,7 @@
  *  - Uutiskirjeen tilaus suostumuksella (taulu subscribers: suostumuksen aika, teksti ja lähde). Ensitilauksen koodi
  *    (vakiot.js ENSITILAUS_ALENNUS_PROSENTTI, 0 = pois käytöstä) lähetetään sähköpostilla: yksi koodi per osoite,
  *    vain ensimmäiseen maksettuun tilaukseen ja vain samalla osoitteella.
- *  - Keskeneräisen tilauksen muistutus 1 h ja 24 h kuluttua (taulu abandoned_carts): vain, jos asiakas valitsi kassalla
+ *  - Keskeneräisen tilauksen muistutus kerran 24 h kuluttua (taulu abandoned_carts): vain, jos asiakas valitsi kassalla
  *    "Lähetä minulle muistutus". Muistutukset loppuvat, kun samalla osoitteella maksetaan tilaus.
  *  - Arviopyyntö kerran per tilaus: 7 päivää toimituksesta (Printifyn delivered_at), tai jos toimituspäivää ei tule,
  *    10 päivää lähetyksestä.
@@ -113,7 +113,7 @@ export function tervetuloViesti({ email, koodi = null, prosentti = 0 }) {
     : "";
   return {
     subject: koodi ? `Ensitilauksen koodisi ${prosentti} % - Huumorikauppa` : "Tervetuloa Huumorikaupan uutiskirjeen tilaajaksi",
-    html: kehys(`<h2>Kiitos, että tilasit uutiskirjeen!</h2><p>Kerromme sähköpostilla uusista tuotteista ja tarjouksista.</p>${koodiOsa}${nappi(kauppaUrl(), "Katso tuotteet")}`, { peruutus, syy }),
+    html: kehys(`<h2>Kiitos, että tilasit uutiskirjeen!</h2><p>Kerromme sähköpostilla uusista tuotteista ja sesongin lahjaideoista.</p>${koodiOsa}${nappi(kauppaUrl(), "Katso tuotteet")}`, { peruutus, syy }),
     text: `Kiitos, että tilasit Huumorikaupan uutiskirjeen.${koodi ? ` Ensimmäisen tilauksesi alennuskoodi: ${koodi} (${prosentti} %). Toimii kerran, ensimmäisessä tilauksessa tällä sähköpostiosoitteella.` : ""} Peru viestit: ${peruutus}`,
     headers: peruutusOtsakkeet(email),
   };
@@ -135,8 +135,8 @@ export function koriMuistutusViesti(kori, vaihe) {
   const summa = Number(kori.total) > 0 ? `<p>Tuotteet yhteensä ${eur(kori.total)}.</p>` : "";
   return {
     subject: `${otsikko} - Huumorikauppa`,
-    html: kehys(`<h2>${otsikko}</h2><p>${alku}</p><ul>${koriRivit(kori.items)}</ul>${summa}${nappi(linkki, "Jatka tilausta")}${vaihe === 2 ? "<p>Tämä on viimeinen muistutus tästä ostoskorista.</p>" : ""}`, { peruutus, syy }),
-    text: `${alku} Jatka tilausta: ${linkki}${vaihe === 2 ? " Tämä on viimeinen muistutus tästä ostoskorista." : ""} Peru viestit: ${peruutus}`,
+    html: kehys(`<h2>${otsikko}</h2><p>${alku}</p><ul>${koriRivit(kori.items)}</ul>${summa}${nappi(linkki, "Jatka tilausta")}${vaihe === 2 ? "<p>Tämä on ainoa muistutus tästä ostoskorista.</p>" : ""}`, { peruutus, syy }),
+    text: `${alku} Jatka tilausta: ${linkki}${vaihe === 2 ? " Tämä on ainoa muistutus tästä ostoskorista." : ""} Peru viestit: ${peruutus}`,
     headers: peruutusOtsakkeet(kori.email),
   };
 }
@@ -163,11 +163,11 @@ const minuuttia = (a, b) => (new Date(a).getTime() - new Date(b).getTime()) / 60
 
 /** Muistutuksen vaihe korille hetkellä nyt: 1, 2 tai null. Ajat viimeisimmästä korin muutoksesta. */
 export function muistutusVaihe(kori, nyt = new Date()) {
-  if (kori.stopped_at || kori.recovered_order_id || kori.reminder2_sent_at) return null;
+  // 28.10.2026: yksi muistutus vuorokauden kuluttua (vaihe 2), ei tunnin muistutusta eikä alennuskoodia.
+  if (kori.stopped_at || kori.recovered_order_id || kori.reminder1_sent_at || kori.reminder2_sent_at) return null;
   const ika = minuuttia(nyt, kori.updated_at || kori.created_at);
   if (ika > KORI_VANHENEE_PV * 24 * 60) return null;
-  if (!kori.reminder1_sent_at) return ika >= MUISTUTUS_1_MIN ? 1 : null;
-  return ika >= MUISTUTUS_2_MIN && minuuttia(nyt, kori.reminder1_sent_at) >= 60 ? 2 : null;
+  return ika >= MUISTUTUS_2_MIN ? 2 : null;
 }
 
 /** Onko arviopyynnön aika: 7 pv toimituksesta tai, jos toimituspäivää ei ole, 10 pv lähetyksestä. */
