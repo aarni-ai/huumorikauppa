@@ -26,6 +26,25 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 28.10. yö: Resend asennettu, etusivun kesän ALE-kuva pois
+
+**Resend:** asennettu CLI:llä Vercelin integraatiosta projektiin huumorikauppa (Production), ilmainen suunnitelma
+(3 000 viestiä/kk, ei maksutapaa), alue eu-west-1. RESEND_API_KEY on Vercelissä. Resend loi domainin
+huumorikauppa.fi, mutta se on vahvistamatta (`not_started`), koska DNS-tietueet puuttuvat. Testivahvistus osoitteeseen
+huumorikauppa@gmail.com palautti Resendiltä 403 "domain is not verified". DKIM-arvo ja muut tietueet ovat
+KAYTTOONOTTO.md:n taulukon riveillä 11-13. Kassa pyytää Stripen kuitin, kunnes domain on vahvistettu ja Vercelissä on
+SAHKOPOSTI_VAHVISTETTU=1. Ilman tätä muutosta asiakas ei olisi saanut kuittia eikä vahvistusta, koska kassa lopetti
+Stripen kuitin heti, kun avain ilmestyi. Kassa, webhook ja Printify-testitilaus (peruttu) tarkistettiin uudelleen.
+
+**Etusivu:** pääkuvassa luki "KESÄHYÖKKÄYS! -50-70 % JUST NYT!", ja siinä oli ALE-hinnat (esim. 39 € -> 24,90 €,
+95 € -> 49,90 €), joita kaupassa ei ole. Kuva korvattiin samankokoisella kuvalla ilman hintoja ja kampanjaa: kaupan
+vihreä tausta, "Hauskat paidat ja hupparit lahjaksi", neljä oikeaa tuotekuvaa ja "Katso tuotteet". Uudet nimet
+`etusivu-hero-*.webp` ja `etusivu-hero.png` (myös jakokuva), koska vanhoilla kuvilla oli 30 päivän välimuisti. Vanhat
+tiedostot poistettiin. Kuvatiedosto on pienempi (800 px: 86 kt -> 27 kt). "Kesän suosituimmat" -> "Suosituimmat
+nyt", bannerin aurinkokuvake -> lahjakuvake, ja avainsanatekstistä poistettiin "tarjous, alennus, kampanja". Tuotteilla
+ei ole yliviivattuja hintoja (original_price tyhjä kaikilla 500 tuotteella). Tarkistettu kolmella User-Agentilla:
+etusivu 200, uusi kuva, ei vanhaa kuvaa eikä kesätekstiä.
+
 ## 27.10. klo 20.30-21.00: uusi kassa käyttöön huumorikauppa.fi:ssä
 
 **Uusi tausta ja Uusiku Oy:n kassa ovat käytössä osoitteessa huumorikauppa.fi.** oma-tausta on yhdistetty mainiin
