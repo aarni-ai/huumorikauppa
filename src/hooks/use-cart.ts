@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { trackAddToCart } from "@/lib/analytics";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { LOVABLE_KASSA_TAPPIO } from "../../api/_lib/lovable-kassa-tappio.js";
+import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 
 const CART_KEY = "huumorikauppa-cart";
 
@@ -11,13 +12,21 @@ const TAPPIO = new Map<string, Set<string>>(Object.entries(LOVABLE_KASSA_TAPPIO 
 export const onTappioVariantti = (product: Pick<Product, "slug">, size?: string, color?: string): boolean =>
   !!TAPPIO.get(product?.slug)?.has(`${color ?? ""}|${size ?? ""}`);
 
+/** Tuote valitun koon hinnalla (api/_lib/kokohinnat.js: hupparit 3XL+); kassa laskee saman hinnan palvelimella. */
+export function kokoHinnalla(product: Product, size?: string): Product {
+  const hinta = rivinHinta(product, size);
+  return Number.isFinite(hinta) && hinta > 0 && hinta !== product.price ? { ...product, price: hinta } : product;
+}
+
 function loadCart(): CartItem[] {
   try {
     const stored = localStorage.getItem(CART_KEY);
     const items: CartItem[] = stored ? JSON.parse(stored) : [];
     // Myynnistä piilotetut tuotteet (mukit 21.10.2026) pois tallennetusta korista.
     // Lisäksi Lovablen kassan tappiolliset koot (27.10.2026).
-    return items.filter((i) => i?.product && !onPiilotettuTuote(i.product) && !onTappioVariantti(i.product, i.selectedSize, i.selectedColor));
+    return items
+      .filter((i) => i?.product && !onPiilotettuTuote(i.product) && !onTappioVariantti(i.product, i.selectedSize, i.selectedColor))
+      .map((i) => (i.giftCard || i.lineId ? i : { ...i, product: kokoHinnalla(i.product, i.selectedSize) }));
   } catch {
     return [];
   }
@@ -47,8 +56,9 @@ export function useCart() {
     saveCart(items);
   }, [items]);
 
-  const addItem = useCallback((product: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string) => {
-    if (onPiilotettuTuote(product) || onTappioVariantti(product, selectedSize, selectedColor)) return;
+  const addItem = useCallback((tuote: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string) => {
+    if (onPiilotettuTuote(tuote) || onTappioVariantti(tuote, selectedSize, selectedColor)) return;
+    const product = kokoHinnalla(tuote, selectedSize);
     const trimmedText = customText?.trim() ? customText.trim().slice(0, 200) : undefined;
     setItems(prev => {
       const existing = prev.find(i => samaRivi(i, product.id, selectedSize, selectedColor, trimmedText));

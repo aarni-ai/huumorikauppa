@@ -9,8 +9,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { onTietokanta, sql } from "./db.js";
 import { onPiilotettuTuote } from "./piilotetut.js";
-import { heikoinKate } from "./kate.js";
-import { kaikkiPoissa, liitaSaatavuusTiedosto } from "./saatavuus.js";
+import { heikoinKate, laskeKate } from "./kate.js";
+import { kaikkiPoissa, liitaSaatavuusTiedosto, saatavuusLista } from "./saatavuus.js";
+import { hinnoitteleRivi } from "./kokohinnat.js";
 
 const VALIMUISTI_MS = 5 * 60 * 1000;
 let valimuisti = null;
@@ -32,7 +33,21 @@ function tilannekuva() {
   return liitaSaatavuusTiedosto(rivit, lueJson("../../src/data/printify-saatavuus.json", ["src", "data", "printify-saatavuus.json"]));
 }
 
-/** Kaikki tuoterivit (myös piilotetut ja luonnokset). */
+/**
+ * Rivi myyntiin: koon mukaiset hinnat (api/_lib/kokohinnat.js) ja alle katerajan jäävät variantit
+ * unavailable_variants-listaan (kate.js tuotteenKateraja). Tuote näkyy muilla koilla; kassa hylkää nämä variantit
+ * joka tapauksessa (kassa.js).
+ */
+export function valmisteleRivi(rivi) {
+  const p = hinnoitteleRivi(rivi);
+  const kartta = p?.variants?.variant_map;
+  if (!kartta || typeof kartta !== "object") return p;
+  const alle = Object.entries(kartta).filter(([, id]) => laskeKate(p, id).sallittu === false).map(([a]) => a);
+  if (!alle.length) return p;
+  return { ...p, unavailable_variants: [...new Set([...saatavuusLista(p), ...alle])] };
+}
+
+/** Kaikki tuoterivit (myös piilotetut ja luonnokset), valmisteltuina (valmisteleRivi). */
 export async function kaikkiTuotteet() {
   if (valimuisti && Date.now() - valimuisti.at < VALIMUISTI_MS) return valimuisti.rivit;
   let rivit = [];
@@ -46,14 +61,15 @@ export async function kaikkiTuotteet() {
     rivit = tilannekuva();
     mista = "tilannekuva";
   }
+  rivit = rivit.map(valmisteleRivi);
   valimuisti = { at: Date.now(), rivit, mista };
   return rivit;
 }
 
 /**
  * Myynnissä olevat: ei luonnoksia (is_active false), ei piilotettuja kategorioita (mukit), ei tuotteita, joiden
- * tunnettu kate on alle 20 % (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole saatavilla
- * (api/_lib/saatavuus.js). Tuntematon kate ei piilota (kassa estää ostamisen).
+ * saatavan variantin tunnettu kate on alle rajan (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole
+ * saatavilla tai katerajan yllä (api/_lib/saatavuus.js, valmisteleRivi). Tuntematon kate ei piilota (kassa estää ostamisen).
  */
 export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false && !kaikkiPoissa(p);
 

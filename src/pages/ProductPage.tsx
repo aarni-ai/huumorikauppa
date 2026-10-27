@@ -7,6 +7,7 @@ import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
+import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { availableColors, availableSizes, isVariantAvailable } from "@/lib/variantAvailability";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -386,6 +387,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const isCustom = isCustomTextProduct(product);
   // Joulun takaraja vain Printify-tuotteille (AliExpress-toimituksesta ei ole dataa).
   const jouluKategoriat = product.supplier !== "aliexpress" ? [product.category] : [];
+  // Valitun koon hinta (api/_lib/kokohinnat.js: hupparit 3XL+), ilman kokoa tuotteen perushinta.
+  const kokoHinta = rivinHinta(product, selectedSize);
   const hasDiscount = product.original_price && product.original_price > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
@@ -578,7 +581,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 <span className="text-sm text-muted-foreground line-through">{formatPriceFi(product.original_price!)}</span>
               )}
               <span className={`text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                {formatPriceFi(product.price)}
+                {formatPriceFi(kokoHinta)}
               </span>
               {hasDiscount && (
                 <Badge className="bg-destructive text-destructive-foreground text-xs font-bold">-{discountPercent}%</Badge>
@@ -704,7 +707,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     </span>
                   )}
                   <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                    {formatPriceFi(product.price)}
+                    {formatPriceFi(kokoHinta)}
                   </span>
                   {hasDiscount && (
                     <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
@@ -1079,7 +1082,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
-            <p className="text-sm font-bold text-primary">{formatPriceFi(product.price)}</p>
+            <p className="text-sm font-bold text-primary">{formatPriceFi(kokoHinta)}</p>
           </div>
           <Button
             onClick={(needsSize && !selectedSize) || (needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}

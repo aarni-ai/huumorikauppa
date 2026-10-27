@@ -19,7 +19,7 @@ const tarra = tuote("tarra-x", 4.99, "tarrat", { variants: { variant_map: { "|OS
 const muki = tuote("oispa-kaljaa-muki", 19.9, "mukit");
 const oma = tuote("oma-tekstikuva-t-paita", 24.9, "t-paidat", { name: "Oma teksti/kuva | T-Paita" });
 const halpaKate = tuote("halpa-huppari", 49.9, "hupparit", {
-  variants: { variant_map: { "Musta|M": 7 }, costs: { "7": 3000 }, shipping_cents: 900 },
+  variants: { variant_map: { "Musta|M": 7 }, costs: { "7": 3500 }, shipping_cents: 900 },
 });
 const r2 = (n: number) => Math.round(n * 100) / 100;
 const kaikki = [paita, huppari, muutPaita, muuHuppari, pipo, tarra, muki, oma, halpaKate];

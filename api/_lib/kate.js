@@ -14,8 +14,11 @@
  * kunnes kulut on tuotu.
  */
 export const ALV = 0.255;
-/** Myynnin raja: alle tämän tuotetta ei voi ostaa (kassa) eikä se näy listoissa. */
+/** Myynnin raja: alle tämän varianttia ei voi ostaa (kassa) eikä se näy (tuotteet.js). */
 export const KATE_RAJA = 0.2;
+/** Kategoriakohtainen myynnin raja (27.10.2026: hupparit 10 %, hinta kilpailijoiden tasolla, api/_lib/kokohinnat.js). */
+export const KATE_RAJAT = { hupparit: 0.1 };
+export const tuotteenKateraja = (tuote) => KATE_RAJAT[tuote?.category] ?? KATE_RAJA;
 /** Pakettialennus annetaan vain, jos paketin kate alennuksen jälkeen on vähintään tämä. */
 export const PAKETTI_KATE_RAJA = 0.3;
 /** Muut alennukset (ensitilauksen koodi): tilauksen kate alennuksen jälkeen vähintään tämä. */
@@ -25,20 +28,24 @@ export const HINNOITTELU_KATE = 0.4;
 export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
+import { rivinHinta } from "./kokohinnat.js";
 
 export const TOIMITUSMAKSU = TOIMITUS;
 export const ILMAINEN_RAJA = ILMAINEN_TOIMITUS_RAJA;
 
 /**
  * Tuotteen variantin kate. Palauttaa { tunnettu, nettokate, kate, sallittu }.
- * asetukset: { toimitusmaksu, ilmainenRaja, raja } (oletus: api/_lib/vakiot.js, raja KATE_RAJA); uusien tuotteiden
+ * asetukset: { toimitusmaksu, ilmainenRaja, raja } (oletus: api/_lib/vakiot.js, raja tuotteenKateraja); uusien tuotteiden
  * hinnoittelu (scripts/printify-uudet-tuotteet.mjs) laskee suunnitellulla toimitusmaksulla ja rajalla HINNOITTELU_KATE.
  */
-export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TOIMITUSMAKSU, ilmainenRaja = ILMAINEN_RAJA, raja = KATE_RAJA } = {}) {
-  const hinta = Number(tuote?.price);
+export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TOIMITUSMAKSU, ilmainenRaja = ILMAINEN_RAJA, raja = tuotteenKateraja(tuote) } = {}) {
   const kulut = tuote?.variants?.costs || {};
   const toimitus = tuote?.variants?.shipping_cents;
-  const id = varianttiId ?? Object.values(tuote?.variants?.variant_map || {})[0];
+  const kartta = Object.entries(tuote?.variants?.variant_map || {});
+  const id = varianttiId ?? kartta[0]?.[1];
+  // Hinta variantin koon mukaan (api/_lib/kokohinnat.js), muuten tuoterivin hinta.
+  const avain = kartta.find(([, v]) => Number(v) === Number(id))?.[0];
+  const hinta = Number(rivinHinta(tuote, avain ? avain.split("|")[1] : null));
   const kulu = kulut[String(id)];
   if (!Number.isFinite(hinta) || typeof kulu !== "number" || typeof toimitus !== "number") {
     return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
@@ -52,9 +59,17 @@ export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TO
   return { tunnettu: true, nettokate: Math.round(nettokate * 100) / 100, kate: Math.round(kate * 1000) / 1000, sallittu: kate >= raja };
 }
 
-/** Tuotteen kaikkien varianttien heikoin kate (listanäkymä: piilotetaan, jos jokin tunnettu variantti on alle rajan). */
+/**
+ * Tuotteen saatavien varianttien heikoin kate (unavailable_variants ohitetaan; tuotteet.js lisää sinne alle rajan
+ * jäävät variantit, jolloin tuote näkyy muilla koilla).
+ */
 export function heikoinKate(tuote) {
-  const idt = Object.values(tuote?.variants?.variant_map || {});
+  let pois = tuote?.unavailable_variants;
+  if (typeof pois === "string") {
+    try { pois = JSON.parse(pois); } catch { pois = []; }
+  }
+  const poissa = new Set(Array.isArray(pois) ? pois : []);
+  const idt = Object.entries(tuote?.variants?.variant_map || {}).filter(([a]) => !poissa.has(a)).map(([, id]) => id);
   const tulokset = idt.map((id) => laskeKate(tuote, id)).filter((k) => k.tunnettu);
   if (!tulokset.length) return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
   return tulokset.reduce((a, b) => (b.kate < a.kate ? b : a));
@@ -74,8 +89,10 @@ export function laskePaketinKate(osat, alennusProsentti = 0) {
   let hinnat = 0;
   let kulut = 0;
   for (const { tuote, varianttiId } of osat) {
-    const hinta = Number(tuote?.price);
-    const id = varianttiId ?? Object.values(tuote?.variants?.variant_map || {})[0];
+    const kartta = Object.entries(tuote?.variants?.variant_map || {});
+    const id = varianttiId ?? kartta[0]?.[1];
+    const avain = kartta.find(([, v]) => Number(v) === Number(id))?.[0];
+    const hinta = Number(rivinHinta(tuote, avain ? avain.split("|")[1] : null));
     const kulu = (tuote?.variants?.costs || {})[String(id)];
     const toimitus = tuote?.variants?.shipping_cents;
     if (!Number.isFinite(hinta) || typeof kulu !== "number" || typeof toimitus !== "number") {

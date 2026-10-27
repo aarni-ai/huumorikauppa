@@ -20,6 +20,7 @@
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
 import { laskeKate, laskeTilauksenKate } from "./kate.js";
+import { rivinHinta } from "./kokohinnat.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
 import { sovellaKorialennus } from "./korialennus.js";
@@ -84,14 +85,15 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     const p = (it.id && byId.get(it.id)) || (it.slug && bySlug.get(it.slug));
     if (!p) throw new KassaVirhe(`Tuotetta ei löydy: ${it.name || it.slug}`, "unknown_product");
     if (!myynnissa(p)) throw new KassaVirhe(`Tuote ei ole enää myynnissä: ${p.name}`, "hidden_category");
-    const hinta = Number(p.price);
+    // Koon mukainen hinta (api/_lib/kokohinnat.js: hupparit 3XL+), muuten tuoterivin hinta.
+    const hinta = Number(rivinHinta(p, it.size));
     if (!Number.isFinite(hinta) || hinta <= 0) throw new KassaVirhe(`Tuotteen hintaa ei voitu vahvistaa: ${p.name}`, "unknown_product_price");
     const variantti = printifyVariantti(p, it.color, it.size);
     if (!p.printify_product_id || variantti === null) {
       throw new KassaVirhe(`Valitse koko ja väri uudelleen tuotteelle ${p.name}. Tätä vaihtoehtoa ei voi nyt tilata.`, "missing_variant");
     }
     if (!varianttiSaatavilla(p, variantti)) throw new KassaVirhe(`${EI_SAATAVILLA_VIESTI} Tuote: ${p.name}.`, "variant_unavailable");
-    // Katesääntö: alle 20 % (KATE_RAJA) tai tuntematon Printify-kulu -> ei maksua.
+    // Katesääntö: alle rajan (kate.js tuotteenKateraja: 20 %, hupparit 10 %) tai tuntematon Printify-kulu -> ei maksua.
     const kate = laskeKate(p, variantti);
     if (!kate.tunnettu) throw new KassaVirhe(`Tuotteen ${p.name} hintaa ei voitu vahvistaa. Yritä hetken kuluttua uudelleen.`, "unknown_cost");
     if (!kate.sallittu) throw new KassaVirhe(`Tuote ${p.name} ei ole tällä hetkellä tilattavissa.`, "low_margin");
