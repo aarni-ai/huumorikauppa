@@ -184,24 +184,29 @@ saa tehdä, vaan vain vanhan webhookin poisto (vaihe 2).
 Testisessio vanhenee itsestään 24 tunnissa. Lovable voi kirjata sen keskeneräiseksi tilaukseksi
 (kassatesti@huumorikauppa.fi).
 
-**Sulkeminen, kun uusi kassa vastaa huumorikauppa.fi:ssä (kohta 9, vaihe 4):**
+**Vanhan kassan webhookin sulkeminen (päivitetty 28.10.2026). Saa tehdä vasta, kun ensimmäinen oikea tilaus on
+mennyt uuden kassan läpi.** Uusi kassa on ollut käytössä huumorikauppa.fi:ssä 27.10.2026 alkaen (välitys), eikä
+sivusto kutsu Lovablen kassaa. Vanhan tilin webhook on vielä päällä, joten mahdollinen suora maksu vanhaan kassaan
+käsitellään edelleen.
 
-1. Varmista: `curl -s -o /dev/null -w '%{http_code}' https://huumorikauppa.fi/api/products?limit=1` palauttaa 200
-   ja `curl -sI https://huumorikauppa.fi/ | grep -i x-vercel-id` vastaa (uusi projekti).
-2. Stripe, tili `acct_1THtN1AhUyocG7PO`, Live mode > Developers > Webhooks > endpoint
-   `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` > **Disable**. Tämän jälkeen vanha tausta ei
-   lähetä tilauksia Printifyyn.
-3. Samalla tilillä Developers > API keys > Secret key > **Roll key**, vanhenemisaika **Now**. Lovablen create-checkout
-   käyttää tätä avainta Supabasessa, joten kierron jälkeen se ei voi luoda maksuja. Jos tilillä on rajattuja avaimia
-   (`rk_live_`), poista ne samalla.
-4. Tarkista: vanha kassa ei luo sessiota. Uuden taustan sivuilla ei ole Lovablen kassaa, joten tämä koskee vain
-   suoria kutsuja Supabaseen:
-   ```
-   cd ~/huumorikauppa && set -a && . ./.env.production.local && set +a && curl -s -X POST "$VITE_SUPABASE_URL/functions/v1/create-checkout" -H "apikey: $VITE_SUPABASE_PUBLISHABLE_KEY" -H "Authorization: Bearer $VITE_SUPABASE_PUBLISHABLE_KEY" -H "Content-Type: application/json" -d '{"items":[{"slug":"tonnin-seteli-t-paita","quantity":1,"size":"M","color":"Musta"}],"customerEmail":"kassatesti@huumorikauppa.fi","shippingAddress":{"address":"Testikatu 1","zip":"00100","city":"Helsinki","phone":"0400000000"}}' | head -c 200
-   ```
-   Odotettu tulos: virhe (ei `checkout.stripe.com`-osoitetta).
-5. Tilin vanhat maksut, palautukset ja tilitykset jäävät tilille; älä sulje tiliä, ennen kuin palautusaika (14 pv)
-   viimeisimmästä vanhan kassan tilauksesta on kulunut ja tilitys on tullut.
+Ennakkoehto (kaikki täytyttävä):
+- Omistajalle on tullut viesti "[Huumorikauppa] Uusi tilaus #...", ja Stripen tilillä `acct_1UVAUMPNXkES1q9G`
+  (Uusiku Oy) näkyy maksu tilassa Succeeded.
+- Tilaus on Printifyssä tilassa "In production" tai myöhemmin (viestin rivi "Printify: tuotannossa").
+- Vanhaan tiliin `acct_1THtN1AhUyocG7PO` ei ole tullut uusia maksuja 27.10.2026 jälkeen (Payments, suodatin
+  Date > 27.10.2026).
+
+Toimenpiteet vanhalla tilillä `acct_1THtN1AhUyocG7PO` (Live mode):
+1. Developers > Webhooks > endpoint `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` >
+   ... > **Disable endpoint**. Älä poista sitä (Disable riittää ja on peruttavissa).
+2. Tarkista samasta näkymästä, että endpointin tila on Disabled eikä tapahtumia lähde.
+3. **Älä sulje tiliä, älä kierrä avaimia äläkä muuta tilin asetuksia.** Tilillä hoidetaan avoin riita-asia
+   3.11.2026, ja sen maksut, palautukset ja tilitykset tarvitaan. Avainten kierron voi harkita vasta, kun riita on
+   ratkaistu ja palautusaika viimeisestä vanhan kassan tilauksesta on kulunut.
+4. Kirjaa KASVU-RAPORTTI.md:hen päivä ja kellonaika.
+
+Tarkistus sulkemisen jälkeen: tee uusi testisessio huumorikauppa.fi:ssä (`node scripts/kassatesti.mjs --url
+https://huumorikauppa.fi --salli-live`) ja varmista, että se syntyy tilille `acct_1UVAUMPNXkES1q9G`.
 
 ## 1. Tietokanta (Neon, ilmainen)
 

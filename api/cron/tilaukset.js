@@ -200,6 +200,25 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, kuiva, tulos });
   }
 
+  // Maksetut tilaukset (uusin ensin), ilman henkilötietoja: ensimmäisen oikean tilauksen seuranta.
+  if (req.query.tehtava === "maksetut") {
+    const rivit = await db`select id, paid_at, amount_paid, total, shipping, items, printify_status, printify_order_id, printify_error,
+        sent_to_production_at, confirmation_email_sent_at from orders where status = 'maksettu' and customer_email <> 'kassatesti@huumorikauppa.fi'
+        order by paid_at desc nulls last limit 10`;
+    const tulos = [];
+    for (const t of rivit) {
+      const tap = await db`select kind from order_events where order_id = ${t.id} order by created_at`;
+      let painotalot = null;
+      if (t.printify_order_id && onPrintify()) {
+        const h = await haeTilaus(t.printify_order_id);
+        if (h.ok) painotalot = { tila: h.data?.status, rivit: (h.data?.line_items || []).map((r) => `${r.metadata?.title || r.product_id} / ${r.print_provider_id} ${r.metadata?.country || ""}`) };
+      }
+      tulos.push({ id: tilausnumero(t.id), maksettu: t.paid_at, summa: Number(t.amount_paid ?? t.total), kpl: (t.items || []).reduce((a, i) => a + (i.quantity || 0), 0),
+        printify: t.printify_status, virhe: t.printify_error, tuotantoon: t.sent_to_production_at, vahvistus: !!t.confirmation_email_sent_at, painotalot, tapahtumat: tap.map((e) => e.kind) });
+    }
+    return res.status(200).json({ ok: true, maara: tulos.length, tilaukset: tulos });
+  }
+
   // Omistajan ilmoituksen testi (OMISTAJA_EMAIL): sama reitti kuin uuden tilauksen ilmoitus (halytys).
   if (req.query.tehtava === "ilmoitustesti") {
     const r = await halytys("Testi: uuden tilauksen ilmoitus", ["Tämä on testiviesti. Oikea ilmoitus lähtee, kun maksu tulee."]);
