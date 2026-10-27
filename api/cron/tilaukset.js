@@ -38,8 +38,10 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
-import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit } from "../_lib/printify.js";
-import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti } from "../_lib/sahkoposti.js";
+import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo } from "../_lib/printify.js";
+import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti } from "../_lib/sahkoposti.js";
+import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
+import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
 import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "../_lib/lahjakortti-db.js";
 import { kaikkiTuotteet } from "../_lib/tuotteet.js";
@@ -101,12 +103,61 @@ export default async function handler(req, res) {
   }
 
   if (req.query.tehtava === "katetarkistus") {
-    const tuotteet = (await db`select * from products`).map((r) => ({ ...r, price: Number(r.price) }));
+    // Koon mukaiset hinnat (api/_lib/kokohinnat.js) mukaan; raportti näyttää myös alle rajan jäävät (piilotetut) variantit.
+    const tuotteet = (await db`select * from products`).map((r) => hinnoitteleRivi({ ...r, price: Number(r.price) }));
     const t = katevalvonta(tuotteet);
     const teksti = kateYhteenveto(t, "tietokanta");
     const huomioita = t.alle.length + t.tuntematon.length;
     const r = huomioita && !kuiva && onSahkoposti() ? await laheta({ to: OMISTAJA(), subject: katetarkistusAihe(t), text: teksti, html: htmlEsi(teksti) }) : null;
     return res.status(200).json({ ok: true, kuiva, tarkistettu: t.tarkistettu, alle: t.alle.length, tuntematon: t.tuntematon.length, lahetetty: !!r?.ok, virhe: r && !r.ok ? r.virhe : null });
+  }
+
+  // Käyttöönottotesti (KAYTTOONOTTO.md, scripts/kayttoonotto.sh): scripts/kassatesti.mjs:n tilaukset (kassatesti@huumorikauppa.fi,
+  // 2 h) Neonissa, Stripe-sessiot vanhennetaan (Stripe lähettää webhookin checkout.session.expired -> tilaus peruttu),
+  // viimeisimmästä Printify-tilaus pitoon, painotalon tarkistus ja peruutus ennen tuotantoa, vahvistusviesti omistajalle.
+  if (req.query.tehtava === "kayttoonottotesti") {
+    const tilaukset = await db`select * from orders where customer_email = 'kassatesti@huumorikauppa.fi' and created_at > now() - interval '2 hours' order by created_at desc limit 5`;
+    if (!tilaukset.length) return res.status(404).json({ error: "Ei testitilauksia 2 tunnin ajalta: aja ensin node scripts/kassatesti.mjs" });
+    const tulos = { neon: [], stripe: [], printify: null, resend: null, webhook: [] };
+    for (const t of tilaukset) {
+      tulos.neon.push({ id: t.id.slice(0, 8), status: t.status, total: Number(t.total), shipping: Number(t.shipping),
+        rivit: (t.items || []).map((i) => `${i.quantity} x ${i.name} ${i.color || ""}/${i.size || ""} ${i.unit_price} € (variantti ${i.variant_id})`) });
+      if (!t.stripe_session_id || !onStripe()) continue;
+      try {
+        const s = await stripe().checkout.sessions.retrieve(t.stripe_session_id);
+        const e = { id: t.id.slice(0, 8), tila: s.status, livemode: s.livemode, summa: (s.amount_total ?? 0) / 100 };
+        if (s.status === "open" && !kuiva) e.vanhennettu = (await stripe().checkout.sessions.expire(s.id)).status === "expired";
+        tulos.stripe.push(e);
+      } catch (e) {
+        tulos.stripe.push({ id: t.id.slice(0, 8), virhe: String(e?.message || e) });
+      }
+    }
+    const t = tilaukset[0];
+    if (onPrintify() && !kuiva) {
+      const r = await luoTilaus({ ...tilausRunko(t), external_id: `${t.id}-testi`, label: "KAYTTOONOTTOTESTI (perutaan)", send_shipping_notification: false });
+      if (!r.ok || !r.data?.id) tulos.printify = { luotu: false, virhe: r.virhe || r.status };
+      else {
+        const id = r.data.id;
+        const h = await haeTilaus(id);
+        const v = h.ok ? await tarkistaEnnenTuotantoa(h.data, t, { haePainotalo }) : null;
+        const p = await peruTilaus(id);
+        const j = await haeTilaus(id);
+        tulos.printify = { luotu: true, id, tila_ennen: h.data?.status, painotalot: v?.rivit.map((x) => `${x.nimi} (${x.maa || "?"}) EU ${x.eu}`),
+          tilausvahti: v?.tulos, kulu_ilman_alv: v?.kulut?.kuluIlmanAlv ?? null, peruutus: p.ok ? "ok" : p.virhe || p.status, tila_jalkeen: j.data?.status };
+      }
+    }
+    if (!kuiva) {
+      const v = vahvistusViesti(t);
+      const r = await laheta({ to: OMISTAJA(), ...v, subject: `[KÄYTTÖÖNOTTOTESTI] ${v.subject}` });
+      tulos.resend = { lahetetty: r.ok, vastaanottaja: OMISTAJA(), virhe: r.ok ? null : r.virhe };
+      await new Promise((ok) => setTimeout(ok, 8000));
+    }
+    for (const x of tilaukset) {
+      const [n] = await db`select status from orders where id = ${x.id}`;
+      const tap = await db`select kind, details from order_events where order_id = ${x.id} order by created_at`;
+      tulos.webhook.push({ id: x.id.slice(0, 8), status: n?.status, tapahtumat: tap.map((e) => e.kind + (e.details?.syy ? ` (${e.details.syy})` : "")) });
+    }
+    return res.status(200).json({ ok: true, kuiva, ...tulos });
   }
 
   if (req.query.tehtava === "eu-siirrot") {

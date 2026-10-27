@@ -7,7 +7,8 @@
 # 2. Ajaa testit ja julkaisee (npx vercel deploy --prod): uusi tausta, kassa 6,90 € / ilmainen toimitus 79 eurosta
 #    (api/_lib/vakiot.js), MYYJA=uusiku ja Vercel Cron samassa julkaisussa.
 # 3. Tarkistaa testiosoitteen curlilla kolmella User-Agentilla (200, Uusiku Oy, tuotelähde tietokanta), kassan
-#    (scripts/kassatesti.mjs), valvonnan kuiva-ajon ja Resend-domainin tilan.
+#    (scripts/kassatesti.mjs), valvonnan kuiva-ajon, Resend-domainin tilan ja käyttöönottotestin (Neon, Stripe-webhook,
+#    Printify-testitilaus perutaan, vahvistusviesti).
 # Ei koske domainiin: huumorikauppa.fi siirretään projektiin erikseen (KAYTTOONOTTO.md kohta 9).
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -45,5 +46,12 @@ node scripts/kassatesti.mjs --url "$POHJA" --salli-live || virhe=1
 S=$(cut -d= -f2- .env.cron.local)
 echo "  valvonta: $(curl -s -m 90 -H "Authorization: Bearer $S" "$POHJA/api/cron/tilaukset?kuiva=1" | head -c 300)"
 echo "  resend:   $(curl -s -m 60 -H "Authorization: Bearer $S" "$POHJA/api/cron/tilaukset?tehtava=resend-domain" | head -c 300)"
+# Neon-tallennus, Stripe-sessioiden vanhennus (webhook checkout.session.expired), Printify-testitilaus EU-painotalolle
+# (perutaan ennen tuotantoa) ja tilausvahvistus Resendillä omistajalle.
+echo "  käyttöönottotesti:"
+curl -s -m 90 -H "Authorization: Bearer $S" "$POHJA/api/cron/tilaukset?tehtava=kayttoonottotesti" | python3 -m json.tool | sed 's/^/    /'
+echo "  webhook-tarkistus 30 s myöhemmin:"
+sleep 30
+curl -s -m 90 -H "Authorization: Bearer $S" "$POHJA/api/cron/tilaukset?tehtava=kayttoonottotesti&kuiva=1" | python3 -c 'import json,sys; d=json.load(sys.stdin); [print("    ", w["id"], w["status"], ", ".join(w["tapahtumat"])) for w in d.get("webhook", [])]' 
 unset S
 [ "$virhe" = 0 ] && echo "Valmis. Seuraavaksi domain (KAYTTOONOTTO.md kohta 9)." || { echo "Tarkistuksissa virheitä, katso yllä."; exit 1; }

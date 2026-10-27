@@ -54,6 +54,11 @@ export function haeTilaus(printifyTilausId) {
   return kutsu(`/orders/${printifyTilausId}.json`, { method: "GET" });
 }
 
+/** Peru tilaus (vain ennen tuotantoa: on-hold tai pending). */
+export function peruTilaus(printifyTilausId) {
+  return kutsu(`/orders/${printifyTilausId}/cancel.json`, { method: "POST" });
+}
+
 /** Printify-tilauksen runko omasta tilausrivistä. */
 export function tilausRunko(tilaus) {
   const nimi = (tilaus.recipient_name || tilaus.customer_name || "Asiakas").trim();

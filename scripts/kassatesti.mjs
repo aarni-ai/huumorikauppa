@@ -6,8 +6,8 @@
  *
  *   node scripts/kassatesti.mjs [--url https://huumorikauppa-five.vercel.app] [--email osoite]
  *
- * Korit: yksi t-paita (alle ilmaisen toimituksen rajan, toimitusmaksu peritään) ja neljä t-paitaa (yli rajan,
- * ilmainen toimitus). Tulostaa jokaisesta session tunnuksen alun (cs_test_ / cs_live_). Live-avaimella ajo
+ * Korit: yksi t-paita (alle ilmaisen toimituksen rajan, toimitusmaksu peritään), neljä t-paitaa (yli rajan,
+ * ilmainen toimitus) ja huppari 3XL (koon mukainen hinta). Tulostaa jokaisesta session tunnuksen alun (cs_test_ / cs_live_). Live-avaimella ajo
  * päättyy virheeseen, ellei mukana ole --salli-live.
  */
 const arvo = (n, oletus) => (process.argv.includes(n) ? process.argv[process.argv.indexOf(n) + 1] : oletus);
@@ -26,9 +26,19 @@ const pyynto = (items) => ({
   shippingAddress: { address: "Testikatu 1", zip: "00100", city: "Helsinki", phone: "0400000000" },
 });
 
+// Huppari koossa 3XL (koon mukainen hinta, api/_lib/kokohinnat.js). Ajetaan viimeisenä: käyttöönottotesti tekee
+// viimeisimmästä tilauksesta Printify-testitilauksen (EU-painotalo) ja perii sen.
+const huppari = await (await fetch(`${POHJA}/api/products?slug=tonnin-seteli-huppari`)).json().catch(() => null);
+const hupparinAvain = Object.keys(huppari?.variants?.variant_map || {}).find((k) => k.endsWith("|3XL"));
+const korit = [["1 t-paita (toimitusmaksu)", [rivi(1)]], ["4 t-paitaa (ilmainen toimitus)", [rivi(4)]]];
+if (hupparinAvain) {
+  const [hv, hk] = hupparinAvain.split("|");
+  korit.push([`1 huppari ${hk} (${huppari.variants.size_prices?.[hk] ?? huppari.price} €)`, [{ id: huppari.id, slug: huppari.slug, name: huppari.name, color: hv, size: hk, quantity: 1 }]]);
+}
+
 let virheita = 0;
-for (const [nimi, maara] of [["1 t-paita (toimitusmaksu)", 1], ["4 t-paitaa (ilmainen toimitus)", 4]]) {
-  const r = await fetch(`${POHJA}/api/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pyynto([rivi(maara)])) });
+for (const [nimi, items] of korit) {
+  const r = await fetch(`${POHJA}/api/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pyynto(items)) });
   const j = await r.json().catch(() => ({}));
   const url = String(j.url || "");
   const tila = /\/c\/pay\/cs_test_/.test(url) ? "testi" : /\/c\/pay\/cs_live_/.test(url) ? "live" : null;
