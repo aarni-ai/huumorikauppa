@@ -36,6 +36,7 @@ import { revealApp } from "@/lib/prerenderPreview";
 import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { SameDesignLinks } from "@/components/SameDesignLinks";
 
 
 function parseDescription(description: string) {
@@ -716,6 +717,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
               </div>
             </div>
+
+            {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
+            <SameDesignLinks product={product} all={allProducts} />
 
             {/* Color + size selector — ref used by sticky bar scroll-to */}
             {hasColors && (

@@ -1,0 +1,58 @@
+{
+  "paiva": "2026-10-27",
+  "kuvaus": "Myydyimpien designien puuttuvat tuotetyypit. Ehdot: kate >= 30 % jokaisessa käytössä olevassa variantissa (toimitusmaksu 3,90 €, ilmainen 60 €:sta, Printifyn ensimmäisen kappaleen toimitus Suomeen, Stripe 1,5 % + 0,25 €, myynti / 1,255), vain EU-painotalot, hinta enintään kilpailijoiden (Stuntman, Meemirotta) saman tuotetyypin hinta.",
+  "kaava": "nettokate = (hinta + 3,90) / 1,255 - Printify-kulu - Printify-toimitus FI - (1,5 % x (hinta + 3,90) + 0,25); kate % = nettokate / ((hinta + 3,90) / 1,255)",
+  "top5_tilauksista": {
+    "lahde": "Printify GET /v1/shops/26630629/orders.json, 1.6.2026 alkaen; perutut pois; pois 21.10. manual-tilaukset 6ad926a6 (sama asiakas kuin 28.9., ALV 0, korvaus) ja 6ad92ed1 (testikopio Ceramic Mug (EU), korvaus perutulle mukille). Myynti = kaupan nykyhinta + toimitusmaksu 6,90 € (näkyi sivustolla tilaushetkellä). Tasatilanteessa järjestys myynnin ja viimeisimmän tilauksen mukaan.",
+    "designit": [
+      { "design": "Tonnin seteli", "kpl": 5, "myynti_sis_toimitus": 184.0, "myynti_alv0": 146.61, "nettokate": 44.82, "kate": 0.306 },
+      { "design": "40 vuotta töitä, nyt ikuinen viikonloppu", "kpl": 2, "myynti_sis_toimitus": 53.6, "myynti_alv0": 42.71, "nettokate": -20.85, "kate": -0.488, "huom": "molemmat mukeja US-painotalolla (SPOKE)" },
+      { "design": "Maailman paras ÄITI", "kpl": 1, "myynti_sis_toimitus": 56.8, "myynti_alv0": 45.26, "nettokate": 8.77, "kate": 0.194 },
+      { "design": "60v kokenut, ei vanha", "kpl": 1, "myynti_sis_toimitus": 31.8, "myynti_alv0": 25.34, "nettokate": 11.02, "kate": 0.435 },
+      { "design": "ICE AATANA", "kpl": 1, "myynti_sis_toimitus": 31.8, "myynti_alv0": 25.34, "nettokate": 8.16, "kate": 0.322 }
+    ]
+  },
+  "kilpailijat": {
+    "haettu": "2026-10-27 (Shopify products.json)",
+    "t-paita": { "stuntman": "19,90 € yleisin (https://www.stuntman.fi/products/nirvana-guitar 19,90 €)", "meemirotta": "24,99 € (https://www.meemirotta.fi/products/kohti-psykoosia-t-paita)" },
+    "lasten t-paita": { "stuntman": "18,95 € yleisin (https://www.stuntman.fi/products/lasten-t-paita-rock-or-bust-acdc)", "meemirotta": "ei myynnissä" },
+    "vauvan body": { "stuntman": "19,90 € yleisin (https://www.stuntman.fi/products/vauvan-body-saako-taalla-kiljua), 29,90 € omalla painatuksella", "meemirotta": "ei myynnissä" },
+    "huppari": { "stuntman": "44,90 € yleisin (https://www.stuntman.fi/products/ramones_1)", "meemirotta": "49,99 € (https://www.meemirotta.fi/products/juhannussima-teemukissa-huppari)" },
+    "muki": { "stuntman": "12,90 € yleisin, 6,90-16,90 € (https://www.stuntman.fi/products/muki-suomi-ahlainen)", "meemirotta": "14,99 € (https://www.meemirotta.fi/products/sammumisvaara-muki)" },
+    "tarra": { "stuntman": "ei myynnissä", "meemirotta": "ei myynnissä" },
+    "juliste": { "stuntman": "15,00 € 20 x 30 cm (https://www.stuntman.fi/products/22163-kilpi-20x30-breakfast-at-tiffanys-juliste-sininen), ainoa", "meemirotta": "ei myynnissä" }
+  },
+  "eu_kulut": {
+    "muki 11 oz, OPT OnDemand CZ (441/30)": { "kulu": 5.88, "toimitus_fi": 10.39, "hinta_30_prosenttiin": 26.9 },
+    "muki 11 oz, Textildruck Europa DE (1016/26)": { "kulu": 5.91, "toimitus_fi": 10.39, "hinta_30_prosenttiin": 26.9 },
+    "tarra 3,5 tuumaa, OPT OnDemand CZ (476/30)": { "kulu": 3.89, "toimitus_fi": 5.59, "hinta_30_prosenttiin": 14.9 },
+    "juliste A4, OPT OnDemand CZ (443/30)": { "kulu": 6.5, "toimitus_fi": 8.49, "hinta_30_prosenttiin": 24.9 },
+    "juliste A3, OPT OnDemand CZ (443/30)": { "kulu": 7.09, "toimitus_fi": 8.49, "hinta_30_prosenttiin": 25.9 },
+    "vauvan body, Textildruck Europa DE (1045/26)": { "kulu": 15.94, "toimitus_fi": 7.29, "hinta_30_prosenttiin": 39.9 },
+    "lasten t-paita, Textildruck/OPT/Atelier Katanga (81, 157)": { "toimitus_fi": 7.29, "huom": "kauppa myy t-paidat aina 24,90 €:lla; 30 % vaatisi kulun enintään 8,09 € hinnalla 24,90 €, ja kilpailijan hinnalla 18,95 € kulun enintään 4,87 €" }
+  },
+  "luodut": [],
+  "ohitetut": [
+    { "design": "Tonnin seteli", "tyyppi": "tarra", "syy": "30 % vaatii 14,90 € (3,5\", OPT CZ); kummallakaan kilpailijalla ei ole tarroja vertailuhinnaksi, ja kaupan nykyinen Se oli tonnin seteli -tarra 11,90 €:lla on jo 20,8 % (toimitusmaksulla 3,90 €). Ei luotu." },
+    { "design": "Tonnin seteli", "tyyppi": "lasten t-paita", "syy": "Stuntman 18,95 €; kauppa hinnoittelee t-paidat aina 24,90 €:een (yli kilpailijan). 18,95 €:lla 30 % vaatisi kulun enintään 4,87 € (toimitus FI 7,29 €)." },
+    { "design": "Tonnin seteli", "tyyppi": "vauvan body", "syy": "Textildruck 1045: kulu 15,94 € + toimitus 7,29 €, 30 % vaatii 39,90 €; Stuntman 19,90 €." },
+    { "design": "Tonnin seteli", "tyyppi": "muki", "syy": "on jo (piilossa, mukit pois myynnistä); EU-muki vaatii 26,90 €, kilpailijat 12,90-14,99 €." },
+    { "design": "40 vuotta töitä, nyt ikuinen viikonloppu", "tyyppi": "tarra", "syy": "kuten Tonnin seteli -tarra: 14,90 €, ei kilpailijavertailua, ei luotu." },
+    { "design": "40 vuotta töitä, nyt ikuinen viikonloppu", "tyyppi": "lasten koko", "syy": "eläkeaiheinen teksti ei sovi lastenvaatteeseen; lisäksi sama hinta- ja katesyy kuin yllä." },
+    { "design": "Maailman paras ÄITI", "tyyppi": "muki", "syy": "EU-muki vaatii 26,90 €, kilpailijat 12,90-14,99 €." },
+    { "design": "Maailman paras ÄITI", "tyyppi": "juliste", "syy": "A4 vaatii 24,90 € ja A3 25,90 €; ainoa vertailukohta Stuntman 15,00 € (20 x 30 cm). Lisäksi design on Printifyn tekstitasoja (ei kuvatiedostoa)." },
+    { "design": "Maailman paras ÄITI", "tyyppi": "tarra", "syy": "14,90 €, ei kilpailijavertailua, ei luotu." },
+    { "design": "Maailman paras ÄITI", "tyyppi": "lasten koko", "syy": "teksti on äidille, ei lapselle; body/lasten paita ei yllä 30 %:iin kilpailijan hinnalla." },
+    { "design": "60v kokenut, ei vanha", "tyyppi": "tarra", "syy": "14,90 €, ei kilpailijavertailua, ei luotu." },
+    { "design": "60v kokenut, ei vanha", "tyyppi": "lasten koko", "syy": "ikäaiheinen teksti ei sovi lastenvaatteeseen." },
+    { "design": "ICE AATANA", "tyyppi": "muki", "syy": "EU-muki vaatii 26,90 €, kilpailijat 12,90-14,99 €." },
+    { "design": "ICE AATANA", "tyyppi": "juliste", "syy": "A4 24,90 € / A3 25,90 € > 15,00 €; lisäksi kuva on 1024 x 1024 px (A3:lla noin 87 dpi)." },
+    { "design": "ICE AATANA", "tyyppi": "tarra", "syy": "14,90 €, ei kilpailijavertailua, ei luotu." },
+    { "design": "ICE AATANA", "tyyppi": "lasten koko", "syy": "kirosanaan viittaava teksti ei sovi lastenvaatteeseen; hinta- ja katesyy kuten yllä." },
+    { "design": "kaikki", "tyyppi": "huppari", "syy": "kaikilla viidellä on jo huppari." }
+  ],
+  "havainnot": [
+    "Toimitusmaksulla 3,90 € nykyiset 22,90 €:n julisteet (OPT A3) ovat 24,0 %:n katteella ja 11,90 €:n tarra 20,8 %:lla, eli alle 30 %:n.",
+    "Toimitusmaksulla 3,90 € Textildruckin t-paita 24,90 €:lla on 24,8 % (30 % vaatii 27,90 €)."
+  ]
+}
