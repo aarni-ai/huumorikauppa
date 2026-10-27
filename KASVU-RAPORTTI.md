@@ -26,6 +26,70 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10. päivä: toimitushinta, esikatselu, rakenteinen data, EU-reititys, lisämyynti
+
+**Edellisen yön kohtien tila:** uusi tausta (taulut, tuonti EU-kopioineen, kulut, tilattavuus) tehty; CRON_SECRET
+Vercelissä ja .env.cron.local-tiedostossa, GitHub-secret puuttuu (gh-työkalua ei ole); Resend ja Uusiku Oy:n Stripe
+puuttuvat. Yritysvaihto: ajastettu vaihto poistettu (työnkulkua ei ole, raw-osoite 404, ei paikallista ajastinta),
+vaihto vain Vercel-muuttujalla MYYJA=uusiku, sivuilla näkyy Inteller (curl kolmella User-Agentilla). Joulu:
+takaraja, /joululahjat ja alasivut (miehelle, naiselle, työkaverille, isälle, äidille, eläkeläiselle, alle 30 €
+= /lahjat/alle-30-euroa), 6 blogia, sivukartta ja llms.txt tehty. Syöte 0 virhettä. ef099df tuotannossa
+(uusi saatavuusdata löytyy tuotannon index-chunkista).
+
+**Toimitushinta.** Sivusto, toimitusehdot, rakenteinen data ja syöte: 6,90 €, ilmainen 79 eurosta. Live-kassa
+(Lovablen create-checkout) veloittaa yhä 3,90 € ja ilmainen 60 eurosta: repossa muutos 29.9.2026 (ca193d1), mutta
+funktiota ei ole julkaistu Lovablessa (tilaus 26630629.21: 19,90 + 3,90 = 23,80 €). Oikea arvo on 6,90 € / 79 €:
+vanhalla säännöllä t-paita + Textildruck-huppari on tappiollinen (-1,27 €), uudella jokainen kori on positiivinen
+(KATTEET.md). Korjaus vaatii create-checkout-funktion julkaisun Lovablessa (omistaja). Sivustolla toimitusmaksu nyt
+näkyvissä etusivun luottamuspalkissa ja jokaisen sivun yläpalkissa ("Toimitus 6,90 €, ilmainen 79 eurosta"),
+tuotesivulla hinnan alla ja ostoskorissa kuten ennen. "Yli 79 €" korjattu muotoon "79 eurosta" / "vähintään 79 euron"
+(kassa antaa ilmaisen toimituksen myös tasan 79 eurosta). Commit 80750b8.
+
+**Tuotesivun esikatselun jumi.** Juurisyy: julkaisun jälkeen välimuistista tullut vanha HTML viittasi poistuneisiin
+/assets/-tiedostoihin, ja SPA-rewrite palautti niiden tilalle HTML:n tilalla 200, joten sovellus ei käynnistynyt
+eikä esikatselu poistunut. Korjaus 019b9ef: rewrite ei koske .js/.css/assets-polkuja (vanha chunk nyt 404),
+sovelluksesta riippumaton käynnistysvahti lataa sivun kerran uudelleen tai näyttää staattisen sivun, esikatselun
+aikaraja 2 s. Selaintesti tuotannossa 7/7 OK kahden julkaisun jälkeen.
+
+**Rakenteinen data.** Tarkistettu 28 tuotesivua ja 12 muuta sivua. Ainoa virhe: ajatusviivat tuotenimissä ja
+-kuvauksissa JSON-LD:ssä (20/28 tuotesivulla ja listasivuilla). Korjattu (5a71b72). Product, Offer, shippingDetails
+(6,90 € / 79 € konfiguraatiosta), hasMerchantReturnPolicy (14 pv, personoiduille ei palautusta) olivat kunnossa.
+aggregateRatingia ei ole millään sivulla, koska vahvistettuja tuotearvosteluja ei ole. Pyydä indeksointi
+Search Consolessa: /joululahjat, /joululahja-elakelaiselle, /joulun-viimeiset-tilauspaivat,
+/joululahja-miehelle-jolla-on-kaikki, /joululahja-isalle, /joululahja-tyokaverille, /lahjat/pikkujouluihin,
+/salainen-joulupukki-lahja, /blogi/hauska-joululahja-naiselle, /blogi/joululahja-aidille-hauskat-ideat,
+/blogi/joululahja-papalle-ja-ukille, /blogi/joululahja-elakelaiselle, /blogi/joululahja-kaverille-alle-30-euroa,
+/blogi/joululahja-veljelle, /blogi/hauskat-joululahjaideat-miehelle-2026,
+/blogi/joululahjan-viimeiset-tilauspaivat-2026, /tonnin-seteli-paita, /hauskat-t-paidat, /kategoria/hupparit,
+/isanpaivalahja, /tuote/tonnin-seteli-t-paita, /tuote/se-oli-tonnin-seteli-t-paita, /tuote/tonnin-seteli-huppari,
+/tuote/joulupukin-virallinen-testaaja-t-paita-jouluun, /tuote/tonttu-koeajalla-t-paita-jouluun.
+
+**Myydyimmät designit 1.6. alkaen** (Printify-tilaukset, korvaukset ja testit pois): Tonnin seteli 5 kpl (kate 30,6 %),
+40 vuotta töitä, nyt ikuinen viikonloppu 2 mukia (US, -48,8 %), Maailman paras ÄITI 1, 60v kokenut, ei vanha 1,
+ICE AATANA 1. Puuttuvia tuotetyyppejä ei luotu: yksikään ei yllä 30 %:iin EU-painotalolla kilpailijahinnalla
+(muki vaatisi 26,90 € vs Stuntman 12,90 / Meemirotta 14,99; juliste 24,90 € vs 15,00; lasten paita 24,90 € vs
+18,95; tarralle ei ole kilpailijahintaa, 30 % vaatisi 14,90 €). Kaikilla viidellä on jo huppari. Laskelma ja
+kilpailijoiden osoitteet: data/uudet-tuotteet/myydyimmat-2026-10-27.json. Tuotesivuilla nyt "Sama design myös:
+Huppari · Tarra · Juliste" -linkit (b3fcdc0), jotka poimivat uudet tuotteet nimestä automaattisesti.
+
+**Keskiostos.** Vaihtoehdot: ilmaisen toimituksen rajan lasku ja "2 tuotetta -10 %" tekevät korista tappiollisen,
+hylätty. "Lisää tarra 11,90 €" pitää jokaisen korin positiivisena, kun sitä ei ehdoteta hupparikoriin. Toteutettu
+ostoskoriin (80750b8), laskelma KATTEET.md:ssä (oma-tausta bc642cf). Arvio +0,45 ... +1,12 €/kk nykyliikenteellä.
+Isompi alennusvipu "2 tuotetta -5 %" on valmiina oman taustan kassassa.
+
+**EU-reititys (tilaus 26630629.21 painettiin Yhdysvalloissa).** Näkyviä tuotteita 502 (8050 varianttia), joista EU:ssa
+painetaan 467 (OPT OnDemand CZ 292, Textildruck Europa DE 175). EU:n ulkopuolella 35 (949 varianttia): 32 Printify
+Choicella (sijainti Miami, Suomen tilaukset kansainvälisellä toimituksella) ja 3 yhdysvaltalaisella painotalolla.
+Kaikki 35 piilotettu (301 /kaikki-tuotteet, pois sivukartasta ja syötteestä), ohjattu 0, koska yhdenkään EU-kopio ei
+ole kaupassa näkyvänä rivinä. 24:llä on EU-kopio Printifyssä (lähinnä 30-60v ikäpaidat): kun Lovablen rivi osoittaa
+kopioon, tuote palaa näkyviin itsestään. 11:lle (esim. Super äiskä, Slay queen, Maailman paras äiti -palkinto) pitää
+tehdä EU-kopio. Seitsemällä laskeutumissivulla on nyt alle 8 tuotetta (äidille, vaimolle, 40-60-vuotiaille).
+Uudelleenajo yön synkronoinnin jälkeen: `npx tsx scripts/eu-reititys.mjs` (ympäristömuuttujat kuten muissa
+Printify-skripteissä), sitten `npx vitest run` ja commit. Commit 9bf84e0.
+
+**Tarkistukset:** jokainen julkaisu curlilla kolmella User-Agentilla (selain, Googlebot, facebookexternalhit), kaikki
+sivut 200, piilotetut 301, vanha chunk 404. Testit 896/896.
+
 ## 27.10. yön synkronoinnin tarkistus (03.40 UTC)
 
 - Lovablen synkronointi 03.17 UTC toi kauppaan 15 uutta joulu- ja eläkeläispaitaa (t-paidat, 24,90 €), 12 julistetta (seinataulut, 22,90 €) ja Se oli tonnin seteli -tarran (tarrat, 11,90 €). Kaikki ovat aktiivisia oikeassa kategoriassa.
