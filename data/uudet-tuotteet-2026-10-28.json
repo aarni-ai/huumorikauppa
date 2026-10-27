@@ -1,0 +1,205 @@
+{
+ "kuvaus": "Uudet joulu-, pikkujoulu-, isänpäivä- ja eläkeläistuotteet 28.10.2026 (data/uudet-tuotteet/joulu-isanpaiva-2026-10-28.json, luotu Printifyyn scripts/printify-uudet-tuotteet.mjs, kirjaus luotu-2026-10-27.json): 20 t-paitaa Textildruck Europa (DE) Gildan Softstyle 64000 (bp 145) S-2XL ja 5 hupparia Atelier Katanga (FR) Gildan 18500 (bp 77) S-3XL. Kate positiivinen jokaisessa variantissa kauppahinnoilla (t-paita 24,90 €: 31,7 %; huppari 49,99 € S-2XL 21,1 %, 55,00 € 3XL 12,3 %; api/_lib/kate.js, toimitusmaksu 6,90 €). Tuodaan ja aktivoidaan kuten lovable-aktiiviset (?tehtava=tuo-aktiiviset).",
+ "tuotteet": [
+  {
+   "slug": "riisipuurosta-loysin-vain-riisia-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae11217a7605d7f8e0ac84e",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Riisipuurosta löysin vain riisiä"
+  },
+  {
+   "slug": "lahjat-ostettu-23-12-klo-17-58-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112381730ecef4b025dd2",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Lahjat ostettu 23.12. klo 17.58"
+  },
+  {
+   "slug": "rauhallista-joulua-paitsi-meilla-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1123f2195ccbd540e50db",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Rauhallista joulua. Paitsi meillä"
+  },
+  {
+   "slug": "joulusaunan-loylymestari-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112459310c63cb0060fc2",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Joulusaunan löylymestari"
+  },
+  {
+   "slug": "kiltti-enimmakseen-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1124b1730ecef4b025dde",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Kiltti. Enimmäkseen"
+  },
+  {
+   "slug": "joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae11250a7605d7f8e0ac85f",
+   "lovable_price": 24.9,
+   "teema": "joulu",
+   "nimi": "Joulukortit lähtevät ensi vuonna"
+  },
+  {
+   "slug": "pikkujoulut-muistan-osittain-t-paita-pikkujouluihin",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1125665aaae1db90207e3",
+   "lovable_price": 24.9,
+   "teema": "pikkujoulu",
+   "nimi": "Pikkujoulut. Muistan osittain"
+  },
+  {
+   "slug": "pikkujoulujen-nimetty-kuski-t-paita-pikkujouluihin",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1125c65aaae1db90207e8",
+   "lovable_price": 24.9,
+   "teema": "pikkujoulu",
+   "nimi": "Pikkujoulujen nimetty kuski"
+  },
+  {
+   "slug": "karaokevuoro-varattu-jo-syyskuussa-t-paita-pikkujouluihin",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112615ff276936206983d",
+   "lovable_price": 24.9,
+   "teema": "pikkujoulu",
+   "nimi": "Karaokevuoro varattu jo syyskuussa"
+  },
+  {
+   "slug": "tanaan-tanssin-huomenna-kadun-t-paita-pikkujouluihin",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112681730ecef4b025e01",
+   "lovable_price": 24.9,
+   "teema": "pikkujoulu",
+   "nimi": "Tänään tanssin. Huomenna kadun"
+  },
+  {
+   "slug": "isavitsien-ammattilainen-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1126fa044f1c025075264",
+   "lovable_price": 24.9,
+   "teema": "isanpaiva",
+   "nimi": "Isävitsien ammattilainen"
+  },
+  {
+   "slug": "kuka-koski-termostaattiin-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1127731654dc5ee0a8e69",
+   "lovable_price": 24.9,
+   "teema": "isanpaiva",
+   "nimi": "Kuka koski termostaattiin?"
+  },
+  {
+   "slug": "isa-tietaa-oikotien-aina-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1127d2195ccbd540e5101",
+   "lovable_price": 24.9,
+   "teema": "isanpaiva",
+   "nimi": "Isä tietää oikotien. Aina"
+  },
+  {
+   "slug": "en-nuku-lepuutan-silmia-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112869310c63cb0060ff7",
+   "lovable_price": 24.9,
+   "teema": "isanpaiva",
+   "nimi": "En nuku. Lepuutan silmiä"
+  },
+  {
+   "slug": "sammuta-valot-sahko-maksaa-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1128eb7c2757e9601db4f",
+   "lovable_price": 24.9,
+   "teema": "isanpaiva",
+   "nimi": "Sammuta valot. Sähkö maksaa"
+  },
+  {
+   "slug": "elakelaisen-tyopaiva-kahvi-lehti-paikkarit-t-paita-elakelaiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae1129a9cb855601e0f4cf5",
+   "lovable_price": 24.9,
+   "teema": "elakelainen",
+   "nimi": "Eläkeläisen työpäivä: kahvi, lehti, päikkärit"
+  },
+  {
+   "slug": "taysipaivainen-isovanhempi-t-paita-elakelaiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112a2a7605d7f8e0ac893",
+   "lovable_price": 24.9,
+   "teema": "elakelainen",
+   "nimi": "Täysipäiväinen isovanhempi"
+  },
+  {
+   "slug": "elakelainen-ala-soita-ennen-kymmenta-t-paita-elakelaiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112aa9310c63cb0061009",
+   "lovable_price": 24.9,
+   "teema": "elakelainen",
+   "nimi": "Eläkeläinen. Älä soita ennen kymmentä"
+  },
+  {
+   "slug": "elakkeella-kello-on-vain-koru-t-paita-elakelaiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112b35ff276936206986a",
+   "lovable_price": 24.9,
+   "teema": "elakelainen",
+   "nimi": "Eläkkeellä. Kello on vain koru"
+  },
+  {
+   "slug": "suunnitelma-talle-paivalle-ei-suunnitelmaa-t-paita-elakelaiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae112bb914d9ad3060b9c68",
+   "lovable_price": 24.9,
+   "teema": "elakelainen",
+   "nimi": "Suunnitelma tälle päivälle: ei suunnitelmaa"
+  },
+  {
+   "slug": "kiltti-enimmakseen-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae112c09310c63cb0061016",
+   "lovable_price": 49.99,
+   "teema": "joulu",
+   "nimi": "Kiltti. Enimmäkseen"
+  },
+  {
+   "slug": "pikkujoulut-muistan-osittain-huppari-pikkujouluihin",
+   "category": "hupparit",
+   "printify_product_id": "6ae112c5914d9ad3060b9c74",
+   "lovable_price": 49.99,
+   "teema": "pikkujoulu",
+   "nimi": "Pikkujoulut. Muistan osittain"
+  },
+  {
+   "slug": "en-nuku-lepuutan-silmia-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae112cc914d9ad3060b9c77",
+   "lovable_price": 49.99,
+   "teema": "isanpaiva",
+   "nimi": "En nuku. Lepuutan silmiä"
+  },
+  {
+   "slug": "kuka-koski-termostaattiin-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae112d25ac45e423e011c68",
+   "lovable_price": 49.99,
+   "teema": "isanpaiva",
+   "nimi": "Kuka koski termostaattiin?"
+  },
+  {
+   "slug": "elakkeella-kello-on-vain-koru-huppari-elakelaiselle",
+   "category": "hupparit",
+   "printify_product_id": "6ae112d82195ccbd540e514b",
+   "lovable_price": 49.99,
+   "teema": "elakelainen",
+   "nimi": "Eläkkeellä. Kello on vain koru"
+  }
+ ]
+}
