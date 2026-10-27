@@ -138,9 +138,19 @@ export default async function handler(req, res) {
       if (!r.ok || !r.data?.id) tulos.printify = { luotu: false, virhe: r.virhe || r.status };
       else {
         const id = r.data.id;
-        const h = await haeTilaus(id);
+        // Printify laskee uutta tilausta hetken (pending), eikä sitä voi perua ennen tilaa on-hold.
+        let h = await haeTilaus(id);
+        for (let i = 0; i < 10 && h.ok && h.data?.status === "pending"; i++) {
+          await new Promise((ok) => setTimeout(ok, 2000));
+          h = await haeTilaus(id);
+        }
         const v = h.ok ? await tarkistaEnnenTuotantoa(h.data, t, { haePainotalo }) : null;
-        const p = await peruTilaus(id);
+        let p = await peruTilaus(id);
+        for (let i = 0; i < 3 && !p.ok; i++) {
+          await new Promise((ok) => setTimeout(ok, 3000));
+          p = await peruTilaus(id);
+        }
+        if (!p.ok) await halytys("Käyttöönottotestin Printify-tilaus jäi perumatta", [`Printify-tilaus ${id}`, "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
         const j = await haeTilaus(id);
         tulos.printify = { luotu: true, id, tila_ennen: h.data?.status, painotalot: v?.rivit.map((x) => `${x.nimi} (${x.maa || "?"}) EU ${x.eu}`),
           tilausvahti: v?.tulos, kulu_ilman_alv: v?.kulut?.kuluIlmanAlv ?? null, peruutus: p.ok ? "ok" : p.virhe || p.status, tila_jalkeen: j.data?.status };
