@@ -1,0 +1,567 @@
+{
+ "nimi": "Joulu, pikkujoulut, isänpäivä ja eläke 28.10.2026",
+ "_huom": "28.10.2026. T-paidat kuten joulu-elake-2026.json: Textildruck Europa (DE), Gildan Softstyle 64000 (bp 145), S-2XL. Kauppahinta 24,90 € (hupparit 49,99 € S-2XL, 55,00 € 3XL+, api/_lib/kokohinnat.js). Ehto: nettokate positiivinen jokaisessa variantissa (api/_lib/kate.js, toimitusmaksu 6,90 €). Ajo: --hintamalli live --kateraja 1. Hupparit Atelier Katanga (FR), Gildan 18500 (bp 77), halvin EU-vaihtoehto (joulu-elake-2026.json eiToteutettavissa).",
+ "oletukset": {
+  "tyyppi": "t-paita",
+  "painotalo": "Textildruck Europa",
+  "blueprint": 145,
+  "koot": [
+   "S",
+   "M",
+   "L",
+   "XL",
+   "2XL"
+  ]
+ },
+ "tuotteet": [
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "RIISIPUUROSTA",
+    "LÖYSIN",
+    "VAIN RIISIÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka ei koskaan löydä mantelia. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "LAHJAT OSTETTU",
+    "23.12.",
+    "KLO 17.58"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun viime hetken lahjaostajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta.",
+   "otsikkoteksti": "Lahjat ostettu 23.12. klo 17.58"
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "RAUHALLISTA JOULUA.",
+    "PAITSI MEILLÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun isolle ja äänekkäälle perheelle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "JOULUSAUNAN",
+    "LÖYLYMESTARI"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka heittää aattona kunnon löylyt. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "KILTTI.",
+    "ENIMMÄKSEEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ja aattoon, kun joulupukki kysyy, onko täällä kilttejä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "JOULUKORTIT",
+    "LÄHTEVÄT",
+    "ENSI VUONNA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, jonka hyvät aikeet siirtyvät vuodesta toiseen. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Pikkujoulut",
+   "otsikko": "{teksti} | {tuote} pikkujouluihin",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "PIKKUJOULUT.",
+    "MUISTAN",
+    "OSITTAIN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin ja työpaikan juhliin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Pikkujoulut",
+   "otsikko": "{teksti} | {tuote} pikkujouluihin",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "PIKKUJOULUJEN",
+    "NIMETTY",
+    "KUSKI"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin sille, joka vie kaikki kotiin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Pikkujoulut",
+   "otsikko": "{teksti} | {tuote} pikkujouluihin",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "KARAOKEVUORO",
+    "VARATTU JO",
+    "SYYSKUUSSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin karaoken ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Military Green"
+   ],
+   "kategoria": "Pikkujoulut",
+   "otsikko": "{teksti} | {tuote} pikkujouluihin",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "TÄNÄÄN TANSSIN.",
+    "HUOMENNA",
+    "KADUN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin tanssilattian valloittajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "ISÄVITSIEN",
+    "AMMATTILAINEN"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi isälle, jonka vitseille nauretaan, vaikka ei pitäisi. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "KUKA KOSKI",
+    "TERMOSTAATTIIN?"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi talon lämpötilan vartijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "ISÄ TIETÄÄ",
+    "OIKOTIEN.",
+    "AINA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi isälle, joka ajaa omia reittejään. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "EN NUKU.",
+    "LEPUUTAN",
+    "SILMIÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi sohvan päiväunimestarille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "SAMMUTA VALOT.",
+    "SÄHKÖ",
+    "MAKSAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi isälle, joka kiertää illalla sammuttamassa valot. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja eläkeläiselle",
+    "Eläkkeelle jäävälle"
+   ],
+   "rivit": [
+    "ELÄKELÄISEN",
+    "TYÖPÄIVÄ:",
+    "KAHVI, LEHTI,",
+    "PÄIKKÄRIT."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle, jonka päivässä on oikeat prioriteetit. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja isovanhemmalle",
+    "Lahja eläkeläiselle"
+   ],
+   "rivit": [
+    "TÄYSIPÄIVÄINEN",
+    "ISOVANHEMPI"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle, jonka työ on nyt lastenlasten hoitaminen. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja eläkeläiselle",
+    "Eläkkeelle jäävälle"
+   ],
+   "rivit": [
+    "ELÄKELÄINEN.",
+    "ÄLÄ SOITA",
+    "ENNEN KYMMENTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle, jonka aamut ovat pyhiä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja eläkeläiselle",
+    "Eläkkeelle jäävälle"
+   ],
+   "rivit": [
+    "ELÄKKEELLÄ.",
+    "KELLO ON",
+    "VAIN KORU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle ja eläkkeelle jäävälle, joka ei enää katso kelloa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja eläkeläiselle",
+    "Eläkkeelle jäävälle"
+   ],
+   "rivit": [
+    "SUUNNITELMA",
+    "TÄLLE PÄIVÄLLE:",
+    "EI SUUNNITELMAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle ja eläkkeelle jäävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Pikkujoulut",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "KILTTI.",
+    "ENIMMÄKSEEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ja aattoon, kun joulupukki kysyy, onko täällä kilttejä. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Pikkujoulut",
+   "otsikko": "{teksti} | {tuote} pikkujouluihin",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Hauska joulupaita"
+   ],
+   "rivit": [
+    "PIKKUJOULUT.",
+    "MUISTAN",
+    "OSITTAIN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin ja työpaikan juhliin. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "EN NUKU.",
+    "LEPUUTAN",
+    "SILMIÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi sohvan päiväunimestarille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Isänpäivä",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Isänpäivälahja",
+    "Lahja isälle",
+    "Isänpäivä"
+   ],
+   "rivit": [
+    "KUKA KOSKI",
+    "TERMOSTAATTIIN?"
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäiväksi talon lämpötilan vartijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari tehdään tilauksesta."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Eläkeläiset",
+   "otsikko": "{teksti} | {tuote} eläkeläiselle",
+   "tagit": [
+    "Eläkelahja",
+    "Lahja eläkeläiselle",
+    "Eläkkeelle jäävälle"
+   ],
+   "rivit": [
+    "ELÄKKEELLÄ.",
+    "KELLO ON",
+    "VAIN KORU."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} eläkeläiselle ja eläkkeelle jäävälle, joka ei enää katso kelloa. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari tehdään tilauksesta."
+  }
+ ]
+}
