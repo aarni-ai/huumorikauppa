@@ -178,7 +178,9 @@ export default async function handler(req, res) {
   // Printifystä kuluineen kantaan (scripts/lib/eu-kanta.mjs tuoPrintifysta), sitten näkyviin Lovablen slugilla ja hinnalla.
   if (req.query.tehtava === "tuo-aktiiviset") {
     if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
-    const data = JSON.parse(readFileSync(join(euSiirtoKansio() || join(process.cwd(), "data"), "lovable-aktiiviset-2026-10-27.json"), "utf8"));
+    // ?tiedosto=uudet-tuotteet-2026-10-28 (vain data/-hakemiston nimetyt tuontitiedostot), oletus Lovablen lista.
+    const nimi = /^(lovable-aktiiviset|uudet-tuotteet)-\d{4}-\d{2}-\d{2}$/.test(String(req.query.tiedosto || "")) ? req.query.tiedosto : "lovable-aktiiviset-2026-10-27";
+    const data = JSON.parse(readFileSync(join(euSiirtoKansio() || join(process.cwd(), "data"), `${nimi}.json`), "utf8"));
     const { kulutRivi } = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
     const siirrot = lueEuSiirrot(euSiirtoKansio());
     const tulos = [];
