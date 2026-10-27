@@ -17,7 +17,7 @@ import { omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
-import { tarkistaLahjakortti, normalisoiKoodi } from "./_lib/lahjakortti.js";
+import { tarkistaLahjakortti, normalisoiKoodi, onLahjakortti } from "./_lib/lahjakortti.js";
 import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita } from "./_lib/lahjakortti-db.js";
 import { jalkikasittely } from "./_lib/tilaus.js";
 import PAKETIT from "./_lib/paketit-data.js";
@@ -96,6 +96,12 @@ export default async function handler(req, res) {
       console.error("alennuskoodi:", e?.message || e);
       return res.status(200).json({ ok: false, error: "Koodin tarkistus epäonnistui. Yritä hetken kuluttua uudelleen." });
     }
+  }
+
+  // Lahjakortin koodi toimitetaan vain sähköpostilla: myynti vasta, kun oma sähköposti on käytössä (Resend-domain
+  // vahvistettu, SAHKOPOSTI_VAHVISTETTU=1). Muuten ostaja maksaisi saamatta koodia.
+  if (!omaVahvistusKaytossa() && Array.isArray(pyynto?.items) && pyynto.items.some((it) => onLahjakortti(it))) {
+    return res.status(200).json({ ok: false, error: "Lahjakortit eivät ole juuri nyt myynnissä. Poista lahjakortti ostoskorista ja jatka tilausta.", diagnostics: { error_stage: "giftcard_unavailable" } });
   }
 
   if (!onStripe() || !onTietokanta()) {

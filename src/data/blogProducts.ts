@@ -497,7 +497,6 @@ export const DEFAULT_THEME: BlogThemeKey = "tpaidat";
 
 /** Artikkelin slug -> teema. */
 export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
-  "isanpaivalahja-viime-hetkella": "isanpaivaViime",
   "isanpaivalahja-isoisalle": "isanpaivaIsoisa",
   "lahja-ensimmaiseksi-isanpaivaksi": "isanpaivaTuore",
   "pikkujoulujen-lahjapeli": "pikkujouluPeli",

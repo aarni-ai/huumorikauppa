@@ -4,7 +4,7 @@ import path from "path";
 import { blogPosts } from "./blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
-import { sesonkiOppaat2026 } from "./blogSesonki2026";
+import { sesonkiOppaat2026, ODOTTAA_SAHKOPOSTIA } from "./blogSesonki2026";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -165,8 +165,8 @@ describe("blogi: joulun 2026 oppaat", () => {
     for (const post of jouluOppaat2026Lisa) expect(muut.has(post.slug), post.slug).toBe(false);
   });
 
-  it("sesonkioppaita on 8, ne ovat mukana blogPosts-listassa, julkaistu 28.10.2026 ja uusilla slugeilla", () => {
-    expect(sesonkiOppaat2026).toHaveLength(8);
+  it("sesonkioppaita on 8 (7 julkaistu, 1 odottaa sähköpostia), ne ovat mukana blogPosts-listassa, julkaistu 28.10.2026 ja uusilla slugeilla", () => {
+    expect(sesonkiOppaat2026.length + ODOTTAA_SAHKOPOSTIA.size).toBe(8);
     const muut = new Set(blogPosts.filter((p) => !sesonkiOppaat2026.includes(p)).map((p) => p.slug));
     for (const post of sesonkiOppaat2026) {
       expect(blogPosts).toContain(post);

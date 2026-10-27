@@ -122,7 +122,6 @@ const CATEGORIES = [
 
 const BLOG_SLUGS = [
   // 28.10.2026: isänpäivän ja joulun sesonkioppaat (src/data/blogSesonki2026.ts).
-  "isanpaivalahja-viime-hetkella",
   "isanpaivalahja-isoisalle",
   "lahja-ensimmaiseksi-isanpaivaksi",
   "pikkujoulujen-lahjapeli",

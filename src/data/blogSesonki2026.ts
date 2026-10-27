@@ -17,7 +17,7 @@ const JOULU_FAQ = {
 };
 const TOIMITUS = `${TOIMITUSMAKSU_LAUSE} Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
 
-export const sesonkiOppaat2026: BlogPost[] = [
+const kaikkiSesonkiOppaat: BlogPost[] = [
   // 1 Isänpäivälahja viime hetkellä ───────────────────────────────────────────
   {
     slug: "isanpaivalahja-viime-hetkella",
@@ -245,7 +245,7 @@ Isänpäivän jälkeen joulu tulee nopeasti. Jos isoisä ilahtuu isänpäivän p
 
 ## Kun lahjan pitää olla perillä isänpäivänä
 
-Tuotteemme painetaan tilauksesta painokumppaneillamme. Tarkista ajantasainen tilausaikataulu sivulta [isänpäivälahjat](/isanpaivalahja). Jos aikaa on vähän, lue opas [isänpäivälahja viime hetkellä](/blogi/isanpaivalahja-viime-hetkella).
+Tuotteemme painetaan tilauksesta painokumppaneillamme. Tarkista ajantasainen tilausaikataulu sivulta [isänpäivälahjat](/isanpaivalahja).
 
 ${TOIMITUS} Kun tilaat isänpäivälahjan isoisälle ja isälle samalla kertaa, toimitusmaksu maksetaan vain kerran.`,
     faq: [
@@ -373,7 +373,7 @@ Jos myös isovanhemmat haluavat muistaa tuoretta isää, sopikaa lahjoista yhdes
 
 ## Tilaus ja toimitus
 
-Tuotteemme painetaan tilauksesta painokumppaneillamme. Tarkista isänpäivän ajantasainen tilausaikataulu sivulta [isänpäivälahjat](/isanpaivalahja). Jos aikaa on vähän, lue opas [isänpäivälahja viime hetkellä](/blogi/isanpaivalahja-viime-hetkella).
+Tuotteemme painetaan tilauksesta painokumppaneillamme. Tarkista isänpäivän ajantasainen tilausaikataulu sivulta [isänpäivälahjat](/isanpaivalahja).
 
 ${TOIMITUS} Lisää ideoita vauvaperheelle löydät oppaasta [lahja tuoreille vanhemmille](/blogi/lahja-tuoreille-vanhemmille).`,
     faq: [
@@ -1013,3 +1013,14 @@ Hinnat näet tuotekorteista. ${TOIMITUS} Tuotteemme painetaan tilauksesta painok
     ],
   },
 ];
+
+/**
+ * Julkaistavat. "Isänpäivälahja viime hetkellä" suosittelee lahjakorttia, jonka koodi lähtee sähköpostilla heti
+ * maksun jälkeen. Se pidetään poissa, kunnes oma sähköposti on käytössä (Resend-domain vahvistettu,
+ * SAHKOPOSTI_VAHVISTETTU=1, ja lahjakorttien myynti avautuu kassalla). Palautus: poista suodatin, lisää slug
+ * takaisin api/sitemap.js-tiedostoon ja tuoteteema `"isanpaivalahja-viime-hetkella": "isanpaivaViime"`
+ * src/data/blogProducts.ts:n karttaan.
+ */
+export const ODOTTAA_SAHKOPOSTIA = new Set(["isanpaivalahja-viime-hetkella"]);
+export const sesonkiOppaat2026: BlogPost[] = kaikkiSesonkiOppaat.filter((p) => !ODOTTAA_SAHKOPOSTIA.has(p.slug));
+
