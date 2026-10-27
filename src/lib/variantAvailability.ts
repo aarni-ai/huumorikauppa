@@ -13,6 +13,7 @@
  * koska JSON-import ei käänny Vercelin middleware-buildissa. Vain suhteelliset importit .js-päätteellä.
  */
 import { SAATAVUUS_DATA as saatavuusData } from "../../api/_lib/printify-saatavuus.js";
+import { LOVABLE_KASSA_TAPPIO } from "../../api/_lib/lovable-kassa-tappio.js";
 
 export interface SaatavuusTuote {
   unavailable: string[];
@@ -91,7 +92,22 @@ export function createAvailability(data: SaatavuusData) {
   return { isVariantAvailable, availableSizes, availableColors, hasAvailableVariant, isFullyUnavailable };
 }
 
-const oletus = createAvailability(saatavuusData as SaatavuusData);
+/** Lisää tuotteille valmistettavista poissuljettavat yhdistelmät (slug -> ["Väri|Koko"]). */
+export function lisaaPoissuljetut(data: SaatavuusData, lisa: Record<string, readonly string[]>): SaatavuusData {
+  const products: Record<string, SaatavuusTuote> = { ...(data?.products ?? {}) };
+  for (const [slug, avaimet] of Object.entries(lisa)) {
+    const vanha = products[slug];
+    products[slug] = { ...vanha, unavailable: [...new Set([...(vanha?.unavailable ?? []), ...avaimet])] };
+  }
+  return { ...data, products };
+}
+
+/** Printify-saatavuus sellaisenaan (scripts/live-kassa-tappiot.ts laskee tällä, ettei oma tulos vaikuta). */
+export const perusSaatavuus = createAvailability(saatavuusData as SaatavuusData);
+
+// Lovablen kassan (3,90 € / ilmainen 60 eurosta) yksinäänkin tappiolliset variantit piilotetaan, kunnes oma kassa on
+// käytössä (api/_lib/lovable-kassa-tappio.js, oma-tausta-haarassa tyhjä).
+const oletus = createAvailability(lisaaPoissuljetut(saatavuusData as SaatavuusData, LOVABLE_KASSA_TAPPIO));
 
 export const isVariantAvailable = oletus.isVariantAvailable;
 export const availableSizes = oletus.availableSizes;

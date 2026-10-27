@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { Product } from "@/types/product";
 import { valitseLisatarra } from "./lisatarra";
+
+// Valintalogiikka ilman Lovablen kassan tappiopiilotusta (mainissa tarra on piilossa, kunnes oma kassa on käytössä).
+vi.mock("../../api/_lib/lovable-kassa-tappio.js", () => ({ LOVABLE_KASSA_TAPPIO: {} }));
 
 const tuote = (o: Partial<Product>): Product =>
   ({
