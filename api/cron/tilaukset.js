@@ -160,8 +160,10 @@ export default async function handler(req, res) {
     }
     if (!kuiva) {
       const v = vahvistusViesti(t);
-      const r = await laheta({ to: OMISTAJA(), ...v, subject: `[KÄYTTÖÖNOTTOTESTI] ${v.subject}` });
-      tulos.resend = { lahetetty: r.ok, vastaanottaja: OMISTAJA(), virhe: r.ok ? null : r.virhe };
+      // ?vastaanottaja=huumorikauppa: kaupan oma osoite; muuten OMISTAJA_EMAIL. Ei muita osoitteita.
+      const vastaanottaja = req.query.vastaanottaja === "huumorikauppa" ? "huumorikauppa@gmail.com" : OMISTAJA();
+      const r = await laheta({ to: vastaanottaja, ...v, subject: `[KÄYTTÖÖNOTTOTESTI] ${v.subject}` });
+      tulos.resend = { lahetetty: r.ok, vastaanottaja, virhe: r.ok ? null : r.virhe };
       await new Promise((ok) => setTimeout(ok, 8000));
     }
     for (const x of tilaukset) {

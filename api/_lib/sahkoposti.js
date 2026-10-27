@@ -7,6 +7,11 @@ import { yritystiedot, postiosoite } from "./yritys.js";
 
 export const OMISTAJA = () => process.env.OMISTAJA_EMAIL || "huumorikauppa@gmail.com";
 export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
+/**
+ * Oma tilausvahvistus korvaa Stripen kuitin vasta, kun Resend-domain on vahvistettu (DNS) ja Vercelissä on
+ * SAHKOPOSTI_VAHVISTETTU=1. Siihen asti kassa pyytää Stripen kuitin (api/checkout.js receipt_email).
+ */
+export const omaVahvistusKaytossa = () => onSahkoposti() && process.env.SAHKOPOSTI_VAHVISTETTU === "1";
 
 /** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
 export async function laheta({ to, subject, html, text, replyTo, headers }) {
