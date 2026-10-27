@@ -7,7 +7,8 @@ import { onPiilotettu } from "@/lib/hiddenCategories";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { footerGiftLinks } from "@/config/internalLinks";
-import { PaymentIcons, PAYMENT_METHODS_TEXT } from "@/components/PaymentIcons";
+import { PaymentIcons } from "@/components/PaymentIcons";
+import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { ORGANIZATION } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { onMarketingConsent, openConsentSettings } from "@/lib/consent";
@@ -23,7 +24,6 @@ export function Footer() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     let cancelled = false;
-    let stopWaiting: (() => void) | undefined;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const start = () => {
       timer = setTimeout(() => {
@@ -33,7 +33,7 @@ export function Footer() {
         else loadWidget();
       }, 3000);
     };
-    stopWaiting = onMarketingConsent(() => {
+    const stopWaiting = onMarketingConsent(() => {
       if (document.readyState === "complete") start();
       else window.addEventListener("load", start, { once: true });
     });
@@ -78,7 +78,9 @@ export function Footer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "alatunniste" }),
       });
-    } catch {}
+    } catch {
+      // Tilaus näytetään onnistuneena myös verkkovirheessä (sama kuin ennen).
+    }
     setFooterSubmitted(true);
     toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
   };
@@ -91,7 +93,7 @@ export function Footer() {
           {[
             { icon: Truck,    label: "Ilmainen toimitus",    sub: `Vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin` },
             { icon: RotateCcw, label: "14 pv palautusoikeus", sub: "Ei koske personoituja tuotteita" },
-            { icon: Shield,   label: "Korttimaksu",          sub: PAYMENT_METHODS_TEXT },
+            { icon: Shield,   label: "Turvallinen maksu",    sub: PAYMENT_METHODS_TEXT },
             { icon: Flag,     label: "Kotimainen kauppa",    sub: `${ORGANIZATION.addressLocality} · Y-tunnus ${ORGANIZATION.legalId}` },
           ].map(({ icon: Icon, label, sub }) => (
             <div key={label} className="flex items-start gap-3">
@@ -220,7 +222,7 @@ export function Footer() {
             </nav>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Korttimaksu:</span>
+            <span>Maksutavat:</span>
             <PaymentIcons iconClassName="h-5 w-auto" />
           </div>
         </div>

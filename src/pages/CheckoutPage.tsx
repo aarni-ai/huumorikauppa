@@ -15,6 +15,7 @@ import { trackBeginCheckout } from "@/lib/analytics";
 import { useProducts } from "@/hooks/use-products";
 import { toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { PaymentIcons } from "@/components/PaymentIcons";
+import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 type Step = "details" | "shipping" | "payment";
@@ -178,9 +179,9 @@ const CheckoutPage = () => {
       } else {
         throw new Error("Stripe-sessiota ei voitu luoda");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Payment error:", err);
-      toast({ title: "Maksun aloitus epäonnistui", description: err.message, variant: "destructive" });
+      toast({ title: "Maksun aloitus epäonnistui", description: err instanceof Error ? err.message : String(err), variant: "destructive" });
     } finally {
       setIsProcessing(false);
     }
@@ -420,7 +421,7 @@ const CheckoutPage = () => {
               <div className="bg-muted/50 border border-border rounded-lg p-6 text-center space-y-4">
                 <Lock className="h-10 w-10 text-primary mx-auto" />
                 <p className="text-sm text-muted-foreground">
-                  Sinut ohjataan Stripen maksusivulle. Voit maksaa Visa- tai Mastercard-kortilla.
+                  Sinut ohjataan Stripen suojatulle maksusivulle. Maksutavat: {PAYMENT_METHODS_TEXT}.
                 </p>
                 <PaymentIcons className="justify-center" />
                 <Button 
