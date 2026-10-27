@@ -5,6 +5,7 @@
 import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { landingPages } from "./landingPages";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
+import { jouluLause } from "./tilauspaivat";
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
 
@@ -13,10 +14,10 @@ export const christmasDeadlinePage = {
   name: "Joulun viimeiset tilauspäivät",
   title: "Joulun viimeiset tilauspäivät 2026 | Huumorikauppa",
   description:
-    "Tilaa viimeistään pe 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Näin päivä on laskettu ja mitä sen jälkeen tapahtuu.",
+    `${jouluLause()} Näin tilauspäivä on laskettu ja mitä sen jälkeen tapahtuu.`,
   h1: "Joulun viimeiset tilauspäivät 2026",
   intro: [
-    `${D} Päivä koskee kaikkia Huumorikaupan tuotteita, myös personoituja.`,
+    `${D} Viimeinen tilauspäivä koskee kaikkia Huumorikaupan tuotteita, myös personoituja.`,
     "Tuotteemme painetaan vasta tilauksen jälkeen, joten joulutilauksen takaraja on aikaisemmin kuin kaupoissa, jotka lähettävät valmiita tuotteita omasta varastostaan.",
   ],
   sections: [
@@ -24,14 +25,14 @@ export const christmasDeadlinePage = {
       heading: "Miksi viimeinen tilauspäivä on jo marraskuussa?",
       paragraphs: [
         "Huumorikaupan tuotteita ei ole valmiina varastossa. Jokainen paita, huppari ja muu tuote painetaan tilauksen jälkeen painokumppaneidemme tuotantolaitoksissa Suomen ulkopuolella, ja valmis tuote kuljetetaan sieltä Suomeen. Toimitusaikaan kuuluu siis sekä painaminen että kuljetus.",
-        "Painokumppanien ilmoittamat tuotantoajat ovat 2-6 arkipäivää. Päivämäärä 20.11.2026 on laskettu painokumppanien edellisen joulun viimeisistä suositelluista tilauspäivistä Eurooppaan, ja niistä on vähennetty viikko Suomeen tulevaa kuljetusta varten. Joulun alla paketteja kulkee tavallista enemmän, ja tämä varaus kattaa sen.",
+        "Painokumppanien ilmoittamat tuotantoajat ovat 2-6 arkipäivää. Viimeinen tilauspäivä on laskettu painokumppanien edellisen joulun viimeisistä suositelluista tilauspäivistä Eurooppaan, ja niistä on vähennetty viikko Suomeen tulevaa kuljetusta varten. Joulun alla paketteja kulkee tavallista enemmän, ja tämä varaus kattaa sen.",
         "Tuotteitamme painetaan useammassa painotalossa. Valitsimme päivän, joka riittää myös niistä hitaimmalle, joten sama päivä koskee kaikkia tuotteita.",
       ],
     },
     {
-      heading: "Mitä tapahtuu 20.11.2026 jälkeen?",
+      heading: "Mitä tapahtuu viimeisen tilauspäivän jälkeen?",
       paragraphs: [
-        "Tilauksia otetaan vastaan normaalisti myös 20.11.2026 jälkeen, ja ne painetaan ja toimitetaan tavalliseen tapaan. Emme kuitenkaan lupaa, että 20.11.2026 jälkeen tehty tilaus on perillä jouluaattoon mennessä.",
+        "Tilauksia otetaan vastaan normaalisti myös viimeisen tilauspäivän jälkeen, ja ne painetaan ja toimitetaan tavalliseen tapaan. Emme kuitenkaan lupaa, että viimeisen tilauspäivän jälkeen tehty tilaus on perillä jouluaattoon mennessä.",
       ],
     },
   ],
@@ -42,7 +43,7 @@ export const christmasDeadlinePage = {
       a: "Koskee. Sama päivä on voimassa kaikille tuotteille, myös personoiduille Oma teksti/kuva -tuotteille.",
     },
     {
-      q: "Voinko tilata vielä 20.11.2026 jälkeen?",
+      q: "Voinko tilata vielä viimeisen tilauspäivän jälkeen?",
       a: "Voit. Tilaukset käsitellään normaalisti, mutta toimitusta jouluaattoon mennessä emme lupaa.",
     },
     {

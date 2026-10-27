@@ -1,5 +1,6 @@
 import { BlogPost } from "@/types/blog";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU, TOIMITUSMAKSU_TEKSTI, euroluku } from "@/config/toimitus";
+import { jouluLause, jouluOpasMeta, jouluOpasIngressi } from "./tilauspaivat";
 
 /**
  * Joulusesongin 2026 lahjaoppaat (julkaistu 21.10.2026).
@@ -125,12 +126,12 @@ Talvella huppari on usein t-paitaa käytännöllisempi joululahja, koska sitä k
 
 Tätä kirjoitettaessa t-paidat maksavat 24,90 € ja hupparit 49,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
-Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. ${jouluLause()} Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
       { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa 24,90 € ja huppari 49,90 € tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
       { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
-      { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneillamme." },
+      { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
   },
 
@@ -253,12 +254,12 @@ Kun nämä kuusi asiaa ovat kunnossa, lahja toimii riippumatta siitä, kenelle s
 
 ## Tilaa ajoissa
 
-Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
+Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. ${jouluLause()} Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
     faq: [
       { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: "Alle 20 eurolla toimii kuusenkoriste omalla kuvalla (19,90 €), koska siinä ei ole kokoa. Se sopii myös saajalle, jota et tunne hyvin." },
       { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: `Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa.` },
       { q: "Onko t-paita hyvä pikkujoululahja?", a: "T-paita on hyvä pikkujoululahja, jos tiedät saajan koon ja hintaraja on vähintään 25 euroa. Jos kokoa ei tiedä, koriste on turvallisempi valinta." },
-      { q: "Milloin pikkujoululahja pitää tilata?", a: "Tilaa heti, kun tiedät saajan, koska tuotteet painetaan tilauksesta. Jouluaattoon mennessä lupaamme toimituksen tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026." },
+      { q: "Milloin pikkujoululahja pitää tilata?", a: `Tilaa heti, kun tiedät saajan, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
     ],
   },
 
@@ -369,14 +370,14 @@ Miehelle, jolla on kaikki, toimii lahja, jota hän ei ostaisi itse. Etsi vuoden 
 
 ## Tilaa ajoissa
 
-Personoidut tuotteet ja muut tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
+Personoidut tuotteet ja muut tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
 
 Jos haluat lisää ideoita, selaa [hauskat lahjat miehelle](/hauskat-lahjat-miehelle) tai lue oppaamme [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea). Valmiita jouluideoita löydät myös sivulta [joululahjat miehelle](/lahjat/joululahjaksi-miehelle).`,
     faq: [
       { q: "Mitä ostaa miehelle, jolla on jo kaikkea?", a: "Osta jotain, mitä hän ei ostaisi itselleen: personoitu lahja, sisäpiirin vitsi tai yhteinen muisto omana kuvana. Tarvelahjat hän on jo ostanut itse." },
       { q: "Onko personoitu lahja hyvä valinta miehelle, jolla on kaikki?", a: "Personoitu lahja on hyvä valinta, koska sitä ei ole kenelläkään muulla. Oma teksti tai kuva paidassa, hupparissa tai koristeessa tekee tuotteesta ainutlaatuisen." },
       { q: "Mitä vitsejä kannattaa välttää lahjassa?", a: "Vältä vitsejä hänen arasta aiheestaan, kuten iästä, painosta tai hiusrajasta, jos hän ei itse naura niille. Valitse vitsi, jonka hän kertoisi itsekin." },
-      { q: "Ehtiikö personoitu lahja jouluksi?", a: "Personoitu lahja ehtii jouluaattoon, kun tilaat viimeistään perjantaina 20.11.2026. Tuotteet painetaan tilauksesta painokumppaneillamme." },
+      { q: "Ehtiikö personoitu lahja jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
   },
 
@@ -497,14 +498,14 @@ Näillä eväillä eläkelahja naurattaa juhlissa ja lämmittää vielä pitkä�
 
 ## Eläkejuhlat joulun alla
 
-Moni jää eläkkeelle vuoden vaihteessa, jolloin eläkejuhlat ja pikkujoulut osuvat samoille viikoille. Silloin aikataulu kiristyy. Kaikki tuotteet painetaan tilauksesta painokumppaneillamme, joten tilaa heti, kun juhlapäivä on tiedossa. Jos juhlat ovat lähellä joulua, lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026.
+Moni jää eläkkeelle vuoden vaihteessa, jolloin eläkejuhlat ja pikkujoulut osuvat samoille viikoille. Silloin aikataulu kiristyy. Kaikki tuotteet painetaan tilauksesta painokumppaneillamme, joten tilaa heti, kun juhlapäivä on tiedossa. ${jouluLause()}
 
 Eläkeläiselle sopivia lahjoja ikävuosien mukaan löydät sivuilta [lahja 60-vuotiaalle miehelle](/lahjat/60-vuotiaalle-miehelle), [lahja 60-vuotiaalle naiselle](/lahjat/60-vuotiaalle-naiselle) ja [lahja 70-vuotiaalle](/lahjat/70-vuotiaalle). Koko valikoima on koottu sivulle [eläkelahjat](/elakelahjat), ja lisää vinkkejä saat oppaasta [hauskimmat eläkelahjat](/blogi/hauskimmat-elakelahjat-selviytymisopas).`,
     faq: [
       { q: "Mikä on hauska eläkelahja?", a: "Hauska eläkelahja juhlii vapautta tai työuraa, ei ikää. Esimerkiksi paita tekstillä \"Eläkeläinen, aamuherätys vapaaehtoinen\" naurattaa ja on käytössä myös juhlien jälkeen." },
       { q: "Paljonko eläkelahjaan kannattaa laittaa rahaa?", a: "Työyhteisön yhteislahjassa 5-10 euroa per henkilö on tavallinen summa. Kymmenen hengen tiimi kokoaa silloin 50-100 euroa, ja kymmenen euron osuuksilla summa riittää esimerkiksi hupparin ja koristeen yhdistelmään." },
       { q: "Sopiiko eläkelahjaksi ikävitsi?", a: "Ikävitsi sopii vain, jos tunnet saajan hyvin ja tiedät hänen nauravan sille itse. Varmempi valinta on vitsi vapaudesta, työurasta tai tulevista harrastuksista." },
-      { q: "Kuinka ajoissa eläkelahja pitää tilata?", a: "Tilaa heti, kun juhlapäivä on tiedossa, koska tuotteet painetaan tilauksesta. Joulun alla lupaamme toimituksen jouluaattoon tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026." },
+      { q: "Kuinka ajoissa eläkelahja pitää tilata?", a: `Tilaa heti, kun juhlapäivä on tiedossa, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
     ],
   },
 
@@ -641,7 +642,7 @@ Kun nämä ovat kunnossa, lahja ilahduttaa eikä aiheuta kenellekään paineita 
 - **Paketoi neutraalisti:** Työpaikalla lahjat avataan usein yhdessä, joten paketin ei tarvitse olla näyttävä, mutta siistin kannattaa olla.
 - **Lisää kortti:** Kaksi lausetta siitä, miksi valitsit juuri tämän lahjan, tekee pienestäkin lahjasta henkilökohtaisen.
 - **Tilaa yhdessä:** Jos useampi kollega ostaa samasta kaupasta, yksi tilaus säästää toimituskulut. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
-- **Tilaa ajoissa:** Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026.
+- **Tilaa ajoissa:** Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()}
 
 Lisää ideoita löydät sivuilta [joululahja työkaverille](/joululahja-tyokaverille), [lahja kollegalle](/lahjat/kollegalle) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
     faq: [
@@ -778,14 +779,14 @@ Isän kokoa ei kannata kysyä suoraan, jos lahja on yllätys. Kysy sen sijaan ä
 
 ## Tilaa ajoissa
 
-Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos haluat antaa sekä isänpäivä- että joululahjan, tilaa ne samalla kertaa hyvissä ajoin ennen isänpäivää. Joululahjoille lupaamme toimituksen jouluaattoon mennessä, kun tilaus on tehty viimeistään perjantaina 20.11.2026.
+Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos haluat antaa sekä isänpäivä- että joululahjan, tilaa ne samalla kertaa hyvissä ajoin ennen isänpäivää. ${jouluLause()}
 
 Lisää valmiita ideoita löydät sivuilta [isänpäivän lahjaideat](/isanpaivalahja), [joululahjat miehelle](/lahjat/joululahjaksi-miehelle) ja [hupparit](/kategoria/hupparit).`,
     faq: [
       { q: "Mikä on hauska joululahja isälle?", a: "Hauska joululahja isälle liittyy hänen rooliinsa perheessä tai harrastukseensa. Esimerkiksi korjaajaisälle sopii \"Jos iskä ei osaa korjata sitä\" -huppari ja grillaajalle grillimestarin paita." },
       { q: "Miten sovitan isänpäivä- ja joululahjan yhteen?", a: "Anna isänpäivänä kevyt ja hauska lahja ja jouluna henkilökohtainen, esimerkiksi personoitu tuote perheen kuvalla. Isänpäivä on vuonna 2026 sunnuntaina 8.11." },
       { q: "Voiko lapsen piirustuksen painaa paitaan?", a: "Lapsen piirustuksen voi painaa paitaan omalla kuvalla painettavana tuotteena. Kuvaa piirustus päivänvalossa suoraan ylhäältä ja lataa kuva tuotesivulla." },
-      { q: "Milloin joululahja isälle pitää tilata?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon mennessä. Jos ostat myös isänpäivälahjan, tilaa molemmat samalla kertaa ennen isänpäivää." },
+      { q: "Milloin joululahja isälle pitää tilata?", a: `${jouluLause()} Jos ostat myös isänpäivälahjan, tilaa molemmat samalla kertaa ennen isänpäivää.` },
     ],
   },
 
@@ -892,7 +893,7 @@ Noppapelissä toivelistoista ei ole hyötyä, koska lahja voi päätyä kenelle 
 
 ## Järjestäjän aikataulu
 
-Järjestäjän tärkeä tehtävä on pitää aikataulu sellaisena, että verkosta tilatut lahjat ehtivät perille. Tee arvonta hyvissä ajoin ennen marraskuun loppua ja kerro osallistujille, että Huumorikaupasta tilatuille lahjoille luvataan toimitus jouluaattoon mennessä, kun ne on tilattu viimeistään perjantaina 20.11.2026. Jos lahjat avataan jo ennen joulua, muistuta osallistujia tilaamaan heti arvonnan jälkeen.
+Järjestäjän tärkeä tehtävä on pitää aikataulu sellaisena, että verkosta tilatut lahjat ehtivät perille. ${jouluLause()} Jos lahjat avataan jo ennen joulua, muistuta osallistujia tilaamaan heti arvonnan jälkeen.
 
 ## Kun joku jää pois
 
@@ -912,7 +913,7 @@ Salaisen joulupukin lahja menee joskus ohi: koko on väärä tai saajalla on sam
 
 ## Tilaa ajoissa
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Jos lahjojen avaus on jo marraskuun lopussa tai joulukuun alussa, tilaa heti arvonnan jälkeen. Lisää ideoita porukan juhliin löydät sivuilta [pikkujoululahjat](/lahjat/pikkujouluihin) ja [lahja kaverille](/lahja-kaverille).`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Jos lahjojen avaus on jo marraskuun lopussa tai joulukuun alussa, tilaa heti arvonnan jälkeen. Lisää ideoita porukan juhliin löydät sivuilta [pikkujoululahjat](/lahjat/pikkujouluihin) ja [lahja kaverille](/lahja-kaverille).`,
     faq: [
       { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: "10 euron budjetti on Huumorikaupassa tiukka. Nosta summa 20 euroon, niin kuusenkoriste omalla kuvalla (19,90 €) mahtuu mukaan. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin." },
       { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: "Kahdellakymmenellä eurolla saat kuusenkoristeen omalla tekstillä tai kuvalla (19,90 €). Se on lahja, joka otetaan esiin joka joulu uudelleen." },
@@ -1042,12 +1043,12 @@ Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat k
 
 ## Tilaa ajoissa
 
-Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen. Lisää ideoita nuorille löydät oppaasta [hauskat lahjat teinipojalle ja -tytölle](/blogi/hauskat-lahjat-teinipojalle-ja-tytolle).`,
+Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen. Lisää ideoita nuorille löydät oppaasta [hauskat lahjat teinipojalle ja -tytölle](/blogi/hauskat-lahjat-teinipojalle-ja-tytolle).`,
     faq: [
       { q: "Mikä on hauska joululahja teinille?", a: "Hauska joululahja teinille liittyy hänen omaan harrastukseensa tai tyyliinsä, esimerkiksi pelaajalle pelaajahuumoria ja lumilautailijalle rinnehuumoria. Huumorin pitää olla nuoren, ei aikuisen." },
       { q: "Millaista huumoria teinin lahjassa kannattaa välttää?", a: "Vältä vitsejä teinistä itsestään, kuten huoneen siivouksesta tai aamuheräämisestä. Jätä pois myös alkoholi- ja aikuishuumori." },
       { q: "Voiko teinille antaa oman tekstin hupparin?", a: "Oman tekstin huppari on hyvä teinin lahja, kun teksti tulee nuoren omasta maailmasta. Voit kysyä tekstiä ovelasti etukäteen tai antaa suunnittelun lahjaksi ja tilata hupparin yhdessä joulun jälkeen." },
-      { q: "Milloin teinin joululahja pitää tilata?", a: "Tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneillamme." },
+      { q: "Milloin teinin joululahja pitää tilata?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
   },
 
@@ -1155,7 +1156,7 @@ Kalastus-, metsästys- ja mökkiporukat tilaavat usein useamman paidan kerralla,
 
 ## Tilaa ajoissa
 
-Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026.`,
+Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()}`,
     faq: [
       { q: "Mitä ostaa kalastajalle lahjaksi, jos en tunne kalastusta?", a: "Osta kalastusaiheinen paita tai huppari välineen sijaan. Kalastaja ostaa vieheet ja vavat mieluiten itse, mutta hauska paita kalastuksesta ei kilpaile hänen varusteidensa kanssa." },
       { q: "Mikä on hyvä lahja metsästäjälle?", a: "Hyvä lahja metsästäjälle kunnioittaa jahdin tunnelmaa, kuten \"Ei ole kiire, olen metsässä\" -huppari. Jahtiporukalle sopii yhteinen paita, jossa on seuran nimi ja vuosiluku." },
@@ -1169,16 +1170,16 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. Lupaamme toimituksen joulua
     slug: "joululahjan-viimeiset-tilauspaivat-2026",
     title: "Joululahjan ajoitus 2026: viimeinen tilauspäivä ja näin paketti ehtii perille",
     metaTitle: "Joululahjan viimeinen tilauspäivä 2026 | Huumorikauppa",
-    metaDescription: "Joululahjat 2026: tilaa viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon. Näin suunnittelet tilauksen ja palautukset.",
-    excerpt: "Tilaa joululahjat viimeistään perjantaina 20.11.2026, niin lupaamme toimituksen jouluaattoon. Näin suunnittelet lahjat, koot ja palautukset ajoissa.",
+    metaDescription: jouluOpasMeta(),
+    excerpt: jouluOpasIngressi(),
     publishedAt: "2026-10-21",
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["joululahjan viimeinen tilauspäivä", "joululahjat ajoissa", "joulutoimitus", "joululahjat", "joulu 2026"],
     relatedCategories: ["t-paidat", "hupparit"],
-    content: `## Lyhyesti: tilaa viimeistään perjantaina 20.11.2026
+    content: `## Lyhyesti: joulun viimeinen tilauspäivä
 
-Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään perjantaina 20.11.2026. Jouluaatto on vuonna 2026 torstai 24.12.
+${jouluLause()} Jouluaatto on vuonna 2026 torstai 24.12.
 
 Tämä päivämäärä on aikaisempi kuin moni odottaa. Alla kerromme, miksi se on marraskuussa, miten suunnittelet joululahjat niin, että ehdit hyvin, ja mitä kannattaa tietää koosta ja palautuksista, kun lahja saapuu viikkoja ennen joulua.
 
@@ -1186,7 +1187,7 @@ Tämä päivämäärä on aikaisempi kuin moni odottaa. Alla kerromme, miksi se 
 
 Huumorikaupan tuotteita ei lähetetä varastohyllystä. Jokainen tuote painetaan tilauksesta painokumppaneillamme, ja vasta painamisen jälkeen se lähtee matkaan. Tämä tarkoittaa, että toimitusaikaan kuuluu kaksi vaihetta: painaminen ja kuljetus.
 
-Joulun alla molemmat vaiheet ruuhkautuvat. Painotaloihin tulee sesongin aikana enemmän tilauksia kuin muuna aikana vuodesta, ja kuljetusyhtiöiden pakettimäärät kasvavat samaan aikaan. Siksi lupaamme toimituksen jouluaattoon vain tilauksille, jotka on tehty viimeistään 20.11.2026. Päivämäärä on valittu niin, että lupaus pitää.
+Joulun alla molemmat vaiheet ruuhkautuvat. Painotaloihin tulee sesongin aikana enemmän tilauksia kuin muuna aikana vuodesta, ja kuljetusyhtiöiden pakettimäärät kasvavat samaan aikaan. Siksi lupaamme toimituksen jouluaattoon vain ajoissa tehdyille tilauksille. Viimeinen tilauspäivä on valittu niin, että lupaus pitää.
 
 Painaminen tilauksesta on myös syy siihen, miksi valikoimassa voi olla satoja eri tekstejä ja omalla kuvalla personoitavia tuotteita: mitään ei tarvitse valmistaa etukäteen varastoon.
 
@@ -1212,7 +1213,7 @@ Kun lista on valmis, tee kaikki tilaukset kerralla. Se säästää aikaa ja raha
 
 Personoitu tuote on hyvä joululahja, koska samaa ei ole kenelläkään muulla. Vaihtoehtoja ovat esimerkiksi [t-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita), [huppari omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-huppari) ja [kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste).
 
-Personoidussa lahjassa suunnitteluun kuluu oma aikansa: kuvan etsiminen, tekstin miettiminen ja tarkistaminen. Varaa tähän aikaa ennen viimeistä tilauspäivää, äläkä jätä suunnittelua perjantaille 20.11.
+Personoidussa lahjassa suunnitteluun kuluu oma aikansa: kuvan etsiminen, tekstin miettiminen ja tarkistaminen. Varaa tähän aikaa ennen viimeistä tilauspäivää, äläkä jätä suunnittelua viimeiselle päivälle.
 
 ## Kun paketti saapuu: tarkista heti
 
@@ -1226,9 +1227,9 @@ Jos paketti saapuu marraskuun lopussa ja lahja avataan vasta jouluaattona, 14 p�
 
 Palautusehtojen mukaan asiakas vastaa palautuksen postikuluista, ellei tuote ole virheellinen tai väärin toimitettu. Virheellisen tuotteen palautuskulut korvataan.
 
-## Jos 20.11. meni jo
+## Jos viimeinen tilauspäivä meni jo
 
-Toimituslupauksemme jouluaattoon koskee tilauksia, jotka on tehty viimeistään perjantaina 20.11.2026. Jos huomaat tämän vasta myöhemmin, sinulla on silti vaihtoehtoja:
+Toimituslupauksemme jouluaattoon koskee vain ajoissa tehtyjä tilauksia. Jos huomaat tämän vasta myöhemmin, sinulla on silti vaihtoehtoja:
 
 - **Lahjalupaus kuusen alle:** Tulosta kuva valitsemastasi tuotteesta korttiin ja kirjoita siihen, että lahja on tulossa. Moni pitää tätä yhtä hauskana kuin valmista pakettia, erityisesti jos tuote on personoitu.
 - **Lahja välipäiville tai uudelle vuodelle:** Kaikkien lahjojen ei tarvitse olla kuusen alla aattona. Uudenvuoden juhliin tai tammikuun synttäreille tilattu lahja on yhtä lailla mieluinen.
@@ -1246,7 +1247,7 @@ Kun lahjalista on pitkä, kaikkea ei tarvitse tilata samana päivänä. Prioriso
 - **Sitten personoidut tuotteet:** Niiden suunnitteluun kuluu oma aikansa. Tekstien ja kuvien pitää olla valmiina ennen tilausta.
 - **Lopuksi pienet lisälahjat:** Koristeet ja muut pienet tuotteet on helppo lisätä samaan ostoskoriin viimeisenä.
 
-Kun ostoskorissa ovat kaikki listan lahjat, tee yksi tilaus viimeistään perjantaina 20.11.2026.
+Kun ostoskorissa ovat kaikki listan lahjat, tee yksi tilaus ennen viimeistä tilauspäivää.
 
 ## Esimerkkiaikataulu
 
@@ -1254,7 +1255,7 @@ Näin aikataulu toimii käytännössä, kun tavoitteena on, että kaikki lahjat 
 
 - **Lokakuu:** Tee lahjalista ja kirjaa jokaisen viereen kuvaava sana. Selaa ideoita rauhassa.
 - **Marraskuun alku:** Selvitä vaatekoot ja kirjoita personoitujen tuotteiden tekstit valmiiksi. Kerää kuvat, joita haluat käyttää.
-- **Viimeistään perjantaina 20.11.2026:** Tee tilaus. Mitä aikaisemmin tilaat, sitä enemmän aikaa jää tarkistamiselle.
+- **Viimeisenä tilauspäivänä:** Tee tilaus. Mitä aikaisemmin tilaat, sitä enemmän aikaa jää tarkistamiselle.
 - **Kun paketti saapuu:** Avaa ja tarkista heti. Paketoi lahjat vasta sen jälkeen.
 
 ## Tarkista tilaus ennen maksamista
@@ -1287,17 +1288,17 @@ Kun lahja on menossa toiselle paikkakunnalle, varaa aikaa myös sen viemiseen ta
 - Tee lahjalista ja kirjoita jokaiselle yksi kuvaava sana.
 - Selvitä vaatekoot ja tarkista saatavilla olevat koot tuotesivun kokoavusta.
 - Kirjoita personoitujen lahjojen tekstit valmiiksi ja tarkista ne.
-- Tee kaikki tilaukset kerralla, viimeistään perjantaina 20.11.2026.
+- Tee kaikki tilaukset kerralla, ennen viimeistä tilauspäivää.
 - Avaa paketti heti saapumisen jälkeen ja tarkista sisältö.
 - Paketoi lahjat vasta tarkistuksen jälkeen.
 
 Toimitusehdot kokonaisuudessaan löydät sivulta [toimitusehdot](/toimitusehdot), ja vastauksia muihin kysymyksiin sivulta [usein kysytyt kysymykset](/usein-kysytyt-kysymykset). Kaikki tuotteet ovat sivulla [kaikki tuotteet](/kaikki-tuotteet).`,
     faq: [
-      { q: "Mikä on joululahjojen viimeinen tilauspäivä 2026?", a: "Viimeinen tilauspäivä on perjantai 20.11.2026. Lupaamme toimituksen jouluaattoon mennessä tilauksille, jotka on tehty viimeistään silloin." },
+      { q: "Mikä on joululahjojen viimeinen tilauspäivä 2026?", a: jouluLause() },
       { q: "Miksi viimeinen tilauspäivä on jo marraskuussa?", a: "Viimeinen tilauspäivä on marraskuussa, koska jokainen tuote painetaan tilauksesta painokumppaneillamme ennen kuljetusta. Joulun alla sekä painaminen että kuljetus ruuhkautuvat." },
       { q: "Paljonko joulutoimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kokoa kaikki lahjat samaan tilaukseen, niin raja ylittyy helpommin.` },
       { q: "Voiko joululahjan palauttaa joulun jälkeen?", a: "Peruutusoikeus on 14 päivää tuotteen vastaanottamisesta, ei joulupäivästä. Avaa paketti heti saapumisen jälkeen ja tarkista koko, jotta ehdit tarvittaessa palauttaa sen." },
-      { q: "Mitä teen, jos en ehtinyt tilata 20.11. mennessä?", a: "Anna kuusen alle lahjalupaus: tulosta kuva tuotteesta korttiin ja kerro, että lahja on tulossa. Toimituslupauksemme jouluaattoon koskee tilauksia, jotka on tehty viimeistään 20.11.2026." },
+      { q: "Mitä teen, jos en ehtinyt tilata ajoissa?", a: "Anna kuusen alle lahjalupaus: tulosta kuva tuotteesta korttiin ja kerro, että lahja on tulossa. Toimituslupauksemme jouluaattoon koskee vain ajoissa tehtyjä tilauksia." },
     ],
   },
 ];

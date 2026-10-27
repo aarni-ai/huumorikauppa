@@ -16,6 +16,7 @@ import { ORGANIZATION, RETURNS, SHIPPING, SITE_URL, formatPriceFi } from "./site
 import { GIFT_ROUTE_SLUGS } from "./prerender/pages";
 import { landingPages, LANDING_REDIRECTS } from "@/data/landingPages";
 import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/christmas";
+import { jouluLause } from "@/data/tilauspaivat";
 
 const fee = formatPriceFi(SHIPPING.feeEur);
 
@@ -55,7 +56,7 @@ Teemoja ovat esimerkiksi ammattihuumori, kalastus, eläkeläishuumori sekä synt
 - Toimitamme vain Suomeen, Postin tai Matkahuollon kautta.
 - Toimitusaika on ${days} arkipäivää tilauksesta.
 - Toimituskulut ovat ${fee}. ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen.
-- Joulu 2026: tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.
+- Joulu 2026: ${jouluLause()}
 - Noutoa ei ole.
 
 ## Maksutavat

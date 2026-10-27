@@ -1,5 +1,6 @@
 import type { SituationGift } from "@/data/situationGifts";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "@/data/tilauspaivat";
 
 export interface GiftGuideContent {
   intro: string;
@@ -49,7 +50,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     },
     {
       q: `Kuinka nopeasti tilaus saapuu?`,
-      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`,
+      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ${jouluLause()}`,
     },
     {
       q: `Voinko palauttaa tuotteen, jos lahja ei sovi?`,

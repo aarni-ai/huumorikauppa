@@ -3,6 +3,7 @@
  * esirenderöinti (scripts/prerender.mjs) voi käyttää samaa lähdettä.
  */
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+import { jouluLause } from "./tilauspaivat";
 export interface GiftCategory {
   slug: string;
   name: string;
@@ -22,7 +23,7 @@ export const TLDR_TEXTS: Record<string, string> = {
   "hauskat-t-paidat": `Hauskat t-paidat ovat 100 % puuvillaa, ja ne painetaan tilauksesta. Valikoimassa yli 30 vitsipainatusta: ammattihuumoria, kalamies- ja äijäteemoja. Hinta 24,90 €. Tilaa nyt, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "hauskat-hupparit": `Hauskat hupparit ovat lämpimiä ja korkealaatuisia, ja ne painetaan tilauksesta. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 49,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita tai -huppari joka liittyy isän harrastukseen tai ammattiin. Valikoimassa on esimerkiksi kalamies- ja 'Maailman paras pappa' -teemoja. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
-  "joululahjat": "Hauska joululahja huumorin ystävälle: t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Teemoina esimerkiksi kalamies, äijä ja eläkeläinen. Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.",
+  "joululahjat": `Hauska joululahja huumorin ystävälle: t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Teemoina esimerkiksi kalamies, äijä ja eläkeläinen. ${jouluLause()}`,
   "syntymapaivaLahjat": `Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "syntymapaivalahjat": `Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "polttari-lahjat": "Polttarilahja ja ryhmäpaidat: hauskat t-paidat polttariporukalle naimisiin menevälle. Räätälöitäviä tekstipaitoja ja yhteishenkipainatuksia. Tilaa hyvissä ajoin koko ryhmälle.",
@@ -275,7 +276,7 @@ Hauska koriste tai pipo sopii pikkujoululahjaksi työkavereille.
 
 ## Milloin tilata joululahjat?
 
-Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä. Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+${jouluLause()} Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     relatedBlogSlugs: ["parhaat-joululahjat-ja-pikkujoululahjat-2026"],
   },
   {

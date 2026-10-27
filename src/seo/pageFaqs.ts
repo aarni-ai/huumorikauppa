@@ -10,6 +10,7 @@
 import { PRODUCT_TYPE_LABEL, cleanProductName } from "@/lib/productNames";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { ORGANIZATION } from "./site";
+import { jouluLaskentaLause, jouluLause, jouluVastaus } from "@/data/tilauspaivat";
 
 export interface FaqItem {
   q: string;
@@ -18,7 +19,7 @@ export interface FaqItem {
 
 /** Ainoa jouluna annettava toimituslupaus (seo/toimitusajat.md). */
 export const CHRISTMAS_DEADLINE_TEXT =
-  "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
+  `${jouluLause()}`;
 
 const DELIVERY_SHORT = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
 const SHIPPING_COST = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
@@ -31,7 +32,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Ehtiikö tilaus jouluksi?",
-    a: `Ehtii, kun tilaat viimeistään perjantaina 20.11.2026: silloin tilaus ehtii perille jouluaattoon mennessä. Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja kuljetusajan mukaan. Myöhemmin tehdyille tilauksille emme lupaa toimitusta ennen joulua.`,
+    a: `${jouluVastaus()} ${jouluLaskentaLause()}`,
   },
   {
     q: "Mikä on hyvä lahja miehelle, jolla on kaikki?",

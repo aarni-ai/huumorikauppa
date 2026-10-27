@@ -165,7 +165,7 @@ const Index = () => {
       {/* HERO BANNER IMAGE */}
       <section className="container pb-2 md:pb-1 pt-3">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
-          {/* LCP-kuva: WebP-koot public/images/etusivu-hero-*.webp (28.10.2026: ei hintoja eikä kampanjaa) (sama srcset/sizes kuin index.html:n preload). */}
+          {/* LCP-kuva: WebP-koot public/images/etusivu-hero-*.webp (ei hintoja eikä kampanjaa) (sama srcset/sizes kuin index.html:n preload). */}
           <img
             src={HERO_SRC}
             srcSet={HERO_SRCSET}

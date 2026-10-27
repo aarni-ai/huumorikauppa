@@ -56,6 +56,7 @@ import {
 } from "../structuredData";
 import type { LinkItem, PrerenderPage, PrerenderProduct, SiteNav } from "./html";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "@/data/tilauspaivat";
 
 /** Supabasen products-rivi siinä muodossa kuin REST palauttaa sen. */
 export interface ProductRow {
@@ -193,7 +194,7 @@ function stockedCategories(products: Product[]) {
   return visibleCategories().filter((c) => used.has(c.slug));
 }
 
-const DELIVERY_FACTS = `Toimitus koko Suomeen ${SHIPPING.deliveryBusinessDaysMin}-${SHIPPING.deliveryBusinessDaysMax} arkipäivässä tilauksesta, Postin tai Matkahuollon kautta. Toimituskulut ${formatPriceFi(SHIPPING.feeEur)}, ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen. ${RETURNS.days} päivän peruutusoikeus (ei koske personoituja tuotteita). Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.`;
+const DELIVERY_FACTS = `Toimitus koko Suomeen ${SHIPPING.deliveryBusinessDaysMin}-${SHIPPING.deliveryBusinessDaysMax} arkipäivässä tilauksesta, Postin tai Matkahuollon kautta. Toimituskulut ${formatPriceFi(SHIPPING.feeEur)}, ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen. ${RETURNS.days} päivän peruutusoikeus (ei koske personoituja tuotteita). ${jouluLause()}`;
 
 export function buildSiteNav(products: Product[] = []): SiteNav {
   const main: LinkItem[] = [

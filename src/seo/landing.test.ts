@@ -1,5 +1,5 @@
-import { isanpaivaAuki } from "@/data/tilauspaivat";
-import { FATHERS_DAY_LAST_ORDER_TEXT } from "@/data/campaignSchedule";
+import { isanpaivaAuki, jouluAuki, jouluLause, JOULU_PAIVA_LYHYT } from "@/data/tilauspaivat";
+import { FATHERS_DAY_LAST_ORDER_TEXT, JOULU_TILAUSPAIVA_ISO } from "@/data/campaignSchedule";
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
@@ -89,12 +89,14 @@ describe("landing pages: data and copy rules", () => {
     expect(new Set(paragraphs).size).toBe(paragraphs.length);
   });
 
-  it("only promises the one Christmas date (20.11.2026); the only other dates are Father's Day and its last order day", () => {
+  it("only promises the one computed Christmas date (never written by hand); the only other dates are Father's Day and its last order day", () => {
     const all = landingPages.flatMap(pageTexts).join("\n");
     const dates = new Set(all.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? []);
+    // Joulun tilauspäivä (laskettu, src/data/campaignSchedule.ts) näkyy vain, kun tilausaika on auki.
+    const joulu = jouluAuki() ? [JOULU_PAIVA_LYHYT.split(" ")[1]] : [];
     // Isänpäivän tilauspäivä (laskettu, src/data/campaignSchedule.ts) näkyy vain, kun tilausaika on auki.
     const isa = isanpaivaAuki() ? [FATHERS_DAY_LAST_ORDER_TEXT.split(" ")[1]] : [];
-    expect([...dates].sort()).toEqual(["20.11.2026", ...isa, "8.11.2026"].sort());
+    expect([...dates].sort()).toEqual([...joulu, ...isa, "8.11.2026"].sort());
     for (const p of landingPages) {
       if (isa.length && pageTexts(p).join("\n").includes(isa[0])) {
         expect(["/isanpaivalahja", "/hauska-isanpaivalahja"], p.path).toContain(p.path);
@@ -103,13 +105,13 @@ describe("landing pages: data and copy rules", () => {
     const deadline = [christmasDeadlinePage.title, christmasDeadlinePage.description, ...christmasDeadlinePage.intro,
       ...christmasDeadlinePage.sections.flatMap((s) => [s.heading, ...s.paragraphs]),
       ...christmasDeadlinePage.faqs.flatMap((f) => [f.q, f.a])].join("\n");
-    expect(new Set(deadline.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g))).toEqual(new Set(["20.11.2026"]));
+    expect(new Set(deadline.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? [])).toEqual(new Set(joulu));
     expect(deadline).not.toMatch(/[–—]/);
     expect(christmasDeadlinePage.title.length).toBeLessThan(60);
     expect(christmasDeadlinePage.description.length).toBeLessThan(155);
-    expect(CHRISTMAS_DEADLINE_PROMISE).toBe(
-      "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.",
-    );
+    expect(CHRISTMAS_DEADLINE_PROMISE).toBe(jouluLause());
+    // Laskettu arvo tänä jouluna (muutos vaatii tietoisen päätöksen).
+    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-11-20");
   });
 
   it("links to at least 3 other landing pages and to a visible category", () => {
