@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { valitysKohde, julkinenOrigin, UUSI_TUOTANTO } from "../../middleware";
+import { valitysKohde, julkinenOrigin, fetchValitys, UUSI_TUOTANTO } from "../../middleware";
 
 describe("vanhan projektin välitys uuteen", () => {
   it("vanha projekti (ei UUSI_TAUSTA) välittää kaiken uuden projektin tuotantoon", () => {
@@ -15,5 +15,14 @@ describe("vanhan projektin välitys uuteen", () => {
     expect(julkinenOrigin(new Request(u, { headers: { "x-huumorikauppa-proxy": "https://huumorikauppa.fi" } }), u)).toBe("https://huumorikauppa.fi");
     expect(julkinenOrigin(new Request(u, { headers: { "x-huumorikauppa-proxy": "https://evil.example" } }), u)).toBe(UUSI_TUOTANTO);
     expect(julkinenOrigin(new Request(u), u)).toBe(UUSI_TUOTANTO);
+  });
+});
+
+describe("välitystapa", () => {
+  it("POST ja rajapinta fetchillä (runko mukana), sivut ja tiedostot rewritellä", () => {
+    expect(fetchValitys("POST", "/api/checkout")).toBe(true);
+    expect(fetchValitys("GET", "/api/products")).toBe(true);
+    expect(fetchValitys("GET", "/tuote/x")).toBe(false);
+    expect(fetchValitys("GET", "/assets/a.js")).toBe(false);
   });
 });
