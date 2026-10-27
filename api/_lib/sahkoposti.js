@@ -14,7 +14,7 @@ export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
 export const omaVahvistusKaytossa = () => onSahkoposti() && process.env.SAHKOPOSTI_VAHVISTETTU === "1";
 
 /** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
-export async function laheta({ to, subject, html, text, replyTo, headers }) {
+export async function laheta({ to, subject, html, text, replyTo, headers, from }) {
   if (!onSahkoposti()) {
     console.warn(`[sahkoposti] RESEND_API_KEY puuttuu, ei lähetetty: ${subject}`);
     return { ok: false, virhe: "RESEND_API_KEY puuttuu" };
@@ -24,7 +24,7 @@ export async function laheta({ to, subject, html, text, replyTo, headers }) {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "Huumorikauppa <tilaukset@huumorikauppa.fi>",
+        from: from || process.env.EMAIL_FROM || "Huumorikauppa <tilaukset@huumorikauppa.fi>",
         to: Array.isArray(to) ? to : [to],
         subject,
         html,
@@ -98,11 +98,19 @@ export function lahetysViesti(tilaus) {
 }
 
 /** Omistajan hälytys heti (Printify-virhe, puuttuva variantti, maksu ilman tilausta). */
-export function halytys(otsikko, rivit) {
-  return laheta({
+export async function halytys(otsikko, rivit) {
+  const viesti = {
     to: OMISTAJA(),
     subject: `[Huumorikauppa] ${otsikko}`,
     html: kehys(`<h3>${esc(otsikko)}</h3><ul>${rivit.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>`),
     text: `${otsikko}\n${rivit.join("\n")}`,
-  });
+  };
+  const r = await laheta(viesti);
+  // Ennen kuin huumorikauppa.fi on vahvistettu Resendissä (DNS), omistajan viestit Resendin testilähettäjältä
+  // (toimii vain Resend-tilin omaan osoitteeseen; muuten virhe kirjataan kuten ennen).
+  if (!r.ok && /domain is not verified/i.test(r.virhe || "")) {
+    const varalla = await laheta({ ...viesti, from: "Huumorikauppa <onboarding@resend.dev>" });
+    return varalla.ok ? varalla : { ok: false, virhe: `${r.virhe}; testilähettäjä: ${varalla.virhe}` };
+  }
+  return r;
 }

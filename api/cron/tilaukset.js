@@ -200,6 +200,12 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, kuiva, tulos });
   }
 
+  // Omistajan ilmoituksen testi (OMISTAJA_EMAIL): sama reitti kuin uuden tilauksen ilmoitus (halytys).
+  if (req.query.tehtava === "ilmoitustesti") {
+    const r = await halytys("Testi: uuden tilauksen ilmoitus", ["Tämä on testiviesti. Oikea ilmoitus lähtee, kun maksu tulee."]);
+    return res.status(200).json({ ok: r.ok, vastaanottaja: OMISTAJA(), virhe: r.ok ? null : r.virhe });
+  }
+
   if (req.query.tehtava === "eu-siirrot") {
     if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
     const haut = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });

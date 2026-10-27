@@ -193,4 +193,29 @@ export async function jalkikasittely(tilaus) {
     await halytys(`Lahjakortin luonti epäonnistui tilaukselle #${tilausnumero(tilaus.id)}`, [String(e?.message || e), "Valvonta yrittää uudelleen."]);
   }
   await lahetaPrintifyyn(tilaus.id);
+  await ilmoitaOmistajalle(tilaus.id);
+}
+
+/**
+ * Omistajalle heti ilmoitus maksetusta tilauksesta (kerran per tilaus, order_events "omistaja_ilmoitettu"):
+ * summa, tuotteet ja Printify-tila (EU-painotalo ja tuotanto: tilausvahti, lahetaPrintifyyn). Poikkeama (ei
+ * tuotannossa) näkyy viestissä, ja tunnin valvonta jatkaa siitä.
+ */
+export async function ilmoitaOmistajalle(tilausId) {
+  try {
+    const [jo] = await sql()`select 1 from order_events where order_id = ${tilausId} and kind = 'omistaja_ilmoitettu' limit 1`;
+    if (jo) return;
+    const [t] = await sql()`select * from orders where id = ${tilausId}`;
+    if (!t || t.status !== "maksettu") return;
+    const rivit = (t.items || []).map((i) => `${i.quantity} x ${i.name}${i.color || i.size ? ` (${[i.color, i.size].filter(Boolean).join(" / ")})` : ""}, ${Number(i.unit_price).toFixed(2).replace(".", ",")} €`);
+    const tuotannossa = ["tuotannossa", "lahetetty", "ei_tarvita"].includes(t.printify_status);
+    const r = await halytys(`Uusi tilaus #${tilausnumero(t.id)}: ${Number(t.amount_paid ?? t.total).toFixed(2).replace(".", ",")} €`, [
+      ...rivit,
+      `Toimitus ${Number(t.shipping).toFixed(2).replace(".", ",")} €, asiakas ${t.customer_name || "?"}, ${t.shipping_address?.city || ""}`,
+      `Printify: ${t.printify_status}${t.printify_order_id ? ` (tilaus ${t.printify_order_id})` : ""}${tuotannossa ? "" : `, POIKKEAMA: ei tuotannossa${t.printify_error ? `: ${t.printify_error}` : ""}`}`,
+    ]);
+    await kirjaaTapahtuma(tilausId, r.ok ? "omistaja_ilmoitettu" : "omistaja_ilmoitus_virhe", r.ok ? {} : { virhe: r.virhe });
+  } catch (e) {
+    console.error("omistajan ilmoitus:", e?.message || e);
+  }
 }
