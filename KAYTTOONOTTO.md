@@ -20,53 +20,73 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 3 | Printify-avain ja kaupan tunnus | Printify | - |
 | 4 | Stripe-avain ja webhook | Stripe | maksutapahtumat kuten ennen |
 | 5 | Sähköposti | Resend | ilmainen 3 000 viestiä/kk |
-| 6 | Ajastimen salaisuus | Vercel + GitHub | - |
+| 6 | Ajastimen salaisuus | Vercel (tehty) | - |
 | 7 | Testitilaus | testiosoite | - |
 | 8 | EU-painotalot (valinnainen, ennen joulua) | Printify | - |
 | 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Cloudflare, Stripe | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
-## Go-live: tarkistuslista (tilanne 27.10.2026)
+## Go-live: tarkistuslista (tilanne 27.10.2026 illalla)
 
-Valmiina Vercel-projektissa `huumorikauppa` (testiosoite huumorikauppa-five.vercel.app): Neon-kanta (DATABASE_URL),
-taulut ja tuotteet (kohta 2 ajettu 27.10.2026, EU-siirrot ja kulut kannassa), PRINTIFY_API_KEY, PRINTIFY_SHOP_ID,
-CRON_SECRET, MARKKINOINTI_SALAISUUS, OMISTAJA_EMAIL. Puuttuu vain Uusiku Oy:n uuden Stripe-tilin `STRIPE_SECRET_KEY`
-ja `STRIPE_WEBHOOK_SECRET` sekä Resend (`RESEND_API_KEY` ei ole asetettu yhteenkään Vercel-ympäristöön).
-Tee kohdat järjestyksessä. Komennot ajetaan kansiossa `~/huumorikauppa`, haara `oma-tausta`.
+Valmiina Vercel-projektissa `huumorikauppa` (Pro, testiosoite huumorikauppa-five.vercel.app): Neon-kanta ja tuotteet
+(EU-kopiot), PRINTIFY_API_KEY, PRINTIFY_SHOP_ID, CRON_SECRET (myös `.env.cron.local`, chmod 600),
+MARKKINOINTI_SALAISUUS, OMISTAJA_EMAIL ja **MYYJA=uusiku** (asetettu 27.10., testiosoite näyttää jo Uusiku Oy:n).
+Kassa perii 6,90 € ja toimitus on ilmainen 79 eurosta (`api/_lib/vakiot.js`). Ajastetut työt ovat **Vercel Cronissa**
+(`vercel.json`: valvonta tunnin välein, päivän yhteenveto klo 7, varianttien saatavuus aamuisin, katetarkistus
+maanantaisin). Vercel lähettää CRON_SECRETin itse, joten GitHubin salaisuuksia ei tarvita. GitHubiin jäävät vain
+linkki- ja sivujen saatavuustarkistus, jotka eivät tarvitse salaisuuksia.
 
-1. **Resend-avain** (kohta 5): luo avain ja tallenna `RESEND_API_KEY` Verceliin (production).
-2. **Resend-domain**: Resend > Domains > Add Domain `huumorikauppa.fi` (alue EU). Lisää Resendin näyttämät
-   DNS-tietueet (MX ja TXT `send`-alitunnukselle, DKIM-TXT `resend._domainkey`) Domainhotellin hallintapaneeliin
-   (Domainit > huumorikauppa.fi > DNS-asetukset). Paina Resendissä **Verify** ja odota tila Verified. Nykyisiin A-,
-   CNAME- ja MX-tietueisiin ei kosketa. Ilman vahvistusta asiakasviestit (`tilaukset@huumorikauppa.fi`) eivät lähde.
-3. **Stripe-avain** (Uusiku Oy:n uusi tili, Live mode, rajattu avain kuten kohdassa 4): tallenna `STRIPE_SECRET_KEY`.
-4. **Stripe-webhook**: Uusiku Oy:n tilillä Developers > Webhooks > Add endpoint
-   `https://huumorikauppa.fi/api/stripe-webhook`, tapahtumat `checkout.session.completed`,
-   `checkout.session.async_payment_succeeded`, `checkout.session.expired`. Signing secret ->
-   `STRIPE_WEBHOOK_SECRET` (production). Webhook alkaa saada tapahtumia vasta domainin vaihdon (kohta 9) jälkeen;
-   ennen sitä testitilaus käsitellään valvonnan paikkauksella (`/api/cron/tilaukset` hakee maksetut sessiot Stripestä).
-5. **Myyjä samaan julkaisuun**: `printf uusiku | npx vercel env add MYYJA production`. MYYJA luetaan myös buildissa
-   (selaimen yritystiedot, `vite.config.ts` -> `VITE_MYYJA`), joten se on asetettava ennen kohdan 6 julkaisua, ja
-   Stripe-avaimet ja MYYJA menevät käyttöön samassa julkaisussa: kauppa ei saa näyttää Uusiku Oy:tä Intellerin
-   Stripellä eikä päinvastoin (`api/_lib/yritys.js`).
-6. **Julkaisu**: `npx vercel deploy --prod` (testiosoite). Tarkista: `curl -s https://huumorikauppa-five.vercel.app/api/products?slug=tonnin-seteli-t-paita -D - -o /dev/null | grep -i x-tuotelahde`
-   näyttää `tietokanta`, ja sivun alatunnisteessa ja toimitusehdoissa on Uusiku Oy, Y-tunnus 3653666-7.
-7. **GitHub-salaisuus**: `pbcopy < <(cut -d= -f2- .env.cron.local)` kopioi CRON_SECRETin leikepöydälle (ei näy
-   ruudulla). github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > New repository secret,
-   nimi `CRON_SECRET`, liitä arvo > Add secret. (`gh`-komentoa ei ole asennettu, joten tämä tehdään selaimessa.)
-8. **Testitilaus** testiosoitteessa oikealla kortilla pienimmällä tuotteella (kohta 7). Tarkista: Stripessä maksu
-   Uusiku Oy:n tilillä, valvonta (`curl -s -H "Authorization: Bearer $(cut -d= -f2- .env.cron.local)" https://huumorikauppa-five.vercel.app/api/cron/tilaukset`)
-   merkitsee tilauksen maksetuksi ja lähettää sen Printifyyn, vahvistusviesti tulee, ja Printifyssä tilaus on
-   tuotannossa (peru se siellä, jos et halua sitä). Palauta maksu Stripestä.
-9. **Domainin vaihto** (kohta 9, hiljaisena aikana): yhdistä haara mainiin, lisää `huumorikauppa.fi` ja
-   `www.huumorikauppa.fi` tähän Vercel-projektiin (Settings > Domains), lisää Vercelin näyttämä vahvistus-TXT
-   (`_vercel`) Domainhotellin DNS-asetuksiin ja paina Verify. Jos Vercel pyytää muuttamaan A- tai CNAME-tietuetta,
-   muuta se Domainhotellissa Vercelin näyttämään arvoon.
-10. **Vanha webhook pois heti**, kun `curl -s https://huumorikauppa.fi/api/products?limit=1 -o /dev/null -w '%{http_code}'`
-    palauttaa 200: Intellerin Stripe-tili > Webhooks > `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook`
-    (Lovable) > Disable. Muuten vanha tausta voisi käsitellä Intellerin tilin maksuja vielä rinnalla.
-11. **Lopputarkistus**: yksi oikea tilaus domainissa, `curl -sI https://huumorikauppa.fi/sitemap.xml`, GitHub >
-    Actions > Tilausvalvonta > Run workflow (vihreä), seuraavana aamuna päivän yhteenveto sähköpostissa.
+Puuttuu vain kolme avainta. Kun ne ovat Vercelissä, yksi komento julkaisee ja tarkistaa kaiken:
+
+1. **Stripe (Uusiku Oy:n uusi tili)**: Developers > API keys > Create restricted key (Checkout Sessions = Write,
+   Payment Intents = Read, muut None). Aloita testitilassa (`rk_test_...`). Tallenna:
+   `cd ~/huumorikauppa && read -s "K?Stripe-avain: " && echo && printf '%s' "$K" | npx vercel env add STRIPE_SECRET_KEY production && unset K`
+2. **Stripe-webhook**: Developers > Webhooks > Add endpoint `https://huumorikauppa-five.vercel.app/api/stripe-webhook`
+   (testivaihe; domainin siirron jälkeen `https://huumorikauppa.fi/api/stripe-webhook`), tapahtumat
+   `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired`.
+   Signing secret: `read -s "K?whsec: " && echo && printf '%s' "$K" | npx vercel env add STRIPE_WEBHOOK_SECRET production && unset K`
+3. **Resend Vercel Marketplacen kautta**: Vercel > Integrations > Marketplace > Resend > Install, yhdistä projektiin
+   `huumorikauppa` (Production). Integraatio lisää `RESEND_API_KEY`:n itse.
+4. **Julkaisu ja tarkistus yhdellä komennolla**:
+   `cd ~/huumorikauppa && git checkout oma-tausta && git pull && scripts/kayttoonotto.sh`.
+   Skripti tarkistaa avaimet, ajaa testit, julkaisee (uusi tausta, kassa 6,90 € / 79 €, MYYJA=uusiku, Vercel Cron)
+   ja tarkistaa sivut kolmella User-Agentilla, kassan (`scripts/kassatesti.mjs`: Stripe-sessio molemmilla
+   toimitussäännöillä), valvonnan ja Resend-domainin. Testiavaimella tee yksi tilaus Stripen sivulla kortilla
+   4242 4242 4242 4242 ja tarkista vahvistusviesti; sitten Live mode -avain ja -webhook kohtien 1 ja 2 komennoilla ja
+   `scripts/kayttoonotto.sh` uudelleen.
+5. **Resendin DNS-tietueet** (alla) Cloudflareen ja Resendissä Verify.
+6. **Domain huumorikauppa.fi tähän projektiin** (kohta 9) ja webhookin osoite domainiin.
+7. **Vanha kassa kiinni**: heti kun domain vastaa uudesta projektista, Intellerin Stripe-tilillä Developers > Webhooks >
+   `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` > Disable, ja Developers > API keys > Roll
+   secret key (Lovablen kassa käyttää Intellerin avainta Supabasessa; kierron jälkeen se ei voi luoda maksuja). Uuden
+   taustan koodi ei kutsu Lovablen kassaa missään (testi `src/test/vanhaKassa.test.ts`), ja vanhan Vercel-projektin
+   osoitteet (`*.aarni-ais-projects.vercel.app`) ohjautuvat huumorikauppa.fi:hin.
+8. **Yhdistä haara mainiin** (`git checkout main && git merge oma-tausta && git push`). Mainin väliaikainen
+   tappioesto (`api/_lib/lovable-kassa-tappio.js`, piilottaa 3XL-5XL-koot ja lisämyynnin tarran Lovablen kassan
+   takia) on oma-tausta-haarassa tyhjä, joten koot ja tarra palaavat yhdistämisessä.
+
+### Resendin DNS-tietueet (Cloudflare, huumorikauppa.fi)
+
+Nimipalvelimet ovat Cloudflaressa (aria/huxley.ns.cloudflare.com): DNS > Records > Add record, Proxy status **DNS only**.
+Tietueet tulevat `send`-alitunnukselle ja `resend._domainkey`:lle, joten nykyiset (MX Zoho, juuren SPF, Google- ja
+Trustpilot-vahvistukset) pysyvät ennallaan.
+
+| Tyyppi | Nimi | Arvo | Prioriteetti |
+|---|---|---|---|
+| MX | `send` | `feedback-smtp.eu-west-1.amazonses.com` | 10 |
+| TXT | `send` | `v=spf1 include:amazonses.com ~all` | |
+| TXT | `resend._domainkey` | Resendin antama DKIM-avain (`p=MIGfMA0...`) | |
+| TXT | `_dmarc` | olemassa: `v=DMARC1; p=none; pct=100; rua=mailto:dmarcreports@lovable.dev`. Vaihda raporttiosoite omaksi: `v=DMARC1; p=none; rua=mailto:huumorikauppa@gmail.com` | |
+
+DKIM-avain on domainikohtainen, ja Resend luo sen, kun domain lisätään. Kun `RESEND_API_KEY` on Vercelissä ja projekti
+julkaistu, tämä lisää domainin Resendiin (alue EU) ja tulostaa kaikki tietueet tarkkoine arvoineen:
+
+```
+cd ~/huumorikauppa && curl -s -H "Authorization: Bearer $(cut -d= -f2- .env.cron.local)" "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=resend-domain" | python3 -m json.tool
+```
+
+Kun tietueet on lisätty, sama komento loppuun `&vahvista=1` pyytää Resendiä tarkistamaan ne (tila `verified`).
+Täsmälliset arvot kirjataan tähän, kun avain on saatavilla.
 
 ## 1. Tietokanta (Neon, ilmainen)
 
@@ -187,18 +207,13 @@ Lähetysosoite `tilaukset@huumorikauppa.fi` vaatii domainin vahvistuksen Resendi
 Se tehdään domainin siirron yhteydessä (kohta 9). Siihen asti Resend lähettää vain tilin omaan osoitteeseen, joten
 asiakasviestit eivät vielä lähde.
 
-## 6. Ajastimen salaisuus
+## 6. Ajastimen salaisuus (tehty 27.10.2026)
 
 Valvonta (`/api/cron/tilaukset`): paikkaa webhookilta jääneet maksut, yrittää epäonnistuneet Printify-siirrot
-uudelleen, hakee seurantakoodit, lähettää muistutukset ja arviopyynnöt sekä päivän yhteenvedon (kohta 13). Vercel Cron ajaa sen kerran päivässä (Hobby-tason
-raja), ja GitHub Actions (`.github/workflows/tilausvalvonta.yml`, ilmainen) tunnin välein. Sama salaisuus molempiin:
-
-```
-cd ~/huumorikauppa && S=$(openssl rand -hex 32) && printf %s "$S" | npx vercel env add CRON_SECRET production && printf 'CRON_SECRET=%s\n' "$S" > .env.cron.local && chmod 600 .env.cron.local && printf %s "$S" | pbcopy && unset S && echo "tallennettu, kopioitu leikepöydälle"
-```
-
-Liitä leikepöydän arvo GitHubiin: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions >
-**New repository secret**, nimi `CRON_SECRET`. GitHubin tuntiajo alkaa vasta, kun haara on yhdistetty mainiin (kohta 9).
+uudelleen, hakee seurantakoodit, lähettää muistutukset ja arviopyynnöt sekä päivän yhteenvedon (kohta 13). Vercel Cron
+(Pro) ajaa sen tunnin välein ja lähettää otsakkeen `Authorization: Bearer CRON_SECRET` itse. CRON_SECRET on Vercelissä
+(production) ja tiedostossa `.env.cron.local` (chmod 600) käsiajoja varten. GitHubiin ei tarvita salaisuutta.
+Ajastimet alkavat toimia projektin tuotantojulkaisusta (testiosoite), eivät vasta domainin siirrosta.
 
 ## 7. Testitilaus
 
@@ -318,9 +333,9 @@ myöhemmin painotalokohtaisiksi.
 | Työnkulku | Milloin | Salaisuudet |
 |---|---|---|
 | Linkkitarkistus (`linkkitarkistus.yml`) | maanantaisin | ei tarvita |
-| Saatavuus (`saatavuus.yml`) | päivittäin | sivut ja kassa: ei tarvita; varianttien saatavuus: `CRON_SECRET` (kohta 12) |
-| Katetarkistus (`katetarkistus.yml`) | maanantaisin | `RESEND_API_KEY` (sähköposti), valinnainen `DATABASE_URL` |
-| Päivän yhteenveto (`paivayhteenveto.yml`) | päivittäin klo 7 Suomen aikaa | `CRON_SECRET` (kohta 13) |
+| Saatavuus (`saatavuus.yml`, sivut ja kassa) | päivittäin | ei tarvita |
+
+Varianttien saatavuus, katetarkistus ja päivän yhteenveto ajetaan Vercel Cronilla (kohta 13), eivät GitHubissa.
 
 Lisää salaisuudet: github.com/aarni-ai/huumorikauppa > Settings > Secrets and variables > Actions > **New repository
 secret**. `RESEND_API_KEY` on sama arvo kuin Vercelissä (kohta 5). `DATABASE_URL` (Vercel > Storage > Neon >
@@ -431,7 +446,7 @@ syyn eikä julkaise. Tuotteet näkyvät kaupassa noin 5 minuutin kuluessa (tuote
 
 ## 12. Varianttien saatavuus (Printify)
 
-Kerran päivässä (`saatavuus.yml`, työ `variantit`) GitHub kutsuu suojattua osoitetta
+Joka aamu Vercel Cron (`vercel.json`) kutsuu suojattua osoitetta
 `/api/cron/tilaukset?tehtava=saatavuus` (`CRON_SECRET`, kohta 6). Se hakee Printifystä jokaisen myynnissä olevan
 tuotteen (5 hakua sekunnissa, 429-vastauksella uusi yritys) ja painotalon katalogin ja merkitsee tuoteriville
 (`unavailable_variants`) väri/koko-yhdistelmät, joita ei voi juuri nyt valmistaa (pois käytöstä, loppu tai poistunut
@@ -446,7 +461,7 @@ valikoimasta). Yksi kutsu tarkistaa noin 35 sekunnin erän; työ toistaa kutsua,
 - Muutoksista tulee yksi yhteenveto sähköpostiin (`OMISTAJA_EMAIL`), vain jos jotain muuttui.
 
 Uudet sarakkeet tulevat ajamalla `node scripts/aja-schema.mjs` uudelleen (kohta 2, turvallinen ajaa monta kertaa).
-Käsiajo: Actions > Saatavuus > **Run workflow**, tai komentoriviltä (lisää `&kuiva=1`, niin mitään ei tallenneta):
+Käsiajo komentoriviltä (lisää `&kuiva=1`, niin mitään ei tallenneta):
 
 ```
 curl -H "Authorization: Bearer $CRON_SECRET" "https://huumorikauppa.fi/api/cron/tilaukset?tehtava=saatavuus"
@@ -499,15 +514,19 @@ uudelleen viikon ajan).
 
 **Ajastukset:**
 
-| Työnkulku | Milloin (UTC) | Tehtävä |
+| Vercel Cron | Milloin (UTC) | Tehtävä |
 |---|---|---|
-| `tilausvalvonta.yml` | joka tunti :17 | valvonta, muistutukset, arviopyynnöt, yhteenvedon varmistus klo 9 jälkeen |
-| `paivayhteenveto.yml` | 04:00 ja 05:00 | päivän yhteenveto; lähtee vain, kun Helsingissä on kello 7 (kesä 04, talvi 05), kerran päivässä |
-| Vercel Cron (`vercel.json`) | 05:00 | valvonta kerran päivässä (varalla) |
+| `/api/cron/tilaukset` | joka tunti :17 | valvonta, muistutukset, arviopyynnöt, yhteenvedon varmistus klo 9 jälkeen |
+| `?tehtava=yhteenveto` | 04:00 ja 05:00 | päivän yhteenveto; lähtee vain, kun Helsingissä on kello 7 (kesä 04, talvi 05), kerran päivässä |
+| `?tehtava=saatavuus` | 05:00-06:55 viiden minuutin välein | Printify-varianttien saatavuus erissä; kun kaikki on tarkistettu, loput ajot eivät tee mitään |
+| `?tehtava=katetarkistus` | maanantaisin 05:07 | alle 20 %:n katteen ja tuntemattomien kulujen tuotteet sähköpostilla |
+
+Kaikki ovat Vercel Cronissa (`vercel.json`, Pro-taso). Käsiajo:
+`curl -H "Authorization: Bearer $(cut -d= -f2- .env.cron.local)" "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=yhteenveto&pakota=1"`.
 
 Yhteenveto: eilisen maksetut tilaukset, myynti ja kate euroina (Printify-kulu tilaushetkeltä), jumissa olevat
 tilaukset, kuukauden kate tavoitteeseen nähden prosentteina ja tarvittava kate päivässä. Käsiajo (lähettää heti, jos
-tänään ei ole lähetetty): Actions > Päivän yhteenveto > **Run workflow**.
+tänään ei ole lähetetty): yllä oleva curl-komento.
 
 ## Mitä jää vielä Lovable Cloudiin
 
