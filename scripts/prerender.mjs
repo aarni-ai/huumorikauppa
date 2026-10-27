@@ -104,23 +104,28 @@ function validate(html, page) {
   if (problems.length > 0) throw new Error(`${page.path}: ${problems.join(", ")}`);
 }
 
-/** Viten manifestista moduulin chunk ja sen staattiset riippuvuudet (/assets/...). Manifesti poistetaan julkisesta dististä. */
-async function readChunkPreloads(src) {
+/**
+ * Viten manifestista moduulien chunkit ja niiden staattiset riippuvuudet (/assets/...). Palauttaa funktion
+ * lahde -> [polut]. Manifesti poistetaan julkisesta dististä heti luennan jälkeen.
+ */
+async function readChunkManifest() {
   const manifestPath = path.join(DIST, ".vite", "manifest.json");
   try {
     const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
-    const out = [];
-    const visit = (key) => {
-      const chunk = manifest[key];
-      if (!chunk || out.includes(`/${chunk.file}`)) return;
-      out.push(`/${chunk.file}`);
-      for (const dep of chunk.imports ?? []) visit(dep);
+    return (src) => {
+      const out = [];
+      const visit = (key) => {
+        const chunk = manifest[key];
+        if (!chunk || out.includes(`/${chunk.file}`)) return;
+        out.push(`/${chunk.file}`);
+        for (const dep of chunk.imports ?? []) visit(dep);
+      };
+      visit(src);
+      return out;
     };
-    visit(src);
-    return out;
   } catch (err) {
     log(`VAROITUS: Viten manifestia ei voitu lukea (${err.message}), ei chunk-esilatausta.`);
-    return [];
+    return () => [];
   } finally {
     await fs.rm(path.join(DIST, ".vite"), { recursive: true, force: true });
   }
@@ -177,9 +182,17 @@ async function main() {
     const nav = pagesMod.buildSiteNav(products);
     const pages = pagesMod.buildPrerenderPages({ products, componentHtml });
 
+    // Sivujen chunkit Viten manifestista (esilataus entryn rinnalla, src/main.tsx odottaa nämä ennen renderöintiä).
+    const chunksFor = await readChunkManifest();
+    // Ostoskori ja kassa eivät ole esirenderöityjä: SPA-kuori esilataa niiden chunkin polun mukaan.
+    const shellRoutePreloads = {
+      "/ostoskori": chunksFor("src/pages/CartPage.tsx"),
+      "/kassa": chunksFor("src/pages/CheckoutPage.tsx"),
+    };
+
     // SPA-kuori ensin, jotta se on olemassa vaikka jokin sivu epäonnistuisi.
     const home = metaMod.STATIC_PAGE_META["/"];
-    const shell = htmlMod.renderShellHtml(template, nav, { title: home.title, description: home.description });
+    const shell = htmlMod.renderShellHtml(template, nav, { title: home.title, description: home.description }, shellRoutePreloads);
     await fs.writeFile(path.join(DIST, SHELL_FILE), shell);
     // 404-sivu tuntemattomille tuotesivuille (middleware.ts palauttaa sen tilakoodilla 404).
     await fs.writeFile(path.join(DIST, NOT_FOUND_FILE), htmlMod.renderNotFoundHtml(template, nav));
@@ -207,7 +220,8 @@ async function main() {
 
     // Tuotesivun komponentti-chunk ja sen riippuvuudet Viten manifestista: esikatselusivun JS-lataaja
     // esilataa ne entryn kanssa, jotta ProductPage on valmis heti sovelluksen käynnistyessä.
-    const productChunks = await readChunkPreloads("src/pages/ProductPage.tsx");
+    const productChunks = chunksFor("src/pages/ProductPage.tsx");
+    const homeChunks = chunksFor("src/pages/Index.tsx");
 
     // Tuote- ja etusivun näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
     // Esikatselu on vain nopeutus: jos moduuli ei lataudu, sivut kirjoitetaan ilman sitä.
@@ -239,6 +253,7 @@ async function main() {
       if (homePage) {
         try {
           homePage.previewHtml = previewMod.renderHomePreview();
+          homePage.modulePreloads = homeChunks;
           previews += 1;
         } catch (err) {
           previewFailures.push(`/ (${err.message})`);

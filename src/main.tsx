@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App, { preloadRoute } from "./App.tsx";
 import "./index.css";
 import { revealApp, setPreviewReveal, setProductSeed } from "./lib/prerenderPreview";
 
@@ -46,10 +46,25 @@ const isStaticFallback =
   (firstChild.hasAttribute('data-prerender') || firstChild.getAttribute('aria-hidden') === 'true');
 const hasStaticHTML = rootElement.hasChildNodes() && !isStaticFallback;
 
-if (hasStaticHTML) {
+function render() {
+  if (hasStaticHTML) {
     ReactDOM.hydrateRoot(rootElement, <React.StrictMode><App /></React.StrictMode>);
-} else {
+  } else {
     // Clear static fallback before mounting so it doesn't flash on screen.
     if (isStaticFallback) rootElement.innerHTML = '';
     ReactDOM.createRoot(rootElement).render(<React.StrictMode><App /></React.StrictMode>);
+  }
 }
+
+// Etusivun, ostoskorin ja kassan chunk on jo latautumassa (modulepreload HTML:ssä, scripts/prerender.mjs):
+// renderöidään vasta sen jälkeen, jolloin sivu näkyy heti ilman Suspense-varanäkymää (ei CLS:ää). Enintään
+// ROUTE_PRELOAD_MAX_MS odotus, ettei hidas chunk pidä sivua tyhjänä.
+const ROUTE_PRELOAD_MAX_MS = 1500;
+let rendered = false;
+const renderOnce = () => {
+  if (rendered) return;
+  rendered = true;
+  render();
+};
+preloadRoute(window.location.pathname).then(renderOnce);
+window.setTimeout(renderOnce, ROUTE_PRELOAD_MAX_MS);
