@@ -26,6 +26,89 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10. ilta: Lovablen kassan tappioesto, Vercel Cron, EU-kopiot, käyttöönoton valmistelu
+
+Lovableen ei ole enää pääsyä, joten Lovablen kassaa (3,90 €, ilmainen toimitus 60 eurosta) ei voi julkaista.
+Uusi tausta on ainoa tie korjata kassa.
+
+**Väliaikainen tappioesto (main, commit 5b3a66c):**
+- Hintojen nosto ei onnistu ilman Lovablea. Lovablen kassa lukee hinnat Supabasen products-taulusta (ei Printifystä).
+  Kirjoitus vaatii Supabasen ylläpitäjän oikeudet. Lovablen yöllinen synkronointi päivittää joka rivin joka yö ja
+  asettaa vaatteille kiinteän kategoriahinnan (t-paidat 24,90 €, hupparit 49,90 €, bodyt 24,90 €, pitkähihaiset
+  39,90 €; 438 riviä poikkeaa Printifyn hinnasta, vaikka rivi on päivitetty Printifyn muutoksen jälkeen). Printifyn
+  hinta siirtyy kassalle vain muissa kategorioissa, ja niissä yksikään tuote ei ole tappiollinen yksinään.
+- `scripts/live-kassa-tappiot.ts` laski kaikki 468 näkyvää tuotetta nykyisellä kassalla: kaikki yksittäiset, kaikki
+  parit ja heikoimpien kolmikot. Tappiollisia koreja oli 7 901, ja heikoin -5,64 € (ICE AATANA -huppari 3XL ja
+  4XL-paita). Yksinään tappiollisia variantteja oli 13. Syynä ovat 3XL-5XL-koot: ilmaisen toimituksen korissa niiden
+  osuus jää negatiiviseksi.
+- Korjaus: sivusto ja ostoskori piilottavat variantit, joiden osuus ilmaisen toimituksen korissa jää alle Stripen
+  kiinteän maksun 0,25 €. Ne ovat 344 kokoa 3XL-5XL (31 tuotetta) ja lisämyynnin tarra (se-oli-tonnin-seteli-tarra,
+  301 kaikkiin tuotteisiin). Tavallisia kokoja S-2XL ei piilotettu. Tulos: 0 tappiollista koria, heikoin osuus
+  0,56 €. Lista: `api/_lib/lovable-kassa-tappio.js`. Ostoskorin "Lisää tarra" -ehdotus on poissa niin kauan kuin
+  Lovablen kassa on käytössä.
+- Palautus: oma-tausta-haarassa lista on tyhjä, joten koot ja tarra palaavat itsestään, kun haara yhdistetään mainiin
+  käyttöönotossa.
+- Tarkistettu curlilla kolmella User-Agentilla: etusivu, tuotesivu ja ostoskori 200, tarra 301; lista on
+  tuotannon JS:ssä.
+
+**Ajastetut työt Vercel Croniin (oma-tausta, 6c6de64):**
+- GitHubin CRON_SECRETiä ei tarvita.
+- `vercel.json` (projekti Pro-tasolla):
+  - valvonta tunnin välein (:17)
+  - päivän yhteenveto 04 ja 05 UTC
+  - varianttien saatavuus viiden minuutin välein klo 05-06 UTC
+  - katetarkistus maanantaisin (`?tehtava=katetarkistus`, logiikka `api/_lib/katevalvonta.js`)
+- Poistettu työnkulut tilausvalvonta, paivayhteenveto ja katetarkistus sekä saatavuus.yml:n varianttityö.
+  GitHubiin jäivät vain salaisuuksia vaatimattomat (linkit, sivujen saatavuus).
+- CRON_SECRET oli jo Vercelissä ja `.env.cron.local`:ssa (600).
+- Testiosoitteessa tarkistettu: ilman avainta 401, valvonnan kuiva-ajo ok, katetarkistus ok.
+
+**EU-kopiot (oma-tausta, 91b7f5b ja d1b7b78):**
+- 8 uutta EU-kopiota 11:stä Printifyyn (ei julkaistu, vanhoja ei muutettu eikä poistettu). Tekstitasot piirrettiin
+  kuviksi.
+  - t-paidat OPT OnDemand CZ: ois-viisaampi, slay-queen, super-aiska, maailman-paras-aiti. Heikoin kate 24,4 %.
+  - hupparit Textildruck DE: slay-queen, super-aiska, maailman-paras-aiti, saatanan-tunarit.
+- Ei tehty: maailman-paras-ystava-koriste, oma-tekstikuva-koriste ja oma-tekstikuva-lippis. Printifyssä ei ole
+  EU-painotaloa keraamisille koristeille eikä lippiksille.
+- Kanta päivitetty funktiolla `?tehtava=eu-siirrot`: 8 päivitetty, 692 jo valmiina, 0 virhettä. 35 piilotetusta
+  32 osoittaa EU-kopioon.
+- Lahjasivujen testiraja palautettu 8:aan oma-tausta-haarassa. Staattisessa HTML:ssä sivuilla on 9-13 tuotetta.
+- Mainissa uudet Printify-tuotteet tulevat Lovablen synkronoinnissa kaksoiskappaleina (`slug-xxxxxx`), jotka
+  piilotetaan ja ohjataan 301:llä kuten ennenkin.
+
+**Käyttöönoton valmistelu (oma-tausta):**
+- MYYJA=uusiku asetettu Vercelin production-ympäristöön. Testiosoitteessa Uusiku Oy ja Y-tunnus 3653666-7
+  kaikilla sivuilla.
+- `scripts/kayttoonotto.sh` tekee kaiken yhdellä komennolla:
+  - tarkistaa avaimet ja ajaa testit
+  - julkaisee
+  - curlaa sivut kolmella User-Agentilla ja tarkistaa tuotelähteen
+  - ajaa `scripts/kassatesti.mjs`:n (Stripe-sessio molemmille toimitussäännöille, ei maksa), valvonnan ja
+    Resend-domainin
+- `?tehtava=resend-domain` lisää huumorikauppa.fi:n Resendiin (EU) ja palauttaa tarkat DNS-tietueet.
+  KAYTTOONOTTO.md:ssä on tietueiden taulukko Cloudflarea varten:
+  - MX ja SPF `send`-alitunnukselle
+  - DKIM `resend._domainkey`
+  - DMARC-raporttiosoite vaihdettava pois lovable.dev:stä
+- Vanha kassa:
+  - oman taustan koodi ei kutsu Lovablen kassaa missään (testi)
+  - vanhan Vercel-projektin `*.aarni-ais-projects.vercel.app`-osoitteet ohjautuvat huumorikauppa.fi:hin
+  - Intellerin Stripe-avaimen kierto ja vanhan webhookin poisto sulkevat Lovablen kassan lopullisesti
+- Löydetty ja korjattu käyttöönoton este: testiosoitteessa sovellus kaatui latauksessa (`supabaseUrl is
+  required`), eikä ostoskoriin voinut lisätä tuotteita. Nyt selaintesti on 4/4 ilman virheitä.
+- Alatunnisteen ja etusivun uutiskirje tallentuu omaan tauluun. HUUMORI5-lupaus poistettu: oma kassa hyväksyy
+  alennuksen vain, jos kate pysyy vähintään 30 %:ssa.
+- Kassaa ei voitu testata testiavaimilla: Vercelissä ei vielä ole STRIPE_SECRET_KEY:tä,
+  STRIPE_WEBHOOK_SECRET:iä eikä RESEND_API_KEY:tä (tarkistettu 27.10. illalla).
+
+**Käyttöönotosta puuttuu:**
+1. Stripe-avain ja webhook-salaisuus (Uusiku Oy) sekä Resend Vercelin Marketplacesta (`RESEND_API_KEY`).
+2. Päätös huppareiden hinnasta. Uudessa taustassa katesääntö (20 %) piilottaa 49,90 eurolla kaikki hupparit:
+   testiosoitteessa näkyy 306 tuotetta (305 paitaa ja 1 koriste), ja selaimessa lahjasivuilla on 5-7 tuotetta.
+   20 % vaatii S-2XL noin 52,90 € ja 3XL+ noin 59,50 €.
+3. `scripts/kayttoonotto.sh`, Resendin DNS-tietueet Cloudflareen, domain projektiin (KAYTTOONOTTO.md kohta 9), vanhan
+   webhookin poisto ja Intellerin Stripe-avaimen kierto, sitten oma-tausta mainiin.
+
 ## 27.10. päivä: toimitushinta, esikatselu, rakenteinen data, EU-reititys, lisämyynti
 
 **Edellisen yön kohtien tila:** uusi tausta (taulut, tuonti EU-kopioineen, kulut, tilattavuus) tehty; CRON_SECRET
