@@ -385,6 +385,51 @@ Hylätyt: oman taustan aiempi suunnitelma 5,90 € / 60 € (tappiollinen kori, 
 muut rajat 50-69 € (tappiollinen kori, odotettu kate laskee), -10 % (tappiolliset korit), kaikki yhdistelmät
 (tappiollinen kori). Oman taustan toimitus palautettiin samaksi kuin live-kaupassa (6,90 € / 79 €).
 
+### Tarran lisämyynti ostoskorissa ("Lisää tarra 11,90 €"), 27.10.2026
+
+Vertailtiin kolmea vaihtoehtoa: ilmaisen toimituksen raja, "2 tuotetta -10 %" ja tarran lisämyynti.
+
+- Raja 50-69 €: tappiollinen kori (t-paita + Textildruck-huppari -0,24 €), hylätty (yllä).
+- 2 tuotetta -10 %: tappiolliset korit (2 Textildruck-hupparia -3,69 €), hylätty (yllä). Paras alennusvaihtoehto
+  on -5 %, joka on valmiina oman taustan kassassa ja tulee voimaan sen käyttöönotossa.
+- Tarra 11,90 € (Se oli tonnin seteli, OPT OnDemand pp 30, bp 476): tuotekulu 3,89 €, toimitus Suomeen 5,59 € (1. kpl),
+  0,10 € lisäkappaleena saman painotalon (OPT) tuotteen kanssa. Lisäkate: +5,31 €, kun korissa on OPT-tuote
+  (t-paita tai juliste), -0,18 €, kun tarra lähtee erikseen (esim. #417-paita), koska erillinen toimitus 5,59 € syö katteen.
+
+Live-kassa (Lovable) veloittaa yhä 3,90 € ja antaa ilmaisen toimituksen 60 eurosta (tilaus 26630629.21: 19,90 + 3,90 =
+23,80 €), vaikka repossa kassa on 6,90 € / 79 € (muutos 29.9.2026 ei ole julkaistu Lovablessa). Siksi korit lasketaan
+molemmilla säännöillä:
+
+| Kori | Ilman tarraa 6,90/79 | Tarran kanssa 6,90/79 | Muutos | Ilman tarraa 3,90/60 | Tarran kanssa 3,90/60 |
+|---|--:|--:|--:|--:|--:|
+| 1 t-paita OPT | 7,22 | 12,54 | 5,31 | 4,88 | 10,19 |
+| 1 t-paita OPT heikoin | 6,19 | 11,51 | 5,31 | 3,85 | 9,16 |
+| 1 t-paita #417 | 11,02 | 10,85 | -0,18 | 8,68 | 8,50 |
+| 2 t-paitaa OPT | 16,60 | 21,91 | 5,31 | 14,25 | 16,52 |
+| 3 t-paitaa OPT | 25,98 | 25,89 | -0,08 | 20,58 | 25,89 |
+| 1 huppari Choice | 4,80 | 4,62 | -0,18 | 2,45 | -0,77 |
+| 1 huppari Textildruck | 3,08 | 2,90 | -0,18 | 0,73 | -2,49 |
+| t-paita OPT + huppari Choice | 6,87 | 6,79 | -0,08 | 1,48 | 6,79 |
+| t-paita OPT + huppari Textildruck | 4,12 | 4,04 | -0,08 | -1,27 | 4,04 |
+| t-paita #417 + huppari Textildruck | 8,95 | 3,38 | -5,57 | 3,56 | 3,38 |
+| 2 huppari Choice | 4,64 | 4,47 | -0,18 | 4,64 | 4,47 |
+| 2 huppari Textildruck | 4,11 | 3,94 | -0,18 | 4,11 | 3,94 |
+| 1 juliste | 7,47 | 12,78 | 5,31 | 5,12 | 10,44 |
+| t-paita OPT + juliste | 16,05 | 21,36 | 5,31 | 13,70 | 19,01 |
+| huppari Choice + juliste | 7,12 | 7,04 | -0,08 | 1,73 | 7,04 |
+
+Tulos: sivuston säännöllä (6,90 / 79) jokainen kori pysyy positiivisena tarran kanssa. Live-kassan säännöllä (3,90 / 60)
+huppari + tarra ylittää 60 €:n rajan ja kori menee tappiolle (-0,77 / -2,49 €). Toteutus: tarraa ehdotetaan vain koriin,
+jossa ei ole huppareita eikä tarraa (`src/lib/lisatarra.ts`, ostoskorin `TarraLisamyynti`). Silloin jokainen kori on
+positiivinen molemmilla säännöillä. Huom: live-kassan säännöllä t-paita + Textildruck-huppari on tappiollinen jo ilman
+tarraa (-1,27 €), mikä korjaantuu, kun kassa julkaistaan 6,90 € / 79 € -säännöllä.
+
+Odotettu vaikutus (arvio, ei mitattua dataa): tarra lisätään 4 % (varovainen) tai 10 % (optimistinen) hupparittomista
+koreista (noin 85 % tilauksista). Paidoista noin kolmannes on OPT:llä (lisäkate +5,31 €), loput #417:llä (-0,18 €),
+keskimäärin +1,65 € lisättyä tarraa kohden. 8 tilausta / kk: +0,45 ... +1,12 €/kk; 16 tilausta / kk: +0,90 ... +2,24 €/kk.
+Pieni, mutta ainoa kolmesta, joka toimii heti live-kassassa ilman tappiollista koria. Kun paidat siirtyvät OPT:lle
+(EU-kopiot), lisäkate nousee kohti +5,31 €:a (8 tilausta / kk: +1,44 ... +3,61 €/kk).
+
 ### Toteutus (oma tausta, haara keskiostos oma-taustan päällä)
 
 Tarjous tulee voimaan vasta uuden taustan käyttöönotossa. Live-kaupan kassa (Lovable, main) ei muutu.
