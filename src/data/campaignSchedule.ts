@@ -42,19 +42,89 @@ export function helsinkiTimeToUtcMs(
   return wall - helsinkiOffsetMs(guess);
 }
 
+// ── Viimeiset tilauspäivät toteutuneista toimitusajoista ─────────────────────
+
+/**
+ * Pahin toteutunut toimitusaika arkipäivinä: Printifyn tilaukset 3-10/2026 (scripts/joulu-aikataulu.mjs, ajettu
+ * 26.10.2026, 22 tilausta): pahin tuotanto 2 + pahin kuljetus Suomeen 13 + puskuri 2 = 17 arkipäivää (t-paidat ja
+ * hupparit; muut tuotetyypit nopeampia). Päivitä tämä, kun skripti ajetaan uudelleen: kaikki päivät seuraavat.
+ */
+export const TOIMITUS_PAHIN_ARKIPAIVAA = 17;
+
+/** Suomen arkipyhät 2026-2027 (lauantaipyhät mukana; laskenta ohittaa myös viikonloput). */
+export const SUOMEN_PYHAT: ReadonlySet<string> = new Set([
+  "2026-01-01", "2026-01-06", "2026-04-03", "2026-04-06", "2026-05-01", "2026-05-14", "2026-06-19", "2026-06-20",
+  "2026-10-31", "2026-12-06", "2026-12-24", "2026-12-25", "2026-12-26", "2026-12-31",
+  "2027-01-01", "2027-01-06", "2027-03-26", "2027-03-29", "2027-05-01", "2027-05-06", "2027-06-25", "2027-06-26",
+  "2027-11-06", "2027-12-06", "2027-12-24", "2027-12-25", "2027-12-26", "2027-12-31",
+]);
+
+const lisaaPaivia = (iso: string, n: number): string => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+};
+export const onArkipaiva = (iso: string): boolean => {
+  const vp = new Date(`${iso}T00:00:00Z`).getUTCDay();
+  return vp !== 0 && vp !== 6 && !SUOMEN_PYHAT.has(iso);
+};
+
+/** Myöhäisin arkipäivä D, jolta D + n arkipäivää on viimeistään perillaIso (sama sääntö kuin joulu-aikataulu.mjs). */
+export function viimeinenTilauspaiva(perillaIso: string, n: number = TOIMITUS_PAHIN_ARKIPAIVAA): string {
+  let d = perillaIso;
+  while (!onArkipaiva(d)) d = lisaaPaivia(d, -1);
+  for (let jaljella = n; jaljella > 0; ) {
+    d = lisaaPaivia(d, -1);
+    if (onArkipaiva(d)) jaljella--;
+  }
+  while (!onArkipaiva(d)) d = lisaaPaivia(d, -1);
+  return d;
+}
+
+const ESSIIVI = ["sunnuntaina", "maanantaina", "tiistaina", "keskiviikkona", "torstaina", "perjantaina", "lauantaina"];
+const LYHYT = ["su", "ma", "ti", "ke", "to", "pe", "la"];
+const osat = (iso: string) => iso.split("-").map(Number) as [number, number, number];
+/** "perjantaina 20.11.2026" */
+export const paivaTeksti = (iso: string): string => {
+  const [y, m, d] = osat(iso);
+  return `${ESSIIVI[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${d}.${m}.${y}`;
+};
+/** "pe 20.11.2026" */
+export const paivaLyhyt = (iso: string): string => {
+  const [y, m, d] = osat(iso);
+  return `${LYHYT[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${d}.${m}.${y}`;
+};
+/** Päivän loppu 23.59.59.999 Suomen aikaa (UTC ms). */
+export const paivanLoppuUtcMs = (iso: string): number => {
+  const [y, m, d] = osat(iso);
+  return helsinkiTimeToUtcMs(y, m, d, 23, 59, 59, 999);
+};
+
 // ── Isänpäivä 2026 ────────────────────────────────────────────────────────────
 
 /** Isänpäivä 2026 (marraskuun toinen sunnuntai). */
 export const FATHERS_DAY_TEXT = "sunnuntaina 8.11.2026";
-/** Viimeinen tilauspäivä isänpäiväksi (omistajan päätös). */
-export const FATHERS_DAY_LAST_ORDER_TEXT = "keskiviikkona 28.10.2026";
-/** Isänpäivän tilausaikaa on jäljellä 28.10.2026 klo 23.59.59 asti Suomen aikaa. */
-export const FATHERS_DAY_ORDER_END_UTC_MS = helsinkiTimeToUtcMs(2026, 10, 28, 23, 59, 59, 999);
+/** Lahjan on oltava perillä viimeistään perjantaina ennen isänpäivää (lauantaijakelua ei oleteta). */
+export const ISANPAIVA_PERILLA_ISO = "2026-11-06";
+/** Viimeinen tilauspäivä isänpäiväksi toteutuneista toimitusajoista (TOIMITUS_PAHIN_ARKIPAIVAA). */
+export const ISANPAIVA_TILAUSPAIVA_ISO = viimeinenTilauspaiva(ISANPAIVA_PERILLA_ISO);
+export const FATHERS_DAY_LAST_ORDER_TEXT = paivaTeksti(ISANPAIVA_TILAUSPAIVA_ISO);
+/** Isänpäivän tilausaika päättyy viimeisen tilauspäivän lopussa Suomen aikaa. */
+export const FATHERS_DAY_ORDER_END_UTC_MS = paivanLoppuUtcMs(ISANPAIVA_TILAUSPAIVA_ISO);
 
 // ── Joulu 2026 ────────────────────────────────────────────────────────────────
 
-/** Joulun viimeinen tilauspäivä pe 20.11.2026 klo 23.59.59 Suomen aikaa (teksti: christmas.ts). */
-export const CHRISTMAS_ORDER_END_UTC_MS = helsinkiTimeToUtcMs(2026, 11, 20, 23, 59, 59, 999);
+/** Joululahjan on oltava perillä viimeistään jouluaattoa edeltävänä päivänä. */
+export const JOULU_PERILLA_ISO = "2026-12-23";
+/**
+ * Printifyn joulusesongin takaraja Suomeen (Printifyn 2025 Eurooppa-cutoffit miinus kuljetus, seo/toimitusajat.md):
+ * myöhäisempää päivää ei luvata, vaikka toimitusajoista laskettu päivä olisi myöhäisempi.
+ */
+export const JOULU_PRINTIFY_RAJA_ISO = "2026-11-20";
+/** Joulun viimeinen tilauspäivä: toteutuneista toimitusajoista laskettu, enintään Printifyn sesonkiraja. */
+export const JOULU_TILAUSPAIVA_ISO = [viimeinenTilauspaiva(JOULU_PERILLA_ISO), JOULU_PRINTIFY_RAJA_ISO].sort()[0];
+/** Joulun tilausaika päättyy viimeisen tilauspäivän lopussa Suomen aikaa. */
+export const CHRISTMAS_ORDER_END_UTC_MS = paivanLoppuUtcMs(JOULU_TILAUSPAIVA_ISO);
 
 // ── Bannerin aikataulu ────────────────────────────────────────────────────────
 
@@ -69,10 +139,11 @@ export interface BannerSlot {
 }
 
 /**
- * Järjestyksessä, ei päällekkäisyyksiä. Isänpäivän banneri 1.10.2026 alkaen 28.10.2026 loppuun,
- * sitten joulun banneri 29.10.2026 klo 00.00 alkaen 20.11.2026 loppuun. Sen jälkeen ei banneria.
+ * Järjestyksessä, ei päällekkäisyyksiä. Isänpäivän banneri 1.10. alkaen isänpäivän viimeisen tilauspäivän loppuun,
+ * joulun banneri heti sen jälkeen joulun viimeisen tilauspäivän loppuun, sen jälkeen ei banneria. Päivät lasketaan
+ * toimitusajoista (yllä), joten vanhentunutta päivää ei näytetä koskaan.
  */
-export const BANNER_SCHEDULE: readonly BannerSlot[] = [
+const SLOTIT: BannerSlot[] = [
   {
     theme: "isanpaiva",
     fromMs: helsinkiTimeToUtcMs(2026, 10, 1),
@@ -80,10 +151,11 @@ export const BANNER_SCHEDULE: readonly BannerSlot[] = [
   },
   {
     theme: "joulu",
-    fromMs: helsinkiTimeToUtcMs(2026, 10, 29),
+    fromMs: Math.max(FATHERS_DAY_ORDER_END_UTC_MS + 1, helsinkiTimeToUtcMs(2026, 10, 1)),
     untilMs: CHRISTMAS_ORDER_END_UTC_MS,
   },
 ];
+export const BANNER_SCHEDULE: readonly BannerSlot[] = SLOTIT.filter((s) => s.untilMs >= s.fromMs);
 
 /** Annettuna hetkenä näytettävä bannerin teema, tai null. */
 export function activeBannerTheme(nowMs: number, schedule: readonly BannerSlot[] = BANNER_SCHEDULE): BannerTheme | null {

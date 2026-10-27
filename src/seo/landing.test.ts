@@ -1,3 +1,5 @@
+import { isanpaivaAuki } from "@/data/tilauspaivat";
+import { FATHERS_DAY_LAST_ORDER_TEXT } from "@/data/campaignSchedule";
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
@@ -90,10 +92,11 @@ describe("landing pages: data and copy rules", () => {
   it("only promises the one Christmas date (20.11.2026); the only other dates are Father's Day and its last order day", () => {
     const all = landingPages.flatMap(pageTexts).join("\n");
     const dates = new Set(all.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? []);
-    expect([...dates].sort()).toEqual(["20.11.2026", "28.10.2026", "8.11.2026"]);
-    // Isänpäivän tilauspäivä (src/data/campaignSchedule.ts) vain isänpäiväsivuilla
+    // Isänpäivän tilauspäivä (laskettu, src/data/campaignSchedule.ts) näkyy vain, kun tilausaika on auki.
+    const isa = isanpaivaAuki() ? [FATHERS_DAY_LAST_ORDER_TEXT.split(" ")[1]] : [];
+    expect([...dates].sort()).toEqual(["20.11.2026", ...isa, "8.11.2026"].sort());
     for (const p of landingPages) {
-      if (pageTexts(p).join("\n").includes("28.10.2026")) {
+      if (isa.length && pageTexts(p).join("\n").includes(isa[0])) {
         expect(["/isanpaivalahja", "/hauska-isanpaivalahja"], p.path).toContain(p.path);
       }
     }

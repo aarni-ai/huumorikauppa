@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import {
   activeBannerTheme,
   nextBannerChangeMs,
-  FATHERS_DAY_LAST_ORDER_TEXT,
-  FATHERS_DAY_TEXT,
   type BannerTheme,
 } from "@/data/campaignSchedule";
-import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/christmas";
+import { isanpaivaLause, jouluLause } from "@/data/tilauspaivat";
+import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
 export const FATHERS_DAY_LANDING_PATH = "/isanpaivalahja";
 
@@ -22,13 +21,18 @@ interface BannerContent {
 
 export const BANNER_CONTENT: Record<BannerTheme, BannerContent> = {
   isanpaiva: {
-    text: `Isänpäivä on ${FATHERS_DAY_TEXT}. Tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}, niin lahja ehtii perille isänpäiväksi.`,
+    // Getter: lause lasketaan näyttöhetkellä (ei moduulin latauksessa).
+    get text() {
+      return isanpaivaLause();
+    },
     linkText: "Katso isänpäivälahjat",
     href: FATHERS_DAY_LANDING_PATH,
     className: "bg-blue-950 text-white",
   },
   joulu: {
-    text: `Joulutilaukset: ${CHRISTMAS_DEADLINE_PROMISE}`,
+    get text() {
+      return `Joulutilaukset: ${jouluLause()}`;
+    },
     linkText: "Joulun viimeiset tilauspäivät",
     href: CHRISTMAS_DEADLINE_PATH,
     className: "bg-red-900 text-white",
@@ -59,8 +63,8 @@ const serverTheme = () => null;
 
 /**
  * Sivuston yläbanneri (myös etusivulla). Teema ja näkyvyys tulevat vain aikataulusta
- * (src/data/campaignSchedule.ts, Suomen aika): isänpäivä 28.10.2026 loppuun, sitten joulun
- * tilauspäivä 20.11.2026 loppuun, sen jälkeen ei mitään.
+ * (src/data/campaignSchedule.ts, Suomen aika, päivät toimitusajoista): isänpäivän viimeisen tilauspäivän loppuun,
+ * sitten joulun viimeisen tilauspäivän loppuun, sen jälkeen ei mitään.
  *
  * Selaimessa teema luetaan jo ensimmäisessä renderöinnissä (useSyncExternalStore), joten banneri
  * on paikallaan heti ensimmäisessä maalauksessa eikä työnnä sisältöä alaspäin jälkikäteen.

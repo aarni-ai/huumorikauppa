@@ -10,19 +10,19 @@
  * seo/toimitusajat.md). Mikään päivä ei saa olla sitä myöhäisempi.
  * Testi varmistaa, ettei mikään päivä ylitä CHRISTMAS_ORDER_END_UTC_MS:ää.
  */
-import { CHRISTMAS_ORDER_END_UTC_MS, helsinkiTimeToUtcMs } from "./campaignSchedule";
+import { CHRISTMAS_ORDER_END_UTC_MS, JOULU_TILAUSPAIVA_ISO, helsinkiTimeToUtcMs } from "./campaignSchedule";
 
 /** Viimeinen tilauspäivä (Suomen aikaa, päivän loppuun asti) kategorian slugin mukaan. */
 export const JOULU_TILAUSPAIVAT: Readonly<Record<string, string>> = {
-  "t-paidat": "2026-11-20",
-  hupparit: "2026-11-20",
-  pitkahihaiset: "2026-11-20",
-  koristeet: "2026-11-20",
-  peitot: "2026-11-20",
-  seinataulut: "2026-11-20",
-  tarrat: "2026-11-20",
-  pipot: "2026-11-20",
-  bodyt: "2026-11-20",
+  "t-paidat": JOULU_TILAUSPAIVA_ISO,
+  hupparit: JOULU_TILAUSPAIVA_ISO,
+  pitkahihaiset: JOULU_TILAUSPAIVA_ISO,
+  koristeet: JOULU_TILAUSPAIVA_ISO,
+  peitot: JOULU_TILAUSPAIVA_ISO,
+  seinataulut: JOULU_TILAUSPAIVA_ISO,
+  tarrat: JOULU_TILAUSPAIVA_ISO,
+  pipot: JOULU_TILAUSPAIVA_ISO,
+  bodyt: JOULU_TILAUSPAIVA_ISO,
 };
 
 /** Kategoria, jota taulukossa ei ole, saa varhaisimman päivän (ei koskaan myöhäisempää). */

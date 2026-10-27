@@ -2,18 +2,20 @@
  * Joulun viimeinen tilauspäivä. Yksi lähde bannerille, joulun lahjasivuille ja
  * /joulun-viimeiset-tilauspaivat-sivulle.
  *
- * Päivä on johdettu Printifyn vuoden 2025 Eurooppa-cutoffeista miinus Suomen kuljetuspuskuri
- * (seo/toimitusajat.md). Sama päivä koskee kaikkia tuotteita, koska tuotekohtaista painotaloa ei
- * tiedetä. Älä lupaa missään muuta päivää.
+ * Päivä lasketaan toteutuneista toimitusajoista (src/data/campaignSchedule.ts), enintään Printifyn
+ * joulusesongin raja (seo/toimitusajat.md). Älä kirjoita päivämäärää tekstiin käsin.
  */
 import { CHRISTMAS_ORDER_END_UTC_MS } from "./campaignSchedule";
+import { JOULU_PAIVA_LYHYT, jouluLause } from "./tilauspaivat";
 
-/** Ihmiselle näytettävä lupaus sellaisenaan. */
-export const CHRISTMAS_DEADLINE_PROMISE =
-  "Tilaa viimeistään perjantaina 20.11.2026, niin tilaus ehtii perille jouluaattoon mennessä.";
+/**
+ * Ihmiselle näytettävä lupaus (src/data/tilauspaivat.ts: päivä toimitusajoista, tilausajan jälkeen ilman päivää).
+ * Arvioidaan sivun latauksessa ja buildissa.
+ */
+export const CHRISTMAS_DEADLINE_PROMISE = jouluLause();
 
 /** Lyhyt muoto (banneri, otsikot). */
-export const CHRISTMAS_DEADLINE_SHORT = "pe 20.11.2026";
+export const CHRISTMAS_DEADLINE_SHORT = JOULU_PAIVA_LYHYT;
 
 export const CHRISTMAS_DEADLINE_PATH = "/joulun-viimeiset-tilauspaivat";
 

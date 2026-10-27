@@ -16,7 +16,8 @@ import type { Product } from "@/types/product";
 import { getPriorityRank } from "@/lib/productPriority";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
-import { FATHERS_DAY_LAST_ORDER_TEXT, FATHERS_DAY_TEXT } from "./campaignSchedule";
+import { FATHERS_DAY_TEXT } from "./campaignSchedule";
+import { isanpaivaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import {
   AMMATTI,
@@ -1663,7 +1664,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Isänpäivälahjaksi sopii paita tai huppari, jonka teksti osuu isän omaan juttuun: kalastajalle KALAMIES, mökkeilijälle Mökki on terapiaa, grillaajalle Grillimestari ja eläkeläiselle Olen eläkkeellä.",
       "Isoisälle valitse pappa- tai ukki-paita, nuorelle isälle personoitava isä-paita tai Jos iskä ei osaa korjata sitä -huppari. Työmiehelle on oman alan paitoja sähköasentajalle, putkimiehelle, rakennusmiehelle ja maanviljelijälle.",
-      `Isänpäivä on ${FATHERS_DAY_TEXT}. Tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}, niin lahja ehtii perille isänpäiväksi.`,
+      isanpaivaLause(),
     ],
     faqs: [
       {
@@ -1684,7 +1685,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Milloin isänpäivälahja pitää tilata?",
-        a: `Isänpäivä on ${FATHERS_DAY_TEXT}. Tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}, niin lahja on perillä isänpäiväksi.`,
+        a: isanpaivaLause(),
       },
     ],
     related: [
@@ -1710,7 +1711,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska isänpäivälahja on paita tai huppari, jossa on isän oma vitsi: Kalju, Isäntä, Amatimies, Museokamaa tai Tässä talossa asuu yksi pomo.",
       "Setähuumori toimii, kun isä nauraa vitsille itse. Kaljulle isälle sopii Kalju, kaiken itse korjaavalle Jos iskä ei osaa korjata sitä ja kalajuttujen kertojalle Kala pääsi tällä kertaa tai Huonokin päivä kalassa on parempi kuin hyvä päivä töissä.",
-      `Isänpäiväksi ${FATHERS_DAY_TEXT} tilaa viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}. Jos haluat valita lahjan isän harrastuksen tai elämänvaiheen mukaan, katso sivu Isänpäivälahja isän tyypin mukaan.`,
+      `${isanpaivaLause()} Jos haluat valita lahjan isän harrastuksen tai elämänvaiheen mukaan, katso sivu Isänpäivälahja isän tyypin mukaan.`,
     ],
     faqs: [
       {
@@ -1731,7 +1732,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Milloin hauska isänpäivälahja pitää tilata?",
-        a: `Viimeistään ${FATHERS_DAY_LAST_ORDER_TEXT}. Isänpäivä on ${FATHERS_DAY_TEXT}.`,
+        a: isanpaivaLause(),
       },
     ],
     related: [
