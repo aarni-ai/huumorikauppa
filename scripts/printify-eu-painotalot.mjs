@@ -12,7 +12,14 @@
  *                               tilaa product_id + variant_id -tunnuksilla, julkaisua ei tarvita.
  *   --poista-vanhat-julkaisusta vanhat tuotteet POST unpublish.json (niitä EI koskaan poisteta).
  *   --raja N                    käsittele enintään N siirrettävää tuotetta (koeajo).
- *   --vain <printify-id>        käsittele vain tämä tuote.
+ *   --vain <printify-id>[,...]  käsittele vain nämä tuotteet.
+ *   --tekstitasot-kuviksi       Printifyn editorin tekstitasot (API ei luo niitä) piirretään PNG-kuviksi
+ *                               (scripts/lib/tekstitaso-kuvaksi.py, Pillow, fontit tools/printify-merkkipaiva/renderer/
+ *                               fonts) ja ladataan Printifyyn (POST /uploads/images.json, vain --toteuta). Kuva rajataan
+ *                               tekstin musteeseen, joten x, y ja scale säilyvät. Kuiva-ajo piirtää kuvat --kuvakansioon.
+ *   --kuvakansio <polku>        minne tekstikuvat piirretään (oletus käyttöjärjestelmän tmp).
+ *   --pudota-paikat neck[,...]  nämä painopaikat jätetään pois uudesta tuotteesta (esim. Printify Choicen kaulaetiketti,
+ *                               jonka Textildruck laskuttaa erikseen) eikä tuotetta ohiteta säännön ohitaPaikat takia.
  *   --paivita-kanta             ei siirrä mitään: päivittää kaikkien jo kirjattujen siirtojen (data/eu-siirto-*.json)
  *                               kantarivit (printify_product_id = vanhaId) EU-kopioon kuten --toteuta. Tarvitsee
  *                               DATABASE_URL:n. Idempotentti: jo päivitetyt ohitetaan ilman Printify-hakuja.
@@ -21,11 +28,13 @@
  * varalla vanhan blueprintin nimi. Jo siirretyt (data/eu-siirto-*.json) ohitetaan, joten ajon voi toistaa.
  */
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   onEU, painotalonMaa, valitseSaanto, valitsePainotalo, valitseBlueprint, tuotteenKoko, yhdistaVariantit,
-  uudetPrintAreat, uusiTuoteRunko, suomenToimitus,
+  uudetPrintAreat, uusiTuoteRunko, suomenToimitus, tekstitasot, korvaaTekstitasot, pudotaPaikat, TEKSTITASO_FONTIT,
 } from "./lib/eu-painotalot.mjs";
 import { lueEuSiirrot, paivitaSiirrotKantaan, postgresKanta, siirraRivitEuKopioon } from "./lib/eu-kanta.mjs";
 
@@ -39,7 +48,10 @@ const toteuta = lippu("--toteuta");
 const julkaise = lippu("--julkaise");
 const poistaVanhatJulkaisusta = lippu("--poista-vanhat-julkaisusta");
 const raja = arvo("--raja") ? Number(arvo("--raja")) : Infinity;
-const vain = arvo("--vain");
+const vain = arvo("--vain") ? new Set(arvo("--vain").split(",").map((s) => s.trim()).filter(Boolean)) : null;
+const tekstitKuviksi = lippu("--tekstitasot-kuviksi");
+const pudotettavatPaikat = (arvo("--pudota-paikat") || "").split(",").map((s) => s.trim()).filter(Boolean);
+const kuvakansio = arvo("--kuvakansio") || path.join(os.tmpdir(), "huumorikauppa-tekstitasot");
 const paivitaKannat = lippu("--paivita-kanta");
 
 const API = "https://api.printify.com/v1";
@@ -191,7 +203,7 @@ if (paivitaKannat) {
 console.log(`EU-painotalosiirto ${toteuta ? "(TOTEUTUS)" : "(kuiva-ajo, ei kirjoita mitään)"}`);
 const siirretyt = joSiirretyt();
 let tuotteet = await kaikkiTuotteet();
-if (vain) tuotteet = tuotteet.filter((p) => String(p.id) === vain);
+if (vain) tuotteet = tuotteet.filter((p) => vain.has(String(p.id)));
 console.log(`Kaupassa ${tuotteet.length} tuotetta.`);
 
 const yhteenveto = {}; // kategoria -> { siirretaan, ohitetaan }
@@ -215,29 +227,66 @@ for (const lista of tuotteet) {
 
   const saanto = valitseSaanto(kategoria, vanhaPp?.title);
   if (!saanto) { ohita(`ei siirtosääntöä (kategoria ${kategoria}, painotalo ${vanhaPp?.title ?? "?"})`); continue; }
-  const paikat = (saanto.ohitaPaikat || []).filter((pos) => (vanha.print_areas || []).some((a) => (a.placeholders || []).some((ph) => ph.position === pos && (ph.images || []).length)));
+  const kaytossaPaikka = (alueet, pos) => (alueet || []).some((a) => (a.placeholders || []).some((ph) => ph.position === pos && (ph.images || []).length));
+  // --pudota-paikat: painopaikka jätetään pois (kirjataan pudotetutPaikat-kenttään) eikä tuotetta ohiteta sen takia.
+  const pudotetutOmat = pudotettavatPaikat.filter((pos) => kaytossaPaikka(vanha.print_areas, pos));
+  let alueet = pudotetutOmat.length ? pudotaPaikat(vanha.print_areas, pudotetutOmat) : vanha.print_areas || [];
+  if (pudotetutOmat.length) console.log(`  pudotetaan painopaikat (--pudota-paikat): ${pudotetutOmat.join(", ")}`);
+  const paikat = (saanto.ohitaPaikat || []).filter((pos) => kaytossaPaikka(alueet, pos));
   if (paikat.length) { ohita(`painopaikka ${paikat.join(", ")}: kohdepainotalolla lisäkulu, kate heikkenisi (sääntö ohitaPaikat)`); continue; }
   const kohde = await ratkaiseKohde(saanto, vanha, vanhaBp);
   if (kohde.syy) { ohita(kohde.syy); continue; }
 
   const uudet = await katalogiVariantit(kohde.blueprint.id, kohde.painotalo.id);
   const { yhdistetyt, pudotetut } = yhdistaVariantit(vanha.variants, uudet);
-  const { print_areas, pudotetutPaikat } = uudetPrintAreat(vanha.print_areas, yhdistetyt, uudet);
+
+  // Printifyn editorin tekstitasoja (layerType "text") ei voi luoda API:lla: luonti päättyy virheeseen "Provided images
+  // do not exist" (26.10.2026 kokeiltu myös tekstikentillä). --tekstitasot-kuviksi piirtää ne kuviksi; muuten ohitetaan.
+  let tekstit;
+  try { tekstit = tekstitasot(alueet); } catch (e) { ohita(e.message); continue; }
+  const tekstikuvat = [];
+  if (tekstit.length) {
+    if (!tekstitKuviksi) { ohita("tekstitaso (Printifyn editorin teksti), API ei tue: --tekstitasot-kuviksi tai siirrä käsin Printifyssä"); continue; }
+    const puuttuvat = tekstit.filter((t) => !TEKSTITASO_FONTIT[t.fontti]);
+    if (puuttuvat.length) { ohita(`tekstitason fonttia ei ole repossa: ${[...new Set(puuttuvat.map((t) => t.fontti))].join(", ")}`); continue; }
+    mkdirSync(kuvakansio, { recursive: true });
+    for (const [i, t] of tekstit.entries()) {
+      // Kuvan leveys painoalueen tarkkuudella: scale * kohdevariantin painopaikan leveys (px).
+      const pw = Math.max(...uudet.flatMap((u) => (u.placeholders || []).filter((p) => t.paikat.includes(p.position)).map((p) => Number(p.width) || 0)), 0) || 3600;
+      const leveysPx = Math.min(6000, Math.max(600, Math.ceil(t.scaleMax * pw)));
+      const polku = path.join(kuvakansio, `${vanha.id}-${i + 1}.png`);
+      execFileSync(process.env.PYTHON || "python3", [path.join(juuri, "scripts/lib/tekstitaso-kuvaksi.py"),
+        "--font", path.join(juuri, "tools/printify-merkkipaiva/renderer/fonts", TEKSTITASO_FONTIT[t.fontti]),
+        "--text", t.teksti, "--color", t.vari, "--box-width", String(t.leveys), "--box-height", String(t.korkeus),
+        "--align", t.tasaus, "--width-px", String(leveysPx), "--out", polku], { stdio: ["ignore", "ignore", "inherit"] });
+      tekstikuvat.push({ ...t, polku, leveysPx });
+      console.log(`  tekstitaso -> kuva: "${t.teksti.replace(/\n/g, " / ")}" ${t.fontti} ${t.vari} (${leveysPx} px) ${polku}`);
+    }
+  }
+  const kuvaIdt = new Map(tekstikuvat.map((t, i) => [t.avain, `kuiva-${i + 1}`]));
+  let { print_areas, pudotetutPaikat } = uudetPrintAreat(korvaaTekstitasot(alueet, kuvaIdt), yhdistetyt, uudet);
+  pudotetutPaikat = [...new Set([...pudotetutOmat, ...pudotetutPaikat])];
   console.log(`  ->  ${kohde.painotalo.title} (${kohde.maa}), blueprint ${kohde.blueprint.title}${kohde.blueprint.model ? ` ${kohde.blueprint.model}` : ""} (${kohde.blueprint.id}), peruste: ${kohde.peruste}`);
   const pudKaytossa = pudotetut.filter((p) => p.is_enabled);
   console.log(`  variantit: ${yhdistetyt.length} yhdistetty${yhdistetyt.some((y) => y.ainoa) ? " (ainoa variantti)" : ""}, ${pudKaytossa.length} käytössä olevaa pudotetaan${pudotetut.length - pudKaytossa.length ? `, ${pudotetut.length - pudKaytossa.length} pois käytöstä olevaa pudotetaan` : ""}`);
   if (pudKaytossa.length) console.log(`    pudotetaan: ${pudKaytossa.map((p) => p.title).join(", ")}`);
-  if (pudotetutPaikat.length) console.log(`    painopaikat joita kohteella ei ole: ${pudotetutPaikat.join(", ")}`);
+  const puuttuvatPaikat = pudotetutPaikat.filter((p) => !pudotetutOmat.includes(p));
+  if (puuttuvatPaikat.length) console.log(`    painopaikat joita kohteella ei ole: ${puuttuvatPaikat.join(", ")}`);
   if (!yhdistetyt.some((y) => y.is_enabled)) { ohita("yksikään käytössä oleva variantti ei vastaa kohdeblueprintia"); continue; }
   if (!print_areas.length) { ohita("painokuvia ei voitu siirtää (ei yhteisiä painopaikkoja)"); continue; }
-  // Printifyn editorin tekstitasoja (layerType "text") ei voi luoda API:lla: luonti päättyy virheeseen "Provided images
-  // do not exist" (26.10.2026 kokeiltu myös tekstikentillä). Siirto tehdään käsin Printifyssä (Duplicate + painotalo).
-  if ((vanha.print_areas || []).some((a) => (a.placeholders || []).some((ph) => (ph.images || []).some((k) => k.layerType === "text")))) {
-    ohita("tekstitaso (Printifyn editorin teksti), API ei tue: siirrä käsin Printifyssä");
-    continue;
-  }
   laske(kategoria, "siirretaan");
   if (!toteuta) continue;
+
+  if (tekstikuvat.length) {
+    try {
+      for (const t of tekstikuvat) {
+        const j = await api("/uploads/images.json", { method: "POST", body: { file_name: `${vanha.id}-${path.basename(t.polku)}`, contents: readFileSync(t.polku).toString("base64") } });
+        t.kuvaId = j.id;
+        kuvaIdt.set(t.avain, j.id);
+      }
+    } catch (e) { ohita(`tekstikuvan lataus epäonnistui: ${String(e.message).slice(0, 200)}`); continue; }
+    ({ print_areas } = uudetPrintAreat(korvaaTekstitasot(alueet, kuvaIdt), yhdistetyt, uudet));
+  }
 
   const runko = uusiTuoteRunko(vanha, kohde.blueprint.id, kohde.painotalo.id, yhdistetyt, print_areas);
   let luotu;
@@ -256,6 +305,9 @@ for (const lista of tuotteet) {
     yhdistetyt: yhdistetyt.map(({ vanhaId, uusiId, title }) => ({ vanhaId, uusiId, title })),
     pudotetut, pudotetutPaikat, julkaistu: false, vanhaPoistettuJulkaisusta: false, kanta: null,
   };
+  if (tekstikuvat.length) {
+    rivi.tekstitasotKuviksi = tekstikuvat.map((t) => ({ teksti: t.teksti, fontti: t.fontti, vari: t.vari, kuvaId: t.kuvaId, leveysPx: t.leveysPx }));
+  }
   kirjaus.siirrot.push(rivi);
   tallennaKirjaus();
   if (julkaise) {

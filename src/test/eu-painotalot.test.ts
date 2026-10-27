@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   EU_MAAT, onEU, painotalonMaa, valitseSaanto, valitsePainotalo, valitseBlueprint, tuotteenKoko, variantinOsat,
   yhdistaVariantit, uudetPrintAreat, uusiTuoteRunko, suomenToimitus, uudetDbVariantit, SIIRTOSAANNOT,
+  tekstitasot, korvaaTekstitasot, pudotaPaikat, tekstitasonAvain, TEKSTITASO_FONTIT,
 } from "../../scripts/lib/eu-painotalot.mjs";
 
 const painotalot = [
@@ -166,5 +167,52 @@ describe("kanta", () => {
     expect(uudetDbVariantit(vanhat, rakennettu, uusi, 450)).toEqual({
       oma: "x", variant_map: { "Musta|M": 101 }, colors: ["Musta"], sizes: ["M"], costs: { "101": 1100 }, shipping_cents: 450,
     });
+  });
+});
+
+describe("tekstitasot kuviksi ja painopaikkojen pudotus (27.10.2026)", () => {
+  const teksti = (vari: string, w: number, h: number, scale = 0.9) => ({
+    id: `t-${vari}-${w}`, layerType: "text", input_text: "Super\näiskä", font_family: "Luckiest Guy", font_color: vari,
+    font_weight: 400, font_style: "normal", text_align: "center", x: 0.5, y: 0.33, scale, angle: 0, width: w, height: h,
+  });
+  const kuva = { id: "kuva1", layerType: "image", x: 0.5, y: 0.6, scale: 0.5, angle: 0 };
+  const neck = { id: "neck1", layerType: "image", x: 0.5, y: 0.5, scale: 1, angle: 0 };
+  const alueet = [
+    { variant_ids: [1, 2], placeholders: [{ position: "front", images: [teksti("#ff9999", 579.9, 324.6), kuva] }, { position: "neck", images: [neck] }] },
+    // Printify jättää kopioidun tason mitoiksi 1 x 1: mitat saman tekstin toisesta tasosta.
+    { variant_ids: [3], placeholders: [{ position: "front", images: [teksti("#DC3131", 1, 1, 0.84)] }, { position: "neck", images: [neck] }] },
+  ];
+
+  it("yksilöi tekstitasot värin mukaan ja täyttää puuttuvat mitat", () => {
+    const t = tekstitasot(alueet);
+    expect(t).toHaveLength(2);
+    expect(t.map((x) => x.vari)).toEqual(["#ff9999", "#DC3131"]);
+    expect(t[1]).toMatchObject({ leveys: 579.9, korkeus: 324.6, scaleMax: 0.84, paikat: ["front"], fontti: "Luckiest Guy" });
+    expect(TEKSTITASO_FONTIT[t[0].fontti]).toBe("LuckiestGuy.ttf");
+  });
+
+  it("heittää, jos tekstitason mittoja ei tiedetä", () => {
+    expect(() => tekstitasot([{ variant_ids: [1], placeholders: [{ position: "front", images: [teksti("#000000", 1, 1)] }] }])).toThrow(/mittoja/);
+  });
+
+  it("korvaa tekstitasot kuvilla samaan kohtaan ja säilyttää tasojen järjestyksen", () => {
+    const idt = new Map(tekstitasot(alueet).map((t, i) => [t.avain, `upload-${i}`]));
+    const uusi = korvaaTekstitasot(alueet, idt);
+    expect(uusi[0].placeholders[0].images).toEqual([{ id: "upload-0", x: 0.5, y: 0.33, scale: 0.9, angle: 0, layerType: "image" }, kuva]);
+    expect(uusi[1].placeholders[0].images[0]).toMatchObject({ id: "upload-1", scale: 0.84 });
+    expect(() => korvaaTekstitasot(alueet, new Map())).toThrow(/ei ole kuvaa/);
+    expect(tekstitasonAvain(alueet[1].placeholders[0].images[0])).toContain("#dc3131");
+  });
+
+  it("pudottaa painopaikan, ja uudetPrintAreat siirtää loput", () => {
+    const ilman = pudotaPaikat(alueet, ["neck"]);
+    expect(ilman.every((a) => a.placeholders.every((ph) => ph.position !== "neck"))).toBe(true);
+    const idt = new Map(tekstitasot(ilman).map((t, i) => [t.avain, `upload-${i}`]));
+    const yhdistetyt = [{ vanhaId: 1, uusiId: 11 }, { vanhaId: 2, uusiId: 12 }, { vanhaId: 3, uusiId: 13 }];
+    const katalogi = [11, 12, 13].map((id) => ({ id, placeholders: [{ position: "front" }, { position: "back" }] }));
+    const { print_areas, pudotetutPaikat } = uudetPrintAreat(korvaaTekstitasot(ilman, idt), yhdistetyt as never, katalogi);
+    expect(pudotetutPaikat).toEqual([]);
+    expect(print_areas.map((a) => a.variant_ids)).toEqual([[11, 12], [13]]);
+    expect(print_areas[0].placeholders[0].images.map((k) => k.id)).toEqual(["upload-0", "kuva1"]);
   });
 });

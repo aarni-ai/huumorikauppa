@@ -262,3 +262,74 @@ export function uudetDbVariantit(vanhatVariantit, rakennettu, uusiTuote, shippin
   for (const k of ["sizes", "colors", "variant_images", "default_color", "variant_map"]) delete tulos[k];
   return { ...tulos, ...(rakennettu?.variants || {}), costs, shipping_cents: shippingCents };
 }
+
+// ---------- Tekstitasot kuviksi ja painopaikkojen pudotus (27.10.2026) ----------
+
+/**
+ * Printifyn editorin fontit, joille repossa on TTF (tools/printify-merkkipaiva/renderer/fonts, Google Fonts, OFL/Apache).
+ * Tekstitaso piirretään kuvaksi (scripts/lib/tekstitaso-kuvaksi.py), koska API ei luo tekstitasoja.
+ */
+export const TEKSTITASO_FONTIT = {
+  "Alfa Slab One": "AlfaSlabOne.ttf",
+  "Carter One": "CarterOne.ttf",
+  "Luckiest Guy": "LuckiestGuy.ttf",
+  "Caprasimo": "Caprasimo.ttf",
+  "Anton": "Anton-Regular.ttf",
+  "Archivo Black": "ArchivoBlack-Regular.ttf",
+};
+
+const onTeksti = (k) => k?.layerType === "text";
+/** Tekstitason avain: sama teksti, fontti, väri ja tasaus = yksi kuva. */
+export const tekstitasonAvain = (k) =>
+  [k.input_text, k.font_family, String(k.font_color || "").toLowerCase(), k.font_weight ?? 400, k.font_style ?? "normal", k.text_align ?? "center"].join("|");
+
+/**
+ * Tuotteen tekstitasot yksilöitynä. Printify jättää osaan kopioiduista tasoista mitoiksi 1 x 1; mitat otetaan silloin
+ * saman tekstin ja fontin toisesta tasosta. Palauttaa [{ avain, teksti, fontti, vari, tasaus, leveys, korkeus,
+ * scaleMax, paikat }]; heittää, jos mittoja ei tiedetä.
+ */
+export function tekstitasot(printAreat) {
+  const mitat = new Map();
+  for (const a of printAreat || []) for (const ph of a.placeholders || []) for (const k of ph.images || []) {
+    if (onTeksti(k) && k.width > 1 && k.height > 1) mitat.set(`${k.input_text}|${k.font_family}`, { leveys: k.width, korkeus: k.height });
+  }
+  const tulos = new Map();
+  for (const a of printAreat || []) for (const ph of a.placeholders || []) for (const k of ph.images || []) {
+    if (!onTeksti(k)) continue;
+    const m = k.width > 1 && k.height > 1 ? { leveys: k.width, korkeus: k.height } : mitat.get(`${k.input_text}|${k.font_family}`);
+    if (!m) throw new Error(`tekstitason "${k.input_text}" mittoja ei tiedetä`);
+    const avain = tekstitasonAvain(k);
+    const t = tulos.get(avain) || { avain, teksti: k.input_text, fontti: k.font_family, vari: k.font_color, tasaus: k.text_align || "center", ...m, scaleMax: 0, paikat: new Set() };
+    t.scaleMax = Math.max(t.scaleMax, Number(k.scale) || 0);
+    t.paikat.add(ph.position);
+    tulos.set(avain, t);
+  }
+  return [...tulos.values()].map((t) => ({ ...t, paikat: [...t.paikat] }));
+}
+
+/**
+ * print_areas, joissa tekstitasot on korvattu ladatuilla kuvilla (kuvaIdt: avain -> Printifyn upload-id). Sijainti
+ * (x, y, scale, angle) säilyy, koska kuva on rajattu tekstin musteeseen kuten Printifyn tekstilaatikko. Tasojen
+ * järjestys säilyy.
+ */
+export function korvaaTekstitasot(printAreat, kuvaIdt) {
+  const hae = (k) => (kuvaIdt instanceof Map ? kuvaIdt.get(tekstitasonAvain(k)) : kuvaIdt?.[tekstitasonAvain(k)]);
+  return (printAreat || []).map((a) => ({
+    ...a,
+    placeholders: (a.placeholders || []).map((ph) => ({
+      ...ph,
+      images: (ph.images || []).map((k) => {
+        if (!onTeksti(k)) return k;
+        const id = hae(k);
+        if (!id) throw new Error(`tekstitasolle "${k.input_text}" ei ole kuvaa`);
+        return { id, x: k.x, y: k.y, scale: k.scale, angle: k.angle ?? 0, layerType: "image" };
+      }),
+    })),
+  }));
+}
+
+/** print_areas ilman annettuja painopaikkoja (esim. "neck": Printify Choicen kaulaetiketti, Textildruckilla lisämaksu). */
+export function pudotaPaikat(printAreat, paikat) {
+  const pois = new Set(paikat || []);
+  return (printAreat || []).map((a) => ({ ...a, placeholders: (a.placeholders || []).filter((ph) => !pois.has(ph.position)) }));
+}
