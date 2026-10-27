@@ -34,6 +34,7 @@ const STATIC_PAGES = [
   { loc: "/polttari-lahjat", changefreq: "weekly", priority: "0.7" },
   { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
+  { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
   ...PAKETIT.map((p) => ({ loc: `/paketit/${p.slug}`, changefreq: "weekly", priority: "0.6" })),
@@ -120,6 +121,15 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  // 28.10.2026: isänpäivän ja joulun sesonkioppaat (src/data/blogSesonki2026.ts).
+  "isanpaivalahja-viime-hetkella",
+  "isanpaivalahja-isoisalle",
+  "lahja-ensimmaiseksi-isanpaivaksi",
+  "pikkujoulujen-lahjapeli",
+  "pikkujoulupaidat-porukalle",
+  "joululahja-poikaystavalle",
+  "joululahja-anopille-ja-appiukolle",
+  "joululahja-siskolle",
   // 27.10.2026: puuttuneet artikkelit (testi src/test/sitemap-blogi.test.ts vertaa blogidataan).
   "hauska-lahja-helsinkilaiselle",
   "hauska-lahja-juhannukseen-2026",

@@ -23,6 +23,7 @@ import Index from "./pages/Index";
 
 // Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
 // (src/lib/chunkReload.ts: enintään kerran minuutissa, ei silmukkaa).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy hyväksyy minkä tahansa komponentin propsit
 function lazyWithRetry<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>
 ) {
@@ -46,6 +47,7 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
 
 // For non-critical lazy components (popups, etc.) — never reload the page on failure;
 // just render nothing. A failed popup must NOT take down the whole app.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- kuten yllä
 function lazySafe<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>
 ) {
@@ -97,6 +99,7 @@ const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
 const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
 const LandingPage = lazyWithRetry(() => import("./pages/LandingPage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
+const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
 // doesn't trigger a full-page reload loop that blanks the site.
@@ -180,6 +183,7 @@ const App = () => (
                 <Route key={path} path={path} element={<LandingPage />} />
               ))}
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
+              <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
               {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (
                 <Route key={from} path={from} element={<Navigate to={to} replace />} />

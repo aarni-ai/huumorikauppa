@@ -82,6 +82,7 @@ const KEY_PAGES = [
   ["Palautusehdot", "/palautusehdot"],
   ["Yhteystiedot", "/yhteystiedot"],
   ["Tietoa meistä", "/tietoa-meista"],
+  ["Ryhmätilaukset (pikkujoulut, kerhot ja työpaikat)", "/ryhmatilaukset"],
   ["Blogi", "/blogi"],
 ] as const;
 

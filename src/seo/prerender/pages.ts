@@ -15,7 +15,15 @@ import { hobbies } from "@/data/hobbies";
 import { municipalities } from "@/data/municipalities";
 import { dialects } from "@/data/dialects";
 import { blogPosts } from "@/data/blog";
-import { blogMidInsertLine, blogPageLabel, getBlogProductTheme, selectBlogProducts, splitBlogProducts } from "@/data/blogProducts";
+import {
+  BLOG_END_COUNT,
+  BLOG_PRODUCT_THEMES,
+  blogMidInsertLine,
+  blogPageLabel,
+  getBlogProductTheme,
+  selectBlogProducts,
+  splitBlogProducts,
+} from "@/data/blogProducts";
 import {
   landingPages,
   LANDING_GRID_LIMIT,
@@ -24,6 +32,7 @@ import {
 } from "@/data/landingPages";
 import { CHRISTMAS_MENU } from "@/data/landingRoutes";
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
+import { ryhmatilausPage } from "@/data/ryhmatilausPage";
 import { onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
@@ -213,6 +222,7 @@ export function buildSiteNav(products: Product[] = []): SiteNav {
     { href: "/tietosuojakaytanto", label: "Tietosuojakäytäntö" },
     { href: "/yhteystiedot", label: "Yhteystiedot" },
     { href: "/tietoa-meista", label: "Tietoa meistä" },
+    { href: "/ryhmatilaukset", label: "Ryhmätilaukset" },
   ];
   return { main, footer };
 }
@@ -549,6 +559,26 @@ export function buildChristmasDeadlinePage(): PrerenderPage {
   };
 }
 
+/** /ryhmatilaukset: sama sisältö ja samat esimerkkituotteet kuin src/pages/GroupOrderPage.tsx. */
+export function buildGroupOrderPage(products: Product[]): PrerenderPage {
+  const page = ryhmatilausPage;
+  const theme = BLOG_PRODUCT_THEMES.ryhmatilaus;
+  const list = selectBlogProducts(theme, products, BLOG_END_COUNT);
+  return staticPage("/ryhmatilaukset", {
+    intro: page.intro,
+    sections: [
+      { links: [{ href: page.mailto, label: `Lähetä ryhmätilauksen tiedot: ${page.email}` }] },
+      ...page.sections.map((s) => ({ heading: s.heading, paragraphs: s.paragraphs, items: s.items })),
+      { heading: "Ideoita porukalle", links: page.links },
+    ],
+    productsHeading: theme.heading,
+    products: toPrerenderProducts(list),
+    ogImage: productImage(list[0]?.images[0]),
+    faqs: page.faqs,
+    jsonLd: [buildFaqJsonLd(page.faqs)],
+  });
+}
+
 export function buildProductPage(product: Product, all: Product[]): PrerenderPage {
   const path = `/tuote/${product.slug}`;
   const category = categories.find((c) => c.slug === product.category);
@@ -625,6 +655,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildGiftPages(products),
     ...buildLandingPages(products),
     buildChristmasDeadlinePage(),
+    buildGroupOrderPage(products),
     buildMothersDay(products),
     ...buildSituationPages(products),
     ...buildContentGraphPages(products),

@@ -23,7 +23,6 @@ export function Footer() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     let cancelled = false;
-    let stopWaiting: (() => void) | undefined;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const start = () => {
       timer = setTimeout(() => {
@@ -33,7 +32,7 @@ export function Footer() {
         else loadWidget();
       }, 3000);
     };
-    stopWaiting = onMarketingConsent(() => {
+    const stopWaiting = onMarketingConsent(() => {
       if (document.readyState === "complete") start();
       else window.addEventListener("load", start, { once: true });
     });
@@ -78,7 +77,9 @@ export function Footer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "alatunniste" }),
       });
-    } catch {}
+    } catch {
+      // Uutiskirjeen tallennusvirhe ei estä kiitosviestiä (sama käytös kuin ennen).
+    }
     setFooterSubmitted(true);
     toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
   };
@@ -144,6 +145,7 @@ export function Footer() {
             <Link to="/kaikki-tuotteet" className="hover:text-foreground transition-colors">Kaikki tuotteet</Link>
             <Link to="/paketit" className="hover:text-foreground transition-colors">Paketit</Link>
             <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>
+            <Link to="/ryhmatilaukset" className="hover:text-foreground transition-colors">Ryhmätilaukset</Link>
             {categories.filter(cat => !onPiilotettu(cat.slug)).map(cat => (
               <Link key={cat.slug} to={`/kategoria/${cat.slug}`} className="hover:text-foreground transition-colors">
                 {cat.name}
