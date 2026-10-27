@@ -26,6 +26,39 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10. myöhäisilta: hupparien hinta, DNS Domainhotelliin, vanhan kassan Stripe-tili
+
+**Hupparien hinta (oma tausta, haara oma-tausta, commitit bc0dd60 ja 85835ed).** Päätös oli S-2XL 52,90 € ja
+3XL+ 59,90 €, mutta korkeintaan kilpailijoiden taso. Stuntmanin ja Meemirotan tuotesyötteet tarkistettiin
+27.10.2026. Painettujen huppareiden korkein hinta on S-2XL 49,99 € (Meemirotta) ja 3XL+ 55,00 € (Stuntman, Speed
+Kings). Päätetyt hinnat ylittäisivät nämä, joten uudessa taustassa on käytössä 49,99 € ja 55,00 €
+(api/_lib/kokohinnat.js). Hinta vaihtuu koon mukaan tuotesivulla, korissa ja kassalla, ja palvelin laskee sen
+itse. Hupparien katesääntö on 10 %, muiden tuotteiden 20 %. Alle rajan jäävä koko piilotetaan ja muut koot jäävät
+myyntiin. Kaikkien 2 988 hupparivariantin kate on positiivinen: S-2XL mediaani 17,3 % (7,86 €), 3XL+ 14,3 %
+(7,06 €). Ainoastaan ICE AATANA -hupparin 3XL-5XL (8,7 %) piilotetaan. Testisivulla on nyt myynnissä 163 hupparia
+(aiemmin 0), myös molemmat Tonnin seteli -hupparit kaikissa koissa S-5XL. Laskelma: KATTEET.md, "Hupparien hinta
+27.10.2026". Testit 1143 ok. Testisivu tarkistettiin kolmella User-Agentilla: 200, hinta ja Uusiku Oy näkyvät.
+Tuotantoon (huumorikauppa.fi, Lovablen kassa) muutos tulee vasta käyttöönotossa.
+
+**DNS (KAYTTOONOTTO.md, "DNS: Domainhotelli").** Domain on rekisteröity Domainhotellissa (Planeetta Internet Oy),
+mutta nimipalvelimet ovat Cloudflaressa. Siksi Domainhotellin paneelin tietueet tulevat käyttöön vasta, kun
+nimipalvelimet vaihdetaan Domainhotellin omiin (ns1/ns2.domainhotelli.fi, ns3.domainhotelli.com). Ohjeessa on koko
+tietuelista julkisesta DNS:stä: Vercel A ja www CNAME, Zoho MX, SPF, DKIM, Google- ja Trustpilot-vahvistukset,
+DMARC raporttiosoitteella huumorikauppa@gmail.com, Resendin MX, SPF ja DKIM sekä Vercelin `_vercel`-vahvistus.
+
+**Domain uuteen Vercel-projektiin.** huumorikauppa.fi ja www.huumorikauppa.fi on lisätty projektiin huumorikauppa;
+www ohjaa juureen (308). Domainit odottavat vahvistusta. Ne siirtyvät uuteen projektiin vasta, kun `_vercel`-TXT on
+DNS:ssä, joten tietue lisätään käyttöönoton hetkellä. huumorikauppa.fi palvelee edelleen vanhasta projektista.
+
+**Vanhan kassan Stripe-tili.** Lovablen create-checkout loi live-session (ei maksettu, vanhenee 24 tunnissa), ja
+Stripen kassasivu kertoo tilin: `acct_1THtN1AhUyocG7PO`, "Huumorikauppa", huumorikauppa@gmail.com, tiliotemerkintä
+HUUMORIKAUPPA. Tili ei ole inteller.info. Valmis sulkuohje on KAYTTOONOTTO.md:ssä ("Vanhan kassan sulkeminen"):
+vanha webhook pois päältä ja salaisen avaimen kierto tällä tilillä, kun uusi kassa vastaa domainissa. Sulkemista ei
+ole tehty.
+
+**Avaimet.** STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET ja RESEND_API_KEY eivät olleet Vercelissä klo 22.40.
+Tarkistus jatkuu 10 minuutin välein.
+
 ## 27.10. ilta: Lovablen kassan tappioesto, Vercel Cron, EU-kopiot, käyttöönoton valmistelu
 
 Lovableen ei ole enää pääsyä, joten Lovablen kassaa (3,90 €, ilmainen toimitus 60 eurosta) ei voi julkaista.
