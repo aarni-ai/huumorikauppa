@@ -17,16 +17,18 @@ POHJA="${KAUPPA_TESTI_URL:-https://huumorikauppa-five.vercel.app}"
 echo "1/4 Ympäristömuuttujat (production)"
 nimet=$(npx vercel env ls production 2>/dev/null | awk '{print $1}')
 puuttuu=0
-for k in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET RESEND_API_KEY MYYJA CRON_SECRET DATABASE_URL PRINTIFY_API_KEY PRINTIFY_SHOP_ID; do
+for k in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET MYYJA CRON_SECRET DATABASE_URL PRINTIFY_API_KEY PRINTIFY_SHOP_ID UUSI_TAUSTA; do
   if grep -qx "$k" <<<"$nimet"; then echo "  ok      $k"; else echo "  PUUTTUU $k"; puuttuu=1; fi
 done
+# Resend ei ole pakollinen: ilman sitä Stripe lähettää asiakkaalle kuitin (api/checkout.js receipt_email).
+grep -qx RESEND_API_KEY <<<"$nimet" && echo "  ok      RESEND_API_KEY" || echo "  (ei)    RESEND_API_KEY: tilausvahvistus Stripen kuittina"
 [ "$puuttuu" = 0 ] || { echo "Lisää puuttuvat Verceliin (KAYTTOONOTTO.md) ja aja uudelleen."; exit 1; }
 
 echo "2/4 Testit"
 npx vitest run >/dev/null && echo "  testit ok"
 
 echo "3/4 Julkaisu"
-npx vercel deploy --prod --yes >/dev/null && echo "  julkaistu $POHJA"
+scripts/julkaise-uusi.sh >/dev/null && echo "  julkaistu $POHJA"
 
 echo "4/4 Tarkistukset"
 virhe=0

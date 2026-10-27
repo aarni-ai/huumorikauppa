@@ -8,7 +8,8 @@ import { describe, expect, it } from "vitest";
  */
 const ROOT = path.resolve(__dirname, "../..");
 const vercel = JSON.parse(fs.readFileSync(path.join(ROOT, "vercel.json"), "utf8"));
-const crons: { path: string; schedule: string }[] = vercel.crons;
+// Ajastukset erillisessä tiedostossa (scripts/julkaise-uusi.sh yhdistää ne uuden projektin julkaisuun).
+const crons: { path: string; schedule: string }[] = JSON.parse(fs.readFileSync(path.join(ROOT, "vercel.crons.json"), "utf8")).crons;
 
 describe("Vercel Cron", () => {
   it("ajaa valvonnan tunnin välein, yhteenvedon, saatavuuden ja katetarkistuksen", () => {
@@ -34,5 +35,15 @@ describe("Vercel Cron", () => {
   it("cron-funktio tarkistaa CRON_SECRETin", () => {
     const koodi = fs.readFileSync(path.join(ROOT, "api/cron/tilaukset.js"), "utf8");
     expect(koodi).toMatch(/req\.headers\.authorization !== `Bearer \$\{process\.env\.CRON_SECRET\}`/);
+  });
+});
+
+describe("vanhan projektin välitys (middleware.ts)", () => {
+  it("vercel.json ei sisällä ajastuksia (vanha projekti voi olla Hobby-tasolla)", () => {
+    expect(vercel.crons).toBeUndefined();
+  });
+  it("vercel.app-osoitteiden noindex ei koske välitettyjä pyyntöjä", () => {
+    const r = vercel.headers.find((h: { has?: { value?: string }[] }) => h.has?.[0]?.value === ".*\\.vercel\\.app");
+    expect(r.missing).toEqual([{ type: "header", key: "x-huumorikauppa-proxy" }]);
   });
 });

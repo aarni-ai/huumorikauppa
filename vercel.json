@@ -1779,6 +1779,21 @@
       "source": "/(.*)",
       "has": [
         {
+          "type": "header",
+          "key": "x-huumorikauppa-proxy"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Huumorikauppa-Valitetty",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
           "type": "host",
           "value": ".*\\.vercel\\.app"
         }
@@ -1787,6 +1802,12 @@
         {
           "key": "X-Robots-Tag",
           "value": "noindex, nofollow"
+        }
+      ],
+      "missing": [
+        {
+          "type": "header",
+          "key": "x-huumorikauppa-proxy"
         }
       ]
     },
@@ -1821,24 +1842,6 @@
     {
       "source": "/((?!assets/)(?!.*\\.(?:js|mjs|css|xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
       "destination": "/spa-shell.html"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/tilaukset",
-      "schedule": "17 * * * *"
-    },
-    {
-      "path": "/api/cron/tilaukset?tehtava=yhteenveto",
-      "schedule": "0 4,5 * * *"
-    },
-    {
-      "path": "/api/cron/tilaukset?tehtava=saatavuus",
-      "schedule": "*/5 5-6 * * *"
-    },
-    {
-      "path": "/api/cron/tilaukset?tehtava=katetarkistus",
-      "schedule": "7 5 * * 1"
     }
   ]
 }

@@ -30,6 +30,8 @@ function siteHandler(supabaseRows: Record<string, unknown[]>): Handler {
 }
 
 beforeAll(async () => {
+  // Uuden projektin ympäristö: ei välitystä (middleware.ts valitysKohde).
+  process.env.UUSI_TAUSTA = "1";
   vi.stubEnv("VITE_SUPABASE_URL", "https://example.supabase.co");
   vi.stubEnv("VITE_SUPABASE_PUBLISHABLE_KEY", "test-key");
   middleware = (await import("../../middleware")).default;

@@ -13,6 +13,7 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
+import { onSahkoposti } from "./_lib/sahkoposti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
@@ -179,7 +180,9 @@ export default async function handler(req, res) {
       success_url: `${origin}/tilaus-vahvistettu?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/kassa`,
       metadata: { order_id: tilaus.id },
-      payment_intent_data: { metadata: { order_id: tilaus.id } },
+      // Ilman Resendiä (oma tilausvahvistus) Stripe lähettää kuitin: receipt_email live-tilassa lähettää sen
+      // Stripen sähköpostiasetuksista riippumatta.
+      payment_intent_data: { metadata: { order_id: tilaus.id }, ...(onSahkoposti() ? {} : { receipt_email: pyynto.customerEmail.trim() }) },
       locale: "fi",
     });
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;
