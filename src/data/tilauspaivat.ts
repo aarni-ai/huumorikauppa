@@ -47,7 +47,7 @@ export function isanpaivaLause(nowMs: number = Date.now()): string {
 /** Lyhyt joululause metakuvauksiin. Tilausajan jälkeen ilman päivämäärää. */
 export function jouluMetaLause(nowMs: number = Date.now()): string {
   return jouluAuki(nowMs)
-    ? `Tilaa viimeistään ${JOULU_PAIVA_LYHYT}, niin lahja ehtii jouluaattoon.`
+    ? `Jouluksi: tilaa viimeistään ${JOULU_PAIVA_LYHYT.replace(/\d{4}$/, "")}`
     : `Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`;
 }
 
