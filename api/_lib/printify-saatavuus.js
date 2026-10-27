@@ -32,6 +32,8 @@ export const KOKONAAN_EI_SAATAVILLA = new Set([
   "audimies-kahvikuppi",
   "bemarimies-kahvikuppi",
   "ceramic-mug-eu",
+  "copy-of-eu-hintavertailu-1576-30",
+  "copy-of-eu-hintavertailu-517-30",
   "ei-perkele-kahvikuppi",
   "elakelainen-aamuheratys-vapaaehtoinen-muki",
   "elakkeella-kiireinen-tekemaan-ei-mitaan-muki",
@@ -396,6 +398,20 @@ export const SAATAVUUS_DATA = {
         "|11oz"
       ],
       "printify_product_id": "6ad92dfc845162834c0283ea",
+      "provider_id": null
+    },
+    "copy-of-eu-hintavertailu-1576-30": {
+      "unavailable": [
+        "Musta|M"
+      ],
+      "printify_product_id": "6adf59f37f77422b2b0b0e62",
+      "provider_id": null
+    },
+    "copy-of-eu-hintavertailu-517-30": {
+      "unavailable": [
+        "Valkoinen|M"
+      ],
+      "printify_product_id": "6adf59f77f77422b2b0b0e65",
       "provider_id": null
     },
     "ei-perkele-kahvikuppi": {
@@ -1469,6 +1485,8 @@ export const SAATAVUUS_DATA = {
     "audimies-kahvikuppi",
     "bemarimies-kahvikuppi",
     "ceramic-mug-eu",
+    "copy-of-eu-hintavertailu-1576-30",
+    "copy-of-eu-hintavertailu-517-30",
     "ei-perkele-kahvikuppi",
     "elakelainen-aamuheratys-vapaaehtoinen-muki",
     "elakkeella-kiireinen-tekemaan-ei-mitaan-muki",
@@ -1553,6 +1571,6 @@ export const SAATAVUUS_DATA = {
     "unavailable_variants": 4002,
     "ei_kartassa": 3838,
     "tila": "printify",
-    "tappio_variantit": 301
+    "tappio_variantit": 2
   }
 };

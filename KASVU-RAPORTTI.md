@@ -26,6 +26,14 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 27.10. yön synkronoinnin tarkistus (03.40 UTC)
+
+- Lovablen synkronointi 03.17 UTC toi kauppaan 15 uutta joulu- ja eläkeläispaitaa (t-paidat, 24,90 €), 12 julistetta (seinataulut, 22,90 €) ja Se oli tonnin seteli -tarran (tarrat, 11,90 €). Kaikki ovat aktiivisia oikeassa kategoriassa.
+- Tarrat-kategoria: /kategoria/tarrat vastaa 200 kolmella User-Agentilla, ja uusi tarra on myynnissä (/tuote/se-oli-tonnin-seteli-tarra 200).
+- Printifyn hintavertailukopiot (copy-of-eu-hintavertailu-*, myös 99,90 €:n rivit) tulivat kauppaan aktiivisina, mutta ne ohjautuvat 301:llä /kaikki-tuotteet-sivulle eivätkä näy listoissa eivätkä syötteessä.
+- Tappiotarkistus (scripts/tappiotarkistus.mjs, Printify-kulu ilman ALV:tä): 108 tuotetta, 279 tappiollista varianttia. Uusina vain kaksi hintavertailukopiota (jo piilossa). Uudet paidat, julisteet ja tarra ovat voitollisia kaikissa varianteissa. Kuusi riviä poistui listalta: viisi mukiriviä, jotka synkronointi osoitti uusiin tuotteisiin (piilossa mukeina, 301), ja ice-aatanahuppari, jonka kaikki variantit ovat nyt voitollisia.
+- Saatavuusdata päivitetty (printify-saatavuus --vain-tappio): jokaisella näkyvällä variantilla on positiivinen kate.
+
 ## 27.10.: uusi tausta valmis Stripeä vaille, joulumyynti, syöte
 
 **Uusi tausta (testisivu huumorikauppa-five.vercel.app, tietokanta Neon Frankfurt):**
