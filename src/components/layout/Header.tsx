@@ -5,7 +5,7 @@ import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { Input } from "@/components/ui/input";
 import { CHRISTMAS_MENU, FATHERS_DAY_MENU } from "@/data/landingRoutes";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 type CategoryItem = { slug: string; name: string; emoji: string; description: string };
 
@@ -121,7 +121,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       {/* Premium multi-signal trust strip */}
       <div className="bg-foreground text-background text-center py-1.5 text-[11px] font-medium tracking-widest uppercase">
-        Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} &euro; &middot; Toimitus {TOIMITUSAIKA_TEKSTI} pv &middot; Kotimainen kauppa
+        Toimitus {TOIMITUSMAKSU_TEKSTI} &euro;, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta &middot; Toimitus {TOIMITUSAIKA_TEKSTI} pv &middot; Kotimainen kauppa
       </div>
 
       <div className="container flex items-center justify-between h-14 md:h-16 gap-4">

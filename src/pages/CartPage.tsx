@@ -8,6 +8,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU } from "@/config/toimitus";
 
@@ -121,6 +122,8 @@ const CartPage = () => {
               </div>
             </div>
           ))}
+
+          <TarraLisamyynti kori={items.map((i) => i.product)} kaikki={allProducts} />
 
           {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
           <ComplementaryProducts

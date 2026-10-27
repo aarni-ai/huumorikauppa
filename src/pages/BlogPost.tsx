@@ -18,7 +18,7 @@ import {
   splitBlogProducts,
 } from "@/data/blogProducts";
 import { buildBlogPostJsonLd, blogImageUrl } from "@/lib/blogJsonLd";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 /** Artikkelin teksti; midBlock (tuotenosto) lisätään blogMidInsertLine-riville (kahden osion jälkeen). */
 function renderContent(content: string, midBlock: ReactNode) {
@@ -296,7 +296,7 @@ const BlogPost = () => {
               )}
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
+              Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
             </p>
           </section>
         )}

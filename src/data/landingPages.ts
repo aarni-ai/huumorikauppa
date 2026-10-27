@@ -227,7 +227,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska joululahja on t-paita, huppari tai personoitu tuote, jonka teksti osuu saajan omaan elämään: ikään, ammattiin, harrastukseen tai perheen sisäpiirin vitsiin. Tällä sivulla on koko joulun valikoima, ja alla olevista lahjaoppaista rajaat sen saajan tai budjetin mukaan.",
       `Tuotteet painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa ja kuljetetaan sieltä Suomeen, joten joulutilauksella on takaraja. ${D}`,
-      `Jos saajan koko on epävarma, valitse huppari: väljä istuvuus ei haittaa hupparissa samalla tavalla kuin t-paidassa. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, joten useamman lahjan tilaaminen kerralla kannattaa.`,
+      `Jos saajan koko on epävarma, valitse huppari: väljä istuvuus ei haittaa hupparissa samalla tavalla kuin t-paidassa. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, joten useamman lahjan tilaaminen kerralla kannattaa.`,
     ],
     faqs: [
       {
@@ -288,7 +288,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska joululahja miehelle on huppari tai t-paita, jonka teksti kertoo jotain hänestä itsestään: kalastus, kalju, kotitalon isäntä tai lapsenlasten ukki.",
       "Jouluna huppari on käytännöllisempi kuin t-paita, koska sitä käytetään talvella sisällä ja ulkona. Siksi tällä sivulla hupparit näkyvät ensin. Jos mies on isä tai isoisä, isän ja papan joululahjasivuilla valikoima on rajattu tarkemmin.",
-      `${D} Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset, esimerkiksi kaksi hupparia, toimitetaan ilman toimituskuluja.`,
+      `${D} Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset, esimerkiksi kaksi hupparia, toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -581,7 +581,7 @@ export const landingPages: LandingPageDef[] = [
     h1: "Hauska joululahja työkaverille",
     intro: [
       "Hauska joululahja työkaverille on toimistohuumoria, joka naurattaa koko työporukkaa eikä osu kehenkään henkilökohtaisesti: palaverit, lounastauko, etätyö ja tiimityö.",
-      `Paitojen tekstit, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko, nauravat työlle eivätkä työkaverille. Jos lahjoja ostetaan koko tiimille, yli ${ILMAINEN_RAJA_TEKSTI} euron tilaus toimitetaan ilman toimituskuluja.`,
+      `Paitojen tekstit, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko, nauravat työlle eivätkä työkaverille. Jos lahjoja ostetaan koko tiimille, vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaus toimitetaan ilman toimituskuluja.`,
       `Jos lahjat jaetaan pikkujouluissa, katso myös pikkujoululahjat ja salaisen joulupukin lahjat. ${D}`,
     ],
     faqs: [
@@ -595,7 +595,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Voiko lahjat tilata koko tiimille kerralla?",
-        a: `Voi. Lisää tuotteet ja koot samaan ostoskoriin. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+        a: `Voi. Lisää tuotteet ja koot samaan ostoskoriin. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
       {
         q: "Mitä huumoria kannattaa välttää työkaverin lahjassa?",
@@ -744,7 +744,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä toimitus maksaa?",
-        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
       {
         q: "Ehtiikö lahja jouluksi?",
@@ -820,7 +820,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä toimitus maksaa?",
-        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Useampi pieni lahja samassa tilauksessa jakaa toimituskulun.`,
+        a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Useampi pieni lahja samassa tilauksessa jakaa toimituskulun.`,
       },
     ],
     related: ["/joululahjat", "/joululahja-alle-50-euroa", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/joululahja-kaverille"],
@@ -852,7 +852,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Saako ilmaisen toimituksen?",
-        a: `Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, eli kaksi hupparia samassa tilauksessa ylittää rajan.`,
+        a: `Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja, eli kaksi hupparia samassa tilauksessa ylittää rajan.`,
       },
       {
         q: "Milloin joululahja on viimeistään tilattava?",
@@ -948,7 +948,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska t-paita on paita, jonka painatus on vitsi: Huumorikaupan valikoimassa on meemejä, ikävuosipaitoja, ammatti- ja harrastuspaitoja sekä kotikaupunkiaiheisia paitoja.",
       "Miehille valikoimassa ovat esimerkiksi Isäntä, Amatimies ja Kalju, naisille slay queen ja Super äiskä. Kaupunkipaidoissa on omat mallinsa yli 50 paikkakunnalle, ja Oma teksti/kuva -paitaan kirjoitat itse painettavan tekstin.",
-      `Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa. Toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa. Toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -1092,7 +1092,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Se oli tonnin seteli on suomalainen meemilausahdus, jolla surraan liioitellen rahaa, joka vain katosi: tonnin seteliä harva on koskaan nähnyt, ja juuri liioittelu tekee vitsistä hauskan.",
       "Tekstistä on kaksi versiota. Se oli tonnin seteli. on koko lausahdus pisteen kanssa, ja Tonnin Seteli on lyhyempi teksti. Kummastakin on t-paita ja huppari kooissa S-5XL, ja ne näkyvät listassa ensimmäisinä.",
-      `Samaan sarjaan sopivat muut suomalaiset meemit, kuten oispa kaljaa, Saatanan Tunarit, ICE AATANA ja ois viisaampi häipyy täält. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Samaan sarjaan sopivat muut suomalaiset meemit, kuten oispa kaljaa, Saatanan Tunarit, ICE AATANA ja ois viisaampi häipyy täält. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -1168,7 +1168,7 @@ export const landingPages: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska lahja 40-vuotiaalle miehelle | Huumorikauppa",
     description:
-      `40 v lahja miehelle: 40v-paidat ja -hupparit kuten 40v ei vanha, vintage ja 40 vuotta, henkisesti 18. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
+      `40 v lahja miehelle: 40v-paidat ja -hupparit kuten 40v ei vanha, vintage ja 40 vuotta, henkisesti 18. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     h1: "Hauskat lahjat 40-vuotiaalle miehelle",
     intro: [
       "Hauska lahja 40-vuotiaalle miehelle on 40v-paita tai -huppari, jonka teksti kääntää ikävuodet vitsiksi, kuten 40v ei vanha, vintage tai 40v kunnossa niinku 20v.",
@@ -1208,7 +1208,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska lahja 50-vuotiaalle miehelle on 50v-paita tai -huppari, jossa puoli vuosisataa on vitsin aihe, kuten 50v puoli vuosisataa, ei naarmuakaan tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Museokamaa sopii 50-vuotiaalle, joka nauraa jo itselleen vanhana mallina, ja 50 vuotta nuori juhlijalle, joka ei koe ikäänsä.",
-      `50-vuotislahjaksi huppari on t-paitaa näyttävämpi, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+      `50-vuotislahjaksi huppari on t-paitaa näyttävämpi, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1260,7 +1260,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Kauanko toimitus kestää?",
-        a: `${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+        a: `${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
     ],
     related: ["/lahjat/60-vuotiaalle-naiselle", "/lahjat/50-vuotiaalle-miehelle", "/lahjat/70-vuotiaalle", "/elakelahjat"],
@@ -1382,7 +1382,7 @@ export const landingPages: LandingPageDef[] = [
     h1: "Hauskat eläkelahjat",
     intro: [
       "Hauska eläkelahja on paita tai huppari, joka juhlii vapautta työstä, kuten Olen eläkkeellä, Eläkkeellä, kiireinen tekemään ei mitään tai 40 vuotta töitä, nyt ikuinen viikonloppu.",
-      `Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       `Eläkejuhliin tilaa vähintään kaksi viikkoa etukäteen, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
@@ -1628,7 +1628,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Työkaverille sopii lahjaksi toimistohuumorin paita, jonka teksti nauraa työlle eikä työkaverille, kuten Tämäkin olisi voinut olla sähköposti tai Tärkeintä työssä on lounastauko.",
       "Ammatin mukaan valittu paita osuu tarkemmin: asiakaspalvelijalle, myyntimiehelle ja etätöitä tekevälle on omat tekstinsä, ja muut ammatit löytyvät ammattipaidoista. Pitkän uran tehneelle sopii personoitava Alalla X vuotta -paita.",
-      `Läksiäisiin eläkkeelle jäävälle sopivat eläkelahjat. Koko työporukan tilaus yli ${ILMAINEN_RAJA_TEKSTI} eurolla toimitetaan ilman toimituskuluja.`,
+      `Läksiäisiin eläkkeelle jäävälle sopivat eläkelahjat. Koko työporukan tilaus vähintään ${ILMAINEN_RAJA_TEKSTI} eurolla toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {
@@ -1645,7 +1645,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Voiko lahjat tilata usealle kerralla?",
-        a: `Voi. Lisää tuotteet samaan ostoskoriin. Yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+        a: `Voi. Lisää tuotteet samaan ostoskoriin. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
     ],
     related: ["/joululahja-tyokaverille", "/ammattipaidat", "/elakelahjat", "/lahjat/pomolle"],
@@ -1756,7 +1756,7 @@ export const landingPages: LandingPageDef[] = [
     intro: [
       "Hauska lahja miehelle on paita tai huppari, jonka teksti liittyy hänen harrastukseensa tai rooliinsa, kuten Isäntä, Kalju, KALAMIES tai Museokamaa.",
       "Valitse ensin, kenelle lahja on: isälle sopivat iskä- ja isäntätekstit, puolisolle I love my girlfriend -paita ja isoisälle ukki- ja pappa-paidat. Jokaiselle on oma, tarkemmin rajattu lahjasivunsa.",
-      `Miehelle, jolla on jo kaikkea, valitse personoitava paita. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja yli ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Miehelle, jolla on jo kaikkea, valitse personoitava paita. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
     ],
     faqs: [
       {

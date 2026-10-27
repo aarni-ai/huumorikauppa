@@ -226,7 +226,7 @@ const MothersDayPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-10 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus vähintään {ILMAINEN_RAJA_TEKSTI} €</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen</div>
@@ -312,7 +312,7 @@ const MothersDayPage = () => {
             joten tilaa viimeistään kaksi viikkoa ennen äitienpäivää.
           </p>
           <p>
-            <strong>Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
+            <strong>Ilmainen toimitus vähintään {ILMAINEN_RAJA_TEKSTI} € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
             kuuluvat aina kauppaan. Selaa alta valikoima ja löydä äidillesi se oikea{" "}
             <strong>äitienpäivälahja 2026</strong>, joka saa hänet nauramaan ääneen — ja muistamaan sinut
             koko vuoden.
