@@ -1,6 +1,6 @@
 /**
- * Tilausvalvonta. GitHub Actions kutsuu tunnin välein (tilausvalvonta.yml) ja Vercel Cron kerran päivässä
- * (vercel.json). Authorization: Bearer CRON_SECRET.
+ * Tilausvalvonta. Vercel Cron kutsuu tunnin välein (vercel.json "crons", Pro-taso; Vercel lähettää otsakkeen
+ * Authorization: Bearer CRON_SECRET itse). Käsiajo samalla otsakkeella.
  *  1. Paikkaus: Stripen maksetut sessiot 72 h ajalta, joita ei ole merkitty maksetuiksi (webhook jäi tulematta).
  *  2. Uudelleenyritys: maksetut tilaukset, joita ei ole saatu Printifyn tuotantoon (ei_lahetetty, luotu = Printifyssä
  *     on-hold, virhe). send_to_production uudelleen kasvavin välein (15 min, 30 min, 1 h, 2 h, sitten 4 h), hälytys heti
@@ -18,13 +18,18 @@
  *  5. Päivän yhteenvedon varmistus: jos klo 7 ajo jäi tekemättä, lähetetään klo 9 jälkeen.
  * ?kuiva=1 listaa vain, mitä tehtäisiin.
  *
- * ?tehtava=yhteenveto: päivän yhteenveto (api/_lib/valvonta.js). GitHub Actions (paivayhteenveto.yml) kutsuu 04:00 ja
- * 05:00 UTC; vain Helsingin kello 7 -ajo lähettää (kesä- ja talviaika), kv estää toisen lähetyksen. &pakota=1 ohittaa
- * kellonajan.
+ * ?tehtava=yhteenveto: päivän yhteenveto (api/_lib/valvonta.js). Vercel Cron kutsuu 04:00 ja 05:00 UTC; vain
+ * Helsingin kello 7 -ajo lähettää (kesä- ja talviaika), kv estää toisen lähetyksen. &pakota=1 ohittaa kellonajan.
  *
  * ?tehtava=saatavuus: Printify-varianttien saatavuustarkistus (api/_lib/saatavuus.js) yhtenä eränä (noin 35 s, 5
- * kutsua sekunnissa). GitHub Actions (saatavuus.yml) kutsuu kerran päivässä uudelleen, kunnes vastauksen jaljella on 0.
- * Erillinen tehtävä samassa funktiossa, koska Vercel Hobby rajaa funktioiden ja Vercel Cronien määrää.
+ * kutsua sekunnissa). Vercel Cron kutsuu viiden minuutin välein klo 05-06 UTC; kun kaikki on tarkistettu (jaljella 0),
+ * loput kutsut eivät tee mitään.
+ *
+ * ?tehtava=resend-domain: lisää huumorikauppa.fi Resendiin (alue eu-west-1), jos sitä ei ole, ja palauttaa domainin tilan
+ * ja vahvistukseen tarvittavat DNS-tietueet (KAYTTOONOTTO.md). &vahvista=1 pyytää Resendiä tarkistamaan tietueet.
+ *
+ * ?tehtava=katetarkistus: näkyvien tuotteiden katevalvonta (api/_lib/katevalvonta.js) maanantaisin; yhteenveto
+ * sähköpostilla omistajalle, jos jokin tuote on alle myynnin rajan tai kulut ovat tuntemattomat.
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
@@ -37,6 +42,7 @@ import { kaikkiTuotteet } from "../_lib/tuotteet.js";
 import { helsinki, printifyTila, jumissaYli, ajaYhteenveto, pgValvonta, KV_YHTEENVETO, JUMISSA_TUNTIA, pysaytetynSeuranta } from "../_lib/valvonta.js";
 import { ajaMarkkinointi } from "../_lib/markkinointi.js";
 import { pgMarkkinointi } from "../_lib/markkinointi-db.js";
+import { katevalvonta, yhteenveto as kateYhteenveto, katetarkistusAihe, htmlEsi } from "../_lib/katevalvonta.js";
 
 // Vercelin funktioraja 60 s: valinnaiset vaiheet (3b, 4) jäävät seuraavaan ajoon, jos aikaa on kulunut yli tämän.
 const AIKARAJA_MS = 40000;
@@ -70,6 +76,30 @@ export default async function handler(req, res) {
       },
     });
     return res.status(200).json({ ok: true, kuiva, ...r });
+  }
+
+  if (req.query.tehtava === "resend-domain") {
+    if (!onSahkoposti()) return res.status(503).json({ error: "RESEND_API_KEY puuttuu" });
+    const resend = async (polku, init = {}) => {
+      const r = await fetch(`https://api.resend.com${polku}`, { ...init, headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" } });
+      return { status: r.status, body: await r.json().catch(() => ({})) };
+    };
+    const lista = await resend("/domains");
+    if (lista.status !== 200) return res.status(502).json({ error: "Resendin domainlista epäonnistui", status: lista.status, viesti: lista.body?.message ?? null });
+    let domain = (lista.body.data || []).find((d) => d.name === "huumorikauppa.fi");
+    if (!domain && !kuiva) domain = (await resend("/domains", { method: "POST", body: JSON.stringify({ name: "huumorikauppa.fi", region: "eu-west-1" }) })).body;
+    if (domain?.id && req.query.vahvista === "1" && !kuiva) await resend(`/domains/${domain.id}/verify`, { method: "POST" });
+    const tiedot = domain?.id ? (await resend(`/domains/${domain.id}`)).body : null;
+    return res.status(200).json({ ok: true, kuiva, domain: tiedot ? { name: tiedot.name, status: tiedot.status, region: tiedot.region, records: tiedot.records } : null });
+  }
+
+  if (req.query.tehtava === "katetarkistus") {
+    const tuotteet = (await db`select * from products`).map((r) => ({ ...r, price: Number(r.price) }));
+    const t = katevalvonta(tuotteet);
+    const teksti = kateYhteenveto(t, "tietokanta");
+    const huomioita = t.alle.length + t.tuntematon.length;
+    const r = huomioita && !kuiva && onSahkoposti() ? await laheta({ to: OMISTAJA(), subject: katetarkistusAihe(t), text: teksti, html: htmlEsi(teksti) }) : null;
+    return res.status(200).json({ ok: true, kuiva, tarkistettu: t.tarkistettu, alle: t.alle.length, tuntematon: t.tuntematon.length, lahetetty: !!r?.ok, virhe: r && !r.ok ? r.virhe : null });
   }
 
   // 1. Paikkaus Stripestä

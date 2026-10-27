@@ -41,6 +41,17 @@
       "has": [
         {
           "type": "host",
+          "value": ".*aarni-ais-projects\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://huumorikauppa.fi/$1",
+      "permanent": false
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
           "value": "www.huumorikauppa.fi"
         }
       ],
@@ -1815,7 +1826,19 @@
   "crons": [
     {
       "path": "/api/cron/tilaukset",
-      "schedule": "0 5 * * *"
+      "schedule": "17 * * * *"
+    },
+    {
+      "path": "/api/cron/tilaukset?tehtava=yhteenveto",
+      "schedule": "0 4,5 * * *"
+    },
+    {
+      "path": "/api/cron/tilaukset?tehtava=saatavuus",
+      "schedule": "*/5 5-6 * * *"
+    },
+    {
+      "path": "/api/cron/tilaukset?tehtava=katetarkistus",
+      "schedule": "7 5 * * 1"
     }
   ]
 }
