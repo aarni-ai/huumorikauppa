@@ -62,7 +62,8 @@ export const TUOTETYYPIT = {
     blueprint: { sisaltaa: ["gildan", "18500"] },
     suositut: ["Textildruck Europa", "OPT OnDemand"],
     oletusVarit: ["Black"], oletusKoot: ["S", "M", "L", "XL", "2XL"],
-    asettelu: { leveys: 0.6, korkeus: 0.3, yla: 0.06 }, oletusAlue: { width: 3600, height: 3600 },
+    // 28.10.2026: Atelier Katangan painoalue 4500x3000; yla 0.06 jäi nyörien alle ja teksti pieneksi (mockup).
+    asettelu: { leveys: 0.62, korkeus: 0.55, yla: 0.2 }, oletusAlue: { width: 3600, height: 3600 },
   },
   tarra: {
     nimi: "Tarra", kategoria: "tarrat", tagi: "Tarra",
