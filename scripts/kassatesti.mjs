@@ -41,7 +41,7 @@ for (const [nimi, items] of korit) {
   const r = await fetch(`${POHJA}/api/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pyynto(items)) });
   const j = await r.json().catch(() => ({}));
   const url = String(j.url || "");
-  const tila = /\/c\/pay\/cs_test_/.test(url) ? "testi" : /\/c\/pay\/cs_live_/.test(url) ? "live" : null;
+  const tila = /\/[cg]\/pay\/cs_test_/.test(url) ? "testi" : /\/[cg]\/pay\/cs_live_/.test(url) ? "live" : null;
   const ok = r.status === 200 && j.ok && /^https:\/\/checkout\.stripe\.com\//.test(url) && (tila === "testi" || (tila === "live" && SALLI_LIVE));
   if (!ok) virheita++;
   console.log(`${ok ? "OK " : "VIRHE"} ${nimi}: HTTP ${r.status}, ${j.ok ? `Stripe-sessio (${tila ?? "tuntematon tila"})` : j.error || "ei vastausta"}${ok ? `\n    ${url.slice(0, 80)}...` : ""}`);
