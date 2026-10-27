@@ -4,12 +4,16 @@ import App from "./App.tsx";
 import "./index.css";
 import { revealApp, setPreviewReveal, setProductSeed } from "./lib/prerenderPreview";
 
+// Sovelluksen moduulit latautuivat: esirenderöidyn HTML:n käynnistysvahti (BOOT_GUARD_SCRIPT,
+// src/seo/prerender/html.ts) ei enää lataa sivua uudelleen eikä näytä varasisältöä.
+(window as Window & { __hkMain?: boolean }).__hkMain = true;
+
 const rootElement = document.getElementById('root')!;
 // Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):
 // siirretään #rootin viereen näkyviin ja React käynnistetään piilotettuun #rootiin. Vaihto
 // (revealApp, src/lib/prerenderPreview.ts) tapahtuu sivun ensimmäisessä renderöinnissä, viimeistään
 // pian Appin asennuksen jälkeen ja aina viimeistään PREVIEW_TIMEOUT_MS:n kuluttua.
-const PREVIEW_TIMEOUT_MS = 4000;
+const PREVIEW_TIMEOUT_MS = 2000;
 const preview = rootElement.querySelector<HTMLElement>(':scope > [data-prerender-visual]');
 if (preview) {
   const seed = preview.querySelector('script[data-product-seed]');

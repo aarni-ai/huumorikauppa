@@ -11,6 +11,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { AddToCartDrawer } from "./components/AddToCartDrawer";
 import { lazy, Suspense, useEffect } from "react";
 import { REVEAL_AFTER_MOUNT_MS, revealApp } from "@/lib/prerenderPreview";
+import { reloadOnceForStaleChunk } from "@/lib/chunkReload";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
@@ -21,11 +22,11 @@ import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 import Index from "./pages/Index";
 
 // Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
+// (src/lib/chunkReload.ts: enintään kerran minuutissa, ei silmukkaa).
 function lazyWithRetry<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>
 ) {
   return lazy(async () => {
-    const KEY = "lovable-chunk-reloaded";
     try {
       return await factory();
     } catch (err) {
@@ -33,9 +34,9 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
         await new Promise((r) => setTimeout(r, 300));
         return await factory();
       } catch (err2) {
-        if (typeof window !== "undefined" && !sessionStorage.getItem(KEY)) {
-          sessionStorage.setItem(KEY, "1");
-          window.location.reload();
+        if (reloadOnceForStaleChunk()) {
+          // Sivu latautuu uudelleen: pidetään Suspense-tila, ei virhenäkymää.
+          return new Promise<never>(() => {});
         }
         throw err2;
       }

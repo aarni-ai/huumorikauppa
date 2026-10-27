@@ -7,6 +7,7 @@
  */
 import { SITE_URL, absoluteUrl, formatPriceFi } from "../site";
 import { buildBreadcrumbJsonLd, buildSiteJsonLd, serializeJsonLd, type BreadcrumbItem, type JsonLd } from "../structuredData";
+import { CHUNK_RELOAD_KEY, CHUNK_RELOAD_MIN_INTERVAL_MS } from "../../lib/chunkReload";
 
 export interface LinkItem {
   href: string;
@@ -213,6 +214,27 @@ export const PRERENDER_STYLE =
   `<style id="prerender-style">[data-prerender]{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>` +
   `<noscript><style>[data-prerender-visual]{display:none}[data-prerender]{position:static;width:auto;height:auto;margin:0 auto;padding:16px;overflow:visible;clip:auto;white-space:normal;max-width:960px;font-family:system-ui,sans-serif;line-height:1.5}</style></noscript>`;
 
+/**
+ * Käynnistysvahti, joka ei riipu sovelluksen JavaScriptistä. Jos sovelluksen entry-moduuli tai
+ * jokin sen staattisista riippuvuuksista ei lataudu (tyypillisesti julkaisun jälkeen
+ * välimuistista tullut vanha HTML viittaa /assets/-tiedostoihin, joita ei enää ole), selain
+ * laukaisee script-elementille error-tapahtuman eikä src/main.tsx koskaan käynnisty. Silloin
+ * esikatselu (inert) jäisi näkyviin pysyvästi. Vahti lataa sivun uudelleen kerran
+ * (sessionStorage, sama avain kuin src/lib/chunkReload.ts) ja muuten näyttää staattisen rungon
+ * linkkeineen esikatselun sijaan. src/main.tsx asettaa window.__hkMain, jolloin vahti ei enää toimi.
+ */
+export const BOOT_GUARD_SCRIPT =
+  `<script id="hk-boot-guard">(function(){var w=window,d=document,done=false;` +
+  `function fail(){if(done||w.__hkMain)return;done=true;var ok=false;` +
+  `try{var s=w.sessionStorage,n=Date.now(),t=Number(s.getItem(${JSON.stringify(CHUNK_RELOAD_KEY)}))||0;` +
+  `if(n-t>=${CHUNK_RELOAD_MIN_INTERVAL_MS}){s.setItem(${JSON.stringify(CHUNK_RELOAD_KEY)},String(n));ok=true}}catch(e){}` +
+  `if(ok){w.location.reload();return}` +
+  `var v=d.querySelectorAll("[data-prerender-visual]");for(var i=0;i<v.length;i++)v[i].parentNode.removeChild(v[i]);` +
+  `var st=d.getElementById("prerender-style");if(st)st.parentNode.removeChild(st);` +
+  `var r=d.getElementById("root");if(r)r.style.display=""}` +
+  `w.__hkBootFail=fail;` +
+  `w.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="SCRIPT"&&t.type==="module")fail()},true)})()</script>`;
+
 function jsonLdScript(data: JsonLd, id: string, prerenderHead: boolean): string {
   return `<script type="application/ld+json" id="${id}"${prerenderHead ? " data-prerender-head" : ""}>${serializeJsonLd(data)}</script>`;
 }
@@ -308,7 +330,7 @@ export function applyHead(template: string, opts: HeadOptions): string {
   const scripts = [jsonLdScript(buildSiteJsonLd(), "seo-site-jsonld", false)];
   if (opts.pageJsonLd) scripts.push(jsonLdScript(opts.pageJsonLd, "seo-jsonld", true));
   if (opts.breadcrumbJsonLd) scripts.push(jsonLdScript(opts.breadcrumbJsonLd, "seo-breadcrumb-jsonld", true));
-  html = html.replace("</head>", () => `  ${PRERENDER_STYLE}\n    ${scripts.join("\n    ")}\n  </head>`);
+  html = html.replace("</head>", () => `  ${PRERENDER_STYLE}\n    ${BOOT_GUARD_SCRIPT}\n    ${scripts.join("\n    ")}\n  </head>`);
   return html;
 }
 
@@ -343,7 +365,10 @@ export function deferEntryScripts(html: string, extraPreloads: string[] = []): s
   const loader =
     `<script>(function(){var d=document,w=window,done=false,po;function go(){if(done)return;done=true;if(po)po.disconnect();` +
     `${JSON.stringify(preloads)}.forEach(function(h){var l=d.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;d.head.appendChild(l)});` +
-    `var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(entry[1])};d.head.appendChild(s)}` +
+    // Entry ei latautunut tai src/main.tsx ei käynnistynyt: käynnistysvahti (BOOT_GUARD_SCRIPT).
+    `var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(entry[1])};` +
+    `s.onerror=function(){w.__hkBootFail&&w.__hkBootFail()};` +
+    `s.onload=function(){if(!w.__hkMain&&w.__hkBootFail)w.__hkBootFail()};d.head.appendChild(s)}` +
     `setTimeout(go,${ENTRY_DEFER_MAX_MS});` +
     `var i=d.querySelector("[data-prerender-visual] img[fetchpriority=high]")||d.querySelector("[data-prerender-visual] img");` +
     `if(!i){go();return}` +
