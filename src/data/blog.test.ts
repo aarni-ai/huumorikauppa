@@ -4,6 +4,7 @@ import path from "path";
 import { blogPosts } from "./blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
+import { sesonkiOppaat2026 } from "./blogSesonki2026";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -12,12 +13,13 @@ import { municipalities } from "./municipalities";
 import { dialects } from "./dialects";
 import { PIILOTETUT_KATEGORIAT } from "@/lib/hiddenCategories";
 // Aktiivisten (is_active != false), myynnissä olevien tuotteiden slugit, haettu Supabasesta 21.10.2026.
-// Ei mukeja. Päivitä, kun tuotevalikoima muuttuu.
+// Ei mukeja. Päivitä, kun tuotevalikoima muuttuu. 28.10.2026: lisätty 27.10.2026 julkaistut joulu- ja eläkepaidat.
 import productSlugs from "@/test/fixtures/productSlugs.json";
 import type { BlogPost } from "@/types/blog";
 import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
 import { LANDING_PATHS, LANDING_REDIRECTS } from "./landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
+import { TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 const DASHES = /[–—]/; // en dash, em dash
 const HEDGES = /(?<!\p{L})(saattaa|saattavat|ehkä|todennäköisesti|pyrimme)(?!\p{L})/iu;
@@ -64,8 +66,14 @@ function allText(post: BlogPost): string {
   return [post.title, post.metaTitle, post.metaDescription, post.excerpt, post.content, ...post.tags, ...faq].join("\n");
 }
 
-/** Joulun 2026 oppaat ja 26.10.2026 julkaistut lisäoppaat: samat teksti-, linkitys- ja FAQ-säännöt. */
-const KAIKKI_JOULU = [...jouluOppaat2026, ...jouluOppaat2026Lisa];
+/** Joulun 2026 oppaat, 26.10.2026 lisäoppaat ja 28.10.2026 sesonkioppaat: samat teksti-, linkitys- ja FAQ-säännöt. */
+const KAIKKI_JOULU = [...jouluOppaat2026, ...jouluOppaat2026Lisa, ...sesonkiOppaat2026];
+
+function julkaisupaiva(post: BlogPost): string {
+  if (jouluOppaat2026.includes(post)) return "2026-10-21";
+  if (jouluOppaat2026Lisa.includes(post)) return "2026-10-26";
+  return "2026-10-28";
+}
 
 function wordCount(md: string): number {
   return md
@@ -156,6 +164,34 @@ describe("blogi: joulun 2026 oppaat", () => {
     for (const post of jouluOppaat2026Lisa) expect(muut.has(post.slug), post.slug).toBe(false);
   });
 
+  it("sesonkioppaita on 8, ne ovat mukana blogPosts-listassa, julkaistu 28.10.2026 ja uusilla slugeilla", () => {
+    expect(sesonkiOppaat2026).toHaveLength(8);
+    const muut = new Set(blogPosts.filter((p) => !sesonkiOppaat2026.includes(p)).map((p) => p.slug));
+    for (const post of sesonkiOppaat2026) {
+      expect(blogPosts).toContain(post);
+      expect(post.publishedAt).toBe("2026-10-28");
+      expect(muut.has(post.slug), post.slug).toBe(false);
+    }
+  });
+
+  it("sesonkioppaat: ei hintoja tekstissä, isänpäivälle ei toimituslupausta, pikkujouluoppaat linkittävät ryhmätilauksiin", () => {
+    for (const post of sesonkiOppaat2026) {
+      const text = allText(post);
+      // Hinnat tulevat tuotekorteista; ainoa euromäärä on toimitusehtojen vakioista tuleva toimitusmaksu.
+      const eurot = [...text.matchAll(/(\d+(?:,\d+)?) ?€/g)].map((m) => m[1]);
+      expect(eurot.every((e) => e === TOIMITUSMAKSU_TEKSTI), post.slug).toBe(true);
+      expect(text).not.toMatch(/voi olla että|suomen paras|painettu suomessa|varastossa/i);
+      if (post.tags.some((t) => t.includes("isänpäivä"))) {
+        expect(text, post.slug).not.toMatch(/ehtii (perille )?isänpäiväksi|perillä isänpäiväksi|isänpäivään mennessä/);
+        expect(internalLinks(post), post.slug).toContain("/isanpaivalahja");
+      }
+    }
+    for (const slug of ["pikkujoulujen-lahjapeli", "pikkujoulupaidat-porukalle"]) {
+      const post = sesonkiOppaat2026.find((p) => p.slug === slug)!;
+      expect(internalLinks(post), slug).toContain("/ryhmatilaukset");
+    }
+  });
+
   it.each(KAIKKI_JOULU.map((p) => [p.slug, p] as const))("%s: tekstisäännöt ja SEO-rajat", (_slug, post) => {
     const text = allText(post);
     expect(text).not.toMatch(DASHES);
@@ -199,7 +235,7 @@ describe("blogi: rakenteinen data", () => {
     expect(article["@type"]).toBe("Article");
     expect(article.headline).toBe(post.title);
     expect(article.description).toBe(post.metaDescription);
-    expect(article.datePublished).toBe(jouluOppaat2026.includes(post) ? "2026-10-21" : "2026-10-26");
+    expect(article.datePublished).toBe(julkaisupaiva(post));
     expect(article.dateModified).toBe(post.updatedAt);
     expect(article.author).toMatchObject({ "@type": "Organization", name: "Huumorikauppa" });
     expect(article.publisher).toMatchObject({ "@type": "Organization", name: "Huumorikauppa", logo: { "@type": "ImageObject" } });

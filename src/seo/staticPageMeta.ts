@@ -112,6 +112,15 @@ export const STATIC_PAGE_META = {
     h1: "Hauskat äitienpäivälahjat 2026",
     name: "Äitienpäivälahjat",
   },
+  "/ryhmatilaukset": {
+    title: "Ryhmätilaukset: paidat porukalle | Huumorikauppa",
+    description:
+      "Ryhmätilaus pikkujouluihin, kerhoille, seuroille ja työpaikoille, kun tuotteita tilataan viisi tai enemmän. Näin tilaus etenee ja toimitetaan.",
+    h1: "Ryhmätilaukset pikkujouluihin, kerhoille ja työpaikoille",
+    name: "Ryhmätilaukset",
+    intro:
+      "Tilaatteko paitoja koko porukalle? Ryhmätilaus sopii pikkujouluihin, kerhoille, urheiluseuroille ja työpaikoille, kun tuotteita tilataan viisi tai enemmän.",
+  },
 } satisfies Record<string, StaticPageMeta>;
 
 export type StaticPagePath = keyof typeof STATIC_PAGE_META;
