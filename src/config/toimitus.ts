@@ -43,6 +43,9 @@ export const ILMAINEN_RAJA_TEKSTI = euroluku(ILMAINEN_TOIMITUS_RAJA);
 /** "3-10" */
 export const TOIMITUSAIKA_TEKSTI = `${TOIMITUSAIKA_MIN_ARKIPAIVAA}-${TOIMITUSAIKA_MAX_ARKIPAIVAA}`;
 
+/** Lyhyt toimitusrivi ostopainikkeen ja ostoskorin yhteenvedon alle: "Toimitus 6,90 €, ilmainen 79 eurosta". */
+export const TOIMITUSRIVI = `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta`;
+
 /** Toimitusehtojen toimitusaikalause. */
 export const TOIMITUSAIKA_LAUSE = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
 /** Toimitusmaksulause, esim. "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen." */

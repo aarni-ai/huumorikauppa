@@ -9,7 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { AddToCartDrawer } from "./components/AddToCartDrawer";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { REVEAL_AFTER_MOUNT_MS, revealApp } from "@/lib/prerenderPreview";
 import { reloadOnceForStaleChunk } from "@/lib/chunkReload";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,22 +18,30 @@ import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { LANDING_PATHS, LANDING_REDIRECTS } from "@/data/landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
-// Eager: homepage (LCP critical)
-import Index from "./pages/Index";
-
 // Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
 // (src/lib/chunkReload.ts: enintään kerran minuutissa, ei silmukkaa).
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy hyväksyy minkä tahansa komponentin propsit
+//
+// Reitin chunk voidaan ladata etukäteen (preload): src/main.tsx odottaa etusivun, ostoskorin ja kassan chunkin
+// ennen ensimmäistä renderöintiä (HTML esilataa ne entryn rinnalla, scripts/prerender.mjs). Valmiiksi ladattu
+// sivu renderöidään suoraan ilman Suspense-varanäkymää, joten alatunniste ei hyppää (CLS) eikä etusivun
+// esikatselun tilalle välähdä luurankoa. Valinta tehdään kerran komponentin asennuksessa (ei uudelleenasennusta).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- reittikomponenttien propsit vaihtelevat
 function lazyWithRetry<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>
 ) {
-  return lazy(async () => {
+  let loaded: T | null = null;
+  const load = () =>
+    factory().then((m) => {
+      loaded = m.default;
+      return m;
+    });
+  const Lazy = lazy(async () => {
     try {
-      return await factory();
+      return await load();
     } catch (err) {
       try {
         await new Promise((r) => setTimeout(r, 300));
-        return await factory();
+        return await load();
       } catch (err2) {
         if (reloadOnceForStaleChunk()) {
           // Sivu latautuu uudelleen: pidetään Suspense-tila, ei virhenäkymää.
@@ -43,11 +51,16 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
       }
     }
   });
+  function RoutePage(props: React.ComponentProps<T>) {
+    const [Valmis] = useState<T | null>(() => loaded);
+    return Valmis ? <Valmis {...props} /> : <Lazy {...props} />;
+  }
+  return Object.assign(RoutePage, { preload: load });
 }
 
 // For non-critical lazy components (popups, etc.) — never reload the page on failure;
 // just render nothing. A failed popup must NOT take down the whole app.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- kuten yllä
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- ponnahdusikkunoiden propsit vaihtelevat
 function lazySafe<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>
 ) {
@@ -60,7 +73,9 @@ function lazySafe<T extends React.ComponentType<any>>(
   });
 }
 
-// Lazy: all other routes
+// Lazy: all routes. Etusivu ladataan rinnakkain entryn kanssa (src/main.tsx + modulepreload), jotta sen
+// blogi- ja kaupunkidata ei kasvata jokaisen sivun pääpakettia.
+const Index = lazyWithRetry(() => import("./pages/Index"));
 const CategoryPage = lazyWithRetry(() => import("./pages/CategoryPage"));
 const ProductPage = lazyWithRetry(() => import("./pages/ProductPage"));
 const CartPage = lazyWithRetry(() => import("./pages/CartPage"));
@@ -222,5 +237,19 @@ const App = () => (
   </QueryClientProvider>
   </HelmetProvider>
 );
+
+/** Reitit, joiden chunk ladataan ennen ensimmäistä renderöintiä (src/main.tsx, spa-shell.html:n esilataus). */
+const ESILADATTAVAT: Record<string, { preload: () => Promise<unknown> }> = {
+  "/": Index,
+  "/ostoskori": CartPage,
+  "/kassa": CheckoutPage,
+};
+
+/** Lataa polun sivun chunkin, jos se kuuluu esiladattaviin; muuten heti valmis. Ei koskaan hylätä. */
+// eslint-disable-next-line react-refresh/only-export-components
+export function preloadRoute(pathname: string): Promise<void> {
+  const sivu = ESILADATTAVAT[pathname.replace(/(.)\/$/, "$1")];
+  return sivu ? sivu.preload().then(() => undefined, () => undefined) : Promise.resolve();
+}
 
 export default App;

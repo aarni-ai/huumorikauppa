@@ -416,12 +416,34 @@ export function cleanComponentHtml(html: string): string {
 }
 
 /**
+ * SPA-kuoren esilataus: polun (ilman loppukauttaviivaa) sivun chunkit modulepreload-linkeiksi heti HTML:n
+ * jäsennyksessä, rinnakkain entryn kanssa. src/main.tsx odottaa sivun chunkin ennen ensimmäistä renderöintiä.
+ * Tyhjä kartta: ei skriptiä.
+ */
+export function routePreloadScript(routePreloads: Record<string, string[]>): string {
+  const kartta = Object.fromEntries(Object.entries(routePreloads).filter(([, v]) => v.length > 0));
+  if (Object.keys(kartta).length === 0) return "";
+  return (
+    `<script>(function(){var m=${JSON.stringify(kartta).replace(/</g, "\\u003c")};` +
+    `var p=location.pathname.replace(/(.)\\/$/,"$1"),c=m[p];if(!c)return;` +
+    `c.forEach(function(h){var l=document.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;document.head.appendChild(l)})})()</script>`
+  );
+}
+
+/**
  * SPA-kuori reiteille, joita ei ole esirenderöity (esim. buildin jälkeen lisätyt tuotteet).
  * Ei canonicalia eikä sivukohtaista sisältöä: React asettaa ne ladattuaan, ja botit saavat
  * middleware.ts:n kautta sivukohtaiset metat.
  */
-export function renderShellHtml(template: string, nav: SiteNav, meta: { title: string; description: string }): string {
-  const html = applyHead(template, { title: meta.title, description: meta.description, canonical: null });
+export function renderShellHtml(
+  template: string,
+  nav: SiteNav,
+  meta: { title: string; description: string },
+  routePreloads: Record<string, string[]> = {},
+): string {
+  let html = applyHead(template, { title: meta.title, description: meta.description, canonical: null });
+  const script = routePreloadScript(routePreloads);
+  if (script) html = html.replace("</head>", () => `  ${script}\n  </head>`);
   const body = `<div data-prerender="true"><header><p><a href="/">Huumorikauppa</a></p><nav aria-label="Päävalikko">${renderLinks(nav.main)}</nav></header><footer><nav aria-label="Asiakaspalvelu">${renderLinks(nav.footer)}</nav></footer></div>`;
   return injectRoot(html, body);
 }

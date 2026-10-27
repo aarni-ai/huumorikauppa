@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, Share2, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
 import { PurchaseFacts } from "@/components/PurchaseFacts";
 import { SizeGuide } from "@/components/SizeGuide";
-import { PaymentIcons } from "@/components/PaymentIcons";
+import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
 import { isClothingCategory } from "@/lib/sizeChart";
 import { PRODUCT_IMAGE_SIZES, defaultImageColor, productImageSources } from "@/lib/productImages";
 import { formatPriceFi } from "@/seo/site";
@@ -81,7 +81,7 @@ function parseDescription(description: string) {
   }
 
   // 5. Split lines like "...viimeistelyKaksinkertainen" (lowercase/digit/paren followed by Uppercase start of new word)
-  text = text.replace(/([a-zäöåü\)°])([A-ZÄÖÅ][a-zäöåü])/g, "$1\n$2");
+  text = text.replace(/([a-zäöåü)°])([A-ZÄÖÅ][a-zäöåü])/g, "$1\n$2");
 
   // 6. Standard bullet split for "- " or "– " after sentence-ending chars
   text = text.replace(/([.!?a-zäöå])(\s*[-–]\s+)/gi, "$1\n$2");
@@ -107,7 +107,7 @@ function parseDescription(description: string) {
             bulletLines.push(l.replace(/^[\s]*[•\-–]\s*/, "").trim());
           } else {
             // Could be an ALLCAPS instruction line → treat as bullet
-            if (/^[A-ZÄÖÅ\s:()°%\/,\-–0-9]+$/.test(l.trim()) && l.trim().length > 5) {
+            if (/^[A-ZÄÖÅ\s:()°%/,\-–0-9]+$/.test(l.trim()) && l.trim().length > 5) {
               bulletLines.push(l.trim());
             } else {
               textLines.push(l.trim());
@@ -830,10 +830,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
               </Button>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <PaymentIcons iconClassName="h-4 w-auto" />
-              <span>Korttimaksu Stripen maksusivulla</span>
-            </div>
+            <MaksuJaToimitus />
 
             <DeliveryBadge supplier={product.supplier} className="w-fit" />
 

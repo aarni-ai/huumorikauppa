@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
-import type { Product } from "@/types/product";
+import type { CartItem, Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/context/CartContext";
 import { proxiedImage } from "@/lib/imageProxy";
@@ -9,10 +9,10 @@ import { productImageAlt } from "@/lib/productNames";
 import { quickAddOption } from "@/lib/recommendations";
 import { valitseLisatarra } from "@/lib/lisatarra";
 
-/** Ostoskorin "Lisää tarra" -rivi (src/lib/lisatarra.ts). */
-export function TarraLisamyynti({ kori, kaikki, className = "" }: { kori: Product[]; kaikki: Product[]; className?: string }) {
+/** Ostoskorin "Lisää tarra" -rivi (src/lib/lisatarra.ts): vain, jos korin kate pysyy tarran kanssa positiivisena. */
+export function TarraLisamyynti({ kori, kaikki, className = "" }: { kori: CartItem[]; kaikki: Product[]; className?: string }) {
   const { addItem } = useCartContext();
-  const koriKey = kori.map((p) => p.id).join(",");
+  const koriKey = kori.map((i) => `${i.product.id}:${i.quantity}:${i.selectedSize || ""}:${i.selectedColor || ""}`).join(",");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const tarra = useMemo(() => valitseLisatarra(kori, kaikki), [koriKey, kaikki]);
   const [lisatty, setLisatty] = useState(false);

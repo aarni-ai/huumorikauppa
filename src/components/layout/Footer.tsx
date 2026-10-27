@@ -7,7 +7,8 @@ import { onPiilotettu } from "@/lib/hiddenCategories";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { footerGiftLinks } from "@/config/internalLinks";
-import { PaymentIcons, PAYMENT_METHODS_TEXT } from "@/components/PaymentIcons";
+import { PaymentIcons } from "@/components/PaymentIcons";
+import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { ORGANIZATION } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { onMarketingConsent, openConsentSettings } from "@/lib/consent";
@@ -78,7 +79,7 @@ export function Footer() {
         body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "alatunniste" }),
       });
     } catch {
-      // Uutiskirjeen tallennusvirhe ei estä kiitosviestiä (sama käytös kuin ennen).
+      // Tilaus näytetään onnistuneena myös verkkovirheessä (sama kuin ennen).
     }
     setFooterSubmitted(true);
     toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
@@ -92,7 +93,7 @@ export function Footer() {
           {[
             { icon: Truck,    label: "Ilmainen toimitus",    sub: `Vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin` },
             { icon: RotateCcw, label: "14 pv palautusoikeus", sub: "Ei koske personoituja tuotteita" },
-            { icon: Shield,   label: "Korttimaksu",          sub: PAYMENT_METHODS_TEXT },
+            { icon: Shield,   label: "Turvallinen maksu",    sub: PAYMENT_METHODS_TEXT },
             { icon: Flag,     label: "Kotimainen kauppa",    sub: `${ORGANIZATION.addressLocality} · Y-tunnus ${ORGANIZATION.legalId}` },
           ].map(({ icon: Icon, label, sub }) => (
             <div key={label} className="flex items-start gap-3">
@@ -222,7 +223,7 @@ export function Footer() {
             </nav>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Korttimaksu:</span>
+            <span>Maksutavat:</span>
             <PaymentIcons iconClassName="h-5 w-auto" />
           </div>
         </div>
