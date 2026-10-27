@@ -56,7 +56,7 @@ HUUMORIKAUPPA. Tili ei ole inteller.info. Valmis sulkuohje on KAYTTOONOTTO.md:ss
 vanha webhook pois päältä ja salaisen avaimen kierto tällä tilillä, kun uusi kassa vastaa domainissa. Sulkemista ei
 ole tehty.
 
-**Avaimet.** STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET ja RESEND_API_KEY eivät olleet Vercelissä klo 22.40.
+**Avaimet.** STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET ja RESEND_API_KEY eivät olleet Vercelissä klo 19.30 (Helsingin aikaa).
 Tarkistus jatkuu 10 minuutin välein.
 
 ## 27.10. ilta: Lovablen kassan tappioesto, Vercel Cron, EU-kopiot, käyttöönoton valmistelu
