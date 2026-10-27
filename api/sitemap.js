@@ -1,6 +1,7 @@
 import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "./_lib/printify-saatavuus.js";
 import { onKaksoiskappaleTaiTestikopio } from "./_lib/kaksoiskappaleet.js";
+import { onEuReititetty } from "./_lib/eu-reititys.js";
 /**
  * Dynamic sitemap.xml — fetches ALL products from Supabase and emits a
  * complete sitemap including products, categories, gift-landing pages,
@@ -204,7 +205,7 @@ async function fetchAllProducts() {
   for (let i = 0; i < 10; i++) {
     const to = from + pageSize - 1;
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
+      `${SUPABASE_URL}/rest/v1/products?select=slug,name,updated_at,printify_product_id&category=neq.mukit&is_active=not.is.false&order=updated_at.desc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -219,7 +220,7 @@ async function fetchAllProducts() {
     const batch = await res.json();
     if (!Array.isArray(batch) || batch.length === 0) break;
     // Mukit väärässä kategoriassa (src/lib/hiddenCategories.ts MUKI_TUNNISTE).
-    out.push(...batch.filter((p) => !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !onKaksoiskappaleTaiTestikopio(p.slug) && !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
+    out.push(...batch.filter((p) => !OHJATUT_TUOTESLUGIT.has(p.slug) && !KOKONAAN_EI_SAATAVILLA.has(p.slug) && !onKaksoiskappaleTaiTestikopio(p.slug) && !onEuReititetty(p) && !/\bmuki\b|kahvimuki|-muki$/i.test(`${p.slug} ${p.name ?? ""}`)));
     if (batch.length < pageSize) break;
     from += pageSize;
   }

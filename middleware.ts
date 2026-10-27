@@ -16,6 +16,7 @@
 import { buildBreadcrumbJsonLd, buildProductJsonLd, serializeJsonLd } from './src/seo/structuredData.js';
 import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
+import { euOhjausKohde } from './api/_lib/eu-reititys.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from './src/config/toimitus.js';
@@ -684,14 +685,14 @@ export async function productStatus(origin: string, slug: string): Promise<Produ
   if (!SUPABASE_URL || !SUPABASE_KEY) return 'unknown';
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,name,category,is_active,variants&limit=1`,
+      `${SUPABASE_URL}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=slug,name,category,is_active,variants,printify_product_id&limit=1`,
       {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         signal: AbortSignal.timeout(4000),
       }
     );
     if (!res.ok) return 'unknown';
-    const rows: Array<{ slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown }> = await res.json();
+    const rows: Array<{ slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown; printify_product_id?: string | null }> = await res.json();
     if (!Array.isArray(rows)) return 'unknown';
     const row = rows[0];
     if (!row || row.is_active === false) return 'missing';
@@ -742,6 +743,9 @@ export default async function middleware(request: Request): Promise<Response | u
   if (path.startsWith('/tuote/')) {
     // Lovable-synkronoinnin kaksoiskappale ("...-0d6670") -> perusrivi (api/_lib/kaksoiskappaleet.js).
     const perus = kaksoiskappaleenPerusslug(productSlugFromPath(path));
+    // EU:n ulkopuolella valmistettava tuote -> sen näkyvä EU-kopio (api/_lib/eu-reititys.js).
+    const euKohde = euOhjausKohde(perus ?? productSlugFromPath(path));
+    if (euKohde) return Response.redirect(`${url.origin}/tuote/${encodeURIComponent(euKohde)}`, 301);
     if (perus) return Response.redirect(`${url.origin}/tuote/${perus}`, 301);
     const status = await productStatus(url.origin, productSlugFromPath(path));
     if (status === 'missing') return notFoundResponse(url.origin);

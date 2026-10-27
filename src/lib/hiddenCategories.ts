@@ -7,9 +7,13 @@
  * Lisäksi piilotetaan tuotteet, joiden yhtään koko/väri-yhdistelmää Printify ei pysty valmistamaan
  * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json), sekä Lovable-
  * synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
+ *
+ * 27.10.2026: myös EU:n ulkopuolella tai Printify Choicen reitityksellä valmistettavat tuotteet (api/_lib/eu-reititys.js,
+ * generaattori scripts/eu-reititys.mjs). Ne, joilla on näkyvä EU-kopio, ohjataan 301:llä kopioon (middleware.ts).
  */
 import { isFullyUnavailable } from "./variantAvailability.js";
 import { onKaksoiskappaleTaiTestikopio } from "../../api/_lib/kaksoiskappaleet.js";
+import { onEuReititetty } from "../../api/_lib/eu-reititys.js";
 
 export const PIILOTETUT_KATEGORIAT: readonly string[] = ["mukit"];
 
@@ -23,7 +27,14 @@ export const MUKI_TUNNISTE = /\bmuki\b|kahvimuki|-muki$/i;
  * Tuotetasoinen piilotus: piilotettu kategoria tai muki muussa kategoriassa. Käytä tätä aina, kun tuoterivi on
  * käytettävissä (listat, kori, esirenderöinti, sivukartta, syöte, middleware).
  */
-export function onPiilotettuTuote(p: { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown }): boolean {
+export function onPiilotettuTuote(p: TuoteRivi): boolean {
+  return onPiilotettuTuotePerus(p) || onEuReititetty(p);
+}
+
+type TuoteRivi = { category?: string | null; slug?: string | null; name?: string | null; variants?: unknown; printify_product_id?: string | null };
+
+/** Piilotus ilman EU-reititystä (scripts/eu-reititys.mjs laskee näkyvyyden tällä, ettei vanha data vaikuta). */
+export function onPiilotettuTuotePerus(p: TuoteRivi): boolean {
   if (onPiilotettu(p.category)) return true;
   if (onKaksoiskappaleTaiTestikopio(p.slug)) return true;
   if (isFullyUnavailable(p)) return true;

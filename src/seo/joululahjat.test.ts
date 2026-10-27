@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import snapshot from "@/test/fixtures/products-snapshot.json";
-import { CHRISTMAS_MENU, getLandingPage, LANDING_MIN_PRODUCTS, selectLandingProducts } from "@/data/landingPages";
+import { CHRISTMAS_MENU, getLandingPage, selectLandingProducts } from "@/data/landingPages";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
 import { buildLlmsTxt } from "./llms";
+import { landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const products = normalizeProducts(snapshot as unknown as ProductRow[]);
@@ -33,7 +34,7 @@ describe("joululahjasivut", () => {
     expect(page.group).toBe("joulu");
     expect(hub.related).toContain(p);
     expect(page.related).toContain("/joululahjat");
-    expect(selectLandingProducts(page, products).length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    expect(selectLandingProducts(page, products).length).toBeGreaterThanOrEqual(landingMinimi(p));
     const html = renderPageHtml(TEMPLATE, pages.get(p)!, nav);
     expect(html).toContain('"@type":"FAQPage"');
     expect(html).toContain('"@type":"BreadcrumbList"');
