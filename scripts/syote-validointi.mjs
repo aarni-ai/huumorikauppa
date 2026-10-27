@@ -13,6 +13,7 @@
 import { OHJATUT_TUOTESLUGIT } from "../api/_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "../api/_lib/printify-saatavuus.js";
 import { onKaksoiskappaleTaiTestikopio } from "../api/_lib/kaksoiskappaleet.js";
+import { onEuReititettySlug } from "../api/_lib/eu-reititys.js";
 import { ILMAINEN_RAJA, TOIMITUS } from "../api/_lib/syote-lisakentat.js";
 
 export const SITE = "https://huumorikauppa.fi";
@@ -185,6 +186,7 @@ export function validateItem(item, opts = {}) {
   if (slug && OHJATUT_TUOTESLUGIT.has(slug)) virhe("ohjattu_tuote", slug);
   if (slug && KOKONAAN_EI_SAATAVILLA.has(slug)) virhe("ei_valmisteta", slug);
   if (slug && onKaksoiskappaleTaiTestikopio(slug)) virhe("kaksoiskappale_tai_testikopio", slug);
+  if (slug && onEuReititettySlug(slug)) virhe("valmistetaan_eu_ulkopuolella", slug);
   return out;
 }
 

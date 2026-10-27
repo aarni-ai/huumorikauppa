@@ -13,12 +13,13 @@
  * canonical), ja päästää pyynnön silloin suoraan staattiseen tiedostoon. Injektointia
  * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
-import { buildBreadcrumbJsonLd, buildProductJsonLd } from './src/seo/structuredData.js';
+import { buildBreadcrumbJsonLd, buildProductJsonLd, serializeJsonLd } from './src/seo/structuredData.js';
 import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
+import { euOhjausKohde } from './api/_lib/eu-reititys.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from './src/config/toimitus.js';
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from './src/config/toimitus.js';
 
 export const config = {
   matcher: [
@@ -46,6 +47,7 @@ interface SupabaseProduct {
   price: number;
   category: string;
   stock: number;
+  variants?: unknown;
 }
 
 
@@ -56,7 +58,7 @@ let ORIGIN = 'https://huumorikauppa.fi';
 async function fetchProductBySlug(slug: string): Promise<SupabaseProduct | null> {
   try {
     const res = await fetch(
-      `${ORIGIN}/api/products?slug=${encodeURIComponent(slug)}&fields=id,slug,name,description,images,price,category,stock`,
+      `${ORIGIN}/api/products?slug=${encodeURIComponent(slug)}&fields=id,slug,name,description,images,price,category,stock,variants`,
       { signal: AbortSignal.timeout(4000) }
     );
     if (!res.ok) return null;
@@ -92,7 +94,7 @@ async function fetchCategoryProducts(
 const PAGE_META: Record<string, PageMeta> = {
   '/': {
     title: 'Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi',
-    description: `Hauskat lahjat: t-paitoja, huppareita ja tarroja hauskalla tekstillä. Yli 700 tuotetta, nopea toimitus, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
+    description: `Hauskat lahjat: t-paitoja, huppareita ja tarroja hauskalla tekstillä. Yli 700 tuotetta, toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   '/kaikki-tuotteet': {
     title: 'Kaikki hauskat tuotteet | Huumorikauppa.fi',
@@ -124,7 +126,7 @@ const PAGE_META: Record<string, PageMeta> = {
   },
   '/toimitusehdot': {
     title: 'Toimitusehdot | Huumorikauppa.fi',
-    description: `Huumorikaupan toimitusehdot. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+    description: `Huumorikaupan toimitusehdot. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
   },
   '/palautusehdot': {
     title: 'Palautusehdot | Huumorikauppa.fi',
@@ -493,43 +495,43 @@ const CATEGORY_FAQS: Record<string, Array<{q: string; a: string}>> = {
   't-paidat': [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paitamme ovat 100 % puuvillaa tai puuvilla-polyesteri-sekoitteita. Materiaali on pehmeä ihoa vasten ja kestää useita pesuja muuttumatta. Koot XS-3XL." },
     { q: "Onko t-paidat painetaan tilauksesta?", a: "Kyllä, kaikki t-paitamme painetaan tilauksesta tilauksesta DTG-tekniikalla (Direct-to-Garment), joka tuottaa kirkkaan ja kestävän painatuksen." },
-    { q: "Kuinka nopeasti tilaus toimitetaan?", a: `Tilaukset toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen Posti tai Matkahuoltoin kautta. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee.` },
+    { q: "Kuinka nopeasti tilaus toimitetaan?", a: `Tilaukset toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen Posti tai Matkahuoltoin kautta. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin. Saat sähköpostiisi seurantakoodin heti kun paketti lähtee.` },
     { q: "Voiko t-paidan palauttaa?", a: "Kyllä, standardituotteilla on 14 päivän palautusoikeus. Palautus on helppo - ota yhteyttä asiakaspalveluumme, saat ohjeet sähköpostitse." },
   ],
   'hupparit': [
     { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Hupparimme ovat pehmeää puuvilla-polyesteri-sekoitetta (80/20). Materiaali on lämmin, pehmeä ja kestää useita pesuja. Koot S-3XL." },
     { q: "Onko hupparit painetaan tilauksesta?", a: "Kyllä, kaikki hupparimme painetaan tilauksesta tilauksesta DTG-tekniikalla." },
-    { q: "Kuinka nopeasti huppari toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti huppari toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko hupparin palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme saadaksesi palautusohjeet." },
   ],
   'mukit': [
     { q: "Onko mukit konepesun kestäviä?", a: "Kyllä, kaikki mukimme kestävät konepesua. Suosittelemme pesemään matalalla lämpötilalla (40°C) painatuksen säilymiseksi pidempään." },
     { q: "Minkä kokoisia mukit ovat?", a: "Mukimme ovat standardi 11 oz (noin 325 ml) -kokoisia. Sopivat aamukahviin tai teehen." },
-    { q: "Kuinka nopeasti muki toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti muki toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko mukin palauttaa?", a: "Kyllä, 14 päivän palautusoikeus kaikille tuotteille. Ota yhteyttä asiakaspalveluumme." },
   ],
   'tarrat': [
     { q: "Onko tarrat ulkokäyttöön sopivia?", a: "Kyllä, tarramme ovat laadukasta vinyyliä joka kestää kosteutta, UV-valoa ja lämpötilavaihteluita. Sopivat autoon, vesipulloon, läppäriin ja ulkokäyttöön." },
     { q: "Kuinka kauan tarrat kestävät?", a: "Ulkokäytössä laadukkaiden tarramme elinikä on 2-5 vuotta olosuhteista riippuen. Sisäkäytössä huomattavasti pidempään." },
-    { q: "Kuinka nopeasti tarrat toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti tarrat toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko tarrat palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'pipot': [
     { q: "Minkälaisesta materiaalista pipot ovat?", a: "Pipomme ovat pehmeää akryyli-materiaalia, joka on lämmin, joustava ja helppohoitoinen. Brodeeraus kestää pesua." },
     { q: "Sopiiko pipo lahjaksi?", a: "Ehdottomasti! Hauska pipo on loistava joululahja, syntymäpäivälahja tai pikkujoululahja työkavereille." },
-    { q: "Kuinka nopeasti pipo toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti pipo toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko pipon palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'lippikset': [
     { q: "Minkälaisesta materiaalista lippikset ovat?", a: "Lippiksemme ovat laadukkaasta puuvilla- tai polyesteri-materiaalista. Brodeeraus on kestävä ja pysyy siistinä." },
     { q: "Sopiiko lippis lahjaksi?", a: "Kyllä, hauska lippis on erinomainen lahja erityisesti kesällä. Sopii syntymäpäiviin, polttareihin ja muihin juhliin." },
-    { q: "Kuinka nopeasti lippis toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti lippis toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Voiko lippiksen palauttaa?", a: "Kyllä, 14 päivän palautusoikeus. Ota yhteyttä asiakaspalveluumme." },
   ],
   'haalarimerkit': [
     { q: "Sopivatko haalarimerkit kaikille haalareille?", a: "Kyllä, haalarimerkkimme sopivat kaikkiin haalareihin, laukkuihin ja reppuihin. Kiinnitys tapahtuu turvallisesti neulalla." },
     { q: "Voiko haalarimerkkejä tilata omalla tekstillä?", a: "Kyllä, tarjoamme myös räätälöityjä haalarimerkkejä. Ota yhteyttä asiakaspalveluumme tilausta varten." },
-    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Sopivatko haalarimerkit lahjaksi?", a: "Ehdottomasti! Haalarimerkit ovat loistava lahja opiskelijalle kiltajuhliin tai tupaantuliaisiin." },
   ],
 };
@@ -605,7 +607,7 @@ const GIFT_FAQS: Record<string, Array<{q: string; a: string}>> = {
   '/haalarimerkit': [
     { q: "Sopivatko haalarimerkit kaikille haalareille?", a: "Kyllä, merkkimme sopivat kaikkiin haalareihin, reppuihin ja laukkuihin. Kiinnitys neulalla." },
     { q: "Voiko haalarimerkkejä tilata omalla tekstillä?", a: "Kyllä! Räätälöityjä merkkejä tilauksesta. Ota yhteyttä asiakaspalveluumme." },
-    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+    { q: "Kuinka nopeasti haalarimerkit toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
     { q: "Sopivatko haalarimerkit lahjaksi opiskelijalle?", a: "Ehdottomasti! Haalarimerkit ovat loistava lahja opiskelijalle kiltajuhliin tai tupaantuliaisiin." },
   ],
   '/opiskelijan-haalarimerkit': [
@@ -628,7 +630,7 @@ function escapeHtml(str: string): string {
 
 function injectJsonLd(html: string, ...schemas: object[]): string {
   const tags = schemas
-    .map(s => `<script type="application/ld+json">\n${JSON.stringify(s, null, 2)}\n</script>`)
+    .map(s => `<script type="application/ld+json">\n${serializeJsonLd(s)}\n</script>`)
     .join('\n  ');
   return html.replace('</head>', `  ${tags}\n</head>`);
 }
@@ -679,13 +681,13 @@ export async function productStatus(origin: string, slug: string): Promise<Produ
   if (known?.has(slug)) return 'known';
   // Buildin jälkeen lisätyt tuotteet: oma tausta (/api/products, tietokanta tai tilannekuva), ei Supabasea.
   try {
-    const res = await fetch(`${origin}/api/products?slug=${encodeURIComponent(slug)}&fields=slug,name,category,is_active,variants`, {
+    const res = await fetch(`${origin}/api/products?slug=${encodeURIComponent(slug)}&fields=slug,name,category,is_active,variants,printify_product_id`, {
       headers: { 'x-bot-inject': 'true' },
       signal: AbortSignal.timeout(4000),
     });
     if (res.status === 404) return 'missing';
     if (!res.ok) return 'unknown';
-    const row: { slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown } | null = await res.json();
+    const row: { slug: string; name?: string; category: string; is_active?: boolean | null; variants?: unknown; printify_product_id?: string | null } | null = await res.json();
     if (!row || row.is_active === false) return 'missing';
     if (onPiilotettuTuote(row)) return 'hidden';
     return 'known';
@@ -735,6 +737,9 @@ export default async function middleware(request: Request): Promise<Response | u
   if (path.startsWith('/tuote/')) {
     // Lovable-synkronoinnin kaksoiskappale ("...-0d6670") -> perusrivi (api/_lib/kaksoiskappaleet.js).
     const perus = kaksoiskappaleenPerusslug(productSlugFromPath(path));
+    // EU:n ulkopuolella valmistettava tuote -> sen näkyvä EU-kopio (api/_lib/eu-reititys.js).
+    const euKohde = euOhjausKohde(perus ?? productSlugFromPath(path));
+    if (euKohde) return Response.redirect(`${url.origin}/tuote/${encodeURIComponent(euKohde)}`, 301);
     if (perus) return Response.redirect(`${url.origin}/tuote/${perus}`, 301);
     const status = await productStatus(url.origin, productSlugFromPath(path));
     if (status === 'missing') return notFoundResponse(url.origin);
@@ -808,7 +813,7 @@ export default async function middleware(request: Request): Promise<Response | u
     const slug = path.slice('/lahjat/'.length).replace(/\/$/, '');
     meta = {
       title: `${slug.replace(/-/g, ' ')} - Hauska lahja | Huumorikauppa.fi`,
-      description: `Hauskat lahjat ja tuotteet Huumorikaupasta. Nopea toimitus, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
+      description: `Hauskat lahjat ja tuotteet Huumorikaupasta. Nopea toimitus, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     };
   }
 
@@ -972,6 +977,7 @@ export default async function middleware(request: Request): Promise<Response | u
         price: Number(pd.price),
         stock: pd.stock,
         categoryName: pd.categoryName,
+        variants: pd.variants,
       });
       const breadcrumbSchema = buildBreadcrumbJsonLd([
         { name: 'Etusivu', url: 'https://huumorikauppa.fi/' },

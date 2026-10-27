@@ -45,7 +45,7 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">4. Toimitus</h2>
-          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on {TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Yli {ILMAINEN_RAJA_TEKSTI} € tilaukset toimitetaan ilman toimituskuluja. Alle {ILMAINEN_RAJA_TEKSTI} € tilausten toimituskulut ovat {TOIMITUSMAKSU_TEKSTI} €.</p>
+          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on {TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Vähintään {ILMAINEN_RAJA_TEKSTI} € tilaukset toimitetaan ilman toimituskuluja. Alle {ILMAINEN_RAJA_TEKSTI} € tilausten toimituskulut ovat {TOIMITUSMAKSU_TEKSTI} €.</p>
         </section>
 
         <section>

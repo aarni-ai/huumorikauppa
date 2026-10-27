@@ -1808,7 +1808,7 @@
       "destination": "/api/sitemap"
     },
     {
-      "source": "/((?!.*\\.(?:xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
+      "source": "/((?!assets/)(?!.*\\.(?:js|mjs|css|xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",
       "destination": "/spa-shell.html"
     }
   ],

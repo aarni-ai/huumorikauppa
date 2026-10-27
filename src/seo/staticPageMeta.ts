@@ -52,7 +52,7 @@ export const STATIC_PAGE_META = {
   "/toimitusehdot": {
     title: "Toimitusehdot | Huumorikauppa.fi",
     description:
-      `Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, toimituskulut ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+      `Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, toimituskulut ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
     h1: "Toimitusehdot ja palautukset",
     name: "Toimitusehdot",
   },

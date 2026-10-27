@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { buildBreadcrumbJsonLd, buildSiteJsonLd } from "@/seo/structuredData";
+import { buildBreadcrumbJsonLd, buildSiteJsonLd, serializeJsonLd } from "@/seo/structuredData";
 
 export const SITE_JSONLD_ID = "seo-site-jsonld";
 
@@ -75,7 +75,7 @@ export function SEOHead({
       const siteScript = document.createElement("script");
       siteScript.id = SITE_JSONLD_ID;
       siteScript.type = "application/ld+json";
-      siteScript.textContent = JSON.stringify(buildSiteJsonLd());
+      siteScript.textContent = serializeJsonLd(buildSiteJsonLd());
       document.head.appendChild(siteScript);
     }
 
@@ -145,7 +145,7 @@ export function SEOHead({
       const script = document.createElement("script");
       script.id = "seo-jsonld";
       script.type = "application/ld+json";
-      script.textContent = JSON.stringify(jsonLd);
+      script.textContent = serializeJsonLd(jsonLd);
       document.head.appendChild(script);
     }
 
@@ -157,7 +157,7 @@ export function SEOHead({
       const script = document.createElement("script");
       script.id = "seo-breadcrumb-jsonld";
       script.type = "application/ld+json";
-      script.textContent = JSON.stringify(bcJsonLd);
+      script.textContent = serializeJsonLd(bcJsonLd);
       document.head.appendChild(script);
     }
 

@@ -20,6 +20,7 @@ import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/chri
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
+import { EU_REITITYS_ALLE_MINIMIN, euPiilotetutTuotteet, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -141,10 +142,22 @@ describe("landing pages: products (snapshot of the live catalog)", () => {
 
   it.each(landingPages.map((p) => [p.path, p] as const))("%s has at least 8 fitting products", (_path, p) => {
     const list = selectLandingProducts(p, products);
-    expect(list.length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    expect(list.length).toBeGreaterThanOrEqual(landingMinimi(p.path));
     for (const item of list) {
       expect(item.category).not.toBe("mukit");
       expect(looksLikeMug(item), item.slug).toBe(false);
+    }
+  });
+
+  it("EU-reitityksen poikkeussivut: vaje johtuu vain EU-reitityksestä ja poikkeus poistetaan, kun sivu on täynnä", () => {
+    const euPiilotetut = euPiilotetutTuotteet(snapshot as unknown as ProductRow[]);
+    for (const pagePath of EU_REITITYS_ALLE_MINIMIN) {
+      const p = getLandingPage(pagePath)!;
+      expect(p, pagePath).toBeTruthy();
+      expect(selectLandingProducts(p, products).length, `${pagePath}: poista EU_REITITYS_ALLE_MINIMIN-listalta`).toBeLessThan(LANDING_MIN_PRODUCTS);
+      // selectLandingProducts hylkää piilotetut (looksLikeMug), joten EU-piilotetut lasketaan sivun suodattimella.
+      const euSopivat = euPiilotetut.filter((x) => p.filter(x)).length;
+      expect(selectLandingProducts(p, products).length + euSopivat, pagePath).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
     }
   });
 
@@ -174,7 +187,7 @@ describe("landing pages: prerendered HTML", () => {
     expect(html).toContain('"@type":"ItemList"');
     expect(html).toContain('"@type":"FAQPage"');
     const productLinks = html.match(/href="\/tuote\//g) ?? [];
-    expect(productLinks.length).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+    expect(productLinks.length).toBeGreaterThanOrEqual(landingMinimi(pagePath));
     const landingLinks = new Set(
       [...html.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1]).filter((h) => h !== pagePath && landingSet.has(h)),
     );

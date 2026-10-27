@@ -5,9 +5,6 @@
   "1995-nevo-foget-kahvikuppi": [
     "|11oz"
   ],
-  "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki": [
-    "|11oz"
-  ],
   "30-nuori-villi-ja-jo-vasynyt-muki": [
     "|11oz"
   ],
@@ -105,6 +102,12 @@
   "ceramic-mug-eu": [
     "|11oz"
   ],
+  "copy-of-eu-hintavertailu-1576-30": [
+    "Musta|M"
+  ],
+  "copy-of-eu-hintavertailu-517-30": [
+    "Valkoinen|M"
+  ],
   "ei-perkele-kahvikuppi": [
     "|11oz"
   ],
@@ -136,9 +139,6 @@
     "|11oz"
   ],
   "harjavaltalainen-ylpeasti-hauska-kahvimuki": [
-    "|11oz"
-  ],
-  "hauska-kahvimuki-baristalle-teen-taidetta-joka-paiva": [
     "|11oz"
   ],
   "hauska-kahvimuki-sairaanhoitajalle-sankari-ilman-viittaa-0e8646": [
@@ -177,25 +177,6 @@
   "helsinkilainen-ylpeasti-hauska-kahvimuki-00933c": [
     "|11oz"
   ],
-  "ice-aatanahuppari": [
-    "Musta|3XL",
-    "Musta|4XL",
-    "Musta|5XL",
-    "Punainen|3XL",
-    "Punainen|4XL",
-    "Punainen|5XL",
-    "Tummansininen|3XL",
-    "Tummansininen|4XL",
-    "Tummansininen|5XL",
-    "Vaaleanharmaa|3XL",
-    "Vaaleanharmaa|4XL",
-    "Vaaleanharmaa|5XL",
-    "Vaaleanpinkki|3XL",
-    "Vaaleansininen|3XL",
-    "Valkoinen|3XL",
-    "Valkoinen|4XL",
-    "Valkoinen|5XL"
-  ],
   "kangasala-jarvien-kaupunki-hauska-kahvimuki": [
     "|11oz"
   ],
@@ -206,9 +187,6 @@
     "|11oz"
   ],
   "kangasalalainen-ylpeasti-hauska-kahvimuki": [
-    "|11oz"
-  ],
-  "kouvola-suomen-keskilapsi-kaikki-tuntee-hauska-kahvimuki": [
     "|11oz"
   ],
   "lempaala-moottoritien-varrella-hauska-kahvimuki": [
@@ -283,28 +261,20 @@
     "|11oz"
   ],
   "ois-viisaampi-haipyy-taalt-t-paita": [
-    "Blossom|2XL",
     "Blossom|3XL",
     "Blossom|4XL",
-    "Citrus|2XL",
     "Citrus|3XL",
     "Citrus|4XL",
-    "Harmaa|2XL",
     "Harmaa|3XL",
     "Harmaa|4XL",
-    "Island Reef|2XL",
     "Island Reef|3XL",
     "Island Reef|4XL",
-    "Musta|2XL",
     "Musta|3XL",
     "Musta|4XL",
-    "Punainen|2XL",
     "Punainen|3XL",
     "Punainen|4XL",
-    "Royal Caribe|2XL",
     "Royal Caribe|3XL",
     "Royal Caribe|4XL",
-    "Valkoinen|2XL",
     "Valkoinen|3XL",
     "Valkoinen|4XL"
   ],
@@ -422,9 +392,6 @@
     "Valkoinen|4XL",
     "Valkoinen|5XL"
   ],
-  "suomi-finland-kahvikuppi": [
-    "|11oz"
-  ],
   "super-aiska-t-paita": [
     "Keltainen|4XL",
     "Musta|4XL",
@@ -494,9 +461,6 @@
     "|11oz"
   ],
   "vantaalainen-ylpeasti-hauska-kahvimuki-0eba28": [
-    "|11oz"
-  ],
-  "varo-myrkyllista-kahvikuppi": [
     "|11oz"
   ],
   "virallisesti-tyoton-epavirallisesti-vapaa-muki": [

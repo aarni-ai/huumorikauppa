@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { KorialennusVihje } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
@@ -141,6 +142,8 @@ const CartPage = () => {
               </div>
             </div>
           ))}
+
+          <TarraLisamyynti kori={items.map((i) => i.product)} kaikki={allProducts} />
 
           {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
           {!tila.vainLahjakortteja && (

@@ -54,7 +54,7 @@ function checkQuantitative(errors, where, q) {
 /**
  * Tarkistaa yhden Product-solmun.
  * @param {object} p Product-solmu
- * @param {{ now?: Date, expectedDeliveryDays?: { min: number, max: number }, personalised?: boolean }} [opts]
+ * @param {{ now?: Date, expectedDeliveryDays?: { min: number, max: number }, expectedShipping?: { fee: number, freeThreshold: number }, personalised?: boolean }} [opts]
  * @returns {string[]} virheet (tyhjä = kunnossa)
  */
 export function validateProduct(p, opts = {}) {
@@ -80,6 +80,7 @@ export function validateProduct(p, opts = {}) {
     if (!isType(o, "Offer")) errors.push(`${w}: @type ei ole Offer`);
     const price = Number(o.price);
     if (o.price === undefined || !Number.isFinite(price) || price <= 0) errors.push(`${w}.price puuttuu tai ei ole positiivinen`);
+    else if (!/^\d+\.\d{2}$/.test(String(o.price))) errors.push(`${w}.price ei ole muotoa "24.90": ${o.price}`);
     if (o.priceCurrency !== "EUR") errors.push(`${w}.priceCurrency ei ole EUR`);
     if (!AVAILABILITY.has(o.availability)) errors.push(`${w}.availability puuttuu tai on tuntematon: ${o.availability}`);
     if (!absUrl(o.url)) errors.push(`${w}.url ei ole absoluuttinen https-URL`);
@@ -94,6 +95,11 @@ export function validateProduct(p, opts = {}) {
       const rate = sd.shippingRate;
       if (!isType(rate, "MonetaryAmount") || rate.currency !== "EUR" || !Number.isFinite(Number(rate.value)) || Number(rate.value) < 0) {
         errors.push(`${w}.shippingDetails.shippingRate ei ole kelvollinen MonetaryAmount (EUR)`);
+      }
+      const ship = opts.expectedShipping;
+      if (ship && Number.isFinite(price)) {
+        const odotettu = (price >= ship.freeThreshold ? 0 : ship.fee).toFixed(2);
+        if (String(rate?.value) !== odotettu) errors.push(`${w}.shippingDetails.shippingRate.value ${rate?.value}, odotettiin ${odotettu}`);
       }
       if (sd.shippingDestination?.addressCountry !== "FI") errors.push(`${w}.shippingDetails.shippingDestination ei ole FI`);
       const dt = sd.deliveryTime;
@@ -141,6 +147,14 @@ export function validateProductPage(html, opts = {}) {
     if (b.error) errors.push(b.error);
     else nodes.push(...flattenNodes(b.data));
   }
+  const viivat = [];
+  const etsiViivat = (v, polku) => {
+    if (typeof v === "string") {
+      if (/[\u2013\u2014]/.test(v)) viivat.push(polku);
+    } else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) etsiViivat(x, `${polku}.${k}`);
+  };
+  blocks.forEach((b, i) => b.data && etsiViivat(b.data, `ld[${i}]`));
+  if (viivat.length) errors.push(`JSON-LD:ssä ajatusviivoja (U+2013/U+2014): ${viivat.slice(0, 5).join(", ")}`);
   const products = nodes.filter((n) => isType(n, "Product"));
   if (products.length !== 1) errors.push(`Product-solmuja ${products.length}, odotettiin 1`);
   let personalised = false;

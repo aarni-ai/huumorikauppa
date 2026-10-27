@@ -721,7 +721,7 @@ Lämmin huppari on käytännöllinen eläkelahja joka sopii aamulenkeille, möki
       },
       {
         q: "Kuinka nopeasti eläkelahja toimitetaan?",
-        a: `Toimitamme eläkelahjat ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Tilaa hyvissä ajoin ennen eläkejuhlia - yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin toimitus on ilmainen.`,
+        a: `Toimitamme eläkelahjat ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Tilaa hyvissä ajoin ennen eläkejuhlia - vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin toimitus on ilmainen.`,
       },
     ],
   },
@@ -1435,7 +1435,7 @@ Hauska paita tai huppari on hyvä läksiäislahja. Se jää muistoksi yhteisist�
       },
       {
         q: "Kuinka nopeasti saamme lahjat toimistolle?",
-        a: `Toimitamme yritystilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin (esim. koko tiimin pikkujoululahjat) toimitus on ilmainen.`,
+        a: `Toimitamme yritystilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin (esim. koko tiimin pikkujoululahjat) toimitus on ilmainen.`,
       },
     ],
   },
@@ -2077,9 +2077,9 @@ Kahden tuotteen paketti lahjapussissa näyttää paljon kalliimmalta.
 2. **Lisää henkilökohtainen viesti** - kirjoitettu kortti tekee lahjan erityiseksi
 3. **Valitse oikea teema** - persoonallinen lahja on aina parempi kuin kallis geneerinen
 
-## Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} euroon
+## Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen
 
-Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen (yli ${ILMAINEN_RAJA_TEKSTI} € tilaus). Käytä hyödyksi!
+Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen (vähintään ${ILMAINEN_RAJA_TEKSTI} € tilaus). Käytä hyödyksi!
 
 ## Tilaa Huumorikaupasta
 
@@ -2246,7 +2246,7 @@ Valikoimasta löytyy tuotteita kaikista Suomen suurimmista kaupungeista: Helsink
 
 **Saako paitaa useassa värissä?** Kyllä - t-paidat saatavilla useissa väreissä: valkoinen, harmaa, punainen, sininen.
 
-**Kuinka nopeasti toimitus?** ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} euron tilauksiin.`,
+**Kuinka nopeasti toimitus?** ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilauksiin.`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -2290,7 +2290,7 @@ Helsinkiläiset ovat usein ylpeitä kaupungistaan - ja usein hiukan naurettavank
 
 **Mikä on hauska lahja Helsinkiläiselle naiselle?** Helsinki-huppari tai t-paita tekstillä "Helsinkiläinen: ylpeästi". Helppo valinta, henkilökohtainen tunne.
 
-**Löytyykö tuotteita nopeasti?** Kyllä - toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
+**Löytyykö tuotteita nopeasti?** Kyllä - toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -2332,7 +2332,7 @@ Tampere on enemmän kuin kaupunki - se on elämänasenne. Tamperelainen ei tarvi
 
 **Mikä on hauska lahja Tamperelaiselle?** Tampere vs Helsinki -aiheinen t-paita tai huppari. Erityisesti tekstit joissa Tampere voittaa Helsingin - klassiset tamperelaishuumori-aiheet.
 
-**Toimitetaanko Tampereelle?** Kyllä, toimitamme koko Suomeen. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €.`,
+**Toimitetaanko Tampereelle?** Kyllä, toimitamme koko Suomeen. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -2392,7 +2392,7 @@ Kaupunkipaita voittaa henkilökohtaisuudessa lähes aina. Sen käyttöarvo on ko
 
 **Voiko paidassa olla oma teksti?** Vakiotuotteet on valmiilla teksteillä. Ota yhteyttä custom-painatuksiin jos haluat täysin oman tekstin.
 
-**Mikä maksaa toimitus?** Ilmainen yli ${ILMAINEN_RAJA_TEKSTI} €, alle siitä ${TOIMITUSMAKSU_TEKSTI} €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+**Mikä maksaa toimitus?** Ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta, alle siitä ${TOIMITUSMAKSU_TEKSTI} €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
 ];

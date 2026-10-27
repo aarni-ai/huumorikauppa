@@ -23,7 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { JOULU_TILAUSPAIVAT } from "@/data/jouluAikataulu";
 
@@ -187,7 +187,7 @@ const Index = () => {
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
               <Truck className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
-            Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €
+            Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta
           </div>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">

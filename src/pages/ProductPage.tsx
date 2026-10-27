@@ -37,6 +37,7 @@ import { revealApp } from "@/lib/prerenderPreview";
 import { getProductReviews } from "@/lib/productReviews";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { SameDesignLinks } from "@/components/SameDesignLinks";
 
 
 function parseDescription(description: string) {
@@ -719,6 +720,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             </div>
 
             <ToimitusarvioRivi product={product} />
+
+            {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
+            <SameDesignLinks product={product} all={allProducts} />
 
             {/* Color + size selector — ref used by sticky bar scroll-to */}
             {hasColors && (

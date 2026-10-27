@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SEOProductsContent, SEOGiftContent } from "@/components/SEOKeywordContent";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 // Blog posts relevant to each category — hub & spoke internal linking
 const CATEGORY_BLOG_SLUGS: Record<string, string[]> = {
@@ -99,7 +99,7 @@ const CategoryPage = () => {
     <div className="min-h-screen">
       <SEOHead
         title={category.seoTitle || `${h1Text} | Huumorikauppa.fi`}
-        description={category.seoDescription || `${category.description}. Ilmainen toimitus yli ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`}
+        description={category.seoDescription || `${category.description}. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
@@ -109,7 +109,7 @@ const CategoryPage = () => {
       {/* Trust bar */}
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-4 md:gap-8 text-xs md:text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus yli {ILMAINEN_RAJA_TEKSTI} €</div>
+          <div className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" /> Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta</div>
           <div className="flex items-center gap-1.5"><RotateCcw className="h-4 w-4 text-primary" /> 14 pv palautusoikeus</div>
           <div className="flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> Turvallinen maksu</div>
           <div className="flex items-center gap-1.5"><Flag className="h-4 w-4 text-primary" /> 100 % suomalainen yritys</div>
@@ -136,7 +136,7 @@ const CategoryPage = () => {
             <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
             Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
             täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen,
-            ilmainen yli {ILMAINEN_RAJA_TEKSTI} € tilauksiin.
+            ilmainen {ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.
           </p>
         </div>
 

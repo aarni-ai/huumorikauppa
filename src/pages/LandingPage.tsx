@@ -60,7 +60,7 @@ const LandingPage = () => {
 
       <section className="bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen yli {ILMAINEN_RAJA_TEKSTI} €</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 päivän peruutusoikeus</div>
           {page.group === "joulu" && (
             <Link to={CHRISTMAS_DEADLINE_PATH} className="flex items-center gap-2 hover:text-foreground">
