@@ -12,8 +12,8 @@ import {
   JOULU_TILAUSPAIVA_ISO,
   paivaLyhyt,
   paivaTeksti,
-} from "./campaignSchedule";
-import { TOIMITUSAIKA_LAUSE, TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+} from "./campaignSchedule.js";
+import { TOIMITUSAIKA_LAUSE, TOIMITUSAIKA_TEKSTI } from "../config/toimitus.js";
 
 export const isanpaivaAuki = (nowMs: number = Date.now()): boolean => nowMs <= FATHERS_DAY_ORDER_END_UTC_MS;
 export const jouluAuki = (nowMs: number = Date.now()): boolean => nowMs <= CHRISTMAS_ORDER_END_UTC_MS;
