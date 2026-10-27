@@ -51,7 +51,7 @@ import { pgMarkkinointi } from "../_lib/markkinointi-db.js";
 import { katevalvonta, yhteenveto as kateYhteenveto, katetarkistusAihe, htmlEsi } from "../_lib/katevalvonta.js";
 import { ajaEuSiirrot, euSiirtoKansio } from "../_lib/eu-siirrot.js";
 import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
-import { buildProductRow, fetchPrintifyProductById } from "../_lib/printify-sync.generated.js";
+import { buildProductRow } from "../_lib/printify-sync.generated.js";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -183,7 +183,8 @@ export default async function handler(req, res) {
     for (const t of data.tuotteet) {
       if (!aikaa()) { tulos.push({ slug: t.slug, tila: "aika loppui, aja uudelleen" }); continue; }
       const id = String(t.printify_product_id);
-      const pf = await fetchPrintifyProductById(id);
+      const h = await haeTuote(id);
+      const pf = h.ok ? h.data : null;
       if (!pf) { tulos.push({ slug: t.slug, tila: "ei Printifyssä" }); continue; }
       const r = kuiva ? null : await tuoPrintifysta({ tuotteet: [pf], kanta: postgresKanta(db), siirrot, buildProductRow, kulutRivi, kulut: true, julkaise: false });
       let rivi = (await db`select id, slug, price, is_active from products where printify_product_id = ${id}`)[0];
