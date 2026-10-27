@@ -23,7 +23,7 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 6 | Ajastimen salaisuus | Vercel (tehty) | - |
 | 7 | Testitilaus | testiosoite | - |
 | 8 | EU-painotalot (valinnainen, ennen joulua) | Printify | - |
-| 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Cloudflare, Stripe | - |
+| 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Domainhotelli, Stripe | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
 ## Go-live: tarkistuslista (tilanne 27.10.2026 illalla)
@@ -54,39 +54,103 @@ Puuttuu vain kolme avainta. Kun ne ovat Vercelissä, yksi komento julkaisee ja t
    toimitussäännöillä), valvonnan ja Resend-domainin. Testiavaimella tee yksi tilaus Stripen sivulla kortilla
    4242 4242 4242 4242 ja tarkista vahvistusviesti; sitten Live mode -avain ja -webhook kohtien 1 ja 2 komennoilla ja
    `scripts/kayttoonotto.sh` uudelleen.
-5. **Resendin DNS-tietueet** (alla) Cloudflareen ja Resendissä Verify.
-6. **Domain huumorikauppa.fi tähän projektiin** (kohta 9) ja webhookin osoite domainiin.
-7. **Vanha kassa kiinni**: heti kun domain vastaa uudesta projektista, Intellerin Stripe-tilillä Developers > Webhooks >
-   `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` > Disable, ja Developers > API keys > Roll
-   secret key (Lovablen kassa käyttää Intellerin avainta Supabasessa; kierron jälkeen se ei voi luoda maksuja). Uuden
-   taustan koodi ei kutsu Lovablen kassaa missään (testi `src/test/vanhaKassa.test.ts`), ja vanhan Vercel-projektin
-   osoitteet (`*.aarni-ais-projects.vercel.app`) ohjautuvat huumorikauppa.fi:hin.
+5. **DNS Domainhotelliin** (alla, "DNS: Domainhotelli"): nimipalvelimet Domainhotelliin ja tietueet, myös Resendin.
+   Resendissä Verify.
+6. **Domain huumorikauppa.fi tähän projektiin**: lisätty valmiiksi 27.10. (odottaa vahvistusta). Vercelin
+   `_vercel`-TXT-tietue lisätään vasta käyttöönoton hetkellä (kohta 9), koska se siirtää domainin uuteen projektiin.
+7. **Vanha kassa kiinni**: ohje alla, "Vanhan kassan sulkeminen". Uuden taustan koodi ei kutsu Lovablen kassaa
+   missään (testi `src/test/vanhaKassa.test.ts`), ja vanhan Vercel-projektin osoitteet (`*.aarni-ais-projects.vercel.app`)
+   ohjautuvat huumorikauppa.fi:hin.
 8. **Yhdistä haara mainiin** (`git checkout main && git merge oma-tausta && git push`). Mainin väliaikainen
    tappioesto (`api/_lib/lovable-kassa-tappio.js`, piilottaa 3XL-5XL-koot ja lisämyynnin tarran Lovablen kassan
    takia) on oma-tausta-haarassa tyhjä, joten koot ja tarra palaavat yhdistämisessä.
 
-### Resendin DNS-tietueet (Cloudflare, huumorikauppa.fi)
+### DNS: Domainhotelli (huumorikauppa.fi)
 
-Nimipalvelimet ovat Cloudflaressa (aria/huxley.ns.cloudflare.com): DNS > Records > Add record, Proxy status **DNS only**.
-Tietueet tulevat `send`-alitunnukselle ja `resend._domainkey`:lle, joten nykyiset (MX Zoho, juuren SPF, Google- ja
-Trustpilot-vahvistukset) pysyvät ennallaan.
+**Tilanne 27.10.2026:** domain on rekisteröity Domainhotellissa (whois: Planeetta Internet Oy), mutta nimipalvelimiksi
+on asetettu Cloudflare (`aria.ns.cloudflare.com`, `huxley.ns.cloudflare.com`). Siksi Domainhotellin DNS-paneelin
+tietueet eivät ole käytössä, ennen kuin nimipalvelimet vaihdetaan Domainhotellin omiin. Tietueet on luettu julkisesta
+DNS:stä 27.10.2026; Cloudflaren koko vyöhykettä ei nähty. Jos Cloudflaren tunnukset löytyvät, tarkista sieltä (DNS >
+Records > Export), ettei listasta puutu mitään.
 
-| Tyyppi | Nimi | Arvo | Prioriteetti |
-|---|---|---|---|
-| MX | `send` | `feedback-smtp.eu-west-1.amazonses.com` | 10 |
-| TXT | `send` | `v=spf1 include:amazonses.com ~all` | |
-| TXT | `resend._domainkey` | Resendin antama DKIM-avain (`p=MIGfMA0...`) | |
-| TXT | `_dmarc` | olemassa: `v=DMARC1; p=none; pct=100; rua=mailto:dmarcreports@lovable.dev`. Vaihda raporttiosoite omaksi: `v=DMARC1; p=none; rua=mailto:huumorikauppa@gmail.com` | |
+**Vaihe A: nimipalvelimet (milloin tahansa ennen käyttöönottoa, hiljaisena aikana).**
+Domainhotellin hallintapaneeli > huumorikauppa.fi > Nimipalvelimet, vaihda nimipalvelimiksi
+`ns1.domainhotelli.fi`, `ns2.domainhotelli.fi`, `ns3.domainhotelli.com`. Lisää heti perään DNS-hallintaan kaikki
+alla olevat tietueet (paitsi `_vercel`). Muutos leviää .fi-rekisterissä tunneissa; sinä aikana osa kävijöistä näkee
+vielä Cloudflaren tietueet, jotka ovat samat, joten sivusto ja Zohon sähköposti toimivat koko ajan.
 
-DKIM-avain on domainikohtainen, ja Resend luo sen, kun domain lisätään. Kun `RESEND_API_KEY` on Vercelissä ja projekti
-julkaistu, tämä lisää domainin Resendiin (alue EU) ja tulostaa kaikki tietueet tarkkoine arvoineen:
+| # | Tyyppi | Nimi (isäntä) | Arvo | Prio | Huom. |
+|---|---|---|---|---|---|
+| 1 | A | `@` (huumorikauppa.fi) | `216.150.1.1` | | Vercel |
+| 2 | A | `@` | `216.150.16.1` | | Vercel |
+| 3 | CNAME | `www` | `bffaf7b5fcbd90db.vercel-dns-016.com.` | | Vercel; uusi projekti ohjaa www:n juureen (308) |
+| 4 | MX | `@` | `mx3.zoho.eu` | 50 | nykyinen Zoho, ennallaan |
+| 5 | TXT | `@` | `v=spf1 +a +mx +ip4:31.217.196.126 +ip4:31.217.196.127 ~all` | | nykyinen SPF, ennallaan |
+| 6 | TXT | `@` | `google-site-verification=snmSsxmak4jKGwNYWtq5kkJJVBo7vaI0oQMG_hp-5BA` | | Search Console |
+| 7 | TXT | `@` | `google-site-verification=Afupwj3flTopFzNZiTu01DXMDlJWGkKOpddZzvTHkL4` | | Search Console |
+| 8 | TXT | `@` | `trustpilot-one-time-verification-id=f57afbee-a2c3-4d50-94c3-3ff988b0d193` | | Trustpilot |
+| 9 | TXT | `default._domainkey` | `v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvePedSMPgTEzGLkrq3P/qjOQVFMbxMWvD8k1LR4390ZmNnGUrpNtgKYXpiUmXRsn2TTaPy9Zv52OexJqJAcfkJU7tQ0MXlHlPidAdSGxv28GjGiVCdrjceyaWOVm+B4RYqL6i226MCVHIClTZ4wwKMSpf5vEzD5r3pL2EDpW4+dJJ2F7g2BINBtY5cJ88EgygGlVYuaztumKg4Oqccp0I3UGtMl3Nj7G571Jhca8j7mlUWHTwz7QK+2ti9vVAVoJPc2qmVriuhJYPgGgj4mpg00+vzfwpWyG3mgvFJ+Q3dWAcLO2ybJOwI5ieDh5DWMIIxJXAyZ15Rfozt9m5mhE1QIDAQAB` | | nykyinen DKIM, ennallaan |
+| 10 | TXT | `_dmarc` | `v=DMARC1; p=none; pct=100; rua=mailto:huumorikauppa@gmail.com` | | korvaa lovable.dev-osoitteen |
+| 11 | MX | `send` | `feedback-smtp.eu-west-1.amazonses.com` | 10 | Resend (palautukset) |
+| 12 | TXT | `send` | `v=spf1 include:amazonses.com ~all` | | Resend SPF |
+| 13 | TXT | `resend._domainkey` | Resendin antama DKIM-avain (`p=MIGfMA0...`), ks. alla | | Resend DKIM |
+| 14 | TXT | `_vercel` | `vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe` | | **vasta käyttöönotossa (kohta 9)** |
+| 15 | TXT | `_vercel` | `vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01` | | **vasta käyttöönotossa (kohta 9)** |
+
+Rivit 1-3: Vercelin suosittelemat arvot uudelle projektille (API `domains/config`, 27.10.2026). Nykyiset A-arvot
+(`216.198.79.65`, `64.29.17.65`) ovat myös Vercelin, joten kumpikin toimii; uudet ovat Vercelin ensisijaiset.
+Vercel ohjaa liikenteen sen projektin sivulle, jolle domain on vahvistettu, ei IP-osoitteen perusteella.
+
+Rivit 14-15 siirtävät domainin vanhasta Vercel-projektista (tiimi aarni-ais-projects) uuteen heti, kun Vercel ne
+näkee. Siksi ne lisätään vasta kohdassa 9, kun avaimet on testattu. Vanhan tiimin `_vercel`-tietueita
+(`...1cd38cc81b9f3fc95d0a`, `...63152a5c20797d66be51`) ei tarvita.
+
+Rivi 10: DMARC-raportit menevät huumorikauppa@gmail.com-osoitteeseen. Osa raportoijista lähettää raportit toiseen
+domainiin vain, jos vastaanottava domain sen erikseen sallii (gmail.com ei salli). Jos raportteja ei tule, käytä
+osoitetta omassa domainissa (esim. `dmarc@huumorikauppa.fi` Zohossa).
+
+Rivi 13: DKIM-avain on domainikohtainen, ja Resend luo sen, kun domain lisätään. Kun `RESEND_API_KEY` on Vercelissä ja
+projekti julkaistu, tämä lisää domainin Resendiin (alue EU) ja tulostaa kaikki tietueet tarkkoine arvoineen:
 
 ```
 cd ~/huumorikauppa && curl -s -H "Authorization: Bearer $(cut -d= -f2- .env.cron.local)" "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=resend-domain" | python3 -m json.tool
 ```
 
 Kun tietueet on lisätty, sama komento loppuun `&vahvista=1` pyytää Resendiä tarkistamaan ne (tila `verified`).
-Täsmälliset arvot kirjataan tähän, kun avain on saatavilla.
+Tarkistus komentoriviltä: `dig +short NS huumorikauppa.fi` (Domainhotelli), `dig +short TXT resend._domainkey.huumorikauppa.fi`.
+
+### Vanhan kassan sulkeminen (ohje, ei vielä tehty)
+
+**Millä tilillä Lovablen kassa toimii (selvitetty 27.10.2026):** Lovablen create-checkout loi live-session
+(`cs_live_...`, ei maksettu), jonka Stripe-sivu kertoo myyjän tiedot: tili **`acct_1THtN1AhUyocG7PO`**, nimi
+"Huumorikauppa", tukiosoite huumorikauppa@gmail.com, osoite huumorikauppa.fi, tiliotemerkintä HUUMORIKAUPPA, maa FI.
+Tili ei siis ole inteller.info. Se on joko toinen kahdesta "Huumorikauppa"-tilistä samalla kirjautumisella tai tili
+toisella kirjautumisella (todennäköisesti huumorikauppa@gmail.com). Tarkistus: Stripe > tilinvaihtaja > kukin
+Huumorikauppa-tili > Settings > Business > Account details > Account ID. Uusiku Oy:n uusi tili ei saa olla
+`acct_1THtN1AhUyocG7PO`; jos on, Lovablen kassa ja uusi kassa ovat samalla tilillä, eikä avaimen kiertoa (vaihe 3)
+saa tehdä, vaan vain vanhan webhookin poisto (vaihe 2).
+
+Testisessio vanhenee itsestään 24 tunnissa. Lovable voi kirjata sen keskeneräiseksi tilaukseksi
+(kassatesti@huumorikauppa.fi).
+
+**Sulkeminen, kun uusi kassa vastaa huumorikauppa.fi:ssä (kohta 9, vaihe 4):**
+
+1. Varmista: `curl -s -o /dev/null -w '%{http_code}' https://huumorikauppa.fi/api/products?limit=1` palauttaa 200
+   ja `curl -sI https://huumorikauppa.fi/ | grep -i x-vercel-id` vastaa (uusi projekti).
+2. Stripe, tili `acct_1THtN1AhUyocG7PO`, Live mode > Developers > Webhooks > endpoint
+   `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` > **Disable**. Tämän jälkeen vanha tausta ei
+   lähetä tilauksia Printifyyn.
+3. Samalla tilillä Developers > API keys > Secret key > **Roll key**, vanhenemisaika **Now**. Lovablen create-checkout
+   käyttää tätä avainta Supabasessa, joten kierron jälkeen se ei voi luoda maksuja. Jos tilillä on rajattuja avaimia
+   (`rk_live_`), poista ne samalla.
+4. Tarkista: vanha kassa ei luo sessiota. Uuden taustan sivuilla ei ole Lovablen kassaa, joten tämä koskee vain
+   suoria kutsuja Supabaseen:
+   ```
+   cd ~/huumorikauppa && set -a && . ./.env.production.local && set +a && curl -s -X POST "$VITE_SUPABASE_URL/functions/v1/create-checkout" -H "apikey: $VITE_SUPABASE_PUBLISHABLE_KEY" -H "Authorization: Bearer $VITE_SUPABASE_PUBLISHABLE_KEY" -H "Content-Type: application/json" -d '{"items":[{"slug":"tonnin-seteli-t-paita","quantity":1,"size":"M","color":"Musta"}],"customerEmail":"kassatesti@huumorikauppa.fi","shippingAddress":{"address":"Testikatu 1","zip":"00100","city":"Helsinki","phone":"0400000000"}}' | head -c 200
+   ```
+   Odotettu tulos: virhe (ei `checkout.stripe.com`-osoitetta).
+5. Tilin vanhat maksut, palautukset ja tilitykset jäävät tilille; älä sulje tiliä, ennen kuin palautusaika (14 pv)
+   viimeisimmästä vanhan kassan tilauksesta on kulunut ja tilitys on tullut.
 
 ## 1. Tietokanta (Neon, ilmainen)
 
@@ -292,11 +356,12 @@ käsittelemättä:
    git checkout main && git merge oma-tausta && git push && npx vercel deploy --prod
    ```
 3. Vercel > huumorikauppa (uusi projekti) > Settings > Domains > **Add** `huumorikauppa.fi` ja `www.huumorikauppa.fi`.
-   Koska domain on vanhassa projektissa, Vercel näyttää TXT-tietueen (`_vercel`): lisää se Cloudflareen
-   (DNS > Add record > TXT) ja paina Verify. A- ja CNAME-tietueet osoittavat jo Verceliin, niitä ei muuteta.
+   Tehty valmiiksi 27.10.2026 (odottaa vahvistusta, www ohjaa juureen 308). Lisää Domainhotellin DNS-hallintaan
+   `_vercel`-TXT-tietueet (taulukon rivit 14-15, "DNS: Domainhotelli") ja paina Vercelissä Verify. Domain siirtyy
+   uuteen projektiin heti vahvistuksen jälkeen.
 4. **Heti kun** `curl -s https://huumorikauppa.fi/api/products?limit=1 -o /dev/null -w '%{http_code}'` palauttaa 200
-   (uusi tausta vastaa domainissa): Stripe > Webhooks > vanha endpoint
-   `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` > **Disable** (tai Delete).
+   (uusi tausta vastaa domainissa): vanha kassa kiinni ohjeen "Vanhan kassan sulkeminen" mukaan (Stripe-tili
+   `acct_1THtN1AhUyocG7PO`: vanha webhook Disable ja salainen avain Roll).
 5. Tarkista: `curl -sI https://huumorikauppa.fi/sitemap.xml`, yksi tuotesivu, ja tee yksi oikea tilaus.
 6. GitHubin tuntiajo käynnistyy itse (Actions > Tilausvalvonta > Run workflow ajaa sen heti).
 
