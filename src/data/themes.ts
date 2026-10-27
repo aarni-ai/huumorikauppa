@@ -28,7 +28,7 @@ export const TONNIN_SETELI = theme(/tonnin seteli/);
 /** Muut suomalaiset meemit tonnin seteli -sivulle. */
 export const SUOMI_MEEMIT = theme(/oispa kaljaa/, /saatanan tunarit/, /ice aatana/, /viisaampi häipyy/, /maailman mestarit/, /suomi finland/);
 
-export const ELAKE = theme(/eläk/, /vapautunut virallisesti/, /ikuinen viikonloppu/, /virallisesti työtön/);
+export const ELAKE = theme(/eläk/, /vapautunut virallisesti/, /ikuinen viikonloppu/, /virallisesti työtön/, /-elakelaiselle\b/);
 
 export const MEEMI = theme(
   /oispa kaljaa/, /tonnin seteli/, /ice aatana/, /saatanan tunarit/, /viisaampi häipyy/, /\bkalju/,

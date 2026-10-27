@@ -132,7 +132,8 @@ const PERSONAL_ADULT = all(PERSONAL, not(inCategory("bodyt", "tarrat", "pipot"))
 /** Omalla tekstillä painettavat lahjat kotiin: peitto, seinätaulu, koriste. */
 const OMA_KOTIIN = all(OMA_TEKSTI, inCategory("peitot", "seinataulut", "koristeet"));
 
-const ISA = theme(/(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /asuu yksi pomo/, /\bkalju/);
+// -isalle: isänpäivän tuotteet slugin mukaan (28.10.2026, data/uudet-tuotteet-2026-10-28.json).
+const ISA = theme(/(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /asuu yksi pomo/, /\bkalju/, /-isalle\b/);
 const AITI = theme(/äiti/, /äiskä/);
 const PAPPA = theme(/\bukki/, /pappa/);
 const NAINEN = theme(/äiti/, /äiskä/, /slay queen/, /my boyfriend/, /swedish boys/, /fabulous/, /hopeanhohtoinen/);
