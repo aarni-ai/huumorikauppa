@@ -9,7 +9,7 @@ import { HOME_FAQS } from "@/seo/pageFaqs";
 import {
   Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield,
   ChevronLeft, ChevronRight, Flag,
-  MapPin, Sun, ArrowRight,
+  MapPin, Gift, ArrowRight,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
@@ -27,8 +27,8 @@ import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { JOULU_TILAUSPAIVAT } from "@/data/jouluAikataulu";
 
 /** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
-const HERO_SRC = "/images/hero-banner-800.webp";
-const HERO_SRCSET = [480, 800, 1200, 1672].map((w) => `/images/hero-banner-${w}.webp ${w}w`).join(", ");
+const HERO_SRC = "/images/etusivu-hero-800.webp";
+const HERO_SRCSET = [480, 800, 1200, 1672].map((w) => `/images/etusivu-hero-${w}.webp ${w}w`).join(", ");
 const HERO_SIZES = "(min-width: 1400px) 890px, (min-width: 1024px) 65vw, (min-width: 768px) 75vw, calc(100vw - 32px)";
 
 const ReviewsCarousel = lazy(() => import("@/components/ReviewsCarousel").then(m => ({ default: m.ReviewsCarousel })));
@@ -99,7 +99,7 @@ const Index = () => {
     toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
   };
 
-  // "Kesän suosituimmat" — sekalainen valikoima kaikista tuotteista.
+  // "Suosituimmat nyt": sekalainen valikoima kaikista tuotteista.
   // Ensin nostetaan käsin valitut suosikit, sitten sekoitetaan muut,
   // ja lopuksi taitetut (folded/flat) mockup-kuvat siirretään loppuun.
   const carouselProducts = (() => {
@@ -144,7 +144,7 @@ const Index = () => {
         title={STATIC_PAGE_META["/"].title}
         description={STATIC_PAGE_META["/"].description}
         canonical="https://huumorikauppa.fi"
-        ogImage="https://huumorikauppa.fi/images/hero-banner-wide.png"
+        ogImage="https://huumorikauppa.fi/images/etusivu-hero.png"
       />
 
       {/* SEASONAL BANNER */}
@@ -154,7 +154,7 @@ const Index = () => {
           className="group flex items-center justify-center gap-2 rounded-2xl overflow-hidden text-center px-4 py-3 text-primary-foreground transition-opacity hover:opacity-90"
           style={{ background: "linear-gradient(90deg, hsl(var(--brand-green-dark)) 0%, hsl(var(--brand-green)) 100%)" }}
         >
-          <Sun className="h-4 w-4 shrink-0 opacity-90" />
+          <Gift className="h-4 w-4 shrink-0 opacity-90" />
           <span className="text-sm font-semibold">
             Löydä hauska lahja meiltä. Tilaa nyt.
           </span>
@@ -165,7 +165,7 @@ const Index = () => {
       {/* HERO BANNER IMAGE */}
       <section className="container pb-2 md:pb-1 pt-3">
         <Link to="/kaikki-tuotteet" className="block overflow-hidden rounded-2xl">
-          {/* LCP-kuva: WebP-koot public/images/hero-banner-*.webp (sama srcset/sizes kuin index.html:n preload). */}
+          {/* LCP-kuva: WebP-koot public/images/etusivu-hero-*.webp (28.10.2026: ei hintoja eikä kampanjaa) (sama srcset/sizes kuin index.html:n preload). */}
           <img
             src={HERO_SRC}
             srcSet={HERO_SRCSET}
@@ -598,7 +598,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
   return (
     <section ref={sectionRef} className="container py-10 md:py-14" style={{ contain: 'layout paint', willChange: 'auto' }}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground">Kesän suosituimmat</h2>
+        <h2 className="font-display text-2xl md:text-3xl text-foreground">Suosituimmat nyt</h2>
         <div className="flex items-center gap-2">
           <Link
             to="/kaikki-tuotteet"

@@ -59,7 +59,8 @@ Tarkistus: `curl -sI https://huumorikauppa.fi/ | grep -i x-huumorikauppa-valitet
    valita, valitaFetch) ja ajastukset takaisin `vercel.json`-tiedostoon, sitten `scripts/julkaise-uusi.sh`.
 3. Webhookin osoitteeksi voi silloin vaihtaa `https://huumorikauppa.fi/api/stripe-webhook` (nykyinen toimii myös).
 
-**Resend:** Vercel CLI on kirjautunut käyttäjänä **flyapeg@gmail.com** (tunnus flyapeg-2135, tiimi
+**Resend (asennettu 28.10.2026, ilmainen suunnitelma, RESEND_API_KEY Vercelissä):** odottaa DNS-tietueita 11-13.
+Alla oleva asennusohje on tehty. Vercel CLI on kirjautunut käyttäjänä **flyapeg@gmail.com** (tunnus flyapeg-2135, tiimi
 flyapeg-2135s-projects). Integraatio vaatii ehtojen hyväksynnän selaimessa:
 1. Kirjaudu https://vercel.com/login > "Continue with Email" > flyapeg@gmail.com (kirjautumislinkki tulee siihen
    postilaatikkoon) tai "Continue with Google" samalla Google-tilillä flyapeg@gmail.com.
@@ -139,7 +140,7 @@ vielä Cloudflaren tietueet, jotka ovat samat, joten sivusto ja Zohon sähköpos
 | 10 | TXT | `_dmarc` | `v=DMARC1; p=none; pct=100; rua=mailto:huumorikauppa@gmail.com` | | korvaa lovable.dev-osoitteen |
 | 11 | MX | `send` | `feedback-smtp.eu-west-1.amazonses.com` | 10 | Resend (palautukset) |
 | 12 | TXT | `send` | `v=spf1 include:amazonses.com ~all` | | Resend SPF |
-| 13 | TXT | `resend._domainkey` | Resendin antama DKIM-avain (`p=MIGfMA0...`), ks. alla | | Resend DKIM |
+| 13 | TXT | `resend._domainkey` | `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUF9+bjHNQ5hAgzDsFGX1wp7BSE29aR3LATlC5vLJ4LSzDc408WZTQ9uZOyZFFSoVhOLXzz0/lCeSDghDgu9uLFNdHNj/5my88gnI6l+fyRwrWF77D5RCglNTYBEiiCQlLCynfYzU0sIjNUx88gT4i9stracQxMLXZ7kb37Q9OfwIDAQAB` | | Resend DKIM (luotu 28.10.2026, alue eu-west-1) |
 | 14 | TXT | `_vercel` | `vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe` | | **vasta käyttöönotossa (kohta 9)** |
 | 15 | TXT | `_vercel` | `vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01` | | **vasta käyttöönotossa (kohta 9)** |
 
@@ -155,7 +156,11 @@ Rivi 10: DMARC-raportit menevät huumorikauppa@gmail.com-osoitteeseen. Osa rapor
 domainiin vain, jos vastaanottava domain sen erikseen sallii (gmail.com ei salli). Jos raportteja ei tule, käytä
 osoitetta omassa domainissa (esim. `dmarc@huumorikauppa.fi` Zohossa).
 
-Rivi 13: DKIM-avain on domainikohtainen, ja Resend luo sen, kun domain lisätään. Kun `RESEND_API_KEY` on Vercelissä ja
+Rivi 13: Resend loi domainin 28.10.2026 Vercelin Resend-integraation kautta (ilmainen suunnitelma, 3 000 viestiä/kk,
+alue eu-west-1); arvo yllä. Tila `not_started`, kunnes tietueet 11-13 ovat DNS:ssä. Siihen asti Resend ei lähetä
+huumorikauppa.fi-osoitteesta (403 "domain is not verified"), joten kassa pyytää Stripen kuitin. Kun domain on
+`verified`: `printf '1' | npx vercel env add SAHKOPOSTI_VAHVISTETTU production` ja `scripts/julkaise-uusi.sh`,
+jolloin oma tilausvahvistus korvaa Stripen kuitin. Tietueet ovat domainikohtaisia ja ne voi tarkistaa uudelleen: Kun `RESEND_API_KEY` on Vercelissä ja
 projekti julkaistu, tämä lisää domainin Resendiin (alue EU) ja tulostaa kaikki tietueet tarkkoine arvoineen:
 
 ```

@@ -210,9 +210,9 @@ describe("blogi: rakenteinen data", () => {
   });
 
   it("kuva lisätään Articleen absoluuttisena URLina, kun artikkelilla on kuva", () => {
-    const ld = buildBlogPostJsonLd({ ...jouluOppaat2026[0], image: "/images/hero-banner.png" }, []);
+    const ld = buildBlogPostJsonLd({ ...jouluOppaat2026[0], image: "/images/etusivu-hero.png" }, []);
     const graph = ld["@graph"] as Record<string, unknown>[];
     expect(graph).toHaveLength(1);
-    expect(graph[0].image).toEqual(["https://huumorikauppa.fi/images/hero-banner.png"]);
+    expect(graph[0].image).toEqual(["https://huumorikauppa.fi/images/etusivu-hero.png"]);
   });
 });

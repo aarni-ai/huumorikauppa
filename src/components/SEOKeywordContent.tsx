@@ -15,7 +15,7 @@ export function SEOHomeContent() {
         Etsitkö halpaa t-paitaa, trendikästä t-paitaa tai design t-paitaa? Meiltä löydät suomi paidan, finland t-paidan, custom t-paidan, oma teksti t-paidan ja oma kuva t-paidan. T-paidan painatus on helppoa – osta paras t-paita, suosittu t-paita tai persoonallinen paita nettikaupastamme. Tarjoamme retro t-paitoja, vintage t-paitoja, minimalistisia paitoja, grafiikkapaitoja, cool t-paitoja ja tyylikkäitä t-paitoja.
       </p>
       <p>
-        Arkipaita, vapaa-aika paita, kesäpaita – meiltä löydät musta t-paita, valkoinen t-paita ja värillinen t-paita. Miesten vaatteet netistä ja naisten vaatteet netistä. Streetwear paita, urbaani paita, suomalainen design paita, trendivaatteet ja verkkokauppa vaatteet ovat erikoisalamme. T-paita tarjous, t-paita alennus ja t-paita kampanja – löydä suosituimmat paidat ja parhaat printtipaidat halvalla.
+        Arkipaita, vapaa-aika paita, kesäpaita – meiltä löydät musta t-paita, valkoinen t-paita ja värillinen t-paita. Miesten vaatteet netistä ja naisten vaatteet netistä. Streetwear paita, urbaani paita, suomalainen design paita, trendivaatteet ja verkkokauppa vaatteet ovat erikoisalamme. Löydä suosituimmat printtipaidat.
       </p>
       <p>
         Laadukkaat paidat paras verkkokaupasta: printtipaita miehelle, printtipaita naiselle, printtipaita lahja. T-paita arkeen ja t-paita juhlaan. Työpaikka paita ja vapaa ajan paita. Nuorten paidat, aikuisten paidat, keski-ikäisten vaatteet. 50v lahja paita, 60v lahja paita, eläkeläis paita. Suomalainen huumori paita, meemipaita, internet meemi paita, hauskat printit, tekstiprintti paita, kuvapaita, uniikki paita, erikoinen t-paita.
@@ -107,7 +107,7 @@ export function SEOBuyingContent() {
         Osta t-paita netistä, osta printtipaita suomi, osta huumoripaita, osta tekstipaita, osta lahjapaita. Osta paita miehelle, osta paita naiselle, osta hauska paita, osta halpa t-paita, osta laadukas t-paita. Osta kotimainen paita, osta suomalainen paita, osta design paita, osta trendipaita, osta suosittu paita.
       </p>
       <p>
-        Osta myydyin paita, osta uusi paita, osta uutuus paita, osta printtipaita nopeasti, osta paita nopea toimitus. Osta paita ilmainen toimitus, osta paita alennus, osta paita tarjous, osta paita kampanja. Osta paita verkosta, osta paita verkkokaupasta, osta paita helposti, osta paita ilman rekisteröitymistä.
+        Osta myydyin paita, osta uusi paita, osta uutuus paita, osta printtipaita nopeasti, osta paita nopea toimitus. Osta paita ilmaisella toimituksella. Osta paita verkosta, osta paita verkkokaupasta, osta paita helposti, osta paita ilman rekisteröitymistä.
       </p>
       <p>
         Osta paita korttimaksulla, osta paita turvallisesti, osta paita suomesta, osta paita nopeasti kotiin. Osta paita lahjaksi, osta paita synttärilahjaksi, osta paita joululahjaksi, osta paita isänpäiväksi, osta paita äitienpäiväksi.

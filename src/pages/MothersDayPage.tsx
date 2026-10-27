@@ -144,7 +144,7 @@ const MothersDayPage = () => {
         description={STATIC_PAGE_META["/aitienpaiva"].description}
         canonical="https://huumorikauppa.fi/aitienpaiva"
         jsonLd={combinedJsonLd}
-        ogImage={proxiedImage(baseProducts[0]?.images[0], { absolute: true }) || "https://huumorikauppa.fi/images/hero-banner-wide.png"}
+        ogImage={proxiedImage(baseProducts[0]?.images[0], { absolute: true }) || "https://huumorikauppa.fi/images/etusivu-hero.png"}
         breadcrumbs={[
           { name: "Etusivu", url: "https://huumorikauppa.fi/" },
           { name: "Äitienpäivälahjat 2026", url: "https://huumorikauppa.fi/aitienpaiva" },

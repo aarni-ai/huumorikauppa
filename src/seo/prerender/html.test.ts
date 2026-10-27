@@ -16,11 +16,11 @@ const TEMPLATE = `<!doctype html>
     <title>Vanha otsikko</title>
     <meta name="description" content="Vanha kuvaus">
     <link rel="canonical" href="https://huumorikauppa.fi/" />
-    <link rel="preload" as="image" href="/images/hero-banner-800.webp" imagesrcset="/images/hero-banner-480.webp 480w" fetchpriority="high" data-hero-preload />
+    <link rel="preload" as="image" href="/images/etusivu-hero-800.webp" imagesrcset="/images/etusivu-hero-480.webp 480w" fetchpriority="high" data-hero-preload />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://huumorikauppa.fi" />
     <meta property="og:title" content="Vanha">
-    <meta property="og:image" content="https://huumorikauppa.fi/images/hero-banner-wide.png">
+    <meta property="og:image" content="https://huumorikauppa.fi/images/etusivu-hero.png">
     <meta property="og:image:width" content="1200">
     <script type="application/ld+json">{"@type":"Store"}</script>
   </head>
@@ -92,8 +92,8 @@ describe("renderPageHtml", () => {
   });
 
   it("drops the homepage hero preload on other pages", () => {
-    expect(html).not.toContain("hero-banner-800.webp");
-    expect(renderPageHtml(TEMPLATE, { ...page, path: "/", breadcrumbs: [] }, nav)).toContain("hero-banner-800.webp");
+    expect(html).not.toContain("etusivu-hero-800.webp");
+    expect(renderPageHtml(TEMPLATE, { ...page, path: "/", breadcrumbs: [] }, nav)).toContain("etusivu-hero-800.webp");
   });
 
   it("adds a noscript style so the static content is visible without JavaScript", () => {

@@ -69,7 +69,7 @@ describe("renderProductPreview", () => {
 describe("renderHomePreview", () => {
   it("renders the home hero image without an H1 heading tag", () => {
     const html = renderHomePreview(Date.UTC(2026, 0, 15));
-    expect(html).toContain("/images/hero-banner-800.webp");
+    expect(html).toContain("/images/etusivu-hero-800.webp");
     expect(html).not.toMatch(/<h1[\s>]/);
   });
 });
