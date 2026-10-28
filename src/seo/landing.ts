@@ -3,6 +3,7 @@
  * (src/pages/LandingPage.tsx) ja esirenderöinnille (src/seo/prerender/pages.ts).
  */
 import { categories } from "@/data/products";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import {
   getLandingPage,
   LANDING_GRID_LIMIT,
@@ -36,6 +37,7 @@ export function landingRelatedLinks(page: LandingPageDef): LandingLink[] {
 
 export function landingCategoryLinks(page: LandingPageDef): LandingLink[] {
   return page.categories
+    .filter((slug) => onKategoriasivu(slug))
     .map((slug) => categories.find((c) => c.slug === slug))
     .filter((c): c is (typeof categories)[number] => !!c)
     .map((c) => ({ href: `/kategoria/${c.slug}`, label: c.name }));

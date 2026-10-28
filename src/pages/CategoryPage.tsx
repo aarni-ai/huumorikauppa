@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { onPiilotettu } from "@/lib/hiddenCategories";
+import { YHDISTETYT_KATEGORIAT, onKategoriasivu, onPiilotettu } from "@/lib/hiddenCategories";
 import { categories } from "@/data/products";
-import { CATEGORY_H1, CATEGORY_H2_SECTIONS, selectCategoryProducts } from "@/data/categoryContent";
+import { CATEGORY_H1, CATEGORY_H2_SECTIONS, CATEGORY_PAGE_CONTENT, selectCategoryProducts } from "@/data/categoryContent";
 import { buildCategoryFaqs } from "@/seo/pageFaqs";
 import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
@@ -35,6 +35,8 @@ const CategoryPage = () => {
   const products = selectCategoryProducts(allProducts, slug);
 
   if (onPiilotettu(slug)) return <Navigate to="/kaikki-tuotteet" replace />;
+  // Yhdistetyt kategoriat (alle 8 tuotetta): 301 myös vercel.json:ssa.
+  if (slug && YHDISTETYT_KATEGORIAT[slug]) return <Navigate to={YHDISTETYT_KATEGORIAT[slug]} replace />;
 
   if (!category) {
     return (
@@ -45,7 +47,7 @@ const CategoryPage = () => {
     );
   }
 
-  const otherCategories = categories.filter(c => c.slug !== slug);
+  const otherCategories = categories.filter(c => c.slug !== slug && onKategoriasivu(c.slug));
   const crossLinkCategories = otherCategories
     .filter(c => allProducts.some(p => p.category === c.slug))
     .slice(0, 5);
@@ -55,6 +57,9 @@ const CategoryPage = () => {
     .filter(Boolean) as typeof blogPosts;
 
   const h1Text = CATEGORY_H1[slug || ""] || `Hauskat ${category.name}`;
+  const content = CATEGORY_PAGE_CONTENT[slug || ""];
+  const pageTitle = content?.title || category.seoTitle || `${h1Text} | Huumorikauppa.fi`;
+  const pageDescription = content?.description || category.seoDescription || `${category.description}. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`;
   const h2Sections = CATEGORY_H2_SECTIONS[slug || ""] || [];
 
   const breadcrumbs = [
@@ -66,7 +71,7 @@ const CategoryPage = () => {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": h1Text,
-    "description": category.seoDescription || category.description,
+    "description": pageDescription,
     "url": `https://huumorikauppa.fi/kategoria/${slug}`,
     "isPartOf": { "@type": "WebSite", "name": "Huumorikauppa", "url": "https://huumorikauppa.fi" },
     "mainEntity": {
@@ -82,7 +87,7 @@ const CategoryPage = () => {
   };
 
   // FAQ JSON-LD — quotable answers for AI Overviews / ChatGPT / Perplexity
-  const categoryFaqs = buildCategoryFaqs(category.name);
+  const categoryFaqs = content?.faqs ?? buildCategoryFaqs(category.name);
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -98,8 +103,8 @@ const CategoryPage = () => {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title={category.seoTitle || `${h1Text} | Huumorikauppa.fi`}
-        description={category.seoDescription || `${category.description}. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`}
+        title={pageTitle}
+        description={pageDescription}
         canonical={`https://huumorikauppa.fi/kategoria/${slug}`}
         jsonLd={combinedJsonLd}
         breadcrumbs={breadcrumbs}
@@ -128,17 +133,16 @@ const CategoryPage = () => {
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">
           {h1Text} {category.emoji}
         </h1>
-        <p className="text-muted-foreground mb-4">{category.description} – {products.length} tuotetta</p>
-
-        {/* DIRECT ANSWER BLOCK — visuaalisesti piilossa, indeksoitavissa SEO/GEO:lle */}
-        <div className="sr-only" aria-hidden="false">
-          <p>
-            <strong>{h1Text}</strong> ovat yksi Suomen suosituimmista huumorilahjaideoista.
-            Huumorikauppa.fi:stä löydät {products.length}+ erilaista hauskaa {category.name.toLowerCase()} —
-            täydellisiä lahjoja töihin, kaverille, perheelle tai itsellesi. Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen,
-            ilmainen {ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.
-          </p>
-        </div>
+        {content ? (
+          <div className="text-muted-foreground mb-4 max-w-3xl space-y-2">
+            {content.intro.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+            <p className="text-sm">{products.length} tuotetta</p>
+          </div>
+        ) : (
+          <p className="text-muted-foreground mb-4">{category.description}. {products.length} tuotetta</p>
+        )}
 
         {/* Trust badges inline */}
         <div className="flex flex-wrap gap-3 mb-8 text-xs">

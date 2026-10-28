@@ -293,7 +293,7 @@ describe("routing, sitemap and redirects", () => {
     ];
     for (const f of files) expect(read(f), f).not.toContain("/kategoria/mukit");
     // Footer listaa kategoriat datasta: piilotetut suodatetaan pois.
-    expect(read("src/components/layout/Footer.tsx")).toContain("onPiilotettu");
+    expect(read("src/components/layout/Footer.tsx")).toMatch(/onPiilotettu|onKategoriasivu/);
   });
 
   it("content-graph slugs are ASCII", async () => {

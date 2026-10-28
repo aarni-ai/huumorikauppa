@@ -155,7 +155,7 @@ Naiselle tekstipaita toimii hameen, farkkujen tai leveiden housujen kanssa. Paid
 
 Kun koko tiimi tai kaveriporukka pukeutuu samaan paitaan, juhlakuvista tulee yhtenäisiä ja ilta saa oman tarinansa. Yhteinen asu voi olla sama vitsi kaikille tai jokaiselle oma rooli: yksi on kuski, toinen karaokevastaava ja kolmas tanssija. Ohjeet yhteistilaukseen löydät sivulta [ryhmätilaukset](/ryhmatilaukset), ja lisää ideoita oppaasta [pikkujoulupaidat porukalle](/blogi/pikkujoulupaidat-porukalle).
 
-Huppareista löydät koko valikoiman sivulta [hauskat hupparit](/hauskat-hupparit).
+Huppareista löydät koko valikoiman sivulta [hauskat hupparit](/kategoria/hupparit).
 
 ## Kun juhla on ravintolassa
 
@@ -866,7 +866,7 @@ Huppari on opiskelijalle lahja, joka on käytössä joka päivä: luennolla, kir
 - **Kotiseutuylpeälle:** Kun opiskelija on muuttanut toiselle paikkakunnalle, kotikaupungin huppari muistuttaa juurista. Esimerkiksi [Kotona vain Tampereella](/tuote/kotona-vain-tampereella-hauska-huppari) sopii tamperelaiselle, joka opiskelee muualla.
 - **Opiskelukaupungin uudelle asukkaalle:** [Tamperelainen selviää mistä vain](/tuote/tamperelainen-selviaa-mista-vain-hauska-huppari) sopii opiskelijalle, joka on jo ottanut uuden kaupunkinsa omakseen.
 
-Kaupunkipaitoja löytyy kymmenille paikkakunnille, esimerkiksi [Tampereen sivulta](/kaupunki/tampere). Koko huppareiden valikoiman näet sivulla [hauskat hupparit](/hauskat-hupparit).
+Kaupunkipaitoja löytyy kymmenille paikkakunnille, esimerkiksi [Tampereen sivulta](/kaupunki/tampere). Koko huppareiden valikoiman näet sivulla [hauskat hupparit](/kategoria/hupparit).
 
 ## Alan vitsi opiskelijalle
 

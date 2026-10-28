@@ -19,10 +19,9 @@ export const giftHubLinks: SiteLink[] = [
   { path: "/syntymapaivalahjat",        label: "Syntymäpäivälahjat",      emoji: "🎂", tags: ["synttäri", "lahjat"] },
   { path: "/elakelahjat",              label: "Eläkelahjat",              emoji: "🎓", tags: ["eläke", "lahjat"] },
   { path: "/lahja-kaverille",          label: "Lahja kaverille",          emoji: "🤝", tags: ["kaveri", "lahjat"] },
-  { path: "/hauskat-t-paidat",         label: "Hauskat t-paidat",         emoji: "👕", tags: ["t-paita"] },
-  { path: "/hauskat-hupparit",         label: "Hauskat hupparit",         emoji: "🧥", tags: ["huppari"] },
-  { path: "/lahja-miehelle",           label: "Lahja miehelle",           emoji: "🎯", tags: ["miehelle", "lahjat"] },
-  { path: "/haalarimerkit",            label: "Haalarimerkit",            emoji: "📌", tags: ["opiskelija"] },
+  { path: "/kategoria/t-paidat",         label: "Hauskat t-paidat",         emoji: "👕", tags: ["t-paita"] },
+  { path: "/kategoria/hupparit",         label: "Hauskat hupparit",         emoji: "🧥", tags: ["huppari"] },
+  { path: "/haalarimerkit",           label: "Haalarimerkit",            emoji: "📌", tags: ["opiskelija"] },
 ];
 
 /** /lahjat/:slug routes built from the shared situationGifts data (yhdistetyt sivut ohjautuvat uuteen polkuun) */
@@ -45,13 +44,11 @@ export const contentHubLinks: SiteLink[] = [
 /** Footer-visible gift links — curated subset that covers all non-linked hub pages */
 export const footerGiftLinks: SiteLink[] = [
   ...giftHubLinks,
-  { path: "/lahjat/miehelle",             label: "Lahjat miehelle",           emoji: "🧔", tags: [] },
-  { path: "/lahjat/naiselle",             label: "Lahjat naiselle",           emoji: "💁‍♀️", tags: [] },
   { path: "/lahjat/alle-30-euroa",        label: "Lahjat alle 30 €",          emoji: "🪙", tags: [] },
-  { path: "/lahjat/valmistujaisiin",      label: "Valmistujaislahjat",        emoji: "🎓", tags: [] },
-  { path: "/lahjat/polttareihin",         label: "Lahjat polttareihin",       emoji: "🎉", tags: [] },
+  { path: "/blogi/hauskat-valmistujaislahjat-2026", label: "Valmistujaislahjat", emoji: "🎓", tags: [] },
   { path: "/lahjat/tyokaverille",         label: "Lahjat työkavereille",      emoji: "💼", tags: [] },
-  { path: "/lahjat/syntymapaivasankarille", label: "Synttärilahjat",          emoji: "🎂", tags: [] },
+  { path: "/lahjat/vauvalle",             label: "Lahjat vauvaperheelle",     emoji: "🍼", tags: [] },
+  { path: "/lahjat/30-vuotiaalle-miehelle", label: "Lahjat 30v miehelle",    emoji: "🎈", tags: [] },
   { path: "/lahjat/50-vuotiaalle-miehelle", label: "Lahjat 50v miehelle",    emoji: "🎂", tags: [] },
   { path: "/lahjat/60-vuotiaalle-miehelle", label: "Lahjat 60v miehelle",    emoji: "🥳", tags: [] },
   { path: "/lahjat/harrastajalle",        label: "Lahjat harrastajalle",      emoji: "🎣", tags: [] },

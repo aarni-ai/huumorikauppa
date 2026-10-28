@@ -64,7 +64,7 @@ Lisää lajikohtaisia ideoita löydät esimerkiksi [harrastajan lahjoista](/lahj
 
 Ammattihuumori toimii, koska siinä on aina totuuden siemen. Valitse vitsi, jota hän itse käyttäisi kahvipöydässä.
 
-- **19. Autoharrastajalle:** [Ei myydä, ei koskaan](/tuote/hauska-t-paita-autoharrastajalle-ei-myyda-ei-koskaan) sopii miehelle, jonka projektiauto ei lähde pihasta kuin ruumiin yli. Lisää ideoita on sivulla [lahjat autoharrastajalle](/lahjat/autoharrastajalle).
+- **19. Autoharrastajalle:** [Ei myydä, ei koskaan](/tuote/hauska-t-paita-autoharrastajalle-ei-myyda-ei-koskaan) sopii miehelle, jonka projektiauto ei lähde pihasta kuin ruumiin yli. Lisää ideoita on sivulla [lahjat harrastajalle](/lahjat/harrastajalle).
 - **20. Vanhan auton omistajalle:** "Museokamaa" sopii yhtä hyvin autolle kuin omistajalleen.
 - **21. Sähköasentajalle:** "Älä kosketa sähkömiestä kun olet märkä" on alan klassikkovitsi.
 - **22. Putkimiehelle:** "Löytää aina lekkauksen" sopii myös kotitalouden omalle putkimiehelle.
@@ -171,7 +171,7 @@ Tätä kirjoitettaessa Huumorikaupan valikoimassa alle 20 euron rajan alle jää
 
 [Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) on lahja, joka kaivetaan esiin joka joulu uudelleen. Koriste toimii erityisen hyvin, jos pikkujoulut ovat tiimin perinne: vuosiluku ja porukan nimi koristeessa tekevät siitä pienen muiston. Valmis vaihtoehto on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjanvaihtoon.
 
-Kaikki koristeet löydät [koristeiden kategoriasta](/kategoria/koristeet).
+Koko valikoiman löydät sivulta [kaikki tuotteet](/kaikki-tuotteet).
 
 Pieni lahja ei tarkoita huonoa lahjaa. Kun teksti on mietitty saajaa ajatellen, edullinenkin lahja jää mieleen. Kirjoita teksti ennen tilausta paperille, näytä se jollekulle muulle ja tarkista, että vitsi ymmärretään myös ilman taustatietoa. Näin vältät sen, että lahja tuntuu vain sinusta hauskalta. Hyvä testi on kysyä itseltäsi, naurattaako lahja myös silloin, kun saaja avaa sen muiden nähden.
 
@@ -297,7 +297,7 @@ Mies, jolla on kaikki, on usein myös itsevarma. Silloin hellä piikittely toimi
 
 ### 4. Tallenna yhteinen muisto
 
-Valokuva on vahva muisto, ja oma kuva tuotteessa tekee siitä esineen, jota ei löydy mistään muualta. [Kuusenkoriste omalla kuvalla tai tekstillä](/tuote/oma-tekstikuva-koriste) sopii kotiin tai mökille: kuva ensimmäisestä yhteisestä kalareissusta, perheen koirasta tai rakennusprojektin aloituspäivästä. [Huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari) taas on lämmin lahja sohvalle tai laiturille. Katso myös koko [koristeiden](/kategoria/koristeet) valikoima.
+Valokuva on vahva muisto, ja oma kuva tuotteessa tekee siitä esineen, jota ei löydy mistään muualta. [Kuusenkoriste omalla kuvalla tai tekstillä](/tuote/oma-tekstikuva-koriste) sopii kotiin tai mökille: kuva ensimmäisestä yhteisestä kalareissusta, perheen koirasta tai rakennusprojektin aloituspäivästä. [Huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari) taas on lämmin lahja sohvalle tai laiturille. Katso myös koko [koristeiden](/kaikki-tuotteet) valikoima.
 
 ### 5. Vahvista hänen identiteettiään harrastajana
 
@@ -644,7 +644,7 @@ Kun nämä ovat kunnossa, lahja ilahduttaa eikä aiheuta kenellekään paineita 
 - **Tilaa yhdessä:** Jos useampi kollega ostaa samasta kaupasta, yksi tilaus säästää toimituskulut. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
 - **Tilaa ajoissa:** Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()}
 
-Lisää ideoita löydät sivuilta [joululahja työkaverille](/joululahja-tyokaverille), [lahja kollegalle](/lahjat/kollegalle) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
+Lisää ideoita löydät sivuilta [joululahja työkaverille](/joululahja-tyokaverille), [lahja kollegalle](/lahjat/tyokaverille) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
     faq: [
       { q: "Paljonko joululahjaan työkaverille kannattaa käyttää?", a: "Tavallinen summa on 5-25 euroa. Jos työpaikalla on arvonta, noudata sovittua hintarajaa, jotta kukaan ei koe painetta vastata kalliimmalla." },
       { q: "Pitääkö työkavereille ostaa joululahja?", a: "Työkavereille ei tarvitse ostaa joululahjaa, ellei työpaikalla ole yhteistä tapaa, kuten lahja-arvontaa. Lähimmälle kollegalle pieni lahja on kuitenkin mukava ele." },
@@ -839,7 +839,7 @@ Kahdellakymmenellä eurolla saat lahjan, jonka saaja muistaa joka joulu. [Kuusen
 - teksti "Salainen joulupukki 2026" ja porukan nimi
 - saajan lemmikin kuva ja nimi
 
-Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjaksi. Selaa kaikki [koristeet](/kategoria/koristeet) tai katso koottu valikoima [salaisen joulupukin lahjat](/salainen-joulupukki-lahja).
+Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjaksi. Selaa [koko valikoima](/kaikki-tuotteet) tai katso koottu valikoima [salaisen joulupukin lahjat](/salainen-joulupukki-lahja).
 
 ## 30 euron budjetti
 
@@ -852,7 +852,7 @@ Kun saaja on tuttu, valitse paita hänen omasta jutustaan. Kun saaja on vähemm�
 - **Sinnikkäälle:** [Yksi kerta vielä](/tuote/yksi-kerta-viela-t-paita) sopii kenelle tahansa, joka ei luovuta.
 - **Turvallinen valinta:** [Suomi Finland -paita](/tuote/suomi-finland-t-paita) toimii, kun et tiedä saajan huumorintajusta mitään.
 
-Lisää vaihtoehtoja on sivuilla [hauskat t-paidat](/hauskat-t-paidat) ja [lahjat alle 30 euroa](/lahjat/alle-30-euroa).
+Lisää vaihtoehtoja on sivuilla [hauskat t-paidat](/kategoria/t-paidat) ja [lahjat alle 30 euroa](/lahjat/alle-30-euroa).
 
 ## Toivelistan malli
 
@@ -963,7 +963,7 @@ Moni nuori aloittaa salitreenin lukioiässä. [Jalkapäivä ohitettu jälleen -p
 
 ### Koodaavalle nuorelle
 
-Ohjelmointia harrastavalle nuorelle sopii IT-huumorin klassikko [Ei se ole bugi, se on feature](/tuote/hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature). Vitsi on sama, jota ammattilaisetkin käyttävät, joten nuori tuntee olevansa osa alaa. Katso lisää sivulta [lahjat koodaajalle](/lahjat/koodaajalle).
+Ohjelmointia harrastavalle nuorelle sopii IT-huumorin klassikko [Ei se ole bugi, se on feature](/tuote/hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature). Vitsi on sama, jota ammattilaisetkin käyttävät, joten nuori tuntee olevansa osa alaa. Katso lisää sivulta [lahjat koodaajalle](/ammatti/koodari).
 
 ### Itsevarmalle tyylittelijälle
 
@@ -979,7 +979,7 @@ Teinin lahjassa riski on aina se, että osut väärään vitsiin. Varma tapa vä
 
 ## Pienet lisälahjat
 
-Koristeet ovat nuorille hauska lisälahja huoneeseen. [Kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa 19,90 €, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat [koristeiden kategoriassa](/kategoria/koristeet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
+Koristeet ovat nuorille hauska lisälahja huoneeseen. [Kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa 19,90 €, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat sivulla [kaikki tuotteet](/kaikki-tuotteet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
 
 ## Mitä välttää
 
@@ -1039,7 +1039,7 @@ Hauska lahja teinille onnistuu, kun huumori on nuoren omaa. Valitse lahja harras
 
 ## Hupparit ja pitkähihaiset talveen
 
-Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [pitkähihaiset](/kategoria/pitkahihaiset). Tätä kirjoitettaessa huppari maksaa 49,90 € ja pitkähihainen 39,90 €.
+Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa 49,90 € ja pitkähihainen 39,90 €.
 
 ## Tilaa ajoissa
 

@@ -132,10 +132,14 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
     seoDescription: "Polttarilahjat morsiamelle ja sulhaselle! Hauskat ja mieleenpainuvat ideat. Toimitus nopeasti. 🥂",
     filterFn: (p) => {
       const t = (p.name + " " + p.description).toLowerCase();
+      // 28.10.2026: ei enää kaikkia paitoja (sama ruudukko kuin muilla lahjasivuilla), vaan polttariaiheet,
+      // ryhmälle omalla tekstillä painettavat paidat ja kaveriporukan juhlameemit.
+      if (p.category !== "t-paidat" && p.category !== "hupparit") return false;
       return (
         t.includes("polttari") || t.includes("sulhanen") || t.includes("morsian") ||
         t.includes("bride") || t.includes("game over") ||
-        p.category === "t-paidat" || p.category === "hupparit"
+        t.includes("oma teksti") || t.includes("personoitava") ||
+        t.includes("oispa kaljaa") || t.includes("yksi kerta vielä") || t.includes("alkoholi")
       );
     },
     seoText: `## Polttarilahjat ja polttaripaidat - tilaa ryhmälle

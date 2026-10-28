@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import { categories } from "@/data/products";
+import { kategoriaPolku } from "@/lib/hiddenCategories";
 import { useProduct, piilotetutSlugit } from "@/hooks/use-products";
 import { useCartContext } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
@@ -512,7 +513,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
   const breadcrumbs = [
     { name: "Etusivu", url: "https://huumorikauppa.fi/" },
-    { name: category?.name || product.category, url: `https://huumorikauppa.fi/kategoria/${product.category}` },
+    { name: category?.name || product.category, url: `https://huumorikauppa.fi${kategoriaPolku(product.category)}` },
     { name: product.name, url: `https://huumorikauppa.fi/tuote/${product.slug}` },
   ];
 
@@ -564,7 +565,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         <nav aria-label="Murupolku" className="hidden md:flex text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-foreground">Etusivu</Link>
           <span className="mx-2">/</span>
-          <Link to={`/kategoria/${product.category}`} className="hover:text-foreground">
+          <Link to={kategoriaPolku(product.category)} className="hover:text-foreground">
             {category?.emoji} {category?.name}
           </Link>
           <span className="mx-2">/</span>
@@ -900,7 +901,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         <section className="mt-8 max-w-3xl">
           <nav aria-label="Aiheeseen liittyvät sivut" className="flex flex-wrap gap-2 text-sm">
             {category && (
-              <Link to={`/kategoria/${product.category}`} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
+              <Link to={kategoriaPolku(product.category)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-primary hover:border-primary/50">
                 {category.emoji} Kaikki {category.name.toLowerCase()}
               </Link>
             )}
@@ -1020,7 +1021,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         {/* Category link */}
         {category && (
           <section className="mt-6">
-            <Link to={`/kategoria/${product.category}`} className="text-sm text-primary hover:underline">
+            <Link to={kategoriaPolku(product.category)} className="text-sm text-primary hover:underline">
               ← Takaisin kategoriaan: {category.emoji} {category.name}
             </Link>
           </section>

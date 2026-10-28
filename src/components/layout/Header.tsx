@@ -3,6 +3,7 @@ import { ShoppingCart, Search, Menu, X, ChevronDown } from "lucide-react";
 import { useState, useRef } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import { Input } from "@/components/ui/input";
 import { CHRISTMAS_MENU, FATHERS_DAY_MENU } from "@/data/landingRoutes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
@@ -49,13 +50,13 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
           {cat.name}
         </Link>
       ))}
-      <button
+      {otherCats.length > 0 && <button
         onClick={() => setOtherOpen(prev => !prev)}
         className="w-full flex items-center justify-between px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
       >
         Muut tuotteet
         <ChevronDown className={`h-4 w-4 transition-transform ${otherOpen ? "rotate-180" : ""}`} />
-      </button>
+      </button>}
       {otherOpen && otherCats.map(cat => (
         <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-8 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           {cat.name}
@@ -86,8 +87,9 @@ export function Header() {
     }
   };
 
-  const mainCats = categories.filter(c => MAIN_CATEGORIES.includes(c.slug));
-  const otherCats = categories.filter(c => OTHER_CATEGORIES.includes(c.slug));
+  // Yhdistetyt kategoriat (alle 8 tuotetta) ohjautuvat muualle: ei valikkoon (src/lib/hiddenCategories.ts).
+  const mainCats = categories.filter(c => MAIN_CATEGORIES.includes(c.slug) && onKategoriasivu(c.slug));
+  const otherCats = categories.filter(c => OTHER_CATEGORIES.includes(c.slug) && onKategoriasivu(c.slug));
 
   const openDropdown = () => {
     if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
@@ -228,7 +230,7 @@ export function Header() {
           </div>
 
           {/* "Muut tuotteet" dropdown */}
-          <div
+          {otherCats.length > 0 && <div
             className="relative"
             onMouseEnter={openDropdown}
             onMouseLeave={closeDropdown}
@@ -254,7 +256,7 @@ export function Header() {
                 ))}
               </div>
             )}
-          </div>
+          </div>}
         </nav>
 
         {/* Right side */}

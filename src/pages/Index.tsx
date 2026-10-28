@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { categories } from "@/data/products";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import { blogPosts } from "@/data/blog";
 import { municipalities } from "@/data/municipalities";
 import { useProducts } from "@/hooks/use-products";
@@ -107,6 +108,7 @@ const Index = () => {
     .slice(0, 4);
 
   const categoriesWithProducts = categories
+    .filter(cat => onKategoriasivu(cat.slug))
     .map(cat => ({
       ...cat,
       count: allProducts.filter(p => p.category === cat.slug).length,
@@ -244,8 +246,8 @@ const Index = () => {
                     </h2>
                     <div className="flex flex-wrap gap-2.5 justify-center">
                       {[
-                        { to: "/lahjat/miehelle",        label: "Miehelle" },
-                        { to: "/lahjat/naiselle",        label: "Naiselle" },
+                        { to: "/hauskat-lahjat-miehelle",        label: "Miehelle" },
+                        { to: "/hauskat-lahjat-naiselle",        label: "Naiselle" },
                         { to: "/lahjat/tyokaverille",    label: "Työkavereille" },
                         { to: "/kaikki-tuotteet?max=30", label: "Alle 30 €" },
                         { to: "/joululahjat",            label: "Joululahjat" },

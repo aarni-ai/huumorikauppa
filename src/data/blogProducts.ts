@@ -171,7 +171,7 @@ export const BLOG_PRODUCT_THEMES = {
     href: "/joululahja-teinille",
     name: "Lahjat teinille",
     heading: "Hauskat lahjat teinille",
-    related: ["/meemipaidat", "/hauskat-hupparit", "/tonnin-seteli-paita"],
+    related: ["/meemipaidat", "/kategoria/hupparit", "/tonnin-seteli-paita"],
   },
   miehelle: {
     href: "/hauskat-lahjat-miehelle",
@@ -291,7 +291,7 @@ export const BLOG_PRODUCT_THEMES = {
     name: "Lahjat harrastajalle",
     heading: "Hauskat lahjat urheilijalle",
     filters: [URHEILU, HARRASTUS],
-    related: ["/hauskat-t-paidat", "/lahja-kaverille", "/syntymapaivalahjat"],
+    related: ["/kategoria/t-paidat", "/lahja-kaverille", "/syntymapaivalahjat"],
   },
   koira: {
     href: "/lahjat/harrastajalle",
@@ -319,7 +319,7 @@ export const BLOG_PRODUCT_THEMES = {
     name: "Suomalainen huumori",
     heading: "Hauskat lahjat saunojalle",
     filters: [SAUNA, SUOMI],
-    related: ["/lahjat/harrastajalle", "/hauskat-lahjat-miehelle", "/hauskat-hupparit"],
+    related: ["/lahjat/harrastajalle", "/hauskat-lahjat-miehelle", "/kategoria/hupparit"],
   },
   juhannus: {
     href: "/suomalainen-huumori-paidat",
@@ -343,8 +343,8 @@ export const BLOG_PRODUCT_THEMES = {
     related: ["/lahjat/tyokaverille", "/lahjat/pomolle", "/lahja-kaverille"],
   },
   tpaidat: {
-    href: "/hauskat-t-paidat",
-    name: "Hauskat t-paidat",
+    href: "/kategoria/t-paidat",
+    name: "T-paidat",
     heading: "Hauskat t-paidat",
     related: ["/meemipaidat", "/setamiespaidat", "/ammattipaidat", TONNIN_SETELI_PATH],
   },
@@ -352,56 +352,56 @@ export const BLOG_PRODUCT_THEMES = {
     href: "/meemipaidat",
     name: "Meemipaidat",
     heading: "Meemipaidat ja -hupparit",
-    related: [TONNIN_SETELI_PATH, "/suomalainen-huumori-paidat", "/hauskat-hupparit"],
+    related: [TONNIN_SETELI_PATH, "/suomalainen-huumori-paidat", "/kategoria/hupparit"],
   },
   polttarit: {
     href: "/polttari-lahjat",
     name: "Polttarilahjat",
     heading: "Polttaripaidat koko porukalle",
     filters: [RYHMAPAITA, MEEMI, PAIDAT],
-    related: ["/hauskat-t-paidat", "/meemipaidat", "/lahja-kaverille"],
+    related: ["/kategoria/t-paidat", "/meemipaidat", "/lahja-kaverille"],
   },
   tarrat: {
     href: "/meemipaidat",
     name: "Meemipaidat",
     heading: "Hauskat meemituotteet",
     filters: [MEEMI],
-    related: ["/kategoria/koristeet", "/lahjat/alle-30-euroa", "/suomalainen-huumori-paidat"],
+    related: ["/kaikki-tuotteet", "/lahjat/alle-30-euroa", "/suomalainen-huumori-paidat"],
   },
   vauva: {
-    href: "/hauskat-t-paidat",
-    name: "Hauskat t-paidat",
+    href: "/lahjat/vauvalle",
+    name: "Lahja vauvaperheelle",
     heading: "Hauskat lahjat vauvalle ja vanhemmille",
     filters: [ISA_AITI],
-    related: ["/hauskat-hupparit", "/isanpaivalahja", "/hauskat-lahjat-naiselle"],
+    related: ["/kategoria/hupparit", "/isanpaivalahja", "/hauskat-lahjat-naiselle"],
   },
   seinataulut: {
-    href: "/hauskat-t-paidat",
-    name: "Hauskat t-paidat",
+    href: "/kategoria/t-paidat",
+    name: "T-paidat",
     heading: "Hauskat koristeet ja lahjat kotiin",
     filters: [inCategory("koristeet")],
-    related: ["/kategoria/koristeet", "/hauskat-hupparit", "/syntymapaivalahjat"],
+    related: ["/kaikki-tuotteet", "/kategoria/hupparit", "/syntymapaivalahjat"],
   },
   pipot: {
-    href: "/hauskat-hupparit",
-    name: "Hauskat hupparit",
+    href: "/kategoria/hupparit",
+    name: "Hupparit",
     heading: "Hauskat pipot ja hupparit",
-    filters: [inCategory("pipot"), getLandingPage("/hauskat-hupparit")!.filter],
-    related: ["/kategoria/pipot", "/suomalainen-huumori-paidat", "/joululahjat"],
+    filters: [inCategory("pipot"), inCategory("hupparit")],
+    related: ["/joululahja-alle-50-euroa", "/suomalainen-huumori-paidat", "/joululahjat"],
   },
   peitot: {
-    href: "/hauskat-hupparit",
-    name: "Hauskat hupparit",
+    href: "/kategoria/hupparit",
+    name: "Hupparit",
     heading: "Hauskat hupparit",
-    filters: [getLandingPage("/hauskat-hupparit")!.filter],
-    related: ["/hauskat-t-paidat", "/joululahjat", "/syntymapaivalahjat"],
+    filters: [inCategory("hupparit")],
+    related: ["/kategoria/t-paidat", "/joululahjat", "/syntymapaivalahjat"],
   },
   laukut: {
-    href: "/hauskat-t-paidat",
-    name: "Hauskat t-paidat",
+    href: "/kategoria/t-paidat",
+    name: "T-paidat",
     heading: "Hauskat kassit ja paidat",
     filters: [inCategory("laukut")],
-    related: ["/kategoria/laukut", "/lahjat/alle-30-euroa", "/meemipaidat"],
+    related: ["/kaikki-tuotteet", "/lahjat/alle-30-euroa", "/meemipaidat"],
   },
   kaupungit: {
     href: "/suomalainen-huumori-paidat",
@@ -504,7 +504,7 @@ export const BLOG_PRODUCT_THEMES = {
     name: "Pikkujoululahjat",
     heading: "Hauskat paidat pikkujouluasuun",
     filters: [both(PIKKUJOULU, PAIDAT), both(JOULU, PAIDAT)],
-    related: ["/ryhmatilaukset", "/hauskat-hupparit", "/joululahjat", "/salainen-joulupukki-lahja"],
+    related: ["/ryhmatilaukset", "/kategoria/hupparit", "/joululahjat", "/salainen-joulupukki-lahja"],
   },
   pikkujouluTeema: {
     href: "/lahjat/pikkujouluihin",
@@ -556,7 +556,7 @@ export const BLOG_PRODUCT_THEMES = {
     related: ["/ryhmatilaukset", "/ammattipaidat", "/lahjat/pomolle", "/lahjat/tyokaverille"],
   },
   jouluOpiskelija: {
-    href: "/hauskat-hupparit",
+    href: "/kategoria/hupparit",
     name: "Hauskat hupparit",
     heading: "Hauskat joululahjat opiskelijalle",
     filters: [theme(/koodari/, /one more level/, /etätöitä/, /lounastauko/), SUOMI_MEEMIT],
@@ -662,6 +662,7 @@ export function getBlogProductTheme(slug: string): BlogProductTheme {
 /** Muiden kuin laskeutumissivujen nimet linkkeihin. */
 const PAGE_LABELS: Record<string, string> = {
   [christmasDeadlinePage.path]: christmasDeadlinePage.name,
+  "/kaikki-tuotteet": "Kaikki tuotteet",
   "/aitienpaiva": "Äitienpäivälahjat",
   "/polttari-lahjat": "Polttarilahjat",
   "/ryhmatilaukset": "Ryhmätilaukset",
@@ -699,7 +700,7 @@ export function isBlogProductEligible(p: BlogProduct): boolean {
 }
 
 const landingFilter = (href: string): Filter | undefined => getLandingPage(href)?.filter;
-const FALLBACK: Filter = landingFilter("/hauskat-t-paidat") ?? PAIDAT;
+const FALLBACK: Filter = inCategory("t-paidat");
 
 /** Kuvalliset ensin, sitten tuoteprioriteetti, muuten alkuperäinen järjestys. */
 function ranked<T extends BlogProduct>(list: T[]): T[] {

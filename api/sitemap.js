@@ -63,12 +63,11 @@ const LANDING_PATHS = [
   "/joululahja-alle-50-euroa",
   "/lahjat/pikkujouluihin",
   "/salainen-joulupukki-lahja",
-  "/hauskat-t-paidat",
-  "/hauskat-hupparit",
   "/meemipaidat",
   "/suomalainen-huumori-paidat",
   "/tonnin-seteli-paita",
   "/setamiespaidat",
+  "/lahjat/30-vuotiaalle-miehelle",
   "/lahjat/40-vuotiaalle-miehelle",
   "/lahjat/50-vuotiaalle-miehelle",
   "/lahjat/60-vuotiaalle-miehelle",
@@ -81,6 +80,7 @@ const LANDING_PATHS = [
   "/lahjat/siskolle",
   "/lahjat/veljelle",
   "/lahjat/puolisolle",
+  "/lahjat/vauvalle",
   "/lahja-kaverille",
   "/lahjat/tyokaverille",
   "/isanpaivalahja",
@@ -93,14 +93,10 @@ const LANDING_PATHS = [
 ];
 
 /**
- * Muut /lahjat/-sivut (src/data/situationGifts.ts), joita laskeutumissivu ei korvaa. Yhdistetyt
- * sivut (opettajalle, hoitajalle, kalastajalle, metsastajalle, kahvinystavalle, alle-20-euroa,
- * saunaan, joulu) ovat 301-ohjauksia eivätkä kuulu sivukarttaan.
+ * Muut /lahjat/-sivut (src/data/situationGifts.ts). 28.10.2026 (canonical-korjaus) jokainen tilannesivu on joko
+ * laskeutumissivu (LANDING_PATHS) tai 301-ohjaus (vercel.json), joten erillisiä tilannesivuja ei ole.
  */
-const SITUATION_GIFT_SLUGS = [
-  "30-vuotiaalle-miehelle", "polttareihin", "rakennusmiehelle", "syntymapaivasankarille", "muutoiset",
-  "ystavalle", "vauvalle", "huumorilahjat",
-];
+const SITUATION_GIFT_SLUGS = [];
 
 /** Kaupunkisivut, joilla on omat kaupunkituotteet (src/data/municipalities.ts, ASCII-slugit). */
 const CITY_SLUGS = [
@@ -112,13 +108,9 @@ const CITY_SLUGS = [
   "orimattila", "harjavalta", "nummela",
 ];
 
-const CATEGORIES = [
-  "t-paidat", "tarrat", // mukit pois myynnistä 21.10.2026 (src/lib/hiddenCategories.ts)
-  "hupparit", "bodyt",
-  "peitot", "pipot", "seinataulut", "pitkahihaiset", "koristeet",
-  "laukut", "lippikset", "haalarimerkit",
-  "sukat", "avaimenperat", "asut", "naamiot",
-];
+// Kategoriat, joilla on oma sivu. Mukit on piilotettu ja kategoriat, joissa on alle 8 tuotetta, ohjautuvat 301:llä
+// muualle (src/lib/hiddenCategories.ts YHDISTETYT_KATEGORIAT, 28.10.2026).
+const CATEGORIES = ["t-paidat", "hupparit"];
 
 const BLOG_SLUGS = [
   // 28.10.2026: joulun ja pikkujoulun hakuoppaat (src/data/blogJouluHaut2026.ts).

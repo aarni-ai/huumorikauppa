@@ -16,6 +16,7 @@ import type { SituationGift } from "@/data/situationGifts";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { mergeSituationFaqs } from "@/seo/pageFaqs";
 import { categories } from "@/data/products";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import { generateTitleVariants } from "@/lib/seoTitleEnhancer";
 import { blogPosts } from "@/data/blog";
 import { proxiedImage } from "@/lib/imageProxy";
@@ -73,6 +74,7 @@ const SituationGiftPage = () => {
   const combinedJsonLd = { "@context": "https://schema.org", "@graph": [itemListJsonLd, faqJsonLd] };
 
   const linkedCategories = (situation.categories || [])
+    .filter(slug => onKategoriasivu(slug))
     .map(slug => categories.find(c => c.slug === slug))
     .filter((c): c is (typeof categories)[number] => Boolean(c));
 
