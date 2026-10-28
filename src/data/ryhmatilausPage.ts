@@ -111,6 +111,8 @@ export const ryhmatilausPage = {
   links: [
     { href: "/blogi/pikkujoulupaidat-porukalle", label: "Opas: pikkujoulupaidat porukalle" },
     { href: "/blogi/pikkujoulujen-lahjapeli", label: "Opas: pikkujoulujen lahjapeli" },
+    { href: "/blogi/pikkujouluohjelma-tyopaikalle", label: "Opas: pikkujouluohjelmaa työpaikalle" },
+    { href: "/blogi/joululahja-tyontekijoille", label: "Opas: joululahja työntekijöille" },
     { href: "/lahjat/pikkujouluihin", label: "Pikkujoululahjat" },
     { href: "/ammattipaidat", label: "Ammattipaidat" },
     { href: "/joululahja-tyokaverille", label: "Joululahja työkaverille" },

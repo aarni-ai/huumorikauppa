@@ -37,7 +37,8 @@ describe("vanha kassa", () => {
   });
 
   it("uutiskirjelomakkeet tallentavat omaan tauluun eivätkä lupaa alennuskoodia, jota kassa ei hyväksy", () => {
-    for (const f of ["src/components/layout/Footer.tsx", "src/pages/Index.tsx"]) {
+    // Etusivun ja blogin lomake on NewsletterBox.tsx (28.10.2026).
+    for (const f of ["src/components/layout/Footer.tsx", "src/components/NewsletterBox.tsx"]) {
       const koodi = fs.readFileSync(path.join(ROOT, f), "utf8");
       expect(koodi, f).toMatch(/fetch\("\/api\/sahkoposti"/);
       expect(koodi, f).not.toMatch(/subscribe-mailerlite|HUUMORI5|5 % alennu/);

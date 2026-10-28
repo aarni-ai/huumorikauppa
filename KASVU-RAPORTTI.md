@@ -127,6 +127,32 @@ kuvat (200 ja mitat) ja canonical tarkistettiin 60 tuotteen otoksesta, hinnat ka
 siirtyminen tarkoittaisi noin 523 × 5-8 kokoa × 3-9 väriä eli kymmeniätuhansia rivejä. Se ylittäisi Vercelin
 4,5 Mt:n vastausrajan, ja tuotesivun pitäisi osata esivalita variantti osoitteesta. Hupparin 3XL+ maksaa 55,00 €,
 mutta syötteessä on perushinta 49,99 € kuten tuotesivullakin.
+## 28.10.2026: 10 joulun ja pikkujoulun hakuopasta, uutiskirjelaatikko (haara `seo-joulu-2810`)
+
+Hakusanat Googlen hakuehdotuksista 28.10.2026 (suggestqueries, hl=fi, gl=fi). Valittu vain aikomuksia, joille ei
+ollut artikkelia eikä laskeutumissivua. Data `src/data/blogJouluHaut2026.ts` (HAKUSANAT), 600-900 sanaa, 4-8
+tuotelinkkiä, UKK + FAQPage, joulun tilauspäivä `tilauspaivat.ts`:n funktioista, ei lahjakortteja, ei hintoja tekstissä.
+
+| Slug | Hakusana |
+| --- | --- |
+| `/blogi/hauska-joulupaita` | hauska joulupaita miehelle |
+| `/blogi/pikkujouluasu-2026` | pikkujouluasu |
+| `/blogi/pikkujoulu-teema-ideat` | pikkujoulu teema ideoita |
+| `/blogi/pikkujouluohjelma-tyopaikalle` | pikkujouluohjelmaa työpaikalle |
+| `/blogi/pikkujoululahja-miehelle` | pikkujoululahja miehelle |
+| `/blogi/joululahja-tyttoystavalle` | joululahja tyttöystävälle |
+| `/blogi/joululahja-vanhemmille` | joululahja vanhemmille |
+| `/blogi/hauska-joululahja-ystavalle` | hauska joululahja ystävälle |
+| `/blogi/joululahja-tyontekijoille` | joululahja työntekijöille |
+| `/blogi/joululahja-opiskelijalle` | joululahja opiskelijalle |
+
+- Tuotenostot: omat teemat `src/data/blogProducts.ts`:ssä. Sisäänlinkit: /joululahjat, /lahjat/pikkujouluihin,
+  /joululahja-tyokaverille, /lahjat/puolisolle (extraLinks) ja /ryhmatilaukset. Sivukartta (api/sitemap.js) ja
+  llms.txt (oma lista) päivitetty, llms-full.txt saa artikkelit blogidatasta.
+- Testifixtuuriin (productSlugs.json) lisätty 12 /api/products-listan joulu- ja pikkujoulupaitaa.
+- Uutiskirjelaatikko etusivulle ja blogiartikkelien loppuun (`NewsletterBox`, laiska lataus, varattu korkeus):
+  "Saat ensimmäisenä uudet hauskat paidat ja joulun takarajat". Sama /api/sahkoposti ja suostumusteksti kuin
+  popupissa, ei alennuskoodia. Etusivun vanha lomake (ilman suostumusruutua) korvattu.
 
 ## 27.-28.10. pitkä ajo: joulu- ja isänpäivämyynti, konversio, keskiostos
 

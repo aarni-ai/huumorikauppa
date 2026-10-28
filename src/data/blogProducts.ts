@@ -81,6 +81,9 @@ const ISOISA = theme(/(?<![a-zåäö])ukki/, /(?<![a-zåäö])pappa/, /(?<![a-z�
 /** Isänpäivän vitsit ilman alkoholivitsejä (lahja annetaan usein lasten nimissä). */
 const ISA_VITSI = theme(/\bkalju/, /isäntä/, /amatimies/, /museokamaa/, /iskä ei osaa/, /asuu yksi pomo/, /grillimest/, /kalamies/);
 const OMA_TEKSTI = theme(/oma teksti/, /kapteeni/, /lempinimi/);
+const PIKKUJOULU = theme(/pikkujoul/);
+/** Toimistohuumori ja työyhteisön kiitokset (pikkujoulujen palkinnot, työntekijöiden lahjat). */
+const TOIMISTO = theme(/työsankari/, /alalla x/, /tiimipelaaja/, /palaverien/, /lounastauko/);
 
 // ── Teemat ───────────────────────────────────────────────────────────────────────
 
@@ -488,6 +491,77 @@ export const BLOG_PRODUCT_THEMES = {
     filters: [OMA_TEKSTI, theme(/tiimipelaaja/), JOULU, AMMATTI],
     related: ["/ammattipaidat", "/lahjat/tyokaverille", "/joululahja-tyokaverille", "/polttari-lahjat"],
   },
+  // 28.10.2026: joulun ja pikkujoulun hakuoppaat (src/data/blogJouluHaut2026.ts).
+  jouluPaita: {
+    href: "/joululahjat",
+    name: "Hauskat joululahjat",
+    heading: "Hauskat joulupaidat",
+    filters: [both(JOULU, PAIDAT)],
+    related: ["/lahjat/joululahjaksi-miehelle", "/lahjat/joululahjaksi-naiselle", "/ryhmatilaukset", "/joulun-viimeiset-tilauspaivat"],
+  },
+  pikkujouluAsu: {
+    href: "/lahjat/pikkujouluihin",
+    name: "Pikkujoululahjat",
+    heading: "Hauskat paidat pikkujouluasuun",
+    filters: [both(PIKKUJOULU, PAIDAT), both(JOULU, PAIDAT)],
+    related: ["/ryhmatilaukset", "/hauskat-hupparit", "/joululahjat", "/salainen-joulupukki-lahja"],
+  },
+  pikkujouluTeema: {
+    href: "/lahjat/pikkujouluihin",
+    name: "Pikkujoululahjat",
+    heading: "Paidat pikkujoulujen teemoihin",
+    filters: [theme(/pikkujoul/, /tonttu/, /löylymestari/, /kiltti/), OMA_TEKSTI, SUOMI_MEEMIT],
+    related: ["/ryhmatilaukset", "/ammattipaidat", "/meemipaidat", "/joululahjat"],
+  },
+  pikkujouluOhjelma: {
+    href: "/lahjat/pikkujouluihin",
+    name: "Pikkujoululahjat",
+    heading: "Palkinnot ja paidat työpaikan pikkujouluihin",
+    filters: [TOIMISTO, PIKKUJOULU],
+    related: ["/ryhmatilaukset", "/joululahja-tyokaverille", "/salainen-joulupukki-lahja", "/lahjat/tyokaverille"],
+  },
+  pikkujouluMies: {
+    href: "/lahjat/pikkujouluihin",
+    name: "Pikkujoululahjat",
+    heading: "Hauskat pikkujoululahjat miehelle",
+    filters: [theme(/kinkkukooma/, /löylymestari/, /nimetty kuski/, /joulupukin/, /grillimest/), SUOMI_MEEMIT, JOULU],
+    related: ["/lahjat/joululahjaksi-miehelle", "/salainen-joulupukki-lahja", "/hauskat-lahjat-miehelle", "/joulun-viimeiset-tilauspaivat"],
+  },
+  jouluTyttoystava: {
+    href: "/lahjat/puolisolle",
+    name: "Lahjat puolisolle",
+    heading: "Hauskat joululahjat tyttöystävälle",
+    filters: [theme(/boyfriend/, /girlfriend/, /slay queen/, /ystävä/, /glögi/, /joulustressi/), JOULU],
+    related: ["/lahjat/joululahjaksi-naiselle", "/hauskat-lahjat-naiselle", "/joululahja-vaimolle", "/joululahjat"],
+  },
+  jouluVanhemmat: {
+    href: "/joululahjat",
+    name: "Hauskat joululahjat",
+    heading: "Hauskat joululahjat vanhemmille",
+    filters: [theme(/super äiskä/, /maailman paras isä/, /yksi pomo/, /isäntä/, /laatikkovastaava/, /joulustressi/), ISA_AITI],
+    related: ["/joululahja-aidille", "/joululahja-isalle", "/joululahja-mummolle", "/joululahja-papalle"],
+  },
+  jouluYstava: {
+    href: "/joululahja-kaverille",
+    name: "Joululahja kaverille",
+    heading: "Hauskat joululahjat ystävälle",
+    filters: [theme(/ystävä/, /tonnin seteli/, /viisaampi häipyy/, /oispa kaljaa/, /piparivaras/, /lempinimi/), JOULU],
+    related: ["/lahja-kaverille", "/meemipaidat", "/joululahjat", "/lahjat/alle-30-euroa"],
+  },
+  jouluTyontekija: {
+    href: "/joululahja-tyokaverille",
+    name: "Joululahjat työkaverille",
+    heading: "Joululahjat työntekijöille",
+    filters: [TOIMISTO, AMMATTI],
+    related: ["/ryhmatilaukset", "/ammattipaidat", "/lahjat/pomolle", "/lahjat/tyokaverille"],
+  },
+  jouluOpiskelija: {
+    href: "/hauskat-hupparit",
+    name: "Hauskat hupparit",
+    heading: "Hauskat joululahjat opiskelijalle",
+    filters: [theme(/koodari/, /one more level/, /etätöitä/, /lounastauko/), SUOMI_MEEMIT],
+    related: ["/meemipaidat", "/joululahja-teinille", "/lahjat/alle-30-euroa", "/joululahjat"],
+  },
 } satisfies Record<string, BlogProductTheme>;
 
 export type BlogThemeKey = keyof typeof BLOG_PRODUCT_THEMES;
@@ -497,6 +571,16 @@ export const DEFAULT_THEME: BlogThemeKey = "tpaidat";
 
 /** Artikkelin slug -> teema. */
 export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
+  "hauska-joulupaita": "jouluPaita",
+  "pikkujouluasu-2026": "pikkujouluAsu",
+  "pikkujoulu-teema-ideat": "pikkujouluTeema",
+  "pikkujouluohjelma-tyopaikalle": "pikkujouluOhjelma",
+  "pikkujoululahja-miehelle": "pikkujouluMies",
+  "joululahja-tyttoystavalle": "jouluTyttoystava",
+  "joululahja-vanhemmille": "jouluVanhemmat",
+  "hauska-joululahja-ystavalle": "jouluYstava",
+  "joululahja-tyontekijoille": "jouluTyontekija",
+  "joululahja-opiskelijalle": "jouluOpiskelija",
   "isanpaivalahja-isoisalle": "isanpaivaIsoisa",
   "lahja-ensimmaiseksi-isanpaivaksi": "isanpaivaTuore",
   "pikkujoulujen-lahjapeli": "pikkujouluPeli",

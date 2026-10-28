@@ -12,14 +12,12 @@ import {
   MapPin, Gift, ArrowRight,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { revealApp } from "@/lib/prerenderPreview";
-import { useToast } from "@/hooks/use-toast";
+import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
@@ -72,33 +70,11 @@ const CAROUSEL_SLUGS = [
 
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
-  const { toast } = useToast();
   // Esirenderöity esikatselu (src/main.tsx) vaihtuu sovellukseen ennen ensimmäistä maalausta: sama
   // näkymä kuin esikatselussa (hero ja latausnäkymät), tuotteet täydentyvät haun jälkeen.
   useLayoutEffect(() => {
     revealApp();
   }, []);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
-
-  const handleNewsletterSubmit = async () => {
-    if (!newsletterEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
-      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
-      return;
-    }
-    try {
-      const email = newsletterEmail.trim().toLowerCase();
-      // Oma tausta: uutiskirje omaan tauluun (api/sahkoposti.js), ei Lovable Cloudiin. Lomakkeen lähetys on tilaus.
-      await fetch("/api/sahkoposti", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "etusivu" }),
-      });
-    } catch {}
-    setNewsletterSubmitted(true);
-    toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
-  };
-
   // "Suosituimmat nyt": sekalainen valikoima kaikista tuotteista.
   // Ensin nostetaan käsin valitut suosikit, sitten sekoitetaan muut,
   // ja lopuksi taitetut (folded/flat) mockup-kuvat siirretään loppuun.
@@ -422,37 +398,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* NEWSLETTER */}
+      {/* NEWSLETTER: kevyt tilauslaatikko, ladataan laiskasti (sivun alaosa, varattu korkeus) */}
       <section className="container py-12 md:py-16">
-        <div className="bg-card border border-border rounded-2xl p-8 md:p-12 text-center max-w-xl mx-auto">
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
-            Tilaa uutiskirje
-          </h2>
-          <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
-            Uudet tuotteet ja sesongin lahjaideat sähköpostiisi.
-          </p>
-          {newsletterSubmitted ? (
-            <p className="text-foreground font-semibold">Kiitos tilauksesta!</p>
-          ) : (
-            <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
-              <Input
-                type="email"
-                placeholder="anna@sahkoposti.fi"
-                className="h-11 bg-muted border-border rounded-xl"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubmit()}
-              />
-              <Button
-                onClick={handleNewsletterSubmit}
-                className="h-11 px-6 shrink-0 rounded-xl"
-              >
-                Tilaa
-              </Button>
-            </div>
-          )}
-          <p className="text-xs text-muted-foreground mt-3">Voit peruuttaa milloin vain.</p>
-        </div>
+        <NewsletterBoxLazy lahde="etusivu" />
       </section>
 
       {/* FAQ */}
