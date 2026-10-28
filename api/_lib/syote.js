@@ -59,7 +59,7 @@ ${additionalImages}
   <channel>
     <title>Huumorikauppa.fi</title>
     <link>${SITE}</link>
-    <description>Suomen hauskin verkkokauppa – Hauskat t-paidat, hupparit, mukit ja lahjat</description>
+    <description>Hauskat t-paidat, hupparit, julisteet ja lahjat suomeksi</description>
 ${items.join("\n")}
   </channel>
 </rss>`;
