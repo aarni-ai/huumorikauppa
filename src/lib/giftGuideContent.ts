@@ -58,7 +58,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     },
     {
       q: `Missä tuotteet painetaan?`,
-      a: `Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa. Materiaali ja hoito-ohje on kerrottu jokaisen tuotteen kuvauksessa.`,
+      a: `Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa. Tuotesivulla on tuotteen materiaali ja hoito-ohje.`,
     },
     {
       q: `Voiko lahjan lähettää suoraan saajalle?`,

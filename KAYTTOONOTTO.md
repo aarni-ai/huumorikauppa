@@ -689,3 +689,30 @@ tänään ei ole lähetetty): yllä oleva curl-komento.
 
 Ylläpitopaneelin kirjautuminen ja MailerLite-synkronointi (uutiskirjeen tilaajat ovat nyt omassa taulussa
 `subscribers`). Uutiskirje, muistutukset, korin palautus, peruutuslinkki ja arviot toimivat omalla taustalla.
+
+## GA4 Data API: kävijät ja konversio viikkotaulukkoon (ilmainen, ei uutta tiliä)
+
+Tehtävä `viikkomittarit` hakee kävijät, istunnot ja ostot GA4:stä ISO-viikoittain, kun kaksi ympäristömuuttujaa on
+asetettu (api/_lib/ga4.js). GA4 Data API on maksuton eikä vaadi laskutustiliä. Kirjaudu samalla Google-tilillä,
+jolla GA4-property G-8FJ58JNKGK on.
+
+1. https://console.cloud.google.com > valitse olemassa oleva projekti tai **New project** (nimi esim. huumorikauppa).
+   Laskutusta ei tarvitse ottaa käyttöön.
+2. **APIs & Services > Library** > hae "Google Analytics Data API" > **Enable**.
+3. **IAM & Admin > Service Accounts > Create service account**, nimi `ga4-lukija`, rooleja ei tarvita > **Done**.
+   Avaa tili > **Keys > Add key > Create new key > JSON**. Tiedosto latautuu koneelle.
+4. Kopioi palvelutilin sähköpostiosoite (`ga4-lukija@...iam.gserviceaccount.com`).
+5. https://analytics.google.com > **Ylläpito > Propertyn käyttöoikeuksien hallinta > + > Lisää käyttäjiä**:
+   liitä osoite, rooli **Lukija**, poista ruksi sähköposti-ilmoituksesta > **Lisää**.
+6. **Ylläpito > Propertyn tiedot**: kopioi **propertyn tunnus** (pelkkiä numeroita, ei G-...).
+7. Päätteessä repon kansiossa (arvot eivät näy ruudulla):
+   ```
+   npx vercel env add GA4_PROPERTY_ID production      # liitä numerotunnus
+   npx vercel env add GA4_PALVELUTILI production < ~/Downloads/<ladattu-avain>.json
+   ```
+   Poista ladattu JSON-tiedosto koneelta tämän jälkeen. Julkaise: `scripts/julkaise-uusi.sh`.
+8. Tarkistus: `viikkomittarit`-tehtävän vastauksessa `ga4Lahde` on "GA4 Data API" ja jokaisella viikolla on
+   `ga4: { kavijat, istunnot, ostot, konversio }`.
+
+Jos organisaation käytäntö estää JSON-avaimen luonnin (kohta 3), Cowork kirjaa viikkoluvut GA4:n käyttöliittymästä
+(Raportit > Hankinta > Liikenteen hankinta) ja taulukon lähde-sarakkeeseen merkitään "Cowork GA4".

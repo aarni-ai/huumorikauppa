@@ -663,7 +663,7 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
     breadcrumbs: [HOME, crumb(categoryName, kategoriaPolku(product.category)), crumb(product.name, path)],
     sections: [
       { paragraphs: description.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean) },
-      { heading: "Materiaali ja hoito", paragraphs: [copy.material, copy.care] },
+      { heading: copy.material ? "Materiaali ja hoito" : "Hoito", paragraphs: [copy.material, copy.care].filter((t): t is string => Boolean(t)) },
       { heading: "Toimitus ja palautus", paragraphs: [DELIVERY_FACTS] },
       { links: [{ href: kategoriaPolku(product.category), label: onKategoriasivu(product.category) ? `Kaikki ${categoryName.toLowerCase()}` : "Kaikki tuotteet" }] },
     ],

@@ -12,7 +12,7 @@ import {
   nextBannerChangeMs,
 } from "@/data/campaignSchedule";
 import { CHRISTMAS_DEADLINE_END_UTC_MS, isBeforeChristmasDeadline } from "@/data/christmas";
-import { JOULU_PAIVA_TEKSTI } from "@/data/tilauspaivat";
+import { JOULU_PAIVA_TEKSTI, jouluPalkkiLause } from "@/data/tilauspaivat";
 
 const banner = () => (
   <MemoryRouter>
@@ -93,7 +93,7 @@ describe("SeasonalBanner", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(fi("2026-10-15T00:00:00"));
     render(banner());
-    expect(screen.getByText(new RegExp(JOULU_PAIVA_TEKSTI.replace(/\./g, "\\.")))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(jouluPalkkiLause(Date.parse("2026-10-15T00:00:00+03:00")).replace(/\./g, "\\.")))).toBeInTheDocument();
     expect(screen.queryByText(/isänpäivä/i)).toBeNull();
     expect(screen.getByRole("link", { name: "Joulun viimeiset tilauspäivät" })).toHaveAttribute(
       "href",

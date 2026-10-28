@@ -11,6 +11,7 @@
  * Tarkistus: scripts/validoi-syote.mjs, testit src/test/syote-sisalto.test.ts.
  */
 import { saatavatKoot } from "./syote-korjaukset.js";
+import { POHJAT, syoteMateriaali, tuotepohja } from "./materiaali.js";
 
 /** Kaupan kategoria -> Googlen taksonomia-ID (taxonomy-with-ids.en-US.txt, versio 2021-09-21). */
 export const GOOGLE_KATEGORIA_ID = {
@@ -204,8 +205,15 @@ export function syoteOtsikko(p) {
   return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,.:;\s]+$/, "");
 }
 
-/** Materiaali tuotteen omasta kuvauksesta (ei arvata): "puuvilla", "puuvilla/polyesteri", "paperi" tai null. */
+/**
+ * Materiaali Printifyn pohjatuotteesta ja väreistä (api/_lib/materiaali.js), muuten tuotteen omasta kuvauksesta
+ * (ei arvata): "puuvilla", "puuvilla/polyesteri", "paperi" tai null. Värikohtaisesti vaihteleva jää pois.
+ */
 export function materiaali(p) {
+  const pohjasta = syoteMateriaali(p?.slug);
+  if (pohjasta) return pohjasta;
+  const pohja = tuotepohja(p?.slug);
+  if (pohja && POHJAT[pohja.b]?.luokat) return null;
   const d = String(p?.description || "");
   if (/50\s?%\s?puuvillaa\s*(?:\/|ja)\s*50\s?%\s?polyester|50\/50\s*puuvilla-polyester/i.test(d)) return "puuvilla/polyesteri";
   if (/100\s?%\s?(?:luomu)?puuvillaa/i.test(d)) return "puuvilla";

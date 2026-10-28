@@ -1,6 +1,7 @@
 import { cleanProductName } from "@/lib/productNames";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 import { jouluLause } from "@/data/tilauspaivat";
+import { materiaaliRivi } from "../../api/_lib/materiaali.js";
 
 // Deterministic per-product SEO copy generator.
 // Produces UNIQUE long-form Finnish content per product so that product pages
@@ -22,7 +23,8 @@ export interface ProductCopy {
   occasions: string;
   whyFunny: string;
   whyBuy: string;
-  material: string;
+  /** Pohjatuotteen ja värien materiaali (api/_lib/materiaali.js), null ilman tietoa. */
+  material: string | null;
   care: string;
   scenarios: string[];            // 3 short bullets
   giftUseCases: string[];         // 3 short bullets
@@ -55,22 +57,9 @@ const CATEGORY_PLURAL: Record<string, string> = {
   "pitkahihaiset": "pitkähihaisia paitoja",
 };
 
-const CATEGORY_MATERIAL: Record<string, string> = {
-  "t-paidat": "Puuvillapaita, tarkka materiaali ja paino ovat tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja tuotesivun kokoavusta näet koon valinnan ohjeet.",
-  "hupparit": "Pehmeä puuvilla-polyesterisekoite, tarkka koostumus on tuotekuvauksessa. Saatavilla olevat koot ja värit valitset yllä, ja tuotesivun kokoavusta näet koon valinnan ohjeet.",
-  "tarrat": "Kestävä vinyylimateriaali UV- ja vesisuojattuna. Pysyy kirkkaana läppärissä, vesipullossa, autossa ja jääkaapissa vuosia.",
-  "bodyt": "100 % puuvillaa, pehmeää ja hengittävää vauvan iholle. Painonapit haaroissa, hellävarainen kaulus.",
-  "peitot": "Pehmeä polyesterifleece, lämmin ja kevyt. Soveltuu sohva- tai vuodepeitoksi.",
-  "pipot": "Akryylineulosta, lämmin ja venyvä. Sopii useimmille pään koolle, brodeerattu kuvio kestää pesun.",
-  "laukut": "Kestävää puuvillakangasta, pitkät kantokahvat. Sopii ostoksille ja arkikäyttöön.",
-  "seinataulut": "Korkealaatuinen kanvaspohja puukehyksellä. Värit eivät haalistu ja taulu on heti ripustusvalmis.",
-  "koristeet": "Kestävä materiaali, sisäkäyttöön. Painatus pysyy kirkkaana vuodesta toiseen.",
-  "pitkahihaiset": "Pehmeä ja paksu puuvillasekoite (~200 g/m²), mukava päällä syksyllä ja keväällä.",
-};
-
 const CATEGORY_CARE: Record<string, string> = {
-  "t-paidat": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua. Tarkka hoito-ohje on tuotekuvauksessa.",
-  "hupparit": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua. Tarkka hoito-ohje on tuotekuvauksessa.",
+  "t-paidat": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua.",
+  "hupparit": "Pese nurinpäin enintään 30 °C, ei kloorivalkaisua eikä kemiallista pesua.",
   "tarrat": "Pyyhi puhdas, kuiva pinta ennen liimausta. Vältä jatkuvaa hankausta.",
   "bodyt": "Konepesu max 40 °C, ei valkaisua, silitys keskilämmöllä nurjalta puolelta.",
   "peitot": "Konepesu max 30 °C, ei valkaisua, ei kuivausrumpua.",
@@ -170,7 +159,8 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
   const occasions = pickOccasions(name + " " + (p.description || ""), p.category);
   const whyFunny = whyFunnyFor(name);
   const whyBuy = whyBuyFor(name, p.category);
-  const material = CATEGORY_MATERIAL[p.category] || "Laadukas materiaali, kestävä painatus.";
+  // Pohjatuotteen ja värien mukainen materiaali Printifyn tiedoista; ilman tietoa ei materiaaliriviä.
+  const material = materiaaliRivi(p.slug);
   const care = CATEGORY_CARE[p.category] || "Hellävarainen pesu suositeltavaa.";
   const scenarios = scenariosFor(name, p.category);
   const giftUseCases = giftUseCasesFor(p.category);
@@ -178,11 +168,11 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
   const longDescription = [
     `${cleanProductName(name)} on hauska ${noun}, joka painetaan tilauksesta. Se sopii ${audience}, kenelle tahansa, joka arvostaa rentoa suomalaista huumoria.`,
     `Tämä ${noun} on lahjavalinta, kun etsit jotain ${occasions}. ${whyFunny}`,
-    `Materiaali: ${material} Hoito-ohjeet: ${care}`,
+    material ? `Materiaali: ${material} Hoito-ohjeet: ${care}` : `Hoito-ohjeet: ${care}`,
     `${whyBuy}`,
   ].join("\n\n");
 
-  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}. ${material} Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
+  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}.${material ? ` ${material}` : ""} Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
 
   const shortDescription = truncateAtWord(
     `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,

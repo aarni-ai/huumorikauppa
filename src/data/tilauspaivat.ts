@@ -25,17 +25,41 @@ export const JOULU_PAIVA_TEKSTI = paivaTeksti(JOULU_TILAUSPAIVA_ISO);
 /** Joulun viimeinen tilauspäivä lyhyesti. */
 export const JOULU_PAIVA_LYHYT = paivaLyhyt(JOULU_TILAUSPAIVA_ISO);
 
+/** T-paitojen oma (myöhäisempi) joulun tilauspäivä sijamuodossa. */
+export const JOULU_TPAITA_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille("t-paidat"));
+/** Muiden tuotetyyppien joulun tilauspäivä sijamuodossa. */
+export const JOULU_MUUT_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille(null));
+
+/** Ovatko t-paitojen ja muiden tuotteiden päivät eri päivinä (silloin lauseet kertovat molemmat). */
+const KAKSI_PAIVAA = JOULU_TPAITA_PAIVA_TEKSTI !== JOULU_MUUT_PAIVA_TEKSTI;
+const lyhyt = (iso: string) => paivaLyhyt(iso).replace(/\d{4}$/, "");
+
+/**
+ * Yläpalkin lyhyt muoto samasta lähteestä: t-paitojen ja muiden tuotteiden päivä viikonpäivineen ilman vuotta.
+ * Tilausajan jälkeen tyhjä.
+ */
+export function jouluPalkkiLause(nowMs: number = Date.now()): string {
+  if (!jouluAuki(nowMs)) return "";
+  const t = lyhyt(joulunTilauspaivaTyypille("t-paidat"));
+  const m = lyhyt(joulunTilauspaivaTyypille(null));
+  return KAKSI_PAIVAA ? `tilaa t-paidat viimeistään ${t} ja muut tuotteet ${m}` : `tilaa viimeistään ${m}`;
+}
+
 /** Joulun lupaus tai, tilausajan jälkeen, pelkkä toimitusaika. */
 export function jouluLause(nowMs: number = Date.now()): string {
   return jouluAuki(nowMs)
-    ? `Tilaa viimeistään ${JOULU_PAIVA_TEKSTI}, niin tilaus ehtii perille jouluaattoon mennessä.`
+    ? KAKSI_PAIVAA
+      ? `Tilaa t-paidat viimeistään ${JOULU_TPAITA_PAIVA_TEKSTI} ja muut tuotteet viimeistään ${JOULU_MUUT_PAIVA_TEKSTI}, niin tilaus ehtii perille jouluaattoon mennessä.`
+      : `Tilaa viimeistään ${JOULU_PAIVA_TEKSTI}, niin tilaus ehtii perille jouluaattoon mennessä.`
     : `Joulun tilausaika on päättynyt. ${TOIMITUSAIKA_LAUSE}`;
 }
 
 /** UKK "Ehtiikö jouluksi?" -vastauksen alku. */
 export function jouluVastaus(nowMs: number = Date.now()): string {
   return jouluAuki(nowMs)
-    ? `Ehtii, kun tilaat viimeistään ${JOULU_PAIVA_TEKSTI}. Silloin tilaus ehtii perille jouluaattoon mennessä.`
+    ? KAKSI_PAIVAA
+      ? `Ehtii, kun tilaat t-paidat viimeistään ${JOULU_TPAITA_PAIVA_TEKSTI} ja muut tuotteet viimeistään ${JOULU_MUUT_PAIVA_TEKSTI}. Silloin tilaus ehtii perille jouluaattoon mennessä.`
+      : `Ehtii, kun tilaat viimeistään ${JOULU_PAIVA_TEKSTI}. Silloin tilaus ehtii perille jouluaattoon mennessä.`
     : `Joulun tilausaika on päättynyt, eikä uusi tilaus enää ehdi perille jouluaattoon mennessä. ${TOIMITUSAIKA_LAUSE}`;
 }
 
@@ -63,7 +87,7 @@ export function jouluOpasMeta(nowMs: number = Date.now()): string {
 /** Joulun tilausaikaoppaan ingressi. Tilausajan jälkeen ilman päivämäärää. */
 export function jouluOpasIngressi(nowMs: number = Date.now()): string {
   return jouluAuki(nowMs)
-    ? `Tilaa joululahjat viimeistään ${JOULU_PAIVA_TEKSTI}, niin lupaamme toimituksen jouluaattoon. Näin suunnittelet lahjat, koot ja palautukset ajoissa.`
+    ? `${jouluLause(nowMs).replace(", niin tilaus ehtii perille jouluaattoon mennessä.", ", niin lupaamme toimituksen jouluaattoon.")} Näin suunnittelet lahjat, koot ja palautukset ajoissa.`
     : "Joulun tilausaika on päättynyt. Näin toimit, kun lahja ei enää ehdi jouluksi, ja miten koot ja palautukset hoituvat.";
 }
 
@@ -73,11 +97,6 @@ export function jouluLaskentaLause(nowMs: number = Date.now()): string {
     ? "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa. Päivämäärä on laskettu toteutuneista toimitusajoista Suomeen, ja tuotesivulla näkyy kunkin tuotteen oma päivä. Myöhemmin tehdyille tilauksille emme lupaa toimitusta ennen joulua."
     : "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa.";
 }
-
-/** T-paitojen oma (myöhäisempi) joulun tilauspäivä sijamuodossa. */
-export const JOULU_TPAITA_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille("t-paidat"));
-/** Muiden tuotetyyppien joulun tilauspäivä sijamuodossa. */
-export const JOULU_MUUT_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille(null));
 
 /** Tuotetyyppikohtaiset joulupäivät yhtenä lauseena. Tilausajan jälkeen ei mitään. */
 export function jouluTyypitLause(nowMs: number = Date.now()): string {

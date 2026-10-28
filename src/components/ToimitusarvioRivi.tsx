@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { Product } from "@/types/product";
 import { muotoilePaiva, tanaanSuomessa, toimitusarvio, toimitusalue } from "@/lib/toimitusarvio";
 import { useJouluTakaraja } from "@/components/JouluTakaraja";
+import { jouluAvain } from "@/data/jouluAikataulu";
 
 /**
  * Tuotesivun toimitusarvio (lasketaan selaimessa tämän päivän mukaan). AliExpress-tuotteille näytetään
@@ -11,7 +12,7 @@ import { useJouluTakaraja } from "@/components/JouluTakaraja";
 export function ToimitusarvioRivi({ product, className = "" }: { product: Product; className?: string }) {
   const tiedot = useMemo(() => ({ arvio: toimitusarvio(tanaanSuomessa(), toimitusalue(product)) }), [product]);
   // "Ehtii jouluksi" samasta tuotetyypin takarajasta kuin "Tilaa viimeistään" -rivi (src/data/jouluAikataulu.ts).
-  const joulu = useJouluTakaraja([product.category]);
+  const joulu = useJouluTakaraja([jouluAvain(product)]);
   if (product.supplier === "aliexpress") return null;
   return (
     <div className={`flex flex-wrap items-center gap-2 text-sm ${className}`}>

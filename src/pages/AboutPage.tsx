@@ -46,10 +46,11 @@ const processSteps = [
 ];
 
 const materials = [
-  { label: "T-paidat & hupparit", detail: "Materiaali on kerrottu jokaisen tuotteen kuvauksessa, esimerkiksi 100 % puuvilla tai puuvilla-polyesterisekoite. Koot näet tuotesivulta." },
-  { label: "Tarrat", detail: "Kestävä UV-suojattu vinyyli. Vedenkestävä, sopii ulkokäyttöön." },
-  { label: "Peitot", detail: "Pehmeä fleece, 150×200 cm. Painatus koko peittoalueelle." },
-  { label: "Seinätaulut", detail: "Puiset kehykset, laadukas kangas. Valmiina ripustamiseen." },
+  { label: "T-paidat", detail: "Gildan Softstyle 64000 (153 g/m²): yksiväriset 100 % rengaskehrättyä puuvillaa, meleeratut sävyt puuvillan ja polyesterin sekoitetta. Muutama malli on Gildan 5000 (180 g/m², 100 % puuvillaa). Tuotesivulla näkyy värikohtainen materiaali." },
+  { label: "Hupparit", detail: "Gildan Heavy Blend 18500 (271 g/m²): 50 % puuvillaa ja 50 % polyesteriä, kaksinkertainen huppu." },
+  { label: "Tarrat", detail: "Tulostettava premium-vinyyli, sisä- ja ulkokäyttöön." },
+  { label: "Julisteet", detail: "Kiiltävä tai matta pinta, sisäkäyttöön." },
+  { label: "Joulukoristeet", detail: "3 mm paksu keramiikka, kiiltävä pinta, mukana ripustusnaru." },
 ];
 
 const trustPoints = [

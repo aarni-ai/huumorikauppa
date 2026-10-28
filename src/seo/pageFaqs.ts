@@ -170,7 +170,7 @@ export function buildCategoryFaqs(categoryName: string): FaqItem[] {
     },
     {
       q: `Mistä materiaalista ${lower} on tehty?`,
-      a: "Materiaali vaihtelee tuotteittain, ja tarkka koostumus ja hoito-ohje ovat jokaisen tuotteen kuvauksessa. Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa.",
+      a: "T-paidat ovat Gildan Softstyle 64000 -paitoja ja hupparit Gildan Heavy Blend 18500 -huppareita. Yksiväriset t-paidat ovat 100 % rengaskehrättyä puuvillaa, meleeratut puuvillan ja polyesterin sekoitetta, ja hupparit 50 % puuvillaa ja 50 % polyesteriä. Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa.",
     },
     {
       q: `Saako ${lower} omalla tekstillä?`,

@@ -17,6 +17,7 @@ import { ToimitusarvioRivi } from "@/components/ToimitusarvioRivi";
 import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, Share2, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
 import { PurchaseFacts } from "@/components/PurchaseFacts";
+import { jouluAvain } from "@/data/jouluAikataulu";
 import { SizeGuide } from "@/components/SizeGuide";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
 import { isClothingCategory } from "@/lib/sizeChart";
@@ -387,7 +388,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const needsColor = hasColors && !selectedColor;
   const isCustom = isCustomTextProduct(product);
   // Joulun takaraja vain Printify-tuotteille (AliExpress-toimituksesta ei ole dataa).
-  const jouluKategoriat = product.supplier !== "aliexpress" ? [product.category] : [];
+  const jouluKategoriat = product.supplier !== "aliexpress" ? [jouluAvain(product)] : [];
   // Valitun koon hinta (api/_lib/kokohinnat.js: hupparit 3XL+), ilman kokoa tuotteen perushinta.
   const kokoHinta = rivinHinta(product, selectedSize);
   const hasDiscount = product.original_price && product.original_price > product.price;
@@ -865,10 +866,12 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
         {/* Structured SEO content blocks: Material, Care, Scenarios, Why buy */}
         <section className="mt-8 max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
+          {seoCopy.material && (
           <div className="rounded-xl border border-border bg-card/50 p-6">
-            <h2 className="font-display text-lg text-foreground mb-2">Materiaali ja koot 🧵</h2>
+            <h2 className="font-display text-lg text-foreground mb-2">Materiaali 🧵</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.material}</p>
           </div>
+          )}
           <div className="rounded-xl border border-border bg-card/50 p-6">
             <h2 className="font-display text-lg text-foreground mb-2">Hoito-ohjeet 🧺</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{seoCopy.care}</p>

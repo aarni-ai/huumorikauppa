@@ -117,12 +117,18 @@ export const FATHERS_DAY_ORDER_END_UTC_MS = paivanLoppuUtcMs(ISANPAIVA_TILAUSPAI
 /** Joululahjan on oltava perillä viimeistään jouluaattoa edeltävänä päivänä. */
 export const JOULU_PERILLA_ISO = "2026-12-23";
 /**
- * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), laskelma KASVU-RAPORTTI.md 28.10.2026:
- * tilauksesta perille toteutuneiden toimitusten 90. persentiili + 2 arkipäivää. T-paidat: 8 toimitettua tilausta
- * (4-16 arkipäivää), P90 13,2 -> 14 + 2 = 16. Muilla tyypeillä havaintoja on alle 5, joten käytetään Printifyn
- * ilmoittamaa toimitusaikaa Suomeen (5-15 arkipäivää, catalog v2 shipping/standard) eli 15 + 2 = 17.
+ * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), painotaloittain laskettuna, KASVU-RAPORTTI.md
+ * 29.10.2026: tilauksesta perille toteutuneiden toimitusten 90. persentiili + 2 arkipäivää, kun havaintoja on
+ * vähintään 5, muuten Printifyn ilmoittama toimitusaika Suomeen (5-15 arkipäivää) + 2 = 17.
+ *  - T-paidat: kaikki OPT OnDemandilla (CZ, JOULU_TPAITA_PAINOTALOT). T-paitojen 8 toimitusta kaikilta painotaloilta
+ *    3-16 arkipäivää, P90 13,2 -> 14 + 2 = 16; OPT:n omat toimitukset 5, 7 ja 9 arkipäivää jäävät sen alle.
+ *  - Hupparit: Textildruck Europa (DE) 11, 13 ja 14 arkipäivää (3 havaintoa) ja Atelier Katanga (FR, ei havaintoja),
+ *    julisteet ja tarrat (OPT, ei havaintoja) sekä koristeet: 17.
+ * T-paita muulta painotalolta saa oletusajan (src/data/jouluAikataulu.ts jouluAvain).
  */
 export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = { "t-paidat": 16 };
+/** Painotalot (Printify print_provider_id), joiden t-paidoille t-paitojen aika pätee: OPT OnDemand. */
+export const JOULU_TPAITA_PAINOTALOT: readonly number[] = [30];
 export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = 17;
 /** Tuotetyypin viimeinen tilauspäivä jouluksi (tuntematon tyyppi: oletusaika). */
 export const joulunTilauspaivaTyypille = (kategoria?: string | null): string =>

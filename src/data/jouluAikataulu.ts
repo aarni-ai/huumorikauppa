@@ -6,7 +6,8 @@
  * 90. persentiili + 2 arkipäivää, ohuella datalla Printifyn ilmoittama toimitusaika). Laskelma: KASVU-RAPORTTI.md
  * 28.10.2026. Sivuston yhteinen päivä (banneri, UKK) on näistä varhaisin.
  */
-import { CHRISTMAS_ORDER_END_UTC_MS, joulunTilauspaivaTyypille, helsinkiTimeToUtcMs } from "./campaignSchedule";
+import { CHRISTMAS_ORDER_END_UTC_MS, JOULU_TPAITA_PAINOTALOT, joulunTilauspaivaTyypille, helsinkiTimeToUtcMs } from "./campaignSchedule";
+import { tuotepohja } from "../../api/_lib/materiaali.js";
 
 /** Viimeinen tilauspäivä (Suomen aikaa, päivän loppuun asti) kategorian slugin mukaan. */
 export const JOULU_TILAUSPAIVAT: Readonly<Record<string, string>> = Object.fromEntries(
@@ -31,6 +32,18 @@ export function jouluTakaraja(iso: string): JouluTakaraja {
   const [y, m, d] = iso.split("-").map(Number);
   const wd = WEEKDAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
   return { iso, endUtcMs: helsinkiTimeToUtcMs(y, m, d, 23, 59, 59, 999), text: `${wd} ${d}.${m}.${y}` };
+}
+
+/**
+ * Tuotteen takarajan avain painotalon mukaan: t-paita saa t-paitojen päivän vain, jos sen painotalo on laskelmassa
+ * (JOULU_TPAITA_PAINOTALOT, painotalo api/_lib/tuotepohjat.generated.js). Muuten avain on tuntematon, ja päivä on
+ * varhaisin.
+ */
+export function jouluAvain(product: { category?: string | null; slug?: string | null }): string | null {
+  const category = product.category ?? null;
+  if (category !== "t-paidat") return category;
+  const painotalo = tuotepohja(product.slug)?.p;
+  return painotalo != null && JOULU_TPAITA_PAINOTALOT.includes(painotalo) ? category : "t-paidat-muu-painotalo";
 }
 
 /** Kategorian takaraja (tuntematon kategoria: varhaisin päivä). */

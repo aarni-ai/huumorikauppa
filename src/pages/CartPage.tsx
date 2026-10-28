@@ -15,6 +15,7 @@ import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
+import { jouluAvain } from "@/data/jouluAikataulu";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
@@ -202,7 +203,7 @@ const CartPage = () => {
           </div>
 
           <JouluTakarajaRivi
-            categories={items.some((i) => i.product.supplier === "aliexpress") ? [] : items.map((i) => i.product.category)}
+            categories={items.some((i) => i.product.supplier === "aliexpress") ? [] : items.map((i) => jouluAvain(i.product))}
             className="text-sm text-foreground"
           />
 

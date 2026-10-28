@@ -19,7 +19,7 @@ const CHRISTMAS = `${jouluLause()}`;
 
 export const CATEGORY_FAQS: Record<string, FAQ[]> = {
   "t-paidat": [
-    { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "Materiaali on kerrottu jokaisen t-paidan tuotekuvauksessa. Esimerkiksi useat t-paidat ovat 100 % puuvillaa, ja tarkka koostumus ja hoito-ohje löytyvät tuotesivulta." },
+    { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paidat ovat Gildan Softstyle 64000 -paitoja (153 g/m²): yksiväriset ovat 100 % rengaskehrättyä puuvillaa ja meleeratut sävyt puuvillan ja polyesterin sekoitetta. Muutama malli on Gildan 5000 (180 g/m², 100 % puuvillaa). Tuotesivulla näkyy tuotteen värikohtainen materiaali." },
     { q: "Missä t-paidat painetaan?", a: "T-paidat painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa. Jokainen paita valmistetaan vasta tilauksen jälkeen." },
     { q: "Kuinka nopeasti tilaus toimitetaan?", a: `${DELIVERY} Saat seurantakoodin sähköpostiisi, kun paketti on lähetetty.` },
     { q: "Voiko t-paidan palauttaa?", a: RETURNS },
@@ -27,7 +27,7 @@ export const CATEGORY_FAQS: Record<string, FAQ[]> = {
     { q: "Mitä maksutapoja voin käyttää?", a: PAYMENT },
   ],
   "hupparit": [
-    { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Materiaali on kerrottu jokaisen hupparin tuotekuvauksessa. Esimerkiksi useat hupparit ovat 50 % puuvillaa ja 50 % polyesteriä, ja hoito-ohje löytyy tuotesivulta." },
+    { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Hupparit ovat Gildan Heavy Blend 18500 -huppareita: 50 % puuvillaa ja 50 % polyesteriä, kankaan paino 271 g/m² ja huppu kaksinkertainen." },
     { q: "Missä hupparit painetaan?", a: "Hupparit painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa." },
     { q: "Kuinka nopeasti huppari toimitetaan?", a: DELIVERY },
     { q: "Voiko hupparin palauttaa?", a: RETURNS },
@@ -107,13 +107,13 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen läksiäisiä.` },
   ],
   "hauskat-t-paidat": [
-    { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "Materiaali on kerrottu jokaisen t-paidan tuotekuvauksessa, ja useat t-paidat ovat 100 % puuvillaa." },
+    { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paidat ovat Gildan Softstyle 64000 -paitoja (153 g/m²): yksiväriset ovat 100 % rengaskehrättyä puuvillaa ja meleeratut sävyt puuvillan ja polyesterin sekoitetta. Muutama malli on Gildan 5000 (180 g/m², 100 % puuvillaa). Tuotesivulla näkyy tuotteen värikohtainen materiaali." },
     { q: "Sopiiko hauska t-paita lahjaksi?", a: "Sopii: hauska t-paita on henkilökohtainen lahja syntymäpäiviin, jouluun ja läksiäisiin." },
     { q: "Miten valitsen oikean koon?", a: "Mittaa hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com." },
     { q: "Voiko t-paidan palauttaa?", a: RETURNS },
   ],
   "hauskat-hupparit": [
-    { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Materiaali on kerrottu jokaisen hupparin tuotekuvauksessa, ja useat hupparit ovat puuvillan ja polyesterin sekoitetta." },
+    { q: "Minkälaisesta materiaalista hauskat hupparit ovat?", a: "Hupparit ovat Gildan Heavy Blend 18500 -huppareita: 50 % puuvillaa ja 50 % polyesteriä, kankaan paino 271 g/m² ja huppu kaksinkertainen." },
     { q: "Sopiiko hauska huppari lahjaksi?", a: "Sopii: huppari on käytännöllinen lahja, joka on käytössä koko kylmän kauden." },
     { q: "Miten valitsen oikean koon?", a: "Mittaa hyvin istuvan hupparin tai paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com." },
     { q: "Voiko hupparin palauttaa?", a: RETURNS },

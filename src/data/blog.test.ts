@@ -21,7 +21,7 @@ import type { BlogPost } from "@/types/blog";
 import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
 import { LANDING_PATHS, LANDING_REDIRECTS } from "./landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
-import { JOULU_PAIVA_LYHYT } from "./tilauspaivat";
+import { JOULU_PAIVA_LYHYT, JOULU_TPAITA_PAIVA_TEKSTI } from "./tilauspaivat";
 import { TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 const DASHES = /[–—]/; // en dash, em dash
@@ -226,7 +226,8 @@ describe("blogi: joulun 2026 oppaat", () => {
   it("joulun toimituslupaus on kaikissa sama (lasketusta päivästä)", () => {
     for (const post of KAIKKI_JOULU) {
       const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
-      for (const d of dates) expect([JOULU_PAIVA_LYHYT.split(" ")[1], "24.12.2026", "8.11.2026"]).toContain(d);
+      // Kaikkien tuotteiden päivä ja t-paitojen oma päivä (src/data/tilauspaivat.ts, jouluLause).
+      for (const d of dates) expect([JOULU_PAIVA_LYHYT.split(" ")[1], JOULU_TPAITA_PAIVA_TEKSTI.split(" ")[1], "24.12.2026", "8.11.2026"]).toContain(d);
     }
   });
 });
@@ -322,7 +323,7 @@ describe("blogi: joulun ja pikkujoulun hakuoppaat 28.10.2026", () => {
   it("joulun tilauspäivä tulee tilauspaivat.ts:stä, ei käsin kirjoitettuna", () => {
     for (const post of jouluHakuOppaat2026) {
       const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
-      for (const d of dates) expect(JOULU_PAIVA_LYHYT, `${post.slug}: ${d}`).toContain(d);
+      for (const d of dates) expect([JOULU_PAIVA_LYHYT.split(" ")[1], JOULU_TPAITA_PAIVA_TEKSTI.split(" ")[1]], `${post.slug}: ${d}`).toContain(d);
     }
     const lahde = fs.readFileSync(path.resolve(__dirname, "blogJouluHaut2026.ts"), "utf8");
     expect(lahde).toMatch(/from "\.\/tilauspaivat"/);

@@ -21,7 +21,7 @@ export function PurchaseFacts({
   /** false, kun tuotteella on oma toimitusaikansa (DeliveryBadge, AliExpress). */
   showDeliveryTime?: boolean;
   /** Tuotteen kategoria joulun tilauspäivää varten; tyhjä = ei joulurivia (esim. AliExpress). */
-  jouluKategoriat?: readonly string[];
+  jouluKategoriat?: readonly (string | null)[];
   className?: string;
 }) {
   return (

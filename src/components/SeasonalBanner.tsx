@@ -5,7 +5,7 @@ import {
   nextBannerChangeMs,
   type BannerTheme,
 } from "@/data/campaignSchedule";
-import { isanpaivaLause, jouluLause } from "@/data/tilauspaivat";
+import { isanpaivaLause, jouluPalkkiLause } from "@/data/tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
 export const FATHERS_DAY_LANDING_PATH = "/isanpaivalahja";
@@ -31,7 +31,8 @@ export const BANNER_CONTENT: Record<BannerTheme, BannerContent> = {
   },
   joulu: {
     get text() {
-      return `Joulutilaukset: ${jouluLause()}`;
+      // Sama lähde kuin tuotesivu, ostoskori ja artikkelit (src/data/tilauspaivat.ts).
+      return `Joulutilaukset: ${jouluPalkkiLause()}`;
     },
     linkText: "Joulun viimeiset tilauspäivät",
     href: CHRISTMAS_DEADLINE_PATH,

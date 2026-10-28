@@ -53,6 +53,7 @@ import { ajaEuSiirrot, euSiirtoKansio } from "../_lib/eu-siirrot.js";
 import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
 import { buildProductRow as buildProductRowPrintify } from "../_lib/printify-sync.generated.js";
 import { korjaaNimi, nimiKorjattava } from "../_lib/tuotenimi.js";
+import { ga4Viikot } from "../_lib/ga4.js";
 
 // Printifyn otsikoissa voi olla ajatusviivoja; kantaan tuotaessa nimi siistitään samalla tavalla kuin 28.10.2026 korjatut.
 const buildProductRow = (...a) => {
@@ -291,7 +292,7 @@ export default async function handler(req, res) {
   // Tuotteen nimen korjaus (&slug=...&nimi=...): vain nimi, slug ja muut tiedot ennallaan. Ilman &kuiva=0 vain näyttää.
   // Viikkomittarit (KASVU-RAPORTTI.md): maksetut tilaukset ilman kassatestejä ISO-viikoittain Helsingin ajassa,
   // myynti, keskiostos ja kate alv 0 Printifyn todellisilla kuluilla (tuote + toimitus) ja Stripen maksulla.
-  // Kävijät ja konversio tulevat GA4:stä, eivät täältä. &alku=YYYY-MM-DD (oletus 8 viikkoa taaksepäin).
+  // Kävijät, istunnot ja ostot GA4 Data API:sta (api/_lib/ga4.js), kun avaimet on asetettu. &alku=YYYY-MM-DD (oletus 8 viikkoa taaksepäin).
   if (req.query.tehtava === "viikkomittarit") {
     const alku = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.alku || "")) ? req.query.alku : new Date(Date.now() - 56 * 864e5).toISOString().slice(0, 10);
     const rivit = await db`select id, paid_at, total, printify_order_id,
@@ -313,9 +314,12 @@ export default async function handler(req, res) {
       else v.kate += myynti / 1.255 - kulu - (myynti * 0.015 + 0.25);
       viikot.set(t.viikko, v);
     }
+    // Kävijät ja konversio GA4 Data API:sta, kun GA4_PROPERTY_ID ja GA4_PALVELUTILI on asetettu (api/_lib/ga4.js).
+    let ga4 = null, ga4Virhe = null;
+    try { ga4 = await ga4Viikot(alku); } catch (e) { ga4Virhe = String(e.message || e).slice(0, 200); }
     const tulos = [...viikot.values()].map((v) => ({ ...v, myynti: Math.round(v.myynti * 100) / 100, kate: Math.round(v.kate * 100) / 100,
-      keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0 }));
-    return res.status(200).json({ ok: true, alku, viikot: tulos });
+      keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0, ga4: ga4?.[v.viikko] ?? null }));
+    return res.status(200).json({ ok: true, alku, viikot: tulos, ga4Viikot: ga4, ga4Lahde: ga4 ? "GA4 Data API" : ga4Virhe || "ei asetettu" });
   }
 
   // Kaikki ajatusviivalliset ja luonnottoman kaksoispisteen nimet kerralla (api/_lib/tuotenimi.js korjaaNimi). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.

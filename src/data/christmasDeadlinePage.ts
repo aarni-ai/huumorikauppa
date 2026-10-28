@@ -5,7 +5,7 @@
 import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { landingPages } from "./landingPages";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
-import { jouluLause, jouluTyypitLause } from "./tilauspaivat";
+import { jouluLause, jouluPalkkiLause, jouluTyypitLause } from "./tilauspaivat";
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
 
@@ -14,10 +14,12 @@ export const christmasDeadlinePage = {
   name: "Joulun viimeiset tilauspäivät",
   title: "Joulun viimeiset tilauspäivät 2026 | Huumorikauppa",
   description:
-    `${jouluLause()} Näin tilauspäivä on laskettu ja mitä sen jälkeen tapahtuu.`,
+    jouluPalkkiLause()
+      ? `Joulun viimeiset tilauspäivät 2026: ${jouluPalkkiLause()}. Näin päivät on laskettu ja mitä sen jälkeen tapahtuu.`
+      : `${jouluLause()} Näin tilauspäivä on laskettu ja mitä sen jälkeen tapahtuu.`,
   h1: "Joulun viimeiset tilauspäivät 2026",
   intro: [
-    `${D} ${jouluTyypitLause()}`.trim(),
+    D,
     "Tuotteemme painetaan vasta tilauksen jälkeen, joten joulutilauksen takaraja on aikaisemmin kuin kaupoissa, jotka lähettävät valmiita tuotteita omasta varastostaan.",
   ],
   sections: [
