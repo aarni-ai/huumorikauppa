@@ -26,6 +26,69 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026: harrastus- ja ammattisarjat, /media, GA4-ostot, musta L, viikkomittarit
+
+Strategia: TM Rakennusmaailman joululahjajutun jälkeen harrastus- ja ammattilehdet sekä niiden lukijoille osuvat
+paidat. Lehdelle pitchataan sarjasivu + /media-sivun zip.
+
+**Harrastussarjat (48 uutta t-paitaa, kaupassa näkyvissä).** 8 sarjaa x 6 paitaa, lista
+`data/uudet-tuotteet/harrastussarjat-2026-10-29.json`, tuonti `data/uudet-tuotteet-2026-10-29.json`.
+- OPT OnDemand (Tšekki), Gildan Softstyle 64000, S, M, L, XL, 2XL, 24,90 €. Kulu 8,90 € kaikissa koissa,
+  toimitus Suomeen 8,49 €, nettokate 7,22 € (28,5 %) yhden paidan tilauksessa. Kaikki 15 varianttia saatavilla,
+  myös musta L. Mustan mockupin teksti tarkistettu jokaisesta (valkoinen). Ei tavaramerkkejä eikä henkilöitä.
+- Laskeutumissivut (oma johdanto, 4 UKK:ta + FAQPage, joulun t-paitapäivä apufunktiosta, linkit muihin sarjoihin,
+  /joululahjat ja /lahjat/harrastajalle): /lahjat/remontoijalle, /lahjat/kalastajalle, /lahjat/metsastajalle,
+  /lahjat/autoilijalle, /lahjat/golfaajalle, /lahjat/mokkeilijalle, /lahjat/maanviljelijalle, /lahjat/it-ihmiselle.
+- Canonical: päällekkäiset sivut 301:llä sarjasivuille (ei ketjuja, utm säilyy): /harrastus/kalastus, /metsastys,
+  /golf, /sauna, /ammatti/rakennusmies, /maanviljelija, /koodari, /lahjat/rakennusmiehelle, /koodaajalle, /saunaan,
+  /autoharrastajalle. Ohjatut pois esirenderöinnistä, sisäiset linkit päivitetty.
+- Merchant-syöte: sarjoille otsikko "Hauska t-paita kalastajalle: Kalastan, siis valehtelen, lahja kalastajalle" ja
+  product_type "Vaatteet > T-paidat > Hauskat t-paidat > Kalastajat". Korjattu samalla: nimen kaksoispiste-erotin ei
+  enää toista tuotetyyppiä, IT-lyhenne säilyy.
+
+**Medialle-sivu /media** (alatunnisteessa "Medialle", ei päävalikossa, indeksoitava, sivukartassa): kaupan kuvaus
+(kotimainen huumoripaitakauppa, myyjä Uusiku Oy, painetaan tilauksesta EU:ssa), huumorikauppa@gmail.com, 20
+myydyintä ja joulun kärkituotetta (tuotekuva + lifestyle 2048 px, hinta, linkki), teemavinkit (remontoijat, sauna,
+kalastus, autot, eläkeläiset, isät ja äidit) ja 8 sarjaa. Zipit `public/media/` (13,7 Mt): kärkituotteet 11,6 Mt
+(40 kuvaa), sarjat 0,3 Mt kukin (tuotekuvat). Zipit eivät ole gitissä; `scripts/julkaise-uusi.sh` luo puuttuvat
+(`node scripts/media-zip.mjs`).
+
+**GA4 (G-8FJ58JNKGK).** purchase lähtee tilausvahvistussivulta vain maksetusta tilauksesta palvelimen tiedoilla
+(transaction_id, value = tilauksen summa, shipping, items: slug, nimi, hinta, määrä), kerran per tilaus (muistissa +
+localStorage, GA4 deduplikoi transaction_id:llä), suostumusta kunnioittaen. Paluu checkout.stripe.comista:
+ignore_referrer, joten alkuperäinen lähde ja utm säilyvät. Uudelleenohjaukset (middleware, asiakaspuolen ohjaukset)
+säilyttävät kyselyparametrit. Server-side Measurement Protocol ei käytössä (API-salaisuutta ei ole).
+
+**Musta L.** Textildruck Europalta (DE) musta L on loppu. 35 t-paitaa (Sammuta valot, 15 joulupaitaa, pikkujoulu-,
+isänpäivä- ja eläkepaidat) siirretty OPT OnDemandille samalla designilla (`data/eu-siirto-2026-10-29.json`,
+tehtävä eu-siirrot): 15 varianttia, musta L mukana, kulu 8,90 € (oli 9,28 €), toimitus 8,49 € (oli 7,29 €), kate
+yhden paidan tilauksessa 7,22 € (oli 8,04 €). Slug, nimi ja hinta ennallaan. Myydyimmät muut: Tonnin seteli -paita,
+Eläkeläinen, Maailman paras äiti -paita ja Saatanan Tunarit ovat jo OPT:lla, kaikki S-2XL saatavilla. Hupparit
+(Tonnin seteli, Maailman paras äiti, Textildruck) jätetty: puuttuvat vain muutama 3XL-5XL; Atelier Katangalla olisi
+musta 4XL, mutta siirto pudottaisi muita värejä.
+
+**Tuotenimet.** Luonnoton kaksoispiste pois 90 nimestä ("60v kokenut, ei vanha", "Eläkkeellä kiireinen tekemään ei
+mitään", "Forssa parempi kuin Helsinki"). Otsikkomaiset jäävät ("Syntymäkaupunki: Tornio", "Hauska T-Paita
+Palomiehelle: Sankari Savussa", "Eläkeläinen: aamuherätys vapaaehtoinen"). URL:t ennallaan.
+
+**Viikkomittarit.** Tehtävä `viikkomittarit&alku=YYYY-MM-DD`: uuden kassan maksetut tilaukset (ilman kassatestejä),
+myynti, keskiostos ja kate alv 0 Printifyn todellisilla kuluilla. Kävijät ja konversio GA4:stä. Huumorikaupan
+GA4-propertya ei ole liitetty raportointityökaluun, joten ne puuttuvat taulukosta, kunnes property on liitetty.
+
+| Viikko | Kävijät | Konversio | Tilaukset (Printify) | Keskiostos | Kate | Huom. |
+|---|---|---|---|---|---|---|
+| 2026-W40 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W41 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W42 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W43 | ei mitattu | ei mitattu | 4 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W44 | ei mitattu | ei mitattu | 2 | ei tiedossa | ei tiedossa | uusi kassa 27.10. alkaen, 0 maksettua |
+
+Täytetään maanantaisin: tilaukset, keskiostos ja kate tehtävästä `viikkomittarit`, kävijät ja konversio GA4:stä
+(Raportit > Hankinta > Liikenteen hankinta, lähde/media). Vanhan kassan tilausten myyntisummat ovat vanhassa
+Lovable-taustassa, joten niiden keskiostos ja kate puuttuvat.
+
+**Resend.** DKIM ja SPF yhä pending (DNS-tietueita ei lisätty), vahti tarkistaa 30 min välein.
+
 ## 28.10.2026 ilta: TM Rakennusmaailman media-aineisto, mustan paidan mockup-vika, tuotenimet ilman ajatusviivoja
 
 **Media-aineisto (Otavamedia, TM Rakennusmaailma, joululahjajuttu).** Kansio `media/rakennusmaailma/` (ei gitissä,

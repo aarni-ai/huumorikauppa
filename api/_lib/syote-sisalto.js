@@ -63,7 +63,7 @@ const VAATE = new Set(["t-paidat", "hupparit", "pitkahihaiset", "bodyt", "pipot"
 // Tuotetyyppisanat nimen loppuosassa ("| T-paita isälle", ", hauska huppari").
 const TYYPPISANA = /^(?:hauska\s+|hauskat\s+|personoitava\s+)?(?:t-paita|huppari|juliste(?:\s*\(poster\))?|tarra|muki|body|pipo|viltti|kassi|koriste|paita)\b\s*/i;
 const ERISNIMET = new Set(["Suomi", "Finland", "Sweden", "Swedish", "Helsinki", "Tampere", "Turku", "Oulu", "Lappi", "I"]);
-const AKRONYYMIT = new Set(["EU", "USA", "XL", "2XL", "3XL", "4XL", "5XL", "DTG", "DTF", "A3", "A4", "OK", "GPS", "HIFK", "HJK", "TPS", "KPS", "HPK"]);
+const AKRONYYMIT = new Set(["EU", "USA", "XL", "2XL", "3XL", "4XL", "5XL", "DTG", "DTF", "A3", "A4", "OK", "GPS", "IT", "HIFK", "HJK", "TPS", "KPS", "HPK"]);
 
 /** Isot alkukirjaimet tavalliseksi: "ÄITI" -> "äiti", "Sää Päättää Teen Silti" -> "Sää päättää teen silti". */
 export function siistiTeksti(s) {
@@ -90,7 +90,7 @@ export function siistiTeksti(s) {
 /** Tuotenimestä painoteksti ja nimen kertoma kohde ("isälle", "pikkujouluihin"). */
 export function puraNimi(nimi) {
   const n = String(nimi || "").replace(/lll/g, "ll").replace(/\s*｜\s*/g, " | ").replace(/\s*[–—]\s*/g, ", ").replace(/\s+/g, " ").trim();
-  let m = n.match(/^(Hauska|Personoitava)\s+(?:T-Paita|Huppari|Juliste|Tarra|Muki|Body|Paita)(?:\s+([^,]+?))?,\s*(.+)$/i);
+  let m = n.match(/^(Hauska|Personoitava)\s+(?:T-Paita|Huppari|Juliste|Tarra|Muki|Body|Paita)(?:\s+([^,:]+?))?[,:]\s*(.+)$/i);
   if (m) return { teksti: m[3], kohde: (m[2] || "").toLowerCase(), personoitava: /personoitava/i.test(m[1]) };
   const pysty = n.lastIndexOf(" | ");
   if (pysty > 0) {

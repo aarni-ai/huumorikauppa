@@ -27,6 +27,11 @@ const tuote = (o: Record<string, unknown> = {}) => ({
 const DASH = /[–—]/;
 
 describe("syötteen otsikot", () => {
+  it("29.10. nimimuodot: kaksoispiste-erotin ei toista tyyppiä, IT-lyhenne säilyy", () => {
+    expect(syoteOtsikko(tuote({ name: "Hauska T-Paita Kalastajalle: Kala Pääsi Tällä Kertaa" }))).not.toMatch(/Hauska t-paita.*Hauska t-paita/i);
+    expect(syoteOtsikko(tuote({ name: "Sukulaisten IT-tuki. Ei palkkaa | T-paita IT-ihmiselle" }))).toContain("Sukulaisten IT-tuki");
+  });
+
   it("tuotetyyppi + kenelle + painoteksti + lahjahaku", () => {
     expect(syoteOtsikko(tuote({ name: "En nuku. Lepuutan silmiä | T-paita isälle" }))).toBe("Hauska t-paita isälle: En nuku. Lepuutan silmiä, isänpäivälahja");
     expect(syoteOtsikko(tuote({ category: "hupparit", name: "Eläkkeellä. Kello on vain koru | Huppari eläkeläiselle" }))).toBe(
