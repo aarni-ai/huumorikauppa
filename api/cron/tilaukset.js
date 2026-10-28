@@ -194,6 +194,9 @@ export default async function handler(req, res) {
     for (const t of data.tuotteet) {
       if (!aikaa()) { tulos.push({ slug: t.slug, tila: "aika loppui, aja uudelleen" }); continue; }
       const id = String(t.printify_product_id);
+      // Jo tuotu ja näkyvissä: ohitetaan, jotta uusinta-ajo etenee isoissa erissä funktion aikarajan yli.
+      const valmis = (await db`select slug, price, is_active from products where printify_product_id = ${id} and is_active = true`)[0];
+      if (valmis && !kuiva && req.query.pakota !== "1") { tulos.push({ slug: t.slug, tuonti: null, rivi: valmis, ohitettu: true }); continue; }
       const h = await haeTuote(id);
       const pf = h.ok ? h.data : null;
       if (!pf) { tulos.push({ slug: t.slug, tila: "ei Printifyssä" }); continue; }
