@@ -79,7 +79,7 @@ describe("UKK (AEO)", () => {
   it("vastauksissa ei ajatusviivoja, mukeja eikä väärää kuljetusliikettä", () => {
     for (const f of allFaqs) {
       expect(f.q + f.a).not.toMatch(DASH);
-      expect(f.q + f.a).not.toMatch(/\bmuki|mukit|PostNord|Klarna|Apple Pay|MobilePay/i);
+      expect(f.q + f.a).not.toMatch(/\bmuki|mukit|PostNord/i);
     }
   });
 

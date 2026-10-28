@@ -13,7 +13,7 @@ export interface FAQ {
 
 const DELIVERY = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.`;
 const RETURNS = "Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita palautuksesta osoitteeseen huumorikauppa@gmail.com, niin saat palautusohjeet. Personoituja tuotteita peruutusoikeus ei koske.";
-const PAYMENT = "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.";
+const PAYMENT = "Voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.";
 const CUSTOM = "Saa niihin tuotteisiin, joiden nimessä on Oma teksti/kuva tai Personoitava. Kirjoitat tekstin tai kuvatoiveen tuotesivun kenttään (enintään 200 merkkiä), ja toive kulkee tilauksen mukana.";
 const CHRISTMAS = `${jouluLause()}`;
 

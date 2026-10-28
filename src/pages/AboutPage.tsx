@@ -55,7 +55,7 @@ const materials = [
 const trustPoints = [
   { icon: Truck, title: "Nopea toimitus", body: `${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
-  { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard ja muut yleisimmät maksutavat. Maksu tehdään suojatulla maksusivulla." },
+  { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay. Maksu tehdään suojatulla maksusivulla." },
   { icon: Flag, title: "Suomalainen yritys", body: `Kauppaa pitää ${ORGANIZATION.legalName}, ${ORGANIZATION.addressLocality}. Y-tunnus ${ORGANIZATION.legalId}. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä.` },
   { icon: Mail, title: "Aito asiakaspalvelu", body: "Vastaamme 1–2 arkipäivässä. Ei chatbottia – aito ihminen lukee viestisi ja auttaa." },
   { icon: MapPin, title: "Tunnettu ja vahvistettu", body: "Rekisteröity Wikidataan (Q139915256). Arvostelut Google Merchant Centerissä." },

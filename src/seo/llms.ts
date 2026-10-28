@@ -60,7 +60,7 @@ Teemoja ovat esimerkiksi ammattihuumori, kalastus, eläkeläishuumori sekä synt
 - Noutoa ei ole.
 
 ## Maksutavat
-Visa, Mastercard ja muut yleisimmät maksutavat (toimitusehdot). Maksu tehdään tilauksen yhteydessä. Hinnat sisältävät arvonlisäveron (ALV 25,5 %).
+Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay (toimitusehdot). Maksu tehdään tilauksen yhteydessä. Hinnat sisältävät arvonlisäveron (ALV 25,5 %).
 
 ## Palautukset
 - Kuluttajansuojalain mukainen ${RETURNS.days} päivän peruutusoikeus tuotteen vastaanottamisesta.

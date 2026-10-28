@@ -278,6 +278,17 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, parit: tulos.sort((a, b) => b.tuotteita - a.tuotteita) });
   }
 
+  // Uuden tilin maksutapojen tila (oletuskonfiguraatio ja tilin capabilityt): mitä sivustolla saa luvata.
+  if (req.query.tehtava === "maksutavat") {
+    if (!onStripe()) return res.status(503).json({ error: "Stripe-avain puuttuu" });
+    const tavat = ["card", "apple_pay", "google_pay", "klarna", "mobilepay"];
+    const konf = (await stripe().paymentMethodConfigurations.list({ limit: 20 })).data.map((c) => ({ nimi: c.name, oletus: c.is_default, aktiivinen: c.active,
+      tavat: Object.fromEntries(tavat.map((t) => [t, c[t] ? { saatavilla: c[t].available, valinta: c[t].display_preference?.value } : null])) }));
+    const tili = await stripe().accounts.retrieve();
+    const kyvyt = Object.fromEntries(Object.entries(tili.capabilities || {}).filter(([k]) => /card|klarna|mobilepay/.test(k)));
+    return res.status(200).json({ ok: true, tili: tili.id, konfiguraatiot: konf, kyvyt });
+  }
+
   // Uuden tilin (STRIPE_SECRET_KEY) Checkout-sessiot aikavälillä &alku=ISO&loppu=ISO, ilman henkilötietoja.
   if (req.query.tehtava === "stripe-sessiot") {
     if (!onStripe()) return res.status(503).json({ error: "Stripe-avain puuttuu" });

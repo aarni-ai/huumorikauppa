@@ -84,7 +84,7 @@ Huumorikauppa on suomalainen verkkokauppa joka on erikoistunut hauskoihin vaatte
 - 14 päivän palautusoikeus
 - Laadukkaat materiaalit ja kestävä painatus
 - 100% suomalainen yritys
-- Turvallinen maksaminen (Visa, Mastercard ja muut yleisimmät maksutavat)
+- Turvallinen maksaminen (Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay)
 
 Selaa valikoimaamme ja löydä vuoden 2026 hauskin t-paita!`,
     relatedCategories: ["t-paidat", "hupparit"],
@@ -140,7 +140,7 @@ Huumorikauppa on Suomen hauskin verkkokauppa, josta löydät hauskoja lahjoja jo
 - **Laaja valikoima** - satoja hauskoja tuotteita eri kategorioissa
 - **Ilmainen toimitus** ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - **14 päivän palautusoikeus**
-- **Turvallinen maksaminen**: Visa, Mastercard ja muut yleisimmät maksutavat
+- **Turvallinen maksaminen**: Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay
 - **Nopea toimitus** - ${TOIMITUSAIKA_TEKSTI} arkipäivässä perille`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
@@ -189,7 +189,7 @@ Hauska teksti piristää arkea, nostattaa tunnelmaa toimistossa ja on mieleenpai
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - 14 päivän palautusoikeus
-- Turvallinen maksaminen: Visa, Mastercard ja muut yleisimmät maksutavat`,
+- Turvallinen maksaminen: Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -294,7 +294,7 @@ ${jouluLause()}
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä
 - 14 päivän palautusoikeus
-- Turvallinen maksaminen: Visa, Mastercard ja muut yleisimmät maksutavat`,
+- Turvallinen maksaminen: Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay`,
     relatedCategories: ["t-paidat", "hupparit", "pipot"],
   },
 
@@ -1272,7 +1272,7 @@ Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydän
       },
       {
         q: "Mistä saa hauskan lahjan naiselle nopeasti?",
-        a: `Huumorikauppa.fi:stä. Toimitamme tilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen, ja maksaa voi Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla.`,
+        a: `Huumorikauppa.fi:stä. Toimitamme tilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen, ja maksaa voi Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla.`,
       },
       {
         q: "Voiko lahjan personoida nimellä?",

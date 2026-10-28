@@ -40,7 +40,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
 
   const shippingTrust =
     `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ` +
-    `Sinulla on 14 päivän peruutusoikeus, ja voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. ` +
+    `Sinulla on 14 päivän peruutusoikeus, ja voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. ` +
     `Asiakaspalvelu vastaa sähköposteihin 1-2 arkipäivässä.`;
 
   const faqs: { q: string; a: string }[] = [

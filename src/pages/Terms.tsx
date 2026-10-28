@@ -40,7 +40,7 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">3. Hinnat ja maksaminen</h2>
-          <p>Kaikki hinnat sisältävät arvonlisäveron (ALV 25,5 %). Maksu suoritetaan tilauksen yhteydessä. Hyväksymme seuraavat maksutavat: Visa, Mastercard sekä muut yleisimmät maksutavat.</p>
+          <p>Kaikki hinnat sisältävät arvonlisäveron (ALV 25,5 %). Maksu suoritetaan tilauksen yhteydessä. Hyväksymme seuraavat maksutavat: Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay.</p>
         </section>
 
         <section>

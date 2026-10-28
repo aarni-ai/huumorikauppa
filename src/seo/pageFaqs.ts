@@ -64,7 +64,7 @@ export const SITE_FAQS: FaqItem[] = [
   },
   {
     q: "Mitä maksutapoja voin käyttää?",
-    a: "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla, jolle kassa ohjaa sinut. Tilaus on sitova, kun maksu on suoritettu, ja tilausvahvistus tulee sähköpostiisi.",
+    a: "Voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla, jolle kassa ohjaa sinut. Tilaus on sitova, kun maksu on suoritettu, ja tilausvahvistus tulee sähköpostiisi.",
   },
   {
     q: "Miten otan yhteyttä asiakaspalveluun?",
@@ -178,7 +178,7 @@ export function buildCategoryFaqs(categoryName: string): FaqItem[] {
     },
     {
       q: "Mitä maksutapoja voin käyttää?",
-      a: "Voit maksaa Visalla, Mastercardilla ja muilla yleisimmillä maksutavoilla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.",
+      a: "Voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.",
     },
   ];
 }
