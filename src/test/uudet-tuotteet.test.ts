@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import {
   parseLista, hinnoittele, ylosX90, idempotenssiAvain, lueKirjaukset, joLuodut, kirjausRivi, otsikkoTeksti, normArvo,
-  valitseVariantit, ratkaiseKohde, kasitteleTuote, TiedostoKatalogi, LiveKatalogi, teeApi, tekstivariRyhmat, VIIVA,
+  valitseVariantit, ratkaiseKohde, kasitteleTuote, TiedostoKatalogi, LiveKatalogi, teeApi, tekstivariRyhmat, taydennaRyhmat, VIIVA,
   KATEGORIAN_POHJAHINNAT, SUUNNITELTU_TOIMITUSMAKSU, SUUNNITELTU_ILMAINEN_RAJA, HINTAMALLIT, suomenToimitusVarianteille,
   blueprintEhdokkaat, kateAlvilla, TUOTETYYPIT,
 } from "../../scripts/lib/uudet-tuotteet.mjs";
@@ -238,6 +238,13 @@ describe("katalogi ja painotalo", () => {
     const v = valitseVariantit(esimerkki.variants["9145/9030"], { varit: ["Black", "White"], koot: ["M"] }).valitut;
     const r = tekstivariRyhmat(v);
     expect(r.map((x) => [x.vari, x.tuotevarit])).toEqual([["#FFFFFF", ["Black"]], ["#111111", ["White"]]]);
+  });
+
+  it("valitsematta jäänyt variantti menee oman värinsä tekstiryhmään (mockup oikealla tekstivärillä)", () => {
+    const r = tekstivariRyhmat([{ id: 1, title: "Black / M" }, { id: 2, title: "White / M" }]);
+    const t = taydennaRyhmat(r, [{ id: 1, title: "Black / M" }, { id: 3, title: "Black / L" }, { id: 4, title: "White / 3XL" }, { id: 5, title: "Red / M" }]);
+    expect(t.map((x) => [x.vari, x.variantIds])).toEqual([["#FFFFFF", [1, 3]], ["#111111", [2, 4]]]);
+    expect(r[0].variantIds).toEqual([1]); // alkuperäinen ennallaan
   });
 
   it("live-katalogi tekee vain GET-kutsuja (mockattu fetch)", async () => {

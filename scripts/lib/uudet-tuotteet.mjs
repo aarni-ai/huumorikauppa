@@ -362,6 +362,25 @@ export function tekstivariRyhmat(valitut, kiintea = null) {
   return [...ryhmat.values()].map((r) => ({ ...r, tuotevarit: [...r.tuotevarit] }));
 }
 
+/**
+ * Lisää valitsematta jääneet variantit (esim. loppunut musta L, 3XL) saman tuotevärin ryhmään. Muuten Printify
+ * sijoittaa ne omaan ryhmäänsä, ja jos värin mockup renderöidään poistetusta variantista, kaupassa näkyy väärä
+ * tekstiväri (28.10.2026: musta teksti mustalla paidalla 20 tuotteessa).
+ */
+export function taydennaRyhmat(ryhmat, kaikki = []) {
+  const mukana = new Set(ryhmat.flatMap((r) => r.variantIds));
+  const vari2ryhma = new Map(ryhmat.flatMap((r) => r.tuotevarit.map((tv) => [normalisoi(tv), r])));
+  const lisatyt = ryhmat.map((r) => ({ ...r, variantIds: [...r.variantIds] }));
+  for (const v of kaikki) {
+    const id = Number(v.id);
+    const r = vari2ryhma.get(normalisoi(variantinVari(v) || ""));
+    if (mukana.has(id) || !r) continue;
+    lisatyt[ryhmat.indexOf(r)].variantIds.push(id);
+    mukana.add(id);
+  }
+  return lisatyt;
+}
+
 export function printAreat(ryhmat, kuvaIdt, position) {
   return ryhmat.map((r) => ({
     variant_ids: r.variantIds,
@@ -506,7 +525,9 @@ export async function ratkaiseKohde(tyyppiAvain, katalogi, { varit = [], koot = 
       const maa = painotalonMaa(tiedot) || painotalonMaa(t);
       if (!onEU(maa)) { hylatyt.push(`${t.title} (${maa ?? "maa?"})`); continue; }
       // Vain valmistettavat variantit (katalogi merkitsee loppuneet / poistuneet).
-      const valinta = valitseVariantit((await katalogi.variantit(bp.id, t.id)).filter((v) => !catalogVariantUnavailable(v)), { varit, koot });
+      const kaikkiVariantit = await katalogi.variantit(bp.id, t.id);
+      const valinta = valitseVariantit(kaikkiVariantit.filter((v) => !catalogVariantUnavailable(v)), { varit, koot });
+      valinta.kaikki = kaikkiVariantit;
       if (!valinta.valitut.length) { hylatyt.push(`${t.title} (${maa}): ei pyydettyjä värejä/kokoja`); continue; }
       const toimitusSentit = suomenToimitusVarianteille(await katalogi.toimitus(bp.id, t.id), valinta.valitut.map((v) => v.id));
       if (toimitusSentit == null) { hylatyt.push(`${t.title} (${maa}): ei toimitusta Suomeen`); continue; }
@@ -622,7 +643,7 @@ export async function kasitteleTuote(tuote, ctx) {
     kuvaIdt[k.vari] = j.id;
     k.printify_kuva = j.id;
   }
-  const runko = tuoteRunko(tuote, kohde, h.hintaSentit, printAreat(ryhmat, kuvaIdt, alue.position));
+  const runko = tuoteRunko(tuote, kohde, h.hintaSentit, printAreat(taydennaRyhmat(ryhmat, kohde.valinta.kaikki), kuvaIdt, alue.position));
   const luotu = await ctx.api(`/shops/${ctx.shopId}/products.json`, { method: "POST", body: runko });
   if (!luotu?.id) throw new Error("tuotteen luonti ei palauttanut id:tä");
   r.printify_id = String(luotu.id);
