@@ -75,7 +75,7 @@ Ohje KAYTTOONOTTO.md "GA4 Data API". Tehtävä `viikkomittarit` hakee kävijät,
 `GA4_PROPERTY_ID` ja `GA4_PALVELUTILI` on asetettu (nyt `ga4Lahde: "ei asetettu"`). Jos avaimen luonti estyy,
 Cowork kirjaa luvut ja lähteeksi "Cowork GA4".
 
-**Resend.** DKIM ja SPF yhä pending 30.10. klo 08.51 asti (12 tunnin vahti, 24 tarkistusta). resend._domainkey.huumorikauppa.fi ei palauta TXT-tietuetta, eli DNS-tietueita ei ole lisätty. Uusi 12 tunnin vahti käynnistetty; vahvistuksen jälkeen SAHKOPOSTI_VAHVISTETTU=1, uudelleenjulkaisu ja isänpäiväartikkeli.
+**Resend.** DKIM ja SPF yhä pending 29.10. klo 20.51 asti (12 tunnin vahti, 24 tarkistusta). resend._domainkey.huumorikauppa.fi ei palauta TXT-tietuetta, eli DNS-tietueita ei ole lisätty. Uusi 12 tunnin vahti käynnistetty; vahvistuksen jälkeen SAHKOPOSTI_VAHVISTETTU=1, uudelleenjulkaisu ja isänpäiväartikkeli.
 
 Tarkistettu tuotannosta tavallisella, Googlebot- ja tyhjällä User-Agentilla: tuotesivut (t-paita, huppari, juliste),
 /joulun-viimeiset-tilauspaivat, /lahjat/kalastajalle, /media ja /tietoa-meista 200; päivät ja materiaalit kuten yllä,
