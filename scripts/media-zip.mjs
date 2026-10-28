@@ -19,6 +19,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
 import { zipSync, strToU8 } from "fflate";
+import sharp from "sharp";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "media");
@@ -43,7 +44,8 @@ async function lataaKuva(url) {
       (async () => {
         for (let yritys = 1; yritys <= 3; yritys++) {
           const res = await fetch(url);
-          if (res.ok && /image\//.test(res.headers.get("content-type") || "")) return new Uint8Array(await res.arrayBuffer());
+          // 2048 px säilyy; mozjpeg laatu 82 pudottaa koon noin kolmannekseen, jotta kaikki sarjat mahtuvat zip-rajaan.
+          if (res.ok && /image\//.test(res.headers.get("content-type") || "")) return new Uint8Array(await sharp(Buffer.from(await res.arrayBuffer())).jpeg({ quality: 82, mozjpeg: true }).toBuffer());
           if (yritys === 3) throw new Error(`Kuvan lataus epäonnistui (${res.status}): ${url}`);
           await new Promise((r) => setTimeout(r, 500 * yritys));
         }

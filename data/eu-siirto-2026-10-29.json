@@ -1,0 +1,3365 @@
+{
+ "paiva": "2026-10-29",
+ "_huom": "Musta L puuttui Textildruck Europalta (loppu). Sama paita OPT OnDemandille (CZ), kaikki 15 varianttia saatavilla, kulu 8,90 €, toimitus FI 8,49 €.",
+ "siirrot": [
+  {
+   "vanhaId": "6ae1128eb7c2757e9601db4f",
+   "uusiId": "6ae2045ebcfa30277b0e9fb6",
+   "title": "Sammuta valot. Sähkö maksaa | T-paita isälle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ]
+  },
+  {
+   "vanhaId": "6adfb9a53f77a7875b0fba8a",
+   "uusiId": "6ae205c1714418d6aa02cd74",
+   "title": "Kinkkukooma alkaa klo 14 | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9c1260c17a8ff05ef05",
+   "uusiId": "6ae205c50eab0eaf6f003dc2",
+   "title": "Joulupukin virallinen testaaja | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9c7260c17a8ff05ef11",
+   "uusiId": "6ae205c99aa827add9031f75",
+   "title": "Tonttu koeajalla | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9cf260c17a8ff05ef1e",
+   "uusiId": "6ae205ceb8cad316790305ad",
+   "title": "Glögi ensin. Sitten joulu | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9d9250930614e0f78e1",
+   "uusiId": "6ae205d2714418d6aa02cd88",
+   "title": "Piparivaras. Ei todisteita | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9dec392daed65010411",
+   "uusiId": "6ae205d77176e4eb8a0cc6c5",
+   "title": "Joulustressi? En tunne | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9e73f77a7875b0fbabe",
+   "uusiId": "6ae205da05651eefe1023cdb",
+   "title": "Laatikkovastaava | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9ee250930614e0f78ef",
+   "uusiId": "6ae205de05651eefe1023cdd",
+   "title": "Paketointi ei ole vahvuuteni | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfb9fb260c17a8ff05ef31",
+   "uusiId": "6ae205e27176e4eb8a0cc6d4",
+   "title": "Eläkkeellä. Kiireinen silti | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba065ea6b5c9cd0aecbd",
+   "uusiId": "6ae205e6e5cd851f5d0f8592",
+   "title": "Eläkeläinen. Kaikki päivät ovat lauantaita | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba1087d17f67bf09e9e0",
+   "uusiId": "6ae205ea714418d6aa02cd9f",
+   "title": "Herätyskello eläkkeellä myös | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba1987d17f67bf09e9ed",
+   "uusiId": "6ae205ed5932d21a50068ee4",
+   "title": "Työt loppui. Mökki ei | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba27be06878c900359f6",
+   "uusiId": "6ae205f105651eefe1023cf3",
+   "title": "Kokenut eläkeläinen. Neuvoja ilmaiseksi | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba3587d17f67bf09ea06",
+   "uusiId": "6ae205f6e5cd851f5d0f859c",
+   "title": "Maanantai on nyt vain sana | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6adfba43c60cddcb060142a6",
+   "uusiId": "6ae205fa5a0698826f096ac3",
+   "title": "Palkka loppui. Päikkärit jatkuu | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae11217a7605d7f8e0ac84e",
+   "uusiId": "6ae205fe714418d6aa02cdb0",
+   "title": "Riisipuurosta löysin vain riisiä | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112381730ecef4b025dd2",
+   "uusiId": "6ae206025a0698826f096acc",
+   "title": "Lahjat ostettu 23.12. klo 17.58 | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1123f2195ccbd540e50db",
+   "uusiId": "6ae20606714418d6aa02cdc5",
+   "title": "Rauhallista joulua. Paitsi meillä | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112459310c63cb0060fc2",
+   "uusiId": "6ae2060a714418d6aa02cdcb",
+   "title": "Joulusaunan löylymestari | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1124b1730ecef4b025dde",
+   "uusiId": "6ae2060e5932d21a50068ef6",
+   "title": "Kiltti. Enimmäkseen | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae11250a7605d7f8e0ac85f",
+   "uusiId": "6ae206119aa827add9031fa2",
+   "title": "Joulukortit lähtevät ensi vuonna | T-paita jouluun",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1125665aaae1db90207e3",
+   "uusiId": "6ae206152401660d8c005d7a",
+   "title": "Pikkujoulut. Muistan osittain | T-paita pikkujouluihin",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1125c65aaae1db90207e8",
+   "uusiId": "6ae20619e5cd851f5d0f85c1",
+   "title": "Pikkujoulujen nimetty kuski | T-paita pikkujouluihin",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112615ff276936206983d",
+   "uusiId": "6ae2061d2401660d8c005d83",
+   "title": "Karaokevuoro varattu jo syyskuussa | T-paita pikkujouluihin",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112681730ecef4b025e01",
+   "uusiId": "6ae20621eb7840320b0cbb2c",
+   "title": "Tänään tanssin. Huomenna kadun | T-paita pikkujouluihin",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38160,
+     "uusiId": 38160,
+     "title": "S / Red"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38166,
+     "uusiId": 38166,
+     "title": "S / Military Green"
+    },
+    {
+     "vanhaId": 38174,
+     "uusiId": 38174,
+     "title": "M / Red"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38180,
+     "uusiId": 38180,
+     "title": "M / Military Green"
+    },
+    {
+     "vanhaId": 38188,
+     "uusiId": 38188,
+     "title": "L / Red"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38194,
+     "uusiId": 38194,
+     "title": "L / Military Green"
+    },
+    {
+     "vanhaId": 38202,
+     "uusiId": 38202,
+     "title": "XL / Red"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38208,
+     "uusiId": 38208,
+     "title": "XL / Military Green"
+    },
+    {
+     "vanhaId": 38216,
+     "uusiId": 38216,
+     "title": "2XL / Red"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    },
+    {
+     "vanhaId": 38222,
+     "uusiId": 38222,
+     "title": "2XL / Military Green"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1126fa044f1c025075264",
+   "uusiId": "6ae206259aa827add9031fb7",
+   "title": "Isävitsien ammattilainen | T-paita isälle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1127731654dc5ee0a8e69",
+   "uusiId": "6ae206295932d21a50068f17",
+   "title": "Kuka koski termostaattiin? | T-paita isälle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1127d2195ccbd540e5101",
+   "uusiId": "6ae2062d2401660d8c005d8a",
+   "title": "Isä tietää oikotien. Aina | T-paita isälle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112869310c63cb0060ff7",
+   "uusiId": "6ae206312401660d8c005d8c",
+   "title": "En nuku. Lepuutan silmiä | T-paita isälle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae1129a9cb855601e0f4cf5",
+   "uusiId": "6ae20635bcfa30277b0ea14d",
+   "title": "Eläkeläisen työpäivä: kahvi, lehti, päikkärit | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112a2a7605d7f8e0ac893",
+   "uusiId": "6ae2063a5932d21a50068f2a",
+   "title": "Täysipäiväinen isovanhempi | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112aa9310c63cb0061009",
+   "uusiId": "6ae2063ebcfa30277b0ea157",
+   "title": "Eläkeläinen. Älä soita ennen kymmentä | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112b35ff276936206986a",
+   "uusiId": "6ae20642b8cad316790305f9",
+   "title": "Eläkkeellä. Kello on vain koru | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  },
+  {
+   "vanhaId": "6ae112bb914d9ad3060b9c68",
+   "uusiId": "6ae20645b8cad316790305fe",
+   "title": "Suunnitelma tälle päivälle: ei suunnitelmaa | T-paita eläkeläiselle",
+   "kategoria": "t-paidat",
+   "vanha": {
+    "painotalo": "Textildruck Europa",
+    "maa": "DE",
+    "blueprint_id": 145,
+    "print_provider_id": 26
+   },
+   "uusi": {
+    "painotalo": "OPT OnDemand",
+    "maa": "CZ",
+    "blueprint_id": 145,
+    "print_provider_id": 30
+   },
+   "yhdistetyt": [
+    {
+     "vanhaId": 38158,
+     "uusiId": 38158,
+     "title": "S / Navy"
+    },
+    {
+     "vanhaId": 38162,
+     "uusiId": 38162,
+     "title": "S / Sport Grey"
+    },
+    {
+     "vanhaId": 38164,
+     "uusiId": 38164,
+     "title": "S / Black"
+    },
+    {
+     "vanhaId": 38172,
+     "uusiId": 38172,
+     "title": "M / Navy"
+    },
+    {
+     "vanhaId": 38176,
+     "uusiId": 38176,
+     "title": "M / Sport Grey"
+    },
+    {
+     "vanhaId": 38178,
+     "uusiId": 38178,
+     "title": "M / Black"
+    },
+    {
+     "vanhaId": 38186,
+     "uusiId": 38186,
+     "title": "L / Navy"
+    },
+    {
+     "vanhaId": 38190,
+     "uusiId": 38190,
+     "title": "L / Sport Grey"
+    },
+    {
+     "vanhaId": 38192,
+     "uusiId": 38192,
+     "title": "L / Black"
+    },
+    {
+     "vanhaId": 38200,
+     "uusiId": 38200,
+     "title": "XL / Navy"
+    },
+    {
+     "vanhaId": 38204,
+     "uusiId": 38204,
+     "title": "XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38206,
+     "uusiId": 38206,
+     "title": "XL / Black"
+    },
+    {
+     "vanhaId": 38214,
+     "uusiId": 38214,
+     "title": "2XL / Navy"
+    },
+    {
+     "vanhaId": 38218,
+     "uusiId": 38218,
+     "title": "2XL / Sport Grey"
+    },
+    {
+     "vanhaId": 38220,
+     "uusiId": 38220,
+     "title": "2XL / Black"
+    }
+   ],
+   "_ok": true
+  }
+ ]
+}

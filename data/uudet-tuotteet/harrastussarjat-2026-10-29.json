@@ -1,0 +1,1066 @@
+{
+ "nimi": "Harrastus- ja ammattisarjat 29.10.2026",
+ "_huom": "8 sarjaa x 6 t-paitaa. OPT OnDemand (CZ), Gildan Softstyle 64000 (bp 145), S-2XL: musta L saatavilla (Textildruck Europalla loppu). 24,90 €, ajo --hintamalli live --kateraja 1 (kate positiivinen jokaisessa variantissa). Laskeutumissivut /lahjat/<sarja>.",
+ "oletukset": {
+  "tyyppi": "t-paita",
+  "painotalo": "OPT OnDemand",
+  "blueprint": 145,
+  "koot": [
+   "S",
+   "M",
+   "L",
+   "XL",
+   "2XL"
+  ]
+ },
+ "tuotteet": [
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "REMONTTI",
+    "VALMIS",
+    "ENSI VUONNA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "MITTAA KERRAN.",
+    "SAHAA",
+    "KOLME KERTAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PIKKUREMONTTI.",
+    "KOLMAS VUOSI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "RAUTAKAUPAN",
+    "KANTA-ASIAKAS"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "EI OLE",
+    "KANTAVA SEINÄ.",
+    "OLI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "remontoijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Remontoijat ja rakentajat",
+   "otsikko": "{teksti} | {tuote} remontoijalle",
+   "tagit": [
+    "Remontti",
+    "Rakentaja",
+    "Remonttilahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "VASARA KÄDESSÄ",
+    "KAIKKI NÄYTTÄÄ",
+    "NAULALTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} remontoijalle, jonka projekti etenee omaa tahtiaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KALA OLI",
+    "TÄTÄKIN",
+    "ISOMPI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PILKILLÄ.",
+    "ÄLÄ SOITA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KALASTAN,",
+    "SIIS",
+    "VALEHTELEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SYÖTTI LOPPUI.",
+    "KAHVI EI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "TÄNÄÄN EI TULLUT.",
+    "HUOMENNA",
+    "TULEE."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "kalastajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Kalastajat",
+   "otsikko": "{teksti} | {tuote} kalastajalle",
+   "tagit": [
+    "Kalastus",
+    "Kalastaja",
+    "Kalastajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "VIEHELAATIKKO",
+    "ON SIJOITUS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kalastajalle, jonka saalis kasvaa joka kerta kun siitä kerrotaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PASSISSA",
+    "14 TUNTIA.",
+    "HIRVI NÄKI MINUT."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "METSÄSTYSSEURAN",
+    "VIRALLINEN",
+    "KAHVINKEITTÄJÄ"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KOIRA LÖYSI.",
+    "MINÄ EN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PEIJAISET",
+    "ON KAUDEN",
+    "TÄRKEIN OSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SYKSY ALKAA,",
+    "KUN JAHTI",
+    "ALKAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "metsastajalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Metsästäjät",
+   "otsikko": "{teksti} | {tuote} metsästäjälle",
+   "tagit": [
+    "Metsästys",
+    "Metsästäjä",
+    "Metsästäjän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "MAASTOPUKU",
+    "ON MYÖS",
+    "JUHLAPUKU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} metsästäjälle, joka viihtyy passissa säällä kuin säällä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "VIELÄ YKSI OSA.",
+    "SITTEN",
+    "SE KÄY."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "TALLISSA.",
+    "TAKAISIN,",
+    "KUN SE KÄY."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "ÖLJYNVAIHTO",
+    "ON TERAPIAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KESÄRENKAAT ALLA",
+    "LOKAKUUHUN",
+    "ASTI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "MOOTTORIPYÖRÄ",
+    "EI OLE KRIISI.",
+    "SE ON RATKAISU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "autoilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Autoilijat ja motoristit",
+   "otsikko": "{teksti} | {tuote} autoilijalle",
+   "tagit": [
+    "Autot",
+    "Moottoripyörä",
+    "Autoilijan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KATSASTUS",
+    "MENI LÄPI.",
+    "JUHLITAAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoilijalle tai motoristille, joka viettää vapaa-aikansa tallissa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PALLO LÖYTYI.",
+    "EI OLLUT",
+    "MINUN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "TASOITUS",
+    "ON MIELENTILA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SE YKSI",
+    "HYVÄ LYÖNTI",
+    "PITÄÄ MINUT TÄÄLLÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "VESIESTE",
+    "RAKASTAA",
+    "MINUA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "19. REIKÄ",
+    "ON MINUN",
+    "VAHVUUTENI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "golfaajalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Golfaajat",
+   "otsikko": "{teksti} | {tuote} golfaajalle",
+   "tagit": [
+    "Golf",
+    "Golfaaja",
+    "Golfaajan lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "MULLIGAN",
+    "ON IHMISOIKEUS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} golfaajalle, joka muistaa jokaisen hyvän lyöntinsä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "LÖYLYÄ LISÄÄ.",
+    "EI OLE",
+    "KUUMA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "MÖKILLÄ",
+    "EI OLE KIIRE.",
+    "EIKÄ KENTTÄÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SAUNA LÄMPIÄÄ.",
+    "MUUT ASIAT",
+    "ODOTTAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "LAITURILLA",
+    "ISTUMINEN",
+    "ON HARRASTUS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KANTOVESI",
+    "PITÄÄ",
+    "KUNNOSSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "mokkeilijalle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Military Green"
+   ],
+   "kategoria": "Mökkeilijät ja saunojat",
+   "otsikko": "{teksti} | {tuote} mökkeilijälle",
+   "tagit": [
+    "Mökki",
+    "Sauna",
+    "Mökkeilijän lahja",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "HUUSSI ON",
+    "PARAS",
+    "LUKUNURKKAUS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle ja saunojalle, jonka paras paikka on laiturin päässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "TRAKTORI",
+    "EI KYSY",
+    "VAPAAPÄIVIÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "METSÄNOMISTAJA.",
+    "PUHUN",
+    "KUUTIOISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PELTO KUTSUU.",
+    "SOITA",
+    "ILLALLA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "HARVENNUS TEHTY.",
+    "KAHVI",
+    "ANSAITTU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SATEEN",
+    "ENNUSTAN",
+    "POLVISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "maanviljelijalle",
+   "varit": [
+    "Black",
+    "Military Green",
+    "Navy"
+   ],
+   "kategoria": "Maanviljelijät ja metsänomistajat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Maanviljelijä",
+    "Metsänomistaja",
+    "Maatalous",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PUUKAUPAT TEHDÄÄN",
+    "KEITTIÖN",
+    "PÖYDÄN ÄÄRESSÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle tai metsänomistajalle, joka lukee säätä paremmin kuin ennuste. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "OLETKO KOKEILLUT",
+    "SAMMUTTAA",
+    "JA KÄYNNISTÄÄ?"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "TOIMII",
+    "MINUN",
+    "KONEELLANI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "PERJANTAINA",
+    "EI",
+    "JULKAISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SALASANA VAIHDETTU.",
+    "EN",
+    "MUISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "KAHVI SISÄÄN,",
+    "KOODIA",
+    "ULOS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "sarja": "it-ihmiselle",
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Tekniikka- ja IT-ihmiset",
+   "otsikko": "{teksti} | {tuote} IT-ihmiselle",
+   "tagit": [
+    "IT",
+    "Koodari",
+    "Tekniikka",
+    "Harrastussarja"
+   ],
+   "rivit": [
+    "SUKULAISTEN",
+    "IT-TUKI.",
+    "EI PALKKAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-ihmiselle, joka on koko suvun tukipalvelu. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa.",
+   "otsikkoteksti": "Sukulaisten IT-tuki. Ei palkkaa"
+  }
+ ]
+}

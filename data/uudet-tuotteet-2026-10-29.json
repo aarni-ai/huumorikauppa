@@ -1,0 +1,390 @@
+{
+ "paiva": "2026-10-29",
+ "kuvaus": "Harrastus- ja ammattisarjat, 8 x 6 t-paitaa (OPT OnDemand CZ). Tuonti: tehtava=tuo-aktiiviset&tiedosto=uudet-tuotteet-2026-10-29",
+ "tuotteet": [
+  {
+   "slug": "remontti-valmis-ensi-vuonna-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae203dbeb7840320b0cb98e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Remontti valmis ensi vuonna"
+  },
+  {
+   "slug": "mittaa-kerran-sahaa-kolme-kertaa-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae203e25a0698826f0968ce",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Mittaa kerran. Sahaa kolme kertaa"
+  },
+  {
+   "slug": "pikkuremontti-kolmas-vuosi-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae203e82401660d8c005bc2",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Pikkuremontti. Kolmas vuosi"
+  },
+  {
+   "slug": "rautakaupan-kanta-asiakas-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae203f1bcfa30277b0e9f71",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Rautakaupan kanta-asiakas"
+  },
+  {
+   "slug": "ei-ole-kantava-seina-oli-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae203f8bcfa30277b0e9f7a",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Ei ole kantava seinä. Oli"
+  },
+  {
+   "slug": "vasara-kadessa-kaikki-nayttaa-naulalta-t-paita-remontoijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204005932d21a50068d5c",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Vasara kädessä kaikki näyttää naulalta"
+  },
+  {
+   "slug": "kala-oli-tatakin-isompi-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20405714418d6aa02cc20",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Kala oli tätäkin isompi"
+  },
+  {
+   "slug": "pilkilla-ala-soita-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2040b5932d21a50068d67",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Pilkillä. Älä soita"
+  },
+  {
+   "slug": "kalastan-siis-valehtelen-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20411eb7840320b0cb9b1",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Kalastan, siis valehtelen"
+  },
+  {
+   "slug": "syotti-loppui-kahvi-ei-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204160eab0eaf6f003c20",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Syötti loppui. Kahvi ei"
+  },
+  {
+   "slug": "tanaan-ei-tullut-huomenna-tulee-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2041b0eab0eaf6f003c26",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Tänään ei tullut. Huomenna tulee"
+  },
+  {
+   "slug": "viehelaatikko-on-sijoitus-t-paita-kalastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20421eb7840320b0cb9c7",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Viehelaatikko on sijoitus"
+  },
+  {
+   "slug": "passissa-14-tuntia-hirvi-naki-minut-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204275a0698826f09691a",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Passissa 14 tuntia. Hirvi näki minut"
+  },
+  {
+   "slug": "metsastysseuran-virallinen-kahvinkeittaja-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2042cb8cad31679030477",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Metsästysseuran virallinen kahvinkeittäjä"
+  },
+  {
+   "slug": "koira-loysi-mina-en-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2043105651eefe1023ba1",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Koira löysi. Minä en"
+  },
+  {
+   "slug": "peijaiset-on-kauden-tarkein-osa-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20437714418d6aa02cc47",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Peijaiset on kauden tärkein osa"
+  },
+  {
+   "slug": "syksy-alkaa-kun-jahti-alkaa-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2043c7176e4eb8a0cc570",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Syksy alkaa, kun jahti alkaa"
+  },
+  {
+   "slug": "maastopuku-on-myos-juhlapuku-t-paita-metsastajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204435a0698826f096935",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Maastopuku on myös juhlapuku"
+  },
+  {
+   "slug": "viela-yksi-osa-sitten-se-kay-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2044a714418d6aa02cc4e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Vielä yksi osa. Sitten se käy"
+  },
+  {
+   "slug": "tallissa-takaisin-kun-se-kay-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20452714418d6aa02cc53",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Tallissa. Takaisin, kun se käy"
+  },
+  {
+   "slug": "oljynvaihto-on-terapiaa-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20459b8cad3167903048e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Öljynvaihto on terapiaa"
+  },
+  {
+   "slug": "kesarenkaat-alla-lokakuuhun-asti-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2045f5932d21a50068da6",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Kesärenkaat alla lokakuuhun asti"
+  },
+  {
+   "slug": "moottoripyora-ei-ole-kriisi-se-on-ratkaisu-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20466714418d6aa02cc58",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Moottoripyörä ei ole kriisi. Se on ratkaisu"
+  },
+  {
+   "slug": "katsastus-meni-lapi-juhlitaan-t-paita-autoilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2046d9aa827add9031e80",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Katsastus meni läpi. Juhlitaan"
+  },
+  {
+   "slug": "pallo-loytyi-ei-ollut-minun-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204749aa827add9031e87",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Pallo löytyi. Ei ollut minun"
+  },
+  {
+   "slug": "tasoitus-on-mielentila-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2047a0eab0eaf6f003c6b",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Tasoitus on mielentila"
+  },
+  {
+   "slug": "se-yksi-hyva-lyonti-pitaa-minut-taalla-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204810eab0eaf6f003c73",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Se yksi hyvä lyönti pitää minut täällä"
+  },
+  {
+   "slug": "vesieste-rakastaa-minua-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae20488e5cd851f5d0f8456",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Vesieste rakastaa minua"
+  },
+  {
+   "slug": "19-reika-on-minun-vahvuuteni-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2048e5a0698826f096976",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "19. Reikä on minun vahvuuteni"
+  },
+  {
+   "slug": "mulligan-on-ihmisoikeus-t-paita-golfaajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204965a0698826f09697d",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Mulligan on ihmisoikeus"
+  },
+  {
+   "slug": "loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae2049b0eab0eaf6f003c8d",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Löylyä lisää. Ei ole kuuma"
+  },
+  {
+   "slug": "mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204a05a0698826f096992",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Mökillä ei ole kiire. Eikä kenttää"
+  },
+  {
+   "slug": "sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204a60eab0eaf6f003ca4",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Sauna lämpiää. Muut asiat odottaa"
+  },
+  {
+   "slug": "laiturilla-istuminen-on-harrastus-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204ab0eab0eaf6f003ca8",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Laiturilla istuminen on harrastus"
+  },
+  {
+   "slug": "kantovesi-pitaa-kunnossa-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204b1714418d6aa02cc8e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Kantovesi pitää kunnossa"
+  },
+  {
+   "slug": "huussi-on-paras-lukunurkkaus-t-paita-mokkeilijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204b6e5cd851f5d0f8490",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Huussi on paras lukunurkkaus"
+  },
+  {
+   "slug": "traktori-ei-kysy-vapaapaivia-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204bb0eab0eaf6f003cb8",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Traktori ei kysy vapaapäiviä"
+  },
+  {
+   "slug": "metsanomistaja-puhun-kuutioista-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204c05a0698826f0969bb",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Metsänomistaja. Puhun kuutioista"
+  },
+  {
+   "slug": "pelto-kutsuu-soita-illalla-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204c6bcfa30277b0ea00d",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Pelto kutsuu. Soita illalla"
+  },
+  {
+   "slug": "harvennus-tehty-kahvi-ansaittu-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204cb0eab0eaf6f003cc4",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Harvennus tehty. Kahvi ansaittu"
+  },
+  {
+   "slug": "sateen-ennustan-polvista-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204d00eab0eaf6f003cc8",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Sateen ennustan polvista"
+  },
+  {
+   "slug": "puukaupat-tehdaan-keittion-poydan-aaressa-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204d60eab0eaf6f003cd1",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Puukaupat tehdään keittiön pöydän ääressä"
+  },
+  {
+   "slug": "oletko-kokeillut-sammuttaa-ja-kaynnistaa-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204dd0eab0eaf6f003cd5",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Oletko kokeillut sammuttaa ja käynnistää?"
+  },
+  {
+   "slug": "toimii-minun-koneellani-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204e50eab0eaf6f003ce2",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Toimii minun koneellani"
+  },
+  {
+   "slug": "perjantaina-ei-julkaista-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204ec5a0698826f0969f2",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Perjantaina ei julkaista"
+  },
+  {
+   "slug": "salasana-vaihdettu-en-muista-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204f30eab0eaf6f003d0e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Salasana vaihdettu. En muista"
+  },
+  {
+   "slug": "kahvi-sisaan-koodia-ulos-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae204fa0eab0eaf6f003d27",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Kahvi sisään, koodia ulos"
+  },
+  {
+   "slug": "sukulaisten-it-tuki-ei-palkkaa-t-paita-it-ihmiselle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae205017176e4eb8a0cc61e",
+   "lovable_price": 24.9,
+   "teema": "harrastussarja",
+   "nimi": "Sukulaisten IT-tuki. Ei palkkaa"
+  }
+ ]
+}
