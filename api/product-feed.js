@@ -3,6 +3,7 @@ import { naytettavatTuotteet } from './_lib/tuotteet.js';
 import { heikoinKate } from './_lib/kate.js';
 import { lisaaKentatSyotteeseen } from './_lib/syote-lisakentat.js';
 import { korjaaSyote } from './_lib/syote-korjaukset.js';
+import { sisallotaSyote } from './_lib/syote-sisalto.js';
 import { OHJATUT_TUOTESLUGIT } from './_lib/ohjatut-tuotteet.js';
 import { onKaksoiskappaleTaiTestikopio } from './_lib/kaksoiskappaleet.js';
 import { onEuReititetty, onEuReititettySlug } from './_lib/eu-reititys.js';
@@ -88,7 +89,9 @@ export default async function handler(req, res) {
     const raw = merchantSyote(tuotteet);
     // Googlen maksuttomien listausten korjaukset (api/_lib/syote-korjaukset.js) omien tuoterivien variaatiotiedoilla.
     const variaatiot = new Map(tuotteet.map((p) => [String(p.id), { slug: p.slug, variants: p.variants || {} }]));
-    const xml = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw, new Map(tuotteet.map((p) => [p.slug, p])))), (id) => kateIdlle.get(id) ?? null), variaatiot);
+    const korjattu = korjaaSyote(lisaaKentatSyotteeseen(sanitizeFeed(dropHiddenItems(raw, new Map(tuotteet.map((p) => [p.slug, p])))), (id) => kateIdlle.get(id) ?? null), variaatiot);
+    // Hakusisältö viimeisenä (api/_lib/syote-sisalto.js): otsikko, kuvaus, product_type, numeerinen Google-kategoria, material.
+    const xml = sisallotaSyote(korjattu, new Map(tuotteet.map((p) => [String(p.id), p])));
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader(

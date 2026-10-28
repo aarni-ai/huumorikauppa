@@ -7,6 +7,9 @@
  *  - item_group_id: pakollinen maksuttomissa listauksissa vain, jos lähetetään variantteja
  *  - title max 150, description max 5000, hinta sisältää ALV:n (muut maat kuin US/CA)
  *  - kuvat: vähintään 100x100 (vaatteet 250x250); 500x500 suositus, pakollinen 31.1.2027 alkaen
+ *  - google_product_category: polku tai numeerinen ID (taxonomy-with-ids.en-US.txt); ID:t puretaan poluksi vaatesääntöjä varten
+ *  - 28.10.2026 lisätty: emoji ja mainosteksti otsikossa/kuvauksessa, kuvauksen pituus 500-1500 (varoitus),
+ *    product_type, material, hinta = sivuston /api/products-hinta (opts.apiHinnat)
  *
  * Puhdas moduuli ilman sivuvaikutuksia: CLI on scripts/validoi-syote.mjs, testit src/test/syoteValidointi.test.ts.
  */
@@ -14,7 +17,9 @@ import { OHJATUT_TUOTESLUGIT } from "../api/_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "../api/_lib/printify-saatavuus.js";
 import { onKaksoiskappaleTaiTestikopio } from "../api/_lib/kaksoiskappaleet.js";
 import { onEuReititettySlug } from "../api/_lib/eu-reititys.js";
-import { ILMAINEN_RAJA, TOIMITUS } from "../api/_lib/syote-lisakentat.js";
+// Toimitussääntö kassan vakioista (api/_lib/vakiot.js, sama kuin api/_lib/kassa.js), ei syötteen omasta peilistä.
+import { ILMAINEN_TOIMITUS_RAJA as ILMAINEN_RAJA, TOIMITUS } from "../api/_lib/vakiot.js";
+import { GOOGLE_KATEGORIAT } from "../api/_lib/syote-sisalto.js";
 
 export const SITE = "https://huumorikauppa.fi";
 export const AVAILABILITY = new Set(["in_stock", "out_of_stock", "preorder", "backorder"]);
@@ -66,7 +71,15 @@ export function parsePrice(s) {
   return m ? Number(`${m[1]}.${m[2]}`) : NaN;
 }
 
-const PROMO = /\b(ilmainen toimitus|ilmaiseksi|ale|alennus|tarjous|osta nyt|free shipping|sale|discount|buy now)\b|-\d+\s?%|\d+\s?%\s?(?:ale|off)/i;
+// "ilmaiseksi" yksinään ei ole mainosteksti (painoteksti "Neuvoja ilmaiseksi"); toimitukseen liitettynä on.
+export const PROMO = /(?<![\p{L}])(ilmainen toimitus|ilmaiset toimitukset|toimitus ilmaiseksi|ilmaisella toimituksella|ale|alennus|alennuksella|tarjous|tarjouksessa|osta nyt|tilaa nyt|free shipping|sale|discount|buy now)(?![\p{L}])|-\d+\s?%|\d+\s?%\s?(?:ale|off)(?![\p{L}])/iu;
+const EMOJI = /[\p{Extended_Pictographic}\u{FE0F}]/u;
+
+/** Kategoria polkuna: numeerinen ID puretaan (opts.taxonomyIds tai syötteen tunnetut ID:t), polku sellaisenaan. */
+export function categoryPath(cat, taxonomyIds) {
+  if (!/^\d+$/.test(cat || "")) return cat || "";
+  return taxonomyIds?.get(cat) || GOOGLE_KATEGORIAT[cat] || "";
+}
 const CAPS_WORD = /(?:^|[\s|｜,:])([A-ZÅÄÖ]{4,})(?=$|[\s|｜,:])/;
 
 /**
@@ -88,6 +101,7 @@ export function validateItem(item, opts = {}) {
   else {
     if (title.length > 150) virhe("title_yli_150", `${title.length} merkkiä`);
     if (PROMO.test(title)) virhe("title_mainosteksti", title);
+    if (EMOJI.test(title)) virhe("title_emoji", title);
     if (/[–—]/.test(title)) varoitus("title_ajatusviiva", title);
     if (CAPS_WORD.test(title)) varoitus("title_versaalit", title);
     if (/\[[^\]]*\]/.test(title)) varoitus("title_paikkamerkki", title);
@@ -103,6 +117,11 @@ export function validateItem(item, opts = {}) {
     if (desc.length > 5000) virhe("description_yli_5000", `${desc.length} merkkiä`);
     if (/#[\p{L}_]+:\S+/u.test(desc)) varoitus("description_sisainen_tagi", desc.slice(-60));
     if (/https?:\/\//.test(desc)) varoitus("description_linkki");
+    if (PROMO.test(desc)) virhe("description_mainosteksti", (desc.match(PROMO) || [])[0]);
+    if (/[–—]/.test(desc)) varoitus("description_ajatusviiva");
+    if (EMOJI.test(desc)) varoitus("description_emoji");
+    if (desc.length < 500) varoitus("description_alle_500", `${desc.length} merkkiä`);
+    else if (desc.length > 1500) varoitus("description_yli_1500", `${desc.length} merkkiä`);
   }
 
   const link = eka(item, "link") || "";
@@ -136,6 +155,12 @@ export function validateItem(item, opts = {}) {
   else {
     if (!priceStr.endsWith(" EUR")) virhe("price_valuutta", priceStr);
     if (price <= 0) virhe("price_nolla", priceStr);
+    // Hinta = sivuston rajapinnan hinta (sama kuin tuotesivu ja kassa). opts.apiHinnat: Map slug -> hinta.
+    if (opts.apiHinnat && slug) {
+      const api = opts.apiHinnat.get(slug);
+      if (api == null) varoitus("price_ei_rajapinnassa", slug);
+      else if (Math.abs(Number(api) - price) > 0.005) virhe("price_ei_vastaa_sivustoa", `${priceStr} != ${Number(api).toFixed(2)} EUR (${slug})`);
+    }
   }
   const sale = eka(item, "sale_price");
   if (sale && !(parsePrice(sale) < price)) virhe("sale_price_virheellinen", sale);
@@ -149,9 +174,17 @@ export function validateItem(item, opts = {}) {
   if (!cond) varoitus("condition_puuttuu");
   else if (!CONDITION.has(cond)) virhe("condition_virheellinen", cond);
 
-  const cat = eka(item, "google_product_category") || "";
-  if (!cat) varoitus("google_product_category_puuttuu");
-  else if (opts.taxonomy && !/^\d+$/.test(cat) && !opts.taxonomy.has(cat)) virhe("google_product_category_tuntematon", cat);
+  const catRaw = eka(item, "google_product_category") || "";
+  const cat = categoryPath(catRaw, opts.taxonomyIds);
+  if (!catRaw) varoitus("google_product_category_puuttuu");
+  else if (/^\d+$/.test(catRaw)) {
+    if (opts.taxonomyIds ? !opts.taxonomyIds.has(catRaw) : !cat) (opts.taxonomyIds ? virhe : varoitus)("google_product_category_id_tuntematon", catRaw);
+  } else if (opts.taxonomy && !opts.taxonomy.has(catRaw)) virhe("google_product_category_tuntematon", catRaw);
+  const ptype = eka(item, "product_type");
+  if (!ptype) varoitus("product_type_puuttuu");
+  else if (ptype.length > 750) virhe("product_type_yli_750", `${ptype.length} merkkiä`);
+  const material = eka(item, "material");
+  if (material != null && (!material.trim() || material.length > 200)) virhe("material_virheellinen", material);
 
   if (isApparel(cat)) {
     const color = eka(item, "color");
