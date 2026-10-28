@@ -38,7 +38,7 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
-import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo } from "../_lib/printify.js";
+import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
 import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
 import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
@@ -219,6 +219,76 @@ export default async function handler(req, res) {
         printify: t.printify_status, virhe: t.printify_error, tuotantoon: t.sent_to_production_at, vahvistus: !!t.confirmation_email_sent_at, painotalot, tapahtumat: tap.map((e) => e.kind) });
     }
     return res.status(200).json({ ok: true, maara: tulos.length, tilaukset: tulos });
+  }
+
+  // Printify-tilaukset ilman henkilötietoja (nimestä vain nimikirjaimet, osoitteesta maa): maksureitin selvitys ja
+  // toteutuneet tuotanto- ja toimitusajat (joulun takaraja). &sivut=N (oletus 4, 50 tilausta sivulla).
+  if (req.query.tehtava === "printify-tilaukset") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
+    const sivut = Math.min(Number(req.query.sivut) || 4, 20);
+    const tilaukset = [];
+    for (let sivu = 1; sivu <= sivut && aikaa(); sivu++) {
+      const r = await listaaTilaukset(sivu, 50);
+      if (!r.ok) return res.status(502).json({ error: r.virhe, tilaukset });
+      for (const o of r.data?.data || []) {
+        const a = o.address_to || {};
+        tilaukset.push({ id: o.id, label: o.metadata?.shop_order_label || o.app_order_id || null, external_id: o.external_id || null,
+          tyyppi: o.metadata?.order_type || null, kanava: o.sales_channel || null, nimikirjaimet: `${(a.first_name || "")[0] || ""}${(a.last_name || "")[0] || ""}`,
+          maa: a.country || null, tila: o.status, luotu: o.created_at, tuotantoon: o.sent_to_production_at || null, valmis: o.fulfilled_at || null,
+          toimitus: o.total_shipping, hinta: o.total_price, toimitustapa: o.shipping_method,
+          rivit: (o.line_items || []).map((l) => ({ tuote: l.product_id, nimi: l.metadata?.title || null, variantti: l.metadata?.variant_label || null,
+            blueprint: l.blueprint_id ?? null, painotalo: l.print_provider_id, maara: l.quantity, tila: l.status, tuotantoon: l.sent_to_production_at || null, valmis: l.fulfilled_at || null })),
+          lahetykset: (o.shipments || []).map((x) => ({ kuljetus: x.carrier, lahetetty: x.shipped_at || null, perilla: x.delivered_at || null })) });
+      }
+      if (!r.data?.next_page_url) break;
+    }
+    return res.status(200).json({ ok: true, maara: tilaukset.length, tilaukset });
+  }
+
+  // Printifyn ilmoittamat tuotanto- ja toimitusajat Suomeen kaupan tuotteiden blueprint/painotalo-pareille (joulun
+  // takaraja, kun toteutunutta dataa on vähän). Ensimmäinen variantti, jolla Suomi tai Eurooppa on mukana.
+  if (req.query.tehtava === "toimitusajat") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
+    const parit = new Map();
+    // &parit=441/30,443/30 ohittaa tuotelistauksen.
+    for (const k of String(req.query.parit || "").split(",").filter(Boolean)) {
+      const [blueprint, painotalo] = k.split("/").map(Number);
+      parit.set(k, { blueprint, painotalo, tuotteita: null, esimerkki: null });
+    }
+    const annetut = parit.size > 0;
+    for (let sivu = 1; !annetut && sivu <= 20 && Date.now() - alku < 30000; sivu++) {
+      const r = await listaaTuotteet(sivu, 50);
+      if (!r.ok) return res.status(502).json({ error: r.virhe });
+      for (const t of r.data?.data || []) {
+        const k = `${t.blueprint_id}/${t.print_provider_id}`;
+        const v = parit.get(k) || { blueprint: t.blueprint_id, painotalo: t.print_provider_id, tuotteita: 0, esimerkki: t.title };
+        v.tuotteita++; parit.set(k, v);
+      }
+      if (!r.data?.next_page_url) break;
+    }
+    const tulos = [];
+    for (const v of parit.values()) {
+      if (!aikaa()) { tulos.push({ ...v, kesken: true }); continue; }
+      const r = await haeToimitusajat(v.blueprint, v.painotalo);
+      const rivit = (r.data?.data || []).map((x) => x.attributes || x);
+      const fi = rivit.find((a) => a.country?.code === "FI") || rivit.find((a) => /REST_OF_THE_WORLD|EU/i.test(a.country?.code || ""));
+      tulos.push({ ...v, ok: r.ok, maa: fi?.country?.code || null, kasittely: fi?.handlingTime || null, kuljetus: fi?.shippingTime || fi?.shipping_time || null,
+        kentat: fi ? Object.keys(fi) : null, virhe: r.ok ? null : r.virhe?.slice(0, 200) });
+    }
+    return res.status(200).json({ ok: true, parit: tulos.sort((a, b) => b.tuotteita - a.tuotteita) });
+  }
+
+  // Uuden tilin (STRIPE_SECRET_KEY) Checkout-sessiot aikavälillä &alku=ISO&loppu=ISO, ilman henkilötietoja.
+  if (req.query.tehtava === "stripe-sessiot") {
+    if (!onStripe()) return res.status(503).json({ error: "Stripe-avain puuttuu" });
+    const gte = Math.floor(Date.parse(req.query.alku) / 1000), lte = Math.floor(Date.parse(req.query.loppu) / 1000);
+    const tili = await stripe().accounts.retrieve().catch(() => null);
+    const sessiot = [];
+    for await (const s of stripe().checkout.sessions.list({ created: { gte, lte }, limit: 100 })) {
+      sessiot.push({ luotu: new Date(s.created * 1000).toISOString(), tila: s.status, maksu: s.payment_status, summa: s.amount_total / 100,
+        toimitus: (s.shipping_cost?.amount_total ?? 0) / 100, tilaus: s.metadata?.order_id || null, testi: s.customer_details?.email === "kassatesti@huumorikauppa.fi" });
+    }
+    return res.status(200).json({ ok: true, tili: tili?.id || null, maara: sessiot.length, sessiot });
   }
 
   // Omistajan ilmoituksen testi (OMISTAJA_EMAIL): sama reitti kuin uuden tilauksen ilmoitus (halytys).

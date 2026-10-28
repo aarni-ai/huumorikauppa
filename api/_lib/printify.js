@@ -8,10 +8,10 @@ async function kutsu(polku, init = {}) {
 }
 
 /** Kutsu mihin tahansa Printify-polkuun (myös /catalog). aikaraja ms, oletus 25 s. */
-async function kutsuApi(polku, init = {}, aikaraja = 25000) {
+async function kutsuApi(polku, init = {}, aikaraja = 25000, pohja = API) {
   if (!onPrintify()) return { ok: false, status: 0, data: null, virhe: "Printify-avain puuttuu (PRINTIFY_API_KEY, PRINTIFY_SHOP_ID)" };
   try {
-    const res = await fetch(`${API}${polku}`, {
+    const res = await fetch(`${pohja}${polku}`, {
       ...init,
       headers: { Authorization: `Bearer ${process.env.PRINTIFY_API_KEY}`, "Content-Type": "application/json", ...(init.headers || {}) },
       signal: AbortSignal.timeout(aikaraja),
@@ -48,6 +48,21 @@ export function luoTilaus(runko) {
 /** Lähetä tuotantoon. Tilaus on lähetetty vasta, kun tämä onnistuu. */
 export function lahetaTuotantoon(printifyTilausId) {
   return kutsu(`/orders/${printifyTilausId}/send_to_production.json`, { method: "POST" });
+}
+
+/** Kaupan tuotteet sivuittain (blueprint_id, print_provider_id). */
+export function listaaTuotteet(sivu = 1, maara = 50) {
+  return kutsu(`/products.json?page=${sivu}&limit=${maara}`, { method: "GET" });
+}
+
+/** Printifyn ilmoittamat toimitustiedot (v2: handlingTime, shippingTime maittain), toimitustapa standard. */
+export function haeToimitusajat(blueprintId, providerId) {
+  return kutsuApi(`/catalog/blueprints/${encodeURIComponent(blueprintId)}/print_providers/${encodeURIComponent(providerId)}/shipping/standard.json`, { method: "GET" }, 15000, "https://api.printify.com/v2");
+}
+
+/** Kaupan tilaukset sivuittain (uusin ensin). */
+export function listaaTilaukset(sivu = 1, maara = 50) {
+  return kutsu(`/orders.json?page=${sivu}&limit=${maara}`, { method: "GET" });
 }
 
 export function haeTilaus(printifyTilausId) {
