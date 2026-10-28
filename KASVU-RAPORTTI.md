@@ -26,6 +26,110 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.-30.10.2026 yö: mobiilin ostopolku ja konversio
+
+**Lähtötilanne.** GA4: 28 päivässä 1 036 kävijää ja 6 tilausta, konversio 0,58 %, tavoite vähintään 1,5 %.
+Search Console 28 pv (29.9.-26.10.): 830 klikkausta, 21 400 näyttöä, CTR 3,9 %, keskisijoitus 11,5. Klikkauksista
+**657 mobiilista (79 %)**, 154 tietokoneelta ja 19 tabletista. Supermetricsin kokeilu on päättynyt, joten luvut
+luettiin Search Consolesta selaimella (ei maksullista käyttöönottoa).
+
+Kymmenen tärkeintä laskeutumissivua (klikkaukset 28 pv): etusivu 83, /blogi/lahja-miehelle-30v-40v-50v-60v 81,
+/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea 71, /blogi/lahja-naiselle-30v-40v-50v-60v 58,
+/blogi/hauskimmat-elakelahjat-selviytymisopas 58, /blogi/hauskat-isanpaivalahjat-opas 25,
+/blogi/hauska-lahja-kaverille 22, /blogi/parhaat-hauskat-tarrat-lappariin 18, /blogi/parhaat-hauskat-lahjat-miehelle 17,
+/blogi/hauskat-lahjat-tyokavereille-opas 17. Yhdeksän kymmenestä on blogiartikkeleita, joten tärkein polku on
+blogi > tuotesivu > kori > kassa > Stripe. Kaikki muutokset koskevat näitä sivuja (blogin tuotekortit,
+etusivun tuoteruudukot ja kaikki tuotesivut).
+
+**Mittaus mobiilissa (Playwright, iPhone 13 390x664 ja Pixel 5 393x727, tuotanto ennen muutoksia):**
+
+| Kohta | Ennen | Jälkeen |
+|---|---|---|
+| Kassa ennen Stripeä | 3 vaihetta (Tiedot, Toimitus, Maksu), 3 painallusta, 8 kenttää ilman automaattista täyttöä (vain puhelimessa autocomplete) | 1 lomake, 1 painallus "Siirry maksamaan X €", 7 kenttää autocomplete-tiedoilla (nimi, sähköposti, puhelin, osoite, postinumero numeronäppäimistöllä, postitoimipaikka) |
+| Ostoskorin Jatka kassalle | yhteenvedon lopussa lisämyyntikorttien alla, mobiilissa noin kahden ruudun päässä | kiinteä palkki ruudun alareunassa: loppusumma toimituksineen ja Jatka kassalle; yhteenveto ennen lisämyyntiä |
+| Ostoskorin alennuskoodikenttä | näkyi, mutta ei tehnyt mitään | poistettu; koodi ja lahjakortti syötetään kassalla, jossa ne tarkistetaan |
+| Tuotesivun Lisää koriin | y=761 (iPhone) ja y=776 (Pixel), ensinäkymän alapuolella; kiinteä palkki pyysi vierittämään ("Valitse koko ↓") | koot ja Lisää koriin kiinteässä palkissa, valittavissa ilman vieritystä molemmilla laitteilla; sivun oma painike y=665 / y=682 |
+| Blogin tuotekortit | "Katso tuote", ensimmäinen tuote y=1211 | "Osta", ensimmäinen tuote y=1107 (avainsanat pois mobiilin ensinäkymästä) |
+| Sarja-, laskeutumis- ja etusivun tuotekortit | ei ostopainiketta mobiilissa (hover-painike vain hiirelle) | näkyvä Osta-painike |
+| Tuotesivun JavaScript | blogidata (126 kt pakattuna) ladattiin ennen ensinäkymää lahjaoppaiden linkkejä varten | ladataan ensinäkymän jälkeen |
+| Kuvat | tuotesivulla 11 kuvaa yhteensä 98 kt, blogissa 5 kuvaa 25 kt (WebP, srcset) | ennallaan, ei kitkaa |
+
+Hakukävijän polku blogista koriin: Osta (1) > koko palkista > Lisää koriin (2). Kassalla yksi painallus Stripeen.
+
+**Suurin kitkakohta: kolmivaiheinen kassa ilman automaattista täyttöä.** Mobiilissa ostaja kirjoitti nimen,
+sähköpostin, osoitteen, postinumeron ja kaupungin käsin ja painoi kolme kertaa Jatka ennen kuin pääsi Stripen
+maksusivulle. Kolmas vaihe ("Maksu") ei kysynyt mitään, vaan kertoi siirtymisestä Stripeen. Nyt selain täyttää
+tiedot yhdellä napautuksella ja maksupainike näyttää loppusumman.
+
+**Tuotesivu (kaikki 573 tuotetta):**
+- **Kokotaulukko senttimetreinä** pohjatuotteen mukaan: leveys, pituus ja hiha Gildanin mittalomakkeista
+  (Softstyle 64000, Heavy Cotton 5000, Heavy Blend 18500; tuumat muunnettu, 1 in = 2,54 cm). Taulukko näkyy
+  tuotesivulla ja Kokotaulukko (cm) -ikkunassa vain myytävillä koilla. Pohja tulee tuotekohtaisesti Printifystä
+  (`api/_lib/tuotepohjat.generated.js`), joten mittoja ei lainata toisesta tuotteesta. Koskee 559 vaatetta.
+- **"Painetaan tilauksesta EU:ssa, toimitus 3-10 arkipäivää"** vain EU-painotalon tuotteille: OPT OnDemand
+  (Tšekki), Textildruck Europa (Saksa), Atelier Katanga (Ranska). Keraaminen koriste painetaan Yhdysvalloissa
+  (Imagine Your Photos), joten siinä riviä ei ole. Maat Printifyn rajapinnasta 29.10.2026.
+- **"Ehtii jouluksi, kun tilaat viimeistään X"**: sama lähde kuin ennen (t-paidat ti 1.12., muut ma 30.11.),
+  näkyy hinnan alla, ostoskorissa ja Sopii lahjaksi -osiossa vain ennen takarajaa.
+- **Sopii lahjaksi**: toimitus suoraan saajalle (kassan valinta), 14 päivän palautusoikeus (personoiduilla ei),
+  lahjakortti 25-100 €. Vain olemassa olevia ominaisuuksia.
+- **Sama huumori, eri tuote**: enintään 4 korttia heti ostoalueen alla, ensin sama design muina tuotetyyppeinä,
+  sitten sama teema toisessa kategoriassa (aiemmin sivun lopussa).
+- Toimitusarvio ja Sama design myös -linkit siirtyivät ostopainikkeen alle, jotta koko ja painike mahtuvat ylemmäs.
+- Luottamustiedot ennen koria: toimitushinta ja -aika, takaraja ja 14 päivän palautus hinnan alla; maksutavat
+  (Visa, Mastercard, Apple Pay, Google Pay, Klarna, MobilePay) painikkeen alla; kotimainen kauppa ja Y-tunnus
+  yläpalkissa ja alatunnisteessa (ennallaan).
+
+**Materiaalit tarkentuivat** samoista Gildanin mittalomakkeista: Gildan 5000 Sport Grey 90/10, Ash 99/1 ja
+meleeratut 50/50 (aiemmin ei riviä), Softstyle 64000 Heather Oatmeal 99/1 (aiemmin 35/65). Materiaalirivi on edelleen
+561 tuotteella 573:sta, ja kolmen Gildan 5000 -tuotteen rivi kattaa nyt kaikki värit.
+
+**Arvostelut:**
+- Arviopyyntö lähtee vain varmistetun perillemenon jälkeen (Printifyn `delivered_at` + 7 pv). Aiempi varasääntö
+  "10 pv lähetyksestä" poistettu.
+- Viestissä on jokaiselle tuotteelle oma "Arvioi tämä tuote" -linkki (`/arvostele?token=...&t=<rivi>`), ja
+  arviosivu avaa sen tuotteen ensimmäisenä.
+- Tuotesivu näyttää vain julkaistut arviot maksetuista tilauksista, joissa arvioitu rivi on juuri tämä tuote
+  (`/api/sahkoposti?arviot=<slug>`), merkinnällä "Varmistettu ostaja". Keksittyjä tai kovakoodattuja arvioita ei ole.
+  Tällä hetkellä arvioita on 0, joten osiota ei näy.
+- Moderointi: `?tehtava=arviot` listaa odottavat, `&julkaise=<id>` tai `&hylkaa=<id>` vaihtaa tilan.
+
+**Mittaus (GA4):**
+- Uusi `view_item` tuotesivulla. `add_to_cart` ja `begin_checkout` olivat jo käytössä.
+- `item_id` on nyt tuotteen slug kaikissa vaiheissa, kuten `purchase`-tapahtumassa (ennen tietokannan id), joten
+  vaiheet yhdistyvät samaan tuotteeseen.
+- `viikkomittarit` palauttaa suppilon (`ga4Suppilo`: view_item, add_to_cart, begin_checkout, purchase) viikoittain,
+  kun GA4 Data API -avaimet on asetettu. Viikkotaulukossa on uusi Suppilo-sarake.
+- Tapahtumat lähtevät vain analytiikkasuostumuksella, joten suppilo kuvaa suostumuksen antaneita kävijöitä.
+
+**Tarkistus tuotannossa** (curl kolmella User-Agentilla: Googlebot, iPhone Safari, Windows Chrome):
+- Tuotesivu, blogi, /lahjat/kalastajalle, etusivu, /ostoskori, /kassa ja arvioiden rajapinta palauttavat 200.
+- "Painetaan tilauksesta EU:ssa" on tuotesivun esirenderöidyssä HTML:ssä.
+- Merchant-syöte: 571 tuotetta, materiaalit 90 puuvilla, 168 puuvilla/polyesteri ja 12 paperi.
+- Playwright-läpikulku molemmilla laitteilla: 21 Osta-painiketta blogissa, kokotaulukko, Sama huumori ja Sopii
+  lahjaksi tuotesivulla, koko valittu palkista ja tuote lisätty koriin, kassapalkki näkyvissä (31,80 € sis.
+  toimitus 6,90 €), alennuskenttä poissa korista, kassassa 7 autocomplete-kenttää ja "Siirry maksamaan 31,80 €".
+- Testit 1 423 läpi, tsc puhdas.
+
+**Vanha Stripe-tili.** Salainen avain kierrettiin 29.10.2026 klo 01.43 Pakistanin aikaa (22.43 Suomen aikaa 28.10.),
+joten vanha Lovable-kassa ei voi luoda maksuja. Webhook pysyy päällä, kunnes ennen kiertoa luodut sessiot ovat
+vanhentuneet (enintään 24 h). Poisto käytöstä 31.10.2026 tai myöhemmin: KAYTTOONOTTO.md, "Vanhan kassan webhookin
+sulkeminen". Tiliä ei suljeta.
+
+**Resend.** huumorikauppa.fi on tuntemattoman Cloudflare-tilin alla, ja Cowork valmistelee siirtoa uudelle tilille.
+Resend vahvistuu nimipalvelinvaihdon jälkeen. Vahvistuksen tarkistus jatkuu 30 minuutin välein; DNS:ään ei
+kosketa.
+
+**Arvioitu vaikutus.** Mobiili tuo 79 % hakuklikkauksista, ja kassa oli siellä raskain vaihe. Kassan
+yksivaiheisuus ja automaattinen täyttö sekä ostopainikkeet blogin ja laskeutumissivujen korteissa kohdistuvat
+juuri niihin kävijöihin, jotka tuovat lähes kaiken myynnin. Vaikutus näkyy suppilossa ensimmäisen täyden viikon
+(W45) jälkeen: begin_checkout / add_to_cart ja purchase / begin_checkout.
+
+**Seuraavaksi:**
+1. GA4 Data API -avaimet (KAYTTOONOTTO.md "GA4 Data API"), jotta suppilo täyttyy automaattisesti.
+2. Ensimmäisten arvioiden julkaisu, kun toimitettujen tilausten pyynnöt alkavat palata.
+3. Vanhan Stripe-webhookin poisto 31.10.2026 tai myöhemmin.
+
 ## 29.10.2026 ilta: joulun takaraja painotaloittain, materiaalit Printifystä, Search Console, GA4 Data API
 
 **Joulun takaraja.** Yläpalkki näytti 30.11. ja t-paitojen tuotesivut 1.12. Laskettu uudelleen painotaloittain
@@ -134,16 +238,18 @@ Palomiehelle: Sankari Savussa", "Eläkeläinen: aamuherätys vapaaehtoinen"). UR
 myynti, keskiostos ja kate alv 0 Printifyn todellisilla kuluilla. Kävijät ja konversio GA4:stä. Huumorikaupan
 GA4-propertya ei ole liitetty raportointityökaluun, joten ne puuttuvat taulukosta, kunnes property on liitetty.
 
-| Viikko | Kävijät | Konversio | Lähde (kävijät) | Tilaukset (Printify) | Keskiostos | Kate | Huom. |
-|---|---|---|---|---|---|---|---|
-| 2026-W40 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W41 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W42 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W43 | ei mitattu | ei mitattu | ei mitattu | 4 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W44 | ei mitattu | ei mitattu | ei mitattu | 2 | ei tiedossa | ei tiedossa | uusi kassa 27.10. alkaen, 0 maksettua |
+| Viikko | Kävijät | Konversio | Lähde (kävijät) | Suppilo (tuote > kori > kassa > osto) | Tilaukset (Printify) | Keskiostos | Kate | Huom. |
+|---|---|---|---|---|---|---|---|---|
+| 2026-W40 | ei mitattu | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W41 | ei mitattu | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W42 | ei mitattu | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W43 | ei mitattu | ei mitattu | ei mitattu | ei mitattu | 4 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W44 | ei mitattu | ei mitattu | ei mitattu | view_item 29.10. alkaen | 2 | ei tiedossa | ei tiedossa | uusi kassa 27.10. alkaen, 0 maksettua |
 
 Täytetään maanantaisin: tilaukset, keskiostos ja kate tehtävästä `viikkomittarit`, kävijät ja konversio GA4:stä
 (lähde "GA4 Data API", kun avaimet on asetettu, muuten "Cowork GA4")
+Suppilo: tapahtumamäärät view_item > add_to_cart > begin_checkout > purchase (`viikkomittarit`-tehtävän `suppilo`,
+tai Cowork GA4: Raportit > Kaupankäynti > Ostospolku).
 (Raportit > Hankinta > Liikenteen hankinta, lähde/media). Vanhan kassan tilausten myyntisummat ovat vanhassa
 Lovable-taustassa, joten niiden keskiostos ja kate puuttuvat.
 

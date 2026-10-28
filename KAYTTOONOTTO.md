@@ -206,8 +206,14 @@ Tarkistus sulkemisen jälkeen: vanhan create-checkoutin kutsu (KASVU-RAPORTTI.md
 `cs_live_`-osoitetta, ja `node scripts/kassatesti.mjs --url https://huumorikauppa.fi --salli-live` luo session
 tilille `acct_1UVAUMPNXkES1q9G`.
 
-**Vanhan kassan webhookin sulkeminen (päivitetty 28.10.2026). Saa tehdä vasta, kun ensimmäinen oikea tilaus on
-mennyt uuden kassan läpi.** Uusi kassa on ollut käytössä huumorikauppa.fi:ssä 27.10.2026 alkaen (välitys), eikä
+**Tilanne 29.10.2026:** vanhan tilin `acct_1THtN1AhUyocG7PO` salainen avain kierrettiin 29.10.2026 klo 01.43
+Pakistanin aikaa (28.10. klo 22.43 Suomen aikaa, 20.43 UTC) vanhentumisella "now", joten Lovablen kassa ei voi enää
+luoda maksuja. Ennen kiertoa luodut Stripe Checkout -sessiot vanhenevat viimeistään 24 tunnin kuluttua luonnista,
+eli viimeistään 29.10. klo 22.43 Suomen aikaa. Webhook pidetään päällä siihen asti, jotta mahdollinen viimeinen
+maksu käsitellään. **Webhookin saa poistaa käytöstä 31.10.2026 tai myöhemmin** alla olevilla ohjeilla.
+
+**Vanhan kassan webhookin sulkeminen (päivitetty 29.10.2026). Saa tehdä aikaisintaan 31.10.2026 ja vasta, kun
+ensimmäinen oikea tilaus on mennyt uuden kassan läpi.** Uusi kassa on ollut käytössä huumorikauppa.fi:ssä 27.10.2026 alkaen (välitys), eikä
 sivusto kutsu Lovablen kassaa. Vanhan tilin webhook on vielä päällä, joten mahdollinen suora maksu vanhaan kassaan
 käsitellään edelleen.
 
@@ -222,9 +228,9 @@ Toimenpiteet vanhalla tilillä `acct_1THtN1AhUyocG7PO` (Live mode):
 1. Developers > Webhooks > endpoint `https://exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/stripe-webhook` >
    ... > **Disable endpoint**. Älä poista sitä (Disable riittää ja on peruttavissa).
 2. Tarkista samasta näkymästä, että endpointin tila on Disabled eikä tapahtumia lähde.
-3. **Älä sulje tiliä, älä kierrä avaimia äläkä muuta tilin asetuksia.** Tilillä hoidetaan avoin riita-asia
-   3.11.2026, ja sen maksut, palautukset ja tilitykset tarvitaan. Avainten kierron voi harkita vasta, kun riita on
-   ratkaistu ja palautusaika viimeisestä vanhan kassan tilauksesta on kulunut.
+3. **Älä sulje tiliä äläkä muuta tilin asetuksia.** Tilillä hoidetaan avoin riita-asia 3.11.2026, ja sen maksut,
+   palautukset ja tilitykset tarvitaan. Salainen avain on jo kierretty (29.10.2026); Dashboardin palautukset ja
+   riita-asia eivät käytä avainta.
 4. Kirjaa KASVU-RAPORTTI.md:hen päivä ja kellonaika.
 
 Tarkistus sulkemisen jälkeen: tee uusi testisessio huumorikauppa.fi:ssä (`node scripts/kassatesti.mjs --url
