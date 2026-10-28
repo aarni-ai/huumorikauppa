@@ -404,7 +404,9 @@ function buildContentGraphPages(products: Product[]): PrerenderPage[] {
     return matched.length > 0 ? matched : fallback;
   };
   return [
-    ...professions.map((p) => buildContentGraphPage("ammatti", p, pick(p.keywords))),
+    ...professions
+      .filter((p) => !SUPERSEDED_PATHS.has(`/ammatti/${p.slug}`))
+      .map((p) => buildContentGraphPage("ammatti", p, pick(p.keywords))),
     ...hobbies
       .filter((h) => !SUPERSEDED_PATHS.has(`/harrastus/${h.slug}`))
       .map((h) => buildContentGraphPage("harrastus", h, pick(h.keywords))),

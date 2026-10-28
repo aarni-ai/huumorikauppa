@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { findHobby, hobbies } from "@/data/hobbies";
+import { LANDING_REDIRECTS } from "@/data/landingRoutes";
 import { situationGifts } from "@/data/situationGifts";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
@@ -74,7 +75,9 @@ const HobbyPage = () => {
     "@graph": [itemListJsonLd, faqJsonLd],
   };
 
-  const relatedHobbies = hobbies
+  // Yhdistetyt harrastussivut ohjataan 301:llä laskeutumissivulle (landingRoutes.ts): niihin ei linkitetä.
+  const linkedHobbies = hobbies.filter((h) => !LANDING_REDIRECTS[`/harrastus/${h.slug}`]);
+  const relatedHobbies = linkedHobbies
     .filter((h) => hobby.relatedSlugs.includes(h.slug))
     .slice(0, 8);
 
@@ -222,7 +225,7 @@ const HobbyPage = () => {
         <nav className="mt-8 pt-6 border-t border-border" aria-label="Kaikki harrastukset">
           <h2 className="font-display text-xl text-foreground mb-4">Selaa harrastuslahjoja</h2>
           <div className="flex flex-wrap gap-2">
-            {hobbies
+            {linkedHobbies
               .filter((h) => h.slug !== hobby.slug)
               .slice(0, 12)
               .map((h) => (

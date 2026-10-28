@@ -89,6 +89,14 @@ const LANDING_PATHS = [
   "/hauskat-lahjat-naiselle",
   "/syntymapaivalahjat",
   "/lahjat/harrastajalle",
+  "/lahjat/remontoijalle",
+  "/lahjat/kalastajalle",
+  "/lahjat/metsastajalle",
+  "/lahjat/autoilijalle",
+  "/lahjat/golfaajalle",
+  "/lahjat/mokkeilijalle",
+  "/lahjat/maanviljelijalle",
+  "/lahjat/it-ihmiselle",
   "/ammattipaidat",
 ];
 

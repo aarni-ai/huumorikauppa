@@ -19,6 +19,7 @@ import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { FATHERS_DAY_TEXT } from "./campaignSchedule";
 import { isanpaivaLause, jouluMetaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
+import { sarjaPages, SARJA_SIVUT } from "./landingPagesSarjat";
 import {
   AMMATTI,
   ELAKE,
@@ -1940,10 +1941,18 @@ export const landingPages: LandingPageDef[] = [
         a: "Personoitavaan Harrastusmestari-paitaan kirjoitat lajin tai oman tekstin tuotesivulla.",
       },
     ],
-    related: ["/joululahja-miehelle-jolla-on-kaikki", "/lahjat/veljelle", "/joululahja-isalle", "/suomalainen-huumori-paidat"],
+    related: [
+      "/joululahja-miehelle-jolla-on-kaikki",
+      "/lahjat/veljelle",
+      "/joululahja-isalle",
+      "/suomalainen-huumori-paidat",
+      ...SARJA_SIVUT,
+    ],
     categories: ["t-paidat", "hupparit"],
     filter: HARRASTUS,
   },
+  // 29.10.2026: harrastus- ja ammattisarjojen sivut (src/data/landingPagesSarjat.ts)
+  ...sarjaPages,
   {
     path: "/ammattipaidat",
     name: "Ammattipaidat",
