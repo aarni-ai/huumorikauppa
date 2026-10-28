@@ -2,6 +2,8 @@
  * Kevyt reittiluettelo laskeutumissivuille (App.tsx, Header). Itse sisältö ja suodattimet ovat
  * src/data/landingPages.ts:ssä; testi varmistaa, että LANDING_PATHS vastaa sitä.
  */
+import { YHDISTETYT_KATEGORIAT } from "@/lib/hiddenCategories";
+
 export const LANDING_PATHS: readonly string[] = [
   "/joululahjat",
   "/lahjat/joululahjaksi-miehelle",
@@ -21,12 +23,11 @@ export const LANDING_PATHS: readonly string[] = [
   "/joululahja-alle-50-euroa",
   "/lahjat/pikkujouluihin",
   "/salainen-joulupukki-lahja",
-  "/hauskat-t-paidat",
-  "/hauskat-hupparit",
   "/meemipaidat",
   "/suomalainen-huumori-paidat",
   "/tonnin-seteli-paita",
   "/setamiespaidat",
+  "/lahjat/30-vuotiaalle-miehelle",
   "/lahjat/40-vuotiaalle-miehelle",
   "/lahjat/50-vuotiaalle-miehelle",
   "/lahjat/60-vuotiaalle-miehelle",
@@ -39,6 +40,7 @@ export const LANDING_PATHS: readonly string[] = [
   "/lahjat/siskolle",
   "/lahjat/veljelle",
   "/lahjat/puolisolle",
+  "/lahjat/vauvalle",
   "/lahja-kaverille",
   "/lahjat/tyokaverille",
   "/isanpaivalahja",
@@ -78,6 +80,33 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/ammatti/maanviljelijä": "/ammatti/maanviljelija",
   "/kaupunki/ylojärvi": "/kaupunki/ylojarvi",
   "/kaupunki/lempäälä": "/kaupunki/lempaala",
+  // 28.10.2026 canonical-korjaus (KASVU-RAPORTTI.md): Search Console "Google valitsi eri kanonisen sivun".
+  // Sama hakuaikomus kuin toisella sivulla -> yhdistetty sivuun, jolla on oma sisältö.
+  "/lahjat/miehelle": "/hauskat-lahjat-miehelle",
+  "/lahja-miehelle": "/hauskat-lahjat-miehelle",
+  "/lahjat/naiselle": "/hauskat-lahjat-naiselle",
+  "/lahjat/aitienpaiva": "/aitienpaiva",
+  "/lahjat/kollegalle": "/lahjat/tyokaverille",
+  "/lahjat/syntymapaivasankarille": "/syntymapaivalahjat",
+  "/lahjat/ystavalle": "/lahja-kaverille",
+  "/lahjat/polttareihin": "/polttari-lahjat",
+  "/lahjat/huumorilahjat": "/kaikki-tuotteet",
+  "/lahjat/koodaajalle": "/ammatti/koodari",
+  "/lahjat/rakennusmiehelle": "/ammatti/rakennusmies",
+  "/lahjat/yrittajalle": "/ammatti/yrittaja",
+  "/hauskat-t-paidat": "/kategoria/t-paidat",
+  "/hauskat-hupparit": "/kategoria/hupparit",
+  "/opiskelijan-haalarimerkit": "/haalarimerkit",
+  // Alle 8 sopivaa tuotetta -> lähin sivu tai saman aiheen opas
+  "/lahjat/golfaajalle": "/lahjat/harrastajalle",
+  "/lahjat/autoharrastajalle": "/lahjat/harrastajalle",
+  "/lahjat/muutoiset": "/lahja-kaverille",
+  "/lahjat/ystavanpaiva": "/lahja-kaverille",
+  "/lahjat/lapselle": "/joululahja-teinille",
+  "/lahjat/valmistujaisiin": "/blogi/hauskat-valmistujaislahjat-2026",
+  "/lahjat/juhannus": "/blogi/hauska-lahja-juhannukseen-2026",
+  // Kategoriat, joissa alle 8 tuotetta (src/lib/hiddenCategories.ts)
+  ...Object.fromEntries(Object.entries(YHDISTETYT_KATEGORIAT).map(([slug, to]) => [`/kategoria/${slug}`, to])),
 };
 
 /**
@@ -86,9 +115,9 @@ export const LANDING_REDIRECTS: Record<string, string> = {
  */
 export const NOT_CREATED_LANDINGS: Record<string, string> = {
   "/joululahja-alle-10-euroa": "/lahjat/alle-30-euroa",
-  "/joulupaidat": "/hauskat-t-paidat",
-  "/jouluhupparit": "/hauskat-hupparit",
-  "/vauvan-ensimmainen-joulu": "/joululahjat",
+  "/joulupaidat": "/joululahjat",
+  "/jouluhupparit": "/joululahjat",
+  "/vauvan-ensimmainen-joulu": "/lahjat/vauvalle",
   "/sauna-t-paidat": "/suomalainen-huumori-paidat",
   "/lahjat/mokkeilijalle": "/lahjat/harrastajalle",
 };

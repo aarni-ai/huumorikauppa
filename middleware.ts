@@ -14,7 +14,7 @@
  * tarvitaan vain reiteille, joita buildissa ei ollut (esim. myöhemmin lisätyt tuotteet).
  */
 import { buildBreadcrumbJsonLd, buildProductJsonLd, serializeJsonLd } from './src/seo/structuredData.js';
-import { onPiilotettuTuote } from './src/lib/hiddenCategories.js';
+import { kategoriaPolku, onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
 import { euOhjausKohde } from './api/_lib/eu-reititys.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
@@ -1048,7 +1048,7 @@ export default async function middleware(request: Request): Promise<Response | u
       });
       const breadcrumbSchema = buildBreadcrumbJsonLd([
         { name: 'Etusivu', url: 'https://huumorikauppa.fi/' },
-        { name: pd.categoryName, url: `https://huumorikauppa.fi/kategoria/${pd.category}` },
+        { name: pd.categoryName, url: `https://huumorikauppa.fi${kategoriaPolku(pd.category)}` },
         { name: pd.name, url: `https://huumorikauppa.fi/tuote/${pd.slug}` },
       ]);
       html = injectJsonLd(html, productSchema, breadcrumbSchema);

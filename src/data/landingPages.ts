@@ -199,6 +199,12 @@ const ISA_VITSIT = all(
 const TONNIN_SETELI_TPAITA = "/tuote/tonnin-seteli-t-paita";
 const SE_OLI_TPAITA = "/tuote/se-oli-tonnin-seteli-t-paita";
 
+/** Vauvaperhe: vauvan body ja tuoreiden vanhempien äiti- ja isäpaidat. */
+const VAUVAPERHE = any(
+  inCategory("bodyt"),
+  theme(/vauva/, /taapero/, /super äiskä/, /maailman paras äiti/, /maailman paras isä/, /iskä ei osaa/),
+);
+
 const ANY_AGE = all(any(age(30), age(40), age(50), age(60), age(70)), not(workYears));
 
 // ── Sivut ───────────────────────────────────────────────────────────────────────
@@ -572,8 +578,9 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/lahja-kaverille", "/lahjat/pikkujouluihin", "/meemipaidat", "/salainen-joulupukki-lahja", TONNIN_SETELI_PATH],
-    categories: ["t-paidat", "koristeet"],
+    categories: ["t-paidat", "hupparit"],
     filter: KAVERI,
+    sort: "hupparit-first",
   },
   {
     path: "/joululahja-tyokaverille",
@@ -609,6 +616,8 @@ export const landingPages: LandingPageDef[] = [
     related: ["/joululahjat", "/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/lahjat/pomolle"],
     categories: ["t-paidat", "hupparit"],
     filter: any(TYO, all(OMA_TEKSTI, inCategory("tarrat", "koristeet"))),
+    featured: theme(/pikkujoulu/, /kesäloma/, /lounastauko/),
+    sort: "hupparit-first",
   },
   {
     path: "/lahjat/pomolle",
@@ -642,7 +651,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/joululahja-tyokaverille", "/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/ammattipaidat"],
-    categories: ["t-paidat"],
+    categories: ["t-paidat", "hupparit"],
     filter: POMO,
   },
   {
@@ -681,8 +690,9 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/lahjat/isoaidille", "/joululahja-papalle", "/joululahja-aidille", "/lahjat/70-vuotiaalle"],
-    categories: ["peitot", "seinataulut", "hupparit"],
+    categories: ["hupparit", "t-paidat"],
     filter: MUMMO,
+    sort: "hupparit-first",
   },
   {
     path: "/joululahja-papalle",
@@ -791,7 +801,7 @@ export const landingPages: LandingPageDef[] = [
         a: `${D}`,
       },
     ],
-    related: ["/meemipaidat", "/joululahja-kaverille", "/lahjat/harrastajalle", "/hauskat-hupparit"],
+    related: ["/meemipaidat", "/joululahja-kaverille", "/lahjat/harrastajalle", "/joululahja-alle-50-euroa"],
     categories: ["hupparit", "t-paidat"],
     filter: TEINI,
     sort: "hupparit-first",
@@ -828,8 +838,10 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/joululahjat", "/joululahja-alle-50-euroa", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/joululahja-kaverille"],
-    categories: ["t-paidat", "koristeet"],
+    categories: ["t-paidat", "hupparit"],
     filter: maxPrice(30),
+    // Johdannon mukaan: ikä-, ammatti- ja harrastuspaidat ensin (erottaa sivun t-paitakategoriasta).
+    featured: any(ANY_AGE, AMMATTI, HARRASTUS),
     sort: "price-desc",
   },
   {
@@ -863,9 +875,11 @@ export const landingPages: LandingPageDef[] = [
         a: `${D}`,
       },
     ],
-    related: ["/lahjat/alle-30-euroa", "/joululahjat", "/hauskat-hupparit", "/joululahja-isalle"],
+    related: ["/lahjat/alle-30-euroa", "/joululahjat", "/salainen-joulupukki-lahja", "/joululahja-isalle"],
     categories: ["hupparit", "t-paidat"],
     filter: all(maxPrice(50), not(inCategory("bodyt"))),
+    // Perheen joululahjahupparit (isä, äiti, pappa, eläkeläinen) ensin: erottaa sivun hupparikategoriasta.
+    featured: all(inCategory("hupparit"), any(ISA, AITI, PAPPA, ELAKE)),
     sort: "price-desc",
   },
   {
@@ -900,7 +914,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/salainen-joulupukki-lahja", "/joululahja-tyokaverille", "/lahjat/alle-30-euroa", "/joululahja-kaverille"],
-    categories: ["t-paidat", "tarrat"],
+    categories: ["t-paidat", "hupparit"],
     filter: PIKKUJOULU,
   },
   {
@@ -935,82 +949,12 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/lahjat/pikkujouluihin", "/joululahja-tyokaverille", "/lahjat/alle-30-euroa", "/joululahja-kaverille"],
-    categories: ["t-paidat", "koristeet"],
+    categories: ["t-paidat", "hupparit"],
     filter: SALAINEN_PUKKI,
     sort: "price-desc",
   },
 
   // ─── Tuotteet ───
-  {
-    path: "/hauskat-t-paidat",
-    name: "Hauskat t-paidat",
-    group: "tuotteet",
-    title: "Hauskat t-paidat miehille ja naisille | Huumorikauppa",
-    description:
-      `Hauskat t-paidat suomalaisella huumorilla: meemit, ikävuodet, ammatit, harrastukset ja kotikaupunki. Myös oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat t-paidat",
-    intro: [
-      "Hauska t-paita on paita, jonka painatus on vitsi: Huumorikaupan valikoimassa on meemejä, ikävuosipaitoja, ammatti- ja harrastuspaitoja sekä kotikaupunkiaiheisia paitoja.",
-      "Miehille valikoimassa ovat esimerkiksi Isäntä, Amatimies ja Kalju, naisille slay queen ja Super äiskä. Kaupunkipaidoissa on omat mallinsa yli 50 paikkakunnalle, ja Oma teksti/kuva -paitaan kirjoitat itse painettavan tekstin.",
-      `Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa. Toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
-    ],
-    faqs: [
-      {
-        q: "Millaisia hauskoja t-paitoja on?",
-        a: "Meemipaitoja, ikävuosipaitoja 30-, 40-, 50-, 60- ja 70-vuotiaille, ammatti- ja harrastuspaitoja, kotikaupunkipaitoja sekä personoitavia paitoja.",
-      },
-      {
-        q: "Onko hauskoja t-paitoja naisille?",
-        a: "On. Esimerkiksi slay queen, Super äiskä ja ikävuosipaidat kuten 40 ja fabulous. Lisää ideoita on sivulla Hauskat lahjat naiselle.",
-      },
-      {
-        q: "Voiko t-paitaan painaa oman tekstin?",
-        a: "Voi. Oma teksti/kuva -paidassa ja personoitavissa paidoissa kirjoitat tekstin tai kuvatoiveen tuotesivulla ennen ostoskoriin lisäämistä.",
-      },
-      {
-        q: "Kauanko toimitus kestää?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. ${D}`,
-      },
-    ],
-    related: ["/hauskat-hupparit", "/meemipaidat", "/setamiespaidat", "/suomalainen-huumori-paidat", "/ammattipaidat"],
-    categories: ["t-paidat"],
-    filter: inCategory("t-paidat"),
-  },
-  {
-    path: "/hauskat-hupparit",
-    name: "Hauskat hupparit",
-    group: "tuotteet",
-    title: "Hauskat hupparit miehille ja naisille | Huumorikauppa",
-    description:
-      `Hauskat hupparit suomalaisella huumorilla: eläkeläis-, ikävuosi-, meemi- ja kaupunkihupparit sekä oma teksti. ${JOULU_META}`,
-    h1: "Hauskat hupparit",
-    intro: [
-      "Hauska huppari on huppari, jonka painatus on vitsi: valikoimassa on eläkeläis- ja ikävuosihuppareita, meemejä, äiti- ja isäaiheisia huppareita sekä kotikaupunkihuppareita.",
-      "Huppari on talven lahjoista käytännöllinen, koska sitä käytetään sisällä ja ulkona, ja väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. Kaupunkihuppareissa paikkakuntalainen selviää mistä vain.",
-      `Hupparit painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa ja toimitetaan Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${D}`,
-    ],
-    faqs: [
-      {
-        q: "Millaisia hauskoja huppareita on?",
-        a: "Eläkeläis- ja ikävuosihuppareita, meemihuppareita kuten se oli tonnin seteli, äiti- ja isäaiheisia huppareita, kaupunkihuppareita ja Oma teksti/kuva -huppari.",
-      },
-      {
-        q: "Onko hauskoja huppareita miehille?",
-        a: "On. Esimerkiksi Isäntä, Kalju, Amatimies ja Museokamaa. Lisää ideoita on sivulla Hauskat lahjat miehelle.",
-      },
-      {
-        q: "Huppari vai t-paita lahjaksi?",
-        a: "Huppari on talvella käytössä useammin, ja sen väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. T-paita on edullisempi.",
-      },
-      {
-        q: "Voiko hupparin palauttaa?",
-        a: "Tilauksilla on 14 päivän peruutusoikeus. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen.",
-      },
-    ],
-    related: ["/hauskat-t-paidat", "/lahjat/joululahjaksi-miehelle", "/joululahja-alle-50-euroa", "/elakelahjat"],
-    categories: ["hupparit"],
-    filter: inCategory("hupparit"),
-  },
   {
     path: "/meemipaidat",
     name: "Meemipaidat",
@@ -1042,7 +986,7 @@ export const landingPages: LandingPageDef[] = [
         a: "Voi. Oma teksti/kuva -paidassa kirjoitat tekstin tai kuvatoiveen tuotesivulla.",
       },
     ],
-    related: ["/suomalainen-huumori-paidat", "/setamiespaidat", "/hauskat-t-paidat", "/joululahja-kaverille", TONNIN_SETELI_PATH],
+    related: ["/suomalainen-huumori-paidat", "/setamiespaidat", "/joululahja-kaverille", TONNIN_SETELI_PATH],
     categories: ["t-paidat", "hupparit"],
     filter: MEEMI,
   },
@@ -1077,7 +1021,7 @@ export const landingPages: LandingPageDef[] = [
         a: "Sisu näkyy kaupunkihuppareissa, joissa paikkakuntalainen selviää mistä vain. Ne löytyvät kaupunkisivuilta.",
       },
     ],
-    related: ["/meemipaidat", "/setamiespaidat", "/hauskat-t-paidat", "/lahjat/harrastajalle"],
+    related: ["/meemipaidat", "/setamiespaidat", TONNIN_SETELI_PATH, "/lahjat/harrastajalle"],
     categories: ["t-paidat", "hupparit"],
     extraLinks: [
       { href: "/kaupunki/tampere", label: "Tampere-paidat" },
@@ -1166,6 +1110,41 @@ export const landingPages: LandingPageDef[] = [
   },
 
   // ─── Lahjat ───
+  {
+    path: "/lahjat/30-vuotiaalle-miehelle",
+    name: "Lahja 30-vuotiaalle miehelle",
+    group: "lahjat",
+    title: "Hauska lahja 30-vuotiaalle miehelle | Huumorikauppa",
+    description:
+      `30 v lahja miehelle: 30v-paidat ja -hupparit kuten 30 nuori, villi ja jo väsynyt sekä 30v selkä alkaa jo rusahdella. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    h1: "Hauskat lahjat 30-vuotiaalle miehelle",
+    intro: [
+      "Hauska lahja 30-vuotiaalle miehelle on 30v-paita tai -huppari, jonka teksti nauraa kolmenkympin rajapyykille: 30 nuori, villi ja jo väsynyt, 30v selkä alkaa jo rusahdella tai 30 ja liian vanha tyhmyyksiin, teen ne silti.",
+      "Kolmekymppisen vitsi toimii, koska se on puoliksi totta. Juhlat venyvät yhä, mutta palautuminen kestää pidempään, ja kaveriporukka tunnistaa tilanteen heti. Jos sankari ottaa iän kevyesti, valitse rusahteleva selkä tai väsynyt villimies. Jos hän pitää enemmän kehuista, 30v paranen iän myötä kuin viini on varma valinta.",
+      `Kaikki tämän sivun tuotteet ovat 30-vuotistekstejä t-paitoina ja huppareina. Paidat painetaan tilauksesta, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa noin kaksi viikkoa ennen juhlia.`,
+    ],
+    faqs: [
+      {
+        q: "Mikä on hauska lahja 30-vuotiaalle miehelle?",
+        a: "30v-paita tai -huppari, esimerkiksi 30 nuori, villi ja jo väsynyt tai 30v selkä alkaa jo rusahdella.",
+      },
+      {
+        q: "Paita vai huppari 30-vuotislahjaksi?",
+        a: "Sama teksti on useimmiten saatavilla molempina. Huppari on talvijuhliin käytännöllisempi, t-paita edullisempi.",
+      },
+      {
+        q: "Sopivatko 30v-paidat myös naiselle?",
+        a: "30v paranen iän myötä kuin viini sopii kenelle tahansa. Naisille suunnatut ikävuosipaidat ovat sivulla Hauskat lahjat naiselle.",
+      },
+      {
+        q: "Kuinka ajoissa 30-vuotislahja kannattaa tilata?",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa noin kaksi viikkoa ennen syntymäpäivää.`,
+      },
+    ],
+    related: ["/lahjat/40-vuotiaalle-miehelle", "/syntymapaivalahjat", "/lahja-kaverille", "/meemipaidat"],
+    categories: ["t-paidat", "hupparit"],
+    filter: all(age(30), not(workYears)),
+  },
   {
     path: "/lahjat/40-vuotiaalle-miehelle",
     name: "Lahja 40-vuotiaalle miehelle",
@@ -1270,6 +1249,7 @@ export const landingPages: LandingPageDef[] = [
     related: ["/lahjat/60-vuotiaalle-naiselle", "/lahjat/50-vuotiaalle-miehelle", "/lahjat/70-vuotiaalle", "/elakelahjat"],
     categories: ["t-paidat", "hupparit"],
     filter: age(60),
+    featured: theme(/kokenut/, /kokemusta/, /takuu/, /kunto/),
   },
   {
     path: "/lahjat/70-vuotiaalle",
@@ -1305,6 +1285,7 @@ export const landingPages: LandingPageDef[] = [
     related: ["/lahjat/60-vuotiaalle-miehelle", "/elakelahjat", "/lahjat/isoisalle", "/joululahja-papalle"],
     categories: ["t-paidat", "hupparit"],
     filter: any(age(70), ELAKE, PAPPA, theme(/museokamaa/)),
+    featured: any(age(70), PAPPA, theme(/museokamaa/)),
   },
   {
     path: "/lahjat/50-vuotiaalle-naiselle",
@@ -1373,8 +1354,10 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/lahjat/60-vuotiaalle-miehelle", "/lahjat/50-vuotiaalle-naiselle", "/elakelahjat", "/lahjat/isoaidille"],
-    categories: ["hupparit", "peitot"],
+    categories: ["hupparit", "t-paidat"],
     filter: any(age(60), OMA_KOTIIN),
+    featured: theme(/nuori/, /sydän/, /sydan/, /nokkela/),
+    sort: "hupparit-first",
   },
   {
     path: "/elakelahjat",
@@ -1478,7 +1461,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/joululahja-mummolle", "/lahjat/isoisalle", "/lahjat/60-vuotiaalle-naiselle", "/joululahja-aidille"],
-    categories: ["peitot", "seinataulut"],
+    categories: ["t-paidat", "hupparit"],
     filter: MUMMO,
   },
   {
@@ -1587,6 +1570,42 @@ export const landingPages: LandingPageDef[] = [
     filter: PUOLISO,
   },
   {
+    path: "/lahjat/vauvalle",
+    name: "Lahja tuoreille vanhemmille",
+    group: "lahjat",
+    title: "Hauska lahja tuoreille vanhemmille | Huumorikauppa",
+    description:
+      "Lahja vauvaperheeseen tuoreille vanhemmille: äitiaiheiset paidat ja hupparit kuten Super äiskä sekä isäpaidat kuten Jos iskä ei osaa korjata sitä.",
+    h1: "Hauskat lahjat tuoreille vanhemmille",
+    intro: [
+      "Hauska lahja vauvaperheeseen on paita tai huppari tuoreelle äidille tai isälle: vauva saa lahjoja joka tapauksesta, mutta vanhemmat ilahtuvat tekstistä, joka kuvaa heidän uutta arkeaan.",
+      "Äidille sopivat äitiaiheiset paidat ja hupparit kuten Super äiskä, isälle esimerkiksi Jos iskä ei osaa korjata sitä tai personoitava isän paita, johon painetaan oma teksti. Ristiäisiin ja vauvakutsuille voi ostaa paidan kummallekin vanhemmalle, jolloin lahja huomioi molemmat. Huppari on valvottujen öiden ja vaunulenkkien vaate, joten se on käytössä heti. Jos lahja on tuoreelle mummolle tai papalle, katso isovanhempien omat sivut.",
+      `Personoidut tuotteet valmistetaan antamasi tekstin mukaan, joten niitä peruutusoikeus ei koske. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`,
+    ],
+    faqs: [
+      {
+        q: "Mitä antaa tuoreille vanhemmille?",
+        a: "Äidille Super äiskä -paita tai -huppari ja isälle esimerkiksi Jos iskä ei osaa korjata sitä -paita. Isän paidan voi myös personoida omalla tekstillä.",
+      },
+      {
+        q: "Sopiiko paita ristiäis- tai vauvakutsulahjaksi?",
+        a: "Sopii. Moni ostaa paidan kummallekin vanhemmalle, jolloin lahja muistaa koko perheen eikä vain vauvaa.",
+      },
+      {
+        q: "Voiko personoidun paidan palauttaa?",
+        a: "Ei. Omalla tekstillä valmistettuja tuotteita peruutusoikeus ei koske, koska ne tehdään asiakkaan toiveiden mukaan. Muilla tuotteilla on 14 päivän peruutusoikeus.",
+      },
+      {
+        q: "Kauanko toimitus kestää?",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.`,
+      },
+    ],
+    related: ["/joululahja-aidille", "/isanpaivalahja", "/lahjat/isoaidille", "/lahjat/puolisolle"],
+    categories: ["t-paidat", "hupparit"],
+    filter: VAUVAPERHE,
+    featured: inCategory("bodyt"),
+  },
+  {
     path: "/lahja-kaverille",
     name: "Lahja kaverille",
     group: "lahjat",
@@ -1618,7 +1637,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/joululahja-kaverille", "/meemipaidat", "/syntymapaivalahjat", "/lahjat/veljelle"],
-    categories: ["t-paidat", "koristeet"],
+    categories: ["t-paidat", "hupparit"],
     filter: KAVERI,
   },
   {
@@ -1653,7 +1672,7 @@ export const landingPages: LandingPageDef[] = [
       },
     ],
     related: ["/joululahja-tyokaverille", "/ammattipaidat", "/elakelahjat", "/lahjat/pomolle"],
-    categories: ["t-paidat"],
+    categories: ["t-paidat", "hupparit"],
     filter: TYO,
   },
   {
@@ -1938,8 +1957,8 @@ export const landingPages: LandingPageDef[] = [
         a: "Voi. Personoitavissa paidoissa kirjoitat tekstin tuotesivulla, enintään 200 merkkiä.",
       },
     ],
-    related: ["/lahjat/tyokaverille", "/joululahja-tyokaverille", "/lahjat/pomolle", "/hauskat-t-paidat"],
-    categories: ["t-paidat"],
+    related: ["/lahjat/tyokaverille", "/joululahja-tyokaverille", "/lahjat/pomolle", "/lahjat/harrastajalle"],
+    categories: ["t-paidat", "hupparit"],
     filter: AMMATTI,
   },
 ];

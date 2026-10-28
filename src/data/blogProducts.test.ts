@@ -7,7 +7,7 @@ import { municipalities } from "./municipalities";
 import { isLandingPath, looksLikeMug } from "./landingPages";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { christmasDeadlinePage } from "./christmasDeadlinePage";
-import { onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
+import { onKategoriasivu, onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { isFullyUnavailable } from "@/lib/variantAvailability";
 import { isCityProduct } from "./themes";
 import {
@@ -31,7 +31,7 @@ function pageExists(href: string): boolean {
   if (href === christmasDeadlinePage.path) return true;
   if (href in STATIC_PAGE_META) return true;
   const cat = href.match(/^\/kategoria\/([a-z0-9-]+)$/)?.[1];
-  if (cat) return categories.some((c) => c.slug === cat) && !onPiilotettu(cat);
+  if (cat) return categories.some((c) => c.slug === cat) && onKategoriasivu(cat);
   const town = href.match(/^\/kaupunki\/([a-z0-9-]+)$/)?.[1];
   if (town) return municipalities.some((m) => m.slug === town);
   return (GIFT_ROUTE_SLUGS as readonly string[]).includes(href.slice(1));

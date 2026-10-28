@@ -7,7 +7,7 @@ import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
  */
 import { PRODUCT_IMAGE_SIZES, defaultColorImages, productImageSources } from "@/lib/productImages";
 import { categories } from "@/data/products";
-import { CATEGORY_H1, CATEGORY_H2_SECTIONS, selectCategoryProducts } from "@/data/categoryContent";
+import { CATEGORY_H1, CATEGORY_H2_SECTIONS, CATEGORY_PAGE_CONTENT, selectCategoryProducts } from "@/data/categoryContent";
 import { giftCategories } from "@/data/giftCategories";
 import { situationGifts, filterProductsForSituation } from "@/data/situationGifts";
 import { professions } from "@/data/professions";
@@ -33,7 +33,7 @@ import {
 import { CHRISTMAS_MENU } from "@/data/landingRoutes";
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { ryhmatilausPage } from "@/data/ryhmatilausPage";
-import { onPiilotettu, onPiilotettuTuote } from "@/lib/hiddenCategories";
+import { kategoriaPolku, onKategoriasivu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
 import { generateProductCopy, isGenericDescription, sanitizeProductDescription, truncateAtWord } from "@/lib/productCopy";
@@ -113,9 +113,7 @@ export function normalizeProducts(rows: ProductRow[]): Product[] {
  */
 export const GIFT_ROUTE_SLUGS = [
   "polttari-lahjat",
-  "lahja-miehelle",
   "haalarimerkit",
-  "opiskelijan-haalarimerkit",
 ] as const;
 
 /** Polut, jotka laskeutumissivu tai uudelleenohjaus korvaa (ei esirenderöidä vanhalla sisällöllä). */
@@ -192,8 +190,9 @@ function itemListJsonLd(name: string, products: Product[], limit: number): JsonL
   };
 }
 
+/** Kategoriat, joilla on oma sivu (ei piilotettuja eikä yhdistettyjä, src/lib/hiddenCategories.ts). */
 function visibleCategories() {
-  return categories.filter((c) => !onPiilotettu(c.slug));
+  return categories.filter((c) => onKategoriasivu(c.slug));
 }
 
 /** Kategoriat, joissa on tuotteita (navigaatioon). Ilman tuotedataa kaikki näkyvät kategoriat. */
@@ -275,17 +274,20 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
     const path = `/kategoria/${category.slug}`;
     const h1 = CATEGORY_H1[category.slug] || `Hauskat ${category.name}`;
     const list = selectCategoryProducts(products, category.slug);
-    const faqs = buildCategoryFaqs(category.name);
+    const content = CATEGORY_PAGE_CONTENT[category.slug];
+    const faqs = content?.faqs ?? buildCategoryFaqs(category.name);
     const description =
-      category.seoDescription || `${category.description}. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`;
+      content?.description ||
+      category.seoDescription ||
+      `${category.description}. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`;
     return {
       path,
-      title: category.seoTitle || `${h1} | Huumorikauppa.fi`,
+      title: content?.title || category.seoTitle || `${h1} | Huumorikauppa.fi`,
       description,
       h1,
       ogImage: productImage(list[0]?.images[0]),
       breadcrumbs: [HOME, crumb(category.name, path)],
-      intro: [category.description],
+      intro: content?.intro ?? [category.description],
       sections: [
         ...(CATEGORY_H2_SECTIONS[category.slug] ?? []).map((s) => ({ heading: s.h2, paragraphs: [s.text] })),
         ...(category.seoText ? [{ markdown: category.seoText }] : []),
@@ -618,12 +620,12 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
     ogType: "product",
     ogImage: images[0],
     preloadImage: mainImage.srcSet ? { href: mainImage.src, srcset: mainImage.srcSet, sizes: PRODUCT_IMAGE_SIZES } : undefined,
-    breadcrumbs: [HOME, crumb(categoryName, `/kategoria/${product.category}`), crumb(product.name, path)],
+    breadcrumbs: [HOME, crumb(categoryName, kategoriaPolku(product.category)), crumb(product.name, path)],
     sections: [
       { paragraphs: description.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean) },
       { heading: "Materiaali ja hoito", paragraphs: [copy.material, copy.care] },
       { heading: "Toimitus ja palautus", paragraphs: [DELIVERY_FACTS] },
-      { links: [{ href: `/kategoria/${product.category}`, label: `Kaikki ${categoryName.toLowerCase()}` }] },
+      { links: [{ href: kategoriaPolku(product.category), label: onKategoriasivu(product.category) ? `Kaikki ${categoryName.toLowerCase()}` : "Kaikki tuotteet" }] },
     ],
     productsHeading: "Samankaltaisia tuotteita",
     products: toPrerenderProducts(related),

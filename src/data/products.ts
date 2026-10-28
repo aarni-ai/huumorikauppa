@@ -8,9 +8,9 @@ export const categories = [
     description: "Hauskat t-paidat ovat helppo lahjavaihtoehto. Löydät vaihtoehtoja eri ammateille, tilanteisiin ja henkilöille. Sopiva äitienpäivälahja äidille tai hauska lisä omaan vaatekaappiin.",
     seoTitle: "Hauskat T-paidat - Huumoripaidat | Huumorikauppa.fi",
     seoDescription: "Hauskat t-paidat lahjaksi isälle, kaverille tai äidille. Yli 100 mallia, koot XS-3XL. Nopea toimitus koko Suomeen. 👕",
-    seoText: `## Suomen hauskimmat t-paidat - meemipaidat, vitsipaidat ja huumoripaidat
+    seoText: `## Meemipaidat, vitsipaidat ja huumoripaidat
 
-Etsitkö hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan valikoimasta löydät Suomen hauskimmat t-paidat - meemipaidat, vitsipaidat ja huumoripaidat jotka saavat kaikki nauramaan. Valikoimamme kasvaa jatkuvasti uusilla malleilla ja trendeillä.
+Etsitkö hauskaa t-paitaa itsellesi tai lahjaksi? Huumorikaupan t-paidoissa on meemejä, vitsejä ja suomalaisia sanontoja, ja valikoimaan tulee uusia malleja.
 
 Meillä on satoja erilaisia hauskoja paitoja: kalastajan huumoripaitoja, setämiehen klassikkopaitoja, äiti-aiheisia huumoripaitoja, IT-alan nörttipaitoja ja paljon muuta. Jokainen paita on laadukas, mukava päällä ja varustettu kestävällä DTG-painatuksella joka ei haalistu pesussa.
 
@@ -22,15 +22,13 @@ Lahjapaidoista löydät esimerkiksi setähuumoripaitoja, kalastuspaitoja, eläkk
 
 ## Miksi tilata hauska t-paita Huumorikaupasta?
 
-Huumorikauppa on 100% suomalainen verkkokauppa, joka on erikoistunut hauskoihin vaatteisiin ja tuotteisiin. Tarjoamme ilmaisen toimituksen vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilauksiin ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.
-
-Valikoimamme uudistuu säännöllisesti uusilla meemipaidoilla ja trendeillä. Seuraa meitä sosiaalisessa mediassa pysyäksesi ajan tasalla uutuuksista ja tarjouksista!`,
+Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita. Tarjoamme ilmaisen toimituksen vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilauksiin ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.`,
   },
   {
     slug: "hupparit",
     name: "Hupparit",
     emoji: "🧥",
-    description: "Hauskat hupparit sopivat lahjaksi syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja: löydä sopiva huppari äidille, kaverille tai itsellesi. Tilattu ennen äitienpäivää? Toimitamme nopeasti.",
+    description: "Hauskat hupparit sopivat lahjaksi syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja: löydä sopiva huppari äidille, kaverille tai itsellesi.",
     seoTitle: "Hauskat Hupparit - Huumorihupparit | Huumorikauppa.fi",
     seoDescription: `Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat - ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} €. 🧥`,
     seoText: `## Hauskat hupparit - lämpöä, asennetta ja huumoria
@@ -47,7 +45,7 @@ Hauska huppari on erinomainen lahja syntymäpäiviin, jouluun, isänpäivään t
 
 ## Laatu ja materiaalit
 
-Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät konepesun ja säilyttävät muotonsa ja painatuksensa pitkään. Tarjoamme kokoja S-XXL, joten jokaiselle löytyy sopiva koko. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin ja 14 päivän palautusoikeus.`,
+Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät konepesun ja säilyttävät muotonsa ja painatuksensa pitkään. Saatavilla olevat koot näet jokaisen tuotteen sivulta. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin ja 14 päivän palautusoikeus.`,
   },
   {
     slug: "pitkahihaiset",

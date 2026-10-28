@@ -192,7 +192,6 @@ const App = () => (
               <Route path="/polttari-lahjat" element={<GiftCategoryPage />} />
               {/* 301-redirect: vanha äitienpäiväsivu → uusi /aitienpaiva */}
               <Route path="/aitienpaiva-lahjat" element={<MothersDayRedirect />} />
-              <Route path="/lahja-miehelle" element={<GiftCategoryPage />} />
               {/* Laskeutumissivut (src/data/landingPages.ts): staattiset polut voittavat /lahjat/:slug-reitin */}
               {LANDING_PATHS.map((path) => (
                 <Route key={path} path={path} element={<LandingPage />} />
@@ -205,7 +204,6 @@ const App = () => (
               ))}
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/haalarimerkit" element={<HaalarimerkkiPage />} />
-              <Route path="/opiskelijan-haalarimerkit" element={<HaalarimerkkiPage />} />
               <Route path="/suomalaiset-tyopaikkameemit-top-50" element={<WorkplaceMemesPage />} />
               <Route path="/hauskimmat-tyopaikkalaput-2026" element={<OfficeNotesPage />} />
               <Route path="/yhteystiedot" element={<ContactPage />} />

@@ -168,7 +168,7 @@ const WorkplaceMemesPage = () => {
           <div className="flex flex-wrap gap-2">
             <Link to="/lahjat/tyokaverille" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎁 Lahjat työkaverille</Link>
             <Link to="/lahjat/pomolle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">👔 Lahjat pomolle</Link>
-            <Link to="/lahjat/kollegalle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🤝 Lahjat kollegalle</Link>
+            <Link to="/lahjat/tyokaverille" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🤝 Lahjat kollegalle</Link>
             <Link to="/lahjat/pikkujouluihin" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">🎄 Pikkujouluihin</Link>
             <Link to="/hauskimmat-tyopaikkalaput-2026" className="px-3 py-1.5 rounded-full border border-border text-sm hover:border-primary/60 hover:text-primary transition">📋 Työpaikkalaput 2026</Link>
           </div>

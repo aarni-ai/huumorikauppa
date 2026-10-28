@@ -780,7 +780,7 @@ Vintage-tyyliset tarrat tuovat nostalgian tuntua läppärin kanteen.
 
 ## Hauska lahja Huumorikaupasta
 
-Huumorikaupasta löydät [hauskoja t-paitoja](/hauskat-t-paidat), [meemipaitoja](/meemipaidat), [huppareita](/hauskat-hupparit) ja [koristeita](/kategoria/koristeet), joihin saa myös oman tekstin.
+Huumorikaupasta löydät [hauskoja t-paitoja](/kategoria/t-paidat), [meemipaitoja](/meemipaidat), [huppareita](/kategoria/hupparit) ja [koristeita](/kaikki-tuotteet), joihin saa myös oman tekstin.
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
@@ -828,7 +828,7 @@ Valitse body, joka on pehmeää ja ihoa hellivää materiaalia, kestää konepes
 
 ## Lahja vanhemmille Huumorikaupasta
 
-Vanhemmat ilahtuvat myös omasta lahjasta. Katso [hauskat t-paidat](/hauskat-t-paidat), [hauskat hupparit](/hauskat-hupparit) ja [isänpäivälahjat](/isanpaivalahja).
+Vanhemmat ilahtuvat myös omasta lahjasta. Katso [hauskat t-paidat](/kategoria/t-paidat), [hauskat hupparit](/kategoria/hupparit) ja [isänpäivälahjat](/isanpaivalahja).
 
 **Lue myös:** [Lahja tuoreille vanhemmille](/blogi/lahja-tuoreille-vanhemmille)
 
@@ -859,9 +859,9 @@ Vauvan syntymä on yksi elämän suurimmista juhlista. Ja mitä parempi tapa juh
 
 ## Lahjaideoita vanhemmille
 
-- Hauska t-paita isälle tai äidille, katso [hauskat t-paidat](/hauskat-t-paidat)
-- Lämmin huppari valvottuihin öihin, katso [hauskat hupparit](/hauskat-hupparit)
-- Koriste, johon saa oman tekstin tai kuvan, katso [koristeet](/kategoria/koristeet)
+- Hauska t-paita isälle tai äidille, katso [hauskat t-paidat](/kategoria/t-paidat)
+- Lämmin huppari valvottuihin öihin, katso [hauskat hupparit](/kategoria/hupparit)
+- Koriste, johon saa oman tekstin tai kuvan, katso [koristeet](/kaikki-tuotteet)
 
 ## Milloin antaa hauska lahja?
 
@@ -975,7 +975,7 @@ Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajust
 
 ## Huumoria kotiin Huumorikaupasta
 
-Samaa huumoria kotiin tuovat myös [hauskat koristeet](/kategoria/koristeet), joihin saa oman tekstin. Tuparilahjaksi sopii myös [hauska huppari](/hauskat-hupparit).
+Samaa huumoria kotiin tuovat myös [hauskat koristeet](/kaikki-tuotteet), joihin saa oman tekstin. Tuparilahjaksi sopii myös [hauska huppari](/kategoria/hupparit).
 
 **Lue myös:** [Hauskat koristeet lahjaksi](/blogi/hauskat-koristeet-lahjaksi)
 
@@ -1023,7 +1023,7 @@ Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajust
 
 ## Tilaa koristeet Huumorikaupasta
 
-Katso [hauskat koristeet](/kategoria/koristeet). Lisää lahjaideoita löydät [syntymäpäivälahjoista](/syntymapaivalahjat).
+Katso [hauskat koristeet](/kaikki-tuotteet). Lisää lahjaideoita löydät [syntymäpäivälahjoista](/syntymapaivalahjat).
 
 **Lue myös:** [Hauskat seinätaulut](/blogi/hauskat-seinataulut-sisusta-huumorilla)
 
@@ -1674,7 +1674,7 @@ Klassinen joululahja.
 
 ## Lämmin ja hauska lahja Huumorikaupasta
 
-Lämpimäksi ja hauskaksi lahjaksi sopii myös huppari. Katso [hauskat hupparit](/hauskat-hupparit), [setämiespaidat](/setamiespaidat) ja [hauskat t-paidat](/hauskat-t-paidat).
+Lämpimäksi ja hauskaksi lahjaksi sopii myös huppari. Katso [hauskat hupparit](/kategoria/hupparit), [setämiespaidat](/setamiespaidat) ja [hauskat t-paidat](/kategoria/t-paidat).
 
 **Lue myös:** [Hauska huppari lahjaksi](/blogi/hauskat-hupparit-lahjaksi)
 
@@ -1722,7 +1722,7 @@ Klassinen talvinen joululahja. Lisää ideoita löydät [hauskoista joululahjois
 
 ## Tilaa Huumorikaupasta
 
-Kaikki mallit löydät sivulta [hauskat hupparit](/hauskat-hupparit).
+Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
 
 **Lue myös:** [Hauska peitto lahjaksi](/blogi/hauskat-peitot-lahjaksi)
 

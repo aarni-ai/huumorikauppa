@@ -26,6 +26,49 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 28.10.2026: Canonical-korjaus
+
+Search Console: 57 sivua "Kaksoiskappale, Google valitsi eri kanonisen sivun kuin käyttäjä" (/lahjat/..., /kategoria/...).
+GSC-listaa ei ollut, joten kaksoiskappaleet etsittiin vertaamalla esirenderöityjen sivujen otsikkoa, H1:tä, johdantoa,
+UKK:ta ja tuoteruudukkoa (tuotedatan tilannekuva). Löydökset: 20 /lahjat/-tilannesivua oli samaa templaattia (sama
+pohjateksti ja UKK, avainsanahaku "it"/"ai" osui lähes kaikkiin tuotteisiin, joten ruudukot olivat samat), 14
+kategoriasivua oli tyhjiä (alle 8 myynnissä olevaa tuotetta) ja /hauskat-t-paidat, /hauskat-hupparit ja /lahja-miehelle
+olivat kategoria- tai laskeutumissivun kopioita (sama H1 ja tuotteet).
+
+Yhdistetty 301:llä (vercel.json + LANDING_REDIRECTS, pois sivukartasta, llms.txt:stä ja sisäisistä linkeistä):
+- /lahjat/miehelle, /lahja-miehelle -> /hauskat-lahjat-miehelle
+- /lahjat/naiselle -> /hauskat-lahjat-naiselle
+- /lahjat/aitienpaiva -> /aitienpaiva
+- /lahjat/kollegalle -> /lahjat/tyokaverille
+- /lahjat/syntymapaivasankarille -> /syntymapaivalahjat
+- /lahjat/ystavalle, /lahjat/ystavanpaiva, /lahjat/muutoiset -> /lahja-kaverille
+- /lahjat/polttareihin -> /polttari-lahjat
+- /lahjat/huumorilahjat -> /kaikki-tuotteet
+- /lahjat/koodaajalle -> /ammatti/koodari, /lahjat/rakennusmiehelle -> /ammatti/rakennusmies, /lahjat/yrittajalle -> /ammatti/yrittaja
+- /lahjat/golfaajalle, /lahjat/autoharrastajalle -> /lahjat/harrastajalle
+- /lahjat/lapselle -> /joululahja-teinille
+- /lahjat/valmistujaisiin -> /blogi/hauskat-valmistujaislahjat-2026, /lahjat/juhannus -> /blogi/hauska-lahja-juhannukseen-2026
+- /hauskat-t-paidat -> /kategoria/t-paidat, /hauskat-hupparit -> /kategoria/hupparit (johdanto ja UKK siirtyivät kategoriasivulle)
+- /opiskelijan-haalarimerkit, /kategoria/haalarimerkit -> /haalarimerkit
+- /kategoria/pitkahihaiset -> /kategoria/t-paidat, /kategoria/bodyt -> /lahjat/vauvalle
+- /kategoria/tarrat, peitot, pipot, laukut, seinataulut, koristeet, lippikset, sukat, avaimenperat, asut, naamiot -> /kaikki-tuotteet
+  (src/lib/hiddenCategories.ts YHDISTETYT_KATEGORIAT; tuotteet pysyvät myynnissä, murupolku osoittaa kohdesivuun)
+
+Eriytetty omalla sisällöllä:
+- /kategoria/t-paidat ja /kategoria/hupparit: oma otsikko, johdanto ja UKK (FAQPage), ei enää "Suomen hauskimmat" -väitettä.
+- /lahjat/30-vuotiaalle-miehelle ja /lahjat/vauvalle (nyt "lahjat tuoreille vanhemmille"): laskeutumissivuiksi omalla
+  johdannolla, UKK:lla ja tuotesuodattimella.
+- Oma tuotejärjestys tai -valinta: /lahjat/alle-30-euroa, /lahjat/60-vuotiaalle-miehelle, /lahjat/60-vuotiaalle-naiselle,
+  /lahjat/70-vuotiaalle, /joululahja-mummolle, /joululahja-tyokaverille, /joululahja-kaverille, /joululahja-alle-50-euroa,
+  /polttari-lahjat (ennen kaikki paidat).
+
+Testi src/seo/canonical.test.ts: /lahjat/- ja /kategoria/-sivuilla ei samaa otsikkoa, H1:tä, johdantoa, UKK:ta eikä
+samaa 12 tuotteen ruudukkoa; ohjatut polut eivät ole esirenderöityjä eivätkä linkitettyjä.
+
+Avoinna: /ammatti/-, /harrastus/- ja /murre/-sivuilla on yhä osin sama varatuotelista (sisältö on sivukohtainen),
+ja /haalarimerkit on ilman tuotteita (haalarimerkkejä ei ole valikoimassa).
+Tarkista GSC:stä 2-4 viikon päästä, mitkä 57:stä jäävät listalle.
+
 ## 27.-28.10. pitkä ajo: joulu- ja isänpäivämyynti, konversio, keskiostos
 
 **Resend ja ilmoitukset.** RESEND_API_KEY on Vercelissä (ilmainen suunnitelma), OMISTAJA_EMAIL on nyt

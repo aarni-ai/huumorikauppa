@@ -215,7 +215,7 @@
     },
     {
       "source": "/tarrat",
-      "destination": "/kategoria/tarrat",
+      "destination": "/kaikki-tuotteet",
       "statusCode": 301
     },
     {
@@ -225,6 +225,186 @@
     },
     {
       "source": "/kategoria/mukit",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/miehelle",
+      "destination": "/hauskat-lahjat-miehelle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahja-miehelle",
+      "destination": "/hauskat-lahjat-miehelle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/naiselle",
+      "destination": "/hauskat-lahjat-naiselle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/aitienpaiva",
+      "destination": "/aitienpaiva",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/kollegalle",
+      "destination": "/lahjat/tyokaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/syntymapaivasankarille",
+      "destination": "/syntymapaivalahjat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/ystavalle",
+      "destination": "/lahja-kaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/polttareihin",
+      "destination": "/polttari-lahjat",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/huumorilahjat",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/koodaajalle",
+      "destination": "/ammatti/koodari",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/rakennusmiehelle",
+      "destination": "/ammatti/rakennusmies",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/yrittajalle",
+      "destination": "/ammatti/yrittaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/hauskat-t-paidat",
+      "destination": "/kategoria/t-paidat",
+      "statusCode": 301
+    },
+    {
+      "source": "/hauskat-hupparit",
+      "destination": "/kategoria/hupparit",
+      "statusCode": 301
+    },
+    {
+      "source": "/opiskelijan-haalarimerkit",
+      "destination": "/haalarimerkit",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/golfaajalle",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/autoharrastajalle",
+      "destination": "/lahjat/harrastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/muutoiset",
+      "destination": "/lahja-kaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/ystavanpaiva",
+      "destination": "/lahja-kaverille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/lapselle",
+      "destination": "/joululahja-teinille",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/valmistujaisiin",
+      "destination": "/blogi/hauskat-valmistujaislahjat-2026",
+      "statusCode": 301
+    },
+    {
+      "source": "/lahjat/juhannus",
+      "destination": "/blogi/hauska-lahja-juhannukseen-2026",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/pitkahihaiset",
+      "destination": "/kategoria/t-paidat",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/bodyt",
+      "destination": "/lahjat/vauvalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/haalarimerkit",
+      "destination": "/haalarimerkit",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/tarrat",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/peitot",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/pipot",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/laukut",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/seinataulut",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/koristeet",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/lippikset",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/sukat",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/avaimenperat",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/asut",
+      "destination": "/kaikki-tuotteet",
+      "statusCode": 301
+    },
+    {
+      "source": "/kategoria/naamiot",
       "destination": "/kaikki-tuotteet",
       "statusCode": 301
     },

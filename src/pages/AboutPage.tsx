@@ -251,8 +251,8 @@ const AboutPage = () => {
         <section>
           <h2 className="font-display text-xl text-foreground mb-3">Lue lisää</h2>
           <div className="flex flex-wrap gap-2">
-            <Link to="/lahjat/miehelle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat miehelle</Link>
-            <Link to="/lahjat/naiselle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat naiselle</Link>
+            <Link to="/hauskat-lahjat-miehelle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat miehelle</Link>
+            <Link to="/hauskat-lahjat-naiselle" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">🎁 Lahjat naiselle</Link>
             <Link to="/suomalaiset-tyopaikkameemit-top-50" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">😂 Työpaikkameemit TOP 50</Link>
             <Link to="/hauskimmat-tyopaikkalaput-2026" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">📋 Työpaikkalaput 2026</Link>
             <Link to="/blogi" className="px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/60 transition">📰 Lahjaopas-blogi</Link>

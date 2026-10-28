@@ -4,6 +4,7 @@ import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
 import { DEFAULT_BLOG_FAQS } from "@/seo/pageFaqs";
 import { categories } from "@/data/products";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
@@ -161,6 +162,7 @@ const BlogPost = () => {
     .slice(0, 5);
 
   const relatedCats = post.relatedCategories
+    .filter((slug) => onKategoriasivu(slug))
     .map((slug) => categories.find((c) => c.slug === slug))
     .filter(Boolean)
     .slice(0, 2);

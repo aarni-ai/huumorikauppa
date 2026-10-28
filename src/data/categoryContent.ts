@@ -3,6 +3,82 @@
  * build-vaiheen esirenderöinnille (scripts/prerender.mjs).
  */
 import { getPriorityRank } from "@/lib/productPriority";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { jouluLause } from "@/data/tilauspaivat";
+
+export interface CategoryFaq {
+  q: string;
+  a: string;
+}
+
+/**
+ * Kategoriasivun oma sisältö (28.10.2026, canonical-korjaus). /hauskat-t-paidat ja /hauskat-hupparit yhdistettiin
+ * 301:llä kategoriasivuihin (sama hakuaikomus, sama tuotevalikoima), ja niiden johdanto ja UKK siirtyivät tänne.
+ * Jokaisella kategoriasivulla on oma otsikko, johdanto ja UKK (testi src/seo/canonical.test.ts).
+ */
+export interface CategoryPageContent {
+  title: string;
+  description: string;
+  intro: string[];
+  faqs: CategoryFaq[];
+}
+
+export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
+  "t-paidat": {
+    title: "Hauskat t-paidat miehille ja naisille | Huumorikauppa",
+    description: `Hauskat t-paidat suomalaisella huumorilla: meemit, ikävuodet, ammatit, harrastukset ja kotikaupunki. Myös oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    intro: [
+      "Hauska t-paita on paita, jonka painatus on vitsi: Huumorikaupan t-paidoissa on meemejä, ikävuosipaitoja, ammatti- ja harrastuspaitoja sekä kotikaupunkiaiheisia paitoja.",
+      "Miehille valikoimassa ovat esimerkiksi Isäntä, Amatimies ja Kalju, naisille slay queen ja Super äiskä. Pyöreitä vuosia täyttävälle on 30-, 40-, 50-, 60- ja 70-vuotistekstejä, ja kaupunkipaidoissa on omat mallinsa yli 50 paikkakunnalle. Oma teksti/kuva -paitaan kirjoitat itse painettavan tekstin tuotesivulla. Jos etsit lahjaa tietylle ihmiselle, lahjasivuilla paidat on valmiiksi rajattu saajan mukaan, esimerkiksi miehelle, naiselle tai työkaverille.",
+      `Tällä sivulla ovat kaikki myynnissä olevat t-paidat. Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa, toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+    ],
+    faqs: [
+      {
+        q: "Millaisia hauskoja t-paitoja on?",
+        a: "Meemipaitoja, ikävuosipaitoja 30-, 40-, 50-, 60- ja 70-vuotiaille, ammatti- ja harrastuspaitoja, kotikaupunkipaitoja sekä personoitavia paitoja.",
+      },
+      {
+        q: "Onko hauskoja t-paitoja naisille?",
+        a: "On. Esimerkiksi slay queen, Super äiskä ja ikävuosipaidat kuten 40 ja fabulous. Lisää ideoita on sivulla Hauskat lahjat naiselle.",
+      },
+      {
+        q: "Voiko t-paitaan painaa oman tekstin?",
+        a: "Voi. Oma teksti/kuva -paidassa ja personoitavissa paidoissa kirjoitat tekstin tai kuvatoiveen tuotesivulla ennen ostoskoriin lisäämistä, enintään 200 merkkiä.",
+      },
+      {
+        q: "Kauanko t-paidan toimitus kestää?",
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ${jouluLause()}`,
+      },
+    ],
+  },
+  hupparit: {
+    title: "Hauskat hupparit miehille ja naisille | Huumorikauppa",
+    description: `Hauskat hupparit suomalaisella huumorilla: eläkeläis-, ikävuosi-, meemi- ja kaupunkihupparit sekä oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    intro: [
+      "Hauska huppari on huppari, jonka painatus on vitsi: valikoimassa on eläkeläis- ja ikävuosihuppareita, meemejä kuten se oli tonnin seteli, äiti- ja isäaiheisia huppareita sekä kotikaupunkihuppareita.",
+      "Huppari on talven lahjoista käytännöllinen, koska sitä käytetään sisällä ja ulkona, ja väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. Moni teksti on saatavilla sekä huppariksi että t-paidaksi, joten voit valita saman vitsin lämpimämpänä. Kaupunkihuppareissa paikkakuntalainen selviää mistä vain, ja Oma teksti/kuva -hupparin teksti kirjoitetaan tuotesivulla. Jos saaja on vilukissa tai viettää talven mökillä, huppari on t-paitaa varmempi valinta.",
+      `Tällä sivulla ovat kaikki myynnissä olevat hupparit. Hupparit painetaan tilauksesta ja toimitetaan Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${jouluLause()}`,
+    ],
+    faqs: [
+      {
+        q: "Millaisia hauskoja huppareita on?",
+        a: "Eläkeläis- ja ikävuosihuppareita, meemihuppareita kuten se oli tonnin seteli, äiti- ja isäaiheisia huppareita, kaupunkihuppareita ja Oma teksti/kuva -huppari.",
+      },
+      {
+        q: "Onko hauskoja huppareita miehille?",
+        a: "On. Esimerkiksi Isäntä, Kalju, Amatimies ja Museokamaa. Lisää ideoita on sivulla Hauskat lahjat miehelle.",
+      },
+      {
+        q: "Huppari vai t-paita lahjaksi?",
+        a: "Huppari on talvella käytössä useammin, ja sen väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. T-paita on edullisempi.",
+      },
+      {
+        q: "Voiko hupparin palauttaa?",
+        a: "Tilauksilla on 14 päivän peruutusoikeus. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen. Omalla tekstillä tehtyjä huppareita peruutusoikeus ei koske.",
+      },
+    ],
+  },
+};
 export const CATEGORY_H1: Record<string, string> = {
   "t-paidat": "Hauskat t-paidat",
   "hupparit": "Hauskat hupparit",

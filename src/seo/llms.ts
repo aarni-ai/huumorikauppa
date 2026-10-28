@@ -10,7 +10,7 @@ import { categories } from "@/data/products";
 import { giftCategories } from "@/data/giftCategories";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
-import { onPiilotettu } from "@/lib/hiddenCategories";
+import { onKategoriasivu } from "@/lib/hiddenCategories";
 import type { Product } from "@/types/product";
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_URL, formatPriceFi } from "./site";
 import { GIFT_ROUTE_SLUGS } from "./prerender/pages";
@@ -30,7 +30,7 @@ function categoriesWithProducts(products: Product[]) {
   const counts = new Map<string, number>();
   for (const p of products) counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
   return categories
-    .filter((c) => !onPiilotettu(c.slug))
+    .filter((c) => onKategoriasivu(c.slug))
     .filter((c) => products.length === 0 || (counts.get(c.slug) ?? 0) > 0)
     .map((c) => ({ ...c, count: counts.get(c.slug) ?? 0 }));
 }
@@ -136,14 +136,13 @@ export function buildLlmsFullTxt(products: Product[]): string {
     .filter(Boolean)
     .join("\n\n");
   const posts = [...blogPosts].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  // Tilannesivut, joita laskeutumissivu ei korvaa eikä ohjaus vie muualle (28.10.2026 alkaen ei yhtään).
+  const situations = situationGifts
+    .filter((s) => !landingPages.some((p) => p.path === `/lahjat/${s.slug}`) && !LANDING_REDIRECTS[`/lahjat/${s.slug}`])
+    .map((s) => `- ${s.h1}: ${SITE_URL}/lahjat/${encodeURI(s.slug)}`);
+  const situationSection = situations.length > 0 ? `\n## Lahjaoppaat tilanteen mukaan\n${situations.join("\n")}\n` : "";
   return withoutDashes(`${buildLlmsTxt(products).trimEnd()}
-
-## Lahjaoppaat tilanteen mukaan
-${situationGifts
-  .filter((s) => !landingPages.some((p) => p.path === `/lahjat/${s.slug}`) && !LANDING_REDIRECTS[`/lahjat/${s.slug}`])
-  .map((s) => `- ${s.h1}: ${SITE_URL}/lahjat/${encodeURI(s.slug)}`)
-  .join("\n")}
-
+${situationSection}
 ## Blogi
 ${posts.map((p) => `- ${p.title}: ${SITE_URL}/blogi/${p.slug}\n  ${p.excerpt}`).join("\n")}
 ${
