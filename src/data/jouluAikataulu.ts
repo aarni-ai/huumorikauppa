@@ -2,28 +2,16 @@
  * Joulun viimeiset tilauspäivät tuotetyypeittäin (kategorian slug). Yksi lähde tuotesivun,
  * ostoskorin ja etusivun "Tilaa viimeistään X, niin ehtii jouluksi" -riville.
  *
- * Datalähde: scripts/joulu-aikataulu.mjs (Printifyn toteutuneet tilaukset 3-10/2026, 22 ei-peruutettua
- * tilausta, ajettu 26.10.2026). Pahin havaittu tuotanto (2) + kuljetus (13) + puskuri (2) = 17
- * arkipäivää ennen 23. joulukuuta antaa t-paidoille ja huppareille 30.11.2026, muille tyypeille
- * 11-16 arkipäivää eli vielä myöhemmän päivän; peitoista ei ole toimitusdataa. Havainnot ovat joulusesongin ulkopuolelta, ja tarroja lukuun ottamatta jokaisella tyypillä on tulostaja
- * ilman toimitusdataa, joten käytetään sivuston yhteistä joulun enimmäispäivää (Printifyn joulusesongin cutoffit,
- * seo/toimitusajat.md). Mikään päivä ei saa olla sitä myöhäisempi.
- * Testi varmistaa, ettei mikään päivä ylitä CHRISTMAS_ORDER_END_UTC_MS:ää.
+ * Päivät lasketaan src/data/campaignSchedule.ts:n JOULU_TOIMITUS_ARKIPAIVAA-taulukosta (toteutuneiden toimitusten
+ * 90. persentiili + 2 arkipäivää, ohuella datalla Printifyn ilmoittama toimitusaika). Laskelma: KASVU-RAPORTTI.md
+ * 28.10.2026. Sivuston yhteinen päivä (banneri, UKK) on näistä varhaisin.
  */
-import { CHRISTMAS_ORDER_END_UTC_MS, JOULU_TILAUSPAIVA_ISO, helsinkiTimeToUtcMs } from "./campaignSchedule";
+import { CHRISTMAS_ORDER_END_UTC_MS, joulunTilauspaivaTyypille, helsinkiTimeToUtcMs } from "./campaignSchedule";
 
 /** Viimeinen tilauspäivä (Suomen aikaa, päivän loppuun asti) kategorian slugin mukaan. */
-export const JOULU_TILAUSPAIVAT: Readonly<Record<string, string>> = {
-  "t-paidat": JOULU_TILAUSPAIVA_ISO,
-  hupparit: JOULU_TILAUSPAIVA_ISO,
-  pitkahihaiset: JOULU_TILAUSPAIVA_ISO,
-  koristeet: JOULU_TILAUSPAIVA_ISO,
-  peitot: JOULU_TILAUSPAIVA_ISO,
-  seinataulut: JOULU_TILAUSPAIVA_ISO,
-  tarrat: JOULU_TILAUSPAIVA_ISO,
-  pipot: JOULU_TILAUSPAIVA_ISO,
-  bodyt: JOULU_TILAUSPAIVA_ISO,
-};
+export const JOULU_TILAUSPAIVAT: Readonly<Record<string, string>> = Object.fromEntries(
+  ["t-paidat", "hupparit", "pitkahihaiset", "koristeet", "peitot", "seinataulut", "tarrat", "pipot", "bodyt"].map((k) => [k, joulunTilauspaivaTyypille(k)]),
+);
 
 /** Kategoria, jota taulukossa ei ole, saa varhaisimman päivän (ei koskaan myöhäisempää). */
 export const JOULU_OLETUS_PAIVA = Object.values(JOULU_TILAUSPAIVAT).sort()[0];
@@ -65,7 +53,7 @@ export function jouluRivi(t: JouluTakaraja): string {
   return `Tilaa viimeistään ${t.text}, niin ehtii jouluksi.`;
 }
 
-/** Myöhäisin taulukon päivä ei saa ylittää sivuston yhteistä lupausta (testattu). */
+/** Myöhäisin tuotetyyppikohtainen takaraja. */
 export const JOULU_MYOHAISIN_END_UTC_MS = Math.max(
   ...Object.values(JOULU_TILAUSPAIVAT).map((iso) => jouluTakaraja(iso).endUtcMs),
 );

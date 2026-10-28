@@ -5,7 +5,7 @@
 import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { landingPages } from "./landingPages";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
-import { jouluLause } from "./tilauspaivat";
+import { jouluLause, jouluTyypitLause } from "./tilauspaivat";
 
 const D = CHRISTMAS_DEADLINE_PROMISE;
 
@@ -17,16 +17,16 @@ export const christmasDeadlinePage = {
     `${jouluLause()} Näin tilauspäivä on laskettu ja mitä sen jälkeen tapahtuu.`,
   h1: "Joulun viimeiset tilauspäivät 2026",
   intro: [
-    `${D} Viimeinen tilauspäivä koskee kaikkia Huumorikaupan tuotteita, myös personoituja.`,
+    `${D} ${jouluTyypitLause()}`.trim(),
     "Tuotteemme painetaan vasta tilauksen jälkeen, joten joulutilauksen takaraja on aikaisemmin kuin kaupoissa, jotka lähettävät valmiita tuotteita omasta varastostaan.",
   ],
   sections: [
     {
-      heading: "Miksi viimeinen tilauspäivä on jo marraskuussa?",
+      heading: "Miten viimeinen tilauspäivä on laskettu?",
       paragraphs: [
-        "Huumorikaupan tuotteita ei ole valmiina varastossa. Jokainen paita, huppari ja muu tuote painetaan tilauksen jälkeen painokumppaneidemme tuotantolaitoksissa Suomen ulkopuolella, ja valmis tuote kuljetetaan sieltä Suomeen. Toimitusaikaan kuuluu siis sekä painaminen että kuljetus.",
-        "Painokumppanien ilmoittamat tuotantoajat ovat 2-6 arkipäivää. Viimeinen tilauspäivä on laskettu painokumppanien edellisen joulun viimeisistä suositelluista tilauspäivistä Eurooppaan, ja niistä on vähennetty viikko Suomeen tulevaa kuljetusta varten. Joulun alla paketteja kulkee tavallista enemmän, ja tämä varaus kattaa sen.",
-        "Tuotteitamme painetaan useammassa painotalossa. Valitsimme päivän, joka riittää myös niistä hitaimmalle, joten sama päivä koskee kaikkia tuotteita.",
+        "Huumorikaupan tuotteita ei ole valmiina varastossa. Jokainen paita, huppari ja muu tuote painetaan tilauksen jälkeen painokumppaneidemme tuotantolaitoksissa Euroopassa, ja valmis tuote kuljetetaan sieltä Suomeen. Toimitusaikaan kuuluu siis sekä painaminen että kuljetus.",
+        "T-paitojen päivä perustuu toteutuneisiin toimitusaikoihin Suomeen, ja siihen on lisätty kahden arkipäivän varaus joulun ruuhkaa varten. Muista tuotteista toimituksia on vielä vähän, joten niiden päivä perustuu painokumppanin ilmoittamaan enimmäistoimitusaikaan Suomeen, 15 arkipäivää, ja samaan kahden arkipäivän varaukseen.",
+        "Ostoskorissa näkyy aina korin tuotteiden varhaisin päivä, ja tuotesivulla tuotteen oma päivä.",
       ],
     },
     {
@@ -39,8 +39,8 @@ export const christmasDeadlinePage = {
   faqs: [
     { q: "Mikä on viimeinen tilauspäivä jouluksi 2026?", a: D },
     {
-      q: "Koskeeko päivä kaikkia tuotteita?",
-      a: "Koskee. Sama päivä on voimassa kaikille tuotteille, myös personoiduille Oma teksti/kuva -tuotteille.",
+      q: "Onko päivä sama kaikille tuotteille?",
+      a: `${jouluTyypitLause() || "Joulun tilausaika on päättynyt kaikilta tuotteilta."} Tuotesivulla näkyy tuotteen oma päivä.`,
     },
     {
       q: "Voinko tilata vielä viimeisen tilauspäivän jälkeen?",

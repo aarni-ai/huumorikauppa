@@ -105,13 +105,13 @@ describe("landing pages: data and copy rules", () => {
     const deadline = [christmasDeadlinePage.title, christmasDeadlinePage.description, ...christmasDeadlinePage.intro,
       ...christmasDeadlinePage.sections.flatMap((s) => [s.heading, ...s.paragraphs]),
       ...christmasDeadlinePage.faqs.flatMap((f) => [f.q, f.a])].join("\n");
-    expect(new Set(deadline.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? [])).toEqual(new Set(joulu));
+    expect(new Set(deadline.match(/\b\d{1,2}\.\d{1,2}\.\d{4}\b/g) ?? [])).toEqual(new Set(jouluAuki() ? [...joulu, "1.12.2026"] : joulu));
     expect(deadline).not.toMatch(/[–—]/);
     expect(christmasDeadlinePage.title.length).toBeLessThan(60);
     expect(christmasDeadlinePage.description.length).toBeLessThan(155);
     expect(CHRISTMAS_DEADLINE_PROMISE).toBe(jouluLause());
     // Laskettu arvo tänä jouluna (muutos vaatii tietoisen päätöksen).
-    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-11-20");
+    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-11-30");
   });
 
   it("links to at least 3 other landing pages and to a visible category", () => {

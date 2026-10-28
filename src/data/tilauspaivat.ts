@@ -10,6 +10,8 @@ import {
   FATHERS_DAY_ORDER_END_UTC_MS,
   FATHERS_DAY_TEXT,
   JOULU_TILAUSPAIVA_ISO,
+  JOULU_TOIMITUS_ARKIPAIVAA,
+  joulunTilauspaivaTyypille,
   paivaLyhyt,
   paivaTeksti,
 } from "./campaignSchedule.js";
@@ -68,6 +70,17 @@ export function jouluOpasIngressi(nowMs: number = Date.now()): string {
 /** UKK-vastauksen jatko: päivän laskentaperuste, tilausajan jälkeen ilman päivämäärää. */
 export function jouluLaskentaLause(nowMs: number = Date.now()): string {
   return jouluAuki(nowMs)
-    ? "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa, ja päivämäärä on laskettu hitaimman painotalon tuotanto- ja kuljetusajan mukaan. Myöhemmin tehdyille tilauksille emme lupaa toimitusta ennen joulua."
+    ? "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa. Päivämäärä on laskettu toteutuneista toimitusajoista Suomeen, ja tuotesivulla näkyy kunkin tuotteen oma päivä. Myöhemmin tehdyille tilauksille emme lupaa toimitusta ennen joulua."
     : "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa.";
+}
+
+/** T-paitojen oma (myöhäisempi) joulun tilauspäivä sijamuodossa. */
+export const JOULU_TPAITA_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille("t-paidat"));
+/** Muiden tuotetyyppien joulun tilauspäivä sijamuodossa. */
+export const JOULU_MUUT_PAIVA_TEKSTI = paivaTeksti(joulunTilauspaivaTyypille(null));
+
+/** Tuotetyyppikohtaiset joulupäivät yhtenä lauseena. Tilausajan jälkeen ei mitään. */
+export function jouluTyypitLause(nowMs: number = Date.now()): string {
+  if (!Object.keys(JOULU_TOIMITUS_ARKIPAIVAA).length || !jouluAuki(nowMs)) return "";
+  return `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${JOULU_TPAITA_PAIVA_TEKSTI}. Hupparit, julisteet, tarrat ja muut tuotteet ehtivät, kun tilaat viimeistään ${JOULU_MUUT_PAIVA_TEKSTI}.`;
 }

@@ -42,7 +42,7 @@ describe("banner schedule (Europe/Helsinki)", () => {
     expect(new Date(helsinkiTimeToUtcMs(2026, 10, 1)).toISOString()).toBe("2026-09-30T21:00:00.000Z");
     // Toimitusajoista laskettu (17 arkipäivää ennen pe 6.11.2026): ke 14.10.2026.
     expect(new Date(FATHERS_DAY_ORDER_END_UTC_MS).toISOString()).toBe("2026-10-14T20:59:59.999Z");
-    expect(new Date(CHRISTMAS_ORDER_END_UTC_MS).toISOString()).toBe("2026-11-20T21:59:59.999Z");
+    expect(new Date(CHRISTMAS_ORDER_END_UTC_MS).toISOString()).toBe("2026-11-30T21:59:59.999Z");
     expect(CHRISTMAS_DEADLINE_END_UTC_MS).toBe(CHRISTMAS_ORDER_END_UTC_MS);
   });
 
@@ -54,12 +54,12 @@ describe("banner schedule (Europe/Helsinki)", () => {
     expect(activeBannerTheme(fi("2026-10-28T12:00:00"))).toBe("joulu");
   });
 
-  it("Christmas until 20.11.2026 23:59:59, nothing from 21.11.2026 00:00:00", () => {
-    expect(activeBannerTheme(fi("2026-11-20T23:59:59"))).toBe("joulu");
-    expect(activeBannerTheme(fi("2026-11-21T00:00:00"))).toBeNull();
+  it("Christmas until 30.11.2026 23:59:59, nothing from 1.12.2026 00:00:00", () => {
+    expect(activeBannerTheme(fi("2026-11-30T23:59:59"))).toBe("joulu");
+    expect(activeBannerTheme(fi("2026-12-01T00:00:00"))).toBeNull();
     expect(activeBannerTheme(fi("2027-01-01T12:00:00"))).toBeNull();
-    expect(isBeforeChristmasDeadline(fi("2026-11-20T23:59:59"))).toBe(true);
-    expect(isBeforeChristmasDeadline(fi("2026-11-21T00:00:00"))).toBe(false);
+    expect(isBeforeChristmasDeadline(fi("2026-11-30T23:59:59"))).toBe(true);
+    expect(isBeforeChristmasDeadline(fi("2026-12-01T00:00:00"))).toBe(false);
   });
 
   it("slots are ordered, contiguous at the switch and non-overlapping", () => {
@@ -67,8 +67,8 @@ describe("banner schedule (Europe/Helsinki)", () => {
       expect(BANNER_SCHEDULE[i].fromMs).toBe(BANNER_SCHEDULE[i - 1].untilMs + 1);
     }
     expect(nextBannerChangeMs(fi("2026-10-10T12:00:00"))).toBe(fi("2026-10-15T00:00:00"));
-    expect(nextBannerChangeMs(fi("2026-11-01T12:00:00"))).toBe(fi("2026-11-21T00:00:00"));
-    expect(nextBannerChangeMs(fi("2026-11-21T00:00:00"))).toBeNull();
+    expect(nextBannerChangeMs(fi("2026-11-01T12:00:00"))).toBe(fi("2026-12-01T00:00:00"));
+    expect(nextBannerChangeMs(fi("2026-12-01T00:00:00"))).toBeNull();
   });
 });
 
@@ -101,13 +101,13 @@ describe("SeasonalBanner", () => {
     );
   });
 
-  it("20.11 23:59:59 still shows Christmas, 21.11 00:00:00 shows nothing", () => {
+  it("30.11 23:59:59 still shows Christmas, 1.12 00:00:00 shows nothing", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(fi("2026-11-20T23:59:59"));
+    vi.setSystemTime(fi("2026-11-30T23:59:59"));
     const first = render(banner());
     expect(first.container.querySelector('[data-banner="joulu"]')).not.toBeNull();
     first.unmount();
-    vi.setSystemTime(fi("2026-11-21T00:00:00"));
+    vi.setSystemTime(fi("2026-12-01T00:00:00"));
     const { container } = render(banner());
     expect(container.textContent).toBe("");
   });

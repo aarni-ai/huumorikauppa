@@ -117,12 +117,18 @@ export const FATHERS_DAY_ORDER_END_UTC_MS = paivanLoppuUtcMs(ISANPAIVA_TILAUSPAI
 /** Joululahjan on oltava perillä viimeistään jouluaattoa edeltävänä päivänä. */
 export const JOULU_PERILLA_ISO = "2026-12-23";
 /**
- * Printifyn joulusesongin takaraja Suomeen (Printifyn 2025 Eurooppa-cutoffit miinus kuljetus, seo/toimitusajat.md):
- * myöhäisempää päivää ei luvata, vaikka toimitusajoista laskettu päivä olisi myöhäisempi.
+ * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), laskelma KASVU-RAPORTTI.md 28.10.2026:
+ * tilauksesta perille toteutuneiden toimitusten 90. persentiili + 2 arkipäivää. T-paidat: 8 toimitettua tilausta
+ * (4-16 arkipäivää), P90 13,2 -> 14 + 2 = 16. Muilla tyypeillä havaintoja on alle 5, joten käytetään Printifyn
+ * ilmoittamaa toimitusaikaa Suomeen (5-15 arkipäivää, catalog v2 shipping/standard) eli 15 + 2 = 17.
  */
-export const JOULU_PRINTIFY_RAJA_ISO = "2026-11-20";
-/** Joulun viimeinen tilauspäivä: toteutuneista toimitusajoista laskettu, enintään Printifyn sesonkiraja. */
-export const JOULU_TILAUSPAIVA_ISO = [viimeinenTilauspaiva(JOULU_PERILLA_ISO), JOULU_PRINTIFY_RAJA_ISO].sort()[0];
+export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = { "t-paidat": 16 };
+export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = 17;
+/** Tuotetyypin viimeinen tilauspäivä jouluksi (tuntematon tyyppi: oletusaika). */
+export const joulunTilauspaivaTyypille = (kategoria?: string | null): string =>
+  viimeinenTilauspaiva(JOULU_PERILLA_ISO, (kategoria && JOULU_TOIMITUS_ARKIPAIVAA[kategoria]) || JOULU_TOIMITUS_OLETUS_ARKIPAIVAA);
+/** Sivuston yhteinen joulun tilauspäivä (banneri, UKK): tuotetyyppien varhaisin, jotta lupaus pätee kaikkiin. */
+export const JOULU_TILAUSPAIVA_ISO = [joulunTilauspaivaTyypille(null), ...Object.keys(JOULU_TOIMITUS_ARKIPAIVAA).map(joulunTilauspaivaTyypille)].sort()[0];
 /** Joulun tilausaika päättyy viimeisen tilauspäivän lopussa Suomen aikaa. */
 export const CHRISTMAS_ORDER_END_UTC_MS = paivanLoppuUtcMs(JOULU_TILAUSPAIVA_ISO);
 
