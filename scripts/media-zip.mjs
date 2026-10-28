@@ -44,8 +44,8 @@ async function lataaKuva(url) {
       (async () => {
         for (let yritys = 1; yritys <= 3; yritys++) {
           const res = await fetch(url);
-          // 2048 px säilyy; mozjpeg laatu 82 pudottaa koon noin kolmannekseen, jotta kaikki sarjat mahtuvat zip-rajaan.
-          if (res.ok && /image\//.test(res.headers.get("content-type") || "")) return new Uint8Array(await sharp(Buffer.from(await res.arrayBuffer())).jpeg({ quality: 82, mozjpeg: true }).toBuffer());
+          // 2048 px säilyy; mozjpeg laatu 75 pudottaa koon noin kolmannekseen, jotta kaikki sarjat mahtuvat zip-rajaan.
+          if (res.ok && /image\//.test(res.headers.get("content-type") || "")) return new Uint8Array(await sharp(Buffer.from(await res.arrayBuffer())).jpeg({ quality: 75, mozjpeg: true }).toBuffer());
           if (yritys === 3) throw new Error(`Kuvan lataus epäonnistui (${res.status}): ${url}`);
           await new Promise((r) => setTimeout(r, 500 * yritys));
         }
@@ -92,7 +92,8 @@ try {
     for (const p of tuotteet) {
       const { tuote, toinen } = lib.mediaKuvat(p);
       const nimet = [];
-      for (const k of [tuote, toinen]) {
+      // Sarjoista vain tuotekuva (lifestyle-kuvat ovat 500-600 kt pakattuinakin); kärkituotteista myös lifestyle.
+      for (const k of ryhma.id === kit.KARKITUOTTEET.id ? [tuote, toinen] : [tuote]) {
         if (!k) continue;
         const nimi = `${p.slug}-${k.tunnus}.jpg`;
         files[`${ryhma.id}/${nimi}`] = [await lataaKuva(k.tulostusUrl), { level: 0 }];
@@ -148,7 +149,8 @@ try {
   }
 
   for (const r of ryhmat.filter((x) => x.ryhma.id !== kit.KARKITUOTTEET.id)) await kirjoita(`huumorikauppa-${r.ryhma.id}.zip`, r.ryhma.heading, [r], false);
-  await kirjoita(`huumorikauppa-${kit.KAIKKI_ZIP_ID}.zip`, "kaikki kuvat", ryhmat, true);
+  // Kaikki-zip = kärkituotteet (sarjoilla omat zipit, ei kahteen kertaan).
+  await kirjoita(`huumorikauppa-${kit.KAIKKI_ZIP_ID}.zip`, "myydyimmät ja joulun kärkituotteet", ryhmat.filter((x) => x.ryhma.id === kit.KARKITUOTTEET.id), true);
 
   let yhteensa = 0;
   for (const t of tulokset) {

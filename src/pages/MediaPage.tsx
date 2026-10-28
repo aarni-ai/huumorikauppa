@@ -168,12 +168,12 @@ const MediaPage = () => {
 
         <section className="space-y-3 max-w-3xl">
           <h2 className="font-display text-2xl text-foreground">Kuvat zip-paketteina</h2>
-          <p>Jokaisessa paketissa on tuotekuvat ja tunnelmakuvat 2048 px:n kokoisina sekä tuotetiedot.txt, jossa on nimi, hinta, värit, koot, linkki, toimitus ja joulun tilausaika.</p>
+          <p>Kuvat ovat 2048 px:n kokoisia. Kärkituotteiden paketissa on tuotekuva ja tunnelmakuva, sarjojen paketeissa tuotekuvat. Jokaisessa paketissa on tuotetiedot.txt, jossa on nimi, hinta, värit, koot, linkki, toimitus ja joulun tilausaika.</p>
           <ul className="space-y-1">
             <li>
               <a href={zipPolku(KAIKKI_ZIP_ID)} download className={linkClass}>
                 <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                Kaikki kuvat (zip)
+                Myydyimmät ja joulun kärkituotteet (zip)
               </a>
             </li>
             {SARJAT.map((r) => (

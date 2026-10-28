@@ -8,4 +8,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .vercel
 node -e 'const fs=require("fs");const v=JSON.parse(fs.readFileSync("vercel.json","utf8"));v.crons=JSON.parse(fs.readFileSync("vercel.crons.json","utf8")).crons;fs.writeFileSync(".vercel/vercel.uusi.json",JSON.stringify(v,null,2))'
+# Medialle-sivun zipit eivät ole gitissä (public/media/*.zip, .gitignore): luodaan, jos puuttuvat.
+ls public/media/*.zip >/dev/null 2>&1 || node scripts/media-zip.mjs
 exec npx vercel deploy --prod --yes --local-config .vercel/vercel.uusi.json "$@"

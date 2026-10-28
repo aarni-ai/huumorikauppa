@@ -608,7 +608,7 @@ export function buildMediaPage(products: Product[]): PrerenderPage {
       {
         heading: "Kuvat zip-paketteina",
         links: [
-          { href: zipPolku(KAIKKI_ZIP_ID), label: "Kaikki kuvat (zip)" },
+          { href: zipPolku(KAIKKI_ZIP_ID), label: "Myydyimmät ja joulun kärkituotteet (zip)" },
           ...SARJAT.map((r) => ({ href: zipPolku(r.id), label: `${r.heading} (zip)` })),
         ],
       },
