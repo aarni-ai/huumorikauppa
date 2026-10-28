@@ -26,6 +26,65 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 ilta: joulun takaraja painotaloittain, materiaalit Printifystä, Search Console, GA4 Data API
+
+**Joulun takaraja.** Yläpalkki näytti 30.11. ja t-paitojen tuotesivut 1.12. Laskettu uudelleen painotaloittain
+(toteutuneet toimitukset Suomeen, tilauksesta perille arkipäivinä, `printify-tilaukset`):
+
+| Painotalo | Tuotteet nyt | Toteutuneet | Sääntö | Viimeinen tilauspäivä |
+|---|---|---|---|---|
+| OPT OnDemand (CZ) | 391 t-paitaa (kaikki), 12 julistetta, 1 tarra | t-paidat 5, 7, 9 | t-paitojen 8 toimitusta kaikilta painotaloilta P90 13,2 -> 14 + 2 = 16; OPT jää alle | t-paidat ti 1.12.2026 |
+| Textildruck Europa (DE) | 163 hupparia | hupparit 11, 13, 14 | alle 5 havaintoa: Printify 5-15 + 2 = 17 | ma 30.11.2026 |
+| Atelier Katanga (FR) | 5 hupparia | ei | Printify 15 + 2 = 17 | ma 30.11.2026 |
+| OPT julisteet ja tarrat, koriste (59) | 14 | ei | Printify 15 + 2 = 17 | ma 30.11.2026 |
+
+Yksi lähde (`src/data/campaignSchedule.ts` + `tilauspaivat.ts`): yläpalkki "Joulutilaukset: tilaa t-paidat viimeistään
+ti 1.12. ja muut tuotteet ma 30.11.", sama kaksiosainen lause artikkeleissa, laskeutumissivuilla, /media-sivulla,
+UKK:ssa ja /joulun-viimeiset-tilauspaivat-sivulla. Tuotesivu ja ostoskori näyttävät tuotteen oman päivän painotalon
+mukaan (`jouluAvain`): t-paita saa 1.12. vain, jos sen painotalo on OPT, muuten varhaisimman päivän. Sarjasivut
+(pelkkiä t-paitoja) 1.12. Metakuvaukset pitävät lyhyyden vuoksi varhaisimman päivän (30.11.), joka pätee kaikkiin.
+Merchant-syötteessä ei ole päivämäärää (vain sesonkitunniste). TM Rakennusmaailman `tuotetiedot.txt` päivitetty
+(1.12., painotalo Tšekissä, musta L saatavilla).
+
+**Materiaali.** Lause "tarkka materiaali ja paino ovat tuotekuvauksessa" poistettu kaikkialta (tuotesivu, esirenderöinti,
+syötteen kuvaus, UKK:t, kategoria-UKK, lahjaoppaat, Tietoa meistä). Uusi `scripts/tuotemateriaalit.mjs` hakee jokaisen
+tuotteen Printify-pohjan, painotalon ja myytävien värien koostumuksen Printifyn katalogikuvauksesta
+(`api/_lib/tuotepohjat.generated.js`, `api/_lib/materiaali.js`):
+- Gildan Softstyle 64000 (388 t-paitaa), 153 g/m²: yksiväriset 100 % rengaskehrättyä puuvillaa, meleeratut 35/65,
+  Sport Grey (vaaleanharmaa) 90/10, Graphite Heather 50/50. Rivi kertoo koostumuksen värikohtaisesti.
+- Gildan 5000 (3), 180 g/m²: 100 % puuvillaa; meleerattujen ja Sport Greyn koostumusta katalogi ei kerro, joten ne
+  jätetään rivistä pois.
+- Gildan Heavy Blend 18500 (168 hupparia), 271 g/m²: 50 % puuvillaa ja 50 % polyesteriä.
+- Tarra (vinyyli) ja keraaminen koriste katalogin mukaan. Julisteet (12): katalogi ei kerro paperia, ei materiaaliriviä.
+
+Tulos: 561/573 tuotteella materiaalirivi, 12 julistetta ilman. Käsin kirjoitetuissa kuvauksissa 20 virheellistä
+väitettä korjattu ("100 % puuvillaa, 180 g/m2" Softstyle-paidoissa, joissa vaaleanharmaa ja meleeratut ovat
+sekoitetta ja paino 153 g/m²; hupparien "ei sivusaumoja", jota katalogi ei kerro). Syötteen `material`: 90 puuvilla,
+168 puuvilla/polyesteri, 12 paperi (kuvauksesta); värikohtaisesti vaihtelevilta jätetty pois. Aja skripti uusien
+tuotteiden jälkeen.
+
+**Search Console: 17 virheellistä Product snippet -merkintää joululahjaoppaassa.** Syy korjattiin jo 26.10.
+(a4ae7a1): blogin tuotekorteissa oli mikrodata `itemtype=Product` ilman offersia; nyt tuotteet ovat ItemListinä
+(ListItem: position + url). Validoitu tuotannosta 29.10.: sivukartan 223 muuta kuin tuotesivua (kaikki artikkelit,
+oppaat, laskeutumis- ja sarjasivut) ilman yhtään Product-merkintää tai mikrodataa ja ilman rikkinäistä JSON-LD:tä;
+39 tuotesivun otos: jokaisella Product + offers (price, priceCurrency, availability, url) ja kuva. Search Consolen
+raportti on vanhasta indeksoinnista. **Aarni:** Search Console > Tuotekatkelmat > Vahvista korjaus.
+
+**GA4 Data API.** Mahdollinen ilman uutta tiliä ja maksua (palvelutili omassa Cloud-projektissa, ei laskutusta).
+Ohje KAYTTOONOTTO.md "GA4 Data API". Tehtävä `viikkomittarit` hakee kävijät, istunnot ja ostot ISO-viikoittain, kun
+`GA4_PROPERTY_ID` ja `GA4_PALVELUTILI` on asetettu (nyt `ga4Lahde: "ei asetettu"`). Jos avaimen luonti estyy,
+Cowork kirjaa luvut ja lähteeksi "Cowork GA4".
+
+**Resend.** DKIM ja SPF yhä pending klo 19.51 (DNS-tietueita ei ole lisätty), vahti jatkaa.
+
+Tarkistettu tuotannosta tavallisella, Googlebot- ja tyhjällä User-Agentilla: tuotesivut (t-paita, huppari, juliste),
+/joulun-viimeiset-tilauspaivat, /lahjat/kalastajalle, /media ja /tietoa-meista 200; päivät ja materiaalit kuten yllä,
+"tuotekuvauksessa" 0 osumaa. Syötevalidaattori: 571 tuotetta, virheellisiä 0.
+
+**Huomio seuraavaan ajoon.** Käsin kirjoitetuissa kuvauksissa (100 tuotetta) on värimääriä ja kokoja, jotka eivät
+enää vastaa tuotteita EU-siirtojen jälkeen (esim. "Värejä on yhdeksän", kun värejä on kolme). Korjataan samalla
+tavalla tuotedatasta.
+
 ## 29.10.2026: harrastus- ja ammattisarjat, /media, GA4-ostot, musta L, viikkomittarit
 
 Strategia: TM Rakennusmaailman joululahjajutun jälkeen harrastus- ja ammattilehdet sekä niiden lukijoille osuvat
@@ -75,15 +134,16 @@ Palomiehelle: Sankari Savussa", "Eläkeläinen: aamuherätys vapaaehtoinen"). UR
 myynti, keskiostos ja kate alv 0 Printifyn todellisilla kuluilla. Kävijät ja konversio GA4:stä. Huumorikaupan
 GA4-propertya ei ole liitetty raportointityökaluun, joten ne puuttuvat taulukosta, kunnes property on liitetty.
 
-| Viikko | Kävijät | Konversio | Tilaukset (Printify) | Keskiostos | Kate | Huom. |
-|---|---|---|---|---|---|---|
-| 2026-W40 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W41 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W42 | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W43 | ei mitattu | ei mitattu | 4 | ei tiedossa | ei tiedossa | vanha kassa |
-| 2026-W44 | ei mitattu | ei mitattu | 2 | ei tiedossa | ei tiedossa | uusi kassa 27.10. alkaen, 0 maksettua |
+| Viikko | Kävijät | Konversio | Lähde (kävijät) | Tilaukset (Printify) | Keskiostos | Kate | Huom. |
+|---|---|---|---|---|---|---|---|
+| 2026-W40 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W41 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W42 | ei mitattu | ei mitattu | ei mitattu | 1 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W43 | ei mitattu | ei mitattu | ei mitattu | 4 | ei tiedossa | ei tiedossa | vanha kassa |
+| 2026-W44 | ei mitattu | ei mitattu | ei mitattu | 2 | ei tiedossa | ei tiedossa | uusi kassa 27.10. alkaen, 0 maksettua |
 
 Täytetään maanantaisin: tilaukset, keskiostos ja kate tehtävästä `viikkomittarit`, kävijät ja konversio GA4:stä
+(lähde "GA4 Data API", kun avaimet on asetettu, muuten "Cowork GA4")
 (Raportit > Hankinta > Liikenteen hankinta, lähde/media). Vanhan kassan tilausten myyntisummat ovat vanhassa
 Lovable-taustassa, joten niiden keskiostos ja kate puuttuvat.
 
