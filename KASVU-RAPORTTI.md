@@ -778,3 +778,5 @@ Lähtötietoja (Search Consolen liikenne, Stripen myynti) ei ollut käytettävis
 | 27.10. | Merchant-syöte 2197 -> 0 virhettä. | main 049d3b6 | Maksuttomat Google-listaukset | Seuraa Merchant Centeriä |
 | 27.10. | 6 joulublogia, /joululahja-elakelaiselle, jouluaikataulu tuotesivulle, koriin ja etusivulle. | main b25f9e8, 4ea1967 | Joulun hakuliikenne ja konversio | |
 | 27.10. | Uusi tausta: kanta täytetty, korialennus -5 %, 15 uutta paitaa (31,7 %). | oma-tausta | Valmis go-liveen Stripeä vaille | Stripe-avaimet |
+
+- 28.10.2026: Ensimmäisen maksetun tilauksen vahti (10 min välein, 6 h) päättyi: ei maksettuja tilauksia uudessa kassassa. Vanhan kassan webhook pysyy päällä, kunnes ensimmäinen oikea tilaus on tarkistettu.
