@@ -1602,3 +1602,56 @@ Johtopäätökset (Printify-kulu ilman ALV:tä, joka vähennetään):
 | yksi-kerta-viela-t-paita | 24,90 € | 21,40 € | 13,49 € | -40,6 % | -45,1 % | Monster Digital (US) |
 | ylojarvelainen-selviaa-mista-vain-hauska-huppari | 49,90 € | 23,77 € | 15,59 € | 10,6 % | 9,0 % | Printify Choice (US) |
 | ylojarvi-parempi-kuin-helsinki-hauska-t-paita-ylojarvelaiselle | 24,90 € | 8,90 € | 8,49 € | 28,5 % | 26,2 % | OPT OnDemand (CZ) |
+
+## Mainonnan kannattavuuden kynnys 28.10.2026 (laskelma, mainontaa ei käynnistetty)
+
+Kaava kuten yllä (api/_lib/kate.js): nettokate = myynti alv 0 - Printifyn tuote- ja toimituskulu - Stripe 1,5 % + 0,25 €.
+Nettokate ei sisällä mainontaa, joten se on suurin hankintakustannus (CPA), jolla tilaus ei vielä tuota tappiota.
+
+**Nykyinen keskikate tilausta kohden**
+
+| Peruste | Tilauksia | Keskiostos sis. alv | Keskikate € / tilaus |
+|---|--:|--:|--:|
+| Toteutuneet tilaukset 6-10/2026 tuotteista, jotka ovat yhä myynnissä (8 t-paitaa, 2 hupparia; ei poistettuja US-mukeja eikä manual-korvauksia) | 10 | 36,80 € | 9,02 € |
+| Malli nykyhinnoilla ja nykyisillä painotaloilla (oletettu kori: 50 % 1 t-paita 7,22 €, 10 % 2 t-paitaa 14,65 €, 25 % 1 huppari noin 4,00 €, 5 % t-paita + huppari noin 3,10 €, 10 % juliste 7,47 €) | | noin 37 € | 6,98 € |
+
+Laskelmissa käytetään varovaista mallia, **7,00 € / tilaus**. Toteutunut 9,02 € nojaa #417-painotalon halpoihin
+t-paitoihin. EU-siirron jälkeen osa paidoista painetaan kalliimmin (OPT, Textildruck), joten luku ei toistu varmasti.
+
+**Suurin kannattava CPA**
+
+| | Google Shopping | Meta |
+|---|--:|--:|
+| Nollatulos (CPA = keskikate) | 7,00 € | 7,00 € |
+| Tavoite, puolet katteesta jää kaupalle | 3,50 € | 3,50 € |
+| Tyypillinen CPA vaatehuumorissa (OLETUS: CPC 0,25-0,40 €, konversio 1,5-2 %; Meta CPM 6-9 €, CTR 1 %, konversio 1 %) | noin 12-27 € | noin 25-45 € |
+
+Ostetulla liikenteellä yhden t-paidan tilaus jää siis tappiolliseksi molemmissa kanavissa. Uusintaostoa ei ole laskettu,
+koska sitä ei ole vielä mitattu.
+
+**Millä korilla mainonta kannattaa** (nettokate nykyhinnoilla, kahden tuotteen alennus -5 %, toimitus 6,90 €, ilmainen 79 €:sta):
+
+| Kori | Tuotteet € | Nettokate € | Kattaa CPA:n |
+|---|--:|--:|---|
+| 1 t-paita | 24,90 | 7,22 | ei kumpaakaan |
+| 2 t-paitaa | 49,80 | 14,65 | Shopping, kun CPA on noin 12-14 € |
+| 3 t-paitaa | 74,70 | 23,05 | Shopping (12-23 €) |
+| 4 t-paitaa (ilmainen toimitus) | 99,60 | noin 30 | Shopping, Meta alarajalla (25-30 €) |
+| 1 huppari | 49,99 | noin 4 | ei |
+| 2 t-paitaa + huppari | 99,70 | 6,96 | ei |
+
+T-paitakorissa nettokate on noin 0,30 € jokaista tuote-euroa kohden. Nollatulos vaatii siis keskiostoksen
+(tuotteet) ≈ (CPA + 0,3) / 0,30:
+- Google Shopping, CPA 15 €: noin 51 €, eli kaksi t-paitaa.
+- Google Shopping, CPA 20 €: noin 68 €, eli kolme t-paitaa.
+- Meta, CPA 30 €: noin 100 €, eli neljä t-paitaa.
+
+Hupparit eivät kanna mainoskulua millään korilla, koska niiden kate on 4-5 €.
+
+**Johtopäätös:** nykyisellä keskiostoksella (noin 37 €) maksettu mainonta on tappiollista. Mainonta muuttuu
+kannattavaksi seuraavissa tilanteissa:
+- Keskiostos nousee noin 68 €:oon, kun mainonnan CPA on 20 €.
+- Kampanja kohdistetaan vain t-paitoihin ja ryhmätilauksiin (/ryhmatilaukset, 5+ paitaa).
+- CPA pysyy alle 7 €:n, mikä on realistista vain brändihauissa ja uudelleenmarkkinoinnissa.
+
+Ilmaislistaukset (Merchant-syöte) ja SEO ovat ainoa kannattava liikenne nykyisillä katteilla.
