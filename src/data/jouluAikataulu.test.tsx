@@ -45,7 +45,7 @@ describe("joulun takarajat tuotetyypeittäin", () => {
     const t = jouluTakaraja("2026-11-20");
     expect(t.text).toBe("pe 20.11.2026");
     expect(new Date(t.endUtcMs).toISOString()).toBe("2026-11-20T21:59:59.999Z");
-    expect(jouluRivi(t)).toBe("Tilaa viimeistään pe 20.11.2026, niin ehtii jouluksi.");
+    expect(jouluRivi(t)).toBe("Ehtii jouluksi, kun tilaat viimeistään pe 20.11.2026.");
     expect(jouluRivi(t)).not.toMatch(/[–—]/);
   });
 
@@ -75,11 +75,11 @@ describe("JouluTakarajaRivi", () => {
     vi.useFakeTimers();
     vi.setSystemTime(fi("2026-11-30T23:59:58"));
     render(<JouluTakarajaRivi categories={["hupparit"]} />);
-    expect(screen.getByText("Tilaa viimeistään ma 30.11.2026, niin ehtii jouluksi.")).toBeInTheDocument();
+    expect(screen.getByText("Ehtii jouluksi, kun tilaat viimeistään ma 30.11.2026.")).toBeInTheDocument();
     act(() => {
       vi.advanceTimersByTime(3000);
     });
-    expect(screen.queryByText(/niin ehtii jouluksi/)).toBeNull();
+    expect(screen.queryByText(/Ehtii jouluksi, kun tilaat/)).toBeNull();
   });
 
   it("ei näy takarajan jälkeen eikä tyhjällä kategorialistalla", () => {

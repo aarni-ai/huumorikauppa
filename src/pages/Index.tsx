@@ -581,7 +581,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
           <div className="flex gap-3">
             {products.map(product => (
               <div key={product.id} className="w-[78vw] max-w-[320px] shrink-0 snap-start sm:w-[46vw]">
-                <ProductCard product={product} />
+                <ProductCard product={product} ostaNappi />
               </div>
             ))}
           </div>
@@ -599,7 +599,7 @@ function HeroCarousel({ products }: { products: import("@/types/product").Produc
             >
               {products.map(product => (
                 <div key={product.id} className="shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
-                  <ProductCard product={product} />
+                  <ProductCard product={product} ostaNappi />
                 </div>
               ))}
             </div>
@@ -635,7 +635,7 @@ function ProductSection({ title, linkTo, products, intro }: { title: string; lin
       {intro && <p className="text-sm text-muted-foreground mb-6 max-w-xl">{intro}</p>}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
         {products.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} ostaNappi />
         ))}
       </div>
     </section>

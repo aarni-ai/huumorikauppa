@@ -205,7 +205,8 @@ const BlogPost = () => {
         </nav>
 
         <header className="mb-8">
-          <div className="flex flex-wrap gap-2 mb-4">
+          {/* Avainsanat vain työpöydällä: mobiilissa ne työnsivät artikkelin ja tuotteet alemmas. */}
+          <div className="hidden md:flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag) => (
               <span
                 key={tag}

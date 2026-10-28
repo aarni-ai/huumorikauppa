@@ -60,9 +60,11 @@ function muistiVarasto() {
       Object.assign(k, kentat);
     },
     lopetaKoriMaksettuna: async () => {},
-    arvostelupyyntoEhdokkaat: async () => tilaukset.filter((t) => t.status === "maksettu" && !t.review_email_sent_at && t.shipped_at),
+    arvostelupyyntoEhdokkaat: async () => tilaukset.filter((t) => t.status === "maksettu" && !t.review_email_sent_at && t.delivered_at),
     merkitseArvostelupyynto: async (tid: string, aika: Date) => void (tilaukset.find((t) => t.id === tid)!.review_email_sent_at = aika),
     haeTilaus: async (tid: string) => tilaukset.find((t) => t.id === tid) ?? null,
+    julkaistutArviot: async (slug: string) => arviot.filter((a) => a.status === "julkaistu"
+      && tilaukset.some((t) => t.id === a.order_id && t.status === "maksettu" && (t.items as Rivi[]).some((i) => i.name === a.product_name && i.slug === slug))),
     arvostellut: async (tid: string) => arviot.filter((a) => a.order_id === tid).map((a) => a.product_name as string),
     tallennaArvio: async (a: Rivi) => {
       if (arviot.some((x) => x.order_id === a.order_id && x.product_name === a.product_name)) return false;
@@ -285,26 +287,40 @@ describe("Keskeneräisen tilauksen muistutus", () => {
 
 describe("Arviopyyntö", () => {
   const tilaus = (extra: Rivi) => ({ id: "abcdef12-0000", status: "maksettu", customer_email: "a@b.fi", customer_name: "Anna A", items: [{ name: "Paita" }, { name: "Kortti", type: "giftcard" }], ...extra });
-  it("7 pv toimituksesta, varalla 10 pv lähetyksestä", () => {
+  it("vain varmistetun perillemenon jälkeen: 7 pv toimituksesta, pelkkä lähetys ei riitä", () => {
     expect(arvosteluAika(tilaus({ delivered_at: T0, shipped_at: min(-3000) }), min(6 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(7 * 24 * 60))).toBe(true);
-    expect(arvosteluAika(tilaus({ shipped_at: T0 }), min(9 * 24 * 60))).toBe(false);
-    expect(arvosteluAika(tilaus({ shipped_at: T0 }), min(10 * 24 * 60))).toBe(true);
-    expect(arvosteluAika(tilaus({ shipped_at: T0, review_email_sent_at: T0 }), min(20 * 24 * 60))).toBe(false);
+    expect(arvosteluAika(tilaus({ shipped_at: T0 }), min(30 * 24 * 60))).toBe(false);
+    expect(arvosteluAika(tilaus({ delivered_at: T0, review_email_sent_at: T0 }), min(20 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({}), min(20 * 24 * 60))).toBe(false);
   });
   it("kerran per tilaus, peruutus ohittaa", async () => {
     const s = muistiVarasto();
     const viestit = resendMock();
-    s.tilaukset.push(tilaus({ shipped_at: T0 }), { ...tilaus({ shipped_at: T0 }), id: "bbbbbbbb-0000", customer_email: "pois@b.fi" });
+    s.tilaukset.push(tilaus({ shipped_at: T0, delivered_at: min(2 * 24 * 60) }), { ...tilaus({ shipped_at: T0, delivered_at: min(2 * 24 * 60) }), id: "bbbbbbbb-0000", customer_email: "pois@b.fi" });
     await peruViestit(s, "pois@b.fi");
     const r = await ajaMarkkinointi(s, { laheta, nyt: min(11 * 24 * 60) });
     expect(r.lahetetty).toBe(1);
     expect(viestit[0].to).toEqual(["a@b.fi"]);
     expect(String(viestit[0].html)).toContain("/arvostele?token=");
+    // Suora linkki tuotteen arvioon (rivi 0 = Paita), lahjakortille ei linkkiä.
+    expect(String(viestit[0].html)).toContain("&amp;t=0");
     expect(String(viestit[0].html)).not.toContain("Kortti");
     expect((await ajaMarkkinointi(s, { laheta, nyt: min(12 * 24 * 60) })).lahetetty).toBe(0);
     expect(s.tilaukset[1].review_email_sent_at).toBeTruthy();
+  });
+});
+
+describe("/api/sahkoposti ?arviot=<slug>", () => {
+  it("vain julkaistut arviot maksetuista tilauksista, nimi lyhennettynä", async () => {
+    const s = muistiVarasto();
+    s.tilaukset.push({ id: "t1", status: "maksettu", items: [{ name: "Paita", slug: "paita-t-paita" }] });
+    s.arviot.push({ order_id: "t1", product_name: "Paita", stars: 5, body: "Hyvä", customer_name: "Anna Asiakas", status: "julkaistu", created_at: new Date("2026-11-02T10:00:00Z") },
+      { order_id: "t1", product_name: "Paita", stars: 1, body: "x", customer_name: "B", status: "odottaa", created_at: new Date("2026-11-02T10:00:00Z") });
+    const out = { status: 0, body: null as unknown };
+    const res = { status: (c: number) => { out.status = c; return res; }, json: (b: unknown) => { out.body = b; return res; }, setHeader: () => res };
+    await kasittele({ method: "GET", query: { arviot: "paita-t-paita" }, body: {} }, res, s);
+    expect(out.body).toEqual({ arviot: [{ nimi: "Anna A.", tahdet: 5, teksti: "Hyvä", pvm: "2026-11-02" }] });
   });
 });
 

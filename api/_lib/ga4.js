@@ -53,3 +53,35 @@ export async function ga4Viikot(alku) {
   }
   return tulos;
 }
+
+/** Ostosuppilon tapahtumat (src/lib/analytics.ts). */
+export const SUPPILO = ["view_item", "add_to_cart", "begin_checkout", "purchase"];
+
+/**
+ * Ostosuppilo ISO-viikoittain: { "2026-W44": { view_item, add_to_cart, begin_checkout, purchase } } tapahtumien
+ * määrinä alkupäivästä tähän päivään. null ilman ympäristömuuttujia.
+ */
+export async function ga4Suppilo(alku) {
+  if (!onGa4()) return null;
+  const token = await haeToken();
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${process.env.GA4_PROPERTY_ID}:runReport`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      dateRanges: [{ startDate: alku, endDate: "today" }],
+      dimensions: [{ name: "isoYearIsoWeek" }, { name: "eventName" }],
+      metrics: [{ name: "eventCount" }],
+      dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: SUPPILO } } },
+    }),
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error(`GA4-suppilo: ${j.error?.message || r.status}`);
+  const tulos = {};
+  for (const rivi of j.rows || []) {
+    const v = rivi.dimensionValues[0].value;
+    const viikko = `${v.slice(0, 4)}-W${v.slice(4)}`;
+    tulos[viikko] ??= Object.fromEntries(SUPPILO.map((e) => [e, 0]));
+    tulos[viikko][rivi.dimensionValues[1].value] = Number(rivi.metricValues[0].value) || 0;
+  }
+  return tulos;
+}

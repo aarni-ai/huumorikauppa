@@ -15,6 +15,8 @@ import { getForcedColor } from "@/lib/productPriority";
 
 interface ProductCardProps {
   product: Product;
+  /** Näkyvä Osta-painike (blogi-, sarja- ja laskeutumissivut): hakukävijä pääsee tuotesivulle ja koriin kahdella klikkauksella. */
+  ostaNappi?: boolean;
 }
 
 const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
@@ -91,7 +93,7 @@ function getHoverImage(product: Product): string | null {
   return null;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [canUseHover, setCanUseHover] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -354,6 +356,11 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.price.toFixed(2)} €
           </span>
         </div>
+        {ostaNappi && (
+          <span className="mt-1 flex items-center justify-center gap-1.5 w-full min-h-[40px] rounded-md bg-primary text-primary-foreground text-sm font-bold">
+            <ShoppingCart className="h-4 w-4" aria-hidden="true" /> Osta
+          </span>
+        )}
       </div>
     </Link>
   );

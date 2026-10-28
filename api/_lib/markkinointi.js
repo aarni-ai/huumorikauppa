@@ -6,8 +6,8 @@
  *    vain ensimmäiseen maksettuun tilaukseen ja vain samalla osoitteella.
  *  - Keskeneräisen tilauksen muistutus kerran 24 h kuluttua (taulu abandoned_carts): vain, jos asiakas valitsi kassalla
  *    "Lähetä minulle muistutus". Muistutukset loppuvat, kun samalla osoitteella maksetaan tilaus.
- *  - Arviopyyntö kerran per tilaus: 7 päivää toimituksesta (Printifyn delivered_at), tai jos toimituspäivää ei tule,
- *    10 päivää lähetyksestä.
+ *  - Arviopyyntö kerran per tilaus, vain varmistetun perillemenon jälkeen: 7 päivää Printifyn delivered_at-päivästä.
+ *    Ilman toimituspäivää pyyntöä ei lähetetä. Viestissä on suora arviolinkki jokaiselle tuotteelle.
  *  - Jokaisessa viestissä on allekirjoitettu peruutuslinkki ja List-Unsubscribe (yhden klikkauksen peruutus).
  *    Peruutus kirjaa osoitteen tauluun email_optouts, ja siihen osoitteeseen ei lähetetä enää markkinointia.
  *  - Lähetysraja: enintään MARKKINOINTI_RAJA_AJO viestiä ajossa (oletus 20) ja MARKKINOINTI_RAJA_PAIVA päivässä
@@ -64,7 +64,9 @@ export function tarkistaTunniste(tunniste, tarkoitus) {
 
 export const peruutusLinkki = (email) => `${kauppaUrl()}/unsubscribe?token=${encodeURIComponent(allekirjoita("peru", normalisoiEmail(email)))}`;
 export const koriLinkki = (koriId) => `${kauppaUrl()}/palauta-kori?token=${encodeURIComponent(allekirjoita("kori", koriId))}`;
-export const arvosteluLinkki = (tilausId) => `${kauppaUrl()}/arvostele?token=${encodeURIComponent(allekirjoita("arvostelu", tilausId))}`;
+/** Arviosivu; rivi = tuotteen järjestysnumero tilauksen tuotteissa (ilman lahjakortteja), jolloin sivu avaa sen ensin. */
+export const arvosteluLinkki = (tilausId, rivi) =>
+  `${kauppaUrl()}/arvostele?token=${encodeURIComponent(allekirjoita("arvostelu", tilausId))}${Number.isInteger(rivi) ? `&t=${rivi}` : ""}`;
 
 /** Yhden klikkauksen peruutus (RFC 8058): posti-ohjelma lähettää POST-pyynnön tähän osoitteeseen. */
 export function peruutusOtsakkeet(email) {
@@ -147,12 +149,14 @@ export function arvostelupyyntoViesti(tilaus) {
   const linkki = arvosteluLinkki(tilaus.id);
   const nro = tilausnumero(tilaus.id);
   const syy = "Sait tämän viestin, koska tilasit Huumorikaupasta. Lähetämme arviopyynnön kerran tilausta kohden.";
-  const tila = tilaus.delivered_at ? `Tilauksesi #${nro} toimitettiin ${pvm(tilaus.delivered_at)}.` : `Tilauksesi #${nro} lähti matkaan ${pvm(tilaus.shipped_at)}.`;
-  const tuotteet = (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i) => `<li>${esc(i.name)}</li>`).join("");
+  const tila = `Tilauksesi #${nro} toimitettiin ${pvm(tilaus.delivered_at)}.`;
+  const rivit = (tilaus.items || []).filter((i) => i.type !== "giftcard");
+  // Suora linkki jokaisen tuotteen arvioon (arviosivu avaa linkin tuotteen ensin).
+  const tuotteet = rivit.map((i, n) => `<li style="margin-bottom:8px">${esc(i.name)}<br><a href="${esc(arvosteluLinkki(tilaus.id, n))}">Arvioi tämä tuote</a></li>`).join("");
   return {
     subject: `Miten tilaus #${nro} onnistui? - Huumorikauppa`,
-    html: kehys(`<h2>Kerro, mitä pidit</h2><p>${tila}</p><ul>${tuotteet}</ul><p>Arvion antaminen vie minuutin. Luemme jokaisen arvion.</p>${nappi(linkki, "Anna arvio")}`, { peruutus, syy }),
-    text: `${tila} Anna arvio: ${linkki} Peru viestit: ${peruutus}`,
+    html: kehys(`<h2>Kerro, mitä pidit</h2><p>${tila}</p><ul>${tuotteet}</ul><p>Arvion antaminen vie minuutin. Luemme jokaisen arvion.</p>${nappi(rivit.length === 1 ? arvosteluLinkki(tilaus.id, 0) : linkki, "Anna arvio")}`, { peruutus, syy }),
+    text: `${tila} ${rivit.map((i, n) => `Arvioi ${i.name}: ${arvosteluLinkki(tilaus.id, n)}`).join(" ")} Peru viestit: ${peruutus}`,
     headers: peruutusOtsakkeet(tilaus.customer_email),
   };
 }
@@ -173,9 +177,9 @@ export function muistutusVaihe(kori, nyt = new Date()) {
 /** Onko arviopyynnön aika: 7 pv toimituksesta tai, jos toimituspäivää ei ole, 10 pv lähetyksestä. */
 export function arvosteluAika(tilaus, nyt = new Date()) {
   if (tilaus.review_email_sent_at || tilaus.status !== "maksettu") return false;
-  if (tilaus.delivered_at) return minuuttia(nyt, tilaus.delivered_at) >= ARVOSTELU_TOIMITUKSESTA_PV * 24 * 60;
-  if (tilaus.shipped_at) return minuuttia(nyt, tilaus.shipped_at) >= ARVOSTELU_LAHETYKSESTA_PV * 24 * 60;
-  return false;
+  // Vain varmistettu perillemeno (Printifyn delivered_at); pelkkä lähetyspäivä ei riitä.
+  if (!tilaus.delivered_at) return false;
+  return minuuttia(nyt, tilaus.delivered_at) >= ARVOSTELU_TOIMITUKSESTA_PV * 24 * 60;
 }
 
 export const lahetysrajat = () => ({

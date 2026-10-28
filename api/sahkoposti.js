@@ -9,6 +9,7 @@
  * POST { action: "peru", token }                                  peruutus peruutussivulta
  * GET  ?kori=<tunniste>                                           muistutuksen kori { ok, items }
  * GET  ?arvostelu=<tunniste>                                      arviosivun tilaus { products, customerName, unsubscribed }
+ * GET  ?arviot=<slug>                                             tuotesivun julkaistut arviot { arviot: [{ nimi, tahdet, teksti, pvm }] }
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
  */
@@ -53,6 +54,20 @@ export async function kasittele(req, res, store) {
       products, customerName: (tilaus.customer_name || "").split(/\s+/)[0] || "",
       unsubscribed: await store.onKielto(normalisoiEmail(tilaus.customer_email)),
     });
+  }
+  if (req.method === "GET" && typeof q.arviot === "string") {
+    const slug = teksti(q.arviot, 200);
+    if (!slug || !/^[a-z0-9-]+$/.test(slug)) return res.status(400).json({ arviot: [] });
+    const rivit = await store.julkaistutArviot(slug);
+    // Nimi muodossa "Etunimi S."; ilman nimeä "Asiakas".
+    const nimi = (n) => {
+      const osat = String(n || "").trim().split(/\s+/).filter(Boolean);
+      return osat.length ? `${osat[0]}${osat[1] ? ` ${osat[1][0].toUpperCase()}.` : ""}` : "Asiakas";
+    };
+    res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=3600");
+    return res.status(200).json({ arviot: rivit.map((r) => ({
+      nimi: nimi(r.customer_name), tahdet: r.stars, teksti: r.body || "", pvm: new Date(r.created_at).toISOString().slice(0, 10),
+    })) });
   }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 

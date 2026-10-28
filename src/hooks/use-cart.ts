@@ -73,7 +73,7 @@ export function useCart() {
     // GA4 add_to_cart
     const variant = [selectedSize, selectedColor].filter(Boolean).join(" / ") || undefined;
     trackAddToCart({
-      item_id: product.id,
+      item_id: product.slug || product.id,
       item_name: product.name,
       price: product.price,
       quantity,
@@ -93,7 +93,7 @@ export function useCart() {
     };
     setItems(prev => [...prev, { product, quantity: 1, lineId, giftCard }]);
     setLastAddedItem({ product });
-    trackAddToCart({ item_id: product.id, item_name: product.name, price: product.price, quantity: 1, item_category: product.category });
+    trackAddToCart({ item_id: product.slug || product.id, item_name: product.name, price: product.price, quantity: 1, item_category: product.category });
   }, []);
 
   const removeItem = useCallback((productId: string, selectedSize?: string, selectedColor?: string, customText?: string, lineId?: string) => {
@@ -110,7 +110,7 @@ export function useCart() {
       const addedQuantity = quantity - existing.quantity;
       const variant = [existing.selectedSize, existing.selectedColor].filter(Boolean).join(" / ") || undefined;
       trackAddToCart({
-        item_id: existing.product.id,
+        item_id: existing.product.slug || existing.product.id,
         item_name: existing.product.name,
         price: existing.product.price,
         quantity: addedQuantity,

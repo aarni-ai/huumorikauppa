@@ -64,12 +64,22 @@ export function pgMarkkinointi(db) {
         where email = ${email} and recovered_order_id is null and stopped_at is null`;
     },
     arvostelupyyntoEhdokkaat: async () => db`select * from orders where status = 'maksettu' and review_email_sent_at is null
-      and shipped_at is not null and shipped_at > now() - interval '60 days' order by shipped_at limit 100`,
+      and delivered_at is not null and delivered_at > now() - interval '60 days' order by delivered_at limit 100`,
     merkitseArvostelupyynto: async (id, aika) => {
       await db`update orders set review_email_sent_at = ${aika} where id = ${id}`;
     },
     haeTilaus: async (id) => (await db`select * from orders where id = ${id}`)[0] ?? null,
     arvostellut: async (tilausId) => (await db`select product_name from reviews where order_id = ${tilausId}`).map((r) => r.product_name),
+    /** Tuotesivun arviot: vain julkaistut arviot maksetuista tilauksista, joissa arvioitu rivi on tämä tuote. */
+    julkaistutArviot: async (slug) => db`select r.stars, r.body, r.customer_name, r.created_at from reviews r
+      join orders o on o.id = r.order_id
+      where r.status = 'julkaistu' and o.status = 'maksettu'
+        and exists (select 1 from jsonb_array_elements(o.items) i where i->>'name' = r.product_name and i->>'slug' = ${slug})
+      order by r.created_at desc limit 20`,
+    /** Moderointi (cron ?tehtava=arviot): odottavat arviot ja tilan vaihto. */
+    odottavatArviot: async () => db`select r.id, r.product_name, r.stars, r.body, r.customer_name, r.created_at from reviews r
+      where r.status = 'odottaa' order by r.created_at`,
+    asetaArvionTila: async (id, tila) => (await db`update reviews set status = ${tila} where id = ${id} returning id`).length > 0,
     tallennaArvio: async (a) =>
       (await db`insert into reviews (order_id, product_name, stars, body, customer_name)
         values (${a.order_id}, ${a.product_name}, ${a.stars}, ${a.body}, ${a.customer_name})

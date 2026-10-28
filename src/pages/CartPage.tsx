@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useCartContext } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Trash2, Plus, Minus, ShoppingCart, ArrowRight, Truck, Gift } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
@@ -49,7 +48,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="container py-8 md:py-12">
+    <div className="container py-8 md:py-12 pb-28 lg:pb-12">
       <SEOHead title="Ostoskori – Huumorikauppa" description="Tarkista ostoskorisi ja jatka kassalle." noindex={true} />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-8">Ostoskori 🛒</h1>
 
@@ -147,7 +146,10 @@ const CartPage = () => {
               </div>
             </div>
           ))}
+        </div>
 
+        {/* Lisämyynti yhteenvedon jälkeen mobiilissa, jotta Jatka kassalle näkyy heti tuotteiden alla (29.10.2026). */}
+        <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2 space-y-4">
           {/* Rajan alittavassa korissa lisätuotetta ehdottaa mittari (MittarinLisatuote). */}
           {shippingFree && !tila.vainLahjakortteja && <TarraLisamyynti kori={items} kaikki={allProducts} />}
 
@@ -163,7 +165,7 @@ const CartPage = () => {
         </div>
 
         {/* Summary */}
-        <div className="bg-card border border-border rounded-lg p-6 h-fit space-y-4 sticky top-32">
+        <div className="bg-card border border-border rounded-lg p-6 h-fit space-y-4 lg:sticky lg:top-32 lg:col-start-3 lg:row-start-1 lg:row-span-2">
           <h2 className="font-display text-xl text-foreground">Yhteenveto</h2>
 
           <div className="space-y-2 text-sm">
@@ -219,14 +221,7 @@ const CartPage = () => {
             </div>
           )}
 
-          {/* Discount code */}
-          <div className="flex gap-2">
-            <Input placeholder="Alennuskoodi" className="h-9 bg-muted border-border text-sm" />
-            <Button variant="outline" size="sm" className="shrink-0 border-border">
-              Käytä
-            </Button>
-          </div>
-
+          {/* Alennuskoodi ja lahjakortti syötetään kassalla (CheckoutPage), jossa ne myös tarkistetaan. */}
           <Button asChild size="lg" className="w-full bg-primary text-primary-foreground font-bold shadow-glow-lime hover:scale-[1.02] transition-transform">
             <Link to="/kassa" className="flex items-center justify-center gap-2">
               Jatka kassalle <ArrowRight className="h-4 w-4" />
@@ -240,6 +235,19 @@ const CartPage = () => {
             <p>🚚 Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</p>
             <p>↩️ 14 pv palautusoikeus</p>
           </div>
+        </div>
+      </div>
+
+      {/* Mobiilin kiinteä kassapalkki: loppusumma toimituksineen ja Jatka kassalle aina näkyvissä. */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="container flex items-center gap-3 py-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs text-muted-foreground">Yhteensä{tila.vainLahjakortteja ? "" : shippingFree ? ", ilmainen toimitus" : `, sis. toimitus ${eur(shippingCost)}`}</p>
+            <p className="text-lg font-bold text-foreground">{eur((totalPrice - pakettialennus - kori.alennus + shippingCost))}</p>
+          </div>
+          <Button asChild size="lg" className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime">
+            <Link to="/kassa" className="flex items-center gap-2">Jatka kassalle <ArrowRight className="h-4 w-4" /></Link>
+          </Button>
         </div>
       </div>
     </div>

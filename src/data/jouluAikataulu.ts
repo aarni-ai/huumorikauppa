@@ -1,6 +1,6 @@
 /**
  * Joulun viimeiset tilauspäivät tuotetyypeittäin (kategorian slug). Yksi lähde tuotesivun,
- * ostoskorin ja etusivun "Tilaa viimeistään X, niin ehtii jouluksi" -riville.
+ * ostoskorin ja etusivun "Ehtii jouluksi, kun tilaat viimeistään X" -riville.
  *
  * Päivät lasketaan src/data/campaignSchedule.ts:n JOULU_TOIMITUS_ARKIPAIVAA-taulukosta (toteutuneiden toimitusten
  * 90. persentiili + 2 arkipäivää, ohuella datalla Printifyn ilmoittama toimitusaika). Laskelma: KASVU-RAPORTTI.md
@@ -63,7 +63,7 @@ export function aktiivinenJouluTakaraja(categories: readonly (string | null | un
 
 /** Asiakkaalle näytettävä rivi. */
 export function jouluRivi(t: JouluTakaraja): string {
-  return `Tilaa viimeistään ${t.text}, niin ehtii jouluksi.`;
+  return `Ehtii jouluksi, kun tilaat viimeistään ${t.text}.`;
 }
 
 /** Myöhäisin tuotetyyppikohtainen takaraja. */

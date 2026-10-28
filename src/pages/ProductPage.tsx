@@ -33,11 +33,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { generateProductCopy, isGenericDescription, sanitizeProductDescription, truncateAtWord } from "@/lib/productCopy";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { situationGifts } from "@/data/situationGifts";
-import { blogPosts } from "@/data/blog";
+import type { BlogPost } from "@/types/blog";
 import { proxiedImage } from "@/lib/imageProxy";
 import { revealApp } from "@/lib/prerenderPreview";
 
-import { getProductReviews } from "@/lib/productReviews";
+import { useOikeatArviot } from "@/hooks/use-oikeat-arviot";
+import { trackViewItem } from "@/lib/analytics";
+import { painetaanEUssa } from "../../api/_lib/materiaali.js";
+import { mittataulukko } from "@/data/mittataulukot";
+import { MittaTaulukko } from "@/components/SizeGuide";
+import { sameDesignLinks } from "@/lib/sameDesign";
+import { SopiiLahjaksi } from "@/components/SopiiLahjaksi";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { SameDesignLinks } from "@/components/SameDesignLinks";
@@ -331,12 +337,29 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       || (g.categories || []).includes(product.category)
     );
   }, [product]);
-  const relatedBlogPosts = useMemo(() => {
-    if (!product) return [];
-    return blogPosts
-      .filter(p => p.category === product.category || p.relatedCategories?.includes(product.category))
-      .slice(0, 2);
-  }, [product]);
+  // Blogidata (n. 125 kt pakattuna) ladataan vasta ensinäkymän jälkeen, ettei se hidasta tuotesivun latausta.
+  const [relatedBlogPosts, setRelatedBlogPosts] = useState<BlogPost[]>([]);
+  useEffect(() => {
+    if (!product || previewOnly) return;
+    let peruttu = false;
+    import("@/data/blog").then(({ blogPosts }) => {
+      if (peruttu) return;
+      setRelatedBlogPosts(blogPosts
+        .filter(p => p.category === product.category || p.relatedCategories?.includes(product.category))
+        .slice(0, 2));
+    }).catch(() => { /* lahjaoppaat ovat lisäsisältöä */ });
+    return () => { peruttu = true; };
+  }, [product, previewOnly]);
+
+  // GA4 view_item kerran tuotetta kohden (src/lib/analytics.ts), item_id = slug kuten purchase-tapahtumassa.
+  const viewItemSent = useRef<string | null>(null);
+  useEffect(() => {
+    if (!product || previewOnly || viewItemSent.current === product.slug) return;
+    viewItemSent.current = product.slug;
+    trackViewItem({ item_id: product.slug, item_name: product.name, price: product.price, quantity: 1, item_category: product.category });
+  }, [product, previewOnly]);
+
+  const oikeatArviot = useOikeatArviot(previewOnly ? undefined : product?.slug);
 
   // Esirenderöity esikatselu (src/main.tsx) vaihtuu sovellukseen ennen maalausta, kun tuote on valmis.
   useLayoutEffect(() => {
@@ -389,6 +412,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const isCustom = isCustomTextProduct(product);
   // Joulun takaraja vain Printify-tuotteille (AliExpress-toimituksesta ei ole dataa).
   const jouluKategoriat = product.supplier !== "aliexpress" ? [jouluAvain(product)] : [];
+  // Painotalon maa (api/_lib/materiaali.js PAINOTALOT): "Painetaan tilauksesta EU:ssa" vain EU-painotalon tuotteille.
+  const euPaino = product.supplier !== "aliexpress" && painetaanEUssa(product.slug) === true;
+  const cmTaulukko = isClothingCategory(product.category) && hasSizes ? mittataulukko(product.slug, sellableSizes) : null;
   // Valitun koon hinta (api/_lib/kokohinnat.js: hupparit 3XL+), ilman kokoa tuotteen perushinta.
   const kokoHinta = rivinHinta(product, selectedSize);
   const hasDiscount = product.original_price && product.original_price > product.price;
@@ -452,8 +478,16 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     variantSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  // Sama huumori, eri tuote: ensin sama design muina tuotetyyppeinä (src/lib/sameDesign.ts), sitten samaa
+  // teemaa toisessa kategoriassa. Enintään 4.
+  const samaHuumori = (() => {
+    const design = sameDesignLinks(product, allProducts).map((l) => l.product);
+    const nahty = new Set([product.id, ...design.map((p) => p.id)]);
+    return [...design, ...themeProductsFn().filter((p) => !nahty.has(p.id))].slice(0, 4);
+  })();
+
   // Cross-category: same theme products
-  const themeProducts = (() => {
+  function themeProductsFn() {
     const skipWords = new Set(['paita', 'paidat', 'huppari', 'muki', 'mukit', 'tarra', 'hauska', 'hauskat', 'kahvikuppi', 'maailman', 'paras', 'body', 'peitto', 'pipo', 'laukku', 'taulu', 'koriste']);
     const nameWords = product.name.toLowerCase()
       .split(/[\s\-–,!?()]+/)
@@ -468,7 +502,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         nameWords.some(w => p.name.toLowerCase().includes(w))
       )
       .slice(0, 4);
-  })();
+  }
 
   const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
@@ -478,7 +512,6 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
   // Product + Offer (toimitus, palautusehdot) samasta rakentajasta kuin esirenderöinti.
   // Ei aggregateRatingia eikä Reviewta: arvioita ei ole todennetusta lähteestä (src/data/arvostelut-arkisto.ts).
-  const productReviews = getProductReviews(product);
 
   const productJsonLd = buildProductJsonLd({
     id: product.id,
@@ -592,7 +625,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {hasDiscount && (
               <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
             )}
-            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
+            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
           </div>
 
           {/* Images */}
@@ -617,7 +650,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                       srcSet={srcSet}
                       sizes={PRODUCT_IMAGE_SIZES}
                       alt={productImageAlt(product, { url: img, index: i, color: selectedColor })}
-                      className="w-full shrink-0 snap-start aspect-square object-cover max-h-[calc(100svh-492px)] min-h-[220px]"
+                      className="w-full shrink-0 snap-start aspect-square object-cover max-h-[calc(100svh-520px)] min-h-[190px]"
                       style={{ scrollSnapAlign: "start" }}
                       width={800}
                       height={800}
@@ -720,14 +753,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}
                   </p>
                 )}
-                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
+                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
               </div>
             </div>
-
-            <ToimitusarvioRivi product={product} />
-
-            {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
-            <SameDesignLinks product={product} all={allProducts} />
 
             {/* Color + size selector — ref used by sticky bar scroll-to */}
             {hasColors && (
@@ -768,6 +796,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                   <span className="text-xs md:text-sm font-medium text-foreground">Koko{selectedSize ? `: ${selectedSize}` : ""}</span>
                   {isClothingCategory(product.category) && (
                     <SizeGuide
+                      slug={product.slug}
                       category={product.category}
                       sizes={sortSizes(product.variants.sizes!)}
                       description={product.description}
@@ -832,6 +861,12 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
               </Button>
             </div>
 
+            {/* Toimitusarvio ja sama design ostopainikkeen alla, jotta koko ja Lisää koriin mahtuvat mobiilin ensinäkymään. */}
+            <ToimitusarvioRivi product={product} />
+
+            {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
+            <SameDesignLinks product={product} all={allProducts} />
+
             <MaksuJaToimitus />
 
             <DeliveryBadge supplier={product.supplier} className="w-fit" />
@@ -853,6 +888,29 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         </div>
 
         {!previewOnly && (<>
+        {/* Sama huumori, eri tuote: heti ostoalueen alla */}
+        {samaHuumori.length > 0 && (
+          <section className="mt-10" aria-labelledby="sama-huumori">
+            <h2 id="sama-huumori" className="font-display text-2xl md:text-3xl text-foreground mb-4">Sama huumori, eri tuote</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {samaHuumori.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Kokotaulukko (cm) pohjatuotteen mukaan ja Sopii lahjaksi */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl">
+          {cmTaulukko && (
+            <section id="kokotaulukko" className="rounded-xl border border-border bg-card/50 p-5 md:p-6 scroll-mt-24">
+              <h2 className="font-display text-xl text-foreground mb-3">Kokotaulukko 📏</h2>
+              <MittaTaulukko taulukko={cmTaulukko} />
+            </section>
+          )}
+          <SopiiLahjaksi isCustom={isCustom} jouluKategoriat={jouluKategoriat} />
+        </div>
+
         {/* Sopii yhteen: täydentävät tuotteet ostoalueen alla (src/lib/recommendations.ts) */}
         <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl" />
 
@@ -959,12 +1017,13 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           </div>
         </section>}
 
-        {/* Customer Reviews: vain todennetut, päivätyt arviot (src/lib/productReviews.ts). Ei osiota, jos arvioita ei ole. */}
-        {productReviews.length > 0 && <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
+        {/* Asiakasarviot: vain tilauksen tehneiden asiakkaiden julkaistut arviot (reviews-taulu, /api/sahkoposti?arviot=).
+            Ei osiota, jos arvioita ei ole. */}
+        {oikeatArviot.length > 0 && <section id="asiakasarviot" className="mt-8 max-w-3xl scroll-mt-24">
           <div className="rounded-xl border border-border bg-card/50 p-6 md:p-8">
             <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">Asiakasarviot ⭐</h2>
             {(() => {
-              const reviews = productReviews;
+              const reviews = oikeatArviot;
               const avgStars = reviews.reduce((s, r) => s + r.stars, 0) / reviews.length;
               return (
                 <div className="space-y-4">
@@ -991,10 +1050,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                             ))}
                           </div>
                           <span className="text-sm font-medium text-foreground">{review.name}</span>
+                          <span className="text-xs text-primary">Varmistettu ostaja</span>
                         </div>
                         <span className="text-xs text-muted-foreground">{review.date}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>
+                      {review.text && <p className="text-sm text-muted-foreground leading-relaxed">"{review.text}"</p>}
                     </div>
                   ))}
                 </div>
@@ -1027,18 +1087,6 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             <Link to={kategoriaPolku(product.category)} className="text-sm text-primary hover:underline">
               ← Takaisin kategoriaan: {category.emoji} {category.name}
             </Link>
-          </section>
-        )}
-
-        {/* Same theme cross-sell */}
-        {themeProducts.length > 0 && (
-          <section className="mt-16">
-            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">Samalla teemalla eri tuotteina 🎯</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {themeProducts.map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
           </section>
         )}
 

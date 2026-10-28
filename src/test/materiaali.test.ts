@@ -54,3 +54,35 @@ describe("joulun takaraja painotaloittain", () => {
     expect(jouluAvain({ category: "hupparit", slug: opt })).toBe("hupparit");
   });
 });
+
+describe("kokotaulukko ja painomaa pohjatuotteesta", async () => {
+  const { mittataulukko } = await import("@/data/mittataulukot");
+  const { painetaanEUssa, materiaaliluokka } = await import("../../api/_lib/materiaali.js");
+  const tpaita = Object.keys(pohjat).find((s) => pohjat[s].b === 145)!;
+  const huppari = Object.keys(pohjat).find((s) => pohjat[s].b === 77)!;
+
+  it("Gildan 64000: senttimitat lomakkeen tuumista, vain myytävät koot", () => {
+    const t = mittataulukko(tpaita, ["S", "M", "XXL", "6XL"])!;
+    expect(t.malli).toBe("Gildan Softstyle 64000");
+    expect(t.koot).toEqual(["S", "M", "XXL"]);
+    expect(t.rivit.find((r) => r.nimi === "Leveys")!.cm).toEqual([46, 51, 66]);
+    expect(t.rivit.find((r) => r.nimi === "Pituus")!.cm).toEqual([71, 74, 81]);
+  });
+  it("Gildan 18500 ja tuntematon pohja", () => {
+    expect(mittataulukko(huppari, ["L"])!.rivit.map((r) => r.cm[0])).toEqual([61, 74, 89]);
+    expect(mittataulukko("ei-tuotetta", ["M"])).toBeNull();
+  });
+  it("EU-painotalot: Tšekki, Saksa ja Ranska kyllä, Yhdysvallat ei", () => {
+    expect(painetaanEUssa(tpaita)).toBe(true);
+    expect(painetaanEUssa(huppari)).toBe(true);
+    const koriste = Object.keys(pohjat).find((s) => pohjat[s].p === 59);
+    if (koriste) expect(painetaanEUssa(koriste)).toBe(false);
+    expect(painetaanEUssa("ei-tuotetta")).toBeNull();
+  });
+  it("Gildanin mittalomakkeen sekoitevärit", () => {
+    expect(POHJAT[6].luokat[materiaaliluokka(6, "Sport Grey")!]).toBe("90 % puuvillaa ja 10 % polyesteriä");
+    expect(POHJAT[6].luokat[materiaaliluokka(6, "Ash")!]).toBe("99 % puuvillaa ja 1 % polyesteriä");
+    expect(POHJAT[6].luokat[materiaaliluokka(6, "Dark Heather")!]).toBe("50 % puuvillaa ja 50 % polyesteriä");
+    expect(POHJAT[145].luokat[materiaaliluokka(145, "Heather Oatmeal")!]).toBe("99 % rengaskehrättyä puuvillaa ja 1 % polyesteriä");
+  });
+});

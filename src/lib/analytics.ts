@@ -40,6 +40,18 @@ export interface GAItem {
   item_category?: string;
 }
 
+/**
+ * Ostosuppilo GA4:ssä: view_item (tuotesivu) -> add_to_cart -> begin_checkout (kassasivu) -> purchase.
+ * item_id on kaikissa tuotteen slug, jotta vaiheet yhdistyvät samaan tuotteeseen.
+ */
+export function trackViewItem(item: GAItem) {
+  sendEvent("view_item", {
+    currency: "EUR",
+    value: +item.price.toFixed(2),
+    items: [item],
+  });
+}
+
 export function trackAddToCart(item: GAItem) {
   sendEvent("add_to_cart", {
     currency: "EUR",

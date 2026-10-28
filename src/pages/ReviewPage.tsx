@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Star, Check, AlertCircle, Loader2 } from "lucide-react";
@@ -16,6 +16,8 @@ export default function ReviewPage() {
   const [params] = useSearchParams();
   const token = params.get("token") || "";
   const wantsUnsub = params.get("unsubscribe") === "1";
+  // Arviopyynnön suora tuotelinkki: ?t=<rivin numero> (api/_lib/markkinointi.js arvosteluLinkki).
+  const valittu = Number.parseInt(params.get("t") ?? "", 10);
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(true);
@@ -27,6 +29,12 @@ export default function ReviewPage() {
   const [name, setName] = useState("");
   const [drafts, setDrafts] = useState<Record<string, { stars: number; text: string }>>({});
   const [submitting, setSubmitting] = useState<string | null>(null);
+
+  // Linkin tuote ensin, jotta asiakas pääsee arvioimaan sen heti.
+  const jarjestetyt = useMemo(() => {
+    if (!Number.isInteger(valittu) || !products[valittu]) return products;
+    return [products[valittu], ...products.filter((_, i) => i !== valittu)];
+  }, [products, valittu]);
 
   useEffect(() => {
     if (!token) { setError("Linkki ei ole kelvollinen."); setLoading(false); return; }
@@ -117,7 +125,7 @@ export default function ReviewPage() {
 
       <h1 className="font-display text-3xl text-foreground mb-2">Arvostele ostoksesi ⭐</h1>
       <p className="text-muted-foreground mb-6">
-        {customerName ? `Hei ${customerName}! ` : ""}Kerro lyhyesti mitä mieltä olit – arviosi auttaa muita asiakkaita.
+        {customerName ? `Hei ${customerName}! ` : ""}Kerro lyhyesti, mitä mieltä olit. Arviosi auttaa muita asiakkaita.
       </p>
 
       {loading && (
@@ -142,7 +150,7 @@ export default function ReviewPage() {
           </div>
 
           <div className="space-y-5">
-            {products.map(prod => {
+            {jarjestetyt.map(prod => {
               const draft = drafts[prod.name] || { stars: 0, text: "" };
               const done = prod.reviewed;
               return (
@@ -151,7 +159,7 @@ export default function ReviewPage() {
 
                   {done ? (
                     <div className="flex items-center gap-2 text-primary text-sm">
-                      <Check className="h-4 w-4" /> Kiitos – tämä tuote on jo arvosteltu.
+                      <Check className="h-4 w-4" /> Kiitos, tämä tuote on jo arvosteltu.
                     </div>
                   ) : (
                     <>

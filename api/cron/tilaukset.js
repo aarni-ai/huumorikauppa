@@ -53,7 +53,7 @@ import { ajaEuSiirrot, euSiirtoKansio } from "../_lib/eu-siirrot.js";
 import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
 import { buildProductRow as buildProductRowPrintify } from "../_lib/printify-sync.generated.js";
 import { korjaaNimi, nimiKorjattava } from "../_lib/tuotenimi.js";
-import { ga4Viikot } from "../_lib/ga4.js";
+import { ga4Viikot, ga4Suppilo } from "../_lib/ga4.js";
 
 // Printifyn otsikoissa voi olla ajatusviivoja; kantaan tuotaessa nimi siistitään samalla tavalla kuin 28.10.2026 korjatut.
 const buildProductRow = (...a) => {
@@ -95,6 +95,18 @@ export default async function handler(req, res) {
       },
     });
     return res.status(200).json({ ok: true, kuiva, ...r });
+  }
+
+  // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.
+  // Tuotesivu näyttää vain julkaistut (api/sahkoposti.js ?arviot=<slug>).
+  if (req.query.tehtava === "arviot") {
+    const store = pgMarkkinointi(db);
+    const id = Number(req.query.julkaise || req.query.hylkaa);
+    if (Number.isInteger(id) && id > 0) {
+      const ok = kuiva || await store.asetaArvionTila(id, req.query.julkaise ? "julkaistu" : "hylatty");
+      return res.status(ok ? 200 : 404).json({ ok, kuiva, id, tila: req.query.julkaise ? "julkaistu" : "hylatty" });
+    }
+    return res.status(200).json({ ok: true, odottavat: await store.odottavatArviot() });
   }
 
   if (req.query.tehtava === "resend-domain") {
@@ -316,10 +328,12 @@ export default async function handler(req, res) {
     }
     // Kävijät ja konversio GA4 Data API:sta, kun GA4_PROPERTY_ID ja GA4_PALVELUTILI on asetettu (api/_lib/ga4.js).
     let ga4 = null, ga4Virhe = null;
-    try { ga4 = await ga4Viikot(alku); } catch (e) { ga4Virhe = String(e.message || e).slice(0, 200); }
+    // Ostosuppilo (view_item -> add_to_cart -> begin_checkout -> purchase) samasta lähteestä.
+    let suppilo = null;
+    try { ga4 = await ga4Viikot(alku); suppilo = await ga4Suppilo(alku); } catch (e) { ga4Virhe = String(e.message || e).slice(0, 200); }
     const tulos = [...viikot.values()].map((v) => ({ ...v, myynti: Math.round(v.myynti * 100) / 100, kate: Math.round(v.kate * 100) / 100,
-      keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0, ga4: ga4?.[v.viikko] ?? null }));
-    return res.status(200).json({ ok: true, alku, viikot: tulos, ga4Viikot: ga4, ga4Lahde: ga4 ? "GA4 Data API" : ga4Virhe || "ei asetettu" });
+      keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0, ga4: ga4?.[v.viikko] ?? null, suppilo: suppilo?.[v.viikko] ?? null }));
+    return res.status(200).json({ ok: true, alku, viikot: tulos, ga4Viikot: ga4, ga4Suppilo: suppilo, ga4Lahde: ga4 ? "GA4 Data API" : ga4Virhe || "ei asetettu" });
   }
 
   // Kaikki ajatusviivalliset ja luonnottoman kaksoispisteen nimet kerralla (api/_lib/tuotenimi.js korjaaNimi). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.

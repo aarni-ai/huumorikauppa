@@ -16,14 +16,16 @@ export const POHJAT = {
   // colors 90% cotton, 10% polyester; Graphite Heather 50% ring-spun cotton, 50% polyester", 153 g/m².
   145: {
     nimi: "Gildan Softstyle 64000", paino: "153 g/m²",
-    luokat: [PUUVILLA_RK, "35 % rengaskehrättyä puuvillaa ja 65 % polyesteriä", "90 % puuvillaa ja 10 % polyesteriä", "50 % rengaskehrättyä puuvillaa ja 50 % polyesteriä"],
-    luokka: (c) => (/^Graphite Heather$/i.test(c) ? 3 : /heather/i.test(c) ? 1 : /^Sport Grey$|^Antique/i.test(c) ? 2 : 0),
+    // Heather Oatmeal 99/1 Gildanin mittalomakkeen mukaan (SpecSheetMeasurements_64000.pdf).
+    luokat: [PUUVILLA_RK, "35 % rengaskehrättyä puuvillaa ja 65 % polyesteriä", "90 % puuvillaa ja 10 % polyesteriä", "50 % rengaskehrättyä puuvillaa ja 50 % polyesteriä", "99 % rengaskehrättyä puuvillaa ja 1 % polyesteriä"],
+    luokka: (c) => (/^Heather Oatmeal$/i.test(c) ? 4 : /^Graphite Heather$/i.test(c) ? 3 : /heather/i.test(c) ? 1 : /^Sport Grey$|^Antique/i.test(c) ? 2 : 0),
   },
-  // "100% cotton", 180 g/m². Meleerattujen ja Sport Greyn koostumusta katalogi ei kerro.
+  // "100% cotton", 180 g/m². Sekoitevärit Gildanin mittalomakkeesta (SpecSheetMeasurements_5000.pdf): Ash 99/1,
+  // Sport Grey ja Antique-värit 90/10, meleeratut (Heather, Dark Heather, Graphite Heather, Tweed) 50/50.
   6: {
     nimi: "Gildan 5000", paino: "180 g/m²",
-    luokat: ["100 % puuvillaa"],
-    luokka: (c) => (/heather|sport grey|^ash$/i.test(c) ? null : 0),
+    luokat: ["100 % puuvillaa", "90 % puuvillaa ja 10 % polyesteriä", "99 % puuvillaa ja 1 % polyesteriä", "50 % puuvillaa ja 50 % polyesteriä"],
+    luokka: (c) => (/^Ash$/i.test(c) ? 2 : /^Sport Grey$|^Antique/i.test(c) ? 1 : /heather|^tweed$/i.test(c) ? 3 : 0),
   },
   // "50% cotton and 50% polyester ... Heather Sport colors 60% polyester, 40% cotton", 271 g/m².
   77: {
@@ -41,6 +43,24 @@ export function materiaaliluokka(bp, vari) {
   if (!pohja?.luokat || !vari) return null;
   const i = pohja.luokka(vari);
   return i == null ? null : i;
+}
+
+/**
+ * Painotalojen maat (Printify /v1/catalog/print_providers, 29.10.2026). Tuotesivun "Painetaan tilauksesta EU:ssa"
+ * näkyy vain, kun tuotteen painotalo on EU:ssa.
+ */
+export const PAINOTALOT = {
+  30: { nimi: "OPT OnDemand", maa: "CZ", eu: true },
+  26: { nimi: "Textildruck Europa", maa: "DE", eu: true },
+  402: { nimi: "Atelier Katanga", maa: "FR", eu: true },
+  59: { nimi: "Imagine Your Photos", maa: "US", eu: false },
+};
+
+/** Painetaanko tuote EU:ssa: true/false painotalon mukaan, null jos painotaloa ei tunneta. */
+export function painetaanEUssa(slug) {
+  const t = tuotepohja(slug);
+  const pt = t && PAINOTALOT[t.p];
+  return pt ? pt.eu : null;
 }
 
 /** Tuotteen pohja ja painotalo ({ b, p, v }) slugin mukaan, tai null. */

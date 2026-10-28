@@ -69,7 +69,7 @@ const CARD = "flex flex-col rounded-xl overflow-hidden border border-border bg-c
 const NAME = "text-xs font-medium text-foreground line-clamp-2 leading-snug min-h-[2.5em]";
 
 /**
- * Pystysuuntainen tuotekortti blogiin: kuva ylhäällä, tiedot alla. Kiinteä neliökuva ja
+ * Pystysuuntainen tuotekortti blogiin: kuva ylhäällä, tiedot alla, Osta vie tuotesivulle (koko ja koriin). Kiinteä neliökuva ja
  * kahden rivin nimi pitävät koon vakiona; kuva ladataan laiskasti.
  */
 export function BlogProductCard({ product }: { product: Product }) {
@@ -90,7 +90,7 @@ export function BlogProductCard({ product }: { product: Product }) {
         <span className={NAME}>{product.name}</span>
         <span className="text-sm font-bold text-primary mt-1">{product.price.toFixed(2).replace(".", ",")} €</span>
         <span className="mt-auto pt-1.5 flex items-center justify-center gap-1 px-2 py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold min-h-[40px] hover:opacity-90 transition-opacity">
-          Katso tuote
+          Osta
         </span>
       </div>
     </Link>
