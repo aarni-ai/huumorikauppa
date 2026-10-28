@@ -963,7 +963,7 @@ Moni nuori aloittaa salitreenin lukioiässä. [Jalkapäivä ohitettu jälleen -p
 
 ### Koodaavalle nuorelle
 
-Ohjelmointia harrastavalle nuorelle sopii IT-huumorin klassikko [Ei se ole bugi, se on feature](/tuote/hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature). Vitsi on sama, jota ammattilaisetkin käyttävät, joten nuori tuntee olevansa osa alaa. Katso lisää sivulta [lahjat koodaajalle](/ammatti/koodari).
+Ohjelmointia harrastavalle nuorelle sopii IT-huumorin klassikko [Ei se ole bugi, se on feature](/tuote/hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature). Vitsi on sama, jota ammattilaisetkin käyttävät, joten nuori tuntee olevansa osa alaa. Katso lisää sivulta [lahjat koodaajalle](/lahjat/it-ihmiselle).
 
 ### Itsevarmalle tyylittelijälle
 
@@ -1090,7 +1090,7 @@ Metsästäjän huumori on hiljaisempaa kuin kalastajan. Jahdissa tärkeintä on 
 - **Rauhallinen metsämies:** [Ei ole kiire, olen metsässä -huppari](/tuote/hauska-huppari-metsastajalle-ei-ole-kiire-olen-metsassa) kertoo jahtikauden tunnelman. Huppari on lämmin lisäkerros passipaikalle ja metsästysmajan iltoihin.
 - **Jahtiporukan oma paita:** Monella metsästysseuralla ja jahtiporukalla on oma nimi, tunnus tai sisäpiirin vitsi. [T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on hauska yhteislahja koko porukalle. Lisää paitaan seuran nimi ja vuosiluku, niin siitä tulee muisto kaudesta.
 
-Huomioi, että metsästyksessä turvallisuusvaatetus on oma asiansa. Huumoripaita on lahja jahtimajalle, nuotiolle ja kotiin, ei korvaa näkyvyysvaatteita metsässä. Lisää ideoita on sivuilla [lahjat harrastajalle](/lahjat/harrastajalle) ja [metsästyksen tuotteet](/harrastus/metsastys).
+Huomioi, että metsästyksessä turvallisuusvaatetus on oma asiansa. Huumoripaita on lahja jahtimajalle, nuotiolle ja kotiin, ei korvaa näkyvyysvaatteita metsässä. Lisää ideoita on sivuilla [lahjat harrastajalle](/lahjat/harrastajalle) ja [metsästyksen tuotteet](/lahjat/metsastajalle).
 
 ## Mökkeilijälle
 

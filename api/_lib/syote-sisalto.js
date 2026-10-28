@@ -116,6 +116,23 @@ function kaupunki(nimi, kuvaus) {
 }
 
 /**
+ * Harrastus- ja ammattisarjat (29.10.2026, laskeutumissivut /lahjat/<sarja>): tuotteen nimen kohde ("T-paita
+ * kalastajalle") -> otsikon "kenelle", lahjahaku, product_typen taso ja kuvauksen lahjalause. Kattaa sarjojen uudet
+ * paidat ja saman aiheen aiemmat tuotteet (Hauska T-Paita Kalastajalle jne.), jotta haku "lahja metsästäjälle"
+ * osuu kaikkiin. Avain on kohde pienillä kirjaimilla.
+ */
+const SARJAT = [
+  { re: /^(?:remontoijalle|rakennusmiehelle|sähköasentajalle|putkimiehelle)$/, taso: "Remontoijat ja rakentajat", yleinen: "remontoijalle tai rakentajalle", kenelle: (k) => k },
+  { re: /^(?:kalastajalle|pilkkijälle)$/, taso: "Kalastajat", yleinen: "kalastajalle tai pilkkijälle", kenelle: (k) => k },
+  { re: /^metsästäjälle$/, taso: "Metsästäjät", yleinen: "metsästäjälle tai metsästysseuran jäsenelle", kenelle: (k) => k },
+  { re: /^(?:autoilijalle|autoharrastajalle)$/, taso: "Autoilijat ja motoristit", yleinen: "autoilijalle, autoharrastajalle tai motoristille", kenelle: (k) => k },
+  { re: /^golfaajalle$/, taso: "Golfaajat", yleinen: "golfaajalle", kenelle: (k) => k },
+  { re: /^(?:mökkeilijälle|saunojalle)$/, taso: "Mökkeilijät ja saunojat", yleinen: "mökkeilijälle tai saunojalle", kenelle: (k) => k },
+  { re: /^maanviljelijälle$/, taso: "Maanviljelijät ja metsänomistajat", yleinen: "maanviljelijälle tai metsänomistajalle", kenelle: (k) => k },
+  { re: /^(?:it-ihmiselle|koodarille)$/, taso: "Tekniikka- ja IT-ihmiset", yleinen: "IT-ihmiselle tai koodarille", kenelle: (k) => (k === "it-ihmiselle" ? "IT-ihmiselle" : k) },
+];
+
+/**
  * Aihe: kenelle (otsikon "{tyyppi} {kenelle}"), lahjahaku (otsikon loppu), product_typen viimeinen taso ja kuvauksen
  * lahjalause. Järjestys: tarkin ensin.
  */
@@ -157,6 +174,11 @@ export function aihe(p) {
       ? `Hyvä lahja ${k || "kotikaupungistaan ylpeälle"}, ${kp.kaupunki} kotiseudukseen tuntevalle tai kaupungista pois muuttaneelle.`
       : `Hyvä lahja ${k} tai kotikaupungistaan pois muuttaneelle.`;
     return tulos({ kenelle: k, lahja, taso: "Paikkakunnat", lause });
+  }
+  const sarja = SARJAT.find((x) => x.re.test(kohde));
+  if (sarja) {
+    const k = sarja.kenelle(kohde);
+    return tulos({ kenelle: k, lahja: `lahja ${k}`, taso: sarja.taso, lause: `Hauska lahja ${sarja.yleinen} syntymäpäiväksi, jouluksi tai muuten vain.` });
   }
   if (kohde && /\p{L}+(?:lle|ille)$/u.test(kohde)) {
     return tulos({ kenelle: kohde, lahja: /loma/.test(kohde) ? "" : `lahja ${kohde}`, taso: "Ammatit ja harrastukset", lause: `Hauska lahja ${kohde} esimerkiksi syntymäpäiväksi, jouluksi tai työpaikan pikkujouluihin.` });

@@ -49,6 +49,14 @@ export const LANDING_PATHS: readonly string[] = [
   "/hauskat-lahjat-naiselle",
   "/syntymapaivalahjat",
   "/lahjat/harrastajalle",
+  "/lahjat/remontoijalle",
+  "/lahjat/kalastajalle",
+  "/lahjat/metsastajalle",
+  "/lahjat/autoilijalle",
+  "/lahjat/golfaajalle",
+  "/lahjat/mokkeilijalle",
+  "/lahjat/maanviljelijalle",
+  "/lahjat/it-ihmiselle",
   "/ammattipaidat",
 ];
 
@@ -60,12 +68,17 @@ export const LANDING_PATHS: readonly string[] = [
 export const LANDING_REDIRECTS: Record<string, string> = {
   // Alle 8 sopivaa tuotetta -> lähin sivu
   "/lahjat/alle-20-euroa": "/lahjat/alle-30-euroa",
-  "/lahjat/kalastajalle": "/lahjat/harrastajalle",
-  "/lahjat/metsastajalle": "/lahjat/harrastajalle",
-  "/harrastus/kalastus": "/lahjat/harrastajalle",
   "/harrastus/videopelit": "/lahjat/harrastajalle",
+  // 29.10.2026: harrastus- ja ammattisarjojen laskeutumissivut korvaavat päällekkäiset harrastus- ja ammattisivut
+  "/harrastus/kalastus": "/lahjat/kalastajalle",
+  "/harrastus/metsastys": "/lahjat/metsastajalle",
+  "/harrastus/golf": "/lahjat/golfaajalle",
+  "/harrastus/sauna": "/lahjat/mokkeilijalle",
+  "/ammatti/rakennusmies": "/lahjat/remontoijalle",
+  "/ammatti/maanviljelija": "/lahjat/maanviljelijalle",
+  "/ammatti/koodari": "/lahjat/it-ihmiselle",
   "/lahjat/kahvinystavalle": "/lahjat/tyokaverille",
-  "/lahjat/saunaan": "/suomalainen-huumori-paidat",
+  "/lahjat/saunaan": "/lahjat/mokkeilijalle",
   "/lahjat/opettajalle": "/ammattipaidat",
   "/lahjat/hoitajalle": "/ammattipaidat",
   // Päällekkäiset sivut (sama hakuaikomus kuin laskeutumissivulla)
@@ -77,7 +90,7 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   // Ääkköset slugeissa -> ASCII
   "/lahjat/isoäidille": "/lahjat/isoaidille",
   "/ammatti/insinöori": "/ammatti/insinoori",
-  "/ammatti/maanviljelijä": "/ammatti/maanviljelija",
+  "/ammatti/maanviljelijä": "/lahjat/maanviljelijalle",
   "/kaupunki/ylojärvi": "/kaupunki/ylojarvi",
   "/kaupunki/lempäälä": "/kaupunki/lempaala",
   // 28.10.2026 canonical-korjaus (KASVU-RAPORTTI.md): Search Console "Google valitsi eri kanonisen sivun".
@@ -91,15 +104,14 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/lahjat/ystavalle": "/lahja-kaverille",
   "/lahjat/polttareihin": "/polttari-lahjat",
   "/lahjat/huumorilahjat": "/kaikki-tuotteet",
-  "/lahjat/koodaajalle": "/ammatti/koodari",
-  "/lahjat/rakennusmiehelle": "/ammatti/rakennusmies",
+  "/lahjat/koodaajalle": "/lahjat/it-ihmiselle",
+  "/lahjat/rakennusmiehelle": "/lahjat/remontoijalle",
   "/lahjat/yrittajalle": "/ammatti/yrittaja",
   "/hauskat-t-paidat": "/kategoria/t-paidat",
   "/hauskat-hupparit": "/kategoria/hupparit",
   "/opiskelijan-haalarimerkit": "/haalarimerkit",
   // Alle 8 sopivaa tuotetta -> lähin sivu tai saman aiheen opas
-  "/lahjat/golfaajalle": "/lahjat/harrastajalle",
-  "/lahjat/autoharrastajalle": "/lahjat/harrastajalle",
+  "/lahjat/autoharrastajalle": "/lahjat/autoilijalle",
   "/lahjat/muutoiset": "/lahja-kaverille",
   "/lahjat/ystavanpaiva": "/lahja-kaverille",
   "/lahjat/lapselle": "/joululahja-teinille",
@@ -119,7 +131,6 @@ export const NOT_CREATED_LANDINGS: Record<string, string> = {
   "/jouluhupparit": "/joululahjat",
   "/vauvan-ensimmainen-joulu": "/lahjat/vauvalle",
   "/sauna-t-paidat": "/suomalainen-huumori-paidat",
-  "/lahjat/mokkeilijalle": "/lahjat/harrastajalle",
 };
 
 /** Isänpäivä-valikko (Header, työpöytä ja mobiili). Ikivihreä: jää valikkoon myös isänpäivän jälkeen. */

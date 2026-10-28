@@ -42,6 +42,31 @@ describe("syötteen otsikot", () => {
     );
   });
 
+  it("harrastus- ja ammattisarjat: kenelle, lahjahaku ja product_type (29.10.2026)", () => {
+    const sarjat: [string, string, string][] = [
+      ["Mittaa kerran. Sahaa kolme kertaa | T-paita remontoijalle", "Hauska t-paita remontoijalle: Mittaa kerran. Sahaa kolme kertaa, lahja remontoijalle", "Remontoijat ja rakentajat"],
+      ["Kala oli tätäkin isompi | T-paita kalastajalle", "Hauska t-paita kalastajalle: Kala oli tätäkin isompi, lahja kalastajalle", "Kalastajat"],
+      ["Koira löysi. Minä en | T-paita metsästäjälle", "Hauska t-paita metsästäjälle: Koira löysi. Minä en, lahja metsästäjälle", "Metsästäjät"],
+      ["Öljynvaihto on terapiaa | T-paita autoilijalle", "Hauska t-paita autoilijalle: Öljynvaihto on terapiaa, lahja autoilijalle", "Autoilijat ja motoristit"],
+      ["Mulligan on ihmisoikeus | T-paita golfaajalle", "Hauska t-paita golfaajalle: Mulligan on ihmisoikeus, lahja golfaajalle", "Golfaajat"],
+      ["Kantovesi pitää kunnossa | T-paita mökkeilijälle", "Hauska t-paita mökkeilijälle: Kantovesi pitää kunnossa, lahja mökkeilijälle", "Mökkeilijät ja saunojat"],
+      ["Traktori ei kysy vapaapäiviä | T-paita maanviljelijälle", "Hauska t-paita maanviljelijälle: Traktori ei kysy vapaapäiviä, lahja maanviljelijälle", "Maanviljelijät ja metsänomistajat"],
+      ["Toimii minun koneellani | T-paita IT-ihmiselle", "Hauska t-paita IT-ihmiselle: Toimii minun koneellani, lahja IT-ihmiselle", "Tekniikka- ja IT-ihmiset"],
+    ];
+    for (const [name, otsikko, taso] of sarjat) {
+      const p = tuote({ name });
+      expect(syoteOtsikko(p), name).toBe(otsikko);
+      expect(tuotetyyppi(p), name).toBe(`Vaatteet > T-paidat > Hauskat t-paidat > ${taso}`);
+      expect(syoteKuvaus(p), name).not.toMatch(DASH);
+    }
+    // Saman aiheen aiemmat tuotteet saavat saman haun ja tason.
+    const vanha = tuote({ name: "Hauska T-Paita Metsästäjälle, Ei Ole Kiire Olen Metsässä" });
+    expect(syoteOtsikko(vanha)).toBe("Hauska t-paita metsästäjälle: Ei ole kiire olen metsässä, lahja metsästäjälle");
+    expect(tuotetyyppi(vanha)).toBe("Vaatteet > T-paidat > Hauskat t-paidat > Metsästäjät");
+    expect(tuotetyyppi(tuote({ name: "Hauska T-Paita Koodarille, Ei Se Ole Bugi Se On Feature" }))).toBe("Vaatteet > T-paidat > Hauskat t-paidat > Tekniikka- ja IT-ihmiset");
+    expect(syoteKuvaus(tuote({ name: "Kala oli tätäkin isompi | T-paita kalastajalle" }))).toContain("Hauska lahja kalastajalle tai pilkkijälle");
+  });
+
   it("kaupunkituote: asukasnimi ja kaupunki-lahja", () => {
     const p = tuote({ name: "100 % Lahtelaista verta – hauska t-paita", description: "Aitous paidassa. Hauska lahja lahtelaiselle. #kaupunki:Lahti" });
     expect(syoteOtsikko(p)).toBe("Hauska t-paita lahtelaiselle: 100 % Lahtelaista verta, Lahti-lahja");

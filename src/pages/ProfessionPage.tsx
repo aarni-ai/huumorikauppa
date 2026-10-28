@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { findProfession, professions } from "@/data/professions";
+import { LANDING_REDIRECTS } from "@/data/landingRoutes";
 import { situationGifts } from "@/data/situationGifts";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 
@@ -74,7 +75,9 @@ const ProfessionPage = () => {
     "@graph": [itemListJsonLd, faqJsonLd],
   };
 
-  const relatedProfessions = professions
+  // Yhdistetyt ammattisivut ohjataan 301:llä laskeutumissivulle (landingRoutes.ts): niihin ei linkitetä.
+  const linkedProfessions = professions.filter((p) => !LANDING_REDIRECTS[`/ammatti/${p.slug}`]);
+  const relatedProfessions = linkedProfessions
     .filter((p) => profession.relatedSlugs.includes(p.slug))
     .slice(0, 8);
 

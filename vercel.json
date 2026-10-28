@@ -64,18 +64,38 @@
       "statusCode": 301
     },
     {
-      "source": "/lahjat/kalastajalle",
-      "destination": "/lahjat/harrastajalle",
-      "statusCode": 301
-    },
-    {
-      "source": "/lahjat/metsastajalle",
-      "destination": "/lahjat/harrastajalle",
-      "statusCode": 301
-    },
-    {
       "source": "/harrastus/kalastus",
-      "destination": "/lahjat/harrastajalle",
+      "destination": "/lahjat/kalastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/metsastys",
+      "destination": "/lahjat/metsastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/golf",
+      "destination": "/lahjat/golfaajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/sauna",
+      "destination": "/lahjat/mokkeilijalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/rakennusmies",
+      "destination": "/lahjat/remontoijalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/maanviljelija",
+      "destination": "/lahjat/maanviljelijalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/koodari",
+      "destination": "/lahjat/it-ihmiselle",
       "statusCode": 301
     },
     {
@@ -90,7 +110,7 @@
     },
     {
       "source": "/lahjat/saunaan",
-      "destination": "/suomalainen-huumori-paidat",
+      "destination": "/lahjat/mokkeilijalle",
       "statusCode": 301
     },
     {
@@ -140,7 +160,7 @@
     },
     {
       "source": "/ammatti/maanviljelij%c3%a4",
-      "destination": "/ammatti/maanviljelija",
+      "destination": "/lahjat/maanviljelijalle",
       "statusCode": 301
     },
     {
@@ -170,12 +190,12 @@
     },
     {
       "source": "/ammatti/maanviljelijä",
-      "destination": "/ammatti/maanviljelija",
+      "destination": "/lahjat/maanviljelijalle",
       "statusCode": 301
     },
     {
       "source": "/ammatti/maanviljelij%C3%A4",
-      "destination": "/ammatti/maanviljelija",
+      "destination": "/lahjat/maanviljelijalle",
       "statusCode": 301
     },
     {
@@ -275,12 +295,12 @@
     },
     {
       "source": "/lahjat/koodaajalle",
-      "destination": "/ammatti/koodari",
+      "destination": "/lahjat/it-ihmiselle",
       "statusCode": 301
     },
     {
       "source": "/lahjat/rakennusmiehelle",
-      "destination": "/ammatti/rakennusmies",
+      "destination": "/lahjat/remontoijalle",
       "statusCode": 301
     },
     {
@@ -304,13 +324,8 @@
       "statusCode": 301
     },
     {
-      "source": "/lahjat/golfaajalle",
-      "destination": "/lahjat/harrastajalle",
-      "statusCode": 301
-    },
-    {
       "source": "/lahjat/autoharrastajalle",
-      "destination": "/lahjat/harrastajalle",
+      "destination": "/lahjat/autoilijalle",
       "statusCode": 301
     },
     {
