@@ -52,12 +52,12 @@ import { katevalvonta, yhteenveto as kateYhteenveto, katetarkistusAihe, htmlEsi 
 import { ajaEuSiirrot, euSiirtoKansio } from "../_lib/eu-siirrot.js";
 import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
 import { buildProductRow as buildProductRowPrintify } from "../_lib/printify-sync.generated.js";
-import { nimiIlmanAjatusviivoja } from "../_lib/tuotenimi.js";
+import { korjaaNimi, nimiKorjattava } from "../_lib/tuotenimi.js";
 
 // Printifyn otsikoissa voi olla ajatusviivoja; kantaan tuotaessa nimi siistitään samalla tavalla kuin 28.10.2026 korjatut.
 const buildProductRow = (...a) => {
   const rivi = buildProductRowPrintify(...a);
-  return rivi && typeof rivi === "object" && "name" in rivi ? { ...rivi, name: nimiIlmanAjatusviivoja(rivi.name) } : rivi;
+  return rivi && typeof rivi === "object" && "name" in rivi ? { ...rivi, name: korjaaNimi(rivi.name) } : rivi;
 };
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -286,16 +286,16 @@ export default async function handler(req, res) {
   }
 
   // Tuotteen nimen korjaus (&slug=...&nimi=...): vain nimi, slug ja muut tiedot ennallaan. Ilman &kuiva=0 vain näyttää.
-  // Kaikki ajatusviivalliset tuotenimet kerralla (api/_lib/tuotenimi.js). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.
+  // Kaikki ajatusviivalliset ja luonnottoman kaksoispisteen nimet kerralla (api/_lib/tuotenimi.js korjaaNimi). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.
   if (req.query.tehtava === "tuotenimet-viivat") {
-    const rivit = await db`select id, slug, name from products where name ~ '[–—]' order by slug`;
-    const muutokset = rivit.map((r) => ({ id: r.id, slug: r.slug, vanha: r.name, uusi: nimiIlmanAjatusviivoja(r.name) }));
+    const rivit = (await db`select id, slug, name from products where name ~ '[–—:]' order by slug`).filter((r) => nimiKorjattava(r.name));
+    const muutokset = rivit.map((r) => ({ id: r.id, slug: r.slug, vanha: r.name, uusi: korjaaNimi(r.name) }));
     const virheet = muutokset.filter((m) => !m.uusi || /[–—]/.test(m.uusi));
     if (virheet.length) return res.status(500).json({ error: "muunnos jätti ajatusviivan", virheet: virheet.slice(0, 5) });
     if (req.query.kuiva === "0") {
       for (const m of muutokset) await db`update products set name = ${m.uusi}, updated_at = now() where id = ${m.id} and name = ${m.vanha}`;
     }
-    const jaljella = req.query.kuiva === "0" ? (await db`select count(*)::int as n from products where name ~ '[–—]'`)[0].n : null;
+    const jaljella = req.query.kuiva === "0" ? (await db`select name from products where name ~ '[–—:]'`).filter((r) => nimiKorjattava(r.name)).length : null;
     return res.status(200).json({ ok: true, kuiva: req.query.kuiva !== "0", maara: muutokset.length, jaljella,
       esimerkit: muutokset.slice(0, 8).map(({ slug, vanha, uusi }) => ({ slug, vanha, uusi })) });
   }

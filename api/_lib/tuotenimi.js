@@ -3,8 +3,8 @@
  * pystyviivalla, muut ajatusviivat korvataan kaksoispisteellä. Slug ei muutu, joten URL:t pysyvät ennallaan.
  *
  * "100 % Lahtelaista verta – hauska t-paita" -> "100 % Lahtelaista verta | Hauska t-paita"
- * "Forssa – parempi kuin Helsinki – hauska t-paita Forssalaiselle" -> "Forssa: parempi kuin Helsinki | Hauska t-paita Forssalaiselle"
- * "60v – kokenut, ei vanha | T-Paita" -> "60v: kokenut, ei vanha | T-Paita"
+ * "Forssa – parempi kuin Helsinki – hauska t-paita Forssalaiselle" -> "Forssa parempi kuin Helsinki | Hauska t-paita Forssalaiselle"
+ * "60v – kokenut, ei vanha | T-Paita" -> "60v kokenut, ei vanha | T-Paita" (luontevaErotin)
  * "Hauska T-Paita Palomiehelle – Sankari Savussa" -> "Hauska T-Paita Palomiehelle: Sankari Savussa"
  * "Helsinki: parempi kuin kaikki muut – itse sanoo – hauska t-paita" -> "Helsinki: parempi kuin kaikki muut, itse sanoo | Hauska t-paita"
  */
@@ -22,5 +22,21 @@ export function nimiIlmanAjatusviivoja(nimi) {
   // Ensimmäinen erotin kaksoispisteeksi (jos alussa ei jo ole kaksoispistettä), loput pilkuiksi.
   const [eka, ...muut] = osat.filter(Boolean);
   const runko = muut.length ? `${eka}${eka.includes(":") ? ", " : ": "}${muut.join(", ")}` : eka;
-  return (liite ? `${runko} | ${liite}` : runko).replace(/\s+/g, " ").trim();
+  return luontevaErotin((liite ? `${runko} | ${liite}` : runko).replace(/\s+/g, " ").trim());
 }
+
+/**
+ * Kaksoispiste pois, kun se katkaisee lauseen luonnottomasti (29.10.2026): ikä ("60v kokenut, ei vanha"),
+ * "Eläkkeellä kiireinen tekemään ei mitään" ja kaupungit ("Forssa parempi kuin Helsinki"). Otsikkomaiset
+ * erottimet jäävät ("Syntymäkaupunki: Tornio", "Hauska T-Paita Palomiehelle: Sankari Savussa").
+ */
+const LUONNOTON = [/^(\d+v?): /, /^(Eläkkeellä): /, /^([A-ZÅÄÖ][a-zåäö]+): (?=parempi kuin )/];
+export function luontevaErotin(nimi) {
+  let s = String(nimi ?? "");
+  for (const re of LUONNOTON) s = s.replace(re, "$1 ");
+  return s;
+}
+
+/** Tarvitseeko nimi korjausta (ajatusviiva tai luonnoton kaksoispiste). */
+export const nimiKorjattava = (nimi) => /[–—]/.test(String(nimi ?? "")) || luontevaErotin(nimi) !== String(nimi ?? "");
+export const korjaaNimi = (nimi) => luontevaErotin(nimiIlmanAjatusviivoja(nimi));
