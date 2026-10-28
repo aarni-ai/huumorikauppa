@@ -26,6 +26,40 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 28.10.2026: Merchant-syöte
+
+**Mitä muuttui.** Googlen maksuttomien listausten syöte (api/product-feed.js) saa uuden viimeisen vaiheen
+api/_lib/syote-sisalto.js. Se kirjoittaa jokaiselle tuotteelle otsikon, kuvauksen, product_typen, numeerisen
+Google-kategorian ja materiaalin tuoterivistä. Hinta, saatavuus, toimitus (6,90 €, ilmainen 79 €:sta, kassan
+vakioista) ja identifier_exists=no pysyvät ennallaan.
+
+- **Otsikot** hakujen mukaan (Googlen ehdotukset 28.10.: "hauska t paita isälle", "lahja eläkeläiselle",
+  "pikkujoululahja", "hauska joulupaita", "40v lahja"): `{tyyppi} {kenelle}: {painoteksti}, {lahjahaku}`, esim.
+  "Hauska t-paita isälle: En nuku. Lepuutan silmiä, isänpäivälahja" ja "Hauska huppari akaalaiselle: Akaalainen
+  selviää mistä vain, Akaa-lahja". Emojit, versaalit ja [NIMI]-paikkamerkit poistetaan. Pituus on enintään 150 merkkiä.
+- **Kuvaukset** ovat 500-1500 merkkiä (aiemmin mediaani 130). Mukana ovat painoteksti, kenelle tuote sopii,
+  tuotteen oma kuvaus, saatavat koot ja värit, materiaali (jos tiedossa) ja tieto EU-valmistuksesta. Ajatusviivat
+  ja toimitus-, hinta- ja palautusmaininnat jätetään pois. Live-syötteessä oli 48 kuvausta, joissa luki
+  "ilmainen toimitus yli 60 €" (väärä raja ja mainosteksti), sekä 8 otsikkoa, joissa oli ❤️.
+- **Kategoria** on nyt numeerinen ID (taxonomy-with-ids, versio 2021-09-21). T-paidat ja hupparit saavat ID:n 212
+  (Shirts & Tops). Hupparit olivat aiemmin Coats & Jackets, mikä ei sovi vetoketjuttomalle hupparille. Julisteet
+  saavat ID:n 500044 ja tarrat 4054.
+- **product_type** on muotoa "Vaatteet > T-paidat > Hauskat t-paidat > Eläkeläiset". Aiheita ovat esimerkiksi
+  Paikkakunnat, Syntymäpäivät, Isät ja isoisät, Pikkujoulut ja Joulu. Niillä voi rajata kampanjoita.
+- **material** tulee vain tuotteen omasta kuvauksesta, ja sen saa 44 tuotetta. Printifyn katalogi ei ollut
+  ajoympäristöstä saatavilla, joten muille tuotteille materiaalia ei arvattu.
+
+**Validaattori** (scripts/validoi-syote.mjs) hakee nyt taksonomian ID:t ja tarkistaa numeerisen kategorian. Se
+tunnistaa myös emojit ja mainostekstin otsikosta ja kuvauksesta, kuvauksen pituuden, product_typen ja materiaalin.
+Lisäksi se vertaa syötteen hintaa sivuston /api/products-hintaan (`--api URL` paikalliselle tiedostolle). Ajo
+tuotannon 523 tuotteella uudella koodilla (`--otos 60 --api https://huumorikauppa.fi`) antoi 0 virhettä. Sivut,
+kuvat (200 ja mitat) ja canonical tarkistettiin 60 tuotteen otoksesta, hinnat kaikista tuotteista.
+
+**Jäi ennalleen:** syöte on yhä tuotetasoinen, ja koko on muotoa "S/M/L/XL/2XL" (510 varoitusta). Variantteihin
+siirtyminen tarkoittaisi noin 523 × 5-8 kokoa × 3-9 väriä eli kymmeniätuhansia rivejä. Se ylittäisi Vercelin
+4,5 Mt:n vastausrajan, ja tuotesivun pitäisi osata esivalita variantti osoitteesta. Hupparin 3XL+ maksaa 55,00 €,
+mutta syötteessä on perushinta 49,99 € kuten tuotesivullakin.
+
 ## 27.-28.10. pitkä ajo: joulu- ja isänpäivämyynti, konversio, keskiostos
 
 **Resend ja ilmoitukset.** RESEND_API_KEY on Vercelissä (ilmainen suunnitelma), OMISTAJA_EMAIL on nyt

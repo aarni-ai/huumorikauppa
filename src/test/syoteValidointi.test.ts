@@ -19,7 +19,8 @@ const item = (o: Record<string, string> = {}, shipping = "6.90 EUR") => `<item>
 ${kentat({
   id: "a1",
   title: "Hauska paita",
-  description: "Hauska paita lahjaksi.",
+  description: "Hauska paita lahjaksi. ".repeat(25).trim(),
+  product_type: "Vaatteet &gt; T-paidat &gt; Hauskat t-paidat",
   link: LINK,
   image_link: "https://huumorikauppa.fi/api/img?u=x.jpg%3Fcamera_label%3Dfront&amp;v=2",
   availability: "in_stock",

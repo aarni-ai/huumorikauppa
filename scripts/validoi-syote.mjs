@@ -2,15 +2,16 @@
 /**
  * Tarkistaa Google Merchant -syötteen maksuttomia listauksia varten (säännöt: scripts/syote-validointi.mjs).
  *
- *   node scripts/validoi-syote.mjs [syöte-URL tai tiedosto] [--ei-verkkoa] [--otos N] [--rinnakkain N] [--json]
+ *   node scripts/validoi-syote.mjs [syöte-URL tai tiedosto] [--ei-verkkoa] [--otos N] [--rinnakkain N] [--api URL] [--json]
  *
  * Oletuksena https://huumorikauppa.fi/api/product-feed. Verkkotarkistukset (oletuksena kaikki tuotteet):
  * tuotesivu 200 ilman ohjausta + canonical + JSON-LD-hinta, pääkuva 200 + image/* + mitat,
- * sivukartan tuotteet ja Googlen kategoriataksonomia. --otos N rajaa sivu- ja kuvatarkistukset N tuotteeseen.
+ * sivukartan tuotteet, Googlen kategoriataksonomia (polut ja numeeriset ID:t) ja hinta = sivuston /api/products-hinta.
+ * --otos N rajaa sivu- ja kuvatarkistukset N tuotteeseen (otos jakautuu tasaisesti koko syötteeseen).
  * Poistuu koodilla 1, jos syötteessä on virheitä.
  */
 import fs from "node:fs";
-import { SITE, validateFeed, summarize, validateImageResponse, validateLandingPage, slugOf, parsePrice } from "./syote-validointi.mjs";
+import { SITE, validateFeed, summarize, validateImageResponse, validateLandingPage, slugOf, parsePrice, categoryPath } from "./syote-validointi.mjs";
 
 const args = process.argv.slice(2);
 const flag = (n) => args.includes(n);
@@ -18,7 +19,7 @@ const arvo = (n, d) => {
   const i = args.indexOf(n);
   return i >= 0 ? args[i + 1] : d;
 };
-const lahde = args.find((a, i) => !a.startsWith("--") && !["--otos", "--rinnakkain"].includes(args[i - 1])) || `${SITE}/api/product-feed`;
+const lahde = args.find((a, i) => !a.startsWith("--") && !["--otos", "--rinnakkain", "--api"].includes(args[i - 1])) || `${SITE}/api/product-feed`;
 const verkko = !flag("--ei-verkkoa");
 const otos = Number(arvo("--otos", "0")) || 0;
 const rinnakkain = Number(arvo("--rinnakkain", "8")) || 8;
@@ -58,11 +59,15 @@ async function rinnakkaisesti(lista, n, fn) {
 const xml = /^https?:\/\//.test(lahde) ? await haeTeksti(lahde) : fs.readFileSync(lahde, "utf8");
 
 let taxonomy;
+let taxonomyIds;
 let sitemapSlugs;
 if (verkko) {
   try {
-    const t = await haeTeksti("https://www.google.com/basepages/producttype/taxonomy.en-US.txt");
-    taxonomy = new Set(t.split("\n").filter((r) => r && !r.startsWith("#")).map((r) => r.trim()));
+    // "212 - Apparel & Accessories > Clothing > Shirts & Tops": sekä polut että ID:t samasta tiedostosta.
+    const t = await haeTeksti("https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt");
+    const rivit = t.split("\n").map((r) => r.trim().match(/^(\d+) - (.+)$/)).filter(Boolean);
+    taxonomy = new Set(rivit.map((m) => m[2]));
+    taxonomyIds = new Map(rivit.map((m) => [m[1], m[2]]));
   } catch (e) {
     console.error(`Taksonomiaa ei saatu (${e.message}), kategorioiden tarkistus ohitetaan.`);
   }
@@ -77,10 +82,15 @@ if (verkko) {
 // Oma tausta: tuoterivit (printify_product_id) /api/products-rajapinnasta, jotta EU-kopioon siirretty rivi ei ole
 // virhe (api/_lib/eu-reititys.js onEuReititetty). Ilman rajapintaa (vanha tausta) päätös tehdään slugista.
 let euReititetty;
-if (verkko && /^https?:\/\//.test(lahde)) {
+let apiHinnat;
+// Samasta rajapinnasta hinnat: syötteen hinnan on vastattava sivuston hintaa (tuotesivu ja kassa käyttävät samaa riviä).
+// --api URL: paikallisen syötetiedoston hinnat ja rivit annetusta sivustosta (esim. https://huumorikauppa.fi).
+const apiOrigin = arvo("--api", null) || (/^https?:\/\//.test(lahde) ? new URL(lahde).origin : null);
+if (verkko && apiOrigin) {
   try {
-    const r = await fetch(`${new URL(lahde).origin}/api/products?fields=slug,printify_product_id`, { headers: { "User-Agent": UA } });
+    const r = await fetch(`${new URL(apiOrigin).origin}/api/products?fields=slug,printify_product_id,price`, { headers: { "User-Agent": UA } });
     const rivit = r.ok && /json/.test(r.headers.get("content-type") || "") ? await r.json() : null;
+    if (Array.isArray(rivit)) apiHinnat = new Map(rivit.filter((x) => x?.slug).map((x) => [x.slug, Number(x.price)]));
     if (Array.isArray(rivit) && rivit.some((x) => x?.printify_product_id)) {
       const { onEuReititetty, onEuReititettySlug } = await import("../api/_lib/eu-reititys.js");
       const kartta = new Map(rivit.map((x) => [x.slug, x]));
@@ -88,10 +98,11 @@ if (verkko && /^https?:\/\//.test(lahde)) {
     }
   } catch { /* ei rajapintaa: slug-päätös */ }
 }
-const { items, tulokset } = validateFeed(xml, { taxonomy, sitemapSlugs, euReititetty });
+const { items, tulokset } = validateFeed(xml, { taxonomy, taxonomyIds, sitemapSlugs, euReititetty, apiHinnat });
 
 if (verkko && items.length) {
-  const kohteet = items.map((item, k) => ({ item, k })).slice(0, otos || items.length);
+  const kaikki = items.map((item, k) => ({ item, k }));
+  const kohteet = otos && otos < kaikki.length ? kaikki.filter((_, k) => k % Math.ceil(kaikki.length / otos) === 0).slice(0, otos) : kaikki;
   const sivut = await rinnakkaisesti(kohteet, rinnakkain, async ({ item }) => {
     const link = item.fields.link?.[0];
     if (!link || !slugOf(link)) return [];
@@ -104,7 +115,7 @@ if (verkko && items.length) {
     if (!img) return [];
     const r = await fetch(img, { headers: { "User-Agent": UA } });
     const bytes = r.ok ? new Uint8Array(await r.arrayBuffer()) : null;
-    return validateImageResponse({ status: r.status, contentType: r.headers.get("content-type"), bytes, redirected: r.redirected }, item.fields.google_product_category?.[0]);
+    return validateImageResponse({ status: r.status, contentType: r.headers.get("content-type"), bytes, redirected: r.redirected }, categoryPath(item.fields.google_product_category?.[0], taxonomyIds));
   });
   kohteet.forEach(({ k }, j) => tulokset[k].ongelmat.push(...(sivut[j] || []), ...(kuvat[j] || [])));
 }
@@ -114,7 +125,7 @@ if (flag("--json")) {
   console.log(JSON.stringify({ lahde, yhteenveto, tulokset: tulokset.filter((t) => t.ongelmat.length) }, null, 2));
 } else {
   console.log(`Syöte: ${lahde}`);
-  console.log(`Tuotteita ${yhteenveto.tuotteita}, joista virheellisiä ${yhteenveto.tuotteitaVirheilla}${verkko ? `, verkkotarkistus ${otos || items.length} tuotteelle` : ", verkkotarkistukset ohitettu"}`);
+  console.log(`Tuotteita ${yhteenveto.tuotteita}, joista virheellisiä ${yhteenveto.tuotteitaVirheilla}${verkko ? `, verkkotarkistus ${Math.min(otos || items.length, items.length)} tuotteelle${apiHinnat ? `, hinnat verrattu ${apiHinnat.size} rajapintariviin` : ""}` : ", verkkotarkistukset ohitettu"}`);
   const tulosta = (otsikko, obj) => {
     const rivit = Object.entries(obj).sort((a, b) => b[1] - a[1]);
     console.log(`\n${otsikko} (${rivit.reduce((s, [, n]) => s + n, 0)}):`);
