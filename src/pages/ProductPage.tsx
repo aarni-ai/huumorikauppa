@@ -1120,6 +1120,32 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         }`}
         aria-hidden={!showStickyBar}
       >
+        {/* Koot palkissa: koon voi valita ja tuotteen lisätä koriin vierittämättä (29.10.2026). */}
+        {hasSizes && (
+          <div
+            className="flex gap-1.5 overflow-x-auto px-3 pt-2.5"
+            style={{ scrollbarWidth: "none" }}
+            role="radiogroup"
+            aria-label="Koko"
+          >
+            {sellableSizes.map((size: string) => (
+              <button
+                key={size}
+                type="button"
+                role="radio"
+                aria-checked={selectedSize === size}
+                onClick={() => setSelectedSize(size)}
+                className={`shrink-0 min-w-[44px] px-2.5 h-9 rounded-md border text-sm font-medium transition-colors ${
+                  selectedSize === size
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-foreground"
+                }`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="flex items-center gap-3 p-3">
           <img
             src={proxiedImage(currentImages[0] || product.images[0], { width: 320 }) || "/placeholder.svg"}
@@ -1134,12 +1160,12 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             <p className="text-sm font-bold text-primary">{formatPriceFi(kokoHinta)}</p>
           </div>
           <Button
-            onClick={(needsSize && !selectedSize) || (needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}
+            onClick={(needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}
             size="lg"
             className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
           >
             {(needsSize && !selectedSize) ? (
-              "Valitse koko ↓"
+              "Valitse koko ↑"
             ) : (needsColor && !selectedColor) ? (
               "Valitse väri ↓"
             ) : (
