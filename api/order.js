@@ -42,8 +42,11 @@ export default async function handler(req, res) {
     found: true,
     order: {
       id: tilaus.id,
-      items: (tilaus.items || []).map((i) => ({ name: i.name, quantity: i.quantity, price: i.unit_price, size: i.size, color: i.color })),
+      items: (tilaus.items || []).map((i) => ({ name: i.name, quantity: i.quantity, price: i.unit_price, size: i.size, color: i.color, slug: i.slug, product_id: i.product_id })),
       total: Number(tilaus.total),
+      // GA4 purchase: toimitus ja Stripen veloittama summa palvelimelta (ei selaimen ostoskorista)
+      shipping: Number(tilaus.shipping) || 0,
+      amount_paid: tilaus.amount_paid == null ? null : Number(tilaus.amount_paid),
       status: tilaus.status === "maksettu" ? "paid" : tilaus.status,
       created_at: tilaus.created_at,
       customer_email: tilaus.customer_email,

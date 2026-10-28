@@ -49,7 +49,10 @@
           if (c.analytics && !loaded) {
             loaded = true;
             gtag('js', new Date());
-            gtag('config', GA_ID);
+            // Paluu Stripe Checkoutista ei saa muuttua referral-lähteeksi (ylikirjoittaisi utm/alkuperäisen lähteen)
+            var cfg = {};
+            try { if (/(^|\.)stripe\.com$/.test(new URL(document.referrer).hostname)) cfg.ignore_referrer = true; } catch (e) {}
+            gtag('config', GA_ID, cfg);
             var s = document.createElement('script');
             s.async = true;
             s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;

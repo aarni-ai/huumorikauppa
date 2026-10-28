@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -15,7 +15,7 @@ import { reloadOnceForStaleChunk } from "@/lib/chunkReload";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
-import { LANDING_PATHS, LANDING_REDIRECTS } from "@/data/landingRoutes";
+import { LANDING_PATHS, LANDING_REDIRECTS, redirectWithQuery } from "@/data/landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 
 // Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
@@ -155,6 +155,12 @@ function PreviewRevealFallback() {
   return null;
 }
 
+/** Client-side-uudelleenohjaus, joka säilyttää kyselymerkkijonon (utm-parametrit) ja hashin. */
+const RedirectKeepQuery = ({ to }: { to: string }) => {
+  const { search, hash } = useLocation();
+  return <Navigate to={redirectWithQuery(to, search, hash)} replace />;
+};
+
 const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
@@ -176,7 +182,7 @@ const App = () => (
               <Route path="/ostoskori" element={<CartPage />} />
               <Route path="/kassa" element={<CheckoutPage />} />
               <Route path="/usein-kysytyt-kysymykset" element={<FAQ />} />
-              <Route path="/faq" element={<Navigate to="/usein-kysytyt-kysymykset" replace />} />
+              <Route path="/faq" element={<RedirectKeepQuery to="/usein-kysytyt-kysymykset" />} />
               <Route path="/toimitusehdot" element={<Terms />} />
               <Route path="/palautusehdot" element={<ReturnsPolicy />} />
               <Route path="/tietosuojakaytanto" element={<Privacy />} />
@@ -200,7 +206,7 @@ const App = () => (
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
               {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (
-                <Route key={from} path={from} element={<Navigate to={to} replace />} />
+                <Route key={from} path={from} element={<RedirectKeepQuery to={to} />} />
               ))}
               <Route path="/lahjat/:slug" element={<SituationGiftPage />} />
               <Route path="/haalarimerkit" element={<HaalarimerkkiPage />} />

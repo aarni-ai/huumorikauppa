@@ -150,3 +150,12 @@ export const CHRISTMAS_MENU: { href: string; label: string }[] = [
   { href: "/lahjat/pikkujouluihin", label: "Pikkujoululahjat" },
   { href: "/joulun-viimeiset-tilauspaivat", label: "Viimeiset tilauspäivät" },
 ];
+
+/** Uudelleenohjauksen kohde säilyttäen kyselymerkkijono (utm-parametrit) ja hash. Navigate-komponentti pudottaisi ne. */
+export function redirectWithQuery(to: string, search: string, hash = ""): string {
+  const [polku, kohteenHash = ""] = to.split("#");
+  const yhdista = polku.includes("?") ? "&" : "?";
+  const lisa = search.replace(/^\?/, "");
+  const h = hash || (kohteenHash ? `#${kohteenHash}` : "");
+  return `${polku}${lisa ? yhdista + lisa : ""}${h}`;
+}

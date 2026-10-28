@@ -806,11 +806,11 @@ export default async function middleware(request: Request): Promise<Response | u
     const perus = kaksoiskappaleenPerusslug(productSlugFromPath(path));
     // EU:n ulkopuolella valmistettava tuote -> sen näkyvä EU-kopio (api/_lib/eu-reititys.js).
     const euKohde = euOhjausKohde(perus ?? productSlugFromPath(path));
-    if (euKohde) return Response.redirect(`${julkinen}/tuote/${encodeURIComponent(euKohde)}`, 301);
-    if (perus) return Response.redirect(`${julkinen}/tuote/${perus}`, 301);
+    if (euKohde) return Response.redirect(`${julkinen}/tuote/${encodeURIComponent(euKohde)}${url.search}`, 301);
+    if (perus) return Response.redirect(`${julkinen}/tuote/${perus}${url.search}`, 301);
     const status = await productStatus(url.origin, productSlugFromPath(path));
     if (status === 'missing') return notFoundResponse(julkinen);
-    if (status === 'hidden') return Response.redirect(`${julkinen}/kaikki-tuotteet`, 301);
+    if (status === 'hidden') return Response.redirect(`${julkinen}/kaikki-tuotteet${url.search}`, 301);
   }
 
   const ua = request.headers.get('user-agent') || '';

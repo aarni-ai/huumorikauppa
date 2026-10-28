@@ -6,14 +6,16 @@ import { CheckCircle, ShoppingBag, Share2, Mail, Loader2, RefreshCw } from "luci
 import { useCartContext } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { trackPurchaseOnce } from "@/lib/analytics";
+import { buildPurchaseParams, trackPurchaseOnce } from "@/lib/analytics";
 import { hasMarketingConsent } from "@/lib/consent";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 interface OrderInfo {
   id: string;
-  items: Array<{ name: string; quantity: number; price: number; customText?: string; product_id?: string; id?: string }>;
+  items: Array<{ name: string; quantity: number; price: number; customText?: string; product_id?: string; slug?: string; id?: string }>;
   total: number;
+  shipping?: number;
+  amount_paid?: number | null;
   status: string;
   created_at: string;
   customer_email?: string;
@@ -48,22 +50,17 @@ const OrderConfirmation = () => {
     }
   }, [sessionId]);
 
+  // GA4 purchase omassa efektissään: tilaus voi olla aluksi odottamassa maksua ja päivittyä maksetuksi pollauksessa.
+  // trackPurchaseOnce estää tuplalähetyksen (StrictMode, uudelleenrenderöinti, localStorage-merkintä).
+  useEffect(() => {
+    const purchase = buildPurchaseParams(order);
+    if (purchase) trackPurchaseOnce(purchase);
+  }, [order]);
+
   // Google Customer Reviews opt-in — render once order data is available
   useEffect(() => {
     if (!order || optInRendered) return;
     if (typeof window === "undefined") return;
-
-    // GA4 purchase — fire once per order id
-    trackPurchaseOnce({
-      transaction_id: order.id,
-      value: Number(order.total) || 0,
-      items: (order.items || []).map((it, idx) => ({
-        item_id: String(it.product_id || it.id || `${order.id}-${idx}`),
-        item_name: it.name,
-        price: Number(it.price) || 0,
-        quantity: Number(it.quantity) || 1,
-      })),
-    });
 
     // Estimated delivery: created_at + 7 days (3–10 business day window midpoint)
     const created = order.created_at ? new Date(order.created_at) : new Date();
