@@ -121,6 +121,15 @@ export const STATIC_PAGE_META = {
     intro:
       "Tilaatteko paitoja koko porukalle? Ryhmätilaus sopii pikkujouluihin, kerhoille, urheiluseuroille ja työpaikoille, kun tuotteita tilataan viisi tai enemmän.",
   },
+  "/media": {
+    title: "Medialle: kuvat ja tiedot toimittajille | Huumorikauppa",
+    description:
+      "Huumorikaupan mediasivu toimittajille: kaupan tiedot, painokelpoiset tuotekuvat zip-paketteina ja lahjavinkit teemoittain.",
+    h1: "Medialle: kuvat, tiedot ja lahjavinkit",
+    name: "Medialle",
+    intro:
+      "Huumorikauppa on kotimainen huumoripaitojen verkkokauppa. Tältä sivulta toimittaja saa kaupan perustiedot, painokelpoiset tuotekuvat ja lahjavinkit teemoittain.",
+  },
 } satisfies Record<string, StaticPageMeta>;
 
 export type StaticPagePath = keyof typeof STATIC_PAGE_META;

@@ -84,6 +84,7 @@ const KEY_PAGES = [
   ["Yhteystiedot", "/yhteystiedot"],
   ["Tietoa meistä", "/tietoa-meista"],
   ["Ryhmätilaukset (pikkujoulut, kerhot ja työpaikat)", "/ryhmatilaukset"],
+  ["Medialle (kuvat ja tiedot toimittajille)", "/media"],
   ["Blogi", "/blogi"],
 ] as const;
 

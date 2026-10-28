@@ -167,6 +167,7 @@ export function Footer() {
             <Link to="/palautusehdot" className="hover:text-foreground transition-colors">Palautusehdot</Link>
             <Link to="/tietosuojakaytanto" className="hover:text-foreground transition-colors">Tietosuojakäytäntö</Link>
             <Link to="/saavutettavuusseloste" className="hover:text-foreground transition-colors">Saavutettavuusseloste</Link>
+            <Link to="/media" className="hover:text-foreground transition-colors">Medialle</Link>
           </div>
         </div>
 

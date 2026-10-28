@@ -66,6 +66,17 @@ import {
 import type { LinkItem, PrerenderPage, PrerenderProduct, SiteNav } from "./html";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { jouluLause } from "@/data/tilauspaivat";
+import {
+  KAIKKI_ZIP_ID,
+  KARKITUOTTEET,
+  LAHJAVINKIT,
+  MEDIA_EMAIL,
+  MEDIA_INTRO,
+  SARJAT,
+  mediaKaupanTiedot,
+  zipPolku,
+} from "@/data/mediaKit";
+import { valitseTuotteet } from "@/lib/mediaKit";
 
 /** Supabasen products-rivi siinä muodossa kuin REST palauttaa sen. */
 export interface ProductRow {
@@ -222,6 +233,7 @@ export function buildSiteNav(products: Product[] = []): SiteNav {
     { href: "/yhteystiedot", label: "Yhteystiedot" },
     { href: "/tietoa-meista", label: "Tietoa meistä" },
     { href: "/ryhmatilaukset", label: "Ryhmätilaukset" },
+    { href: "/media", label: "Medialle" },
   ];
   return { main, footer };
 }
@@ -581,6 +593,32 @@ export function buildGroupOrderPage(products: Product[]): PrerenderPage {
   });
 }
 
+/** /media: sama sisältö kuin src/pages/MediaPage.tsx (tuotteet haetaan selaimessa uudelleen /api/products-rajapinnasta). */
+export function buildMediaPage(products: Product[]): PrerenderPage {
+  const tuotelinkit = (slugs: string[]): LinkItem[] =>
+    valitseTuotteet(slugs, products).map((p) => ({ href: `/tuote/${p.slug}`, label: p.name, note: formatPriceFi(p.price) }));
+  const top = valitseTuotteet(KARKITUOTTEET.slugs, products);
+  return staticPage("/media", {
+    intro: [STATIC_PAGE_META["/media"].intro as string, ...MEDIA_INTRO],
+    sections: [
+      { heading: "Kauppa lyhyesti", items: mediaKaupanTiedot() },
+      { links: [{ href: `mailto:${MEDIA_EMAIL}`, label: `Sähköposti: ${MEDIA_EMAIL}` }] },
+      {
+        heading: "Kuvat zip-paketteina",
+        links: [
+          { href: zipPolku(KAIKKI_ZIP_ID), label: "Kaikki kuvat (zip)" },
+          ...SARJAT.map((r) => ({ href: zipPolku(r.id), label: `${r.heading} (zip)` })),
+        ],
+      },
+      ...LAHJAVINKIT.map((t) => ({ heading: `Lahjavinkit: ${t.heading}`, links: tuotelinkit(t.slugs) })),
+      ...SARJAT.map((t) => ({ heading: t.heading, links: tuotelinkit(t.slugs) })),
+    ],
+    productsHeading: KARKITUOTTEET.heading,
+    products: toPrerenderProducts(top),
+    ogImage: productImage(top[0]?.images[0]),
+  });
+}
+
 export function buildProductPage(product: Product, all: Product[]): PrerenderPage {
   const path = `/tuote/${product.slug}`;
   const category = categories.find((c) => c.slug === product.category);
@@ -658,6 +696,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildLandingPages(products),
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
+    buildMediaPage(products),
     buildMothersDay(products),
     ...buildSituationPages(products),
     ...buildContentGraphPages(products),

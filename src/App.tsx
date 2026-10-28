@@ -17,6 +17,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { LANDING_PATHS, LANDING_REDIRECTS, redirectWithQuery } from "@/data/landingRoutes";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
+import { MEDIA_PATH } from "@/data/mediaKit";
 
 // Retry dynamic import once, then hard-reload to recover from stale chunks after deploys
 // (src/lib/chunkReload.ts: enintään kerran minuutissa, ei silmukkaa).
@@ -114,6 +115,7 @@ const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
 const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
 const LandingPage = lazyWithRetry(() => import("./pages/LandingPage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
+const MediaPage = lazyWithRetry(() => import("./pages/MediaPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
@@ -204,6 +206,7 @@ const App = () => (
               ))}
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
+              <Route path={MEDIA_PATH} element={<MediaPage />} />
               {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
               {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (
                 <Route key={from} path={from} element={<RedirectKeepQuery to={to} />} />
