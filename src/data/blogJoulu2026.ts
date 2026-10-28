@@ -1197,7 +1197,7 @@ Kiireen välttää, kun teet lahjat kolmessa vaiheessa.
 
 ### Vaihe 1: lahjalista
 
-Kirjoita lista kaikista, joille ostat lahjan. Lisää jokaisen nimen viereen yksi sana, joka kuvaa häntä: harrastus, ammatti tai elämänvaihe. Tämä sana on usein jo lahjaidea. Kalastajalle sopii kalastuspaita, kuten [KALAMIES-t-paita](/tuote/kalamies-t-paita), ja työkavereiden juhliin [Pikkujoulut muistetaan vuosia -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia). Ideoita listan täydentämiseen löydät sivuilta [joululahjat](/joululahjat) ja [joululahja isälle](/joululahja-isalle).
+Kirjoita lista kaikista, joille ostat lahjan. Lisää jokaisen nimen viereen yksi sana, joka kuvaa häntä: harrastus, ammatti tai elämänvaihe. Tämä sana on usein jo lahjaidea. Kalastajalle sopii kalastuspaita, kuten [KALAMIES-t-paita](/tuote/kalamies-t-paita), ja työkavereiden juhliin [Pikkujoulut 2026: muistetaan 2036 -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia). Ideoita listan täydentämiseen löydät sivuilta [joululahjat](/joululahjat) ja [joululahja isälle](/joululahja-isalle).
 
 ### Vaihe 2: koot ja tekstit
 

@@ -278,6 +278,17 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, parit: tulos.sort((a, b) => b.tuotteita - a.tuotteita) });
   }
 
+  // Tuotteen nimen korjaus (&slug=...&nimi=...): vain nimi, slug ja muut tiedot ennallaan. Ilman &kuiva=0 vain näyttää.
+  if (req.query.tehtava === "tuotenimi") {
+    const [rivi] = await db`select id, name from products where slug = ${req.query.slug}`;
+    if (!rivi) return res.status(404).json({ error: "tuotetta ei löydy" });
+    const nimi = String(req.query.nimi || "").trim();
+    if (!nimi || /[–—]/.test(nimi)) return res.status(400).json({ error: "nimi puuttuu tai sisältää ajatusviivan" });
+    if (req.query.kuiva !== "0") return res.status(200).json({ ok: true, kuiva: true, vanha: rivi.name, uusi: nimi });
+    await db`update products set name = ${nimi}, updated_at = now() where id = ${rivi.id}`;
+    return res.status(200).json({ ok: true, vanha: rivi.name, uusi: nimi });
+  }
+
   // Uuden tilin maksutapojen tila (oletuskonfiguraatio ja tilin capabilityt): mitä sivustolla saa luvata.
   if (req.query.tehtava === "maksutavat") {
     if (!onStripe()) return res.status(503).json({ error: "Stripe-avain puuttuu" });

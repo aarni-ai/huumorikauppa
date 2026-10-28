@@ -447,7 +447,7 @@ Joulu on teema, joka yhdistää kaikki pikkujoulujen osallistujat. Siksi jouluai
 - **Glögin ystävälle:** [Glögi ensin. Sitten joulu](/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun) sopii porukkaan, jossa glögikattila on illan keskipiste.
 - **Pipareiden vartijalle:** [Piparivaras. Ei todisteita](/tuote/piparivaras-ei-todisteita-t-paita-jouluun) tuo hymyn kenelle tahansa.
 - **Joulun asiantuntijalle:** [Joulupukin virallinen testaaja](/tuote/joulupukin-virallinen-testaaja-t-paita-jouluun) on lahja, josta noppapelissä taistellaan.
-- **Juhlien muistajalle:** [Pikkujoulut muistetaan vuosia -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia) on lämmin lahja pikkujoulujen jälkeiseen aamuun.
+- **Juhlien muistajalle:** [Pikkujoulut 2026: muistetaan 2036 -huppari](/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia) on lämmin lahja pikkujoulujen jälkeiseen aamuun.
 
 Jos hintaraja on matala, katso myös sivu [lahjat alle 30 euroa](/lahjat/alle-30-euroa). Hinnat näet tuotekorteista.
 

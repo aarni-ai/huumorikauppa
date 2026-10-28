@@ -884,7 +884,7 @@ export const landingPages: LandingPageDef[] = [
     faqs: [
       {
         q: "Mikä on hauska pikkujoululahja?",
-        a: "Lahja, joka naurattaa koko porukkaa avattaessa: toimistohuumorin paita, Pikkujoulut muistetaan vuosia -huppari tai oma vitsi koristeessa.",
+        a: "Lahja, joka naurattaa koko porukkaa avattaessa: toimistohuumorin paita, Pikkujoulut 2026: muistetaan 2036 -huppari tai oma vitsi koristeessa.",
       },
       {
         q: "Löytyykö edullinen pikkujoululahja?",
