@@ -8,6 +8,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 import { BlogProductStrip } from "@/components/BlogProductStrip";
+import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
 import { useProducts } from "@/hooks/use-products";
 import {
   BLOG_END_COUNT,
@@ -362,6 +363,11 @@ const BlogPost = () => {
             ))}
           </div>
         </section>
+
+        {/* Uutiskirje artikkelin lopussa: ladataan laiskasti, varattu korkeus */}
+        <div className="mt-12">
+          <NewsletterBoxLazy lahde="blogi" />
+        </div>
       </article>
     </div>
   );

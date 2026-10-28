@@ -121,6 +121,17 @@ const CATEGORIES = [
 ];
 
 const BLOG_SLUGS = [
+  // 28.10.2026: joulun ja pikkujoulun hakuoppaat (src/data/blogJouluHaut2026.ts).
+  "hauska-joulupaita",
+  "pikkujouluasu-2026",
+  "pikkujoulu-teema-ideat",
+  "pikkujouluohjelma-tyopaikalle",
+  "pikkujoululahja-miehelle",
+  "joululahja-tyttoystavalle",
+  "joululahja-vanhemmille",
+  "hauska-joululahja-ystavalle",
+  "joululahja-tyontekijoille",
+  "joululahja-opiskelijalle",
   // 28.10.2026: isänpäivän ja joulun sesonkioppaat (src/data/blogSesonki2026.ts).
   "isanpaivalahja-isoisalle",
   "lahja-ensimmaiseksi-isanpaivaksi",

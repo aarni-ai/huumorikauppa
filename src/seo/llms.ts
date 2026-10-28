@@ -10,6 +10,7 @@ import { categories } from "@/data/products";
 import { giftCategories } from "@/data/giftCategories";
 import { situationGifts } from "@/data/situationGifts";
 import { blogPosts } from "@/data/blog";
+import { jouluHakuOppaat2026 } from "@/data/blogJouluHaut2026";
 import { onPiilotettu } from "@/lib/hiddenCategories";
 import type { Product } from "@/types/product";
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_URL, formatPriceFi } from "./site";
@@ -113,6 +114,9 @@ ${landingPages
   .filter((p) => p.group === "joulu")
   .map((p) => `- ${p.h1}: ${SITE_URL}${p.path}`)
   .join("\n")}
+
+Joulun ja pikkujoulun oppaat blogissa:
+${jouluHakuOppaat2026.map((p) => `- ${p.title}: ${SITE_URL}/blogi/${p.slug}`).join("\n")}
 
 ## Lahjaideat
 ${giftLinks()}

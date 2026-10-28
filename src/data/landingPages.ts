@@ -275,7 +275,13 @@ export const landingPages: LandingPageDef[] = [
       TONNIN_SETELI_PATH,
     ],
     categories: ["t-paidat", "hupparit"],
-    extraLinks: [{ href: "/joulun-viimeiset-tilauspaivat", label: "Joulun viimeiset tilauspäivät" }],
+    extraLinks: [
+      { href: "/joulun-viimeiset-tilauspaivat", label: "Joulun viimeiset tilauspäivät" },
+      { href: "/blogi/hauska-joulupaita", label: "Opas: hauska joulupaita" },
+      { href: "/blogi/joululahja-vanhemmille", label: "Opas: joululahja vanhemmille" },
+      { href: "/blogi/hauska-joululahja-ystavalle", label: "Opas: hauska joululahja ystävälle" },
+      { href: "/blogi/joululahja-opiskelijalle", label: "Opas: joululahja opiskelijalle" },
+    ],
     spotlight: tonninSeteliSpotlight(
       "Joululahja kaverille, joka tuntee meemin: se oli tonnin seteli. ja Tonnin Seteli t-paitana ja huppareina.",
     ),
@@ -608,6 +614,9 @@ export const landingPages: LandingPageDef[] = [
     ],
     related: ["/joululahjat", "/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/salainen-joulupukki-lahja", "/lahjat/pomolle"],
     categories: ["t-paidat", "hupparit"],
+    extraLinks: [
+      { href: "/blogi/joululahja-tyontekijoille", label: "Opas: joululahja työntekijöille" },
+    ],
     filter: any(TYO, all(OMA_TEKSTI, inCategory("tarrat", "koristeet"))),
   },
   {
@@ -901,6 +910,12 @@ export const landingPages: LandingPageDef[] = [
     ],
     related: ["/salainen-joulupukki-lahja", "/joululahja-tyokaverille", "/lahjat/alle-30-euroa", "/joululahja-kaverille"],
     categories: ["t-paidat", "tarrat"],
+    extraLinks: [
+      { href: "/blogi/pikkujouluasu-2026", label: "Opas: pikkujouluasu 2026" },
+      { href: "/blogi/pikkujoulu-teema-ideat", label: "Opas: pikkujoulu teema ideoita" },
+      { href: "/blogi/pikkujouluohjelma-tyopaikalle", label: "Opas: pikkujouluohjelmaa työpaikalle" },
+      { href: "/blogi/pikkujoululahja-miehelle", label: "Opas: pikkujoululahja miehelle" },
+    ],
     filter: PIKKUJOULU,
   },
   {
@@ -1584,6 +1599,9 @@ export const landingPages: LandingPageDef[] = [
     ],
     related: ["/joululahja-vaimolle", "/lahjat/joululahjaksi-miehelle", "/lahjat/joululahjaksi-naiselle", "/lahja-kaverille"],
     categories: ["t-paidat", "hupparit"],
+    extraLinks: [
+      { href: "/blogi/joululahja-tyttoystavalle", label: "Opas: joululahja tyttöystävälle" },
+    ],
     filter: PUOLISO,
   },
   {

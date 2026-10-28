@@ -2,10 +2,12 @@ import { BlogPost } from "@/types/blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { sesonkiOppaat2026 } from "./blogSesonki2026";
+import { jouluHakuOppaat2026 } from "./blogJouluHaut2026";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { jouluLause } from "./tilauspaivat";
 
 export const blogPosts: BlogPost[] = [
+  ...jouluHakuOppaat2026,
   ...sesonkiOppaat2026,
   ...jouluOppaat2026Lisa,
   ...jouluOppaat2026,

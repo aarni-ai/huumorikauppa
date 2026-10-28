@@ -5,6 +5,7 @@ import { blogPosts } from "./blog";
 import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { sesonkiOppaat2026, ODOTTAA_SAHKOPOSTIA } from "./blogSesonki2026";
+import { jouluHakuOppaat2026, HAKUSANAT } from "./blogJouluHaut2026";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -14,6 +15,7 @@ import { dialects } from "./dialects";
 import { PIILOTETUT_KATEGORIAT } from "@/lib/hiddenCategories";
 // Aktiivisten (is_active != false), myynnissä olevien tuotteiden slugit, haettu Supabasesta 21.10.2026.
 // Ei mukeja. Päivitä, kun tuotevalikoima muuttuu. 28.10.2026: lisätty 27.10.2026 julkaistut joulu- ja eläkepaidat.
+// 28.10.2026: lisätty /api/products-listan joulu- ja pikkujoulupaidat, joita listalla ei vielä ollut.
 import productSlugs from "@/test/fixtures/productSlugs.json";
 import type { BlogPost } from "@/types/blog";
 import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
@@ -251,5 +253,88 @@ describe("blogi: rakenteinen data", () => {
     const graph = ld["@graph"] as Record<string, unknown>[];
     expect(graph).toHaveLength(1);
     expect(graph[0].image).toEqual(["https://huumorikauppa.fi/images/etusivu-joulu.png"]);
+  });
+});
+
+describe("blogi: joulun ja pikkujoulun hakuoppaat 28.10.2026", () => {
+  const muut = blogPosts.filter((p) => !jouluHakuOppaat2026.includes(p));
+
+  it("oppaita on 10, ne ovat blogPosts-listassa, julkaistu 28.10.2026 ja uusilla slugeilla", () => {
+    expect(jouluHakuOppaat2026).toHaveLength(10);
+    const vanhat = new Set(muut.map((p) => p.slug));
+    for (const post of jouluHakuOppaat2026) {
+      expect(blogPosts).toContain(post);
+      expect(post.publishedAt).toBe("2026-10-28");
+      expect(vanhat.has(post.slug), post.slug).toBe(false);
+    }
+  });
+
+  it("jokaisella on dokumentoitu hakusana, joka on ensimmäinen tagi ja näkyy tekstissä", () => {
+    expect(Object.keys(HAKUSANAT).sort()).toEqual(jouluHakuOppaat2026.map((p) => p.slug).sort());
+    for (const post of jouluHakuOppaat2026) {
+      const sana = HAKUSANAT[post.slug];
+      expect(post.tags[0], post.slug).toBe(sana);
+      expect(`${post.title} ${post.metaTitle}`.toLowerCase(), post.slug).toContain(sana.split(" ")[0]);
+      expect(allText(post).toLowerCase(), post.slug).toContain(sana);
+    }
+  });
+
+  it.each(jouluHakuOppaat2026.map((p) => [p.slug, p] as const))("%s: tekstisäännöt, pituus 600-900 sanaa, SEO-rajat", (_slug, post) => {
+    const text = allText(post);
+    expect(text).not.toMatch(DASHES);
+    expect(text).not.toMatch(HEDGES);
+    expect(text.toLowerCase()).not.toMatch(/\bmuki/);
+    expect(text).not.toMatch(/suosituin|suosituimm|myydyin|asiakkaamme kertovat|arvostelu/i);
+    expect(text).not.toMatch(/voi olla että|suomen paras|painettu suomessa|varastossa/i);
+    // Lahjakorttien myynti on tauolla: ei suosituksia eikä linkkejä.
+    expect(text).not.toMatch(/lahjakort/i);
+    // Hinnat tulevat tuotekorteista; ainoa euromäärä on toimitusehtojen vakioista tuleva toimitusmaksu.
+    const eurot = [...text.matchAll(/(\d+(?:,\d+)?) ?€/g)].map((m) => m[1]);
+    expect(eurot.every((e) => e === TOIMITUSMAKSU_TEKSTI)).toBe(true);
+    expect(post.metaTitle.length).toBeLessThan(60);
+    expect(post.metaDescription.length).toBeLessThan(155);
+    const words = wordCount(post.content);
+    expect(words).toBeGreaterThanOrEqual(600);
+    expect(words).toBeLessThanOrEqual(900);
+  });
+
+  it.each(jouluHakuOppaat2026.map((p) => [p.slug, p] as const))("%s: 4-8 tuotetta, sisäiset linkit, FAQPage", (_slug, post) => {
+    const links = internalLinks(post);
+    const products = new Set(links.filter((l) => l.startsWith("/tuote/")));
+    const pages = new Set(links.filter((l) => !l.startsWith("/tuote/")));
+    expect(products.size).toBeGreaterThanOrEqual(4);
+    expect(products.size).toBeLessThanOrEqual(8);
+    expect(pages.size).toBeGreaterThanOrEqual(4);
+    expect(pages.size).toBeLessThanOrEqual(8);
+    // Vähintään yksi lahja- tai laskeutumissivu (joulu, pikkujoulu, ryhmätilaukset tai lahjasivu).
+    expect([...pages].some((l) => /^\/(joululahj|lahjat\/|ryhmatilaukset|hauskat-|lahja-|joulun-)/.test(l))).toBe(true);
+    for (const l of links) expect(l).not.toMatch(/lahjakortti|mukit/);
+
+    const faq = post.faq ?? [];
+    expect(faq.length).toBeGreaterThanOrEqual(3);
+    expect(faq.length).toBeLessThanOrEqual(5);
+    for (const f of faq) expect(f.a).toMatch(/^[^.?!]+[.!]/);
+    const [, faqLd] = buildBlogPostJsonLd(post, faq)["@graph"] as Record<string, unknown>[];
+    expect(faqLd["@type"]).toBe("FAQPage");
+    expect((faqLd.mainEntity as unknown[]).length).toBe(faq.length);
+  });
+
+  it("joulun tilauspäivä tulee tilauspaivat.ts:stä, ei käsin kirjoitettuna", () => {
+    for (const post of jouluHakuOppaat2026) {
+      const dates = [...allText(post).matchAll(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/g)].map((m) => m[0]);
+      for (const d of dates) expect(JOULU_PAIVA_LYHYT, `${post.slug}: ${d}`).toContain(d);
+    }
+    const lahde = fs.readFileSync(path.resolve(__dirname, "blogJouluHaut2026.ts"), "utf8");
+    expect(lahde).toMatch(/from "\.\/tilauspaivat"/);
+    expect(lahde).not.toMatch(/\b\d{1,2}\.12\.(2026)?(?!\d)/);
+  });
+
+  it("jokaiseen oppaaseen linkitetään vähintään yhdeltä olemassa olevalta sivulta tai artikkelilta", () => {
+    const lahteet = [
+      fs.readFileSync(path.resolve(__dirname, "landingPages.ts"), "utf8"),
+      fs.readFileSync(path.resolve(__dirname, "ryhmatilausPage.ts"), "utf8"),
+      ...muut.map((p) => p.content),
+    ].join("\n");
+    for (const post of jouluHakuOppaat2026) expect(lahteet, post.slug).toMatch(new RegExp(`/blogi/${post.slug}["')]`));
   });
 });
