@@ -286,6 +286,35 @@ export default async function handler(req, res) {
   }
 
   // Tuotteen nimen korjaus (&slug=...&nimi=...): vain nimi, slug ja muut tiedot ennallaan. Ilman &kuiva=0 vain näyttää.
+  // Viikkomittarit (KASVU-RAPORTTI.md): maksetut tilaukset ilman kassatestejä ISO-viikoittain Helsingin ajassa,
+  // myynti, keskiostos ja kate alv 0 Printifyn todellisilla kuluilla (tuote + toimitus) ja Stripen maksulla.
+  // Kävijät ja konversio tulevat GA4:stä, eivät täältä. &alku=YYYY-MM-DD (oletus 8 viikkoa taaksepäin).
+  if (req.query.tehtava === "viikkomittarit") {
+    const alku = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.alku || "")) ? req.query.alku : new Date(Date.now() - 56 * 864e5).toISOString().slice(0, 10);
+    const rivit = await db`select id, paid_at, total, printify_order_id,
+        to_char(paid_at at time zone 'Europe/Helsinki', 'IYYY-"W"IW') as viikko
+      from orders where status = 'maksettu' and customer_email <> 'kassatesti@huumorikauppa.fi' and paid_at >= ${alku}
+      order by paid_at`;
+    const viikot = new Map();
+    for (const t of rivit) {
+      const myynti = Number(t.total) || 0;
+      let kulu = null;
+      if (t.printify_order_id && onPrintify()) {
+        const h = await haeTilaus(t.printify_order_id);
+        if (h.ok && h.data && h.data.status !== "canceled") kulu = ((Number(h.data.total_price) || 0) + (Number(h.data.total_shipping) || 0)) / 100;
+      }
+      const v = viikot.get(t.viikko) || { viikko: t.viikko, tilauksia: 0, myynti: 0, kate: 0, kateTuntematon: 0 };
+      v.tilauksia++;
+      v.myynti += myynti;
+      if (kulu == null) v.kateTuntematon++;
+      else v.kate += myynti / 1.255 - kulu - (myynti * 0.015 + 0.25);
+      viikot.set(t.viikko, v);
+    }
+    const tulos = [...viikot.values()].map((v) => ({ ...v, myynti: Math.round(v.myynti * 100) / 100, kate: Math.round(v.kate * 100) / 100,
+      keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0 }));
+    return res.status(200).json({ ok: true, alku, viikot: tulos });
+  }
+
   // Kaikki ajatusviivalliset ja luonnottoman kaksoispisteen nimet kerralla (api/_lib/tuotenimi.js korjaaNimi). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.
   if (req.query.tehtava === "tuotenimet-viivat") {
     const rivit = (await db`select id, slug, name from products where name ~ '[–—:]' order by slug`).filter((r) => nimiKorjattava(r.name));
