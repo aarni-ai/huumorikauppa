@@ -26,6 +26,38 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 28.10.2026 ilta: TM Rakennusmaailman media-aineisto, mustan paidan mockup-vika, tuotenimet ilman ajatusviivoja
+
+**Media-aineisto (Otavamedia, TM Rakennusmaailma, joululahjajuttu).** Kansio `media/rakennusmaailma/` (ei gitissä,
+4,7 MB): kummastakin paidasta kolme 2048 x 2048 px kuvaa Printifyn mockupeista (`&s=2048`) ja `tuotetiedot.txt`.
+Toimittajan "Sammuta valo, sähkö maksaa" on kaupassa "Sammuta valot. Sähkö maksaa".
+- Molemmat myynnissä Textildruck Europalla (Saksa, provider 26), Gildan Softstyle 64000, 24,90 €.
+  14 varianttia kummassakin, kaikki `is_available`. Koot S, M, L, XL ja 2XL. Musta L (38192) on painotalolla loppu,
+  joten mustana S, M, XL ja 2XL. Sammuta: musta, tummansininen, vaaleanharmaa. Löylymestari: punainen, musta,
+  armeijanvihreä.
+- Kate, yksi paita + toimitus, alv 0: 25,34 € myynti, 16,57 € Printify (9,28 + 7,29), 0,73 € Stripe = 8,04 €.
+- Joulun päivä tiedostossa 30.11.2026, sama kuin tuotesivun UKK:ssa (t-paitojen oma päivä on 1.12.).
+
+**Mockup-vika, musta teksti mustalla paidalla (20 tuotetta korjattu).** Generaattori (scripts/lib/uudet-tuotteet.mjs)
+antoi Printifylle vain valitut variantit. Printify sijoitti valitsematta jääneet (musta L, 3XL, 4XL) viimeiseen
+eli mustan tekstin ryhmään, ja mustan värin mockupit renderöidään juuri variantista 38192 (musta L). Kaupan
+"Musta"-kuvissa teksti ei näkynyt. Painatus oli oikein (myytävät mustat variantit valkoisella tekstillä).
+- Korjattu Printifyssä: poistetut variantit siirretty saman värin myytävien varianttien ryhmään 17 paidassa ja
+  3 hupparissa (erät 26.10. ja 27.10.). Myytävät variantit ja hinnat ennallaan. Tarkistettu kuvasta ja sivuston
+  kuvavälityksestä (kaikki leveydet valkoinen teksti).
+- Generaattori: `taydennaRyhmat` lisää katalogin muut variantit oman värinsä ryhmään (testi uudet-tuotteet.test.ts).
+
+**Tuotenimet ilman ajatusviivoja.** `api/_lib/tuotenimi.js`: tuotetyyppiliite pystyviivalla kuten muissa nimissä
+("100 % Lahtelaista verta | Hauska t-paita"), muut ajatusviivat kaksoispisteellä ("60v: kokenut, ei vanha | T-Paita"),
+kolmas osa pilkulla. Slug ei muutu, joten ohjauksia ei tarvittu.
+- Tehtävä `tuotenimet-viivat` (kuiva oletuksena, `&kuiva=0` tallentaa): 659 riviä korjattu (386 myynnissä,
+  loput piilotettuja). Kannassa 0 jäljellä. Printify-tuonti (tuo-aktiiviset, eu-siirrot) siistii nimen samalla
+  funktiolla, joten viivat eivät palaa Printifyn otsikoista.
+- Tarkistettu tuotannosta kolmella User-Agentilla: title ja H1 ilman ajatusviivaa, `/api/products` 0/525.
+  Esirenderöinti lukee nimet kannasta buildissa, joten julkaistu uudelleen nimien päivityksen jälkeen.
+
+**Resend.** DNS-tietueita ei vielä ole (`resend._domainkey` tyhjä, tila pending 15.21). Vahti jatkaa 30 min välein.
+
 ## 28.10.2026 päivä: vanha kassa, joulun takaraja tuotetyypeittäin, maksutavat, Pikkujoulut-huppari, CPA
 
 **Vanha kassa: kysytty Printify-tilaus.**
