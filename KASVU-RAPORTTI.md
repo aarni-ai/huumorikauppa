@@ -26,6 +26,74 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 28.10.2026 päivä: vanha kassa, joulun takaraja tuotetyypeittäin, maksutavat, Pikkujoulut-huppari, CPA
+
+**Vanha kassa: kysytty Printify-tilaus.**
+- Tilaus luotiin 27.10. klo 18.38 Suomen aikaa. Ilmoitettu klo 21.38 on koneen UTC+5-aikaa. Tilaus tuli siis
+  ennen uuden kassan käyttöönottoa (noin klo 20.30).
+- Toimitusmaksu 3,90 € on vanhan Lovable-kassan hinta (uusi kassa: 6,90 €), joten maksu meni vanhalle tilille
+  `acct_1THtN1AhUyocG7PO`.
+- Uuden tilin `acct_1UVAUMPNXkES1q9G` kaikki 39 sessiota 27.-28.10. ovat kassatestejä, eikä yksikään ole maksettu.
+- Tilaus lähti tuotantoon 28.10. klo 8.54 EU-painotalossa (#30, OPT OnDemand CZ).
+
+**Vanha kassa: reitti on yhä auki.**
+- Vanhan Lovable-kassan create-checkout loi 28.10. live-session vanhalle tilille (testi, maksamaton, vanhenee
+  24 tunnissa). Sitä kutsuu vain ennen 27.10. klo 20.30 avattu sivu.
+- Vanhat osoitteet ohjaavat jo huumorikauppa.fi:hin:
+  - huumorikauppa.lovable.app 302
+  - vanhat Vercel-aliakset 307
+  - www 307
+- Wayback Machinessa ei ole kassasivua.
+- Sulkeminen vaatii Lovable- tai vanhan Stripe-tilin pääsyn: ohje KAYTTOONOTTO.md "Vanhan kassan reitti". Vanha
+  webhook pidetään päällä, kunnes reitti on suljettu ja ensimmäinen oikea tilaus on mennyt uuden kassan läpi. Muuten
+  vanhan kassan kautta maksettu tilaus ei menisi Printifyyn.
+- Uudet palvelintehtävät (ilman henkilötietoja):
+  - lukevat: `printify-tilaukset`, `stripe-sessiot`, `toimitusajat`, `maksutavat`
+  - kirjoittava: `tuotenimi` (vain nimi, oletuksena kuiva)
+
+**Joulun takaraja tuotetyypeittäin** (toteutuneet toimitukset tilauksesta perille, arkipäivinä, Printify 3-10/2026):
+- T-paidat: 8 toimitusta (4, 4, 5, 7, 7, 9, 12, 16). P90 (lineaarinen) 13,2, eli 14 arkipäivää. Lisäksi
+  2 arkipäivää, yhteensä 16. Viimeinen tilauspäivä on ti 1.12.2026.
+- Muut tyypit ma 30.11.2026. Niillä on alle 5 havaintoa:
+  - hupparit 11, 13, 14
+  - mukit 7, 10, 13
+  - koriste 13
+  - julisteet ja tarrat: ei toimituksia
+  
+  Siksi käytetään Printifyn ilmoittamaa aikaa Suomeen: catalog v2 shipping/standard, FI 5-15 arkipäivää kaikilla
+  käytetyillä pareilla. Laskelma 15 + 2 = 17 arkipäivää.
+- Printifyn 2025-sesongin 20.11.-katto poistettu.
+- Missä päivä näkyy:
+  - tuotesivu: tuotteen oma päivä ("Tilaa viimeistään X, niin ehtii jouluksi" ja "Ehtii jouluksi" samasta lähteestä)
+  - ostoskori: korin varhaisin päivä
+  - banneri, UKK ja etusivu: 30.11.
+  - /joulun-viimeiset-tilauspaivat: molemmat päivät ja laskentaperuste
+- Joulumyyntiä tulee 10-11 päivää lisää.
+
+**Maksutavat.**
+- Stripen oletuskonfiguraatiossa ovat päällä kortti, Apple Pay, Google Pay, Klarna ja MobilePay. Capabilityt
+  card, klarna ja mobilepay ovat aktiivisia.
+- Alatunnisteessa ne olivat jo. "Visa, Mastercard ja muut yleisimmät maksutavat" on korjattu kuudella maksutavalla
+  näihin kohtiin: toimitusehdot, UKK, Tietoa meistä, llms.txt, oppaat ja blogit.
+
+**Pikkujoulut-huppari.**
+- Painatus oli "Pikkujoulut 2025: muistetaan 2035", ja ylin rivi jäi nyörien alle.
+- Uusi painatus on "Pikkujoulut 2026: muistetaan 2036" pienempänä ja alempana (Printify 6adf634a10aa455cb00a0d9e).
+  Mockup tarkistettu: koko teksti näkyy.
+- Nimi on nyt "Pikkujoulut 2026: muistetaan 2036 | Huppari pikkujouluihin". Kuvaus ja linkkitekstit päivitetty.
+- Havainto: 386 tuotteen nimessä on ajatusviiva (tietokanta). Merchant-otsikot ovat ilman viivaa. Sivuston nimet
+  ovat seuraava korjattava.
+
+**Mainonnan kynnys** (KATTEET.md):
+- Keskikate on noin 7,00 € tilausta kohden (toteutunut 9,02 €).
+- Suurin kannattava CPA on 7 €.
+- Nollatulos vaatii keskiostoksen noin 51 € (CPA 15 €), 68 € (CPA 20 €) tai 100 € (Meta, CPA 30 €).
+- Mainontaa ei käynnistetty.
+
+**Merchant-syöte julkaistu.** Kanavan kuvauksesta poistettiin "Suomen hauskin verkkokauppa".
+
+**Resend:** domain on pending (DNS-tietueita ei ole Cloudflaressa 28.10. klo 12.30). Tarkistus 30 minuutin välein.
+
 ## 28.10.2026: Merchant-syöte
 
 **Mitä muuttui.** Googlen maksuttomien listausten syöte (api/product-feed.js) saa uuden viimeisen vaiheen

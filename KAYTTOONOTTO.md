@@ -184,6 +184,28 @@ saa tehdä, vaan vain vanhan webhookin poisto (vaihe 2).
 Testisessio vanhenee itsestään 24 tunnissa. Lovable voi kirjata sen keskeneräiseksi tilaukseksi
 (kassatesti@huumorikauppa.fi).
 
+**Vanhan kassan reitti (selvitetty 28.10.2026 klo 12).** Vanhan Lovable-kassan maksufunktio
+(`exhzrrbvipqwhjhjgnxs.supabase.co/functions/v1/create-checkout`, Lovable Cloud) luo yhä live-sessioita tilille
+`acct_1THtN1AhUyocG7PO`: testipyyntö 28.10. sai `cs_live_`-session. Session oli maksamaton, vanhenee 24 tunnissa eikä
+näy uuden tilin sessioissa. Sitä kutsuu vain vanha sivuston JavaScript, eli selainvälilehti, joka on avattu ennen
+27.10. klo 20.30. Vanhat osoitteet eivät enää tarjoa vanhaa sovellusta:
+- `huumorikauppa.lovable.app`: 302 -> huumorikauppa.fi
+- `huumorikauppa-aarni-ais-projects.vercel.app` ja `-git-main-`: 307 -> huumorikauppa.fi
+- www: 307 -> huumorikauppa.fi
+- Wayback Machinessa ei ole kassasivua, ja Googlen välimuistia ei enää ole.
+
+Reitin sulkeminen vaatii Lovable- tai vanhan Stripe-tilin pääsyn, eikä tätä voi tehdä koodista. Tee jompikumpi:
+1. **Lovable (suositus):** projekti > Cloud > Edge Functions > `create-checkout` > poista tai poista käytöstä.
+   Vaihtoehtoisesti Cloud > Secrets > tyhjennä `STRIPE_SECRET_KEY`. Vanha webhook ja tilin maksut, palautukset ja
+   riita-asia toimivat edelleen.
+2. **Vanha Stripe-tili `acct_1THtN1AhUyocG7PO`:** Developers > API keys > Secret key > Roll key, vanhentuminen "now".
+   Lovablen kassa ei sen jälkeen voi luoda sessioita. Dashboardin palautukset ja 3.11. riita-asia toimivat ennallaan,
+   koska ne eivät käytä avainta. Tiliä ei suljeta.
+
+Tarkistus sulkemisen jälkeen: vanhan create-checkoutin kutsu (KASVU-RAPORTTI.md 28.10.2026, "Vanha kassa") ei saa palauttaa
+`cs_live_`-osoitetta, ja `node scripts/kassatesti.mjs --url https://huumorikauppa.fi --salli-live` luo session
+tilille `acct_1UVAUMPNXkES1q9G`.
+
 **Vanhan kassan webhookin sulkeminen (päivitetty 28.10.2026). Saa tehdä vasta, kun ensimmäinen oikea tilaus on
 mennyt uuden kassan läpi.** Uusi kassa on ollut käytössä huumorikauppa.fi:ssä 27.10.2026 alkaen (välitys), eikä
 sivusto kutsu Lovablen kassaa. Vanhan tilin webhook on vielä päällä, joten mahdollinen suora maksu vanhaan kassaan
