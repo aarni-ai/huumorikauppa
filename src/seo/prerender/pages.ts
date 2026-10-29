@@ -44,6 +44,7 @@ import { proxiedImage } from "@/lib/imageProxy";
 import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
+import { yrityksetPage } from "@/data/yrityksetPage";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
 import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
@@ -589,6 +590,29 @@ export function buildGiftCardAndBundlePages(): PrerenderPage[] {
   ];
 }
 
+/** /yritykset: sama sisältö kuin src/pages/BusinessPage.tsx (src/data/yrityksetPage.ts). */
+export function buildBusinessPage(products: Product[]): PrerenderPage {
+  const theme = BLOG_PRODUCT_THEMES.ryhmatilaus;
+  const list = selectBlogProducts(theme, products, BLOG_END_COUNT);
+  return staticPage("/yritykset", {
+    intro: yrityksetPage.intro,
+    sections: [
+      { heading: "Määräalennus t-paidoista", items: [
+        ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
+        ...yrityksetPage.esimerkit.map((e) => `${e.kpl} t-paitaa: ${e.ennen}, määräalennus -${e.prosentti} % = ${e.jalkeen}`),
+      ] },
+      ...yrityksetPage.sections.map((s) => ({ heading: s.heading, paragraphs: "paragraphs" in s ? s.paragraphs : undefined, items: "items" in s ? s.items : undefined, links: "links" in s ? s.links : undefined })),
+      { heading: "Tarjouspyyntö", paragraphs: ["Lähetä tarjouspyyntö sivun lomakkeella tai sähköpostilla huumorikauppa@gmail.com."] },
+      { heading: "Liittyvät sivut", links: yrityksetPage.links },
+    ],
+    productsHeading: theme.heading,
+    products: toPrerenderProducts(list),
+    ogImage: productImage(list[0]?.images[0]),
+    faqs: yrityksetPage.faqs,
+    jsonLd: [buildFaqJsonLd(yrityksetPage.faqs)],
+  });
+}
+
 /** /ryhmatilaukset: sama sisältö ja samat esimerkkituotteet kuin src/pages/GroupOrderPage.tsx. */
 export function buildGroupOrderPage(products: Product[]): PrerenderPage {
   const page = ryhmatilausPage;
@@ -712,6 +736,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildLandingPages(products),
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
+    buildBusinessPage(products),
     ...buildGiftCardAndBundlePages(),
     buildMediaPage(products),
     buildMothersDay(products),

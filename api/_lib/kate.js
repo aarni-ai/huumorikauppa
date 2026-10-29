@@ -29,6 +29,7 @@ export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
 import { rivinHinta } from "./kokohinnat.js";
+import { tuotepohja } from "./materiaali.js";
 
 export const TOIMITUSMAKSU = TOIMITUS;
 export const ILMAINEN_RAJA = ILMAINEN_TOIMITUS_RAJA;
@@ -170,6 +171,21 @@ export function laskeTilauksenKate(osat, toimitusmaksu = 0, raja = ALENNUS_KATE_
  * @param osat [{ tuote, maara }]
  * Palauttaa sentit tai null, jos jonkin tuotteen toimituskulua ei tunneta.
  */
+/**
+ * Printifyn Suomen toimitus pohjatuotteen ja painotalon mukaan (sentit, GET catalog/blueprints/<b>/print_providers/<p>/
+ * shipping.json, 29.10.2026). Täydentää tuoterivit, joilta puuttuu print_provider_id tai shipping_additional_cents
+ * (304/391 t-paitaa 29.10.2026): muuten jokainen kappale laskettaisiin omana lähetyksenään.
+ */
+export const PRINTIFY_TOIMITUS_FI = {
+  "145/30": { eka: 849, lisa: 119 },
+  "6/30": { eka: 849, lisa: 119 },
+  "77/26": { eka: 1089, lisa: 239 },
+  "77/402": { eka: 1089, lisa: 239 },
+  "443/30": { eka: 929, lisa: 199 },
+  "476/30": { eka: 559, lisa: 10 },
+  "531/59": { eka: 949, lisa: 199 },
+};
+
 export function printifyToimitusSentit(osat) {
   const ryhmat = new Map();
   let erikseen = 0;
@@ -177,8 +193,10 @@ export function printifyToimitusSentit(osat) {
     const v = tuote?.variants || {};
     const eka = v.shipping_cents;
     if (typeof eka !== "number") return null;
-    const lisa = v.shipping_additional_cents;
-    const pp = v.print_provider_id;
+    const pohja = tuotepohja(tuote?.slug);
+    const taulu = pohja ? PRINTIFY_TOIMITUS_FI[`${pohja.b}/${pohja.p}`] : undefined;
+    const lisa = typeof v.shipping_additional_cents === "number" ? v.shipping_additional_cents : taulu?.lisa;
+    const pp = v.print_provider_id ?? (taulu ? pohja.p : undefined);
     if (typeof lisa !== "number" || pp === undefined || pp === null) {
       erikseen += eka * maara;
       continue;

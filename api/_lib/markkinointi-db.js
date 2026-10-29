@@ -70,6 +70,13 @@ export function pgMarkkinointi(db) {
     },
     haeTilaus: async (id) => (await db`select * from orders where id = ${id}`)[0] ?? null,
     arvostellut: async (tilausId) => (await db`select product_name from reviews where order_id = ${tilausId}`).map((r) => r.product_name),
+    /** Yrityssivun tarjouspyyntö (/yritykset). Taulu luodaan tarvittaessa (db/schema.sql tarjouspyynnot). */
+    tallennaTarjouspyynto: async (t) => {
+      await db`create table if not exists tarjouspyynnot (id bigserial primary key, yritys text not null, nimi text not null,
+        email text not null, puhelin text, maara integer, viesti text, created_at timestamptz not null default now())`;
+      return (await db`insert into tarjouspyynnot (yritys, nimi, email, puhelin, maara, viesti)
+        values (${t.yritys}, ${t.nimi}, ${t.email}, ${t.puhelin}, ${t.maara}, ${t.viesti}) returning id`)[0].id;
+    },
     /** Tuotesivun arviot: vain julkaistut arviot maksetuista tilauksista, joissa arvioitu rivi on tämä tuote. */
     julkaistutArviot: async (slug) => db`select r.stars, r.body, r.customer_name, r.created_at from reviews r
       join orders o on o.id = r.order_id

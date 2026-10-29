@@ -109,6 +109,7 @@ export const ryhmatilausPage = {
   ],
   /** Sisäiset linkit: ideat ja tilausaikataulu. */
   links: [
+    { href: "/yritykset", label: "Yritysten joululahjat ja määräalennus (10+ t-paitaa)" },
     { href: "/blogi/pikkujoulupaidat-porukalle", label: "Opas: pikkujoulupaidat porukalle" },
     { href: "/blogi/pikkujoulujen-lahjapeli", label: "Opas: pikkujoulujen lahjapeli" },
     { href: "/blogi/pikkujouluohjelma-tyopaikalle", label: "Opas: pikkujouluohjelmaa työpaikalle" },

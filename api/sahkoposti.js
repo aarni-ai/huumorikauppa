@@ -13,9 +13,10 @@
  * GET  ?arviot=<slug>                                             tuotesivun julkaistut arviot { arviot: [{ nimi, tahdet, teksti, pvm }] }
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
+ * POST { action: "tarjouspyynto", yritys, nimi, email, ... }      /yritykset: tallennus ja ilmoitus omistajalle
  */
 import { onTietokanta, sql } from "./_lib/db.js";
-import { laheta, omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
+import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
 
@@ -92,6 +93,24 @@ export async function kasittele(req, res, store) {
       if (!email) return res.status(400).json({ success: false, reason: "invalid" });
       const r = await peruViestit(store, email, { lahde: "peruutussivu" });
       return res.status(200).json(r.jo ? { success: false, reason: "already_unsubscribed" } : { success: true });
+    }
+    case "tarjouspyynto": {
+      // Roskapostisuoja: piilokenttä täytetty -> hyväksytään hiljaa tallentamatta.
+      if (teksti(body.kotisivu, 200)) return res.status(200).json({ ok: true });
+      const t = {
+        yritys: teksti(body.yritys, 120), nimi: teksti(body.nimi, 100), email: normalisoiEmail(teksti(body.email, 200) || ""),
+        puhelin: teksti(body.puhelin, 40), maara: Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
+      };
+      if (!t.yritys || !t.nimi || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
+        return res.status(400).json({ ok: false, error: "Täytä yritys, nimi ja toimiva sähköpostiosoite." });
+      }
+      const id = await store.tallennaTarjouspyynto(t);
+      // Ilmoitus omistajalle (OMISTAJA_EMAIL); tallennus riittää, vaikka viesti epäonnistuisi.
+      await halytys(`Tarjouspyyntö: ${t.yritys}${t.maara ? `, ${t.maara} kpl` : ""}`, [
+        `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
+        `Määrä: ${t.maara ?? "-"}`, `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
+      ]).catch(() => null);
+      return res.status(200).json({ ok: true });
     }
     case "review":
     case "unsubscribe": {

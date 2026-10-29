@@ -112,6 +112,15 @@ export const STATIC_PAGE_META = {
     h1: "Hauskat äitienpäivälahjat 2026",
     name: "Äitienpäivälahjat",
   },
+  "/yritykset": {
+    title: "Yritysten joululahjat ja tiimipaidat | Huumorikauppa",
+    description:
+      "Yritysten joululahjat ja tiimipaidat: määräalennus 10+ t-paidasta -10 %, 25+ -12 % ja 50+ -14 % automaattisesti kassalla. Toimitus yhteen osoitteeseen.",
+    h1: "Yritysten joululahjat ja tiimipaidat",
+    name: "Yritykset",
+    intro:
+      "Huumorikaupan t-paidat ovat yrityksen joululahja tai tiimipaita, joka tulee käyttöön. Kun samassa tilauksessa on vähintään 10 t-paitaa, kassa vähentää määräalennuksen automaattisesti ilman koodia.",
+  },
   "/lahjakortti": {
     title: "Lahjakortti: 25, 50 tai 75 € | Huumorikauppa.fi",
     description:

@@ -149,6 +149,7 @@ export function Footer() {
             <Link to="/paketit" className="hover:text-foreground transition-colors">Paketit</Link>
             {lahjakortit && <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>}
             <Link to="/ryhmatilaukset" className="hover:text-foreground transition-colors">Ryhmätilaukset</Link>
+            <Link to="/yritykset" className="hover:text-foreground transition-colors">Yrityksille</Link>
             {categories.filter(cat => onKategoriasivu(cat.slug)).map(cat => (
               <Link key={cat.slug} to={`/kategoria/${cat.slug}`} className="hover:text-foreground transition-colors">
                 {cat.name}

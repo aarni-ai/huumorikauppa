@@ -52,3 +52,20 @@ export const ENSITILAUS_ALENNUS_PROSENTTI = 0;
 export const SUOSTUMUS_UUTISKIRJE =
   "Haluan Huumorikaupan uutiskirjeen sähköpostiini. Voin perua tilauksen milloin tahansa jokaisen viestin lopussa olevalla linkillä.";
 export const SUOSTUMUS_MUISTUTUS = "Lähetä minulle muistutus, jos tilaus jää kesken.";
+
+/**
+ * Määräalennus yrityksille ja ryhmille (KATTEET.md "Määräalennus yrityksille", sivu /yritykset): t-paidat
+ * (kappalehinta 24,90 €) samassa tilauksessa, toimitus yhteen osoitteeseen. Portaat pitävät katteen vähintään
+ * 5 € paitaa kohden heikoimmallakin koolla. Korvaa kahden tuotteen alennuksen ja t-paitaparin, kun se on suurempi.
+ */
+export const MAARAALENNUS = {
+  kaytossa: true,
+  kategoria: "t-paidat",
+  kappalehinta: 24.9,
+  portaat: [
+    { min: 50, prosentti: 14 },
+    { min: 25, prosentti: 12 },
+    { min: 10, prosentti: 10 },
+  ],
+  minKatePerPaita: 5,
+};

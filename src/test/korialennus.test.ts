@@ -181,3 +181,29 @@ describe("Black Friday: kaksi t-paitaa 44,90 € (TPAITAPARI_KAMPANJA)", async (
     expect(k.alennus).toBe(2.48);
   });
 });
+
+describe("Määräalennus (MAARAALENNUS): 10+ -10 %, 25+ -12 %, 50+ -14 % t-paidoista", async () => {
+  const { maaraPorras } = await import("../../api/_lib/korialennus.js");
+  const rivi = (quantity: number, variant_id = 1) => ({ slug: "testi-t-paita", quantity, variant_id, unit_cents: 2490 });
+  const bySlug = new Map<string, unknown>([[paita.slug, paita], [huppari.slug, huppari]]);
+  const ulkona = new Date("2026-11-20T10:00:00Z");
+
+  it("portaat", () => {
+    expect(maaraPorras(9)).toBeNull();
+    expect(maaraPorras(10)?.prosentti).toBe(10);
+    expect(maaraPorras(24)?.prosentti).toBe(10);
+    expect(maaraPorras(25)?.prosentti).toBe(12);
+    expect(maaraPorras(50)?.prosentti).toBe(14);
+  });
+  it.each([[10, 10], [25, 12], [50, 14]])("%i t-paitaa: -%i %, kate vähintään 5 € paitaa kohden heikoimmallakin koolla", (n, pros) => {
+    for (const variant of [1, 2]) {
+      const k = sovellaKorialennus([rivi(n, variant)], bySlug, 0, { nyt: ulkona });
+      expect(k.tyyppi).toBe("maara");
+      expect(k.prosentti).toBe(pros);
+      expect(k.nettokate / n).toBeGreaterThanOrEqual(5);
+    }
+  });
+  it("alle 10 t-paitaa: kahden tuotteen -5 % ennallaan", () => {
+    expect(sovellaKorialennus([rivi(9)], bySlug, 0, { nyt: ulkona }).tyyppi).toBe("prosentti");
+  });
+});

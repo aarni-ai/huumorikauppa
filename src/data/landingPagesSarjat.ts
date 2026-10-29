@@ -51,7 +51,7 @@ const JOULU_KYSYMYS = "Ehtiikö paita jouluksi?";
 
 const filterOf = (f: (p: LandingProduct) => boolean) => f;
 
-export const sarjaPages: LandingPageDef[] = [
+const sarjaPagesPohja: LandingPageDef[] = [
   {
     path: "/lahjat/remontoijalle",
     name: "Lahjat remontoijalle",
@@ -374,3 +374,9 @@ export const sarjaPages: LandingPageDef[] = [
     featured: sarja(/t-paita[ -]it-ihmiselle/),
   },
 ];
+
+/** Sarjasivuilta linkki yrityssivulle (tiimipaidat, määräalennus). */
+export const sarjaPages: LandingPageDef[] = sarjaPagesPohja.map((p) => ({
+  ...p,
+  extraLinks: [...(p.extraLinks ?? []), { href: "/yritykset", label: "Tiimipaidat ja yritysten joululahjat" }],
+}));

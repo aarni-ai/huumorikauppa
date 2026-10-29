@@ -34,6 +34,7 @@ const STATIC_PAGES = [
   { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
   { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
+  { loc: "/yritykset", changefreq: "weekly", priority: "0.8" },
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },

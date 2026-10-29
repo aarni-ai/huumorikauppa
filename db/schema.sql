@@ -213,3 +213,15 @@ create table if not exists hintahistoria (
   original_price numeric(10,2),
   primary key (paiva, slug)
 );
+
+-- Yrityssivun tarjouspyynnöt (29.10.2026, /yritykset, api/sahkoposti.js action tarjouspyynto).
+create table if not exists tarjouspyynnot (
+  id bigserial primary key,
+  yritys text not null,
+  nimi text not null,
+  email text not null,
+  puhelin text,
+  maara integer,
+  viesti text,
+  created_at timestamptz not null default now()
+);

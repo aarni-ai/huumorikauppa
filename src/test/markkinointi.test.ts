@@ -63,6 +63,8 @@ function muistiVarasto() {
     arvostelupyyntoEhdokkaat: async () => tilaukset.filter((t) => t.status === "maksettu" && !t.review_email_sent_at && t.delivered_at),
     merkitseArvostelupyynto: async (tid: string, aika: Date) => void (tilaukset.find((t) => t.id === tid)!.review_email_sent_at = aika),
     haeTilaus: async (tid: string) => tilaukset.find((t) => t.id === tid) ?? null,
+    tarjouspyynnot: [] as Rivi[],
+    tallennaTarjouspyynto: async function (this: { tarjouspyynnot: Rivi[] }, t: Rivi) { s.tarjouspyynnot.push(t); return s.tarjouspyynnot.length; },
     julkaistutArviot: async (slug: string) => arviot.filter((a) => a.status === "julkaistu"
       && tilaukset.some((t) => t.id === a.order_id && t.status === "maksettu" && (t.items as Rivi[]).some((i) => i.name === a.product_name && i.slug === slug))),
     arvostellut: async (tid: string) => arviot.filter((a) => a.order_id === tid).map((a) => a.product_name as string),
@@ -308,6 +310,25 @@ describe("Arviopyyntö", () => {
     expect(String(viestit[0].html)).not.toContain("Kortti");
     expect((await ajaMarkkinointi(s, { laheta, nyt: min(12 * 24 * 60) })).lahetetty).toBe(0);
     expect(s.tilaukset[1].review_email_sent_at).toBeTruthy();
+  });
+});
+
+describe("/api/sahkoposti tarjouspyyntö (/yritykset)", () => {
+  const kutsu = async (st: ReturnType<typeof muistiVarasto>, body: Rivi) => {
+    const out = { status: 0, body: null as unknown };
+    const res = { status: (c: number) => { out.status = c; return res; }, json: (b: unknown) => { out.body = b; return res; }, setHeader: () => res };
+    await kasittele({ method: "POST", query: {}, body: { action: "tarjouspyynto", ...body } }, res, st);
+    return out;
+  };
+  it("tallentaa ja ilmoittaa, puutteellinen ja roskaposti hylätään", async () => {
+    const st = muistiVarasto();
+    const viestit = resendMock();
+    expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "ei-osoite" })).status).toBe(400);
+    expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", kotisivu: "http://x" })).body).toEqual({ ok: true });
+    expect(st.tarjouspyynnot.length).toBe(0);
+    expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "A@B.fi", maara: "25", viesti: "Joulupaidat" })).body).toEqual({ ok: true });
+    expect(st.tarjouspyynnot[0]).toMatchObject({ yritys: "Oy Ab", email: "a@b.fi", maara: 25 });
+    expect(String(viestit[0].subject)).toContain("Tarjouspyyntö: Oy Ab, 25 kpl");
   });
 });
 

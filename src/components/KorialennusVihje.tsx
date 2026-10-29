@@ -1,7 +1,7 @@
 import { Percent } from "lucide-react";
 import type { KorialennusTila } from "@/lib/ostoskori";
 import { useEffect, useState } from "react";
-import { TPAITAPARI_KAMPANJA, tpaitapariVoimassa } from "../../api/_lib/korialennus.js";
+import { TPAITAPARI_KAMPANJA, tpaitapariVoimassa, MAARAALENNUS } from "../../api/_lib/korialennus.js";
 import { paivaLyhyt } from "@/data/campaignSchedule";
 
 /** Kampanjan alku- ja loppupäivä ilman vuotta, esim. "pe 27.11." (asetuksista). */
@@ -11,6 +11,10 @@ const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
 /** Kampanjan teksti ja kuluttajansuojalain edellyttämä 30 päivän alin hinta (api/_lib/vakiot.js TPAITAPARI_KAMPANJA). */
 export const TPAITAPARI_TEKSTI = `Kaksi t-paitaa ${eur(TPAITAPARI_KAMPANJA.parihinta)}`;
+/** Alennusrivin nimi ostoskorissa ja kassalla. */
+export const korialennusNimi = (tila: { tyyppi?: string; prosentti: number }) =>
+  tila.tyyppi === "tpaitapari" ? TPAITAPARI_TEKSTI : tila.tyyppi === "maara" ? `Määräalennus (-${tila.prosentti} %)` : `Kahden tuotteen alennus (-${tila.prosentti} %)`;
+
 export const TPAITAPARI_ALIN_HINTA = `T-paidan hinta ${eur(TPAITAPARI_KAMPANJA.kappalehinta)}, alin hinta 30 päivän aikana ${eur(TPAITAPARI_KAMPANJA.alinHinta30pv)}.`;
 
 /**
@@ -19,6 +23,28 @@ export const TPAITAPARI_ALIN_HINTA = `T-paidan hinta ${eur(TPAITAPARI_KAMPANJA.k
  */
 export function KorialennusVihje({ tila, className = "" }: { tila: KorialennusTila; className?: string }) {
   if (tila.kpl === 0 || tila.syy === "pois" || tila.syy === "koodi" || tila.syy === "ei_rivia") return null;
+  if (tila.voimassa && tila.tyyppi === "maara") {
+    const seuraava = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min).find((p) => (tila.maaraTpaitoja ?? 0) < p.min);
+    return (
+      <p className={`flex items-start gap-2 text-xs font-medium text-primary ${className}`}>
+        <Percent className="h-4 w-4 shrink-0" />
+        <span>
+          Määräalennus -{tila.prosentti} % t-paidoista on mukana.
+          {seuraava ? ` ${seuraava.min - (tila.maaraTpaitoja ?? 0)} t-paitaa lisää: -${seuraava.prosentti} %.` : ""}
+        </span>
+      </p>
+    );
+  }
+  // Määräalennuksen vihje, kun t-paitoja on 5-9: seuraava porras 10 kappaleessa.
+  const ensimmainen = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min)[0];
+  if (MAARAALENNUS.kaytossa && (tila.maaraTpaitoja ?? 0) >= 5 && (tila.maaraTpaitoja ?? 0) < ensimmainen.min) {
+    return (
+      <p className={`flex items-start gap-2 text-xs text-foreground ${className}`}>
+        <Percent className="h-4 w-4 text-primary shrink-0" />
+        <span>Lisää {ensimmainen.min - (tila.maaraTpaitoja ?? 0)} t-paitaa: määräalennus <span className="font-bold text-primary">-{ensimmainen.prosentti} %</span> kaikista t-paidoista.</span>
+      </p>
+    );
+  }
   if (tila.voimassa && tila.tyyppi === "tpaitapari") {
     return (
       <p className={`flex items-center gap-2 text-xs font-medium text-primary ${className}`}>

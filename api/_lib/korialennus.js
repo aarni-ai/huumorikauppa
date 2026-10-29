@@ -12,11 +12,11 @@
  * - Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta (kassa).
  */
 import { laskeTilauksenNettokate } from "./kate.js";
-import { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA } from "./vakiot.js";
+import { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA, MAARAALENNUS } from "./vakiot.js";
 
-export { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA };
+export { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA, MAARAALENNUS };
 
-const OLETUS = { prosentti: KORIALENNUS_PROSENTTI, minKpl: KORIALENNUS_MIN_KPL, minKateEuroa: KORIALENNUS_MIN_KATE_EUROA, kampanja: TPAITAPARI_KAMPANJA };
+const OLETUS = { prosentti: KORIALENNUS_PROSENTTI, minKpl: KORIALENNUS_MIN_KPL, minKateEuroa: KORIALENNUS_MIN_KATE_EUROA, kampanja: TPAITAPARI_KAMPANJA, maara: MAARAALENNUS };
 
 /** Päivä Suomen aikaa (YYYY-MM-DD). */
 const helsinginPaiva = (nyt) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(nyt);
@@ -26,6 +26,19 @@ export function tpaitapariVoimassa(kampanja = TPAITAPARI_KAMPANJA, nyt = new Dat
   if (!kampanja?.kaytossa) return false;
   const p = helsinginPaiva(nyt);
   return p >= kampanja.alku && p <= kampanja.loppu;
+}
+
+/** Määräalennuksen porras kampanjan t-paitojen määrälle (suurin, jonka minimi täyttyy), tai null. */
+export function maaraPorras(kpl, maara = MAARAALENNUS) {
+  if (!maara?.kaytossa) return null;
+  return [...maara.portaat].sort((a, b) => b.min - a.min).find((p) => kpl >= p.min) ?? null;
+}
+
+/** Kuinka monta määräalennukseen kelpaavaa t-paitaa riveillä on. */
+export function maaraKelpaavat(rivit, tuotteetSlugilla, maara = MAARAALENNUS) {
+  const kappale = Math.round(maara.kappalehinta * 100);
+  return rivit.filter((r) => !r.paketti && r.unit_cents === kappale && tuotteetSlugilla.get(r.slug)?.category === maara.kategoria)
+    .reduce((s, r) => s + r.quantity, 0);
 }
 
 /**
@@ -59,10 +72,10 @@ function tpaitapariRivit(rivit, tuotteetSlugilla, kampanja) {
  * Alkuperäiset rivit palautetaan muuttamattomina, jos alennusta ei anneta.
  */
 export function sovellaKorialennus(rivit, tuotteetSlugilla, toimitusmaksu, asetukset = {}) {
-  const { prosentti, minKpl, minKateEuroa, kampanja, nyt } = { ...OLETUS, ...asetukset };
+  const { prosentti, minKpl, minKateEuroa, kampanja, nyt, maara } = { ...OLETUS, ...asetukset };
   const ei = (syy, nettokate = null) => ({ rivit, alennus: 0, prosentti: 0, syy, nettokate });
   const pariVoimassa = tpaitapariVoimassa(kampanja, nyt ?? new Date());
-  if (!(prosentti > 0 && prosentti < 50) && !pariVoimassa) return ei("pois");
+  if (!(prosentti > 0 && prosentti < 50) && !pariVoimassa && !maara?.kaytossa) return ei("pois");
   const kpl = rivit.reduce((s, r) => s + r.quantity, 0);
   if (kpl < minKpl) return ei("kpl");
   if (!rivit.some((r) => !r.paketti)) return ei("ei_rivia");
@@ -83,6 +96,20 @@ export function sovellaKorialennus(rivit, tuotteetSlugilla, toimitusmaksu, asetu
     const p = tpaitapariRivit(rivit, tuotteetSlugilla, kampanja);
     if (p) vaihtoehdot.push({ ...p, prosentti: 0, tyyppi: "tpaitapari" });
   }
+  // Määräalennus (yritykset, ryhmät): porras t-paitojen määrän mukaan, koskee vain kelpaavia t-paitarivejä.
+  const kelpaavat = maara?.kaytossa ? maaraKelpaavat(rivit, tuotteetSlugilla, maara) : 0;
+  const porras = maaraPorras(kelpaavat, maara);
+  if (porras) {
+    const kappale = Math.round(maara.kappalehinta * 100);
+    let alennusSentteina = 0;
+    const uudet = rivit.map((r) => {
+      if (r.paketti || r.unit_cents !== kappale || tuotteetSlugilla.get(r.slug)?.category !== maara.kategoria) return r;
+      const alennettu = Math.round(r.unit_cents * (1 - porras.prosentti / 100));
+      alennusSentteina += (r.unit_cents - alennettu) * r.quantity;
+      return { ...r, unit_cents: alennettu, maaraalennus_prosentti: porras.prosentti };
+    });
+    vaihtoehdot.push({ rivit: uudet, alennusSentteina, prosentti: porras.prosentti, tyyppi: "maara", minKate: maara.minKatePerPaita * kelpaavat });
+  }
   vaihtoehdot.sort((a, b) => b.alennusSentteina - a.alennusSentteina);
 
   let hylatty = null;
@@ -95,7 +122,7 @@ export function sovellaKorialennus(rivit, tuotteetSlugilla, toimitusmaksu, asetu
     }
     const kate = laskeTilauksenNettokate(osat, toimitusmaksu);
     if (!kate.tunnettu) return ei("kulu");
-    if (kate.nettokate < 0 || kate.nettokate < minKateEuroa) { hylatty = hylatty ?? kate.nettokate; continue; }
+    if (kate.nettokate < 0 || kate.nettokate < Math.max(minKateEuroa, v.minKate ?? 0)) { hylatty = hylatty ?? kate.nettokate; continue; }
     return { rivit: v.rivit, alennus: v.alennusSentteina / 100, prosentti: v.prosentti, tyyppi: v.tyyppi, syy: null, nettokate: kate.nettokate };
   }
   return ei("kate", hylatty);

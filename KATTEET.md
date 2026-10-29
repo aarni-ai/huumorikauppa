@@ -53,6 +53,32 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Määräalennus yrityksille ja ryhmille (29.10.2026)
+
+**Ehto:** kate vähintään 5 € t-paitaa kohden heikoimmallakin koolla (tuotekulu 9,93 €). Printify toimittaa tilauksen
+yhteen osoitteeseen, joten samaan tilaukseen kuuluvat t-paidat (OPT OnDemand, pp 30) maksavat toimituksen
+8,49 € + 1,19 € jokaisesta lisäkappaleesta. Asiakkaan toimitus on ilmainen, koska 10 t-paitaa ylittää 79 €:n rajan.
+Korttimaksu varovaisesti 3,25 % + 0,25 € (ensimmäisen oikean tilauksen todellinen maksu oli 3,7 %; EU-kortti 1,5 %).
+
+| Tilaus | Suurin alennus, jolla kate >= 5 €/paita | Valittu porras | Kate/paita heikoin | Kate/paita tavallinen koko | Tilaus | Kate yhteensä (tavallinen) |
+|---|--:|--:|--:|--:|--:|--:|
+| 10 t-paitaa | 11,0 % | **-10 %** | 5,25 € | 6,28 € | 224,10 € | 62,83 € |
+| 25 t-paitaa | 13,5 % | **-12 %** | 5,33 € | 6,36 € | 547,80 € | 158,89 € |
+| 50 t-paitaa | 14,5 % | **-14 %** | 5,10 € | 6,13 € | 1 070,70 € | 306,30 € |
+
+-15 % 50 paidalle antaisi heikoimmalla koolla 4,91 €/paita, joten porras on -14 %. Hupparit eivät kuulu
+määräalennukseen (kate yhden hupparin tilauksessa 3,08-7,86 €).
+
+**Toteutus** (`api/_lib/vakiot.js` MAARAALENNUS, `api/_lib/korialennus.js`): kassa laskee alennuksen automaattisesti
+24,90 €:n t-paidoista, kun niitä on samassa tilauksessa 10, 25 tai 50; alennus korvaa kahden tuotteen -5 %:n ja
+t-paitaparin, kun se on suurempi. Katevahti vaatii nettokatteen vähintään 5 € kelpaavaa t-paitaa kohden.
+Katevahti täydentää nyt puuttuvat Printify-toimitustiedot pohjatuotteen ja painotalon taulukosta
+(`PRINTIFY_TOIMITUS_FI`, `api/_lib/kate.js`): 304/391 t-paidan tuoteriviltä puuttui lisäkappaleen toimitus, ja
+ilman täydennystä jokainen paita olisi laskettu omana lähetyksenään (määräalennus ei olisi koskaan toteutunut).
+
+**Odotettu vaikutus (arvio, ei mitattua dataa):** yksi 25 paidan yritystilaus kuukaudessa tuo noin 159 € katetta,
+kaksi 10 paidan tilausta noin 126 €. Marras-joulukuussa 1-3 yritystilausta kuukaudessa: noin 125-475 €/kk.
+
 ## Black Friday ja joulu 2026: kampanjavertailu (29.10.2026)
 
 **Ajankohta:** Black Friday pe 27.11. - joulun takaraja (t-paidat ti 1.12., muut ma 30.11.). Kampanja-aika 5 päivää.
