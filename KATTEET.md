@@ -195,6 +195,7 @@ jolloin todellista myyntiä ei ole).
 | 24.10.2026 | Noora S. | 1 x Tonnin Seteli \| T-Paita (S / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 13,59 € | 3,47 € | 11,02 € | 43,5 % |
 | 25.10.2026 | Satu V. | 1 x Tonnin Seteli \| T-Paita (3XL / Black), 24,90 € | #417 LV | 31,80 € | 25,34 € | 16,41 € | 4,18 € | 8,20 € | 32,4 % |
 | 26.10.2026 | Niina Y. | 1 x 60v – kokenut, ei vanha \| T-Paita (M / Graphite Heather), 24,90 € | #417 LV | 31,80 € | 25,34 € | 13,59 € | 3,47 € | 11,02 € | 43,5 % |
+| 29.10.2026 (uusi kassa) | Jaana V. | 1 x Amatimies \| Huppari (Black / L), 49,99 € -5 % koodi | Textildruck Europa DE | 54,39 € | 43,34 € | 36,37 € | 0,00 € | 4,94 € (Stripe 2,03 €) | 11,4 % |
 | **Yhteensä** | 17 tilausta | | | 570,50 € | 454,58 € | 381,00 € | 87,82 € | 60,76 € | 13,4 % |
 
 - Tilauksia 17, myynti sis. alv 570,50 €, ilman alv:tä 454,58 €, Stripe 12,82 €.

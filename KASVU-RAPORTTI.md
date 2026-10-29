@@ -26,6 +26,38 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 iltapäivä: ensimmäinen oikea tilaus uuden kassan kautta
+
+**TOIMENPIDE AARNILLE HETI: Printify ei ole veloittanut tilausta, eikä se ole tuotannossa.** Printify-tilauksen
+26630629.36 tila on `payment-not-received`, ja rivi (Amatimies | Huppari, Black / L, Textildruck Europa, pp 26) on
+on-hold. Kassan automaattinen tuotantoon lähetys epäonnistui samasta syystä: "It is not allowed to send order
+26630629.36 to production with status pending". Lisää Printifyyn maksutapa tai saldoa (Printify > Billing) ja paina
+tilaukselle Send to production, tai anna tuntiajon yrittää uudelleen.
+
+| Tarkistus | Tulos |
+|---|---|
+| Stripe (Uusiku Oy, acct_1UVAUMPNXkES1q9G) | Checkout-sessio paid, PaymentIntent succeeded, 54,39 € (tilaus 2ed0a626) |
+| Summa | 49,99 € -5 % alennuskoodilla (47,49 €) + toimitus 6,90 € = 54,39 €, sama Neonissa ja Stripessä |
+| Neon | tilaus 2ED0A626 maksettu 29.10. klo 9.43 (Suomen aika), tapahtumat kassa, maksettu, printify_luotu, omistaja_ilmoitettu |
+| Stripen kuitti | receipt_email asetettu, kuitti nro 1658-8795 muodostettu (Stripe lähettää kuitin live-tilassa) |
+| Oma tilausvahvistus | ei lähtenyt (vahvistus_virhe), koska Resend-domain ei ole vahvistettu; Stripen kuitti korvaa sen |
+| Omistajailmoitus | lähti (omistaja_ilmoitettu = Resend hyväksyi lähetyksen) |
+| Printify | 26630629.36 payment-not-received, on-hold (ks. yllä) |
+
+**Kate:** myynti alv 0 = 54,39 / 1,255 = 43,34 €; Printify huppari 25,48 € + toimitus 10,89 € = 36,37 € (ilman
+ALV:tä); Stripen todellinen maksu 2,03 € (laskelmien 1,5 % + 0,25 € = 1,07 €; korttityyppi oli kalliimpi). Nettokate
+**4,94 € (11,4 %)**. Alennuskoodi (-2,50 €) ja hupparin Saksan toimitus pitävät katteen pienenä.
+
+**Omistajailmoitusten osoite.** Vaihdoin aamupäivällä OMISTAJA_EMAIL-arvoksi huumorikauppa@gmail.com. Ennen
+Resend-domainin vahvistusta Resend toimittaa vain tilin omaan osoitteeseen, joten muutos olisi estänyt seuraavat
+ilmoitukset (tämä tilaus tuli ennen muutoksen julkaisua). Palautettu arvoon flyapeg@gmail.com ja testattu
+(`?tehtava=ilmoitustesti`: ok, vastaanottaja flyapeg@gmail.com). Vaihto huumorikauppa@gmail.comiin tehdään vasta,
+kun domain on vahvistettu.
+
+**Vanhan Stripe-tilin webhook:** ensimmäinen oikea tilaus on mennyt uuden kassan läpi, joten ennakkoehto täyttyy.
+Webhookin poisto käytöstä (Disable, ei poistoa) kuuluu tehdä 31.10.2026 tai myöhemmin. Claudella ei ole pääsyä
+vanhaan tiliin. **Coworkin tehtävä 31.10. tai myöhemmin:** KAYTTOONOTTO.md "Vanhan kassan webhookin sulkeminen".
+
 ## 29.10.2026 aamupäivä: nimipalvelinvaihto, domainin siirron valmistelu, Black Friday, lahjakortit, nopeus
 
 **Nimipalvelinvaihdon seuranta** (dig NS ja A 1.1.1.1:stä sekä HTTPS-tila 15 minuutin välein; vahti pysähtyy ja
