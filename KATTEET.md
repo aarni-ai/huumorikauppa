@@ -53,6 +53,195 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Hinnoittelu 29.10.2026: keskikate vähintään 10 €, minimi 7 € (käytössä)
+
+**Aarnin päätös 29.10.2026:**
+- Keskikate vähintään 10,00 € tilausta kohden.
+- Jokaisesta tavallisesta tilauksesta jää kaikkien kulujen jälkeen vähintään 7,00 €. Kuluihin lasketaan Printify ilman
+  ALV:tä, Stripe, provisio ja alennukset.
+- Yritystilauksissa (10+ t-paitaa) riittää 5,00 € paitaa kohden.
+
+Kaava on api/_lib/kate.js laskeTilauksenNettokate: Stripe 1,5 % + 0,25 €, Printifyn toimitus painotaloittain.
+
+### Uudet hinnat (api/_lib/kokohinnat.js, julkaistu 29.10.2026)
+
+| Tuote | Ennen | Nyt | 3XL-5XL ennen | 3XL-5XL nyt |
+|---|---|---|---|---|
+| T-paita, suora kilpailijavertailu (14 designia: Saatanan tunarit, Tonnin seteli, I love my girlfriend/boyfriend, Alkoholiongelmaa, Maailman paras äiti, Kalju, Amatimies, Eläkeläinen, 100 % eläkeläinen, Olen eläkkeellä) | 24,90 € | 24,90 € | 24,90 € | 28,90 € |
+| Muut t-paidat (304 designia: harrastus- ja ammattisarjat, ikävuodet, joulu, kaupungit ja muut uniikit) | 24,90 € | 27,90 € | 24,90 € | 29,90 € |
+| Personoitu t-paita | 29,90 € | 29,90 € | 29,90 € | 29,90 € |
+| Huppari | 49,99 € | 52,90 € | 55,00 € | 59,90 € |
+| Juliste | 22,90 € | 24,90 € | | |
+| Keraaminen koriste | 19,90 € | 22,90 € | | |
+| Tarra | 11,90 € | 11,90 € (vain lisätuotteena) | | |
+
+- Toimitus pysyy 6,90 €:ssa ja ilmaisen toimituksen raja 79 €:ssa.
+- Toimitusmaksun nosto 7,90 €:oon toisi noin +0,40 € keskikatetta. Se jätettiin varalle, koska suorin kilpailija
+  (Hauskatpaidat.fi) perii 4,90 €.
+- Personoitu paita pysyy 29,90 €:ssa, koska kilpailijan oma printti maksaa enintään 30 €.
+
+### Kilpailijat (29.10.2026, kaupat avattu Chromella)
+
+| Kilpailija | T-paita | Oma printti / premium | Huppari | Toimitus |
+|---|---|---|---|---|
+| Hauskatpaidat.fi | 25 € | 25 € / 30 € | 45-69 € (yleensä 50-55 €) | 4,90 €, ilmainen yli 65 € |
+| Stuntman | 19,90-22,90 € | | 38,90-44,90 € (erikoismallit 59 €) | noutopiste 6,90 €, koti 12,90 € |
+| Meemirotta | | | 49,99 € (27.10.2026) | |
+| Huumoripaidat.com | | | | (sivu antoi virhesivun) |
+
+Uudet hinnat pysyvät kilpailijoiden haarukassa:
+- t-paidat 24,90-29,90 € (Hauskatpaidat.fi 25-30 €)
+- hupparit 52,90-59,90 € (Hauskatpaidat.fi 45-69 €)
+
+### Heikoin kate tuotannon kuluilla (?tehtava=katetaulu 29.10.2026)
+
+Yhden tuotteen tilaus, asiakas maksaa toimituksen 6,90 €. Kaikki myytävät variantit:
+
+| Ryhmä | Hinta | Heikoin | Keskiarvo | Alle 7 € |
+|---|---|---|---|---|
+| T-paita, suora vertailu | 24,90 € | 7,05 € | 7,21 € | 0 / 495 |
+| T-paita, suora vertailu 3XL+ | 28,90 € | 7,77 € | 9,18 € | 0 / 150 |
+| T-paita, muut | 27,90 € | 8,66 € | 9,56 € | 0 / 4 743 |
+| T-paita, muut 3XL+ | 29,90 € | 7,81 € | 9,88 € | 0 / 233 |
+| Huppari | 52,90 € | 7,35 € | 10,29 € | 0 / 2 675 |
+| Huppari 3XL+ | 59,90 € | 8,12 € | 10,76 € | 0 / 341 |
+| Juliste | 24,90 € | 8,23 € | 8,23 € | 0 / 12 |
+| Koriste | 22,90 € | 7,22 € | 7,22 € | 0 / 1 |
+| Tarra (yksin) | 11,90 € | 4,97 € | | kassa hylkää pelkän tarran |
+
+**3XL+ -hinnat:** ensimmäinen versio (3XL+ 27,90 € ja huppari 57,90 €) jätti 40 varianttia alle 7 €:n:
+- heikoin t-paita 4XL: 6,25 €
+- huppari 3XL: 6,55 €
+
+Siksi 3XL+ nostettiin, ja nyt yksikään variantti ei jää alle 7 €:n.
+
+**Alennukset ja 7 €:n raja** (api/_lib/kassa.js ja korialennus.js):
+- Alennuskoodi hylätään, jos tilauksen nettokate alennuksen jälkeen jäisi alle 7 €.
+- Pakettialennus ja kahden tuotteen -5 % jätetään antamatta samalla ehdolla (katevahti
+  KORIALENNUS_MIN_KATE_EUROA = 7).
+- Määräalennus koskee kaikkia t-paitoja, raja 5 € paitaa kohden.
+  - 10 t-paitaa 27,90 € -10 %: noin 8,8 €/paita.
+  - 50 t-paitaa 24,90 € -14 %: noin 6,5 €/paita.
+- Black Friday "2 t-paitaa 44,90 €" koskee vain 24,90 €:n t-paitoja (suora vertailu, S-2XL), ja katevahti on 7 €.
+  - Parin kate on 12,77 € (heikoin 10,71 €).
+  - 30 päivän alin hinta on 24,90 € (KSL 2:6 a §).
+  - Näiden paitojen hinta ei muuttunut, ja hintatarkistus hälyttää, jos se muuttuu.
+
+### Alennuskoodit (inventaario 29.10.2026)
+
+| Koodi | Mistä | Missä mainostettu | Käyttö | Päätös |
+|---|---|---|---|---|
+| HUUMORI5 (-5 %) | kanta discount_codes, koodin varalista OLETUSKOODIT ja kassasivun VALID_CODES | ei missään sivustolla, viesteissä eikä sähköposteissa | 1 tilaus (29.10., alennus 2,50 €) | poistettu käytöstä 29.10. |
+| PALAA10 (-10 %) | sama | ei missään (kassasivun kommentti mainitsi palautusviestit, mutta yksikään viesti ei käytä sitä) | 0 | poistettu käytöstä 29.10. |
+| TERVE-xxxx (ensitilaus) | api/_lib/markkinointi.js | uutiskirjeen tervetuloviesti | 0 | pois (ENSITILAUS_ALENNUS_PROSENTTI = 0) |
+| Stripe promotion codes / coupons | Stripe | | tilillä ei ole yhtään | |
+
+- Kannan rivit säilyvät historiaa varten (is_active = false).
+- Hallinta: ?tehtava=alennuskoodit[&poista=KOODI].
+- Uusi koodi hyväksytään kassalla vain, jos tilauksen kate pysyy vähintään 7 €:ssa.
+- Kumppanikoodi ei ole alennuskoodi.
+
+### Keskikate ennen ja jälkeen
+
+Tuotemix (sama kuin aiemmissa laskelmissa):
+- 70 % yksi t-paita
+- 5 % kaksi t-paitaa
+- 15 % huppari
+- 3 % t-paita ja huppari
+- 7 % juliste
+
+T-paitatilauksista 30 % on suoran vertailun paitoja (24,90 €) ja 70 % muita (27,90 €). Kumpikin osuus on oletus,
+koska oikeita tilauksia on vasta yksi.
+
+| | Yksi t-paita | Kaksi t-paitaa | Huppari | T-paita + huppari | Juliste | Keskikate |
+|---|---|---|---|---|---|---|
+| Ennen (24,90 / 49,99 / 22,90 €) | 7,22 € | 14,65 € | 7,86 € | 6,95 € | 6,67 € | **7,64 €** |
+| Nyt, ilman lisämyyntiä | 8,86 € | 17,8 € | 10,29 € | 9,87 € | 8,23 € | **9,51 €** |
+| Nyt, 10 % yhden paidan koreista saa toisen paidan | | | | | | **10,13 €** |
+
+- T-paita ja huppari ylittävät uusilla hinnoilla 79 €:n rajan, joten toimitus on ilmainen. Katevahti ei anna -5 %:a,
+  koska kate jäisi 6,71 €:oon.
+- Ostoskori ehdottaa toista t-paitaa aina, kun korissa on yksi t-paita (Lisää toinen t-paita). Samalla näytetään
+  linkki personoituun paitaan. Etusivulla ja tuotesivuilla nostetaan personoitu paita ja /yritykset.
+
+**Vaikutus kuukausikatteeseen nykyisellä tilausmäärällä (noin 6,5 tilausta/kk):**
+- ennen 7,64 € × 6,5 = 49,7 €/kk
+- nyt 9,51-10,13 € × 6,5 = 61,8-65,8 €/kk
+- muutos noin +12-16 €/kk
+
+3000 €/kk:n tavoite vaatii nykyisellä keskikatteella noin 300 tilausta kuukaudessa.
+
+### Maksutapojen kulut keskiostoksella (yksi t-paita 27,90 € + toimitus 6,90 € = 34,80 €)
+
+| Maksutapa (Stripe, Suomi) | Hinnasto | Kulu | Ero kortin perushintaan |
+|---|---|---|---|
+| Kortti (ETA, tavallinen), Apple Pay, Google Pay | 1,5 % + 0,25 € | 0,77 € | 0 |
+| Kortti (ETA, premium/yritys) | 2,8 % + 0,25 € | 1,22 € | +0,45 € |
+| Kortti (UK) | 2,5 % + 0,25 € | 1,12 € | +0,35 € |
+| Kortti (kansainvälinen) | 3,15 % + 0,25 € | 1,35 € | +0,58 € |
+| MobilePay | 1,5 % + 0,36 € + erillinen MobilePay-maksu (laskutetaan päivittäin) | 0,88 € + MobilePay-maksu | +0,11 € + MobilePay-maksu |
+| **Klarna** | 2,99 % + 0,40 € (+1,5 % kansainvälinen) | **1,44 €** | **+0,67 €** |
+
+Klarna vie eniten katetta. Ensimmäinen oikea tilaus maksettiin Klarnalla, ja Stripe-kulu oli 2,03 €.
+
+**Poikkeama 7 €:n minimiin:** kaikki katteet on laskettu kortin perushinnalla (1,5 % + 0,25 €). Klarna maksaa
+tilauksen summasta riippuen 0,6-1,0 € enemmän, premium-kortti 0,4-0,8 € enemmän. Klarnalla maksettuna heikoimmat
+variantit jäävät alle 7 €:n:
+
+| Variantti | Kortti | Klarna | Premium-kortti |
+|---|---|---|---|
+| 24,90 € t-paita | 7,05 € | 6,43 € | 6,64 € |
+| koriste | 7,22 € | 6,63 € | 6,83 € |
+| heikoin huppari | 7,35 € | 6,31 € | 6,64 € |
+
+Ryhmien keskiarvot pysyvät Klarnallakin yli 7 €:n, paitsi 24,90 €:n t-paidoilla (noin 6,6 €).
+
+Aarnin päätettävä:
+- (a) Klarna pois alle 60 €:n tilauksista (Stripe Checkoutin maksutavat valitaan tilauksen summan mukaan).
+- (b) Hyväksytään poikkeama Klarna- ja premium-korttimaksuille. Klarnan osuus tilauksista seurataan ensin.
+
+24,90 €:n paitojen hintaa ei voi nostaa: 25,90 € ylittäisi suoran kilpailijan 25 €:n hinnan.
+
+### Printify Premium (34,99 €/kk): kannattavuusraja
+
+Premium alentaa tuotekuluja enintään 20 %, toimituskuluihin se ei vaikuta.
+
+| Tilaus | Säästö |
+|---|---|
+| T-paita | 20 % × 8,90 € = 1,78 € |
+| Huppari | 20 % × noin 25 € = 5,0 € |
+| Keskiostos (yllä oleva mix) | noin 2,48 € |
+
+- Kannattavuusraja on 34,99 € / 2,48 € = **noin 14 tilausta kuukaudessa**.
+- Nykyisellä 6,5 tilauksella kuukaudessa säästö on noin 16 €/kk, mikä on vähemmän kuin 34,99 €. Premium ei kannata
+  vielä. Uusi tarkistus kannattaa tehdä, kun tilauksia on yli 15 kuukaudessa.
+- Premiumia ei tilattu.
+
+### Painotalot (vertailu 26.10.2026, osio "Halvin EU-vaihtoehto")
+
+| Tuote | Nykyinen painotalo | Vaihtoehto | Miksi ei siirretty |
+|---|---|---|---|
+| T-paita | OPT CZ (Gildan 64000): 8,90 € + toimitus 8,49 € | Textildruck DE: 9,28 € + 7,29 € | Kate on hiukan parempi (31,7 % vs. 28,5 %), mutta Black L puuttuu ja 3XL maksaa 10,68 €. |
+| Huppari | Textildruck DE: 24,77-25,48 € + 10,89 € | Atelier Katanga FR: 23,79 € + 10,89 € | Ash, Heather Navy ja Graphite Heather puuttuvat, ja 3XL+ on heikompi. |
+
+Molemmissa siirto pudottaisi värejä tai kokoja. Lisäksi 20 tuotteen tekstitasot pitäisi siirtää käsin. Siksi tuotteita
+ei siirretty. Toimitusaika Suomeen on kaikilla EU-painotaloilla sama (3-10 arkipäivää).
+
+### Printifyn ALV: vähennettävissä vai ei
+
+Printify perii Suomen ALV:n (25,5 %), eikä käännettyä verovelvollisuutta saa (ks. alku). Katteet yllä olettavat, että
+Uusiku Oy vähentää Printifyn ALV:n. Jos ALV ei ole vähennettävissä, Printify-kulut ovat 25,5 % suuremmat:
+
+| Tuote | Kate, ALV vähennettävissä | Kate, ALV ei vähennettävissä | Hinta, jolla kate on 7 € ilman vähennystä |
+|---|---|---|---|
+| T-paita, suora vertailu (OPT) | 7,05-7,22 € | noin 2,8 € | 30,90 € |
+| T-paita, muut (OPT) | 9,56 € (ka) | noin 5,1 € | 30,90 € |
+| Huppari (Textildruck) | 10,29 € (ka) | noin 1,2 € | 59,90 € (3XL+ noin 66,90 €) |
+
+Jos tilitoimisto toteaa, ettei ALV ole vähennettävissä, kaikkien t-paitojen ja huppareiden hintoja on nostettava.
+Silloin t-paidat ylittävät kilpailijoiden 25-30 €:n haarukan. Tilitoimiston vahvistus on siksi tärkeä ennen
+1.11.2026 (Uusiku Oy).
+
 ## Personoitu t-paita 29,90 € (29.10.2026)
 
 Gildan Softstyle 64000, OPT OnDemand (Tšekki, pp 30), lennosta luotava Printify-tuote tilauskohtaisella
@@ -70,6 +259,19 @@ t-paitaan verrattuna kate on noin 3,90 € suurempi. Personoitu paita ei kuulu t
 (kappalehinta ei ole 24,90 €), mutta kahden tuotteen -5 % koskee sitä kuten muitakin.
 
 ## Kumppanuusohjelma: provisio (hyväksytty 29.10.2026, käytössä)
+
+**Päivitys 29.10.2026 illalla:** raja nostettu 5,00 €:sta **7,00 €:oon** (KUMPPANUUS.minKateEuroa = 7). Uusilla
+hinnoilla provisio esimerkkitilauksissa:
+
+| Tilaus | Provisio |
+|---|---|
+| t-paita 27,90 € (kate 9,57 €) | 2,22 € (täysi 10 %) |
+| t-paita 24,90 € (kate 7,22 €) | 0,22 € |
+| kaksi t-paitaa 27,90 € | 4,22 € |
+| huppari 52,90 € (kate 10,14 €) | 3,14 € |
+| 25 t-paitaa | 43,65 € |
+
+Sivu /kumppanit, PROVISIOSAANTO ja KUMPPANIT-VIESTIPOHJA.md on päivitetty. Alla oleva 5 €:n laskelma on historiaa.
 
 **Sääntö (hyväksytty):** provisio on enintään 10 % tilauksen tuotteiden arvosta ilman ALV:tä ja toimitusta, ja
 enintään summa, joka jättää kauppaan provision jälkeen **vähintään 5,00 € nettokatetta**. Jos tilauksen kate on
