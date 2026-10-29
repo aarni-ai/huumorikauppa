@@ -24,7 +24,8 @@ import { SeasonalBannerView } from "@/components/SeasonalBanner";
 import { activeBannerTheme } from "@/data/campaignSchedule";
 import ProductPage from "@/pages/ProductPage";
 import Index from "@/pages/Index";
-import BlogPost from "@/pages/BlogPost";
+import { AppTarjoajat, AppSisalto, preloadRoute } from "@/App";
+import { asetaEsirenderoinninTeema } from "@/components/SeasonalBanner";
 import type { ReactNode } from "react";
 import { mapProduct } from "@/hooks/use-products";
 import type { Tables } from "@/integrations/supabase/types";
@@ -87,18 +88,26 @@ export function renderProductPreview(row: Tables<"products">, nowMs = Date.now()
 }
 
 /**
- * Blogiartikkeli ilman tuotedataa (29.10.2026): artikkelin teksti näkyy heti HTML:n ja CSS:n saavuttua. Ennen
- * esikatselua teksti tuli näkyviin vasta, kun sovellus ja blogidata (124 kt) oli ajettu (Lighthouse mobiili LCP 4,9-5,2 s).
+ * Blogiartikkeli hydratoitavana sovelluksena (29.10.2026): koko sovelluspuu (AppSisalto) MemoryRouterilla samalla
+ * tavalla kuin selaimen ensimmäinen renderöinti, ilman tuotedataa (tuotekorteissa latausnäkymä). Selain hydratoi
+ * merkinnän (src/main.tsx hydrateRoot), joten näkyvä teksti ei vaihdu toiseen solmuun (ennen esikatselun vaihto
+ * kirjasi myöhäisen LCP:n, Lighthouse mobiili 4,5 s kahdessa ikävuosiblogissa).
  */
-export function renderBlogPreview(slug: string, nowMs = Date.now()): string {
-  return renderWithShell(
-    `/blogi/${slug}`,
-    <Routes>
-      <Route path="/blogi/:slug" element={<BlogPost />} />
-    </Routes>,
-    previewQueryClient(),
-    nowMs,
-  );
+export async function renderBlogApp(slug: string, nowMs = Date.now()): Promise<string> {
+  const path = `/blogi/${slug}`;
+  await preloadRoute(path);
+  asetaEsirenderoinninTeema(activeBannerTheme(nowMs));
+  try {
+    return renderToString(
+      <AppTarjoajat client={new QueryClient()}>
+        <MemoryRouter initialEntries={[path]}>
+          <AppSisalto />
+        </MemoryRouter>
+      </AppTarjoajat>,
+    );
+  } finally {
+    asetaEsirenderoinninTeema(null);
+  }
 }
 
 /** Etusivu ilman tuotedataa: hero (LCP-kuva) ja tuoteosioiden latausnäkymät, kuten selaimessa ennen hakua. */

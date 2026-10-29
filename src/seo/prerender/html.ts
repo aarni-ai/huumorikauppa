@@ -64,6 +64,11 @@ export interface PrerenderPage {
    * src/main.tsx näyttää sen, kunnes React-sivu on valmis.
    */
   previewHtml?: string;
+  /**
+   * Hydratoitava sovelluksen merkintä #rootin sisään (blogiartikkelit, renderBlogApp). Selain hydratoi sen
+   * vaihtamatta solmuja, joten myöhäistä LCP:tä ei synny. Staattinen runko siirtyy #rootin perään (H1 div:ksi).
+   */
+  hydrateHtml?: string;
 }
 
 export interface PreloadImage {
@@ -400,6 +405,14 @@ export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteN
     keepHeroPreload: page.path === "/",
     preloadImage: page.preloadImage,
   });
+  if (page.hydrateHtml) {
+    // Sovelluksen merkintä #rootiin, staattinen runko (hakukoneille ja ilman JavaScriptiä) sen perään ilman toista H1:tä.
+    const runko = renderStaticBody(page, nav).replace(/<(\/?)h1(?=[\s>])/g, "<$1div");
+    const marker = '<div id="root"></div>';
+    if (!html.includes(marker)) throw new Error('index.html: tyhjä <div id="root"></div> puuttuu');
+    const full = html.replace(marker, () => `<div id="root">${page.hydrateHtml}</div>${runko}`);
+    return deferEntryScripts(full, page.modulePreloads);
+  }
   const full = injectRoot(html, renderStaticBody(page, nav), page.previewHtml ?? "");
   return page.previewHtml ? deferEntryScripts(full, page.modulePreloads) : full;
 }

@@ -255,7 +255,7 @@ async function main() {
         const m = /^\/blogi\/([^/]+)$/.exec(page.path);
         if (!m) continue;
         try {
-          page.previewHtml = previewMod.renderBlogPreview(m[1]);
+          page.hydrateHtml = await previewMod.renderBlogApp(m[1]);
           page.modulePreloads = blogChunks;
           previews += 1;
         } catch (err) {

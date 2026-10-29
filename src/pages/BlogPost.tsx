@@ -132,7 +132,8 @@ function renderInlineFormatting(text: string): (string | JSX.Element)[] {
 
 const BlogPost = () => {
   usePrerenderReady();
-  // Esirenderöity esikatselu (src/seo/prerender/renderPreview.tsx renderBlogPreview) vaihtuu sovellukseen ennen
+  // Blogiartikkeli hydratoidaan esirenderöidystä merkinnästä (renderPreview.tsx renderBlogApp); revealApp ei tee mitään
+  // ilman esikatselua. Säilytetään varalle, jos esikatselu palautetaan:
   // ensimmäistä maalausta: sama näkymä, tuotekortit täydentyvät haun jälkeen.
   useLayoutEffect(() => {
     revealApp();

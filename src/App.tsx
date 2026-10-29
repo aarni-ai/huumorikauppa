@@ -165,14 +165,27 @@ const RedirectKeepQuery = ({ to }: { to: string }) => {
   return <Navigate to={redirectWithQuery(to, search, hash)} replace />;
 };
 
-const App = () => (
+/**
+ * Sovelluksen tarjoajat (sama puu selaimessa ja esirenderöinnissä). Esirenderöinti käyttää omaa QueryClientia ja
+ * MemoryRouteria (src/seo/prerender/renderPreview.tsx renderBlogApp), selain BrowserRouteria.
+ */
+export const AppTarjoajat = ({ client, children }: { client: QueryClient; children: React.ReactNode }) => (
   <HelmetProvider>
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={client}>
     <TooltipProvider>
       <CartProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        {children}
+      </CartProvider>
+    </TooltipProvider>
+  </QueryClientProvider>
+  </HelmetProvider>
+);
+
+/** Reititetty sisältö ilman reititintä: blogiartikkelit hydratoidaan tästä esirenderöidystä merkinnästä. */
+export const AppSisalto = () => (
+  <>
           <PreviewRevealFallback />
           <ScrollToTop />
           <Header />
@@ -242,11 +255,15 @@ const App = () => (
             <NewsletterPopup />
             <ExitIntentPopup />
           </Suspense>
-        </BrowserRouter>
-      </CartProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-  </HelmetProvider>
+  </>
+);
+
+const App = () => (
+  <AppTarjoajat client={queryClient}>
+    <BrowserRouter>
+      <AppSisalto />
+    </BrowserRouter>
+  </AppTarjoajat>
 );
 
 /** Reitit, joiden chunk ladataan ennen ensimmäistä renderöintiä (src/main.tsx, spa-shell.html:n esilataus). */
@@ -259,7 +276,9 @@ const ESILADATTAVAT: Record<string, { preload: () => Promise<unknown> }> = {
 /** Lataa polun sivun chunkin, jos se kuuluu esiladattaviin; muuten heti valmis. Ei koskaan hylätä. */
 // eslint-disable-next-line react-refresh/only-export-components
 export function preloadRoute(pathname: string): Promise<void> {
-  const sivu = ESILADATTAVAT[pathname.replace(/(.)\/$/, "$1")];
+  const polku = pathname.replace(/(.)\/$/, "$1");
+  // Blogiartikkelit hydratoidaan esirenderöidystä merkinnästä: sivun chunk ennen hydratointia.
+  const sivu = ESILADATTAVAT[polku] ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost : undefined);
   return sivu ? sivu.preload().then(() => undefined, () => undefined) : Promise.resolve();
 }
 

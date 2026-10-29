@@ -56,7 +56,15 @@ const hasStaticHTML = rootElement.hasChildNodes() && !isStaticFallback;
 
 function render() {
   if (hasStaticHTML) {
-    ReactDOM.hydrateRoot(rootElement, <React.StrictMode><App /></React.StrictMode>);
+    // Esirenderöinti (renderToString) jättää lazy-osat (uutiskirje, ponnahdusikkunat) selaimen renderöitäviksi:
+    // React raportoi niistä palautuvan virheen #419, joka ei ole vika. Muut palautuvat virheet konsoliin.
+    ReactDOM.hydrateRoot(rootElement, <React.StrictMode><App /></React.StrictMode>, {
+      onRecoverableError: (error) => {
+        const viesti = String((error as Error)?.message ?? error);
+        if (/#419|did not finish this Suspense boundary/.test(viesti)) return;
+        console.error(error);
+      },
+    });
   } else {
     // Clear static fallback before mounting so it doesn't flash on screen.
     if (isStaticFallback) rootElement.innerHTML = '';

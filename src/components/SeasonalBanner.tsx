@@ -61,8 +61,21 @@ function subscribe(onChange: () => void): () => void {
 }
 
 const clientTheme = () => activeBannerTheme(Date.now());
-/** Palvelin- ja esirenderöinnissä ei banneria: staattiseen HTML:ään ei jää vanhentunutta tilaa. */
-const serverTheme = () => null;
+/**
+ * Palvelin- ja esirenderöinnissä ei banneria (staattiseen HTML:ään ei jää vanhentunutta tilaa), paitsi hydratoitavissa
+ * blogiartikkeleissa: esirenderöinti asettaa teeman (asetaEsirenderoinninTeema), ja selain lukee hydratoinnissa saman
+ * arvon HTML:stä (#root [data-banner]), jottei banneri ilmesty hydratoinnin jälkeen ja siirrä sisältöä (CLS).
+ */
+let esirenderoinninTeema: BannerTheme | null = null;
+export function asetaEsirenderoinninTeema(teema: BannerTheme | null) {
+  esirenderoinninTeema = teema;
+}
+const serverTheme = (): BannerTheme | null => {
+  if (typeof document === "undefined") return esirenderoinninTeema;
+  const el = document.querySelector<HTMLElement>("#root [data-banner]");
+  const t = el?.dataset.banner;
+  return t === "joulu" || t === "isanpaiva" ? t : null;
+};
 
 /**
  * Sivuston yläbanneri (myös etusivulla). Teema ja näkyvyys tulevat vain aikataulusta
