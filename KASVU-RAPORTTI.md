@@ -26,6 +26,76 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 klo 20: katekorjaus (keskikate vähintään 10 €, minimi 7 €)
+
+Yksityiskohdat ovat KATTEET.md:n osiossa "Hinnoittelu 29.10.2026". Julkaistu ja tarkistettu tuotannossa.
+
+**Hinnat (api/_lib/kokohinnat.js):**
+- T-paidat, joilla on suora kilpailijavertailu (14 designia), pysyvät 24,90 €:ssa. 3XL-5XL maksaa 28,90 €.
+- Muut 304 t-paitaa maksavat 27,90 €, 3XL-5XL 29,90 €.
+- Hupparit 52,90 €, 3XL+ 59,90 €.
+- Julisteet 24,90 €, koriste 22,90 €.
+- Personoitu paita pysyy 29,90 €:ssa.
+- Toimitus pysyy 6,90 €:ssa, ilmainen 79 €:sta.
+- Kaikki hinnat ovat kilpailijoiden haarukassa (Hauskatpaidat.fi t-paita 25-30 €, huppari 45-69 €).
+
+**7 €:n minimi:**
+- Tuotannon kuluilla (uusi ?tehtava=katetaulu) yksikään myytävä variantti ei jää alle 7 €:n. Heikoin on 24,90 €:n
+  t-paita, 7,05 €.
+- Tarraa myydään vain lisätuotteena: kassa hylkää pelkän tarran, ja tuotesivu ja ostoskori kertovat ehdon.
+- Alennuskoodi hylätään, jos kate jäisi alle 7 €:n. Paketti- ja kahden tuotteen alennus jätetään samalla ehdolla
+  antamatta (katevahti 7 €).
+- Määräalennus koskee nyt kaikkia t-paitoja, 5 € paitaa kohden.
+- Black Friday -pari koskee vain 24,90 €:n paitoja. Niiden hinta ei muuttunut, joten 30 päivän alin hinta 24,90 €
+  pitää paikkansa.
+- Hintatarkistus kirjaa nyt todelliset myyntihinnat ja hälyttää vain kampanjapaitojen poikkeamasta.
+
+**Alennuskoodit:**
+- HUUMORI5 (käytetty kerran, 2,50 €) ja PALAA10 (ei käyttöä) on poistettu kannasta käytöstä sekä koodin
+  varalistasta ja kassasivulta. Kumpaakaan ei mainostettu missään.
+- Stripessä ei ole koodeja.
+- Kassa hylkää nyt HUUMORI5:n (tarkistettu).
+
+**Kumppanit:**
+- Kauppaan jää provision jälkeen vähintään 7,00 €.
+- /kumppanit-sivun esimerkit, sääntöteksti ja KUMPPANIT-VIESTIPOHJA.md on päivitetty.
+- Esimerkiksi t-paita 27,90 € tuo provisiota 2,22 € ja 24,90 €:n paita 0,22 €.
+
+**Myynnin ohjaus:**
+- Ostoskori ehdottaa "Lisää toinen t-paita" -rivillä kolmea t-paitaa, kun korissa on yksi t-paita. Samalla näkyy
+  linkki personoituun paitaan.
+- Etusivulla on nostot personoidulle paidalle ja /yritykset-sivulle.
+- Tuotesivuilla (t-paidat ja hupparit) on linkki personoituun paitaan.
+
+**Tekstit:**
+- Kaikki hintamaininnat on päivitetty "alkaen"-muotoon tai uuteen haarukkaan: blogit, joulublogit,
+  laskeutumissivut, mediakit, yritykset ja meta-kuvaukset.
+- Kolme "alle 20 euron" vastausta on kirjoitettu uudelleen, koska koriste maksaa nyt 22,90 €.
+- Etusivun pääkuva on generoitu uudelleen ("T-paidat alkaen 24,90 €, hupparit alkaen 52,90 €").
+
+**Keskikate tilausta kohden:**
+- ennen 7,64 €
+- nyt 9,51 € ilman lisämyyntiä
+- 10,13 €, kun 10 % yhden paidan koreista saa toisen paidan
+
+Nykyisellä noin 6,5 tilauksella kuukaudessa vaikutus on noin +12-16 €/kk (49,7 € → 61,8-65,8 €).
+
+**Avoimet päätökset Aarnille:**
+- **Klarna:** se maksaa 0,6-1,0 € enemmän kuin kortti. Klarnalla heikoimmat variantit jäävät alle 7 €:n:
+  24,90 €:n paita 6,43 €, koriste 6,63 € ja huppari 6,31 €. Vaihtoehdot:
+  - Klarna pois alle 60 €:n tilauksista
+  - poikkeama hyväksytään
+- **Printifyn ALV:** katteet olettavat, että Uusiku Oy vähentää Printifyn ALV:n. Jos ei voi, t-paitojen pitää maksaa
+  30,90 € ja hupparien 59,90 €. Tilitoimiston vahvistus tarvitaan ennen 1.11.
+- **Printify Premium:** kannattaa noin 14 tilauksesta kuukaudessa alkaen. Nyt se ei kannata, eikä sitä tilattu.
+- **Painotalot:** siirto ei kannata. Textildruck ja Atelier Katanga pudottaisivat värejä tai kokoja.
+
+**Tarkistus:**
+- Googlebot, Bingbot ja Chrome: etusivu, tuotesivut (24,90 € ja 27,90 € JSON-LD:ssä), /kumppanit, /yritykset,
+  /personoitu-paita, blogi, /black-friday, ostoskori ja robots.txt palauttavat 200.
+- Rajapinta palauttaa koon mukaiset hinnat (kalamies 27,90/29,90 €, huppari 52,90/59,90 €).
+- Testit: 1451 läpi.
+
 ## 29.10.2026 klo 18: Search Console "403 Forbidden" (179 osoitetta) korjattu
 
 **Mitkä osoitteet:** Search Consolen Sivujen indeksointi -raportin kaikki 179 osoitetta tilassa "Blocked due to access
