@@ -148,6 +148,35 @@ export default async function handler(req, res) {
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
   }
 
+  // Katetaulu (29.10.2026): yhden tuotteen tilauksen nettokate euroina jokaiselle myytävälle variantille (asiakas maksaa
+  // toimituksen), ryhmittäin heikoin ja keskiarvo sekä alle 7 €:n variantit. KATTEET.md "Hinnoittelu 29.10.2026".
+  if (req.query.tehtava === "katetaulu") {
+    const { laskeTilauksenNettokate } = await import("../_lib/kate.js");
+    const { rivinHinta, onSuoraVertailu } = await import("../_lib/kokohinnat.js");
+    const { myynnissa } = await import("../_lib/tuotteet.js");
+    const { TOIMITUS, ILMAINEN_TOIMITUS_RAJA, LISATUOTE_KATEGORIAT } = await import("../_lib/vakiot.js");
+    const ryhmat = {};
+    const alle7 = [];
+    for (const t of (await kaikkiTuotteet()).filter((x) => x.is_active !== false && myynnissa(x))) {
+      const piilo = new Set(t.unavailable_variants || []);
+      for (const [avain, id] of Object.entries(t.variants?.variant_map || {})) {
+        if (piilo.has(avain)) continue;
+        const koko = avain.split("|")[1] || "";
+        const hinta = rivinHinta(t, koko);
+        const k = laskeTilauksenNettokate([{ tuote: t, varianttiId: id, maara: 1, yksikkohinta: hinta }], hinta >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS);
+        if (!k.tunnettu) continue;
+        const nimi = `${t.category}${t.category === "t-paidat" ? (onSuoraVertailu(t) ? " 24,90" : " 27,90") : ""}${/^(3|4|5|6)XL$/i.test(koko) ? " 3XL+" : ""}`;
+        const r = (ryhmat[nimi] ||= { hinta, heikoin: Infinity, heikoinTuote: null, summa: 0, n: 0, alle7: 0 });
+        if (k.nettokate < r.heikoin) { r.heikoin = k.nettokate; r.heikoinTuote = `${t.slug} ${avain}`; }
+        r.summa += k.nettokate; r.n += 1;
+        if (k.nettokate < 7) { r.alle7 += 1; if (!LISATUOTE_KATEGORIAT.includes(t.category)) alle7.push({ slug: t.slug, avain, hinta, nettokate: k.nettokate }); }
+      }
+    }
+    const taulu = Object.entries(ryhmat).sort().map(([ryhma, r]) => ({ ryhma, hinta: r.hinta, heikoin: r.heikoin, heikoinTuote: r.heikoinTuote,
+      keskiarvo: Math.round((r.summa / r.n) * 100) / 100, variantteja: r.n, alle7: r.alle7 }));
+    return res.status(200).json({ ok: true, taulu, alle7: alle7.sort((a, b) => a.nettokate - b.nettokate).slice(0, 100) });
+  }
+
   // Alennuskoodit (katepäätös 29.10.2026): kannan discount_codes ja käyttö maksetuissa tilauksissa.
   // &poista=KOODI asettaa koodin pois käytöstä (is_active = false), rivi säilyy historiaa varten.
   if (req.query.tehtava === "alennuskoodit") {
