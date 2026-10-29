@@ -1,4 +1,5 @@
 import { BlogPost } from "@/types/blog";
+import { HINTA } from "./hintatekstit";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU, TOIMITUSMAKSU_TEKSTI, euroluku } from "@/config/toimitus";
 import { jouluLause, jouluOpasMeta, jouluOpasIngressi } from "./tilauspaivat";
 
@@ -124,12 +125,12 @@ Talvella huppari on usein t-paitaa käytännöllisempi joululahja, koska sitä k
 
 ## Hinnat ja tilaaminen ajoissa
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 € ja hupparit alkaen 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alkaen ${HINTA.huppariAlkaen}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. ${jouluLause()} Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
-      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa 24,90-29,90 € ja huppari alkaen 52,90 € tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
+      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen} tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
       { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
       { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
@@ -167,7 +168,7 @@ Pikkujoululahjan saaja on usein arvoituksen takana. Arvonnassa nimesi voi osua k
 
 Tätä kirjoitettaessa Huumorikaupan valikoimassa alle 20 euron rajan alle jää kuusenkoriste. Se täyttää yllä olevat kriteerit hyvin, koska siinä ei ole kokoa ja sitä käytetään.
 
-### Oma kuusenkoriste (22,90 €)
+### Oma kuusenkoriste (${HINTA.koriste})
 
 [Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) on lahja, joka kaivetaan esiin joka joulu uudelleen. Koriste toimii erityisen hyvin, jos pikkujoulut ovat tiimin perinne: vuosiluku ja porukan nimi koristeessa tekevät siitä pienen muiston. Valmis vaihtoehto on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjanvaihtoon.
 
@@ -177,7 +178,7 @@ Pieni lahja ei tarkoita huonoa lahjaa. Kun teksti on mietitty saajaa ajatellen, 
 
 ## Kun raja joustaa: 20-30 euroa
 
-Joissain porukoissa hintaraja on 25 tai 30 euroa. Silloin vaihtoehdoksi tulee hauska t-paita: suosituimmat meemipaidat maksavat tätä kirjoitettaessa alkaen 24,90 € ja muut alkaen 27,90 €. Toimistoporukkaan sopivat esimerkiksi [Tämäkin olisi voinut olla sähköposti](/tuote/hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti) ja [Tärkeintä työssä on lounastauko](/tuote/hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko).
+Joissain porukoissa hintaraja on 25 tai 30 euroa. Silloin vaihtoehdoksi tulee hauska t-paita: suosituimmat meemipaidat maksavat tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen} ja muut alkaen ${HINTA.tpaitaUniikki}. Toimistoporukkaan sopivat esimerkiksi [Tämäkin olisi voinut olla sähköposti](/tuote/hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti) ja [Tärkeintä työssä on lounastauko](/tuote/hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko).
 
 Paidan kanssa koko on kuitenkin arvaus. Jos et tiedä saajan kokoa, liitä mukaan lappu, jossa kerrot, että paidan voi vaihtaa. Tarkista ensin [palautusehdot](/palautusehdot): peruutusoikeus on 14 päivää tuotteen vastaanottamisesta, joten paketti kannattaa avata ja koko tarkistaa ajoissa. Lisää ideoita on sivulla [hauskat lahjat alle 30 euroa](/lahjat/alle-30-euroa).
 
@@ -256,7 +257,7 @@ Kun nämä kuusi asiaa ovat kunnossa, lahja toimii riippumatta siitä, kenelle s
 
 Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. ${jouluLause()} Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
     faq: [
-      { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: "Huumorikaupan edullisin lahja on kuusenkoriste omalla kuvalla, 22,90 €. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin." },
+      { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: `Huumorikaupan edullisin lahja on kuusenkoriste omalla kuvalla, ${HINTA.koriste}. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin.` },
       { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: `Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa.` },
       { q: "Onko t-paita hyvä pikkujoululahja?", a: "T-paita on hyvä pikkujoululahja, jos tiedät saajan koon ja hintaraja on vähintään 25 euroa. Jos kokoa ei tiedä, koriste on turvallisempi valinta." },
       { q: "Milloin pikkujoululahja pitää tilata?", a: `Tilaa heti, kun tiedät saajan, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
@@ -335,9 +336,9 @@ Kirjoita jokaisen vastauksen viereen yksi tuote tai teksti, joka siihen liittyis
 
 Mies, jolla on kaikki, ei mittaa lahjaa hinnalla. Hyvä uutinen on, että personoitu tai hauska lahja ei vaadi suurta budjettia. Tätä kirjoitettaessa hintatasot ovat seuraavat:
 
-- **T-paita valmiilla tekstillä:** 24,90-29,90 €
-- **Kuusenkoriste omalla kuvalla:** 22,90 €
-- **Huppari:** alkaen 52,90 €
+- **T-paita valmiilla tekstillä:** ${HINTA.tpaitaHaarukka}
+- **Kuusenkoriste omalla kuvalla:** ${HINTA.koriste}
+- **Huppari:** alkaen ${HINTA.huppariAlkaen}
 
 Kun lahjoja ostaa useammalle, ${ILMAINEN_RAJA_TEKSTI} euron raja ilmaiseen toimitukseen tulee nopeasti täyteen. Esimerkiksi t-paita ja huppari yhdessä (74,80 €) jäävät vielä hieman alle rajan, mutta kaksi hupparia (99,80 €) ylittää sen.
 
@@ -434,7 +435,7 @@ Eläkelahja annetaan usein työyhteisön puolesta. Yhteislahjassa on kolme vaihe
 
 **3. Lisää henkilökohtainen osa.** Yhteislahjaan sopii hyvin [kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste): tiimikuva, kuva työpisteestä tai kuvakollaasi vuosien varrelta. Painetun lahjan rinnalle kortti, johon jokainen kirjoittaa yhden muiston, tekee kokonaisuudesta lämpimän.
 
-Tätä kirjoitettaessa huppari maksaa alkaen 52,90 € ja koriste 22,90 €, joten yhteishinta on alkaen 75,80 €. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
+Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}, joten yhteishinta on alkaen ${HINTA.huppariJaKoriste}. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
 
 ## Näin annat lahjan eläkejuhlissa
 
@@ -572,7 +573,7 @@ Jos työpaikalla on selvä ammatti, lahja voi viitata siihen. Esimerkiksi hoitoa
 
 ## Pieni budjetti: alle 10 euroa
 
-Jos hintaraja on matala, [kuusenkoriste omalla tekstillä](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa 22,90 €. Koristeeseen voi painaa tiimin sisäpiirin lausahduksen tai vaikka projektin nimen. Lue lisää edullisista vaihtoehdoista oppaasta [pikkujoululahja alle 20 euroa](/blogi/pikkujoululahja-alle-20-euroa).
+Jos hintaraja on matala, [kuusenkoriste omalla tekstillä](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}. Koristeeseen voi painaa tiimin sisäpiirin lausahduksen tai vaikka projektin nimen. Lue lisää edullisista vaihtoehdoista oppaasta [pikkujoululahja alle 20 euroa](/blogi/pikkujoululahja-alle-20-euroa).
 
 ## Koko tiimin lahja
 
@@ -722,7 +723,7 @@ Lataa kuva [omalla kuvalla painettavaan t-paitaan](/tuote/oma-tekstikuva-t-paita
 Kun lapset ovat aikuisia, isän lahja hoidetaan usein sisarusten kesken. Sovi kolme asiaa ajoissa:
 
 - **Kuka tilaa:** Yksi sisaruksista hoitaa tilauksen ja muut maksavat osuutensa.
-- **Mikä on budjetti:** Kolme sisarusta 20 eurolla kokoaa 60 euroa, mikä riittää esimerkiksi hupparin hintaan (alkaen 52,90 € tätä kirjoitettaessa).
+- **Mikä on budjetti:** Kolme sisarusta 20 eurolla kokoaa 60 euroa, mikä riittää esimerkiksi hupparin hintaan (alkaen ${HINTA.huppariAlkaen} tätä kirjoitettaessa).
 - **Mikä on viesti:** Yhteislahja voi olla perheen sisäpiirin vitsi paidassa, jonka jokainen sisarus ymmärtää.
 
 Jos lahjoja kertyy samaan tilaukseen useammalle perheenjäsenelle, ${ILMAINEN_RAJA_TEKSTI} euron raja ylittyy helposti, ja toimitus on silloin ilmainen. Alle sen toimitus on ${TOIMITUSMAKSU_TEKSTI} €.
@@ -833,7 +834,7 @@ Jos porukka on sopinut tiukasta rajasta, puhu asiasta etukäteen. Moni on valmis
 
 ## 20 euron budjetti
 
-Kahdellakymmenellä eurolla saat lahjan, jonka saaja muistaa joka joulu. [Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa 22,90 €. Koristeeseen sopii esimerkiksi:
+Kahdellakymmenellä eurolla saat lahjan, jonka saaja muistaa joka joulu. [Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}. Koristeeseen sopii esimerkiksi:
 
 - kuva porukan yhteisestä reissusta
 - teksti "Salainen joulupukki 2026" ja porukan nimi
@@ -843,7 +844,7 @@ Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](
 
 ## 30 euron budjetti
 
-Kolmellakymmenellä eurolla mukaan tulevat t-paidat, jotka maksavat tätä kirjoitettaessa 24,90-29,90 €. Paita on näyttävä salaisen joulupukin lahja, mutta siinä on yksi ehto: koko pitää tietää. Jos järjestäjä kerää toivelistat, pyydä koko mukaan.
+Kolmellakymmenellä eurolla mukaan tulevat t-paidat, jotka maksavat tätä kirjoitettaessa ${HINTA.tpaitaHaarukka}. Paita on näyttävä salaisen joulupukin lahja, mutta siinä on yksi ehto: koko pitää tietää. Jos järjestäjä kerää toivelistat, pyydä koko mukaan.
 
 Kun saaja on tuttu, valitse paita hänen omasta jutustaan. Kun saaja on vähemmän tuttu, valitse yleisesti hauska teksti, joka ei koske ulkonäköä tai ikää. Esimerkkejä:
 
@@ -915,8 +916,8 @@ Salaisen joulupukin lahja menee joskus ohi: koko on väärä tai saajalla on sam
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Jos lahjojen avaus on jo marraskuun lopussa tai joulukuun alussa, tilaa heti arvonnan jälkeen. Lisää ideoita porukan juhliin löydät sivuilta [pikkujoululahjat](/lahjat/pikkujouluihin) ja [lahja kaverille](/lahja-kaverille).`,
     faq: [
-      { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: "10 euron budjetti on Huumorikaupassa tiukka. Nosta summa 23 euroon, niin kuusenkoriste omalla kuvalla (22,90 €) mahtuu mukaan. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin." },
-      { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: "Kahdellakymmenellä eurolla Huumorikaupasta ei saa valmista lahjaa. Edullisin vaihtoehto on kuusenkoriste omalla tekstillä tai kuvalla, 22,90 €. Se on lahja, joka otetaan esiin joka joulu uudelleen." },
+      { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: `10 euron budjetti on Huumorikaupassa tiukka. Kun budjettia nostetaan, kuusenkoriste omalla kuvalla (${HINTA.koriste}) mahtuu mukaan. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin.` },
+      { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: `Kahdellakymmenellä eurolla Huumorikaupasta ei saa valmista lahjaa. Edullisin vaihtoehto on kuusenkoriste omalla tekstillä tai kuvalla, ${HINTA.koriste}. Se on lahja, joka otetaan esiin joka joulu uudelleen.` },
       { q: "Kuuluvatko toimituskulut salaisen joulupukin hintarajaan?", a: `Järjestäjän kannattaa sopia asia etukäteen. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten lahja kannattaa tilata omien joululahjojen kanssa.` },
       { q: "Mitä teen, jos salaisen joulupukin lahja on väärää kokoa?", a: "Ota yhteyttä 14 päivän sisällä tuotteen vastaanottamisesta. Avaa paketti heti saapumisen jälkeen, koska peruutusaika lasketaan vastaanottopäivästä." },
     ],
@@ -979,7 +980,7 @@ Teinin lahjassa riski on aina se, että osut väärään vitsiin. Varma tapa vä
 
 ## Pienet lisälahjat
 
-Koristeet ovat nuorille hauska lisälahja huoneeseen. [Kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa 22,90 €, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat sivulla [kaikki tuotteet](/kaikki-tuotteet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
+Koristeet ovat nuorille hauska lisälahja huoneeseen. [Kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat sivulla [kaikki tuotteet](/kaikki-tuotteet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
 
 ## Mitä välttää
 
@@ -1023,7 +1024,7 @@ Kolme tapaa edetä:
 
 ## Budjetti
 
-Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 €, pitkähihainen 39,90 € ja huppari alkaen 52,90 €. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
+Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, pitkähihainen 39,90 € ja huppari alkaen ${HINTA.huppariAlkaen}. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
 
 ## Anna avata rauhassa
 
@@ -1039,7 +1040,7 @@ Hauska lahja teinille onnistuu, kun huumori on nuoren omaa. Valitse lahja harras
 
 ## Hupparit ja pitkähihaiset talveen
 
-Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa alkaen 52,90 € ja pitkähihainen 39,90 €.
+Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen} ja pitkähihainen 39,90 €.
 
 ## Tilaa ajoissa
 

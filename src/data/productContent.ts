@@ -10,6 +10,7 @@
  * toimitus 3-10 arkipäivää (Terms.tsx); joulun tilauspäivä: src/data/tilauspaivat.ts (jouluLause).
  */
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
+import { HINTA } from "./hintatekstit";
 import { jouluLause, jouluVastaus } from "./tilauspaivat";
 import { materiaaliRivi } from "../../api/_lib/materiaali.js";
 
@@ -52,7 +53,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
   "tonnin-seteli-t-paita": {
     // Search Console 28 pv: "tonnin seteli paita" 287 näyttöä, sijoitus 6,3, ja kysely osuu tähän tuotesivuun.
     seoTitle: "Tonnin seteli paita: Tonnin Seteli t-paita | Huumorikauppa",
-    metaDescription: `Tonnin seteli paita alkaen 24,90 €, koot S-5XL. Sama teksti hupparina, julisteena ja tarrana. Painetaan tilauksesta EU:ssa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+    metaDescription: `Tonnin seteli paita alkaen ${HINTA.tpaitaAlkaen}, koot S-5XL. Sama teksti hupparina, julisteena ja tarrana. Painetaan tilauksesta EU:ssa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     description:
       `Kuka tahansa voi väittää olevansa arvokas, mutta harva kantaa sitä rintamuksessaan. "Tonnin seteli" on paita kaverille, joka tietää oman arvonsa: työporukan itsevarma myyjä, veli, joka kuittaa jokaisen ravintolalaskun, tai ystävä, jonka mielestä hän on koko seurueen kovin valuutta. Tonnin seteliä harva on nähnyt omassa lompakossaan, joten paidan kantaja on käytännössä harvinaisuus, jota kaikki haluaisivat pitää taskussa.\n\nVitsi toimii erityisen hyvin synttäreillä, polttareissa ja siinä kohtaa iltaa, kun joku kysyy, kuka maksaa seuraavan kierroksen. Paita saa kantajansa näyttämään juuri niin arvokkaalta kuin hän itse luulee olevansa, eikä kukaan uskalla väittää vastaan. Se on myös näppärä läksiäislahja työkaverille, jonka lähtö tuntuu tiimissä oikeasti kalliilta.\n\nT-paitaa on saatavilla kooissa S-5XL ja kahdeksassa värissä, esimerkiksi keltaisena, irlanninvihreänä, tummansinisenä ja mustana. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com. Paita painetaan tilauksesta, ja paketti lähtee Postin tai Matkahuollon kyytiin niin, että se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     faqs: [

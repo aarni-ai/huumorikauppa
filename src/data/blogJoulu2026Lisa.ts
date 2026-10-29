@@ -1,4 +1,5 @@
 import { BlogPost } from "@/types/blog";
+import { HINTA } from "./hintatekstit";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { jouluLause } from "./tilauspaivat";
 
@@ -111,14 +112,14 @@ Kokoa lahjat samaan tilaukseen, niin toimitusmaksu maksetaan vain kerran. Tarkis
 
 ## Hinnat ja tilausaikataulu
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €, hupparit alkaen 52,90 € ja koristeet 22,90 €. ${TOIMITUS} Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS} Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten ne eivät lähde hyllystä. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja naiselle?", a: "Hyvä hauska joululahja liittyy naisen omaan ikään, harrastukseen tai teidän yhteiseen vitsiinne. Esimerkiksi koiraihmiselle koira-aiheinen paita ja kotikokille keittiöaiheinen paita osuvat, koska vitsi koskee hänen arkeaan." },
       { q: "Mitä antaa naiselle, jolla on jo kaikkea?", a: "Anna personoitu lahja omalla tekstillä tai kuvalla. Sellaista ei ole hänellä valmiina, koska teksti on teidän oma." },
       { q: "Onko huppari vai t-paita parempi joululahja?", a: "Huppari on talvella käytössä useammin ja väljän mallin vuoksi koon suhteen varmempi. T-paita sopii, jos hän pukeutuu kerroksittain tai haluat pysyä pienemmässä budjetissa." },
-      { q: "Paljonko hauska joululahja naiselle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 €, huppari alkaen 52,90 € ja koriste 22,90 €. ${TOIMITUS}` },
+      { q: "Paljonko hauska joululahja naiselle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}. ${TOIMITUS}` },
       TOIMITUS_FAQ,
     ],
   },
@@ -218,7 +219,7 @@ Kevään äitienpäivää varten on oma oppaansa: [hauska äitienpäivälahja](/
 
 Katso äidin eniten käyttämästä paidasta leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com, jos haluat varmistaa koon. Huppari on väljän mallin vuoksi t-paitaa varmempi valinta, ja koriste ei vaadi kokoa ollenkaan.
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €, hupparit alkaen 52,90 € ja koristeet 22,90 €. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS}
 
 ## Tilaa ajoissa
 
@@ -227,7 +228,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemm
       { q: "Mikä on hyvä joululahja äidille?", a: "Hyvä joululahja äidille on lahja, jota hän käyttää arjessa, kuten äitiaiheinen huppari. Jos haluat perheen oman jutun, valitse tuote, johon kirjoitat tekstin itse." },
       { q: "Mitä antaa äidille, jolla on jo kaikkea?", a: "Anna personoitu lahja, esimerkiksi kuusenkoriste lasten nimillä ja vuosiluvulla. Samanlaista ei ole hänellä valmiina." },
       { q: "Voiko lahjan antaa lasten nimissä?", a: "Voi. Kirjoita lasten nimet Oma teksti/kuva -tuotteen tekstikenttään, johon mahtuu enintään 200 merkkiä." },
-      { q: "Paljonko hauska joululahja äidille maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 €, huppari alkaen 52,90 € ja koriste 22,90 €. ${TOIMITUS}` },
+      { q: "Paljonko hauska joululahja äidille maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}. ${TOIMITUS}` },
       TOIMITUS_FAQ,
     ],
   },
@@ -327,7 +328,7 @@ Jos pappa asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoittee
 
 ## Papan lahja pienellä budjetilla
 
-Lastenlasten lahjan papalle ei tarvitse olla kallis. Tätä kirjoitettaessa kuusenkoriste maksaa 22,90 € ja t-paita 24,90-29,90 €, joten koululaisetkin voivat koota rahat yhdessä. Isommat lapset voivat maksaa osan omista säästöistään, ja vanhemmat lisäävät loput. Kun lapset tietävät osallistuneensa lahjaan, he odottavat aattona papan reaktiota yhtä innokkaasti kuin omia pakettejaan.
+Lastenlasten lahjan papalle ei tarvitse olla kallis. Tätä kirjoitettaessa kuusenkoriste maksaa ${HINTA.koriste} ja t-paita ${HINTA.tpaitaHaarukka}, joten koululaisetkin voivat koota rahat yhdessä. Isommat lapset voivat maksaa osan omista säästöistään, ja vanhemmat lisäävät loput. Kun lapset tietävät osallistuneensa lahjaan, he odottavat aattona papan reaktiota yhtä innokkaasti kuin omia pakettejaan.
 
 ## Koristeesta suvun perinne
 
@@ -345,7 +346,7 @@ Moni ostaa jouluksi lahjan sekä isälle että papalle. Silloin kannattaa valita
 
 Papalle huppari on usein t-paitaa käytännöllisempi, koska talvella sitä käytetään joka päivä. Ota mitta hänen eniten käyttämästään paidasta ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on papalle usein mieluisampi kuin tiukka.
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €, hupparit alkaen 52,90 € ja koristeet 22,90 €. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS}
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat). Mummolle löydät ideat sivulta [joululahja mummolle](/joululahja-mummolle).`,
     faq: [
@@ -442,7 +443,7 @@ Monelle eläkeläiselle tärkein lahja on yhteinen aika. Yhdistä paita tai hupp
 
 ## Pieni budjetti, iso ilo
 
-Eläkeläisen joululahjan ei tarvitse olla kallis ollakseen mieluinen. Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 €, joten lastenlapset voivat koota rahat yhdessä ja antaa lahjan kaikkien nimissä. Jos budjetti on suurempi, huppari ja kortti, jossa lupaat yhteistä tekemistä, on kokonaisuus, joka kestää koko talven. Tärkeintä ei ole hinta vaan se, että vitsi kertoo hänen omasta elämästään. Kun lahja on valittu hänen arkensa pohjalta, hän tietää, että antaja on oikeasti kuunnellut hänen kuulumisiaan.
+Eläkeläisen joululahjan ei tarvitse olla kallis ollakseen mieluinen. Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, joten lastenlapset voivat koota rahat yhdessä ja antaa lahjan kaikkien nimissä. Jos budjetti on suurempi, huppari ja kortti, jossa lupaat yhteistä tekemistä, on kokonaisuus, joka kestää koko talven. Tärkeintä ei ole hinta vaan se, että vitsi kertoo hänen omasta elämästään. Kun lahja on valittu hänen arkensa pohjalta, hän tietää, että antaja on oikeasti kuunnellut hänen kuulumisiaan.
 
 ## Kun eläkeläinen asuu kaukana tai palvelutalossa
 
@@ -462,7 +463,7 @@ Jos eläkeläinen asuu toisella paikkakunnalla tai palvelutalossa, anna toimitus
 
 Eläkeläiselle väljä malli on usein mieluisampi. Ota mitta hänen eniten käyttämästään paidasta ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com.
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €, pitkähihaiset 39,90 € ja hupparit alkaen 52,90 €. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, pitkähihaiset 39,90 € ja hupparit alkaen ${HINTA.huppariAlkaen}. ${TOIMITUS}
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
@@ -500,7 +501,7 @@ Valmiita vaihtoehtoja voit selata sivulta [joululahja kaverille](/joululahja-kav
 
 ## Meemipaidat kaverille
 
-Meemipaita on helppo valinta kaverille, jonka kanssa on jaettu samat vitsit vuosia. Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €.
+Meemipaita on helppo valinta kaverille, jonka kanssa on jaettu samat vitsit vuosia. Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}.
 
 - **Klassikko:** [se oli tonnin seteli](/tuote/se-oli-tonnin-seteli-t-paita) on suomalainen meemi, jonka jokainen tuntee. Sopii kaverille, joka kertoo saman tarinan joka kerta.
 - **Saunaillan kaverille:** [oispa kaljaa](/tuote/oispa-kaljaa-t-paita) on tuttu toive jokaiselle, joka on istunut kesäillan laiturilla.
@@ -519,7 +520,7 @@ Jos tunnette toisenne harrastuksen kautta, harrastuspaita on osuva lahja. Pelika
 Kun mikään valmis teksti ei osu, kirjoita oma. Personoitu lahja on suora tapa nostaa teidän oma juttunne esiin, ja se pysyy silti budjetissa.
 
 - [Personoitava t-paita lempinimellä](/tuote/personoitava-t-paita-lempinimi) nostaa kaveriporukan sisäpiirin nimen paitaan.
-- [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on kuusenkoriste, johon tulee yhteinen kuva tai lause. Tätä kirjoitettaessa se maksaa 22,90 €.
+- [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on kuusenkoriste, johon tulee yhteinen kuva tai lause. Tätä kirjoitettaessa se maksaa ${HINTA.koriste}.
 
 Kirjoita teksti tai kuvatoive tuotesivun kenttään ennen kuin lisäät tuotteen ostoskoriin.
 
@@ -555,7 +556,7 @@ Pienellä budjetilla houkuttaa ostaa jotain, mikä näyttää isolta. Halpa tava
 
 ## Ideat harrastuksen mukaan
 
-Jos kaverilla on harrastus, josta hän puhuu jatkuvasti, valitse lahja sen ympäriltä. Salilla kävijälle sopii salihuumori, golfaajalle golfvitsi, mökkeilijälle mökkiteksti ja pelaajalle pelipaita. Harrastuspaita on hyvä valinta myös kaverille, jota et tunne vielä kovin hyvin, koska harrastuksesta on turvallista vitsailla. Kaikki harrastuspaidat ovat tätä kirjoitettaessa t-paitoina alkaen 27,90 €, joten ne mahtuvat budjettiin.
+Jos kaverilla on harrastus, josta hän puhuu jatkuvasti, valitse lahja sen ympäriltä. Salilla kävijälle sopii salihuumori, golfaajalle golfvitsi, mökkeilijälle mökkiteksti ja pelaajalle pelipaita. Harrastuspaita on hyvä valinta myös kaverille, jota et tunne vielä kovin hyvin, koska harrastuksesta on turvallista vitsailla. Kaikki harrastuspaidat ovat tätä kirjoitettaessa t-paitoina alkaen ${HINTA.tpaitaUniikki}, joten ne mahtuvat budjettiin.
 
 ## Lahja kaveripariskunnalle
 
@@ -563,7 +564,7 @@ Jos kaverilla on puoliso, jonka tunnet hyvin, voit antaa lahjan molemmille. Kaks
 
 ## Hintaesimerkit
 
-Tätä kirjoitettaessa suosituimmat meemipaidat maksavat alkaen 24,90 € ja koriste 22,90 €. Kahdelle kaverille meemipaidat maksavat yhteensä alkaen 49,80 €, ja meemipaita ja koriste yhdelle kaverille alkaen 47,80 €. Toimitusmaksu tulee tilaukseen kerran, joten mitä useamman lahjan kokoat samaan tilaukseen, sitä pienempi osuus toimituksesta jää yhdelle lahjalle.
+Tätä kirjoitettaessa suosituimmat meemipaidat maksavat alkaen ${HINTA.tpaitaAlkaen} ja koriste ${HINTA.koriste}. Kahdelle kaverille meemipaidat maksavat yhteensä alkaen ${HINTA.kaksiMeemipaitaa}, ja meemipaita ja koriste yhdelle kaverille alkaen ${HINTA.meemipaitaJaKoriste}. Toimitusmaksu tulee tilaukseen kerran, joten mitä useamman lahjan kokoat samaan tilaukseen, sitä pienempi osuus toimituksesta jää yhdelle lahjalle.
 
 ## Joululahja vai pikkujoululahja?
 
@@ -591,7 +592,7 @@ Jos kaveri asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitte
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
-      { q: "Mikä on hyvä joululahja kaverille alle 30 eurolla?", a: "Hyvä joululahja kaverille alle 30 eurolla on meemipaita tai personoitu paita, jossa on teidän yhteinen vitsinne. Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 €." },
+      { q: "Mikä on hyvä joululahja kaverille alle 30 eurolla?", a: `Hyvä joululahja kaverille alle 30 eurolla on meemipaita tai personoitu paita, jossa on teidän yhteinen vitsinne. Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}.` },
       { q: "Mitä antaa kaverille, joka ei käytä tekstipaitoja?", a: "Anna koriste, esimerkiksi kuusenkoriste omalla tekstillä tai kuvalla. Se ei vaadi kokoa, ja se on esillä joka joulu." },
       { q: "Miten säästän toimituskuluissa?", a: `Kokoa usean kaverin lahjat samaan tilaukseen, niin toimitusmaksu maksetaan kerran. ${TOIMITUS}` },
       { q: "Voiko paitaan laittaa kaverin lempinimen?", a: "Voi. Valitse personoitava paita ja kirjoita lempinimi tuotesivun kenttään ennen ostoskoriin lisäämistä." },
@@ -711,14 +712,14 @@ Jos ostat lahjan myös siskolle, kokoa lahjat samaan tilaukseen. Siskolle sopiva
 
 Veljen koko on helpompi selvittää kuin moni luulee: kysy vanhemmilta tai puolisolta, tai katso hänen eniten käyttämänsä paidan leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Jos olet epävarma, huppari on väljän mallin vuoksi varmempi valinta.
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 € ja hupparit alkaen 52,90 €. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alkaen ${HINTA.huppariAlkaen}. ${TOIMITUS}
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
       { q: "Mikä on hauska joululahja veljelle?", a: "Hauska joululahja veljelle liittyy hänen harrastukseensa tai teidän sisarusten omaan vitsiinne. Esimerkiksi pelaajalle pelipaita ja salilla kävijälle salihuumorin paita osuvat." },
       { q: "Mitä antaa veljelle, jolla on jo kaikkea?", a: "Anna personoitu paita, johon kirjoitat hänen suvussa käytetyn lempinimensä. Sellaista hänellä ei ole valmiina." },
       { q: "Miten selvitän veljen paidan koon?", a: "Kysy vanhemmilta tai puolisolta, tai mittaa hänen käyttämänsä paidan leveys ja pituus. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com." },
-      { q: "Paljonko hauska joululahja veljelle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 € ja huppari alkaen 52,90 €. ${TOIMITUS}` },
+      { q: "Paljonko hauska joululahja veljelle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen}. ${TOIMITUS}` },
       TOIMITUS_FAQ,
     ],
   },

@@ -52,12 +52,13 @@ export const HINNASTOT = {
     personoitu: 29.9,
     tpaitapari: 44.9,
   },
+  // Laskettu 30.10.2026: heikoin variantti 7 € + pyöristys ylöspäin x,90:een (KATTEET.md "ALV-varasuunnitelma").
   alvKulu: {
-    tpaita: { suora: 30.9, suoraIso: 33.9, uniikki: 30.9, uniikkiIso: 33.9 },
-    hupparit: { perus: 59.9, iso: 66.9 },
-    kategoriat: { seinataulut: 27.9, koristeet: 25.9 },
+    tpaita: { suora: 30.9, suoraIso: 34.9, uniikki: 31.9, uniikkiIso: 35.9 },
+    hupparit: { perus: 65.9, iso: 72.9 },
+    kategoriat: { seinataulut: 28.9, koristeet: 27.9 },
     personoitu: 32.9,
-    tpaitapari: 54.9,
+    tpaitapari: 49.9,
   },
 };
 export const HINNASTO = PRINTIFY_ALV_VAHENNETTAVA ? HINNASTOT.perus : HINNASTOT.alvKulu;

@@ -35,6 +35,7 @@ import {
   TONNIN_SETELI_PATH,
 } from "./themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { HINTA } from "./hintatekstit";
 
 export { isCityProduct, TONNIN_SETELI, TONNIN_SETELI_PATH } from "./themes";
 export { LANDING_PATHS, LANDING_REDIRECTS, NOT_CREATED_LANDINGS, CHRISTMAS_MENU, FATHERS_DAY_MENU } from "./landingRoutes";
@@ -1187,10 +1188,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/lahjat/30-vuotiaalle-miehelle",
     name: "Lahja 30-vuotiaalle miehelle",
     group: "lahjat",
-    title: "Hauska lahja 30-vuotiaalle miehelle | Huumorikauppa",
+    title: "30v lahja miehelle: hauskat 30-vuotislahjat | Huumorikauppa",
     description:
       `30 v lahja miehelle: 30v-paidat ja -hupparit kuten 30 nuori, villi ja jo väsynyt sekä 30v selkä alkaa jo rusahdella. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat lahjat 30-vuotiaalle miehelle",
+    h1: "Hauska 30v lahja miehelle",
     intro: [
       "Hauska lahja 30-vuotiaalle miehelle on 30v-paita tai -huppari, jonka teksti nauraa kolmenkympin rajapyykille: 30 nuori, villi ja jo väsynyt, 30v selkä alkaa jo rusahdella tai 30 ja liian vanha tyhmyyksiin, teen ne silti.",
       "Kolmekymppisen vitsi toimii, koska se on puoliksi totta. Juhlat venyvät yhä, mutta palautuminen kestää pidempään, ja kaveriporukka tunnistaa tilanteen heti. Jos sankari ottaa iän kevyesti, valitse rusahteleva selkä tai väsynyt villimies. Jos hän pitää enemmän kehuista, 30v paranen iän myötä kuin viini on varma valinta.",
@@ -1202,16 +1203,24 @@ export const landingPages: LandingPageDef[] = [
         a: "30v-paita tai -huppari, esimerkiksi 30 nuori, villi ja jo väsynyt tai 30v selkä alkaa jo rusahdella.",
       },
       {
+        q: "Mitä lahjaksi 30-vuotiaalle miehelle?",
+        a: "Paita tai huppari, joka nauraa kolmenkympin rajapyykille, kuten 30 ja liian vanha tyhmyyksiin, teen ne silti. Jos haluat saajan nimen paitaan, valitse personoitu paita.",
+      },
+      {
+        q: "Sopiiko 30v-paita lahjaksi veljelle tai kaverille?",
+        a: "Sopii. 30 nuori, villi ja jo väsynyt on veljien ja kaveriporukan suosikki, koska vitsi on puoliksi totta.",
+      },
+      {
+        q: "Paljonko 30v lahja maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      },
+      {
         q: "Paita vai huppari 30-vuotislahjaksi?",
         a: "Sama teksti on useimmiten saatavilla molempina. Huppari on talvijuhliin käytännöllisempi, t-paita edullisempi.",
       },
       {
         q: "Sopivatko 30v-paidat myös naiselle?",
         a: "30v paranen iän myötä kuin viini sopii kenelle tahansa. Naisille suunnatut ikävuosipaidat ovat sivulla Hauskat lahjat naiselle.",
-      },
-      {
-        q: "Kuinka ajoissa 30-vuotislahja kannattaa tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa noin kaksi viikkoa ennen syntymäpäivää.`,
       },
     ],
     extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Opas: lahja miehelle 30v, 40v, 50v ja 60v" }],
@@ -1247,7 +1256,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Paljonko 40v-paita maksaa?",
-        a: `T-paita maksaa alkaen 27,90 € ja huppari alkaen 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `T-paita maksaa alkaen ${HINTA.tpaitaUniikki} ja huppari alkaen ${HINTA.huppariAlkaen}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
       {
         q: "Miten valitsen koon 40-vuotiaalle?",
@@ -1267,10 +1276,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/lahjat/50-vuotiaalle-miehelle",
     name: "Lahja 50-vuotiaalle miehelle",
     group: "lahjat",
-    title: "Hauska lahja 50-vuotiaalle miehelle | Huumorikauppa",
+    title: "Mitä lahjaksi 50-vuotiaalle miehelle? | Huumorikauppa",
     description:
       `50 v lahja miehelle: 50v-paidat ja -hupparit kuten 50v puoli vuosisataa, ei naarmuakaan ja Museokamaa. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat lahjat 50-vuotiaalle miehelle",
+    h1: "Hauska lahja 50-vuotiaalle miehelle",
     intro: [
       "Hauska lahja 50-vuotiaalle miehelle on 50v-paita tai -huppari, jossa puoli vuosisataa on vitsin aihe, kuten 50v puoli vuosisataa, ei naarmuakaan tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Museokamaa sopii 50-vuotiaalle, joka nauraa jo itselleen vanhana mallina, ja 50 vuotta nuori juhlijalle, joka ei koe ikäänsä.",
@@ -1283,7 +1292,15 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mitä antaa 50-vuotiaalle, jolla on jo kaikkea?",
-        a: "Personoitavan paidan, johon lisätään hänen nimensä tai lempinimensä, kuten Elävä legenda. Personoitavat tuotteet ovat sivulla Joululahja miehelle, jolla on kaikki.",
+        a: "Personoidun paidan, johon tulee hänen nimensä ja ikänsä, esimerkiksi Pekka 50v: kokenut, ei vanha. Esikatselu näyttää tekstin ennen tilausta.",
+      },
+      {
+        q: "Mitä lahjaksi 50-vuotiaalle isälle?",
+        a: "Museokamaa tai 50v puoli vuosisataa, ei naarmuakaan. Isävitseistä pitävälle sopivat myös Kalju, Isäntä ja Amatimies.",
+      },
+      {
+        q: "Paljonko 50v lahja miehelle maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
       {
         q: "Sopiiko ikävitsi lahjaksi 50-vuotiaalle?",
@@ -1294,7 +1311,7 @@ export const landingPages: LandingPageDef[] = [
         a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
       },
     ],
-    extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Opas: 50v lahja miehelle" }],
+    extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Opas: 50v lahja miehelle" }, { href: "/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", label: "Mitä antaa 50-vuotiaalle, jolla on jo kaikkea" }],
     related: ["/lahjat/40-vuotiaalle-miehelle", "/lahjat/60-vuotiaalle-miehelle", "/syntymapaivalahjat", "/setamiespaidat"],
     categories: ["t-paidat", "hupparit"],
     filter: any(age(50), theme(/museokamaa/)),
@@ -1303,10 +1320,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/lahjat/60-vuotiaalle-miehelle",
     name: "Lahja 60-vuotiaalle miehelle",
     group: "lahjat",
-    title: "Hauska lahja 60-vuotiaalle miehelle | Huumorikauppa",
+    title: "Mitä lahjaksi 60-vuotiaalle miehelle? | Huumorikauppa",
     description:
-      `60 v lahja miehelle: 60v-paidat ja -hupparit kuten 60v takuu mennyt, toimii silti ja 60 vuotta nuori ja nokkela. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat lahjat 60-vuotiaalle miehelle",
+      `Mitä lahjaksi 60-vuotiaalle miehelle? 60v takuu mennyt, toimii silti, 60v kokenut, ei vanha ja personoitu paita nimellä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    h1: "Hauska 60v lahja miehelle",
     intro: [
       "Hauska lahja 60-vuotiaalle miehelle on 60v-paita tai -huppari, jonka teksti kehuu kokemusta tai liioittelee kuntoa, kuten 60v takuu mennyt, toimii silti.",
       "Valikoimassa on useita 60-vuotisaiheita, ja useimmista on sekä t-paita että huppari. Jos 60-vuotias on jäämässä eläkkeelle, eläkelahjoissa ovat Olen eläkkeellä ja muut eläketekstit.",
@@ -1318,16 +1335,24 @@ export const landingPages: LandingPageDef[] = [
         a: "60v-paita tai -huppari, esimerkiksi 60v kokenut, ei vanha tai 60v takuu mennyt, toimii silti.",
       },
       {
+        q: "Mitä lahjaksi 60-vuotiaalle miehelle, jolla on jo kaikkea?",
+        a: "Personoidun paidan, johon tulee hänen nimensä ja ikänsä, esimerkiksi Pekka 60v: takuu mennyt, toimii silti. Sellaista hänellä ei vielä ole.",
+      },
+      {
+        q: "Mikä on hauska 60v lahja isälle?",
+        a: "60v takuu mennyt, toimii silti tai 60v mutta fyysinen kunto kuin 20v. Isoisälle sopivat myös pappa- ja ukki-paidat sivulla Lahja isoisälle.",
+      },
+      {
+        q: "Paljonko 60v lahja miehelle maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      },
+      {
         q: "Sopiiko lahja myös naiselle?",
         a: "60-vuotistekstit eivät ole sukupuolisidonnaisia. Naisille rajattu valikoima on sivulla Hauskat lahjat 60-vuotiaalle naiselle.",
       },
       {
         q: "Mikä sopii 60-vuotiaalle, joka jää eläkkeelle?",
         a: "Eläkeläishuumori, kuten Olen eläkkeellä tai Eläkeläinen, aamuherätys vapaaehtoinen. Ne ovat sivulla Hauskat eläkelahjat.",
-      },
-      {
-        q: "Kauanko toimitus kestää?",
-        a: `${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
       },
     ],
     extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Opas: 60v lahja miehelle" }],
@@ -1376,10 +1401,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/lahjat/50-vuotiaalle-naiselle",
     name: "Lahja 50-vuotiaalle naiselle",
     group: "lahjat",
-    title: "Hauska lahja 50-vuotiaalle naiselle | Huumorikauppa",
+    title: "50v lahja naiselle: hauska 50-vuotislahja | Huumorikauppa",
     description:
       `50 v lahja naiselle: 50 ja hopeanhohtoinen (vain hiukset), 50 vuotta nuori ja muut 50v-paidat ja -hupparit sekä Super äiskä. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat lahjat 50-vuotiaalle naiselle",
+    h1: "Hauska 50v lahja naiselle",
     intro: [
       "Hauska lahja 50-vuotiaalle naiselle on 50v-paita tai -huppari, jonka teksti kehuu, kuten 50 vuotta nuori tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Naiselle valittu ikävitsi toimii, kun se on hänen puolellaan: tekstit kuten 50v puoli vuosisataa, ei naarmuakaan nauravat iälle eivätkä ulkonäölle. Äidille 50-vuotislahjaksi sopii myös Super äiskä -huppari.",
@@ -1395,15 +1420,23 @@ export const landingPages: LandingPageDef[] = [
         a: "50-vuotishuppari tai Super äiskä -huppari. Äidille rajatut tuotteet ovat sivulla Hauska joululahja äidille.",
       },
       {
+        q: "Mikä on persoonallinen lahja 50-vuotiaalle naiselle?",
+        a: "Personoitu paita, johon tulee hänen nimensä ja ikänsä, esimerkiksi Marja, 50 vuotta nuori. Esikatselu näyttää tekstin ennen tilausta.",
+      },
+      {
+        q: "Mitä lahjaksi 50-vuotiaalle naiselle, jolla on jo kaikkea?",
+        a: "Vitsin, jota hänellä ei vielä ole: 50 vuotta nuori -huppari tai personoitu paita. Lisää ideoita on oppaassa Mitä antaa 50-vuotiaalle, jolla on jo kaikkea.",
+      },
+      {
+        q: "Paljonko 50v lahja naiselle maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      },
+      {
         q: "Millainen ikävitsi sopii naiselle?",
         a: "Myönteinen teksti, joka koskee ikää eikä ulkonäköä, kuten 50 vuotta nuori.",
       },
-      {
-        q: "Kuinka ajoissa lahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
-      },
     ],
-    extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Opas: 50v lahja naiselle" }],
+    extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Opas: 50v lahja naiselle" }, { href: "/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", label: "Mitä antaa 50-vuotiaalle, jolla on jo kaikkea" }],
     related: ["/lahjat/60-vuotiaalle-naiselle", "/hauskat-lahjat-naiselle", "/syntymapaivalahjat", "/lahjat/50-vuotiaalle-miehelle"],
     categories: ["hupparit", "t-paidat"],
     filter: any(age(50), theme(/äiskä/, /slay queen/)),
@@ -1412,10 +1445,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/lahjat/60-vuotiaalle-naiselle",
     name: "Lahja 60-vuotiaalle naiselle",
     group: "lahjat",
-    title: "Hauska lahja 60-vuotiaalle naiselle | Huumorikauppa",
+    title: "Mitä lahjaksi 60-vuotiaalle naiselle? | Huumorikauppa",
     description:
-      "60 v lahja naiselle tai äidille: 60v-paidat ja -hupparit kuten 60v mutta sydän kuin 20v sekä omalla tekstillä painettu koriste.",
-    h1: "Hauskat lahjat 60-vuotiaalle naiselle",
+      "Mitä lahjaksi 60-vuotiaalle naiselle tai äidille? 60v mutta sydän kuin 20v, 60 vuotta nuori ja nokkela sekä personoitu paita nimellä ja iällä.",
+    h1: "Hauska 60v lahja naiselle",
     intro: [
       "Hauska lahja 60-vuotiaalle naiselle on 60v-paita tai -huppari, jonka teksti korostaa mieltä eikä vuosia, kuten 60v mutta sydän kuin 20v tai 60 vuotta nuori ja nokkela.",
       "Jos 60-vuotias on äiti tai isoäiti, lahjaksi sopii myös omalla tekstillä painettu huppari, paita tai koriste, johon kirjoitetaan lasten tai lastenlasten tervehdys.",
@@ -1429,6 +1462,14 @@ export const landingPages: LandingPageDef[] = [
       {
         q: "Mikä on 60 v lahja äidille?",
         a: "60-vuotishuppari tai omalla tekstillä painettu paita, jossa on lasten tervehdys.",
+      },
+      {
+        q: "Mitä lahjaksi 60-vuotiaalle naiselle, jolla on jo kaikkea?",
+        a: "Personoidun paidan, johon tulee hänen nimensä ja ikänsä, esimerkiksi Marja 60v: kokenut, ei vanha. Esikatselu näyttää tekstin ennen tilausta.",
+      },
+      {
+        q: "Paljonko 60v lahja naiselle maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
       {
         q: "Sopivatko 60v-paidat myös miehelle?",
@@ -1450,10 +1491,10 @@ export const landingPages: LandingPageDef[] = [
     path: "/elakelahjat",
     name: "Eläkelahjat",
     group: "lahjat",
-    title: "Hauskat eläkelahjat miehelle ja naiselle | Huumorikauppa",
+    title: "Eläkelahja eläkkeelle jäävälle | Huumorikauppa",
     description:
       `Eläkelahja huumorilla: Olen eläkkeellä, 100% Eläkeläinen ja Eläkeläinen, aamuherätys vapaaehtoinen -paidat ja hupparit. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-    h1: "Hauskat eläkelahjat",
+    h1: "Hauska eläkelahja eläkkeelle jäävälle",
     intro: [
       "Hauska eläkelahja on paita tai huppari, joka juhlii vapautta työstä, kuten Olen eläkkeellä, Eläkkeellä, kiireinen tekemään ei mitään tai 40 vuotta töitä, nyt ikuinen viikonloppu.",
       `Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
@@ -1465,16 +1506,24 @@ export const landingPages: LandingPageDef[] = [
         a: "Paita tai huppari, joka juhlii vapaata, esimerkiksi Olen eläkkeellä tai Eläkeläinen, aamuherätys vapaaehtoinen.",
       },
       {
+        q: "Mitä lahjaksi eläkkeelle jäävälle?",
+        a: "Paidan tai hupparin, joka juhlii vapautta, kuten Virallisesti työtön, epävirallisesti vapaa tai Eläkkeellä, kiireinen tekemään ei mitään. Pitkän uran tehneelle sopii personoitava Alalla X vuotta.",
+      },
+      {
+        q: "Mitä eläkeläiselle lahjaksi?",
+        a: "Eläkeläishuumoria arkeen, kuten 100% Eläkeläinen tai Eläkeläinen, aamuherätys vapaaehtoinen. Isovanhemmalle sopivat myös pappa- ja ukki-paidat.",
+      },
+      {
+        q: "Paljonko eläkelahja maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      },
+      {
         q: "Mikä on eläkelahja miehelle?",
         a: "Eläkeläishuppari, kuten 100% Eläkeläinen tai Olen eläkkeellä. Isoisälle sopivat myös ukki- ja pappa-paidat.",
       },
       {
         q: "Mikä on eläkelahja naiselle?",
         a: "Samat eläketekstit, koska ne eivät ole sukupuolisidonnaisia. Esimerkiksi Eläkkeellä, kiireinen tekemään ei mitään sopii kenelle tahansa.",
-      },
-      {
-        q: "Mikä sopii työkavereiden yhteiseksi eläkelahjaksi?",
-        a: "Huppari, jonka hinta jaetaan. Siihen voi liittää kortin, jossa on koko työporukan terveiset.",
       },
     ],
     related: ["/joululahja-elakelaiselle", "/lahjat/70-vuotiaalle", "/lahjat/60-vuotiaalle-miehelle", "/lahjat/tyokaverille", "/joululahja-papalle"],
@@ -1816,7 +1865,7 @@ export const landingPages: LandingPageDef[] = [
     path: "/hauska-isanpaivalahja",
     name: "Hauska isänpäivälahja",
     group: "lahjat",
-    title: "Hauska isänpäivälahja: isävitsit paidassa | Huumorikauppa",
+    title: "Hauska isänpäivälahja 2026 | Huumorikauppa",
     description:
       "Hauska isänpäivälahja setähuumorilla: Kalju-, Isäntä-, Amatimies- ja Museokamaa-paidat sekä iskä-vitsit hupparissa. Isänpäivä on su 8.11.2026.",
     h1: "Hauska isänpäivälahja",
@@ -1843,8 +1892,12 @@ export const landingPages: LandingPageDef[] = [
         a: "Ei, kun isä vitsailee asiasta itsekin. Jos et ole varma, valitse vitsi isän harrastuksesta, esimerkiksi Kala pääsi tällä kertaa.",
       },
       {
-        q: "Milloin hauska isänpäivälahja pitää tilata?",
-        a: isanpaivaLause(),
+        q: "Onko isänpäivälahjaksi huppareita?",
+        a: "On. Useimmat isävitsit, kuten Kalju, Isäntä, Amatimies ja Jos iskä ei osaa korjata sitä, ovat sekä t-paitana että hupparina.",
+      },
+      {
+        q: "Paljonko hauska isänpäivälahja maksaa?",
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita nimellä ja iällä ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
     ],
     related: [
@@ -1855,7 +1908,7 @@ export const landingPages: LandingPageDef[] = [
       "/hauskat-lahjat-miehelle",
     ],
     categories: ["t-paidat", "hupparit"],
-    extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }],
+    extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }, { href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }],
     filter: ISA_VITSIT,
   },
   {

@@ -3,6 +3,7 @@
  * esirenderöinti (scripts/prerender.mjs) voi käyttää samaa lähdettä.
  */
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "../config/toimitus";
+import { HINTA } from "./hintatekstit";
 import { jouluLause } from "./tilauspaivat";
 export interface GiftCategory {
   slug: string;
@@ -20,8 +21,8 @@ export const TLDR_TEXTS: Record<string, string> = {
   "hauskat-lahjat-miehelle": `Hauska lahja miehelle on huumoripaita tai -huppari joka liittyy hänen harrastukseensa tai ammattiinsa. Valikoimassa on esimerkiksi kalamies- ja ammattimiesteemoja. Kaikki tuotteet painetaan tilauksesta, ja toimitus tapahtuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "hauskat-lahjat-naiselle": `Hauska lahja naiselle on 'Maailman paras äiti' -huppari, hauska t-paita tai söpö huumoriaiheinen tuote. Kaikki tuotteet painetaan tilauksesta, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "lahja-miehelle": "Lahjaideat miehelle: huumoripaita tai -huppari ammatista, harrastuksesta tai luonteenpiirteestä. Valikoimassa on myös 50-vuotis- ja eläkkeellelähtöteemoja. Huumorikaupasta löydät yli 75 hauskaa lahjaideaa miehille kaikkiin tilanteisiin.",
-  "hauskat-t-paidat": `Hauskat t-paidat ovat 100 % puuvillaa, ja ne painetaan tilauksesta. Valikoimassa yli 30 vitsipainatusta: ammattihuumoria, kalamies- ja äijäteemoja. Hinnat 24,90-29,90 €. Tilaa nyt, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
-  "hauskat-hupparit": `Hauskat hupparit ovat lämpimiä ja korkealaatuisia, ja ne painetaan tilauksesta. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen 52,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "hauskat-t-paidat": `Hauskat t-paidat ovat 100 % puuvillaa, ja ne painetaan tilauksesta. Valikoimassa yli 30 vitsipainatusta: ammattihuumoria, kalamies- ja äijäteemoja. Hinnat ${HINTA.tpaitaHaarukka}. Tilaa nyt, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+  "hauskat-hupparit": `Hauskat hupparit ovat lämpimiä ja korkealaatuisia, ja ne painetaan tilauksesta. Valikoimassa yli 25 huumoripainatusta. Hinta alkaen ${HINTA.huppariAlkaen}. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
   "isanpaiva-lahjat": "Hauska isänpäivälahja on huumoripaita tai -huppari joka liittyy isän harrastukseen tai ammattiin. Valikoimassa on esimerkiksi kalamies- ja 'Maailman paras pappa' -teemoja. Tilaa hyvissä ajoin ennen marraskuun toista sunnuntaita.",
   "joululahjat": `Hauska joululahja huumorin ystävälle: t-paita, huppari tai pipo suomalaisesta ammattihuumorista. Teemoina esimerkiksi kalamies, äijä ja eläkeläinen. ${jouluLause()}`,
   "syntymapaivaLahjat": `Syntymäpäivälahja huumorin ystävälle: huumoripaita tai -huppari ikääntyvälle juhlijalle. Valikoimassa on esimerkiksi '100 % eläkeläinen'- ja '50v'-teemoja sekä ammattihuumoria. Tilaa nopeasti, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,

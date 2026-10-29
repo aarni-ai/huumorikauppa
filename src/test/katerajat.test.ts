@@ -20,3 +20,28 @@ describe("katerajat 29.10.2026", () => {
     expect(() => laskeTilaus(p, [tarra], null)).toThrow(/Tarra myydään/);
   });
 });
+
+import { HINNASTOT, HINNASTO, PRINTIFY_ALV_VAHENNETTAVA } from "../../api/_lib/vakiot.js";
+import { hinnoitteleRivi, rivinHinta } from "../../api/_lib/kokohinnat.js";
+import { laskeTilauksenNettokate } from "../../api/_lib/kate.js";
+
+describe("ALV-varasuunnitelma (pois päältä)", () => {
+  it("kytkin pois ja perushinnasto käytössä", () => {
+    expect(PRINTIFY_ALV_VAHENNETTAVA).toBe(true);
+    expect(HINNASTO).toBe(HINNASTOT.perus);
+  });
+  it("varahinnasto hinnoittelee t-paidat ja hupparit", () => {
+    const p = hinnoitteleRivi({ name: "Kala | T-paita", category: "t-paidat", price: 24.9, variants: { sizes: ["M", "3XL"] } }, HINNASTOT.alvKulu);
+    expect(p.price).toBe(31.9);
+    expect(rivinHinta(p, "3XL")).toBe(35.9);
+    const h = hinnoitteleRivi({ name: "Kalju | Huppari", category: "hupparit", price: 49.9, variants: { sizes: ["M", "4XL"] } }, HINNASTOT.alvKulu);
+    expect(h.price).toBe(65.9);
+    expect(rivinHinta(h, "4XL")).toBe(72.9);
+  });
+  it("kulukerroin 1,255 pienentää katetta Printify-kulujen ALV:n verran", () => {
+    const t = { category: "t-paidat", variants: { variant_map: { "Musta|M": 1 }, costs: { "1": 890 }, shipping_cents: 849 } };
+    const ilman = laskeTilauksenNettokate([{ tuote: t, varianttiId: 1, maara: 1, yksikkohinta: 24.9 }], 6.9);
+    const alv = laskeTilauksenNettokate([{ tuote: t, varianttiId: 1, maara: 1, yksikkohinta: 24.9 }], 6.9, { kerroin: 1.255 });
+    expect(ilman.nettokate - alv.nettokate).toBeCloseTo(17.39 * 0.255, 1);
+  });
+});
