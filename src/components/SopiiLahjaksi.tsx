@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { Gift } from "lucide-react";
 import { useJouluTakaraja } from "@/components/JouluTakaraja";
 import { jouluRivi } from "@/data/jouluAikataulu";
+import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
 
 /**
  * "Sopii lahjaksi" tuotesivulle. Vain todennettavia asioita: kassan vastaanottajavalinta (CheckoutPage),
  * joulun takaraja (src/data/jouluAikataulu.ts, vain ennen takarajaa), palautusoikeus (ReturnsPolicy.tsx) ja
- * lahjakortti (GiftCardPage.tsx: 25, 50, 75 tai 100 €, koodi sähköpostilla).
+ * lahjakortti (GiftCardPage.tsx: 25, 50 tai 75 €, koodi sähköpostilla; vain kun lahjakortit ovat myynnissä).
  */
 export function SopiiLahjaksi({ isCustom, jouluKategoriat }: { isCustom: boolean; jouluKategoriat: readonly (string | null)[] }) {
   const joulu = useJouluTakaraja(jouluKategoriat);
+  const lahjakortit = useLahjakortitMyynnissa();
   return (
     <section className="rounded-xl border border-border bg-card/50 p-5 md:p-6" aria-labelledby="sopii-lahjaksi">
       <h2 id="sopii-lahjaksi" className="font-display text-xl text-foreground mb-3 flex items-center gap-2">
@@ -23,7 +25,9 @@ export function SopiiLahjaksi({ isCustom, jouluKategoriat }: { isCustom: boolean
         ) : (
           <li>Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. <Link to="/palautusehdot" className="text-primary underline underline-offset-2">Palautusehdot</Link></li>
         )}
-        <li>Et tiedä kokoa? <Link to="/lahjakortti" className="text-primary underline underline-offset-2">Lahjakortti</Link> 25, 50, 75 tai 100 €, koodi sähköpostilla heti maksun jälkeen.</li>
+        {lahjakortit && (
+          <li>Et tiedä kokoa? <Link to="/lahjakortti" className="text-primary underline underline-offset-2">Lahjakortti</Link> 25, 50 tai 75 €, koodi sähköpostilla heti maksun jälkeen.</li>
+        )}
       </ul>
     </section>
   );

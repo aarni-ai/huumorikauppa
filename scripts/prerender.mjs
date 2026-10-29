@@ -222,6 +222,7 @@ async function main() {
     // esilataa ne entryn kanssa, jotta ProductPage on valmis heti sovelluksen käynnistyessä.
     const productChunks = chunksFor("src/pages/ProductPage.tsx");
     const homeChunks = chunksFor("src/pages/Index.tsx");
+    const blogChunks = chunksFor("src/pages/BlogPost.tsx");
 
     // Tuote- ja etusivun näkyvä esikatselu (oikeat komponentit, LCP-kuva näkyy ennen Reactia).
     // Esikatselu on vain nopeutus: jos moduuli ei lataudu, sivut kirjoitetaan ilman sitä.
@@ -249,6 +250,18 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
+      // Blogiartikkelit (tärkeimmät hakulaskeutumiset): teksti näkyy ennen Reactia.
+      for (const page of previewMod ? pages : []) {
+        const m = /^\/blogi\/([^/]+)$/.exec(page.path);
+        if (!m) continue;
+        try {
+          page.previewHtml = previewMod.renderBlogPreview(m[1]);
+          page.modulePreloads = blogChunks;
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`${page.path} (${err.message})`);
+        }
+      }
       const homePage = previewMod ? pages.find((p) => p.path === "/") : undefined;
       if (homePage) {
         try {
@@ -265,7 +278,7 @@ async function main() {
     if (previewFailures.length > 0) {
       log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} sivulla: ${previewFailures.slice(0, 5).join(", ")}`);
     }
-    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut + etusivu).`);
+    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut, blogiartikkelit ja etusivu).`);
 
     const seen = new Set();
     let written = 0;

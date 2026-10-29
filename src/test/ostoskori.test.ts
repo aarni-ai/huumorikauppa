@@ -36,7 +36,7 @@ describe("Ilmainen toimitus", () => {
     expect(toimitusTila([rivi(tuote("x", ILMAINEN_TOIMITUS_RAJA - 0.01))]).puuttuu).toBe(0.01);
   });
   it("lahjakortit eivät kerrytä rajaa, pelkät lahjakortit ilman toimitusta", () => {
-    const kortti = lahjakorttiTuote(100) as Product;
+    const kortti = lahjakorttiTuote(75) as Product;
     expect(fyysinenSumma([rivi(kortti), rivi(paita)])).toBe(24.9);
     expect(toimitusTila([rivi(kortti), rivi(paita)]).puuttuu).toBe(r2(ILMAINEN_TOIMITUS_RAJA - 24.9));
     expect(toimitusTila([rivi(kortti)])).toMatchObject({ vainLahjakortteja: true, toimitus: 0, puuttuu: 0 });

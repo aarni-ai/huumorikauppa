@@ -8,7 +8,7 @@ import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
 import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
-import { KorialennusVihje } from "@/components/KorialennusVihje";
+import { KorialennusVihje, TPAITAPARI_TEKSTI } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
@@ -185,7 +185,7 @@ const CartPage = () => {
             )}
             {kori.voimassa && (
               <div className="flex justify-between text-primary">
-                <span>Kahden tuotteen alennus (-{kori.prosentti} %)</span>
+                <span>{kori.tyyppi === "tpaitapari" ? TPAITAPARI_TEKSTI : `Kahden tuotteen alennus (-${kori.prosentti} %)`}</span>
                 <span>-{eur(kori.alennus)}</span>
               </div>
             )}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
+import { TPAITAPARI_TEKSTI } from "@/components/KorialennusVihje";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
@@ -488,7 +489,7 @@ const CheckoutPage = () => {
             )}
             {basketDiscount > 0 && (
               <div className="flex justify-between text-primary">
-                <span>Kahden tuotteen alennus (-{kori.prosentti} %)</span><span>-{basketDiscount.toFixed(2)} €</span>
+                <span>{kori.tyyppi === "tpaitapari" ? TPAITAPARI_TEKSTI : `Kahden tuotteen alennus (-${kori.prosentti} %)`}</span><span>-{basketDiscount.toFixed(2)} €</span>
               </div>
             )}
             <div className="flex justify-between text-muted-foreground">

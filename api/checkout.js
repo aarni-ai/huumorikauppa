@@ -60,7 +60,7 @@ async function lahjakortti(koodi) {
 }
 
 const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${r.custom_text}"`,
-  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
+  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });

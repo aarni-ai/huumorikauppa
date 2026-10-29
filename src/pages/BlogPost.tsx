@@ -1,4 +1,5 @@
-import { useMemo, type ReactNode } from "react";
+import { useLayoutEffect, useMemo, type ReactNode } from "react";
+import { revealApp } from "@/lib/prerenderPreview";
 import { useParams, Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { blogPosts } from "@/data/blog";
@@ -131,6 +132,11 @@ function renderInlineFormatting(text: string): (string | JSX.Element)[] {
 
 const BlogPost = () => {
   usePrerenderReady();
+  // Esirenderöity esikatselu (src/seo/prerender/renderPreview.tsx renderBlogPreview) vaihtuu sovellukseen ennen
+  // ensimmäistä maalausta: sama näkymä, tuotekortit täydentyvät haun jälkeen.
+  useLayoutEffect(() => {
+    revealApp();
+  }, []);
   const { slug } = useParams();
   const post = blogPosts.find((p) => p.slug === slug);
   const { data: allProducts, isError } = useProducts();

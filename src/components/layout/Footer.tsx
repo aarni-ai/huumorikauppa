@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { footerGiftLinks } from "@/config/internalLinks";
 import { PaymentIcons } from "@/components/PaymentIcons";
+import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
 import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { ORGANIZATION } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { onMarketingConsent, openConsentSettings } from "@/lib/consent";
 
 export function Footer() {
+  const lahjakortit = useLahjakortitMyynnissa();
   const [footerEmail, setFooterEmail] = useState("");
   const [footerSubmitted, setFooterSubmitted] = useState(false);
   const { toast } = useToast();
@@ -145,7 +147,7 @@ export function Footer() {
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
             <Link to="/kaikki-tuotteet" className="hover:text-foreground transition-colors">Kaikki tuotteet</Link>
             <Link to="/paketit" className="hover:text-foreground transition-colors">Paketit</Link>
-            <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>
+            {lahjakortit && <Link to="/lahjakortti" className="hover:text-foreground transition-colors">Lahjakortti</Link>}
             <Link to="/ryhmatilaukset" className="hover:text-foreground transition-colors">Ryhmätilaukset</Link>
             {categories.filter(cat => onKategoriasivu(cat.slug)).map(cat => (
               <Link key={cat.slug} to={`/kategoria/${cat.slug}`} className="hover:text-foreground transition-colors">

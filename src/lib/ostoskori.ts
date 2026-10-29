@@ -9,7 +9,7 @@ import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, 
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
 import { sovellaPaketit } from "../../api/_lib/paketit.js";
-import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL } from "../../api/_lib/korialennus.js";
+import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, TPAITAPARI_KAMPANJA, tpaitapariVoimassa } from "../../api/_lib/korialennus.js";
 import type { CartItem, Product } from "@/types/product";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
@@ -126,6 +126,10 @@ export interface KorialennusTila {
   alennus: number;
   /** true: alennus on mukana arviossa. */
   voimassa: boolean;
+  /** Voimassa olevan alennuksen tyyppi: "prosentti" (kahden tuotteen -X %) tai "tpaitapari" (kampanja). */
+  tyyppi?: "prosentti" | "tpaitapari";
+  /** T-paitaparikampanja voimassa: korissa on näin monta kampanjan t-paitaa (vihjettä "lisää toinen t-paita" varten). */
+  kampanjaTpaitoja?: number;
   /** Miksi alennusta ei ole: null, "kpl", "pois", "koodi", "ei_rivia" (kaikki paketissa), "kulu", "kate" (katevahti). */
   syy: string | null;
 }
@@ -135,13 +139,21 @@ export interface KorialennusTila {
  * ensin). Rivin variantti valitun koon ja värin mukaan, muuten kallein variantti (varovainen arvio). Palvelin laskee
  * lopullisen alennuksen.
  */
+/** Kampanjan t-paitojen määrä korissa, kun t-paitaparikampanja on voimassa; muuten 0. */
+function kampanjanTpaitat(fyysiset: KoriRivi[]): number {
+  if (!tpaitapariVoimassa()) return 0;
+  return fyysiset
+    .filter((i) => i.product.category === TPAITAPARI_KAMPANJA.kategoria && Math.abs(i.product.price - TPAITAPARI_KAMPANJA.kappalehinta) < 0.005)
+    .reduce((s, i) => s + i.quantity, 0);
+}
+
 export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennuskoodi = false, paketit: Paketti[] = PAKETTIMAARITYKSET): KorialennusTila {
   const fyysiset = items.filter((i) => !onLahjakortti(i));
   const kpl = fyysiset.reduce((s, i) => s + i.quantity, 0);
   const pohja = { kpl, puuttuu: Math.max(0, KORIALENNUS_MIN_KPL - kpl), prosentti: KORIALENNUS_PROSENTTI, alennus: 0, voimassa: false };
   if (!(KORIALENNUS_PROSENTTI > 0)) return { ...pohja, syy: "pois" };
   if (alennuskoodi) return { ...pohja, syy: "koodi" };
-  if (kpl < KORIALENNUS_MIN_KPL) return { ...pohja, syy: "kpl" };
+  if (kpl < KORIALENNUS_MIN_KPL) return { ...pohja, syy: "kpl", kampanjaTpaitoja: kampanjanTpaitat(fyysiset) };
   const bySlug = new Map<string, Product>(tuotteet.map((p) => [p.slug, p]));
   for (const i of fyysiset) if (!bySlug.has(i.product.slug)) bySlug.set(i.product.slug, i.product);
   const rivit = fyysiset.map((i) => {
@@ -155,5 +167,5 @@ export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennusk
   });
   const paketoitu = sovellaPaketit(rivit, bySlug, paketit).rivit;
   const k = sovellaKorialennus(paketoitu, bySlug, toimitusTila(items).toimitus);
-  return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy };
+  return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy, tyyppi: k.tyyppi, prosentti: k.tyyppi === "tpaitapari" ? 0 : pohja.prosentti, kampanjaTpaitoja: kampanjanTpaitat(fyysiset) };
 }

@@ -7,7 +7,7 @@
  * - Käyttö kassalla kentällä "Lahjakortin koodi": saldo tarkistetaan palvelimella ja vähennetään maksun jälkeen.
  *   Voi käyttää useaan tilaukseen, ei vaihdeta rahaksi. Lahjakortilla ei voi ostaa lahjakortteja.
  */
-export const LAHJAKORTTI_ARVOT = [25, 50, 75, 100];
+export const LAHJAKORTTI_ARVOT = [25, 50, 75];
 export const LAHJAKORTTI_KATEGORIA = "lahjakortit";
 export const VOIMASSA_KUUKAUTTA = 24;
 export const LAHJAKORTTI_EHDOT = [

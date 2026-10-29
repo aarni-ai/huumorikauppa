@@ -9,12 +9,13 @@
  * POST { action: "peru", token }                                  peruutus peruutussivulta
  * GET  ?kori=<tunniste>                                           muistutuksen kori { ok, items }
  * GET  ?arvostelu=<tunniste>                                      arviosivun tilaus { products, customerName, unsubscribed }
+ * GET  ?tila=1                                                   { lahjakortit }: lahjakortit myynnissä (oma sähköposti käytössä)
  * GET  ?arviot=<slug>                                             tuotesivun julkaistut arviot { arviot: [{ nimi, tahdet, teksti, pvm }] }
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
  */
 import { onTietokanta, sql } from "./_lib/db.js";
-import { laheta } from "./_lib/sahkoposti.js";
+import { laheta, omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
 
@@ -54,6 +55,12 @@ export async function kasittele(req, res, store) {
       products, customerName: (tilaus.customer_name || "").split(/\s+/)[0] || "",
       unsubscribed: await store.onKielto(normalisoiEmail(tilaus.customer_email)),
     });
+  }
+  // Lahjakorttien myyntitila sivustolle: sama ehto kuin kassalla (api/checkout.js), joten sivu avautuu itsestään,
+  // kun SAHKOPOSTI_VAHVISTETTU=1 asetetaan (Resend-domain vahvistettu).
+  if (req.method === "GET" && q.tila === "1") {
+    res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
+    return res.status(200).json({ lahjakortit: omaVahvistusKaytossa() });
   }
   if (req.method === "GET" && typeof q.arviot === "string") {
     const slug = teksti(q.arviot, 200);

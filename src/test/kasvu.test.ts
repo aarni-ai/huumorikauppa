@@ -221,10 +221,10 @@ describe("Lahjakortti: kassa", () => {
     expect(puuttuvatVariantit(r.rivit)).toEqual([]);
   });
   it("lahjakortti ei kerrytä ilmaisen toimituksen rajaa eikä saa alennuskoodia", () => {
-    const r = laskeTilaus(pyynto([kortti(100), t("oispa-kaljaa-t-paita")]), tuotteet, { type: "percent", value: 10 });
+    const r = laskeTilaus(pyynto([kortti(75), t("oispa-kaljaa-t-paita")]), tuotteet, { type: "percent", value: 10 });
     expect(r.shipping).toBe(TOIMITUS);
     expect(r.discount).toBe(2.49);
-    expect(r.total).toBe(r2(100 + 22.41 + TOIMITUS));
+    expect(r.total).toBe(r2(75 + 22.41 + TOIMITUS));
     const runko = tilausRunko({ id: "abcdef12-0000", customer_email: "a@b.fi", shipping_address: osoite, items: r.rivit });
     expect(runko.line_items).toEqual([{ product_id: "pf-t", variant_id: 1, quantity: 1 }]);
   });

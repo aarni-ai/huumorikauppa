@@ -53,6 +53,82 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Black Friday ja joulu 2026: kampanjavertailu (29.10.2026)
+
+**Ajankohta:** Black Friday pe 27.11. - joulun takaraja (t-paidat ti 1.12., muut ma 30.11.). Kampanja-aika 5 päivää.
+
+**Laskentaperuste:** sama kaava kuin "Keskiostoksen nosto: laskelma" (myynti alv 0 = maksettu / 1,255; nettokate =
+myynti alv 0 - Printifyn tuotekulu - Printifyn toimitus painotaloittain - Stripe 1,5 % + 0,25 €). T-paita 24,90 €
+(kulu 8,90 €, heikoin koko 9,93 €, OPT OnDemand, toimitus 8,49 € / lisäkpl 1,19 €), huppari 49,99 € (Textildruck,
+25,48 € + 10,89 € / lisäkpl 2,39 €). Nykyinen kahden tuotteen -5 % ja toimitus 6,90 € alle 79 € ovat vertailukohta.
+
+**Vaihtoehdot:**
+- **A. Kaksi t-paitaa 44,90 €** (pari 49,80 € -> 44,90 €; korvaa -5 %:n, kun pari on asiakkaalle edullisempi).
+- **B. Ilmainen toimitus 49 €:sta** (nyt 79 €).
+- **C. Kaksi tuotetta -10 %** (nyt -5 %).
+- **D. Lahjapaketti:** Printify ei tarjoa lahjapaketointia. Saatavilla on vain lahjaviestikortti (gift message,
+  Etsy- ja käsin luodut tilaukset) ja painotalon pakkausliite (insert). Ei toteutettavissa omassa kassassa
+  kauppiaan tilauksena, joten jätetään pois. Lähteet: help.printify.com "What are gift messages?" ja "How can I
+  brand my products?" (tarkistettu hakutuloksista 29.10.2026).
+
+**Korin nettokate € (asiakkaan maksama summa suluissa):**
+
+| Kori | Nyky -5 % | A: 2 t-paitaa 44,90 € | B: ilmainen toimitus 49 €:sta | C: 2 tuotetta -10 % |
+|---|--:|--:|--:|--:|
+| 1 t-paita | 7,22 (31,80) | 7,22 (31,80) | 7,22 (31,80) | 7,22 (31,80) |
+| 2 t-paitaa | 14,65 (54,21) | 12,77 (51,80) | 9,26 (47,31) | 12,71 (51,72) |
+| 2 t-paitaa, heikoin koko | 12,59 | 10,71 (51,80) | 7,20 | 10,65 |
+| 3 t-paitaa | 23,06 (77,86) | 22,15 (76,70) | 17,66 (70,96) | 20,14 (74,13) |
+| 4 t-paitaa | 26,07 (94,62) | 22,30 (89,80) | 26,07 (94,62) | 22,17 (89,64) |
+| 1 huppari | 7,86 (56,89) | 7,86 (56,89) | 2,46 (49,99) | 7,86 (56,89) |
+| t-paita + huppari | 7,01 (78,05) | 7,01 (78,05) | 1,61 (71,15) | 4,08 (74,30) |
+| 2 hupparia | 9,77 (94,98) | 9,77 (94,98) | 9,77 (94,98) | 5,86 (89,98) |
+
+B menettää toimitusmaksun (6,90 € = 5,50 € alv 0) jokaisesta 49-79 €:n korista, myös hupparin ostajilta, jotka
+ostaisivat ilman kampanjaakin (15 % tilauksista). C laskee hupparikorien katetta eikä kohdistu t-paitoihin. A koskee
+vain t-paitapareja, eikä yksikään kori jää tappiolle (heikoin 10,71 €).
+
+**Odotettu vaikutus kampanja-aikana (arvio, ei mitattua dataa).** Oletukset:
+- Korijakauma nykyisistä tilauksista: 1 t-paita 70 %, 2 t-paitaa 5 %, 1 huppari 15 %, t-paita + huppari 3 %, muut 7 %
+  (ennallaan, ei mukana).
+- Nyky: 4 % yhden t-paidan tilauksista muuttuu kahden t-paidan tilauksiksi (-5 %).
+- A: 15 % (varovainen) / 30 % (optimistinen) muuttuu pariksi; optimistisessa lisäksi +15 % tilauksia kampanjasta.
+- B: 10 % / 20 % muuttuu pariksi; optimistisessa +15 % tilauksia.
+- Tilauksia 5 päivässä: 3 (nykyinen 6 / 28 pv x joulusesonki noin 3x) ja 8 (Black Friday -liikenne).
+
+| Vaihtoehto | Kate/tilaus | 3 tilausta | Muutos | 8 tilausta | Muutos |
+|---|--:|--:|--:|--:|--:|
+| Nyky -5 % | 7,38 € | 22,15 € | 0 € | 59,07 € | 0 € |
+| A varovainen | 7,66 € | 22,99 € | +0,84 € | 61,32 € | +2,25 € |
+| A optimistinen | 9,48 € | 28,45 € | +6,30 € | 75,88 € | +16,80 € |
+| B varovainen | 6,08 € | 18,23 € | -3,92 € | 48,62 € | -10,45 € |
+| B optimistinen | 7,15 € | 21,46 € | -0,69 € | 57,22 € | -1,85 € |
+
+Myynti tilausta kohden: nyky 36,47 €, A varovainen 37,82 €, A optimistinen 45,91 € (sis. lisätilaukset).
+
+**Kannattavuuden kynnys A:** jokainen yhden t-paidan tilaus, josta tulee pari, tuo +5,55 € (12,77 - 7,22); jokainen
+pari, joka olisi tullut -5 %:lla ilman kampanjaa, maksaa 1,88 € (14,65 - 12,77). A on nykyistä parempi, kun
+vähintään 7,8 % yhden t-paidan tilauksista muuttuu pariksi. B ei ole nykyistä parempi millään oletuksella.
+
+**Kuluttajansuojalaki (2 luku 6 a §, KKV):** alennusmarkkinoinnissa on kerrottava tuotteen alin hinta edeltävän
+30 päivän ajalta, ja kuluttaja-asiamiehen mukaan sääntö koskee myös ilmaisuja, jotka luovat mielikuvan alennuksesta
+(esim. "Black Friday"). Siksi:
+- Ei ennen-hintoja eikä yliviivattuja hintoja. T-paidan kappalehinta pysyy 24,90 €:ssa.
+- Kampanjateksti kertoo aina myös t-paidan hinnan ja 30 päivän alimman hinnan: "Kaksi t-paitaa 44,90 € (kun korissa
+  on kaksi t-paitaa). T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €."
+- Prosenttia (esim. "-10 %") ei käytetä markkinoinnissa. Jos sitä käytetään, se lasketaan 30 päivän alimmasta hinnasta.
+- **Ennen käyttöönottoa tarkistettava:** t-paitojen hinta on ollut 24,90 € koko 30 päivää ennen 27.11. (28.10.-26.11.).
+  Jos hinta on muuttunut, päivitä `alinHinta30pv`.
+
+**Suositus: A, "Kaksi t-paitaa 44,90 €", 27.11.-1.12.** Toteutettu valmiiksi, pois päältä:
+- `api/_lib/vakiot.js` `TPAITAPARI_KAMPANJA` (`kaytossa: false`, alku 2026-11-27, loppu 2026-12-01, parihinta 44,90 €,
+  alinHinta30pv 24,90 €).
+- Kassa (`api/_lib/korialennus.js`): pari korvaa -5 %:n, kun se on suurempi; katevahti kuten ennen. Alennus jaetaan
+  t-paitakappaleille ja pyöristetään sentin asiakkaan hyväksi (3 t-paitaa: 4,92 €).
+- Ostoskori ja kassa näyttävät "Kaksi t-paitaa 44,90 €", korissa yhden t-paidan kanssa "Lisää toinen t-paita".
+  T-paitojen tuotesivulla kampanjarivi 30 päivän alimman hinnan kanssa. Näkyy vain kampanja-aikana.
+- Käyttöönotto Aarnin hyväksynnällä: `kaytossa: true`, testit, julkaisu.
+
 ## Hupparien hinta 27.10.2026 (oma tausta)
 
 **Päätös:** S-2XL 52,90 € ja 3XL+ 59,90 €, mutta korkeintaan kilpailijoiden korkein hinta, jos kate pysyy

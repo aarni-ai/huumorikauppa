@@ -44,6 +44,7 @@ import { mittataulukko } from "@/data/mittataulukot";
 import { MittaTaulukko } from "@/components/SizeGuide";
 import { sameDesignLinks } from "@/lib/sameDesign";
 import { SopiiLahjaksi } from "@/components/SopiiLahjaksi";
+import { TpaitapariRivi } from "@/components/KorialennusVihje";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { SameDesignLinks } from "@/components/SameDesignLinks";
@@ -626,6 +627,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
               <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
             )}
             <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
+            <TpaitapariRivi kategoria={product.category} hinta={product.price} className="mt-1" />
           </div>
 
           {/* Images */}
@@ -754,6 +756,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                   </p>
                 )}
                 <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
+                <TpaitapariRivi kategoria={product.category} hinta={product.price} className="mt-1" />
               </div>
             </div>
 

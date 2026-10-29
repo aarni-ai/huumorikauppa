@@ -1,8 +1,8 @@
 /**
  * Näkyvä esikatselu esirenderöintiin (scripts/prerender.mjs): oikea Header, kampanjabanneri ja sivun
  * ensinäkymä renderöitynä samoilla komponenteilla ja Tailwind-luokilla kuin selaimessa. Käytössä
- * tuotesivuilla (ProductPage previewOnly) ja etusivulla (Index ilman tuotedataa, kuten selaimen
- * ensimmäinen renderöinti).
+ * tuotesivuilla (ProductPage previewOnly), etusivulla (Index ilman tuotedataa, kuten selaimen
+ * ensimmäinen renderöinti) ja blogiartikkeleissa (BlogPost ilman tuotedataa, tuotekorteissa latausnäkymä).
  *
  * Selain näyttää esikatselun heti HTML:n ja CSS:n saavuttua (LCP-kuvalla on <head>-preload), kun
  * taas React-sovellus käynnistyy piilotettuun #rootiin. src/main.tsx vaihtaa sovelluksen näkyviin
@@ -24,6 +24,7 @@ import { SeasonalBannerView } from "@/components/SeasonalBanner";
 import { activeBannerTheme } from "@/data/campaignSchedule";
 import ProductPage from "@/pages/ProductPage";
 import Index from "@/pages/Index";
+import BlogPost from "@/pages/BlogPost";
 import type { ReactNode } from "react";
 import { mapProduct } from "@/hooks/use-products";
 import type { Tables } from "@/integrations/supabase/types";
@@ -82,6 +83,21 @@ export function renderProductPreview(row: Tables<"products">, nowMs = Date.now()
     queryClient,
     nowMs,
     productSeedScript(row),
+  );
+}
+
+/**
+ * Blogiartikkeli ilman tuotedataa (29.10.2026): artikkelin teksti näkyy heti HTML:n ja CSS:n saavuttua. Ennen
+ * esikatselua teksti tuli näkyviin vasta, kun sovellus ja blogidata (124 kt) oli ajettu (Lighthouse mobiili LCP 4,9-5,2 s).
+ */
+export function renderBlogPreview(slug: string, nowMs = Date.now()): string {
+  return renderWithShell(
+    `/blogi/${slug}`,
+    <Routes>
+      <Route path="/blogi/:slug" element={<BlogPost />} />
+    </Routes>,
+    previewQueryClient(),
+    nowMs,
   );
 }
 

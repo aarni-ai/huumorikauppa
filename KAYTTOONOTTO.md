@@ -23,8 +23,65 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 | 6 | Ajastimen salaisuus | Vercel (tehty) | - |
 | 7 | Testitilaus | testiosoite | - |
 | 8 | EU-painotalot (valinnainen, ennen joulua) | Printify | - |
-| 9 | Domain ja vanhan webhookin poisto samalla hetkellä | Vercel, Domainhotelli, Stripe | - |
+| 9 | Domain suoraan uuteen projektiin (ohje alla: "Domain suoraan uuteen Vercel-projektiin") | Cloudflare, Vercel | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
+
+## Domain suoraan uuteen Vercel-projektiin (valmisteltu 29.10.2026, EI vielä tehty)
+
+**Nykytila 29.10.2026.** huumorikauppa.fi on vanhassa Vercel-projektissa (tiimi aarni-ais-projects), joka välittää
+pyynnöt uuteen projektiin `huumorikauppa` (tiimi flyapeg-2135s-projects, `huumorikauppa-five.vercel.app`,
+middleware.ts). DNS on Cloudflaressa (nimipalvelimet aria ja huxley, tuntematon tili). Cowork siirtää vyöhykkeen
+uudelle Cloudflare-tilille (huumorikauppa@gmail.com, nimipalvelimet annabel ja vick) Domainhotellissa.
+
+Vercelin CLI on kirjautunut vain uuden projektin tiimiin, joten `npx vercel domains inspect huumorikauppa.fi` vastaa
+"You don't have access to the domain huumorikauppa.fi under flyapeg-2135s-projects". Odotetut tietueet luettiin
+Vercelin rajapinnasta (`GET /v6/domains/<domain>/config` ja `GET /v9/projects/<projekti>/domains`, uuden tiimin oikeuksilla).
+
+| Tietue | Nyt (vanha projekti) | Uusi projekti odottaa |
+|---|---|---|
+| `huumorikauppa.fi` A | 216.198.79.1 ja 64.29.17.1 julkisista resolvereista (Vercel näkee 216.198.79.65 ja 64.29.17.65) | **216.150.1.1** ja **216.150.16.1** (Vercelin suositus 1; varalla 76.76.21.21) |
+| `www` CNAME | 529bd05f3b0cb29b.vercel-dns-017.com | **bffaf7b5fcbd90db.vercel-dns-016.com** (varalla cname.vercel-dns.com) |
+| `_vercel` TXT | ei ole | **vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe** |
+| `_vercel` TXT (toinen) | ei ole | **vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01** |
+
+Uuteen projektiin on jo lisätty `huumorikauppa.fi` ja `www.huumorikauppa.fi` (www ohjaa 308:lla juureen), tila
+"pending_domain_verification". Vercel ei ilmoita konfliktia nykyisten tietueiden kanssa (`misconfigured: false`).
+
+**Tärkeää:** molemmat A-osoitteet ovat Vercelin reunapalvelimia, ja Vercel reitittää pyynnön sen projektin
+domainiin, jonka tiimi omistaa domainin. Kun `_vercel`-TXT on lisätty ja Vercel vahvistaa sen, domain siirtyy uuteen
+projektiin, vaikka A-tietueet olisivat vielä vanhat. **TXT-tietueen lisääminen on siis itse siirtohetki.** Älä lisää
+sitä etukäteen.
+
+**Ennakkoehdot (kaikki):**
+1. Uusi Cloudflare-vyöhyke on Active huumorikauppa@gmail.comin tilillä, ja `dig NS huumorikauppa.fi` palauttaa
+   annabel ja vick.
+2. Resend-domain on vahvistettu ja sähköpostit ovat päällä (SAHKOPOSTI_VAHVISTETTU=1).
+3. Aarni on hyväksynyt siirron ajankohdan. Hiljainen aika, ei kampanjaa käynnissä.
+
+**Tietuemuutokset Coworkille uudessa Cloudflaressa (DNS > Records), tässä järjestyksessä:**
+1. Lisää TXT, nimi `_vercel`, sisältö `vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe`, TTL Auto.
+2. Lisää toinen TXT, nimi `_vercel`, sisältö `vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01`, TTL Auto.
+3. Muokkaa juuren A-tietueet: poista 216.198.79.1 ja 64.29.17.1 (tai .65-arvot), lisää A `@` 216.150.1.1 ja
+   A `@` 216.150.16.1. **Proxy status: DNS only (harmaa pilvi).**
+4. Muokkaa `www` CNAME -> `bffaf7b5fcbd90db.vercel-dns-016.com`, **DNS only**.
+5. Älä koske Resendin kolmeen tietueeseen (resend._domainkey, send MX ja send TXT), DMARCiin (`_dmarc`,
+   rua=mailto:huumorikauppa@gmail.com) äläkä muihin tietueisiin.
+
+**Claude tekee samalla hetkellä:**
+1. Vahvistaa domainit uudessa projektissa (`POST /v9/projects/<projekti>/domains/huumorikauppa.fi/verify` ja www).
+2. Palauttaa ajastukset `vercel.json`-tiedostoon (scripts/julkaise-uusi.sh: "Kun domain on uudessa projektissa,
+   ajastukset voi palauttaa"), tarkistaa `KAUPPA_URL`:n ja julkaisee.
+3. Tarkistaa: `dig A huumorikauppa.fi`, `dig CNAME www.huumorikauppa.fi`, HTTPS-varmenne, sivut kolmella
+   User-Agentilla, `/api/products`, kassatesti (`node scripts/kassatesti.mjs --url https://huumorikauppa.fi`),
+   Stripe-webhook (`huumorikauppa-five.vercel.app/api/stripe-webhook` toimii ennallaan) ja Search Consolen sivukartta.
+4. Kirjaa KASVU-RAPORTTI.md:hen.
+
+**Vanha projekti siirron jälkeen:** jätetään paikalleen viikoksi ilman domainia, eikä sitä poisteta. Välitys
+(middleware.ts) ei enää saa liikennettä.
+
+**Palautus:** jos sivusto ei vastaa 10 minuutin kuluessa, poista kaksi `_vercel`-TXT-tietuetta ja palauta A-tietueet
+216.198.79.1 ja 64.29.17.1 sekä www CNAME 529bd05f3b0cb29b.vercel-dns-017.com. Domain on silloin vahvistettu
+uudessa tiimissä, joten palautus vaatii myös domainin poiston uudesta projektista (Claude tekee rajapinnalla).
 
 ## Tilanne 27.10.2026 klo 21: uusi kassa käytössä huumorikauppa.fi:ssä
 
