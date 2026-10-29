@@ -23,6 +23,7 @@ export const LANDING_PATHS: readonly string[] = [
   "/joululahja-alle-50-euroa",
   "/lahjat/pikkujouluihin",
   "/salainen-joulupukki-lahja",
+  "/black-friday",
   "/meemipaidat",
   "/suomalainen-huumori-paidat",
   "/tonnin-seteli-paita",

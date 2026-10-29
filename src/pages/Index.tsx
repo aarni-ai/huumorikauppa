@@ -18,6 +18,7 @@ import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { revealApp } from "@/lib/prerenderPreview";
+import { BlackFridayNosto } from "@/components/KorialennusVihje";
 import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
@@ -159,6 +160,11 @@ const Index = () => {
         </Link>
       </section>
 
+
+      {/* BLACK FRIDAY 27.11.-1.12. (vain kampanjan aikana, src/components/KorialennusVihje.tsx) */}
+      <div className="container">
+        <BlackFridayNosto className="mt-3" />
+      </div>
 
       {/* TRUST BADGES */}
       <section className="border-y border-border bg-muted/40 py-2.5 mt-2">

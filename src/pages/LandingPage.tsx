@@ -17,6 +17,7 @@ import {
 } from "@/seo/landing";
 import { SITE_URL } from "@/seo/site";
 import NotFound from "./NotFound";
+import { TpaitapariTila } from "@/components/KorialennusVihje";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const chip =
@@ -94,6 +95,8 @@ const LandingPage = () => {
             <p key={i}>{p}</p>
           ))}
         </div>
+
+        {page.path === "/black-friday" && <TpaitapariTila className="max-w-3xl mb-6" />}
 
         {page.spotlight && (
           <aside className="max-w-3xl mb-8 rounded-xl border border-primary/30 bg-primary/5 p-4 md:p-5" aria-label={page.spotlight.heading}>

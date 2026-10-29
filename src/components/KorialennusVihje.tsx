@@ -2,6 +2,10 @@ import { Percent } from "lucide-react";
 import type { KorialennusTila } from "@/lib/ostoskori";
 import { useEffect, useState } from "react";
 import { TPAITAPARI_KAMPANJA, tpaitapariVoimassa } from "../../api/_lib/korialennus.js";
+import { paivaLyhyt } from "@/data/campaignSchedule";
+
+/** Kampanjan alku- ja loppupäivä ilman vuotta, esim. "pe 27.11." (asetuksista). */
+const lyhytPaiva = (iso: string) => paivaLyhyt(iso).replace(/\d{4}$/, "");
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
@@ -83,5 +87,45 @@ export function TpaitapariRivi({ kategoria, hinta, className = "" }: { kategoria
       <Percent className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
       <span><span className="font-bold text-primary">{TPAITAPARI_TEKSTI}</span> (kun korissa on kaksi t-paitaa). {TPAITAPARI_ALIN_HINTA}</span>
     </p>
+  );
+}
+
+type KampanjanTila = "tulossa" | "voimassa" | "paattynyt";
+
+/** Kampanjan tila Suomen ajassa selaimessa (null palvelin- ja esirenderöinnissä). */
+function useKampanjanTila(): KampanjanTila | null {
+  const [tila, setTila] = useState<KampanjanTila | null>(null);
+  useEffect(() => {
+    const p = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+    setTila(p < TPAITAPARI_KAMPANJA.alku ? "tulossa" : p > TPAITAPARI_KAMPANJA.loppu ? "paattynyt" : tpaitapariVoimassa() ? "voimassa" : "paattynyt");
+  }, []);
+  return tila;
+}
+
+/** /black-friday: kampanjan tila (alkaa, voimassa, päättynyt). Staattinen sivu kertoo päivämäärät. */
+export function TpaitapariTila({ className = "" }: { className?: string }) {
+  const tila = useKampanjanTila();
+  if (!tila) return null;
+  const teksti =
+    tila === "tulossa" ? `Tarjous alkaa ${lyhytPaiva(TPAITAPARI_KAMPANJA.alku)} klo 00.00 Suomen aikaa.` :
+    tila === "voimassa" ? `Tarjous on voimassa ${lyhytPaiva(TPAITAPARI_KAMPANJA.loppu)} klo 23.59 asti.` :
+    `Black Friday -tarjous päättyi ${paivaLyhyt(TPAITAPARI_KAMPANJA.loppu)}.`;
+  return (
+    <p className={`rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm font-medium text-foreground ${className}`} role="status">
+      <Percent className="inline h-4 w-4 text-primary mr-1.5 align-[-2px]" aria-hidden="true" />{teksti}
+    </p>
+  );
+}
+
+/** Etusivun Black Friday -nosto vain kampanjan aikana (27.11.-1.12.). */
+export function BlackFridayNosto({ className = "" }: { className?: string }) {
+  const tila = useKampanjanTila();
+  if (tila !== "voimassa") return null;
+  return (
+    <aside className={`rounded-xl border border-primary/40 bg-primary/5 p-4 md:p-5 ${className}`} aria-label="Black Friday">
+      <p className="font-display text-xl text-foreground">Black Friday: {TPAITAPARI_TEKSTI.toLowerCase()}</p>
+      <p className="text-sm text-muted-foreground mt-1">Voimassa {lyhytPaiva(TPAITAPARI_KAMPANJA.loppu)} klo 23.59 asti. {TPAITAPARI_ALIN_HINTA}</p>
+      <a href="/black-friday" className="mt-3 inline-flex min-h-[44px] items-center rounded-lg bg-primary px-4 text-sm font-bold text-primary-foreground">Katso t-paidat</a>
+    </aside>
   );
 }

@@ -1,3 +1,4 @@
+import { TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
 import { isanpaivaAuki, jouluAuki, jouluLause, JOULU_PAIVA_LYHYT } from "@/data/tilauspaivat";
 import { FATHERS_DAY_LAST_ORDER_TEXT, JOULU_TILAUSPAIVA_ISO, joulunTilauspaivaTyypille, paivaLyhyt } from "@/data/campaignSchedule";
 import { describe, expect, it } from "vitest";
@@ -98,7 +99,9 @@ describe("landing pages: data and copy rules", () => {
     const isa = isanpaivaAuki() ? [FATHERS_DAY_LAST_ORDER_TEXT.split(" ")[1]] : [];
     // Harrastus- ja ammattisarjojen t-paitasivut (landingPagesSarjat.ts) näyttävät t-paitojen oman, myöhemmän päivän.
     const joulutpaita = jouluAuki() ? [paivaLyhyt(joulunTilauspaivaTyypille("t-paidat")).split(" ")[1]] : [];
-    expect([...dates].sort()).toEqual([...new Set([...joulu, ...joulutpaita, ...isa, "8.11.2026"])].sort());
+    // Black Friday -sivun kampanjapäivät (api/_lib/vakiot.js TPAITAPARI_KAMPANJA).
+    const bf = [TPAITAPARI_KAMPANJA.alku, TPAITAPARI_KAMPANJA.loppu].map((iso) => paivaLyhyt(iso).split(" ")[1]);
+    expect([...dates].sort()).toEqual([...new Set([...joulu, ...joulutpaita, ...isa, ...bf, "8.11.2026"])].sort());
     for (const p of landingPages) {
       if (isa.length && pageTexts(p).join("\n").includes(isa[0])) {
         expect(["/isanpaivalahja", "/hauska-isanpaivalahja"], p.path).toContain(p.path);

@@ -16,7 +16,8 @@ import type { Product } from "@/types/product";
 import { getPriorityRank } from "@/lib/productPriority";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
-import { FATHERS_DAY_TEXT } from "./campaignSchedule";
+import { FATHERS_DAY_TEXT, joulunTilauspaivaTyypille, paivaLyhyt } from "./campaignSchedule";
+import { TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
 import { isanpaivaLause, jouluMetaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import { sarjaPages, SARJA_SIVUT } from "./landingPagesSarjat";
@@ -224,6 +225,13 @@ const tonninSeteliSpotlight = (text: string): LandingSpotlight => ({
     { href: "/tuote/se-oli-tonnin-seteli-huppari", label: "Se oli tonnin seteli -huppari" },
   ],
 });
+
+// Black Friday -sivun päivät kampanja-asetuksista (api/_lib/vakiot.js), ei käsin kirjoitettuja päivämääriä.
+const BF_ALKU = paivaLyhyt(TPAITAPARI_KAMPANJA.alku);
+const BF_LOPPU = paivaLyhyt(TPAITAPARI_KAMPANJA.loppu);
+const BF_JOULU_TPAIDAT = joulunTilauspaivaTyypille("t-paidat");
+const BF_JOULU_TEKSTI = paivaLyhyt(BF_JOULU_TPAIDAT);
+const BF_EUR = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
 export const landingPages: LandingPageDef[] = [
   // ─── Joulu ───
@@ -971,6 +979,55 @@ export const landingPages: LandingPageDef[] = [
   },
 
   // ─── Tuotteet ───
+  {
+    // Black Friday (päivät api/_lib/vakiot.js TPAITAPARI_KAMPANJA). Kuluttajansuojalaki 2:6 a §: t-paidan
+    // hinta ja 30 päivän alin hinta kerrotaan, ei ennen-hintoja. Kampanjan tila näytetään selaimessa (LandingPage).
+    path: "/black-friday",
+    name: "Black Friday",
+    group: "tuotteet",
+    title: `Black Friday 2026: kaksi t-paitaa ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)} | Huumorikauppa`,
+    description:
+      `Black Friday ${BF_ALKU.split(" ")[1]}-${BF_LOPPU.split(" ")[1]}: kaksi hauskaa t-paitaa ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)}. T-paidan hinta ja alin hinta 30 päivän aikana ${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}.`,
+    h1: `Black Friday: kaksi t-paitaa ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)}`,
+    intro: [
+      `Black Friday -tarjous on voimassa ${BF_ALKU} klo 00.00 - ${BF_LOPPU} klo 23.59 Suomen aikaa: kaksi t-paitaa maksaa yhteensä ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)}, kun korissa on kaksi t-paitaa.`,
+      `Tarjous koskee kaikkia ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}:n t-paitoja, ja parin voi koota kahdesta eri paidasta. T-paidan hinta on ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}, ja alin hinta 30 päivän aikana ennen tarjousta on ${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. Hinta lasketaan ostoskorissa ilman koodia.`,
+      BF_JOULU_TPAIDAT === TPAITAPARI_KAMPANJA.loppu
+        ? `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${BF_JOULU_TEKSTI}, joten tarjouksen viimeinen päivä on myös t-paitojen joulun viimeinen tilauspäivä.`
+        : `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${BF_JOULU_TEKSTI}.`,
+    ],
+    faqs: [
+      {
+        q: "Miten Black Friday -tarjous toimii?",
+        a: `Lisää ostoskoriin kaksi t-paitaa. Ostoskori laskee parin hinnaksi ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)} ilman alennuskoodia.`,
+      },
+      {
+        q: "Paljonko maksavat kolme tai neljä t-paitaa?",
+        a: "Jokainen pari maksaa 44,90 €. Kolme t-paitaa maksaa 69,78 € ja neljä t-paitaa 89,80 €. Neljän t-paidan tilauksessa toimitus on ilmainen.",
+      },
+      {
+        q: "Koskeeko tarjous huppareita?",
+        a: "Ei. Hupparin ja t-paidan yhdistelmään sekä muihin kahden tuotteen tilauksiin saat kahden tuotteen alennuksen -5 %.",
+      },
+      {
+        q: "Voiko tarjouksen yhdistää alennuskoodiin?",
+        a: "Ei. Kun kassalla käytetään alennuskoodia, tarjous ei ole voimassa samassa tilauksessa.",
+      },
+      {
+        q: "Mikä on t-paidan alin hinta 30 päivän aikana?",
+        a: `${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. T-paidan hinta on ollut ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)} koko tarjousta edeltäneet 30 päivää.`,
+      },
+      {
+        q: "Ehtiikö tilaus jouluksi?",
+        a: `Ehtii, kun tilaat t-paidat viimeistään ${BF_JOULU_TEKSTI}. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää ja maksaa ${TOIMITUSMAKSU_TEKSTI} €, ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.`,
+      },
+    ],
+    related: ["/joululahjat", "/meemipaidat", "/suomalainen-huumori-paidat", TONNIN_SETELI_PATH],
+    categories: ["t-paidat"],
+    // Meemit ensin, jotta ruudukko eroaa t-paitakategoriasta.
+    featured: MEEMI,
+    filter: (p) => p.category === "t-paidat" && Math.abs(p.price - 24.9) < 0.005 && !looksLikeMug(p),
+  },
   {
     path: "/meemipaidat",
     name: "Meemipaidat",

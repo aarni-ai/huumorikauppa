@@ -21,14 +21,15 @@ export const KORIALENNUS_MIN_KPL = 2;
 export const KORIALENNUS_MIN_KATE_EUROA = 0;
 
 /**
- * Black Friday ja joulu 2026 (KATTEET.md "Black Friday ja joulu 2026"): "Kaksi t-paitaa 44,90 €". Pois päältä,
- * kunnes Aarni hyväksyy (kaytossa: true). Voimassa vain alku-loppu Suomen aikaa. Koskee t-paitoja, joiden kappalehinta
+ * Black Friday ja joulu 2026 (KATTEET.md "Black Friday ja joulu 2026"): "Kaksi t-paitaa 44,90 €". Aarni hyväksyi
+ * 29.10.2026; laskeutumissivu /black-friday. Voimassa vain alku-loppu Suomen aikaa. Koskee t-paitoja, joiden kappalehinta
  * on 24,90 €; korvaa kahden tuotteen -5 %:n, kun pari on asiakkaalle edullisempi (ei molempia). Katevahti kuten
  * korialennuksessa. Kuluttajansuojalaki 2:6 a §: markkinoinnissa kerrotaan t-paidan 30 päivän alin hinta
  * (alinHinta30pv); tarkista se ennen käyttöönottoa. Ei ennen-hintoja.
  */
 export const TPAITAPARI_KAMPANJA = {
-  kaytossa: false,
+  // Hyväksytty 29.10.2026. Hinta 24,90 € todennettu (hintatarkistus, KASVU-RAPORTTI.md 29.10.2026 iltapäivä).
+  kaytossa: true,
   alku: "2026-11-27",
   loppu: "2026-12-01",
   kategoria: "t-paidat",
