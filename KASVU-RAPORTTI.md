@@ -26,6 +26,83 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 aamupäivä: nimipalvelinvaihto, domainin siirron valmistelu, Black Friday, lahjakortit, nopeus
+
+**Nimipalvelinvaihdon seuranta** (dig NS ja A 1.1.1.1:stä sekä HTTPS-tila 15 minuutin välein; vahti pysähtyy ja
+kirjaus tehdään tähän ylimmäksi, jos sivusto ei vastaa kahdesti peräkkäin):
+
+| Aika | NS | Juuren A | www | huumorikauppa.fi |
+|---|---|---|---|---|
+| 29.10. 08.46 | aria, huxley | 216.198.79.1, 64.29.17.1 | 529bd05f3b0cb29b.vercel-dns-017.com | 200 |
+| 29.10. 09.01 | aria, huxley | 216.198.79.65, 64.29.17.65 | sama | 200 |
+| 29.10. 09.17 | (tämän koneen DNS-aikakatkaisu, kaikki kyselyt) | | | 000, toistettu 09.32: 200 |
+| 29.10. 09.47 | aria, huxley | 216.198.79.65, 64.29.17.65 | sama | 200 |
+
+Vaihto annabel/vick ei ollut vielä näkynyt klo 09.47. Sivusto on vastannut koko ajan.
+
+**Vercelin odottamat tietueet.** `npx vercel domains inspect huumorikauppa.fi` vastaa "You don't have access to the
+domain huumorikauppa.fi under flyapeg-2135s-projects": domain on vanhan projektin tiimissä, eikä CLI ole kirjautunut
+siihen. Tiedot luettiin Vercelin rajapinnasta uuden tiimin oikeuksilla:
+- Juuren A: **216.150.1.1 ja 216.150.16.1** (suositus 1; varalla 76.76.21.21). Nyt 216.198.79.65 ja 64.29.17.65.
+- www CNAME: **bffaf7b5fcbd90db.vercel-dns-016.com** (varalla cname.vercel-dns.com). Nyt
+  529bd05f3b0cb29b.vercel-dns-017.com.
+- Uudessa projektissa on jo `huumorikauppa.fi` ja `www.huumorikauppa.fi` (www ohjaa 308:lla juureen), tila
+  pending_domain_verification. Vahvistukseen tarvitaan `_vercel`-TXT:t (KAYTTOONOTTO.md).
+- Siirto-ohje Coworkille: KAYTTOONOTTO.md "Domain suoraan uuteen Vercel-projektiin". **TXT-tietue on itse
+  siirtohetki**, koska molemmat IP-sarjat ovat Vercelin reunaa ja reititys seuraa domainin omistavaa tiimiä. Siirtoa
+  ei ole tehty.
+
+**Resend.** Tila pending, DKIM-tietuetta ei vielä näy (nimipalvelinvaihto kesken). Tarkistus jatkuu 30 minuutin
+välein 24 tuntia. Kun domain vahvistuu: SAHKOPOSTI_VAHVISTETTU=1, julkaisu, testivahvistus osoitteeseen
+huumorikauppa@gmail.com, isänpäiväartikkeli (ODOTTAA_SAHKOPOSTIA-suodatin pois), ja tervetuloviesti,
+ostoskorimuistutus ja lahjakortit käynnistyvät. Tervetuloviesti ja muistutukset eivät tarvitse erillistä kytkintä:
+ne lähtevät heti, kun Resend hyväksyy lähettäjän.
+- **Omistajailmoitukset:** OMISTAJA_EMAIL asetettu Verceliin arvoon huumorikauppa@gmail.com (29.10. klo 10).
+
+**Lahjakortit** (`/lahjakortti`): arvot 25, 50 ja 75 € (100 € poistettu). Myynti avautuu itsestään samalla ehdolla
+kuin kassa (`SAHKOPOSTI_VAHVISTETTU=1`): sivu kysyy tilan `/api/sahkoposti?tila=1`. Siihen asti sivu kertoo, ettei
+lahjakortteja ole vielä myynnissä, ja Lisää koriin -painike on pois käytöstä. Alatunnisteen linkki ja tuotesivun
+Sopii lahjaksi -rivi näkyvät vasta myynnin avauduttua. Joulun viimeisen tilauspäivän jälkeen jouluaattoon asti
+yläbanneri: "Joulupaketit eivät enää ehdi, mutta lahjakortti tulee sähköpostilla heti maksun jälkeen" (vain kun
+lahjakortit ovat myynnissä). Tila nyt: `{"lahjakortit":false}`.
+
+**Black Friday ja joulu: "Kaksi t-paitaa 44,90 €" 27.11.-1.12.** valmiina, pois päältä (`TPAITAPARI_KAMPANJA`,
+`kaytossa: false`). Laskelma KATTEET.md "Black Friday ja joulu 2026". Vertailu: ilmainen toimitus 49 €:sta laskee
+katetta kaikissa skenaarioissa (-0,69...-10,45 € kampanja-aikana), -10 % kahdesta tuotteesta heikentää hupparikoreja,
+lahjapakettia Printify ei tarjoa. Pari: heikoin kori 10,71 €, odotettu vaikutus 5 päivän kampanjassa +0,84...+6,30 €
+(3 tilausta) ja +2,25...+16,80 € (8 tilausta); kannattaa, kun vähintään 7,8 % yhden t-paidan tilauksista muuttuu
+pariksi. Kuluttajansuojalaki: ei ennen-hintoja, kampanjateksti kertoo t-paidan hinnan ja 30 päivän alimman hinnan
+(24,90 €). Käyttöönotto Aarnin hyväksynnällä; ennen sitä tarkistetaan, että t-paidan hinta on ollut 24,90 € 30 päivää.
+
+**Nopeus (mobiili).** PageSpeed Insightsin avoimen rajapinnan päiväkiintiö oli käytetty (429), joten mittaus tehtiin
+samalla Lighthouse 12.6 -mobiiliprofiililla paikallisesti. Löydökset:
+1. **Blogiartikkeleissa ei ollut näkyvää esikatselua.** Esirenderöity teksti oli piilotettu, ja artikkeli tuli
+   näkyviin vasta, kun sovellus ja blogidata (124 kt) oli ajettu. Lisäksi alatunniste siirtyi (CLS 0,16).
+   Korjaus: 82 blogiartikkelille sama näkyvä esikatselu kuin tuote- ja etusivulla (`renderBlogPreview`).
+2. Esikatselu siirrettiin selaimessa #rootin eteen, jolloin se piirtyi uudelleen. Nyt esirenderöinti kirjoittaa sen
+   valmiiksi oikealle paikalle.
+3. Otsikko- ja leipätekstifontit (Anton 12 kt, Inter 47 kt) saapuivat hitaalla 4G:llä vasta 1,7-3,7 s. Nyt ne
+   esiladataan ja määritellään kriittisessä CSS:ssä.
+
+| Sivu | Ennen (Lighthouse, simuloitu) | Jälkeen (Lighthouse, hidastettu selain) | Oikea selain 4x hidas CPU, LCP |
+|---|---|---|---|
+| Etusivu | 69, LCP 4,3 s | 97, LCP 1,7-1,9 s | |
+| /blogi/lahja-miehelle-30v-40v-50v-60v | 71, LCP 5,2 s | 83, LCP 4,6 s | 1,2 s (esikatselu 0,7 s) |
+| /blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea | 73, LCP 4,9 s, CLS 0,162 | 99, LCP 1,6 s, CLS 0,002 | 0,6-1,5 s |
+| /blogi/lahja-naiselle-30v-40v-50v-60v | 71, LCP 5,2 s, CLS 0,162 | 83, LCP 4,5 s, CLS 0,005 | 1,2 s (esikatselu 0,7 s) |
+| /tuote/amatimies-t-paita | 89, LCP 3,7 s | 99, LCP 1,6-1,7 s | |
+
+Mittaustavat eroavat (ennen simuloitu, jälkeen hidastettu selain), ja tämän koneen verkko vaihteli: sama sivu antoi
+FCP:n 1,2-4,2 s. Selvä muutos: blogien teksti näkyy ensimmäisessä piirrossa ja CLS on poissa. Kahdessa
+ikävuosiblogissa Lighthouse kirjaa LCP:n vielä silloin, kun sovellus korvaa esikatselun, koska varafontilla
+piirretty kappale on hieman pienempi kuin sovelluksen Inter-kappale. **Seuraava korjaus:** hydratoi esikatselu
+sovellukseksi sen sijaan, että se vaihdetaan.
+
+**Tarkistus tuotannossa** kolmella User-Agentilla (Googlebot, iPhone Safari, Windows Chrome): etusivu, kolme blogia,
+tuotesivu, /lahjakortti, /kassa ja /api/sahkoposti?tila=1 palauttavat 200. Sisältösivuilla on näkyvä esikatselu ja
+yksi H1. Mobiilin ostopolku (blogi > Osta > koko palkista > kori > kassa) toimii iPhone 13 -koossa kuten ennen.
+Testit 1 427 läpi.
+
 ## 29.-30.10.2026 yö: mobiilin ostopolku ja konversio
 
 **Lähtötilanne.** GA4: 28 päivässä 1 036 kävijää ja 6 tilausta, konversio 0,58 %, tavoite vähintään 1,5 %.
