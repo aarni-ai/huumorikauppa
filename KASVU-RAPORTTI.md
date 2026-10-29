@@ -26,6 +26,36 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 myöhäisilta: kumppanuusohjelma käytössä
+
+**Hyväksytty ehto:** kauppaan jää jokaisesta kumppanitilauksesta vähintään 5,00 € katetta provision jälkeen.
+Provisio on enintään 10 % tuotteiden arvosta (ilman ALV:tä ja toimitusta) ja enintään summa, joka jättää kauppaan
+5 €; jos tilauksen kate on 5 € tai alle, provisio on 0 (KATTEET.md "Kumppanuusohjelma: provisio").
+
+- **Kumppaneille näytettävä sääntö** (/kumppanit, raportti ja viestipohjat): "Provisio on 10 % tilauksen tuotteiden
+  arvosta (ilman arvonlisäveroa ja toimituskuluja) tilauksista, joista kaupalle jää provision jälkeen vähintään
+  5,00 € katetta. Jos kate ei riitä täyteen 10 %:iin, provisio on pienempi, ja jos tilauksen kate on 5,00 € tai
+  alle, provisiota ei makseta."
+- Esimerkit: t-paita 1,98 €, kaksi t-paitaa 3,77 €, huppari 2,86 €, 25 paidan yritystilaus 43,65 €. Ensimmäisen
+  oikean tilauksen kaltaisesta korista (kate 4,94 €) provisio olisi 0 €.
+- **Käyttöön:** `KUMPPANUUS.kaytossa: true`, `minKateEuroa: 5`. Kumppanit taulussa `kumppanit`, hallinta
+  `?tehtava=kumppani-lisaa&koodi=..&nimi=..&email=..` (palauttaa linkin) ja `?tehtava=kumppani-poista&koodi=..`.
+- **Seuranta:** linkki `https://huumorikauppa.fi/?ref=<koodi>` (mikä tahansa sivu) ja kassan uusi kenttä
+  "Kumppanikoodi (valinnainen)", joka täyttyy linkistä. Kenttä varmistaa kirjauksen myös ilman evästeitä (linkin koodi
+  säilyy välilehden istunnon yli vain markkinointisuostumuksella). Palvelin hyväksyy vain aktiiviset koodit ja
+  kirjaa tilaukselle tapahtuman "kumppani".
+- **Raportti:** `?tehtava=kumppanit&kuukausi=YYYY-MM`: kumppaneittain tilaukset, myynti, kate Printifyn todellisilla
+  kuluilla, provisio ja peruste (täysi, rajattu, ei, kate-tuntematon). Tilitys kerran kuussa edellisen kuukauden
+  tilauksista, kun 14 päivän palautusaika on päättynyt.
+- **Sivu /kumppanit:** miten toimii, provisio ja esimerkit, tilitys, mainonnan merkintä, yhteys
+  huumorikauppa@gmail.com; esirenderöity, sivukartassa, alatunnisteessa "Kumppaneille".
+- **Coworkille:** KUMPPANIT-VIESTIPOHJA.md: 1) yhteydenotto, 2) tervetuloa ja koodi, 3) kuukausiraportti.
+- **Tarkistus tuotannossa:** testikumppani lisätty ja poistettu käytöstä, virheellinen koodi hylätty, raportti
+  palauttaa säännön; /kumppanit, /kassa ja /?ref= 200 kolmella User-Agentilla. Testit 1 446 läpi.
+- **Arvioitu vaikutus:** 10 kumppanin tuomaa lisätilausta kuukaudessa: kate noin +55-75 €/kk, provisiot noin
+  20-30 €/kk. Kaikki riippuu kumppanien määrästä ja yleisöstä.
+- **Aarnille:** sovi tilitystapa kumppanin kanssa (lasku tai muu) ja lähetä kuukausiraportti viestipohjan 3 mukaan.
+
 ## 29.10.2026 ilta: yritykset, personoitu paita, Black Friday, SEO, Shopping-syöte, canonical, nopeus
 
 ### Black Friday ajastettu (hyväksytty)
