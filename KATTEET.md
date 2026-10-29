@@ -53,6 +53,22 @@ Stripe 1,5 % + 0,25 €. Yhden kappaleen tilaus, tuotteen kate = heikoin variant
 - Myynnissä 481 tuotetta, kulut tiedossa 481, Printify-tuote puuttuu 0.
 - Alle 40 %: nykyisellä kassalla (6,90 € / 79 €) 481 tuotetta, omalla taustalla (5,90 € / 60 €) 481.
 
+## Personoitu t-paita 29,90 € (29.10.2026)
+
+Gildan Softstyle 64000, OPT OnDemand (Tšekki, pp 30), lennosta luotava Printify-tuote tilauskohtaisella
+painokuvalla. Yhden kappaleen tilaus, asiakas maksaa toimituksen 6,90 € (myynti 36,80 €, alv 0 29,32 €), Printifyn
+toimitus 8,49 €, Stripe 1,5 % + 0,25 €. Testitilaus 26630629.37 (luotu ja peruttu 29.10.2026): Printify veloittaisi
+tuotteen 8,90 € ja toimituksen 8,49 €, eli samat kulut kuin valmiilla t-paidalla.
+
+| Koko | Printify-tuotekulu | Nettokate | Kate % |
+|---|--:|--:|--:|
+| S-2XL | 8,90 € | 11,13 € | 38,0 % |
+| 3XL-5XL | 9,93 € | 10,10 € | 34,4 % |
+
+Kate on positiivinen jokaisessa koossa ja värissä (testi `src/test/personoitu.test.ts`). Valmiiseen 24,90 €:n
+t-paitaan verrattuna kate on noin 3,90 € suurempi. Personoitu paita ei kuulu t-paitaparin eikä määräalennuksen piiriin
+(kappalehinta ei ole 24,90 €), mutta kahden tuotteen -5 % koskee sitä kuten muitakin.
+
 ## Kumppanuusohjelma: provision kannattavuus (29.10.2026, pois päältä)
 
 Provisio lasketaan tuotteiden arvosta ilman ALV:tä ja ilman toimitusta. Korin nettokate € provision jälkeen

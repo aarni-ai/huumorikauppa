@@ -186,8 +186,14 @@ export default async function handler(req, res) {
     if (kuiva || !onPrintify()) return res.status(200).json({ ok: true, kuiva, laskettu: { total: laskettu.total, rivit: laskettu.rivit }, rivi: runko.line_items[0], kuvaVastaus });
     const luotu = await luoTilaus(runko);
     const id = luotu.data?.id;
-    const tila = id ? await haeTilaus(id) : null;
-    const peruttu = id ? await peruTilaus(id) : null;
+    // Printify käsittelee painokuvan ensin (pending); peruutus onnistuu vasta, kun tila on on-hold.
+    let tila = id ? await haeTilaus(id) : null;
+    for (let k = 0; id && k < 8 && tila?.data?.status === "pending"; k++) {
+      await new Promise((r) => setTimeout(r, 3000));
+      tila = await haeTilaus(id);
+    }
+    let peruttu = id ? await peruTilaus(id) : null;
+    if (id && !peruttu?.ok) { await new Promise((r) => setTimeout(r, 5000)); peruttu = await peruTilaus(id); }
     return res.status(200).json({ ok: !!luotu.ok, kuvaVastaus, total: laskettu.total, printify: { id, luotu: luotu.ok, virhe: luotu.virhe ?? null,
       tila: tila?.data?.status ?? null, kulut: tila?.data ? { tuote: tila.data.total_price / 100, toimitus: tila.data.total_shipping / 100 } : null,
       rivit: (tila?.data?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, tila: l.status, kulu: l.cost / 100 })),
