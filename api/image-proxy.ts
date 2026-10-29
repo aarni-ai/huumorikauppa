@@ -1,50 +1,30 @@
+/**
+ * Vanhan sivuston kuvaproxy (/api/image-proxy?url=...). Google indeksoi näitä osoitteita touko-syyskuussa 2026, ja ne
+ * palauttivat 403:n: proxy haki kuvan Printifystä Googlebot-Image-tunnisteella, jonka Printify torjuu Vercelin
+ * IP-osoitteesta (väärennetty botti), ja välitti 403:n eteenpäin (Search Console 179 sivua, KASVU-RAPORTTI.md
+ * 29.10.2026). Nykyiset kuvat tarjoillaan /api/img:n kautta, joten vanhat osoitteet ohjataan sinne pysyvästi. Vain
+ * Printifyn kuvapalvelimet kelpaavat, joten ohjaus ei ole avoin uudelleenohjaus.
+ */
 export const config = { runtime: "edge" };
 
 const ALLOWED_HOSTS = new Set(["images-api.printify.com", "images.printify.com"]);
 
-export default async function handler(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const imageUrl = url.searchParams.get("url");
-
-  if (!imageUrl) return new Response("Missing url parameter", { status: 400 });
-
-  let targetUrl: URL;
+export default function handler(request: Request): Response {
+  const imageUrl = new URL(request.url).searchParams.get("url");
+  let target: URL | null = null;
   try {
-    targetUrl = new URL(imageUrl);
+    target = imageUrl ? new URL(imageUrl) : null;
   } catch {
-    return new Response("Invalid url", { status: 400 });
+    target = null;
   }
-
-  if (!ALLOWED_HOSTS.has(targetUrl.hostname)) {
-    return new Response("Forbidden", { status: 403 });
+  if (!target || target.protocol !== "https:" || !ALLOWED_HOSTS.has(target.hostname)) {
+    return new Response("Not found", { status: 404, headers: { "X-Robots-Tag": "noindex" } });
   }
-
-  try {
-    const imageResponse = await fetch(targetUrl.toString(), {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot-Image/1.0)",
-        "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
-        "Referer": "https://huumorikauppa.fi/",
-      },
-    });
-
-    if (!imageResponse.ok) {
-      return new Response("Image fetch failed", { status: imageResponse.status });
-    }
-
-    const contentType = imageResponse.headers.get("content-type") || "image/jpeg";
-    const body = await imageResponse.arrayBuffer();
-
-    return new Response(body, {
-      status: 200,
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400, s-maxage=86400",
-        "X-Content-Type-Options": "nosniff",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-  } catch {
-    return new Response("Proxy error", { status: 502 });
-  }
+  return new Response(null, {
+    status: 301,
+    headers: {
+      Location: `/api/img?u=${encodeURIComponent(target.toString())}`,
+      "Cache-Control": "public, max-age=86400, s-maxage=31536000",
+    },
+  });
 }

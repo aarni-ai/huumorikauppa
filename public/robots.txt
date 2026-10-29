@@ -3,7 +3,8 @@
 # Huom: robots.txt:ssä botti noudattaa vain sitä ryhmää, joka nimeää sen tarkimmin.
 # Nimetyt botit eivät siis peri "User-agent: *" -ryhmän estoja, joten jokaisessa
 # ryhmässä on samat säännöt. /api/img on sallittu, koska tuotekuvat (og:image ja
-# Product-rakenteinen data) tarjoillaan sen kautta.
+# Product-rakenteinen data) tarjoillaan sen kautta. /api/image-proxy on vanhan sivuston
+# kuvaosoite, joka ohjaa 301:llä /api/img:iin (Google näkee ohjauksen).
 
 # Hakukoneet
 User-agent: Googlebot
@@ -12,6 +13,7 @@ User-agent: AdsBot-Google
 User-agent: Bingbot
 Allow: /
 Allow: /api/img
+Allow: /api/image-proxy
 Disallow: /admin
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
@@ -34,6 +36,7 @@ User-agent: Perplexity-User
 User-agent: Google-Extended
 Allow: /
 Allow: /api/img
+Allow: /api/image-proxy
 Disallow: /admin
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
@@ -48,6 +51,7 @@ Disallow: /api/
 User-agent: *
 Allow: /
 Allow: /api/img
+Allow: /api/image-proxy
 Disallow: /admin
 Disallow: /ostoskori
 Disallow: /tilausvahvistus
