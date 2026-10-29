@@ -33,30 +33,28 @@ describe("syötteen otsikot", () => {
   });
 
   it("tuotetyyppi + kenelle + painoteksti + lahjahaku", () => {
-    expect(syoteOtsikko(tuote({ name: "En nuku. Lepuutan silmiä | T-paita isälle" }))).toBe("Hauska t-paita isälle: En nuku. Lepuutan silmiä, isänpäivälahja");
+    // 29.10.2026: "Aihe | Hauska t-paita kenelle | Huumorikauppa".
+    expect(syoteOtsikko(tuote({ name: "En nuku. Lepuutan silmiä | T-paita isälle" }))).toBe("En nuku. Lepuutan silmiä | Hauska t-paita isälle | Huumorikauppa");
     expect(syoteOtsikko(tuote({ category: "hupparit", name: "Eläkkeellä. Kello on vain koru | Huppari eläkeläiselle" }))).toBe(
-      "Hauska huppari eläkeläiselle: Eläkkeellä. Kello on vain koru, lahja eläkeläiselle",
+      "Eläkkeellä. Kello on vain koru | Hauska huppari eläkeläiselle | Huumorikauppa",
     );
-    expect(syoteOtsikko(tuote({ name: "Pikkujoulut. Muistan osittain | T-paita pikkujouluihin" }))).toBe(
-      "Hauska t-paita pikkujouluihin: Pikkujoulut. Muistan osittain, pikkujoululahja",
-    );
-    expect(syoteOtsikko(tuote({ name: "Tonttu koeajalla | T-paita jouluun" }))).toBe("Hauska joulupaita: Tonttu koeajalla, joululahja");
-    expect(syoteOtsikko(tuote({ name: "40v, kunnossa niinku 20v | T-Paita" }))).toBe("Hauska t-paita 40-vuotiaalle: 40v, kunnossa niinku 20v, 40v lahja");
+    expect(syoteOtsikko(tuote({ name: "Tonttu koeajalla | T-paita jouluun" }))).toBe("Tonttu koeajalla | Hauska joulupaita | Huumorikauppa");
+    expect(syoteOtsikko(tuote({ name: "40v, kunnossa niinku 20v | T-Paita" }))).toBe("40v, kunnossa niinku 20v | Hauska t-paita 40-vuotiaalle | Huumorikauppa");
     expect(syoteOtsikko(tuote({ name: "Hauska T-Paita Kalastajalle, Kala Pääsi Tällä Kertaa" }))).toBe(
-      "Hauska t-paita kalastajalle: Kala pääsi tällä kertaa, lahja kalastajalle",
+      "Kala pääsi tällä kertaa | Hauska t-paita kalastajalle | Huumorikauppa",
     );
   });
 
   it("harrastus- ja ammattisarjat: kenelle, lahjahaku ja product_type (29.10.2026)", () => {
     const sarjat: [string, string, string][] = [
-      ["Mittaa kerran. Sahaa kolme kertaa | T-paita remontoijalle", "Hauska t-paita remontoijalle: Mittaa kerran. Sahaa kolme kertaa, lahja remontoijalle", "Remontoijat ja rakentajat"],
-      ["Kala oli tätäkin isompi | T-paita kalastajalle", "Hauska t-paita kalastajalle: Kala oli tätäkin isompi, lahja kalastajalle", "Kalastajat"],
-      ["Koira löysi. Minä en | T-paita metsästäjälle", "Hauska t-paita metsästäjälle: Koira löysi. Minä en, lahja metsästäjälle", "Metsästäjät"],
-      ["Öljynvaihto on terapiaa | T-paita autoilijalle", "Hauska t-paita autoilijalle: Öljynvaihto on terapiaa, lahja autoilijalle", "Autoilijat ja motoristit"],
-      ["Mulligan on ihmisoikeus | T-paita golfaajalle", "Hauska t-paita golfaajalle: Mulligan on ihmisoikeus, lahja golfaajalle", "Golfaajat"],
-      ["Kantovesi pitää kunnossa | T-paita mökkeilijälle", "Hauska t-paita mökkeilijälle: Kantovesi pitää kunnossa, lahja mökkeilijälle", "Mökkeilijät ja saunojat"],
-      ["Traktori ei kysy vapaapäiviä | T-paita maanviljelijälle", "Hauska t-paita maanviljelijälle: Traktori ei kysy vapaapäiviä, lahja maanviljelijälle", "Maanviljelijät ja metsänomistajat"],
-      ["Toimii minun koneellani | T-paita IT-ihmiselle", "Hauska t-paita IT-ihmiselle: Toimii minun koneellani, lahja IT-ihmiselle", "Tekniikka- ja IT-ihmiset"],
+      ["Mittaa kerran. Sahaa kolme kertaa | T-paita remontoijalle", "Mittaa kerran. Sahaa kolme kertaa | Hauska t-paita remontoijalle | Huumorikauppa", "Remontoijat ja rakentajat"],
+      ["Kala oli tätäkin isompi | T-paita kalastajalle", "Kala oli tätäkin isompi | Hauska t-paita kalastajalle | Huumorikauppa", "Kalastajat"],
+      ["Koira löysi. Minä en | T-paita metsästäjälle", "Koira löysi. Minä en | Hauska t-paita metsästäjälle | Huumorikauppa", "Metsästäjät"],
+      ["Öljynvaihto on terapiaa | T-paita autoilijalle", "Öljynvaihto on terapiaa | Hauska t-paita autoilijalle | Huumorikauppa", "Autoilijat ja motoristit"],
+      ["Mulligan on ihmisoikeus | T-paita golfaajalle", "Mulligan on ihmisoikeus | Hauska t-paita golfaajalle | Huumorikauppa", "Golfaajat"],
+      ["Kantovesi pitää kunnossa | T-paita mökkeilijälle", "Kantovesi pitää kunnossa | Hauska t-paita mökkeilijälle | Huumorikauppa", "Mökkeilijät ja saunojat"],
+      ["Traktori ei kysy vapaapäiviä | T-paita maanviljelijälle", "Traktori ei kysy vapaapäiviä | Hauska t-paita maanviljelijälle | Huumorikauppa", "Maanviljelijät ja metsänomistajat"],
+      ["Toimii minun koneellani | T-paita IT-ihmiselle", "Toimii minun koneellani | Hauska t-paita IT-ihmiselle | Huumorikauppa", "Tekniikka- ja IT-ihmiset"],
     ];
     for (const [name, otsikko, taso] of sarjat) {
       const p = tuote({ name });
@@ -66,7 +64,7 @@ describe("syötteen otsikot", () => {
     }
     // Saman aiheen aiemmat tuotteet saavat saman haun ja tason.
     const vanha = tuote({ name: "Hauska T-Paita Metsästäjälle, Ei Ole Kiire Olen Metsässä" });
-    expect(syoteOtsikko(vanha)).toBe("Hauska t-paita metsästäjälle: Ei ole kiire olen metsässä, lahja metsästäjälle");
+    expect(syoteOtsikko(vanha)).toBe("Ei ole kiire olen metsässä | Hauska t-paita metsästäjälle | Huumorikauppa");
     expect(tuotetyyppi(vanha)).toBe("Vaatteet > T-paidat > Hauskat t-paidat > Metsästäjät");
     expect(tuotetyyppi(tuote({ name: "Hauska T-Paita Koodarille, Ei Se Ole Bugi Se On Feature" }))).toBe("Vaatteet > T-paidat > Hauskat t-paidat > Tekniikka- ja IT-ihmiset");
     expect(syoteKuvaus(tuote({ name: "Kala oli tätäkin isompi | T-paita kalastajalle" }))).toContain("Hauska lahja kalastajalle tai pilkkijälle");
@@ -74,18 +72,18 @@ describe("syötteen otsikot", () => {
 
   it("kaupunkituote: asukasnimi ja kaupunki-lahja", () => {
     const p = tuote({ name: "100 % Lahtelaista verta – hauska t-paita", description: "Aitous paidassa. Hauska lahja lahtelaiselle. #kaupunki:Lahti" });
-    expect(syoteOtsikko(p)).toBe("Hauska t-paita lahtelaiselle: 100 % Lahtelaista verta, Lahti-lahja");
+    expect(syoteOtsikko(p)).toBe("100 % Lahtelaista verta | Hauska t-paita lahtelaiselle | Huumorikauppa");
     const h = tuote({ category: "hupparit", name: "Akaalainen selviää mistä vain – hauska huppari", description: "Sisukkuus hupparissa. #kaupunki:Akaa" });
-    expect(syoteOtsikko(h)).toBe("Hauska huppari akaalaiselle: Akaalainen selviää mistä vain, Akaa-lahja");
+    expect(syoteOtsikko(h)).toBe("Akaalainen selviää mistä vain | Hauska huppari akaalaiselle | Huumorikauppa");
   });
 
   it("ei emojeja, versaaleja, paikkamerkkejä eikä väärää isä-osumaa", () => {
-    expect(syoteOtsikko(tuote({ name: "I ❤️ Swedish Girls | T-Paita" }))).toBe("Hauska t-paita: I love Swedish Girls, hauska lahja");
-    expect(syoteOtsikko(tuote({ name: "maailman paras ÄITI | T-Paita" }))).toBe("Hauska t-paita äidille: Maailman paras äiti, lahja äidille");
-    expect(syoteOtsikko(tuote({ name: "ICE AATANA｜T-Paita" }))).toBe("Hauska t-paita: Ice aatana, hauska lahja");
-    expect(syoteOtsikko(tuote({ name: "Isäntä | Huppari", category: "hupparit" }))).toBe("Hauska huppari: Isäntä, hauska lahja");
+    expect(syoteOtsikko(tuote({ name: "I ❤️ Swedish Girls | T-Paita" }))).toBe("I love Swedish Girls | Hauska t-paita | Huumorikauppa");
+    expect(syoteOtsikko(tuote({ name: "maailman paras ÄITI | T-Paita" }))).toBe("Maailman paras äiti | Hauska t-paita äidille | Huumorikauppa");
+    expect(syoteOtsikko(tuote({ name: "ICE AATANA｜T-Paita" }))).toBe("Ice aatana | Hauska t-paita | Huumorikauppa");
+    expect(syoteOtsikko(tuote({ name: "Isäntä | Huppari", category: "hupparit" }))).toBe("Isäntä | Hauska huppari | Huumorikauppa");
     const pers = syoteOtsikko(tuote({ name: "Personoitava T-Paita, [NIMI] Legendaarinen Työsankari" }));
-    expect(pers).toBe("Personoitava t-paita: Nimi legendaarinen työsankari, personoitu lahja");
+    expect(pers).toBe("Nimi legendaarinen työsankari | Personoitava t-paita | Huumorikauppa");
     expect(pers).not.toMatch(/\[/);
   });
 
@@ -163,7 +161,7 @@ describe("syötteen attribuutit", () => {
       <g:product_type>Vaatteet &gt; T-paidat</g:product_type>
     </item>`;
     const out = sisallotaItem(item, tuote());
-    expect(out).toContain("<g:title>Hauska t-paita: Tonnin seteli, hauska lahja</g:title>");
+    expect(out).toContain("<g:title>Tonnin seteli | Hauska t-paita | Huumorikauppa</g:title>");
     expect(out).toContain("<g:google_product_category>212</g:google_product_category>");
     expect(out).toContain("<g:product_type>Vaatteet &gt; T-paidat &gt; Hauskat t-paidat &gt; Huumori</g:product_type>");
     expect(out).toContain("<g:material>puuvilla</g:material>");

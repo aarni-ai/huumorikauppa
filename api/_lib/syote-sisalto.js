@@ -192,17 +192,22 @@ export function aihe(p) {
 
 const tyyppi = (p) => TYYPIT[p?.category] || OLETUSTYYPPI;
 
-/** Otsikko: "{tyyppi} {kenelle}: {teksti}, {lahja}", max 150 (lahja pois ensin, sitten teksti sanarajalta). */
+/**
+ * Otsikko (29.10.2026): "{teksti} | {tyyppi} {kenelle} | Huumorikauppa", esim. "En nuku. Lepuutan silmiä | Hauska
+ * t-paita isälle | Huumorikauppa". Aihe ensin, koska se on tuotteen erottava tieto. Max 150: teksti lyhennetään
+ * sanarajalta.
+ */
+export const SYOTE_BRAND_LOPPU = " | Huumorikauppa";
 export function syoteOtsikko(p) {
   const a = aihe(p);
   const t = tyyppi(p);
   const nimi = a.personoitava ? t.nimi.replace(/^Hauska(t)?/, "Personoitava") : a.joulu && t.joulu ? t.joulu : t.nimi;
   const alku = `${nimi}${a.kenelle ? ` ${a.kenelle}` : ""}`;
-  const teksti = siistiTeksti(a.teksti) || siistiTeksti(p.name);
-  const lahja = !a.lahja || teksti.toLowerCase().includes(a.lahja.toLowerCase()) ? "" : /[.!?]$/.test(teksti) ? ` ${a.lahja.charAt(0).toUpperCase()}${a.lahja.slice(1)}` : `, ${a.lahja}`;
-  for (const ehdokas of [`${alku}: ${teksti}${lahja}`, `${alku}: ${teksti}`]) if (ehdokas.length <= 150) return ehdokas;
-  const cut = `${alku}: ${teksti}`.slice(0, 150);
-  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,.:;\s]+$/, "");
+  const teksti = (siistiTeksti(a.teksti) || siistiTeksti(p.name)).replace(/[.!?]+$/, (m) => (m === "." ? "" : m));
+  const loppu = ` | ${alku}${SYOTE_BRAND_LOPPU}`;
+  if (teksti.length + loppu.length <= 150) return `${teksti}${loppu}`;
+  const cut = teksti.slice(0, 150 - loppu.length);
+  return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,.:;\s]+$/, "")}${loppu}`;
 }
 
 /**

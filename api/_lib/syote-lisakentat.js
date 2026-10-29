@@ -9,6 +9,7 @@
  *    generoitu Printify-kuluista: scripts/generoi-kateluokat.mjs); puuttuu, jos tuotteen katetta ei tunneta
  *  - g:custom_label_2: myydyin | muut (Printify-tilaukset, api/_lib/kateluokat.js)
  */
+import TOP50 from "./top50.generated.js";
 import { KATELUOKAT, MYYDYIMMAT } from "./kateluokat.js";
 
 /** Kate (0-1) -> custom_label_0 (samat rajat kuin scripts/generoi-kateluokat.mjs). */
@@ -53,16 +54,53 @@ const slugLinkista = (item) => (item.match(/<g:link>[^<]*\/tuote\/([^<?#/]+)/) |
  * @param opts.kateluokat slug -> kateluokka (oletus api/_lib/kateluokat.js)
  * @param opts.myydyimmat myydyimpien slugit (oletus api/_lib/kateluokat.js)
  */
+/**
+ * Lisäkuvat (29.10.2026): lifestyle- ja ympäristökuvat ensin, sitten muut etukuvat, lopuksi takakuvat. Pääkuva
+ * (image_link) pysyy selkeänä etukuvana (api/_lib/syote-korjaukset.js).
+ */
+const KUVAJARJESTYS = ["lifestyle", "context", "front", "front-collar-closeup", "back", "back-2"];
+export function jarjestaLisakuvat(item) {
+  const kuvat = [...item.matchAll(/<g:additional_image_link>([^<]*)<\/g:additional_image_link>/g)].map((m) => m[1]);
+  if (kuvat.length < 2) return item;
+  const kulma = (u) => (decodeURIComponent(u).match(/camera_label=([a-z0-9-]+)/) || [])[1] || "";
+  const sija = (u) => { const i = KUVAJARJESTYS.indexOf(kulma(u)); return i < 0 ? KUVAJARJESTYS.length : i; };
+  const jarjestetty = kuvat.map((u, i) => ({ u, i })).sort((a, b) => sija(a.u) - sija(b.u) || a.i - b.i).map((x) => x.u);
+  let k = 0;
+  return item.replace(/<g:additional_image_link>[^<]*<\/g:additional_image_link>/g, () => `<g:additional_image_link>${jarjestetty[k++]}</g:additional_image_link>`);
+}
+
+/** custom_label_3: kampanjoitava teema otsikon ja slugin perusteella. */
+export function teemaluokka(teksti) {
+  const t = String(teksti).toLowerCase();
+  if (/joulu|tonttu|pukki|pikkujoulu/.test(t)) return "joulu";
+  if (/eläk|elak/.test(t)) return "elakelaiselle";
+  if (/\bisä|isälle|isalle|iskä|faija/.test(t)) return "isalle";
+  if (/äiti|aiti|äidille|mummo|vaimo|naiselle/.test(t)) return "naiselle";
+  if (/(^|[^0-9])(30|40|50|60|70)(v|-vuo| vuo| ja)/.test(t)) return "ikavuosi";
+  if (/kalast|metsäst|metsast|golf|mökki|mokki|autoil|remont|maanviljel|it-ihmi|koodar|sähkö|putki/.test(t)) return "harrastus-ammatti";
+  if (/tonnin|seteli|oispa|tunarit|aatana|kalju|amatimies|meemi/.test(t)) return "meemi";
+  return "muut";
+}
+
+/** custom_label_4 "top50": api/_lib/top50.generated.js (myydyimmät, suosituimmuussäännöt, Search Consolen ikävuosihaut). */
+export const onTop50 = (slug) => TOP50.has(slug);
+
 export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = KATELUOKAT, myydyimmat = MYYDYIMMAT } = {}) {
   const hinta = parseFloat(kentta(item, "price") || "0");
   const toimitus = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUS;
   const gkat = (kentta(item, "google_product_category") || "").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
   const tyyppi = (TUOTETYYPIT.find(([re]) => re.test(gkat)) || [null, "Hauskat lahjat"])[1];
+  // Toimitusaika 3-10 arkipäivää (src/config/toimitus.ts): valmistus 2-5 ja kuljetus 1-5 arkipäivää.
   let out = item.replace(/<g:shipping>[\s\S]*?<\/g:shipping>/, `<g:shipping>
         <g:country>FI</g:country>
         <g:service>Posti kotiinkuljetus</g:service>
         <g:price>${toimitus.toFixed(2)} EUR</g:price>
+        <g:min_handling_time>2</g:min_handling_time>
+        <g:max_handling_time>5</g:max_handling_time>
+        <g:min_transit_time>1</g:min_transit_time>
+        <g:max_transit_time>5</g:max_transit_time>
       </g:shipping>`);
+  out = jarjestaLisakuvat(out);
   const lisat = [];
   const lisaa = (nimi, arvo) => {
     if (arvo != null && !new RegExp(`<g:${nimi}>`).test(out)) lisat.push(`      <g:${nimi}>${arvo}</g:${nimi}>`);
@@ -75,6 +113,14 @@ export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = 
   // Oma tausta: elävä kate tietokannan Printify-kuluista (opts.kate), muuten generoitu kateluokka (kateluokat.js).
   lisaa("custom_label_0", typeof kate === "number" ? kateluokka(kate) : Object.prototype.hasOwnProperty.call(kateluokat, slug) ? kateluokat[slug] : null);
   lisaa("custom_label_2", myydyimmat.has(slug) ? "myydyin" : "muut");
+  lisaa("custom_label_3", teemaluokka(`${kentta(out, "title") || ""} ${slug}`));
+  lisaa("custom_label_4", onTop50(slug) ? "top50" : "muut");
+  if (!/<g:free_shipping_threshold>/.test(out)) {
+    lisat.push(`      <g:free_shipping_threshold>
+        <g:country>FI</g:country>
+        <g:price_threshold>${ILMAINEN_RAJA.toFixed(2)} EUR</g:price_threshold>
+      </g:free_shipping_threshold>`);
+  }
   return lisat.length ? out.replace(/\s*<\/item>$/, `\n${lisat.join("\n")}\n    </item>`) : out;
 }
 
