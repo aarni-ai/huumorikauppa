@@ -121,6 +121,15 @@ export const STATIC_PAGE_META = {
     intro:
       "Valitse malli, kirjoita saajan nimi ja ikä ja katso esikatselu. Paita painetaan tilauksen jälkeen juuri tällä tekstillä.",
   },
+  "/kumppanit": {
+    title: "Kumppanuusohjelma sisällöntuottajille | Huumorikauppa",
+    description:
+      "Huumorikaupan kumppanuusohjelma: provisio enintään 10 % tilauksista oman linkin tai koodin kautta, tilitys kerran kuussa. Hae: huumorikauppa@gmail.com.",
+    h1: "Kumppanuusohjelma",
+    name: "Kumppanit",
+    intro:
+      "Huumorikaupan kumppanina saat provision tilauksista, jotka tulevat oman linkkisi tai kumppanikoodisi kautta.",
+  },
   "/yritykset": {
     title: "Yritysten joululahjat ja tiimipaidat | Huumorikauppa",
     description:

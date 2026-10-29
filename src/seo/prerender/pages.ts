@@ -45,6 +45,7 @@ import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
 import { yrityksetPage } from "@/data/yrityksetPage";
+import { kumppanitPage } from "@/data/kumppanitPage";
 import { MALLIT } from "../../../api/_lib/personoitu.js";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
@@ -738,6 +739,15 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
     buildBusinessPage(products),
+    staticPage("/kumppanit", {
+      intro: kumppanitPage.intro,
+      sections: [
+        { heading: "Esimerkkejä provisiosta", items: kumppanitPage.esimerkit.map((e) => `${e.kori}: ${e.provisio}`) },
+        ...kumppanitPage.sections.map((s) => ({ heading: s.heading, items: "items" in s ? s.items : undefined, paragraphs: "paragraphs" in s ? s.paragraphs : undefined })),
+      ],
+      faqs: kumppanitPage.faqs,
+      jsonLd: [buildFaqJsonLd(kumppanitPage.faqs)],
+    }),
     staticPage("/personoitu-paita", { sections: [
       { heading: "Mallit", items: MALLIT.map((m: { nimi: string }) => m.nimi) },
       { heading: "Hinta ja toimitus", paragraphs: ["Personoitu t-paita 29,90 €. Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta."] },

@@ -36,6 +36,7 @@ const STATIC_PAGES = [
   { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
   { loc: "/yritykset", changefreq: "weekly", priority: "0.8" },
   { loc: "/personoitu-paita", changefreq: "weekly", priority: "0.8" },
+  { loc: "/kumppanit", changefreq: "monthly", priority: "0.5" },
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },

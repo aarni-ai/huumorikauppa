@@ -69,29 +69,32 @@ Kate on positiivinen jokaisessa koossa ja värissä (testi `src/test/personoitu.
 t-paitaan verrattuna kate on noin 3,90 € suurempi. Personoitu paita ei kuulu t-paitaparin eikä määräalennuksen piiriin
 (kappalehinta ei ole 24,90 €), mutta kahden tuotteen -5 % koskee sitä kuten muitakin.
 
-## Kumppanuusohjelma: provision kannattavuus (29.10.2026, pois päältä)
+## Kumppanuusohjelma: provisio (hyväksytty 29.10.2026, käytössä)
 
-Provisio lasketaan tuotteiden arvosta ilman ALV:tä ja ilman toimitusta. Korin nettokate € provision jälkeen
-(toimitus 6,90 € alle 79 €, kahden tuotteen -5 %, Stripe 1,5 % + 0,25 €):
+**Sääntö (hyväksytty):** provisio on enintään 10 % tilauksen tuotteiden arvosta ilman ALV:tä ja toimitusta, ja
+enintään summa, joka jättää kauppaan provision jälkeen **vähintään 5,00 € nettokatetta**. Jos tilauksen kate on
+5,00 € tai alle, provisio on 0. Kate lasketaan Printifyn todellisilla kuluilla (Stripe 1,5 % + 0,25 €); kun
+Printify-kulu ei vielä ole tiedossa, provisio odottaa ("kate-tuntematon").
 
-| Kori | Kate ilman provisiota | Provisio 5 % | 10 % | 15 % |
-|---|--:|--:|--:|--:|
-| 1 t-paita | 7,22 | 6,23 | 5,24 | 4,25 |
-| 2 t-paitaa (-5 %) | 14,65 | 12,77 | 10,88 | 9,00 |
-| 1 huppari | 7,86 | 5,87 | 3,87 | 1,88 |
-| t-paita + huppari (-5 %) | 7,01 | 4,17 | 1,34 | -1,50 |
-| Black Friday -pari | 12,77 | 10,98 | 9,19 | 7,40 |
+| Kori | Kate ennen provisiota | Provisio | Peruste | Kauppaan jää |
+|---|--:|--:|---|--:|
+| 1 t-paita (24,90 €) | 7,22 € | 1,98 € | täysi 10 % | 5,24 € |
+| 2 t-paitaa (-5 %, 47,31 €) | 14,65 € | 3,77 € | täysi 10 % | 10,88 € |
+| 1 huppari (49,99 €) | 7,86 € | 2,86 € | rajattu | 5,00 € |
+| t-paita + huppari (-5 %, 71,15 €) | 7,01 € | 2,01 € | rajattu | 5,00 € |
+| Black Friday -pari (44,90 €) | 12,77 € | 3,58 € | täysi 10 % | 9,19 € |
+| Personoitu paita (29,90 €) | 11,13 € | 2,38 € | täysi 10 % | 8,75 € |
+| 25 t-paitaa, määräalennus -12 % (547,80 €) | 158,89 € | 43,65 € | täysi 10 % | 115,24 € |
+| Ensimmäinen oikea tilaus (huppari koodilla, 47,49 €) | 4,94 € | 0,00 € | ei | 4,94 € |
 
-**Suositus: 10 %, katto niin, että tilauksen nettokatteesta jää vähintään 2 €** (`KUMPPANUUS.minKateEuroa`).
-15 % tekee t-paidan ja hupparin korista tappiollisen. Provisio kannattaa vain kumppanin tuomasta lisämyynnistä:
-jokainen kumppanin tuoma t-paitatilaus, jota ei muuten olisi tullut, jättää 5,24 €. Jos kumppani tuo 10 lisätilausta
-kuukaudessa (keskimäärin noin 7 € kate ennen provisiota), kate kasvaa noin 50 €/kk ja provisio on noin 20 €/kk.
+**Kannattavuus:** provisio maksetaan vain kumppanin tuomista tilauksista, ja kauppaan jää jokaisesta vähintään 5 €.
+Jos kumppanit tuovat 10 lisätilausta kuukaudessa (keskikate noin 7-11 € ennen provisiota), kate kasvaa noin
+55-75 €/kk ja provisiot ovat noin 20-30 €/kk.
 
-**Toteutus (pois päältä):** `api/_lib/vakiot.js` KUMPPANUUS (kaytossa: false) ja KUMPPANIT (hyväksytyt koodit),
-`api/_lib/kumppani.js` (koodin tarkistus ja provisio), kumppanilinkki `?ref=<koodi>` (`src/lib/kumppani.ts`: säilyy
-välilehden istunnon ajan vain markkinointisuostumuksella), kassa kirjaa koodin tilauksen tapahtumaksi "kumppani",
-raportti `?tehtava=kumppanit[&alku=YYYY-MM-DD]`: tilaukset, myynti ja provisio kumppaneittain Printifyn todellisilla
-kuluilla. Käyttöönotto: lisää kumppani KUMPPANIT-listaan ja aseta kaytossa: true.
+**Toteutus:** `api/_lib/vakiot.js` KUMPPANUUS (kaytossa: true, 10 %, minKateEuroa 5), `api/_lib/kumppani.js`
+(provisioJaTila, tarkistaKumppani), kumppanit taulussa `kumppanit` (`?tehtava=kumppani-lisaa` /
+`kumppani-poista`), linkki `?ref=<koodi>` ja kassan kenttä Kumppanikoodi, tilauksen tapahtuma "kumppani",
+kuukausiraportti `?tehtava=kumppanit&kuukausi=YYYY-MM`. Sivu /kumppanit, viestipohjat KUMPPANIT-VIESTIPOHJA.md.
 
 ## Määräalennus yrityksille ja ryhmille (29.10.2026)
 

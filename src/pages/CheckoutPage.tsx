@@ -36,6 +36,8 @@ const CheckoutPage = () => {
     address: "", zip: "", city: "",
   });
   const [differentRecipient, setDifferentRecipient] = useState(false);
+  // Kumppanikoodi (kumppanuusohjelma): täyttyy kumppanilinkistä ?ref=, asiakas voi myös kirjoittaa sen.
+  const [kumppaniKoodi, setKumppaniKoodi] = useState(() => kumppani() ?? "");
   const [recipientName, setRecipientName] = useState("");
   const { data: allProducts = [] } = useProducts();
   const [giftCardInput, setGiftCardInput] = useState("");
@@ -162,7 +164,7 @@ const CheckoutPage = () => {
             ...(i.product.type === "giftcard" ? { type: "giftcard", giftCard: i.giftCard } : {}),
           })),
           customerEmail: form.email,
-          kumppani: kumppani() ?? undefined,
+          kumppani: kumppaniKoodi.trim() || undefined,
           customerName: `${form.firstName} ${form.lastName}`,
           shippingAddress: onlyGiftCards ? undefined : { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
           recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,
@@ -367,6 +369,13 @@ const CheckoutPage = () => {
                 </p>
               </>
             )}
+
+            <div>
+              <Label htmlFor="kumppani" className="text-sm text-muted-foreground">Kumppanikoodi (valinnainen)</Label>
+              <Input id="kumppani" autoComplete="off" autoCapitalize="none" spellCheck={false} maxLength={40} value={kumppaniKoodi}
+                onChange={e => setKumppaniKoodi(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                className="bg-muted border-border mt-1 max-w-[240px]" placeholder="esim. anna-k" />
+            </div>
 
             {!onlyGiftCards && (
               <div className="flex items-start gap-2">

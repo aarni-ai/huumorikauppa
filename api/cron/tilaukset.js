@@ -138,16 +138,42 @@ export default async function handler(req, res) {
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
   }
 
-  // Kumppaniraportti (kumppanuusohjelma, pois päältä): maksetut tilaukset, joilla on tapahtuma "kumppani", myynti ja
-  // provisio kumppaneittain (api/_lib/kumppani.js provisio: % tuotteista ilman ALV:tä, kate jää vähintään 2 €).
-  // &alku=YYYY-MM-DD (oletus kuluvan kuun alku).
+  // Kumppanit (kumppanuusohjelma, api/_lib/kumppani.js): lisäys ja poisto käytöstä.
+  //   ?tehtava=kumppani-lisaa&koodi=anna-k&nimi=Anna%20K.&email=...  (päivittää, jos koodi on jo olemassa)
+  //   ?tehtava=kumppani-poista&koodi=anna-k                          (aktiivinen = false, tilaushistoria säilyy)
+  if (req.query.tehtava === "kumppani-lisaa" || req.query.tehtava === "kumppani-poista") {
+    const { kumppaniKoodinMuoto, varmistaKumppanitaulu } = await import("../_lib/kumppani.js");
+    const koodi = kumppaniKoodinMuoto(req.query.koodi);
+    if (!koodi) return res.status(400).json({ ok: false, virhe: "koodi: pienet kirjaimet, numerot ja väliviiva, 2-40 merkkiä" });
+    await varmistaKumppanitaulu(db);
+    if (req.query.tehtava === "kumppani-poista") {
+      const r = await db`update kumppanit set aktiivinen = false where koodi = ${koodi} returning koodi`;
+      return res.status(r.length ? 200 : 404).json({ ok: r.length > 0, koodi });
+    }
+    const nimi = String(req.query.nimi || "").trim().slice(0, 100);
+    if (!nimi) return res.status(400).json({ ok: false, virhe: "nimi puuttuu" });
+    const email = String(req.query.email || "").trim().slice(0, 200) || null;
+    await db`insert into kumppanit (koodi, nimi, email) values (${koodi}, ${nimi}, ${email})
+      on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true`;
+    const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/?ref=${koodi}` });
+  }
+
+  // Kumppaniraportti kuukaudelta (&kuukausi=YYYY-MM, oletus kuluva kuukausi Suomen aikaa): tilaukset kumppaneittain,
+  // myynti, kate Printifyn todellisilla kuluilla, provisio ja sen peruste (api/_lib/kumppani.js provisioJaTila).
+  // Tilitys kerran kuussa edellisen kuukauden raportista, kun palautusaika (14 pv) on päättynyt.
   if (req.query.tehtava === "kumppanit") {
-    const { provisio } = await import("../_lib/kumppani.js");
+    const { provisioJaTila, varmistaKumppanitaulu, PROVISIOSAANTO } = await import("../_lib/kumppani.js");
     const { KUMPPANUUS } = await import("../_lib/vakiot.js");
-    const alku = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.alku || "")) ? req.query.alku : new Date().toISOString().slice(0, 8) + "01";
-    const rivit = await db`select o.id, o.total, o.shipping, o.printify_order_id, e.details->>'koodi' as koodi
+    await varmistaKumppanitaulu(db);
+    const kk = /^\d{4}-\d{2}$/.test(String(req.query.kuukausi || "")) ? req.query.kuukausi
+      : new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date()).slice(0, 7);
+    const rivit = await db`select o.id, o.paid_at, o.total, o.shipping, o.printify_order_id, e.details->>'koodi' as koodi
       from orders o join order_events e on e.order_id = o.id and e.kind = 'kumppani'
-      where o.status = 'maksettu' and o.paid_at >= ${alku} order by o.paid_at`;
+      where o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi'
+        and to_char(o.paid_at at time zone 'Europe/Helsinki', 'YYYY-MM') = ${kk}
+      order by o.paid_at`;
+    const nimet = new Map((await db`select koodi, nimi, email, aktiivinen from kumppanit`).map((k) => [k.koodi, k]));
     const kumppanit = new Map();
     for (const t of rivit) {
       const myynti = Number(t.total) || 0;
@@ -159,13 +185,19 @@ export default async function handler(req, res) {
           kate = myynti / 1.255 - ((Number(h.data.total_price) || 0) + (Number(h.data.total_shipping) || 0)) / 100 - (myynti * 0.015 + 0.25);
         }
       }
-      const k = kumppanit.get(t.koodi) || { koodi: t.koodi, tilauksia: 0, myynti: 0, provisio: 0 };
+      const p = provisioJaTila(tuotteet, kate ?? NaN);
+      const k = kumppanit.get(t.koodi) || { koodi: t.koodi, nimi: nimet.get(t.koodi)?.nimi ?? null, email: nimet.get(t.koodi)?.email ?? null,
+        tilauksia: 0, myynti: 0, provisio: 0, tilaukset: [] };
       k.tilauksia++;
       k.myynti = Math.round((k.myynti + myynti) * 100) / 100;
-      k.provisio = Math.round((k.provisio + provisio(tuotteet, kate ?? NaN)) * 100) / 100;
+      k.provisio = Math.round((k.provisio + p.provisio) * 100) / 100;
+      k.tilaukset.push({ tilaus: tilausnumero(t.id), maksettu: t.paid_at, myynti, tuotteet: Math.round(tuotteet * 100) / 100,
+        kate: kate == null ? null : Math.round(kate * 100) / 100, provisio: p.provisio, peruste: p.tila });
       kumppanit.set(t.koodi, k);
     }
-    return res.status(200).json({ ok: true, kaytossa: KUMPPANUUS.kaytossa, alku, kumppanit: [...kumppanit.values()] });
+    return res.status(200).json({ ok: true, kaytossa: KUMPPANUUS.kaytossa, kuukausi: kk, saanto: PROVISIOSAANTO,
+      kumppaneita: [...nimet.values()].filter((k) => k.aktiivinen).length, kumppanit: [...kumppanit.values()],
+      yhteensa: { tilauksia: rivit.length, provisio: Math.round([...kumppanit.values()].reduce((s, k) => s + k.provisio, 0) * 100) / 100 } });
   }
 
   // Personoidun t-paidan polkutesti: kassan laskenta (laskeTilaus) ja tilausrunko testiosoitteella, painokuvan haku ja

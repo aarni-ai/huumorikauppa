@@ -225,3 +225,12 @@ create table if not exists tarjouspyynnot (
   viesti text,
   created_at timestamptz not null default now()
 );
+
+-- Kumppanuusohjelman kumppanit (29.10.2026, api/_lib/kumppani.js, ?tehtava=kumppani-lisaa).
+create table if not exists kumppanit (
+  koodi text primary key,
+  nimi text not null,
+  email text,
+  aktiivinen boolean not null default true,
+  created_at timestamptz not null default now()
+);

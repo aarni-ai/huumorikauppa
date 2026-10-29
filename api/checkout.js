@@ -14,7 +14,7 @@ import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
-import { kumppaniKoodi } from "./_lib/kumppani.js";
+import { tarkistaKumppani } from "./_lib/kumppani.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
@@ -195,7 +195,7 @@ export default async function handler(req, res) {
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;
     await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount });
     // Kumppanuusohjelma (pois päältä, api/_lib/vakiot.js KUMPPANUUS): hyväksytty koodi kirjataan tilaukselle.
-    const kumppani = kumppaniKoodi(pyynto.kumppani);
+    const kumppani = await tarkistaKumppani(sql(), pyynto.kumppani);
     if (kumppani) await kirjaaTapahtuma(tilaus.id, "kumppani", { koodi: kumppani });
     return res.status(200).json({ ok: true, url: session.url });
   } catch (e) {

@@ -72,13 +72,14 @@ export const MAARAALENNUS = {
 
 /**
  * Kumppanuusohjelma (KATTEET.md "Kumppanuusohjelma"): kumppanilinkki ?ref=<koodi> tai kumppanikoodi kassalla.
- * POIS PÄÄLTÄ, kunnes Aarni hyväksyy (kaytossa: true). Provisio prosentteina tuotteiden arvosta ilman ALV:tä ja
- * toimitusta; tilauksen nettokatteesta jää aina vähintään minKateEuroa. Kumppanit: KUMPPANIT (koodi -> nimi).
+ * Hyväksytty 29.10.2026 ehdolla: kauppaan jää jokaisesta kumppanitilauksesta vähintään 5,00 € katetta provision
+ * jälkeen. Provisio enintään 10 % tuotteiden arvosta ilman ALV:tä ja toimitusta (api/_lib/kumppani.js).
+ * Kumppanit taulussa kumppanit (?tehtava=kumppani-lisaa); KUMPPANIT on varalista.
  */
 export const KUMPPANUUS = {
-  kaytossa: false,
+  kaytossa: true,
   provisioProsentti: 10,
-  minKateEuroa: 2,
+  minKateEuroa: 5,
 };
 
 /** Hyväksytyt kumppanit: koodi (pienet kirjaimet, numerot ja väliviiva) -> nimi. Lisää vasta sopimuksen jälkeen. */
