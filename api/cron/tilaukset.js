@@ -25,6 +25,7 @@
  * kutsua sekunnissa). Vercel Cron kutsuu viiden minuutin välein klo 05-06 UTC; kun kaikki on tarkistettu (jaljella 0),
  * loput kutsut eivät tee mitään.
  *
+ * ?tehtava=hintatarkistus: t-paitojen hinnat päivittäin tauluun hintahistoria ja 30 päivän alimman hinnan näyttö (Black Friday).
  * ?tehtava=resend-domain: lisää huumorikauppa.fi Resendiin (alue eu-west-1), jos sitä ei ole, ja palauttaa domainin tilan
  * ja vahvistukseen tarvittavat DNS-tietueet (KAYTTOONOTTO.md). &vahvista=1 pyytää Resendiä tarkistamaan tietueet.
  *
@@ -95,6 +96,45 @@ export default async function handler(req, res) {
       },
     });
     return res.status(200).json({ ok: true, kuiva, ...r });
+  }
+
+  // Hintatarkistus (Black Friday, kuluttajansuojalaki 2:6 a §): tallentaa t-paitojen hinnat päivittäin tauluun
+  // hintahistoria ja raportoi 30 päivän alimman hinnan näytön: nykyiset hinnat, ennen-hinnat, viimeisin päivitys,
+  // maksettujen tilausten t-paitarivien hinnat ja hintahistoria. Hälyttää, jos kampanjan t-paidan hinta poikkeaa
+  // kampanjan kappalehinnasta 30 päivää ennen kampanjaa tai sen aikana (TPAITAPARI_KAMPANJA).
+  if (req.query.tehtava === "hintatarkistus") {
+    const { TPAITAPARI_KAMPANJA: K } = await import("../_lib/vakiot.js");
+    await db`create table if not exists hintahistoria (paiva date not null, slug text not null, price numeric(10,2) not null,
+      original_price numeric(10,2), primary key (paiva, slug))`;
+    const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+    if (!kuiva) {
+      await db`insert into hintahistoria (paiva, slug, price, original_price)
+        select ${paiva}::date, slug, price, original_price from products where category = ${K.kategoria} and is_active
+        on conflict (paiva, slug) do update set price = excluded.price, original_price = excluded.original_price`;
+    }
+    const nyt = await db`select price::float, count(*)::int as tuotteita, count(original_price)::int as ennen_hinnallisia,
+        min(updated_at) as vanhin_paivitys, max(updated_at) as uusin_paivitys
+      from products where category = ${K.kategoria} and is_active group by price order by tuotteita desc`;
+    const ikkunaAlku = new Date(Date.parse(`${K.alku}T00:00:00+02:00`) - 30 * 864e5).toISOString().slice(0, 10);
+    const myydyt = await db`select to_char(o.paid_at at time zone 'Europe/Helsinki', 'YYYY-MM-DD') as paiva, (i->>'unit_price')::float as hinta,
+        count(*)::int as riveja
+      from orders o, jsonb_array_elements(o.items) i
+      where o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi' and i->>'slug' like '%t-paita%'
+        and o.paid_at >= now() - interval '60 days'
+      group by 1, 2 order by 1`;
+    const historia = await db`select paiva::text, min(price)::float as alin, max(price)::float as ylin, count(*)::int as tuotteita
+      from hintahistoria group by paiva order by paiva`;
+    const poikkeavat = nyt.filter((r) => Math.abs(r.price - K.kappalehinta) > 0.001);
+    const valvontaaika = paiva >= ikkunaAlku && paiva <= K.loppu;
+    if (valvontaaika && poikkeavat.length && !kuiva && onSahkoposti()) {
+      await halytys("T-paidan hinta poikkeaa Black Friday -kampanjan hinnasta", [
+        `Kampanja ${K.alku}-${K.loppu}: t-paidan hinta ${K.kappalehinta} € ja 30 päivän alin hinta ${K.alinHinta30pv} € markkinoinnissa.`,
+        ...poikkeavat.map((r) => `${r.tuotteita} t-paitaa hinnalla ${r.price} €`),
+        "Palauta hinta tai päivitä alinHinta30pv (api/_lib/vakiot.js) ennen kampanjaa.",
+      ]);
+    }
+    return res.status(200).json({ ok: true, kuiva, paiva, ikkuna: { alku: ikkunaAlku, kampanja: `${K.alku}-${K.loppu}` },
+      kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
   }
 
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.

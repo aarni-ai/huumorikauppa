@@ -203,3 +203,13 @@ alter table orders add column if not exists printify_cost numeric(10,2);
 alter table orders add column if not exists printify_cost_ex_tax numeric(10,2);
 -- Printifyn tuotekulu (total_price) euroina: Printify Premium -laskelma (20 % alennus vain tuotekulusta).
 alter table orders add column if not exists printify_product_cost numeric(10,2);
+
+-- Hintahistoria (29.10.2026): t-paitojen päivittäiset hinnat 30 päivän alimman hinnan näyttöä varten
+-- (kuluttajansuojalaki 2:6 a §, Black Friday). Kirjoittaa api/cron/tilaukset.js ?tehtava=hintatarkistus.
+create table if not exists hintahistoria (
+  paiva date not null,
+  slug text not null,
+  price numeric(10,2) not null,
+  original_price numeric(10,2),
+  primary key (paiva, slug)
+);
