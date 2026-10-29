@@ -26,6 +26,135 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 ilta: yritykset, personoitu paita, Black Friday, SEO, Shopping-syöte, canonical, nopeus
+
+### Black Friday ajastettu (hyväksytty)
+- **30 päivän alin hinta todennettu:** kaikki 401 aktiivista t-paitaa 24,90 € (Neon 29.10.), tuotetaulussa ei ole
+  ennen-hintoja (ei original_price-saraketta), ja toteutuneet t-paitatilaukset 29.6.-26.10. on myyty 24,90 €:lla
+  (KATTEET.md tilauskohtaiset katteet, myös 17.10., 24.10., 25.10. ja 26.10.).
+- **Uusi päivittäinen hintatarkistus** (`?tehtava=hintatarkistus`, cron 03.30 UTC): tallentaa t-paitojen hinnat
+  tauluun `hintahistoria` (ensimmäinen rivi 29.10.: 401 tuotetta, 24,90-24,90 €) ja hälyttää, jos hinta poikkeaa
+  28.10.-1.12. Näin 30 päivän alin hinta on todennettavissa koko kampanjaa edeltävältä ajalta.
+- `TPAITAPARI_KAMPANJA.kaytossa: true`, voimassa 27.11. klo 00.00 - 1.12. klo 23.59 Suomen aikaa (päivärajaus
+  palvelimella ja selaimessa). Kampanjateksti kertoo aina t-paidan hinnan ja 30 päivän alimman hinnan (24,90 €).
+- **/black-friday**: laskeutumissivu (title, H1, intro, 6 UKK:ta, meemi-t-paidat ensin), tila selaimessa (alkaa /
+  voimassa / päättyi). Etusivun nosto näkyy vain 27.11.-1.12. Päivät lasketaan kampanja-asetuksista.
+
+### Yritysten joululahjat ja määräalennus
+- **Portaat** (KATTEET.md "Määräalennus yrityksille"): 10+ t-paitaa -10 %, 25+ -12 %, 50+ -14 %. Kate vähintään
+  5 € paitaa kohden heikoimmallakin koolla ja varovaisella 3,25 %:n korttimaksulla (5,25 / 5,33 / 5,10 €).
+- **Kassa** laskee alennuksen automaattisesti (`MAARAALENNUS`), valitsee suurimman katevahdin läpäisevän
+  alennuksen (määrä, t-paitapari tai kahden tuotteen -5 %) ja näyttää korissa seuraavan portaan.
+- **Korjattu katevahdin piilovika:** 304/391 t-paidan tuoteriviltä puuttui lisäkappaleen toimitus ja painotalo,
+  jolloin jokainen paita laskettiin omana lähetyksenään. Nyt `PRINTIFY_TOIMITUS_FI` täydentää ne pohjatuotteen ja
+  painotalon mukaan (Printifyn katalogi 29.10.). Ilman korjausta määräalennus ei olisi koskaan toteutunut.
+- **/yritykset**: edut, portaat ja esimerkit (10 kpl 224,10 €, 25 kpl 547,80 €, 50 kpl 1 070,70 €), toimitus
+  yhteen osoitteeseen, myyjä ja laskutus Uusiku Oy, joulun viimeinen tilauspäivä (laskettu), esimerkkituotteet, UKK ja
+  **tarjouspyyntölomake**: tallennus tauluun `tarjouspyynnot` ja ilmoitus omistajalle (OMISTAJA_EMAIL; nyt
+  flyapeg@gmail.com, Resendin vahvistuksen jälkeen huumorikauppa@gmail.com). Roskapostisuoja piilokentällä.
+  Tuotantotesti tehty: lomake hyväksytty (`{"ok":true}`), testirivi "TESTI Claude (ei oikea)".
+- Linkit: /ryhmatilaukset, alatunniste ("Yrityksille") ja kaikki 8 sarjasivua ("Tiimipaidat ja yritysten
+  joululahjat"). Esirenderöity, sivukartassa.
+
+### Personoitu paita nimellä ja iällä (/personoitu-paita)
+- **Mallit** (ikävuositeemat ja Amatimies, etusivun suosituimmuus): Kokenut, ei vanha; Vuotta nuori; Paras vasta
+  tulossa; Takuu mennyt, toimii silti; Amatimies. Esimerkki: "MARJA 50V / KOKENUT, EI VANHA".
+- **Tarkistus selaimessa ja palvelimella:** nimi enintään 14 merkkiä (kirjaimet, välilyönti, väliviiva), ikä
+  18-110, estetyt sanat (kirosanat, solvaukset, väkivalta, ääriliikkeet, myös numeromuunnelmat kuten P3rkele),
+  ei osoitteita. Tavalliset nimet (Tapani, Panu, Marja-Liisa) menevät läpi.
+- **Esikatselu** tuotesivulla samalla SVG:llä kuin painokuva, 4 väriä (tekstin väri paidan mukaan), koot S-5XL,
+  kokotaulukko cm. Hinta 29,90 €, ei 14 päivän palautusoikeutta (personoitu), kerrottu sivulla.
+- **Maksun jälkeen automaattisesti:** Printify-tilaus lennosta luotavalla tuotteella (Gildan 64000, OPT OnDemand,
+  Tšekki, `print_areas.front`) ja tilauskohtainen painokuva `/api/painokuva` (3461 x 3955 px PNG, Anton-fontti,
+  allekirjoitettu osoite, teksti tarkistetaan uudelleen). Tilausvahti hyväksyy EU-painotalon kuten muutkin.
+- **Kate positiivinen jokaisessa koossa:** S-2XL 11,13 € (38,0 %), 3XL-5XL 10,10 € (34,4 %).
+- **Testitilaus:** `?tehtava=personointitesti` (kassan laskenta, tilausrunko, painokuva 200 image/png, Printify
+  hyväksyi tilauksen 26630629.37: tuote 8,90 €, toimitus 8,49 €, OPT pp 30). Peruttu ennen tuotantoa (canceled).
+  Peruutus onnistuu vasta, kun Printify on käsitellyt painokuvan (pending -> on-hold); testitehtävä odottaa nyt sen.
+- Mobiilitesti: nimi ja ikä, koko, Lisää koriin ja korissa "Personoitu ikäpaita, Koko L, Musta" toimivat.
+- Linkit: ikävuosiblogit (50v miehelle ja naiselle) ja kuusi ikävuosisivua.
+
+### SEO: kyselyt sijainneilla 5-20 (Search Console 28 pv, 844 klikkausta, 21 900 näyttöä)
+| Kysely (näytöt, sijainti) | Sivu Googlessa | Muutos |
+|---|---|---|
+| tonnin seteli paita (287, 6,3) | /tuote/tonnin-seteli-t-paita | title "Tonnin seteli paita: Tonnin Seteli t-paita", meta (uusi seoTitle/metaDescription) |
+| hauskat lahjat (180, 9,3) | jakautuu kolmelle sivulle | linkitys koontisivuille (ks. alla) |
+| 50v lahja naiselle (175, 9,5), hauska lahja 50-vuotiaalle naiselle (171, 6,4), 60-vuotiaalle naiselle (141, 6,0), mitä lahjaksi 60/50 vuotiaalle naiselle (124 + 92) | /blogi/lahja-naiselle-30v-40v-50v-60v | kirjoitettu uudelleen oikeilla tuotteilla, title/meta/H1/UKK kyselyn mukaan |
+| 50v lahja miehelle (156, 6,8), mitä lahjaksi 60 v miehelle (128, 10,3), 30v lahja miehelle (112, 9,1), lahja 50 v miehelle (96, 5,5) | /blogi/lahja-miehelle-30v-40v-50v-60v | sama |
+| hauskat lahjat miehelle (108, 12,1) | /blogi/parhaat-hauskat-lahjat-miehelle | title/meta, UKK, linkki koontisivulle |
+| lahja eläkkeelle jäävälle (84, 7,6), eläkelahja (70, 13,4) | /blogi/hauskimmat-elakelahjat-selviytymisopas | title "Eläkelahja: hauskat lahjat eläkkeelle jäävälle", UKK, tuotelinkit |
+| hauska lahja 40-vuotiaalle miehelle (62, 8,2) | /lahjat/40-vuotiaalle-miehelle | UKK hinta ja koko, linkki oppaaseen |
+| hauskat isänpäivälahjat (60, 9,2) | /blogi/hauskat-isanpaivalahjat-opas | title 2026, UKK |
+- Ikävuosiblogeissa mainittiin tuotteita, joita ei ole ("Museo-kappale", "Legendaarinen"-huppari, kangaskassi);
+  nyt jokainen mainittu tuote on linkki oikeaan tuotesivuun (tarkistettu valikoimasta).
+- Sisäiset linkit: ikävuosisivut -> oppaat, oppaat -> koontisivut, eläkeblogi -> /elakelahjat.
+- Tuotekuvausten "Tarkat mitat saat kysymällä sähköpostilla" (26 kpl) -> "Tarkat mitat senttimetreinä ovat
+  tuotesivun kokotaulukossa".
+- Havainto: neljä jouluaiheista blogia linkittää tuotteeseen /tuote/oma-tekstikuva-koriste, joka ohjautuu 301:llä.
+
+### Canonical
+- /lahjat/kalastajalle, /lahjat/metsastajalle ja muut sarjasivut viittaavat itseensä; /harrastus/kalastus ja
+  /harrastus/metsastys ohjautuvat 301:llä. Kaikki 223 sivukartan sivua (tuotesivuja lukuun ottamatta) vastaavat 200
+  ilman ohjausta ja canonical on sivu itse, paitsi 22 sivua, joita ei esirenderöity:
+- /lahjakortti ja /paketit esirenderöity (oma canonical staattisessa HTML:ssä). 20 yksittäistä pakettisivua
+  poistettu sivukartasta ja merkitty noindexiksi: ilman alennusta ne toistavat tuotesivut.
+- Tuntemattomat osoitteet (esim. /kalastajalle) palauttivat SPA-kuoren robots index ja etusivun otsikko (pehmeä
+  404). Boteille nyt noindex (`x-robots-tag: noindex`, tarkistettu uudesta projektista). huumorikauppa.fi välittää
+  vielä vanhan projektin kautta, jonka välimuisti palauttaa vanhan version; korjaus näkyy siellä domainin siirron
+  jälkeen.
+
+### Google Shopping -syöte
+- Otsikot "Aihe | Hauska t-paita kenelle | Huumorikauppa" (esim. "Sukulaisten IT-tuki. Ei palkkaa | Hauska t-paita
+  IT-ihmiselle | Huumorikauppa").
+- Toimitusajat (valmistus 2-5 + kuljetus 1-5 arkipäivää = 3-10) ja ilmaisen toimituksen raja 79 €.
+- Pääkuva selkeä etukuva, lisäkuvissa lifestyle-kuvat ensin (47 tuotteella lifestyle-kuva).
+- custom_label_3 teema (joulu, eläkeläiselle, isälle, naiselle, ikävuosi, harrastus-ammatti, meemi, muut),
+  custom_label_4 "top50" 50 tuotteelle: myydyimmät, etusivun suosituimmuussäännöt ja Search Consolen ikävuosihaut.
+  Myyntidataa on alle 20 tilausta, joten pelkkä myynti ei riitä 50 tuotteen valintaan.
+- identifier_exists=no oli jo kaikilla. Validointi: 571 tuotetta, 0 virhettä (varoituksena koko tuotetasolla).
+
+### Kumppanuusohjelma (valmis, pois päältä)
+- `?ref=<koodi>` (säilyy välilehden istunnon ajan vain markkinointisuostumuksella) ja kassan kirjaus tilauksen
+  tapahtumaksi, raportti `?tehtava=kumppanit`. Provisio 10 % tuotteista ilman ALV:tä, tilauksen katteesta jää aina
+  vähintään 2 € (KATTEET.md). Käyttöönotto: kumppani KUMPPANIT-listaan ja kaytossa: true.
+
+### Kiitosviesti: Seuraava tilaus
+- Vahvistusviestiin sama aihe muina tuotetyyppeinä (enintään 3, esim. Amatimies-hupparin ostajalle t-paita ja
+  juliste), ei alennuskoodia (ensitilauksen koodi on pois käytöstä katesäännön vuoksi). Lähtee, kun Resend toimii.
+
+### Nopeus: blogit hydratoidaan
+- Blogiartikkeli renderöidään esirenderöinnissä koko sovelluksena ja selain hydratoi sen (ei esikatselun vaihtoa).
+  Joulubannerin teema luetaan HTML:stä, jottei se hyppää. Lighthouse mobiili (hidastettu selain):
+
+| Sivu | Ennen | Jälkeen |
+|---|---|---|
+| /blogi/lahja-miehelle-30v-40v-50v-60v | 83, LCP 4,6 s | **99, LCP 1,7 s**, CLS 0,002 |
+| /blogi/lahja-naiselle-30v-40v-50v-60v | 83, LCP 4,5 s | **99, LCP 1,7 s**, CLS 0,002 |
+| /blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea | 99, LCP 1,6 s | 98, LCP 1,8 s |
+- Oikeassa selaimessa (4x hidas CPU) yksi LCP-ehdokas 0,7-1,7 s, ei hydratointivirheitä. Palaavalla ostajalla
+  (kori ei tyhjä) sivu toimii, kori näyttää tuotteen.
+
+### Arvioitu vaikutus euroina kuukaudessa (arvio, ei mitattua dataa)
+| Muutos | Oletus | Kate €/kk |
+|---|---|--:|
+| Yritystilaukset ja määräalennus | 1-3 tilausta (10-25 paitaa) marras-joulukuussa | 125-475 |
+| Personoitu paita | 4-10 tilausta ikävuosihauista (noin 250 klikkausta/kk, 1,5-4 %) | 45-110 |
+| SEO-nousut | kyselyt 5.-20. sijalta 3. sijan tuntumaan: noin +140 klikkausta, 1,5 % | 15-30 |
+| Shopping-syöte | Organic Shopping 4 -> 40-80 käyntiä | 5-10 |
+| Black Friday | koko kampanja 5 pv | 1-17 (kertaluonteinen) |
+| Kumppanuusohjelma | pois päältä | 0 |
+| **Yhteensä** | | **noin 190-640 €/kk marras-joulukuussa** |
+
+Tavoite 3 000 €/kk vaatii noin 400 tilausta kuukaudessa nykyisellä 7 €:n keskikatteella tai isompia yritystilauksia.
+Suurin yksittäinen vipu on yritystilausten myynti (yksi 50 paidan tilaus = noin 306 € katetta).
+
+### Mitä odottaa Aarnia
+1. **Printify-maksutapa tai saldo heti** (tilaus 26630629.36 payment-not-received, ei tuotannossa).
+2. Cowork: uudet Cloudflare-nimipalvelimet ja tietueet (TXT kahden vanhan rinnalle, A, www), Resend-tietueet.
+3. Cowork 31.10. tai myöhemmin: vanhan Stripe-tilin webhook Disable.
+4. Kumppanuusohjelman hyväksyntä ja ensimmäiset kumppanit (jos halutaan).
+5. Search Console > Tuotekatkelmat > Vahvista korjaus; GA4 Data API -avaimet suppiloa varten.
+
 ## 29.10.2026 iltapäivä: ensimmäinen oikea tilaus uuden kassan kautta
 
 **TOIMENPIDE AARNILLE HETI: Printify ei ole veloittanut tilausta, eikä se ole tuotannossa.** Printify-tilauksen
