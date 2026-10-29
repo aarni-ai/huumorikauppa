@@ -25,7 +25,9 @@
  * kutsua sekunnissa). Vercel Cron kutsuu viiden minuutin välein klo 05-06 UTC; kun kaikki on tarkistettu (jaljella 0),
  * loput kutsut eivät tee mitään.
  *
- * ?tehtava=hintatarkistus: t-paitojen hinnat päivittäin tauluun hintahistoria ja 30 päivän alimman hinnan näyttö (Black Friday).
+ * ?tehtava=hintatarkistus: t-paitojen todelliset myyntihinnat (api/_lib/kokohinnat.js) päivittäin tauluun hintahistoria ja
+ * 30 päivän alimman hinnan näyttö (Black Friday). Hälyttää, jos kampanjaan kuuluva t-paita (suora vertailu) ei ole 24,90 €.
+ * ?tehtava=alennuskoodit[&poista=KOODI]: kannan alennuskoodit ja niiden käyttö maksetuissa tilauksissa.
  * ?tehtava=resend-domain: lisää huumorikauppa.fi Resendiin (alue eu-west-1), jos sitä ei ole, ja palauttaa domainin tilan
  * ja vahvistukseen tarvittavat DNS-tietueet (KAYTTOONOTTO.md). &vahvista=1 pyytää Resendiä tarkistamaan tietueet.
  *
@@ -107,15 +109,22 @@ export default async function handler(req, res) {
     await db`create table if not exists hintahistoria (paiva date not null, slug text not null, price numeric(10,2) not null,
       original_price numeric(10,2), primary key (paiva, slug))`;
     const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
-    if (!kuiva) {
-      // Tuotetaulussa ei ole ennen-hintaa (original_price); sarake jää tyhjäksi.
+    // Todellinen myyntihinta (perushinta, S-2XL) kokohinnat.js:n säännöillä, ei tuotetaulun price-saraketta (29.10.2026).
+    const { onSuoraVertailu } = await import("../_lib/kokohinnat.js");
+    const paidat = (await kaikkiTuotteet()).filter((t) => t.category === K.kategoria && t.is_active !== false && !t.variants?.personoitu);
+    if (!kuiva && paidat.length) {
+      const slugit = paidat.map((t) => t.slug);
+      const hinnat = paidat.map((t) => Number(t.price));
       await db`insert into hintahistoria (paiva, slug, price)
-        select ${paiva}::date, slug, price from products where category = ${K.kategoria} and is_active
+        select ${paiva}::date, s, h from unnest(${slugit}::text[], ${hinnat}::numeric[]) as u(s, h)
         on conflict (paiva, slug) do update set price = excluded.price`;
     }
-    const nyt = await db`select price::float, count(*)::int as tuotteita, min(created_at) as vanhin_luotu,
-        min(updated_at) as vanhin_paivitys, max(updated_at) as uusin_paivitys
-      from products where category = ${K.kategoria} and is_active group by price order by tuotteita desc`;
+    const ryhmat = new Map();
+    for (const t of paidat) {
+      const k = `${Number(t.price)}|${onSuoraVertailu(t) ? "kampanja" : "muu"}`;
+      ryhmat.set(k, (ryhmat.get(k) || 0) + 1);
+    }
+    const nyt = [...ryhmat].map(([k, tuotteita]) => ({ price: Number(k.split("|")[0]), ryhma: k.split("|")[1], tuotteita }));
     const ikkunaAlku = new Date(Date.parse(`${K.alku}T00:00:00+02:00`) - 30 * 864e5).toISOString().slice(0, 10);
     const myydyt = await db`select to_char(o.paid_at at time zone 'Europe/Helsinki', 'YYYY-MM-DD') as paiva, (i->>'unit_price')::float as hinta,
         count(*)::int as riveja
@@ -125,17 +134,30 @@ export default async function handler(req, res) {
       group by 1, 2 order by 1`;
     const historia = await db`select paiva::text, min(price)::float as alin, max(price)::float as ylin, count(*)::int as tuotteita
       from hintahistoria group by paiva order by paiva`;
-    const poikkeavat = nyt.filter((r) => Math.abs(r.price - K.kappalehinta) > 0.001);
+    // Kampanjaan kuuluvat vain suoran vertailun t-paidat (24,90 €); muut t-paidat 27,90 € eivät kuulu kampanjaan.
+    const poikkeavat = nyt.filter((r) => r.ryhma === "kampanja" && Math.abs(r.price - K.kappalehinta) > 0.001);
     const valvontaaika = paiva >= ikkunaAlku && paiva <= K.loppu;
     if (valvontaaika && poikkeavat.length && !kuiva && onSahkoposti()) {
       await halytys("T-paidan hinta poikkeaa Black Friday -kampanjan hinnasta", [
-        `Kampanja ${K.alku}-${K.loppu}: t-paidan hinta ${K.kappalehinta} € ja 30 päivän alin hinta ${K.alinHinta30pv} € markkinoinnissa.`,
-        ...poikkeavat.map((r) => `${r.tuotteita} t-paitaa hinnalla ${r.price} €`),
+        `Kampanja ${K.alku}-${K.loppu}: kampanjan t-paitojen hinta ${K.kappalehinta} € ja 30 päivän alin hinta ${K.alinHinta30pv} € markkinoinnissa.`,
+        ...poikkeavat.map((r) => `${r.tuotteita} kampanjan t-paitaa hinnalla ${r.price} €`),
         "Palauta hinta tai päivitä alinHinta30pv (api/_lib/vakiot.js) ennen kampanjaa.",
       ]);
     }
     return res.status(200).json({ ok: true, kuiva, paiva, ikkuna: { alku: ikkunaAlku, kampanja: `${K.alku}-${K.loppu}` },
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
+  }
+
+  // Alennuskoodit (katepäätös 29.10.2026): kannan discount_codes ja käyttö maksetuissa tilauksissa.
+  // &poista=KOODI asettaa koodin pois käytöstä (is_active = false), rivi säilyy historiaa varten.
+  if (req.query.tehtava === "alennuskoodit") {
+    if (req.query.poista && !kuiva) {
+      await db`update discount_codes set is_active = false where upper(code) = ${String(req.query.poista).toUpperCase()}`;
+    }
+    const koodit = await db`select code, discount_type, discount_value, is_active from discount_codes order by code`;
+    const kaytto = await db`select upper(discount_code) as koodi, count(*)::int as tilauksia, sum(discount)::float as alennukset,
+        max(paid_at) as viimeksi from orders where status = 'maksettu' and discount_code is not null group by 1 order by 2 desc`;
+    return res.status(200).json({ ok: true, kuiva, koodit, kaytto });
   }
 
   // Kumppanit (kumppanuusohjelma, api/_lib/kumppani.js): lisäys ja poisto käytöstä.

@@ -2,8 +2,8 @@
  * Kumppanuusohjelma (hyväksytty 29.10.2026, KATTEET.md "Kumppanuusohjelma"). Asetukset api/_lib/vakiot.js KUMPPANUUS.
  *
  * Sääntö: provisio on enintään 10 % tilauksen tuotteiden arvosta ilman ALV:tä ja toimitusta, ja enintään summa, joka
- * jättää kauppaan provision jälkeen vähintään 5,00 € nettokatetta. Jos tilauksen kate on 5,00 € tai alle, provisio
- * on 0. Kate lasketaan Printifyn todellisilla kuluilla; kun kulua ei vielä tiedetä, provisio odottaa (0).
+ * jättää kauppaan provision jälkeen vähintään KUMPPANUUS.minKateEuroa (7,00 € 29.10.2026 alkaen, aiemmin 5,00 €)
+ * nettokatetta. Jos tilauksen kate on raja tai alle, provisio on 0. Kate lasketaan Printifyn todellisilla kuluilla; kun kulua ei vielä tiedetä, provisio odottaa (0).
  *
  * Kumppanit ovat taulussa kumppanit (koodi, nimi, email, aktiivinen), ja niitä hallitaan cron-tehtävillä
  * ?tehtava=kumppani-lisaa ja ?tehtava=kumppani-poista. Kassa kirjaa hyväksytyn koodin tilauksen tapahtumaksi
@@ -53,7 +53,7 @@ export async function tarkistaKumppani(db, arvo, { asetukset = KUMPPANUUS } = {}
 
 /**
  * Provisio ja sen peruste. tuotteet = tuotteiden summa alennusten jälkeen (sis. ALV), nettokate euroina ennen
- * provisiota (Printifyn todelliset kulut). tila: "taysi" (10 %), "rajattu" (kauppaan jää 5 €), "ei" (kate 5 € tai
+ * provisiota (Printifyn todelliset kulut). tila: "taysi" (10 %), "rajattu" (kauppaan jää 7 €), "ei" (kate 7 € tai
  * alle) tai "kate-tuntematon" (Printify-kulu ei vielä tiedossa, provisio 0 kunnes kulu tiedetään).
  */
 export function provisioJaTila(tuotteet, nettokate, asetukset = KUMPPANUUS) {

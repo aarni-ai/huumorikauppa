@@ -36,8 +36,7 @@ export function maaraPorras(kpl, maara = MAARAALENNUS) {
 
 /** Kuinka monta määräalennukseen kelpaavaa t-paitaa riveillä on. */
 export function maaraKelpaavat(rivit, tuotteetSlugilla, maara = MAARAALENNUS) {
-  const kappale = Math.round(maara.kappalehinta * 100);
-  return rivit.filter((r) => !r.paketti && r.unit_cents === kappale && tuotteetSlugilla.get(r.slug)?.category === maara.kategoria)
+  return rivit.filter((r) => !r.paketti && tuotteetSlugilla.get(r.slug)?.category === maara.kategoria)
     .reduce((s, r) => s + r.quantity, 0);
 }
 
@@ -100,10 +99,9 @@ export function sovellaKorialennus(rivit, tuotteetSlugilla, toimitusmaksu, asetu
   const kelpaavat = maara?.kaytossa ? maaraKelpaavat(rivit, tuotteetSlugilla, maara) : 0;
   const porras = maaraPorras(kelpaavat, maara);
   if (porras) {
-    const kappale = Math.round(maara.kappalehinta * 100);
     let alennusSentteina = 0;
     const uudet = rivit.map((r) => {
-      if (r.paketti || r.unit_cents !== kappale || tuotteetSlugilla.get(r.slug)?.category !== maara.kategoria) return r;
+      if (r.paketti || tuotteetSlugilla.get(r.slug)?.category !== maara.kategoria) return r;
       const alennettu = Math.round(r.unit_cents * (1 - porras.prosentti / 100));
       alennusSentteina += (r.unit_cents - alennettu) * r.quantity;
       return { ...r, unit_cents: alennettu, maaraalennus_prosentti: porras.prosentti };

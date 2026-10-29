@@ -991,7 +991,7 @@ export const landingPages: LandingPageDef[] = [
     h1: `Black Friday: kaksi t-paitaa ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)}`,
     intro: [
       `Black Friday -tarjous on voimassa ${BF_ALKU} klo 00.00 - ${BF_LOPPU} klo 23.59 Suomen aikaa: kaksi t-paitaa maksaa yhteensä ${BF_EUR(TPAITAPARI_KAMPANJA.parihinta)}, kun korissa on kaksi t-paitaa.`,
-      `Tarjous koskee kaikkia ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}:n t-paitoja, ja parin voi koota kahdesta eri paidasta. T-paidan hinta on ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}, ja alin hinta 30 päivän aikana ennen tarjousta on ${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. Hinta lasketaan ostoskorissa ilman koodia.`,
+      `Tarjous koskee kaikkia ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}:n t-paitoja, ja parin voi koota kahdesta eri paidasta. Kampanjan t-paitojen hinta on ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)}, ja alin hinta 30 päivän aikana ennen tarjousta on ${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. Hinta lasketaan ostoskorissa ilman koodia.`,
       BF_JOULU_TPAIDAT === TPAITAPARI_KAMPANJA.loppu
         ? `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${BF_JOULU_TEKSTI}, joten tarjouksen viimeinen päivä on myös t-paitojen joulun viimeinen tilauspäivä.`
         : `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${BF_JOULU_TEKSTI}.`,
@@ -1015,7 +1015,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Mikä on t-paidan alin hinta 30 päivän aikana?",
-        a: `${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. T-paidan hinta on ollut ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)} koko tarjousta edeltäneet 30 päivää.`,
+        a: `${BF_EUR(TPAITAPARI_KAMPANJA.alinHinta30pv)}. Kampanjan t-paitojen hinta on ollut ${BF_EUR(TPAITAPARI_KAMPANJA.kappalehinta)} koko tarjousta edeltäneet 30 päivää.`,
       },
       {
         q: "Ehtiikö tilaus jouluksi?",
@@ -1247,7 +1247,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Paljonko 40v-paita maksaa?",
-        a: `T-paita maksaa 24,90 € ja huppari 49,99 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `T-paita maksaa 27,90 € ja huppari 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
       {
         q: "Miten valitsen koon 40-vuotiaalle?",

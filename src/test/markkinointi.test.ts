@@ -207,8 +207,9 @@ describe("Ensitilauksen alennus ja kate", () => {
     expect(() => laskeTilaus(pyynto, [paita(24.9)], koodi)).toThrow(/Ensitilauksen alennuskoodia ei voi käyttää/);
     const ok = laskeTilaus(pyynto, [paita(29.9)], koodi);
     expect(ok.discount).toBe(2.99);
-    // Tavallinen koodi ilman ensitilaus-merkintää käyttäytyy kuten ennen.
-    expect(laskeTilaus(pyynto, [paita(24.9)], { type: "percent", value: 10 }).discount).toBe(2.49);
+    // Tavallinen koodi: hylätään, jos tilauksen nettokate jäisi alle 7 € (29.10.2026), muuten hyväksytään.
+    expect(() => laskeTilaus(pyynto, [paita(24.9)], { type: "percent", value: 10 })).toThrow(/Alennuskoodia ei voi käyttää/);
+    expect(laskeTilaus(pyynto, [paita(29.9)], { type: "percent", value: 5 }).discount).toBe(1.49);
     // Kulut tallentuvat riville päivän yhteenvetoa varten.
     expect(ok.rivit[0]).toMatchObject({ kulu_sentit: 890, toimitus_sentit: 849 });
   });

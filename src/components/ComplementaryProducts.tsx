@@ -19,21 +19,27 @@ interface Props {
   limit?: number;
   onNavigate?: () => void;
   className?: string;
+  /** Valmiiksi valitut suositukset (esim. selectSecondTshirt); muuten selectComplementary. */
+  picks?: Product[];
+  /** Otsikon alle näytettävä lyhyt teksti. */
+  note?: string;
 }
 
 /**
  * "Sopii yhteen": 2-3 täydentävää tuotetta (src/lib/recommendations.ts). Ei väitä, että tuotteita
  * ostettaisiin yhdessä. Lisäys koriin kuten tuotesivulla: oletusväri, koko valitaan itse.
  */
-export function ComplementaryProducts({ base, all, title = "Sopii yhteen", layout = "grid", limit = 3, onNavigate, className = "" }: Props) {
+export function ComplementaryProducts({ base, all, title = "Sopii yhteen", layout = "grid", limit = 3, onNavigate, className = "", picks: valmiit, note }: Props) {
   // Avain tuotetunnisteista: uusi taulukko joka renderöinnillä ei laske suosituksia uudelleen.
   const baseKey = base.map((b) => b.id).join(",");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const picks = useMemo(() => selectComplementary(base, all, limit), [baseKey, all, limit]);
+  const lasketut = useMemo(() => (valmiit ? [] : selectComplementary(base, all, limit)), [baseKey, all, limit, valmiit]);
+  const picks = valmiit ?? lasketut;
   if (picks.length < 2) return null;
   return (
     <section className={className} aria-label={title}>
-      <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">{title}</h2>
+      <h2 className={`font-display text-xl md:text-2xl text-foreground ${note ? "mb-1" : "mb-4"}`}>{title}</h2>
+      {note && <p className="text-sm text-muted-foreground mb-4">{note}</p>}
       <div className={layout === "grid" ? "grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4" : "space-y-3"}>
         {picks.map((p) => (
           <ComplementaryItem key={p.id} product={p} layout={layout} onNavigate={onNavigate} />

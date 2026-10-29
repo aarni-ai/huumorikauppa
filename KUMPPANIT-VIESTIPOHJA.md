@@ -22,9 +22,9 @@ Tarjoamme kumppanuutta: saat oman linkin ja kumppanikoodin, ja maksamme provisio
 kauttasi.
 
 - Provisio on 10 % tilauksen tuotteiden arvosta (ilman arvonlisäveroa ja toimituskuluja) tilauksista, joista
-  kaupalle jää provision jälkeen vähintään 5,00 € katetta. Jos kate ei riitä täyteen 10 %:iin, provisio on pienempi,
-  ja jos tilauksen kate on 5,00 € tai alle, provisiota ei makseta.
-- Esimerkkejä: yksi t-paita (24,90 €) = 1,98 €, kaksi t-paitaa = 3,77 €, huppari (49,99 €) = 2,86 €.
+  kaupalle jää provision jälkeen vähintään 7,00 € katetta. Jos kate ei riitä täyteen 10 %:iin, provisio on pienempi,
+  ja jos tilauksen kate on 7,00 € tai alle, provisiota ei makseta.
+- Esimerkkejä: yksi t-paita (27,90 €) = 2,22 €, yksi meemipaita (24,90 €) = 0,22 €, kaksi t-paitaa (27,90 €) = 4,22 €, huppari (52,90 €) = 3,14 €.
 - Tilitys kerran kuussa edellisen kuukauden tilauksista, kun 14 päivän palautusaika on päättynyt. Saat
   kuukausiraportin tilauksittain.
 - Seuraajasi maksavat tavallisen hinnan. Kumppanikoodi ei ole alennuskoodi.
@@ -58,7 +58,7 @@ kassan kenttään Kumppanikoodi. Pyydä seuraajia kirjoittamaan koodi kassalla, 
 Muistathan merkitä julkaisut mainonnaksi, esimerkiksi "Kaupallinen yhteistyö: Huumorikauppa".
 
 Provisio: 10 % tuotteiden arvosta ilman arvonlisäveroa ja toimituskuluja tilauksista, joista kaupalle jää vähintään
-5,00 € katetta (pienempi tai 0, jos kate ei riitä). Tilitys kerran kuussa edellisen kuukauden tilauksista.
+7,00 € katetta (pienempi tai 0, jos kate ei riitä). Tilitys kerran kuussa edellisen kuukauden tilauksista.
 
 Kiitos ja hauskaa yhteistyötä!
 

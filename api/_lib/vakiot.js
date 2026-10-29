@@ -13,12 +13,23 @@ export const TOIMITUS = 6.9;
  * Kahden tuotteen alennus (korialennus): kun korissa on vähintään KORIALENNUS_MIN_KPL fyysistä tuotetta eikä
  * alennuskoodia käytetä, palvelin (api/_lib/korialennus.js) alentaa pakettiin kuulumattomia rivejä
  * KORIALENNUS_PROSENTTI prosenttia. Alennus jätetään antamatta, jos tilauksen nettokate alennuksen jälkeen olisi alle
- * KORIALENNUS_MIN_KATE_EUROA (katevahti; 0 = ei koskaan tappiollista tilausta). -10 % hylättiin: kaksi hupparia ja
+ * KORIALENNUS_MIN_KATE_EUROA (katevahti, 7 € 29.10.2026 alkaen). -10 % hylättiin: kaksi hupparia ja
  * t-paita + Textildruck-huppari jäisivät tappiolle (KATTEET.md). 0 = pois käytöstä.
  */
 export const KORIALENNUS_PROSENTTI = 5;
 export const KORIALENNUS_MIN_KPL = 2;
-export const KORIALENNUS_MIN_KATE_EUROA = 0;
+export const KORIALENNUS_MIN_KATE_EUROA = 7;
+
+/**
+ * Tilauksen vähimmäiskate (Aarnin päätös 29.10.2026, KATTEET.md "Hinnoittelu 29.10.2026"): jokaisesta tavallisesta
+ * tilauksesta jää kaikkien kulujen jälkeen (Printify ilman ALV:tä, Stripe, provisio, alennukset) vähintään 7,00 €.
+ * Alennuskoodi, pakettialennus ja kahden tuotteen alennus annetaan vain, jos raja täyttyy. Yritystilauksissa (10+
+ * t-paitaa) raja on MAARAALENNUS.minKatePerPaita paitaa kohden.
+ */
+export const TILAUKSEN_MIN_KATE_EUROA = 7;
+
+/** Kategoriat, joita myydään vain toisen tuotteen lisänä (tarra yksin jättäisi katetta alle 5 €). */
+export const LISATUOTE_KATEGORIAT = ["tarrat"];
 
 /**
  * Black Friday ja joulu 2026 (KATTEET.md "Black Friday ja joulu 2026"): "Kaksi t-paitaa 44,90 €". Aarni hyväksyi
@@ -54,9 +65,10 @@ export const SUOSTUMUS_UUTISKIRJE =
 export const SUOSTUMUS_MUISTUTUS = "Lähetä minulle muistutus, jos tilaus jää kesken.";
 
 /**
- * Määräalennus yrityksille ja ryhmille (KATTEET.md "Määräalennus yrityksille", sivu /yritykset): t-paidat
- * (kappalehinta 24,90 €) samassa tilauksessa, toimitus yhteen osoitteeseen. Portaat pitävät katteen vähintään
- * 5 € paitaa kohden heikoimmallakin koolla. Korvaa kahden tuotteen alennuksen ja t-paitaparin, kun se on suurempi.
+ * Määräalennus yrityksille ja ryhmille (KATTEET.md "Määräalennus yrityksille", sivu /yritykset): kaikki t-paidat
+ * (24,90 € ja 27,90 €, kappalehinta = edullisin hinta esimerkeissä) samassa tilauksessa, toimitus yhteen osoitteeseen.
+ * Katevahti pitää katteen vähintään 5 € paitaa kohden. Korvaa kahden tuotteen alennuksen ja t-paitaparin, kun se on
+ * suurempi.
  */
 export const MAARAALENNUS = {
   kaytossa: true,
@@ -72,14 +84,14 @@ export const MAARAALENNUS = {
 
 /**
  * Kumppanuusohjelma (KATTEET.md "Kumppanuusohjelma"): kumppanilinkki ?ref=<koodi> tai kumppanikoodi kassalla.
- * Hyväksytty 29.10.2026 ehdolla: kauppaan jää jokaisesta kumppanitilauksesta vähintään 5,00 € katetta provision
- * jälkeen. Provisio enintään 10 % tuotteiden arvosta ilman ALV:tä ja toimitusta (api/_lib/kumppani.js).
+ * Hyväksytty 29.10.2026 ehdolla: kauppaan jää jokaisesta kumppanitilauksesta vähintään 7,00 € katetta provision
+ * jälkeen (raja nostettu 5,00 €:sta 29.10.2026). Provisio enintään 10 % tuotteiden arvosta ilman ALV:tä ja toimitusta (api/_lib/kumppani.js).
  * Kumppanit taulussa kumppanit (?tehtava=kumppani-lisaa); KUMPPANIT on varalista.
  */
 export const KUMPPANUUS = {
   kaytossa: true,
   provisioProsentti: 10,
-  minKateEuroa: 5,
+  minKateEuroa: 7,
 };
 
 /** Hyväksytyt kumppanit: koodi (pienet kirjaimet, numerot ja väliviiva) -> nimi. Lisää vasta sopimuksen jälkeen. */

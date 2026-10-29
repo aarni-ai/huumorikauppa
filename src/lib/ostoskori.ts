@@ -128,7 +128,7 @@ export interface KorialennusTila {
   voimassa: boolean;
   /** Voimassa olevan alennuksen tyyppi: "prosentti" (kahden tuotteen -X %) tai "tpaitapari" (kampanja). */
   tyyppi?: "prosentti" | "tpaitapari" | "maara";
-  /** Määräalennukseen kelpaavat t-paidat korissa (24,90 €:n t-paidat). */
+  /** Määräalennukseen kelpaavat t-paidat korissa (kaikki t-paidat 29.10.2026 alkaen). */
   maaraTpaitoja?: number;
   /** T-paitaparikampanja voimassa: korissa on näin monta kampanjan t-paitaa (vihjettä "lisää toinen t-paita" varten). */
   kampanjaTpaitoja?: number;
@@ -145,7 +145,7 @@ export interface KorialennusTila {
 function maaranTpaitat(fyysiset: KoriRivi[]): number {
   if (!MAARAALENNUS.kaytossa) return 0;
   return fyysiset
-    .filter((i) => i.product.category === MAARAALENNUS.kategoria && Math.abs(i.product.price - MAARAALENNUS.kappalehinta) < 0.005)
+    .filter((i) => i.product.category === MAARAALENNUS.kategoria)
     .reduce((s, i) => s + i.quantity, 0);
 }
 

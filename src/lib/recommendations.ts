@@ -151,3 +151,24 @@ export function quickAddOption(p: Product): QuickAdd {
   if (!isVariantAvailable(p, color, sizes[0])) return { kind: "link" };
   return { kind: "add", size: undefined, color };
 }
+
+/**
+ * "Lisää toinen t-paita" (ostoskori, 29.10.2026): kun korissa on yksi t-paita, ehdotetaan toista t-paitaa. Ensin
+ * samaan aiheeseen tai aihepiiriin sopivat (selectComplementary), loput suosituimmista. Toinen paita nostaa korin
+ * nettokatteen noin 9,60 eurosta noin 19 euroon kahden tuotteen alennuksen jälkeen (KATTEET.md "Hinnoittelu 29.10.2026").
+ */
+export function selectSecondTshirt(base: Product[], all: Product[], limit = 3): Product[] {
+  const baseIds = new Set(base.map((b) => b.id));
+  const baseThemes = new Set(base.map((b) => themeText(b.name)));
+  const paidat = all.filter((p) => p.category === "t-paidat" && !baseIds.has(p.id) && isRecommendable(p) && !baseThemes.has(themeText(p.name)));
+  const result = selectComplementary(base, paidat, limit);
+  const seen = new Set(result.map((p) => themeText(p.name)));
+  for (const p of [...paidat].sort((a, b) => getPriorityRank(a) - getPriorityRank(b))) {
+    if (result.length >= limit) break;
+    const t = themeText(p.name);
+    if (seen.has(t)) continue;
+    seen.add(t);
+    result.push(p);
+  }
+  return result;
+}

@@ -36,12 +36,12 @@ const t = (slug: string, quantity = 1, size = "M") => ({ slug, quantity, size, c
 const r2 = (n: number) => Math.round(n * 100) / 100;
 
 describe("Korialennuksen vakiot", () => {
-  it("toimitus 6,90 € alle 79 €, kahden tuotteen alennus 5 %, katevahti 0 €", () => {
+  it("toimitus 6,90 € alle 79 €, kahden tuotteen alennus 5 %, katevahti 7 €", () => {
     expect(TOIMITUS).toBe(6.9);
     expect(ILMAINEN_TOIMITUS_RAJA).toBe(79);
     expect(KORIALENNUS_PROSENTTI).toBe(5);
     expect(KORIALENNUS_MIN_KPL).toBe(2);
-    expect(KORIALENNUS_MIN_KATE_EUROA).toBe(0);
+    expect(KORIALENNUS_MIN_KATE_EUROA).toBe(7);
   });
 });
 
@@ -91,10 +91,10 @@ describe("Kahden tuotteen alennus kassalla", () => {
     expect(r.total).toBe(r2(r.rivit.reduce((x: number, y: { unit_cents: number }) => x + y.unit_cents, 0) / 100 + 6.9));
     expect(r.shipping).toBe(6.9);
   });
-  it("kaksi hupparia: ilmainen toimitus (99,80 €) ja alennus, kate pysyy positiivisena", () => {
+  it("kaksi hupparia 49,90 €: ilmainen toimitus, mutta alennus jäisi alle 7 €:n katteen, joten sitä ei anneta", () => {
     const r = laskeTilaus(pyynto([t("testi-huppari", 2)]), tuotteet, null);
     expect(r.shipping).toBe(0);
-    expect(r.basket_discount).toBeCloseTo(4.99, 1);
+    expect(r.basket_discount).toBe(0);
     const k = laskeTilauksenNettokate([{ tuote: huppari, varianttiId: 11, maara: 2, yksikkohinta: 47.4 }], 0);
     expect(k.nettokate).toBeCloseTo(3.88, 1);
   });

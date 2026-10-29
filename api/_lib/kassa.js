@@ -19,9 +19,9 @@
  * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
-import { laskeKate, laskeTilauksenKate } from "./kate.js";
+import { laskeKate, laskeTilauksenKate, laskeTilauksenNettokate } from "./kate.js";
 import { rivinHinta } from "./kokohinnat.js";
-import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
 import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
@@ -29,8 +29,12 @@ import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
 import { PERSONOITU_TUOTE, onPersonoitu, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
-/** Koodit, jos tietokantaa ei ole (samat kuin kassasivulla). Tietokannan discount_codes ohittaa nämä. */
-export const OLETUSKOODIT = { HUUMORI5: { type: "percent", value: 5 }, PALAA10: { type: "percent", value: 10 } };
+/**
+ * Koodit, jos tietokantaa ei ole. Tyhjä 29.10.2026 alkaen: HUUMORI5 ja PALAA10 poistettiin (KATTEET.md
+ * "Alennuskoodit 29.10.2026"). Tietokannan discount_codes ja ensitilauksen koodit toimivat, kun tilauksen kate pysyy
+ * alennuksen jälkeen vähintään TILAUKSEN_MIN_KATE_EUROA.
+ */
+export const OLETUSKOODIT = {};
 
 const sentit = (x) => Math.round(x * 100);
 const STRIPE_MINIMI_SENTIT = 50;
@@ -119,6 +123,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     throw new KassaVirhe("Lahjakortilla ei voi ostaa lahjakortteja. Tee lahjakortin osto erillisenä tilauksena.", "giftcard_for_giftcard");
   }
 
+  // Tarra myydään vain toisen fyysisen tuotteen lisänä.
+  if (rivit.length && rivit.every((r) => LISATUOTE_KATEGORIAT.includes(byId.get(r.product_id)?.category))) {
+    throw new KassaVirhe("Tarra myydään t-paidan, hupparin tai julisteen lisänä. Lisää koriin myös toinen tuote.", "addon_only");
+  }
   // Fyysiset tuotteet: alennuskoodi ja toimitusmaksu kuten ennen.
   const valisumma = rivit.reduce((s, r) => s + r.unit_price * r.quantity, 0);
   const prosentti = alennus?.type === "percent" ? alennus.value : 0;
@@ -134,11 +142,23 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     );
     if (!kate.sallittu) throw new KassaVirhe("Ensitilauksen alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
   }
+  // Vähimmäiskate 7 €: alennuskoodi hylätään ja pakettialennus jätetään antamatta, jos kate jäisi alle rajan.
+  const nettokate = (rr) => laskeTilauksenNettokate(
+    rr.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 })),
+    toimitus,
+  );
+  if (alennus && fyysiset.length) {
+    const k = nettokate(fyysiset);
+    if (!k.tunnettu || k.nettokate < TILAUKSEN_MIN_KATE_EUROA) throw new KassaVirhe("Alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
+  }
   let pakettiAlennus = 0;
   if (!alennus && lisat.paketit?.length) {
     const p = sovellaPaketit(fyysiset, bySlug, lisat.paketit);
-    fyysiset = p.rivit;
-    pakettiAlennus = p.alennus;
+    const k = p.alennus > 0 ? nettokate(p.rivit) : null;
+    if (!k || (k.tunnettu && k.nettokate >= TILAUKSEN_MIN_KATE_EUROA)) {
+      fyysiset = p.rivit;
+      pakettiAlennus = p.alennus;
+    }
   }
   let koriAlennus = 0;
   if (!alennus && fyysiset.length) {

@@ -20,10 +20,8 @@ import { PaymentIcons } from "@/components/PaymentIcons";
 import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
-const VALID_CODES: Record<string, { percent: number; label: string }> = {
-  "HUUMORI5": { percent: 5, label: "5% alennus" },
-  "PALAA10": { percent: 10, label: "10% alennus" },
-};
+/** Kiinteät koodit poistettiin 29.10.2026 (KATTEET.md "Alennuskoodit"); koodit tarkistetaan palvelimella. */
+const VALID_CODES: Record<string, { percent: number; label: string }> = {};
 
 const CheckoutPage = () => {
   const { items, totalPrice, totalItems } = useCartContext();

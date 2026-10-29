@@ -29,7 +29,7 @@ export const yrityksetPage = {
   path: "/yritykset",
   intro: [
     `Huumorikaupan t-paidat ovat yrityksen joululahja tai tiimipaita, joka tulee käyttöön. Kun samassa tilauksessa on vähintään ${YRITYS_PORTAAT[0].min} t-paitaa, kassa vähentää määräalennuksen automaattisesti ilman koodia.`,
-    `Määräalennus koskee kaikkia ${eur(MAARAALENNUS.kappalehinta)}:n t-paitoja, ja paidat voivat olla eri designeja, kokoja ja värejä.`,
+    `Määräalennus koskee kaikkia t-paitoja, ja paidat voivat olla eri designeja, kokoja ja värejä. Esimerkit on laskettu ${eur(MAARAALENNUS.kappalehinta)}:n t-paidoilla.`,
   ],
   portaat: YRITYS_PORTAAT.map((p) => ({ teksti: `${p.min}+ t-paitaa`, prosentti: p.prosentti })),
   esimerkit: [10, 25, 50].map(yritysEsimerkki),
@@ -69,7 +69,7 @@ export const yrityksetPage = {
     },
     {
       q: "Voiko paidat olla eri designeja ja kokoja?",
-      a: "Voi. Määräalennus lasketaan kaikista samassa tilauksessa olevista 24,90 €:n t-paidoista designista, koosta ja väristä riippumatta.",
+      a: "Voi. Määräalennus lasketaan kaikista samassa tilauksessa olevista t-paidoista designista, koosta ja väristä riippumatta.",
     },
     {
       q: "Koskeeko määräalennus huppareita?",

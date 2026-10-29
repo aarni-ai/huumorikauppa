@@ -1,4 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
+import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
 import { Helmet } from "react-helmet-async";
 
 import { categories } from "@/data/products";
@@ -629,7 +631,15 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
               <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
             )}
             <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
-            <TpaitapariRivi kategoria={product.category} hinta={product.price} className="mt-1" />
+            <TpaitapariRivi kategoria={product.category} hinta={kokoHinta} className="mt-1" />
+            {LISATUOTE_KATEGORIAT.includes(product.category) && (
+              <p className="mt-1 text-xs text-muted-foreground">Tarra myydään t-paidan, hupparin tai julisteen lisänä samassa tilauksessa.</p>
+            )}
+            {(product.category === "t-paidat" || product.category === "hupparit") && (
+              <Link to="/personoitu-paita" className="mt-1 inline-block text-xs text-primary underline">
+                Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}
+              </Link>
+            )}
           </div>
 
           {/* Images */}

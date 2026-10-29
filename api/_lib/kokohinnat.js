@@ -9,10 +9,33 @@
  */
 export const ISOT_KOOT = /^(3|4|5|6)XL$/i;
 
+/**
+ * Hinnoittelu 29.10.2026 (KATTEET.md "Hinnoittelu 29.10.2026"): tavoite keskikate vähintään 10 € tilausta kohden ja
+ * vähintään 7 € jokaisessa tavallisessa tilauksessa kaikkien kulujen jälkeen. Kilpailijat 29.10.2026:
+ * Hauskatpaidat.fi t-paita 25 €, premium/oma printti 30 €, huppari 45-69 € (yleensä 50-55 €); Stuntman t-paita
+ * 19,90-22,90 €, huppari 38,90-44,90 € (erikoismallit 50-59 €).
+ * - T-paidat, joilla on suora kilpailijavertailu (SUORA_VERTAILU: samat meemit ja aiheet kilpailijalla 25 €): 24,90 €,
+ *   3XL-5XL 27,90 € (heikoimman koon kate muuten 6,77 €). Black Friday koskee vain näitä (kappalehinta 24,90 €).
+ * - Muut t-paidat (harrastus- ja ammattisarjat, joulu-, ikävuosi-, kaupunki- ja muut uniikit designit): 27,90 €.
+ * - Hupparit 52,90 €, 3XL+ 57,90 €. Julisteet 24,90 €. Keraaminen koriste 22,90 €.
+ */
+export const SUORA_VERTAILU = /saatanan.?tunarit|tonnin.?seteli|^i\s*(love|❤️?|♥)\s*my\s*(girl|boy)friend|alkoholiongelmaa|maailman.?paras.?(äiti|aiti)|^kalju\s*\||amatimies|^100.?%?.?eläkeläinen\s*\||^eläkeläinen\s*\||^olen eläkkeellä\s*\|/i;
+
+export const TPAITA_HINNAT = { suora: 24.9, suoraIso: 27.9, uniikki: 27.9 };
+
 /** Kategoriat, joilla on koon mukainen hinta: { perus, iso } (iso = 3XL ja isommat). */
 export const KOKOHINNAT = {
-  hupparit: { perus: 49.99, iso: 55.0 },
+  hupparit: { perus: 52.9, iso: 57.9 },
 };
+
+/** Kiinteät kategoriahinnat (kaikki koot). */
+export const KATEGORIAHINNAT = {
+  seinataulut: 24.9,
+  koristeet: 22.9,
+};
+
+/** Onko t-paidalla suora kilpailijavertailu (24,90 €). Personoitu paita hinnoitellaan erikseen (api/_lib/personoitu.js). */
+export const onSuoraVertailu = (tuote) => tuote?.category === "t-paidat" && SUORA_VERTAILU.test(String(tuote?.name || "").trim());
 
 /**
  * Tuotteen perushinta (listat, pienin koko): kategorian perushinta tai tuoterivin hinta.
@@ -20,8 +43,7 @@ export const KOKOHINNAT = {
  * @returns {number}
  */
 export function perusHinta(tuote) {
-  const k = KOKOHINNAT[tuote?.category];
-  return k ? k.perus : Number(tuote?.price);
+  return hinnoitteleRivi(tuote).price;
 }
 
 /**
@@ -40,13 +62,19 @@ export function rivinHinta(tuote, koko) {
  * poikkeaa perushinnasta. Muut kategoriat sellaisenaan.
  */
 export function hinnoitteleRivi(tuote) {
-  const k = KOKOHINNAT[tuote?.category];
+  if (!tuote || tuote.variants?.personoitu) return tuote;
+  const kiintea = KATEGORIAHINNAT[tuote.category];
+  if (kiintea) return { ...tuote, price: kiintea };
+  const t = tuote.category === "t-paidat" && Number(tuote.price) > 0
+    ? (onSuoraVertailu(tuote) ? { perus: TPAITA_HINNAT.suora, iso: TPAITA_HINNAT.suoraIso } : { perus: TPAITA_HINNAT.uniikki, iso: TPAITA_HINNAT.uniikki })
+    : null;
+  const k = t || KOKOHINNAT[tuote?.category];
   if (!k) return tuote;
   const koot = new Set([
     ...(Array.isArray(tuote?.variants?.sizes) ? tuote.variants.sizes : []),
     ...Object.keys(tuote?.variants?.variant_map || {}).map((a) => a.split("|")[1]),
   ]);
   const size_prices = {};
-  for (const koko of koot) if (koko && ISOT_KOOT.test(koko)) size_prices[koko] = k.iso;
+  for (const koko of koot) if (koko && ISOT_KOOT.test(koko) && k.iso !== k.perus) size_prices[koko] = k.iso;
   return { ...tuote, price: k.perus, variants: { ...(tuote.variants || {}), size_prices } };
 }

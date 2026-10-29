@@ -10,6 +10,9 @@ import { useMemo } from "react";
 import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { KorialennusVihje, korialennusNimi } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
+import { selectSecondTshirt } from "@/lib/recommendations";
+import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
+import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
@@ -32,6 +35,15 @@ const CartPage = () => {
   const shippingProgress = tila.edistyminen;
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
   const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
+  // Yksi t-paita korissa: ehdotetaan toista t-paitaa (kate noin 9,60 € -> noin 19 €, KATTEET.md "Hinnoittelu 29.10.2026").
+  const fyysiset = items.filter((i) => !i.giftCard);
+  const vainTarroja = fyysiset.length > 0 && fyysiset.every((i) => LISATUOTE_KATEGORIAT.includes(i.product.category));
+  const yksiPaita = fyysiset.length === 1 && fyysiset[0].quantity === 1 && fyysiset[0].product.category === "t-paidat";
+  const toinenPaita = useMemo(
+    () => (yksiPaita ? selectSecondTshirt([fyysiset[0].product], allProducts) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [yksiPaita, fyysiset[0]?.product.id, allProducts],
+  );
 
   if (items.length === 0) {
     return (
@@ -153,8 +165,25 @@ const CartPage = () => {
           {/* Rajan alittavassa korissa lisätuotetta ehdottaa mittari (MittarinLisatuote). */}
           {shippingFree && !tila.vainLahjakortteja && <TarraLisamyynti kori={items} kaikki={allProducts} />}
 
+          {yksiPaita && toinenPaita.length >= 2 && (
+            <ComplementaryProducts
+              base={[fyysiset[0].product]}
+              all={allProducts}
+              picks={toinenPaita}
+              title="Lisää toinen t-paita"
+              note="Kahden tuotteen alennus lasketaan ostoskorissa automaattisesti."
+              className="mt-6 pt-6 border-t border-border"
+            />
+          )}
+          {yksiPaita && (
+            <Link to="/personoitu-paita" className="flex items-center gap-3 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground hover:border-primary">
+              <Gift className="h-5 w-5 text-primary shrink-0" aria-hidden="true" />
+              <span><span className="font-semibold">Saajan nimi ja ikä paitaan:</span> personoitu t-paita {eur(PERSONOITU_HINTA)}, esikatselu ennen tilausta.</span>
+            </Link>
+          )}
+
           {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
-          {!tila.vainLahjakortteja && (
+          {!tila.vainLahjakortteja && !yksiPaita && (
           <ComplementaryProducts
             base={items.map((i) => i.product)}
             all={allProducts}
@@ -219,6 +248,12 @@ const CartPage = () => {
                   : ""}
               </p>
             </div>
+          )}
+
+          {vainTarroja && (
+            <p className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-800" role="status">
+              Tarra myydään t-paidan, hupparin tai julisteen lisänä. Lisää koriin myös toinen tuote.
+            </p>
           )}
 
           {/* Alennuskoodi ja lahjakortti syötetään kassalla (CheckoutPage), jossa ne myös tarkistetaan. */}

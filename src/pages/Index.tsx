@@ -10,8 +10,11 @@ import { HOME_FAQS } from "@/seo/pageFaqs";
 import {
   Users, ThumbsUp, Heart, Star, Truck, RotateCcw, Shield,
   ChevronLeft, ChevronRight, Flag,
-  MapPin, Gift, ArrowRight,
+  MapPin, Gift, ArrowRight, Building2,
 } from "lucide-react";
+import { formatPriceFi } from "@/seo/site";
+import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
+import { YRITYS_PORTAAT } from "@/data/yrityksetPage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
@@ -197,6 +200,24 @@ const Index = () => {
       </section>
 
 
+
+      {/* NOSTOT (29.10.2026): personoitu paita ja yritystilaukset, korkein kate tilausta kohden (KATTEET.md). */}
+      <section className="container pt-6 grid grid-cols-1 md:grid-cols-2 gap-3" aria-label="Personoitu paita ja yritystilaukset">
+        <Link to="/personoitu-paita" className="flex items-center gap-4 rounded-xl border border-primary/40 bg-primary/5 p-4 hover:border-primary transition-colors">
+          <Gift className="h-8 w-8 text-primary shrink-0" aria-hidden="true" />
+          <span>
+            <span className="block font-display text-lg text-foreground">Saajan nimi ja ikä paitaan</span>
+            <span className="block text-sm text-muted-foreground">Personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}, esikatselu ennen tilausta.</span>
+          </span>
+        </Link>
+        <Link to="/yritykset" className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 hover:border-primary transition-colors">
+          <Building2 className="h-8 w-8 text-primary shrink-0" aria-hidden="true" />
+          <span>
+            <span className="block font-display text-lg text-foreground">Yrityksille ja porukoille</span>
+            <span className="block text-sm text-muted-foreground">Määräalennus {YRITYS_PORTAAT[0].min}+ t-paidasta alkaen -{YRITYS_PORTAAT[0].prosentti} %, ilman koodia.</span>
+          </span>
+        </Link>
+      </section>
 
       <h1 className="sr-only">{STATIC_PAGE_META["/"].h1}</h1>
 

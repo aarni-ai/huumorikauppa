@@ -7,12 +7,16 @@ import { KUMPPANUUS } from "../../api/_lib/vakiot.js";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
-/** Esimerkkitilaukset (KATTEET.md korien nettokatteet ennen provisiota). */
+/**
+ * Esimerkkitilaukset (KATTEET.md "Hinnoittelu 29.10.2026": korien nettokatteet ennen provisiota uusilla hinnoilla).
+ * Kauppaan jää provision jälkeen vähintään KUMPPANUUS.minKateEuroa (7 €).
+ */
 const ESIMERKIT = [
-  { kori: "1 t-paita, 24,90 €", tuotteet: 24.9, kate: 7.22 },
-  { kori: "2 t-paitaa, 47,31 € (kahden tuotteen -5 %)", tuotteet: 47.31, kate: 14.65 },
-  { kori: "1 huppari, 49,99 €", tuotteet: 49.99, kate: 7.86 },
-  { kori: "25 t-paitaa yritykselle, 547,80 € (määräalennus -12 %)", tuotteet: 547.8, kate: 158.89 },
+  { kori: "1 t-paita, 27,90 €", tuotteet: 27.9, kate: 9.57 },
+  { kori: "1 meemipaita, 24,90 €", tuotteet: 24.9, kate: 7.22 },
+  { kori: "2 t-paitaa, 53,01 € (kahden tuotteen -5 %)", tuotteet: 53.01, kate: 19.11 },
+  { kori: "1 huppari, 52,90 €", tuotteet: 52.9, kate: 10.14 },
+  { kori: "25 meemipaitaa yritykselle, 547,80 € (määräalennus -12 %)", tuotteet: 547.8, kate: 158.89 },
 ];
 
 export const kumppanitPage = {

@@ -306,7 +306,7 @@ ${jouluLause()}
     slug: "parhaat-hauskat-lahjat-miehelle",
     title: "Parhaat hauskat lahjat miehelle 2025-15 lahjaa jotka oikeasti naurattavat",
     metaTitle: "Hauskat lahjat miehelle: 15 ideaa | Huumorikauppa.fi",
-    metaDescription: `Hauskat lahjat miehelle isälle, kaverille ja puolisolle: t-paidat 24,90 € ja hupparit 49,99 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen ${ILMAINEN_RAJA_TEKSTI} €:sta.`,
+    metaDescription: `Hauskat lahjat miehelle isälle, kaverille ja puolisolle: t-paidat 24,90-27,90 € ja hupparit 52,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen ${ILMAINEN_RAJA_TEKSTI} €:sta.`,
     excerpt: "15 parasta hauskaa lahjaa miehelle - isälle, kaverille, aviomiehelle tai sedälle. Löydä lahja joka oikeasti naurattaa.",
     publishedAt: "2023-11-05",
     updatedAt: "2026-10-29",
@@ -400,7 +400,7 @@ Talvipipo hauskalla brodeerauksella on käytännöllinen ja hauska lahja.
       },
       {
         q: "Paljonko hauska lahja miehelle maksaa?",
-        a: `T-paidat maksavat 24,90 € ja hupparit 49,99 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `T-paidat maksavat 24,90-27,90 € ja hupparit 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
     ],
     relatedCategories: ["t-paidat", "hupparit"],
@@ -1117,7 +1117,7 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
     slug: "lahja-miehelle-30v-40v-50v-60v",
     title: "Lahja miehelle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
     metaTitle: "50v lahja miehelle ja 30v, 40v, 60v | Huumorikauppa.fi",
-    metaDescription: "Hauska 50v lahja miehelle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 24,90 € ja hupparit 49,99 €. Toimitus 3-10 arkipäivää.",
+    metaDescription: "Hauska 50v lahja miehelle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 27,90 € ja hupparit 52,90 €. Toimitus 3-10 arkipäivää.",
     excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle miehelle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä on itse vitsi.",
     publishedAt: "2023-03-15",
     updatedAt: "2026-10-29",
@@ -1125,7 +1125,7 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
     tags: ["50v lahja miehelle", "lahja 50 vuotiaalle miehelle", "60v lahja miehelle", "30v lahja miehelle", "lahja 40 vuotiaalle miehelle"],
     content: `## Lahja miehelle ikävuosittain: 30v, 40v, 50v ja 60v
 
-Hauska lahja pyöreitä täyttävälle miehelle on paita tai huppari, jossa ikä on itse vitsi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (24,90 €) että huppari (49,99 €). Alla ideat iän mukaan, ja jokaisen kohdalla tuote, jonka voit tilata suoraan.
+Hauska lahja pyöreitä täyttävälle miehelle on paita tai huppari, jossa ikä on itse vitsi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (27,90 €) että huppari (52,90 €). Alla ideat iän mukaan, ja jokaisen kohdalla tuote, jonka voit tilata suoraan.
 
 ## 50v lahja miehelle
 
@@ -1187,7 +1187,7 @@ Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on ko
     faq: [
       {
         q: "Mitä lahjaksi 50-vuotiaalle miehelle?",
-        a: "Hauska 50v lahja miehelle on paita tai huppari, jossa ikä käännetään kehuksi, esimerkiksi 50v puoli vuosisataa, ei naarmuakaan tai 50 ja paras vasta tulossa. T-paidat maksavat 24,90 € ja hupparit 49,99 €.",
+        a: "Hauska 50v lahja miehelle on paita tai huppari, jossa ikä käännetään kehuksi, esimerkiksi 50v puoli vuosisataa, ei naarmuakaan tai 50 ja paras vasta tulossa. T-paidat maksavat 27,90 € ja hupparit 52,90 €.",
       },
       {
         q: "Mitä lahjaksi 60-vuotiaalle miehelle, jolla on jo kaikkea?",
@@ -1211,7 +1211,7 @@ Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on ko
     slug: "lahja-naiselle-30v-40v-50v-60v",
     title: "Lahja naiselle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
     metaTitle: "50v lahja naiselle ja 30v, 40v, 60v | Huumorikauppa.fi",
-    metaDescription: "Hauska 50v lahja naiselle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 24,90 € ja hupparit 49,99 €. Toimitus 3-10 arkipäivää.",
+    metaDescription: "Hauska 50v lahja naiselle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 27,90 € ja hupparit 52,90 €. Toimitus 3-10 arkipäivää.",
     excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle naiselle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä käännetään kehuksi.",
     publishedAt: "2023-06-10",
     updatedAt: "2026-10-29",
@@ -1219,7 +1219,7 @@ Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on ko
     tags: ["50v lahja naiselle", "hauska lahja 50-vuotiaalle naiselle", "hauska lahja 60-vuotiaalle naiselle", "mitä lahjaksi 60 vuotiaalle naiselle", "lahja naiselle 40v"],
     content: `## Lahja naiselle ikävuosittain: 30v, 40v, 50v ja 60v
 
-Hauska lahja pyöreitä täyttävälle naiselle on paita tai huppari, jossa ikä käännetään kehuksi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (24,90 €) että huppari (49,99 €). Paidat ovat unisex-mallia, joten koon valinnassa auttaa tuotesivun kokotaulukko senttimetreinä.
+Hauska lahja pyöreitä täyttävälle naiselle on paita tai huppari, jossa ikä käännetään kehuksi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (27,90 €) että huppari (52,90 €). Paidat ovat unisex-mallia, joten koon valinnassa auttaa tuotesivun kokotaulukko senttimetreinä.
 
 ## 50v lahja naiselle
 
@@ -1277,7 +1277,7 @@ Vertaa kokotaulukon leveyttä ja pituutta saajan omaan hyvin istuvaan paitaan. J
     faq: [
       {
         q: "Mitä lahjaksi 50-vuotiaalle naiselle?",
-        a: "Hauska 50v lahja naiselle on paita tai huppari, jonka teksti kehuu juhlijaa, esimerkiksi 50 ja hopeanhohtoinen (vain hiukset) tai 50 ja paras vasta tulossa. T-paidat maksavat 24,90 € ja hupparit 49,99 €.",
+        a: "Hauska 50v lahja naiselle on paita tai huppari, jonka teksti kehuu juhlijaa, esimerkiksi 50 ja hopeanhohtoinen (vain hiukset) tai 50 ja paras vasta tulossa. T-paidat maksavat 27,90 € ja hupparit 52,90 €.",
       },
       {
         q: "Mikä on hauska lahja 60-vuotiaalle naiselle?",
@@ -2121,7 +2121,7 @@ Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen 
     slug: "hauskimmat-elakelahjat-selviytymisopas",
     title: "Hauskimmat eläkelahjat ja selviytymisopas vapaaherralle tai -rouvalle",
     metaTitle: "Eläkelahja: hauskat lahjat eläkkeelle jäävälle | Huumorikauppa",
-    metaDescription: `Hauska eläkelahja eläkkeelle jäävälle: eläkeläisen t-paidat 24,90 €, hupparit 49,99 € ja julisteet 22,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+    metaDescription: `Hauska eläkelahja eläkkeelle jäävälle: eläkeläisen t-paidat 24,90-27,90 €, hupparit 52,90 € ja julisteet 24,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     excerpt: "Eläkkeelle jääminen on Suomen virallisin lupa juoda kahvia, hoitaa pihaa ja kommentoida lottoarvontaa. Tässä hauskimmat eläkelahjat ja selviytymisopas tuoreelle vapaaherralle.",
     publishedAt: "2026-04-22",
     updatedAt: "2026-10-29",
@@ -2218,7 +2218,7 @@ Yhdistelmä toimii: **huumorilahja juhlaan, käytännöllinen lahja arkeen.** N�
       },
       {
         q: "Mikä on hyvä eläkelahja työkaverilta?",
-        a: "Lähtökahveille sopii t-paita tai juliste, jonka teksti kertoo uudesta arjesta, kuten Maanantai on nyt vain sana tai Herätyskello eläkkeellä myös. T-paita maksaa 24,90 € ja juliste 22,90 €, joten kustannus jakautuu helposti porukalle.",
+        a: "Lähtökahveille sopii t-paita tai juliste, jonka teksti kertoo uudesta arjesta, kuten Maanantai on nyt vain sana tai Herätyskello eläkkeellä myös. T-paita maksaa 24,90-27,90 € ja juliste 24,90 €, joten kustannus jakautuu helposti porukalle.",
       },
       {
         q: "Mitä eläkeläiselle lahjaksi?",
