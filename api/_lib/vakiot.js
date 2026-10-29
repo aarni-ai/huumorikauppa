@@ -69,3 +69,17 @@ export const MAARAALENNUS = {
   ],
   minKatePerPaita: 5,
 };
+
+/**
+ * Kumppanuusohjelma (KATTEET.md "Kumppanuusohjelma"): kumppanilinkki ?ref=<koodi> tai kumppanikoodi kassalla.
+ * POIS PÄÄLTÄ, kunnes Aarni hyväksyy (kaytossa: true). Provisio prosentteina tuotteiden arvosta ilman ALV:tä ja
+ * toimitusta; tilauksen nettokatteesta jää aina vähintään minKateEuroa. Kumppanit: KUMPPANIT (koodi -> nimi).
+ */
+export const KUMPPANUUS = {
+  kaytossa: false,
+  provisioProsentti: 10,
+  minKateEuroa: 2,
+};
+
+/** Hyväksytyt kumppanit: koodi (pienet kirjaimet, numerot ja väliviiva) -> nimi. Lisää vasta sopimuksen jälkeen. */
+export const KUMPPANIT = {};

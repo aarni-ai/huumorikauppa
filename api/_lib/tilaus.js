@@ -11,7 +11,9 @@
  */
 import { sql, kirjaaTapahtuma } from "./db.js";
 import * as P from "./printify.js";
-import { halytys, laheta, vahvistusViesti, tilausnumero } from "./sahkoposti.js";
+import { halytys, laheta, vahvistusViesti, tilausnumero, seuraavaTilausSuositukset } from "./sahkoposti.js";
+import { kaikkiTuotteet } from "./tuotteet.js";
+import { onPiilotettuTuote } from "./piilotetut.js";
 import { onLahjakortti } from "./lahjakortti.js";
 import { toimitaLahjakortit, veloitaLahjakortti } from "./lahjakortti-db.js";
 import { pgMarkkinointi } from "./markkinointi-db.js";
@@ -175,7 +177,10 @@ export async function kasitteleMaksu(session) {
 export async function jalkikasittely(tilaus) {
   if (tilaus.gift_card_code && !tilaus.gift_card_charged_at) await veloitaLahjakortti(tilaus);
   if (!tilaus.confirmation_email_sent_at) {
-    const v = vahvistusViesti(tilaus);
+    // "Seuraava tilaus" -suositukset samasta aiheesta (ei alennuskoodia); virhe ei estä vahvistusta.
+    let suositukset = [];
+    try { suositukset = seuraavaTilausSuositukset(tilaus, await kaikkiTuotteet(), { piilotettu: onPiilotettuTuote }); } catch { /* ilman suosituksia */ }
+    const v = vahvistusViesti(tilaus, suositukset);
     const r = await laheta({ to: tilaus.customer_email, ...v });
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });

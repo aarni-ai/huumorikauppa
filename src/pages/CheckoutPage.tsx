@@ -3,6 +3,7 @@ import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
 import { korialennusNimi } from "@/components/KorialennusVihje";
+import { kumppani } from "@/lib/kumppani";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
@@ -161,6 +162,7 @@ const CheckoutPage = () => {
             ...(i.product.type === "giftcard" ? { type: "giftcard", giftCard: i.giftCard } : {}),
           })),
           customerEmail: form.email,
+          kumppani: kumppani() ?? undefined,
           customerName: `${form.firstName} ${form.lastName}`,
           shippingAddress: onlyGiftCards ? undefined : { address: form.address, zip: form.zip, city: form.city, phone: form.phone },
           recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,

@@ -55,7 +55,44 @@ function kehys(sisalto) {
   return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;line-height:1.5">${sisalto}<p style="color:#666;font-size:13px;margin-top:28px">Kysyttävää? Vastaa tähän viestiin, niin autamme.<br>Huumorikauppa.fi</p><p style="color:#888;font-size:12px">${esc(myyjaRivi())}</p></div>`;
 }
 
-export function vahvistusViesti(tilaus) {
+const designAvain = (nimi) => {
+  const osat = String(nimi ?? "").split(/\s+[|｜]\s+|\s*｜\s*/);
+  return osat.length < 2 ? null : osat[0].toLowerCase().replace(/[–—-]/g, " ").replace(/[^\p{L}\p{N}%\s]/gu, " ").replace(/\s+/g, " ").trim() || null;
+};
+
+/**
+ * "Seuraava tilaus" -suositukset kiitosviestiin: sama aihe (design) toisena tuotetyyppinä kuin ostettu tuote,
+ * enintään 3, vain näkyvät tuotteet. Ei alennuskoodia (katesääntö: ensitilauksen koodi on pois käytöstä).
+ */
+export function seuraavaTilausSuositukset(tilaus, tuotteet, { piilotettu = () => false } = {}) {
+  const ostetut = (tilaus.items || []).filter((i) => i.type !== "giftcard");
+  const ostetutSlugit = new Set(ostetut.map((i) => i.slug));
+  const ostetutKategoriat = new Map();
+  for (const i of ostetut) {
+    const p = tuotteet.find((t) => t.slug === i.slug);
+    const k = designAvain(i.name);
+    if (p && k) ostetutKategoriat.set(k, new Set([...(ostetutKategoriat.get(k) || []), p.category]));
+  }
+  const tulos = [];
+  for (const p of tuotteet) {
+    if (tulos.length >= 3) break;
+    if (!p.is_active || ostetutSlugit.has(p.slug) || piilotettu(p)) continue;
+    const k = designAvain(p.name);
+    if (!k || !ostetutKategoriat.has(k) || ostetutKategoriat.get(k).has(p.category)) continue;
+    if (tulos.some((t) => t.category === p.category && designAvain(t.name) === k)) continue;
+    tulos.push(p);
+  }
+  return tulos.map((p) => ({ nimi: p.name, slug: p.slug, hinta: Number(p.price), category: p.category }));
+}
+
+/** Kiitosviestin "Seuraava tilaus" -osio (tyhjä, jos suosituksia ei ole). */
+function suositusHtml(suositukset) {
+  if (!suositukset?.length) return "";
+  const rivit = suositukset.map((s) => `<li><a href="https://huumorikauppa.fi/tuote/${encodeURIComponent(s.slug)}">${esc(s.nimi)}</a>, ${eur(s.hinta)}</li>`).join("");
+  return `<h3>Seuraava tilaus: sama aihe muina tuotteina</h3><ul>${rivit}</ul>`;
+}
+
+export function vahvistusViesti(tilaus, suositukset = []) {
   const rivit = (tilaus.items || [])
     .map((i) => `<tr><td style="padding:4px 0">${i.quantity} × ${esc(i.name)}${i.size ? `, ${esc(i.size)}` : ""}${i.color ? `, ${esc(i.color)}` : ""}</td><td style="text-align:right">${eur(i.unit_price * i.quantity)}</td></tr>`)
     .join("");
@@ -69,7 +106,7 @@ export function vahvistusViesti(tilaus) {
     : "Lahjakorttien koodit tulevat erillisessä viestissä.";
   return {
     subject: `Tilausvahvistus #${nro} - Huumorikauppa`,
-    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr><tr><td style="color:#666">Sisältää ALV 25,5 %</td><td style="text-align:right;color:#666">${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}</td></tr>${lahjakortilla}</table><p>${loppu}</p>`),
+    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr><tr><td style="color:#666">Sisältää ALV 25,5 %</td><td style="text-align:right;color:#666">${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}</td></tr>${lahjakortilla}</table><p>${loppu}</p>${suositusHtml(suositukset)}`),
     text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)} (sisältää ALV 25,5 % ${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}). ${loppu}\n\n${myyjaRivi()}`,
   };
 }

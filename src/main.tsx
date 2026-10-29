@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App, { preloadRoute } from "./App.tsx";
 import "./index.css";
 import { revealApp, setPreviewReveal, setProductSeed } from "./lib/prerenderPreview";
+import { tallennaKumppaniUrlista } from "./lib/kumppani";
 
 // Sovelluksen moduulit latautuivat: esirenderöidyn HTML:n käynnistysvahti (BOOT_GUARD_SCRIPT,
 // src/seo/prerender/html.ts) ei enää lataa sivua uudelleen eikä näytä varasisältöä.
 (window as Window & { __hkMain?: boolean }).__hkMain = true;
 
 const rootElement = document.getElementById('root')!;
+// Kumppanilinkki ?ref= (pois päältä, src/lib/kumppani.ts).
+tallennaKumppaniUrlista(window.location.search);
 // Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):
 // siirretään #rootin viereen näkyviin ja React käynnistetään piilotettuun #rootiin. Vaihto
 // (revealApp, src/lib/prerenderPreview.ts) tapahtuu sivun ensimmäisessä renderöinnissä, viimeistään

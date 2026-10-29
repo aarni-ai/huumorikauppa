@@ -391,3 +391,22 @@ describe("/api/sahkoposti", () => {
     expect((await kutsu(s, { query: { arvostelu: allekirjoita("arvostelu", "ei-ole") } })).status).toBe(404);
   });
 });
+
+describe("kiitosviestin Seuraava tilaus -suositukset", async () => {
+  const { seuraavaTilausSuositukset, vahvistusViesti } = await import("../../api/_lib/sahkoposti.js");
+  const tuotteet = [
+    { slug: "amatimies-huppari", name: "Amatimies | Huppari", category: "hupparit", price: 49.99, is_active: true },
+    { slug: "amatimies-t-paita", name: "Amatimies | T-Paita", category: "t-paidat", price: 24.9, is_active: true },
+    { slug: "amatimies-juliste-poster", name: "Amatimies | Juliste (poster)", category: "seinataulut", price: 22.9, is_active: true },
+    { slug: "kalju-t-paita", name: "Kalju | T-Paita", category: "t-paidat", price: 24.9, is_active: true },
+  ];
+  const tilaus = { id: "abcdef12-0000", items: [{ slug: "amatimies-huppari", name: "Amatimies | Huppari", quantity: 1, unit_price: 49.99 }], shipping: 6.9, total: 56.89 };
+  it("sama aihe muina tuotetyyppeinä, ei ostettua eikä muita aiheita, ei alennuskoodia", () => {
+    const s = seuraavaTilausSuositukset(tilaus, tuotteet);
+    expect(s.map((x) => x.slug)).toEqual(["amatimies-t-paita", "amatimies-juliste-poster"]);
+    const v = vahvistusViesti(tilaus, s);
+    expect(v.html).toContain("Seuraava tilaus");
+    expect(v.html).toContain("/tuote/amatimies-t-paita");
+    expect(v.html).not.toMatch(/koodi|alennus -/i);
+  });
+});

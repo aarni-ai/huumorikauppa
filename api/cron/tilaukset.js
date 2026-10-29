@@ -138,6 +138,36 @@ export default async function handler(req, res) {
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
   }
 
+  // Kumppaniraportti (kumppanuusohjelma, pois päältä): maksetut tilaukset, joilla on tapahtuma "kumppani", myynti ja
+  // provisio kumppaneittain (api/_lib/kumppani.js provisio: % tuotteista ilman ALV:tä, kate jää vähintään 2 €).
+  // &alku=YYYY-MM-DD (oletus kuluvan kuun alku).
+  if (req.query.tehtava === "kumppanit") {
+    const { provisio } = await import("../_lib/kumppani.js");
+    const { KUMPPANUUS } = await import("../_lib/vakiot.js");
+    const alku = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.alku || "")) ? req.query.alku : new Date().toISOString().slice(0, 8) + "01";
+    const rivit = await db`select o.id, o.total, o.shipping, o.printify_order_id, e.details->>'koodi' as koodi
+      from orders o join order_events e on e.order_id = o.id and e.kind = 'kumppani'
+      where o.status = 'maksettu' and o.paid_at >= ${alku} order by o.paid_at`;
+    const kumppanit = new Map();
+    for (const t of rivit) {
+      const myynti = Number(t.total) || 0;
+      const tuotteet = myynti - (Number(t.shipping) || 0);
+      let kate = null;
+      if (t.printify_order_id && onPrintify()) {
+        const h = await haeTilaus(t.printify_order_id);
+        if (h.ok && h.data && h.data.status !== "canceled") {
+          kate = myynti / 1.255 - ((Number(h.data.total_price) || 0) + (Number(h.data.total_shipping) || 0)) / 100 - (myynti * 0.015 + 0.25);
+        }
+      }
+      const k = kumppanit.get(t.koodi) || { koodi: t.koodi, tilauksia: 0, myynti: 0, provisio: 0 };
+      k.tilauksia++;
+      k.myynti = Math.round((k.myynti + myynti) * 100) / 100;
+      k.provisio = Math.round((k.provisio + provisio(tuotteet, kate ?? NaN)) * 100) / 100;
+      kumppanit.set(t.koodi, k);
+    }
+    return res.status(200).json({ ok: true, kaytossa: KUMPPANUUS.kaytossa, alku, kumppanit: [...kumppanit.values()] });
+  }
+
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.
   // Tuotesivu näyttää vain julkaistut (api/sahkoposti.js ?arviot=<slug>).
   if (req.query.tehtava === "arviot") {
