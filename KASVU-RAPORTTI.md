@@ -26,6 +26,82 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 30.10.2026: ensimmäinen kumppani, kumppanin raportti, ALV-varasuunnitelma, laatuvirhe, SEO 10 sivua
+
+### Ensimmäinen kumppani: antsa
+- Kumppani Antti "antsa" Heinonen (Instagram @antsa_outdoor) on lisätty kantaan (?tehtava=kumppani-lisaa).
+  - koodi ANTSA, järjestelmässä `antsa`
+  - linkki https://huumorikauppa.fi/?ref=antsa
+- Tervetuloviesti, 5 somejulkaisua ja suorat linkit 5 tuotteeseen ovat tiedostossa **KUMPPANIT-ANTSA.md**. Cowork
+  lähettää viestin sieltä.
+  - Tuotteet: Kala oli tätäkin isompi, Pilkillä. Älä soita, Passissa 14 tuntia, Ei ole kiire olen metsässä
+    -huppari ja Mökillä ei ole kiire.
+- KUMPPANIT-ANTSA.md on .gitignoressa, koska repo on julkinen ja tiedostossa on sähköposti ja raportin avain.
+  Tiedosto on vain koneella ~/huumorikauppa.
+
+### Kumppanin oma raportti
+- Sivu /kumppanit/raportti?koodi=...&avain=... näyttää klikkaukset, tilaukset, tuotteiden arvon ja provision
+  kuukausittain.
+- Tilauksista näytetään vain päivä, tuotteiden arvo ja provisio. Asiakkaiden tietoja ei näytetä.
+- Avain on allekirjoitettu tunniste (MARKKINOINTI_SALAISUUS), jota ei tallenneta. kumppani-lisaa palauttaa linkin.
+- Väärä avain tai koodi palauttaa 404. Sivu on noindex ja robots.txt:ssä Disallow.
+- Klikkaukset: kumppanilinkin avaus kirjataan päiväkohtaiseen laskuriin (taulu kumppani_klikit, ei tunnisteita
+  eikä evästeitä). Botit ohitetaan. Vain hyväksytyt, aktiiviset koodit kirjataan.
+
+### Printifyn ALV-varasuunnitelma (valmis, pois päältä)
+- Yksi kytkin: api/_lib/vakiot.js `PRINTIFY_ALV_VAHENNETTAVA = false`. Se vaihtaa kulukertoimen 1,255:een ja
+  hinnaston `HINNASTOT.alvKulu`:un. Hinnat:
+  - t-paidat 30,90/31,90 €, 3XL+ 34,90/35,90 €
+  - hupparit 65,90 €, 3XL+ 72,90 €
+  - juliste 28,90 €, koriste 27,90 €
+  - personoitu 32,90 €
+  - Black Friday -pari 49,90 €
+- Tuotannon kuluilla jokainen variantti jää tällöinkin vähintään 7,09 €:oon.
+- Sisältöjen hintamaininnat (blogit, laskeutumissivut, UKK, mediakit) tulevat nyt hinnastosta
+  (src/data/hintatekstit.ts), joten ne päivittyvät samalla.
+- 30 päivän alin hinta pysyy 24,90 €:ssa, mikä on laillinen alin hinta Black Fridayta edeltäviltä 30 päivältä.
+- Käsin päivitettävät kohdat on listattu KATTEET.md:ssä ("ALV-varasuunnitelma 30.10.2026").
+
+### Laatuvirhe: Teron Tonnin seteli -paita (26630629.22)
+- **Painotalo:** tilaus tehtiin 17.10. vanhan kassan kautta. Printify Choice reititti sen latvialaiselle
+  painotalolle (Printifyn painotalo 417, rivin maa Latvia, lähetys UNISEND LI399199132LT, toimitettu 29.10.).
+- **Muut tilaukset samalta painotalolta:** 9 t-paitariviä 27.3.-26.10. Niistä Tonnin seteli -paidat ovat .22, .25
+  (24.10.) ja .26 (25.10.).
+- **Muut valitukset:** kaupan arvioissa ei ole odottavia tai huonoja arvioita. Liitetty Gmail on eri tili kuin
+  kaupan postilaatikko, joten sähköpostivalituksia ei voitu tarkistaa.
+- **Siirto:** Tonnin seteli -t-paidat siirrettiin jo 25.10. EU-siirrossa OPT OnDemandille (Tšekki), ja uuden kassan
+  tilaukset menevät sinne (esim. .28 27.10.).
+  - Tonnin seteli -hupparit ovat Textildruckilla (Saksa).
+  - Molempien tuotteiden kaikki värit ja koot ovat myynnissä.
+  - Kate on vähintään 7 €: heikoin suoran vertailun t-paita 7,05 €.
+  - Latvialaiselle painotalolle ei mene enää Tonnin seteli -tilauksia, joten uutta siirtoa ei tarvita.
+- **Cowork:**
+  - Tee Printifyyn laatureklamaatio tilauksesta 26630629.22 (valokuvat Terolta, homeen haju ja painatus). Printify
+    korvaa tai painaa uudelleen virheellisen tuotteen.
+  - Seuraa tilauksia .25 ja .26, jotka tulivat samalta painotalolta.
+
+### SEO: seuraavat 10 sivua sijainneilta 5-20 (Search Console 28 pv)
+| Sivu (näytöt, sijainti) | Kyselyt | Muutos |
+|---|---|---|
+| /blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea (1 411, 9,5) | hauskat 50v lahjat, persoonallinen lahja 50-vuotiaalle | kirjoitettu uudelleen: 10 oikeaa tuotetta linkkeineen (ennen olemattomia "Museo-kappale", "Legendaarinen"-huppari, pipot), title/meta, UKK 5 |
+| /blogi/hauska-lahja-kaverille (856, 10,0) | mitä ostaa kaverille synttärilahjaksi, hauska lahja ystävälle | kirjoitettu uudelleen: 12 ideaa oikeilla tuotteilla (ennen pipo ja kangaskassi), UKK 4 |
+| /blogi/hauskat-lahjat-tyokavereille-opas (754, 13,3) | läksiäislahja työkaverille, eläkelahja työkaverille, kiitoslahja | kirjoitettu uudelleen: läksiäis-, eläke-, kiitos- ja pikkujoululahjat, tiimin määräalennus, UKK 6 |
+| /lahjat/60-vuotiaalle-miehelle (337, 12,8) | mitä lahjaksi 60 vuotiaalle miehelle (128), jolla on jo kaikkea (89) | title, H1, UKK: jolla on jo kaikkea, isälle, hinta |
+| /lahjat/50-vuotiaalle-miehelle (247, 18,1) | mitä lahjaksi 50 vuotiaalle miehelle | title, H1, UKK: isälle, personoitu, hinta |
+| /lahjat/50-vuotiaalle-naiselle (209, 16,0) | 50v lahja naiselle (175), persoonallinen lahja | title, H1, UKK: persoonallinen, jolla on jo kaikkea, hinta |
+| /lahjat/60-vuotiaalle-naiselle (122, 18,9) | mitä lahjaksi 60 vuotiaalle naiselle (124), 60v lahja naiselle (81) | title, H1, kuvaus, UKK |
+| /lahjat/30-vuotiaalle-miehelle (184, 9,7) | 30v lahja miehelle (112), lahja 30-vuotiaalle miehelle (67) | title, H1, UKK: mitä lahjaksi, veljelle/kaverille, hinta |
+| /elakelahjat (153, 14,4) | eläkelahja (70), mitä lahjaksi eläkkeelle jäävälle (58), mitä eläkeläiselle lahjaksi (54) | title, H1, UKK |
+| /hauska-isanpaivalahja (/isanpaiva-lahjat 166, 15,0) | hauska isänpäivälahja, isänpäivä huppari | title 2026, UKK: hupparit, hinta; linkki personoituun paitaan |
+
+Hinnat UKK:issa tulevat hinnastosta. Laskeutumissivuilla ei ole superlatiiveja (testi kieltää sanan "paras").
+
+**Tarkistus:**
+- Googlebot, Bingbot ja Chrome: kaikki 10 sivua sekä /kumppanit, /kumppanit/raportti ja etusivu palauttavat 200,
+  ja uudet otsikot näkyvät.
+- Katetaulu: nykyisellä hinnastolla 0 varianttia alle 7 €:n, varahinnastolla (&alv=1) 0.
+- Testit: 1455 läpi.
+
 ## 29.10.2026 klo 20: katekorjaus (keskikate vähintään 10 €, minimi 7 €)
 
 Yksityiskohdat ovat KATTEET.md:n osiossa "Hinnoittelu 29.10.2026". Julkaistu ja tarkistettu tuotannossa.

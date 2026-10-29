@@ -227,6 +227,46 @@ Premium alentaa tuotekuluja enintään 20 %, toimituskuluihin se ei vaikuta.
 Molemmissa siirto pudottaisi värejä tai kokoja. Lisäksi 20 tuotteen tekstitasot pitäisi siirtää käsin. Siksi tuotteita
 ei siirretty. Toimitusaika Suomeen on kaikilla EU-painotaloilla sama (3-10 arkipäivää).
 
+### ALV-varasuunnitelma 30.10.2026 (valmis, pois päältä)
+
+**Kytkin:** api/_lib/vakiot.js `PRINTIFY_ALV_VAHENNETTAVA`. Oletus on true. Kun kirjanpitäjä toteaa, ettei Printifyn
+ALV ole vähennettävissä, kytkin asetetaan arvoon false ja sivusto julkaistaan. Silloin:
+- Katteet lasketaan Printify-kulu × 1,255 (api/_lib/kate.js PRINTIFY_KULUKERROIN). Tämä koskee katevahtia,
+  alennuskoodien 7 €:n rajaa, kumppaniprovisiota ja tuotteiden katesääntöä.
+- Hinnasto vaihtuu `HINNASTOT.alvKulu`:un. Tämä koskee tuotesivuja, kassaa, syötettä ja sivukarttaa.
+- Sisältöjen hintamaininnat tulevat src/data/hintatekstit.ts:stä ja päivittyvät samalla. Tämä koskee blogeja,
+  laskeutumissivuja, UKK:ita ja mediakittiä.
+
+| Tuote | Nyt | ALV kuluna | Heikoin kate (ALV kuluna, uusi hinta) |
+|---|---|---|---|
+| T-paita, suora vertailu | 24,90 € | 30,90 € | 7,26 € |
+| T-paita, suora vertailu 3XL+ | 28,90 € | 34,90 € | 7,37 € |
+| T-paita, muut | 27,90 € | 31,90 € | 7,12 € |
+| T-paita, muut 3XL+ | 29,90 € | 35,90 € | 7,22 € |
+| Huppari | 52,90 € | 65,90 € | 7,53 € |
+| Huppari 3XL+ | 59,90 € | 72,90 € | 7,09 € |
+| Juliste | 24,90 € | 28,90 € | 7,18 € |
+| Koriste | 22,90 € | 27,90 € | 7,09 € |
+| Personoitu t-paita | 29,90 € | 32,90 € | noin 7,9 € (arvio, kulu noin 18,4 €) |
+| Black Friday -pari | 44,90 € | 49,90 € | 9,24 € |
+
+- Tuotannon kuluilla laskettiin ensin hinnat 30,90/33,90/59,90/66,90 € (?tehtava=katetaulu&alv=1). Heikoimmat
+  variantit jäivät alle 7 €:n (huppari 2,84 €, juliste 6,40 €, koriste 5,53 €), joten hinnat nostettiin
+  taulukon mukaisiksi. Tarkistettu tuotannossa 30.10.2026 (?tehtava=katetaulu&alv=1): 0 / 8 649 varianttia alle 7 €.
+- **Kilpailijat:** ALV kuluna t-paidat ylittävät Hauskatpaidat.fi:n 25-30 €:n haarukan ja hupparit 3XL+ sen 69 €:n
+  ylärajan. Tämä on väistämätöntä, jos 7 €:n minimi pidetään.
+- **Black Friday ja 30 päivän alin hinta (KSL 2:6 a §):**
+  - Kampanjan kappalehinta ja parihinta seuraavat hinnastoa.
+  - TPAITAPARI_KAMPANJA.alinHinta30pv pysyy 24,90 €:ssa. Kampanjaa edeltäneiden 30 päivän aikana (28.10.-26.11.)
+    paita on maksanut 24,90 €, joten se on laillinen alin hinta, vaikka kytkin käännettäisiin ennen kampanjaa.
+  - Markkinointi näyttää silloin "T-paidan hinta 30,90 €, alin hinta 30 päivän aikana 24,90 €" ja parihinnan 49,90 €.
+  - Ennen-hintoja ei käytetä.
+- **Käsin päivitettävät kohdat, kun kytkin käännetään:**
+  - etusivun pääkuva (`python3 scripts/etusivun-kuva.py` julkaisun jälkeen)
+  - /kumppanit-sivun esimerkit (src/data/kumppanitPage.ts kate-luvut)
+  - KUMPPANIT-VIESTIPOHJA.md:n ja kumppanien omien viestien esimerkit
+  - Google Merchant -syöte päivittyy itsestään
+
 ### Printifyn ALV: vähennettävissä vai ei
 
 Printify perii Suomen ALV:n (25,5 %), eikä käännettyä verovelvollisuutta saa (ks. alku). Katteet yllä olettavat, että

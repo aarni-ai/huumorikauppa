@@ -44,3 +44,7 @@ scripts/*.local.ts
 data/uudet-tuotteet/kuvat/
 data/uudet-tuotteet/.katalogi-valimuisti.json
 public/media/*.zip
+
+# Kumppanikohtaiset tiedot (sähköposti, raporttiavain), ei julkiseen repoon
+KUMPPANIT-*.md
+!KUMPPANIT-VIESTIPOHJA.md
