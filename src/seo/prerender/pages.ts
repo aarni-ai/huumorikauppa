@@ -666,8 +666,8 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
   const mainImage = productImageSources(defaultColorImages(product)[0]);
   return {
     path,
-    title: `${product.name} | Huumorikauppa`,
-    description: override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription,
+    title: override?.seoTitle ?? `${product.name} | Huumorikauppa`,
+    description: override?.metaDescription ?? (override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription),
     h1: product.name,
     price: product.price,
     images: imageAlts,

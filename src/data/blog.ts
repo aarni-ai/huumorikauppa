@@ -305,14 +305,16 @@ ${jouluLause()}
   {
     slug: "parhaat-hauskat-lahjat-miehelle",
     title: "Parhaat hauskat lahjat miehelle 2025-15 lahjaa jotka oikeasti naurattavat",
-    metaTitle: "Hauskat lahjat miehelle | Huumorikauppa.fi",
-    metaDescription: "Etsitkö hauskaa lahjaa miehelle? Lahjaideat isälle, kaverille, aviomiehelle ja sedälle. Toimitus koko Suomeen. 🎯",
+    metaTitle: "Hauskat lahjat miehelle: 15 ideaa | Huumorikauppa.fi",
+    metaDescription: `Hauskat lahjat miehelle isälle, kaverille ja puolisolle: t-paidat 24,90 € ja hupparit 49,99 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen ${ILMAINEN_RAJA_TEKSTI} €:sta.`,
     excerpt: "15 parasta hauskaa lahjaa miehelle - isälle, kaverille, aviomiehelle tai sedälle. Löydä lahja joka oikeasti naurattaa.",
     publishedAt: "2023-11-05",
-    updatedAt: "2025-09-15",
+    updatedAt: "2026-10-29",
     category: "lahjaideat",
     tags: ["hauska lahja miehelle", "lahja miehelle", "lahja isälle", "lahja kaverille", "lahja aviomiehelle"],
     content: `## Parhaat hauskat lahjat miehelle - 15 lahjaa jotka naurattavat
+
+Kaikki hauskat lahjat miehelle samalla sivulla: [hauskat lahjat miehelle](/hauskat-lahjat-miehelle). Pyöreitä täyttävälle katso [lahja miehelle 30v, 40v, 50v ja 60v](/blogi/lahja-miehelle-30v-40v-50v-60v).
 
 Miehelle lahjan ostaminen on tunnetusti Suomen vaikein tehtävä heti verottajan lomakkeiden täyttämisen jälkeen. "Mitä antaa miehelle jolla on jo kaikkea?" on kysymys, joka pyörii miljoonien suomalaisten päässä joka syntymäpäivä, joulu ja isänpäivä.
 
@@ -391,6 +393,16 @@ Talvipipo hauskalla brodeerauksella on käytännöllinen ja hauska lahja.
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - 14 päivän palautusoikeus
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus koko Suomeen`,
+    faq: [
+      {
+        q: "Mikä on hauska lahja miehelle?",
+        a: "Paita tai huppari, jonka teksti osuu hänen harrastukseensa, ammattiinsa tai ikäänsä. Hauskat lahjat miehelle löytyvät koottuna sivulta Hauskat lahjat miehelle, ja pyöreitä täyttävälle oppaasta Lahja miehelle 30v, 40v, 50v ja 60v.",
+      },
+      {
+        q: "Paljonko hauska lahja miehelle maksaa?",
+        a: `T-paidat maksavat 24,90 € ja hupparit 49,99 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      },
+    ],
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -557,12 +569,12 @@ Kun lahjan saajalla on jo kaikkea, paras lahja on sellainen joka herättää tun
 
   {
     slug: "hauskat-isanpaivalahjat-opas",
-    title: "Hauskat isänpäivälahjat - 10 parasta lahjaa isälle joka naurattaa",
-    metaTitle: "Hauskat isänpäivälahjat: opas | Huumorikauppa.fi",
+    title: "Hauskat isänpäivälahjat: 10 lahjaa isälle, joka nauraa",
+    metaTitle: "Hauskat isänpäivälahjat 2026 | Huumorikauppa.fi",
     metaDescription: `Mitä antaa isälle isänpäiväksi? Hauskat lahjaideat kaikenlaisille isille. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää. 👨`,
     excerpt: "10 hauskaa isänpäivälahjaa: kalastuspaidat, setähuumoripaidat ja hupparit, jotka saavat isän nauramaan.",
     publishedAt: "2023-10-15",
-    updatedAt: "2025-11-01",
+    updatedAt: "2026-10-29",
     category: "lahjaideat",
     tags: ["isänpäivälahja", "hauska lahja isälle", "lahja isälle", "isänpäivä", "kalastuspaita"],
     content: `## Hauskat isänpäivälahjat - 10 parasta lahjaa isälle
@@ -620,6 +632,12 @@ Isänpäivä on marraskuun 2. sunnuntai. Tilaa lahja viimeistään 2 viikkoa etu
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
 - 14 päivän palautusoikeus`,
+    faq: [
+      {
+        q: "Mikä on hauska isänpäivälahja?",
+        a: "Paita tai huppari, jonka teksti osuu isän harrastukseen tai tapoihin. Isänpäivän tuotteet ja viimeinen tilauspäivä ovat sivulla Isänpäivälahja.",
+      },
+    ],
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -1097,188 +1115,181 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
 
   {
     slug: "lahja-miehelle-30v-40v-50v-60v",
-    title: "Lahja miehelle 30v, 40v, 50v ja 60v - Parhaat lahjaideat ikävuosittain",
-    metaTitle: "Lahja miehelle 30v, 40v, 50v ja 60v | Huumorikauppa.fi",
-    metaDescription: "Miehen pyöreä syntymäpäivä tulossa? Hauskat lahjaideat 30-, 40-, 50- tai 60-vuotiaalle miehelle. 🎯",
-    excerpt: "Mitä lahjaksi miehelle 30-, 40-, 50- tai 60-vuotissyntymäpäiviin? Parhaat lahjaideat jokaiselle ikävaiheelle.",
+    title: "Lahja miehelle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
+    metaTitle: "50v lahja miehelle ja 30v, 40v, 60v | Huumorikauppa.fi",
+    metaDescription: "Hauska 50v lahja miehelle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 24,90 € ja hupparit 49,99 €. Toimitus 3-10 arkipäivää.",
+    excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle miehelle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä on itse vitsi.",
     publishedAt: "2023-03-15",
-    updatedAt: "2025-08-20",
+    updatedAt: "2026-10-29",
     category: "lahjaideat",
-    tags: ["lahja miehelle 30v", "lahja miehelle 40v", "lahja miehelle 50v", "lahja miehelle 60v", "syntymäpäivälahja miehelle"],
-    content: `## Lahja miehelle ikävuosittain - opas 30v, 40v, 50v ja 60v
+    tags: ["50v lahja miehelle", "lahja 50 vuotiaalle miehelle", "60v lahja miehelle", "30v lahja miehelle", "lahja 40 vuotiaalle miehelle"],
+    content: `## Lahja miehelle ikävuosittain: 30v, 40v, 50v ja 60v
 
-Pyöreät vuodet ovat erityisiä - ja ne ansaitsevat erityisen lahjan. Mutta mitä antaa miehelle joka täyttää 30, 40, 50 tai 60 vuotta? Huumorintaju muuttuu iän myötä, ja paras lahja osuu juuri oikeaan kohtaan.
+Hauska lahja pyöreitä täyttävälle miehelle on paita tai huppari, jossa ikä on itse vitsi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (24,90 €) että huppari (49,99 €). Alla ideat iän mukaan, ja jokaisen kohdalla tuote, jonka voit tilata suoraan.
 
-## Lahja miehelle 30v 🎯
+## 50v lahja miehelle
 
-30-vuotias mies on elämänsä parhaassa iässä - ja hän tietää sen. Tässä iässä meemit, internet-huumori ja itseironia puhuttelevat.
+50-vuotias mies arvostaa lahjaa, joka nauraa iälle mutta ei hänelle. Toimivimmat tekstit kääntävät viisikymppisyyden kehuksi:
 
-### Parhaat lahjat 30-vuotiaalle miehelle:
+- **[50v puoli vuosisataa, ei naarmuakaan](/tuote/50v-puoli-vuosisataa-ei-naarmuakaan-t-paita)**: t-paita miehelle, joka on pysynyt kunnossa.
+- **[50 ja hopeanhohtoinen (vain hiukset)](/tuote/50-ja-hopeanhohtoinen-vain-hiukset-t-paita)**: harmaantuvalle, joka osaa nauraa itselleen.
+- **[50 vuotta nuori](/tuote/50-vuotta-nuori-huppari)**: huppari, joka tulee käyttöön syksyllä ja talvella.
+- **[50 ja paras vasta tulossa](/tuote/50-ja-paras-vasta-tulossa-t-paita)**: positiivinen teksti juhlapäivään.
 
-**Meemipaita** - Internet-huumori on 30-vuotiaan äidinkieltä. Meemipaita naurattaa ja kertoo "ymmärrän sinua".
+Kaikki 50v-tuotteet samalla sivulla: [lahjat 50-vuotiaalle miehelle](/lahjat/50-vuotiaalle-miehelle). Jos 50-vuotiaalla on jo kaikkea, katso myös opas [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
 
-**Hauska huppari** - Mukava, rento ja hauska - 30-vuotiaan miehen perusvaate.
+## 60v lahja miehelle
 
-**Ammattihuumoripaita** - IT-nörttipaita, insinööripaita tai mikä tahansa ammattiin liittyvä huumori osuu 30-vuotiaaseen.
+60-vuotiaan lahjassa toimii kokemus ja kunto, ei vanhuus:
 
-## Lahja miehelle 40v 👔
+- **[60v kokenut, ei vanha](/tuote/60v-kokenut-ei-vanha-t-paita)**: t-paita, huppari ja juliste.
+- **[60v takuu mennyt, toimii silti](/tuote/60v-takuu-mennyt-toimii-silti-t-paita)**: miehelle, joka korjaa itse kaiken.
+- **[60v mutta fyysinen kunto kuin 20v](/tuote/60v-mutta-fyysinen-kunto-kuin-20v-t-paita)**: liikkuvalle kuusikymppiselle.
+- **[60 vuotta nuori ja nokkela](/tuote/60-vuotta-nuori-ja-nokkela-huppari)**: huppari sanavalmiille.
 
-40 on ikä jolloin setähuumori alkaa kutsua. Mies joka vastusti setähuumoria 30-vuotiaana löytää itsensä kertomasta samoja vitsejä kuin isänsä.
+Jos 60-vuotias jää samalla eläkkeelle, eläkeaiheiset paidat ovat [eläkelahjojen oppaassa](/blogi/hauskimmat-elakelahjat-selviytymisopas). Kaikki tuotteet: [lahjat 60-vuotiaalle miehelle](/lahjat/60-vuotiaalle-miehelle).
 
-### Parhaat lahjat 40-vuotiaalle miehelle:
+## 30v lahja miehelle
 
-**Setähuumoripaita** - "Amatimies" ja muut kuivan huumorin paidat alkavat puhutella.
+30-vuotiaan lahjassa toimii itseironia ensimmäisistä ikämerkeistä:
 
-**Kalastuspaita** - 40-vuotias mies on usein löytänyt kalastuksen (tai golf, tai puutarha).
+- **[30v selkä alkaa jo rusahdella](/tuote/30v-selka-alkaa-jo-rusahdella-t-paita)**: kun aamut alkavat tuntua.
+- **[30 nuori, villi ja jo väsynyt](/tuote/30-nuori-villi-ja-jo-vasynyt-t-paita)**: lapsiperheen kolmekymppiselle.
+- **[30 ja liian vanha tyhmyyksiin (teen ne silti)](/tuote/30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari)**: huppari kaverille, joka ei aio rauhoittua.
+- **[30v paranen iän myötä kuin viini](/tuote/30v-paranen-ian-myota-kuin-viini-t-paita)**: kehu, joka toimii myös juhlapuheessa.
 
-**Hauska pipo tai lippis** - Käytännöllinen ja hauska lahja ulkoiluun ja pihatöihin.
+Kaikki tuotteet: [lahjat 30-vuotiaalle miehelle](/lahjat/30-vuotiaalle-miehelle).
 
-## Lahja miehelle 50v 🏛️
+## 40v lahja miehelle
 
-50 vuotta on itseironian kulta-aikaa. "Museo-kappale", "Legendaarinen vuodesta [vuosi]" ja muut ikähuumorituotteet ovat täydellisiä.
+- **[40v kunnossa niinku 20v](/tuote/40v-kunnossa-niinku-20v-t-paita)**: urheilevalle nelikymppiselle.
+- **[40v ei keski-ikä, klassikko](/tuote/40v-ei-keski-ika-klassikko-t-paita)**: kun ikä halutaan kääntää kehuksi.
+- **[40 vuotta, henkisesti 18](/tuote/40-vuotta-henkisesti-18-huppari)**: huppari ikinuorelle.
 
-### Parhaat lahjat 50-vuotiaalle miehelle:
+Kaikki tuotteet: [lahjat 40-vuotiaalle miehelle](/lahjat/40-vuotiaalle-miehelle).
 
-**"Museo-kappale" -paita** - Täydellinen itseironia 50-vuotiaalle.
+## Miten valitsen koon ja ehtiikö lahja juhliin?
 
-**Eläkehuumoripaita** - "Harjoittelen eläkeläistä" puhuttelee 50-vuotiasta.
-
-**Hauska huppari** - Sohvalla löhöily alkaa olla elämäntapa.
-
-## Lahja miehelle 60v 🏖️
-
-60-vuotias on usein jo eläkkeellä tai lähellä sitä. Eläkehuumori on kuningas.
-
-### Parhaat lahjat 60-vuotiaalle miehelle:
-
-**"Eläkkeellä ja nautinnossa" -paita** - Uuden elämänvaiheen juhlistaminen.
-
-**Hauska huppari** - Lämmin ja mukava aamulenkeille.
-
-**Hauska koriste** - Omalla tekstillä, esimerkiksi "Tässä talossa asuu legenda".
-
-## Yhteenveto
-
-| Ikä | Huumorityyli | Parhaat tuotteet |
-|-----|-------------|-----------------|
-| 30v | Meemit, sarkasmi | Meemipaidat, hupparit |
-| 40v | Setähuumori, harrastukset | Kalastuspaidat, pipot |
-| 50v | Itseironia, ikähuumori | "Museo"-paidat, hupparit |
-| 60v | Eläkehuumori | Eläkepaidat, hupparit |
+Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on kokotaulukko senttimetreinä, ja jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlaa.
 
 ## Tilaa miehen lahja Huumorikaupasta
 
-- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
-- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
+- Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
+- Kahden tuotteen tilauksessa -5 %, esimerkiksi saman tekstin t-paita ja huppari
 - 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit"],
     productLinks: [
-      { slug: "amatimies-t-paita", label: "Amatimies | T-Paita - klassikko 40v miehelle" },
-      { slug: "kalamies-t-paita", label: "KALAMIES | T-Paita - kalastusta harrastavalle" },
-      { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita - setähuumoria" },
-      { slug: "ice-aatanat-paita", label: "ICE AATANA | T-Paita - meemihenkinen lahja miehelle" },
+      { slug: "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita", label: "50v puoli vuosisataa, ei naarmuakaan | T-paita 50-vuotiaalle miehelle" },
+      { slug: "60v-kokenut-ei-vanha-t-paita", label: "60v kokenut, ei vanha | T-paita 60-vuotiaalle miehelle" },
+      { slug: "30v-selka-alkaa-jo-rusahdella-t-paita", label: "30v selkä alkaa jo rusahdella | T-paita 30-vuotiaalle" },
+      { slug: "40v-kunnossa-niinku-20v-t-paita", label: "40v kunnossa niinku 20v | T-paita 40-vuotiaalle" },
     ],
     faq: [
       {
-        q: "Mikä on paras lahja 50-vuotiaalle miehelle jolla on jo kaikkea?",
-        a: "50-vuotias mies arvostaa itseironista ikähuumoria. Hyviä lahjoja ovat 'museo-kappale' -tyyliset paidat, eläkehuumoripaidat sekä lämmin huppari, joka on käytännöllinen ja muistettava 50v lahja miehelle.",
+        q: "Mitä lahjaksi 50-vuotiaalle miehelle?",
+        a: "Hauska 50v lahja miehelle on paita tai huppari, jossa ikä käännetään kehuksi, esimerkiksi 50v puoli vuosisataa, ei naarmuakaan tai 50 ja paras vasta tulossa. T-paidat maksavat 24,90 € ja hupparit 49,99 €.",
       },
       {
-        q: "Mikä on hauskin lahja 60-vuotiaalle miehelle?",
-        a: "60-vuotiaalle miehelle hauska lahja kannattaa hakea eläkehuumorin puolelta: 'Eläkkeellä ja nautinnossa' -paita tai lämmin huppari aamulenkeille.",
+        q: "Mitä lahjaksi 60-vuotiaalle miehelle, jolla on jo kaikkea?",
+        a: "Lahja, jota hänellä ei vielä ole: oma 60v-paita, kuten 60v kokenut, ei vanha tai 60v takuu mennyt, toimii silti. Sama teksti on myös hupparina ja julisteena.",
       },
       {
-        q: "Sopiiko hauska t-paita lahjaksi miehelle?",
-        a: "Kyllä - hauska t-paita on suosituin huumorilahja miehelle. Se on edullinen, tulee oikeasti käyttöön ja erottuu lahjakorteista. Valitse paita harrastuksen tai ammatin mukaan niin osut aina oikeaan.",
+        q: "Mikä on hyvä 30v lahja miehelle?",
+        a: "Itseironinen ikäpaita, esimerkiksi 30v selkä alkaa jo rusahdella tai 30 ja liian vanha tyhmyyksiin (teen ne silti).",
       },
       {
-        q: "Paljonko hauska lahja miehelle maksaa?",
-        a: `Huumorikaupan edullisimpia hauskoja lahjoja miehelle ovat koristeet. T-paidat ovat tyypillisesti 20-30 € ja hupparit 35-50 €. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        q: "Miten valitsen paidan koon lahjaksi?",
+        a: "Vertaa tuotesivun kokotaulukon leveyttä ja pituutta saajan omaan hyvin istuvaan paitaan. Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus.",
       },
       {
-        q: "Kuinka nopeasti hauska lahja toimitetaan?",
-        a: `Toimitamme tilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Tilaa pyöreät synttärit mielessä vähintään viikkoa ennen juhlapäivää.`,
+        q: "Kuinka nopeasti lahja toimitetaan?",
+        a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Tilaa vähintään kaksi viikkoa ennen juhlapäivää.`,
       },
     ],
   },
   {
     slug: "lahja-naiselle-30v-40v-50v-60v",
-    title: "Lahja naiselle 30v, 40v, 50v ja 60v - Parhaat lahjaideat ikävuosittain",
-    metaTitle: "Lahja Naiselle 30v, 40v, 50v tai 60v | Huumorikauppa.fi",
-    metaDescription: "Naisen pyöreä syntymäpäivä? Hauskat ja persoonalliset lahjaideat 30-, 40-, 50- ja 60-vuotiaalle naiselle! 🌸",
-    excerpt: "Mitä lahjaksi naiselle 30-, 40-, 50- tai 60-vuotissyntymäpäiviin? Parhaat lahjaideat jokaiselle ikävaiheelle.",
+    title: "Lahja naiselle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
+    metaTitle: "50v lahja naiselle ja 30v, 40v, 60v | Huumorikauppa.fi",
+    metaDescription: "Hauska 50v lahja naiselle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat 24,90 € ja hupparit 49,99 €. Toimitus 3-10 arkipäivää.",
+    excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle naiselle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä käännetään kehuksi.",
     publishedAt: "2023-06-10",
-    updatedAt: "2025-09-05",
+    updatedAt: "2026-10-29",
     category: "lahjaideat",
-    tags: ["lahja naiselle 30v", "lahja naiselle 40v", "lahja naiselle 50v", "lahja naiselle 60v", "syntymäpäivälahja naiselle"],
-    content: `## Lahja naiselle ikävuosittain - opas 30v, 40v, 50v ja 60v
+    tags: ["50v lahja naiselle", "hauska lahja 50-vuotiaalle naiselle", "hauska lahja 60-vuotiaalle naiselle", "mitä lahjaksi 60 vuotiaalle naiselle", "lahja naiselle 40v"],
+    content: `## Lahja naiselle ikävuosittain: 30v, 40v, 50v ja 60v
 
-Naisen pyöreät vuodet ansaitsevat lahjan joka naurattaa ja lämmittää sydäntä. Tässä oppaassa löydät parhaat lahjaideat 30-, 40-, 50- ja 60-vuotiaalle naiselle.
+Hauska lahja pyöreitä täyttävälle naiselle on paita tai huppari, jossa ikä käännetään kehuksi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (24,90 €) että huppari (49,99 €). Paidat ovat unisex-mallia, joten koon valinnassa auttaa tuotesivun kokotaulukko senttimetreinä.
 
-## Lahja naiselle 30v 🌟
+## 50v lahja naiselle
 
-30-vuotias nainen arvostaa huumoria joka on hienovaraista mutta osuvaa. Itseironia ja arjen huumori puhuttelevat.
+Hauska lahja 50-vuotiaalle naiselle nauraa iälle mutta kehuu juhlijaa:
 
-**Meemihuppari** - Rento ja hauska arjen perusvaate.
-**Hauska kangaskassi** - Ekologinen ja hauska.
-**Hauska pitkähihainen** - Arkeen persoonallisuutta.
+- **[50 ja hopeanhohtoinen (vain hiukset)](/tuote/50-ja-hopeanhohtoinen-vain-hiukset-t-paita)**: naiselle, joka kantaa harmaat hiuksensa ylpeänä.
+- **[50 ja paras vasta tulossa](/tuote/50-ja-paras-vasta-tulossa-huppari)**: huppari, jonka teksti sopii myös juhlapuheeseen.
+- **[50 vuotta nuori](/tuote/50-vuotta-nuori-t-paita)**: lyhyt ja selkeä, t-paitana ja hupparina.
+- **[50v puoli vuosisataa, ei naarmuakaan](/tuote/50v-puoli-vuosisataa-ei-naarmuakaan-t-paita)**: liikkuvalle viisikymppiselle.
 
-## Lahja naiselle 40v 💃
+Kaikki tuotteet samalla sivulla: [lahjat 50-vuotiaalle naiselle](/lahjat/50-vuotiaalle-naiselle). Jos juhlijalla on jo kaikkea, katso myös [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
 
-40-vuotias nainen on itsevarma ja arvostaa laatua. Hauska lahja saa olla myös laadukas.
+## Hauska lahja 60-vuotiaalle naiselle
 
-**"Maailman paras äiti" -huppari** - Monella 40-vuotiaalla on lapsia, ja tämä puhuttelee.
-**Sarkasmipaita** - Hienovaraisen hauska t-paita arkeen.
-**Pitkähihainen paita** - Lämmin ja hauska lahja arkeen.
+Mitä lahjaksi 60-vuotiaalle naiselle? Teksti, joka puhuu kokemuksesta ja nuorena pysymisestä:
 
-## Lahja naiselle 50v 👑
+- **[60v mutta sydän kuin 20v](/tuote/60v-mutta-sydan-kuin-20v-t-paita)**: lämmin teksti t-paitana ja hupparina.
+- **[60 vuotta nuori](/tuote/60-vuotta-nuori-huppari)**: huppari kylmiin aamuihin.
+- **[60v kokenut, ei vanha](/tuote/60v-kokenut-ei-vanha-t-paita)**: myös julisteena seinälle.
+- **[60 vuotta nuori ja nokkela](/tuote/60-vuotta-nuori-ja-nokkela-t-paita)**: sanavalmiille.
 
-50 on uusi 30 - ja 50-vuotias nainen ansaitsee juhlistamisen.
+Jos 60-vuotias jää samalla eläkkeelle, katso [eläkelahjojen opas](/blogi/hauskimmat-elakelahjat-selviytymisopas). Kaikki tuotteet: [lahjat 60-vuotiaalle naiselle](/lahjat/60-vuotiaalle-naiselle).
 
-**"Legendaarinen" -huppari** - "Legenda syntyi vuonna [vuosi]".
-**Hauska t-paita** - Hauska paita, jota käytetään vuosia.
-**Hauska koriste** - Sisustuslahja joka naurattaa päivittäin.
+## Lahja naiselle 40v
 
-## Lahja naiselle 60v 🌸
+- **[40 ja fabulous](/tuote/40-ja-fabulous-t-paita)**: t-paita ja huppari nelikymppiselle, joka tietää arvonsa.
+- **[40v ei vanha, vintage](/tuote/40v-ei-vanha-vintage-t-paita)**: kun ikä halutaan kääntää kehuksi.
+- **[Slay queen](/tuote/slay-queen-t-paita)**: lyhyt kehu ilman ikää.
 
-60-vuotias nainen arvostaa lämpöä, mukavuutta ja huumoria.
+## Lahja naiselle 30v
 
-**Eläkehuumoripaita** - Hauska paita uuteen elämänvaiheeseen.
-**Lämmin pitkähihainen** - Pehmeä paita hauskalla painatuksella.
-**Hauska huppari** - Mukava ja lämmin joka päivä.
+- **[30v paranen iän myötä kuin viini](/tuote/30v-paranen-ian-myota-kuin-viini-t-paita)**: kehu, joka toimii myös korttiin.
+- **[30 nuori, villi ja jo väsynyt](/tuote/30-nuori-villi-ja-jo-vasynyt-huppari)**: pikkulapsiarkea elävälle kolmekymppiselle.
+
+## Lahja äidille, joka täyttää pyöreitä
+
+Jos juhlija on äiti, [Maailman paras ÄITI](/tuote/maailman-paras-aiti-huppari) on huppari ja t-paita, joka sopii kaikkiin ikävuosiin. Lisää ideoita: [joululahja äidille](/joululahja-aidille).
+
+## Miten valitsen koon ja ehtiikö lahja juhliin?
+
+Vertaa kokotaulukon leveyttä ja pituutta saajan omaan hyvin istuvaan paitaan. Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlaa.
 
 ## Tilaa naisen lahja Huumorikaupasta
 
-- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
-- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
+- Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
+- Kahden tuotteen tilauksessa -5 %
 - 14 päivän palautusoikeus`,
-    relatedCategories: ["hupparit", "t-paidat", "laukut"],
+    relatedCategories: ["hupparit", "t-paidat"],
     productLinks: [
-      { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari - 40v naiselle/äidille" },
-      { slug: "maailman-paras-aiti-t-paita", label: "Maailman paras ÄITI | T-Paita" },
-      { slug: "maailman-paras-aiti-palkinnon-voittaja-huppari", label: "Maailman paras äiti -palkinnon voittaja | Huppari" },
-      { slug: "minulla-ei-ole-alkoholiongelmaa-t-paita", label: "Sarkasmihenkinen t-paita 30v naiselle" },
+      { slug: "50-ja-hopeanhohtoinen-vain-hiukset-t-paita", label: "50 ja hopeanhohtoinen (vain hiukset) | T-paita 50-vuotiaalle naiselle" },
+      { slug: "60v-mutta-sydan-kuin-20v-t-paita", label: "60v mutta sydän kuin 20v | T-paita 60-vuotiaalle naiselle" },
+      { slug: "40-ja-fabulous-t-paita", label: "40 ja fabulous | T-paita 40-vuotiaalle naiselle" },
+      { slug: "maailman-paras-aiti-huppari", label: "Maailman paras ÄITI | Huppari" },
     ],
     faq: [
       {
-        q: "Mikä on paras lahja 50-vuotiaalle naiselle?",
-        a: "50-vuotias nainen arvostaa lahjaa joka yhdistää huumorin ja laadun. 'Legendaarinen vuodesta 1975' -tyyliset hupparit, hauskat t-paidat ja hauska koriste sopivat hyvin 50v lahjaksi naiselle.",
+        q: "Mitä lahjaksi 50-vuotiaalle naiselle?",
+        a: "Hauska 50v lahja naiselle on paita tai huppari, jonka teksti kehuu juhlijaa, esimerkiksi 50 ja hopeanhohtoinen (vain hiukset) tai 50 ja paras vasta tulossa. T-paidat maksavat 24,90 € ja hupparit 49,99 €.",
       },
       {
-        q: "Mikä on hyvä lahja 60-vuotiaalle naiselle?",
-        a: "60-vuotiaalle naiselle sopivat lämpimät ja käytännölliset lahjat: hauska huppari, pehmeä pitkähihainen tai eläkehuumoripaita.",
+        q: "Mikä on hauska lahja 60-vuotiaalle naiselle?",
+        a: "60v mutta sydän kuin 20v, 60 vuotta nuori tai 60v kokenut, ei vanha. Samat tekstit ovat t-paitana ja hupparina, ja 60v kokenut, ei vanha myös julisteena.",
       },
       {
-        q: "Mikä on hauska syntymäpäivälahja naiselle?",
-        a: "Hauska syntymäpäivälahja naiselle kannattaa valita huumorintajun mukaan: meemihuppari 30-vuotiaalle, 'Maailman paras äiti' -tuote 40-vuotiaalle ja eläkehuumorituote 60-vuotiaalle. Personoitava tuote omalla tekstillä on myös hyvä vaihtoehto.",
+        q: "Sopiiko unisex-paita naiselle?",
+        a: "Sopii. Valitse koko tuotesivun kokotaulukon senttimetrien mukaan: vertaa leveyttä ja pituutta saajan omaan paitaan. Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus.",
       },
       {
-        q: "Mistä saa hauskan lahjan naiselle nopeasti?",
-        a: `Huumorikauppa.fi:stä. Toimitamme tilaukset ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen, ja maksaa voi Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla.`,
-      },
-      {
-        q: "Voiko lahjan personoida nimellä?",
-        a: "Kyllä. Osa tuotteistamme on personoitavissa omalla tekstillä, esimerkiksi nimellä. Se on hyvä lahja naiselle, jolla on jo kaikkea. Personoiduilla tuotteilla ei ole peruutusoikeutta.",
+        q: "Kuinka nopeasti lahja toimitetaan?",
+        a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} € ja on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
     ],
   },
@@ -2109,14 +2120,16 @@ Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen 
   {
     slug: "hauskimmat-elakelahjat-selviytymisopas",
     title: "Hauskimmat eläkelahjat ja selviytymisopas vapaaherralle tai -rouvalle",
-    metaTitle: "Eläkelahjat 2026: selviytymisopas | Huumorikauppa.fi",
-    metaDescription: "Eläkkeelle jäävän selviytymisopas: hauskat eläkelahjat, lähtökahvit ja vinkit vapaaherran arkeen. Kahvi, mökki ja lottoarvonta odottavat! ☕🎁",
+    metaTitle: "Eläkelahja: hauskat lahjat eläkkeelle jäävälle | Huumorikauppa",
+    metaDescription: `Hauska eläkelahja eläkkeelle jäävälle: eläkeläisen t-paidat 24,90 €, hupparit 49,99 € ja julisteet 22,90 €. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     excerpt: "Eläkkeelle jääminen on Suomen virallisin lupa juoda kahvia, hoitaa pihaa ja kommentoida lottoarvontaa. Tässä hauskimmat eläkelahjat ja selviytymisopas tuoreelle vapaaherralle.",
     publishedAt: "2026-04-22",
-    updatedAt: "2026-05-18",
+    updatedAt: "2026-10-29",
     category: "elamantilanteet",
     tags: ["eläkelahja", "hauska eläkelahja", "lähtökahvit", "eläkkeelle jääminen", "vapaaherra"],
     content: `## Onneksi olkoon, uusi vapaaherra (tai -rouva)!
+
+Kaikki eläkelahjat samalla sivulla: [eläkelahjat](/elakelahjat). Eläkkeelle jäävälle sopivat erityisesti [Eläkkeellä. Kello on vain koru](/tuote/elakkeella-kello-on-vain-koru-t-paita-elakelaiselle), [Palkka loppui. Päikkärit jatkuu](/tuote/palkka-loppui-paikkarit-jatkuu-t-paita-elakelaiselle) ja [Olen eläkkeellä -juliste](/tuote/olen-elakkeella-juliste-poster).
 
 Eläkkeelle jääminen on Suomessa lähes pyhä toimitus. Se on hetki, jolloin työpaikan kahvihuoneessa kannetaan pullaa, joku pitää puheen ja kakkulapio katoaa mystisesti puoleksi tunniksi. **Lähtökahvit** ovat järjestyksessä, ja yhtäkkiä työkaverista tulee virallinen vapaaherra - ihminen, jolla on lain mukaan oikeus kommentoida säätä ja **lottoarvontaa** koko loppuelämänsä.
 
@@ -2198,6 +2211,20 @@ Yhdistelmä toimii: **huumorilahja juhlaan, käytännöllinen lahja arkeen.** N�
 - 14 päivän palautusoikeus
 - Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä
 - 100 % suomalainen verkkokauppa`,
+    faq: [
+      {
+        q: "Mitä lahjaksi eläkkeelle jäävälle?",
+        a: "Eläkeaiheinen paita tai juliste, esimerkiksi Eläkkeellä. Kello on vain koru, Eläkeläinen. Kaikki päivät ovat lauantaita tai Palkka loppui. Päikkärit jatkuu. Kaikki eläkelahjat ovat sivulla Eläkelahjat.",
+      },
+      {
+        q: "Mikä on hyvä eläkelahja työkaverilta?",
+        a: "Lähtökahveille sopii t-paita tai juliste, jonka teksti kertoo uudesta arjesta, kuten Maanantai on nyt vain sana tai Herätyskello eläkkeellä myös. T-paita maksaa 24,90 € ja juliste 22,90 €, joten kustannus jakautuu helposti porukalle.",
+      },
+      {
+        q: "Mitä eläkeläiselle lahjaksi?",
+        a: "Jo eläkkeellä olevalle sopivat tekstit eläkeläisen päivästä, esimerkiksi Eläkeläisen työpäivä: kahvi, lehti, päikkärit tai Kokenut eläkeläinen. Neuvoja ilmaiseksi.",
+      },
+    ],
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {

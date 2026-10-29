@@ -557,18 +557,20 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
-  const metaDesc = contentOverride
+  const metaDesc = contentOverride?.metaDescription ?? (contentOverride
     ? truncateAtWord(contentOverride.description.replace(/\s+/g, " "), 155)
-    : seoCopy.shortDescription;
+    : seoCopy.shortDescription);
+  // Hakukyselyn mukainen title (src/data/productContent.ts seoTitle), sama kuin esirenderöinnissä.
+  const seoTitle = contentOverride?.seoTitle ?? `${product.name} | Huumorikauppa`;
 
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>{`${product.name} | Huumorikauppa`}</title>
+        <title>{seoTitle}</title>
         <meta name="description" content={metaDesc} />
         <link rel="canonical" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta property="og:title" content={`${product.name} | Huumorikauppa`} />
+        <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="product" />
         <meta property="og:url" content={`https://huumorikauppa.fi/tuote/${product.slug}`} />
@@ -578,7 +580,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         <meta property="product:price:amount" content={product.price.toFixed(2)} />
         <meta property="product:price:currency" content="EUR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${product.name} | Huumorikauppa`} />
+        <meta name="twitter:title" content={seoTitle} />
         <meta name="twitter:description" content={metaDesc} />
         <meta name="twitter:image" content={toProxiedImage(allProductImages[0]?.startsWith("http") ? allProductImages[0] : `https://huumorikauppa.fi${allProductImages[0]}`)} />
         <link rel="alternate" hrefLang="fi" href={`https://huumorikauppa.fi/tuote/${product.slug}`} />
@@ -586,7 +588,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         {/* JSON-LD (Product + Breadcrumb + FAQPage) is emitted exclusively by SEOHead below via combinedProductJsonLd. */}
       </Helmet>
       <SEOHead
-        title={`${product.name} | Huumorikauppa`}
+        title={seoTitle}
         description={metaDesc}
         canonical={`https://huumorikauppa.fi/tuote/${product.slug}`}
         jsonLd={combinedProductJsonLd}
