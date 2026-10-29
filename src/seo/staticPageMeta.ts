@@ -112,6 +112,24 @@ export const STATIC_PAGE_META = {
     h1: "Hauskat äitienpäivälahjat 2026",
     name: "Äitienpäivälahjat",
   },
+  "/lahjakortti": {
+    title: "Lahjakortti: 25, 50 tai 75 € | Huumorikauppa.fi",
+    description:
+      "Digitaalinen lahjakortti Huumorikauppaan: 25, 50 tai 75 €. Koodi tulee sähköpostiin heti maksun jälkeen, ja saaja valitsee itse paidan tai hupparin.",
+    h1: "Lahjakortti",
+    name: "Lahjakortti",
+    intro:
+      "Lahjakortti on digitaalinen: koodi tulee sähköpostiin heti maksun jälkeen, ja voit lähettää sen suoraan saajalle. Saaja kirjoittaa koodin kassalla kenttään Lahjakortin koodi. Lahjakortista ei peritä toimitusmaksua.",
+  },
+  "/paketit": {
+    title: "Paketit: t-paita ja huppari | Huumorikauppa.fi",
+    description:
+      "Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla.",
+    h1: "Paketit: t-paita ja huppari samalla tekstillä",
+    name: "Paketit",
+    intro:
+      "Paketissa on saman tekstin t-paita ja huppari. Valitset kummallekin koon ja värin, ja molemmat menevät koriin yhdellä painalluksella.",
+  },
   "/ryhmatilaukset": {
     title: "Ryhmätilaukset: paidat porukalle | Huumorikauppa",
     description:

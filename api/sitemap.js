@@ -1,6 +1,5 @@
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { onPiilotettuTuote } from "./_lib/piilotetut.js";
-import PAKETIT from "./_lib/paketit-data.js";
 import { OHJATUT_TUOTESLUGIT } from "./_lib/ohjatut-tuotteet.js";
 import { KOKONAAN_EI_SAATAVILLA } from "./_lib/printify-saatavuus.js";
 import { onKaksoiskappaleTaiTestikopio } from "./_lib/kaksoiskappaleet.js";
@@ -38,7 +37,7 @@ const STATIC_PAGES = [
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
-  ...PAKETIT.map((p) => ({ loc: `/paketit/${p.slug}`, changefreq: "weekly", priority: "0.6" })),
+  // Yksittäiset paketit eivät ole sivukartassa (29.10.2026): ilman alennusta ne toistavat tuotesivut, noindex.
 ];
 
 /**

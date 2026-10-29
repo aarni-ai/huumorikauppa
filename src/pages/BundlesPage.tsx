@@ -43,7 +43,7 @@ export const BundlesPage = () => {
   return (
     <div className="container py-8 md:py-12">
       <SEOHead
-        title="Paketit: t-paita ja huppari samalla tekstillä | Huumorikauppa.fi"
+        title="Paketit: t-paita ja huppari | Huumorikauppa.fi"
         description="Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla."
         canonical={`${URL_POHJA}/paketit`}
         breadcrumbs={[{ name: "Etusivu", url: `${URL_POHJA}/` }, { name: "Paketit", url: `${URL_POHJA}/paketit` }]}
@@ -167,6 +167,7 @@ export const BundlePage = () => {
         title={`${t.paketti.nimi} | Huumorikauppa.fi`}
         description={`${t.paketti.nimi}: sama teksti paitana ja huppariin. Valitse koot ja lisää molemmat koriin kerralla.`}
         canonical={`${URL_POHJA}/paketit/${t.paketti.slug}`}
+        noindex={true}
         breadcrumbs={[
           { name: "Etusivu", url: `${URL_POHJA}/` },
           { name: "Paketit", url: `${URL_POHJA}/paketit` },

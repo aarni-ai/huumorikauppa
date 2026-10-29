@@ -43,6 +43,8 @@ import { productImageAlt } from "@/lib/productNames";
 import { proxiedImage } from "@/lib/imageProxy";
 import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
+import PAKETIT from "../../../api/_lib/paketit-data.js";
+import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
 import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
 import {
@@ -575,6 +577,18 @@ export function buildChristmasDeadlinePage(): PrerenderPage {
   };
 }
 
+/** /lahjakortti ja /paketit (29.10.2026): oma canonical ja sisältö staattisessa HTML:ssä (aiemmin vain SPA-kuori). */
+export function buildGiftCardAndBundlePages(): PrerenderPage[] {
+  return [
+    staticPage("/lahjakortti", {
+      sections: [{ heading: "Ehdot", items: [...LAHJAKORTTI_EHDOT, "Lahjakortilla ei voi ostaa lahjakortteja."] }],
+    }),
+    staticPage("/paketit", {
+      sections: [{ heading: "Paketit", links: PAKETIT.map((p: { slug: string; nimi: string }) => ({ href: `/paketit/${p.slug}`, label: p.nimi })) }],
+    }),
+  ];
+}
+
 /** /ryhmatilaukset: sama sisältö ja samat esimerkkituotteet kuin src/pages/GroupOrderPage.tsx. */
 export function buildGroupOrderPage(products: Product[]): PrerenderPage {
   const page = ryhmatilausPage;
@@ -698,6 +712,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildLandingPages(products),
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
+    ...buildGiftCardAndBundlePages(),
     buildMediaPage(products),
     buildMothersDay(products),
     ...buildSituationPages(products),

@@ -973,7 +973,14 @@ export default async function middleware(request: Request): Promise<Response | u
   }
 
   if (!meta) {
-    return undefined;
+    // Tuntematon, esirenderöimätön polku (esim. /kalastajalle): SPA-kuori näyttää selaimessa 404-sivun, mutta
+    // kuoressa oli robots index ja etusivun otsikko (pehmeä 404). Boteille noindex (29.10.2026). Kaikki
+    // sivukartan sivut on esirenderöity, joten tämä koskee vain apusivuja ja olemattomia osoitteita.
+    const noindexHtml = baseHtml.replace(/<meta name="robots"[^>]*>/, '<meta name="robots" content="noindex, follow">');
+    return new Response(noindexHtml, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex', 'Cache-Control': 'public, max-age=0, s-maxage=3600' },
+    });
   }
 
   try {
