@@ -45,6 +45,7 @@ import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
 import { yrityksetPage } from "@/data/yrityksetPage";
+import { MALLIT } from "../../../api/_lib/personoitu.js";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
 import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
@@ -737,6 +738,11 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
     buildBusinessPage(products),
+    staticPage("/personoitu-paita", { sections: [
+      { heading: "Mallit", items: MALLIT.map((m: { nimi: string }) => m.nimi) },
+      { heading: "Hinta ja toimitus", paragraphs: ["Personoitu t-paita 29,90 €. Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta."] },
+      { heading: "Lisää ideoita", links: [{ href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Lahja naiselle 30v, 40v, 50v ja 60v" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Lahja miehelle 30v, 40v, 50v ja 60v" }] },
+    ] }),
     ...buildGiftCardAndBundlePages(),
     buildMediaPage(products),
     buildMothersDay(products),

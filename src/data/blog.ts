@@ -1136,7 +1136,7 @@ Hauska lahja pyöreitä täyttävälle miehelle on paita tai huppari, jossa ikä
 - **[50 vuotta nuori](/tuote/50-vuotta-nuori-huppari)**: huppari, joka tulee käyttöön syksyllä ja talvella.
 - **[50 ja paras vasta tulossa](/tuote/50-ja-paras-vasta-tulossa-t-paita)**: positiivinen teksti juhlapäivään.
 
-Kaikki 50v-tuotteet samalla sivulla: [lahjat 50-vuotiaalle miehelle](/lahjat/50-vuotiaalle-miehelle). Jos 50-vuotiaalla on jo kaikkea, katso myös opas [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
+Kaikki 50v-tuotteet samalla sivulla: [lahjat 50-vuotiaalle miehelle](/lahjat/50-vuotiaalle-miehelle). Saajan nimen saa paitaan [personoidulla paidalla](/personoitu-paita), esimerkiksi Pekka 50v: kokenut, ei vanha (29,90 €). Jos 50-vuotiaalla on jo kaikkea, katso myös opas [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
 
 ## 60v lahja miehelle
 
@@ -1230,7 +1230,7 @@ Hauska lahja 50-vuotiaalle naiselle nauraa iälle mutta kehuu juhlijaa:
 - **[50 vuotta nuori](/tuote/50-vuotta-nuori-t-paita)**: lyhyt ja selkeä, t-paitana ja hupparina.
 - **[50v puoli vuosisataa, ei naarmuakaan](/tuote/50v-puoli-vuosisataa-ei-naarmuakaan-t-paita)**: liikkuvalle viisikymppiselle.
 
-Kaikki tuotteet samalla sivulla: [lahjat 50-vuotiaalle naiselle](/lahjat/50-vuotiaalle-naiselle). Jos juhlijalla on jo kaikkea, katso myös [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
+Kaikki tuotteet samalla sivulla: [lahjat 50-vuotiaalle naiselle](/lahjat/50-vuotiaalle-naiselle). Saajan nimen saa paitaan [personoidulla paidalla](/personoitu-paita), esimerkiksi Marja 50v: kokenut, ei vanha (29,90 €). Jos juhlijalla on jo kaikkea, katso myös [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea).
 
 ## Hauska lahja 60-vuotiaalle naiselle
 

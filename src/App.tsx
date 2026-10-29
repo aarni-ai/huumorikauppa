@@ -115,6 +115,7 @@ const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
 const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
 const LandingPage = lazyWithRetry(() => import("./pages/LandingPage"));
 const BusinessPage = lazyWithRetry(() => import("./pages/BusinessPage"));
+const PersonalizedPage = lazyWithRetry(() => import("./pages/PersonalizedPage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
 const MediaPage = lazyWithRetry(() => import("./pages/MediaPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
@@ -208,6 +209,7 @@ const App = () => (
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               <Route path="/yritykset" element={<BusinessPage />} />
+              <Route path="/personoitu-paita" element={<PersonalizedPage />} />
               <Route path={MEDIA_PATH} element={<MediaPage />} />
               {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
               {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (

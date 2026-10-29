@@ -26,6 +26,7 @@ import { sovellaPaketit } from "./paketit.js";
 import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
 import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
+import { PERSONOITU_TUOTE, onPersonoitu, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
 /** Koodit, jos tietokantaa ei ole (samat kuin kassasivulla). Tietokannan discount_codes ohittaa nämä. */
@@ -72,8 +73,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   if (!vainLahjakortteja && (!shippingAddress?.address || !shippingAddress?.zip || !shippingAddress?.city)) {
     throw new KassaVirhe("Toimitusosoite puuttuu.", "missing_address");
   }
-  const byId = new Map(tuotteet.map((p) => [p.id, p]));
-  const bySlug = new Map(tuotteet.map((p) => [p.slug, p]));
+  // Personoitu t-paita on virtuaalinen tuoterivi (api/_lib/personoitu.js), ei tietokannassa.
+  const kaikki = [...tuotteet, PERSONOITU_TUOTE];
+  const byId = new Map(kaikki.map((p) => [p.id, p]));
+  const bySlug = new Map(kaikki.map((p) => [p.slug, p]));
   const lahjakortit = [];
   const rivit = [];
   for (const it of items) {
@@ -97,9 +100,16 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     const kate = laskeKate(p, variantti);
     if (!kate.tunnettu) throw new KassaVirhe(`Tuotteen ${p.name} hintaa ei voitu vahvistaa. Yritä hetken kuluttua uudelleen.`, "unknown_cost");
     if (!kate.sallittu) throw new KassaVirhe(`Tuote ${p.name} ei ole tällä hetkellä tilattavissa.`, "low_margin");
+    // Personoitu: nimi ja ikä tarkistetaan palvelimella uudelleen (merkkimäärä, estetyt sanat).
+    let customText = teksti(it.customText, 200);
+    if (onPersonoitu(p)) {
+      const pers = jasennaPersonointi(customText);
+      if (!pers.ok) throw new KassaVirhe(`Personoitu paita: ${pers.virhe}`, "invalid_personalization");
+      customText = personointiTeksti(pers);
+    }
     rivit.push({
       product_id: p.id, slug: p.slug, name: p.name, size: it.size || null, color: it.color || null,
-      custom_text: teksti(it.customText, 200),
+      custom_text: customText,
       image: typeof it.image === "string" && /^https?:\/\//.test(it.image) ? it.image : null,
       quantity: it.quantity, unit_price: hinta, printify_product_id: p.printify_product_id, variant_id: variantti,
       kulu_sentit: p.variants?.costs?.[String(variantti)] ?? null, toimitus_sentit: p.variants?.shipping_cents ?? null,

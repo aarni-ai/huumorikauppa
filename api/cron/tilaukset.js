@@ -168,6 +168,32 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, kaytossa: KUMPPANUUS.kaytossa, alku, kumppanit: [...kumppanit.values()] });
   }
 
+  // Personoidun t-paidan polkutesti: kassan laskenta (laskeTilaus) ja tilausrunko testiosoitteella, painokuvan haku ja
+  // Printify-tilaus lennosta luotavalla tuotteella. Tilausta EI lähetetä tuotantoon: se perutaan heti (peruTilaus).
+  // &nimi=..&ika=..&malli=..&vari=..&koko=..
+  if (req.query.tehtava === "personointitesti") {
+    const { laskeTilaus } = await import("../_lib/kassa.js");
+    const { personointiTeksti, tarkistaPersonointi } = await import("../_lib/personoitu.js");
+    const pers = tarkistaPersonointi({ malli: req.query.malli || "kokenut", nimi: req.query.nimi || "Marja", ika: req.query.ika || "50" });
+    if (!pers.ok) return res.status(400).json({ ok: false, virhe: pers.virhe });
+    const osoite = { address: "Testikatu 1", zip: "00100", city: "Helsinki", phone: "0401234567" };
+    const laskettu = laskeTilaus({ items: [{ slug: "personoitu-ikapaita-t-paita", quantity: 1, size: req.query.koko || "L", color: req.query.vari || "Musta",
+      customText: personointiTeksti(pers) }], customerEmail: "kassatesti@huumorikauppa.fi", shippingAddress: osoite }, [], null);
+    const runko = tilausRunko({ id: `testi-${Date.now().toString(36)}-0000`, customer_email: "kassatesti@huumorikauppa.fi", customer_name: "Kassa Testi",
+      shipping_address: osoite, items: laskettu.rivit });
+    const kuva = runko.line_items[0].print_areas.front;
+    const kuvaVastaus = await fetch(kuva).then((r) => ({ status: r.status, tyyppi: r.headers.get("content-type"), koko: Number(r.headers.get("content-length")) || null })).catch((e) => ({ virhe: String(e) }));
+    if (kuiva || !onPrintify()) return res.status(200).json({ ok: true, kuiva, laskettu: { total: laskettu.total, rivit: laskettu.rivit }, rivi: runko.line_items[0], kuvaVastaus });
+    const luotu = await luoTilaus(runko);
+    const id = luotu.data?.id;
+    const tila = id ? await haeTilaus(id) : null;
+    const peruttu = id ? await peruTilaus(id) : null;
+    return res.status(200).json({ ok: !!luotu.ok, kuvaVastaus, total: laskettu.total, printify: { id, luotu: luotu.ok, virhe: luotu.virhe ?? null,
+      tila: tila?.data?.status ?? null, kulut: tila?.data ? { tuote: tila.data.total_price / 100, toimitus: tila.data.total_shipping / 100 } : null,
+      rivit: (tila?.data?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, tila: l.status, kulu: l.cost / 100 })),
+      peruttu: peruttu?.ok ?? false, peruttuTila: peruttu?.data?.status ?? null } });
+  }
+
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.
   // Tuotesivu näyttää vain julkaistut (api/sahkoposti.js ?arviot=<slug>).
   if (req.query.tehtava === "arviot") {

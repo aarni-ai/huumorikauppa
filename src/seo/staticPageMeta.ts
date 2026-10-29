@@ -112,6 +112,15 @@ export const STATIC_PAGE_META = {
     h1: "Hauskat äitienpäivälahjat 2026",
     name: "Äitienpäivälahjat",
   },
+  "/personoitu-paita": {
+    title: "Personoitu paita nimellä ja iällä | Huumorikauppa",
+    description:
+      "Personoitu t-paita nimellä ja iällä, esimerkiksi Marja 50v: kokenut, ei vanha. Esikatselu ennen tilausta, 29,90 €, painetaan tilauksesta EU:ssa.",
+    h1: "Personoitu paita nimellä ja iällä",
+    name: "Personoitu paita",
+    intro:
+      "Valitse malli, kirjoita saajan nimi ja ikä ja katso esikatselu. Paita painetaan tilauksen jälkeen juuri tällä tekstillä.",
+  },
   "/yritykset": {
     title: "Yritysten joululahjat ja tiimipaidat | Huumorikauppa",
     description:

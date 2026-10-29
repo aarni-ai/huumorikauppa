@@ -1,4 +1,6 @@
 /** Printify API (PRINTIFY_API_KEY, PRINTIFY_SHOP_ID). Kaikki kutsut palauttavat { ok, status, data, virhe }. */
+import { PERSONOITU_PRINTIFY, PERSONOITU_POHJA, jasennaPersonointi } from "./personoitu.js";
+import { allekirjoita } from "./markkinointi.js";
 const API = "https://api.printify.com/v1";
 
 export const onPrintify = () => !!(process.env.PRINTIFY_API_KEY && process.env.PRINTIFY_SHOP_ID);
@@ -74,6 +76,15 @@ export function peruTilaus(printifyTilausId) {
   return kutsu(`/orders/${printifyTilausId}/cancel.json`, { method: "POST" });
 }
 
+/** Personoidun rivin painokuvan osoite: allekirjoitettu { malli, nimi, ika, vari } (api/painokuva.js). */
+export function painokuvaUrl(rivi, tilausId = "", n = 0) {
+  const pers = jasennaPersonointi(rivi.custom_text);
+  if (!pers.ok) throw new Error(`Personointi puuttuu tai on virheellinen (tilaus ${tilausId}, rivi ${n})`);
+  const tunniste = allekirjoita("painokuva", JSON.stringify({ m: pers.malli, n: pers.nimi, i: pers.ika, v: rivi.color || "Musta" }));
+  const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+  return `${pohja}/api/painokuva?t=${encodeURIComponent(tunniste)}`;
+}
+
 /** Printify-tilauksen runko omasta tilausrivistä. */
 export function tilausRunko(tilaus) {
   const nimi = (tilaus.recipient_name || tilaus.customer_name || "Asiakas").trim();
@@ -83,7 +94,10 @@ export function tilausRunko(tilaus) {
     external_id: tilaus.id,
     label: `Huumorikauppa #${tilaus.id.slice(0, 8).toUpperCase()}`,
     // Lahjakortit (type "giftcard") eivät ole Printify-tuotteita.
-    line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i) => ({ product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
+    // Personoitu t-paita: lennosta luotava tuote, painokuva tilausriville (api/painokuva.js, allekirjoitettu osoite).
+    line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i, n) => (i.printify_product_id === PERSONOITU_PRINTIFY
+      ? { ...PERSONOITU_POHJA, variant_id: i.variant_id, print_areas: { front: painokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
+      : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
     shipping_method: 1,
     is_printify_express: false,
     is_economy_shipping: false,
