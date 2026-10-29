@@ -14,7 +14,12 @@ const rootElement = document.getElementById('root')!;
 // (revealApp, src/lib/prerenderPreview.ts) tapahtuu sivun ensimmäisessä renderöinnissä, viimeistään
 // pian Appin asennuksen jälkeen ja aina viimeistään PREVIEW_TIMEOUT_MS:n kuluttua.
 const PREVIEW_TIMEOUT_MS = 2000;
-const preview = rootElement.querySelector<HTMLElement>(':scope > [data-prerender-visual]');
+// Esikatselu on #rootin edellinen sisar (src/seo/prerender/html.ts injectRoot); vanhemmissa välimuistin sivuissa
+// #rootin ensimmäinen lapsi, jolloin se siirretään #rootin eteen.
+const previous = rootElement.previousElementSibling as HTMLElement | null;
+const preview = previous?.hasAttribute('data-prerender-visual')
+  ? previous
+  : rootElement.querySelector<HTMLElement>(':scope > [data-prerender-visual]');
 if (preview) {
   const seed = preview.querySelector('script[data-product-seed]');
   if (seed) {
@@ -24,7 +29,7 @@ if (preview) {
       // Virheellinen siemen: tuote haetaan tavalliseen tapaan.
     }
   }
-  rootElement.before(preview);
+  if (preview.parentElement === rootElement) rootElement.before(preview);
   rootElement.style.display = 'none';
   setPreviewReveal(() => {
     preview.remove();

@@ -121,7 +121,7 @@ describe("product preview", () => {
   const html = renderPageHtml(VITE_TEMPLATE, { ...page, path: "/tuote/x", previewHtml: preview }, nav);
 
   it("puts the visible preview before the static body inside #root", () => {
-    expect(html).toContain(`<div id="root">${preview}<div data-prerender="true">`);
+    expect(html).toContain(`${preview}<div id="root"><div data-prerender="true">`);
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
   });
 

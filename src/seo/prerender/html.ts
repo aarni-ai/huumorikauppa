@@ -334,10 +334,15 @@ export function applyHead(template: string, opts: HeadOptions): string {
   return html;
 }
 
-export function injectRoot(html: string, bodyHtml: string): string {
+/**
+ * Staattinen runko #rootin sisään ja näkyvä esikatselu (previewHtml) #rootin eteen. Esikatselu on valmiiksi
+ * oikealla paikallaan, joten src/main.tsx:n ei tarvitse siirtää sitä: siirretty solmu piirtyisi uudelleen ja
+ * selain kirjaisi myöhäisen LCP:n (29.10.2026, Lighthouse mobiili blogit 4,0-4,3 s).
+ */
+export function injectRoot(html: string, bodyHtml: string, previewHtml = ""): string {
   const marker = '<div id="root"></div>';
   if (!html.includes(marker)) throw new Error('index.html: tyhjä <div id="root"></div> puuttuu');
-  return html.replace(marker, () => `<div id="root">${bodyHtml}</div>`);
+  return html.replace(marker, () => `${previewHtml}<div id="root">${bodyHtml}</div>`);
 }
 
 /** Kuinka kauan sovelluksen JavaScript odottaa esikatselun pääkuvaa ennen latauksen aloittamista. */
@@ -395,7 +400,7 @@ export function renderPageHtml(template: string, page: PrerenderPage, nav: SiteN
     keepHeroPreload: page.path === "/",
     preloadImage: page.preloadImage,
   });
-  const full = injectRoot(html, (page.previewHtml ?? "") + renderStaticBody(page, nav));
+  const full = injectRoot(html, renderStaticBody(page, nav), page.previewHtml ?? "");
   return page.previewHtml ? deferEntryScripts(full, page.modulePreloads) : full;
 }
 
