@@ -58,6 +58,21 @@ sitä etukäteen.
 2. Resend-domain on vahvistettu ja sähköpostit ovat päällä (SAHKOPOSTI_VAHVISTETTU=1).
 3. Aarni on hyväksynyt siirron ajankohdan. Hiljainen aika, ei kampanjaa käynnissä.
 
+**Huomio 29.10.2026 klo 13.48:** `_vercel.huumorikauppa.fi` palauttaa jo kaksi TXT-tietuetta, mutta niiden arvot
+ovat eri kuin uuden projektin (`vc-domain-verify=huumorikauppa.fi,63152a5c20797d66be51,dc` ja
+`vc-domain-verify=www.huumorikauppa.fi,1cd38cc81b9f3fc95d0a,dc`). Ne ovat vanhan Vercel-tilin varmennuksia. Lisää
+uuden projektin kaksi TXT-arvoa näiden rinnalle samalla nimellä `_vercel` (TXT-nimellä voi olla useita arvoja); vanhat
+voi poistaa siirron jälkeen.
+
+**Stripen webhook-osoite:** pidetään osoitteessa `https://huumorikauppa-five.vercel.app/api/stripe-webhook`. Se ei
+riipu DNS:stä eikä Cloudflaresta, joten nimipalvelin- tai tietuevirhe ei katkaise maksujen käsittelyä. Vaihto
+osoitteeseen `https://huumorikauppa.fi/api/stripe-webhook` ei toisi hyötyä, koska molemmat osuvat samaan projektiin.
+
+**Vanhan projektin välitys (middleware.ts `valitysKohde`):** uudessa projektissa välitys on pois päältä
+(UUSI_TAUSTA=1), joten koodi ei vaikuta siihen. Kun domain on vahvistettu uuteen projektiin ja sivut, kassa ja
+webhook on tarkistettu, välityskoodin voi poistaa seuraavassa julkaisussa. Vanha projekti (toinen Vercel-tili, ei
+Aarnin hallussa) jää ilman liikennettä.
+
 **Tietuemuutokset Coworkille uudessa Cloudflaressa (DNS > Records), tässä järjestyksessä:**
 1. Lisää TXT, nimi `_vercel`, sisältö `vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe`, TTL Auto.
 2. Lisää toinen TXT, nimi `_vercel`, sisältö `vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01`, TTL Auto.
