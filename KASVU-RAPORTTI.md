@@ -26,6 +26,49 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 29.10.2026 klo 18: Search Console "403 Forbidden" (179 osoitetta) korjattu
+
+**Mitkä osoitteet:** Search Consolen Sivujen indeksointi -raportin kaikki 179 osoitetta tilassa "Blocked due to access
+forbidden (403)" ovat vanhan sivuston kuvaosoitteita muotoa
+`/api/image-proxy?url=https://images-api.printify.com/mockup/.../<tuote>.jpg?camera_label=...`. Google haki ne
+23.5.-18.9.2026. Mikään niistä ei ole sivu, eikä yksikään tuote-, sarja-, blogi- tai muu sivu ole 403-tilassa.
+Raportin tiedot on päivitetty viimeksi 23.10.2026.
+
+**Syy:** `api/image-proxy.ts` haki kuvan Printifystä User-Agentilla "Googlebot-Image". Printify torjuu Googlebotiksi
+esittäytyvän pyynnön, joka tulee Vercelin IP-osoitteesta (väärennetty botti), ja proxy välitti Printifyn 403:n
+eteenpäin. Selaimella tai curlilla omalta koneelta kuva latautui, joten vika näkyi vain Googlelle.
+
+Muut epäillyt syyt eivät pidä paikkaansa:
+- Vercelin palomuuri ja Bot Protection eivät aiheuta tätä: sama 403 tuli myös uuden projektin omasta osoitteesta
+  (huumorikauppa-five.vercel.app), ja sivut palauttavat Googlebot-tunnisteella 200:n.
+- Vanhan projektin välitys ja middleware eivät aiheuta tätä: sivut palauttavat 200:n kummankin osoitteen kautta.
+- Ohjaukset eivät aiheuta tätä.
+
+**Korjaus:**
+- `api/image-proxy.ts` ohjaa nyt vanhan osoitteen pysyvällä 301-ohjauksella nykyiseen kuvaproxyyn
+  `/api/img?u=<sama kuva>`. Ohjaus hyväksyy vain Printifyn kuvapalvelimet (https), joten avointa uudelleenohjausta ei
+  synny. Muut osoitteet saavat 404:n ja noindexin.
+- robots.txt:hen lisättiin kaikkiin kolmeen ryhmään `Allow: /api/image-proxy`, jotta Google näkee ohjauksen.
+- Hallinta- ja API-reitit pysyvät estettyinä (Disallow: /admin, /kassa, /api/ ym.).
+
+**Tarkistus 29.10.2026:**
+- Googlebot, Bingbot ja Chrome sekä huumorikauppa.fi että huumorikauppa-five.vercel.app:
+  `/api/image-proxy?url=...` palauttaa 301 ja sen jälkeen 200 image/jpeg; robots.txt palauttaa 200.
+- Vieras isäntä (`?url=https://evil.example/...`) palauttaa 404.
+- Kaikki 779 sitemapin osoitetta (tuotteet, sarjat, artikkelit, laskeutumissivut) palauttavat Googlebotille 200:n, ja
+  jokaisessa on `<meta name="robots" content="index, follow, ...">`. Yhdessäkään ei ole noindexiä tai
+  X-Robots-Tag-estoa.
+- robots.txt ei estä yhtään julkista sivua.
+
+**Merchant listings:**
+- Tuotesivujen Product-rakenteisessa datassa on jo `priceValidUntil` (seuraavan vuoden 31.12., nyt "2027-12-31").
+- Datassa ovat myös availability, shippingDetails ja hasMerchantReturnPolicy.
+- Botille tarjoiltu tuotesivu tarkistettiin curlilla.
+- Lisäyksiä ei tarvittu.
+
+**Seuraavaksi (Aarni tai Cowork):** Search Consolessa Sivut, sitten "Blocked due to access forbidden (403)" ja sitten
+VALIDATE FIX. Google hakee osoitteet uudelleen ja poistaa ne raportista, kun ohjaus on havaittu (yleensä 1-4 viikkoa).
+
 ## 29.10.2026 myöhäisilta: kumppanuusohjelma käytössä
 
 **Hyväksytty ehto:** kauppaan jää jokaisesta kumppanitilauksesta vähintään 5,00 € katetta provision jälkeen.
