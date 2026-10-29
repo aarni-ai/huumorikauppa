@@ -75,6 +75,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Otsikkofontti Anton (latin, 12 kt) esiladataan ja määritellään src/index.css:ssä: esikatselun otsikko piirtyy
+         heti oikealla fontilla, joten sovellukseen vaihtuessa ei synny uutta, myöhäistä LCP:tä (29.10.2026). -->
+    <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/anton/v27/1Ptgg87LROyAm3Kz-C8CSKlv.woff2" crossorigin />
     <!-- Fontit ei-blokkaavasti: preload + asynkroninen tyylitiedosto (display=swap), vain käytetyt painot -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@600;700&display=swap" media="print" onload="this.media='all'" />
