@@ -14,6 +14,11 @@
  * kunnes kulut on tuotu.
  */
 export const ALV = 0.255;
+/**
+ * Printify-kulujen kerroin katteessa: 1, kun Printifyn perimä ALV vähennetään (oletus), 1,255, kun ALV jää kuluksi
+ * (vakiot.js PRINTIFY_ALV_VAHENNETTAVA = false, ALV-varasuunnitelma 30.10.2026).
+ */
+export const PRINTIFY_KULUKERROIN = PRINTIFY_ALV_VAHENNETTAVA ? 1 : 1 + ALV;
 /** Myynnin raja: alle tämän varianttia ei voi ostaa (kassa) eikä se näy (tuotteet.js). */
 export const KATE_RAJA = 0.2;
 /** Kategoriakohtainen myynnin raja (27.10.2026: hupparit 10 %, hinta kilpailijoiden tasolla, api/_lib/kokohinnat.js). */
@@ -27,7 +32,7 @@ export const ALENNUS_KATE_RAJA = 0.3;
 export const HINNOITTELU_KATE = 0.4;
 export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
-import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS } from "./vakiot.js";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, PRINTIFY_ALV_VAHENNETTAVA } from "./vakiot.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { tuotepohja } from "./materiaali.js";
 
@@ -55,7 +60,7 @@ export function laskeKate(tuote, varianttiId = null, { toimitusmaksu: maksu = TO
   const maksettu = hinta + toimitusmaksu;
   const myyntiAlv0 = maksettu / (1 + ALV);
   const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
-  const nettokate = myyntiAlv0 - kulu / 100 - toimitus / 100 - stripe;
+  const nettokate = myyntiAlv0 - ((kulu + toimitus) / 100) * PRINTIFY_KULUKERROIN - stripe;
   const kate = nettokate / myyntiAlv0;
   return { tunnettu: true, nettokate: Math.round(nettokate * 100) / 100, kate: Math.round(kate * 1000) / 1000, sallittu: kate >= raja };
 }
@@ -100,7 +105,7 @@ export function laskePaketinKate(osat, alennusProsentti = 0) {
       return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
     }
     hinnat += hinta;
-    kulut += (kulu + toimitus) / 100;
+    kulut += ((kulu + toimitus) / 100) * PRINTIFY_KULUKERROIN;
   }
   const toimitusmaksu = hinnat >= ILMAINEN_RAJA ? 0 : TOIMITUSMAKSU;
   const maksettu = hinnat * (1 - alennusProsentti / 100) + toimitusmaksu;
@@ -154,7 +159,7 @@ export function laskeTilauksenKate(osat, toimitusmaksu = 0, raja = ALENNUS_KATE_
       return { tunnettu: false, nettokate: null, kate: null, sallittu: null };
     }
     maksettu += Number(yksikkohinta) * maara;
-    kulut += ((kulu + toimitus) / 100) * maara;
+    kulut += ((kulu + toimitus) / 100) * maara * PRINTIFY_KULUKERROIN;
   }
   const myyntiAlv0 = maksettu / (1 + ALV);
   const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
@@ -219,7 +224,7 @@ export function printifyToimitusSentit(osat) {
  * @param toimitusmaksu asiakkaan maksama toimitus euroina
  * Palauttaa { tunnettu, nettokate, kate }.
  */
-export function laskeTilauksenNettokate(osat, toimitusmaksu = 0) {
+export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRINTIFY_KULUKERROIN } = {}) {
   if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, kate: null };
   let maksettu = toimitusmaksu;
   let tuotekulut = 0;
@@ -234,7 +239,7 @@ export function laskeTilauksenNettokate(osat, toimitusmaksu = 0) {
   if (toimitus === null) return { tunnettu: false, nettokate: null, kate: null };
   const myyntiAlv0 = maksettu / (1 + ALV);
   const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
-  const nettokate = myyntiAlv0 - (tuotekulut + toimitus) / 100 - stripe;
+  const nettokate = myyntiAlv0 - ((tuotekulut + toimitus) / 100) * kerroin - stripe;
   return {
     tunnettu: true,
     nettokate: Math.round(nettokate * 100) / 100,

@@ -14,11 +14,15 @@
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
  * POST { action: "tarjouspyynto", yritys, nimi, email, ... }      /yritykset: tallennus ja ilmoitus omistajalle
+ * POST { action: "kumppaniklikki", koodi }                        kumppanilinkin avaus (laskuri, ei henkilötietoja)
+ * GET  ?kumppaniraportti=<avain>                                  kumppanin oma raportti (api/_lib/kumppani.js kumppaniRaportti)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
+import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS } from "./_lib/kumppani.js";
+import { haeTilaus, onPrintify } from "./_lib/printify.js";
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -77,6 +81,14 @@ export async function kasittele(req, res, store) {
       nimi: nimi(r.customer_name), tahdet: r.stars, teksti: r.body || "", pvm: new Date(r.created_at).toISOString().slice(0, 10),
     })) });
   }
+  // Kumppanin raportti: allekirjoitettu avain (cron ?tehtava=kumppani-lisaa palauttaa linkin), ei asiakastietoja.
+  if (req.method === "GET" && typeof q.kumppaniraportti === "string") {
+    const koodi = kumppaniKoodinMuoto(tarkistaTunniste(q.kumppaniraportti, RAPORTTI_TARKOITUS));
+    if (!koodi || (q.koodi && kumppaniKoodinMuoto(q.koodi) !== koodi)) return res.status(404).json({ ok: false });
+    const raportti = await kumppaniRaportti(sql(), koodi, { haeTilaus: onPrintify() ? haeTilaus : null });
+    if (!raportti) return res.status(404).json({ ok: false });
+    return res.status(200).json({ ok: true, ...raportti });
+  }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
   switch (body.action) {
@@ -111,6 +123,10 @@ export async function kasittele(req, res, store) {
         `Määrä: ${t.maara ?? "-"}`, `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
       ]).catch(() => null);
       return res.status(200).json({ ok: true });
+    }
+    case "kumppaniklikki": {
+      const kirjattu = await kirjaaKlikki(sql(), body.koodi);
+      return res.status(200).json({ ok: kirjattu });
     }
     case "review":
     case "unsubscribe": {

@@ -152,19 +152,31 @@ export default async function handler(req, res) {
   // toimituksen), ryhmittäin heikoin ja keskiarvo sekä alle 7 €:n variantit. KATTEET.md "Hinnoittelu 29.10.2026".
   if (req.query.tehtava === "katetaulu") {
     const { laskeTilauksenNettokate } = await import("../_lib/kate.js");
-    const { rivinHinta, onSuoraVertailu } = await import("../_lib/kokohinnat.js");
+    const { rivinHinta, onSuoraVertailu, hinnoitteleRivi } = await import("../_lib/kokohinnat.js");
     const { myynnissa } = await import("../_lib/tuotteet.js");
-    const { TOIMITUS, ILMAINEN_TOIMITUS_RAJA, LISATUOTE_KATEGORIAT } = await import("../_lib/vakiot.js");
+    const { TOIMITUS, ILMAINEN_TOIMITUS_RAJA, LISATUOTE_KATEGORIAT, HINNASTOT, PRINTIFY_ALV_VAHENNETTAVA } = await import("../_lib/vakiot.js");
+    // &alv=1: ALV-varasuunnitelma (Printify-kulu x 1,255 ja hinnasto HINNASTOT.alvKulu), vaikka kytkin olisi pois.
+    const alv = req.query.alv === "1" || !PRINTIFY_ALV_VAHENNETTAVA;
+    const hinnasto = alv ? HINNASTOT.alvKulu : HINNASTOT.perus;
+    const kerroin = alv ? 1.255 : 1;
+    const nettokate = (osat, toimitus) => laskeTilauksenNettokate(osat, toimitus, { kerroin });
     const ryhmat = {};
     const alle7 = [];
-    for (const t of (await kaikkiTuotteet()).filter((x) => x.is_active !== false && myynnissa(x))) {
+    let pari = { heikoin: Infinity, tuote: null };
+    for (const t of (await kaikkiTuotteet()).filter((x) => x.is_active !== false && myynnissa(x)).map((x) => hinnoitteleRivi(x, hinnasto))) {
       const piilo = new Set(t.unavailable_variants || []);
       for (const [avain, id] of Object.entries(t.variants?.variant_map || {})) {
         if (piilo.has(avain)) continue;
         const koko = avain.split("|")[1] || "";
         const hinta = rivinHinta(t, koko);
-        const k = laskeTilauksenNettokate([{ tuote: t, varianttiId: id, maara: 1, yksikkohinta: hinta }], hinta >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS);
+        const k = nettokate([{ tuote: t, varianttiId: id, maara: 1, yksikkohinta: hinta }], hinta >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS);
         if (!k.tunnettu) continue;
+        // Black Friday -pari: kaksi samaa kampanjapaitaa (S-2XL) parihintaan.
+        if (t.category === "t-paidat" && onSuoraVertailu(t) && !/^(3|4|5|6)XL$/i.test(koko)) {
+          const ph = hinnasto.tpaitapari;
+          const kp = nettokate([{ tuote: t, varianttiId: id, maara: 2, yksikkohinta: ph / 2 }], ph >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS);
+          if (kp.tunnettu && kp.nettokate < pari.heikoin) pari = { heikoin: kp.nettokate, tuote: `${t.slug} ${avain}` };
+        }
         const nimi = `${t.category}${t.category === "t-paidat" ? (onSuoraVertailu(t) ? " 24,90" : " 27,90") : ""}${/^(3|4|5|6)XL$/i.test(koko) ? " 3XL+" : ""}`;
         const r = (ryhmat[nimi] ||= { hinta, heikoin: Infinity, heikoinTuote: null, summa: 0, n: 0, alle7: 0 });
         if (k.nettokate < r.heikoin) { r.heikoin = k.nettokate; r.heikoinTuote = `${t.slug} ${avain}`; }
@@ -174,7 +186,8 @@ export default async function handler(req, res) {
     }
     const taulu = Object.entries(ryhmat).sort().map(([ryhma, r]) => ({ ryhma, hinta: r.hinta, heikoin: r.heikoin, heikoinTuote: r.heikoinTuote,
       keskiarvo: Math.round((r.summa / r.n) * 100) / 100, variantteja: r.n, alle7: r.alle7 }));
-    return res.status(200).json({ ok: true, taulu, alle7: alle7.sort((a, b) => a.nettokate - b.nettokate).slice(0, 100) });
+    return res.status(200).json({ ok: true, alv, kerroin, hinnasto, tpaitapari: { parihinta: hinnasto.tpaitapari, ...pari }, taulu,
+      alle7: alle7.sort((a, b) => a.nettokate - b.nettokate).slice(0, 100) });
   }
 
   // Alennuskoodit (katepäätös 29.10.2026): kannan discount_codes ja käyttö maksetuissa tilauksissa.
@@ -207,7 +220,11 @@ export default async function handler(req, res) {
     await db`insert into kumppanit (koodi, nimi, email) values (${koodi}, ${nimi}, ${email})
       on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true`;
     const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
-    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/?ref=${koodi}` });
+    // Kumppanin oma raportti (/kumppanit/raportti): allekirjoitettu avain, jota ei tallenneta mihinkään.
+    const { allekirjoita } = await import("../_lib/markkinointi.js");
+    const { RAPORTTI_TARKOITUS } = await import("../_lib/kumppani.js");
+    const raportti = `${pohja}/kumppanit/raportti?koodi=${koodi}&avain=${encodeURIComponent(allekirjoita(RAPORTTI_TARKOITUS, koodi))}`;
+    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/?ref=${koodi}`, raportti });
   }
 
   // Kumppaniraportti kuukaudelta (&kuukausi=YYYY-MM, oletus kuluva kuukausi Suomen aikaa): tilaukset kumppaneittain,

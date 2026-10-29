@@ -67,3 +67,74 @@ export function provisioJaTila(tuotteet, nettokate, asetukset = KUMPPANUUS) {
 
 /** Provisio euroina (ks. provisioJaTila). */
 export const provisio = (tuotteet, nettokate, asetukset = KUMPPANUUS) => provisioJaTila(tuotteet, nettokate, asetukset).provisio;
+
+/** Kumppanin raporttiavaimen tarkoitus (api/_lib/markkinointi.js allekirjoita / tarkistaTunniste). */
+export const RAPORTTI_TARKOITUS = "kumppaniraportti";
+
+/** Klikkaukset päivittäin koodeittain (ei henkilötietoja, ei evästeitä): kumppanilinkin avaukset. */
+export async function varmistaKlikkitaulu(db) {
+  await db`create table if not exists kumppani_klikit (koodi text not null, paiva date not null,
+    klikit integer not null default 0, primary key (koodi, paiva))`;
+}
+
+/** Kirjaa yhden kumppanilinkin avauksen, jos koodi on hyväksytty ja aktiivinen. Palauttaa true, jos kirjattiin. */
+export async function kirjaaKlikki(db, arvo) {
+  const koodi = await tarkistaKumppani(db, arvo);
+  if (!koodi) return false;
+  await varmistaKlikkitaulu(db);
+  const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+  await db`insert into kumppani_klikit (koodi, paiva, klikit) values (${koodi}, ${paiva}::date, 1)
+    on conflict (koodi, paiva) do update set klikit = kumppani_klikit.klikit + 1`;
+  return true;
+}
+
+/**
+ * Tilauksen nettokate ennen provisiota Printifyn todellisilla kuluilla (sama kaava kuin api/_lib/kate.js:
+ * myynti / 1,255 - Printify-tuote ja -toimitus ilman ALV:tä - Stripe 1,5 % + 0,25 €). null, jos kulua ei vielä tiedetä.
+ */
+export async function tilauksenKate(tilaus, haeTilaus) {
+  if (!tilaus.printify_order_id || !haeTilaus) return null;
+  const h = await haeTilaus(tilaus.printify_order_id);
+  if (!h?.ok || !h.data || h.data.status === "canceled") return null;
+  const myynti = Number(tilaus.total) || 0;
+  return myynti / 1.255 - ((Number(h.data.total_price) || 0) + (Number(h.data.total_shipping) || 0)) / 100 - (myynti * 0.015 + 0.25);
+}
+
+/**
+ * Kumppanin oma raportti (/kumppanit/raportti): klikkaukset, tilaukset ja provisio kuukausittain. Ei asiakkaiden
+ * henkilötietoja: tilauksista vain päivä, tuotteiden arvo ja provisio. Kumppanin nimestä vain etunimi.
+ */
+export async function kumppaniRaportti(db, koodi, { haeTilaus } = {}) {
+  await varmistaKumppanitaulu(db);
+  await varmistaKlikkitaulu(db);
+  const [k] = await db`select koodi, nimi, created_at from kumppanit where koodi = ${koodi} and aktiivinen limit 1`;
+  if (!k) return null;
+  const klikit = await db`select to_char(paiva, 'YYYY-MM') as kuukausi, sum(klikit)::int as klikit
+    from kumppani_klikit where koodi = ${koodi} group by 1`;
+  const rivit = await db`select o.paid_at, o.total, o.shipping, o.printify_order_id
+    from orders o join order_events e on e.order_id = o.id and e.kind = 'kumppani'
+    where e.details->>'koodi' = ${koodi} and o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi'
+    order by o.paid_at desc limit 500`;
+  const kk = new Map(klikit.map((r) => [r.kuukausi, { kuukausi: r.kuukausi, klikit: r.klikit, tilauksia: 0, tuotteet: 0, provisio: 0, odottaa: 0 }]));
+  const tilaukset = [];
+  const r2 = (x) => Math.round(x * 100) / 100;
+  for (const t of rivit) {
+    const tuotteet = (Number(t.total) || 0) - (Number(t.shipping) || 0);
+    const p = provisioJaTila(tuotteet, (await tilauksenKate(t, haeTilaus)) ?? NaN);
+    const kuukausi = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date(t.paid_at)).slice(0, 7);
+    const m = kk.get(kuukausi) || { kuukausi, klikit: 0, tilauksia: 0, tuotteet: 0, provisio: 0, odottaa: 0 };
+    m.tilauksia += 1;
+    m.tuotteet = r2(m.tuotteet + tuotteet);
+    m.provisio = r2(m.provisio + p.provisio);
+    if (p.tila === "kate-tuntematon") m.odottaa += 1;
+    kk.set(kuukausi, m);
+    tilaukset.push({ pvm: new Date(t.paid_at).toISOString().slice(0, 10), tuotteet: r2(tuotteet), provisio: p.provisio, tila: p.tila });
+  }
+  const kuukaudet = [...kk.values()].sort((a, b) => b.kuukausi.localeCompare(a.kuukausi));
+  const summa = (f) => r2(kuukaudet.reduce((s, m) => s + m[f], 0));
+  return {
+    koodi: k.koodi, etunimi: String(k.nimi || "").trim().split(/\s+/)[0] || k.koodi,
+    linkki: `https://huumorikauppa.fi/?ref=${k.koodi}`, saanto: PROVISIOSAANTO,
+    kuukaudet, tilaukset, yhteensa: { klikit: summa("klikit"), tilauksia: summa("tilauksia"), tuotteet: summa("tuotteet"), provisio: summa("provisio") },
+  };
+}

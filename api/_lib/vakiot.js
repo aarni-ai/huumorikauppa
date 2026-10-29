@@ -32,6 +32,37 @@ export const TILAUKSEN_MIN_KATE_EUROA = 7;
 export const LISATUOTE_KATEGORIAT = ["tarrat"];
 
 /**
+ * Printifyn ALV (KATTEET.md "Printifyn ALV" ja "ALV-varasuunnitelma 30.10.2026"). true = Uusiku Oy vähentää Printifyn
+ * perimän 25,5 %:n ALV:n (katteet ilman ALV:tä, hinnasto HINNASTOT.perus). Jos kirjanpitäjä toteaa, ettei ALV ole
+ * vähennettävissä, aseta false ja julkaise: kate lasketaan Printify-kulu x 1,255 (api/_lib/kate.js) ja hinnasto vaihtuu
+ * HINNASTOT.alvKulu:un. Black Friday -pari ja määräalennus seuraavat hinnastoa; 30 päivän alin hinta pysyy 24,90 €:ssa,
+ * koska kampanjaa edeltäneiden 30 päivän aikana (28.10.-26.11.) paita on maksanut 24,90 € (KSL 2:6 a §).
+ */
+export const PRINTIFY_ALV_VAHENNETTAVA = true;
+
+/**
+ * Hinnastot (api/_lib/kokohinnat.js, api/_lib/personoitu.js). perus: hinnoittelu 29.10.2026. alvKulu: jokaisen variantin
+ * nettokate vähintään 7 €, kun Printifyn ALV on kulu (tarkistettu tuotannon kuluilla ?tehtava=katetaulu&alv=1).
+ */
+export const HINNASTOT = {
+  perus: {
+    tpaita: { suora: 24.9, suoraIso: 28.9, uniikki: 27.9, uniikkiIso: 29.9 },
+    hupparit: { perus: 52.9, iso: 59.9 },
+    kategoriat: { seinataulut: 24.9, koristeet: 22.9 },
+    personoitu: 29.9,
+    tpaitapari: 44.9,
+  },
+  alvKulu: {
+    tpaita: { suora: 30.9, suoraIso: 33.9, uniikki: 30.9, uniikkiIso: 33.9 },
+    hupparit: { perus: 59.9, iso: 66.9 },
+    kategoriat: { seinataulut: 27.9, koristeet: 25.9 },
+    personoitu: 32.9,
+    tpaitapari: 54.9,
+  },
+};
+export const HINNASTO = PRINTIFY_ALV_VAHENNETTAVA ? HINNASTOT.perus : HINNASTOT.alvKulu;
+
+/**
  * Black Friday ja joulu 2026 (KATTEET.md "Black Friday ja joulu 2026"): "Kaksi t-paitaa 44,90 €". Aarni hyväksyi
  * 29.10.2026; laskeutumissivu /black-friday. Voimassa vain alku-loppu Suomen aikaa. Koskee t-paitoja, joiden kappalehinta
  * on 24,90 €; korvaa kahden tuotteen -5 %:n, kun pari on asiakkaalle edullisempi (ei molempia). Katevahti kuten
@@ -44,8 +75,8 @@ export const TPAITAPARI_KAMPANJA = {
   alku: "2026-11-27",
   loppu: "2026-12-01",
   kategoria: "t-paidat",
-  kappalehinta: 24.9,
-  parihinta: 44.9,
+  kappalehinta: HINNASTO.tpaita.suora,
+  parihinta: HINNASTO.tpaitapari,
   alinHinta30pv: 24.9,
 };
 
@@ -73,7 +104,7 @@ export const SUOSTUMUS_MUISTUTUS = "Lähetä minulle muistutus, jos tilaus jää
 export const MAARAALENNUS = {
   kaytossa: true,
   kategoria: "t-paidat",
-  kappalehinta: 24.9,
+  kappalehinta: HINNASTO.tpaita.suora,
   portaat: [
     { min: 50, prosentti: 14 },
     { min: 25, prosentti: 12 },

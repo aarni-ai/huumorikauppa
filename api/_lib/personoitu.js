@@ -10,11 +10,12 @@
  * Personointi tallentuu ostoskorin customText-kenttään luettavassa muodossa "Malli: Nimi 50v", ja palvelin jäsentää
  * ja tarkistaa sen uudelleen (jasennaPersonointi).
  */
+import { HINNASTO } from "./vakiot.js";
 
 export const PERSONOITU_SLUG = "personoitu-ikapaita-t-paita";
 export const PERSONOITU_PRINTIFY = "PERSONOITU";
 export const PERSONOITU_POHJA = { blueprint_id: 145, print_provider_id: 30 };
-export const PERSONOITU_HINTA = 29.9;
+export const PERSONOITU_HINTA = HINNASTO.personoitu;
 /** Painoalue (catalog/blueprints/145/print_providers/30/variants.json, front). */
 export const PAINOALUE = { leveys: 3461, korkeus: 3955 };
 export const NIMI_MAX = 14;

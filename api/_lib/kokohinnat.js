@@ -7,6 +7,8 @@
  * -sarja). Molemmat jäävät alle päätöksen, joten käytössä kilpailijahinta. Katesääntö hupparille 10 %
  * (api/_lib/kate.js KATE_RAJAT). Laskelma: KATTEET.md, "Hupparien hinta 27.10.2026".
  */
+import { HINNASTO } from "./vakiot.js";
+
 export const ISOT_KOOT = /^(3|4|5|6)XL$/i;
 
 /**
@@ -24,18 +26,16 @@ export const ISOT_KOOT = /^(3|4|5|6)XL$/i;
  */
 export const SUORA_VERTAILU = /saatanan.?tunarit|tonnin.?seteli|^i\s*(love|❤️?|♥)\s*my\s*(girl|boy)friend|alkoholiongelmaa|maailman.?paras.?(äiti|aiti)|^kalju\s*\||amatimies|^100.?%?.?eläkeläinen\s*\||^eläkeläinen\s*\||^olen eläkkeellä\s*\|/i;
 
-export const TPAITA_HINNAT = { suora: 24.9, suoraIso: 28.9, uniikki: 27.9, uniikkiIso: 29.9 };
+/** Voimassa olevan hinnaston (api/_lib/vakiot.js HINNASTO) t-paitahinnat. */
+export const TPAITA_HINNAT = HINNASTO.tpaita;
 
 /** Kategoriat, joilla on koon mukainen hinta: { perus, iso } (iso = 3XL ja isommat). */
 export const KOKOHINNAT = {
-  hupparit: { perus: 52.9, iso: 59.9 },
+  hupparit: HINNASTO.hupparit,
 };
 
 /** Kiinteät kategoriahinnat (kaikki koot). */
-export const KATEGORIAHINNAT = {
-  seinataulut: 24.9,
-  koristeet: 22.9,
-};
+export const KATEGORIAHINNAT = HINNASTO.kategoriat;
 
 /** Onko t-paidalla suora kilpailijavertailu (24,90 €). Personoitu paita hinnoitellaan erikseen (api/_lib/personoitu.js). */
 export const onSuoraVertailu = (tuote) => tuote?.category === "t-paidat" && SUORA_VERTAILU.test(String(tuote?.name || "").trim());
@@ -64,14 +64,15 @@ export function rivinHinta(tuote, koko) {
  * Tuoterivi kokohinnoilla: price = perushinta, variants.size_prices = { koko: hinta } niille koille, joiden hinta
  * poikkeaa perushinnasta. Muut kategoriat sellaisenaan.
  */
-export function hinnoitteleRivi(tuote) {
+export function hinnoitteleRivi(tuote, hinnasto = HINNASTO) {
   if (!tuote || tuote.variants?.personoitu) return tuote;
-  const kiintea = KATEGORIAHINNAT[tuote.category];
+  const kiintea = hinnasto.kategoriat[tuote.category];
   if (kiintea) return { ...tuote, price: kiintea };
+  const tp = hinnasto.tpaita;
   const t = tuote.category === "t-paidat" && Number(tuote.price) > 0
-    ? (onSuoraVertailu(tuote) ? { perus: TPAITA_HINNAT.suora, iso: TPAITA_HINNAT.suoraIso } : { perus: TPAITA_HINNAT.uniikki, iso: TPAITA_HINNAT.uniikkiIso })
+    ? (onSuoraVertailu(tuote) ? { perus: tp.suora, iso: tp.suoraIso } : { perus: tp.uniikki, iso: tp.uniikkiIso })
     : null;
-  const k = t || KOKOHINNAT[tuote?.category];
+  const k = t || (tuote?.category === "hupparit" ? hinnasto.hupparit : null);
   if (!k) return tuote;
   const koot = new Set([
     ...(Array.isArray(tuote?.variants?.sizes) ? tuote.variants.sizes : []),
