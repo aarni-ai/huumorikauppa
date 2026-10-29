@@ -99,7 +99,7 @@ export default async function handler(req, res) {
   }
 
   // Hintatarkistus (Black Friday, kuluttajansuojalaki 2:6 a §): tallentaa t-paitojen hinnat päivittäin tauluun
-  // hintahistoria ja raportoi 30 päivän alimman hinnan näytön: nykyiset hinnat, ennen-hinnat, viimeisin päivitys,
+  // hintahistoria ja raportoi 30 päivän alimman hinnan näytön: nykyiset hinnat, luonti- ja päivitysajat,
   // maksettujen tilausten t-paitarivien hinnat ja hintahistoria. Hälyttää, jos kampanjan t-paidan hinta poikkeaa
   // kampanjan kappalehinnasta 30 päivää ennen kampanjaa tai sen aikana (TPAITAPARI_KAMPANJA).
   if (req.query.tehtava === "hintatarkistus") {
@@ -108,11 +108,12 @@ export default async function handler(req, res) {
       original_price numeric(10,2), primary key (paiva, slug))`;
     const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
     if (!kuiva) {
-      await db`insert into hintahistoria (paiva, slug, price, original_price)
-        select ${paiva}::date, slug, price, original_price from products where category = ${K.kategoria} and is_active
-        on conflict (paiva, slug) do update set price = excluded.price, original_price = excluded.original_price`;
+      // Tuotetaulussa ei ole ennen-hintaa (original_price); sarake jää tyhjäksi.
+      await db`insert into hintahistoria (paiva, slug, price)
+        select ${paiva}::date, slug, price from products where category = ${K.kategoria} and is_active
+        on conflict (paiva, slug) do update set price = excluded.price`;
     }
-    const nyt = await db`select price::float, count(*)::int as tuotteita, count(original_price)::int as ennen_hinnallisia,
+    const nyt = await db`select price::float, count(*)::int as tuotteita, min(created_at) as vanhin_luotu,
         min(updated_at) as vanhin_paivitys, max(updated_at) as uusin_paivitys
       from products where category = ${K.kategoria} and is_active group by price order by tuotteita desc`;
     const ikkunaAlku = new Date(Date.parse(`${K.alku}T00:00:00+02:00`) - 30 * 864e5).toISOString().slice(0, 10);
