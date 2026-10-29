@@ -152,7 +152,7 @@ const Index = () => {
             src={HERO_SRC}
             srcSet={HERO_SRCSET}
             sizes={HERO_SIZES}
-            alt="Hauskat joululahjat: t-paidat 24,90 € ja hupparit alkaen 49,99 €"
+            alt="Hauskat joululahjat: t-paidat alkaen 24,90 € ja hupparit alkaen 52,90 €"
             className="w-full md:w-[75%] lg:w-[65%] h-auto object-cover object-center block mx-auto"
             width={1672}
             height={941}

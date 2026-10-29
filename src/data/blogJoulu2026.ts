@@ -124,12 +124,12 @@ Talvella huppari on usein t-paitaa käytännöllisempi joululahja, koska sitä k
 
 ## Hinnat ja tilaaminen ajoissa
 
-Tätä kirjoitettaessa t-paidat maksavat 24,90-27,90 € ja hupparit 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
+Tätä kirjoitettaessa t-paidat maksavat 24,90-29,90 € ja hupparit alkaen 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. ${jouluLause()} Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
-      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa 24,90-27,90 € ja huppari 52,90 € tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
+      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa 24,90-29,90 € ja huppari alkaen 52,90 € tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
       { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
       { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
@@ -177,7 +177,7 @@ Pieni lahja ei tarkoita huonoa lahjaa. Kun teksti on mietitty saajaa ajatellen, 
 
 ## Kun raja joustaa: 20-30 euroa
 
-Joissain porukoissa hintaraja on 25 tai 30 euroa. Silloin vaihtoehdoksi tulee hauska t-paita: suosituimmat meemipaidat maksavat tätä kirjoitettaessa 24,90 € ja muut 27,90 €. Toimistoporukkaan sopivat esimerkiksi [Tämäkin olisi voinut olla sähköposti](/tuote/hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti) ja [Tärkeintä työssä on lounastauko](/tuote/hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko).
+Joissain porukoissa hintaraja on 25 tai 30 euroa. Silloin vaihtoehdoksi tulee hauska t-paita: suosituimmat meemipaidat maksavat tätä kirjoitettaessa alkaen 24,90 € ja muut alkaen 27,90 €. Toimistoporukkaan sopivat esimerkiksi [Tämäkin olisi voinut olla sähköposti](/tuote/hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti) ja [Tärkeintä työssä on lounastauko](/tuote/hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko).
 
 Paidan kanssa koko on kuitenkin arvaus. Jos et tiedä saajan kokoa, liitä mukaan lappu, jossa kerrot, että paidan voi vaihtaa. Tarkista ensin [palautusehdot](/palautusehdot): peruutusoikeus on 14 päivää tuotteen vastaanottamisesta, joten paketti kannattaa avata ja koko tarkistaa ajoissa. Lisää ideoita on sivulla [hauskat lahjat alle 30 euroa](/lahjat/alle-30-euroa).
 
@@ -335,9 +335,9 @@ Kirjoita jokaisen vastauksen viereen yksi tuote tai teksti, joka siihen liittyis
 
 Mies, jolla on kaikki, ei mittaa lahjaa hinnalla. Hyvä uutinen on, että personoitu tai hauska lahja ei vaadi suurta budjettia. Tätä kirjoitettaessa hintatasot ovat seuraavat:
 
-- **T-paita valmiilla tekstillä:** 24,90-27,90 €
+- **T-paita valmiilla tekstillä:** 24,90-29,90 €
 - **Kuusenkoriste omalla kuvalla:** 22,90 €
-- **Huppari:** 52,90 €
+- **Huppari:** alkaen 52,90 €
 
 Kun lahjoja ostaa useammalle, ${ILMAINEN_RAJA_TEKSTI} euron raja ilmaiseen toimitukseen tulee nopeasti täyteen. Esimerkiksi t-paita ja huppari yhdessä (74,80 €) jäävät vielä hieman alle rajan, mutta kaksi hupparia (99,80 €) ylittää sen.
 
@@ -434,7 +434,7 @@ Eläkelahja annetaan usein työyhteisön puolesta. Yhteislahjassa on kolme vaihe
 
 **3. Lisää henkilökohtainen osa.** Yhteislahjaan sopii hyvin [kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste): tiimikuva, kuva työpisteestä tai kuvakollaasi vuosien varrelta. Painetun lahjan rinnalle kortti, johon jokainen kirjoittaa yhden muiston, tekee kokonaisuudesta lämpimän.
 
-Tätä kirjoitettaessa huppari maksaa 52,90 € ja koriste 22,90 €, joten yhteishinta on 75,80 €. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
+Tätä kirjoitettaessa huppari maksaa alkaen 52,90 € ja koriste 22,90 €, joten yhteishinta on alkaen 75,80 €. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
 
 ## Näin annat lahjan eläkejuhlissa
 
@@ -722,7 +722,7 @@ Lataa kuva [omalla kuvalla painettavaan t-paitaan](/tuote/oma-tekstikuva-t-paita
 Kun lapset ovat aikuisia, isän lahja hoidetaan usein sisarusten kesken. Sovi kolme asiaa ajoissa:
 
 - **Kuka tilaa:** Yksi sisaruksista hoitaa tilauksen ja muut maksavat osuutensa.
-- **Mikä on budjetti:** Kolme sisarusta 20 eurolla kokoaa 60 euroa, mikä riittää esimerkiksi hupparin hintaan (52,90 € tätä kirjoitettaessa).
+- **Mikä on budjetti:** Kolme sisarusta 20 eurolla kokoaa 60 euroa, mikä riittää esimerkiksi hupparin hintaan (alkaen 52,90 € tätä kirjoitettaessa).
 - **Mikä on viesti:** Yhteislahja voi olla perheen sisäpiirin vitsi paidassa, jonka jokainen sisarus ymmärtää.
 
 Jos lahjoja kertyy samaan tilaukseen useammalle perheenjäsenelle, ${ILMAINEN_RAJA_TEKSTI} euron raja ylittyy helposti, ja toimitus on silloin ilmainen. Alle sen toimitus on ${TOIMITUSMAKSU_TEKSTI} €.
@@ -843,7 +843,7 @@ Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](
 
 ## 30 euron budjetti
 
-Kolmellakymmenellä eurolla mukaan tulevat t-paidat, jotka maksavat tätä kirjoitettaessa 24,90-27,90 €. Paita on näyttävä salaisen joulupukin lahja, mutta siinä on yksi ehto: koko pitää tietää. Jos järjestäjä kerää toivelistat, pyydä koko mukaan.
+Kolmellakymmenellä eurolla mukaan tulevat t-paidat, jotka maksavat tätä kirjoitettaessa 24,90-29,90 €. Paita on näyttävä salaisen joulupukin lahja, mutta siinä on yksi ehto: koko pitää tietää. Jos järjestäjä kerää toivelistat, pyydä koko mukaan.
 
 Kun saaja on tuttu, valitse paita hänen omasta jutustaan. Kun saaja on vähemmän tuttu, valitse yleisesti hauska teksti, joka ei koske ulkonäköä tai ikää. Esimerkkejä:
 
@@ -1023,7 +1023,7 @@ Kolme tapaa edetä:
 
 ## Budjetti
 
-Tätä kirjoitettaessa t-paita maksaa 24,90-27,90 €, pitkähihainen 39,90 € ja huppari 52,90 €. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
+Tätä kirjoitettaessa t-paita maksaa 24,90-29,90 €, pitkähihainen 39,90 € ja huppari alkaen 52,90 €. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
 
 ## Anna avata rauhassa
 
@@ -1039,7 +1039,7 @@ Hauska lahja teinille onnistuu, kun huumori on nuoren omaa. Valitse lahja harras
 
 ## Hupparit ja pitkähihaiset talveen
 
-Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa 52,90 € ja pitkähihainen 39,90 €.
+Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa alkaen 52,90 € ja pitkähihainen 39,90 €.
 
 ## Tilaa ajoissa
 

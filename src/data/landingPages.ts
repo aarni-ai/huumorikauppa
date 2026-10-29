@@ -1247,7 +1247,7 @@ export const landingPages: LandingPageDef[] = [
       },
       {
         q: "Paljonko 40v-paita maksaa?",
-        a: `T-paita maksaa 27,90 € ja huppari 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `T-paita maksaa alkaen 27,90 € ja huppari alkaen 52,90 €. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
       {
         q: "Miten valitsen koon 40-vuotiaalle?",

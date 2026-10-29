@@ -10,8 +10,8 @@ const huppari = {
   variants: {
     sizes: ["S", "M", "3XL"], colors: ["Musta"],
     variant_map: { "Musta|S": 1, "Musta|M": 2, "Musta|3XL": 3 },
-    // S ja M kate yli 10 %, 3XL alle 10 % hinnalla 57,90 € (kulu 36,00 €)
-    costs: { "1": 2400, "2": 2400, "3": 3600 },
+    // S ja M kate yli 10 %, 3XL alle 10 % hinnalla 59,90 € (kulu 38,00 €)
+    costs: { "1": 2400, "2": 2400, "3": 3800 },
     shipping_cents: 1089,
   },
 };
@@ -28,7 +28,7 @@ describe("koon mukaiset hupparihinnat", () => {
   it("rivi saa perushinnan ja size_prices-kartan", () => {
     const r = hinnoitteleRivi(huppari);
     expect(r.price).toBe(52.9);
-    expect(r.variants.size_prices).toEqual({ "3XL": 57.9 });
+    expect(r.variants.size_prices).toEqual({ "3XL": 59.9 });
   });
 
   it("hupparin katesääntö on 10 %, muiden 20 %", () => {
@@ -54,17 +54,17 @@ describe("koon mukaiset hupparihinnat", () => {
 
 describe("t-paitojen hinnoittelu 29.10.2026", () => {
   const paita = (name: string) => hinnoitteleRivi({ name, category: "t-paidat", price: 24.9, variants: { sizes: ["M", "3XL"] } });
-  it("suora kilpailijavertailu: 24,90 €, 3XL+ 27,90 €", () => {
+  it("suora kilpailijavertailu: 24,90 €, 3XL+ 28,90 €", () => {
     for (const n of ["Saatanan Tunarit | T-Paita", "Se oli tonnin seteli | T-paita", "I love my girlfriend | T-paita", "Kalju | T-paita", "Olen eläkkeellä | T-paita"]) {
       const r = paita(n);
       expect(r.price, n).toBe(24.9);
-      expect(rivinHinta(r, "3XL"), n).toBe(27.9);
+      expect(rivinHinta(r, "3XL"), n).toBe(28.9);
     }
   });
-  it("muut t-paidat 27,90 € kaikissa ko'oissa", () => {
+  it("muut t-paidat 27,90 €, 3XL+ 29,90 €", () => {
     const r = paita("Kala oli tätäkin isompi | T-paita kalastajalle");
     expect(r.price).toBe(27.9);
-    expect(rivinHinta(r, "3XL")).toBe(27.9);
+    expect(rivinHinta(r, "3XL")).toBe(29.9);
   });
   it("juliste 24,90 €, koriste 22,90 €, tarra ennallaan", () => {
     expect(hinnoitteleRivi({ name: "x", category: "seinataulut", price: 22.9, variants: {} }).price).toBe(24.9);

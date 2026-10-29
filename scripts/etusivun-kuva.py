@@ -15,6 +15,7 @@ TUOTTEET = [  # slug, väri (variant_images), kategoria-teksti
     ("joulupukin-virallinen-testaaja-t-paita-jouluun", "Musta", "T-paita"),
     ("kalamies-t-paita", "Valkoinen", "T-paita"),
 ]
+EDULLISIN_TPAITA = "saatanan-tunarit-t-paita"
 F = "/System/Library/Fonts/Supplemental/"
 W, H = 1672, 941
 JUURI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "images")
@@ -64,10 +65,11 @@ def main():
     for rivi in ["Hauskat", "joululahjat", "paidoista", "huppareihin"]:
         d.text((x0, y), rivi, font=musta, fill="white")
         y += 102
-    tp = min(p for _, p, t in tuotteet if t == "T-paita")
+    # Edullisin t-paita (suora kilpailijavertailu 24,90 €, api/_lib/kokohinnat.js), vaikka kuvan paidat olisivat kalliimpia.
+    tp = min([p for _, p, t in tuotteet if t == "T-paita"] + [float(json.loads(hae(API + EDULLISIN_TPAITA))["price"])])
     hp = min(p for _, p, t in tuotteet if t == "Huppari")
     keski = ImageFont.truetype(F + "Arial Bold.ttf", 36)
-    d.text((x0, y + 30), f"T-paidat {hinta(tp)}, hupparit alkaen {hinta(hp)}", font=keski, fill=(255, 236, 236))
+    d.text((x0, y + 30), f"T-paidat alkaen {hinta(tp)}, hupparit alkaen {hinta(hp)}", font=keski, fill=(255, 236, 236))
     d.text((x0, y + 80), "Suomalaista huumoria lahjaksi.", font=lihava, fill=(255, 236, 236))
     bx, by, bw, bh = x0, y + 168, 470, 96
     d.rounded_rectangle([bx, by, bx + bw, by + bh], radius=48, fill=(255, 214, 10))

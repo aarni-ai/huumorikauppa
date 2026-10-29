@@ -15,17 +15,20 @@ export const ISOT_KOOT = /^(3|4|5|6)XL$/i;
  * Hauskatpaidat.fi t-paita 25 €, premium/oma printti 30 €, huppari 45-69 € (yleensä 50-55 €); Stuntman t-paita
  * 19,90-22,90 €, huppari 38,90-44,90 € (erikoismallit 50-59 €).
  * - T-paidat, joilla on suora kilpailijavertailu (SUORA_VERTAILU: samat meemit ja aiheet kilpailijalla 25 €): 24,90 €,
- *   3XL-5XL 27,90 € (heikoimman koon kate muuten 6,77 €). Black Friday koskee vain näitä (kappalehinta 24,90 €).
- * - Muut t-paidat (harrastus- ja ammattisarjat, joulu-, ikävuosi-, kaupunki- ja muut uniikit designit): 27,90 €.
- * - Hupparit 52,90 €, 3XL+ 57,90 €. Julisteet 24,90 €. Keraaminen koriste 22,90 €.
+ *   3XL-5XL 28,90 €. Black Friday koskee vain näitä (kappalehinta 24,90 €).
+ * - Muut t-paidat (harrastus- ja ammattisarjat, joulu-, ikävuosi-, kaupunki- ja muut uniikit designit): 27,90 €,
+ *   3XL-5XL 29,90 €.
+ * - Hupparit 52,90 €, 3XL+ 59,90 €. Julisteet 24,90 €. Keraaminen koriste 22,90 €.
+ * 3XL+ -hinnat tarkistettiin tuotannon kuluilla (?tehtava=katetaulu): 27,90 €:lla 4XL jäi 6,25 €:oon ja hupparin 3XL
+ * 57,90 €:lla 6,55 €:oon, joten 3XL+ nostettiin niin, että jokaisen variantin kate on vähintään 7 €.
  */
 export const SUORA_VERTAILU = /saatanan.?tunarit|tonnin.?seteli|^i\s*(love|❤️?|♥)\s*my\s*(girl|boy)friend|alkoholiongelmaa|maailman.?paras.?(äiti|aiti)|^kalju\s*\||amatimies|^100.?%?.?eläkeläinen\s*\||^eläkeläinen\s*\||^olen eläkkeellä\s*\|/i;
 
-export const TPAITA_HINNAT = { suora: 24.9, suoraIso: 27.9, uniikki: 27.9 };
+export const TPAITA_HINNAT = { suora: 24.9, suoraIso: 28.9, uniikki: 27.9, uniikkiIso: 29.9 };
 
 /** Kategoriat, joilla on koon mukainen hinta: { perus, iso } (iso = 3XL ja isommat). */
 export const KOKOHINNAT = {
-  hupparit: { perus: 52.9, iso: 57.9 },
+  hupparit: { perus: 52.9, iso: 59.9 },
 };
 
 /** Kiinteät kategoriahinnat (kaikki koot). */
@@ -66,7 +69,7 @@ export function hinnoitteleRivi(tuote) {
   const kiintea = KATEGORIAHINNAT[tuote.category];
   if (kiintea) return { ...tuote, price: kiintea };
   const t = tuote.category === "t-paidat" && Number(tuote.price) > 0
-    ? (onSuoraVertailu(tuote) ? { perus: TPAITA_HINNAT.suora, iso: TPAITA_HINNAT.suoraIso } : { perus: TPAITA_HINNAT.uniikki, iso: TPAITA_HINNAT.uniikki })
+    ? (onSuoraVertailu(tuote) ? { perus: TPAITA_HINNAT.suora, iso: TPAITA_HINNAT.suoraIso } : { perus: TPAITA_HINNAT.uniikki, iso: TPAITA_HINNAT.uniikkiIso })
     : null;
   const k = t || KOKOHINNAT[tuote?.category];
   if (!k) return tuote;
