@@ -9,12 +9,21 @@
  *
  * POST { action: "lahjakortti", code } tarkistaa lahjakortin saldon kassasivulle: { ok, saldo, voimassa } tai
  * { ok: false, error }. Ei vaadi Stripeä.
+ *
+ * POST { action: "kumppanikoodi", code } -> { ok, koodi }: hyväksytty, aktiivinen kumppanikoodi (kassan vahvistus).
+ *
+ * POST { action: "lasku", items, yritys: { yritys, ytunnus, nimi, email, puhelin, osoite, postinumero, kaupunki, viite },
+ *   toimitus: { nimi, osoite, postinumero, kaupunki } } yritystilaus laskulla (/yritykset/tilaus): vähintään 10
+ *   fyysistä tuotetta, Y-tunnus (tarkiste ja PRH). Tilaus odottaa maksua; Stripe lähettää laskun (maksuaika 14 pv).
+ *   Printify-tilaus lähtee vasta, kun lasku on maksettu (api/_lib/tilaus.js kasitteleLasku: webhook invoice.paid ja
+ *   tunnin cron). Vastaus { ok, lasku: hosted_invoice_url, tilaus }.
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
 import { tarkistaKumppani } from "./_lib/kumppani.js";
+import { ytunnus as tarkistaYtunnus, haeYritys, laskuData, YRITYS_MIN_KPL } from "./_lib/yritysmyynti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
@@ -98,6 +107,14 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: false, error: "Koodin tarkistus epäonnistui. Yritä hetken kuluttua uudelleen." });
     }
   }
+
+  if (pyynto.action === "kumppanikoodi") {
+    if (!onTietokanta()) return res.status(200).json({ ok: false });
+    const koodi = await tarkistaKumppani(sql(), pyynto.code).catch(() => null);
+    return res.status(200).json(koodi ? { ok: true, koodi } : { ok: false });
+  }
+
+  if (pyynto.action === "lasku") return laskuTilaus(pyynto, res);
 
   // Lahjakortin koodi toimitetaan vain sähköpostilla: myynti vasta, kun oma sähköposti on käytössä (Resend-domain
   // vahvistettu, SAHKOPOSTI_VAHVISTETTU=1). Muuten ostaja maksaisi saamatta koodia.
@@ -203,5 +220,75 @@ export default async function handler(req, res) {
     console.error("checkout:", e?.message || e);
     if (tilausId) await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${tilausId} and status = 'odottaa_maksua'`.catch(() => {});
     return res.status(200).json({ ok: false, error: "Maksun aloitus epäonnistui. Yritä hetken kuluttua uudelleen.", diagnostics: { error_stage: "stripe_checkout_create" } });
+  }
+}
+
+const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** ALV 25,5 % (sisältyy hintoihin) Stripe-laskun riveille: haetaan tai luodaan kerran. */
+let alvId = null;
+async function alvVerokanta() {
+  if (alvId) return alvId;
+  for await (const t of stripe().taxRates.list({ active: true, limit: 100 })) {
+    if (t.inclusive && Number(t.percentage) === 25.5 && t.country === "FI") return (alvId = t.id);
+  }
+  alvId = (await stripe().taxRates.create({ display_name: "ALV", percentage: 25.5, inclusive: true, country: "FI", jurisdiction: "FI", description: "Arvonlisävero 25,5 %" })).id;
+  return alvId;
+}
+
+/** Yritystilaus laskulla (ks. tiedoston alku). */
+async function laskuTilaus(pyynto, res) {
+  if (!onStripe() || !onTietokanta()) return res.status(503).json({ ok: false, error: "Laskutus ei ole vielä käytössä." });
+  const y = pyynto.yritys || {};
+  const tunnus = tarkistaYtunnus(y.ytunnus);
+  const a = {
+    yritys: teksti(y.yritys, 120), ytunnus: tunnus, nimi: teksti(y.nimi, 100), email: teksti(y.email, 200), puhelin: teksti(y.puhelin, 40),
+    osoite: teksti(y.osoite, 200), postinumero: teksti(y.postinumero, 10), kaupunki: teksti(y.kaupunki, 80), viite: teksti(y.viite, 30),
+  };
+  if (!tunnus) return res.status(200).json({ ok: false, error: "Tarkista Y-tunnus (muoto 1234567-8)." });
+  if (!a.yritys || !a.nimi || !a.email || !EMAIL_RE.test(a.email) || !a.osoite || !/^\d{5}$/.test(a.postinumero || "") || !a.kaupunki) {
+    return res.status(200).json({ ok: false, error: "Täytä yritys, yhteyshenkilö, sähköposti ja laskutusosoite." });
+  }
+  const prh = await haeYritys(tunnus);
+  if (prh.ok === false) return res.status(200).json({ ok: false, error: prh.syy });
+  const t = pyynto.toimitus || {};
+  const toimitus = { address: teksti(t.osoite, 200) || a.osoite, zip: teksti(t.postinumero, 10) || a.postinumero, city: teksti(t.kaupunki, 80) || a.kaupunki, phone: a.puhelin };
+  let tilausId = null;
+  try {
+    const tuotteet = await kaikkiTuotteet();
+    const kassa = { items: pyynto.items, customerEmail: a.email, customerName: a.nimi, shippingAddress: toimitus, recipientName: teksti(t.nimi, 200) || a.yritys };
+    const laskettu = laskeTilaus(kassa, tuotteet, null, {});
+    const kpl = laskettu.rivit.filter((r) => r.type !== "giftcard").reduce((s, r) => s + r.quantity, 0);
+    if (laskettu.rivit.some((r) => r.type === "giftcard")) return res.status(200).json({ ok: false, error: "Lahjakortit ostetaan tavallisen kassan kautta." });
+    if (kpl < YRITYS_MIN_KPL) return res.status(200).json({ ok: false, error: `Laskulla voi tilata vähintään ${YRITYS_MIN_KPL} tuotetta. Pienemmän tilauksen voi maksaa kortilla.` });
+    const [tilaus] = await sql()`insert into orders (customer_email, customer_name, recipient_name, phone, shipping_address,
+        items, subtotal, shipping, discount_code, discount, bundle_discount, total, gift_card_code, gift_card_amount, printify_status)
+      values (${a.email}, ${a.nimi}, ${kassa.recipientName}, ${a.puhelin}, ${sql().json({ ...toimitus, country: "FI" })},
+        ${sql().json(laskettu.rivit.map(({ unit_cents, ...r }) => r))}, ${laskettu.subtotal}, ${laskettu.shipping}, null, ${laskettu.discount},
+        ${laskettu.bundle_discount}, ${laskettu.total}, null, 0, 'ei_lahetetty')
+      returning *`;
+    tilausId = tilaus.id;
+    const d = laskuData({ rivit: laskettu.rivit, toimitus: laskettu.shipping, tilausId, asiakas: a });
+    const asiakas = await stripe().customers.create(d.asiakas);
+    const vero = await alvVerokanta();
+    const lasku = await stripe().invoices.create({ customer: asiakas.id, ...d.lasku, pending_invoice_items_behavior: "exclude" });
+    for (const i of d.items) {
+      await stripe().invoiceItems.create({ customer: asiakas.id, invoice: lasku.id, currency: "eur", amount: i.unit_amount * i.quantity,
+        description: i.quantity > 1 ? `${i.quantity} x ${i.description} (${(i.unit_amount / 100).toFixed(2).replace(".", ",")} €/kpl)` : i.description,
+        tax_rates: [vero] });
+    }
+    const valmis = await stripe().invoices.finalizeInvoice(lasku.id);
+    if (Math.abs(valmis.total / 100 - laskettu.total) > 0.01) throw new Error(`laskun summa ${valmis.total / 100} != tilaus ${laskettu.total}`);
+    await stripe().invoices.sendInvoice(valmis.id);
+    await kirjaaTapahtuma(tilaus.id, "lasku", { invoice: valmis.id, ytunnus: tunnus, yritys: a.yritys, prh: prh.ok === true ? prh.nimi : "ei vastausta", viite: a.viite });
+    const kumppani = await tarkistaKumppani(sql(), pyynto.kumppani);
+    if (kumppani) await kirjaaTapahtuma(tilaus.id, "kumppani", { koodi: kumppani });
+    return res.status(200).json({ ok: true, lasku: valmis.hosted_invoice_url, tilaus: tilaus.id, summa: laskettu.total });
+  } catch (e) {
+    if (tilausId) await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${tilausId} and status = 'odottaa_maksua'`.catch(() => {});
+    if (e instanceof KassaVirhe) return res.status(200).json({ ok: false, error: e.message });
+    console.error("lasku:", e?.message || e);
+    return res.status(200).json({ ok: false, error: "Laskun luonti epäonnistui. Yritä hetken kuluttua uudelleen tai pyydä tarjous." });
   }
 }

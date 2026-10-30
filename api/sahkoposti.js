@@ -16,6 +16,8 @@
  * POST { action: "tarjouspyynto", yritys, nimi, email, ... }      /yritykset: tallennus ja ilmoitus omistajalle
  * POST { action: "kumppaniklikki", koodi }                        kumppanilinkin avaus (laskuri, ei henkilötietoja)
  * GET  ?kumppaniraportti=<avain>                                  kumppanin oma raportti (api/_lib/kumppani.js kumppaniRaportti)
+ * GET  ?tarjoukset=<avain>                                        /hallinta/tarjoukset: tarjouspyynnöt katteineen (avain: cron hallinta-linkki)
+ * POST { action: "tarjoustila", avain, id, tila }                 tarjouspyynnön tila (uusi, vastattu, tilattu, hylatty)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
@@ -23,6 +25,8 @@ import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
 import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS } from "./_lib/kumppani.js";
 import { haeTilaus, onPrintify } from "./_lib/printify.js";
+import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } from "./_lib/yritysmyynti.js";
+import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -89,6 +93,12 @@ export async function kasittele(req, res, store) {
     if (!raportti) return res.status(404).json({ ok: false });
     return res.status(200).json({ ok: true, ...raportti });
   }
+  // Hallinta: tarjouspyynnöt (allekirjoitettu avain, tarkoitus "hallinta"; linkki cron ?tehtava=hallinta-linkki).
+  if (req.method === "GET" && typeof q.tarjoukset === "string") {
+    if (tarkistaTunniste(q.tarjoukset, "hallinta") !== "tarjoukset") return res.status(404).json({ ok: false });
+    const rivit = await store.tarjouspyynnot().catch(() => []);
+    return res.status(200).json({ ok: true, tarjoukset: rivit });
+  }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
   switch (body.action) {
@@ -109,9 +119,16 @@ export async function kasittele(req, res, store) {
     case "tarjouspyynto": {
       // Roskapostisuoja: piilokenttä täytetty -> hyväksytään hiljaa tallentamatta.
       if (teksti(body.kotisivu, 200)) return res.status(200).json({ ok: true });
+      // Laskuri ja aikataulu lasketaan palvelimella uudelleen (selaimen arvoihin ei luoteta).
+      const koot = Object.fromEntries(KOOT.map((k) => [k, Math.max(0, Math.min(999, Math.floor(Number(body.koot?.[k]) || 0)))]).filter(([, n]) => n > 0));
+      const malli = MALLIT[body.malli] ? body.malli : null;
+      const laskuri = malli && Object.keys(koot).length ? laskeTarjous({ malli, koot }, { kerroin: PRINTIFY_KULUKERROIN }) : null;
+      const at = aikataulu(teksti(body.toimituspaiva, 10));
       const t = {
         yritys: teksti(body.yritys, 120), nimi: teksti(body.nimi, 100), email: normalisoiEmail(teksti(body.email, 200) || ""),
-        puhelin: teksti(body.puhelin, 40), maara: Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
+        puhelin: teksti(body.puhelin, 40), maara: laskuri?.kpl || Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
+        paketti: teksti(body.paketti, 60), malli, koot: laskuri ? koot : null, hinta: laskuri?.yhteensa ?? null, kate: laskuri?.kate ?? null,
+        toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus),
       };
       if (!t.yritys || !t.nimi || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
         return res.status(400).json({ ok: false, error: "Täytä yritys, nimi ja toimiva sähköpostiosoite." });
@@ -120,9 +137,18 @@ export async function kasittele(req, res, store) {
       // Ilmoitus omistajalle (OMISTAJA_EMAIL); tallennus riittää, vaikka viesti epäonnistuisi.
       await halytys(`Tarjouspyyntö: ${t.yritys}${t.maara ? `, ${t.maara} kpl` : ""}`, [
         `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
-        `Määrä: ${t.maara ?? "-"}`, `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
+        `Määrä: ${t.maara ?? "-"}`, `Paketti: ${t.paketti || "-"}`, `Malli: ${t.malli || "-"}`, `Koot: ${t.koot ? JSON.stringify(t.koot) : "-"}`,
+        `Hinta: ${t.hinta ?? "-"} €, kate (arvio): ${t.kate ?? "-"} €`, `Toivottu toimituspäivä: ${t.toivottu_paiva || "-"} (${t.ehtii === null ? "-" : t.ehtii ? "ehtii" : "ei ehdi"})`,
+        `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
       ]).catch(() => null);
-      return res.status(200).json({ ok: true });
+      return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at });
+    }
+    case "tarjoustila": {
+      if (tarkistaTunniste(body.avain, "hallinta") !== "tarjoukset") return res.status(404).json({ ok: false });
+      const tila = ["uusi", "vastattu", "tilattu", "hylatty"].includes(body.tila) ? body.tila : null;
+      if (!tila || !Number.isInteger(Number(body.id))) return res.status(400).json({ ok: false });
+      const r = await store.asetaTarjousTila(Number(body.id), tila);
+      return res.status(200).json({ ok: r.length > 0 });
     }
     case "kumppaniklikki": {
       const kirjattu = await kirjaaKlikki(sql(), body.koodi);

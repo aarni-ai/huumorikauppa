@@ -40,7 +40,7 @@
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
-import { kasitteleMaksu, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
+import { kasitteleMaksu, kasitteleLasku, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
 import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
 import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
@@ -146,6 +146,45 @@ export default async function handler(req, res) {
     }
     return res.status(200).json({ ok: true, kuiva, paiva, ikkuna: { alku: ikkunaAlku, kampanja: `${K.alku}-${K.loppu}` },
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
+  }
+
+  // Hallintalinkki /hallinta/tarjoukset (allekirjoitettu avain, ei tallenneta). Annetaan Aarnille ja Coworkille.
+  if (req.query.tehtava === "hallinta-linkki") {
+    const { allekirjoita } = await import("../_lib/markkinointi.js");
+    const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+    return res.status(200).json({ ok: true, linkki: `${pohja}/hallinta/tarjoukset?avain=${encodeURIComponent(allekirjoita("hallinta", "tarjoukset"))}` });
+  }
+
+  // Laskupolun testi (yritystilaus laskulla). Ilman avainta: laskun rivit nykyhinnoilla (kuiva). STRIPE_TEST_SECRET_KEY
+  // (Vercelin ympäristömuuttuja, sk_test_...) -> testitilassa asiakas, ALV-verokanta, lasku, rivit, viimeistely,
+  // maksu (paid_out_of_band) ja tila paid; Printify-tilausta ei tehdä eikä kantaan kirjoiteta.
+  if (req.query.tehtava === "laskutesti") {
+    const { laskuData, ytunnus } = await import("../_lib/yritysmyynti.js");
+    const { laskeTilaus } = await import("../_lib/kassa.js");
+    const tuotteet = await kaikkiTuotteet();
+    const paita = tuotteet.find((t) => t.slug === "saatanan-tunarit-t-paita");
+    const vm = Object.keys(paita?.variants?.variant_map || {});
+    const vari = vm.find((a) => a.endsWith("|M"))?.split("|")[0];
+    const items = ["M", "L", "XL"].map((koko, i) => ({ id: paita.id, slug: paita.slug, size: koko, color: vari, quantity: [4, 4, 2][i] }));
+    const laskettu = laskeTilaus({ items, customerEmail: "kassatesti@huumorikauppa.fi", shippingAddress: { address: "Testikatu 1", zip: "00100", city: "Helsinki" } }, tuotteet, null, {});
+    const asiakas = { yritys: "Testi Oy", ytunnus: ytunnus("3653666-7"), email: "kassatesti@huumorikauppa.fi", osoite: "Testikatu 1", postinumero: "00100", kaupunki: "Helsinki", viite: "TESTI" };
+    const d = laskuData({ rivit: laskettu.rivit, toimitus: laskettu.shipping, tilausId: "testi", asiakas });
+    const tulos = { kassa: { kpl: laskettu.rivit.reduce((s, r) => s + r.quantity, 0), alennus: laskettu.basket_discount, total: laskettu.total }, lasku: { rivit: d.items, summa: d.summa } };
+    const avain = process.env.STRIPE_TEST_SECRET_KEY;
+    if (!avain || !avain.startsWith("sk_test_")) return res.status(200).json({ ok: true, testitila: false, syy: "STRIPE_TEST_SECRET_KEY puuttuu", ...tulos });
+    const { default: Stripe } = await import("stripe");
+    const st = new Stripe(avain, { apiVersion: "2025-08-27.basil" });
+    const cus = await st.customers.create(d.asiakas);
+    let vero = null;
+    for await (const t of st.taxRates.list({ active: true, limit: 100 })) if (t.inclusive && Number(t.percentage) === 25.5) { vero = t.id; break; }
+    vero ||= (await st.taxRates.create({ display_name: "ALV", percentage: 25.5, inclusive: true, country: "FI", jurisdiction: "FI" })).id;
+    const inv = await st.invoices.create({ customer: cus.id, ...d.lasku, pending_invoice_items_behavior: "exclude" });
+    for (const i of d.items) await st.invoiceItems.create({ customer: cus.id, invoice: inv.id, currency: "eur", amount: i.unit_amount * i.quantity, description: `${i.quantity} x ${i.description}`, tax_rates: [vero] });
+    const fin = await st.invoices.finalizeInvoice(inv.id);
+    const maksettu = await st.invoices.pay(fin.id, { paid_out_of_band: true });
+    return res.status(200).json({ ok: true, testitila: true, ...tulos, stripe: { lasku: fin.id, summa: fin.total / 100, vero: fin.total_taxes?.reduce?.((s, x) => s + x.amount, 0) / 100,
+      erapaiva: new Date(fin.due_date * 1000).toISOString().slice(0, 10), tila: maksettu.status, order_id: maksettu.metadata?.order_id, url: fin.hosted_invoice_url,
+      summaTasmaa: Math.abs(fin.total / 100 - laskettu.total) < 0.01 } });
   }
 
   // Katetaulu (29.10.2026): yhden tuotteen tilauksen nettokate euroina jokaiselle myytävälle variantille (asiakas maksaa
@@ -610,6 +649,23 @@ export default async function handler(req, res) {
       if (t?.status === "maksettu") continue;
       loki.push(`paikkaus ${s.id}`);
       if (!kuiva) await kasitteleMaksu(s);
+    }
+  }
+
+  // 1b. Yritystilausten laskut (webhook invoice.paid voi puuttua Stripen tapahtumalistasta): avoimet laskut 45 pv.
+  if (onStripe()) {
+    const laskut = await db`select o.id, e.details->>'invoice' as invoice from orders o
+      join order_events e on e.order_id = o.id and e.kind = 'lasku'
+      where o.status = 'odottaa_maksua' and o.created_at > now() - interval '45 days'`;
+    for (const l of laskut) {
+      try {
+        const lasku = await stripe().invoices.retrieve(l.invoice);
+        if (lasku.status === "open") continue;
+        loki.push(`lasku #${tilausnumero(l.id)} ${lasku.status}`);
+        if (!kuiva) await kasitteleLasku(lasku);
+      } catch (e) {
+        loki.push(`lasku #${tilausnumero(l.id)} virhe ${e?.message || e}`);
+      }
     }
   }
 

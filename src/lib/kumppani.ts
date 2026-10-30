@@ -29,6 +29,10 @@ export function tallennaKumppaniUrlista(search: string): void {
 
 export function kumppani(): string | null {
   if (!KUMPPANUUS.kaytossa) return null;
-  if (muistissa) return muistissa;
+  if (muistissa) {
+    // Suostumus voi tulla vasta linkin avaamisen jälkeen: tallennetaan silloin istuntoon (säilyy sivun latauksen yli).
+    try { if (hasMarketingConsent() && !sessionStorage.getItem(AVAIN)) sessionStorage.setItem(AVAIN, muistissa); } catch { /* ei tallennusta */ }
+    return muistissa;
+  }
   try { return sessionStorage.getItem(AVAIN); } catch { return null; }
 }

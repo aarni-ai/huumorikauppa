@@ -4,6 +4,7 @@
  * "Määräalennus yrityksille"), joulun päivä lasketaan (src/data/tilauspaivat.ts).
  */
 import { MAARAALENNUS } from "../../api/_lib/vakiot.js";
+import { esimerkkiHinnat, YRITYS_JOULU_TAKARAJA_ISO, paivaTeksti } from "../../api/_lib/yritysmyynti.js";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 import { jouluAuki, JOULU_TPAITA_PAIVA_TEKSTI } from "./tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "./christmas";
@@ -24,6 +25,37 @@ export function yritysEsimerkki(n: number): { kpl: number; ennen: string; prosen
 const JOULU = jouluAuki()
   ? `T-paidat ehtivät jouluksi, kun tilaus on tehty viimeistään ${JOULU_TPAITA_PAIVA_TEKSTI}. Isossa tilauksessa jätä aikaa myös kokojen keräämiseen.`
   : `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
+
+/** Yritysten joulutakaraja tekstinä, esim. "to 26.11." (api/_lib/yritysmyynti.js). */
+export const YRITYS_JOULU_TEKSTI = paivaTeksti(YRITYS_JOULU_TAKARAJA_ISO);
+
+/** Pakettitarjoukset kolmeen yleisimpään tilanteeseen; esimerkkihinnat 10, 25 ja 50 paidalle (koot M-XL). */
+export const YRITYS_PAKETIT = [
+  {
+    id: "pikkujoulu",
+    otsikko: "Pikkujoulupaita koko tiimille",
+    kuvaus: "Sama pikkujoulupaita tai jokaiselle oma vitsi. Paidat tulevat yhteen osoitteeseen ennen pikkujouluja.",
+    malli: "tpaita",
+    linkki: { href: "/lahjat/pikkujouluihin", label: "Pikkujoulupaidat" },
+    esimerkit: esimerkkiHinnat("tpaita"),
+  },
+  {
+    id: "joululahja",
+    otsikko: "Joululahja asiakkaille ja henkilökunnalle",
+    kuvaus: "Meemipaita on joululahja, joka otetaan käyttöön. Paidat voivat olla eri designeja ja kokoja.",
+    malli: "meemipaita",
+    linkki: { href: "/meemipaidat", label: "Meemipaidat" },
+    esimerkit: esimerkkiHinnat("meemipaita"),
+  },
+  {
+    id: "tyomaa",
+    otsikko: "Työmaa- tai tiimipaita",
+    kuvaus: "Ammatti- tai tiimihuumoria koko porukalle, esimerkiksi rakennusmiehille, hoitajille tai IT-tiimille.",
+    malli: "tpaita",
+    linkki: { href: "/ammattipaidat", label: "Ammattipaidat" },
+    esimerkit: esimerkkiHinnat("tpaita"),
+  },
+] as const;
 
 export const yrityksetPage = {
   path: "/yritykset",

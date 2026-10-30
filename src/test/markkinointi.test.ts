@@ -327,8 +327,13 @@ describe("/api/sahkoposti tarjouspyyntö (/yritykset)", () => {
     expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "ei-osoite" })).status).toBe(400);
     expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", kotisivu: "http://x" })).body).toEqual({ ok: true });
     expect(st.tarjouspyynnot.length).toBe(0);
-    expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "A@B.fi", maara: "25", viesti: "Joulupaidat" })).body).toEqual({ ok: true });
+    expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "A@B.fi", maara: "25", viesti: "Joulupaidat" })).body).toMatchObject({ ok: true, hinta: null });
     expect(st.tarjouspyynnot[0]).toMatchObject({ yritys: "Oy Ab", email: "a@b.fi", maara: 25 });
+    // Laskuri: palvelin laskee hinnan ja kateen uudelleen; koot ja toivottu päivä tallentuvat.
+    const r = await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", malli: "meemipaita", koot: { M: 5, L: 5 }, toimituspaiva: "2099-12-01", ytunnus: "3653666-7" });
+    expect(r.body).toMatchObject({ ok: true, hinta: 224.1, aikataulu: { ehtii: true } });
+    expect(st.tarjouspyynnot[1]).toMatchObject({ maara: 10, malli: "meemipaita", koot: { M: 5, L: 5 }, hinta: 224.1, ytunnus: "3653666-7", toivottu_paiva: "2099-12-01", ehtii: true });
+    expect(st.tarjouspyynnot[1].kate).toBeGreaterThan(50);
     expect(String(viestit[0].subject)).toContain("Tarjouspyyntö: Oy Ab, 25 kpl");
   });
 });

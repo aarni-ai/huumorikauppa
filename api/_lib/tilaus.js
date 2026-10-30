@@ -171,6 +171,32 @@ export async function kasitteleMaksu(session) {
 }
 
 /**
+ * Yritystilauksen lasku (api/checkout.js laskuTilaus): maksettu lasku merkitsee tilauksen maksetuksi ja vie sen
+ * Printifyyn (jalkikasittely). Mitätöity tai perimätön lasku perii tilauksen. Idempotentti: webhook invoice.paid ja
+ * tunnin cron (api/cron/tilaukset.js) kutsuvat samaa.
+ */
+export async function kasitteleLasku(lasku) {
+  const tilausId = lasku?.metadata?.order_id;
+  if (!tilausId) return null;
+  if (lasku.status === "void" || lasku.status === "uncollectible") {
+    const r = await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${tilausId} and status = 'odottaa_maksua' returning id`;
+    if (r.length) await kirjaaTapahtuma(tilausId, "peruttu", { syy: `lasku ${lasku.status}`, invoice: lasku.id });
+    return null;
+  }
+  if (lasku.status !== "paid") return null;
+  const paivitetyt = await sql()`update orders set status = 'maksettu', paid_at = now(), amount_paid = ${(lasku.amount_paid ?? 0) / 100}, updated_at = now()
+    where id = ${tilausId} and status = 'odottaa_maksua' returning id`;
+  if (paivitetyt.length) await kirjaaTapahtuma(tilausId, "maksettu", { invoice: lasku.id });
+  const [tilaus] = await sql()`select * from orders where id = ${tilausId}`;
+  if (!tilaus) {
+    await halytys("Maksettu lasku ilman tilausta", [`Lasku ${lasku.id}`, `Tilaus ${tilausId}`]);
+    return null;
+  }
+  await jalkikasittely(tilaus);
+  return tilaus.id;
+}
+
+/**
  * Maksetun tilauksen jatko (Stripe-maksu tai kokonaan lahjakortilla maksettu): lahjakortin veloitus, vahvistusviesti,
  * ostettujen lahjakorttien koodit ja Printify-siirto. Jokainen vaihe on idempotentti.
  */

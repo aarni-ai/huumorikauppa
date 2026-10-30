@@ -5,7 +5,7 @@
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
-import { kasitteleMaksu } from "./_lib/tilaus.js";
+import { kasitteleMaksu, kasitteleLasku } from "./_lib/tilaus.js";
 
 export const config = { api: { bodyParser: false } };
 
@@ -28,6 +28,8 @@ export default async function handler(req, res) {
     const session = tapahtuma.data.object;
     if (tapahtuma.type === "checkout.session.completed" || tapahtuma.type === "checkout.session.async_payment_succeeded") {
       await kasitteleMaksu(session);
+    } else if (tapahtuma.type === "invoice.paid" || tapahtuma.type === "invoice.voided" || tapahtuma.type === "invoice.marked_uncollectible") {
+      await kasitteleLasku(session);
     } else if (tapahtuma.type === "checkout.session.expired") {
       const id = session.metadata?.order_id || session.client_reference_id;
       if (id) {

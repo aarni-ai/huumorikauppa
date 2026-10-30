@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import { formatPriceFi } from "@/seo/site";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
-import { YRITYS_PORTAAT } from "@/data/yrityksetPage";
+import { YRITYS_PORTAAT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { aikataulu } from "../../api/_lib/yritysmyynti.js";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
@@ -128,6 +129,17 @@ const Index = () => {
         canonical="https://huumorikauppa.fi"
         ogImage="https://huumorikauppa.fi/images/etusivu-joulu.png"
       />
+
+      {/* YRITYSTEN JOULULAHJAT (30.10.2026): takaraja api/_lib/yritysmyynti.js, näkyy takarajaan asti. */}
+      {aikataulu(null).jouluun && (
+        <div className="container pt-3">
+          <Link to="/yritykset" className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground hover:opacity-95">
+            <Building2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>Yritysten joululahjat: tilaa viimeistään {YRITYS_JOULU_TEKSTI}</span>
+            <span className="underline">Paketit ja tarjous</span>
+          </Link>
+        </div>
+      )}
 
       {/* SEASONAL BANNER */}
       <section className="container pt-3">

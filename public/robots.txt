@@ -23,6 +23,8 @@ Disallow: /checkout/
 Disallow: /haku
 Disallow: /tili/
 Disallow: /kumppanit/raportti
+Disallow: /hallinta
+Disallow: /yritykset/tilaus
 Disallow: /api/
 
 # Tekoälyhaut ja -avustajat (GEO): sallittu
@@ -47,6 +49,8 @@ Disallow: /checkout/
 Disallow: /haku
 Disallow: /tili/
 Disallow: /kumppanit/raportti
+Disallow: /hallinta
+Disallow: /yritykset/tilaus
 Disallow: /api/
 
 # Muut botit
@@ -63,6 +67,8 @@ Disallow: /checkout/
 Disallow: /haku
 Disallow: /tili/
 Disallow: /kumppanit/raportti
+Disallow: /hallinta
+Disallow: /yritykset/tilaus
 Disallow: /api/
 
 Sitemap: https://huumorikauppa.fi/sitemap.xml

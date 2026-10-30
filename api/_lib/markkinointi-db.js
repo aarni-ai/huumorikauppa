@@ -74,9 +74,20 @@ export function pgMarkkinointi(db) {
     tallennaTarjouspyynto: async (t) => {
       await db`create table if not exists tarjouspyynnot (id bigserial primary key, yritys text not null, nimi text not null,
         email text not null, puhelin text, maara integer, viesti text, created_at timestamptz not null default now())`;
-      return (await db`insert into tarjouspyynnot (yritys, nimi, email, puhelin, maara, viesti)
-        values (${t.yritys}, ${t.nimi}, ${t.email}, ${t.puhelin}, ${t.maara}, ${t.viesti}) returning id`)[0].id;
+      // Laskuri ja aikataulu (30.10.2026): paketti, malli, koot, hinta ja kate (arvio, vain sisäisesti), toivottu päivä.
+      await db`alter table tarjouspyynnot add column if not exists paketti text, add column if not exists malli text,
+        add column if not exists koot jsonb, add column if not exists hinta numeric(10,2), add column if not exists kate numeric(10,2),
+        add column if not exists toivottu_paiva date, add column if not exists ehtii boolean, add column if not exists jouluun boolean,
+        add column if not exists ytunnus text, add column if not exists tila text not null default 'uusi'`;
+      return (await db`insert into tarjouspyynnot (yritys, nimi, email, puhelin, maara, viesti, paketti, malli, koot, hinta, kate,
+          toivottu_paiva, ehtii, jouluun, ytunnus)
+        values (${t.yritys}, ${t.nimi}, ${t.email}, ${t.puhelin}, ${t.maara}, ${t.viesti}, ${t.paketti ?? null}, ${t.malli ?? null},
+          ${t.koot ? db.json(t.koot) : null}, ${t.hinta ?? null}, ${t.kate ?? null}, ${t.toivottu_paiva ?? null}, ${t.ehtii ?? null},
+          ${t.jouluun ?? null}, ${t.ytunnus ?? null}) returning id`)[0].id;
     },
+    /** /hallinta/tarjoukset: tarjouspyynnöt uusimmasta (kate vain täällä). */
+    tarjouspyynnot: async () => db`select * from tarjouspyynnot order by created_at desc limit 300`,
+    asetaTarjousTila: async (id, tila) => db`update tarjouspyynnot set tila = ${tila} where id = ${id} returning id`,
     /** Tuotesivun arviot: vain julkaistut arviot maksetuista tilauksista, joissa arvioitu rivi on tämä tuote. */
     julkaistutArviot: async (slug) => db`select r.stars, r.body, r.customer_name, r.created_at from reviews r
       join orders o on o.id = r.order_id

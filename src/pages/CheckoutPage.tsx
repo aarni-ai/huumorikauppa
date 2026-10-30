@@ -4,6 +4,7 @@ import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
 import { korialennusNimi } from "@/components/KorialennusVihje";
 import { kumppani } from "@/lib/kumppani";
+import { KumppaniKentta } from "@/components/KumppaniKentta";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
@@ -368,12 +369,7 @@ const CheckoutPage = () => {
               </>
             )}
 
-            <div>
-              <Label htmlFor="kumppani" className="text-sm text-muted-foreground">Kumppanikoodi (valinnainen)</Label>
-              <Input id="kumppani" autoComplete="off" autoCapitalize="none" spellCheck={false} maxLength={40} value={kumppaniKoodi}
-                onChange={e => setKumppaniKoodi(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
-                className="bg-muted border-border mt-1 max-w-[240px]" placeholder="esim. anna-k" />
-            </div>
+            <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} />
 
             {!onlyGiftCards && (
               <div className="flex items-start gap-2">
