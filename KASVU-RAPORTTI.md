@@ -26,6 +26,80 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 30.10.2026 ilta: yritysmyynnin kone, yritystilaus laskulla, kumppanikoodin vahvistus
+
+Tavoite: 3000 €/kk kate. Nopein reitti on yritystilaukset ja joulusesonki. Yksi 25 t-paidan yritystilaus (27,90 €,
+-12 %) tuottaa noin 220 € katetta, eli saman verran kuin noin 22 tavallista tilausta.
+
+### Antin koodi ANTSA
+- **Kassa:** koodi hyväksytään kirjainkoosta riippumatta (tarkistettu: `kumppanikoodi` palauttaa ok antsalle).
+  Tilaukselle kirjataan tapahtuma "kumppani".
+- **Uutta:** kassan Kumppanikoodi-kentässä on näkyvä vahvistus "Koodi ANTSA hyväksytty" (src/components/KumppaniKentta.tsx).
+  Tuntemattomalle koodille näkyy "Koodia ... ei löytynyt".
+- **Miksi Cowork ei nähnyt tallennusta:** ?ref=antsa tallentuu selaimen istuntoon (sessionStorage) vain
+  markkinointisuostumuksella. Ilman suostumusta koodi pysyy muistissa sivulatauksen ajan (sivulta toiselle
+  siirtyminen säilyttää sen) ja täyttyy kassan kenttään.
+- **Korjaus:** jos suostumus annetaan vasta linkin avaamisen jälkeen, koodi tallennetaan istuntoon silloin.
+- Linkin avaus kirjautuu lisäksi Antin klikkauslaskuriin palvelimella ilman suostumusta, koska tunnisteita ei
+  tallenneta.
+
+### Yritysmyynnin kone (/yritykset)
+- **Valmiit paketit:**
+
+  | Paketti | 10 kpl | 25 kpl | 50 kpl |
+  |---|---|---|---|
+  | Pikkujoulupaita koko tiimille | 251,10 € | 613,80 € | 1 199,70 € |
+  | Joululahja asiakkaille ja henkilökunnalle (meemipaidat) | 224,10 € | 547,80 € | 1 070,70 € |
+  | Työmaa- tai tiimipaita | 251,10 € | 613,80 € | 1 199,70 € |
+
+  Hinnoissa on määräalennus, ja toimitus on ilmainen. Kortissa on painikkeet "Pyydä tarjous" ja "Tilaa heti".
+- **Tarjouslaskuri:** asiakas valitsee mallin (meemipaita, t-paita, huppari) ja syöttää määrät koon mukaan
+  (S-5XL). Laskuri näyttää hinnan, kappalehinnan ja määräalennuksen. Kate lasketaan vain palvelimella, eikä asiakas
+  näe sitä.
+- **Toivottu toimituspäivä:** lomake näyttää heti, ehtiikö tilaus perille (16 arkipäivää, joulun mitoitus) ja
+  joulun takarajan.
+- **Tallennus:** jokainen tarjouspyyntö tallentuu tauluun tarjouspyynnot (paketti, malli, koot, hinta, kate,
+  toivottu päivä, ehtii, Y-tunnus, tila). Omistajalle lähtee ilmoitus.
+- **/hallinta/tarjoukset:** suojattu allekirjoitetulla avaimella (linkki: cron ?tehtava=hallinta-linkki). Sivu
+  näyttää pyynnöt katteineen, ja tilan voi vaihtaa (uusi, vastattu, tilattu, hylatty). Sivu on noindex, ja
+  robots.txt:ssä on Disallow /hallinta.
+
+### Yritystilaus (/yritykset/tilaus)
+- Designit, värit ja koot syötetään taulukkona. Designeja voi olla useita.
+- **Kortti:** rivit menevät ostoskoriin ja tavalliselle kassalle (kortti, Apple Pay, Google Pay, Klarna,
+  MobilePay), jossa määräalennus lasketaan.
+- **Lasku (Stripe Invoice, maksuaika 14 pv):**
+  - Ehdot: vähintään 10 tuotetta ja Y-tunnus. Tunnuksen tarkiste tarkistetaan, ja yrityksen pitää löytyä PRH:n
+    avoimesta YTJ-rajapinnasta eikä olla lopettanut.
+  - Tilaus odottaa maksua. Stripe-asiakkaalle tulee ALV-tunniste FI+Y-tunnus.
+  - Laskun rivit ovat sis. ALV 25,5 % (inclusive-verokanta luodaan ensimmäisellä laskulla).
+  - Alatunnisteessa ovat myyjän Y-tunnus ja ALV-numero. Lasku viimeistellään ja lähetetään asiakkaalle.
+- **Printify-tilaus lähtee vasta maksun jälkeen:**
+  - webhook invoice.paid (api/stripe-webhook.js)
+  - tunnin cron, joka tarkistaa avoimet laskut 45 päivältä
+  - mitätöity tai perimätön lasku perii tilauksen
+- **Testi:** Stripe-tilillä on vain live-avain. ?tehtava=laskutesti laskee laskun rivit nykyhinnoilla ilman
+  Stripeä. Kun STRIPE_TEST_SECRET_KEY on Vercelissä, sama tehtävä tekee testitilassa koko polun (asiakas, ALV,
+  lasku, viimeistely, maksu) ilman Printify-tilausta. Yksikkötestit kattavat laskun datan, Y-tunnuksen, aikataulun
+  ja laskurin.
+
+### Joulu
+- Yritysten joulutakaraja on **to 26.11.2026**: t-paitojen 16 arkipäivää + 3 arkipäivää kokojen keruuseen ja
+  maksuun, perillä 23.12.
+- Etusivun yläosassa on palkki "Yritysten joululahjat: tilaa viimeistään to 26.11." (näkyy takarajaan asti).
+- Samat tiedot näkyvät /yritykset- ja /yritykset/tilaus-sivuilla.
+
+### Aarnin tehtävät (Stripe)
+1. Stripe > Settings > Billing > Invoices: oletusmaksutavat laskuille (kortti ja tilisiirto/SEPA). Tarkista,
+   että asiakassähköpostit laskuista ovat päällä.
+2. Stripe > Settings > Business > Public details: Uusiku Oy, osoite ja ALV-numero laskuille.
+3. Stripe > Developers > Webhooks: lisää nykyiseen huumorikauppa-five.vercel.app/api/stripe-webhook-endpointiin
+   tapahtumat invoice.paid, invoice.voided ja invoice.marked_uncollectible. Cron tarkistaa laskut tunnin välein
+   ilmankin.
+4. Testitila: kopioi Stripen testiavain (sk_test_...) Vercelin ympäristömuuttujaksi STRIPE_TEST_SECRET_KEY
+   (ei chattiin), ja aja ?tehtava=laskutesti.
+5. Stripe Invoicing veloittaa maksetuista laskuista 0,4 %. Kuukausimaksua ei ole.
+
 ## 30.10.2026: ensimmäinen kumppani, kumppanin raportti, ALV-varasuunnitelma, laatuvirhe, SEO 10 sivua
 
 ### Ensimmäinen kumppani: antsa
