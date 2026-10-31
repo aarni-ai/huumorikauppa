@@ -237,6 +237,35 @@ Kirjanpitäjä vahvisti, että Printifyn laskuttama Suomen ALV (25,5 %) on Uusik
 - Printifyn laskut menevät kirjanpitoon ostolaskuina (ALV vähennetään), ja maksu tapahtuu Huumorikaupan omalla
   Holvi-kortilla (KAYTTOONOTTO.md "Raha- ja kirjanpitovirta").
 
+### 7 €:n minimi maksutavoittain (31.10.2026, tuotannon kulut, ALV vähennettävissä)
+
+?tehtava=katetaulu&maksutapa=...: yhden tuotteen tilaus, asiakas maksaa toimituksen, kaikki myytävät variantit
+(tarra on vain lisätuote). Stripen hinnasto Suomessa.
+
+| Maksutapa | Kulu | Variantteja alle 7 € | Mitkä | Heikoin |
+|---|---|---|---|---|
+| ETA-kortti, Apple Pay, Google Pay | 1,5 % + 0,25 € | 0 | | 7,05 € |
+| MobilePay | 1,5 % + 0,36 € (+ MobilePayn erillinen maksu) | 25 | 24,90 €:n t-paidat, kalleimmat variantit | 6,94 € |
+| UK-kortti | 2,5 % + 0,25 € | 542 | 24,90 €:n t-paidat 491/495, hupparit 50/2 675, koriste | 6,73 € |
+| Premium- tai yrityskortti (ETA) | 2,8 % + 0,25 € | 542 | 24,90 €:n t-paidat 491/495, hupparit 50/2 675, koriste | 6,58 € |
+| Kansainvälinen kortti | 3,15 % + 0,25 € | 546 | 24,90 €:n t-paidat 495/495, hupparit 50/2 675, koriste | 6,37 € |
+| **Klarna** | 2,99 % + 0,40 € | 557 | 24,90 €:n t-paidat 495/495, hupparit 61, koriste | 6,31 € |
+| Klarna, ulkomainen | 4,49 % + 0,40 € | 583 | edellisten lisäksi 3XL+ t-paidat 20 | 5,41 € |
+
+- Kaikki 27,90 €:n t-paidat (S-2XL), julisteet ja Black Friday -pari (heikoin 10,73-12,43 €) pysyvät yli 7 €:n
+  kaikilla maksutavoilla.
+- Kahden tuotteen tilaukset ylittävät 7 €:n kaikilla maksutavoilla (heikoin noin 13 €).
+- **Alle 7 €:n jäävät yhden tuotteen tilaukset:**
+  - 24,90 €:n t-paidat (14 meemi- ja klassikkodesignia S-2XL) kaikilla maksutavoilla paitsi ETA-kortilla
+  - heikoimmat hupparit (50-61 varianttia, kalleimmat koot ja värit, 6,31-6,75 €)
+  - keraaminen koriste (6,62-6,92 €)
+  - Ero on 0,06-0,69 € tilausta kohden.
+- **Vaihtoehdot (Aarnin päätös):**
+  - (a) Klarna ja MobilePay vain yli 60 €:n tilauksiin.
+  - (b) Hyväksytään poikkeama, koska ensimmäinen ja ainoa Uusiku Oy:n tilaus maksettiin Klarnalla ja Klarna voi
+    nostaa konversiota.
+  - (c) 24,90 €:n paitojen hintaa ei voi nostaa ylittämättä kilpailijan 25 €:a.
+
 ### ALV-varasuunnitelma 30.10.2026 (valmis, pois päältä)
 
 **Kytkin:** api/_lib/vakiot.js `PRINTIFY_ALV_VAHENNETTAVA`. Oletus on true. Kun kirjanpitäjä toteaa, ettei Printifyn

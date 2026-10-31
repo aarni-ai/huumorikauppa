@@ -26,6 +26,44 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 31.10.2026: ALV-päätös, rahavirta, kirjanpidon kuukausiraportti, maksutapojen katteet, yritysnostot
+
+- **Printifyn ALV:** kirjanpitäjä vahvisti, että ALV on vähennettävissä. Hinnat pysyvät ennallaan, ja
+  PRINTIFY_ALV_VAHENNETTAVA = true. Kirjattu KATTEET.md:hen ("Printifyn ALV: päätös 31.10.2026").
+- **Rahavirta (KAYTTOONOTTO.md):**
+  - Stripe-tilitykset menevät Huumorikaupan Holvi-tilille. IBAN on reposta maskattu, koska repo on julkinen.
+  - Printify veloittaa Holvi-kortilta.
+  - Ennen 27.10. myynti kuuluu Tmi Intellerille, siitä eteenpäin Uusiku Oy:lle.
+- **Kirjanpidon kuukausiraportti (api/_lib/kirjanpito.js):**
+  - Sisältö: tilaukset, myynti ALV:n kanssa ja ilman, ALV 25,5 %, toimitukset, myydyt lahjakortit, Stripen kulut
+    tilauksittain, palautukset, kumppaniprovisiot ja Stripe-tilitykset. Muodot CSV (Excel, puolipiste) ja PDF.
+  - Lähteet: Neon ja Stripe API.
+  - Vercel Cron (vercel.crons.json "0 6 2 * *") lähettää edellisen kuun raportin omistajalle liitteinä kuun 2.
+    päivä.
+  - Käsin: `node scripts/kuukausiraportti.mjs ALKU LOPPU`.
+- **Lokakuu (27.-31.10.):** kirjanpito/2026-10/myyntiraportti-huumorikauppa-2026-10-27-2026-10-31.csv ja .pdf.
+  - 1 tilaus, myynti 54,39 € sis. ALV, ALV 0 % 43,34 €, ALV 11,05 €
+  - Stripen kulu 2,03 € (Klarna), palautukset 0, provisiot 0
+  - Tilitykset 0 € aikavälillä
+  - Kansio on .gitignoressa, ja Aarni tai Cowork vie tiedostot kirjanpitäjälle.
+- **7 €:n minimi maksutavoittain** (KATTEET.md):
+  - ETA-kortilla, Apple Paylla ja Google Paylla mikään tavallinen tilaus ei jää alle 7 €:n.
+  - Klarnalla, premium-, UK- ja kansainvälisellä kortilla alle 7 €:n jäävät yhden tuotteen tilaukset: 24,90 €:n
+    t-paidat, heikoimmat hupparit (50-61 varianttia) ja koriste. Heikoin on 6,31 € Klarnalla ja 5,41 € ulkomaisella
+    Klarnalla.
+  - MobilePaylla 25 kalleinta 24,90 €:n paitavarianttia jää 6,94 €:oon.
+  - Kahden tuotteen tilaukset ja Black Friday -pari ylittävät 7 €:n kaikilla maksutavoilla.
+  - Päätös Aarnille: Klarna ja MobilePay vain yli 60 €:n tilauksiin tai poikkeaman hyväksyntä.
+- **Yritystilauksen nosto "Tilaa koko tiimille: 10+ t-paitaa -10 %"** (src/components/YritysNosto.tsx) linkkeineen
+  /yritykset/tilaus ja /yritykset:
+  - Blogit (Search Console -klikkaukset): lahja-miehelle-30v-40v-50v-60v, mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea
+    ja lahja-naiselle-30v-40v-50v-60v.
+  - Tuotteet (Printifyn toteutuneet tilaukset): Tonnin seteli -t-paita (4), Saatanan tunarit -t-paita (3), Tonnin
+    seteli -huppari (2), Maailman paras äiti -huppari (2) ja Amatimies-huppari (1).
+  - Teksti sanoo "t-paitaa", koska määräalennus ei koske huppareita.
+- **Tarkistus:** Googlebot, Bingbot ja Chrome saavat 200:n. Nosto näkyy kolmessa blogissa ja tuotesivuilla, myös
+  esirenderöidyssä HTML:ssä. Testit: 1462 läpi.
+
 ## 30.10.2026 ilta: yritysmyynnin kone, yritystilaus laskulla, kumppanikoodin vahvistus
 
 Tavoite: 3000 €/kk kate. Nopein reitti on yritystilaukset ja joulusesonki. Yksi 25 t-paidan yritystilaus (27,90 €,
