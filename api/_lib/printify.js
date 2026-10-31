@@ -1,5 +1,6 @@
 /** Printify API (PRINTIFY_API_KEY, PRINTIFY_SHOP_ID). Kaikki kutsut palauttavat { ok, status, data, virhe }. */
 import { PERSONOITU_PRINTIFY, PERSONOITU_POHJA, jasennaPersonointi } from "./personoitu.js";
+import { LOGOPAITA_PRINTIFY, LOGOPAITA_POHJA, jasennaLogopaita, tarkistaLogopaita } from "./logopaita.js";
 import { allekirjoita } from "./markkinointi.js";
 const API = "https://api.printify.com/v1";
 
@@ -85,6 +86,18 @@ export function painokuvaUrl(rivi, tilausId = "", n = 0) {
   return `${pohja}/api/painokuva?t=${encodeURIComponent(tunniste)}`;
 }
 
+/**
+ * Oma logo -paidan painokuvan osoite: allekirjoitettu { logo, rivit, design, vari } (api/painokuva.js). Valinta luetaan
+ * tilausrivin logo-kentästä tai customTextistä ja tarkistetaan uudelleen.
+ */
+export function logoPainokuvaUrl(rivi, tilausId = "", n = 0) {
+  const v = rivi.logo ? tarkistaLogopaita({ logo: rivi.logo.id, rivit: rivi.logo.rivit, design: rivi.logo.design }) : jasennaLogopaita(rivi.custom_text);
+  if (!v.ok) throw new Error(`Oma logo -paidan valinta puuttuu tai on virheellinen (tilaus ${tilausId}, rivi ${n}): ${v.virhe}`);
+  const tunniste = allekirjoita("logopainokuva", JSON.stringify({ l: v.logo, r: v.rivit, d: v.design, v: rivi.color || "Musta" }));
+  const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+  return `${pohja}/api/painokuva?t=${encodeURIComponent(tunniste)}`;
+}
+
 /** Printify-tilauksen runko omasta tilausrivistä. */
 export function tilausRunko(tilaus) {
   const nimi = (tilaus.recipient_name || tilaus.customer_name || "Asiakas").trim();
@@ -95,9 +108,12 @@ export function tilausRunko(tilaus) {
     label: `Huumorikauppa #${tilaus.id.slice(0, 8).toUpperCase()}`,
     // Lahjakortit (type "giftcard") eivät ole Printify-tuotteita.
     // Personoitu t-paita: lennosta luotava tuote, painokuva tilausriville (api/painokuva.js, allekirjoitettu osoite).
+    // Oma logo -paita: sama pohja ja painotalo (OPT, Tšekki), painokuva api/painokuva.js (logopainokuva).
     line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i, n) => (i.printify_product_id === PERSONOITU_PRINTIFY
       ? { ...PERSONOITU_POHJA, variant_id: i.variant_id, print_areas: { front: painokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
-      : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
+      : i.printify_product_id === LOGOPAITA_PRINTIFY
+        ? { ...LOGOPAITA_POHJA, variant_id: i.variant_id, print_areas: { front: logoPainokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
+        : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
     shipping_method: 1,
     is_printify_express: false,
     is_economy_shipping: false,

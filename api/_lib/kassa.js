@@ -27,6 +27,7 @@ import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
 import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
 import { PERSONOITU_TUOTE, onPersonoitu, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
+import { LOGOPAITA_TUOTE, LOGOPAITA_MIN_KPL, onLogopaita, jasennaLogopaita, logopaitaTeksti, sallitutVarit } from "./logopaita.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
 /**
@@ -77,8 +78,8 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   if (!vainLahjakortteja && (!shippingAddress?.address || !shippingAddress?.zip || !shippingAddress?.city)) {
     throw new KassaVirhe("Toimitusosoite puuttuu.", "missing_address");
   }
-  // Personoitu t-paita on virtuaalinen tuoterivi (api/_lib/personoitu.js), ei tietokannassa.
-  const kaikki = [...tuotteet, PERSONOITU_TUOTE];
+  // Personoitu t-paita ja Oma logo -paita ovat virtuaalisia tuoterivejä (api/_lib/personoitu.js, logopaita.js).
+  const kaikki = [...tuotteet, PERSONOITU_TUOTE, LOGOPAITA_TUOTE];
   const byId = new Map(kaikki.map((p) => [p.id, p]));
   const bySlug = new Map(kaikki.map((p) => [p.slug, p]));
   const lahjakortit = [];
@@ -111,9 +112,18 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
       if (!pers.ok) throw new KassaVirhe(`Personoitu paita: ${pers.virhe}`, "invalid_personalization");
       customText = personointiTeksti(pers);
     }
+    // Oma logo -paita: logo, teksti ja design tarkistetaan palvelimella uudelleen (logon olemassaolo api/checkout.js).
+    let logo = null;
+    if (onLogopaita(p)) {
+      const v = jasennaLogopaita(customText);
+      if (!v.ok) throw new KassaVirhe(`Oma logo -paita: ${v.virhe}`, "invalid_logo");
+      if (!sallitutVarit(v.design).includes(it.color)) throw new KassaVirhe(`Oma logo -paita: valitulle designille sopivat värit ovat ${sallitutVarit(v.design).join(" ja ")}.`, "invalid_logo");
+      customText = logopaitaTeksti(v);
+      logo = { id: v.logo, rivit: v.rivit, design: v.design };
+    }
     rivit.push({
       product_id: p.id, slug: p.slug, name: p.name, size: it.size || null, color: it.color || null,
-      custom_text: customText,
+      custom_text: customText, ...(logo ? { logo } : {}),
       image: typeof it.image === "string" && /^https?:\/\//.test(it.image) ? it.image : null,
       quantity: it.quantity, unit_price: hinta, printify_product_id: p.printify_product_id, variant_id: variantti,
       kulu_sentit: p.variants?.costs?.[String(variantti)] ?? null, toimitus_sentit: p.variants?.shipping_cents ?? null,
@@ -123,6 +133,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     throw new KassaVirhe("Lahjakortilla ei voi ostaa lahjakortteja. Tee lahjakortin osto erillisenä tilauksena.", "giftcard_for_giftcard");
   }
 
+  const logoKpl = rivit.filter((r) => r.logo).reduce((s, r) => s + r.quantity, 0);
+  if (logoKpl > 0 && logoKpl < LOGOPAITA_MIN_KPL) {
+    throw new KassaVirhe(`Oma logo -paitoja tilataan vähintään ${LOGOPAITA_MIN_KPL} kpl (nyt ${logoKpl}).`, "logo_min_quantity");
+  }
   // Tarra myydään vain toisen fyysisen tuotteen lisänä.
   if (rivit.length && rivit.every((r) => LISATUOTE_KATEGORIAT.includes(byId.get(r.product_id)?.category))) {
     throw new KassaVirhe("Tarra myydään t-paidan, hupparin tai julisteen lisänä. Lisää koriin myös toinen tuote.", "addon_only");
@@ -190,11 +204,13 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   };
 }
 
+const VIRTUAALISET = new Map([PERSONOITU_TUOTE, LOGOPAITA_TUOTE].map((t) => [t.id, t]));
+
 /** Kassan laskennan nettokate (Printifyn kulut tuoteriviltä, api/_lib/kate.js), kumppanimallin 2 valintaan. */
 export function laskettuNettokate(laskettu, tuotteet) {
   const byId = new Map(tuotteet.map((t) => [t.id, t]));
   const osat = laskettu.rivit.filter((r) => r.type !== "giftcard")
-    .map((r) => ({ tuote: byId.get(r.product_id) || (r.product_id === PERSONOITU_TUOTE.id ? PERSONOITU_TUOTE : undefined), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 }));
+    .map((r) => ({ tuote: byId.get(r.product_id) || VIRTUAALISET.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 }));
   const k = laskeTilauksenNettokate(osat, laskettu.shipping);
   return k.tunnettu ? k.nettokate : NaN;
 }

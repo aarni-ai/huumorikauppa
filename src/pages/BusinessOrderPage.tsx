@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Building2, Check, Loader2, Plus, Trash2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
@@ -18,10 +18,41 @@ import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { MAARAALENNUS } from "../../api/_lib/vakiot.js";
 import { YRITYS_MIN_KPL, LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
 import type { Product } from "@/types/product";
+import { LogoEditori, TYHJA_LOGO, logoTarkistus, lueLogoValinta, type LogoValinta } from "@/components/LogoEditori";
+import { LOGOPAITA_TUOTE, LOGOPAITA_SLUG, LOGOPAITA_MIN_KPL, logopaitaTeksti } from "../../api/_lib/logopaita.js";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-type Rivi = { slug: string; vari: string; koot: Record<string, string> };
+type Rivi = { slug: string; vari: string; koot: Record<string, string>; logo?: LogoValinta };
+const LOGOTUOTE = LOGOPAITA_TUOTE as unknown as Product;
+const logoKoot = (vari: string) => (LOGOPAITA_TUOTE.variants.sizes as string[]).filter((k) => `${vari}|${k}` in LOGOPAITA_TUOTE.variants.variant_map);
+
+/** Oma logo -paita: editori ja kappalemäärät koon mukaan. */
+function LogoRivi({ rivi, muuta, poista, i }: { rivi: Rivi; muuta: (r: Rivi) => void; poista: () => void; i: number }) {
+  const logo = rivi.logo ?? TYHJA_LOGO;
+  return (
+    <div className="rounded-xl border border-primary/40 bg-card p-4 space-y-3">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-medium text-foreground">Oma logo -paita</p>
+          <p className="text-sm text-muted-foreground">{eur(LOGOPAITA_TUOTE.price)}/kpl, vähintään {LOGOPAITA_MIN_KPL} kpl</p>
+        </div>
+        <button type="button" onClick={poista} className="text-muted-foreground hover:text-destructive p-1" aria-label="Poista Oma logo -paita"><Trash2 className="h-4 w-4" /></button>
+      </div>
+      <LogoEditori arvo={logo} setArvo={(v) => muuta({ ...rivi, logo: v, vari: v.vari })} tunniste={`tilaus-logo-${i}`} />
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+        {logoKoot(logo.vari).map((k) => (
+          <label key={k} className="text-xs text-muted-foreground">
+            {k}
+            <Input inputMode="numeric" value={rivi.koot[k] || ""} aria-label={`Oma logo -paita ${k} kpl`}
+              onChange={(e) => muuta({ ...rivi, koot: { ...rivi.koot, [k]: e.target.value.replace(/[^0-9]/g, "").slice(0, 3) } })}
+              className="bg-muted border-border mt-0.5 h-9 px-2" />
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /** Yksi design: värin valinta ja kappalemäärät kokotaulukkona. */
 function RiviEditori({ rivi, tuote, kaikki, muuta, poista }: {
@@ -95,7 +126,11 @@ const BusinessOrderPage = () => {
   const { addItem } = useCartContext();
   const navigate = useNavigate();
   const valikoima = useMemo(() => kaikki.filter((p) => p.category === "t-paidat" || p.category === "hupparit"), [kaikki]);
-  const [rivit, setRivit] = useState<Rivi[]>([{ slug: "", vari: "", koot: {} }]);
+  const [haku] = useSearchParams();
+  const [rivit, setRivit] = useState<Rivi[]>(() => {
+    const logo = haku.get("logo") === "1" ? lueLogoValinta() : null;
+    return [logo ? { slug: LOGOPAITA_SLUG, vari: logo.vari, koot: {}, logo } : { slug: "", vari: "", koot: {} }];
+  });
   const [maksu, setMaksu] = useState<"kortti" | "lasku">("lasku");
   const [y, setY] = useState({ yritys: "", ytunnus: "", nimi: "", email: "", puhelin: "", osoite: "", postinumero: "", kaupunki: "", viite: "" });
   const [kumppaniKoodi, setKumppaniKoodi] = useState(() => kumppani() ?? "");
@@ -106,10 +141,15 @@ const BusinessOrderPage = () => {
 
   const bySlug = useMemo(() => new Map(valikoima.map((p) => [p.slug, p])), [valikoima]);
   const kappaleet = useMemo(() => rivit.flatMap((r) => {
-    const t = bySlug.get(r.slug);
+    // Oma logo -paita: mukaan vasta, kun logo tai teksti on kunnossa (customText tarkistetaan kassalla uudelleen).
+    const lt = r.logo ? logoTarkistus(r.logo) : null;
+    const t = r.logo ? (lt?.ok ? LOGOTUOTE : undefined) : bySlug.get(r.slug);
     if (!t || !r.vari) return [];
-    return Object.entries(r.koot).map(([koko, n]) => ({ tuote: t, koko, vari: r.vari, maara: Number(n) || 0 })).filter((x) => x.maara > 0);
+    const customText: string | undefined = lt?.ok ? logopaitaTeksti(lt) : undefined;
+    return Object.entries(r.koot).map(([koko, n]) => ({ tuote: t, koko, vari: r.vari, maara: Number(n) || 0, customText })).filter((x) => x.maara > 0);
   }), [rivit, bySlug]);
+  const logoKpl = kappaleet.filter((x) => x.customText).reduce((s, x) => s + x.maara, 0);
+  const logoVirhe = rivit.map((r) => (r.logo ? logoTarkistus(r.logo) : null)).find((t) => t && !t.ok);
   const kpl = kappaleet.reduce((s, x) => s + x.maara, 0);
   const summa = kappaleet.reduce((s, x) => s + x.maara * rivinHinta(x.tuote, x.koko), 0);
   const tpaitoja = kappaleet.filter((x) => x.tuote.category === MAARAALENNUS.kategoria).reduce((s, x) => s + x.maara, 0);
@@ -118,9 +158,11 @@ const BusinessOrderPage = () => {
   const tilaa = async () => {
     setVirhe("");
     if (kpl < YRITYS_MIN_KPL && maksu === "lasku") { setVirhe(`Laskulla voi tilata vähintään ${YRITYS_MIN_KPL} tuotetta.`); return; }
+    if (logoVirhe && !logoVirhe.ok) { setVirhe(`Oma logo -paita: ${logoVirhe.virhe}`); return; }
     if (!kpl) { setVirhe("Lisää vähintään yksi tuote, väri ja määrä."); return; }
+    if (logoKpl > 0 && logoKpl < LOGOPAITA_MIN_KPL) { setVirhe(`Oma logo -paitoja tilataan vähintään ${LOGOPAITA_MIN_KPL} kpl (nyt ${logoKpl}).`); return; }
     if (maksu === "kortti") {
-      for (const x of kappaleet) addItem(x.tuote, x.maara, x.koko, x.vari);
+      for (const x of kappaleet) addItem(x.tuote, x.maara, x.koko, x.vari, x.customText);
       navigate("/kassa");
       return;
     }
@@ -135,7 +177,7 @@ const BusinessOrderPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "lasku", yritys: y, kumppani: kumppaniKoodi.trim() || undefined,
-          items: kappaleet.map((x) => ({ id: x.tuote.id, slug: x.tuote.slug, name: x.tuote.name, quantity: x.maara, size: x.koko, color: x.vari })),
+          items: kappaleet.map((x) => ({ id: x.tuote.id, slug: x.tuote.slug, name: x.tuote.name, quantity: x.maara, size: x.koko, color: x.vari, customText: x.customText })),
         }),
       });
       const j = await r.json().catch(() => null);
@@ -164,12 +206,17 @@ const BusinessOrderPage = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {rivit.map((r, i) => (
-            <RiviEditori key={i} rivi={r} tuote={bySlug.get(r.slug)} kaikki={valikoima}
-              muuta={(uusi) => setRivit((x) => x.map((v, j) => (j === i ? uusi : v)))}
-              poista={() => setRivit((x) => (x.length > 1 ? x.filter((_, j) => j !== i) : [{ slug: "", vari: "", koot: {} }]))} />
-          ))}
-          <Button type="button" variant="outline" onClick={() => setRivit((x) => [...x, { slug: "", vari: "", koot: {} }])}><Plus className="h-4 w-4 mr-1" /> Lisää design</Button>
+          {rivit.map((r, i) => {
+            const muuta = (uusi: Rivi) => setRivit((x) => x.map((v, j) => (j === i ? uusi : v)));
+            const poista = () => setRivit((x) => (x.length > 1 ? x.filter((_, j) => j !== i) : [{ slug: "", vari: "", koot: {} }]));
+            return r.logo
+              ? <LogoRivi key={i} i={i} rivi={r} muuta={muuta} poista={poista} />
+              : <RiviEditori key={i} rivi={r} tuote={bySlug.get(r.slug)} kaikki={valikoima} muuta={muuta} poista={poista} />;
+          })}
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" variant="outline" onClick={() => setRivit((x) => [...x, { slug: "", vari: "", koot: {} }])}><Plus className="h-4 w-4 mr-1" /> Lisää design</Button>
+            <Button type="button" variant="outline" onClick={() => setRivit((x) => [...x, { slug: LOGOPAITA_SLUG, vari: TYHJA_LOGO.vari, koot: {}, logo: TYHJA_LOGO }])}><Plus className="h-4 w-4 mr-1" /> Lisää oma logo tai teksti</Button>
+          </div>
 
           <div className="rounded-xl border border-border bg-card p-4" role="status">
             <p className="text-foreground"><span className="font-semibold">{kpl} kpl</span>, tuotteet {eur(summa)}{porras ? `, määräalennus t-paidoista -${porras.prosentti} %` : ""}.</p>

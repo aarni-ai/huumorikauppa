@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Building2, Check, Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { BlogProductStrip } from "@/components/BlogProductStrip";
@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { yrityksetPage as page, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
-import { laskeTarjous, aikataulu, MALLIT, KOOT } from "../../api/_lib/yritysmyynti.js";
+import { laskeTarjous, aikataulu, esimerkkiHinnat, MALLIT, KOOT } from "../../api/_lib/yritysmyynti.js";
+import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../api/_lib/logopaita.js";
+import { LogoEditori, TYHJA_LOGO, logoTarkistus, tallennaLogoValinta, type LogoValinta } from "@/components/LogoEditori";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { BLOG_END_COUNT, BLOG_PRODUCT_THEMES, selectBlogProducts } from "@/data/blogProducts";
 import { buildFaqJsonLd } from "@/seo/structuredData";
@@ -22,13 +24,15 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 const pvm = (iso: string) => { const [v, k, p] = iso.split("-"); return `${Number(p)}.${Number(k)}.${v}`; };
-type Malli = "meemipaita" | "tpaita" | "huppari";
+type Malli = "meemipaita" | "tpaita" | "logopaita" | "huppari";
 
 /**
  * Tarjouspyyntölomake ja laskuri: /api/sahkoposti action "tarjouspyynto" (tallennus kantaan, ilmoitus omistajalle).
  * Hinta lasketaan api/_lib/yritysmyynti.js laskeTarjous; kate lasketaan vain palvelimella (/hallinta/tarjoukset).
  */
-function Tarjouspyynto({ paketti, malli, setMalli }: { paketti: string; malli: Malli; setMalli: (m: Malli) => void }) {
+function Tarjouspyynto({ paketti, malli, setMalli, logo, setLogo }: {
+  paketti: string; malli: Malli; setMalli: (m: Malli) => void; logo: LogoValinta; setLogo: (v: LogoValinta) => void;
+}) {
   const [lomake, setLomake] = useState({ yritys: "", ytunnus: "", nimi: "", email: "", puhelin: "", viesti: "", kotisivu: "", toimituspaiva: "" });
   const [koot, setKoot] = useState<Record<string, string>>({});
   const [tila, setTila] = useState<"lomake" | "lahetetaan" | "valmis" | "virhe">("lomake");
@@ -44,13 +48,16 @@ function Tarjouspyynto({ paketti, malli, setMalli }: { paketti: string; malli: M
       setVirhe("Täytä yritys, nimi ja toimiva sähköpostiosoite.");
       return;
     }
+    const lt = logoTarkistus(logo);
+    if (malli === "logopaita" && !lt.ok) { setVirhe(lt.virhe); return; }
     setVirhe("");
     setTila("lahetetaan");
+    const logoKentat = malli === "logopaita" && lt.ok ? { logo: { id: lt.logo, rivit: lt.rivit, design: lt.design, vari: logo.vari } } : {};
     try {
       const r = await fetch("/api/sahkoposti", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "tarjouspyynto", ...lomake, paketti, malli, koot: kootLuvut, maara: laskettu?.kpl || "" }),
+        body: JSON.stringify({ action: "tarjouspyynto", ...lomake, paketti, malli, koot: kootLuvut, maara: laskettu?.kpl || "", ...logoKentat }),
       });
       const j = await r.json().catch(() => null);
       if (r.ok && j?.ok) setTila("valmis");
@@ -79,6 +86,12 @@ function Tarjouspyynto({ paketti, malli, setMalli }: { paketti: string; malli: M
             {(Object.keys(MALLIT) as Malli[]).map((m) => <option key={m} value={m}>{MALLIT[m].nimi}</option>)}
           </select>
         </div>
+        {malli === "logopaita" && (
+          <div className="space-y-2">
+            <span className="text-sm font-medium text-foreground block">Oma logo tai teksti</span>
+            <LogoEditori arvo={logo} setArvo={setLogo} tunniste="ty-logo" />
+          </div>
+        )}
         <div>
           <span className="text-sm font-medium text-foreground">Määrät koon mukaan</span>
           <div className="mt-1 grid grid-cols-4 sm:grid-cols-8 gap-2">
@@ -172,12 +185,44 @@ function Paketit({ valitse }: { valitse: (id: string, malli: Malli) => void }) {
   );
 }
 
+/** Oma logo tai teksti: editori, porrashinnat ja polut tilaukseen tai tarjouspyyntöön (api/_lib/logopaita.js). */
+function OmaLogo({ logo, setLogo, pyydaTarjous }: { logo: LogoValinta; setLogo: (v: LogoValinta) => void; pyydaTarjous: () => void }) {
+  const navigate = useNavigate();
+  const hinnat = useMemo(() => esimerkkiHinnat("logopaita"), []);
+  const ok = logoTarkistus(logo).ok;
+  return (
+    <section id="oma-logo" aria-labelledby="oma-logo-otsikko" className="mb-8 rounded-xl border border-primary/40 bg-card p-4 md:p-5 scroll-mt-24">
+      <h2 id="oma-logo-otsikko" className="font-display text-xl text-foreground mb-1">Oma logo tai teksti</h2>
+      <p className="text-sm text-muted-foreground mb-4">
+        Lataa yrityksen logo tai kirjoita teksti ja valitse, tuleeko huumoridesign mukaan. Esikatselu näyttää painatuksen paidan etupuolella.
+        T-paita {eur(LOGOPAITA_HINTA)}/kpl, vähintään {LOGOPAITA_MIN_KPL} paitaa, määräalennus kuten muissa t-paidoissa. Painetaan EU:ssa.
+      </p>
+      <LogoEditori arvo={logo} setArvo={setLogo} tunniste="oma-logo" />
+      <ul className="mt-4 grid grid-cols-3 gap-2 text-center">
+        {hinnat.map((h) => (
+          <li key={h.kpl} className="rounded-lg border border-border p-2">
+            <span className="block text-xs text-muted-foreground">{h.kpl} paitaa</span>
+            <span className="block font-bold text-foreground">{eur(h.perKpl)}/kpl</span>
+            <span className="block text-xs text-muted-foreground">yht. {eur(h.yhteensa)}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="text-xs text-muted-foreground mt-1">Hinnat sisältävät ALV:n ja määräalennuksen, toimitus ilmainen.</p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Button type="button" disabled={!ok} onClick={() => { tallennaLogoValinta(logo); navigate("/yritykset/tilaus?logo=1"); }} className="bg-primary text-primary-foreground font-bold">Valitse koot ja tilaa</Button>
+        <Button type="button" variant="outline" onClick={pyydaTarjous}>Pyydä tarjous</Button>
+      </div>
+    </section>
+  );
+}
+
 /** /yritykset: yritysten joululahjat ja tiimipaidat (sisältö src/data/yrityksetPage.ts). */
 const BusinessPage = () => {
   usePrerenderReady();
   const canonical = `${SITE_URL}${page.path}`;
   const [paketti, setPaketti] = useState("");
   const [malli, setMalli] = useState<Malli>("tpaita");
+  const [logo, setLogo] = useState<LogoValinta>(TYHJA_LOGO);
   const lomakeRef = useRef<HTMLElement>(null);
   const valitse = (id: string, m: Malli) => {
     setPaketti(id);
@@ -213,6 +258,8 @@ const BusinessPage = () => {
 
       <Paketit valitse={valitse} />
 
+      <OmaLogo logo={logo} setLogo={setLogo} pyydaTarjous={() => valitse("oma-logo", "logopaita")} />
+
       <section aria-labelledby="portaat" className="mb-8">
         <h2 id="portaat" className="font-display text-xl text-foreground mb-3">Määräalennus t-paidoista</h2>
         <div className="grid grid-cols-3 gap-3">
@@ -237,15 +284,17 @@ const BusinessPage = () => {
             <ul className="list-disc pl-5 space-y-1 text-muted-foreground">{s.items.map((i) => <li key={i}>{i}</li>)}</ul>
           )}
           {"paragraphs" in s && s.paragraphs?.map((p) => <p key={p} className="text-muted-foreground mb-2">{p}</p>)}
-          {"links" in s && s.links?.map((l) => <Link key={l.href} to={l.href} className="text-primary underline text-sm">{l.label}</Link>)}
+          {"links" in s && s.links && (
+            <div className="flex flex-wrap gap-x-4 gap-y-1">{s.links.map((l) => <Link key={l.href} to={l.href} className="text-primary underline text-sm">{l.label}</Link>)}</div>
+          )}
         </section>
       ))}
 
       <BlogProductStrip theme={theme} products={products} count={BLOG_END_COUNT} variant="end" />
 
       <section ref={lomakeRef} id="tarjouspyynto" aria-labelledby="tarjouspyynto-otsikko" className="mt-10 rounded-xl border border-border bg-card p-5 md:p-6 scroll-mt-24">
-        <h2 id="tarjouspyynto-otsikko" className="font-display text-xl text-foreground mb-3">Tarjouspyyntö{paketti ? `: ${YRITYS_PAKETIT.find((p) => p.id === paketti)?.otsikko}` : ""}</h2>
-        <Tarjouspyynto paketti={paketti} malli={malli} setMalli={setMalli} />
+        <h2 id="tarjouspyynto-otsikko" className="font-display text-xl text-foreground mb-3">Tarjouspyyntö{paketti === "oma-logo" ? ": oma logo tai teksti" : paketti ? `: ${YRITYS_PAKETIT.find((p) => p.id === paketti)?.otsikko}` : ""}</h2>
+        <Tarjouspyynto paketti={paketti} malli={malli} setMalli={setMalli} logo={logo} setLogo={setLogo} />
       </section>
 
       <section className="mt-10">

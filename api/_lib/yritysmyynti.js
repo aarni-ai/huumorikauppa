@@ -7,6 +7,7 @@
  * yritysten takaraja on 19 arkipäivää ennen 23.12. Laskulla tilaus lähtee painoon vasta maksun jälkeen.
  */
 import { HINNASTO, MAARAALENNUS, TOIMITUS, ILMAINEN_TOIMITUS_RAJA, TILAUKSEN_MIN_KATE_EUROA } from "./vakiot.js";
+import { logopaitaKuvaus } from "./logopaita.js";
 
 const maaraPorras = (kpl) => (MAARAALENNUS.kaytossa ? [...MAARAALENNUS.portaat].sort((a, b) => b.min - a.min).find((p) => kpl >= p.min) ?? null : null);
 
@@ -99,6 +100,7 @@ const ISO = /^(3|4|5)XL$/;
 export const MALLIT = {
   meemipaita: { nimi: "Meemipaita (esim. Saatanan tunarit, Tonnin seteli)", hinta: () => HINNASTO.tpaita.suora, iso: () => HINNASTO.tpaita.suoraIso, kulu: 8.9, kuluIso: 10.68, eka: 8.49, lisa: 1.19, maara: true },
   tpaita: { nimi: "T-paita (ammatti-, harrastus-, pikkujoulu- ja muut designit)", hinta: () => HINNASTO.tpaita.uniikki, iso: () => HINNASTO.tpaita.uniikkiIso, kulu: 8.9, kuluIso: 10.68, eka: 8.49, lisa: 1.19, maara: true },
+  logopaita: { nimi: "Oma logo tai teksti (t-paita, halutessa huumoridesign)", hinta: () => HINNASTO.personoitu, iso: () => HINNASTO.personoitu, kulu: 8.9, kuluIso: 9.93, eka: 8.49, lisa: 1.19, maara: true },
   huppari: { nimi: "Huppari", hinta: () => HINNASTO.hupparit.perus, iso: () => HINNASTO.hupparit.iso, kulu: 24.77, kuluIso: 27.5, eka: 10.89, lisa: 2.39, maara: false },
 };
 
@@ -147,7 +149,7 @@ export const MYYJA = "Uusiku Oy, Y-tunnus 3653666-7, ALV-numero FI36536667";
  * rivit: [{ name, size, color, quantity, unit_cents }], toimitus euroina.
  */
 export function laskuData({ rivit, toimitus, tilausId, asiakas }) {
-  const kuvaus = (r) => [r.name, [r.color, r.size].filter(Boolean).join(" / ")].filter(Boolean).join(", ");
+  const kuvaus = (r) => [r.name, [r.color, r.size].filter(Boolean).join(" / "), r.logo ? logopaitaKuvaus({ logo: r.logo.id, rivit: r.logo.rivit, design: r.logo.design }) : null].filter(Boolean).join(", ");
   const items = rivit.map((r) => ({ description: `${kuvaus(r)}`.slice(0, 500), quantity: r.quantity, unit_amount: r.unit_cents }));
   if (toimitus > 0) items.push({ description: "Toimitus", quantity: 1, unit_amount: Math.round(toimitus * 100) });
   return {

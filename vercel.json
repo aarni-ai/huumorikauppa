@@ -3,6 +3,10 @@
     "api/img.js": {
       "includeFiles": "node_modules/{sharp,@img/sharp-linux-x64,@img/sharp-libvips-linux-x64}/**/*"
     },
+    "api/painokuva.js": {
+      "includeFiles": "node_modules/{sharp,@img/sharp-linux-x64,@img/sharp-libvips-linux-x64}/**/*",
+      "maxDuration": 60
+    },
     "api/products.js": {
       "includeFiles": "data/products-snapshot.json",
       "maxDuration": 60

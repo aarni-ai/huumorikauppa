@@ -6,29 +6,61 @@
  *
  * Fontti Anton (SIL Open Font License) haetaan Google Fontsista ja pidetään muistissa funktion elinajan.
  * ?esikatselu=1 palauttaa 600 px leveän version.
+ *
+ * Oma logo -paita (api/_lib/logopaita.js, kuvat api/_lib/logopaita-kuva.js):
+ *   POST { action: "logo", tyyppi: "png" | "svg", data: base64 }      logon tarkistus ja tallennus -> { ok, id, ... }
+ *   GET  ?logopaita=1&logo=<id>&r1=..&r2=..&design=<slug>&vari=..      esikatselu 600 px (sama kuva kuin painossa)
+ *   GET  ?t=<allekirjoitettu "logopainokuva">                          tilauskohtainen painokuva 3461 x 3955
  */
 import { Resvg } from "@resvg/resvg-js";
-import { writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { tarkistaTunniste } from "./_lib/markkinointi.js";
 import { painokuvaSvg, tarkistaPersonointi, PAINOALUE } from "./_lib/personoitu.js";
+import { tarkistaLogopaita } from "./_lib/logopaita.js";
+import { haeFontti, logoPainokuva, tallennaLogo } from "./_lib/logopaita-kuva.js";
+import { onTietokanta } from "./_lib/db.js";
 
-const ANTON_TTF = "https://fonts.gstatic.com/s/anton/v27/1Ptgg87LROyAm0K0.ttf";
-let fontti = null;
+const VARIT = new Set(["Musta", "Valkoinen", "Vaaleanharmaa", "Tummansininen"]);
 
-/** Fonttitiedoston polku (resvg-js lukee fontit Nodessa tiedostosta; /tmp on kirjoitettava Vercelissä). */
-async function haeFontti() {
-  if (fontti) return fontti;
-  const r = await fetch(ANTON_TTF);
-  if (!r.ok) throw new Error(`fontti ${r.status}`);
-  const polku = join(tmpdir(), "anton-v27.ttf");
-  await writeFile(polku, Buffer.from(await r.arrayBuffer()));
-  fontti = polku;
-  return fontti;
+function lahetaPng(res, png, valimuisti) {
+  res.setHeader("Content-Type", "image/png");
+  res.setHeader("Cache-Control", valimuisti);
+  return res.status(200).send(png);
+}
+
+async function logopaita(req, res) {
+  if (req.method === "POST") {
+    let body = req.body || {};
+    if (typeof body === "string") { try { body = JSON.parse(body); } catch { body = {}; } }
+    if (body.action !== "logo") return res.status(400).json({ ok: false });
+    if (!onTietokanta()) return res.status(503).json({ ok: false, virhe: "Logon lataus ei ole nyt käytössä." });
+    const tulos = await tallennaLogo({ tyyppi: body.tyyppi, data: body.data }).catch((e) => {
+      console.error("logo:", e?.message || e);
+      return { ok: false, virhe: "Logon tallennus epäonnistui. Yritä uudelleen." };
+    });
+    return res.status(200).json(tulos);
+  }
+  const q = req.query || {};
+  const allekirjoitettu = q.t ? tarkistaTunniste(String(q.t), "logopainokuva") : null;
+  let data;
+  if (allekirjoitettu) {
+    try { data = JSON.parse(allekirjoitettu); } catch { return res.status(400).json({ ok: false }); }
+  } else {
+    data = { l: q.logo || null, r: [q.r1, q.r2].filter(Boolean), d: q.design || null, v: q.vari };
+  }
+  const valinta = tarkistaLogopaita({ logo: data.l, rivit: data.r, design: data.d });
+  if (!valinta.ok) return res.status(400).json({ ok: false, virhe: valinta.virhe });
+  const vari = VARIT.has(data.v) ? data.v : "Musta";
+  try {
+    const png = await logoPainokuva(valinta, vari, { leveys: allekirjoitettu ? PAINOALUE.leveys : 600 });
+    return lahetaPng(res, png, allekirjoitettu ? "public, max-age=31536000, immutable" : "public, max-age=86400");
+  } catch (e) {
+    console.error("logopainokuva:", e?.message || e);
+    return res.status(/puuttuu/.test(String(e?.message)) ? 404 : 500).json({ ok: false, virhe: "Esikatselua ei voitu muodostaa." });
+  }
 }
 
 export default async function handler(req, res) {
+  if (req.method === "POST" || req.query?.logopaita === "1" || tarkistaTunniste(String(req.query?.t || ""), "logopainokuva")) return logopaita(req, res);
   const arvo = tarkistaTunniste(String(req.query?.t || ""), "painokuva");
   if (!arvo) return res.status(404).json({ ok: false });
   let data;
@@ -43,9 +75,7 @@ export default async function handler(req, res) {
       font: { fontFiles: [await haeFontti()], loadSystemFonts: false, defaultFontFamily: "Anton" },
       background: "rgba(0,0,0,0)",
     }).render().asPng();
-    res.setHeader("Content-Type", "image/png");
-    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-    return res.status(200).send(png);
+    return lahetaPng(res, png, "public, max-age=31536000, immutable");
   } catch (e) {
     console.error("painokuva:", e?.message || e);
     return res.status(500).json({ ok: false });

@@ -491,6 +491,21 @@ export const BLOG_PRODUCT_THEMES = {
     filters: [OMA_TEKSTI, theme(/tiimipelaaja/), JOULU, AMMATTI],
     related: ["/ammattipaidat", "/lahjat/tyokaverille", "/joululahja-tyokaverille", "/polttari-lahjat"],
   },
+  // 1.11.2026: yritysten hakuoppaat (src/data/blogYritysHaut2026.ts): tuotekortit ja linkki sivulle /yritykset.
+  yritykset: {
+    href: "/yritykset",
+    name: "Yritysten joululahjat ja tiimipaidat",
+    heading: "Paidat yrityksille ja tiimeille",
+    filters: [TOIMISTO, OMA_TEKSTI, AMMATTI, JOULU],
+    related: ["/ryhmatilaukset", "/ammattipaidat", "/lahjat/pikkujouluihin", "/lahjat/tyokaverille"],
+  },
+  yritysPikkujoulu: {
+    href: "/yritykset",
+    name: "Yritysten joululahjat ja tiimipaidat",
+    heading: "Pikkujoulupaidat tiimille",
+    filters: [both(PIKKUJOULU, PAIDAT), both(JOULU, PAIDAT), OMA_TEKSTI],
+    related: ["/lahjat/pikkujouluihin", "/ryhmatilaukset", "/joululahjat", "/ammattipaidat"],
+  },
   // 28.10.2026: joulun ja pikkujoulun hakuoppaat (src/data/blogJouluHaut2026.ts).
   jouluPaita: {
     href: "/joululahjat",
@@ -585,6 +600,11 @@ export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
   "lahja-ensimmaiseksi-isanpaivaksi": "isanpaivaTuore",
   "pikkujoulujen-lahjapeli": "pikkujouluPeli",
   "pikkujoulupaidat-porukalle": "pikkujouluPaidat",
+  "yrityksen-joululahja-tyontekijoille": "yritykset",
+  "pikkujoulupaidat-tiimille": "yritysPikkujoulu",
+  "tiimipaidat-omalla-logolla": "yritykset",
+  "joululahja-asiakkaille-yritys": "yritykset",
+  "hauska-tiimipaita": "yritykset",
   "joululahja-poikaystavalle": "jouluPoikaystava",
   "joululahja-anopille-ja-appiukolle": "jouluAppivanhemmat",
   "joululahja-siskolle": "jouluSisko",

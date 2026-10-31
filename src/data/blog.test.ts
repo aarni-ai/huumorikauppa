@@ -6,6 +6,7 @@ import { jouluOppaat2026 } from "./blogJoulu2026";
 import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { sesonkiOppaat2026, ODOTTAA_SAHKOPOSTIA } from "./blogSesonki2026";
 import { jouluHakuOppaat2026, HAKUSANAT } from "./blogJouluHaut2026";
+import { yritysHakuOppaat2026, YRITYSHAKUSANAT } from "./blogYritysHaut2026";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -337,5 +338,59 @@ describe("blogi: joulun ja pikkujoulun hakuoppaat 28.10.2026", () => {
       ...muut.map((p) => p.content),
     ].join("\n");
     for (const post of jouluHakuOppaat2026) expect(lahteet, post.slug).toMatch(new RegExp(`/blogi/${post.slug}["')]`));
+  });
+});
+
+describe("blogi: yritysten hakuoppaat 1.11.2026", () => {
+  it("oppaita on 5, ne ovat blogPosts-listassa ja niillä on dokumentoitu hakusana ensimmäisenä tagina", () => {
+    expect(yritysHakuOppaat2026).toHaveLength(5);
+    expect(Object.keys(YRITYSHAKUSANAT).sort()).toEqual(yritysHakuOppaat2026.map((p) => p.slug).sort());
+    const muut = new Set(blogPosts.filter((p) => !yritysHakuOppaat2026.includes(p)).map((p) => p.slug));
+    for (const post of yritysHakuOppaat2026) {
+      expect(blogPosts).toContain(post);
+      expect(muut.has(post.slug), post.slug).toBe(false);
+      const sana = YRITYSHAKUSANAT[post.slug];
+      expect(post.tags[0], post.slug).toBe(sana);
+      expect(`${post.title} ${post.metaTitle}`.toLowerCase(), post.slug).toContain(sana.split(" ")[0]);
+    }
+  });
+
+  it.each(yritysHakuOppaat2026.map((p) => [p.slug, p] as const))("%s: tekstisäännöt, pituus 600-900 sanaa, SEO-rajat", (_slug, post) => {
+    const text = allText(post);
+    expect(text).not.toMatch(DASHES);
+    expect(text).not.toMatch(HEDGES);
+    expect(text.toLowerCase()).not.toMatch(/\bmuki/);
+    expect(text).not.toMatch(/suosituin|suosituimm|myydyin|asiakkaamme kertovat|arvostelu|lahjakort/i);
+    expect(text).not.toMatch(/voi olla että|suomen paras|painettu suomessa|varastossa/i);
+    const eurot = [...text.matchAll(/(\d+(?:,\d+)?) ?€/g)].map((m) => m[1]);
+    expect(eurot.every((e) => e === TOIMITUSMAKSU_TEKSTI)).toBe(true);
+    expect(post.metaTitle.length).toBeLessThan(60);
+    expect(post.metaDescription.length).toBeLessThan(155);
+    const words = wordCount(post.content);
+    expect(words).toBeGreaterThanOrEqual(600);
+    expect(words).toBeLessThanOrEqual(900);
+  });
+
+  it.each(yritysHakuOppaat2026.map((p) => [p.slug, p] as const))("%s: 4-8 tuotetta, linkki /yritykset, FAQPage", (_slug, post) => {
+    const links = internalLinks(post);
+    const products = new Set(links.filter((l) => l.startsWith("/tuote/")));
+    const pages = new Set(links.filter((l) => !l.startsWith("/tuote/")));
+    expect(products.size).toBeGreaterThanOrEqual(4);
+    expect(products.size).toBeLessThanOrEqual(8);
+    expect(pages.size).toBeGreaterThanOrEqual(4);
+    expect(pages.size).toBeLessThanOrEqual(8);
+    expect(pages.has("/yritykset")).toBe(true);
+    for (const l of products) expect(productSlugs as string[], l).toContain(l.slice("/tuote/".length));
+    const faq = post.faq ?? [];
+    expect(faq.length).toBeGreaterThanOrEqual(3);
+    expect(faq.length).toBeLessThanOrEqual(5);
+    for (const f of faq) expect(f.a).toMatch(/^[^.?!]+[.!]/);
+    const [, faqLd] = buildBlogPostJsonLd(post, faq)["@graph"] as Record<string, unknown>[];
+    expect(faqLd["@type"]).toBe("FAQPage");
+  });
+
+  it("jokaiseen oppaaseen linkitetään sivulta /yritykset", () => {
+    const lahde = fs.readFileSync(path.resolve(__dirname, "yrityksetPage.ts"), "utf8");
+    for (const post of yritysHakuOppaat2026) expect(lahde, post.slug).toContain(`/blogi/${post.slug}"`);
   });
 });

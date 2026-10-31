@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { buildPurchaseParams, trackPurchaseOnce } from "@/lib/analytics";
 import { hasMarketingConsent } from "@/lib/consent";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { naytettavaTeksti } from "../../api/_lib/logopaita.js";
 
 interface OrderInfo {
   id: string;
@@ -256,7 +257,7 @@ const OrderConfirmation = () => {
                 <span>{(item.price * item.quantity).toFixed(2)} €</span>
               </div>
               {item.customText && (
-                <p className="text-xs text-primary break-words">✍️ Oma teksti: ”{item.customText}”</p>
+                <p className="text-xs text-primary break-words">✍️ Oma teksti: ”{naytettavaTeksti(item.customText)}”</p>
               )}
             </div>
           ))}

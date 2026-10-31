@@ -337,6 +337,39 @@ export default async function handler(req, res) {
       yhteensa: { tilauksia: rivit.length, provisio: Math.round([...kumppanit.values()].reduce((s, k) => s + k.provisio, 0) * 100) / 100 } });
   }
 
+  // Oma logo -paidan polkutesti: kassan laskenta (10 kpl), tilausrunko, painokuvan haku ja Printify-tilaus lennosta
+  // luotavalla tuotteella. Tilausta EI lähetetä tuotantoon: se perutaan heti (peruTilaus). &logo=<id>&r1=..&r2=..&design=..&vari=..
+  if (req.query.tehtava === "logotesti") {
+    const { laskeTilaus } = await import("../_lib/kassa.js");
+    const { logopaitaTeksti, tarkistaLogopaita, LOGOPAITA_SLUG } = await import("../_lib/logopaita.js");
+    const v = tarkistaLogopaita({ logo: req.query.logo || null, rivit: [req.query.r1, req.query.r2].filter(Boolean), design: req.query.design || null });
+    if (!v.ok) return res.status(400).json({ ok: false, virhe: v.virhe });
+    const osoite = { address: "Testikatu 1", zip: "00100", city: "Helsinki", phone: "0401234567" };
+    const vari = req.query.vari || "Valkoinen";
+    const laskettu = laskeTilaus({ items: [{ slug: LOGOPAITA_SLUG, quantity: 5, size: "M", color: vari, customText: logopaitaTeksti(v) },
+      { slug: LOGOPAITA_SLUG, quantity: 5, size: "L", color: vari, customText: logopaitaTeksti(v) }],
+    customerEmail: "kassatesti@huumorikauppa.fi", shippingAddress: osoite }, [], null);
+    const runko = tilausRunko({ id: `testi-${Date.now().toString(36)}-0000`, customer_email: "kassatesti@huumorikauppa.fi", customer_name: "Kassa Testi",
+      shipping_address: osoite, items: laskettu.rivit });
+    const kuva = runko.line_items[0].print_areas.front;
+    const kuvaVastaus = await fetch(kuva).then((r) => ({ status: r.status, tyyppi: r.headers.get("content-type"), koko: Number(r.headers.get("content-length")) || null })).catch((e) => ({ virhe: String(e) }));
+    const summa = { total: laskettu.total, alennus: laskettu.discount + laskettu.basket_discount, rivit: laskettu.rivit.map((r) => ({ koko: r.size, kpl: r.quantity, hinta: r.unit_cents / 100 })) };
+    if (kuiva || !onPrintify() || kuvaVastaus.status !== 200) return res.status(200).json({ ok: kuvaVastaus.status === 200, kuiva, summa, rivi: runko.line_items[0], kuvaVastaus });
+    const luotu = await luoTilaus(runko);
+    const id = luotu.data?.id;
+    let tila = id ? await haeTilaus(id) : null;
+    for (let k = 0; id && k < 8 && tila?.data?.status === "pending"; k++) {
+      await new Promise((r) => setTimeout(r, 3000));
+      tila = await haeTilaus(id);
+    }
+    let peruttu = id ? await peruTilaus(id) : null;
+    if (id && !peruttu?.ok) { await new Promise((r) => setTimeout(r, 5000)); peruttu = await peruTilaus(id); }
+    return res.status(200).json({ ok: !!luotu.ok, kuvaVastaus, summa, printify: { id, luotu: luotu.ok, virhe: luotu.virhe ?? null,
+      tila: tila?.data?.status ?? null, kulut: tila?.data ? { tuote: tila.data.total_price / 100, toimitus: tila.data.total_shipping / 100 } : null,
+      rivit: (tila?.data?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, kpl: l.quantity, tila: l.status, kulu: l.cost / 100 })),
+      peruttu: peruttu?.ok ?? false, peruttuTila: peruttu?.data?.status ?? null } });
+  }
+
   // Personoidun t-paidan polkutesti: kassan laskenta (laskeTilaus) ja tilausrunko testiosoitteella, painokuvan haku ja
   // Printify-tilaus lennosta luotavalla tuotteella. Tilausta EI lähetetä tuotantoon: se perutaan heti (peruTilaus).
   // &nimi=..&ika=..&malli=..&vari=..&koko=..

@@ -34,6 +34,7 @@ import { jalkikasittely } from "./_lib/tilaus.js";
 import PAKETIT from "./_lib/paketit-data.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tarkistaEnsitilausKoodi, normalisoiEmail, kelpaaEmail } from "./_lib/markkinointi.js";
+import { naytettavaTeksti } from "./_lib/logopaita.js";
 
 /**
  * Alennuskoodi: discount_codes-taulu, ensitilauksen koodi (TERVE-..., api/_lib/markkinointi.js: sama sähköposti,
@@ -70,7 +71,7 @@ async function lahjakortti(koodi) {
   return { koodi: k, saldo: t.saldo };
 }
 
-const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${r.custom_text}"`,
+const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${naytettavaTeksti(r.custom_text)}"`,
   r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
 
 export default async function handler(req, res) {
@@ -147,6 +148,7 @@ export default async function handler(req, res) {
     const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
     const valinta = kp?.malli === "alennus" && !koodiAlennus ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
     const laskettu = valinta?.laskettu ?? laskeTilaus(pyynto, tuotteet, koodiAlennus, lisat);
+    await varmistaLogot(laskettu.rivit);
     const osoite = laskettu.only_gift_cards ? {} : { ...pyynto.shippingAddress, country: "FI" };
     const [tilaus] = await sql()`insert into orders (customer_email, customer_name, recipient_name, phone, shipping_address,
         items, subtotal, shipping, discount_code, discount, bundle_discount, total, gift_card_code, gift_card_amount, printify_status)
@@ -273,6 +275,7 @@ async function laskuTilaus(pyynto, res) {
     const tuotteet = await kaikkiTuotteet();
     const kassa = { items: pyynto.items, customerEmail: a.email, customerName: a.nimi, shippingAddress: toimitus, recipientName: teksti(t.nimi, 200) || a.yritys };
     const laskettu = laskeTilaus(kassa, tuotteet, null, {});
+    await varmistaLogot(laskettu.rivit);
     const kpl = laskettu.rivit.filter((r) => r.type !== "giftcard").reduce((s, r) => s + r.quantity, 0);
     if (laskettu.rivit.some((r) => r.type === "giftcard")) return res.status(200).json({ ok: false, error: "Lahjakortit ostetaan tavallisen kassan kautta." });
     if (kpl < YRITYS_MIN_KPL) return res.status(200).json({ ok: false, error: `Laskulla voi tilata vähintään ${YRITYS_MIN_KPL} tuotetta. Pienemmän tilauksen voi maksaa kortilla.` });
@@ -307,6 +310,14 @@ async function laskuTilaus(pyynto, res) {
     console.error("lasku:", e?.message || e);
     return res.status(200).json({ ok: false, error: "Laskun luonti epäonnistui. Yritä hetken kuluttua uudelleen tai pyydä tarjous." });
   }
+}
+
+/** Oma logo -paita: ladattu logo on tallessa (taulu yrityslogot), muuten painokuvaa ei voi tehdä. */
+async function varmistaLogot(rivit) {
+  const idt = [...new Set(rivit.filter((r) => r.logo?.id).map((r) => r.logo.id))];
+  if (!idt.length) return;
+  const loydetyt = await sql()`select id from yrityslogot where id = any(${idt}::uuid[])`.catch(() => []);
+  if (loydetyt.length < idt.length) throw new KassaVirhe("Logo puuttuu. Lataa logo uudelleen ja lisää paidat koriin.", "logo_missing");
 }
 
 /** Kumppanimalli 2: suurin alennus, jolla kauppaan jää 7 € provision jälkeen (api/_lib/kumppani.js). */

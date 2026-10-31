@@ -136,6 +136,12 @@ const BLOG_SLUGS = [
   "hauska-joululahja-ystavalle",
   "joululahja-tyontekijoille",
   "joululahja-opiskelijalle",
+  // 1.11.2026: yritysten hakuoppaat (src/data/blogYritysHaut2026.ts).
+  "yrityksen-joululahja-tyontekijoille",
+  "pikkujoulupaidat-tiimille",
+  "tiimipaidat-omalla-logolla",
+  "joululahja-asiakkaille-yritys",
+  "hauska-tiimipaita",
   // 28.10.2026: isänpäivän ja joulun sesonkioppaat (src/data/blogSesonki2026.ts).
   "isanpaivalahja-isoisalle",
   "lahja-ensimmaiseksi-isanpaivaksi",

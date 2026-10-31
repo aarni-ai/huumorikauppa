@@ -45,6 +45,8 @@ import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
 import { yrityksetPage, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { esimerkkiHinnat } from "../../../api/_lib/yritysmyynti.js";
+import { LOGO_RAJAT, LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
 import { MALLIT } from "../../../api/_lib/personoitu.js";
@@ -606,6 +608,12 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
         items: p.esimerkit.map((e) => `${e.kpl} paitaa: ${e.yhteensa.toFixed(2).replace(".", ",")} € (${e.perKpl.toFixed(2).replace(".", ",")} €/kpl), määräalennus ja toimitus sisältyvät`),
         links: [p.linkki, { href: "/yritykset/tilaus", label: "Tilaa heti" }],
       })),
+      {
+        heading: "Oma logo tai teksti",
+        paragraphs: [`Lataa yrityksen logo (PNG vähintään ${LOGO_RAJAT.minPx} px tai SVG) tai kirjoita teksti ja valitse, tuleeko huumoridesign mukaan. Esikatselu näyttää painatuksen paidan etupuolella. T-paita ${LOGOPAITA_HINTA.toFixed(2).replace(".", ",")} €/kpl, vähintään ${LOGOPAITA_MIN_KPL} paitaa, painetaan EU:ssa.`],
+        items: esimerkkiHinnat("logopaita").map((e) => `${e.kpl} paitaa: ${e.perKpl.toFixed(2).replace(".", ",")} €/kpl, yhteensä ${e.yhteensa.toFixed(2).replace(".", ",")} € (määräalennus -${e.alennusProsentti} %, toimitus ilmainen)`),
+        links: [{ href: "/yritykset/tilaus", label: "Valitse koot ja tilaa" }, { href: "/blogi/tiimipaidat-omalla-logolla", label: "Tiimipaidat omalla logolla" }],
+      },
       { heading: "Määräalennus t-paidoista", items: [
         ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
         ...yrityksetPage.esimerkit.map((e) => `${e.kpl} t-paitaa: ${e.ennen}, määräalennus -${e.prosentti} % = ${e.jalkeen}`),

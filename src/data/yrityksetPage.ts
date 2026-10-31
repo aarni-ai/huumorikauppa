@@ -85,13 +85,23 @@ export const yrityksetPage = {
       heading: "Laskutus ja kuitti",
       paragraphs: [
         "Myyjä on Uusiku Oy (Y-tunnus 3653666-7, ALV-numero FI36536667). Kassalla maksetaan Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla tai MobilePaylla, ja kuitti tulee sähköpostiin Uusiku Oy:n nimissä.",
-        "Jos yritys tarvitsee laskun, lähetä tarjouspyyntö alla olevalla lomakkeella, niin laskutuksesta sovitaan sähköpostilla.",
+        "Yritys, jolla on Y-tunnus, voi tilata vähintään 10 tuotetta laskulla sivulla Yritystilaus. Maksuaika on 14 päivää, ja tuotteet lähtevät painoon, kun lasku on maksettu.",
       ],
     },
     {
       heading: "Viimeinen tilauspäivä jouluksi",
       paragraphs: [JOULU],
       links: [{ href: CHRISTMAS_DEADLINE_PATH, label: "Joulun viimeiset tilauspäivät" }],
+    },
+    {
+      heading: "Oppaat yrityksille",
+      links: [
+        { href: "/blogi/yrityksen-joululahja-tyontekijoille", label: "Yrityksen joululahja työntekijöille" },
+        { href: "/blogi/tiimipaidat-omalla-logolla", label: "Tiimipaidat omalla logolla" },
+        { href: "/blogi/joululahja-asiakkaille-yritys", label: "Joululahja asiakkaille" },
+        { href: "/blogi/pikkujoulupaidat-tiimille", label: "Pikkujoulupaidat tiimille" },
+        { href: "/blogi/hauska-tiimipaita", label: "Hauska tiimipaita" },
+      ],
     },
   ],
   faqs: [

@@ -79,12 +79,12 @@ export function pgMarkkinointi(db) {
         add column if not exists koot jsonb, add column if not exists hinta numeric(10,2), add column if not exists kate numeric(10,2),
         add column if not exists toivottu_paiva date, add column if not exists ehtii boolean, add column if not exists jouluun boolean,
         add column if not exists ytunnus text, add column if not exists tila text not null default 'uusi',
-        add column if not exists ilmoitus text`;
+        add column if not exists ilmoitus text, add column if not exists logo jsonb`;
       return (await db`insert into tarjouspyynnot (yritys, nimi, email, puhelin, maara, viesti, paketti, malli, koot, hinta, kate,
-          toivottu_paiva, ehtii, jouluun, ytunnus)
+          toivottu_paiva, ehtii, jouluun, ytunnus, logo)
         values (${t.yritys}, ${t.nimi}, ${t.email}, ${t.puhelin}, ${t.maara}, ${t.viesti}, ${t.paketti ?? null}, ${t.malli ?? null},
           ${t.koot ? db.json(t.koot) : null}, ${t.hinta ?? null}, ${t.kate ?? null}, ${t.toivottu_paiva ?? null}, ${t.ehtii ?? null},
-          ${t.jouluun ?? null}, ${t.ytunnus ?? null}) returning id`)[0].id;
+          ${t.jouluun ?? null}, ${t.ytunnus ?? null}, ${t.logo ? db.json(t.logo) : null}) returning id`)[0].id;
     },
     /** /hallinta/tarjoukset: tarjouspyynnöt uusimmasta (kate vain täällä). */
     tarjouspyynnot: async () => db`select * from tarjouspyynnot order by created_at desc limit 300`,

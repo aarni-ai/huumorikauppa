@@ -20,6 +20,7 @@ import { toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostos
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { naytettavaTeksti } from "../../api/_lib/logopaita.js";
 
 /** Kiinteät koodit poistettiin 29.10.2026 (KATTEET.md "Alennuskoodit"); koodit tarkistetaan palvelimella. */
 const VALID_CODES: Record<string, { percent: number; label: string }> = {};
@@ -429,7 +430,7 @@ const CheckoutPage = () => {
                     className="!gap-0.5"
                   />
                   {item.customText && (
-                    <p className="text-xs text-primary break-words">✍️ ”{item.customText}”</p>
+                    <p className="text-xs text-primary break-words">✍️ ”{naytettavaTeksti(item.customText)}”</p>
                   )}
                 </div>
               </div>

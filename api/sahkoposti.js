@@ -27,6 +27,7 @@ import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS
 import { haeTilaus, onPrintify } from "./_lib/printify.js";
 import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } from "./_lib/yritysmyynti.js";
 import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
+import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -124,11 +125,21 @@ export async function kasittele(req, res, store) {
       const malli = MALLIT[body.malli] ? body.malli : null;
       const laskuri = malli && Object.keys(koot).length ? laskeTarjous({ malli, koot }, { kerroin: PRINTIFY_KULUKERROIN }) : null;
       const at = aikataulu(teksti(body.toimituspaiva, 10));
+      // Oma logo tai teksti: sama tarkistus kuin kassalla; esikatselulinkki ilmoitukseen ja hallintaan.
+      let logo = null;
+      if (malli === "logopaita" && body.logo) {
+        const v = tarkistaLogopaita({ logo: body.logo.id, rivit: body.logo.rivit, design: body.logo.design });
+        if (!v.ok) return res.status(400).json({ ok: false, error: v.virhe });
+        const vari = sallitutVarit(v.design).includes(body.logo.vari) ? body.logo.vari : sallitutVarit(v.design)[0];
+        const q = new URLSearchParams({ logopaita: "1", vari, ...(v.logo ? { logo: v.logo } : {}), ...(v.design ? { design: v.design } : {}) });
+        v.rivit.forEach((rr, i) => q.set(`r${i + 1}`, rr));
+        logo = { id: v.logo, rivit: v.rivit, design: v.design, vari, kuvaus: logopaitaKuvaus(v), esikatselu: `${(process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "")}/api/painokuva?${q}` };
+      }
       const t = {
         yritys: teksti(body.yritys, 120), nimi: teksti(body.nimi, 100), email: normalisoiEmail(teksti(body.email, 200) || ""),
         puhelin: teksti(body.puhelin, 40), maara: laskuri?.kpl || Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
         paketti: teksti(body.paketti, 60), malli, koot: laskuri ? koot : null, hinta: laskuri?.yhteensa ?? null, kate: laskuri?.kate ?? null,
-        toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus),
+        toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus), logo,
       };
       if (!t.yritys || !t.nimi || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
         return res.status(400).json({ ok: false, error: "Täytä yritys, nimi ja toimiva sähköpostiosoite." });
@@ -139,6 +150,7 @@ export async function kasittele(req, res, store) {
         `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
         `Määrä: ${t.maara ?? "-"}`, `Paketti: ${t.paketti || "-"}`, `Malli: ${t.malli || "-"}`, `Koot: ${t.koot ? JSON.stringify(t.koot) : "-"}`,
         `Hinta: ${t.hinta ?? "-"} €, kate (arvio): ${t.kate ?? "-"} €`, `Toivottu toimituspäivä: ${t.toivottu_paiva || "-"} (${t.ehtii === null ? "-" : t.ehtii ? "ehtii" : "ei ehdi"})`,
+        ...(logo ? [`Oma logo tai teksti: ${logo.kuvaus}, paita ${logo.vari}`, `Esikatselu: ${logo.esikatselu}`] : []),
         `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
       ]).catch((e) => ({ ok: false, virhe: String(e?.message || e) }));
       // Ilmoituksen tila talteen (/hallinta/tarjoukset): epäonnistunut ilmoitus näkyy, eikä pyyntö jää huomaamatta.

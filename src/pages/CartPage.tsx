@@ -21,6 +21,7 @@ import { jouluAvain } from "@/data/jouluAikataulu";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { naytettavaTeksti } from "../../api/_lib/logopaita.js";
 
 const CartPage = () => {
   usePrerenderReady();
@@ -121,7 +122,7 @@ const CartPage = () => {
                   {item.selectedColor && <span>Väri: {item.selectedColor}</span>}
                 </div>
                 {item.customText && (
-                  <p className="text-sm text-primary mt-1 break-words">✍️ Oma teksti: ”{item.customText}”</p>
+                  <p className="text-sm text-primary mt-1 break-words">✍️ Oma teksti: ”{naytettavaTeksti(item.customText)}”</p>
                 )}
                 {item.giftCard && (item.giftCard.recipientName || item.giftCard.recipientEmail) && (
                   <p className="text-sm text-muted-foreground mt-1 break-words">
