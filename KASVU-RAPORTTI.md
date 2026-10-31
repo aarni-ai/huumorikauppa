@@ -26,6 +26,47 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 31.10.2026 ilta: Klarna-päätös, kumppanimalli 2, yritysmyynnin mobiilitesti
+
+- **Klarna ja MobilePay pysyvät** kaikissa tilauksissa. Aarni hyväksyi enintään 0,69 €:n poikkeaman 7 €:n minimistä
+  näillä maksutavoilla (KATTEET.md "Päätös 31.10.2026").
+- **Pois tehtävälistalta:** Holvi-kortti on jo Printifyssä, ja Aarni vaihtaa Stripen tilitystilin itse.
+- **Kumppanimalli 2** (KATTEET.md "Kumppanimalli 2"):
+  - Kumppanin koodilla ostaja saa -5 % ja kumppani 5 % provision tuotteista alennuksen jälkeen, ilman ALV:tä ja
+    toimitusta.
+  - Kauppaan jää aina vähintään 7 €. Muuten alennus ja provisio pienenevät 1 %-yksikön askelin tai jäävät pois.
+  - Jos kahden tuotteen, määrä- tai pakettialennus on yhtä suuri tai suurempi, kumppanialennusta ei lisätä.
+  - Kassa näyttää kumppanikoodin kentässä ja yhteenvedossa "Koodi X: -5 %" (tai korille toteutuvan pienemmän
+    prosentin, jonka palvelin laskee).
+  - Malli asetetaan: ?tehtava=kumppani-lisaa&koodi=...&malli=alennus. Antsa pysyy mallissa 1.
+  - Provisio lasketaan raporteissa (kumppanit, kumppanin oma raportti, kirjanpidon kuukausiraportti) tilauksen
+    kumppanitapahtumaan tallennetulla prosentilla.
+  - /kumppanit näyttää molemmat mallit sääntöineen ja esimerkkeineen, myös esirenderöitynä:
+    - 27,90 €:n paita: ostaja -5 % (1,39 €), provisio 1,06 €
+    - 24,90 €:n paita: ei alennusta
+    - huppari: -3 %, provisio 1,23 €
+  - **Tuotantotesti** väliaikaisella kumppanilla testi-malli2, joka poistettiin heti käytöstä:
+    - 27,90 € paita 5 %
+    - 24,90 € paita 0 %
+    - huppari 3 %
+    - antsa (malli 1) 0 %
+- **Yritysmyynti mobiilissa** (Chrome, 390 px kehys; 85 yritystä sai muistutuksen):
+  - /yritykset: ei vaakavieritystä.
+  - Pyydä tarjous vierittää lomakkeeseen, laskuri toimii (12 meemipaitaa = 268,92 €, -10 %), ja toimituspäivä
+    näyttää "Ehtii".
+  - Testipyyntö tallentui hinnan, katteen (81,62 €) ja toivotun päivän kanssa.
+  - /yritykset/tilaus: designin haku, väri, kokotaulukko, summa (10 kpl 249,00 €, -10 %) ja laskun lomake toimivat.
+    Kaupparekisteristä puuttuva Y-tunnus hylätään selvällä viestillä ennen laskun luontia (oikeaa laskua ei
+    lähetetty).
+- **Ilmoitus jokaisesta tarjouspyynnöstä:**
+  - Ilmoitus lähtee omistajalle (OMISTAJA_EMAIL = flyapeg@gmail.com). Kun Resend-domainia ei ole vahvistettu, se
+    lähtee Resendin testilähettäjältä samaan osoitteeseen.
+  - Lähetyksen tulos tallentuu nyt tarjouspyynnön riville (sarake ilmoitus) ja näkyy /hallinta/tarjoukset-sivulla.
+    Epäonnistunut ilmoitus näkyy punaisena.
+  - Testipyynnössä luki "lähetetty flyapeg@gmail.com". Testipyynnöt merkittiin hylätyiksi.
+- **Tarkistus:** Googlebot, Bingbot ja Chrome saavat 200:n (/kumppanit, /yritykset, /yritykset/tilaus, /kassa ja
+  etusivu). Testit: 1466 läpi.
+
 ## 31.10.2026: ALV-päätös, rahavirta, kirjanpidon kuukausiraportti, maksutapojen katteet, yritysnostot
 
 - **Printifyn ALV:** kirjanpitäjä vahvisti, että ALV on vähennettävissä. Hinnat pysyvät ennallaan, ja
@@ -127,7 +168,7 @@ Tavoite: 3000 €/kk kate. Nopein reitti on yritystilaukset ja joulusesonki. Yks
 - Etusivun yläosassa on palkki "Yritysten joululahjat: tilaa viimeistään to 26.11." (näkyy takarajaan asti).
 - Samat tiedot näkyvät /yritykset- ja /yritykset/tilaus-sivuilla.
 
-### Aarnin tehtävät (Stripe)
+### Aarnin tehtävät (Stripe) (31.10.: Holvi-kortti on Printifyssä ja tilitystili Aarnin hoidossa)
 1. Stripe > Settings > Billing > Invoices: oletusmaksutavat laskuille (kortti ja tilisiirto/SEPA). Tarkista,
    että asiakassähköpostit laskuista ovat päällä.
 2. Stripe > Settings > Business > Public details: Uusiku Oy, osoite ja ALV-numero laskuille.
