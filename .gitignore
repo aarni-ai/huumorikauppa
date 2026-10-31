@@ -48,3 +48,6 @@ public/media/*.zip
 # Kumppanikohtaiset tiedot (sähköposti, raporttiavain), ei julkiseen repoon
 KUMPPANIT-*.md
 !KUMPPANIT-VIESTIPOHJA.md
+
+# Kirjanpidon raportit (asiakas- ja myyntitietoja), ei julkiseen repoon
+kirjanpito/

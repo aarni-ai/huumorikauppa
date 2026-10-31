@@ -227,6 +227,16 @@ Premium alentaa tuotekuluja enintään 20 %, toimituskuluihin se ei vaikuta.
 Molemmissa siirto pudottaisi värejä tai kokoja. Lisäksi 20 tuotteen tekstitasot pitäisi siirtää käsin. Siksi tuotteita
 ei siirretty. Toimitusaika Suomeen on kaikilla EU-painotaloilla sama (3-10 arkipäivää).
 
+### Printifyn ALV: päätös 31.10.2026
+
+Kirjanpitäjä vahvisti, että Printifyn laskuttama Suomen ALV (25,5 %) on Uusiku Oy:lle vähennettävissä.
+- Hinnat pysyvät ennallaan, eli korotusta ei tehdä.
+- `PRINTIFY_ALV_VAHENNETTAVA` pysyy arvossa true (api/_lib/vakiot.js), joten katteet lasketaan Printify-kuluilla
+  ilman ALV:tä.
+- ALV-varasuunnitelma (alla) jää koodiin käyttämättömänä. Se otetaan käyttöön vain, jos verotilanne muuttuu.
+- Printifyn laskut menevät kirjanpitoon ostolaskuina (ALV vähennetään), ja maksu tapahtuu Huumorikaupan omalla
+  Holvi-kortilla (KAYTTOONOTTO.md "Raha- ja kirjanpitovirta").
+
 ### ALV-varasuunnitelma 30.10.2026 (valmis, pois päältä)
 
 **Kytkin:** api/_lib/vakiot.js `PRINTIFY_ALV_VAHENNETTAVA`. Oletus on true. Kun kirjanpitäjä toteaa, ettei Printifyn

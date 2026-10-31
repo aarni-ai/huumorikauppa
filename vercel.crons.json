@@ -17,6 +17,10 @@
       "schedule": "7 5 * * 1"
     },
     {
+      "path": "/api/cron/tilaukset?tehtava=kuukausiraportti&laheta=1",
+      "schedule": "0 6 2 * *"
+    },
+    {
       "path": "/api/cron/tilaukset?tehtava=hintatarkistus",
       "schedule": "30 3 * * *"
     }

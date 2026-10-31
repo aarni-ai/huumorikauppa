@@ -224,7 +224,7 @@ export function printifyToimitusSentit(osat) {
  * @param toimitusmaksu asiakkaan maksama toimitus euroina
  * Palauttaa { tunnettu, nettokate, kate }.
  */
-export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRINTIFY_KULUKERROIN } = {}) {
+export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRINTIFY_KULUKERROIN, stripeProsentti = STRIPE_PROSENTTI, stripeKiintea = STRIPE_KIINTEA } = {}) {
   if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, kate: null };
   let maksettu = toimitusmaksu;
   let tuotekulut = 0;
@@ -238,7 +238,7 @@ export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRI
   const toimitus = printifyToimitusSentit(osat);
   if (toimitus === null) return { tunnettu: false, nettokate: null, kate: null };
   const myyntiAlv0 = maksettu / (1 + ALV);
-  const stripe = maksettu * STRIPE_PROSENTTI + STRIPE_KIINTEA;
+  const stripe = maksettu * stripeProsentti + stripeKiintea;
   const nettokate = myyntiAlv0 - ((tuotekulut + toimitus) / 100) * kerroin - stripe;
   return {
     tunnettu: true,

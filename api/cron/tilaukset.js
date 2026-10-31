@@ -148,6 +148,29 @@ export default async function handler(req, res) {
       kaikkiKampanjahinnassa: poikkeavat.length === 0, nyt, myydyt, historia });
   }
 
+  // Kuukauden myyntiraportti kirjanpitoon (api/_lib/kirjanpito.js). Oletus edellinen kuukausi (Vercel Cron kuun 2. päivä,
+  // &laheta=1: CSV ja PDF omistajalle liitteinä). &alku=YYYY-MM-DD&loppu=YYYY-MM-DD tietylle aikavälille.
+  if (req.query.tehtava === "kuukausiraportti") {
+    const k = await import("../_lib/kirjanpito.js");
+    const oletus = k.edellinenKuukausi();
+    const pvm = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(String(x || "")) ? String(x) : null);
+    const alku = pvm(req.query.alku) || oletus.alku, loppu = pvm(req.query.loppu) || oletus.loppu;
+    const raportti = await k.kuukausiraportti(db, { alku, loppu, stripe: onStripe() ? stripe() : null, haeTilaus: onPrintify() ? haeTilaus : null });
+    const nimi = `myyntiraportti-huumorikauppa-${alku}-${loppu}`;
+    const csv = k.csv(raportti), pdf = k.pdf(raportti);
+    let lahetetty = null;
+    if (req.query.laheta === "1" && !kuiva && onSahkoposti()) {
+      const y = raportti.yhteenveto;
+      lahetetty = await laheta({
+        to: OMISTAJA(), subject: `Myyntiraportti kirjanpitoon ${alku} - ${loppu}: ${y.tilauksia} tilausta, ${y.myyntiAlvKanssa.toFixed(2).replace(".", ",")} €`,
+        text: `Liitteenä Huumorikaupan (Uusiku Oy) myyntiraportti ${alku} - ${loppu} CSV- ja PDF-muodossa kirjanpitäjälle.\n\nMyynti sis. ALV ${y.myyntiAlvKanssa} €, ALV ${y.alv} €, Stripen kulut ${y.stripeKulut} €, palautukset ${y.palautukset} €, provisiot ${y.provisiot} €.`,
+        attachments: [{ filename: `${nimi}.csv`, content: Buffer.from(csv, "utf8").toString("base64") }, { filename: `${nimi}.pdf`, content: pdf.toString("base64") }],
+      });
+    }
+    return res.status(200).json({ ok: true, alku, loppu, nimi, yhteenveto: raportti.yhteenveto, rivit: raportti.rivit.length, lahetetty,
+      csv: req.query.tiedostot === "1" ? csv : undefined, pdf: req.query.tiedostot === "1" ? pdf.toString("base64") : undefined });
+  }
+
   // Hallintalinkki /hallinta/tarjoukset (allekirjoitettu avain, ei tallenneta). Annetaan Aarnille ja Coworkille.
   if (req.query.tehtava === "hallinta-linkki") {
     const { allekirjoita } = await import("../_lib/markkinointi.js");
@@ -198,7 +221,11 @@ export default async function handler(req, res) {
     const alv = req.query.alv === "1" || !PRINTIFY_ALV_VAHENNETTAVA;
     const hinnasto = alv ? HINNASTOT.alvKulu : HINNASTOT.perus;
     const kerroin = alv ? 1.255 : 1;
-    const nettokate = (osat, toimitus) => laskeTilauksenNettokate(osat, toimitus, { kerroin });
+    // &maksutapa=: Stripen hinnasto Suomessa (KATTEET.md "Maksutapojen kulut"); oletus ETA-kortti 1,5 % + 0,25 €.
+    const MAKSUTAVAT = { kortti: [0.015, 0.25], premium: [0.028, 0.25], uk: [0.025, 0.25], kansainvalinen: [0.0315, 0.25],
+      klarna: [0.0299, 0.4], "klarna-kansainvalinen": [0.0449, 0.4], mobilepay: [0.015, 0.36] };
+    const [stripeProsentti, stripeKiintea] = MAKSUTAVAT[req.query.maksutapa] || MAKSUTAVAT.kortti;
+    const nettokate = (osat, toimitus) => laskeTilauksenNettokate(osat, toimitus, { kerroin, stripeProsentti, stripeKiintea });
     const ryhmat = {};
     const alle7 = [];
     let pari = { heikoin: Infinity, tuote: null };
@@ -225,7 +252,7 @@ export default async function handler(req, res) {
     }
     const taulu = Object.entries(ryhmat).sort().map(([ryhma, r]) => ({ ryhma, hinta: r.hinta, heikoin: r.heikoin, heikoinTuote: r.heikoinTuote,
       keskiarvo: Math.round((r.summa / r.n) * 100) / 100, variantteja: r.n, alle7: r.alle7 }));
-    return res.status(200).json({ ok: true, alv, kerroin, hinnasto, tpaitapari: { parihinta: hinnasto.tpaitapari, ...pari }, taulu,
+    return res.status(200).json({ ok: true, alv, kerroin, maksutapa: req.query.maksutapa || "kortti", stripe: [stripeProsentti, stripeKiintea], hinnasto, tpaitapari: { parihinta: hinnasto.tpaitapari, ...pari }, taulu,
       alle7: alle7.sort((a, b) => a.nettokate - b.nettokate).slice(0, 100) });
   }
 

@@ -14,7 +14,7 @@ export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
 export const omaVahvistusKaytossa = () => onSahkoposti() && process.env.SAHKOPOSTI_VAHVISTETTU === "1";
 
 /** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
-export async function laheta({ to, subject, html, text, replyTo, headers, from }) {
+export async function laheta({ to, subject, html, text, replyTo, headers, from, attachments }) {
   if (!onSahkoposti()) {
     console.warn(`[sahkoposti] RESEND_API_KEY puuttuu, ei lähetetty: ${subject}`);
     return { ok: false, virhe: "RESEND_API_KEY puuttuu" };
@@ -31,6 +31,8 @@ export async function laheta({ to, subject, html, text, replyTo, headers, from }
         text,
         reply_to: replyTo || "huumorikauppa@gmail.com",
         ...(headers && Object.keys(headers).length ? { headers } : {}),
+        // Liitteet: [{ filename, content: base64 }] (kuukausiraportti kirjanpitoon).
+        ...(Array.isArray(attachments) && attachments.length ? { attachments } : {}),
       }),
       signal: AbortSignal.timeout(15000),
     });

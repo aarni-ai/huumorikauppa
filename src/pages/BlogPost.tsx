@@ -10,6 +10,8 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 import { BlogProductStrip } from "@/components/BlogProductStrip";
+import { YritysNosto } from "@/components/YritysNosto";
+import { onYritysNostoBlogi } from "@/data/yritysNostot";
 import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
 import { useProducts } from "@/hooks/use-products";
 import {
@@ -256,6 +258,8 @@ const BlogPost = () => {
         </div>
 
         <BlogProductStrip theme={productTheme} products={endProducts} count={BLOG_END_COUNT} variant="end" />
+
+        {onYritysNostoBlogi(post.slug) && <YritysNosto className="mt-8" />}
 
         {/* Hand-picked product links — internal linking to specific products */}
         {post.productLinks && post.productLinks.length > 0 && (

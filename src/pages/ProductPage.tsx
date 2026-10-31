@@ -1,6 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
+import { YritysNosto } from "@/components/YritysNosto";
+import { onYritysNostoTuote } from "@/data/yritysNostot";
 import { Helmet } from "react-helmet-async";
 
 import { categories } from "@/data/products";
@@ -635,6 +637,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {LISATUOTE_KATEGORIAT.includes(product.category) && (
               <p className="mt-1 text-xs text-muted-foreground">Tarra myydään t-paidan, hupparin tai julisteen lisänä samassa tilauksessa.</p>
             )}
+            {onYritysNostoTuote(product.slug) && <YritysNosto className="mt-3" />}
             {(product.category === "t-paidat" || product.category === "hupparit") && (
               <Link to="/personoitu-paita" className="mt-1 inline-block text-xs text-primary underline">
                 Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}

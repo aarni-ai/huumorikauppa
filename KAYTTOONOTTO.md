@@ -11,6 +11,44 @@ funktioissa, eivätkä tarvitse Lovable Cloudia. Tuotanto (`main`, huumorikauppa
 - `vercel env add` kysyy arvon: liitä se ja paina Enter. Arvo ei näy ruudulla eikä jää komentohistoriaan.
 - Ilman avaimia testiosoite näyttää kaupan (tuotteet repon tilannekuvasta), mutta kassa vastaa "ei vielä käytössä".
 
+## Raha- ja kirjanpitovirta (31.10.2026)
+
+**Pankkitili:** Huumorikaupan oma Holvi-tili (Uusiku Oy), IBAN FI73 7997 **** **** 47. Repo on julkinen, joten
+koko IBAN ei ole tässä. Täysi numero on Holvissa ja Aarnilla.
+
+**Myyjä ja kausi:**
+- Myynnit ennen 27.10.2026 kuuluvat Tmi Intellerille (vanha Lovable-kassa ja vanha Stripe-tili acct_1THtN1).
+- 27.10.2026 alkaen myynnit kuuluvat Uusiku Oy:lle (Y-tunnus 3653666-7, ALV FI36536667), uusi kassa ja Stripe-tili
+  acct_1UVAUMPNXkES1q9G.
+- Raja on maksupäivä Suomen aikaa (orders.paid_at).
+
+**Rahavirta:**
+1. **Asiakas maksaa** uudessa kassassa Stripelle (kortti, Apple Pay, Google Pay, Klarna, MobilePay) tai
+   yritystilauksen Stripe-laskulla (maksuaika 14 pv).
+2. **Stripe tilittää** myynnit kulujen jälkeen Holvi-tilille. Aarni asettaa tilitystilin: Stripe > Settings > Payouts
+   > Bank account, Holvin IBAN.
+3. **Printify veloittaa** tuotteet ja toimitukset Huumorikaupan omalta Holvi-kortilta. Aarni asettaa kortin:
+   Printify > Billing. Tilaus lähtee painoon vasta maksun jälkeen.
+4. **Ostolaskut kirjanpitoon:**
+   - Printifyn laskuissa on Suomen ALV 25,5 %, jonka kirjanpitäjä on vahvistanut vähennettäväksi
+     (KATTEET.md "Printifyn ALV: päätös 31.10.2026").
+   - Stripen kululaskut tulevat Stripen Documents-osiosta kuukausittain.
+   - Holvin tiliote täsmäyttää tilitykset.
+
+**Kuukausiraportti kirjanpitoon:**
+- **Automaattinen:** Vercel Cron ajaa kuun 2. päivä klo 6 UTC tehtävän
+  /api/cron/tilaukset?tehtava=kuukausiraportti&laheta=1. Se lähettää edellisen kuukauden myyntiraportin CSV:nä ja
+  PDF:nä omistajalle (OMISTAJA_EMAIL).
+- **Käsin:** `node scripts/kuukausiraportti.mjs [ALKU LOPPU]` tallentaa tiedostot kansioon kirjanpito/YYYY-MM/.
+  Kansio on .gitignoressa.
+- **Sisältö:**
+  - tilaukset maksupäivineen ja maksutapoineen
+  - myynti ALV:n kanssa ja ilman, ALV 25,5 %, toimitukset
+  - myydyt lahjakortit (ei ALV:tä myyntihetkellä)
+  - Stripen kulut tilauksittain, palautukset ALV-osuuksineen, kumppaniprovisiot ja Stripe-tilitykset
+- **Lähteet:** Neon (orders, order_events) ja Stripe API (payment intents, refunds, payouts).
+- **Lokakuu 2026:** Uusiku Oy:n kausi on 27.-31.10. Tiedostot ovat kansiossa kirjanpito/2026-10/.
+
 ## Järjestys
 
 | # | Mitä | Palvelu | Maksaa |
