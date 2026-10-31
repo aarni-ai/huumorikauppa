@@ -6,7 +6,7 @@ import { SEOHead } from "@/components/SEOHead";
 type Tarjous = {
   id: number; yritys: string; nimi: string; email: string; puhelin: string | null; maara: number | null; viesti: string | null;
   paketti: string | null; malli: string | null; koot: Record<string, number> | null; hinta: string | null; kate: string | null;
-  toivottu_paiva: string | null; ehtii: boolean | null; jouluun: boolean | null; ytunnus: string | null; tila: string; created_at: string;
+  toivottu_paiva: string | null; ehtii: boolean | null; jouluun: boolean | null; ytunnus: string | null; tila: string; created_at: string; ilmoitus: string | null;
 };
 const TILAT = ["uusi", "vastattu", "tilattu", "hylatty"] as const;
 const eur = (x: string | null) => (x == null ? "-" : `${Number(x).toFixed(2).replace(".", ",")} €`);
@@ -51,7 +51,7 @@ const QuoteAdminPage = () => {
             <tbody>
               {rivit.map((t) => (
                 <tr key={t.id} className="border-b border-border/60 align-top">
-                  <td className="py-2 pr-3 whitespace-nowrap">{pvm(t.created_at)}</td>
+                  <td className="py-2 pr-3 whitespace-nowrap">{pvm(t.created_at)}{t.ilmoitus ? <div className={`text-xs ${t.ilmoitus.startsWith("virhe") ? "text-destructive" : "text-muted-foreground"}`}>ilmoitus {t.ilmoitus}</div> : null}</td>
                   <td className="py-2 pr-3">{t.yritys}{t.ytunnus ? <div className="text-xs text-muted-foreground">{t.ytunnus}</div> : null}</td>
                   <td className="py-2 pr-3">{t.nimi}<div className="text-xs"><a href={`mailto:${t.email}`} className="text-primary underline">{t.email}</a></div>{t.puhelin && <div className="text-xs">{t.puhelin}</div>}</td>
                   <td className="py-2 pr-3">{t.paketti || "-"}<div className="text-xs text-muted-foreground">{t.malli || ""}</div></td>

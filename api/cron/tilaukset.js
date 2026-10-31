@@ -283,8 +283,11 @@ export default async function handler(req, res) {
     const nimi = String(req.query.nimi || "").trim().slice(0, 100);
     if (!nimi) return res.status(400).json({ ok: false, virhe: "nimi puuttuu" });
     const email = String(req.query.email || "").trim().slice(0, 200) || null;
-    await db`insert into kumppanit (koodi, nimi, email) values (${koodi}, ${nimi}, ${email})
-      on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true`;
+    // &malli=alennus: kumppanimalli 2 (ostaja -5 %, kumppani 5 %); oletus provisio (malli 1). Päivitys säilyttää mallin, jos sitä ei anneta.
+    const malli = ["provisio", "alennus"].includes(req.query.malli) ? req.query.malli : null;
+    await db`insert into kumppanit (koodi, nimi, email, malli) values (${koodi}, ${nimi}, ${email}, ${malli || "provisio"})
+      on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true,
+        malli = coalesce(${malli}, kumppanit.malli)`;
     const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
     // Kumppanin oma raportti (/kumppanit/raportti): allekirjoitettu avain, jota ei tallenneta mihinkään.
     const { allekirjoita } = await import("../_lib/markkinointi.js");
@@ -297,12 +300,12 @@ export default async function handler(req, res) {
   // myynti, kate Printifyn todellisilla kuluilla, provisio ja sen peruste (api/_lib/kumppani.js provisioJaTila).
   // Tilitys kerran kuussa edellisen kuukauden raportista, kun palautusaika (14 pv) on päättynyt.
   if (req.query.tehtava === "kumppanit") {
-    const { provisioJaTila, varmistaKumppanitaulu, PROVISIOSAANTO } = await import("../_lib/kumppani.js");
+    const { provisioJaTila, varmistaKumppanitaulu, PROVISIOSAANTO, provisioAsetukset } = await import("../_lib/kumppani.js");
     const { KUMPPANUUS } = await import("../_lib/vakiot.js");
     await varmistaKumppanitaulu(db);
     const kk = /^\d{4}-\d{2}$/.test(String(req.query.kuukausi || "")) ? req.query.kuukausi
       : new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date()).slice(0, 7);
-    const rivit = await db`select o.id, o.paid_at, o.total, o.shipping, o.printify_order_id, e.details->>'koodi' as koodi
+    const rivit = await db`select o.id, o.paid_at, o.total, o.shipping, o.printify_order_id, e.details->>'koodi' as koodi, e.details
       from orders o join order_events e on e.order_id = o.id and e.kind = 'kumppani'
       where o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi'
         and to_char(o.paid_at at time zone 'Europe/Helsinki', 'YYYY-MM') = ${kk}
@@ -319,14 +322,14 @@ export default async function handler(req, res) {
           kate = myynti / 1.255 - ((Number(h.data.total_price) || 0) + (Number(h.data.total_shipping) || 0)) / 100 - (myynti * 0.015 + 0.25);
         }
       }
-      const p = provisioJaTila(tuotteet, kate ?? NaN);
+      const p = provisioJaTila(tuotteet, kate ?? NaN, provisioAsetukset(t.details));
       const k = kumppanit.get(t.koodi) || { koodi: t.koodi, nimi: nimet.get(t.koodi)?.nimi ?? null, email: nimet.get(t.koodi)?.email ?? null,
         tilauksia: 0, myynti: 0, provisio: 0, tilaukset: [] };
       k.tilauksia++;
       k.myynti = Math.round((k.myynti + myynti) * 100) / 100;
       k.provisio = Math.round((k.provisio + p.provisio) * 100) / 100;
       k.tilaukset.push({ tilaus: tilausnumero(t.id), maksettu: t.paid_at, myynti, tuotteet: Math.round(tuotteet * 100) / 100,
-        kate: kate == null ? null : Math.round(kate * 100) / 100, provisio: p.provisio, peruste: p.tila });
+        kate: kate == null ? null : Math.round(kate * 100) / 100, provisio: p.provisio, peruste: p.tila, malli: t.details?.malli || "provisio", alennus: t.details?.alennus ?? null });
       kumppanit.set(t.koodi, k);
     }
     return res.status(200).json({ ok: true, kaytossa: KUMPPANUUS.kaytossa, kuukausi: kk, saanto: PROVISIOSAANTO,

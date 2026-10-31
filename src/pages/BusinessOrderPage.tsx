@@ -200,7 +200,7 @@ const BusinessOrderPage = () => {
             </div>
           )}
 
-          <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} />
+          <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} alennus={false} />
 
           {virhe && <p className="text-sm text-destructive" role="alert">{virhe}</p>}
           <Button type="button" size="lg" onClick={tilaa} disabled={tila === "lahetetaan"} className="bg-primary text-primary-foreground font-bold">

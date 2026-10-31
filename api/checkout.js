@@ -22,11 +22,12 @@ import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
 import { omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
-import { tarkistaKumppani } from "./_lib/kumppani.js";
+import { kumppaninTiedot, valitseKumppaniAlennus } from "./_lib/kumppani.js";
 import { ytunnus as tarkistaYtunnus, haeYritys, laskuData, YRITYS_MIN_KPL } from "./_lib/yritysmyynti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
-import { laskeTilaus, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
+import { laskeTilaus, laskettuNettokate, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
+import { KUMPPANUUS } from "./_lib/vakiot.js";
 import { tarkistaLahjakortti, normalisoiKoodi, onLahjakortti } from "./_lib/lahjakortti.js";
 import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita } from "./_lib/lahjakortti-db.js";
 import { jalkikasittely } from "./_lib/tilaus.js";
@@ -110,8 +111,18 @@ export default async function handler(req, res) {
 
   if (pyynto.action === "kumppanikoodi") {
     if (!onTietokanta()) return res.status(200).json({ ok: false });
-    const koodi = await tarkistaKumppani(sql(), pyynto.code).catch(() => null);
-    return res.status(200).json(koodi ? { ok: true, koodi } : { ok: false });
+    const kp = await kumppaninTiedot(sql(), pyynto.code).catch(() => null);
+    if (!kp) return res.status(200).json({ ok: false });
+    // Malli 2: alennus, joka kassalla toteutuu tälle korille (7 €:n kateehto). Ilman koria nimellinen alennus.
+    let prosentti = kp.malli === "alennus" ? KUMPPANUUS.alennusmalli.alennusProsentti : 0;
+    if (kp.malli === "alennus" && Array.isArray(pyynto.items) && pyynto.items.length) {
+      try {
+        const tuotteet = await kaikkiTuotteet();
+        const arvio = { items: pyynto.items, customerEmail: "arvio@huumorikauppa.fi", shippingAddress: { address: "-", zip: "00100", city: "-" } };
+        prosentti = kumppaniValinta(arvio, tuotteet, {}).prosentti;
+      } catch { /* nimellinen */ }
+    }
+    return res.status(200).json({ ok: true, koodi: kp.koodi, malli: kp.malli, prosentti });
   }
 
   if (pyynto.action === "lasku") return laskuTilaus(pyynto, res);
@@ -130,17 +141,19 @@ export default async function handler(req, res) {
     // Saatavuus: tallennettu päivittäinen tieto, täydennettynä tuoreella Printify-haulla (3 s, virheessä tallennettu).
     let tuotteet = await kaikkiTuotteet();
     if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
-    const laskettu = laskeTilaus(pyynto, tuotteet, await alennus(pyynto.discountCode, pyynto.customerEmail), {
-      paketit: PAKETIT,
-      lahjakortti: await lahjakortti(pyynto.giftCardCode),
-    });
+    const koodiAlennus = await alennus(pyynto.discountCode, pyynto.customerEmail);
+    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode) };
+    // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen.
+    const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
+    const valinta = kp?.malli === "alennus" && !koodiAlennus ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
+    const laskettu = valinta?.laskettu ?? laskeTilaus(pyynto, tuotteet, koodiAlennus, lisat);
     const osoite = laskettu.only_gift_cards ? {} : { ...pyynto.shippingAddress, country: "FI" };
     const [tilaus] = await sql()`insert into orders (customer_email, customer_name, recipient_name, phone, shipping_address,
         items, subtotal, shipping, discount_code, discount, bundle_discount, total, gift_card_code, gift_card_amount, printify_status)
       values (${pyynto.customerEmail.trim()}, ${pyynto.customerName || null}, ${pyynto.recipientName?.trim()?.slice(0, 200) || null},
         ${pyynto.shippingAddress?.phone || null}, ${sql().json(osoite)},
         ${sql().json(laskettu.rivit.map(({ unit_cents, ...r }) => r))}, ${laskettu.subtotal}, ${laskettu.shipping},
-        ${pyynto.discountCode ? String(pyynto.discountCode).toUpperCase() : null}, ${laskettu.discount}, ${laskettu.bundle_discount},
+        ${pyynto.discountCode ? String(pyynto.discountCode).toUpperCase() : valinta?.prosentti ? `${kp.koodi.toUpperCase()} (kumppani -${valinta.prosentti} %)` : null}, ${laskettu.discount}, ${laskettu.bundle_discount},
         ${laskettu.total}, ${laskettu.gift_card_code}, ${laskettu.gift_card_amount},
         ${laskettu.only_gift_cards ? "ei_tarvita" : "ei_lahetetty"})
       returning *`;
@@ -212,8 +225,9 @@ export default async function handler(req, res) {
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;
     await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount });
     // Kumppanuusohjelma (pois päältä, api/_lib/vakiot.js KUMPPANUUS): hyväksytty koodi kirjataan tilaukselle.
-    const kumppani = await tarkistaKumppani(sql(), pyynto.kumppani);
-    if (kumppani) await kirjaaTapahtuma(tilaus.id, "kumppani", { koodi: kumppani });
+    if (kp) await kirjaaTapahtuma(tilaus.id, "kumppani", kp.malli === "alennus"
+      ? { koodi: kp.koodi, malli: "alennus", alennus: valinta?.prosentti ?? 0, provisio: valinta?.provisioProsentti ?? KUMPPANUUS.alennusmalli.provisioProsentti }
+      : { koodi: kp.koodi });
     return res.status(200).json({ ok: true, url: session.url });
   } catch (e) {
     if (e instanceof KassaVirhe) return res.status(200).json({ ok: false, error: e.message, diagnostics: { error_stage: e.vaihe } });
@@ -282,8 +296,10 @@ async function laskuTilaus(pyynto, res) {
     if (Math.abs(valmis.total / 100 - laskettu.total) > 0.01) throw new Error(`laskun summa ${valmis.total / 100} != tilaus ${laskettu.total}`);
     await stripe().invoices.sendInvoice(valmis.id);
     await kirjaaTapahtuma(tilaus.id, "lasku", { invoice: valmis.id, ytunnus: tunnus, yritys: a.yritys, prh: prh.ok === true ? prh.nimi : "ei vastausta", viite: a.viite });
-    const kumppani = await tarkistaKumppani(sql(), pyynto.kumppani);
-    if (kumppani) await kirjaaTapahtuma(tilaus.id, "kumppani", { koodi: kumppani });
+    // Laskutilauksessa ei kumppanialennusta (määräalennus); malli 2:n kumppani saa provision kateehdolla.
+    const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
+    if (kp) await kirjaaTapahtuma(tilaus.id, "kumppani", kp.malli === "alennus"
+      ? { koodi: kp.koodi, malli: "alennus", alennus: 0, provisio: KUMPPANUUS.alennusmalli.provisioProsentti } : { koodi: kp.koodi });
     return res.status(200).json({ ok: true, lasku: valmis.hosted_invoice_url, tilaus: tilaus.id, summa: laskettu.total });
   } catch (e) {
     if (tilausId) await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${tilausId} and status = 'odottaa_maksua'`.catch(() => {});
@@ -291,4 +307,11 @@ async function laskuTilaus(pyynto, res) {
     console.error("lasku:", e?.message || e);
     return res.status(200).json({ ok: false, error: "Laskun luonti epäonnistui. Yritä hetken kuluttua uudelleen tai pyydä tarjous." });
   }
+}
+
+/** Kumppanimalli 2: suurin alennus, jolla kauppaan jää 7 € provision jälkeen (api/_lib/kumppani.js). */
+function kumppaniValinta(pyynto, tuotteet, lisat) {
+  const laske = (p) => { try { return laskeTilaus(pyynto, tuotteet, { type: "percent", value: p }, lisat); } catch (e) { if (e instanceof KassaVirhe && e.vaihe === "discount_low_margin") return null; throw e; } };
+  const perus = laskeTilaus(pyynto, tuotteet, null, lisat);
+  return valitseKumppaniAlennus({ laske, nettokate: (l) => laskettuNettokate(l, tuotteet), perus });
 }

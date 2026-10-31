@@ -17,6 +17,10 @@ export const KUMPPANIKOODI = /^[a-z0-9][a-z0-9-]{1,39}$/;
 export const PROVISIOSAANTO =
   `Provisio on ${KUMPPANUUS.provisioProsentti} % tilauksen tuotteiden arvosta (ilman arvonlisäveroa ja toimituskuluja) tilauksista, joista kaupalle jää provision jälkeen vähintään ${KUMPPANUUS.minKateEuroa.toFixed(2).replace(".", ",")} € katetta. Jos kate ei riitä täyteen ${KUMPPANUUS.provisioProsentti} %:iin, provisio on pienempi, ja jos tilauksen kate on ${KUMPPANUUS.minKateEuroa.toFixed(2).replace(".", ",")} € tai alle, provisiota ei makseta.`;
 
+/** Malli 2:n sääntö kumppaneille (sivu /kumppanit ja raportti). */
+export const ALENNUSMALLI_SAANTO =
+  `Kumppanin koodilla ostaja saa ${KUMPPANUUS.alennusmalli.alennusProsentti} %:n alennuksen tuotteista, ja kumppani saa ${KUMPPANUUS.alennusmalli.provisioProsentti} %:n provision tuotteiden arvosta (alennuksen jälkeen, ilman arvonlisäveroa ja toimituskuluja). Kaupalle jää jokaisesta tilauksesta vähintään ${KUMPPANUUS.minKateEuroa.toFixed(2).replace(".", ",")} € katetta: jos se ei muuten toteudu, alennus ja provisio pienenevät tai jäävät pois.`;
+
 /** Koodin muoto: pienet kirjaimet, numerot ja väliviiva, 2-40 merkkiä. Palauttaa normalisoidun koodin tai null. */
 export function kumppaniKoodinMuoto(arvo) {
   const k = String(arvo ?? "").trim().toLowerCase();
@@ -30,11 +34,55 @@ export function kumppaniKoodi(arvo, { asetukset = KUMPPANUUS, kumppanit = KUMPPA
   return k && Object.prototype.hasOwnProperty.call(kumppanit, k) ? k : null;
 }
 
-/** Taulu kumppaneille (luodaan tarvittaessa, db/schema.sql). */
+/** Taulu kumppaneille (luodaan tarvittaessa, db/schema.sql). malli: "provisio" (malli 1) tai "alennus" (malli 2). */
 export async function varmistaKumppanitaulu(db) {
   await db`create table if not exists kumppanit (koodi text primary key, nimi text not null, email text,
     aktiivinen boolean not null default true, created_at timestamptz not null default now())`;
+  await db`alter table kumppanit add column if not exists malli text not null default 'provisio'`;
 }
+
+export const KUMPPANIMALLIT = ["provisio", "alennus"];
+
+/** Hyväksytty, aktiivinen kumppani ja sen malli: { koodi, malli } tai null. */
+export async function kumppaninTiedot(db, arvo, { asetukset = KUMPPANUUS } = {}) {
+  if (!asetukset.kaytossa) return null;
+  const k = kumppaniKoodinMuoto(arvo);
+  if (!k) return null;
+  if (Object.prototype.hasOwnProperty.call(KUMPPANIT, k)) return { koodi: k, malli: "provisio" };
+  try {
+    await varmistaKumppanitaulu(db);
+    const [r] = await db`select koodi, malli from kumppanit where koodi = ${k} and aktiivinen limit 1`;
+    return r ? { koodi: r.koodi, malli: KUMPPANIMALLIT.includes(r.malli) ? r.malli : "provisio" } : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Malli 2: suurin alennus (alennusProsentti, 1 %-yksikön askelin alas), jolla kauppaan jää provision jälkeen
+ * minKateEuroa. laske(p) palauttaa kassan laskennan p %:n alennuksella tai null (kassa hylkäsi), nettokate(l) sen
+ * nettokatteen. perus = laskenta ilman kumppanialennusta: jos sen alennus (määrä-, kahden tuotteen tai paketti) on
+ * vähintään yhtä suuri, kumppanialennusta ei anneta ja provisio on mallin provisioProsentti kateehdolla.
+ * Palauttaa { prosentti, provisioProsentti, laskettu }.
+ */
+export function valitseKumppaniAlennus({ laske, nettokate, perus, asetukset = KUMPPANUUS }) {
+  const { alennusProsentti, provisioProsentti } = asetukset.alennusmalli;
+  for (let p = alennusProsentti; p >= 1; p--) {
+    const l = laske(p);
+    if (!l) continue;
+    if (perus && perus.discount >= l.discount) break;
+    const nk = nettokate(l);
+    if (!Number.isFinite(nk)) continue;
+    const tuotteet = l.total - l.shipping;
+    const prov = (tuotteet / 1.255) * (Math.min(p, provisioProsentti) / 100);
+    if (nk - prov >= asetukset.minKateEuroa) return { prosentti: p, provisioProsentti: Math.min(p, provisioProsentti), laskettu: l };
+  }
+  return { prosentti: 0, provisioProsentti, laskettu: perus };
+}
+
+/** Provision asetukset tilauksen kumppanitapahtumasta (malli 2 tallentaa prosentin). */
+export const provisioAsetukset = (details, asetukset = KUMPPANUUS) =>
+  details?.malli === "alennus" ? { ...asetukset, provisioProsentti: Number(details.provisio ?? asetukset.alennusmalli.provisioProsentti) } : asetukset;
 
 /** Hyväksytty, aktiivinen kumppanikoodi kannasta tai varalistasta; muuten null. */
 export async function tarkistaKumppani(db, arvo, { asetukset = KUMPPANUUS } = {}) {
@@ -107,11 +155,11 @@ export async function tilauksenKate(tilaus, haeTilaus) {
 export async function kumppaniRaportti(db, koodi, { haeTilaus } = {}) {
   await varmistaKumppanitaulu(db);
   await varmistaKlikkitaulu(db);
-  const [k] = await db`select koodi, nimi, created_at from kumppanit where koodi = ${koodi} and aktiivinen limit 1`;
+  const [k] = await db`select koodi, nimi, malli, created_at from kumppanit where koodi = ${koodi} and aktiivinen limit 1`;
   if (!k) return null;
   const klikit = await db`select to_char(paiva, 'YYYY-MM') as kuukausi, sum(klikit)::int as klikit
     from kumppani_klikit where koodi = ${koodi} group by 1`;
-  const rivit = await db`select o.paid_at, o.total, o.shipping, o.printify_order_id
+  const rivit = await db`select o.paid_at, o.total, o.shipping, o.printify_order_id, e.details
     from orders o join order_events e on e.order_id = o.id and e.kind = 'kumppani'
     where e.details->>'koodi' = ${koodi} and o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi'
     order by o.paid_at desc limit 500`;
@@ -120,7 +168,7 @@ export async function kumppaniRaportti(db, koodi, { haeTilaus } = {}) {
   const r2 = (x) => Math.round(x * 100) / 100;
   for (const t of rivit) {
     const tuotteet = (Number(t.total) || 0) - (Number(t.shipping) || 0);
-    const p = provisioJaTila(tuotteet, (await tilauksenKate(t, haeTilaus)) ?? NaN);
+    const p = provisioJaTila(tuotteet, (await tilauksenKate(t, haeTilaus)) ?? NaN, provisioAsetukset(t.details));
     const kuukausi = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date(t.paid_at)).slice(0, 7);
     const m = kk.get(kuukausi) || { kuukausi, klikit: 0, tilauksia: 0, tuotteet: 0, provisio: 0, odottaa: 0 };
     m.tilauksia += 1;
@@ -134,7 +182,7 @@ export async function kumppaniRaportti(db, koodi, { haeTilaus } = {}) {
   const summa = (f) => r2(kuukaudet.reduce((s, m) => s + m[f], 0));
   return {
     koodi: k.koodi, etunimi: String(k.nimi || "").trim().split(/\s+/)[0] || k.koodi,
-    linkki: `https://huumorikauppa.fi/?ref=${k.koodi}`, saanto: PROVISIOSAANTO,
+    linkki: `https://huumorikauppa.fi/?ref=${k.koodi}`, saanto: k.malli === "alennus" ? ALENNUSMALLI_SAANTO : PROVISIOSAANTO,
     kuukaudet, tilaukset, yhteensa: { klikit: summa("klikit"), tilauksia: summa("tilauksia"), tuotteet: summa("tuotteet"), provisio: summa("provisio") },
   };
 }

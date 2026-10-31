@@ -189,3 +189,12 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     only_gift_cards: rivit.length === 0,
   };
 }
+
+/** Kassan laskennan nettokate (Printifyn kulut tuoteriviltä, api/_lib/kate.js), kumppanimallin 2 valintaan. */
+export function laskettuNettokate(laskettu, tuotteet) {
+  const byId = new Map(tuotteet.map((t) => [t.id, t]));
+  const osat = laskettu.rivit.filter((r) => r.type !== "giftcard")
+    .map((r) => ({ tuote: byId.get(r.product_id) || (r.product_id === PERSONOITU_TUOTE.id ? PERSONOITU_TUOTE : undefined), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 }));
+  const k = laskeTilauksenNettokate(osat, laskettu.shipping);
+  return k.tunnettu ? k.nettokate : NaN;
+}

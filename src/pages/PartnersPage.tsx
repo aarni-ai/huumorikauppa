@@ -27,11 +27,27 @@ const PartnersPage = () => {
       </h1>
       <div className="space-y-3 text-muted-foreground mb-6">{page.intro.map((p) => <p key={p}>{p}</p>)}</div>
 
+      <section className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-3" aria-label="Kumppanimallit">
+        {page.mallit.map((m) => (
+          <div key={m.otsikko} className="rounded-xl border border-border bg-card p-4">
+            <h2 className="font-display text-lg text-foreground mb-2">{m.otsikko}</h2>
+            <p className="text-sm text-muted-foreground">{m.saanto}</p>
+            <p className="text-sm text-foreground mt-2">{m.ostaja}</p>
+          </div>
+        ))}
+      </section>
+
       <section className="mb-8 rounded-xl border border-primary/40 bg-primary/5 p-4 md:p-5" aria-labelledby="esimerkit">
-        <h2 id="esimerkit" className="font-display text-xl text-foreground mb-3">Esimerkkejä provisiosta</h2>
+        <h2 id="esimerkit" className="font-display text-xl text-foreground mb-3">Esimerkkejä: malli 1 (provisio)</h2>
         <ul className="space-y-1.5 text-sm">
           {page.esimerkit.map((e) => (
             <li key={e.kori} className="flex justify-between gap-4"><span className="text-muted-foreground">{e.kori}</span><span className="font-semibold text-foreground whitespace-nowrap">{e.provisio}</span></li>
+          ))}
+        </ul>
+        <h2 className="font-display text-xl text-foreground mt-5 mb-3">Esimerkkejä: malli 2 (alennus seuraajille)</h2>
+        <ul className="space-y-1.5 text-sm">
+          {page.esimerkit2.map((e) => (
+            <li key={e.kori} className="flex justify-between gap-4"><span className="text-muted-foreground">{e.kori}</span><span className="text-foreground whitespace-nowrap">ostaja {e.alennus}, provisio <span className="font-semibold">{e.provisio}</span></span></li>
           ))}
         </ul>
       </section>

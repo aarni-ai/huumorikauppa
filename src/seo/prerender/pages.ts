@@ -46,6 +46,7 @@ import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
 import { yrityksetPage, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
 import { kumppanitPage } from "@/data/kumppanitPage";
+import { HINTA } from "@/data/hintatekstit";
 import { MALLIT } from "../../../api/_lib/personoitu.js";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
@@ -748,7 +749,9 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     staticPage("/kumppanit", {
       intro: kumppanitPage.intro,
       sections: [
-        { heading: "Esimerkkejä provisiosta", items: kumppanitPage.esimerkit.map((e) => `${e.kori}: ${e.provisio}`) },
+        ...kumppanitPage.mallit.map((m) => ({ heading: m.otsikko, paragraphs: [m.saanto, m.ostaja] })),
+        { heading: "Esimerkkejä: malli 1 (provisio)", items: kumppanitPage.esimerkit.map((e) => `${e.kori}: ${e.provisio}`) },
+        { heading: "Esimerkkejä: malli 2 (alennus seuraajille)", items: kumppanitPage.esimerkit2.map((e) => `${e.kori}: ostaja ${e.alennus}, provisio ${e.provisio}`) },
         ...kumppanitPage.sections.map((s) => ({ heading: s.heading, items: "items" in s ? s.items : undefined, paragraphs: "paragraphs" in s ? s.paragraphs : undefined })),
       ],
       faqs: kumppanitPage.faqs,
@@ -756,7 +759,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     }),
     staticPage("/personoitu-paita", { sections: [
       { heading: "Mallit", items: MALLIT.map((m: { nimi: string }) => m.nimi) },
-      { heading: "Hinta ja toimitus", paragraphs: ["Personoitu t-paita 29,90 €. Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta."] },
+      { heading: "Hinta ja toimitus", paragraphs: [`Personoitu t-paita ${HINTA.personoitu}. Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta.`] },
       { heading: "Lisää ideoita", links: [{ href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Lahja naiselle 30v, 40v, 50v ja 60v" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Lahja miehelle 30v, 40v, 50v ja 60v" }] },
     ] }),
     ...buildGiftCardAndBundlePages(),

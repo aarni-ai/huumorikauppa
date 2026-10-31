@@ -124,6 +124,12 @@ export const KUMPPANUUS = {
   kaytossa: true,
   provisioProsentti: 10,
   minKateEuroa: 7,
+  /**
+   * Malli 2 (31.10.2026): kumppanin koodilla ostaja saa alennusProsentti alennuksen tuotteista ja kumppani
+   * provisioProsentti provision tuotteiden arvosta ilman ALV:tä ja toimitusta. Jos kauppaan ei jäisi minKateEuroa,
+   * molemmat pienenevät prosenttiyksikkö kerrallaan tai poistuvat (api/_lib/kumppani.js valitseKumppaniAlennus).
+   */
+  alennusmalli: { alennusProsentti: 5, provisioProsentti: 5 },
 };
 
 /** Hyväksytyt kumppanit: koodi (pienet kirjaimet, numerot ja väliviiva) -> nimi. Lisää vasta sopimuksen jälkeen. */

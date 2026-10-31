@@ -135,12 +135,14 @@ export async function kasittele(req, res, store) {
       }
       const id = await store.tallennaTarjouspyynto(t);
       // Ilmoitus omistajalle (OMISTAJA_EMAIL); tallennus riittää, vaikka viesti epäonnistuisi.
-      await halytys(`Tarjouspyyntö: ${t.yritys}${t.maara ? `, ${t.maara} kpl` : ""}`, [
+      const ilmoitus = await halytys(`Tarjouspyyntö: ${t.yritys}${t.maara ? `, ${t.maara} kpl` : ""}`, [
         `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
         `Määrä: ${t.maara ?? "-"}`, `Paketti: ${t.paketti || "-"}`, `Malli: ${t.malli || "-"}`, `Koot: ${t.koot ? JSON.stringify(t.koot) : "-"}`,
         `Hinta: ${t.hinta ?? "-"} €, kate (arvio): ${t.kate ?? "-"} €`, `Toivottu toimituspäivä: ${t.toivottu_paiva || "-"} (${t.ehtii === null ? "-" : t.ehtii ? "ehtii" : "ei ehdi"})`,
         `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
-      ]).catch(() => null);
+      ]).catch((e) => ({ ok: false, virhe: String(e?.message || e) }));
+      // Ilmoituksen tila talteen (/hallinta/tarjoukset): epäonnistunut ilmoitus näkyy, eikä pyyntö jää huomaamatta.
+      await store.merkitseTarjousIlmoitus?.(id, ilmoitus?.ok ? `lähetetty ${ilmoitus.vastaanottaja || ""}`.trim() : `virhe: ${String(ilmoitus?.virhe || "").slice(0, 200)}`).catch(() => null);
       return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at });
     }
     case "tarjoustila": {

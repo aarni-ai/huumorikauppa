@@ -37,6 +37,7 @@ const CheckoutPage = () => {
   const [differentRecipient, setDifferentRecipient] = useState(false);
   // Kumppanikoodi (kumppanuusohjelma): täyttyy kumppanilinkistä ?ref=, asiakas voi myös kirjoittaa sen.
   const [kumppaniKoodi, setKumppaniKoodi] = useState(() => kumppani() ?? "");
+  const [kumppaniAle, setKumppaniAle] = useState<{ koodi: string; prosentti: number } | null>(null);
   const [recipientName, setRecipientName] = useState("");
   const { data: allProducts = [] } = useProducts();
   const [giftCardInput, setGiftCardInput] = useState("");
@@ -244,13 +245,16 @@ const CheckoutPage = () => {
   // Alennuskoodi koskee vain fyysisiä tuotteita (ei lahjakortteja). Pakettialennus vain ilman alennuskoodia.
   // Lopullinen summa lasketaan palvelimella (api/_lib/kassa.js).
   const discountAmount = appliedDiscount ? Math.round(tila.summa * appliedDiscount.percent) / 100 : 0;
-  const bundleDiscount = appliedDiscount ? 0 : arvioiPakettialennus(items, allProducts);
+  // Kumppanimalli 2: palvelin valitsee kumppanialennuksen vain, kun se on suurempi kuin paketti- ja korialennus.
+  const kumppaniProsentti = !appliedDiscount && kumppaniAle?.prosentti ? kumppaniAle.prosentti : 0;
+  const partnerDiscount = kumppaniProsentti ? Math.round(tila.summa * kumppaniProsentti) / 100 : 0;
+  const bundleDiscount = appliedDiscount || kumppaniProsentti ? 0 : arvioiPakettialennus(items, allProducts);
   // Kahden tuotteen alennus vain ilman alennuskoodia (api/_lib/korialennus.js).
-  const kori = korialennusTila(items, allProducts, !!appliedDiscount);
+  const kori = korialennusTila(items, allProducts, !!appliedDiscount || !!kumppaniProsentti);
   const basketDiscount = kori.alennus;
   const shippingFree = tila.ilmainen;
   const shippingCost = tila.toimitus;
-  const grandTotal = Math.round((totalPrice - discountAmount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
+  const grandTotal = Math.round((totalPrice - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
   // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
   const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
   const giftCardUse = grandTotal - giftCardRaw > 0 && grandTotal - giftCardRaw < 0.5 ? Math.max(0, grandTotal - 0.5) : giftCardRaw;
@@ -369,7 +373,8 @@ const CheckoutPage = () => {
               </>
             )}
 
-            <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} />
+            <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} onTulos={setKumppaniAle}
+              items={items.filter((i) => i.product.type !== "giftcard").map((i) => ({ id: i.product.id, slug: i.product.slug, quantity: i.quantity, size: i.selectedSize, color: i.selectedColor }))} />
 
             {!onlyGiftCards && (
               <div className="flex items-start gap-2">
@@ -485,6 +490,11 @@ const CheckoutPage = () => {
             {appliedDiscount && (
               <div className="flex justify-between text-primary">
                 <span>Alennus ({appliedDiscount.percent}%)</span><span>-{discountAmount.toFixed(2)} €</span>
+              </div>
+            )}
+            {partnerDiscount > 0 && (
+              <div className="flex justify-between text-primary">
+                <span>Koodi {kumppaniAle?.koodi}: -{kumppaniProsentti} %</span><span>-{partnerDiscount.toFixed(2)} €</span>
               </div>
             )}
             {bundleDiscount > 0 && (

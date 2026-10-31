@@ -237,6 +237,33 @@ Kirjanpitäjä vahvisti, että Printifyn laskuttama Suomen ALV (25,5 %) on Uusik
 - Printifyn laskut menevät kirjanpitoon ostolaskuina (ALV vähennetään), ja maksu tapahtuu Huumorikaupan omalla
   Holvi-kortilla (KAYTTOONOTTO.md "Raha- ja kirjanpitovirta").
 
+### Päätös 31.10.2026: Klarna ja MobilePay pysyvät
+
+- Klarna ja MobilePay pysyvät käytössä kaikissa tilauksissa.
+- Aarni hyväksyi poikkeaman: näillä maksutavoilla, samoin kuin premium-, UK- ja ulkomaisella kortilla, yhden tuotteen
+  tilauksen kate saa jäädä enintään 0,69 € alle 7 €:n minimin.
+- Koskee 24,90 €:n t-paitoja, heikoimpia huppareita ja koristetta, heikoin 6,31 € Klarnalla (taulukko alla).
+- Ulkomainen Klarna (5,41 €) on harvinainen, koska kauppa myy vain Suomeen.
+- Katevahti, alennuskoodit ja kumppaniprovisio lasketaan edelleen ETA-kortin kululla (1,5 % + 0,25 €).
+
+### Kumppanimalli 2 (31.10.2026)
+
+- Kumppanin koodilla ostaja saa -5 % tuotteista. Kumppani saa 5 % provision tuotteiden arvosta alennuksen jälkeen,
+  ilman ALV:tä ja toimitusta.
+- Jos kauppaan ei jäisi provision jälkeen 7 €, alennus ja provisio pienenevät prosenttiyksikkö kerrallaan tai jäävät
+  pois (api/_lib/kumppani.js valitseKumppaniAlennus).
+- Jos asiakkaan muu alennus (kahden tuotteen -5 %, määrä- tai pakettialennus) on vähintään yhtä suuri,
+  kumppanialennusta ei lisätä, ja provisio on 5 % kateehdolla.
+
+| Kori | Ostajan alennus | Provisio (malli 2) | Provisio (malli 1) |
+|---|---|---|---|
+| 1 t-paita 27,90 € (kate 9,57 €) | -5 % (1,39 €) | 1,06 € | 2,22 € |
+| 1 meemipaita 24,90 € (kate 7,22 €) | ei alennusta | 0,00 € | 0,22 € |
+| 1 huppari 52,90 € (kate 10,14 €) | -3 % (1,59 €) | 1,23 € | 3,14 € |
+
+Kaupan kate on mallissa 2 pienempi kuin mallissa 1, koska se maksaa sekä alennuksen että provision. Kumppanin malli
+asetetaan: ?tehtava=kumppani-lisaa&koodi=...&malli=alennus. Oletus on malli 1, eli antsa pysyy mallissa 1.
+
 ### 7 €:n minimi maksutavoittain (31.10.2026, tuotannon kulut, ALV vähennettävissä)
 
 ?tehtava=katetaulu&maksutapa=...: yhden tuotteen tilaus, asiakas maksaa toimituksen, kaikki myytävät variantit

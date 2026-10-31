@@ -5,12 +5,12 @@
  *
  * Ajo: cron ?tehtava=kuukausiraportti[&alku=YYYY-MM-DD&loppu=YYYY-MM-DD][&laheta=1] ja scripts/kuukausiraportti.mjs
  * (tallentaa kansioon kirjanpito/YYYY-MM/). Vercel Cron ajaa edellisen kuun raportin kuun 2. päivä ja lähettää sen
- * omistajalle. Uusiku Oy:n myynti alkaa 27.10.2026 (UUSIKU_ALKU); sitä aiemmat myynnit kuuluvat Tmi Intellerille.
+ * omistajalle. Uusiku Oy:n myynti alkaa 27.10.2026 (UUSIKU_ALKU); sitä aiemmat myynnit kuuluvat edelliselle pitäjälle (src/config/yritys.ts).
  *
  * ALV: myyntihinnat sisältävät 25,5 % ALV:n. Myydyt lahjakortit (monikäyttöinen arvoseteli) eivät ole ALV:n
  * alaisia myyntihetkellä; ALV syntyy, kun lahjakortilla ostetaan, joten lahjakortilla maksettu tilaus on ALV-pohjassa.
  */
-import { provisioJaTila, tilauksenKate } from "./kumppani.js";
+import { provisioJaTila, tilauksenKate, provisioAsetukset } from "./kumppani.js";
 
 export const UUSIKU_ALKU = "2026-10-27";
 export const ALV_KANTA = 0.255;
@@ -49,6 +49,7 @@ async function stripeMaksu(stripe, tilaus) {
  */
 export async function kuukausiraportti(db, { alku, loppu, stripe = null, haeTilaus = null }) {
   const tilaukset = await db`select o.*, (select e.details->>'koodi' from order_events e where e.order_id = o.id and e.kind = 'kumppani' limit 1) as kumppani,
+      (select e.details from order_events e where e.order_id = o.id and e.kind = 'kumppani' limit 1) as kumppani_tiedot,
       (select e.details->>'invoice' from order_events e where e.order_id = o.id and e.kind = 'lasku' limit 1) as lasku
     from orders o where o.status = 'maksettu' and o.customer_email <> 'kassatesti@huumorikauppa.fi'
       and (o.paid_at at time zone 'Europe/Helsinki')::date between ${alku}::date and ${loppu}::date
@@ -62,7 +63,7 @@ export async function kuukausiraportti(db, { alku, loppu, stripe = null, haeTila
     const alvPohja = r2(yhteensa - lahjakortitMyyty);
     const m = t.lasku ? { maksutapa: "lasku", kulu: null } : await stripeMaksu(stripe, t);
     let provisio = 0;
-    if (t.kumppani) provisio = provisioJaTila(yhteensa - toimitus, (await tilauksenKate(t, haeTilaus)) ?? NaN).provisio;
+    if (t.kumppani) provisio = provisioJaTila(yhteensa - toimitus, (await tilauksenKate(t, haeTilaus)) ?? NaN, provisioAsetukset(t.kumppani_tiedot)).provisio;
     rivit.push({
       tilaus: String(t.id).slice(0, 8).toUpperCase(), maksettu: hki(t.paid_at), maksutapa: m.maksutapa,
       kpl: items.filter((i) => i.type !== "giftcard").reduce((s, i) => s + (i.quantity || 0), 0),
