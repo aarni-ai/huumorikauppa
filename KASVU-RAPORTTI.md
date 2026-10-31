@@ -26,6 +26,49 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 1.11.2026: Oma logo -paita yrityksille, Erämaankeisarit (malli 2), 5 yritysopasta
+
+- **Oma logo tai teksti** (/yritykset, osio "Oma logo tai teksti"; /yritykset/tilaus; tarjouspyyntö):
+  - Yritys lataa logon tai kirjoittaa kaksi tekstiriviä, valitsee halutessaan huumoridesignin ja paidan värin, ja
+    esikatselu näyttää saman kuvan, joka painetaan (api/painokuva.js, api/_lib/logopaita.js, logopaita-kuva.js).
+  - **Logon tarkistus:** PNG vähintään 1000 px pidemmältä sivulta (huomautus alle 2000 px ja läpinäkymättömästä
+    taustasta), enintään 3 Mt (selain pienentää isomman); SVG enintään 1 Mt, skriptit, tapahtumakäsittelijät ja
+    ulkoiset viittaukset hylätään. Logot tauluun yrityslogot (sama tiedosto = sama id).
+  - **Designit:** 282/318 t-paitaa, joissa etupuolella yksi PNG-kerros (scripts/generoi-logodesignit.mjs).
+    Tekstikerroksellisia designeja ei voi yhdistää. Designit on tehty vaaleille paidoille, joten designin kanssa
+    värit ovat valkoinen ja vaaleanharmaa (kassa tarkistaa). Pelkkä logo tai teksti: musta, valkoinen,
+    vaaleanharmaa ja tummansininen.
+  - **Hinta:** 29,90 €/kpl (HINNASTO.personoitu), vähintään 10 kpl, määräalennus kuten t-paidoissa: 10 kpl 26,91 €,
+    25 kpl 26,31 €, 50 kpl 25,71 €/kpl, toimitus ilmainen.
+  - **Kate (Printifyn todellinen kulu testitilauksesta):** 10 kpl 101,93 € eli 10,19 €/paita, 50 kpl noin
+    9,86 €/paita. Raja 5 €/paita täyttyy.
+  - **Printify:** maksun tai maksetun laskun jälkeen tilausrivi on lennosta luotu tuote (blueprint 145, OPT OnDemand
+    pp 30, Tšekki) ja allekirjoitettu tilauskohtainen painokuva 3461 x 3955 PNG.
+  - **Testitilaus 1.11.2026** (cron ?tehtava=logotesti, logo, teksti ja design, 10 kpl): Printify-tilaus
+    6ae65b3af5088a7822008676 luotiin. Kulut olivat 89,00 € (8,90 €/kpl) ja toimitus 19,20 €, rivit pp 30 ja tila
+    on-hold. Tilaus **peruttiin heti (canceled)**, eikä sitä lähetetty tuotantoon.
+  - **Kassa ja lasku:** logon olemassaolo tarkistetaan ennen maksua, alle 10 kpl hylätään (testattu tuotannossa
+    9 kpl ja tuntematon logo). Laskun rivillä näkyy "oma logo, teksti ..., design ...". Korissa, kassalla ja
+    vahvistuksessa näkyy luettava kuvaus logon id:n sijaan.
+  - **Tarjouspyyntö:** mallissa "Oma logo tai teksti" lomakkeessa on sama editori. Logo, teksti, design, väri ja
+    esikatselulinkki tallentuvat (sarake logo) ja näkyvät ilmoituksessa ja /hallinta/tarjoukset-sivulla.
+  - **Mobiilitesti (390 px):** lataus, esikatselu, designin valinta ja värirajaus, tarjouspyyntö (12 kpl
+    322,92 €, ilmoitus lähetetty flyapeg@gmail.com, pyyntö id 3 merkitty hylätyksi) sekä siirtymä tilaussivulle,
+    jossa kokotaulukko ja 10 kpl:n minimi toimivat. Ei vaakavieritystä. Testin paidat poistettiin selaimen korista.
+- **Erämaankeisarit:** Gmailissa ei ole vielä hyväksyntää. Mallin 2 koodi `keisarit` (KEISARIT) on luotu valmiiksi,
+  ja kassa palauttaa malli alennus, -5 %. Tervetuloviesti on paikallisessa tiedostossa KUMPPANIT-KEISARIT.md
+  (gitignore). Sähköposti lisätään, kun vastaus tulee.
+- **SEO, 5 yritysopasta** (src/data/blogYritysHaut2026.ts): yrityksen joululahja työntekijöille, pikkujoulupaidat
+  tiimille, tiimipaidat omalla logolla, joululahja asiakkaille yritys ja hauska tiimipaita.
+  - Jokaisessa 600-900 sanaa, 4-8 tuotelinkkiä, linkki /yritykset, FAQ (FAQPage) ja tuotekortit (teemat yritykset
+    ja yritysPikkujoulu). Mukana sivukartassa ja /yritykset-sivun osiossa "Oppaat yrityksille".
+  - Ei päällekkäisyyttä vanhojen kanssa: joululahja-tyontekijoille on lahjaideat ja pikkujoulupaidat-porukalle
+    kaveriporukat; uudet käsittelevät yrityksen hankintaa ja logoa.
+  - /yritykset-sivun laskutusteksti korjattu (lasku suoraan sivulla Yritystilaus, ei sähköpostisopimusta).
+- **Tarkistukset:** testit 1512 läpi (uusi src/test/logopaita.test.ts ja blogitestit), 3 User-Agentia 200 sivuilla
+  /, /yritykset, /yritykset/tilaus, viidellä oppaalla ja /kumppanit. Sivukartta sisältää 5 uutta osoitetta;
+  huumorikauppa.fi/sitemap.xml näyttää ne välimuistin (1 h) vanhennuttua.
+
 ## 31.10.2026 ilta: Klarna-päätös, kumppanimalli 2, yritysmyynnin mobiilitesti
 
 - **Klarna ja MobilePay pysyvät** kaikissa tilauksissa. Aarni hyväksyi enintään 0,69 €:n poikkeaman 7 €:n minimistä
