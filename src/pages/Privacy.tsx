@@ -61,6 +61,7 @@ const Privacy = () => {
         <section>
           <h2 className="font-display text-xl text-foreground">6. Evästeet</h2>
           <p>Välttämättömät evästeet ja selaimen tallennus pitävät ostoskorin ja kassan toiminnassa. Analytiikka (Google Analytics) ja markkinointi (Google-asiakasarvostelujen merkki ja kysely) otetaan käyttöön vain suostumuksellasi: niiden skriptejä ei ladata ennen kuin hyväksyt ne. Voit muuttaa tai perua suostumuksesi milloin tahansa sivun alalaidan Evästeasetukset-linkistä.</p>
+          <p>Laskemme sivustolle saapuvien käyntien määrän koosteena: päivä, saapumissivun osio ja lähde (esimerkiksi hakukone, some tai suora osoite). Laskuri ei käytä evästeitä eikä selaimen tallennusta, eikä se tallenna IP-osoitetta tai muuta tunnistetta, joten yksittäistä kävijää ei voi tunnistaa.</p>
         </section>
 
         <section>

@@ -68,6 +68,7 @@ const LANDING_PATHS = [
   "/salainen-joulupukki-lahja",
   "/black-friday",
   "/meemipaidat",
+  "/suosituimmat",
   "/suomalainen-huumori-paidat",
   "/tonnin-seteli-paita",
   "/setamiespaidat",

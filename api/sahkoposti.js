@@ -18,6 +18,8 @@
  * GET  ?kumppaniraportti=<avain>                                  kumppanin oma raportti (api/_lib/kumppani.js kumppaniRaportti)
  * GET  ?tarjoukset=<avain>                                        /hallinta/tarjoukset: tarjouspyynnöt katteineen (avain: cron hallinta-linkki)
  * POST { action: "tarjoustila", avain, id, tila }                 tarjouspyynnön tila (uusi, vastattu, tilattu, hylatty)
+ * POST { action: "kaynti", polku, viittaaja, utm, ref, gclid }      käyntilaskuri (api/_lib/kaynnit.js, ei tunnisteita)
+ * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
@@ -28,6 +30,7 @@ import { haeTilaus, onPrintify } from "./_lib/printify.js";
 import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } from "./_lib/yritysmyynti.js";
 import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
+import { kaynninLahde, sivunOsio, onBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -100,6 +103,15 @@ export async function kasittele(req, res, store) {
     const rivit = await store.tarjouspyynnot().catch(() => []);
     return res.status(200).json({ ok: true, tarjoukset: rivit });
   }
+  // Hallinta: tavoitemittari (allekirjoitettu avain "hallinta" / "mittarit", linkki cron ?tehtava=hallinta-linkki).
+  if (req.method === "GET" && typeof q.mittarit === "string") {
+    if (tarkistaTunniste(q.mittarit, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+    const [{ keraaMittarit }, { pgValvonta }, { kaikkiTuotteet }] = await Promise.all([
+      import("./_lib/mittarit.js"), import("./_lib/valvonta.js"), import("./_lib/tuotteet.js")]);
+    const db = sql();
+    const m = await keraaMittarit(db, pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}));
+    return res.status(200).json({ ok: true, ...m });
+  }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
   switch (body.action) {
@@ -163,6 +175,13 @@ export async function kasittele(req, res, store) {
       if (!tila || !Number.isInteger(Number(body.id))) return res.status(400).json({ ok: false });
       const r = await store.asetaTarjousTila(Number(body.id), tila);
       return res.status(200).json({ ok: r.length > 0 });
+    }
+    case "kaynti": {
+      // Käyntilaskuri: vain koostemäärä päivä x lähde x osio, ei IP-osoitetta eikä tunnisteita (api/_lib/kaynnit.js).
+      if (onBotti(String(req.headers["user-agent"] || ""))) return res.status(200).json({ ok: false });
+      const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120) });
+      await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
+      return res.status(200).json({ ok: true });
     }
     case "kumppaniklikki": {
       const kirjattu = await kirjaaKlikki(sql(), body.koodi);

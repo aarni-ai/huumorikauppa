@@ -26,6 +26,58 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 1.11.2026: tavoitemittari, oma käyntilaskuri, 20 somevideota, /linkit ja UTM
+
+**Tavoitemittari (totuus päivittäin):**
+- Sivu /hallinta/mittarit (allekirjoitettu avain, noindex, robots Disallow /hallinta). Linkki: cron `?tehtava=hallinta-linkki` (kenttä `mittarit`) ja päivän yhteenvetoviestin loppu.
+- Päivän yhteenvetoviesti (klo 7, OMISTAJA_EMAIL eli flyapeg@gmail.com) sai lopun osion TAVOITEMITTARI. Kuiva-ajo tarkistettu tuotannossa. Ensimmäinen mittarillinen viesti lähtee 2.11. klo 7.
+- **Sisältö:**
+  - kuukauden kate tähän mennessä (Printifyn todellinen kulu tai arvio, miinus Stripe ja kumppaniprovisiot)
+  - ennuste kuun lopulle (7. päivästä alkaen kuun oma tahti, sitä ennen kertynyt + 30 päivän tahti)
+  - matka 3000 €:oon, tilaukset, keskiostos, käynnit, konversio ja liikenteen lähteet (30 pv)
+  - saapumissivut, yritysten tarjouspyynnöt tiloittain, kumppanien myynti ja provisio
+  - edellisen kuukauden vertailu
+  - tarve: tilauksia ja käyntejä päivässä 3000 €:oon sekä tämän kuun loppuun
+- Koodi: api/_lib/mittarit.js, api/sahkoposti.js `?mittarit=`, src/pages/MetricsAdminPage.tsx. Testit src/test/mittarit.test.ts.
+
+**Oma käyntilaskuri (GA4 Data API -avaimia ei ole):**
+- Kun sivu avataan sivuston ulkopuolelta, kirjataan yksi käynti: päivä, lähde ja saapumissivun osio koosteena. Ei evästeitä, ei selaimen tallennusta, ei IP-osoitetta, joten suostumusta ei tarvita. Tietosuojaselosteeseen lisätty kappale.
+- Lähde: utm_source, kumppanilinkki (?ref), Google Ads (gclid) tai viittaava verkkotunnus (google, bing, facebook, instagram, tiktok, youtube, chatgpt ym.), muuten "suora". Botit, uudelleenlataukset, sisäiset siirtymät ja /hallinta eivät ole käyntejä.
+- Lähde "testi" (tuotannon tarkistusajot) ei näy luvuissa.
+- Koodi: api/_lib/kaynnit.js, src/lib/kaynti.ts, taulu `kaynnit`. Laskuri alkoi 1.11.2026.
+- **Konversio laskelmassa:** GA4:n 28 päivän 0,58 % (29.10., 1 036 kävijää, 6 tilausta), kunnes omaa dataa on 7 päivää ja 200 käyntiä.
+- **Kate per tilaus laskelmassa:** hinnoittelun laskettu keskikate 9,51 € (29.10.), kunnes 30 päivässä on 5 tilausta uudessa kassassa. Vanhan kassan tilaukset eivät ole Neonissa, ja uudessa kassassa on nyt 1 maksettu tilaus.
+
+**Nykyiset luvut 1.11.2026 klo 12:**
+
+| Mittari | Arvo |
+|---|---|
+| Marraskuun kate | 0,00 € (0 %), matka 3000 € |
+| Ennuste marraskuulle | 5,83 € (kuun alku, 30 päivän tahti) |
+| Tilaukset (uusi kassa) | marraskuu 0, 30 pv 1 (54,39 €, kate 5,90 €) |
+| Käynnit | 3 (laskuri alkoi tänään: suora 2, google 1) |
+| Konversio laskelmassa | 0,58 % (GA4) |
+| Yritysten tarjouspyynnöt | marraskuu 0, 30 pv 3 (testejä, hylätty) |
+| Kumppanien myynti | 0 |
+| Tarve 3000 €:oon | 100 € katetta, 10,5 tilausta ja 1 813 käyntiä päivässä |
+
+Nykytaso GA4:n mukaan on noin 37 kävijää päivässä, joten kuluttajakaupalla tavoite vaatii noin 50-kertaisen liikenteen. Yksi 10 paidan logotilaus päivässä (kate noin 100 €) täyttää saman tavoitteen, joten yritysmyynti on liikenteen rinnalla nopein reitti.
+
+**Somevideot (uusi liikennekanava):**
+- 20 pystyvideota some/videot/ (1080 x 1920, 9:16, 10,6 s, H.264, hiljainen äänirata, ei musiikkia). Kansikuvat samannimisinä .jpg-tiedostoina.
+- Rakenne: koukku isona tekstinä ensimmäisestä ruudusta, kaksi tuotekuvaa (kaupan Printify-mockupit, hidas zoom), loppuruutu "huumorikauppa.fi".
+- Aiheet: Tonnin seteli (2), Saatanan tunarit (2), 60v (2), metsästys (2), kalastus (3), mökki ja sauna (2), golf, joulu (3), pikkujoulut (2) ja personoitu paita. Personoidun paidan kuvat ovat oikeita painokuvia samalla koodilla kuin tilauksessa.
+- some/JULKAISUT.md: järjestys 2.-21.11., kuvateksti ja 3-5 hashtagia jokaiselle sekä UTM-linkit kanavittain.
+- Generaattori scripts/some-videot.mjs (sharp, resvg, ffmpeg). Videot ja välimuisti ovat .gitignoressa ja .vercelignoressa, koska repo on julkinen ja tiedostot ovat isoja (38 Mt).
+- .vercelignore jättää julkaisusta pois myös kirjanpito/- ja KUMPPANIT-*.md-tiedostot, jotka eivät kuulu buildiin.
+
+**UTM ja /linkit:**
+- /linkit on bio-linkkisivu (noindex), jossa on 5 linkkiä: Joululahjat, Yrityksille, Personoitu paita, Suosituimmat ja Harrastussarjat. Black Friday tulee ensimmäiseksi linkiksi kampanjan ajaksi 27.11.-1.12. (kampanja-asetuksista), jolloin linkkejä on 6. Saapumisen utm-parametrit kulkevat linkkeihin, jotta GA4 yhdistää ostot somelähteeseen.
+- Bio-linkit: huumorikauppa.fi/linkit?utm_source=tiktok|instagram|youtube&utm_medium=social&utm_campaign=bio.
+- Uusi laskeutumissivu /suosituimmat (tuotesyötteen top50: myydyimmät ja haetuimmat synttäripaidat). Lisätty sivukarttaan, esirenderöity.
+
+**Tarkistukset:** 1529 testiä läpi. Tuotannossa toimivat käynnin kirjaus (botti hylätty), mittarirajapinta (väärä avain 404) ja sivut /linkit, /suosituimmat ja /hallinta/mittarit selaimessa. Kolme User-Agentia: 200 sivuilla /, /linkit, /suosituimmat, /hallinta/mittarit, /tietosuojakaytanto ja /yritykset.
+
 ## 1.11.2026: Printify-testitilausten tarkistus ja pysyvä peruutuskäytäntö
 
 **Tilaus #26630629.38 "TESTI-MV" (Kassa Testi):** oli Oma logo -paidan polkutesti 31.10. klo 21.18 UTC (10 paitaa, Printifyn kulu 89,00 € + toimitus 19,20 €). Se oli jo peruttu samassa ajossa, Printifyn tila canceled, kaikki rivit canceled. Stripessä ei ole maksua, koska testi luodaan suoraan Printifyyn ilman kassaa.

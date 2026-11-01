@@ -184,9 +184,9 @@ export function yhteenveto({ nyt = new Date(), eilen, kk, jumissa, pysaytetyt = 
 /**
  * Lähettää päivän yhteenvedon kerran päivässä. Ajastus (GitHub Actions) kutsuu 04:00 ja 05:00 UTC; vain Helsingin
  * kello 7 -ajo lähettää (kesä- ja talviaika), ja kv-avain estää toisen lähetyksen samana päivänä.
- * pakota: ohita kellonaika (käsiajo). Palauttaa { lahetetty, syy }.
+ * pakota: ohita kellonaika (käsiajo). lisarivit: async () => string[] viestin loppuun. Palauttaa { lahetetty, syy }.
  */
-export async function ajaYhteenveto(store, { laheta, vastaanottaja, nyt = new Date(), pakota = false, kuiva = false }) {
+export async function ajaYhteenveto(store, { laheta, vastaanottaja, nyt = new Date(), pakota = false, kuiva = false, lisarivit = null }) {
   const h = helsinki(nyt);
   if (!pakota && h.tunti !== YHTEENVETO_TUNTI) return { lahetetty: false, syy: `Helsingissä kello ${h.tunti}, lähetetään kello ${YHTEENVETO_TUNTI}` };
   if ((await store.lueKv(KV_YHTEENVETO)) === h.paiva) return { lahetetty: false, syy: "jo lähetetty tänään" };
@@ -211,6 +211,10 @@ export async function ajaYhteenveto(store, { laheta, vastaanottaja, nyt = new Da
     hitaat: await store.hitaat(),
     tuotteetSlugilla: await store.tuotteetSlugilla(),
   });
+  // Tavoitemittari (api/_lib/mittarit.js) viestin loppuun; virhe ei estä yhteenvetoa.
+  if (lisarivit) {
+    try { sisalto.rivit.push(...(await lisarivit())); } catch (e) { sisalto.rivit.push("", `Tavoitemittari ei latautunut: ${String(e?.message || e).slice(0, 200)}`); }
+  }
   if (kuiva) return { lahetetty: false, syy: "kuiva-ajo", sisalto };
   const r = await laheta({ to: vastaanottaja, subject: sisalto.otsikko, html: `<pre style="font-family:Menlo,Consolas,monospace">${sisalto.rivit.map((x) => x.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]))).join("\n")}</pre>`, text: sisalto.rivit.join("\n") });
   if (!r.ok) return { lahetetty: false, syy: r.virhe, sisalto };

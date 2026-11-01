@@ -18,6 +18,7 @@ import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { CHRISTMAS_DEADLINE_PROMISE } from "./christmas";
 import { FATHERS_DAY_TEXT, joulunTilauspaivaTyypille, paivaLyhyt } from "./campaignSchedule";
 import { TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
+import TOP50 from "../../api/_lib/top50.generated.js";
 import { isanpaivaLause, jouluMetaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import { sarjaPages, SARJA_SIVUT } from "./landingPagesSarjat";
@@ -1063,6 +1064,43 @@ export const landingPages: LandingPageDef[] = [
     related: ["/suomalainen-huumori-paidat", "/setamiespaidat", "/joululahja-kaverille", TONNIN_SETELI_PATH],
     categories: ["t-paidat", "hupparit"],
     filter: MEEMI,
+  },
+  {
+    // Suosituimmat (1.11.2026, /linkit-sivun bio-linkki): tuotesyötteen top50 (api/_lib/top50.generated.js),
+    // joka on koottu myydyimmistä tuotteista ja Search Consolen haetuimmista ikävuosipaidoista.
+    path: "/suosituimmat",
+    name: "Suosituimmat paidat",
+    group: "tuotteet",
+    title: "Suosituimmat hauskat paidat ja hupparit | Huumorikauppa",
+    description:
+      "Suosituimmat paidat: myydyimmät meemipaidat, kuten se oli tonnin seteli ja Saatanan Tunarit, sekä haetuimmat synttäripaidat.",
+    h1: "Suosituimmat paidat",
+    intro: [
+      "Tälle sivulle on koottu Huumorikaupan suosituimmat tuotteet: myydyimmät meemipaidat ja -hupparit sekä haetuimmat syntymäpäiväpaidat.",
+      "Mukana ovat esimerkiksi se oli tonnin seteli, Tonnin Seteli ja Saatanan Tunarit. Useimmista on sekä t-paita että huppari, ja paidan voi valita usealla värillä ja koolla.",
+      "Jos etsit lahjaa tietylle ihmiselle, katso myös joululahjat, synttärilahjat ja harrastajan paidat.",
+    ],
+    faqs: [
+      {
+        q: "Miten suosituimmat tuotteet valitaan?",
+        a: "Listalla ovat myydyimmät tuotteet ja ne syntymäpäiväpaidat, joita haetaan eniten.",
+      },
+      {
+        q: "Onko suosituimmista paidoista huppareita?",
+        a: "On. Useimmista suosituista teksteistä on sekä t-paita että huppari.",
+      },
+      {
+        q: "Mikä suosituista paidoista sopii lahjaksi?",
+        a: "Meemipaita sopii kaverille, jonka huumorin tunnet. Synttäripaita sopii, kun päivänsankari täyttää tasavuosia.",
+      },
+      {
+        q: "Missä paidat painetaan?",
+        a: "Paidat painetaan tilauksesta painotaloissa, joiden toimitusaika näkyy tuotesivulla ja kassalla.",
+      },
+    ],
+    related: ["/meemipaidat", "/joululahjat", "/syntymapaivalahjat", "/lahjat/harrastajalle"],
+    categories: ["t-paidat", "hupparit"],
+    filter: (p) => TOP50.has(p.slug),
   },
   {
     path: "/suomalainen-huumori-paidat",

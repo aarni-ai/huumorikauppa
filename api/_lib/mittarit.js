@@ -1,0 +1,188 @@
+/**
+ * Tavoitemittari (1.11.2026): kuukauden kate suhteessa tavoitteeseen (KK_TAVOITE, 3000 €), ennuste, tilaukset,
+ * keskiostos, käynnit ja konversio (oma laskuri api/_lib/kaynnit.js), liikenteen lähteet, yritysten tarjouspyynnöt
+ * ja kumppanien myynti sekä tarve: montako tilausta ja käyntiä päivässä tavoite vaatii nykyisellä katteella ja
+ * konversiolla. Näkyy sivulla /hallinta/mittarit (api/sahkoposti.js ?mittarit=) ja päivän yhteenvetoviestissä.
+ *
+ * Kate: Printifyn todellinen kulu, kun se tiedetään, muuten arvio tuotteen kulusta (api/_lib/valvonta.js toteutuneet),
+ * josta vähennetään kumppaniprovisiot. Testitilaukset (kassatesti@huumorikauppa.fi) eivät ole mukana.
+ */
+import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilauksenKate } from "./valvonta.js";
+import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
+import { kaynnitValilla } from "./kaynnit.js";
+
+const r2 = (x) => Math.round(x * 100) / 100;
+const r1 = (x) => Math.round(x * 10) / 10;
+const TESTI = "kassatesti@huumorikauppa.fi";
+
+/**
+ * Konversion varalukema, kunnes oma laskuri on kerännyt riittävästi dataa (vähintään 7 päivää ja 200 käyntiä):
+ * GA4, 28 päivää ennen 29.10.2026: 1 036 kävijää, 6 tilausta (KASVU-RAPORTTI.md).
+ */
+export const KONVERSIO_VARA = { prosentti: 0.58, lahde: "GA4, 28 pv ennen 29.10.2026 (1 036 kävijää, 6 tilausta)" };
+export const LASKURI_RIITTAA = { paivia: 7, kaynteja: 200 };
+/**
+ * Kate per tilaus laskelmaan, kun 30 päivän toteutuneita tilauksia on alle 5 (uusi kassa 27.10.2026 alkaen, vanhan
+ * kassan tilaukset eivät ole Neonissa): hinnoittelun laskettu keskikate 29.10.2026 (KATTEET.md, KASVU-RAPORTTI.md).
+ */
+export const KATE_PER_TILAUS_VARA = { kate: 9.51, lahde: "hinnoittelun laskettu keskikate 29.10.2026 (KATTEET.md)" };
+export const TILAUKSIA_RIITTAA = 5;
+
+const lisaaPaiva = (paiva, n) => {
+  const [y, m, d] = paiva.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
+};
+
+/** Tilauslistan summat: tilaukset, myynti (sis. alv), kate ennen provisioita, provisiot, kate. */
+export function tilausSummat(lista, provisiot = new Map(), tuotteetSlugilla = new Map()) {
+  const t = toteutuneet(lista, tuotteetSlugilla);
+  const myynti = lista.reduce((s, x) => s + (Number(x.total) || 0), 0);
+  const prov = lista.reduce((s, x) => s + (provisiot.get(x.id)?.provisio || 0), 0);
+  return { tilauksia: lista.length, myynti: r2(myynti), keskiostos: lista.length ? r2(myynti / lista.length) : 0,
+    kateEnnenProvisioita: r2(t.yhteensa), provisiot: r2(prov), kate: r2(t.yhteensa - prov), kuluTiedossa: t.n };
+}
+
+/**
+ * Tavoitelaskelma (puhdas funktio). kate = kuukauden kate tähän mennessä, paivia = kuun päivät, kulunut = kulunut
+ * aika päivinä (desimaali), katePerTilaus ja konversio (%) nykyiseltä tasolta, kateTahti30 = 30 päivän kate per päivä.
+ */
+export function tavoitelaskelma({ kate, tavoite = KK_TAVOITE(), paivia, kulunut, jaljella, katePerTilaus, konversio, kateTahti30 = null }) {
+  const omaTahti = kulunut >= 7;
+  const tahti = omaTahti ? kate / kulunut : kateTahti30 ?? (kulunut > 0 ? kate / kulunut : 0);
+  const ennuste = r2(omaTahti ? (kate / kulunut) * paivia : kate + (tahti || 0) * Math.max(0, paivia - kulunut));
+  const matka = r2(Math.max(0, tavoite - kate));
+  const perPaiva = tavoite / paivia;
+  const tilauksiaPaivassa = katePerTilaus > 0 ? perPaiva / katePerTilaus : null;
+  const kaynteja = (tilauksia) => (tilauksia != null && konversio > 0 ? tilauksia / (konversio / 100) : null);
+  const jaljellaPaivassa = jaljella > 0 ? matka / jaljella : 0;
+  const tilauksiaJaljella = katePerTilaus > 0 ? jaljellaPaivassa / katePerTilaus : null;
+  return {
+    tavoite, kate: r2(kate), prosentti: tavoite ? r1((kate / tavoite) * 100) : 0, matka, ennuste,
+    ennusteTapa: omaTahti ? "kuukauden oma tahti" : "tähän asti kertynyt + 30 päivän tahti loppukuulle",
+    tarve: {
+      katePaivassa: r2(perPaiva),
+      tilauksiaPaivassa: tilauksiaPaivassa == null ? null : r1(tilauksiaPaivassa),
+      kaynteja_paivassa: kaynteja(tilauksiaPaivassa) == null ? null : Math.round(kaynteja(tilauksiaPaivassa)),
+      jaljellaKatePaivassa: r2(jaljellaPaivassa),
+      jaljellaTilauksiaPaivassa: tilauksiaJaljella == null ? null : r1(tilauksiaJaljella),
+      jaljellaKaynteja_paivassa: kaynteja(tilauksiaJaljella) == null ? null : Math.round(kaynteja(tilauksiaJaljella)),
+    },
+  };
+}
+
+/** Kumppanitilausten provisiot: Map(tilausId -> { koodi, provisio }). */
+async function provisiot(db, lista, tuotteetSlugilla) {
+  const idt = lista.map((t) => t.id);
+  if (!idt.length) return new Map();
+  const tap = await db`select order_id, details from order_events where kind = 'kumppani' and order_id = any(${idt})`;
+  const m = new Map();
+  for (const e of tap) {
+    const t = lista.find((x) => x.id === e.order_id);
+    if (!t) continue;
+    const kate = toteutunutKate(t)?.kate ?? tilauksenKate(t, tuotteetSlugilla).kate;
+    const p = provisioJaTila((Number(t.total) || 0) - (Number(t.shipping) || 0), kate, provisioAsetukset(e.details));
+    m.set(t.id, { koodi: e.details?.koodi || "?", provisio: p.provisio, myynti: Number(t.total) || 0 });
+  }
+  return m;
+}
+
+/**
+ * Kokoaa mittarit. store = pgValvonta(db, kaikkiTuotteet, { haeTilaus }) (api/_lib/valvonta.js), db = postgres-tagi.
+ * kuiva: ei tallenneta täydennettyjä Printify-kuluja.
+ */
+export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false } = {}) {
+  const h = helsinki(nyt);
+  const kuunAlkuPv = `${h.paiva.slice(0, 8)}01`;
+  const kuunAlku = paivanAlku(kuunAlkuPv);
+  const paivia = new Date(Date.UTC(h.vuosi, h.kuukausi, 0)).getUTCDate();
+  const kulunut = r2((nyt.getTime() - kuunAlku.getTime()) / 864e5);
+  const jaljella = r2(paivia - kulunut);
+  const alku30Pv = lisaaPaiva(h.paiva, -30);
+  const tuotteetSlugilla = await store.tuotteetSlugilla();
+  const ilmanTesteja = (l) => l.filter((t) => String(t.customer_email || "").toLowerCase() !== TESTI);
+
+  const kk = ilmanTesteja(await store.maksetutValilla(kuunAlku, nyt));
+  const p30 = ilmanTesteja(await store.maksetutValilla(paivanAlku(alku30Pv), nyt));
+  if (store.taydennaKulut) await store.taydennaKulut(p30, 15, { kuiva });
+  const prov = await provisiot(db, p30, tuotteetSlugilla);
+  const kkSumma = tilausSummat(kk, prov, tuotteetSlugilla);
+  const s30 = tilausSummat(p30, prov, tuotteetSlugilla);
+
+  // Edellinen kuukausi vertailuksi.
+  const edAlkuPv = `${lisaaPaiva(kuunAlkuPv, -1).slice(0, 8)}01`;
+  const ed = ilmanTesteja(await store.maksetutValilla(paivanAlku(edAlkuPv), kuunAlku));
+  const edSumma = tilausSummat(ed, await provisiot(db, ed, tuotteetSlugilla), tuotteetSlugilla);
+
+  // Käynnit: tämä kuu, 30 päivää ja laskurin koko historia konversiota varten.
+  const kayKk = await kaynnitValilla(db, kuunAlkuPv, h.paiva);
+  const kay30 = await kaynnitValilla(db, alku30Pv, h.paiva);
+  let konversio = { prosentti: KONVERSIO_VARA.prosentti, lahde: KONVERSIO_VARA.lahde, oma: null };
+  if (kay30.ensimmainen) {
+    const laskurinAjalta = p30.filter((t) => helsinki(t.paid_at).paiva >= kay30.ensimmainen);
+    const oma = kay30.yhteensa ? r2((laskurinAjalta.length / kay30.yhteensa) * 100) : null;
+    konversio.oma = { prosentti: oma, kaynteja: kay30.yhteensa, tilauksia: laskurinAjalta.length, paivia: kay30.paivia, alkaen: kay30.ensimmainen };
+    if (kay30.paivia >= LASKURI_RIITTAA.paivia && kay30.yhteensa >= LASKURI_RIITTAA.kaynteja && oma > 0) {
+      konversio = { ...konversio, prosentti: oma, lahde: `oma laskuri, ${kay30.paivia} pv (${kay30.yhteensa} käyntiä, ${laskurinAjalta.length} tilausta)` };
+    }
+  }
+
+  // Yritysten tarjouspyynnöt.
+  let tarjoukset = { kk: 0, p30: 0, tilat: {}, arvoKk: 0, kateKk: 0 };
+  try {
+    const t = await db`select tila, hinta, kate, created_at from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)}`;
+    const kkT = t.filter((x) => new Date(x.created_at) >= kuunAlku);
+    tarjoukset = {
+      kk: kkT.length, p30: t.length,
+      tilat: Object.fromEntries([...new Set(t.map((x) => x.tila))].map((tila) => [tila, t.filter((x) => x.tila === tila).length])),
+      arvoKk: r2(kkT.reduce((s, x) => s + (Number(x.hinta) || 0), 0)), kateKk: r2(kkT.reduce((s, x) => s + (Number(x.kate) || 0), 0)),
+    };
+  } catch { /* taulua ei vielä ole */ }
+
+  // Kumppanien myynti tässä kuussa.
+  const kumppanit = new Map();
+  for (const t of kk) {
+    const p = prov.get(t.id);
+    if (!p) continue;
+    const k = kumppanit.get(p.koodi) || { koodi: p.koodi, tilauksia: 0, myynti: 0, provisio: 0 };
+    k.tilauksia++; k.myynti = r2(k.myynti + p.myynti); k.provisio = r2(k.provisio + p.provisio);
+    kumppanit.set(p.koodi, k);
+  }
+
+  const toteutunutPerTilaus = s30.tilauksia ? r2(s30.kate / s30.tilauksia) : null;
+  const riittaa = s30.tilauksia >= TILAUKSIA_RIITTAA;
+  const katePerTilaus = riittaa ? toteutunutPerTilaus : KATE_PER_TILAUS_VARA.kate;
+  const katePerTilausLahde = riittaa ? `toteutunut, ${s30.tilauksia} tilausta 30 pv` : `${KATE_PER_TILAUS_VARA.lahde}; toteutunut ${s30.tilauksia} tilauksesta ${toteutunutPerTilaus == null ? "-" : `${toteutunutPerTilaus.toFixed(2).replace(".", ",")} €`}`;
+  const laskelma = tavoitelaskelma({ kate: kkSumma.kate, paivia, kulunut, jaljella, katePerTilaus, konversio: konversio.prosentti,
+    kateTahti30: s30.kate / 30 });
+  return {
+    paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
+    tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
+    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, kumppanit: [...kumppanit.values()],
+  };
+}
+
+const eur = (x) => `${r2(x).toFixed(2).replace(".", ",")} €`;
+const lu = (x) => String(x).replace(".", ",");
+
+/** Mittarit tekstiriveinä päivän yhteenvetoviestiin. */
+export function mittaririvit(m, linkki = null) {
+  const t = m.tavoite;
+  const lahteet = m.kaynnit.p30.lahteet.slice(0, 6).map((l) => `${l.nimi} ${l.kaynnit}`).join(", ") || "ei vielä käyntejä";
+  return [
+    "",
+    `TAVOITEMITTARI ${m.kuukausi} (tavoite ${eur(t.tavoite)} katetta)`,
+    `Kate tähän mennessä: ${eur(t.kate)} (${lu(t.prosentti)} %), matka tavoitteeseen ${eur(t.matka)}`,
+    `Ennuste kuun lopulle: ${eur(t.ennuste)} (${t.ennusteTapa})`,
+    `Tilaukset tässä kuussa: ${m.kk.tilauksia}, keskiostos ${eur(m.kk.keskiostos)}; 30 pv: ${m.p30.tilauksia} tilausta`,
+    `Kate per tilaus laskelmassa: ${m.p30.katePerTilaus == null ? "-" : eur(m.p30.katePerTilaus)} (${m.p30.katePerTilausLahde || "toteutunut"})`,
+    `Käynnit (oma laskuri): tässä kuussa ${m.kaynnit.kk.yhteensa}, 30 pv ${m.kaynnit.p30.yhteensa}${m.kaynnit.p30.ensimmainen ? ` (laskuri alkaen ${m.kaynnit.p30.ensimmainen})` : ""}`,
+    `Konversio laskelmassa: ${lu(m.konversio.prosentti)} % (${m.konversio.lahde})${m.konversio.oma?.prosentti != null ? `; oma laskuri nyt ${lu(m.konversio.oma.prosentti)} %` : ""}`,
+    `Lähteet 30 pv: ${lahteet}`,
+    `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
+    `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
+    `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
+    `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,
+    `Edellinen kuukausi ${m.edellinen.kuukausi}: ${m.edellinen.tilauksia} tilausta, kate ${eur(m.edellinen.kate)}`,
+    ...(linkki ? [`Mittarisivu: ${linkki}`] : []),
+  ];
+}

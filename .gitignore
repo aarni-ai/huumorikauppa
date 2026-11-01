@@ -51,3 +51,8 @@ KUMPPANIT-*.md
 
 # Kirjanpidon raportit (asiakas- ja myyntitietoja), ei julkiseen repoon
 kirjanpito/
+
+# Somevideot ja niiden välimuisti (isot tiedostot, scripts/some-videot.mjs)
+some/videot/*.mp4
+some/videot/*.jpg
+some/.valimuisti/
