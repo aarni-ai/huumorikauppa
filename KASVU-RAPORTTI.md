@@ -2345,3 +2345,11 @@ käytössä, joten arvo meni teemalabeliin custom_label_3 aiemman arvon "joulu" 
 
 **Mittari.** Uudet kortit: uutiskirjeen tilaajat (yhteensä, 7 pv, 28 pv), blogin käynnit ja yritysten alasivujen käynnit
 (osio yritykset-<ala>, kk ja 30 pv).
+
+**Julkaisu ja tarkistus 2.11.2026 (ilta).** Commit 0976dd2, julkaistu scripts/julkaise-uusi.sh:lla. Kolme User-Agentia
+(Chrome, iPhone, Googlebot): etusivu, /yritykset ja 9 alasivua, 6 uutta blogia, ostoskori, toimitusehdot, tuotesivu ja
+sitemap.xml 200. Mobiilissa (390 x 844) evästepalkki 734-844 px ja tuotesivun ostopalkki 660-733 px päällekkäin, CLS 0
+(myös 1366 x 800). Ostoskori kolmella mobiili-UA:lla: yksi paita "Vielä 1 tuote ilmaiseen toimitukseen", kaksi paitaa
+"Ilmainen toimitus". Tuotannon syöte: 651 tuotetta, ei puutteita, joulu2026 101 tuotteella. Mittarin lukuja ei saatu
+luettua tässä ajossa: tietokannan muuttujat ovat Vercelissä suojattuja (eivät lataudu paikallisesti) ja hallintasivu vaatii
+aktivoidun selaimen; luvut näkyvät /hallinta/mittarit-sivulla Coworkin aktivoidussa Chromessa.
