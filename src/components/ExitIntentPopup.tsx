@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { formatPriceFi } from "@/seo/site";
 import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/context/CartContext";
 import { Link } from "react-router-dom";
@@ -82,7 +83,7 @@ export function ExitIntentPopup() {
               Hei, unohditko jotain? 🛒
             </h2>
             <p className="text-sm text-muted-foreground mt-2">
-              Sinulla on {totalItems} tuotetta ostoskorissasi ({totalPrice.toFixed(2)} €)
+              Sinulla on {totalItems} tuotetta ostoskorissasi ({formatPriceFi(totalPrice)})
             </p>
           </div>
 
@@ -97,7 +98,7 @@ export function ExitIntentPopup() {
                 />
                 <div className="min-w-0">
                   <p className="text-foreground line-clamp-1 text-xs font-medium">{item.product.name}</p>
-                  <p className="text-primary text-xs font-bold">{(item.product.price * item.quantity).toFixed(2)} €</p>
+                  <p className="text-primary text-xs font-bold">{formatPriceFi((item.product.price * item.quantity))}</p>
                 </div>
               </div>
             ))}
@@ -108,7 +109,7 @@ export function ExitIntentPopup() {
 
           {shippingGap > 0 && (
             <p className="text-xs text-primary font-medium">
-              🚚 Lisää {shippingGap.toFixed(2)} € → ilmainen toimitus!
+              🚚 Lisää {formatPriceFi(shippingGap)} → ilmainen toimitus!
             </p>
           )}
 

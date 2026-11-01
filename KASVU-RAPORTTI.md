@@ -2248,3 +2248,44 @@ Testit 1551 läpi. Kolmen User-Agentin tarkistus: /, /kategoria/t-paidat, /tuote
 
 Testit 1 578 läpi. Kolmen User-Agentin tarkistus: /, /joulu, kuusi uutta lahjasivua, /lahjat/kalastajalle,
 /lahjaopas-media, /k/keisarit, /ystava/..., /kassa, uusi tuotesivu, /sitemap.xml ja /api/product-feed kaikki 200.
+
+## 2.11.2026: kumppanilinkit /k/, palvelinrenderöinti, mobiilin Lisää koriin ja etusivun Lighthouse
+
+### Kumppanilinkit
+- /k/KOODI renderöidään nyt palvelimella (vercel.json rewrite -> api/sahkoposti.js, SPA-kuoreen otsikko, noindex,
+  canonical ja tervehdys). Eväste hk_kumppani (30 pv) asetetaan samassa vastauksessa, joten tervehdys ja koodi
+  toimivat myös ilman JavaScriptiä. Tarkistettu: /k/antsa "Tervetuloa Antsan kautta", /k/keisarit "Tervetuloa
+  Erämaankeisarien kautta", tuntematon koodi 404 ja "Tervetuloa Huumorikauppaan".
+- Syvälinkki /k/KOODI/polku (esim. /k/antsa/tuote/...) tallentaa koodin ja ohjaa sivulle. /kumppanit-sivulla ja
+  kumppanien linkkilistoissa ei enää ?ref=-muotoa; raporttisivun linkki oli jo /k/. ?ref= toimii edelleen.
+
+### Palvelinrenderöinti ja lahjaopas
+- /lahjaopas-media esirenderöidään komponentista: oma otsikko, h1, kaikki 20 ideaa ja canonical HTML:ssä.
+- Lause "Kuvia saa käyttää vapaasti juttuihin ja lahjaoppaisiin, kunhan lähteenä mainitaan Huumorikauppa.fi."
+  sivulla ja PDF:ssä (PDF tehty uudelleen, uusi Blob-osoite).
+- Lahjasivut ja /joulu olivat jo palvelimella (h1, opas, UKK-schema, tuotteet). Nyt ne ja /lahjaopas-media
+  hydratoidaan samasta merkinnästä kuin kategoriasivut, joten näkyvä sisältö on HTML:ssä heti.
+
+### Ennen koria
+- Lisää koriin toimi kolmella mobiili-UA:lla (iPhone Safari, Android Chrome, Samsung Internet) ja värinvaihto vaihtaa
+  kuvan ja koot tummien värien poiston jälkeen. Viat ja korjaukset:
+  - Painike alkoi 390 x 844 -näytöllä 844 px:n kohdalta eli taitteen alta. Toimitus- ja maksutiedot siirrettiin
+    painikkeen alle: väri 583 px, koot 665 px, painike 715 px.
+  - Kiinteän alapalkin kokorivi peitti värivalinnan. Palkki on nyt yksi rivi: kuva, nimi, hinta ja Lisää koriin, ja se
+    näkyy koko tuotesisällön ajan.
+  - Ilman kokoa painettu Lisää koriin antoi punaisen virheilmoituksen. Nyt kokovalitsin korostetaan ja vieritetään
+    näkyviin, ja koon valinta lisää tuotteen koriin.
+  - Hitaalla mobiiliyhteydellä sivu reagoi napautuksiin vasta 3,5 s:n kuluttua (esikatselu oli inert). Esikatselu
+    ottaa nyt koon, värin ja Lisää koriin -napautuksen talteen, ja tuote lisätään, kun sovellus käynnistyy (testattu
+    4G-hidastuksella).
+  - Ostoskorin ikkunassa, tuotekorteissa ja suosituksissa hinnat näkyivät pisteellä (27.90 €). Nyt pilkulla.
+
+### Etusivun Lighthouse
+- Syy: fontit tulivat fonts.gstatic.comista 1,1-2,3 s:ssa, ja ensipiirto osui niiden saapumiseen. Fontit (Anton,
+  Inter, Space Grotesk, latin ja latin-ext) ovat nyt omalla palvelimella (public/fonts, vuoden välimuisti).
+- Mobiili ennen: 64, 99, 93, 92, 93, 70. Jälkeen kuusi ajoa: 96, 99, 100, 98, 100, 100.
+- /joulu 77-87 -> 98-100, /joululahja-anopille 100, /lahjaopas-media 85 -> 92-100 (kuvat pienennettynä
+  kuvaproxyn kautta), kategoriasivu 95-100, tuotesivu 99-100. CLS 0 kaikissa.
+
+Testit 1 579 läpi. Kolmen User-Agentin tarkistus: /, /k/antsa, /k/keisarit, /kumppanit, /lahjaopas-media, /joulu,
+/joululahja-anopille, /kategoria/t-paidat, tuotesivu, /fonts/inter-latin.woff2 ja /?ref=antsa kaikki 200.

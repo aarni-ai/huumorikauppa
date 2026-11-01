@@ -16,6 +16,8 @@ const { put } = require("@vercel/blob");
 const JUURI = new URL("..", import.meta.url).pathname;
 const CHROME = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const DATA = join(JUURI, "src/data/lahjaopasMedia.generated.ts");
+// Kuvien käyttölupa: sama lause kuin sivulla (src/data/lahjaopasMediaTeksti.ts).
+const KUVIEN_KAYTTO = (await readFile(join(JUURI, "src/data/lahjaopasMediaTeksti.ts"), "utf8")).match(/KUVIEN_KAYTTO = "([^"]+)"/)[1];
 
 const lahde = await readFile(DATA, "utf8");
 const ideat = JSON.parse(lahde.slice(lahde.indexOf("MEDIA_LAHJAIDEAT: MediaLahjaidea[] = ") + 37, lahde.indexOf("];") + 1));
@@ -35,10 +37,11 @@ h1 { font-size: 24pt; margin: 0 0 4mm; } h2 { font-size: 15pt; margin: 6mm 0 3mm
 <h1>Lahjaopas medialle 2026</h1>
 <p class="intro">Huumorikauppa.fi myy suomalaisella huumorilla painettuja t-paitoja ja huppareita. Tässä 20 lahjaideaa: kymmenen klassikkoa ja
 kymmenen joulumalliston 2026 mallia. Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Ladattavat pysty- ja vaakakuvat:
-<b>huumorikauppa.fi/lahjaopas-media</b>. Kuvia saa käyttää lahjaoppaissa ja jutuissa Huumorikaupan tuotteista.</p>
+<b>huumorikauppa.fi/lahjaopas-media</b>.</p>
+<p class="intro"><b>${esc(KUVIEN_KAYTTO)}</b></p>
 ${[...new Set(ideat.map((i) => i.ryhma))].map((r) => `<h2>${esc(r)}</h2><div class="g">${ideat.filter((i) => i.ryhma === r).map(kortti).join("")}</div>`).join("")}
 <div class="yt"><b>Yhteystiedot</b><br>Huumorikauppa (Uusiku Oy), Y-tunnus 3653666-7, Capellan puistotie 21, 00580 Helsinki<br>
-Medialle: huumorikauppa@gmail.com · huumorikauppa.fi/media</div>
+Medialle: huumorikauppa@gmail.com · huumorikauppa.fi/media<br>${esc(KUVIEN_KAYTTO)}</div>
 </body></html>`;
 
 const kansio = await mkdtemp(join(tmpdir(), "lahjaopas-"));

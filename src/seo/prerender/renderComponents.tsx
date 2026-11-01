@@ -19,6 +19,7 @@ const LOADERS: Record<ComponentPagePath, () => Promise<{ default: ComponentType 
   "/tietoa-meista": () => import("@/pages/AboutPage"),
   "/suomalaiset-tyopaikkameemit-top-50": () => import("@/pages/WorkplaceMemesPage"),
   "/hauskimmat-tyopaikkalaput-2026": () => import("@/pages/OfficeNotesPage"),
+  "/lahjaopas-media": () => import("@/pages/MediaGuidePage"),
 };
 
 export async function renderComponentPages(

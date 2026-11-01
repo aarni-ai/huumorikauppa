@@ -274,6 +274,22 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
+      // Lahjasivut (src/data/landingPages.ts) ja /lahjaopas-media (2.11.2026) samoin: ennen sivu näkyi vasta Reactin
+      // renderöityä, ja Lighthouse mobiili vaihteli 77:n ja 90:n välillä.
+      const landingRoutesMod = await vite.ssrLoadModule("/src/data/landingRoutes.ts");
+      const landingChunks = chunksFor("src/pages/LandingPage.tsx");
+      const mediaGuideChunks = chunksFor("src/pages/MediaGuidePage.tsx");
+      for (const page of previewMod ? pages : []) {
+        const media = page.path === "/lahjaopas-media";
+        if (!media && !landingRoutesMod.LANDING_PATHS.includes(page.path)) continue;
+        try {
+          page.hydrateHtml = await previewMod.renderAppHydrated(page.path);
+          page.modulePreloads = media ? mediaGuideChunks : landingChunks;
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`${page.path} (${err.message})`);
+        }
+      }
       const homePage = previewMod ? pages.find((p) => p.path === "/") : undefined;
       if (homePage) {
         try {
@@ -290,7 +306,7 @@ async function main() {
     if (previewFailures.length > 0) {
       log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} sivulla: ${previewFailures.slice(0, 5).join(", ")}`);
     }
-    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut, blogiartikkelit, kategoriat ja etusivu).`);
+    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut, blogiartikkelit, kategoriat, lahjasivut ja etusivu).`);
 
     const seen = new Set();
     let written = 0;

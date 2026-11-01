@@ -4,9 +4,15 @@ import { Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { EtusivunSuosituimmat } from "@/components/EtusivunSuosituimmat";
 import { useProducts } from "@/hooks/use-products";
-import { KUMPPANUUS } from "../../api/_lib/vakiot.js";
+import { kumppaniTervehdys } from "../../api/_lib/kumppani.js";
 
 type Kumppani = { koodi: string; nimi: string; kautta: string; malli: "provisio" | "alennus" };
+
+/** Palvelimen renderöimän sivun tiedot (api/_lib/kumppani.js kumppaniSivunHtml): ei uutta hakua. */
+function palvelimenTiedot(koodi: string): { kumppani: Kumppani | null } | null {
+  const s = typeof window !== "undefined" ? (window as Window & { __hkKumppani?: { pyynto: string; kumppani: Kumppani | null } }).__hkKumppani : undefined;
+  return s && s.pyynto === koodi.toLowerCase() ? { kumppani: s.kumppani } : null;
+}
 
 /**
  * /k/<koodi> (2.11.2026): kumppanin oma laskeutumissivu. Palvelin tallentaa koodin evästeeseen 30 päiväksi
@@ -14,10 +20,12 @@ type Kumppani = { koodi: string; nimi: string; kautta: string; malli: "provisio"
  */
 const PartnerLandingPage = () => {
   const { koodi = "" } = useParams();
-  const [k, setK] = useState<Kumppani | null>(null);
-  const [virhe, setVirhe] = useState(false);
+  const alku = palvelimenTiedot(koodi);
+  const [k, setK] = useState<Kumppani | null>(alku?.kumppani ?? null);
+  const [virhe, setVirhe] = useState(!!alku && !alku.kumppani);
   const { data: tuotteet = [], isLoading } = useProducts();
   useEffect(() => {
+    if (palvelimenTiedot(koodi)) return;
     fetch(`/api/sahkoposti?kumppanisivu=${encodeURIComponent(koodi)}`, { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => (j?.ok ? setK(j) : setVirhe(true)))
@@ -26,24 +34,13 @@ const PartnerLandingPage = () => {
 
   return (
     <div className="py-8 md:py-12">
-      <SEOHead title="Tervetuloa | Huumorikauppa" description="Hauskoja t-paitoja ja huppareita suomalaisella huumorilla." noindex />
+      <SEOHead title={k ? `${kumppaniTervehdys(k).otsikko} | Huumorikauppa` : "Tervetuloa | Huumorikauppa"} description="Hauskoja t-paitoja ja huppareita suomalaisella huumorilla." noindex />
       <div className="container max-w-3xl text-center space-y-3">
         {!k && !virhe && <p className="flex items-center justify-center gap-2 text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Ladataan...</p>}
-        {virhe && (
+        {(k || virhe) && (
           <>
-            <h1 className="font-display text-3xl text-foreground">Tervetuloa Huumorikauppaan</h1>
-            <p className="text-muted-foreground">Kumppanikoodia ei löytynyt. Tuotteet löytyvät alta.</p>
-          </>
-        )}
-        {k && (
-          <>
-            <h1 className="font-display text-3xl md:text-4xl text-foreground">Tervetuloa {k.kautta} kautta</h1>
-            <p className="text-muted-foreground">
-              {k.malli === "alennus"
-                ? `Koodi ${k.koodi.toUpperCase()} on tallennettu: kassa antaa ${KUMPPANUUS.alennusmalli.alennusProsentti} %:n alennuksen useimmista tilauksista, eikä koodia tarvitse kirjoittaa.`
-                : `Koodi ${k.koodi.toUpperCase()} on tallennettu, eikä sitä tarvitse kirjoittaa kassalla.`}{" "}
-              Koodi on voimassa tällä laitteella 30 päivää.
-            </p>
+            <h1 className="font-display text-3xl md:text-4xl text-foreground">{kumppaniTervehdys(k).otsikko}</h1>
+            <p className="text-muted-foreground">{kumppaniTervehdys(k).teksti}</p>
           </>
         )}
         <div className="flex flex-wrap justify-center gap-3 pt-2">

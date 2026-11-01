@@ -45,6 +45,8 @@ export const KUMPPANIMALLIT = ["provisio", "alennus"];
 
 /** Kumppanisivun osoite (2.11.2026): huumorikauppa.fi/k/<koodi> tallentaa koodin evästeeseen 30 päiväksi. */
 export const kumppaniLinkki = (koodi, pohja = "https://huumorikauppa.fi") => `${pohja.replace(/\/$/, "")}/k/${koodi}`;
+/** Syvälinkki: huumorikauppa.fi/k/<koodi>/tuote/<slug> tallentaa koodin ja avaa sivun (api/sahkoposti.js jatka=). */
+export const kumppaniSyvalinkki = (koodi, polku, pohja = "https://huumorikauppa.fi") => `${kumppaniLinkki(koodi, pohja)}/${String(polku).replace(/^\/+/, "")}`;
 export const KUMPPANI_EVASTE = "hk_kumppani";
 export const KUMPPANI_EVASTE_PV = 30;
 
@@ -55,6 +57,38 @@ export function genetiivi(nimi) {
   if (/[aeiouyäö]$/i.test(n)) return `${n}n`;
   if (/it$/i.test(n)) return `${n.slice(0, -2)}ien`;
   return `${n}in`;
+}
+
+/** Kumppanisivun tervehdys (sama palvelimen HTML:ssä ja selaimessa, src/pages/PartnerLandingPage.tsx). */
+export function kumppaniTervehdys(k, asetukset = KUMPPANUUS) {
+  if (!k) return { otsikko: "Tervetuloa Huumorikauppaan", teksti: "Kumppanikoodia ei löytynyt. Tuotteet löytyvät alta." };
+  const tallennettu = k.malli === "alennus"
+    ? `Koodi ${k.koodi.toUpperCase()} on tallennettu: kassa antaa ${asetukset.alennusmalli.alennusProsentti} %:n alennuksen useimmista tilauksista, eikä koodia tarvitse kirjoittaa.`
+    : `Koodi ${k.koodi.toUpperCase()} on tallennettu, eikä sitä tarvitse kirjoittaa kassalla.`;
+  return { otsikko: `Tervetuloa ${k.kautta} kautta`, teksti: `${tallennettu} Koodi on voimassa tällä laitteella ${KUMPPANI_EVASTE_PV} päivää.` };
+}
+
+const html = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/**
+ * /k/<koodi> palvelimella (2.11.2026, vercel.json rewrite -> api/sahkoposti.js ?kumppanisivu=&html=1): SPA-kuoreen
+ * (dist/spa-shell.html) oma otsikko, noindex, canonical ja tervehdys, jotta tervehdys näkyy ilman JavaScriptiä.
+ * window.__hkKumppani välittää tiedot sovellukselle, joka ei hae niitä uudelleen.
+ */
+export function kumppaniSivunHtml(kuori, k, koodi) {
+  const t = kumppaniTervehdys(k);
+  const polku = `/k/${encodeURIComponent(String(koodi || "").toLowerCase())}`;
+  const otsikko = k ? `${t.otsikko} | Huumorikauppa` : "Tervetuloa | Huumorikauppa";
+  const kuvaus = "Hauskoja t-paitoja ja huppareita suomalaisella huumorilla.";
+  const siemen = JSON.stringify({ pyynto: String(koodi || "").toLowerCase(), kumppani: k || null }).replace(/</g, "\\u003c");
+  const sisalto = `<main><h1>${html(t.otsikko)}</h1><p>${html(t.teksti)}</p><p><a href="/joulu">Joulumallisto 2026</a> <a href="/kaikki-tuotteet">Kaikki tuotteet</a></p></main>`;
+  return String(kuori)
+    .replace(/<title>[^<]*<\/title>/, () => `<title>${html(otsikko)}</title>`)
+    .replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${html(kuvaus)}" />`)
+    .replace(/<meta name="(robots|googlebot)" content="[^"]*"\s*\/?>/g, '<meta name="$1" content="noindex, follow" />')
+    .replace(/<link rel="canonical"[^>]*>/g, "")
+    .replace("</head>", () => `<link rel="canonical" href="https://huumorikauppa.fi${polku}" />\n<script>window.__hkKumppani=${siemen}</script>\n</head>`)
+    .replace(/(<div id="root">[\s\S]*?<\/header>)/, (m) => m + sisalto);
 }
 
 /** Kumppanisivun tiedot: { koodi, nimi, kautta, malli } tai null. */

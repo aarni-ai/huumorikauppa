@@ -1,5 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCartContext } from "@/context/CartContext";
+import { formatPriceFi } from "@/seo/site";
 import { useProducts } from "@/hooks/use-products";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -56,7 +57,7 @@ export function AddToCartDrawer() {
                   {lastAddedItem.product.name}
                 </p>
                 <p className="text-primary font-bold mt-1">
-                  {lastAddedItem.product.price.toFixed(2)} €
+                  {formatPriceFi(lastAddedItem.product.price)}
                 </p>
                 <div className="text-xs text-muted-foreground mt-0.5 space-x-2">
                   {lastAddedItem.size && <span>Koko: {lastAddedItem.size}</span>}
@@ -79,7 +80,7 @@ export function AddToCartDrawer() {
                   Korissa {totalItems} tuotetta
                 </span>
                 <span className="font-bold text-foreground">
-                  {totalPrice.toFixed(2)} €
+                  {formatPriceFi(totalPrice)}
                 </span>
               </div>
               <FreeShippingProgress total={totalPrice} className="pt-1" />

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { formatPriceFi } from "@/seo/site";
 import { ShoppingCart } from "lucide-react";
 import type { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
@@ -80,7 +81,7 @@ function ComplementaryItem({ product, layout, onNavigate }: { product: Product; 
           <Link to={href} onClick={onNavigate} className="text-sm font-medium text-foreground hover:text-primary transition-colors line-clamp-2">
             {product.name}
           </Link>
-          <p className="text-sm font-bold text-primary mt-0.5">{product.price.toFixed(2)} €</p>
+          <p className="text-sm font-bold text-primary mt-0.5">{formatPriceFi(product.price)}</p>
           {option.kind !== "link" && option.color && <p className="text-xs text-muted-foreground">Väri: {option.color}</p>}
         </div>
         {added ? (

@@ -40,7 +40,9 @@ describe("renderProductPreview", () => {
   const html = renderProductPreview(row, Date.UTC(2026, 0, 15));
 
   it("renders the above-the-fold product view without H1 and without below-the-fold sections", () => {
-    expect(html.startsWith('<div data-prerender-visual="true" inert="">')).toBe(true);
+    // Tuotesivun esikatselu ei ole inert: napautukset otetaan talteen (ESIVALINTA_SCRIPT).
+    expect(html.startsWith('<div data-prerender-visual="true" aria-hidden="true">')).toBe(true);
+    expect(html).toContain("__hkEsivalinta");
     expect(html).not.toMatch(/<h1[\s>]/);
     expect(html).toContain("Testipaita");
     expect(html).toContain("Lisää koriin");

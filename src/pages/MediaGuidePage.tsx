@@ -4,9 +4,12 @@ import { ORGANIZATION } from "@/seo/site";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { MEDIA_LAHJAIDEAT, MEDIA_LAHJAOPAS_PDF } from "@/data/lahjaopasMedia.generated";
+import { KUVIEN_KAYTTO } from "@/data/lahjaopasMediaTeksti";
 
 export const LAHJAOPAS_MEDIA_PATH = "/lahjaopas-media";
 const hinta = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
+// Sivulla pienennetty kuva (api/img.js, 2.11.2026: LCP 4 s täysikokoisella 1000 x 1500 -kuvalla); latauslinkit alkuperäisiin.
+const pieni = (url: string, w: number) => `/api/img?u=${encodeURIComponent(url)}&w=${w}`;
 
 /**
  * /lahjaopas-media (2.11.2026): 20 lahjaideaa toimittajille ja bloggaajille. Pysty- (1000 x 1500) ja vaakakuvat
@@ -27,9 +30,9 @@ const MediaGuidePage = () => {
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3">Lahjaopas medialle 2026</h1>
       <p className="text-muted-foreground max-w-3xl mb-4">
         20 hauskaa lahjaideaa suomalaisella huumorilla: kymmenen klassikkoa ja kymmenen joulumalliston 2026 mallia. Jokaisesta
-        on ladattava pystykuva (1000 x 1500) ja vaakakuva (1500 x 1000). Kuvia saa käyttää lahjaoppaissa ja jutuissa
-        Huumorikaupan tuotteista.
+        on ladattava pystykuva (1000 x 1500) ja vaakakuva (1500 x 1000).
       </p>
+      <p className="font-semibold text-foreground max-w-3xl mb-4">{KUVIEN_KAYTTO}</p>
       <ul className="text-sm text-muted-foreground mb-6 space-y-1">
         <li>Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta.</li>
         <li>14 päivän palautusoikeus (ei personoiduilla tuotteilla). Digitaalinen lahjakortti 25, 35 tai 50 € toimitetaan heti.</li>
@@ -49,9 +52,22 @@ const MediaGuidePage = () => {
         <section key={ryhma} className="mb-12" aria-labelledby={`ryhma-${ryhma}`}>
           <h2 id={`ryhma-${ryhma}`} className="font-display text-2xl text-foreground mb-4">{ryhma}</h2>
           <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {MEDIA_LAHJAIDEAT.filter((i) => i.ryhma === ryhma).map((i) => (
+            {MEDIA_LAHJAIDEAT.filter((i) => i.ryhma === ryhma).map((i) => {
+              const ensimmainen = i.slug === MEDIA_LAHJAIDEAT[0].slug;
+              return (
               <li key={i.slug} className="rounded-xl border border-border bg-card overflow-hidden">
-                <img src={i.pysty} alt={`${i.nimi}, ${i.tuote.toLowerCase()}`} width={1000} height={1500} loading="lazy" decoding="async" className="w-full aspect-[2/3] object-cover bg-muted" />
+                <img
+                  src={pieni(i.pysty, 640)}
+                  srcSet={`${pieni(i.pysty, 480)} 320w, ${pieni(i.pysty, 640)} 427w, ${pieni(i.pysty, 1200)} 800w`}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, calc(100vw - 32px)"
+                  alt={`${i.nimi}, ${i.tuote.toLowerCase()}`}
+                  width={1000}
+                  height={1500}
+                  loading={ensimmainen ? "eager" : "lazy"}
+                  fetchPriority={ensimmainen ? "high" : "auto"}
+                  decoding="async"
+                  className="w-full aspect-[2/3] object-cover bg-muted"
+                />
                 <div className="p-4 space-y-2">
                   <h3 className="font-semibold text-foreground">{i.nimi}</h3>
                   <p className="text-sm text-muted-foreground">{i.tuote} · {hinta(i.hinta)}</p>
@@ -63,7 +79,8 @@ const MediaGuidePage = () => {
                   </div>
                 </div>
               </li>
-            ))}
+              );
+            })}
           </ol>
         </section>
       ))}

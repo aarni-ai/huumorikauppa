@@ -11,7 +11,7 @@ import { kirjaaKaynti } from "./lib/kaynti";
 (window as Window & { __hkMain?: boolean }).__hkMain = true;
 
 const rootElement = document.getElementById('root')!;
-// Kumppanilinkki ?ref= (pois päältä, src/lib/kumppani.ts).
+// Vanha kumppanilinkki ?ref= toimii yhä (src/lib/kumppani.ts); uusi muoto /k/<koodi> asettaa evästeen palvelimella.
 tallennaKumppaniUrlista(window.location.search);
 // Käyntilaskuri /hallinta/mittarit-sivulle (src/lib/kaynti.ts): ei evästeitä eikä tunnisteita.
 kirjaaKaynti();

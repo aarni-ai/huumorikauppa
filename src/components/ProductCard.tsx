@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Product } from "@/types/product";
+import { formatPriceFi } from "@/seo/site";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, X } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -349,11 +350,11 @@ export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
         <div className="flex items-baseline gap-2 flex-wrap pt-0.5">
           {hasDiscount && (
             <span className="text-xs md:text-sm text-muted-foreground line-through font-medium">
-              {product.original_price!.toFixed(2)} €
+              {formatPriceFi(product.original_price!)}
             </span>
           )}
           <span className={`text-lg md:text-xl font-black tracking-tight ${hasDiscount ? "text-destructive" : "text-black"}`}>
-            {product.price.toFixed(2)} €
+            {formatPriceFi(product.price)}
           </span>
         </div>
         {ostaNappi && (

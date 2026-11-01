@@ -3,6 +3,8 @@ const ALLOWED_HOSTS = new Set([
   'images.printify.com',
   'pfy-prod-image-storage.s3.amazonaws.com',
   'pfy-prod-automaton-cache.s3.us-east-2.amazonaws.com',
+  // Kaupan oma Vercel Blob (lahjaopas medialle ja somekuvat, 2.11.2026): sivulle pienennetty kuva, latauslinkki alkuperäiseen.
+  'f9rxc7ndxeb58y5f.public.blob.vercel-storage.com',
 ]);
 
 /**

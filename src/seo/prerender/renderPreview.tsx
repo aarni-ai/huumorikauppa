@@ -37,10 +37,18 @@ export const PREVIEW_ATTR = "data-prerender-visual";
  * Siistii renderToStringin tuloksen esikatseluksi: H1:t <div>:eiksi, koska data-prerender-runko pitää
  * sivun ainoan H1:n. Tuotesivun H1:illä on font-display-luokka, joka määrää fontin, joten ulkoasu ei muutu.
  */
-export function toPreviewHtml(html: string, extra = ""): string {
+export function toPreviewHtml(html: string, extra = "", { inert = true } = {}): string {
   const body = html.replace(/<(\/?)h1(?=[\s>])/g, "<$1div");
-  return `<div ${PREVIEW_ATTR}="true" inert="">${body}${extra}</div>`;
+  return `<div ${PREVIEW_ATTR}="true"${inert ? ' inert=""' : ' aria-hidden="true"'}>${body}${extra}</div>`;
 }
+
+/**
+ * Tuotesivun esikatselu ottaa napautukset talteen (2.11.2026): hitaalla mobiiliyhteydellä sovellus käynnistyy vasta
+ * 3-4 s kuluttua, ja ennen sitä värin, koon ja Lisää koriin -napautukset katosivat. Skripti merkitsee valinnan näkyviin
+ * ja tallentaa sen window.__hkEsivalinta-olioon, jonka ProductPage käyttää käynnistyessään (Lisää koriin lisää tuotteen
+ * valitulla koolla tai korostaa kokovalitsimen). Linkit toimivat esikatselussa tavallisina linkkeinä.
+ */
+export const ESIVALINTA_SCRIPT = `<script>(function(){var V="${PREVIEW_ATTR}";document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)return;var p=t.closest("["+V+"]");if(!p)return;var w=window.__hkEsivalinta=window.__hkEsivalinta||{};var r=t.closest('[role=radio]');var g=r&&r.closest('[role=radiogroup]');if(g){var l=g.getAttribute("aria-label");w[l==="Väri"?"vari":"koko"]=r.textContent.trim();var on=["border-primary","bg-primary","text-primary-foreground"],off=["border-border","text-foreground"];var rs=g.querySelectorAll('[role=radio]');for(var i=0;i<rs.length;i++){var x=rs[i],s=x===r;x.setAttribute("aria-checked",s?"true":"false");for(var j=0;j<on.length;j++)x.classList.toggle(on[j],s);for(var k=0;k<off.length;k++)x.classList.toggle(off[k],!s);}e.preventDefault();return;}var b=t.closest("button");if(b&&/Lisää koriin/.test(b.textContent)){w.lisaa=true;b.setAttribute("aria-busy","true");b.style.opacity="0.75";e.preventDefault();return;}if(b)e.preventDefault();},true);})();</script>`;
 
 /** JSON <script>-elementtiin: "<" escapoidaan, ettei sisältö voi sulkea elementtiä. */
 export function productSeedScript(row: unknown): string {
@@ -48,7 +56,7 @@ export function productSeedScript(row: unknown): string {
   return `<script type="application/json" data-product-seed>${json}</script>`;
 }
 
-function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient, nowMs: number, extra = ""): string {
+function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient, nowMs: number, extra = "", inert = true): string {
   const html = renderToString(
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
@@ -64,7 +72,7 @@ function renderWithShell(path: string, page: ReactNode, queryClient: QueryClient
       </QueryClientProvider>
     </HelmetProvider>,
   );
-  return toPreviewHtml(html, extra);
+  return toPreviewHtml(html, extra, { inert });
 }
 
 /** Ei hakuja palvelimella: vain annettu data tai latausnäkymä, kuten selaimen ensimmäisessä renderöinnissä. */
@@ -83,7 +91,8 @@ export function renderProductPreview(row: Tables<"products">, nowMs = Date.now()
     </Routes>,
     queryClient,
     nowMs,
-    productSeedScript(row),
+    productSeedScript(row) + ESIVALINTA_SCRIPT,
+    false,
   );
 }
 

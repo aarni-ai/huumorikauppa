@@ -2020,6 +2020,15 @@
       ]
     },
     {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/images/(.*)",
       "headers": [
         {
@@ -2037,6 +2046,14 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
+    },
+    {
+      "source": "/k/([^/]+)/(.+)",
+      "destination": "/api/sahkoposti?kumppanisivu=$1&jatka=$2"
+    },
+    {
+      "source": "/k/:koodi",
+      "destination": "/api/sahkoposti?kumppanisivu=:koodi&html=1"
     },
     {
       "source": "/((?!assets/)(?!.*\\.(?:js|mjs|css|xml|txt|json|ico|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|otf|pdf|map)$).*)",

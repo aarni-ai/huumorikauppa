@@ -148,6 +148,7 @@ export const COMPONENT_PAGES = {
   "/tietoa-meista": "AboutPage",
   "/suomalaiset-tyopaikkameemit-top-50": "WorkplaceMemesPage",
   "/hauskimmat-tyopaikkalaput-2026": "OfficeNotesPage",
+  "/lahjaopas-media": "MediaGuidePage",
 } as const satisfies Partial<Record<StaticPagePath, string>>;
 
 export type ComponentPagePath = keyof typeof COMPONENT_PAGES;

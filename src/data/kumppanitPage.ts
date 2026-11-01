@@ -61,8 +61,8 @@ export const kumppanitPage = {
     {
       heading: "Näin kumppanuus toimii",
       items: [
-        "Saat oman kumppanikoodin, esimerkiksi anna-k, ja oman sivun huumorikauppa.fi/k/anna-k, joka toivottaa kävijät tervetulleiksi nimelläsi ja tallentaa koodin 30 päiväksi, joten sitä ei tarvitse kirjoittaa kassalla. Vanha muoto ?ref=anna-k toimii edelleen minkä tahansa sivun perässä.",
-        "Tilaus kirjataan sinulle, kun ostaja tulee linkistäsi ja tilaa samalla käynnillä, tai kun ostaja kirjoittaa koodisi kassan kenttään Kumppanikoodi.",
+        "Saat oman kumppanikoodin, esimerkiksi anna-k, ja oman sivun huumorikauppa.fi/k/anna-k, joka toivottaa kävijät tervetulleiksi nimelläsi ja tallentaa koodin 30 päiväksi, joten sitä ei tarvitse kirjoittaa kassalla. Suoraan tuotteeseen vievä linkki on muotoa huumorikauppa.fi/k/anna-k/tuote/tuotteen-nimi, ja sekin tallentaa koodin.",
+        "Tilaus kirjataan sinulle, kun ostaja tulee linkistäsi ja tilaa samalla laitteella koodin ollessa tallessa (30 päivää), tai kun ostaja kirjoittaa koodisi kassan kenttään Kumppanikoodi.",
         "Mallissa 1 ostaja maksaa tavallisen hinnan. Mallissa 2 koodi antaa ostajalle alennuksen, ja kassa näyttää sen.",
         "Merkitse julkaisut mainonnaksi, esimerkiksi Kaupallinen yhteistyö: Huumorikauppa.",
       ],

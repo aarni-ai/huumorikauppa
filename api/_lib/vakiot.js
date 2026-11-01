@@ -115,7 +115,7 @@ export const MAARAALENNUS = {
 };
 
 /**
- * Kumppanuusohjelma (KATTEET.md "Kumppanuusohjelma"): kumppanilinkki ?ref=<koodi> tai kumppanikoodi kassalla.
+ * Kumppanuusohjelma (KATTEET.md "Kumppanuusohjelma"): kumppanisivu /k/<koodi> (vanha ?ref=<koodi> toimii yhä) tai kumppanikoodi kassalla.
  * Hyväksytty 29.10.2026 ehdolla: kauppaan jää jokaisesta kumppanitilauksesta vähintään 7,00 € katetta provision
  * jälkeen (raja nostettu 5,00 €:sta 29.10.2026). Provisio enintään 10 % tuotteiden arvosta ilman ALV:tä ja toimitusta (api/_lib/kumppani.js).
  * Kumppanit taulussa kumppanit (?tehtava=kumppani-lisaa); KUMPPANIT on varalista.

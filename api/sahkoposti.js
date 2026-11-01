@@ -53,6 +53,18 @@ function asetaHallintaEvaste(res, sivu, avain) {
   const vanhat = [].concat(res.getHeader?.("Set-Cookie") || []);
   res.setHeader("Set-Cookie", [...vanhat, `hk_hallinta_${sivu}=${encodeURIComponent(avain)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
 }
+/** SPA-kuori (dist/spa-shell.html) palvelimen renderöimille sivuille; tuotannon osoitteesta, 5 min muistissa. */
+let kuoriMuisti = { aika: 0, html: "" };
+async function spaKuori(req) {
+  if (kuoriMuisti.html && Date.now() - kuoriMuisti.aika < 300000) return kuoriMuisti.html;
+  const pohjat = ["https://huumorikauppa-five.vercel.app", req.headers?.host ? `https://${req.headers.host}` : null].filter(Boolean);
+  for (const pohja of pohjat) {
+    const r = await fetch(`${pohja}/spa-shell.html`, { headers: { "x-bot-inject": "true" } }).catch(() => null);
+    const t = r?.ok ? await r.text() : "";
+    if (t.includes('<div id="root">')) { kuoriMuisti = { aika: Date.now(), html: t }; return t; }
+  }
+  return kuoriMuisti.html || null;
+}
 export function hallintaPaasy(req, res, sivu, annettu) {
   const nimi = `hk_hallinta_${sivu}`;
   res.setHeader("Cache-Control", "private, no-store");
@@ -134,9 +146,25 @@ export async function kasittele(req, res, store) {
     const { kumppaniSivu, KUMPPANI_EVASTE, KUMPPANI_EVASTE_PV } = await import("./_lib/kumppani.js");
     const k = onTietokanta() ? await kumppaniSivu(sql(), q.kumppanisivu).catch(() => null) : null;
     res.setHeader("Cache-Control", "private, no-store");
+    if (k) {
+      res.setHeader("Set-Cookie", `${KUMPPANI_EVASTE}=${encodeURIComponent(k.koodi)}; Path=/; Max-Age=${KUMPPANI_EVASTE_PV * 86400}; Secure; SameSite=Lax`);
+      // Middlewaren bottitarkistuksen sisäinen haku (x-bot-inject) ei ole avaus.
+      if (!onBotti(String(req.headers["user-agent"] || "")) && !req.headers["x-bot-inject"]) await kirjaaKlikki(sql(), k.koodi).catch(() => false);
+    }
+    // Syvälinkki /k/<koodi>/<polku> (vercel.json rewrite, jatka=): koodi evästeeseen ja suoraan sivulle, esim. tuotteeseen.
+    if (typeof q.jatka === "string") {
+      const polku = `/${String(q.jatka).replace(/^\/+/, "")}`;
+      return res.redirect(302, /^\/[a-z0-9/_-]*$/i.test(polku) && !polku.startsWith("//") ? polku : "/");
+    }
+    // Palvelimen renderöimä sivu /k/<koodi> (vercel.json rewrite, html=1): tervehdys näkyy ilman JavaScriptiä.
+    if (q.html === "1") {
+      const { kumppaniSivunHtml } = await import("./_lib/kumppani.js");
+      const kuori = await spaKuori(req);
+      if (!kuori) return res.redirect(302, "/");
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.status(k ? 200 : 404).send(kumppaniSivunHtml(kuori, k, q.kumppanisivu));
+    }
     if (!k) return res.status(404).json({ ok: false });
-    res.setHeader("Set-Cookie", `${KUMPPANI_EVASTE}=${encodeURIComponent(k.koodi)}; Path=/; Max-Age=${KUMPPANI_EVASTE_PV * 86400}; Secure; SameSite=Lax`);
-    if (!onBotti(String(req.headers["user-agent"] || ""))) await kirjaaKlikki(sql(), k.koodi).catch(() => false);
     return res.status(200).json({ ok: true, koodi: k.koodi, nimi: k.nimi, kautta: k.kautta, malli: k.malli });
   }
   // Hallinta: tarjouspyynnöt (allekirjoitettu avain, tarkoitus "hallinta"; linkki cron ?tehtava=hallinta-linkki).

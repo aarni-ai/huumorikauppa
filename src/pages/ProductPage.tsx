@@ -252,12 +252,18 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
   const addToCartBtnRef = useRef<HTMLButtonElement>(null);
   const variantSectionRef = useRef<HTMLDivElement>(null);
+  const sizeSectionRef = useRef<HTMLDivElement>(null);
+  // Koko puuttuu, kun Lisää koriin painettiin: kokovalitsin korostetaan ja vieritetään näkyviin (ei virhetoastia).
+  const [kokoMuistutus, setKokoMuistutus] = useState(false);
+  const [lisaaKunKoko, setLisaaKunKoko] = useState(false);
   const stickyEndRef = useRef<HTMLDivElement>(null);
   const [buttonOutOfView, setButtonOutOfView] = useState(false);
   const [pageEndReached, setPageEndReached] = useState(false);
   // Kiinteä ostopalkki näkyy vain, kun sivun oma Lisää koriin -painike ei ole näkyvissä, ja
   // piiloutuu tuotesisällön lopussa, jottei se peitä alatunnistetta.
-  const showStickyBar = buttonOutOfView && !pageEndReached;
+  // 2.11.2026: palkki (hinta ja Lisää koriin) näkyy mobiilissa koko tuotesisällön ajan, myös ensinäkymässä.
+  void buttonOutOfView;
+  const showStickyBar = !pageEndReached;
 
   useEffect(() => {
     const el = addToCartBtnRef.current;
@@ -301,6 +307,35 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       if (next && next !== selectedColor) setSelectedColor(next);
     }
   }, [product, selectedColor, sellableColors]);
+
+  // Esikatselussa (ennen sovelluksen latautumista) tehdyt valinnat: src/seo/prerender/renderPreview.tsx ESIVALINTA_SCRIPT.
+  const esivalintaKaytetty = useRef(false);
+  useEffect(() => {
+    if (previewOnly || !product || esivalintaKaytetty.current || !sellableColors.length) return;
+    esivalintaKaytetty.current = true;
+    const w = window as Window & { __hkEsivalinta?: { vari?: string; koko?: string; lisaa?: boolean } };
+    const e = w.__hkEsivalinta;
+    delete w.__hkEsivalinta;
+    if (!e) return;
+    // Oletusväri samalla säännöllä kuin alla (värivalinta ei välttämättä ole vielä asetettu).
+    const oletus = product.variants.default_color as string | undefined;
+    const vari = e.vari && sellableColors.includes(e.vari)
+      ? e.vari
+      : selectedColor ?? (oletus && sellableColors.includes(oletus) ? oletus : sellableColors[0]);
+    if (vari && vari !== selectedColor) setSelectedColor(vari);
+    const koko = e.koko && isVariantAvailable(product, vari, e.koko) ? e.koko : undefined;
+    if (koko) setSelectedSize(koko);
+    if (e.lisaa) setEsilisays(koko ?? "");
+  }, [previewOnly, product, sellableColors, selectedColor]);
+  const [esilisays, setEsilisays] = useState<string | null>(null);
+  const lisaaRef = useRef<((koko?: string) => void) | null>(null);
+  // Esikatselussa painettu Lisää koriin: lisätään, kun valinnat on palautettu (ilman kokoa kokovalitsin korostetaan).
+  useEffect(() => {
+    if (esilisays === null || !selectedColor || (esilisays && selectedSize !== esilisays)) return;
+    setEsilisays(null);
+    if (!esilisays) setLisaaKunKoko(true);
+    lisaaRef.current?.(esilisays || undefined);
+  }, [esilisays, selectedColor, selectedSize]);
 
   useEffect(() => {
     // Värin vaihto: koko, jota ei valmisteta uudella värillä, poistetaan valinnasta.
@@ -439,9 +474,10 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       ? seoCopy.longDescription
       : sanitizeProductDescription(product.description);
 
-  const handleAddToCart = () => {
-    if (needsSize) {
-      toast({ title: "Valitse koko ensin! 📏", variant: "destructive" });
+  const handleAddToCart = (koko = selectedSize) => {
+    if (hasSizes && !koko) {
+      setKokoMuistutus(true);
+      sizeSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
     if (needsColor) {
@@ -457,7 +493,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       document.getElementById("custom-text-input")?.focus();
       return;
     }
-    const size = hideSize ? (availableSizes(product, selectedColor, allSizes)[0] ?? allSizes[0]) : selectedSize;
+    const size = hideSize ? (availableSizes(product, selectedColor, allSizes)[0] ?? allSizes[0]) : koko;
     const tarkistettavaKoko = size ?? (allSizes.length === 1 ? allSizes[0] : undefined);
     if (
       (tarkistettavaKoko !== undefined || allSizes.length === 0) &&
@@ -478,6 +514,19 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
   const handleColorSelect = (color: string) => {
     setSelectedColor(color);
+  };
+
+  lisaaRef.current = handleAddToCart;
+
+  // Koon valinta: jos ostaja painoi jo Lisää koriin ilman kokoa (myös esikatselussa ennen sovelluksen latautumista),
+  // tuote lisätään koriin heti valitulla koolla.
+  const valitseKoko = (size: string) => {
+    setSelectedSize(size);
+    setKokoMuistutus(false);
+    if (lisaaKunKoko) {
+      setLisaaKunKoko(false);
+      handleAddToCart(size);
+    }
   };
 
   const scrollToVariants = () => {
@@ -633,17 +682,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {hasDiscount && (
               <p className="text-xs text-muted-foreground">Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}</p>
             )}
-            <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact className="mt-1" />
             <TpaitapariRivi kategoria={product.category} hinta={kokoHinta} className="mt-1" />
             {LISATUOTE_KATEGORIAT.includes(product.category) && (
               <p className="mt-1 text-xs text-muted-foreground">Tarra myydään t-paidan, hupparin tai julisteen lisänä samassa tilauksessa.</p>
             )}
             {onYritysNostoTuote(product.slug) && <YritysNosto className="mt-3" />}
-            {(product.category === "t-paidat" || product.category === "hupparit") && (
-              <Link to="/personoitu-paita" className="mt-1 inline-block text-xs text-primary underline">
-                Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}
-              </Link>
-            )}
           </div>
 
           {/* Images */}
@@ -810,9 +853,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
             {/* Size selector + kokoapu */}
             {hasSizes && (
-              <div ref={!hasColors ? variantSectionRef : undefined}>
+              <div ref={sizeSectionRef} className={`scroll-mt-24 rounded-md transition-shadow ${kokoMuistutus ? "ring-2 ring-primary ring-offset-4 ring-offset-background" : ""}`}>
                 <div className="flex items-center justify-between mb-1 md:mb-2 min-h-[20px]">
-                  <span className="text-xs md:text-sm font-medium text-foreground">Koko{selectedSize ? `: ${selectedSize}` : ""}</span>
+                  <span className={`text-xs md:text-sm font-medium ${kokoMuistutus ? "text-primary font-bold" : "text-foreground"}`}>
+                    {selectedSize ? `Koko: ${selectedSize}` : kokoMuistutus ? "Valitse koko" : "Koko"}
+                  </span>
                   {isClothingCategory(product.category) && (
                     <SizeGuide
                       slug={product.slug}
@@ -835,8 +880,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                       type="button"
                       role="radio"
                       aria-checked={selectedSize === size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`shrink-0 min-w-[44px] px-3 md:px-4 h-9 md:h-11 rounded-md border text-sm font-medium transition-colors ${
+                      onClick={() => valitseKoko(size)}
+                      className={`shrink-0 min-w-[44px] px-3 md:px-4 h-10 md:h-11 rounded-md border text-sm font-medium transition-colors ${
                         selectedSize === size
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border text-foreground hover:border-primary/50"
@@ -875,9 +920,20 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 <span className="text-base font-bold text-foreground w-7 text-center" aria-live="polite">{quantity}</span>
                 <button type="button" aria-label="Lisää määrää" onClick={() => setQuantity(Math.min(product.stock, quantity + 1))} className="w-10 h-12 text-foreground hover:bg-muted flex items-center justify-center font-bold">+</button>
               </div>
-              <Button ref={addToCartBtnRef} onClick={handleAddToCart} size="lg" className="flex-1 h-12 bg-primary text-primary-foreground font-bold text-base md:text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
+              <Button ref={addToCartBtnRef} data-lisaa-koriin="" onClick={() => { if (needsSize) setLisaaKunKoko(true); handleAddToCart(); }} size="lg" className="flex-1 h-12 bg-primary text-primary-foreground font-bold text-base md:text-lg shadow-glow-lime hover:scale-[1.02] transition-transform">
                 <ShoppingCart className="h-5 w-5 mr-2" /> Lisää koriin
               </Button>
+            </div>
+
+            {/* Mobiili (2.11.2026): toimitus, maksu, joulun takaraja ja palautus ostopainikkeen alla, jotta väri, koko ja
+                Lisää koriin mahtuvat 390 x 844 -ensinäkymään (ennen painike alkoi 844 px:n kohdalta, taitteen alla). */}
+            <div className="md:hidden space-y-1">
+              <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact />
+              {(product.category === "t-paidat" || product.category === "hupparit") && (
+                <Link to="/personoitu-paita" className="inline-block text-xs text-primary underline">
+                  Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}
+                </Link>
+              )}
             </div>
 
             {/* Toimitusarvio ja sama design ostopainikkeen alla, jotta koko ja Lisää koriin mahtuvat mobiilin ensinäkymään. */}
@@ -1142,32 +1198,6 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         }`}
         aria-hidden={!showStickyBar}
       >
-        {/* Koot palkissa: koon voi valita ja tuotteen lisätä koriin vierittämättä (29.10.2026). */}
-        {hasSizes && (
-          <div
-            className="flex gap-1.5 overflow-x-auto px-3 pt-2.5"
-            style={{ scrollbarWidth: "none" }}
-            role="radiogroup"
-            aria-label="Koko"
-          >
-            {sellableSizes.map((size: string) => (
-              <button
-                key={size}
-                type="button"
-                role="radio"
-                aria-checked={selectedSize === size}
-                onClick={() => setSelectedSize(size)}
-                className={`shrink-0 min-w-[44px] px-2.5 h-9 rounded-md border text-sm font-medium transition-colors ${
-                  selectedSize === size
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-card text-foreground"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        )}
         <div className="flex items-center gap-3 p-3">
           <img
             src={proxiedImage(currentImages[0] || product.images[0], { width: 320 }) || "/placeholder.svg"}
@@ -1182,17 +1212,15 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             <p className="text-sm font-bold text-primary">{formatPriceFi(kokoHinta)}</p>
           </div>
           <Button
-            onClick={(needsColor && !selectedColor) ? scrollToVariants : handleAddToCart}
+            onClick={() => {
+              if (needsColor && !selectedColor) return scrollToVariants();
+              if (needsSize) setLisaaKunKoko(true);
+              handleAddToCart();
+            }}
             size="lg"
-            className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
+            className="h-12 bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime"
           >
-            {(needsSize && !selectedSize) ? (
-              "Valitse koko ↑"
-            ) : (needsColor && !selectedColor) ? (
-              "Valitse väri ↓"
-            ) : (
-              <><ShoppingCart className="h-4 w-4 mr-1" /> Lisää koriin</>
-            )}
+            <ShoppingCart className="h-4 w-4 mr-1" /> Lisää koriin
           </Button>
         </div>
       </div>

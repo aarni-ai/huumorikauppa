@@ -301,7 +301,12 @@ export function preloadRoute(pathname: string): Promise<void> {
   const polku = pathname.replace(/(.)\/$/, "$1");
   // Blogiartikkelit hydratoidaan esirenderöidystä merkinnästä: sivun chunk ennen hydratointia.
   // Kategoriasivut samoin (2.11.2026, scripts/prerender.mjs renderAppHydrated).
-  const sivu = ESILADATTAVAT[polku] ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost : /^\/kategoria\/[^/]+$/.test(polku) ? CategoryPage : undefined);
+  // Lahjasivut ja lahjaopas medialle samoin (2.11.2026): staattinen runko teki Lighthouse-tuloksesta vaihtelevan (77-90).
+  const sivu = ESILADATTAVAT[polku]
+    ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost
+      : /^\/kategoria\/[^/]+$/.test(polku) ? CategoryPage
+        : polku === "/lahjaopas-media" ? MediaGuidePage
+          : LANDING_PATHS.includes(polku) ? LandingPage : undefined);
   return sivu ? sivu.preload().then(() => undefined, () => undefined) : Promise.resolve();
 }
 

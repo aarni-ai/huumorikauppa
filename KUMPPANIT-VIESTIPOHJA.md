@@ -49,8 +49,8 @@ Hei [nimi],
 tervetuloa Huumorikaupan kumppaniksi!
 
 - Kumppanikoodisi: **[koodi]**
-- Linkkisi: https://huumorikauppa.fi/?ref=[koodi]
-  (Koodin voi lisätä minkä tahansa sivun perään, esimerkiksi https://huumorikauppa.fi/tonnin-seteli-paita?ref=[koodi].)
+- Linkkisi: https://huumorikauppa.fi/k/[koodi]
+  (Linkin perään voi lisätä minkä tahansa sivun, esimerkiksi https://huumorikauppa.fi/k/[koodi]/tonnin-seteli-paita.)
 
 Tilaus kirjataan sinulle, kun ostaja tulee linkistäsi ja tilaa samalla käynnillä, tai kun ostaja kirjoittaa koodisi
 kassan kenttään Kumppanikoodi. Pyydä seuraajia kirjoittamaan koodi kassalla, niin tilaus kirjautuu varmasti.

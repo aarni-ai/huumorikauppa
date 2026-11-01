@@ -175,6 +175,15 @@ export const STATIC_PAGE_META = {
     intro:
       "Huumorikauppa on kotimainen huumoripaitojen verkkokauppa. Tältä sivulta toimittaja saa kaupan perustiedot, painokelpoiset tuotekuvat ja lahjavinkit teemoittain.",
   },
+  "/lahjaopas-media": {
+    title: "Lahjaopas medialle 2026 | Huumorikauppa",
+    description:
+      "Huumorikaupan lahjaopas toimittajille ja bloggaajille: 20 hauskaa lahjaideaa, hinnat ja ladattavat pysty- ja vaakakuvat sekä PDF.",
+    h1: "Lahjaopas medialle 2026",
+    name: "Lahjaopas medialle",
+    intro:
+      "20 hauskaa lahjaideaa suomalaisella huumorilla toimittajille ja bloggaajille, kuvat ja hinnat valmiina.",
+  },
 } satisfies Record<string, StaticPageMeta>;
 
 export type StaticPagePath = keyof typeof STATIC_PAGE_META;

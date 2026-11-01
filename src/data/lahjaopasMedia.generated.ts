@@ -224,4 +224,4 @@ export const MEDIA_LAHJAIDEAT: MediaLahjaidea[] = [
 ];
 
 /** PDF-versio (scripts/lahjaopas-media-pdf.mjs, Vercel Blob); tyhjä, kunnes PDF on tehty. */
-export const MEDIA_LAHJAOPAS_PDF = "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/huumorikauppa-lahjaopas-2026-ZIML9y0L8nT5jjDwSQmBHF1v0gyqPP.pdf";
+export const MEDIA_LAHJAOPAS_PDF = "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/huumorikauppa-lahjaopas-2026-hBYKwjrbpQtevIVeRw6Tvcy1LedQTq.pdf";
