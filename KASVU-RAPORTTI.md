@@ -2096,3 +2096,21 @@ Testit 1546 läpi. Kolmen User-Agentin tarkistus (Chrome, iPhone Safari, Googleb
   domainivirheeseen. Nyt se käyttää samaa varareittiä kuin hälytykset (lahetaVarareitilla).
 - Päivän yhteenvedossa jatkossa linkit mittariin, someen ja tarjouspyyntöihin sekä muistutus evästeestä.
 - Huumorikauppa@gmail.com saa viestit suoraan vasta, kun domain on vahvistettu Resendissä (DNS, KAYTTOONOTTO.md kohta 5).
+
+## 2.11.2026 (kiireellinen): hallintapääsy Coworkille kertakäyttöisellä aktivointikoodilla
+
+- **Miksi viesti ei tullut:** Resendin loki: "Hallintalinkit Coworkille" lähti 1.11. klo 15.35 ja meni perille, mutta
+  vain osoitteeseen flyapeg@gmail.com. huumorikauppa.fi-domainia ei ole vahvistettu Resendissä, ja silloin Resendin
+  testilähettäjä toimittaa vain Resend-tilin omaan osoitteeseen. Mikään Resend-reitti ei tavoita huumorikauppa@gmail.comia
+  ennen vahvistusta (sama koskee päivän yhteenvetoa ja hälytyksiä, jotka menevät flyapeg@gmail.comiin).
+- **Uusi reitti:** kertakäyttöinen aktivointikoodi. Sivu /hallinta/aktivoi; koodi (XXXX-XXXX) toimii kerran ja vanhenee
+  24 tunnissa (api/_lib/aktivointi.js, kannassa vain SHA-256-tiiviste, yli 20 väärää yritystä tunnissa lukitsee
+  tunniksi). Onnistunut koodi antaa selaimelle 90 päivän evästeet sivuille /hallinta/mittarit, /hallinta/some ja
+  /hallinta/tarjoukset. Koodin luo cron `?tehtava=aktivointikoodi`; koodia ei tallenneta repoon.
+- **Lähetys:** viesti "Hallintalinkit Coworkille" lähetettiin Gmailista (flyapeg@gmail.com) osoitteeseen
+  huumorikauppa@gmail.com: aktivointisivu, koodi ja ohje mittarilomakkeisiin ja kirjausrajapintaan. Pitkäikäisiä
+  avaimia viestissä ei ole.
+- **Tarkistettu tuotannossa:** väärä koodi 400, oikea koodi 200 ja kolme evästettä (HttpOnly, Secure, 90 pv), toinen
+  käyttö 400; evästeillä mittarit, some ja tarjoukset 200, ilman 404. Chromessa erillinen testikoodi: "Aktivoitu",
+  mittari ("matka tavoitteeseen") ja some (Pinterest-kuvat) aukeavat ilman avainta. Headless Chrome tyhjällä
+  profiililla: molemmat sivut näyttävät "Ei pääsyä. Avaa koko hallintalinkki."

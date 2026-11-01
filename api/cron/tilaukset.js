@@ -227,6 +227,15 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: r.ok, otsikko: viesti.subject, yritykset });
   }
 
+  // Hallinnan kertakäyttöinen aktivointikoodi (24 h, yksi käyttö; api/_lib/aktivointi.js, sivu /hallinta/aktivoi).
+  if (req.query.tehtava === "aktivointikoodi") {
+    const { luoAktivointikoodi } = await import("../_lib/aktivointi.js");
+    const { koodi, vanhenee } = await luoAktivointikoodi(sql());
+    const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(200).json({ ok: true, koodi, sivu: `${pohja}/hallinta/aktivoi`, vanhenee });
+  }
+
   if (req.query.tehtava === "hallinta-linkki") {
     const { hallintaLinkit } = await import("../_lib/hallinta.js");
     const l = hallintaLinkit();

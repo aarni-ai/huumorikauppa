@@ -39,3 +39,14 @@ describe("hallintasivujen pääsy evästeellä", () => {
     expect(yhteenvetoRivit(l)[0]).toContain("/hallinta/tarjoukset?avain=");
   });
 });
+
+describe("aktivointikoodi", () => {
+  it("muoto, normalisointi ja tiiviste", async () => {
+    const { uusiKoodi, normalisoi, tiiviste } = await import("../../api/_lib/aktivointi.js");
+    const k = uusiKoodi();
+    expect(k).toMatch(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/);
+    expect(normalisoi(` ${k.toLowerCase()} `)).toBe(k.replace("-", ""));
+    expect(tiiviste(k.toLowerCase())).toBe(tiiviste(k));
+    expect(tiiviste(k)).not.toContain(k.replace("-", ""));
+  });
+});

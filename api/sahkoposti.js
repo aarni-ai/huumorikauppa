@@ -22,6 +22,7 @@
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
+ * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
@@ -46,12 +47,15 @@ function lueEvaste(req, nimi) {
   const pari = String(req.headers?.cookie || "").split(/;\s*/).find((c) => c.startsWith(`${nimi}=`));
   try { return pari ? decodeURIComponent(pari.slice(nimi.length + 1)) : ""; } catch { return ""; }
 }
+function asetaHallintaEvaste(res, sivu, avain) {
+  const vanhat = [].concat(res.getHeader?.("Set-Cookie") || []);
+  res.setHeader("Set-Cookie", [...vanhat, `hk_hallinta_${sivu}=${encodeURIComponent(avain)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
+}
 export function hallintaPaasy(req, res, sivu, annettu) {
   const nimi = `hk_hallinta_${sivu}`;
   res.setHeader("Cache-Control", "private, no-store");
   if (annettu && tarkistaTunniste(annettu, "hallinta") === sivu) {
-    const vanhat = [].concat(res.getHeader?.("Set-Cookie") || []);
-    res.setHeader("Set-Cookie", [...vanhat, `${nimi}=${encodeURIComponent(annettu)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
+    asetaHallintaEvaste(res, sivu, annettu);
     return true;
   }
   const evaste = lueEvaste(req, nimi);
@@ -226,6 +230,16 @@ export async function kasittele(req, res, store) {
       if (!t.ok) return res.status(400).json(t);
       await tallennaYritysluvut(sql(), t.rivi);
       return res.status(200).json({ ok: true, tallennettu: t.rivi });
+    }
+    case "aktivoi": {
+      // Kertakäyttöinen aktivointikoodi (api/_lib/aktivointi.js): evästeet mittariin, someen ja tarjouspyyntöihin 90 pv.
+      res.setHeader("Cache-Control", "private, no-store");
+      const { kaytaAktivointikoodi } = await import("./_lib/aktivointi.js");
+      const { allekirjoita } = await import("./_lib/markkinointi.js");
+      const t = await kaytaAktivointikoodi(sql(), body.koodi);
+      if (!t.ok) return res.status(t.syy === "lukittu" ? 429 : 400).json({ ok: false, virhe: t.syy === "lukittu" ? "Liian monta yritystä. Yritä tunnin päästä." : "Koodi on virheellinen, vanhentunut tai jo käytetty." });
+      for (const sivu of ["mittarit", "some", "tarjoukset"]) asetaHallintaEvaste(res, sivu, allekirjoita("hallinta", sivu));
+      return res.status(200).json({ ok: true, sivut: ["/hallinta/mittarit", "/hallinta/some", "/hallinta/tarjoukset"] });
     }
     case "mainoskulut": {
       // Mainoskulut mittariin (api/_lib/mainoskulut.js); avain = mittarisivun avain.
