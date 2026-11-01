@@ -8,6 +8,9 @@
  *  - g:custom_label_0: kateluokka kate-alle-20 | kate-20-30 | kate-30-40 | kate-yli-40 (api/_lib/kateluokat.js,
  *    generoitu Printify-kuluista: scripts/generoi-kateluokat.mjs); puuttuu, jos tuotteen katetta ei tunneta
  *  - g:custom_label_2: myydyin | muut (Printify-tilaukset, api/_lib/kateluokat.js)
+ *  - g:custom_label_3: teema; joulutuotteet "joulu2026" (onJoulutuote, 2.11.2026; kaikki viisi labelia ovat käytössä,
+ *    joten joulumerkintä on teemalabelin arvo, aiemmin "joulu")
+ * Tarkistus: scripts/syote-tarkistus.mjs.
  */
 import TOP50 from "./top50.generated.js";
 import { KATELUOKAT, MYYDYIMMAT } from "./kateluokat.js";
@@ -24,6 +27,9 @@ export function kateluokka(kate) {
 // kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
 export const ILMAINEN_RAJA = 79;
 export const TOIMITUS = 6.9;
+// Peili: src/config/toimitus.ts KASITTELYAIKA_MIN/MAX ja KULJETUSAIKA_MIN/MAX (src/test/syote.test.ts vertaa).
+export const KASITTELY = [1, 4];
+export const KULJETUS = [2, 6];
 
 const TUOTETYYPIT = [
   [/T-Shirts/, "Vaatteet > T-paidat"],
@@ -70,10 +76,21 @@ export function jarjestaLisakuvat(item) {
   return item.replace(/<g:additional_image_link>[^<]*<\/g:additional_image_link>/g, () => `<g:additional_image_link>${jarjestetty[k++]}</g:additional_image_link>`);
 }
 
+/**
+ * Joulutuote (custom_label_3 = "joulu2026"): joulumallisto 2026 (src/data/joulumallisto2026.ts: slugit päättyvät
+ * -jouluun, -pikkujouluihin tai kaamos- ja marraskuumalleissa -talveen; src/test/syote.test.ts tarkistaa jokaisen) sekä
+ * muut joulu- ja pikkujouluaiheiset tuotteet slugin tai otsikon sanasta (joulu, pikkujoulu, tonttu, pukki, glögi,
+ * kinkku, piparkakku, lumiukko, poro).
+ */
+export function onJoulutuote(teksti) {
+  const t = String(teksti).toLowerCase();
+  return /-(jouluun|pikkujouluihin|talveen)\b/.test(t) || /joulu|tonttu|tontun|pukki|gl[öo]gi|kinkku|piparkak|lumiukko|\bporo/.test(t);
+}
+
 /** custom_label_3: kampanjoitava teema otsikon ja slugin perusteella. */
 export function teemaluokka(teksti) {
   const t = String(teksti).toLowerCase();
-  if (/joulu|tonttu|pukki|pikkujoulu/.test(t)) return "joulu";
+  if (onJoulutuote(t)) return "joulu2026";
   if (/eläk|elak/.test(t)) return "elakelaiselle";
   if (/\bisä|isälle|isalle|iskä|faija/.test(t)) return "isalle";
   if (/äiti|aiti|äidille|mummo|vaimo|naiselle/.test(t)) return "naiselle";
@@ -91,15 +108,16 @@ export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = 
   const toimitus = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUS;
   const gkat = (kentta(item, "google_product_category") || "").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
   const tyyppi = (TUOTETYYPIT.find(([re]) => re.test(gkat)) || [null, "Hauskat lahjat"])[1];
-  // Toimitusaika 3-10 arkipäivää (src/config/toimitus.ts): valmistus 2-5 ja kuljetus 1-5 arkipäivää.
+  // Toimitusaika 3-10 arkipäivää (src/config/toimitus.ts): käsittely 1-4 ja kuljetus 2-6 arkipäivää, samat kuin
+  // tuotesivujen OfferShippingDetails (KASITTELYAIKA_*, KULJETUSAIKA_*; aiemmin syötteessä 2-5 ja 1-5).
   let out = item.replace(/<g:shipping>[\s\S]*?<\/g:shipping>/, `<g:shipping>
         <g:country>FI</g:country>
         <g:service>Posti kotiinkuljetus</g:service>
         <g:price>${toimitus.toFixed(2)} EUR</g:price>
-        <g:min_handling_time>2</g:min_handling_time>
-        <g:max_handling_time>5</g:max_handling_time>
-        <g:min_transit_time>1</g:min_transit_time>
-        <g:max_transit_time>5</g:max_transit_time>
+        <g:min_handling_time>${KASITTELY[0]}</g:min_handling_time>
+        <g:max_handling_time>${KASITTELY[1]}</g:max_handling_time>
+        <g:min_transit_time>${KULJETUS[0]}</g:min_transit_time>
+        <g:max_transit_time>${KULJETUS[1]}</g:max_transit_time>
       </g:shipping>`);
   out = jarjestaLisakuvat(out);
   const lisat = [];
@@ -116,6 +134,7 @@ export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = 
   lisaa("custom_label_2", myydyimmat.has(slug) ? "myydyin" : "muut");
   lisaa("custom_label_3", teemaluokka(`${kentta(out, "title") || ""} ${slug}`));
   lisaa("custom_label_4", onTop50(slug) ? "top50" : "muut");
+
   if (!/<g:free_shipping_threshold>/.test(out)) {
     lisat.push(`      <g:free_shipping_threshold>
         <g:country>FI</g:country>

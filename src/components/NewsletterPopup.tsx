@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { X, Mail, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ENSITILAUS_ALENNUS_PROSENTTI, SUOSTUMUS_UUTISKIRJE } from "../../api/_lib/vakiot.js";
+import { LISTA_EHDOT } from "./NewsletterLista";
 
 const STORAGE_KEY = "huumorikauppa-newsletter-dismissed";
 const DELAY_MS = 20000;
@@ -22,7 +23,7 @@ const kirjoita = (k: string, v: string) => {
 /**
  * Uutiskirjeen tilaus (oma tausta, /api/sahkoposti). Suostumus annetaan erillisellä valintaruudulla, jota ei ole
  * valittu valmiiksi; sama teksti tallentuu suostumuksen kanssa. Ensitilauksen koodi luvataan vain, kun se on käytössä
- * (api/_lib/vakiot.js ENSITILAUS_ALENNUS_PROSENTTI), ja se lähetetään sähköpostilla.
+ * (api/_lib/vakiot.js ENSITILAUS_ALENNUS_PROSENTTI), ja se näytetään heti tilauksen jälkeen (2.11.2026).
  */
 export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
   const [open, setOpen] = useState(false);
@@ -30,6 +31,7 @@ export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
   const [suostumus, setSuostumus] = useState(false);
   const [lahettaa, setLahettaa] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [koodi, setKoodi] = useState<string | null>(null);
   const { toast } = useToast();
   const alennus = ENSITILAUS_ALENNUS_PROSENTTI > 0;
 
@@ -65,8 +67,10 @@ export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
       const data = await vastaus.json().catch(() => null);
       if (!vastaus.ok || !data?.ok) throw new Error(data?.error || "Tilaus epäonnistui");
       setSubmitted(true);
+      setKoodi(data.koodi || null);
       kirjoita(STORAGE_KEY, "true");
-      setTimeout(() => setOpen(false), 4000);
+      // Koodi näytetään heti (2.11.2026), joten ikkuna jää auki, kunnes asiakas sulkee sen.
+      if (!data.koodi) setTimeout(() => setOpen(false), 4000);
     } catch (err) {
       toast({ title: "Tilaus epäonnistui", description: err instanceof Error ? err.message : undefined, variant: "destructive" });
     } finally {
@@ -94,7 +98,7 @@ export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
             {alennus
-              ? "Tilaa uutiskirje, niin lähetämme alennuskoodin sähköpostiisi."
+              ? "Tilaa uutiskirje, niin saat alennuskoodin heti."
               : "Kerromme sähköpostilla uusista tuotteista ja tarjouksista."}
           </DialogDescription>
         </div>
@@ -105,8 +109,10 @@ export function NewsletterPopup({ viive = DELAY_MS }: { viive?: number }) {
               <Mail className="h-10 w-10 text-primary mx-auto" />
               <p className="font-bold text-foreground">Kiitos!</p>
               <p className="text-sm text-muted-foreground">
-                {alennus ? "Alennuskoodi on matkalla sähköpostiisi." : "Tilaus on vastaanotettu. Lähetimme vahvistuksen sähköpostiisi."}
+                {koodi ? "Ensimmäisen tilauksesi alennuskoodi:" : "Tilaus on vastaanotettu."}
               </p>
+              {koodi && <p className="font-mono text-xl font-bold tracking-wider text-foreground select-all">{koodi}</p>}
+              {koodi && <p className="text-xs text-muted-foreground">Kirjoita koodi kassalla kenttään Alennuskoodi. {LISTA_EHDOT}</p>}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">

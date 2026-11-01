@@ -10,7 +10,8 @@
  *  - image_link: etukuva (camera_label=front), jos pääkuvana on muu näkymä; additional_image_link ilman
  *    pääkuvan toistoa ja kaksoiskappaleita, max 10
  *  - vaatteet (Apparel & Accessories): gender, age_group, color (oletusväri = pääkuvan väri) ja
- *    Clothing-tuotteille size (valmistettavat koot tuotetason arvona "S/M/L/XL/2XL"; syöte on tuotetasoinen)
+ *    Clothing-tuotteille size (valmistettavat koot tuotetason arvona "S/M/L/XL/2XL"; syöte on tuotetasoinen),
+ *    koot aina järjestyksessä XS-5XL, sekä size_system EU ja size_type regular (2.11.2026)
  */
 import { createRequire } from "node:module";
 
@@ -89,8 +90,12 @@ export function saatavatKoot(slug, variants) {
   const koot = Array.isArray(variants?.sizes) ? variants.sizes : [];
   const varit = Array.isArray(variants?.colors) && variants.colors.length ? variants.colors : [""];
   const ei = new Set(SAATAVUUS[slug]?.unavailable || []);
-  return koot.filter((koko) => varit.some((vari) => !ei.has(`${vari}|${koko}`)));
+  const saatavat = koot.filter((koko) => varit.some((vari) => !ei.has(`${vari}|${koko}`)));
+  // Kokojärjestys (tuoterivillä joskus "L/M/S/..."): tunnetut koot pienimmästä suurimpaan, tuntemattomat perään.
+  const sija = (k) => { const i = KOKOJARJESTYS.indexOf(String(k).toUpperCase()); return i < 0 ? KOKOJARJESTYS.length : i; };
+  return saatavat.map((k, i) => ({ k, i })).sort((a, b) => sija(a.k) - sija(b.k) || a.i - b.i).map((x) => x.k);
 }
+const KOKOJARJESTYS = ["XXS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
 
 export function kokoArvo(koot) {
   if (koot.length === 1 && /^one[\s_-]?size$/i.test(koot[0])) return "one_size";
@@ -159,7 +164,11 @@ export function korjaaItem(item, tuote = null) {
     lisaa("color", v?.default_color || varit[0]);
     if (/^Apparel & Accessories > (Clothing|Shoes)(?: >|$)/.test(kat)) {
       const koot = saatavatKoot(tuote?.slug, v);
-      if (koot.length) lisaa("size", kokoArvo(koot));
+      if (koot.length) {
+        lisaa("size", kokoArvo(koot));
+        lisaa("size_system", "EU");
+        lisaa("size_type", "regular");
+      }
     }
   }
   return lisat.length ? out.replace(/\s*<\/item>$/, `\n${lisat.join("\n")}\n    </item>`) : out;

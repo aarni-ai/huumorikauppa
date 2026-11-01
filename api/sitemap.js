@@ -35,6 +35,16 @@ const STATIC_PAGES = [
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
   { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
   { loc: "/yritykset", changefreq: "weekly", priority: "0.8" },
+  // Alakohtaiset yrityssivut (2.11.2026, src/data/yritysAlat.ts; src/data/yritysAlat.test.ts tarkistaa listan).
+  { loc: "/yritykset/rakennus", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/insinoorit", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/vpk", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/terveys", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/kauneus", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/it", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/mainos", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/tapahtumat", changefreq: "weekly", priority: "0.7" },
+  { loc: "/yritykset/urheiluseurat", changefreq: "weekly", priority: "0.7" },
   { loc: "/personoitu-paita", changefreq: "weekly", priority: "0.8" },
   { loc: "/kumppanit", changefreq: "monthly", priority: "0.5" },
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
@@ -134,6 +144,13 @@ const CITY_SLUGS = [
 const CATEGORIES = ["t-paidat", "hupparit"];
 
 const BLOG_SLUGS = [
+  // Lahjahaut 2.11.2026
+  "35-hauskaa-joululahjaa-miehelle-2026",
+  "pikkujoululahja-alle-30-euroa-25-ideaa",
+  "hauskat-lahjat-isalle-jolla-on-jo-kaikki",
+  "lahjaideat-elakelaiselle",
+  "saunojan-lahjaopas",
+  "mita-ostaa-tyokaverille-pikkujouluihin",
   // 28.10.2026: joulun ja pikkujoulun hakuoppaat (src/data/blogJouluHaut2026.ts).
   "hauska-joulupaita",
   "pikkujouluasu-2026",

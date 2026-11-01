@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { HelmetProvider } from "react-helmet-async";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
 import { LANDING_PATHS, LANDING_REDIRECTS, redirectWithQuery } from "@/data/landingRoutes";
+import { YRITYS_ALA_POLUT } from "@/data/yritysAlat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 import { MEDIA_PATH } from "@/data/mediaKit";
 
@@ -115,6 +116,7 @@ const HobbyPage = lazyWithRetry(() => import("./pages/HobbyPage"));
 const DialectPage = lazyWithRetry(() => import("./pages/DialectPage"));
 const LandingPage = lazyWithRetry(() => import("./pages/LandingPage"));
 const BusinessPage = lazyWithRetry(() => import("./pages/BusinessPage"));
+const BusinessVerticalPage = lazyWithRetry(() => import("./pages/BusinessVerticalPage"));
 const PersonalizedPage = lazyWithRetry(() => import("./pages/PersonalizedPage"));
 const PartnersPage = lazyWithRetry(() => import("./pages/PartnersPage"));
 const PartnerReportPage = lazyWithRetry(() => import("./pages/PartnerReportPage"));
@@ -234,6 +236,7 @@ export const AppSisalto = () => (
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               <Route path="/yritykset" element={<BusinessPage />} />
               <Route path="/yritykset/tilaus" element={<BusinessOrderPage />} />
+              <Route path="/yritykset/:ala" element={<BusinessVerticalPage />} />
               <Route path="/hallinta/tarjoukset" element={<QuoteAdminPage />} />
               <Route path="/hallinta/mittarit" element={<MetricsAdminPage />} />
               <Route path="/hallinta/some" element={<SomeAdminPage />} />
@@ -302,11 +305,13 @@ export function preloadRoute(pathname: string): Promise<void> {
   // Blogiartikkelit hydratoidaan esirenderöidystä merkinnästä: sivun chunk ennen hydratointia.
   // Kategoriasivut samoin (2.11.2026, scripts/prerender.mjs renderAppHydrated).
   // Lahjasivut ja lahjaopas medialle samoin (2.11.2026): staattinen runko teki Lighthouse-tuloksesta vaihtelevan (77-90).
+  // Yritysten alasivut /yritykset/<ala> samoin (2.11.2026).
   const sivu = ESILADATTAVAT[polku]
     ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost
       : /^\/kategoria\/[^/]+$/.test(polku) ? CategoryPage
         : polku === "/lahjaopas-media" ? MediaGuidePage
-          : LANDING_PATHS.includes(polku) ? LandingPage : undefined);
+          : LANDING_PATHS.includes(polku) ? LandingPage
+            : YRITYS_ALA_POLUT.includes(polku) ? BusinessVerticalPage : undefined);
   return sivu ? sivu.preload().then(() => undefined, () => undefined) : Promise.resolve();
 }
 

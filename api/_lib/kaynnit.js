@@ -34,8 +34,11 @@ export function kaynninLahde({ utm, ref, gclid, viittaaja } = {}) {
 
 /** Saapumissivun osio: "/" -> "etusivu", "/tuote/x" -> "tuote", "/lahjat/x" -> "lahjat". */
 export function sivunOsio(polku) {
-  const osa = String(polku || "/").split(/[?#]/)[0].split("/").filter(Boolean)[0] || "etusivu";
-  return osa.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 30) || "etusivu";
+  const osat = String(polku || "/").split(/[?#]/)[0].split("/").filter(Boolean);
+  const siivoa = (x) => x.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 30);
+  // Yritysten alakohtaiset sivut (2.11.2026) omina osioinaan: /yritykset/rakennus -> "yritykset-rakennus".
+  if (siivoa(osat[0] || "") === "yritykset" && osat[1] && siivoa(osat[1]) !== "tilaus") return siivoa(`yritykset-${osat[1]}`);
+  return siivoa(osat[0] || "etusivu") || "etusivu";
 }
 
 export const onBotti = (ua) => !ua || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse|pagespeed|facebookexternalhit|whatsapp|curl|wget|python|node-fetch|axios|vercel/i.test(ua);

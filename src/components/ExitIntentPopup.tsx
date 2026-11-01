@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, X, ArrowRight } from "lucide-react";
 import { productAlt } from "@/lib/seoAlt";
 import { proxiedImage } from "@/lib/imageProxy";
-import { ILMAINEN_TOIMITUS_RAJA } from "@/config/toimitus";
+import { toimitusTila, ilmaisenToimituksenViesti } from "@/lib/ostoskori";
 
 const SESSION_KEY = "huumorikauppa-exit-intent-shown";
 
@@ -61,7 +61,7 @@ export function ExitIntentPopup() {
 
   if (items.length === 0) return null;
 
-  const shippingGap = ILMAINEN_TOIMITUS_RAJA - totalPrice;
+  const toimitusViesti = ilmaisenToimituksenViesti(toimitusTila(items));
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose(); }}>
@@ -107,9 +107,9 @@ export function ExitIntentPopup() {
             )}
           </div>
 
-          {shippingGap > 0 && (
+          {toimitusViesti && (
             <p className="text-xs text-primary font-medium">
-              🚚 Lisää {formatPriceFi(shippingGap)} → ilmainen toimitus!
+              🚚 {toimitusViesti}
             </p>
           )}
 

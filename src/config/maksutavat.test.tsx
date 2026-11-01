@@ -20,7 +20,7 @@ describe("maksutavat yhdestä listasta", () => {
   });
 
   it("toimitusrivi rakentuu toimitusehdoista", () => {
-    expect(TOIMITUSRIVI).toBe(`Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta`);
+    expect(TOIMITUSRIVI).toBe(`Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`);
   });
 });
 

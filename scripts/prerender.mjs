@@ -290,6 +290,19 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
+      // Yritysten alasivut /yritykset/<ala> (2.11.2026) samoin; tuotekortit latausnäkymänä, staattinen runko listaa tuotteet.
+      const yritysAlatMod = await vite.ssrLoadModule("/src/data/yritysAlat.ts");
+      const businessVerticalChunks = chunksFor("src/pages/BusinessVerticalPage.tsx");
+      for (const page of previewMod ? pages : []) {
+        if (!yritysAlatMod.YRITYS_ALA_POLUT.includes(page.path)) continue;
+        try {
+          page.hydrateHtml = await previewMod.renderAppHydrated(page.path);
+          page.modulePreloads = businessVerticalChunks;
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`${page.path} (${err.message})`);
+        }
+      }
       const homePage = previewMod ? pages.find((p) => p.path === "/") : undefined;
       if (homePage) {
         try {

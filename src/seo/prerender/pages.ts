@@ -45,6 +45,8 @@ import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
 import PAKETIT from "../../../api/_lib/paketit-data.js";
 import { yrityksetPage, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { YRITYS_ALAT, YRITYS_ALA_POLKU } from "@/data/yritysAlat";
+import { valitseAlanTuotteet, yritysAlaFaqs } from "@/data/yritysAlaSivu";
 import { esimerkkiHinnat } from "../../../api/_lib/yritysmyynti.js";
 import { LOGO_RAJAT, LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { kumppanitPage } from "@/data/kumppanitPage";
@@ -621,6 +623,7 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
         ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
         ...yrityksetPage.esimerkit.map((e) => `${e.kpl} t-paitaa: ${e.ennen}, määräalennus -${e.prosentti} % = ${e.jalkeen}`),
       ] },
+      { heading: "Paidat alasi mukaan", links: YRITYS_ALAT.map((a) => ({ href: YRITYS_ALA_POLKU(a.slug), label: a.nimi })) },
       ...yrityksetPage.sections.map((s) => ({ heading: s.heading, paragraphs: "paragraphs" in s ? s.paragraphs : undefined, items: "items" in s ? s.items : undefined, links: "links" in s ? s.links : undefined })),
       { heading: "Tarjouspyyntö", paragraphs: ["Lähetä tarjouspyyntö sivun lomakkeella tai sähköpostilla huumorikauppa@gmail.com."] },
       { heading: "Liittyvät sivut", links: yrityksetPage.links },
@@ -630,6 +633,44 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
     ogImage: productImage(list[0]?.images[0]),
     faqs: yrityksetPage.faqs,
     jsonLd: [buildFaqJsonLd(yrityksetPage.faqs)],
+  });
+}
+
+/** /yritykset/<ala> (2.11.2026): sama sisältö kuin src/pages/BusinessVerticalPage.tsx (src/data/yritysAlat.ts). */
+export function buildBusinessVerticalPages(products: Product[]): PrerenderPage[] {
+  const e = (x: number) => x.toFixed(2).replace(".", ",");
+  return YRITYS_ALAT.map((ala) => {
+    const path = YRITYS_ALA_POLKU(ala.slug);
+    const list = valitseAlanTuotteet(ala, products);
+    const faqs = yritysAlaFaqs(ala);
+    return {
+      path,
+      title: ala.metaTitle,
+      description: ala.description,
+      h1: ala.h1,
+      breadcrumbs: [HOME, crumb("Yritykset", "/yritykset"), crumb(ala.nimi, path)],
+      intro: [...ala.intro, `Joulun yritystilaukset: tilaa ja maksa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`],
+      sections: [
+        {
+          heading: "Oma logo tai teksti",
+          paragraphs: [`Lataa yrityksen logo tai kirjoita teksti ja valitse, tuleeko huumoridesign mukaan. T-paita ${e(LOGOPAITA_HINTA)} €/kpl, vähintään ${LOGOPAITA_MIN_KPL} paitaa, painetaan EU:ssa.`],
+          items: esimerkkiHinnat("logopaita").map((x) => `${x.kpl} paitaa: ${e(x.perKpl)} €/kpl, yhteensä ${e(x.yhteensa)} € (määräalennus -${x.alennusProsentti} %, toimitus ilmainen)`),
+          links: [{ href: "/yritykset/tilaus", label: "Valitse koot ja tilaa" }],
+        },
+        { heading: "Ideoita omaan paitaan", items: ala.ideat },
+        { heading: "Määräalennus t-paidoista", items: [
+          ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
+          ...yrityksetPage.esimerkit.map((x) => `${x.kpl} t-paitaa: ${x.ennen}, määräalennus -${x.prosentti} % = ${x.jalkeen}`),
+        ] },
+        { heading: "Tarjouspyyntö", paragraphs: [`Lähetä tarjouspyyntö sivun lomakkeella (ala: ${ala.nimi}) tai sähköpostilla huumorikauppa@gmail.com.`] },
+        { heading: "Paidat muille aloille", links: [{ href: "/yritykset", label: "Kaikki yrityksille" }, ...YRITYS_ALAT.filter((a) => a.slug !== ala.slug).map((a) => ({ href: YRITYS_ALA_POLKU(a.slug), label: a.nimi }))] },
+      ],
+      productsHeading: ala.tuotteetOtsikko,
+      products: toPrerenderProducts(list),
+      ogImage: productImage(list[0]?.images[0]),
+      faqs,
+      jsonLd: [buildFaqJsonLd(faqs)],
+    };
   });
 }
 
@@ -757,6 +798,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
     buildBusinessPage(products),
+    ...buildBusinessVerticalPages(products),
     staticPage("/kumppanit", {
       intro: kumppanitPage.intro,
       sections: [

@@ -124,7 +124,8 @@ describe("Paketit: kate ja alennus", () => {
   it("katevahti: paketin kate alle 30 % tai tuntematon kulu, ei alennusta", () => {
     const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit, korialennus: eiKorialennusta });
     expect(r.bundle_discount).toBe(0);
-    expect(r.total).toBe(r2(74.8 + toimitusSummalle(74.8)));
+    // Kaksi tuotetta ilman paketti- tai koodialennusta: ilmainen toimitus (2.11.2026).
+    expect(r.total).toBe(74.8);
     const m = new Map([[paita.slug, paita], [tuntematon.slug, tuntematon]]);
     const s = sovellaPaketit(
       [{ slug: paita.slug, quantity: 1, unit_cents: 2490, variant_id: 1 }, { slug: tuntematon.slug, quantity: 1, unit_cents: 4990, variant_id: 13 }],

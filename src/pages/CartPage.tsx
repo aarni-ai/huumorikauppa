@@ -7,7 +7,8 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
 import { useMemo } from "react";
-import { ILMAINEN_TOIMITUS_RAJA, toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
+import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
+import { toimitusTila, ilmaisenToimituksenViesti, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { KorialennusVihje, korialennusNimi } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { selectSecondTshirt } from "@/lib/recommendations";
@@ -32,7 +33,7 @@ const CartPage = () => {
   const tila = toimitusTila(items);
   const shippingFree = tila.ilmainen;
   const shippingCost = tila.toimitus;
-  const shippingGap = tila.puuttuu;
+  const toimitusViesti = ilmaisenToimituksenViesti(tila);
   const shippingProgress = tila.edistyminen;
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
   const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
@@ -71,7 +72,7 @@ const CartPage = () => {
           <div className="flex items-center gap-2 mb-2">
             <Truck className="h-4 w-4 text-primary shrink-0" />
             <p className="text-sm text-foreground">
-              Lisää <span className="font-bold text-primary">{eur(shippingGap)}</span> ilmaiseen toimitukseen
+              <span className="font-bold text-primary">{toimitusViesti}</span>
             </p>
           </div>
           <div
@@ -79,17 +80,17 @@ const CartPage = () => {
             role="progressbar"
             aria-label="Ilmainen toimitus"
             aria-valuemin={0}
-            aria-valuemax={ILMAINEN_TOIMITUS_RAJA}
-            aria-valuenow={Math.min(tila.summa, ILMAINEN_TOIMITUS_RAJA)}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(shippingProgress)}
           >
             <div
               className="h-full rounded-full bg-primary transition-all duration-500"
               style={{ width: `${shippingProgress}%` }}
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-1">{eur(tila.summa)} / {ILMAINEN_TOIMITUS_RAJA} €{tila.summa !== totalPrice ? " (lahjakortit eivät kerrytä rajaa)" : ""}</p>
+          <p className="text-xs text-muted-foreground mt-1">Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta{tila.summa !== totalPrice ? " (lahjakortit eivät kerrytä rajaa)" : ""}.</p>
           {/* Lisätuote, joka kuroo puuttuvan summan umpeen (src/lib/lisatarra.ts, KATTEET.md 28.10.2026) */}
-          <MittarinLisatuote items={items} kaikki={allProducts} className="mt-3" />
+          {tila.puuttuuKpl === 0 && <MittarinLisatuote items={items} kaikki={allProducts} className="mt-3" />}
         </div>
       ) : (
         <div className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 flex items-center gap-2">
@@ -188,7 +189,7 @@ const CartPage = () => {
           <ComplementaryProducts
             base={items.map((i) => i.product)}
             all={allProducts}
-            title={shippingFree ? "Täydennä tilaus" : `Täydennä tilaus: ${shippingGap.toFixed(2).replace(".", ",")} € ilmaiseen toimitukseen`}
+            title={shippingFree ? "Täydennä tilaus" : `Täydennä tilaus: ${toimitusViesti.charAt(0).toLowerCase()}${toimitusViesti.slice(1)}`}
             className="mt-6 pt-6 border-t border-border"
           />
           )}
@@ -222,7 +223,7 @@ const CartPage = () => {
             {!tila.vainLahjakortteja && <KorialennusVihje tila={kori} />}
             {!shippingFree && (
               <p className="text-xs text-primary font-medium">
-                {eur(shippingGap)} ilmaiseen toimitukseen
+                {toimitusViesti}
               </p>
             )}
           </div>
@@ -275,7 +276,7 @@ const CartPage = () => {
       </div>
 
       {/* Mobiilin kiinteä kassapalkki: loppusumma toimituksineen ja Jatka kassalle aina näkyvissä. */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)]">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 [translate:0_calc(-1*var(--hk-evaste,0px))] bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)]">
         <div className="container flex items-center gap-3 py-3">
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground">Yhteensä{tila.vainLahjakortteja ? "" : shippingFree ? ", ilmainen toimitus" : `, sis. toimitus ${eur(shippingCost)}`}</p>

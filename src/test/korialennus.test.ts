@@ -77,18 +77,24 @@ describe("Kahden tuotteen alennus kassalla", () => {
     expect(r.rivit[0]).toMatchObject({ unit_cents: 2366, korialennus_prosentti: 5 });
     expect(r.basket_discount).toBe(2.48);
     expect(r.discount).toBe(2.48);
-    expect(r.shipping).toBe(6.9);
-    expect(r.total).toBe(r2(2 * 23.66 + 6.9));
+    // Kaksi tuotetta: ilmainen toimitus (2.11.2026, vakiot.js ILMAINEN_TOIMITUS_KPL).
+    expect(r.shipping).toBe(0);
+    expect(r.total).toBe(r2(2 * 23.66));
   });
   it("selaimen lähettämä hinta ei vaikuta", () => {
     const r = laskeTilaus(pyynto([{ ...t("testi-t-paita", 2), price: 1, unit_price: 1 }]), tuotteet, null);
     expect(r.rivit[0].unit_cents).toBe(2366);
   });
-  it("t-paita + huppari: alennus, toimitusraja lasketaan ennen alennusta", () => {
+  it("t-paita + huppari: ilmainen toimitus, -5 % jää pois, kun kate jäisi alle 7 €", () => {
     const r = laskeTilaus(pyynto([t("testi-t-paita"), t("testi-huppari")]), tuotteet, null);
-    // Sentteihin pyöristys kuten Stripe: 5 % 74,80 €:sta, yksi sentti suuntaan tai toiseen.
-    expect(r.basket_discount).toBeCloseTo(3.74, 1);
-    expect(r.total).toBe(r2(r.rivit.reduce((x: number, y: { unit_cents: number }) => x + y.unit_cents, 0) / 100 + 6.9));
+    expect(r.shipping).toBe(0);
+    expect(r.basket_discount).toBe(0);
+    expect(r.total).toBe(74.8);
+  });
+  it("t-paita + tarra: tarra ei kerrytä kahden tuotteen ilmaista toimitusta", () => {
+    const tarra = tuotteet.find((x: { category: string }) => x.category === "tarrat");
+    if (!tarra) return;
+    const r = laskeTilaus(pyynto([t("testi-t-paita"), t(tarra.slug)]), tuotteet, null);
     expect(r.shipping).toBe(6.9);
   });
   it("kaksi hupparia 49,90 €: ilmainen toimitus, mutta alennus jäisi alle 7 €:n katteen, joten sitä ei anneta", () => {

@@ -48,6 +48,19 @@ describe("uudelleenostot ja kumppanit", () => {
     const { liikenne } = await import("../../api/_lib/mittarit.js");
     const l = liikenne({ lahteet: [{ nimi: "google", kaynnit: 5 }, { nimi: "bing", kaynnit: 1 }, { nimi: "media", kaynnit: 2 }, { nimi: "kumppani", kaynnit: 3 }],
       osiot: [{ nimi: "joululahja-isalle", kaynnit: 4 }, { nimi: "lahjat", kaynnit: 2 }, { nimi: "k", kaynnit: 3 }, { nimi: "tuote", kaynnit: 9 }] });
-    expect(l).toEqual({ orgaaninen: 6, lahjasivut: 6, media: 2, kumppanisivut: 3, kumppanilinkit: 3 });
+    expect(l).toMatchObject({ orgaaninen: 6, lahjasivut: 6, media: 2, kumppanisivut: 3, kumppanilinkit: 3, blogi: 0, yritysAlat: 0 });
+  });
+});
+
+describe("käyntiosiot 2.11.2026", () => {
+  it("yritysten alasivut omina osioinaan, blogi ja yritysten alasivut liikenteessä", async () => {
+    const { sivunOsio } = await import("../../api/_lib/kaynnit.js");
+    const { liikenne } = await import("../../api/_lib/mittarit.js");
+    expect(sivunOsio("/yritykset/rakennus?utm_source=x")).toBe("yritykset-rakennus");
+    expect(sivunOsio("/yritykset/tilaus")).toBe("yritykset");
+    expect(sivunOsio("/yritykset")).toBe("yritykset");
+    expect(sivunOsio("/blogi/saunojan-lahjaopas")).toBe("blogi");
+    const l = liikenne({ lahteet: [], osiot: [{ nimi: "blogi", kaynnit: 4 }, { nimi: "yritykset-vpk", kaynnit: 2 }, { nimi: "yritykset-it", kaynnit: 1 }, { nimi: "yritykset", kaynnit: 5 }] });
+    expect(l).toMatchObject({ blogi: 4, yritysAlat: 3 });
   });
 });

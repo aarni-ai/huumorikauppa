@@ -2109,3 +2109,42 @@ kannattavaksi seuraavissa tilanteissa:
 - CPA pysyy alle 7 €:n, mikä on realistista vain brändihauissa ja uudelleenmarkkinoinnissa.
 
 Ilmaislistaukset (Merchant-syöte) ja SEO ovat ainoa kannattava liikenne nykyisillä katteilla.
+
+## Ilmainen toimitus kahdesta tuotteesta (2.11.2026)
+
+Laskettu 2.11.2026 nykyisillä hinnoilla (t-paita 27,90 €, huppari 52,90 €) ja kuluilla (t-paita 8,90 €, heikoin koko 9,93 €,
+OPT 8,49 / 1,19 €; huppari Printify Choice 23,77 €, 15,59 / 10,00 €; Textildruck 30,19 €, 10,89 / 2,39 €). Kaava kuten
+"Keskiostoksen nosto: laskelma"; kahden tuotteen -5 % mukana katevahdilla (7 €). Solussa nettokate € (asiakkaan maksama €).
+
+| Kori (tuotteet €) | raja 79 | raja 69 | raja 60 | raja 55 | raja 50 | raja 2kpl |
+|---|--:|--:|--:|--:|--:|--:|
+| 1 t-paita (27.90) | 9.57 (34.80) | 9.57 (34.80) | 9.57 (34.80) | 9.57 (34.80) | 9.57 (34.80) | 9.57 (34.80) |
+| 1 t-paita heikoin (27.90) | 8.54 (34.80) | 8.54 (34.80) | 8.54 (34.80) | 8.54 (34.80) | 8.54 (34.80) | 8.54 (34.80) |
+| 2 t-paitaa (55.80) | 19.11 (59.91) | 19.11 (59.91) | 19.11 (59.91) | 13.71 (53.01) | 13.71 (53.01) | 13.71 (53.01) |
+| 2 t-paitaa heikoin (55.80) | 17.05 (59.91) | 17.05 (59.91) | 17.05 (59.91) | 11.65 (53.01) | 11.65 (53.01) | 11.65 (53.01) |
+| 3 t-paitaa (83.70) | 24.35 (79.51) | 24.35 (79.51) | 24.35 (79.51) | 24.35 (79.51) | 24.35 (79.51) | 24.35 (79.51) |
+| 1 huppari Choice (52.90) | 7.14 (59.80) | 7.14 (59.80) | 7.14 (59.80) | 7.14 (59.80) | 1.75 (52.90) | 7.14 (59.80) |
+| 1 huppari Textildruck (52.90) | 5.42 (59.80) | 5.42 (59.80) | 5.42 (59.80) | 5.42 (59.80) | 0.03 (52.90) | 5.42 (59.80) |
+| t-paita + huppari Choice (80.80) | 6.17 (80.80) | 6.17 (80.80) | 6.17 (80.80) | 6.17 (80.80) | 6.17 (80.80) | 6.17 (80.80) |
+| t-paita + huppari Textildruck (80.80) | 4.45 (80.80) | 4.45 (80.80) | 4.45 (80.80) | 4.45 (80.80) | 4.45 (80.80) | 4.45 (80.80) |
+| 2 hupparia Choice (105.80) | 9.34 (105.80) | 9.34 (105.80) | 9.34 (105.80) | 9.34 (105.80) | 9.34 (105.80) | 9.34 (105.80) |
+
+**Havainnot.**
+- € -raja ei toimi: 55 €:n raja tekisi yksittäisestä isokokoisesta hupparista (59,90 €) ilmaisen toimituksen tilauksen, ja
+  kate jäisi alle 7 €:n (Textildruck noin 2,70 €). 50 €:n raja tekee jo 52,90 €:n hupparista tappiollisen (0,03 €).
+  60 € tai enemmän ei koske kahta t-paitaa (55,80 €), joten keskiostos ei nouse.
+- Kahden tuotteen raja: ainoa kori, jonka kate laskee, on kaksi t-paitaa (19,11 € -> 13,71 €, heikoin koko 11,65 €). Kaikki
+  muut korit ovat ennallaan (t-paita + huppari on jo yli 79 €).
+- Kannattavuus: jokainen yhden t-paidan tilaus, joka muuttuu kahden t-paidan tilaukseksi, nostaa katetta 9,57 € -> 13,71 €
+  (+4,14 €). Jokainen kahden t-paidan tilaus, joka olisi tullut ilman muutosta, laskee katetta 5,40 €. Nollaraja: 5,40 / 4,14
+  = 1,3 muuttunutta tilausta jokaista jo valmiiksi kahden t-paidan tilausta kohden. Toteutuneista tilauksista 17/17 on ollut
+  yhden tuotteen tilauksia, joten menetys nykyisistä on lähes nolla.
+- Odotettu kate 100 tilausta kohden (oletus 80 % yksi t-paita, 5 % kaksi, 10 % huppari, 3 % t-paita + huppari, 2 % kolme):
+  nyky 1000 €; kahden tuotteen raja ilman muutosta 973 €, 10 %:n siirtymällä 1006 €, 20 %:n siirtymällä 1039 €.
+
+**Päätös:** otettu käyttöön 2.11.2026. Ilmainen toimitus, kun tilauksessa on vähintään kaksi tuotetta (tarrat ja lahjakortit
+eivät lasketa) tai summa on vähintään 79 €. Ei yhdisty alennuskoodiin, kumppanialennukseen, pakettialennukseen eikä
+t-paitaparin kampanjahintaan, koska niissä kate jäisi heikoimmilla koilla alle 7 €:n (pari 44,90 € ilmaisella toimituksella,
+heikoin koko 5,32 €). Koodi: api/_lib/vakiot.js toimitusmaksu, api/_lib/kassa.js, src/lib/ostoskori.ts. Korissa näkyy
+"Vielä 1 tuote ilmaiseen toimitukseen" (koodin kanssa "Vielä X € ilmaiseen toimitukseen"). Seuranta: kahden tuotteen
+tilausten osuus tilauksista (Printify-tilausten rivimäärä); jos osuus ei nouse yli 5 %:n neljässä viikossa, palautetaan pelkkä 79 €:n raja.

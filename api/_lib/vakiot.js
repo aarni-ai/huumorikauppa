@@ -10,6 +10,22 @@ export const ILMAINEN_TOIMITUS_RAJA = 79;
 export const TOIMITUS = 6.9;
 
 /**
+ * Ilmainen toimitus kahdesta tuotteesta (2.11.2026, KATTEET.md "Ilmainen toimitus kahdesta tuotteesta"): kun tilauksessa
+ * on vähintään ILMAINEN_TOIMITUS_KPL tuotetta (tarrat eivät lasketa, lahjakortit eivät lasketa), toimitus on ilmainen.
+ * Ei yhdisty alennuskoodiin, pakettialennukseen eikä t-paitaparin kampanjahintaan: niissä toimitus kuten ennen
+ * (ilmainen rajasta alkaen). Kahden t-paidan kori jää ilmaisella toimituksella ja -5 %:lla 13,71 € katteelle (heikoin koko 11,65 €).
+ */
+export const ILMAINEN_TOIMITUS_KPL = 2;
+
+/** Tilauksen toimitusmaksu: summa ennen alennuksia, kpl = tuotteet ilman tarroja ja lahjakortteja. */
+export function toimitusmaksu({ summa, kpl, alennus = false }) {
+  if (!(kpl > 0) && !(summa > 0)) return 0;
+  if (summa >= ILMAINEN_TOIMITUS_RAJA) return 0;
+  if (!alennus && kpl >= ILMAINEN_TOIMITUS_KPL) return 0;
+  return TOIMITUS;
+}
+
+/**
  * Kahden tuotteen alennus (korialennus): kun korissa on vähintään KORIALENNUS_MIN_KPL fyysistä tuotetta eikä
  * alennuskoodia käytetä, palvelin (api/_lib/korialennus.js) alentaa pakettiin kuulumattomia rivejä
  * KORIALENNUS_PROSENTTI prosenttia. Alennus jätetään antamatta, jos tilauksen nettokate alennuksen jälkeen olisi alle
@@ -82,14 +98,14 @@ export const TPAITAPARI_KAMPANJA = {
 };
 
 /**
- * Ensitilauksen alennus uutiskirjeen tilaajalle (prosenttia, 0 = pois käytöstä). Asetetaan niin, että tyypillisen
- * tilauksen (yksi t-paita, asiakas maksaa toimitusmaksun) kate pysyy alennuksen jälkeen vähintään 30 %
- * (api/_lib/kate.js ALENNUS_KATE_RAJA). 26.10.2026 kuluilla (t-paita 24,90 €, tuotekulu 8,90 €, toimitus 8,49 €) kate on
- * jo ilman alennusta 26,2 %, joten koodi on pois käytöstä. 5 %:n koodi vaatii t-paidan hinnaksi vähintään 28,90 € ja
- * 10 %:n koodi 29,90 € (tuotekululla 9,93 €: 30,90 € ja 31,90 €). Kassa tarkistaa lisäksi jokaisen tilauksen katteen
- * alennuksen jälkeen (api/_lib/kassa.js).
+ * Ensitilauksen alennus uutiskirjeen tilaajalle (prosenttia, 0 = pois käytöstä). 2.11.2026: 5 % (TERVE-koodi, yksi per
+ * osoite, vain ensimmäiseen maksettuun tilaukseen samalla osoitteella). Katesääntö on sama kuin muilla koodeilla:
+ * kassa hylkää koodin, jos tilauksen nettokate jäisi alle TILAUKSEN_MIN_KATE_EUROA (7 €, api/_lib/kassa.js). Esimerkit
+ * (t-paidan kulu 8,90 €, Printifyn toimitus 8,49 €, asiakas maksaa toimitusmaksun): yksi 24,90 €:n t-paita 6,25 € (hylätään),
+ * yksi 27,90 €:n t-paita 8,48 €, kaksi 24,90 €:n t-paitaa 14,65 €, huppari 2,85 € (hylätään).
+ * Aiempi 30 %:n katteen raja (ALENNUS_KATE_RAJA) ei enää koske ensitilauksen koodia (omistajan ohje 2.11.2026: 7 €).
  */
-export const ENSITILAUS_ALENNUS_PROSENTTI = 0;
+export const ENSITILAUS_ALENNUS_PROSENTTI = 5;
 
 /** Suostumustekstit: sama teksti näytetään lomakkeella ja tallennetaan suostumuksen kanssa. */
 export const SUOSTUMUS_UUTISKIRJE =

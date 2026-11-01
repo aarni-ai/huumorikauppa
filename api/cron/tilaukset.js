@@ -974,6 +974,21 @@ export default async function handler(req, res) {
     }
   }
 
+  // 4b. Uutiskirje (2.11.2026): tervetuloviestien jono ja joulukampanjan kolme viestiä (api/_lib/uutiskirje.js). Lähtee
+  // vain, kun lähetysdomain on vahvistettu Resendissä (SAHKOPOSTI_VAHVISTETTU=1 tai Resendin API: verified).
+  if (aikaa()) {
+    try {
+      const { ajaUutiskirje, pgUutiskirje, domainVahvistettu } = await import("../_lib/uutiskirje.js");
+      const vahvistettu = await domainVahvistettu();
+      if (vahvistettu) {
+        const u = await ajaUutiskirje(pgUutiskirje(db), { laheta, vahvistettu, kuiva });
+        loki.push(...u.loki);
+      }
+    } catch (e) {
+      loki.push(`uutiskirje: ${e?.message || e}`);
+    }
+  }
+
   // 5. Päivän yhteenvedon varmistus: klo 7 ajo jäi tekemättä (GitHub Actionsin viive tai virhe).
   const h = helsinki();
   if (h.tunti >= 9 && (await db`select value from kv where key = ${KV_YHTEENVETO}`)[0]?.value !== h.paiva) {

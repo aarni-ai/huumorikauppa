@@ -137,7 +137,8 @@ export function valitseKumppaniAlennus({ laske, nettokate, perus, asetukset = KU
   for (let p = alennusProsentti; p >= 1; p--) {
     const l = laske(p);
     if (!l) continue;
-    if (perus && perus.discount >= l.discount) { syy = "muu_alennus"; break; }
+    // Vertailu loppusummalla: kahden tuotteen ilmainen toimitus (2.11.2026) ei yhdisty kumppanialennukseen.
+    if (perus && (perus.total <= l.total || perus.discount >= l.discount)) { syy = "muu_alennus"; break; }
     const nk = nettokate(l);
     if (!Number.isFinite(nk)) continue;
     const tuotteet = l.total - l.shipping;

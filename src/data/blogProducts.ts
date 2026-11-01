@@ -21,6 +21,8 @@ import { getPriorityRank } from "@/lib/productPriority";
 import { getLandingPage, looksLikeMug } from "./landingPages";
 import { categories } from "./products";
 import { christmasDeadlinePage } from "./christmasDeadlinePage";
+import { LAHJAHAKU_TEEMAT_A } from "./blogLahjaHaut2026A";
+import { LAHJAHAKU_TEEMAT_B } from "./blogLahjaHaut2026B";
 import { AMMATTI, ELAKE, HARRASTUS, isCityProduct, MEEMI, SUOMI, SUOMI_MEEMIT, TONNIN_SETELI_PATH, theme } from "./themes";
 
 /** Valinnan tarvitsemat tuotekentät (sama muoto kuin use-products.ts ja normalizeProducts). */
@@ -673,6 +675,9 @@ export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
   "hauska-lahja-helsinkilaiselle": "helsinki",
   "hauska-lahja-tamperelaiselle": "tampere",
   "kaupunkipaita-idea-kotiseudulle": "kaupungit",
+  // Lahjahaut 2.11.2026: teemat artikkelitiedostoissa.
+  ...(LAHJAHAKU_TEEMAT_A as Record<string, BlogThemeKey>),
+  ...(LAHJAHAKU_TEEMAT_B as Record<string, BlogThemeKey>),
 };
 
 export function getBlogProductTheme(slug: string): BlogProductTheme {

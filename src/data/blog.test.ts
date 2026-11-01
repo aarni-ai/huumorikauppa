@@ -7,6 +7,9 @@ import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { sesonkiOppaat2026, ODOTTAA_SAHKOPOSTIA } from "./blogSesonki2026";
 import { jouluHakuOppaat2026, HAKUSANAT } from "./blogJouluHaut2026";
 import { yritysHakuOppaat2026, YRITYSHAKUSANAT } from "./blogYritysHaut2026";
+import { lahjaHakuOppaat2026A, LAHJAHAKUSANAT_A, LAHJAHAKU_TEEMAT_A } from "./blogLahjaHaut2026A";
+import { lahjaHakuOppaat2026B, LAHJAHAKUSANAT_B, LAHJAHAKU_TEEMAT_B } from "./blogLahjaHaut2026B";
+import { BLOG_PRODUCT_THEMES } from "./blogProducts";
 import { categories } from "./products";
 import { situationGifts } from "./situationGifts";
 import { professions } from "./professions";
@@ -392,5 +395,52 @@ describe("blogi: yritysten hakuoppaat 1.11.2026", () => {
   it("jokaiseen oppaaseen linkitetään sivulta /yritykset", () => {
     const lahde = fs.readFileSync(path.resolve(__dirname, "yrityksetPage.ts"), "utf8");
     for (const post of yritysHakuOppaat2026) expect(lahde, post.slug).toContain(`/blogi/${post.slug}"`);
+  });
+});
+
+describe("blogi: lahjahaut 2.11.2026", () => {
+  const oppaat = [...lahjaHakuOppaat2026A, ...lahjaHakuOppaat2026B];
+  const hakusanat = { ...LAHJAHAKUSANAT_A, ...LAHJAHAKUSANAT_B };
+  const teemat = { ...LAHJAHAKU_TEEMAT_A, ...LAHJAHAKU_TEEMAT_B };
+
+  it("artikkeleita on 6, ne ovat blogPosts-listassa uusilla slugeilla, hakusana ensimmäisenä tagina ja teema olemassa", () => {
+    expect(oppaat).toHaveLength(6);
+    const muut = new Set(blogPosts.filter((p) => !oppaat.includes(p)).map((p) => p.slug));
+    expect(Object.keys(hakusanat).sort()).toEqual(oppaat.map((p) => p.slug).sort());
+    for (const post of oppaat) {
+      expect(blogPosts).toContain(post);
+      expect(muut.has(post.slug), post.slug).toBe(false);
+      expect(post.publishedAt).toBe("2026-11-02");
+      expect(post.tags[0], post.slug).toBe(hakusanat[post.slug]);
+      expect(BLOG_PRODUCT_THEMES[teemat[post.slug] as keyof typeof BLOG_PRODUCT_THEMES], post.slug).toBeDefined();
+    }
+  });
+
+  it.each([...lahjaHakuOppaat2026A, ...lahjaHakuOppaat2026B].map((p) => [p.slug, p] as const))("%s: tekstisäännöt, 800-1200 sanaa, linkit /joulu ja lahjasivu, FAQPage", (_slug, post) => {
+    const text = allText(post);
+    expect(text).not.toMatch(DASHES);
+    expect(text).not.toMatch(HEDGES);
+    expect(text.toLowerCase()).not.toMatch(/\bmuki/);
+    expect(text).not.toMatch(/suosituin|suosituimm|myydyin|asiakkaamme kertovat|arvostelu|lahjakort/i);
+    expect(text).not.toMatch(/voi olla että|suomen paras|painettu suomessa|varastossa/i);
+    // Hinnat tuotekorteista; sallitut euromäärät: toimitusmaksu ja hakusanan hintaraja (alle 30 €).
+    const eurot = [...text.matchAll(/(\d+(?:,\d+)?) ?€/g)].map((m) => m[1]);
+    expect(eurot.every((e) => e === TOIMITUSMAKSU_TEKSTI || e === "30"), eurot.join(" ")).toBe(true);
+    expect(post.metaTitle.length).toBeLessThan(60);
+    expect(post.metaDescription.length).toBeLessThan(155);
+    const words = wordCount(post.content);
+    expect(words).toBeGreaterThanOrEqual(800);
+    expect(words).toBeLessThanOrEqual(1200);
+    const links = internalLinks(post);
+    const products = new Set(links.filter((l) => l.startsWith("/tuote/")));
+    expect(products.size).toBeGreaterThanOrEqual(5);
+    expect(links).toContain("/joulu");
+    expect(links.some((l) => l.startsWith("/lahjat/"))).toBe(true);
+    for (const l of links) expect(l).not.toMatch(/lahjakortti|mukit/);
+    const faq = post.faq ?? [];
+    expect(faq.length).toBeGreaterThanOrEqual(3);
+    expect(faq.length).toBeLessThanOrEqual(5);
+    const graph = buildBlogPostJsonLd(post, faq)["@graph"] as Record<string, unknown>[];
+    expect(graph.map((g) => g["@type"])).toContain("FAQPage");
   });
 });

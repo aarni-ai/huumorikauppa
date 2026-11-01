@@ -261,8 +261,10 @@ const CheckoutPage = () => {
   // Kahden tuotteen alennus vain ilman alennuskoodia (api/_lib/korialennus.js).
   const kori = korialennusTila(items, allProducts, !!appliedDiscount || !!kumppaniProsentti);
   const basketDiscount = kori.alennus;
-  const shippingFree = tila.ilmainen;
-  const shippingCost = tila.toimitus;
+  // Ilmainen toimitus kahdesta tuotteesta ei yhdisty alennuskoodiin, kumppani- eikä pakettialennukseen (api/_lib/kassa.js).
+  const toimitusKassalla = toimitusTila(items, { alennus: !!appliedDiscount || !!kumppaniProsentti || bundleDiscount > 0 || kori.tyyppi === "tpaitapari" });
+  const shippingFree = toimitusKassalla.ilmainen;
+  const shippingCost = toimitusKassalla.toimitus;
   const grandTotal = Math.round((totalPrice - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
   // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
   const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;

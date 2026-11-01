@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toimitusTila, valitseSuositukset, suoraLisays, fyysinenSumma, arvioiPakettialennus, paketinTiedot, PAKETTIMAARITYKSET } from "@/lib/ostoskori";
+import { toimitusTila, ilmaisenToimituksenViesti, valitseSuositukset, suoraLisays, fyysinenSumma, arvioiPakettialennus, paketinTiedot, PAKETTIMAARITYKSET } from "@/lib/ostoskori";
 import { TOIMITUSMAKSU, ILMAINEN_TOIMITUS_RAJA } from "@/config/toimitus";
 import { lahjakorttiTuote } from "../../api/_lib/lahjakortti.js";
 import type { Product } from "@/types/product";
@@ -28,7 +28,14 @@ describe("Ilmainen toimitus", () => {
   it("puuttuva summa ja edistyminen", () => {
     const t = toimitusTila([rivi(paita)]);
     expect(t).toMatchObject({ summa: 24.9, puuttuu: r2(ILMAINEN_TOIMITUS_RAJA - 24.9), ilmainen: false, toimitus: TOIMITUSMAKSU });
-    expect(t.edistyminen).toBeCloseTo((24.9 / ILMAINEN_TOIMITUS_RAJA) * 100, 1);
+    // Edistyminen kahden tuotteen säännöllä (2.11.2026): yksi tuote = puolet.
+    expect(t.edistyminen).toBe(50);
+    expect(t.puuttuuKpl).toBe(1);
+    expect(toimitusTila([rivi(paita, 2)])).toMatchObject({ ilmainen: true, toimitus: 0, puuttuuKpl: 0 });
+    expect(toimitusTila([rivi(paita), rivi(tarra)])).toMatchObject({ ilmainen: false, puuttuuKpl: 1 });
+    expect(toimitusTila([rivi(paita, 2)], { alennus: true })).toMatchObject({ ilmainen: false, toimitus: TOIMITUSMAKSU });
+    expect(ilmaisenToimituksenViesti(t)).toBe("Vielä 1 tuote ilmaiseen toimitukseen");
+    expect(ilmaisenToimituksenViesti(toimitusTila([rivi(paita)], { alennus: true }))).toMatch(/^Vielä \d+,\d\d € ilmaiseen toimitukseen$/);
     expect(toimitusTila([rivi(paita), rivi(huppari, 2)])).toMatchObject({ ilmainen: true, puuttuu: 0, toimitus: 0 });
   });
   it("tasan rajan suuruinen summa on ilmainen", () => {

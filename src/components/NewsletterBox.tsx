@@ -16,6 +16,7 @@ export function NewsletterBox({ lahde }: { lahde: string }) {
   const [suostumus, setSuostumus] = useState(false);
   const [lahettaa, setLahettaa] = useState(false);
   const [valmis, setValmis] = useState(false);
+  const [koodi, setKoodi] = useState<string | null>(null);
   const [virhe, setVirhe] = useState("");
   const id = `uutiskirje-${lahde}`;
 
@@ -40,6 +41,7 @@ export function NewsletterBox({ lahde }: { lahde: string }) {
       });
       const data = await vastaus.json().catch(() => null);
       if (!vastaus.ok || !data?.ok) throw new Error(data?.error || "Tilaus epäonnistui.");
+      setKoodi(data.koodi || null);
       setValmis(true);
     } catch (err) {
       setVirhe(err instanceof Error && err.message ? err.message : "Tilaus epäonnistui.");
@@ -55,9 +57,14 @@ export function NewsletterBox({ lahde }: { lahde: string }) {
       </h2>
       <p className="text-muted-foreground text-sm mb-5 leading-relaxed">{UUTISKIRJE_TEKSTI}</p>
       {valmis ? (
-        <p role="status" className="text-foreground font-semibold">
-          Kiitos! Tilaus on vastaanotettu. Lähetimme vahvistuksen sähköpostiisi.
-        </p>
+        <div role="status" className="space-y-1">
+          <p className="text-foreground font-semibold">Kiitos! Tilaus on vastaanotettu.</p>
+          {koodi && (
+            <p className="text-sm text-muted-foreground">
+              Ensimmäisen tilauksesi alennuskoodi: <span className="font-mono font-bold text-foreground select-all">{koodi}</span>
+            </p>
+          )}
+        </div>
       ) : (
         <form onSubmit={tilaa} noValidate className="space-y-3 max-w-sm mx-auto text-left">
           <div className="flex flex-col sm:flex-row gap-2">

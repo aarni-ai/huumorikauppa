@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, KAHDEN_TUOTTEEN_EHTO, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { ORGANIZATION } from "@/seo/site";
 
 const Terms = () => {
@@ -45,7 +45,7 @@ const Terms = () => {
 
         <section>
           <h2 className="font-display text-xl text-foreground">4. Toimitus</h2>
-          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on {TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Vähintään {ILMAINEN_RAJA_TEKSTI} € tilaukset toimitetaan ilman toimituskuluja. Alle {ILMAINEN_RAJA_TEKSTI} € tilausten toimituskulut ovat {TOIMITUSMAKSU_TEKSTI} €.</p>
+          <p>Toimitamme tilaukset Postin tai Matkahuollon kautta. Toimitusaika on {TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Tilaukset, joissa on vähintään kaksi tuotetta tai joiden arvo on vähintään {ILMAINEN_RAJA_TEKSTI} €, toimitetaan ilman toimituskuluja. Muiden tilausten toimituskulut ovat {TOIMITUSMAKSU_TEKSTI} €. {KAHDEN_TUOTTEEN_EHTO}</p>
         </section>
 
         <section>

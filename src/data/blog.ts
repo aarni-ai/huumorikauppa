@@ -4,11 +4,15 @@ import { jouluOppaat2026Lisa } from "./blogJoulu2026Lisa";
 import { sesonkiOppaat2026 } from "./blogSesonki2026";
 import { jouluHakuOppaat2026 } from "./blogJouluHaut2026";
 import { yritysHakuOppaat2026 } from "./blogYritysHaut2026";
+import { lahjaHakuOppaat2026A } from "./blogLahjaHaut2026A";
+import { lahjaHakuOppaat2026B } from "./blogLahjaHaut2026B";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { jouluLause } from "./tilauspaivat";
 import { HINTA } from "./hintatekstit";
 
 export const blogPosts: BlogPost[] = [
+  ...lahjaHakuOppaat2026A,
+  ...lahjaHakuOppaat2026B,
   ...jouluHakuOppaat2026,
   ...yritysHakuOppaat2026,
   ...sesonkiOppaat2026,

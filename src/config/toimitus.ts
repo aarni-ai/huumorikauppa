@@ -43,13 +43,19 @@ export const ILMAINEN_RAJA_TEKSTI = euroluku(ILMAINEN_TOIMITUS_RAJA);
 /** "3-10" */
 export const TOIMITUSAIKA_TEKSTI = `${TOIMITUSAIKA_MIN_ARKIPAIVAA}-${TOIMITUSAIKA_MAX_ARKIPAIVAA}`;
 
-/** Lyhyt toimitusrivi ostopainikkeen ja ostoskorin yhteenvedon alle: "Toimitus 6,90 €, ilmainen 79 eurosta". */
-export const TOIMITUSRIVI = `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta`;
+/** Kahden tuotteen ilmainen toimitus (2.11.2026, api/_lib/vakiot.js ILMAINEN_TOIMITUS_KPL; ei yhdisty alennuskoodiin). */
+export const ILMAINEN_TOIMITUS_KPL = 2;
+
+/** Lyhyt toimitusrivi ostopainikkeen ja ostoskorin yhteenvedon alle: "Toimitus 6,90 €, ilmainen kahdesta tuotteesta". */
+export const TOIMITUSRIVI = `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`;
 
 /** Toimitusehtojen toimitusaikalause. */
 export const TOIMITUSAIKA_LAUSE = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
 /** Toimitusmaksulause, esim. "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen." */
-export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
+export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja kun tilaat kaksi tuotetta tai vähintään ${ILMAINEN_RAJA_TEKSTI} eurolla, toimitus on ilmainen.`;
+
+/** Kahden tuotteen säännön ehdot (toimitusehdot, UKK). */
+export const KAHDEN_TUOTTEEN_EHTO = `Kahden tuotteen ilmainen toimitus koskee t-paitoja, huppareita ja julisteita (tarrat eivät lasketa), eikä se yhdisty alennuskoodiin, pakettialennukseen eikä t-paitaparin kampanjahintaan. Niissä toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
 
 /** Toimitusmaksu tilauksen välisummalle (sama sääntö kuin kassalla). */
 export function toimitusmaksuSummalle(valisumma: number): number {

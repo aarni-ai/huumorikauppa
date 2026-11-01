@@ -111,11 +111,11 @@ export function tervetuloViesti({ email, koodi = null, prosentti = 0 }) {
   const peruutus = peruutusLinkki(email);
   const syy = "Sait tämän viestin, koska tilasit Huumorikaupan uutiskirjeen.";
   const koodiOsa = koodi
-    ? `<p>Ensimmäisen tilauksesi alennuskoodi:</p><p style="font-size:22px;letter-spacing:2px"><b>${esc(koodi)}</b></p><p>Koodi antaa ${prosentti} %:n alennuksen. Se toimii kerran, ensimmäisessä tilauksessasi, kun tilaat tällä sähköpostiosoitteella. Kirjoita koodi kassalla kenttään "Alennuskoodi".</p>`
+    ? `<p>Ensimmäisen tilauksesi alennuskoodi:</p><p style="font-size:22px;letter-spacing:2px"><b>${esc(koodi)}</b></p><p>Koodi antaa ${prosentti} %:n alennuksen. Se toimii kerran, ensimmäisessä tilauksessasi, kun tilaat tällä sähköpostiosoitteella. Kirjoita koodi kassalla kenttään "Alennuskoodi". Kassa kertoo heti, jos koodi ei käy valittuihin tuotteisiin.</p>`
     : "";
   return {
-    subject: koodi ? `Ensitilauksen koodisi ${prosentti} % - Huumorikauppa` : "Tervetuloa Huumorikaupan uutiskirjeen tilaajaksi",
-    html: kehys(`<h2>Kiitos, että tilasit uutiskirjeen!</h2><p>Kerromme sähköpostilla uusista tuotteista ja sesongin lahjaideoista.</p>${koodiOsa}${nappi(kauppaUrl(), "Katso tuotteet")}`, { peruutus, syy }),
+    subject: koodi ? `Ensitilauksen koodisi: ${prosentti} % alennus | Huumorikauppa` : "Tervetuloa Huumorikaupan uutiskirjeen tilaajaksi",
+    html: kehys(`<h2>Kiitos, että tilasit uutiskirjeen!</h2><p>Kerromme sähköpostilla uusista tuotteista ja sesongin lahjaideoista.</p>${koodiOsa}${nappi(`${kauppaUrl()}/?utm_source=uutiskirje&utm_medium=email&utm_campaign=tervetuloa`, "Katso tuotteet")}`, { peruutus, syy }),
     text: `Kiitos, että tilasit Huumorikaupan uutiskirjeen.${koodi ? ` Ensimmäisen tilauksesi alennuskoodi: ${koodi} (${prosentti} %). Toimii kerran, ensimmäisessä tilauksessa tällä sähköpostiosoitteella.` : ""} Peru viestit: ${peruutus}`,
     headers: peruutusOtsakkeet(email),
   };
@@ -271,27 +271,34 @@ export function tiivistaKori(items) {
 /**
  * Uutiskirjeen tilaus. Tallentaa suostumuksen (aika, teksti, lähde), poistaa aiemman peruutuksen ja lähettää
  * tervetuloviestin (ensitilauksen koodi, jos käytössä eikä osoitteella ole maksettuja tilauksia). Koodi luodaan
- * osoitteelle vain kerran. Palauttaa { ok, koodiLahetetty } tai { ok: false, virhe }.
+ * osoitteelle vain kerran, ja se palautetaan heti näytettäväksi lomakkeella (2.11.2026: viestit lähtevät vasta, kun
+ * lähetysdomain on vahvistettu; voiLahettaa = api/_lib/uutiskirje.js domainVahvistettu). Ilman lähetystä
+ * tervetuloviesti jää jonoon (welcome_sent_at tyhjä), ja cron lähettää sen myöhemmin (uutiskirje.js ajaUutiskirje).
+ * Palauttaa { ok, koodiLahetetty, koodi, prosentti } tai { ok: false, virhe }.
  */
-export async function tilaaUutiskirje(store, { email, suostumus, lahde = "lomake" }, { laheta, nyt = new Date(), prosentti = ENSITILAUS_ALENNUS_PROSENTTI } = {}) {
+export async function tilaaUutiskirje(store, { email, suostumus, lahde = "lomake" }, { laheta, nyt = new Date(), prosentti = ENSITILAUS_ALENNUS_PROSENTTI, voiLahettaa = true } = {}) {
   const osoite = normalisoiEmail(email);
   if (!EMAIL_RE.test(osoite)) return { ok: false, virhe: "Tarkista sähköpostiosoite." };
   if (suostumus !== true) return { ok: false, virhe: "Tilaus vaatii suostumuksen." };
   const vanha = await store.haeTilaaja(osoite);
   let koodi = vanha?.discount_code || null;
-  const saaKoodin = prosentti > 0 && !koodi && (await store.maksettujaTilauksia(osoite)) === 0;
+  const ensimmainen = prosentti > 0 && (await store.maksettujaTilauksia(osoite)) === 0;
+  const saaKoodin = ensimmainen && !koodi;
   if (saaKoodin) koodi = luoEnsitilausKoodi();
   await store.tallennaTilaaja({
-    email: osoite, consent_at: nyt, consent_text: SUOSTUMUS_UUTISKIRJE, source: String(lahde).slice(0, 40),
+    email: osoite, consent_at: nyt, consent_text: SUOSTUMUS_UUTISKIRJE, source: String(lahde).slice(0, 120),
     discount_code: koodi, discount_percent: saaKoodin ? prosentti : vanha?.discount_percent ?? null,
   });
   await store.poistaKielto(osoite);
+  // Näytettävä koodi: osoitteen oma koodi, jos sillä ei ole maksettuja tilauksia eikä koodia ole käytetty.
+  const naytettava = ensimmainen && koodi && !(await store.koodiKaytetty(koodi)) ? koodi : null;
+  const nayta = naytettava ? { koodi: naytettava, prosentti: Number(vanha?.discount_percent) > 0 && !saaKoodin ? Math.min(Number(vanha.discount_percent), prosentti) : prosentti } : {};
   // Tervetuloviesti kerran (ei uudelleen samalle osoitteelle, ettei lomaketta voi käyttää viestien lähettämiseen).
-  if (vanha?.welcome_sent_at) return { ok: true, koodiLahetetty: false, jo: true };
-  if (!onAllekirjoitus()) return { ok: true, koodiLahetetty: false };
-  const r = await laheta({ to: osoite, ...tervetuloViesti({ email: osoite, koodi: saaKoodin ? koodi : null, prosentti }) });
+  if (vanha?.welcome_sent_at) return { ok: true, koodiLahetetty: false, jo: true, ...nayta };
+  if (!onAllekirjoitus() || !voiLahettaa) return { ok: true, koodiLahetetty: false, ...nayta };
+  const r = await laheta({ to: osoite, ...tervetuloViesti({ email: osoite, koodi: naytettava, prosentti: nayta.prosentti || prosentti }) });
   if (r.ok) await store.merkitseTervetulo(osoite, nyt);
-  return { ok: true, koodiLahetetty: r.ok && saaKoodin };
+  return { ok: true, koodiLahetetty: r.ok && !!naytettava, ...nayta };
 }
 
 /** Kassan muistutuspyyntö: suostumus true tallentaa korin, false poistaa sen. */

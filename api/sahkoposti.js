@@ -2,7 +2,7 @@
  * /api/sahkoposti: uutiskirjeen tilaus, kassan muistutuspyyntö, peruutus, korin palautus ja arviot
  * (api/_lib/markkinointi.js). Yksi funktio kaikille, koska Vercel Hobby rajaa funktioiden määrän.
  *
- * POST { action: "tilaa", email, suostumus: true, lahde }          uutiskirje (+ ensitilauksen koodi, jos käytössä)
+ * POST { action: "tilaa", email, suostumus: true, lahde, polku }   uutiskirje; vastaus { koodi, prosentti }: ensitilauksen koodi näytetään heti
  * POST { action: "kori", email, items, suostumus: true|false }    kassan "Lähetä minulle muistutus" (false poistaa)
  * GET  ?peru=<tunniste>                                           peruutuslinkin tarkistus { valid, reason }
  * POST ?peru=<tunniste>                                           yhden klikkauksen peruutus (List-Unsubscribe-Post)
@@ -195,8 +195,14 @@ export async function kasittele(req, res, store) {
 
   switch (body.action) {
     case "tilaa": {
-      const r = await tilaaUutiskirje(store, { email: body.email, suostumus: body.suostumus, lahde: teksti(body.lahde, 40) || "lomake" }, { laheta });
-      return res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true, koodiLahetetty: r.koodiLahetetty } : r);
+      // Honeypot (2.11.2026): botin täyttämä piilokenttä kuitataan onnistuneeksi tallentamatta.
+      if (teksti(body.kotisivu, 200)) return res.status(200).json({ ok: true });
+      // Lähde ja sivun polku suostumuksen yhteyteen (esim. "tuotesivu:/tuote/x"). Viestit vain vahvistetulla domainilla.
+      const polku = typeof body.polku === "string" && /^\/[^\s]{0,100}$/.test(body.polku) ? body.polku : "";
+      const lahde = `${teksti(body.lahde, 40) || "lomake"}${polku ? `:${polku}` : ""}`;
+      const { domainVahvistettu } = await import("./_lib/uutiskirje.js");
+      const r = await tilaaUutiskirje(store, { email: body.email, suostumus: body.suostumus, lahde }, { laheta, voiLahettaa: await domainVahvistettu() });
+      return res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true, koodiLahetetty: r.koodiLahetetty, koodi: r.koodi || null, prosentti: r.prosentti || null } : r);
     }
     case "kori": {
       const r = await tallennaKori(store, { email: body.email, items: body.items, suostumus: body.suostumus });
@@ -230,7 +236,7 @@ export async function kasittele(req, res, store) {
         yritys: teksti(body.yritys, 120), nimi: teksti(body.nimi, 100), email: normalisoiEmail(teksti(body.email, 200) || ""),
         puhelin: teksti(body.puhelin, 40), maara: laskuri?.kpl || Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
         paketti: teksti(body.paketti, 60), malli, koot: laskuri ? koot : null, hinta: laskuri?.yhteensa ?? null, kate: laskuri?.kate ?? null,
-        toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus), logo,
+        toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus), logo, ala: teksti(body.ala, 60),
       };
       if (!t.yritys || !t.nimi || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
         return res.status(400).json({ ok: false, error: "Täytä yritys, nimi ja toimiva sähköpostiosoite." });
@@ -239,7 +245,7 @@ export async function kasittele(req, res, store) {
       // Ilmoitus omistajalle (OMISTAJA_EMAIL); tallennus riittää, vaikka viesti epäonnistuisi.
       const ilmoitus = await halytys(`Tarjouspyyntö: ${t.yritys}${t.maara ? `, ${t.maara} kpl` : ""}`, [
         `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
-        `Määrä: ${t.maara ?? "-"}`, `Paketti: ${t.paketti || "-"}`, `Malli: ${t.malli || "-"}`, `Koot: ${t.koot ? JSON.stringify(t.koot) : "-"}`,
+        `Määrä: ${t.maara ?? "-"}`, `Ala: ${t.ala || "-"}`, `Paketti: ${t.paketti || "-"}`, `Malli: ${t.malli || "-"}`, `Koot: ${t.koot ? JSON.stringify(t.koot) : "-"}`,
         `Hinta: ${t.hinta ?? "-"} €, kate (arvio): ${t.kate ?? "-"} €`, `Toivottu toimituspäivä: ${t.toivottu_paiva || "-"} (${t.ehtii === null ? "-" : t.ehtii ? "ehtii" : "ei ehdi"})`,
         ...(logo ? [`Oma logo tai teksti: ${logo.kuvaus}, paita ${logo.vari}`, `Esikatselu: ${logo.esikatselu}`] : []),
         `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,

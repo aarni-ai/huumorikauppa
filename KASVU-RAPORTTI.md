@@ -2289,3 +2289,59 @@ Testit 1 578 läpi. Kolmen User-Agentin tarkistus: /, /joulu, kuusi uutta lahjas
 
 Testit 1 579 läpi. Kolmen User-Agentin tarkistus: /, /k/antsa, /k/keisarit, /kumppanit, /lahjaopas-media, /joulu,
 /joululahja-anopille, /kategoria/t-paidat, tuotesivu, /fonts/inter-latin.woff2 ja /?ref=antsa kaikki 200.
+
+## 2.11.2026 (ilta): evästepalkki, yritysten alasivut, ilmainen toimitus kahdesta tuotteesta, uutiskirje, 6 blogia, Merchant-syöte
+
+**Evästebanneri.** Matala palkki sivun alareunassa (oli mobiilissa ylälaidassa ja peitti ostoskorin sulkemispainikkeen).
+"Hyväksy" ja "Vain välttämättömät" ovat samankokoiset ja samannäköiset (175 x 36 px mobiilissa). Palkki on ostoskorin paneelin
+ja dialogien alla (z 45 < 50) ja mobiilin kiinteiden ostopalkkien päällä: palkin korkeus menee muuttujaan --hk-evaste, ja
+tuotesivun ja ostoskorin palkit nousevat sen yläpuolelle CSS:n translate-ominaisuudella (ei asettelumuutosta). CLS 0
+mobiilissa ennen ja jälkeen palkin.
+
+**Yritysmyynnin alakohtaiset sivut (Coworkin seurantaviesteihin):**
+- https://huumorikauppa.fi/yritykset/rakennus
+- https://huumorikauppa.fi/yritykset/insinoorit
+- https://huumorikauppa.fi/yritykset/vpk
+- https://huumorikauppa.fi/yritykset/terveys (hammas- ja eläinlääkärit)
+- https://huumorikauppa.fi/yritykset/kauneus
+- https://huumorikauppa.fi/yritykset/it
+- https://huumorikauppa.fi/yritykset/mainos
+- https://huumorikauppa.fi/yritykset/tapahtumat
+- https://huumorikauppa.fi/yritykset/urheiluseurat
+
+Jokaisella 10-11 alan paitaa, oma logo tai teksti 29,90 €/kpl vähintään 10 kpl, määräalennustaulukko, takaraja to 26.11.
+(YRITYS_JOULU_TEKSTI) ja tarjouspyyntölomake, jossa ala on esitäytetty (tallentuu tarjouspyyntöön ja näkyy
+/hallinta/tarjoukset-näkymässä). Palvelinrenderöinti, oma title/canonical, FAQPage, sitemap. Data src/data/yritysAlat.ts.
+
+**Ilmainen toimitus kahdesta tuotteesta: otettu käyttöön.** Laskelma KATTEET.md "Ilmainen toimitus kahdesta tuotteesta".
+Euroraja ei toimi (55 €:lla isokokoinen huppari jää alle 7 €:n katteen, 60 €:lla kaksi t-paitaa ei täyty). Kahden tuotteen
+raja muuttaa vain kahden t-paidan korin katetta (19,11 € -> 13,71 €); jokainen yhden paidan tilaus, joka muuttuu kahdeksi,
+tuo +4,14 €. Ei yhdisty alennuskoodiin, kumppani- ja pakettialennukseen eikä t-paitapariin. Korissa, minikorissa ja
+poistumisikkunassa "Vielä 1 tuote ilmaiseen toimitukseen" (koodin kanssa "Vielä X € ilmaiseen toimitukseen"). Yläpalkki,
+alatunniste, ostotiedot, toimitusehdot ja UKK päivitetty. Merchant-syötteen toimitus (6,90 €, ilmainen 79 €:sta) on edelleen
+oikein yhden tuotteen ostolle.
+
+**Uutiskirje.** Kevyt tilauslaatikko tuotesivulla (kuvauksen jälkeen, ei siirrä ostoaluetta) ja alatunnisteessa: "Liity
+listalle ja saat 5 % ensimmäisestä tilauksesta". Pakollinen suostumusruutu (ei valmiiksi valittu), suostumuksen aika, teksti
+ja lähde (myös polku) tauluun subscribers. Koodi TERVE-XXXXXX näytetään heti: 5 %, kerran, sama osoite, vain jos
+osoitteella ei ole maksettua tilausta, ja kassa hylkää koodin, jos kate jäisi alle 7 € (yksi 24,90 €:n paita ja huppari
+hylätään, 27,90 €:n paita ja kaksi paitaa käyvät). Resend-viestit valmiina (api/_lib/uutiskirje.js): tervetuloviesti ja
+joulukampanja 16.-22.11. joulumallisto, 27.-29.11. Black Friday -pari, 30.11.-1.12. viimeiset tilauspäivät. Lähtevät vain,
+kun Resend ilmoittaa lähetysdomainin vahvistetuksi (tai SAHKOPOSTI_VAHVISTETTU=1), vain suostumuksen antaneille ja
+peruuttamattomille, kerran per viesti (loki uutiskirje_lahetykset). Tässä ajossa ei lähetetty viestejä.
+
+**Blogi (6 artikkelia, 819-850 sanaa, Article + FAQPage, sitemapissa):** /blogi/35-hauskaa-joululahjaa-miehelle-2026,
+/blogi/pikkujoululahja-alle-30-euroa-25-ideaa, /blogi/hauskat-lahjat-isalle-jolla-on-jo-kaikki,
+/blogi/lahjaideat-elakelaiselle, /blogi/saunojan-lahjaopas, /blogi/mita-ostaa-tyokaverille-pikkujouluihin. Jokaisessa
+tuotelinkit (16-35 ensimmäisessä kolmessa, 6-9 muissa), linkki /joulu ja lahjasivuille. Huom: pituudet ovat lähellä testin
+800 sanan alarajaa, ja joulun tilauslause (jouluLause) vaihtuu takarajan jälkeen.
+
+**Merchant-syöte.** Uusi tarkistus scripts/syote-tarkistus.mjs (kentät tuote tuotteelta, poistumiskoodi 1 puutteista).
+Lähtötilanne 651 tuotetta: pakolliset kentät kunnossa (identifier_exists=no, brand, color, size, gender, age_group,
+shipping, product_type, google_product_category), mutta toimitusajat erosivat sivustosta kaikissa (käsittely 2-5 / kuljetus
+1-5 -> 1-4 / 2-6), size_system ja size_type puuttuivat 638 vaatteelta, kokojärjestys väärin 3 tuotteella. Korjattu: 0
+puutetta. custom_label "joulu2026" 101 joulutuotteelle (kaikki 80 joulumalliston tuotetta); kaikki viisi custom_labelia olivat
+käytössä, joten arvo meni teemalabeliin custom_label_3 aiemman arvon "joulu" paikalle.
+
+**Mittari.** Uudet kortit: uutiskirjeen tilaajat (yhteensä, 7 pv, 28 pv), blogin käynnit ja yritysten alasivujen käynnit
+(osio yritykset-<ala>, kk ja 30 pv).

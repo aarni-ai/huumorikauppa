@@ -83,7 +83,7 @@ export function AddToCartDrawer() {
                   {formatPriceFi(totalPrice)}
                 </span>
               </div>
-              <FreeShippingProgress total={totalPrice} className="pt-1" />
+              <FreeShippingProgress items={items} className="pt-1" />
               <KorialennusVihje tila={korialennusTila(items, allProducts)} className="pt-2" />
             </div>
 

@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import { Mail, MapPin, Instagram, Truck, RotateCcw, Shield, Flag } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { categories } from "@/data/products";
 import { onKategoriasivu } from "@/lib/hiddenCategories";
-import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
+import { NewsletterLista } from "@/components/NewsletterLista";
 import { footerGiftLinks } from "@/config/internalLinks";
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
@@ -16,9 +14,6 @@ import { onMarketingConsent, openConsentSettings } from "@/lib/consent";
 
 export function Footer() {
   const lahjakortit = useLahjakortitMyynnissa();
-  const [footerEmail, setFooterEmail] = useState("");
-  const [footerSubmitted, setFooterSubmitted] = useState(false);
-  const { toast } = useToast();
 
   // Google Customer Reviews -merkki. Ladataan vain markkinointisuostumuksella (src/lib/consent.ts) ja vasta
   // sivun latauduttua selaimen ollessa joutilas (n. 250 kt skriptejä), jotta se ei kilpaile tuotekuvan ja
@@ -67,33 +62,13 @@ export function Footer() {
     document.body.appendChild(script);
   }
 
-  const handleFooterNewsletter = async () => {
-    if (!footerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) {
-      toast({ title: "Tarkista sähköpostiosoite", variant: "destructive" });
-      return;
-    }
-    try {
-      const email = footerEmail.trim().toLowerCase();
-      // Oma tausta: uutiskirje omaan tauluun (api/sahkoposti.js), ei Lovable Cloudiin. Lomakkeen lähetys on tilaus.
-      await fetch("/api/sahkoposti", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "tilaa", email, suostumus: true, lahde: "alatunniste" }),
-      });
-    } catch {
-      // Tilaus näytetään onnistuneena myös verkkovirheessä (sama kuin ennen).
-    }
-    setFooterSubmitted(true);
-    toast({ title: "Kiitos tilauksesta!", description: "Saat uutiskirjeen sähköpostiisi." });
-  };
-
   return (
     <footer className="border-t border-border bg-card mt-16">
       {/* Trust strip */}
       <div className="border-b border-border py-6">
         <div className="container grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Truck,    label: "Ilmainen toimitus",    sub: `Vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin` },
+            { icon: Truck,    label: "Ilmainen toimitus",    sub: `Kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta` },
             { icon: RotateCcw, label: "14 pv palautusoikeus", sub: "Ei koske personoituja tuotteita" },
             { icon: Shield,   label: "Turvallinen maksu",    sub: PAYMENT_METHODS_TEXT },
             { icon: Flag,     label: "Kotimainen kauppa",    sub: `${ORGANIZATION.addressLocality} · Y-tunnus ${ORGANIZATION.legalId}` },
@@ -175,27 +150,10 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Newsletter */}
+        {/* Uutiskirje (2.11.2026): kevyt tilauslaatikko, ensitilauksen koodi näkyy heti. */}
         <div className="space-y-4">
           <h4 className="text-xs font-semibold text-foreground uppercase tracking-widest">Uutiskirje</h4>
-          <p className="text-sm text-muted-foreground leading-relaxed">Uudet tuotteet ja sesongin lahjaideat sähköpostiisi.</p>
-          {footerSubmitted ? (
-            <p className="text-sm text-foreground font-semibold">Kiitos tilauksesta!</p>
-          ) : (
-            <div className="flex gap-2">
-              <Input
-                placeholder="anna@email.fi"
-                className="h-9 bg-muted border-border text-sm rounded-lg"
-                value={footerEmail}
-                onChange={(e) => setFooterEmail(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleFooterNewsletter()}
-              />
-              <Button size="sm" onClick={handleFooterNewsletter} className="shrink-0 rounded-lg">
-                Tilaa
-              </Button>
-            </div>
-          )}
-          <p className="text-xs text-muted-foreground">Voit peruuttaa milloin vain.</p>
+          <NewsletterLista lahde="alatunniste" tumma />
         </div>
       </div>
 

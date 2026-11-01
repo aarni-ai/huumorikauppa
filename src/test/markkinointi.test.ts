@@ -137,10 +137,9 @@ describe("Uutiskirje ja ensitilauksen koodi", () => {
     expect(l).not.toHaveBeenCalled();
   });
   it("koodi pois käytöstä (0 %): suostumus tallentuu, tervetuloviesti ilman koodia, peruutusotsake mukana", async () => {
-    expect(ENSITILAUS_ALENNUS_PROSENTTI).toBe(0);
     const s = muistiVarasto();
     const viestit = resendMock();
-    const r = await tilaaUutiskirje(s, { email: " Anna@Esimerkki.fi ", suostumus: true, lahde: "popup" }, { laheta, nyt: T0 });
+    const r = await tilaaUutiskirje(s, { email: " Anna@Esimerkki.fi ", suostumus: true, lahde: "popup" }, { laheta, nyt: T0, prosentti: 0 });
     expect(r).toEqual({ ok: true, koodiLahetetty: false });
     expect(s.tilaajat.get("anna@esimerkki.fi")).toMatchObject({ consent_at: T0, consent_text: SUOSTUMUS_UUTISKIRJE, source: "popup", discount_code: null });
     expect(viestit).toHaveLength(1);
@@ -148,8 +147,22 @@ describe("Uutiskirje ja ensitilauksen koodi", () => {
     expect(String(viestit[0].html)).not.toMatch(/TERVE-/);
     expect((viestit[0].headers as Record<string, string>)["List-Unsubscribe-Post"]).toBe("List-Unsubscribe=One-Click");
     // Uusi tilaus samalla osoitteella ei lähetä viestiä uudelleen.
-    await tilaaUutiskirje(s, { email: "anna@esimerkki.fi", suostumus: true }, { laheta, nyt: min(5) });
+    await tilaaUutiskirje(s, { email: "anna@esimerkki.fi", suostumus: true }, { laheta, nyt: min(5), prosentti: 0 });
     expect(viestit).toHaveLength(1);
+  });
+  it("2.11.2026: ensitilauksen koodi 5 % käytössä, koodi palautetaan heti näytettäväksi myös ilman lähetystä", async () => {
+    expect(ENSITILAUS_ALENNUS_PROSENTTI).toBe(5);
+    const s = muistiVarasto();
+    const viestit = resendMock();
+    const r = await tilaaUutiskirje(s, { email: "d@b.fi", suostumus: true, lahde: "tuotesivu:/tuote/x" }, { laheta, nyt: T0, voiLahettaa: false });
+    expect(r).toMatchObject({ ok: true, koodiLahetetty: false, prosentti: 5 });
+    expect(r.koodi).toMatch(/^TERVE-[A-Z2-9]{6}$/);
+    expect(viestit).toHaveLength(0);
+    expect(s.tilaajat.get("d@b.fi")).toMatchObject({ source: "tuotesivu:/tuote/x", discount_code: r.koodi, discount_percent: 5, consent_text: SUOSTUMUS_UUTISKIRJE });
+    // Uusi yritys: sama koodi; käytetty tai maksettu tilaus: ei koodia.
+    expect((await tilaaUutiskirje(s, { email: "d@b.fi", suostumus: true }, { laheta, voiLahettaa: false })).koodi).toBe(r.koodi);
+    s.tilaukset.push({ id: "o2", customer_email: "d@b.fi", status: "maksettu", paid_at: T0, discount_code: r.koodi });
+    expect((await tilaaUutiskirje(s, { email: "d@b.fi", suostumus: true }, { laheta, voiLahettaa: false })).koodi).toBeUndefined();
   });
   it("koodi käytössä: yksi koodi per osoite, ei jo tilanneelle", async () => {
     const s = muistiVarasto();
@@ -157,6 +170,7 @@ describe("Uutiskirje ja ensitilauksen koodi", () => {
     const r = await tilaaUutiskirje(s, { email: "b@b.fi", suostumus: true }, { laheta, nyt: T0, prosentti: 10 });
     expect(r.koodiLahetetty).toBe(true);
     const koodi = s.tilaajat.get("b@b.fi")!.discount_code as string;
+    expect(r.koodi).toBe(koodi);
     expect(koodi).toMatch(/^TERVE-[A-Z2-9]{6}$/);
     expect(String(viestit[0].html)).toContain(koodi);
     await tilaaUutiskirje(s, { email: "b@b.fi", suostumus: true }, { laheta, prosentti: 10 });
@@ -186,7 +200,7 @@ describe("Ensitilauksen alennus ja kate", () => {
   });
   const kate = (hinta: number, ale: number, kulu = 890) =>
     laskeTilauksenKate([{ tuote: paita(hinta, kulu), varianttiId: 11, maara: 1, yksikkohinta: hinta * (1 - ale / 100) }], 5.9);
-  it("nykyhinnalla mikään 5-10 %:n alennus ei pidä 30 %:n katetta: koodi pois käytöstä", () => {
+  it("24,90 €:n t-paidalla mikään 5-10 %:n alennus ei pidä 30 %:n katetta (kate.js laskenta)", () => {
     expect(ALENNUS_KATE_RAJA).toBe(0.3);
     expect(kate(24.9, 0).kate).toBeCloseTo(0.262, 3);
     for (const ale of [5, 6, 7, 8, 9, 10]) expect(kate(24.9, ale).sallittu).toBe(false);
@@ -200,18 +214,22 @@ describe("Ensitilauksen alennus ja kate", () => {
     expect(kate(31.9, 10, 993).sallittu).toBe(true);
     expect(kate(30.9, 10, 993).sallittu).toBe(false);
   });
-  it("kassa hylkää ensitilauksen koodin, jos tilauksen kate jää alle 30 %", () => {
+  it("kassa hylkää ensitilauksen koodin, jos tilauksen nettokate jää alle 7 € (2.11.2026, ei enää 30 %:n rajaa)", () => {
     const pyynto = { items: [{ id: "p1", quantity: 1, size: "M", color: "Musta" }], customerEmail: "a@b.fi", shippingAddress: { address: "K 1", zip: "00100", city: "Hki" } };
-    const koodi = { type: "percent", value: 10, ensitilaus: true };
+    const koodi = { type: "percent", value: 5, ensitilaus: true };
+    // Yksi 24,90 €:n t-paita: nettokate 5 %:n jälkeen 6,25 € < 7 €.
     expect(() => laskeTilaus(pyynto, [paita(24.9)], koodi)).toThrow(KassaVirhe);
-    expect(() => laskeTilaus(pyynto, [paita(24.9)], koodi)).toThrow(/Ensitilauksen alennuskoodia ei voi käyttää/);
-    const ok = laskeTilaus(pyynto, [paita(29.9)], koodi);
-    expect(ok.discount).toBe(2.99);
-    // Tavallinen koodi: hylätään, jos tilauksen nettokate jäisi alle 7 € (29.10.2026), muuten hyväksytään.
+    expect(() => laskeTilaus(pyynto, [paita(24.9)], koodi)).toThrow(/Alennuskoodia ei voi käyttää/);
+    // Joulumalliston 27,90 €:n t-paita: nettokate yli 7 €, vaikka kate on alle 30 %:n heikoimmalla koolla.
+    expect(laskeTilaus(pyynto, [paita(27.9)], koodi).discount).toBe(1.39);
+    expect(laskeTilaus(pyynto, [paita(27.9, 993)], koodi).discount).toBe(1.39);
+    // Kaksi 24,90 €:n t-paitaa: koodi käy.
+    const kaksi = { ...pyynto, items: [{ id: "p1", quantity: 2, size: "M", color: "Musta" }] };
+    expect(laskeTilaus(kaksi, [paita(24.9)], koodi).discount).toBeGreaterThan(0);
+    // Tavallinen koodi: sama 7 €:n sääntö.
     expect(() => laskeTilaus(pyynto, [paita(24.9)], { type: "percent", value: 10 })).toThrow(/Alennuskoodia ei voi käyttää/);
     expect(laskeTilaus(pyynto, [paita(29.9)], { type: "percent", value: 5 }).discount).toBe(1.49);
-    // Kulut tallentuvat riville päivän yhteenvetoa varten.
-    expect(ok.rivit[0]).toMatchObject({ kulu_sentit: 890, toimitus_sentit: 849 });
+    expect(laskeTilaus(pyynto, [paita(29.9)], koodi).rivit[0]).toMatchObject({ kulu_sentit: 890, toimitus_sentit: 849 });
   });
 });
 
@@ -373,7 +391,13 @@ describe("/api/sahkoposti", () => {
     const s = muistiVarasto();
     resendMock();
     expect((await kutsu(s, { method: "POST", body: { action: "tilaa", email: "a@b.fi" } })).status).toBe(400);
-    expect(await kutsu(s, { method: "POST", body: { action: "tilaa", email: "a@b.fi", suostumus: true, lahde: "popup" } })).toEqual({ status: 200, body: { ok: true, koodiLahetetty: false } });
+    expect(await kutsu(s, { method: "POST", body: { action: "tilaa", email: "a@b.fi", suostumus: true, lahde: "popup" } })).toMatchObject({ status: 200, body: { ok: true, prosentti: 5, koodi: expect.stringMatching(/^TERVE-/) } });
+    expect(s.tilaajat.get("a@b.fi")!.source).toBe("popup");
+    await kutsu(s, { method: "POST", body: { action: "tilaa", email: "p@b.fi", suostumus: true, lahde: "tuotesivu", polku: "/tuote/x-t-paita" } });
+    expect(s.tilaajat.get("p@b.fi")!.source).toBe("tuotesivu:/tuote/x-t-paita");
+    // Honeypot: ei tallennusta.
+    expect((await kutsu(s, { method: "POST", body: { action: "tilaa", email: "h@b.fi", suostumus: true, kotisivu: "http://x" } })).status).toBe(200);
+    expect(s.tilaajat.has("h@b.fi")).toBe(false);
     const items = [{ product: { slug: "x-t-paita", name: "X", price: 10 }, quantity: 1 }];
     expect((await kutsu(s, { method: "POST", body: { action: "kori", email: "a@b.fi", items, suostumus: true } })).status).toBe(200);
     const kori = s.korit.get("a@b.fi")!;

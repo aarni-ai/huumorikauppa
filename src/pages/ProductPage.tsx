@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, Share2, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
 import { KORIALENNUS_PROSENTTI } from "../../api/_lib/vakiot.js";
 import { PurchaseFacts } from "@/components/PurchaseFacts";
+import { NewsletterLista } from "@/components/NewsletterLista";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { SizeGuide } from "@/components/SizeGuide";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
@@ -1000,6 +1001,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           </div>
         </section>
 
+        {/* Uutiskirjelista (2.11.2026): kuvauksen jälkeen, ei ostoalueella eikä ponnahdusikkunana. */}
+        <div className="mt-8 max-w-3xl">
+          <NewsletterLista lahde="tuotesivu" />
+        </div>
+
         {/* Structured SEO content blocks: Material, Care, Scenarios, Why buy */}
         <section className="mt-8 max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4">
           {seoCopy.material && (
@@ -1193,7 +1199,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       {/* Sticky mobile add-to-cart bar */}
       {!previewOnly && (
       <div
-        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)] transition-transform duration-300 ${
+        className={`md:hidden fixed bottom-0 inset-x-0 z-40 [translate:0_calc(-1*var(--hk-evaste,0px))] bg-card/95 backdrop-blur border-t border-border shadow-2xl pb-[env(safe-area-inset-bottom,0px)] transition-transform duration-300 ${
           showStickyBar ? "translate-y-0" : "translate-y-full"
         }`}
         aria-hidden={!showStickyBar}

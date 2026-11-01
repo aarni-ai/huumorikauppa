@@ -11,17 +11,17 @@
  * - Saatavuus (api/_lib/saatavuus.js): variantti, joka on tuoterivin unavailable_variants-listassa (päivittäinen
  *   Printify-tarkistus, kassalla tuoreella haulla täydennettynä), hylätään ennen maksua.
  * - Lahjakortilla maksu: tarkistettu saldo vähennetään maksettavasta (lahjakortti { koodi, saldo }).
- * - Ensitilauksen koodi (alennus.ensitilaus, api/_lib/markkinointi.js): hyväksytään vain, jos koko tilauksen kate
- *   alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js ALENNUS_KATE_RAJA).
+ * - Ensitilauksen koodi (alennus.ensitilaus, api/_lib/markkinointi.js): sama sääntö kuin muilla koodeilla, eli tilauksen
+ *   nettokate alennuksen jälkeen vähintään TILAUKSEN_MIN_KATE_EUROA (2.11.2026; aiemmin 30 %:n katteen raja).
  * - Kahden tuotteen alennus (api/_lib/korialennus.js, vakiot.js KORIALENNUS_*): ilman alennuskoodia, kun korissa on
  *   vähintään kaksi fyysistä tuotetta; koskee pakettiin kuulumattomia rivejä ja annetaan vain, jos tilauksen nettokate
  *   alennuksen jälkeen pysyy katevahdin rajalla. Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta.
  * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
-import { laskeKate, laskeTilauksenKate, laskeTilauksenNettokate } from "./kate.js";
+import { laskeKate, laskeTilauksenNettokate } from "./kate.js";
 import { rivinHinta } from "./kokohinnat.js";
-import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT } from "./vakiot.js";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT, toimitusmaksu } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
 import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
@@ -146,20 +146,17 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const prosentti = alennus?.type === "percent" ? alennus.value : 0;
   const euroa = alennus?.type === "fixed" ? alennus.value : 0;
   const suhde = valisumma > 0 ? Math.max(0, valisumma - euroa) / valisumma : 1;
-  const toimitus = rivit.length === 0 || valisumma >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS;
+  // Ilmainen toimitus rajasta tai kahdesta tuotteesta (tarrat eivät lasketa); kahden tuotteen sääntö ei yhdisty
+  // alennuskoodiin, pakettialennukseen eikä t-paitapariin (vakiot.js ILMAINEN_TOIMITUS_KPL).
+  const toimitusKpl = rivit.filter((r) => !LISATUOTE_KATEGORIAT.includes(byId.get(r.product_id)?.category)).reduce((s, r) => s + r.quantity, 0);
+  const normaaliToimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: true });
+  let toimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: !!alennus });
   // Rivikohtainen hinta sentteinä kuten Stripe veloittaa.
   let fyysiset = rivit.map((r) => ({ ...r, unit_cents: Math.max(0, Math.round(sentit(r.unit_price) * (1 - prosentti / 100) * suhde)) }));
-  if (alennus?.ensitilaus && fyysiset.length) {
-    const kate = laskeTilauksenKate(
-      fyysiset.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 })),
-      toimitus,
-    );
-    if (!kate.sallittu) throw new KassaVirhe("Ensitilauksen alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
-  }
   // Vähimmäiskate 7 €: alennuskoodi hylätään ja pakettialennus jätetään antamatta, jos kate jäisi alle rajan.
-  const nettokate = (rr) => laskeTilauksenNettokate(
+  const nettokate = (rr, maksu = toimitus) => laskeTilauksenNettokate(
     rr.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 })),
-    toimitus,
+    maksu,
   );
   if (alennus && fyysiset.length) {
     const k = nettokate(fyysiset);
@@ -168,15 +165,21 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   let pakettiAlennus = 0;
   if (!alennus && lisat.paketit?.length) {
     const p = sovellaPaketit(fyysiset, bySlug, lisat.paketit);
-    const k = p.alennus > 0 ? nettokate(p.rivit) : null;
+    const k = p.alennus > 0 ? nettokate(p.rivit, normaaliToimitus) : null;
     if (!k || (k.tunnettu && k.nettokate >= TILAUKSEN_MIN_KATE_EUROA)) {
       fyysiset = p.rivit;
       pakettiAlennus = p.alennus;
+      if (pakettiAlennus > 0) toimitus = normaaliToimitus;
     }
   }
   let koriAlennus = 0;
   if (!alennus && fyysiset.length) {
-    const k = sovellaKorialennus(fyysiset, bySlug, toimitus, lisat.korialennus);
+    let k = sovellaKorialennus(fyysiset, bySlug, toimitus, lisat.korialennus);
+    // T-paitapari: kampanjahinta ja toimitus kuten ennen (ei kahden tuotteen ilmaista toimitusta).
+    if (k.tyyppi === "tpaitapari" && toimitus !== normaaliToimitus) {
+      toimitus = normaaliToimitus;
+      k = sovellaKorialennus(fyysiset, bySlug, toimitus, lisat.korialennus);
+    }
     fyysiset = k.rivit;
     koriAlennus = k.alennus;
   }

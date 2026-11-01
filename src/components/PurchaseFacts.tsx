@@ -38,7 +38,7 @@ export function PurchaseFacts({
           </li>
           <li className="flex items-start gap-1.5">
             <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
-            <span>Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta{compact ? "" : " alkaen"}</span>
+            <span>Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta</span>
           </li>
         </>
       ) : (
@@ -46,7 +46,7 @@ export function PurchaseFacts({
         <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
         <span>
           {showDeliveryTime && <>Toimitus {TOIMITUSAIKA_TEKSTI} {compact ? "pv" : "arkipäivää"} · </>}
-          {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta{compact ? "" : " alkaen"}
+          {TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta
         </span>
       </li>
       )}
