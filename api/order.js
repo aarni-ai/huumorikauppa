@@ -46,6 +46,14 @@ export default async function handler(req, res) {
       lahjakortit = await tilauksenLahjakortit(tilaus.id);
     }
   }
+  // Kiitos- ja ystäväkoodi (api/_lib/uusintaosto.js) maksetulle tilaukselle kiitossivulle.
+  let asiakaskoodit = {};
+  if (tilaus.status === "maksettu") {
+    try {
+      const { tilauksenAsiakaskoodit } = await import("./_lib/uusintaosto.js");
+      asiakaskoodit = await tilauksenAsiakaskoodit(sql(), tilaus);
+    } catch (e) { console.error("asiakaskoodit:", e?.message || e); }
+  }
   if (req.method === "GET" && req.query.lahjakortti) {
     const koodi = normalisoiKoodi(req.query.lahjakortti);
     const kortti = lahjakortit.find((k) => k.code === koodi);
@@ -77,6 +85,10 @@ export default async function handler(req, res) {
       shipping_country: tilaus.shipping_address?.country ?? "FI",
     },
     emailSent: !!tilaus.confirmation_email_sent_at,
+    koodit: {
+      kiitos: asiakaskoodit.kiitos ? { koodi: asiakaskoodit.kiitos.koodi, prosentti: Number(asiakaskoodit.kiitos.prosentti), voimassa: asiakaskoodit.kiitos.voimassa } : null,
+      ystava: asiakaskoodit.ystava ? { koodi: asiakaskoodit.ystava.koodi, linkki: `https://huumorikauppa.fi/ystava/${asiakaskoodit.ystava.koodi}` } : null,
+    },
     lahjakortit: lahjakortit.map((k) => ({
       code: k.code, value: Number(k.initial_value), expires_at: k.expires_at,
       recipient_name: k.recipient_name || null, recipient_email: k.recipient_email || null,

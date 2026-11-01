@@ -1,0 +1,25 @@
+{
+ "kuvaus": "Lahjaopas medialle ja bloggaajille 2026 (/lahjaopas-media, scripts/lahjaopas-media.mjs). Nimet ja kuvaukset kirjoitettu käsin; hinnat ja kuvat tuotannosta.",
+ "tuotteet": [
+  { "slug": "maailman-paras-aiti-huppari", "ryhma": "Klassikot", "nimi": "Maailman paras äiti", "kuvaus": "Lämmin huppari, jonka sydämeen on painettu kehu äidille. Lahja äidille jouluksi, syntymäpäiväksi tai muuten vain." },
+  { "slug": "tonnin-seteli-t-paita", "ryhma": "Klassikot", "nimi": "Tonnin seteli", "kuvaus": "Suomalaisen internetin tuttu rahameemi t-paidassa. Lahja kaverille, joka muistaa vielä markka-ajan." },
+  { "slug": "saatanan-tunarit-t-paita", "ryhma": "Klassikot", "nimi": "Saatanan tunarit", "kuvaus": "Suomalaisen politiikan kuuluisa lausahdus ja muotokuva t-paidassa. Lahja historian ja kuivan huumorin ystävälle." },
+  { "slug": "minulla-ei-ole-alkoholiongelmaa-t-paita", "ryhma": "Klassikot", "nimi": "Minulla ei ole alkoholiongelmaa", "kuvaus": "Itseironinen t-paita saunailtaan, mökille ja pikkujouluihin." },
+  { "slug": "amatimies-t-paita", "ryhma": "Klassikot", "nimi": "Amatimies", "kuvaus": "Varoitusmerkki ja yksi sana: lahja kotiremontoijalle, joka tekee kaiken itse ja kysyy neuvoa vasta lopuksi." },
+  { "slug": "kalju-t-paita", "ryhma": "Klassikot", "nimi": "Kalju", "kuvaus": "Karhunpää ja yksi sana. Lahja miehelle, joka on sinut hiustensa puuttumisen kanssa." },
+  { "slug": "elakelainen-kaikki-paivat-ovat-lauantaita-t-paita-elakelaiselle", "ryhma": "Klassikot", "nimi": "Eläkeläinen. Kaikki päivät ovat lauantaita", "kuvaus": "Lahja juuri eläkkeelle jäävälle tai pitkään eläkkeellä olleelle, jonka kalenteri on silti täynnä." },
+  { "slug": "50-vuotta-nuori-t-paita", "ryhma": "Klassikot", "nimi": "50 vuotta nuori", "kuvaus": "Ikävuosipaita 50-vuotislahjaksi. Sarjassa ovat myös 30, 40 ja 60 vuotta." },
+  { "slug": "viehelaatikko-on-sijoitus-t-paita-kalastajalle", "ryhma": "Klassikot", "nimi": "Viehelaatikko on sijoitus", "kuvaus": "Kalastajien harrastussarjasta: lahja kalastajalle, jonka viehelaatikko kasvaa joka kesä." },
+  { "slug": "isanta-t-paita", "ryhma": "Klassikot", "nimi": "Isäntä", "kuvaus": "Talon isännälle, joka hoitaa grillin, nurmikon ja termostaatin." },
+  { "slug": "joulu-tulee-olen-valmis-ensi-vuonna-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Joulu tulee. Olen valmis ensi vuonna", "kuvaus": "Joulupaita sille, joka on joka vuosi vähän myöhässä mutta ehtii silti aattoon." },
+  { "slug": "pikkujoulut-lauloin-vain-yhden-laulun-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Pikkujoulut. Lauloin vain yhden laulun", "kuvaus": "Pikkujouluihin karaoken ystävälle. Hyvä lahja myös työpaikan lahjanvaihtoon." },
+  { "slug": "tonttu-valvoo-aina-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Tonttu. Valvoo. Aina", "kuvaus": "Kolme sanaa joulun valvojalta. Lahja vanhemmalle, joka näkee kaiken." },
+  { "slug": "joulusiivous-tarkoittaa-kaapit-kiinni-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Joulusiivous tarkoittaa kaapit kiinni", "kuvaus": "Joulusiivouksen realistinen määritelmä t-paidassa." },
+  { "slug": "anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Anoppi tulee jouluksi. Pysy rauhallisena", "kuvaus": "Vävylle tai miniälle, joka valmistautuu joulupöytään. Mallistossa on myös anopille itselleen sopivia tekstejä." },
+  { "slug": "kinkkuvahti-ala-koske-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Kinkkuvahti. Älä koske", "kuvaus": "Joulupöydän vartijalle, joka paistaa kinkun ja päättää, milloin sitä leikataan." },
+  { "slug": "glogi-ilman-rusinoita-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Glögi. Ilman rusinoita", "kuvaus": "Glögin ystävälle, jolla on selvä mielipide rusinoista." },
+  { "slug": "lahjapaniikki-perinteinen-joulutapa-t-paita-jouluun", "ryhma": "Joulumallisto 2026", "nimi": "Lahjapaniikki. Perinteinen joulutapa", "kuvaus": "Viime hetken lahjaostajalle, joka tunnistaa itsensä." },
+  { "slug": "marraskuu-nakemiin-aurinko-t-paita-talveen", "ryhma": "Joulumallisto 2026", "nimi": "Marraskuu. Näkemiin aurinko", "kuvaus": "Marraskuun pimeyteen ja työmatkoille, jotka alkavat ja päättyvät pimeässä." },
+  { "slug": "kaamos-on-vain-pitka-ilta-t-paita-talveen", "ryhma": "Joulumallisto 2026", "nimi": "Kaamos on vain pitkä ilta", "kuvaus": "Pohjoisen asukkaalle, joka ottaa kaamoksen rauhallisesti." }
+ ]
+}

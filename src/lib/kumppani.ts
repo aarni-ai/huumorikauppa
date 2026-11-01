@@ -27,8 +27,18 @@ export function tallennaKumppaniUrlista(search: string): void {
   }
 }
 
+/** Kumppanisivun (/k/<koodi>) eväste hk_kumppani, 30 päivää (api/sahkoposti.js ?kumppanisivu=). */
+function evasteenKoodi(): string | null {
+  if (typeof document === "undefined") return null;
+  const m = document.cookie.match(/(?:^|;\s*)hk_kumppani=([^;]+)/);
+  const k = m ? decodeURIComponent(m[1]).toLowerCase() : null;
+  return k && KUMPPANIKOODI.test(k) ? k : null;
+}
+
 export function kumppani(): string | null {
   if (!KUMPPANUUS.kaytossa) return null;
+  const evaste = evasteenKoodi();
+  if (!muistissa && evaste) return evaste;
   if (muistissa) {
     // Suostumus voi tulla vasta linkin avaamisen jälkeen: tallennetaan silloin istuntoon (säilyy sivun latauksen yli).
     try { if (hasMarketingConsent() && !sessionStorage.getItem(AVAIN)) sessionStorage.setItem(AVAIN, muistissa); } catch { /* ei tallennusta */ }

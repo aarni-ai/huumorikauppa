@@ -46,6 +46,7 @@ const OrderConfirmation = () => {
   const [resending, setResending] = useState(false);
   const [optInRendered, setOptInRendered] = useState(false);
   const [lahjakortit, setLahjakortit] = useState<Lahjakortti[]>([]);
+  const [koodit, setKoodit] = useState<{ kiitos: { koodi: string; prosentti: number; voimassa: string } | null; ystava: { koodi: string; linkki: string } | null } | null>(null);
 
   // Clear cart once
   useEffect(() => {
@@ -148,6 +149,7 @@ const OrderConfirmation = () => {
           setOrder(json.order);
           setEmailSent(!!json.emailSent);
           if (Array.isArray(json.lahjakortit) && json.lahjakortit.length) setLahjakortit(json.lahjakortit);
+          if (json.koodit?.kiitos || json.koodit?.ystava) setKoodit(json.koodit);
           // Stop polling once we have the order AND email sent OR we hit max
           if (json.emailSent || attempts >= maxAttempts) {
             setPolling(false);
@@ -295,6 +297,31 @@ const OrderConfirmation = () => {
           </>
         )}
       </div>
+
+      {/* Uudelleenostot (api/_lib/uusintaosto.js): kiitoskoodi ja ystävälinkki. */}
+      {koodit && (
+        <section aria-label="Seuraava tilaus" className="bg-card border border-border rounded-lg p-6 space-y-3 text-left">
+          {koodit.kiitos && (
+            <div>
+              <h2 className="font-display text-lg text-foreground">{koodit.kiitos.prosentti} % seuraavaan tilaukseen</h2>
+              <p className="font-mono text-xl font-bold tracking-wider text-foreground">{koodit.kiitos.koodi}</p>
+              <p className="text-xs text-muted-foreground">
+                Voimassa {new Date(koodit.kiitos.voimassa).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" })} asti samalla sähköpostiosoitteella. Kirjoita koodi kassalla kenttään Alennuskoodi.
+              </p>
+            </div>
+          )}
+          {koodit.ystava && (
+            <div className="pt-2 border-t border-border">
+              <h2 className="font-display text-lg text-foreground">Jaa ystävälle: hän saa 5 %, sinä saat 5 %</h2>
+              <p className="text-sm text-muted-foreground break-all">{koodit.ystava.linkki}</p>
+              <Button size="sm" variant="outline" className="mt-2"
+                onClick={() => navigator.clipboard?.writeText(koodit.ystava!.linkki).then(() => toast({ title: "Linkki kopioitu" })).catch(() => undefined)}>
+                <Copy className="h-4 w-4 mr-2" /> Kopioi ystävälinkki
+              </Button>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Order details if available */}
       {order && order.items?.length > 0 && (

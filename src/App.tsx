@@ -126,6 +126,9 @@ const SomeAdminPage = lazyWithRetry(() => import("./pages/SomeAdminPage"));
 const AdminActivatePage = lazyWithRetry(() => import("./pages/AdminActivatePage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
 const MediaPage = lazyWithRetry(() => import("./pages/MediaPage"));
+const MediaGuidePage = lazyWithRetry(() => import("./pages/MediaGuidePage"));
+const PartnerLandingPage = lazyWithRetry(() => import("./pages/PartnerLandingPage"));
+const FriendLandingPage = lazyWithRetry(() => import("./pages/FriendLandingPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
@@ -240,6 +243,9 @@ export const AppSisalto = () => (
               <Route path="/kumppanit" element={<PartnersPage />} />
               <Route path="/kumppanit/raportti" element={<PartnerReportPage />} />
               <Route path={MEDIA_PATH} element={<MediaPage />} />
+              <Route path="/lahjaopas-media" element={<MediaGuidePage />} />
+              <Route path="/k/:koodi" element={<PartnerLandingPage />} />
+              <Route path="/ystava/:koodi" element={<FriendLandingPage />} />
               {/* Yhdistetyt sivut ja ääkkösslugit (301 myös vercel.json:ssa) */}
               {Object.entries(LANDING_REDIRECTS).map(([from, to]) => (
                 <Route key={from} path={from} element={<RedirectKeepQuery to={to} />} />

@@ -29,3 +29,25 @@ describe("etusivun 8 suosituinta", () => {
     expect(valitseSuosituimmat(tuotteet).map((x) => x.slug)).toEqual(["maailman-paras-aiti-huppari", "tonnin-seteli-huppari", "saatanan-tunarit-t-paita"]);
   });
 });
+
+describe("uudelleenostot ja kumppanit", () => {
+  it("asiakaskoodin muoto ja ystävälinkki", async () => {
+    const { ASIAKASKOODI, ystavaLinkki } = await import("../../api/_lib/uusintaosto.js");
+    expect(ASIAKASKOODI.test("KIITOS-ABC234")).toBe(true);
+    expect(ASIAKASKOODI.test("YSTAVA-ABC23")).toBe(false);
+    expect(ystavaLinkki("YSTAVA-ABC234")).toBe("https://huumorikauppa.fi/ystava/YSTAVA-ABC234");
+  });
+  it("kumppanin nimen genetiivi ja linkki", async () => {
+    const { genetiivi, kumppaniLinkki } = await import("../../api/_lib/kumppani.js");
+    expect(genetiivi("Antsa")).toBe("Antsan");
+    expect(genetiivi("Keisarit")).toBe("Keisarien");
+    expect(genetiivi("Mikael")).toBe("Mikaelin");
+    expect(kumppaniLinkki("antsa")).toBe("https://huumorikauppa.fi/k/antsa");
+  });
+  it("liikenteen erittely", async () => {
+    const { liikenne } = await import("../../api/_lib/mittarit.js");
+    const l = liikenne({ lahteet: [{ nimi: "google", kaynnit: 5 }, { nimi: "bing", kaynnit: 1 }, { nimi: "media", kaynnit: 2 }, { nimi: "kumppani", kaynnit: 3 }],
+      osiot: [{ nimi: "joululahja-isalle", kaynnit: 4 }, { nimi: "lahjat", kaynnit: 2 }, { nimi: "k", kaynnit: 3 }, { nimi: "tuote", kaynnit: 9 }] });
+    expect(l).toEqual({ orgaaninen: 6, lahjasivut: 6, media: 2, kumppanisivut: 3, kumppanilinkit: 3 });
+  });
+});

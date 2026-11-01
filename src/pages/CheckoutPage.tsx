@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
+import { jouluAvain } from "@/data/jouluAikataulu";
 import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
@@ -78,6 +80,9 @@ const CheckoutPage = () => {
     if (code && VALID_CODES[code] && !appliedDiscount) {
       setAppliedDiscount({ code, ...VALID_CODES[code] });
     }
+    // Ystäväkoodi (/ystava/<koodi>, eväste hk_alekoodi 7 pv): kenttään valmiiksi; tarkistus "Käytä"-painikkeella.
+    const ystava = document.cookie.match(/(?:^|;\s*)hk_alekoodi=([A-Z0-9-]+)/)?.[1];
+    if (!code && ystava && !appliedDiscount) setDiscountCode(ystava);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -371,6 +376,8 @@ const CheckoutPage = () => {
                   </div>
                 )}
 
+                {/* Joulun takaraja korin tuotteille (2.11.2026, src/data/jouluAikataulu.ts): näkyy takarajaan asti. */}
+                <JouluTakarajaRivi categories={items.some((i) => i.product.supplier === "aliexpress") ? [] : items.filter((i) => i.product.type !== "giftcard").map((i) => jouluAvain(i.product))} className="text-sm text-foreground" />
                 <p className="text-sm text-muted-foreground">
                   📦 Kotiinkuljetus {TOIMITUSAIKA_TEKSTI} arkipäivää · {shippingFree ? "ilmainen toimitus" : `toimitus ${shippingCost.toFixed(2).replace(".", ",")} €`}
                 </p>

@@ -45,6 +45,11 @@ async function alennus(koodi, email) {
   if (!koodi) return null;
   const k = String(koodi).trim().toUpperCase();
   if (onTietokanta()) {
+    // Kiitos-, ystävä- ja palkkiokoodit (api/_lib/uusintaosto.js); katesääntö kuten muillakin koodeilla.
+    const { tarkistaAsiakaskoodi } = await import("./_lib/uusintaosto.js");
+    const ak = await tarkistaAsiakaskoodi(sql(), k, email);
+    if (ak?.virhe) throw new KassaVirhe(ak.virhe, "discount_invalid");
+    if (ak) return ak;
     const [r] = await sql()`select discount_type, discount_value, is_active from discount_codes where upper(code) = ${k}`;
     if (r) return r.is_active ? { type: r.discount_type, value: Number(r.discount_value) } : null;
     if (k.startsWith("TERVE-")) {

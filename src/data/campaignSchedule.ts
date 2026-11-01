@@ -117,19 +117,20 @@ export const FATHERS_DAY_ORDER_END_UTC_MS = paivanLoppuUtcMs(ISANPAIVA_TILAUSPAI
 /** Joululahjan on oltava perillä viimeistään jouluaattoa edeltävänä päivänä. */
 export const JOULU_PERILLA_ISO = "2026-12-23";
 /**
- * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), painotaloittain laskettuna, KASVU-RAPORTTI.md
- * 29.10.2026: tilauksesta perille toteutuneiden toimitusten 90. persentiili + 2 arkipäivää, kun havaintoja on
- * vähintään 5, muuten Printifyn ilmoittama toimitusaika Suomeen (5-15 arkipäivää) + 2 = 17.
- *  - T-paidat: kaikki OPT OnDemandilla (CZ, JOULU_TPAITA_PAINOTALOT). T-paitojen 8 toimitusta kaikilta painotaloilta
- *    3-16 arkipäivää, P90 13,2 -> 14 + 2 = 16; OPT:n omat toimitukset 5, 7 ja 9 arkipäivää jäävät sen alle.
- *  - Hupparit: Textildruck Europa (DE) 11, 13 ja 14 arkipäivää (3 havaintoa) ja Atelier Katanga (FR, ei havaintoja),
- *    julisteet ja tarrat (OPT, ei havaintoja) sekä koristeet: 17.
- * T-paita muulta painotalolta saa oletusajan (src/data/jouluAikataulu.ts jouluAvain).
+ * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), painotaloittain Printifyn toteutuneista
+ * tilauksista (scripts/joulu-aikataulu.mjs, päivitetty 2.11.2026): pahin havaittu käsittely + tuotanto + kuljetus
+ * Suomeen + 2 arkipäivän varmuus, perillä viimeistään JOULU_PERILLA_ISO (ennen jouluaattoa).
+ *  - T-paidat, OPT OnDemand (CZ, JOULU_TPAITA_PAINOTALOT): käsittely 1 + tuotanto 1 + kuljetus 8 (4 toimitusta)
+ *    = 10 + 2 = 12 (maanantai 7. joulukuuta). Printifyn oma Europe-takaraja OPT:lle oli 5. joulukuuta 2025
+ *    (seo/toimitusajat.md), joten myöhäisempää ei luvata: 13 arkipäivää (perjantai 4. joulukuuta).
+ *  - Hupparit ja muut, Textildruck Europa (DE): käsittely 1 + tuotanto 2 + kuljetus 11 (3 toimitusta) = 14 + 2 = 16.
+ *    Sama oletus muille tuotteille ja muiden painotalojen t-paidoille (src/data/jouluAikataulu.ts jouluAvain).
+ * Sivuston yhteinen päivä (banneri, kassa) on tyyppien varhaisin.
  */
-export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = { "t-paidat": 16 };
+export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = { "t-paidat": 13, hupparit: 16 };
 /** Painotalot (Printify print_provider_id), joiden t-paidoille t-paitojen aika pätee: OPT OnDemand. */
 export const JOULU_TPAITA_PAINOTALOT: readonly number[] = [30];
-export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = 17;
+export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = 16;
 /** Tuotetyypin viimeinen tilauspäivä jouluksi (tuntematon tyyppi: oletusaika). */
 export const joulunTilauspaivaTyypille = (kategoria?: string | null): string =>
   viimeinenTilauspaiva(JOULU_PERILLA_ISO, (kategoria && JOULU_TOIMITUS_ARKIPAIVAA[kategoria]) || JOULU_TOIMITUS_OLETUS_ARKIPAIVAA);

@@ -60,6 +60,14 @@ export const LANDING_PATHS: readonly string[] = [
   "/lahjat/maanviljelijalle",
   "/lahjat/it-ihmiselle",
   "/ammattipaidat",
+  // Lahjahakujen sivut (2.11.2026, src/data/lahjaoppaat2026.ts)
+  "/joulu",
+  "/joululahja-anopille",
+  "/hauska-joululahja",
+  "/pikkujoululahja-alle-30-euroa",
+  "/40-vuotislahja",
+  "/50-vuotislahja",
+  "/60-vuotislahja",
 ];
 
 /**
@@ -146,6 +154,7 @@ export const FATHERS_DAY_MENU: { href: string; label: string }[] = [
 /** Joululahjat-valikko (Header, työpöytä ja mobiili). */
 export const CHRISTMAS_MENU: { href: string; label: string }[] = [
   { href: "/joululahjat", label: "Kaikki joululahjat" },
+  { href: "/joulu", label: "Joulumallisto 2026" },
   { href: "/lahjat/joululahjaksi-miehelle", label: "Miehelle" },
   { href: "/lahjat/joululahjaksi-naiselle", label: "Naiselle" },
   { href: "/joululahja-isalle", label: "Isälle" },

@@ -40,9 +40,8 @@ const lyhyt = (iso: string) => paivaLyhyt(iso).replace(/\d{4}$/, "");
  */
 export function jouluPalkkiLause(nowMs: number = Date.now()): string {
   if (!jouluAuki(nowMs)) return "";
-  const t = lyhyt(joulunTilauspaivaTyypille("t-paidat"));
-  const m = lyhyt(joulunTilauspaivaTyypille(null));
-  return KAKSI_PAIVAA ? `tilaa t-paidat viimeistään ${t} ja muut tuotteet ${m}` : `tilaa viimeistään ${m}`;
+  // 2.11.2026: yksi päivä (tuotetyyppien varhaisin), muoto "Tilaa viimeistään X, niin ehtii jouluksi".
+  return `Tilaa viimeistään ${lyhyt(JOULU_TILAUSPAIVA_ISO)}, niin ehtii jouluksi`;
 }
 
 /** Joulun lupaus tai, tilausajan jälkeen, pelkkä toimitusaika. */

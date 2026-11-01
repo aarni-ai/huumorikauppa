@@ -538,7 +538,7 @@ function buildComponentPages(componentHtml: BuildOptions["componentHtml"] = {}):
 export function buildLandingPages(products: Product[]): PrerenderPage[] {
   return landingPages.map((page) => {
     const list = selectLandingProducts(page, products);
-    const shown = list.slice(0, LANDING_GRID_LIMIT);
+    const shown = list.slice(0, page.maxTuotteita ?? LANDING_GRID_LIMIT);
     const related = landingRelatedLinks(page);
     const extra = page.extraLinks ?? [];
     return {
@@ -553,6 +553,8 @@ export function buildLandingPages(products: Product[]): PrerenderPage[] {
         ...(page.spotlight
           ? [{ heading: page.spotlight.heading, paragraphs: [page.spotlight.text], links: page.spotlight.links }]
           : []),
+        // Lahjaopas (src/data/lahjaoppaat2026.ts) samassa järjestyksessä kuin selaimessa.
+        ...(page.opas ?? []).map((o) => ({ heading: o.otsikko, paragraphs: o.teksti })),
         { heading: "Lisää lahjaideoita", links: [...related, ...extra] },
         { heading: "Tuotekategoriat", links: landingCategoryLinks(page) },
       ],

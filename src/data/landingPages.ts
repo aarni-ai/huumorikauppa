@@ -22,6 +22,8 @@ import TOP50 from "../../api/_lib/top50.generated.js";
 import { isanpaivaLause, jouluMetaLause } from "./tilauspaivat";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import { sarjaPages, SARJA_SIVUT } from "./landingPagesSarjat";
+import { LAHJAOPPAAT } from "./lahjaoppaat2026";
+import { JOULUMALLISTO_SLUGIT } from "./joulumallisto2026";
 import {
   AMMATTI,
   ELAKE,
@@ -81,6 +83,10 @@ export interface LandingPageDef {
   featured?: (p: LandingProduct) => boolean;
   /** Nosto toiselle sivulle tuotteiden yläpuolella (esim. joulusivulta teemasivulle). */
   spotlight?: LandingSpotlight;
+  /** Lahjaopas tuotteiden alla (src/data/lahjaoppaat2026.ts): otsikoidut osiot, yhteensä intron kanssa 320-480 sanaa. */
+  opas?: { otsikko: string; teksti: string[] }[];
+  /** Näytettävien tuotteiden enimmäismäärä (oletus LANDING_GRID_LIMIT); lahjahakusivuilla 20. */
+  maxTuotteita?: number;
 }
 
 export interface LandingSpotlight {
@@ -235,7 +241,7 @@ const BF_JOULU_TPAIDAT = joulunTilauspaivaTyypille("t-paidat");
 const BF_JOULU_TEKSTI = paivaLyhyt(BF_JOULU_TPAIDAT);
 const BF_EUR = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
-export const landingPages: LandingPageDef[] = [
+const PERUSSIVUT: LandingPageDef[] = [
   // ─── Joulu ───
   {
     path: "/joululahjat",
@@ -2151,6 +2157,84 @@ export const landingPages: LandingPageDef[] = [
     filter: AMMATTI,
   },
 ];
+
+// ── Lahjahakujen sivut ja oppaat (2.11.2026, src/data/lahjaoppaat2026.ts) ─────────────────────────────────────
+
+const joukko = (polku: string) => new Set(LAHJAOPPAAT[polku]?.tuotteet ?? []);
+const JOULUTUOTE = (p: LandingProduct) => (/-(jouluun|pikkujouluihin)$/.test(p.slug) || /joulu|pikkujoul|tonttu|glögi|kinkku/.test(lower(p))) && !looksLikeMug(p);
+const IKA = (n: number) => (p: LandingProduct) => new RegExp(`^${n}(v|-vuotta|-ja)?-`).test(p.slug) && !looksLikeMug(p);
+const omat = (polku: string, lisa: (p: LandingProduct) => boolean = () => false) => {
+  const s = joukko(polku);
+  return (p: LandingProduct) => s.has(p.slug) || lisa(p);
+};
+const ensin = (polku: string) => {
+  const s = joukko(polku);
+  return (p: LandingProduct) => s.has(p.slug);
+};
+const uusi = (polku: string, name: string, group: LandingGroup, related: string[], filter: (p: LandingProduct) => boolean): LandingPageDef => {
+  const o = LAHJAOPPAAT[polku];
+  return {
+    path: polku, name, group, title: o.title!, description: o.description!, h1: o.h1!, intro: o.intro, faqs: o.faqs,
+    related, categories: ["t-paidat", "hupparit"], filter, featured: ensin(polku), opas: o.opas, maxTuotteita: 20,
+  };
+};
+
+const JOULUMALLISTO = new Set<string>(JOULUMALLISTO_SLUGIT);
+
+const UUDET_LAHJASIVUT: LandingPageDef[] = [
+  {
+    path: "/joulu",
+    name: "Joulumallisto 2026",
+    group: "joulu",
+    title: "Joulumallisto 2026: hauskat joulupaidat | Huumorikauppa",
+    description: "Joulumallisto 2026: 40 uutta huumorimallia jouluun, pikkujouluihin ja kaamokseen t-paitoina ja huppareina. Painetaan tilauksesta EU:ssa.",
+    h1: "Joulumallisto 2026",
+    intro: [
+      "Joulumallistossa on 40 uutta huumorimallia t-paitoina ja huppareina: tonttuja, joulusiivousta, anoppi jouluna, joulukinkkua, glögiä, lahjapaniikkia, marraskuun pimeyttä ja kaamosta.",
+      "Tummilla paidoilla teksti on valkoinen ja vaaleilla musta, joten jokainen teksti erottuu. Mallistossa ovat myös aiemmat joulu- ja pikkujoulupaidat.",
+    ],
+    faqs: [
+      { q: "Mitä joulumallistossa on?", a: "40 uutta huumorimallia jouluun, pikkujouluihin, marraskuuhun ja kaamokseen, jokainen t-paitana ja huppareina, sekä aiemmat joulupaidat." },
+      { q: "Paljonko joulupaita maksaa?", a: "Uudet t-paidat maksavat 27,90 € ja hupparit 52,90 € (3XL 59,90 €)." },
+      { q: "Ehtiikö paita jouluksi?", a: "Joulun viimeiset tilauspäivät näkyvät sivuston yläpalkissa, tuotesivulla ja kassalla. Lahjakortti toimitetaan heti tulostettavana PDF:nä." },
+      { q: "Missä paidat painetaan?", a: "Tilauksesta EU:ssa: t-paidat Tšekissä ja hupparit Ranskassa." },
+    ],
+    related: ["/joululahjat", "/hauska-joululahja", "/pikkujoululahja-alle-30-euroa", "/joululahja-anopille", "/lahjat/pikkujouluihin"],
+    categories: ["t-paidat", "hupparit"],
+    filter: JOULUTUOTE,
+    featured: (p) => JOULUMALLISTO.has(p.slug),
+    maxTuotteita: 120,
+  },
+  uusi("/joululahja-anopille", "Joululahja anopille", "joulu",
+    ["/joululahjat", "/lahjat/joululahjaksi-naiselle", "/joululahja-aidille", "/hauska-joululahja"], omat("/joululahja-anopille", JOULUTUOTE)),
+  uusi("/hauska-joululahja", "Hauska joululahja", "joulu",
+    ["/joululahjat", "/lahjat/joululahjaksi-miehelle", "/lahjat/joululahjaksi-naiselle", "/joululahja-anopille", "/pikkujoululahja-alle-30-euroa"],
+    omat("/hauska-joululahja", JOULUTUOTE)),
+  uusi("/pikkujoululahja-alle-30-euroa", "Pikkujoululahja alle 30 €", "joulu",
+    ["/lahjat/pikkujouluihin", "/lahjat/alle-30-euroa", "/hauska-joululahja", "/joululahja-tyokaverille"],
+    omat("/pikkujoululahja-alle-30-euroa", (p) => JOULUTUOTE(p) && p.price < 30)),
+  uusi("/40-vuotislahja", "40-vuotislahja", "lahjat",
+    ["/lahjat/40-vuotiaalle-miehelle", "/50-vuotislahja", "/syntymapaivalahjat", "/lahja-kaverille"], omat("/40-vuotislahja", IKA(40))),
+  uusi("/50-vuotislahja", "50-vuotislahja", "lahjat",
+    ["/lahjat/50-vuotiaalle-miehelle", "/lahjat/50-vuotiaalle-naiselle", "/40-vuotislahja", "/60-vuotislahja"], omat("/50-vuotislahja", IKA(50))),
+  uusi("/60-vuotislahja", "60-vuotislahja", "lahjat",
+    ["/lahjat/60-vuotiaalle-miehelle", "/lahjat/60-vuotiaalle-naiselle", "/50-vuotislahja", "/joululahja-elakelaiselle"], omat("/60-vuotislahja", IKA(60))),
+];
+
+/** Olemassa oleviin hakusivuihin opas, uusi intro ja lisä-UKK (sekä tarkennettu otsikko, jos annettu). */
+function lisaaOppaat(sivut: LandingPageDef[]): LandingPageDef[] {
+  return sivut.map((p) => {
+    const o = LAHJAOPPAAT[p.path];
+    if (!o || p.opas) return p;
+    // h1 pysyy ennallaan (linkit ja murupolut); UKK enintään 6 (src/seo/landing.test.ts).
+    // Otsikko ja kuvaus vaihtuvat vain, jos vanhasta otsikosta puuttuu lahja-hakusana (esim. "Hauska t-paita kalastajalle").
+    const uusiOtsikko = !!o.title && !/lahj/i.test(p.title);
+    return { ...p, title: uusiOtsikko ? o.title! : p.title, description: uusiOtsikko && o.description ? o.description : p.description, intro: o.intro,
+      faqs: [...p.faqs, ...o.faqs].slice(0, 6), opas: o.opas, maxTuotteita: 20 };
+  });
+}
+
+export const landingPages: LandingPageDef[] = lisaaOppaat([...PERUSSIVUT, ...UUDET_LAHJASIVUT]);
 
 /** Polku, johon vanha polku ohjautuu (tai polku itse). */
 export function resolveLandingRedirect(path: string): string {

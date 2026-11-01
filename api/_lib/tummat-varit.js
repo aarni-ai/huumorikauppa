@@ -25,7 +25,14 @@ export function poistaTummatVarit(p, lista = TUMMAT) {
   if (Array.isArray(v.colors)) variants.colors = v.colors.filter((c) => !poisJoukko.has(c));
   if (v.variant_images) variants.variant_images = Object.fromEntries(Object.entries(v.variant_images).filter(([c]) => !poisJoukko.has(c)));
   if (variants.default_color && poisJoukko.has(variants.default_color)) variants.default_color = variants.colors?.[0] ?? null;
-  const images = Array.isArray(p.images) ? p.images.filter((u) => !poisIdt.has(kuvanVariantti(u))) : p.images;
+  // Kuva pois, jos sen variantti on poistetun värin tai URL on poistetun värin variant_images-listassa (pääkuva voi tulla
+  // variantilta, joka ei ole variant_mapissa, esim. ei myynnissä oleva koko).
+  const ilmanKyselya = (u) => String(u).split("?")[0];
+  const poisUrlit = new Set(pois.flatMap((c) => v.variant_images?.[c] || []).map(ilmanKyselya));
+  const poisKuvanIdt = new Set([...poisUrlit].map(kuvanVariantti).filter(Boolean));
+  const images = Array.isArray(p.images)
+    ? p.images.filter((u) => !poisIdt.has(kuvanVariantti(u)) && !poisKuvanIdt.has(kuvanVariantti(u)) && !poisUrlit.has(ilmanKyselya(u)))
+    : p.images;
   const unavailable = Array.isArray(p.unavailable_variants) ? p.unavailable_variants.filter((a) => !poisJoukko.has(String(a).split("|")[0])) : p.unavailable_variants;
   return { ...p, variants, images: images?.length ? images : p.images, ...(unavailable !== undefined ? { unavailable_variants: unavailable } : {}) };
 }

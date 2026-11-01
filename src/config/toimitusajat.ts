@@ -31,7 +31,9 @@ export const OLETUSALUE: ToimitusAlue = "us";
  * ja Jondo 4.-5.12. -> 27.11. Laskettu arvio ei voi olla tätä myöhäisempi. Sama 20.11. on luvattu tuotannon UKK:ssa.
  * Päivitä, kun Printify julkaisee vuoden 2026 takarajat (printify.com/network-fulfillment-status).
  */
-export const JOULU_VIIMEINEN_TILAUSPAIVA: Record<ToimitusAlue, string> = { us: "11-20", eu: "11-27" };
+// EU 2.11.2026: sivuston yhteinen joulun tilauspäivä (src/data/campaignSchedule.ts), jotta "Ehtii jouluksi" ja banneri
+// eivät ristiriitaisesti eroa toisistaan.
+export const JOULU_VIIMEINEN_TILAUSPAIVA: Record<ToimitusAlue, string> = { us: "11-20", eu: "12-01" };
 
 /** Joulun raja: paketti perillä viimeistään tänä päivänä (kuukausi-päivä). */
 export const JOULU_RAJA = "12-23";

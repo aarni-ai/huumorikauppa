@@ -38,6 +38,7 @@ const STATIC_PAGES = [
   { loc: "/personoitu-paita", changefreq: "weekly", priority: "0.8" },
   { loc: "/kumppanit", changefreq: "monthly", priority: "0.5" },
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
+  { loc: "/lahjaopas-media", changefreq: "weekly", priority: "0.5" },
   { loc: "/lahjakortti", changefreq: "monthly", priority: "0.7" },
   { loc: "/paketit", changefreq: "weekly", priority: "0.7" },
   // Yksittäiset paketit eivät ole sivukartassa (29.10.2026): ilman alennusta ne toistavat tuotesivut, noindex.
@@ -47,7 +48,7 @@ const STATIC_PAGES = [
  * Laskeutumissivut. Pidä samana kuin src/data/landingRoutes.ts:n LANDING_PATHS
  * (src/seo/sitemap.test.ts tarkistaa).
  */
-const LANDING_PATHS = [
+export const LANDING_PATHS = [
   "/joululahjat",
   "/lahjat/joululahjaksi-miehelle",
   "/lahjat/joululahjaksi-naiselle",
@@ -103,6 +104,13 @@ const LANDING_PATHS = [
   "/lahjat/maanviljelijalle",
   "/lahjat/it-ihmiselle",
   "/ammattipaidat",
+  "/joulu",
+  "/joululahja-anopille",
+  "/hauska-joululahja",
+  "/pikkujoululahja-alle-30-euroa",
+  "/40-vuotislahja",
+  "/50-vuotislahja",
+  "/60-vuotislahja",
 ];
 
 /**

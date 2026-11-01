@@ -47,7 +47,7 @@ const LandingPage = () => {
   const breadcrumbs = landingBreadcrumbs(page);
   const related = landingRelatedLinks(page);
   const categoryLinks = landingCategoryLinks(page);
-  const shown = products.slice(0, LANDING_GRID_LIMIT);
+  const shown = products.slice(0, page.maxTuotteita ?? LANDING_GRID_LIMIT);
 
   return (
     <div className="min-h-screen">
@@ -143,6 +143,17 @@ const LandingPage = () => {
               </Link>
             )}
           </p>
+        )}
+
+        {page.opas && page.opas.length > 0 && (
+          <article className="max-w-3xl mt-12 space-y-8 text-muted-foreground" aria-label={`${page.name}: opas`}>
+            {page.opas.map((o) => (
+              <section key={o.otsikko} className="space-y-3">
+                <h2 className="font-display text-2xl text-foreground">{o.otsikko}</h2>
+                {o.teksti.map((t, i) => <p key={i}>{t}</p>)}
+              </section>
+            ))}
+          </article>
         )}
 
         <section className="max-w-3xl mt-12">

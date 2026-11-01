@@ -202,11 +202,26 @@ export async function kasitteleLasku(lasku) {
  */
 export async function jalkikasittely(tilaus) {
   if (tilaus.gift_card_code && !tilaus.gift_card_charged_at) await veloitaLahjakortti(tilaus);
+  // Uudelleenostot (api/_lib/uusintaosto.js): kiitos- ja ystäväkoodi tälle tilaukselle, ja jos tilauksessa käytettiin
+  // ystäväkoodia, palkkiokoodi koodin antajalle. Virhe ei estä vahvistusta eikä Printify-siirtoa.
+  let asiakaskoodit = {};
+  try {
+    const { tilauksenAsiakaskoodit, kirjaaAsiakaskoodinKaytto } = await import("./uusintaosto.js");
+    asiakaskoodit = await tilauksenAsiakaskoodit(sql(), tilaus);
+    const palkkio = await kirjaaAsiakaskoodinKaytto(sql(), tilaus);
+    if (palkkio) {
+      const { palkkioViesti } = await import("./sahkoposti.js");
+      const r = await laheta({ to: palkkio.email, ...palkkioViesti(palkkio) });
+      await kirjaaTapahtuma(tilaus.id, "ystavapalkkio", { lahetetty: r.ok });
+    }
+  } catch (e) {
+    console.error("asiakaskoodit:", e?.message || e);
+  }
   if (!tilaus.confirmation_email_sent_at) {
     // "Seuraava tilaus" -suositukset samasta aiheesta (ei alennuskoodia); virhe ei estä vahvistusta.
     let suositukset = [];
     try { suositukset = seuraavaTilausSuositukset(tilaus, await kaikkiTuotteet(), { piilotettu: onPiilotettuTuote }); } catch { /* ilman suosituksia */ }
-    const v = vahvistusViesti(tilaus, suositukset);
+    const v = vahvistusViesti(tilaus, suositukset, asiakaskoodit);
     const r = await laheta({ to: tilaus.customer_email, ...v });
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     else await kirjaaTapahtuma(tilaus.id, "vahvistus_virhe", { virhe: r.virhe });

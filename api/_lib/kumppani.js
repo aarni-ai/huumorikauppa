@@ -43,6 +43,37 @@ export async function varmistaKumppanitaulu(db) {
 
 export const KUMPPANIMALLIT = ["provisio", "alennus"];
 
+/** Kumppanisivun osoite (2.11.2026): huumorikauppa.fi/k/<koodi> tallentaa koodin evästeeseen 30 päiväksi. */
+export const kumppaniLinkki = (koodi, pohja = "https://huumorikauppa.fi") => `${pohja.replace(/\/$/, "")}/k/${koodi}`;
+export const KUMPPANI_EVASTE = "hk_kumppani";
+export const KUMPPANI_EVASTE_PV = 30;
+
+/** "Tervetuloa Antsan kautta": nimen genetiivi (sarake kautta_nimi ohittaa). Antsa -> Antsan, Keisarit -> Keisarien, Mikael -> Mikaelin. */
+export function genetiivi(nimi) {
+  const n = String(nimi || "").trim();
+  if (!n) return n;
+  if (/[aeiouyäö]$/i.test(n)) return `${n}n`;
+  if (/it$/i.test(n)) return `${n.slice(0, -2)}ien`;
+  return `${n}in`;
+}
+
+/** Kumppanisivun tiedot: { koodi, nimi, kautta, malli } tai null. */
+export async function kumppaniSivu(db, arvo) {
+  const t = await kumppaninTiedot(db, arvo);
+  if (!t) return null;
+  let nimi = t.koodi, kautta = null;
+  try {
+    await db`alter table kumppanit add column if not exists kautta_nimi text`;
+    const [r] = await db`select nimi, kautta_nimi from kumppanit where koodi = ${t.koodi}`;
+    if (r?.nimi) nimi = r.nimi;
+    kautta = r?.kautta_nimi || null;
+  } catch { /* oletuskumppani ilman taulua */ }
+  // Lempinimi suluissa ("Antti Heinonen (antsa)" -> Antsa), muuten nimen ensimmäinen sana.
+  const lempi = nimi.match(/\(([^)]+)\)/)?.[1]?.trim();
+  const kutsu = lempi ? lempi.charAt(0).toUpperCase() + lempi.slice(1) : nimi.split(/\s+/)[0];
+  return { koodi: t.koodi, nimi: lempi ? kutsu : nimi, kautta: kautta || genetiivi(kutsu), malli: t.malli };
+}
+
 /** Hyväksytty, aktiivinen kumppani ja sen malli: { koodi, malli } tai null. */
 export async function kumppaninTiedot(db, arvo, { asetukset = KUMPPANUUS } = {}) {
   if (!asetukset.kaytossa) return null;
@@ -184,7 +215,7 @@ export async function kumppaniRaportti(db, koodi, { haeTilaus } = {}) {
   const summa = (f) => r2(kuukaudet.reduce((s, m) => s + m[f], 0));
   return {
     koodi: k.koodi, etunimi: String(k.nimi || "").trim().split(/\s+/)[0] || k.koodi,
-    linkki: `https://huumorikauppa.fi/?ref=${k.koodi}`, saanto: k.malli === "alennus" ? ALENNUSMALLI_SAANTO : PROVISIOSAANTO,
+    linkki: kumppaniLinkki(k.koodi), saanto: k.malli === "alennus" ? ALENNUSMALLI_SAANTO : PROVISIOSAANTO,
     kuukaudet, tilaukset, yhteensa: { klikit: summa("klikit"), tilauksia: summa("tilauksia"), tuotteet: summa("tuotteet"), provisio: summa("provisio") },
   };
 }

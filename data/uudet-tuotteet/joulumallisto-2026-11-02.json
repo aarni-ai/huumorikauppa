@@ -1,0 +1,2168 @@
+{
+ "nimi": "Joulumallisto 2026 (2.11.2026)",
+ "_huom": "40 mallia: joulu, pikkujoulut, tonttu, joulusiivous, anoppi jouluna, joulukinkku, glögi, lahjapaniikki, marraskuun pimeys ja kaamos. T-paidat OPT OnDemand (CZ) Gildan Softstyle 64000 (bp 145) S-2XL, hupparit Atelier Katanga (FR) Gildan 18500 (bp 77) S-3XL. Tummilla väreillä valkoinen ja vaaleilla musta teksti (kontrasti), tarkistus scripts/tummat-varit.mjs luonnin jälkeen. Mukit ovat piilotettu kategoria (api/_lib/piilotetut.js), eikä putkessa ole collegepaitaa, joten niitä ei tehty. Ajo: --hintamalli live --kateraja 1; myyntiin vain, jos tilauksen kate on vähintään 7 € (api/_lib/vakiot.js TILAUKSEN_MIN_KATE_EUROA).",
+ "oletukset": {
+  "tyyppi": "t-paita",
+  "painotalo": "OPT OnDemand",
+  "blueprint": 145,
+  "koot": [
+   "S",
+   "M",
+   "L",
+   "XL",
+   "2XL"
+  ]
+ },
+ "tuotteet": [
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "OLIN KILTTI.",
+    "TODISTEET",
+    "HÄVISIVÄT."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka kiltteys on tulkintakysymys. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "OLIN KILTTI.",
+    "TODISTEET",
+    "HÄVISIVÄT."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka kiltteys on tulkintakysymys. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "JOULU TULEE.",
+    "OLEN VALMIS",
+    "ENSI VUONNA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka on aina vähän myöhässä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "JOULU TULEE.",
+    "OLEN VALMIS",
+    "ENSI VUONNA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka on aina vähän myöhässä. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "JOULURAUHA",
+    "ALKAA KUN",
+    "KAIKKI NUKKUU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} vanhemmalle, joka odottaa hiljaista hetkeä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "JOULURAUHA",
+    "ALKAA KUN",
+    "KAIKKI NUKKUU."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} vanhemmalle, joka odottaa hiljaista hetkeä. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "TÄMÄ ON",
+    "JOULUPAITANI.",
+    "EI ENEMPÄÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka ei pukeudu porokuosiin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joululahja",
+    "Hauska joulupaita",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulu",
+   "rivit": [
+    "TÄMÄ ON",
+    "JOULUPAITANI.",
+    "EI ENEMPÄÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka ei pukeudu porokuosiin. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUT.",
+    "LAULOIN VAIN",
+    "YHDEN LAULUN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin karaoken ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUT.",
+    "LAULOIN VAIN",
+    "YHDEN LAULUN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin karaoken ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUISSA",
+    "KAIKKI ON",
+    "SALAISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} työpaikan pikkujouluihin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUISSA",
+    "KAIKKI ON",
+    "SALAISTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} työpaikan pikkujouluihin. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "TANSSILATTIAN",
+    "KUNINGAS.",
+    "PIKKUJOULUT 2026."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujoulujen tanssijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "TANSSILATTIAN",
+    "KUNINGAS.",
+    "PIKKUJOULUT 2026."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujoulujen tanssijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUT.",
+    "NYT SINUTTELEN",
+    "ESIMIESTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} työpaikan pikkujouluihin rohkealle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Pikkujoulut",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "pikkujoulut",
+   "rivit": [
+    "PIKKUJOULUT.",
+    "NYT SINUTTELEN",
+    "ESIMIESTÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} työpaikan pikkujouluihin rohkealle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTTU.",
+    "VALVOO.",
+    "AINA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka näkee kaiken. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTTU.",
+    "VALVOO.",
+    "AINA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka näkee kaiken. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTTU NÄKEE.",
+    "OLE KILTTI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun lapsiperheen vanhemmalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTTU NÄKEE.",
+    "OLE KILTTI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun lapsiperheen vanhemmalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTUN",
+    "TYÖSOPIMUS",
+    "PÄÄTTYY 24.12."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ahkeralle tontulle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "TONTUN",
+    "TYÖSOPIMUS",
+    "PÄÄTTYY 24.12."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ahkeralle tontulle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "KOTITONTTU.",
+    "EI PALKKAA.",
+    "EI LOMAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka hoitaa joulun valmistelut. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Tonttu",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "tonttu",
+   "rivit": [
+    "KOTITONTTU.",
+    "EI PALKKAA.",
+    "EI LOMAA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka hoitaa joulun valmistelut. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "JOULUSIIVOUS",
+    "TARKOITTAA",
+    "KAAPIT KIINNI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka siivoaa näkyvät paikat. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "JOULUSIIVOUS",
+    "TARKOITTAA",
+    "KAAPIT KIINNI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka siivoaa näkyvät paikat. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "SIIVOSIN",
+    "JOULUKSI.",
+    "TUOLIN PÄÄLTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka siivoaa tehokkaasti. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "SIIVOSIN",
+    "JOULUKSI.",
+    "TUOLIN PÄÄLTÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka siivoaa tehokkaasti. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "JOULUSIIVOUKSEN",
+    "PÄÄLLIKKÖ.",
+    "KOMENNAN VAIN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun perheen siivouspäällikölle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "JOULUSIIVOUKSEN",
+    "PÄÄLLIKKÖ.",
+    "KOMENNAN VAIN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun perheen siivouspäällikölle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "PÖLY ON",
+    "OSA",
+    "JOULUTUNNELMAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun rennolle siivoojalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulusiivous",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "joulusiivous",
+   "rivit": [
+    "PÖLY ON",
+    "OSA",
+    "JOULUTUNNELMAA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun rennolle siivoojalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPPI TULEE",
+    "JOULUKSI.",
+    "PYSY RAUHALLISENA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun vävylle tai miniälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPPI TULEE",
+    "JOULUKSI.",
+    "PYSY RAUHALLISENA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun vävylle tai miniälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPIN",
+    "JOULUKINKKU",
+    "ON PAREMPI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} anopille, jonka kinkku on legenda. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPIN",
+    "JOULUKINKKU",
+    "ON PAREMPI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} anopille, jonka kinkku on legenda. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPPI ARVIOI.",
+    "MINÄ",
+    "HYMYILEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun vävylle tai miniälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "ANOPPI ARVIOI.",
+    "MINÄ",
+    "HYMYILEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun vävylle tai miniälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "MAAILMAN PARAS",
+    "ANOPPI.",
+    "SANOI ANOPPI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} anopille, jolla on huumorintajua. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Anoppi",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "anoppi",
+   "rivit": [
+    "MAAILMAN PARAS",
+    "ANOPPI.",
+    "SANOI ANOPPI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} anopille, jolla on huumorintajua. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "KINKKU ON",
+    "MINUN",
+    "RAKKAUSKIELENI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun kinkun ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "KINKKU ON",
+    "MINUN",
+    "RAKKAUSKIELENI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun kinkun ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "KINKKUVAHTI.",
+    "ÄLÄ KOSKE."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka vartioi joulupöytää. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "KINKKUVAHTI.",
+    "ÄLÄ KOSKE."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka vartioi joulupöytää. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "SINAPPIA",
+    "RIITTÄÄ.",
+    "KINKKUA EI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ison perheen kinkunleikkaajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "SINAPPIA",
+    "RIITTÄÄ.",
+    "KINKKUA EI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ison perheen kinkunleikkaajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "JOULUKINKUN",
+    "SUOJELIJA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun kinkun paistajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Joulukinkku",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kinkku",
+   "rivit": [
+    "JOULUKINKUN",
+    "SUOJELIJA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun kinkun paistajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "GLÖGI.",
+    "ILMAN",
+    "RUSINOITA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun glögin ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "GLÖGI.",
+    "ILMAN",
+    "RUSINOITA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun glögin ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "GLÖGIN",
+    "VIRALLINEN",
+    "MAISTAJA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin ja jouluun glögin ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "GLÖGIN",
+    "VIRALLINEN",
+    "MAISTAJA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin ja jouluun glögin ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "KUUMA GLÖGI.",
+    "KYLMÄ TALVI.",
+    "TÄYDELLISTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} talven iltoihin glögin ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "KUUMA GLÖGI.",
+    "KYLMÄ TALVI.",
+    "TÄYDELLISTÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} talven iltoihin glögin ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "KOLMAS GLÖGI.",
+    "NYT LAULAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin laulajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Glögi",
+    "Pikkujoulut",
+    "Joulumallisto 2026"
+   ],
+   "teema": "glogi",
+   "rivit": [
+    "KOLMAS GLÖGI.",
+    "NYT LAULAN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pikkujouluihin laulajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJAPANIIKKI.",
+    "PERINTEINEN",
+    "JOULUTAPA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun viime hetken lahjaostajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJAPANIIKKI.",
+    "PERINTEINEN",
+    "JOULUTAPA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun viime hetken lahjaostajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "OSTIN ITSELLENI",
+    "LAHJAN.",
+    "VARMUUDEN VUOKSI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka hoitaa asiat itse. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "OSTIN ITSELLENI",
+    "LAHJAN.",
+    "VARMUUDEN VUOKSI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka hoitaa asiat itse. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJATOIVE:",
+    "HILJAISUUS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ison perheen vanhemmalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJATOIVE:",
+    "HILJAISUUS."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun ison perheen vanhemmalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJAKORTTI",
+    "ON MYÖS",
+    "LAHJA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka ostaa lahjakortin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} jouluun",
+   "tagit": [
+    "Lahjapaniikki",
+    "Joululahja",
+    "Joulumallisto 2026"
+   ],
+   "teema": "lahjapaniikki",
+   "rivit": [
+    "LAHJAKORTTI",
+    "ON MYÖS",
+    "LAHJA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} jouluun sille, joka ostaa lahjakortin. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "MARRASKUU.",
+    "NÄKEMIIN",
+    "AURINKO."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun pimeään. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "MARRASKUU.",
+    "NÄKEMIIN",
+    "AURINKO."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun pimeään. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "PIMEÄ AAMU.",
+    "PIMEÄ ILTA.",
+    "MARRASKUU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun pimeyteen työmatkalaiselle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "PIMEÄ AAMU.",
+    "PIMEÄ ILTA.",
+    "MARRASKUU."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun pimeyteen työmatkalaiselle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "MARRASKUUSSA",
+    "EN OLE",
+    "AAMUIHMINEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun aamuihin. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "MARRASKUUSSA",
+    "EN OLE",
+    "AAMUIHMINEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun aamuihin. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "OTSALAMPPU",
+    "ON MUOTIA",
+    "MARRASKUUSSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun lenkkeilijälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Marraskuu",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "marraskuu",
+   "rivit": [
+    "OTSALAMPPU",
+    "ON MUOTIA",
+    "MARRASKUUSSA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} marraskuun lenkkeilijälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOS",
+    "ON VAIN",
+    "PITKÄ ILTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle pohjoiseen. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOS",
+    "ON VAIN",
+    "PITKÄ ILTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle pohjoiseen. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOS.",
+    "NUKUN",
+    "KEVÄÄSEEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle unen ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOS.",
+    "NUKUN",
+    "KEVÄÄSEEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle unen ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "D-VITAMIINIA",
+    "JA KAHVIA.",
+    "KAAMOSDIEETTI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle kahvin ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "D-VITAMIINIA",
+    "JA KAHVIA.",
+    "KAAMOSDIEETTI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle kahvin ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy",
+    "Sport Grey"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOKSEN",
+    "SELVIYTYJÄ",
+    "2026."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle pohjoisen asukkaalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Red",
+    "Navy"
+   ],
+   "kategoria": "Joulu",
+   "otsikko": "{teksti} | {tuote} talveen",
+   "tagit": [
+    "Kaamos",
+    "Talvi",
+    "Joulumallisto 2026"
+   ],
+   "teema": "kaamos",
+   "rivit": [
+    "KAAMOKSEN",
+    "SELVIYTYJÄ",
+    "2026."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kaamoksen keskelle pohjoisen asukkaalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  }
+ ]
+}

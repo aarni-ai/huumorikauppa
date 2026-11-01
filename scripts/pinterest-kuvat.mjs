@@ -6,10 +6,13 @@
  * Tuote irrotetaan Printify-mockupin tasaisesta taustasta (täyttö reunoilta) ja asetetaan seinän ja puulattian
  * eteen varjon kanssa. Jos tuotteella on Printifyn lifestyle-mockup, sitä käytetään sellaisenaan (rajattu 2:3).
  *
- * Ajo: node scripts/pinterest-kuvat.mjs [--vain slug]. Julkaisu Blobiin: scripts/some-blob.mjs.
+ * Ajo: node scripts/pinterest-kuvat.mjs [--vain slug] [--lista data/uudet-tuotteet-2026-11-02.json]. --lista tekee kuvat
+ * tuontitiedoston tuotteille (esim. joulumallisto) ja kirjoittaa some/kuvat/kuvat-<tiedosto>.json. Julkaisu Blobiin:
+ * scripts/some-blob.mjs (--lisakuvat some/kuvat/kuvat-<tiedosto>.json lataa vain nämä).
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { createHash } from "node:crypto";
 import sharp from "sharp";
 import { Resvg } from "@resvg/resvg-js";
 import TOP50 from "../api/_lib/top50.generated.js";
@@ -78,7 +81,8 @@ export async function irrota(kuva, toleranssi = 14) {
 }
 
 async function lataa(url, nimi) {
-  const polku = join(VALI, `${nimi}.jpg`);
+  // Avain sisältää URL:n tiivisteen: tuotteen kuvalistan muuttuessa (esim. väri poistettu) vanha kuva ei jää käyttöön.
+  const polku = join(VALI, `${nimi}-${createHash("sha1").update(url).digest("hex").slice(0, 10)}.jpg`);
   try { return await readFile(polku); } catch { /* haetaan */ }
   const r = await fetch(url);
   if (!r.ok) throw new Error(`kuva ${r.status}: ${url}`);
@@ -170,6 +174,8 @@ async function pinni(p, pohja, m, fontit) {
 
 if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop())) {
   const vain = process.argv.includes("--vain") ? process.argv[process.argv.indexOf("--vain") + 1] : null;
+  const listaTiedosto = process.argv.includes("--lista") ? process.argv[process.argv.indexOf("--lista") + 1] : null;
+  const slugit = listaTiedosto ? JSON.parse(await readFile(join(JUURI, listaTiedosto), "utf8")).tuotteet.map((t) => t.slug) : [...TOP50];
   await mkdir(join(ULOS, "shopping"), { recursive: true });
   await mkdir(join(ULOS, "pinterest"), { recursive: true });
   const fontit = [join(VALI, "anton.ttf")];
@@ -178,7 +184,7 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop()
   const tuotteet = new Map((Array.isArray(j) ? j : j.products).map((p) => [p.slug, p]));
   const lista = [];
   let i = 0;
-  for (const slug of TOP50) {
+  for (const slug of slugit) {
     if (vain && slug !== vain) continue;
     const p = tuotteet.get(slug);
     if (!p?.images?.length) { console.log(`ohitettu ${slug}`); continue; }
@@ -189,5 +195,6 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop()
     lista.push({ slug, nimi: p.name, teksti: paidanTeksti(p.name), kategoria: p.category });
     console.log(slug);
   }
-  if (!vain) await writeFile(join(ULOS, "kuvat.json"), JSON.stringify(lista, null, 1));
+  const nimi = listaTiedosto ? `kuvat-${listaTiedosto.split("/").pop().replace(/\.json$/, "")}.json` : "kuvat.json";
+  if (!vain) await writeFile(join(ULOS, nimi), JSON.stringify(lista, null, 1));
 }

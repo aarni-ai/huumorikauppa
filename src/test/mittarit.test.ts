@@ -113,7 +113,8 @@ describe("Merchant-syötteen sisustuskuvat", () => {
     const [eka, toka] = xml.split("</item>");
     expect(eka.match(/<g:additional_image_link>([^<]*)</)![1]).toBe(LISAKUVAT[slug]);
     expect(toka).not.toContain("blob.vercel-storage.com");
-    expect(Object.keys(LISAKUVAT)).toHaveLength(50);
+    // 50 suosituinta (2 vaihdettu) ja joulumallisto 2026 (80), scripts/some-blob.mjs --lisakuvat.
+    expect(Object.keys(LISAKUVAT).length).toBeGreaterThanOrEqual(130);
   });
 });
 

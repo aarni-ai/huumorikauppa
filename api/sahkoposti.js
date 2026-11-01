@@ -24,6 +24,7 @@
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
  * POST { action: "suppilo", vaihe, ab }                          oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
+ * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
@@ -126,6 +127,17 @@ export async function kasittele(req, res, store) {
     const raportti = await kumppaniRaportti(sql(), koodi, { haeTilaus: onPrintify() ? haeTilaus : null });
     if (!raportti) return res.status(404).json({ ok: false });
     return res.status(200).json({ ok: true, ...raportti });
+  }
+  // Kumppanisivu /k/<koodi> (2.11.2026): kumppanin nimi ja koodi evästeeseen 30 päiväksi, jotta kassa käyttää koodia
+  // ilman kirjoittamista (src/pages/PartnerLandingPage.tsx, src/lib/kumppani.ts). Eväste tallentaa vain koodin.
+  if (req.method === "GET" && typeof q.kumppanisivu === "string") {
+    const { kumppaniSivu, KUMPPANI_EVASTE, KUMPPANI_EVASTE_PV } = await import("./_lib/kumppani.js");
+    const k = onTietokanta() ? await kumppaniSivu(sql(), q.kumppanisivu).catch(() => null) : null;
+    res.setHeader("Cache-Control", "private, no-store");
+    if (!k) return res.status(404).json({ ok: false });
+    res.setHeader("Set-Cookie", `${KUMPPANI_EVASTE}=${encodeURIComponent(k.koodi)}; Path=/; Max-Age=${KUMPPANI_EVASTE_PV * 86400}; Secure; SameSite=Lax`);
+    if (!onBotti(String(req.headers["user-agent"] || ""))) await kirjaaKlikki(sql(), k.koodi).catch(() => false);
+    return res.status(200).json({ ok: true, koodi: k.koodi, nimi: k.nimi, kautta: k.kautta, malli: k.malli });
   }
   // Hallinta: tarjouspyynnöt (allekirjoitettu avain, tarkoitus "hallinta"; linkki cron ?tehtava=hallinta-linkki).
   if (req.method === "GET" && typeof q.tarjoukset === "string") {

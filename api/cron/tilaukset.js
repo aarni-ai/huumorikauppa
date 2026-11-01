@@ -279,6 +279,8 @@ export default async function handler(req, res) {
       const istunto = `cs_test_lahjakorttitesti_${Date.now().toString(36)}`;
       const rivi = { type: "giftcard", product_id: p.id, slug: p.slug, name: p.name, size: null, color: null, custom_text: null, image: null, quantity: 1,
         unit_price: p.price, printify_product_id: null, variant_id: null, recipient_email: null, recipient_name: "TESTI Isä", message: "TESTI: peruutetaan samassa ajossa" };
+      // &tuote=1: fyysinen rivi (uudelleenostokoodien testi, api/_lib/uusintaosto.js); ei Printifyä, ei jälkikäsittelyä.
+      if (req.query.tuote === "1") Object.assign(rivi, { type: "product", product_id: "testi", slug: "tonnin-seteli-t-paita", name: "TESTI t-paita", size: "M", color: "Musta" });
       const [t] = await db`insert into orders (customer_email, customer_name, shipping_address, items, subtotal, shipping, discount, bundle_discount,
           total, gift_card_amount, printify_status, status, stripe_session_id, paid_at, amount_paid)
         values (${testi}, ${"TESTI Lahjakortti (perutaan)"}, ${db.json({ country: "FI" })}, ${db.json([rivi])}, ${p.price}, 0, 0, 0, ${p.price}, 0,
@@ -290,6 +292,12 @@ export default async function handler(req, res) {
     if (req.query.vaihe === "siivoa") {
       const tilaukset = await db`select id, stripe_session_id, status from orders where customer_email = ${testi}
         and created_at > now() - interval '1 day' and status <> 'peruttu'`;
+      try {
+        const { varmistaAsiakaskoodit } = await import("../_lib/uusintaosto.js");
+        await varmistaAsiakaskoodit(db);
+        await db`update asiakaskoodit set voimassa = now(), kaytetty = coalesce(kaytetty, now())
+          where order_id in (select id from orders where customer_email = ${testi})`;
+      } catch { /* taulua ei ole */ }
       const kortit = await db`update gift_cards set balance = 0, expires_at = now(), updated_at = now()
         where order_id in (select id from orders where customer_email = ${testi}) and balance > 0 returning code`;
       const istunnot = [];
@@ -426,7 +434,7 @@ export default async function handler(req, res) {
     const { allekirjoita } = await import("../_lib/markkinointi.js");
     const { RAPORTTI_TARKOITUS } = await import("../_lib/kumppani.js");
     const raportti = `${pohja}/kumppanit/raportti?koodi=${koodi}&avain=${encodeURIComponent(allekirjoita(RAPORTTI_TARKOITUS, koodi))}`;
-    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/?ref=${koodi}`, raportti });
+    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/k/${koodi}`, raportti });
   }
 
   // Kumppaniraportti kuukaudelta (&kuukausi=YYYY-MM, oletus kuluva kuukausi Suomen aikaa): tilaukset kumppaneittain,

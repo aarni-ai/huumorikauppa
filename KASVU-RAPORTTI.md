@@ -2177,3 +2177,74 @@ Testit 1546 läpi. Kolmen User-Agentin tarkistus (Chrome, iPhone Safari, Googleb
 
 Testit 1551 läpi. Kolmen User-Agentin tarkistus: /, /kategoria/t-paidat, /tuote/tonnin-seteli-t-paita, /ostoskori,
 /kassa, /tietoa-meista, /hallinta/mittarit, /hallinta/aktivoi kaikki 200.
+
+## 2.11.2026: joulu ilman mainoksia (takarajat, joulumallisto, 15 lahjahakusivua, lahjaopas medialle, kumppanisivut, uudelleenostot)
+
+### Joulun viimeinen tilauspäivä
+- Printifyn toteutuneet tilaukset (scripts/joulu-aikataulu.mjs 2.11.): **OPT OnDemand (CZ)** käsittely 1 + tuotanto 1 +
+  kuljetus Suomeen 8 arkipäivää (4 toimitusta) = 10; **Textildruck Europa (DE)** 1 + 2 + 11 (3 toimitusta) = 14.
+  Varmuudeksi +2 arkipäivää, perillä 23.12. (ennen aattoa).
+- T-paidat (OPT): data antaisi ma 7.12., mutta Printifyn oma Europe-takaraja OPT:lle oli 5.12.2025, joten lupaus on
+  **pe 4.12.** Hupparit ja muut (Textildruck-taso): **ti 1.12.**
+- **Sivuston yhteinen päivä ti 1.12.**: yläpalkki "Tilaa viimeistään ti 1.12., niin ehtii jouluksi", tuotesivu
+  (tuotetyypin päivä), ostoskori ja nyt myös kassa (korin tuotteiden varhaisin päivä). Kun päivä on mennyt, palkki
+  vaihtuu heti lahjakorttiin ("koodi ja tulostettava PDF maksun jälkeen"); aiemmin vasta viimeisimmän tyyppikohtaisen
+  päivän jälkeen. "Ehtii jouluksi" -merkin EU-katto 27.11. -> 1.12. (samassa linjassa).
+
+### Joulumallisto 2026 (/joulu)
+- 40 uutta mallia (joulu, pikkujoulut, tonttu, joulusiivous, anoppi jouluna, joulukinkku, glögi, lahjapaniikki,
+  marraskuun pimeys, kaamos) bestsellerien tyyliin: t-paidat OPT OnDemand (CZ) 27,90 € ja hupparit Atelier Katanga
+  (FR) 52,90 € (3XL 59,90 €). 80 tuotetta Printifyyn ja kauppaan aktiivisina (data/uudet-tuotteet-2026-11-02.json).
+- Kontrasti heti luonnissa: tummilla väreillä valkoinen, vaaleilla (Sport Grey) musta teksti; tummat-varit-tarkistus
+  ajettu luonnin jälkeen: 0 uutta poistoa.
+- Kate: kaikki 1 520 varianttia, pienin nettokate 9,57 € tilaukselta kaikkien kulujen jälkeen (vaatimus 7 €).
+- Mukit ovat piilotettu kategoria (ei myydä) eikä putkessa ole collegepaitaa, joten pukeroita ja mukeja ei tehty.
+- /joulu-sivu (85 tuotetta, uudet ensin), joulun valikossa "Joulumallisto 2026", sivukartassa.
+- Merchant-syöte: jokaiselle 80 tuotteelle pystykuva 1000 x 1500 ensimmäiseksi lisäkuvaksi (yhteensä 132 tuotteella)
+  ja Pinterest-kuvat /hallinta/some-sivulle. Samalla korjattu: 12 suosituimman kuvaa näytti poistettua väriä
+  (kuvavälimuistin avain oli kuvan järjestysnumero); kuvat tehty uudelleen, ja tuotteen kuvista poistuvat nyt myös
+  poistetun värin variant_images-kuvat.
+
+### 15 lahjahakusivua
+- Uudet: /joululahja-anopille, /hauska-joululahja, /pikkujoululahja-alle-30-euroa, /40-vuotislahja, /50-vuotislahja,
+  /60-vuotislahja. Laajennetut (sama hakuaihe jo olemassa): /lahjat/joululahjaksi-miehelle, /joululahja-isalle,
+  /lahjat/joululahjaksi-naiselle, /joululahja-elakelaiselle (lahja eläkeläiselle), /lahjat/kalastajalle,
+  /lahjat/mokkeilijalle (lahja saunojalle), /lahjat/metsastajalle, /lahjat/tyokaverille, /lahja-kaverille (ystävälle).
+- Jokaisella yksilöllinen teksti (intro + opas 325-354 sanaa), 4-6 UKK:ta FAQPage-schemalla, title ja meta
+  description, sisäiset linkit kategorioihin ja muihin lahjasivuihin, enintään 20 tuotetta. Tekstit tarkistettu:
+  ei ajatusviivoja, ei superlatiiveja ("paras" pois kuvauksista), ei käsin kirjoitettuja joulupäiviä,
+  toimitusehdot konfiguraatiosta. Uudet sivut sivukartassa.
+- Tuotemäärät: 13-20 kaikilla paitsi /lahjat/kalastajalle 11 (kaikki kaupan kalastustuotteet).
+
+### Lahjaopas medialle
+- /lahjaopas-media: 20 lahjaideaa (10 klassikkoa, 10 joulumalliston teemaa), pysty- ja vaakakuvat ladattavina,
+  hinnat, käsin kirjoitetut kuvaukset, yhteystiedot ja PDF (A4, 4,9 Mt, Vercel Blob). Tuotelinkeissä
+  utm_source=media. Cowork voi lähettää linkin maanantaina (KAYTTOONOTTO.md kohta 16).
+
+### Search Console
+- Vahvistustagi on index.html:ssä. KAYTTOONOTTO.md kohta 15 ja hallintalinkkiviesti: huumorikauppa@gmail.com lisää
+  ominaisuuden, vahvistaa HTML-tagilla (tai saa tilin lisättyä omistajaksi) ja lähettää sitemap.xml:n.
+
+### Kumppanisivut /k/KOODI
+- Sivu toivottaa "Tervetuloa Antsan kautta" (nimen genetiivi, suluissa oleva lempinimi ensin) ja tallentaa koodin
+  evästeeseen hk_kumppani 30 päiväksi; kassa käyttää koodia ilman kirjoittamista. Kumppanilinkki raportissa ja
+  kumppani-lisaa-tehtävässä on nyt muotoa huumorikauppa.fi/k/koodi (?ref= toimii edelleen). Tietosuojaseloste
+  päivitetty. Tarkistettu: keisarit -> "Erämaankeisarien", antsa -> "Antsan", eväste 30 pv.
+
+### Uudelleenostot
+- Kiitossivulla ja tilausvahvistuksessa: KIITOS-koodi 10 % seuraavaan tilaukseen (60 pv, sama sähköposti, kerran) ja
+  ystävälinkki huumorikauppa.fi/ystava/YSTAVA-...: ystävä saa 5 %, ja kun hänen tilauksensa on maksettu, ostaja saa
+  PALKKIO-koodin 5 % (60 pv, enintään 5). Kaikki koodit vain, jos tilauksen kate jää vähintään 7 €:oon (kassan
+  katevahti). Testattu tuotannossa (scripts/uusintaostotesti.mjs): koodit kiitossivulla, kiitoskoodi toimii samalla
+  ja hylätään eri sähköpostilla, ystäväkoodi toimii ystävälle ja hylätään ostajalta; testikoodit mitätöity ja
+  testitilaus peruttu.
+
+### Mittari
+- Uusi liikenne-erittely: hakukoneet, lahjasivut, media (utm_source=media), kumppanisivut (/k/) ja kumppanilinkit,
+  myös päivän viestissä.
+- Luvut 2.11.: kate 0,00 € (matka 3000 €), ennuste 5,76 €; marraskuun käynnit 85 (suora 66, google 18, chatgpt 1);
+  hakukoneet 18, lahjasivut 5, media 0, kumppanisivut 0; konversio laskelmassa 0,58 %; tarve 10,5 tilausta ja 1 813
+  käyntiä päivässä; mainoskulut 0,00 €.
+
+Testit 1 578 läpi. Kolmen User-Agentin tarkistus: /, /joulu, kuusi uutta lahjasivua, /lahjat/kalastajalle,
+/lahjaopas-media, /k/keisarit, /ystava/..., /kassa, uusi tuotesivu, /sitemap.xml ja /api/product-feed kaikki 200.

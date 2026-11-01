@@ -94,7 +94,27 @@ function suositusHtml(suositukset) {
   return `<h3>Seuraava tilaus: sama aihe muina tuotteina</h3><ul>${rivit}</ul>`;
 }
 
-export function vahvistusViesti(tilaus, suositukset = []) {
+/** Kiitos- ja ystäväkoodi vahvistukseen (api/_lib/uusintaosto.js). */
+function koodiHtml(k = {}) {
+  if (!k.kiitos && !k.ystava) return { html: "", text: "" };
+  const pv = (d) => new Date(d).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" });
+  const linkki = k.ystava ? `https://huumorikauppa.fi/ystava/${k.ystava.koodi}` : "";
+  const html = `<div style="margin-top:20px;padding:14px;background:#f4f4f0;border-radius:8px">${k.kiitos ? `<p><b>${Number(k.kiitos.prosentti)} % seuraavaan tilaukseen:</b> ${esc(k.kiitos.koodi)}<br><span style="color:#666">Voimassa ${pv(k.kiitos.voimassa)} asti, samalla sähköpostiosoitteella.</span></p>` : ""}${k.ystava ? `<p><b>Jaa ystävälle:</b> <a href="${linkki}">${linkki}</a><br><span style="color:#666">Ystäväsi saa 5 %, ja kun hän tilaa, saat itse 5 % seuraavaan tilaukseesi.</span></p>` : ""}</div>`;
+  const text = `${k.kiitos ? `\n${Number(k.kiitos.prosentti)} % seuraavaan tilaukseen: ${k.kiitos.koodi} (voimassa ${pv(k.kiitos.voimassa)} asti).` : ""}${k.ystava ? `\nJaa ystävälle: ${linkki} (ystävä saa 5 %, sinä 5 % seuraavaan tilaukseen).` : ""}`;
+  return { html, text };
+}
+
+/** Ystävän tilauksesta syntynyt palkkiokoodi koodin antajalle. */
+export function palkkioViesti(p) {
+  const pv = new Date(p.voimassa).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" });
+  return {
+    subject: "Ystäväsi tilasi: 5 % seuraavaan tilaukseesi - Huumorikauppa",
+    html: kehys(`<h2>Kiitos suosittelusta!</h2><p>Ystäväsi tilasi ystäväkoodillasi. Saat 5 % seuraavasta tilauksestasi koodilla:</p><p style="font-size:20px;letter-spacing:1px"><b>${esc(p.koodi)}</b></p><p>Voimassa ${pv} asti. Kirjoita koodi kassalla kenttään "Alennuskoodi".</p>`),
+    text: `Ystäväsi tilasi ystäväkoodillasi. Saat 5 % seuraavasta tilauksestasi koodilla ${p.koodi}, voimassa ${pv} asti.`,
+  };
+}
+
+export function vahvistusViesti(tilaus, suositukset = [], asiakaskoodit = {}) {
   const rivit = (tilaus.items || [])
     .map((i) => `<tr><td style="padding:4px 0">${i.quantity} × ${esc(i.name)}${i.size ? `, ${esc(i.size)}` : ""}${i.color ? `, ${esc(i.color)}` : ""}</td><td style="text-align:right">${eur(i.unit_price * i.quantity)}</td></tr>`)
     .join("");
@@ -108,8 +128,8 @@ export function vahvistusViesti(tilaus, suositukset = []) {
     : "Lahjakorttien koodit tulevat erillisessä viestissä.";
   return {
     subject: `Tilausvahvistus #${nro} - Huumorikauppa`,
-    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr><tr><td style="color:#666">Sisältää ALV 25,5 %</td><td style="text-align:right;color:#666">${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}</td></tr>${lahjakortilla}</table><p>${loppu}</p>${suositusHtml(suositukset)}`),
-    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)} (sisältää ALV 25,5 % ${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}). ${loppu}\n\n${myyjaRivi()}`,
+    html: kehys(`<h2>Kiitos tilauksestasi!</h2><p>Tilausnumero: <b>#${nro}</b></p><table style="width:100%;border-collapse:collapse">${rivit}<tr><td>Toimitus</td><td style="text-align:right">${eur(tilaus.shipping)}</td></tr>${Number(tilaus.discount) > 0 ? `<tr><td>Alennus</td><td style="text-align:right">-${eur(tilaus.discount)}</td></tr>` : ""}<tr><td><b>Yhteensä</b></td><td style="text-align:right"><b>${eur(tilaus.total)}</b></td></tr><tr><td style="color:#666">Sisältää ALV 25,5 %</td><td style="text-align:right;color:#666">${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}</td></tr>${lahjakortilla}</table><p>${loppu}</p>${koodiHtml(asiakaskoodit).html}${suositusHtml(suositukset)}`),
+    text: `Kiitos tilauksestasi! Tilausnumero #${nro}. Yhteensä ${eur(tilaus.total)} (sisältää ALV 25,5 % ${eur(Number(tilaus.total) - Number(tilaus.total) / 1.255)}). ${loppu}${koodiHtml(asiakaskoodit).text}\n\n${myyjaRivi()}`,
   };
 }
 

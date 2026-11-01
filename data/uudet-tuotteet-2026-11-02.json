@@ -1,0 +1,646 @@
+{
+ "paiva": "2026-11-02",
+ "kuvaus": "Joulumallisto 2026: 40 mallia t-paitoina (OPT OnDemand CZ, 27,90 €) ja huppareina (Atelier Katanga FR, 52,90 €), data/uudet-tuotteet/joulumallisto-2026-11-02.json. Tuonti: tehtava=tuo-aktiiviset&tiedosto=uudet-tuotteet-2026-11-02",
+ "tuotteet": [
+  {
+   "slug": "olin-kiltti-todisteet-havisivat-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748a47bc6c37eff0ce456",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Olin kiltti. Todisteet hävisivät"
+  },
+  {
+   "slug": "olin-kiltti-todisteet-havisivat-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748aa3416756e5804a429",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Olin kiltti. Todisteet hävisivät"
+  },
+  {
+   "slug": "joulu-tulee-olen-valmis-ensi-vuonna-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748c84175ec911d0ed790",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Joulu tulee. Olen valmis ensi vuonna"
+  },
+  {
+   "slug": "joulu-tulee-olen-valmis-ensi-vuonna-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748cd4175ec911d0ed799",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Joulu tulee. Olen valmis ensi vuonna"
+  },
+  {
+   "slug": "joulurauha-alkaa-kun-kaikki-nukkuu-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748d4218721fa5d0977a1",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Joulurauha alkaa kun kaikki nukkuu"
+  },
+  {
+   "slug": "joulurauha-alkaa-kun-kaikki-nukkuu-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748da56f1176cec0fd0f0",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Joulurauha alkaa kun kaikki nukkuu"
+  },
+  {
+   "slug": "tama-on-joulupaitani-ei-enempaa-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748e03416756e5804a462",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Tämä on joulupaitani. Ei enempää"
+  },
+  {
+   "slug": "tama-on-joulupaitani-ei-enempaa-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748e57bc6c37eff0ce4a1",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulu",
+   "nimi": "Tämä on joulupaitani. Ei enempää"
+  },
+  {
+   "slug": "pikkujoulut-lauloin-vain-yhden-laulun-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748eb218721fa5d0977c4",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujoulut. Lauloin vain yhden laulun"
+  },
+  {
+   "slug": "pikkujoulut-lauloin-vain-yhden-laulun-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748f04175ec911d0ed7cd",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujoulut. Lauloin vain yhden laulun"
+  },
+  {
+   "slug": "pikkujouluissa-kaikki-on-salaista-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae748f756f1176cec0fd122",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujouluissa kaikki on salaista"
+  },
+  {
+   "slug": "pikkujouluissa-kaikki-on-salaista-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae748fc56f1176cec0fd127",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujouluissa kaikki on salaista"
+  },
+  {
+   "slug": "tanssilattian-kuningas-pikkujoulut-2026-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74903e8a14b46b70e5223",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Tanssilattian kuningas. Pikkujoulut 2026"
+  },
+  {
+   "slug": "tanssilattian-kuningas-pikkujoulut-2026-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74908218721fa5d0977e4",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Tanssilattian kuningas. Pikkujoulut 2026"
+  },
+  {
+   "slug": "pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7490f62956c1e3f0b736e",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujoulut. Nyt sinuttelen esimiestä"
+  },
+  {
+   "slug": "pikkujoulut-nyt-sinuttelen-esimiesta-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7491462956c1e3f0b7370",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-pikkujoulut",
+   "nimi": "Pikkujoulut. Nyt sinuttelen esimiestä"
+  },
+  {
+   "slug": "tonttu-valvoo-aina-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7491b3416756e5804a487",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tonttu. Valvoo. Aina"
+  },
+  {
+   "slug": "tonttu-valvoo-aina-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7492017932a00ba0278df",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tonttu. Valvoo. Aina"
+  },
+  {
+   "slug": "tonttu-nakee-ole-kiltti-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749264175ec911d0ed7ff",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tonttu näkee. Ole kiltti"
+  },
+  {
+   "slug": "tonttu-nakee-ole-kiltti-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7492b7bc6c37eff0ce4d3",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tonttu näkee. Ole kiltti"
+  },
+  {
+   "slug": "tontun-tyosopimus-paattyy-24-12-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749326fd1e36e730b6b71",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tontun työsopimus päättyy 24.12"
+  },
+  {
+   "slug": "tontun-tyosopimus-paattyy-24-12-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7493756f1176cec0fd15b",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Tontun työsopimus päättyy 24.12"
+  },
+  {
+   "slug": "kotitonttu-ei-palkkaa-ei-lomaa-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7493d4175ec911d0ed81d",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Kotitonttu. Ei palkkaa. Ei lomaa"
+  },
+  {
+   "slug": "kotitonttu-ei-palkkaa-ei-lomaa-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749424175ec911d0ed822",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-tonttu",
+   "nimi": "Kotitonttu. Ei palkkaa. Ei lomaa"
+  },
+  {
+   "slug": "joulusiivous-tarkoittaa-kaapit-kiinni-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749494175ec911d0ed825",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Joulusiivous tarkoittaa kaapit kiinni"
+  },
+  {
+   "slug": "joulusiivous-tarkoittaa-kaapit-kiinni-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7494d62956c1e3f0b739c",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Joulusiivous tarkoittaa kaapit kiinni"
+  },
+  {
+   "slug": "siivosin-jouluksi-tuolin-paalta-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7495462956c1e3f0b739e",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Siivosin jouluksi. Tuolin päältä"
+  },
+  {
+   "slug": "siivosin-jouluksi-tuolin-paalta-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7495962956c1e3f0b73a3",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Siivosin jouluksi. Tuolin päältä"
+  },
+  {
+   "slug": "joulusiivouksen-paallikko-komennan-vain-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74960e8a14b46b70e5264",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Joulusiivouksen päällikkö. Komennan vain"
+  },
+  {
+   "slug": "joulusiivouksen-paallikko-komennan-vain-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7496517932a00ba02791f",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Joulusiivouksen päällikkö. Komennan vain"
+  },
+  {
+   "slug": "poly-on-osa-joulutunnelmaa-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7496d17932a00ba02792d",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Pöly on osa joulutunnelmaa"
+  },
+  {
+   "slug": "poly-on-osa-joulutunnelmaa-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749727bc6c37eff0ce511",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-joulusiivous",
+   "nimi": "Pöly on osa joulutunnelmaa"
+  },
+  {
+   "slug": "anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749797bc6c37eff0ce517",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anoppi tulee jouluksi. Pysy rauhallisena"
+  },
+  {
+   "slug": "anoppi-tulee-jouluksi-pysy-rauhallisena-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7497e6fd1e36e730b6bac",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anoppi tulee jouluksi. Pysy rauhallisena"
+  },
+  {
+   "slug": "anopin-joulukinkku-on-parempi-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7498656f1176cec0fd1a9",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anopin joulukinkku on parempi"
+  },
+  {
+   "slug": "anopin-joulukinkku-on-parempi-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7498b6fd1e36e730b6bbc",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anopin joulukinkku on parempi"
+  },
+  {
+   "slug": "anoppi-arvioi-mina-hymyilen-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749914175ec911d0ed85a",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anoppi arvioi. Minä hymyilen"
+  },
+  {
+   "slug": "anoppi-arvioi-mina-hymyilen-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae7499662956c1e3f0b73df",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Anoppi arvioi. Minä hymyilen"
+  },
+  {
+   "slug": "maailman-paras-anoppi-sanoi-anoppi-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae7499e6fd1e36e730b6bd4",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Maailman paras anoppi. Sanoi anoppi"
+  },
+  {
+   "slug": "maailman-paras-anoppi-sanoi-anoppi-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749a36fd1e36e730b6bde",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-anoppi",
+   "nimi": "Maailman paras anoppi. Sanoi anoppi"
+  },
+  {
+   "slug": "kinkku-on-minun-rakkauskieleni-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749aa4175ec911d0ed86c",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Kinkku on minun rakkauskieleni"
+  },
+  {
+   "slug": "kinkku-on-minun-rakkauskieleni-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749af4b8be074030d4eda",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Kinkku on minun rakkauskieleni"
+  },
+  {
+   "slug": "kinkkuvahti-ala-koske-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749b74b8be074030d4ee4",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Kinkkuvahti. Älä koske"
+  },
+  {
+   "slug": "kinkkuvahti-ala-koske-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749bc56f1176cec0fd1cc",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Kinkkuvahti. Älä koske"
+  },
+  {
+   "slug": "sinappia-riittaa-kinkkua-ei-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749c356f1176cec0fd1d7",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Sinappia riittää. Kinkkua ei"
+  },
+  {
+   "slug": "sinappia-riittaa-kinkkua-ei-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749c83416756e5804a4fe",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Sinappia riittää. Kinkkua ei"
+  },
+  {
+   "slug": "joulukinkun-suojelija-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749ce4175ec911d0ed88c",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Joulukinkun suojelija"
+  },
+  {
+   "slug": "joulukinkun-suojelija-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749d356f1176cec0fd1ee",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kinkku",
+   "nimi": "Joulukinkun suojelija"
+  },
+  {
+   "slug": "glogi-ilman-rusinoita-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749d956f1176cec0fd1f9",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Glögi. Ilman rusinoita"
+  },
+  {
+   "slug": "glogi-ilman-rusinoita-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749de4175ec911d0ed8a3",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Glögi. Ilman rusinoita"
+  },
+  {
+   "slug": "glogin-virallinen-maistaja-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749e562956c1e3f0b743b",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Glögin virallinen maistaja"
+  },
+  {
+   "slug": "glogin-virallinen-maistaja-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749eae8a14b46b70e52de",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Glögin virallinen maistaja"
+  },
+  {
+   "slug": "kuuma-glogi-kylma-talvi-taydellista-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749f1e8a14b46b70e52eb",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Kuuma glögi. Kylmä talvi. Täydellistä"
+  },
+  {
+   "slug": "kuuma-glogi-kylma-talvi-taydellista-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae749f617932a00ba0279b5",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Kuuma glögi. Kylmä talvi. Täydellistä"
+  },
+  {
+   "slug": "kolmas-glogi-nyt-laulan-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae749fd4b8be074030d4f26",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Kolmas glögi. Nyt laulan"
+  },
+  {
+   "slug": "kolmas-glogi-nyt-laulan-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a02e8a14b46b70e52fb",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-glogi",
+   "nimi": "Kolmas glögi. Nyt laulan"
+  },
+  {
+   "slug": "lahjapaniikki-perinteinen-joulutapa-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a09e8a14b46b70e5301",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjapaniikki. Perinteinen joulutapa"
+  },
+  {
+   "slug": "lahjapaniikki-perinteinen-joulutapa-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a0e4175ec911d0ed8d2",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjapaniikki. Perinteinen joulutapa"
+  },
+  {
+   "slug": "ostin-itselleni-lahjan-varmuuden-vuoksi-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a1462956c1e3f0b746d",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Ostin itselleni lahjan. Varmuuden vuoksi"
+  },
+  {
+   "slug": "ostin-itselleni-lahjan-varmuuden-vuoksi-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a1917932a00ba0279dd",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Ostin itselleni lahjan. Varmuuden vuoksi"
+  },
+  {
+   "slug": "lahjatoive-hiljaisuus-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a217bc6c37eff0ce5c5",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjatoive: hiljaisuus"
+  },
+  {
+   "slug": "lahjatoive-hiljaisuus-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a267bc6c37eff0ce5cc",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjatoive: hiljaisuus"
+  },
+  {
+   "slug": "lahjakortti-on-myos-lahja-t-paita-jouluun",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a2e7bc6c37eff0ce5d3",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjakortti on myös lahja"
+  },
+  {
+   "slug": "lahjakortti-on-myos-lahja-huppari-jouluun",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a334175ec911d0ed8ed",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-lahjapaniikki",
+   "nimi": "Lahjakortti on myös lahja"
+  },
+  {
+   "slug": "marraskuu-nakemiin-aurinko-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a394175ec911d0ed8f6",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Marraskuu. Näkemiin aurinko"
+  },
+  {
+   "slug": "marraskuu-nakemiin-aurinko-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a3e4175ec911d0ed8f9",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Marraskuu. Näkemiin aurinko"
+  },
+  {
+   "slug": "pimea-aamu-pimea-ilta-marraskuu-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a447bc6c37eff0ce5e9",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Pimeä aamu. Pimeä ilta. Marraskuu"
+  },
+  {
+   "slug": "pimea-aamu-pimea-ilta-marraskuu-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a4b7bc6c37eff0ce5f0",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Pimeä aamu. Pimeä ilta. Marraskuu"
+  },
+  {
+   "slug": "marraskuussa-en-ole-aamuihminen-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a51e8a14b46b70e5329",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Marraskuussa en ole aamuihminen"
+  },
+  {
+   "slug": "marraskuussa-en-ole-aamuihminen-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a5656f1176cec0fd245",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Marraskuussa en ole aamuihminen"
+  },
+  {
+   "slug": "otsalamppu-on-muotia-marraskuussa-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a5c4b8be074030d4f5f",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Otsalamppu on muotia marraskuussa"
+  },
+  {
+   "slug": "otsalamppu-on-muotia-marraskuussa-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a624175ec911d0ed91b",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-marraskuu",
+   "nimi": "Otsalamppu on muotia marraskuussa"
+  },
+  {
+   "slug": "kaamos-on-vain-pitka-ilta-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a6856f1176cec0fd25c",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamos on vain pitkä ilta"
+  },
+  {
+   "slug": "kaamos-on-vain-pitka-ilta-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a6d7bc6c37eff0ce60e",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamos on vain pitkä ilta"
+  },
+  {
+   "slug": "kaamos-nukun-kevaaseen-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a737bc6c37eff0ce612",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamos. Nukun kevääseen"
+  },
+  {
+   "slug": "kaamos-nukun-kevaaseen-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a784b8be074030d4f70",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamos. Nukun kevääseen"
+  },
+  {
+   "slug": "d-vitamiinia-ja-kahvia-kaamosdieetti-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a7f4175ec911d0ed936",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "D-vitamiinia ja kahvia. Kaamosdieetti"
+  },
+  {
+   "slug": "d-vitamiinia-ja-kahvia-kaamosdieetti-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a84e8a14b46b70e5347",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "D-vitamiinia ja kahvia. Kaamosdieetti"
+  },
+  {
+   "slug": "kaamoksen-selviytyja-2026-t-paita-talveen",
+   "category": "t-paidat",
+   "printify_product_id": "6ae74a8b4175ec911d0ed944",
+   "lovable_price": 27.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamoksen selviytyjä 2026"
+  },
+  {
+   "slug": "kaamoksen-selviytyja-2026-huppari-talveen",
+   "category": "hupparit",
+   "printify_product_id": "6ae74a907bc6c37eff0ce622",
+   "lovable_price": 52.9,
+   "teema": "joulumallisto-kaamos",
+   "nimi": "Kaamoksen selviytyjä 2026"
+  }
+ ]
+}

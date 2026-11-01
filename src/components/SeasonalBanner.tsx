@@ -7,7 +7,7 @@ import {
 } from "@/data/campaignSchedule";
 import { isanpaivaLause, jouluPalkkiLause } from "@/data/tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
-import { JOULU_MYOHAISIN_END_UTC_MS } from "@/data/jouluAikataulu";
+import { JOULU_SIVUSTON_END_UTC_MS } from "@/data/jouluAikataulu";
 import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
 
 export const FATHERS_DAY_LANDING_PATH = "/isanpaivalahja";
@@ -34,7 +34,7 @@ export const BANNER_CONTENT: Record<BannerTheme, BannerContent> = {
   joulu: {
     get text() {
       // Sama lähde kuin tuotesivu, ostoskori ja artikkelit (src/data/tilauspaivat.ts).
-      return `Joulutilaukset: ${jouluPalkkiLause()}`;
+      return jouluPalkkiLause();
     },
     linkText: "Joulun viimeiset tilauspäivät",
     href: CHRISTMAS_DEADLINE_PATH,
@@ -96,14 +96,17 @@ export function SeasonalBanner() {
 /** Jouluaatto 24.12.2026 klo 23.59.59 Suomen aikaa (UTC+2). */
 const JOULUAATTO_LOPPU_UTC_MS = Date.UTC(2026, 11, 24, 21, 59, 59);
 
-/** Joulun viimeisten tilauspäivien jälkeen jouluaattoon asti: lahjakortti ehtii, paketit eivät. */
-export const lahjakorttiAika = (nyt: number) => nyt > JOULU_MYOHAISIN_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
+/**
+ * Sivuston joulun takarajan (tuotetyyppien varhaisin) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
+ * toimitetaan heti (2.11.2026; ennen vasta viimeisimmän tyyppikohtaisen takarajan jälkeen).
+ */
+export const lahjakorttiAika = (nyt: number) => nyt > JOULU_SIVUSTON_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
 
 /** Viime hetken lahjakortti -banneri (vain kun lahjakortit ovat myynnissä, useLahjakortitMyynnissa). */
 export function LahjakorttiBanneri() {
   return (
     <aside aria-label="Viime hetken lahja" data-banner="lahjakortti" className="bg-red-900 text-white text-center text-xs md:text-sm px-4 py-2">
-      <span>Joulupaketit eivät enää ehdi, mutta lahjakortti tulee sähköpostilla heti maksun jälkeen. </span>
+      <span>Joulun tilauspäivä meni, mutta lahjakortti on perillä heti: koodi ja tulostettava PDF maksun jälkeen. </span>
       <Link
         to="/lahjakortti"
         className="underline underline-offset-2 font-semibold whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"

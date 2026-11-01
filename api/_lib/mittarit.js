@@ -13,6 +13,17 @@ import { kaynnitValilla } from "./kaynnit.js";
 import { yritysluvutValilla, summaaYritysluvut } from "./yritysluvut.js";
 import { mainoskulutValilla, mainontaYhteenveto } from "./mainoskulut.js";
 import { suppiloValilla } from "./suppilo.js";
+import { LANDING_PATHS } from "../sitemap.js";
+
+/** Liikenteen erittely (2.11.2026): hakukoneet, lahjasivut (laskeutumissivujen osiot), media (utm_source=media), kumppanisivut (/k/). */
+const HAKUKONEET = new Set(["google", "bing", "duckduckgo", "yahoo", "ecosia"]);
+const LAHJAOSIOT = new Set([...LANDING_PATHS.map((p) => p.split("/")[1]), "lahjat"].filter(Boolean));
+export function liikenne(k) {
+  const lahde = (f) => k.lahteet.filter((l) => f(l.nimi)).reduce((s, l) => s + l.kaynnit, 0);
+  const osio = (f) => k.osiot.filter((o) => f(o.nimi)).reduce((s, o) => s + o.kaynnit, 0);
+  return { orgaaninen: lahde((n) => HAKUKONEET.has(n)), lahjasivut: osio((n) => LAHJAOSIOT.has(n)), media: lahde((n) => n === "media"),
+    kumppanisivut: osio((n) => n === "k"), kumppanilinkit: lahde((n) => n === "kumppani") };
+}
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -181,7 +192,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -202,6 +213,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     `Käynnit (oma laskuri): tässä kuussa ${m.kaynnit.kk.yhteensa}, 30 pv ${m.kaynnit.p30.yhteensa}${m.kaynnit.p30.ensimmainen ? ` (laskuri alkaen ${m.kaynnit.p30.ensimmainen})` : ""}`,
     `Konversio laskelmassa: ${lu(m.konversio.prosentti)} % (${m.konversio.lahde})${m.konversio.oma?.prosentti != null ? `; oma laskuri nyt ${lu(m.konversio.oma.prosentti)} %` : ""}`,
     `Lähteet 30 pv: ${lahteet}`,
+    ...(m.liikenne ? [`Liikenne tässä kuussa: hakukoneet ${m.liikenne.kk.orgaaninen}, lahjasivut ${m.liikenne.kk.lahjasivut}, media ${m.liikenne.kk.media}, kumppanisivut ${m.liikenne.kk.kumppanisivut} (kumppanilinkit ${m.liikenne.kk.kumppanilinkit})`] : []),
     `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
     m.yritysmyynti
       ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`

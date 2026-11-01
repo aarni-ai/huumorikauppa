@@ -932,3 +932,31 @@ Google mallintaa loput.
     pienemmällä CPC:llä tai parempien tuotteiden rajauksella
   - kustannus per tilaus alle 9,51 € ja vähintään 5 tilausta: jatketaan, CPC +0,02 € kerrallaan
   - vähintään 30 konversiota 30 päivässä: PMax-kokeilu omana kampanjanaan tavoite-ROAS:lla
+
+## 15. Search Console huumorikauppa@gmail.comilla (Cowork, 2.11.2026)
+
+Sivustolla on jo Search Consolen HTML-vahvistustagi (`<meta name="google-site-verification" ...>` index.html:ssä).
+Tagi on sidottu siihen Google-tiliin, joka sen loi, joten toimi näin:
+
+1. Kirjaudu Chromessa osoitteeseen search.google.com/search-console tilillä **huumorikauppa@gmail.com**.
+2. Lisää ominaisuus > **URL-etuliite** > `https://huumorikauppa.fi/` > Jatka.
+3. Valitse vahvistustavaksi **HTML-tagi** ja paina **Vahvista**.
+   - Jos vahvistus onnistuu: siirry kohtaan 4.
+   - Jos ei onnistu, tagi kuuluu toiselle tilille. Kopioi Search Consolen näyttämä `content="..."`-arvo ja lähetä se
+     Aarnille: Claude lisää toisen meta-tagin index.html:ään ja julkaisee, minkä jälkeen paina Vahvista uudelleen.
+     Vaihtoehto: nykyinen omistaja lisää huumorikauppa@gmail.comin (Asetukset > Käyttäjät ja oikeudet > Lisää
+     käyttäjä > Omistaja).
+4. **Sivukartat** > Lisää uusi sivukartta: `sitemap.xml` > **Lähetä**. Tila "Onnistui" näkyy muutaman minuutin päästä.
+5. **URL-tarkistus**: tarkista ja pyydä indeksointia uusille sivuille: /joulu, /joululahja-anopille, /hauska-joululahja,
+   /pikkujoululahja-alle-30-euroa, /40-vuotislahja, /50-vuotislahja, /60-vuotislahja ja /lahjaopas-media.
+6. Kirjaa KASVU-RAPORTTI.md:hen: ominaisuuden tila, sivukartan tila ja indeksointipyynnöt.
+
+Ohje on myös hallintalinkkiviestissä (api/_lib/hallinta.js).
+
+## 16. Lahjaopas medialle (Cowork, maanantaista 2.11.2026)
+
+Sivu **https://huumorikauppa.fi/lahjaopas-media**: 20 lahjaideaa (10 klassikkoa, 10 joulumalliston 2026 mallia),
+jokaisesta pystykuva 1000 x 1500 ja vaakakuva 1500 x 1000 ladattavina, hinnat, lyhyet kuvaukset, yhteystiedot ja
+sama sisältö PDF:nä (sivun painike "Lataa lahjaopas PDF:nä"). Tuotelinkeissä `utm_source=media`, joten mediasta tulleet
+käynnit näkyvät mittarissa (Liikenne: Media). Päivitys: muokkaa `data/lahjaopas-media.json` ja aja
+`scripts/lahjaopas-media.mjs` ja `scripts/lahjaopas-media-pdf.mjs` (BLOB_READ_WRITE_TOKEN), sitten julkaisu.

@@ -15,6 +15,7 @@ type Mittarit = {
   };
   kk: Summat; p30: Summat & { katePerTilaus: number | null; katePerTilausLahde: string }; edellinen: Summat & { kuukausi: string };
   kaynnit: { kk: Kaynnit; p30: Kaynnit };
+  liikenne?: Record<"kk" | "p30", { orgaaninen: number; lahjasivut: number; media: number; kumppanisivut: number; kumppanilinkit: number }>;
   konversio: { prosentti: number; lahde: string; oma: { prosentti: number | null; kaynteja: number; tilauksia: number; paivia: number; alkaen: string } | null };
   tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
   kumppanit: { koodi: string; tilauksia: number; myynti: number; provisio: number }[];
@@ -192,6 +193,15 @@ const MetricsAdminPage = () => {
             <Lista otsikko="Kumppanien myynti (kk)" tyhja="Ei kumppanitilauksia tässä kuussa."
               rivit={m.kumppanit.map((k) => ({ nimi: k.koodi, arvo: `${k.tilauksia} kpl, ${eur(k.myynti)}, provisio ${eur(k.provisio)}` }))} />
           </div>
+
+          {m.liikenne && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Kortti otsikko="Hakukoneet (kk)" arvo={luku(m.liikenne.kk.orgaaninen)} ala={`30 pv: ${m.liikenne.p30.orgaaninen}`} />
+              <Kortti otsikko="Lahjasivut (kk)" arvo={luku(m.liikenne.kk.lahjasivut)} ala={`30 pv: ${m.liikenne.p30.lahjasivut}`} />
+              <Kortti otsikko="Media (kk)" arvo={luku(m.liikenne.kk.media)} ala={`utm_source=media, 30 pv: ${m.liikenne.p30.media}`} />
+              <Kortti otsikko="Kumppanisivut (kk)" arvo={luku(m.liikenne.kk.kumppanisivut)} ala={`/k/-sivut; kumppanilinkit ${m.liikenne.kk.kumppanilinkit}`} />
+            </div>
+          )}
 
           {m.suppilo && (
             <section className="rounded-xl border border-border bg-card p-4 space-y-3">

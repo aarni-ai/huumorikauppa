@@ -22,7 +22,7 @@ export const yhteenvetoRivit = (linkit) => [
   "Hallintalinkit pysyvät kirjautuneina Chromessa 90 päivää ensimmäisestä avauksesta; avaa linkki uudelleen, jos sivu sanoo \"Ei pääsyä\".",
 ];
 
-const OTSIKOT = new Set(["MITTARILOMAKKEET (/hallinta/mittarit)", "KIRJAUSRAJAPINTA"]);
+const OTSIKOT = new Set(["MITTARILOMAKKEET (/hallinta/mittarit)", "KIRJAUSRAJAPINTA", "SEARCH CONSOLE (huumorikauppa@gmail.com)"]);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /** "Hallintalinkit Coworkille": linkit ja ohje mittarilomakkeisiin ja kirjausrajapintaan. */
@@ -44,6 +44,9 @@ export function hallintalinkkiViesti(linkit) {
     `Yritysmyynti: {"action":"yritysluvut","avain":"<avain>","paiva":"VVVV-KK-PP","viestit":0,"vastaukset":0,"tarjouspyynnot":0,"tilaukset":0,"huom":""}`,
     `Mainoskulut: {"action":"mainoskulut","avain":"<avain>","paiva":"VVVV-KK-PP","kanava":"google-ads","kulut":0,"klikit":0,"konversiot":0,"huom":""}`,
     "Vastaus {\"ok\":true,\"tallennettu\":{...}}; virheessä {\"ok\":false,\"virhe\":\"...\"} (esim. päivä tulevaisuudessa). Väärä tai puuttuva avain: 404.",
+    "",
+    "SEARCH CONSOLE (huumorikauppa@gmail.com)",
+    "Sivustolla on Search Consolen vahvistustagi (google-site-verification, index.html). Kirjaudu search.google.com/search-console tilillä huumorikauppa@gmail.com, lisää ominaisuus \"URL-etuliite\" https://huumorikauppa.fi/ ja valitse vahvistustavaksi HTML-tagi. Jos vahvistus ei mene läpi, tagi on toisen Google-tilin: kopioi Search Consolen antama content-arvo ja lähetä se Aarnille, tai pyydä nykyistä omistajaa lisäämään huumorikauppa@gmail.com käyttäjäksi (Asetukset > Käyttäjät ja oikeudet > Omistaja). Vahvistuksen jälkeen Sivukartat > lisää sitemap.xml > Lähetä.",
     "",
     "Älä jaa linkkejä eteenpäin: niillä pääsee hallintasivuille ilman salasanaa.",
   ];

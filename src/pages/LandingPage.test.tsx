@@ -32,7 +32,7 @@ describe("LandingPage (client)", () => {
   it("renders H1, intro, products, FAQ and internal links", () => {
     renderAt("/joululahja-isalle", <LandingPage />);
     expect(screen.getByRole("heading", { level: 1, name: "Hauska joululahja isälle" })).toBeInTheDocument();
-    expect(screen.getByText(/Hauska joululahja isälle on paita tai huppari/)).toBeInTheDocument();
+    expect(screen.getByText(/Isän joulupakettiin sopii paita tai huppari/)).toBeInTheDocument();
     expect(screen.getAllByRole("link").filter((a) => a.getAttribute("href")?.startsWith("/tuote/")).length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText("Mikä on hauska joululahja isälle?")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Isänpäivälahja isän tyypin mukaan" })).toHaveAttribute("href", "/isanpaivalahja");
@@ -58,6 +58,6 @@ describe("LandingPage (client)", () => {
   it("renders the Christmas deadline page", () => {
     renderAt("/joulun-viimeiset-tilauspaivat", <ChristmasDeadlinePage />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Joulun viimeiset tilauspäivät 2026");
-    expect(screen.getAllByText(/30\.11\.2026/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/1\.12\.2026/).length).toBeGreaterThan(0);
   });
 });
