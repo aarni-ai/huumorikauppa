@@ -1,3 +1,4 @@
+import { IsanpaivaLahjakorttiBanneri, ISA_POLUT } from "@/components/IsanpaivaLahjakorttiBanneri";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Truck, RotateCcw, CalendarClock } from "lucide-react";
@@ -89,6 +90,7 @@ const LandingPage = () => {
           })}
         </nav>
 
+        {ISA_POLUT.includes(pathname) && <IsanpaivaLahjakorttiBanneri className="mb-4" />}
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-4">{page.h1}</h1>
         <div className="max-w-3xl space-y-3 text-muted-foreground mb-6">
           {page.intro.map((p, i) => (

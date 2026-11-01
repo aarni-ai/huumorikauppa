@@ -9,7 +9,7 @@
  * POST { action: "peru", token }                                  peruutus peruutussivulta
  * GET  ?kori=<tunniste>                                           muistutuksen kori { ok, items }
  * GET  ?arvostelu=<tunniste>                                      arviosivun tilaus { products, customerName, unsubscribed }
- * GET  ?tila=1                                                   { lahjakortit }: lahjakortit myynnissä (oma sähköposti käytössä)
+ * GET  ?tila=1                                                   { lahjakortit, sahkoposti }: lahjakortit myynnissä, oma sähköposti käytössä
  * GET  ?arviot=<slug>                                             tuotesivun julkaistut arviot { arviot: [{ nimi, tahdet, teksti, pvm }] }
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
@@ -21,6 +21,7 @@
  * POST { action: "kaynti", polku, viittaaja, utm, ref, gclid }      käyntilaskuri (api/_lib/kaynnit.js, ei tunnisteita)
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
+ * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
@@ -33,6 +34,7 @@ import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } fro
 import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
 import { kaynninLahde, sivunOsio, onBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
+import { lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -71,11 +73,10 @@ export async function kasittele(req, res, store) {
       unsubscribed: await store.onKielto(normalisoiEmail(tilaus.customer_email)),
     });
   }
-  // Lahjakorttien myyntitila sivustolle: sama ehto kuin kassalla (api/checkout.js), joten sivu avautuu itsestään,
-  // kun SAHKOPOSTI_VAHVISTETTU=1 asetetaan (Resend-domain vahvistettu).
+  // Lahjakorttien myyntitila sivustolle: sama ehto kuin kassalla (api/checkout.js, lahjakortitMyynnissa).
   if (req.method === "GET" && q.tila === "1") {
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
-    return res.status(200).json({ lahjakortit: omaVahvistusKaytossa() });
+    return res.status(200).json({ lahjakortit: lahjakortitMyynnissa(), sahkoposti: omaVahvistusKaytossa() });
   }
   if (req.method === "GET" && typeof q.arviot === "string") {
     const slug = teksti(q.arviot, 200);
@@ -202,6 +203,16 @@ export async function kasittele(req, res, store) {
       const t = tarkistaYritysluvut(body, tanaan);
       if (!t.ok) return res.status(400).json(t);
       await tallennaYritysluvut(sql(), t.rivi);
+      return res.status(200).json({ ok: true, tallennettu: t.rivi });
+    }
+    case "mainoskulut": {
+      // Mainoskulut mittariin (api/_lib/mainoskulut.js); avain = mittarisivun avain.
+      if (tarkistaTunniste(body.avain, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+      const { tarkistaMainoskulut, tallennaMainoskulut } = await import("./_lib/mainoskulut.js");
+      const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+      const t = tarkistaMainoskulut(body, tanaan);
+      if (!t.ok) return res.status(400).json(t);
+      await tallennaMainoskulut(sql(), t.rivi);
       return res.status(200).json({ ok: true, tallennettu: t.rivi });
     }
     case "kumppaniklikki": {

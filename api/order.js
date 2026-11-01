@@ -2,11 +2,16 @@
  * GET /api/order?session_id=... tilausvahvistussivulle (korvaa get-order-by-session). Jos webhook ei ole vielä
  * käsitellyt maksua, käsittelee sen tässä (sama idempotentti funktio).
  * POST /api/order { sessionId, action: "resend" } lähettää vahvistuksen uudelleen (enintään 10 min välein).
+ * Lahjakortit (1.11.2026): maksetun tilauksen koodit vastauksen kentässä lahjakortit, ja
+ * GET ?session_id=...&lahjakortti=HK-... palauttaa tulostettavan PDF:n (vain saman tilauksen kortti).
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kasitteleMaksu } from "./_lib/tilaus.js";
 import { laheta, vahvistusViesti } from "./_lib/sahkoposti.js";
+import { onLahjakortti, normalisoiKoodi } from "./_lib/lahjakortti.js";
+import { tilauksenLahjakortit, toimitaLahjakortit } from "./_lib/lahjakortti-db.js";
+import { lahjakorttiPdf, pdfTiedostonimi } from "./_lib/lahjakortti-pdf.js";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // Kokonaan lahjakortilla maksettu tilaus (ei Stripe-sessiota) haetaan tilauksen id:llä (?order_id=, UUID).
@@ -31,6 +36,25 @@ export default async function handler(req, res) {
     }
   }
   if (!tilaus) return res.status(200).json({ found: false });
+  // Ostetut lahjakortit: koodit luodaan maksun käsittelyssä (jalkikasittely); jos niitä ei vielä ole, luodaan tässä
+  // (idempotentti). Näytetään vain maksetulle tilaukselle.
+  let lahjakortit = [];
+  if (tilaus.status === "maksettu" && (tilaus.items || []).some((i) => onLahjakortti(i))) {
+    lahjakortit = await tilauksenLahjakortit(tilaus.id);
+    if (!lahjakortit.length) {
+      try { await toimitaLahjakortit(tilaus); } catch (e) { console.error("lahjakortit:", e?.message || e); }
+      lahjakortit = await tilauksenLahjakortit(tilaus.id);
+    }
+  }
+  if (req.method === "GET" && req.query.lahjakortti) {
+    const koodi = normalisoiKoodi(req.query.lahjakortti);
+    const kortti = lahjakortit.find((k) => k.code === koodi);
+    if (!kortti) return res.status(404).json({ error: "Lahjakorttia ei löytynyt" });
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${pdfTiedostonimi(kortti.code)}"`);
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(200).send(lahjakorttiPdf(kortti));
+  }
   if (req.method === "POST" && req.body?.action === "resend") {
     const viimeksi = tilaus.confirmation_email_sent_at ? new Date(tilaus.confirmation_email_sent_at).getTime() : 0;
     if (Date.now() - viimeksi < 10 * 60 * 1000) return res.status(200).json({ customerEmailSent: true, recently: true });
@@ -53,5 +77,9 @@ export default async function handler(req, res) {
       shipping_country: tilaus.shipping_address?.country ?? "FI",
     },
     emailSent: !!tilaus.confirmation_email_sent_at,
+    lahjakortit: lahjakortit.map((k) => ({
+      code: k.code, value: Number(k.initial_value), expires_at: k.expires_at,
+      recipient_name: k.recipient_name || null, recipient_email: k.recipient_email || null,
+    })),
   });
 }

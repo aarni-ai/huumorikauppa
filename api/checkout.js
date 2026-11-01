@@ -29,7 +29,7 @@ import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, laskettuNettokate, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
 import { KUMPPANUUS } from "./_lib/vakiot.js";
 import { tarkistaLahjakortti, normalisoiKoodi, onLahjakortti } from "./_lib/lahjakortti.js";
-import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita } from "./_lib/lahjakortti-db.js";
+import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita, lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
 import { jalkikasittely } from "./_lib/tilaus.js";
 import PAKETIT from "./_lib/paketit-data.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
@@ -132,9 +132,9 @@ export default async function handler(req, res) {
 
   if (pyynto.action === "lasku") return laskuTilaus(pyynto, res);
 
-  // Lahjakortin koodi toimitetaan vain sähköpostilla: myynti vasta, kun oma sähköposti on käytössä (Resend-domain
-  // vahvistettu, SAHKOPOSTI_VAHVISTETTU=1). Muuten ostaja maksaisi saamatta koodia.
-  if (!omaVahvistusKaytossa() && Array.isArray(pyynto?.items) && pyynto.items.some((it) => onLahjakortti(it))) {
+  // Lahjakortin koodi ja PDF näytetään kiitossivulla heti maksun jälkeen (api/order.js) ja lähetetään sähköpostilla,
+  // kun se toimii: myynti vaatii tietokannan ja Stripen (lahjakortitMyynnissa).
+  if (!lahjakortitMyynnissa() && Array.isArray(pyynto?.items) && pyynto.items.some((it) => onLahjakortti(it))) {
     return res.status(200).json({ ok: false, error: "Lahjakortit eivät ole juuri nyt myynnissä. Poista lahjakortti ostoskorista ja jatka tilausta.", diagnostics: { error_stage: "giftcard_unavailable" } });
   }
 

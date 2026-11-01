@@ -11,6 +11,7 @@ import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilaukse
 import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
 import { kaynnitValilla } from "./kaynnit.js";
 import { yritysluvutValilla, summaaYritysluvut } from "./yritysluvut.js";
+import { mainoskulutValilla, mainontaYhteenveto } from "./mainoskulut.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -146,6 +147,11 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     yritysmyynti = { kk: summaaYritysluvut(rivit.filter((r) => r.paiva >= kuunAlkuPv)), p30: summaaYritysluvut(rivit), paivat: rivit.slice(0, 14) };
   } catch { /* taulua ei vielä ole */ }
 
+  // Mainoskulut (api/_lib/mainoskulut.js): ennen Google Ads -kokeilua nollaa, jotta tulos näkyy heti.
+  let mainosrivit = [];
+  try { mainosrivit = await mainoskulutValilla(db, kuunAlkuPv, h.paiva); } catch { /* taulua ei vielä ole */ }
+  const mainonta = { ...mainontaYhteenveto(mainosrivit, { tilauksia: kkSumma.tilauksia, kate: kkSumma.kate }), paivat: mainosrivit.slice(0, 14) };
+
   // Kumppanien myynti tässä kuussa.
   const kumppanit = new Map();
   for (const t of kk) {
@@ -165,7 +171,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, mainonta, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -190,6 +196,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     m.yritysmyynti
       ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`
       : "Yritysmyynti (Cowork): ei kirjauksia",
+    ...(m.mainonta ? [`Mainoskulut tässä kuussa: ${eur(m.mainonta.kulut)}, kustannus per tilaus ${m.mainonta.kustannusPerTilaus == null ? "-" : eur(m.mainonta.kustannusPerTilaus)}, kate mainoskulujen jälkeen ${eur(m.mainonta.kateMainonnanJalkeen)}${m.mainonta.klikit ? ` (${m.mainonta.klikit} klikkiä)` : ""}`] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
     `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,

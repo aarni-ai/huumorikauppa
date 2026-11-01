@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCartContext } from "@/context/CartContext";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
-import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
+import { useLahjakortitMyynnissa, useLahjakorttiSahkoposti } from "@/hooks/use-lahjakortit";
 import { toast } from "@/hooks/use-toast";
 import { LAHJAKORTTI_ARVOT, LAHJAKORTTI_EHDOT, lahjakorttiTuote } from "../../api/_lib/lahjakortti.js";
 import type { Product } from "@/types/product";
@@ -16,8 +16,8 @@ import type { Product } from "@/types/product";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * /lahjakortti: digitaalinen lahjakortti 25, 50 tai 75 €, koodi sähköpostilla maksun jälkeen. Myynti avautuu itsestään,
- * kun oma sähköposti on käytössä (useLahjakortitMyynnissa, sama ehto kuin kassalla).
+ * /lahjakortti: digitaalinen lahjakortti 25, 35 tai 50 €. Koodi ja tulostettava PDF kiitossivulla heti maksun jälkeen,
+ * sähköpostilla kun oma sähköposti on käytössä (useLahjakorttiSahkoposti). Myynti: useLahjakortitMyynnissa.
  */
 const GiftCardPage = () => {
   usePrerenderReady();
@@ -29,6 +29,7 @@ const GiftCardPage = () => {
   const [message, setMessage] = useState("");
   const [lisatty, setLisatty] = useState(false);
   const myynnissa = useLahjakortitMyynnissa();
+  const sahkoposti = useLahjakorttiSahkoposti();
 
   const lisaa = () => {
     if (saajalle && recipientEmail.trim() && !EMAIL_RE.test(recipientEmail.trim())) {
@@ -45,7 +46,7 @@ const GiftCardPage = () => {
     <div className="container py-8 md:py-12 max-w-3xl">
       <SEOHead
         title="Lahjakortti | Huumorikauppa.fi"
-        description="Digitaalinen lahjakortti Huumorikauppaan: 25, 50 tai 75 €. Koodi sähköpostilla heti maksun jälkeen, voimassa 24 kuukautta. Sopii viime hetken joululahjaksi."
+        description="Digitaalinen lahjakortti Huumorikauppaan: 25, 35 tai 50 €. Koodi ja tulostettava PDF heti maksun jälkeen, voimassa 24 kuukautta. Ehtii isänpäiväksi ja jouluksi."
         canonical="https://huumorikauppa.fi/lahjakortti"
         breadcrumbs={[{ name: "Etusivu", url: "https://huumorikauppa.fi/" }, { name: "Lahjakortti", url: "https://huumorikauppa.fi/lahjakortti" }]}
       />
@@ -53,8 +54,8 @@ const GiftCardPage = () => {
         <Gift className="h-8 w-8 text-primary" /> Lahjakortti
       </h1>
       <p className="text-muted-foreground mb-8">
-        Kun et tiedä, mikä paita naurattaa eniten, anna saajan valita itse. Lahjakortti on digitaalinen: koodi tulee
-        sähköpostiin heti maksun jälkeen, ja voit lähettää sen suoraan saajalle. Se ehtii jouluksi myös joulun
+        Kun et tiedä, mikä paita naurattaa eniten, anna saajan valita itse. Lahjakortti on digitaalinen: koodi ja
+        tulostettava PDF ovat valmiina heti maksun jälkeen, joten se ehtii isänpäiväksi su 8.11. ja jouluksi myös
         viimeisten tilauspäivien jälkeen.
       </p>
       {myynnissa === false && (
@@ -87,7 +88,7 @@ const GiftCardPage = () => {
         <div className="space-y-3">
           <label className="flex items-center gap-2 cursor-pointer text-sm text-foreground">
             <input type="checkbox" checked={saajalle} onChange={(e) => setSaajalle(e.target.checked)} className="accent-primary" />
-            Lähetä koodi myös saajalle sähköpostilla
+            {sahkoposti ? "Lähetä koodi myös saajalle sähköpostilla" : "Lisää saajan nimi ja viesti lahjakorttiin"}
           </label>
           {saajalle && (
             <div className="space-y-3">
@@ -95,10 +96,12 @@ const GiftCardPage = () => {
                 <Label htmlFor="lk-nimi" className="text-foreground">Saajan nimi</Label>
                 <Input id="lk-nimi" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} className="bg-muted border-border mt-1" maxLength={100} />
               </div>
-              <div>
-                <Label htmlFor="lk-email" className="text-foreground">Saajan sähköposti</Label>
-                <Input id="lk-email" type="email" value={recipientEmail} onChange={(e) => setRecipientEmail(e.target.value)} className="bg-muted border-border mt-1" maxLength={200} />
-              </div>
+              {sahkoposti && (
+                <div>
+                  <Label htmlFor="lk-email" className="text-foreground">Saajan sähköposti</Label>
+                  <Input id="lk-email" type="email" value={recipientEmail} onChange={(e) => setRecipientEmail(e.target.value)} className="bg-muted border-border mt-1" maxLength={200} />
+                </div>
+              )}
               <div>
                 <Label htmlFor="lk-viesti" className="text-foreground">Viesti saajalle</Label>
                 <Textarea id="lk-viesti" value={message} onChange={(e) => setMessage(e.target.value)} className="bg-muted border-border mt-1" maxLength={500} rows={3} />
@@ -124,7 +127,9 @@ const GiftCardPage = () => {
           <h2 className="font-display text-lg text-foreground mb-2 flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> Näin se toimii</h2>
           <ol className="list-decimal pl-5 text-sm text-muted-foreground space-y-1">
             <li>Valitse arvo ja maksa kassalla.</li>
-            <li>Koodi tulee sähköpostiisi heti maksun jälkeen (ja saajalle, jos annoit osoitteen).</li>
+            <li>{sahkoposti
+              ? "Koodi ja tulostettava PDF näkyvät heti maksun jälkeen ja tulevat sähköpostiisi (ja saajalle, jos annoit osoitteen)."
+              : "Koodi ja tulostettava PDF näkyvät heti maksun jälkeen kiitossivulla. Tulosta PDF tai anna koodi saajalle."}</li>
             <li>Saaja kirjoittaa koodin kassalla kenttään "Lahjakortin koodi".</li>
           </ol>
           <p className="text-xs text-muted-foreground mt-3">Lahjakortista ei peritä toimitusmaksua.</p>

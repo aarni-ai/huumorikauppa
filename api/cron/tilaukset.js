@@ -211,6 +211,51 @@ export default async function handler(req, res) {
       some: `${pohja}/hallinta/some?avain=${encodeURIComponent(allekirjoita("hallinta", "some"))}` });
   }
 
+  // Lahjakorttipolun testi (1.11.2026, scripts/lahjakorttitesti.mjs). vaihe=luo: maksettu testitilaus (TESTI,
+  // kassatesti@, istunto cs_test_lahjakorttitesti_...) lahjakortista 35 €; koodi, kiitossivu (/api/order), PDF ja käyttö
+  // kassalla testataan sen jälkeen oikeita rajapintoja vasten. vaihe=siivoa: testitilausten lahjakortit nollataan ja
+  // vanhennetaan, tilaukset perutaan, maksamattomat Stripe-istunnot vanhennetaan ja Printifyn testitilaukset perutaan.
+  if (req.query.tehtava === "lahjakorttitesti") {
+    const db = sql();
+    const testi = "kassatesti@huumorikauppa.fi";
+    if (req.query.vaihe === "luo") {
+      const { lahjakorttiTuote } = await import("../_lib/lahjakortti.js");
+      const p = lahjakorttiTuote(35);
+      const istunto = `cs_test_lahjakorttitesti_${Date.now().toString(36)}`;
+      const rivi = { type: "giftcard", product_id: p.id, slug: p.slug, name: p.name, size: null, color: null, custom_text: null, image: null, quantity: 1,
+        unit_price: p.price, printify_product_id: null, variant_id: null, recipient_email: null, recipient_name: "TESTI Isä", message: "TESTI: peruutetaan samassa ajossa" };
+      const [t] = await db`insert into orders (customer_email, customer_name, shipping_address, items, subtotal, shipping, discount, bundle_discount,
+          total, gift_card_amount, printify_status, status, stripe_session_id, paid_at, amount_paid)
+        values (${testi}, ${"TESTI Lahjakortti (perutaan)"}, ${db.json({ country: "FI" })}, ${db.json([rivi])}, ${p.price}, 0, 0, 0, ${p.price}, 0,
+          'ei_lahetetty', 'maksettu', ${istunto}, now(), ${p.price})
+        returning id`;
+      await kirjaaTapahtuma(t.id, "lahjakorttitesti", { vaihe: "luo" });
+      return res.status(200).json({ ok: true, tilaus: t.id, istunto });
+    }
+    if (req.query.vaihe === "siivoa") {
+      const tilaukset = await db`select id, stripe_session_id, status from orders where customer_email = ${testi}
+        and created_at > now() - interval '1 day' and status <> 'peruttu'`;
+      const kortit = await db`update gift_cards set balance = 0, expires_at = now(), updated_at = now()
+        where order_id in (select id from orders where customer_email = ${testi}) and balance > 0 returning code`;
+      const istunnot = [];
+      for (const t of tilaukset) {
+        if (t.status === "odottaa_maksua" && /^cs_live_/.test(t.stripe_session_id || "") && onStripe()) {
+          try {
+            const s = await stripe().checkout.sessions.retrieve(t.stripe_session_id);
+            if (s.status === "open") await stripe().checkout.sessions.expire(t.stripe_session_id);
+            istunnot.push({ istunto: t.stripe_session_id.slice(0, 16), tila: s.status === "open" ? "vanhennettu" : s.status, maksu: s.payment_status, summa: s.amount_total / 100 });
+          } catch (e) { istunnot.push({ istunto: t.stripe_session_id.slice(0, 16), virhe: String(e?.message || e).slice(0, 120) }); }
+        }
+        await db`update orders set status = 'peruttu', updated_at = now() where id = ${t.id}`;
+        await kirjaaTapahtuma(t.id, "lahjakorttitesti", { vaihe: "siivoa" });
+      }
+      // Kokonaan lahjakortilla maksettu testitilaus menee Printifyyn: kassatesti@-tilaukset perutaan samassa ajossa.
+      const printify = onPrintify() ? await siivoaTestitilaukset() : null;
+      return res.status(200).json({ ok: true, perutut: tilaukset.length, nollatutKoodit: kortit.length, istunnot, printify });
+    }
+    return res.status(400).json({ ok: false, virhe: "vaihe=luo tai vaihe=siivoa" });
+  }
+
   // Laskupolun testi (yritystilaus laskulla). Ilman avainta: laskun rivit nykyhinnoilla (kuiva). STRIPE_TEST_SECRET_KEY
   // (Vercelin ympäristömuuttuja, sk_test_...) -> testitilassa asiakas, ALV-verokanta, lasku, rivit, viimeistely,
   // maksu (paid_out_of_band) ja tila paid; Printify-tilausta ei tehdä eikä kantaan kirjoiteta.

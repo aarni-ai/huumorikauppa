@@ -1,3 +1,4 @@
+import { IsanpaivaLahjakorttiBanneri } from "@/components/IsanpaivaLahjakorttiBanneri";
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { categories } from "@/data/products";
@@ -129,6 +130,9 @@ const Index = () => {
         canonical="https://huumorikauppa.fi"
         ogImage="https://huumorikauppa.fi/images/etusivu-joulu.png"
       />
+
+      {/* ISÄNPÄIVÄN LAHJAKORTTI (1.11.2026): su 8.11. loppuun. */}
+      <IsanpaivaLahjakorttiBanneri />
 
       {/* YRITYSTEN JOULULAHJAT (30.10.2026): takaraja api/_lib/yritysmyynti.js, näkyy takarajaan asti. */}
       {aikataulu(null).jouluun && (

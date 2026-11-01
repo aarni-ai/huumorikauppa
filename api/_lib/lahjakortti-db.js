@@ -4,9 +4,24 @@
  *  - toimitaLahjakortit: maksetun tilauksen lahjakorttirivit koodeiksi ja sähköpostiin (idempotentti)
  *  - veloitaLahjakortti: tilauksen lahjakorttiosuus saldosta maksun jälkeen (idempotentti, ei koskaan negatiivinen)
  */
-import { sql, kirjaaTapahtuma } from "./db.js";
+import { sql, kirjaaTapahtuma, onTietokanta } from "./db.js";
+import { onStripe } from "./stripe.js";
+import { lahjakorttiPdf, pdfTiedostonimi } from "./lahjakortti-pdf.js";
 import { luoKoodi, voimassaAsti, onLahjakortti, normalisoiKoodi } from "./lahjakortti.js";
 import { laheta, lahjakorttiViesti, halytys, tilausnumero } from "./sahkoposti.js";
+
+/**
+ * Lahjakortit myynnissä (1.11.2026 alkaen): tietokanta ja Stripe käytössä. Koodi ja PDF näytetään kiitossivulla heti
+ * maksun jälkeen (api/order.js), joten myynti ei odota oman sähköpostidomainin vahvistusta. Sähköposti lähtee
+ * lisäksi, kun Resend toimii.
+ */
+export const lahjakortitMyynnissa = () => onTietokanta() && onStripe();
+
+/** Tilauksen lahjakortit kiitossivulle: [{ code, initial_value, expires_at, recipient_name, recipient_email }]. */
+export async function tilauksenLahjakortit(tilausId) {
+  return sql()`select code, initial_value, balance, expires_at, recipient_name, recipient_email, message from gift_cards
+    where order_id = ${tilausId} order by item_index, unit_index`;
+}
 
 export async function haeLahjakortti(syote) {
   const koodi = normalisoiKoodi(syote);
@@ -41,10 +56,12 @@ export async function toimitaLahjakortit(tilaus) {
   }
   const lahettamatta = await db`select * from gift_cards where order_id = ${tilaus.id} and emailed_at is null order by item_index, unit_index`;
   for (const kortti of lahettamatta) {
-    const ostajalle = await laheta({ to: tilaus.customer_email, ...lahjakorttiViesti(kortti) });
+    // Tulostettava PDF liitteenä (sama kuin kiitossivun latauslinkki).
+    const attachments = [{ filename: pdfTiedostonimi(kortti.code), content: lahjakorttiPdf(kortti).toString("base64") }];
+    const ostajalle = await laheta({ to: tilaus.customer_email, ...lahjakorttiViesti(kortti), attachments });
     let saajalle = { ok: true };
     if (kortti.recipient_email) {
-      saajalle = await laheta({ to: kortti.recipient_email, ...lahjakorttiViesti(kortti, { saajalle: true, ostaja: tilaus.customer_name || "" }) });
+      saajalle = await laheta({ to: kortti.recipient_email, ...lahjakorttiViesti(kortti, { saajalle: true, ostaja: tilaus.customer_name || "" }), attachments });
     }
     if (ostajalle.ok && saajalle.ok) await db`update gift_cards set emailed_at = now(), updated_at = now() where code = ${kortti.code}`;
     else await kirjaaTapahtuma(tilaus.id, "lahjakortti_viesti_virhe", { virhe: ostajalle.virhe || saajalle.virhe });

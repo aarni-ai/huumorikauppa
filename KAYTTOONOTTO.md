@@ -832,3 +832,103 @@ jolla GA4-property G-8FJ58JNKGK on.
 
 Jos organisaation käytäntö estää JSON-avaimen luonnin (kohta 3), Cowork kirjaa viikkoluvut GA4:n käyttöliittymästä
 (Raportit > Hankinta > Liikenteen hankinta) ja taulukon lähde-sarakkeeseen merkitään "Cowork GA4".
+
+## 14. Google Shopping -mainokset (valmisteltu 1.11.2026, EI käynnistetty)
+
+**Mitään maksullista ei käynnistetä ilman Aarnin hyväksyntää.** Cowork tekee kaiken valmiiksi niin, että kampanja
+jää tilaan **Keskeytetty**. Maksutiedot ja kampanjan käynnistyksen tekee Aarni itse, kun hän on hyväksynyt budjetin.
+
+### Valinta: Standard Shopping (ei Performance Max aluksi)
+
+| | Standard Shopping | Performance Max |
+|---|---|---|
+| Missä näkyy | vain Google-haun ostostulokset | haku, YouTube, Display, Gmail, Discover |
+| Hakusanat näkyvissä ja estettävissä | kyllä | rajoitetusti |
+| Tarvitsee konversiohistoriaa | ei | oppii vasta noin 30 konversiosta / 30 pv |
+| Hinta per klikki hallittavissa | kyllä (enimmäis-CPC) | ei |
+
+Kaupalla on alle 5 tilausta 30 päivässä, joten PMax ei pysty oppimaan, ja 10 €/pv valuisi helposti YouTubeen ja
+Displayhin. Aloitetaan Standard Shoppingilla, ja PMaxiin siirrytään vasta, kun Google Ads näyttää vähintään 30
+konversiota 30 päivässä.
+
+### Kannattavuusraja (lasketaan ennen käynnistystä)
+
+Mittarin luvut 1.11.2026: kate per tilaus 9,51 € (oletus, kunnes tilauksia on vähintään 5), konversio 0,58 % (GA4).
+
+| Konversio mainoskävijöillä | Kannattavuusraja per klikki (kate per tilaus × konversio) |
+|---|---|
+| 0,58 % (koko sivuston nykyinen) | 0,06 € |
+| 1,0 % | 0,10 € |
+| 1,5 % | 0,14 € |
+
+Tilaus kannattaa vain, jos kustannus per tilaus jää alle katteen per tilaus (9,51 €). Siksi enimmäis-CPC aloitetaan
+0,10 €:sta ja nostetaan vain, jos toteutunut kustannus per tilaus jää alle 9,51 €.
+
+### Kampanjan rakenne
+
+- Kampanja: **HK Shopping FI**, tyyppi Myynti, Standard Shopping, Merchant Center -tili 5759809345 (huumorikauppa.fi)
+- Myyntimaa Suomi; sijainti Suomi, vaihtoehto "Läsnäolo: ihmiset, jotka ovat kohdesijainneissa tai käyvät niissä säännöllisesti"
+- Kieli: suomi
+- Päiväbudjetti **10 €**; hakukumppanit pois; Display-verkosto pois
+- Hintatarjous: Manuaalinen CPC, "Tehostettu CPC" pois
+- Kampanjan prioriteetti: Matala; paikallisen myymälän tuotteet pois
+- Aloitus- ja lopetuspäivä: aloitus jätetään tyhjäksi; kampanja tallennetaan **Keskeytetty**-tilaan
+- Mainosryhmä **Kaikki tuotteet**, tuoteryhmät (custom_label-tiedot tulevat syötteestä, api/_lib/syote-lisakentat.js):
+
+| Tuoteryhmä | Ehto | Enimmäis-CPC |
+|---|---|---|
+| Myydyimmät | Mukautettu tunniste 4 = top50 | 0,12 € |
+| Kate 30-40 % | Tunniste 4 = muut ja Mukautettu tunniste 0 = kate-30-40 | 0,10 € |
+| Kate 20-30 % | Tunniste 4 = muut ja tunniste 0 = kate-20-30 | 0,07 € |
+| Kate alle 20 % | tunniste 0 = kate-alle-20 | Poissuljettu |
+| Kaikki muu | jäljelle jäävät | 0,07 € |
+
+- Kampanjatason poissulkevat hakusanat (laaja haku): ilmainen, ilmaiseksi, käytetty, tori, kirpputori, kaava, ohje,
+  diy, itse tehty, tukku, printify, työpaikka, rekry, vuokra
+
+### Konversioseuranta GA4:n purchase-tapahtumasta
+
+Sivusto lähettää GA4:ään purchase-tapahtuman palvelimen vahvistamasta tilauksesta (G-8FJ58JNKGK, src/lib/analytics.ts,
+kerran tilausta kohden, arvo ja valuutta mukana). Consent Mode v2: tapahtuma lähtee vain analytiikkasuostumuksella;
+Google mallintaa loput.
+
+1. GA4 (analytics.google.com, omaisuus huumorikauppa.fi) > Ylläpito > Tuotelinkit > Google Ads -linkit > Linkitä >
+   valitse Google Ads -tili > ota käyttöön "Mukautettu mainonta" ja "Automaattinen tagien lisääminen" > Lähetä.
+2. GA4 > Ylläpito > Tapahtumat: varmista, että `purchase` on merkitty avaintapahtumaksi (Avaintapahtuma päällä).
+3. Google Ads > Tavoitteet > Konversiot > Yhteenveto > Uusi konversiotoiminto > Tuo > Google Analytics 4 -omaisuudet >
+   Verkko > valitse `purchase` (huumorikauppa.fi) > Tuo ja jatka.
+4. Avaa tuotu konversio: Tavoite **Osto**, toiminnon optimointi **Ensisijainen**, Arvo "Käytä eri arvoja kullekin
+   konversiolle", Laskenta **Jokainen**, konversioaika 30 päivää. Tallenna.
+5. Google Ads > Ylläpito > Tilin asetukset > Automaattinen tagien lisääminen: päällä. (Oma käyntilaskuri tunnistaa
+   gclid-parametrin ja kirjaa lähteeksi google-ads, api/_lib/kaynnit.js.)
+6. Merchant Center (merchants.google.com, tili 5759809345) > Asetukset > Linkitetyt tilit > Google Ads > linkitä sama
+   Google Ads -tili. Hyväksy pyyntö Google Adsissa (Ylläpito > Linkitetyt tilit > Google Merchant Center).
+
+### Coworkin vaiheet Chromessa
+
+1. Avaa ads.google.com Aarnin Google-tilillä. Jos tiliä ei ole, valitse "Vaihda asiantuntijatilaan" heti
+   ensimmäisessä näkymässä ja "Luo tili ilman kampanjaa". Maa Suomi, aikavyöhyke (GMT+02:00) Helsinki, valuutta EUR.
+   **Pysähdy laskutustietoihin**: niitä ei täytetä, vaan Aarni tekee sen itse.
+2. Tee yllä olevat konversioseurannan kohdat 1-6.
+3. Luo kampanja: Kampanjat > + > Uusi kampanja > Myynti > Shopping > Merchant Center -tili 5759809345, maa Suomi >
+   Standard Shopping -kampanja. Täytä asetukset yllä olevan rakenteen mukaan.
+4. Tee tuoteryhmät: Mainosryhmä > Tuoteryhmät > jaa "Kaikki tuotteet" ensin Mukautettu tunniste 4 -arvon mukaan, sitten
+   "muut" Mukautettu tunniste 0 -arvon mukaan. Aseta enimmäis-CPC taulukon mukaan ja sulje pois kate-alle-20.
+5. Lisää poissulkevat hakusanat: Hakusanat > Poissulkevat hakusanat > kampanjataso.
+6. Tallenna kampanja **Keskeytetty**-tilaan. Jos Google Ads ei anna tallentaa ilman maksutapaa, jätä luonnokseksi.
+7. Kirjaa KASVU-RAPORTTI.md:hen: kampanjan nimi, tila (Keskeytetty), konversion tila Google Adsissa ("Ei viimeaikaisia
+   konversioita" on normaali ennen ensimmäistä ostoa).
+8. Aarni hyväksyy budjetin, lisää maksutavan ja käynnistää kampanjan.
+
+### Kokeilun seuranta (kampanjan käynnistyttyä)
+
+- Cowork kirjaa joka aamu edellisen päivän kulut, klikit ja konversiot Google Adsista (Kampanjat, päivämäärä "Eilen")
+  mittarin lomakkeelle /hallinta/mittarit (kohta Mainonta) tai rajapintaan:
+  `POST /api/sahkoposti { action: "mainoskulut", avain, paiva, kanava: "google-ads", kulut, klikit, konversiot }`
+  (avain = mittarisivun avain päivän yhteenvetoviestistä). Mittari näyttää mainoskulut, kustannuksen per tilaus ja
+  katteen mainoskulujen jälkeen; sama rivi on päivän yhteenvetoviestissä.
+- Päätössäännöt 14 päivän tai 140 €:n jälkeen (kumpi ensin):
+  - kustannus per tilaus yli katteen per tilaus (9,51 €): kampanja keskeytetään, hakusanaraportti läpi, uusi yritys
+    pienemmällä CPC:llä tai parempien tuotteiden rajauksella
+  - kustannus per tilaus alle 9,51 € ja vähintään 5 tilausta: jatketaan, CPC +0,02 € kerrallaan
+  - vähintään 30 konversiota 30 päivässä: PMax-kokeilu omana kampanjanaan tavoite-ROAS:lla

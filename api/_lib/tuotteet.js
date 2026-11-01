@@ -12,6 +12,7 @@ import { onPiilotettuTuote } from "./piilotetut.js";
 import { heikoinKate, laskeKate } from "./kate.js";
 import { kaikkiPoissa, liitaSaatavuusTiedosto, saatavuusLista } from "./saatavuus.js";
 import { hinnoitteleRivi } from "./kokohinnat.js";
+import { poistaTummatVarit } from "./tummat-varit.js";
 
 const VALIMUISTI_MS = 5 * 60 * 1000;
 let valimuisti = null;
@@ -36,10 +37,10 @@ function tilannekuva() {
 /**
  * Rivi myyntiin: koon mukaiset hinnat (api/_lib/kokohinnat.js) ja alle katerajan jäävät variantit
  * unavailable_variants-listaan (kate.js tuotteenKateraja). Tuote näkyy muilla koilla; kassa hylkää nämä variantit
- * joka tapauksessa (kassa.js).
+ * joka tapauksessa (kassa.js). Tumma painatus tummalla pohjalla -värit poistetaan ensin kokonaan (tummat-varit.js).
  */
 export function valmisteleRivi(rivi) {
-  const p = hinnoitteleRivi(rivi);
+  const p = hinnoitteleRivi(poistaTummatVarit(rivi));
   const kartta = p?.variants?.variant_map;
   if (!kartta || typeof kartta !== "object") return p;
   const alle = Object.entries(kartta).filter(([, id]) => laskeKate(p, id).sallittu === false).map(([a]) => a);

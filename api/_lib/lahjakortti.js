@@ -1,13 +1,14 @@
 /**
  * Digitaalinen lahjakortti (puhdas moduuli: selain ja palvelin). Tietokantaosa: api/_lib/lahjakortti-db.js.
  *
- * - Tuotteet "Lahjakortti 25/50/75/100 €": ei Printifyä, ei tuotantokulua, ei toimitusmaksua. Ostetaan samalla
+ * - Tuotteet "Lahjakortti 25/35/50 €" (1.11.2026 alkaen, ennen 25/50/75): ei Printifyä, ei tuotantokulua, ei toimitusmaksua. Ostetaan samalla
  *   kassalla (rivin type "giftcard"). Katesääntö ei koske lahjakorttia (ei kulua), Stripen maksukulu koskee.
- * - Maksun jälkeen jokaiselle kappaleelle luodaan oma koodi (taulu gift_cards), voimassa 24 kuukautta.
+ * - Maksun jälkeen jokaiselle kappaleelle luodaan oma koodi (taulu gift_cards), voimassa 24 kuukautta. Toimitus heti:
+ *   kiitossivulla koodi ja tulostettava PDF (api/order.js, api/_lib/lahjakortti-pdf.js) ja sähköpostissa PDF-liitteenä.
  * - Käyttö kassalla kentällä "Lahjakortin koodi": saldo tarkistetaan palvelimella ja vähennetään maksun jälkeen.
  *   Voi käyttää useaan tilaukseen, ei vaihdeta rahaksi. Lahjakortilla ei voi ostaa lahjakortteja.
  */
-export const LAHJAKORTTI_ARVOT = [25, 50, 75];
+export const LAHJAKORTTI_ARVOT = [25, 35, 50];
 export const LAHJAKORTTI_KATEGORIA = "lahjakortit";
 export const VOIMASSA_KUUKAUTTA = 24;
 export const LAHJAKORTTI_EHDOT = [
@@ -28,7 +29,7 @@ export function lahjakorttiTuote(arvo) {
     humor_type: "lahjakortti",
     price: a,
     stock: 999,
-    description: `Digitaalinen lahjakortti Huumorikauppaan, arvo ${a} €. Koodi toimitetaan sähköpostilla heti maksun jälkeen.`,
+    description: `Digitaalinen lahjakortti Huumorikauppaan, arvo ${a} €. Koodi ja tulostettava PDF heti maksun jälkeen kiitossivulla ja sähköpostissa.`,
     images: ["/lahjakortti.svg"],
     variants: {},
     is_featured: false,

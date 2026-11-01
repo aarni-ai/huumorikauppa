@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SEOHead } from "@/components/SEOHead";
-import { CheckCircle, ShoppingBag, Share2, Mail, Loader2, RefreshCw } from "lucide-react";
+import { CheckCircle, ShoppingBag, Share2, Mail, Loader2, RefreshCw, Gift, Download, Copy } from "lucide-react";
 import { useCartContext } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +23,15 @@ interface OrderInfo {
   shipping_country?: string;
 }
 
+/** Ostettu lahjakortti (api/order.js lahjakortit): koodi ja tulostettava PDF heti maksun jälkeen. */
+interface Lahjakortti {
+  code: string;
+  value: number;
+  expires_at: string;
+  recipient_name?: string | null;
+  recipient_email?: string | null;
+}
+
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
   // Stripe-maksu: ?session_id=cs_..., kokonaan lahjakortilla maksettu tilaus: ?tilaus=<tilauksen id>.
@@ -36,6 +45,7 @@ const OrderConfirmation = () => {
   const [showResend, setShowResend] = useState(false);
   const [resending, setResending] = useState(false);
   const [optInRendered, setOptInRendered] = useState(false);
+  const [lahjakortit, setLahjakortit] = useState<Lahjakortti[]>([]);
 
   // Clear cart once
   useEffect(() => {
@@ -137,6 +147,7 @@ const OrderConfirmation = () => {
         if (json?.found) {
           setOrder(json.order);
           setEmailSent(!!json.emailSent);
+          if (Array.isArray(json.lahjakortit) && json.lahjakortit.length) setLahjakortit(json.lahjakortit);
           // Stop polling once we have the order AND email sent OR we hit max
           if (json.emailSent || attempts >= maxAttempts) {
             setPolling(false);
@@ -207,6 +218,8 @@ const OrderConfirmation = () => {
     }
   };
 
+  const vainLahjakortteja = !!order?.items?.length && order.items.every((i) => /^lahjakortti-\d+$/.test(String(i.slug || i.product_id || "")));
+
   return (
     <div className="container py-16 md:py-24 text-center max-w-2xl mx-auto space-y-8">
       <SEOHead title="Tilaus vahvistettu! – Huumorikauppa" description="Kiitos tilauksestasi Huumorikaupassa!" noindex={true} />
@@ -220,9 +233,46 @@ const OrderConfirmation = () => {
       </h1>
 
       <p className="text-lg text-muted-foreground leading-relaxed">
-        Kiitos tilauksestasi! Saat vahvistusviestin sähköpostiisi hetken kuluttua.
-        Pakettisi lähtee matkaan 1–3 arkipäivän kuluessa. 📦
+        {vainLahjakortteja
+          ? "Kiitos tilauksestasi! Lahjakorttisi on valmis alla: voit tulostaa sen tai lähettää koodin saajalle heti."
+          : "Kiitos tilauksestasi! Saat vahvistusviestin sähköpostiisi hetken kuluttua. Pakettisi lähtee matkaan 1–3 arkipäivän kuluessa. 📦"}
       </p>
+
+      {lahjakortit.length > 0 && (
+        <section aria-label="Lahjakortit" className="bg-card border-2 border-primary rounded-lg p-6 space-y-4 text-left">
+          <h2 className="font-display text-xl text-foreground flex items-center gap-2">
+            <Gift className="h-5 w-5 text-primary" /> Lahjakorttisi
+          </h2>
+          {lahjakortit.map((k) => (
+            <div key={k.code} className="rounded-lg bg-muted/50 p-4 space-y-2" data-lahjakortti={k.code}>
+              <p className="text-sm text-muted-foreground">
+                Lahjakortti {k.value.toFixed(2).replace(".", ",")} €{k.recipient_name ? `, saajalle ${k.recipient_name}` : ""}
+              </p>
+              <p className="font-mono text-2xl font-bold tracking-wider text-foreground break-all">{k.code}</p>
+              <p className="text-xs text-muted-foreground">
+                Voimassa {new Date(k.expires_at).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" })} asti. Koodi kirjoitetaan kassalla kenttään "Lahjakortin koodi".
+              </p>
+              <div className="flex flex-wrap gap-2 pt-1">
+                <Button asChild size="sm" className="bg-primary text-primary-foreground">
+                  <a href={`/api/order?${tunnisteParametri}=${encodeURIComponent(sessionId || "")}&lahjakortti=${encodeURIComponent(k.code)}`} download>
+                    <Download className="h-4 w-4 mr-2" /> Lataa tulostettava PDF
+                  </a>
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => navigator.clipboard?.writeText(k.code).then(() => toast({ title: "Koodi kopioitu" })).catch(() => undefined)}
+                >
+                  <Copy className="h-4 w-4 mr-2" /> Kopioi koodi
+                </Button>
+              </div>
+            </div>
+          ))}
+          <p className="text-xs text-muted-foreground">
+            Tallenna PDF tai koodi talteen.{emailSent ? " Lahjakortti on myös sähköpostissasi." : ""}
+          </p>
+        </section>
+      )}
 
       {/* Email status */}
       <div className="bg-card border border-border rounded-lg p-4 flex items-center justify-center gap-2 text-sm">

@@ -18,6 +18,10 @@ type Mittarit = {
   tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
   kumppanit: { koodi: string; tilauksia: number; myynti: number; provisio: number }[];
   yritysmyynti: { kk: YSumma; p30: YSumma; paivat: (Record<YKentta, number> & { paiva: string; huom: string | null })[] } | null;
+  mainonta?: {
+    kulut: number; klikit: number; konversiot: number; tilauksia: number; kustannusPerTilaus: number | null; kateMainonnanJalkeen: number;
+    paivat: { paiva: string; kanava: string; kulut: string | number; klikit: number; konversiot: number; huom: string | null }[];
+  };
 };
 type YKentta = "viestit" | "vastaukset" | "tarjouspyynnot" | "tilaukset";
 type YSumma = Record<YKentta, number> & { vastausprosentti: number | null; paivia: number };
@@ -69,6 +73,35 @@ const YrityslukuLomake = ({ avain, onTallennettu }: { avain: string; onTallennet
       ))}
       <button type="submit" className="h-9 rounded bg-primary px-3 font-medium text-primary-foreground">Tallenna</button>
       <label className="col-span-2 md:col-span-6 flex flex-col gap-1">Huomio (valinnainen)<input value={arvot.huom} maxLength={300} onChange={(e) => setArvot({ ...arvot, huom: e.target.value })} className="h-9 rounded border border-border bg-muted px-2" /></label>
+      {tila && <p className="col-span-2 md:col-span-6 text-muted-foreground" role="status">{tila}</p>}
+    </form>
+  );
+};
+
+/** Päivän mainoskulut (api/sahkoposti.js action "mainoskulut", api/_lib/mainoskulut.js); sama päivä ja kanava korvaa. */
+const MainoskuluLomake = ({ avain, onTallennettu }: { avain: string; onTallennettu: () => void }) => {
+  const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+  const [arvot, setArvot] = useState<Record<string, string>>({ paiva: tanaan, kanava: "google-ads", kulut: "", klikit: "", konversiot: "", huom: "" });
+  const [tila, setTila] = useState<string | null>(null);
+  const laheta = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTila("Tallennetaan...");
+    const body = { action: "mainoskulut", avain, paiva: arvot.paiva, kanava: arvot.kanava, kulut: arvot.kulut || "0", klikit: Number(arvot.klikit || 0), konversiot: Number(arvot.konversiot || 0), huom: arvot.huom };
+    const j = await fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then((r) => r.json()).catch(() => null);
+    setTila(j?.ok ? `Tallennettu ${arvot.paiva} (${arvot.kanava}).` : j?.virhe || "Tallennus epäonnistui.");
+    if (j?.ok) onTallennettu();
+  };
+  const kentta = "h-9 rounded border border-border bg-muted px-2";
+  return (
+    <form onSubmit={laheta} className="grid grid-cols-2 md:grid-cols-6 gap-2 items-end text-sm" aria-label="Mainoskulut">
+      <label className="flex flex-col gap-1">Päivä<input type="date" value={arvot.paiva} max={tanaan} onChange={(e) => setArvot({ ...arvot, paiva: e.target.value })} className={kentta} /></label>
+      <label className="flex flex-col gap-1">Kanava<select value={arvot.kanava} onChange={(e) => setArvot({ ...arvot, kanava: e.target.value })} className={kentta}>
+        {["google-ads", "meta", "tiktok", "pinterest", "muu"].map((k) => <option key={k} value={k}>{k}</option>)}
+      </select></label>
+      <label className="flex flex-col gap-1">Kulut €<input inputMode="decimal" value={arvot.kulut} onChange={(e) => setArvot({ ...arvot, kulut: e.target.value })} className={kentta} /></label>
+      <label className="flex flex-col gap-1">Klikit<input type="number" min={0} value={arvot.klikit} onChange={(e) => setArvot({ ...arvot, klikit: e.target.value })} className={kentta} /></label>
+      <label className="flex flex-col gap-1">Konversiot<input type="number" min={0} value={arvot.konversiot} onChange={(e) => setArvot({ ...arvot, konversiot: e.target.value })} className={kentta} /></label>
+      <button type="submit" className="h-9 rounded bg-primary px-3 font-medium text-primary-foreground">Tallenna</button>
       {tila && <p className="col-span-2 md:col-span-6 text-muted-foreground" role="status">{tila}</p>}
     </form>
   );
@@ -151,6 +184,22 @@ const MetricsAdminPage = () => {
             <Lista otsikko="Kumppanien myynti (kk)" tyhja="Ei kumppanitilauksia tässä kuussa."
               rivit={m.kumppanit.map((k) => ({ nimi: k.koodi, arvo: `${k.tilauksia} kpl, ${eur(k.myynti)}, provisio ${eur(k.provisio)}` }))} />
           </div>
+
+          <section className="rounded-xl border border-border bg-card p-4 space-y-3">
+            <h2 className="font-semibold text-foreground">Mainonta (kk)</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Kortti otsikko="Mainoskulut" arvo={eur(m.mainonta?.kulut ?? 0)} ala={`${luku(m.mainonta?.klikit ?? 0)} klikkiä`} />
+              <Kortti otsikko="Kustannus per tilaus" arvo={eur(m.mainonta ? m.mainonta.kustannusPerTilaus : 0)} ala={`${m.kk.tilauksia} tilausta tässä kuussa`} />
+              <Kortti otsikko="Kate mainosten jälkeen" arvo={eur(m.mainonta?.kateMainonnanJalkeen ?? m.kk.kate)} ala={`kate ${eur(m.kk.kate)}`} />
+              <Kortti otsikko="Mainoskonversiot" arvo={luku(m.mainonta?.konversiot ?? 0)} ala="Google Adsin ilmoittamat" />
+            </div>
+            {!!m.mainonta?.paivat.length && (
+              <ul className="text-xs text-muted-foreground">
+                {m.mainonta.paivat.map((p) => <li key={`${p.paiva}-${p.kanava}`}>{p.paiva} {p.kanava}: {eur(Number(p.kulut))}, {p.klikit} klikkiä, {p.konversiot} konversiota</li>)}
+              </ul>
+            )}
+            <MainoskuluLomake avain={avain} onTallennettu={lataa} />
+          </section>
 
           <section className="rounded-xl border border-border bg-card p-4 space-y-3">
             <h2 className="font-semibold text-foreground">Yritysmyynti: viestejä lähetetty / vastauksia / tarjouspyyntöjä / tilauksia</h2>

@@ -4,6 +4,7 @@
  * Väri, jonka koostumusta katalogi ei kerro, jätetään pois; tuote ilman tietoa jää ilman materiaaliriviä.
  */
 import TUOTEPOHJAT from "./tuotepohjat.generated.js";
+import TUMMAT from "./tummat-varit.generated.js";
 
 const PUUVILLA_RK = "100 % rengaskehrättyä puuvillaa";
 
@@ -64,7 +65,13 @@ export function painetaanEUssa(slug) {
 }
 
 /** Tuotteen pohja ja painotalo ({ b, p, v }) slugin mukaan, tai null. */
-export const tuotepohja = (slug) => (slug && TUOTEPOHJAT[slug]) || null;
+/** Tuotepohja ilman myynnistä poistettuja värejä (tumma painatus tummalla pohjalla, api/_lib/tummat-varit.js). */
+export const tuotepohja = (slug) => {
+  const t = (slug && TUOTEPOHJAT[slug]) || null;
+  const pois = t?.v && TUMMAT[slug];
+  if (!pois?.length) return t;
+  return { ...t, v: Object.fromEntries(Object.entries(t.v).filter(([c]) => !pois.includes(c))) };
+};
 
 const pieni = (osat) => osat.map((o) => o.charAt(0).toLowerCase() + o.slice(1));
 const luettelo = (osat) => { const o = pieni(osat); return o.length < 2 ? o[0] : `${o.slice(0, -1).join(", ")} ja ${o.at(-1)}`; };
