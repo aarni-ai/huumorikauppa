@@ -122,6 +122,7 @@ const BusinessOrderPage = lazyWithRetry(() => import("./pages/BusinessOrderPage"
 const QuoteAdminPage = lazyWithRetry(() => import("./pages/QuoteAdminPage"));
 const MetricsAdminPage = lazyWithRetry(() => import("./pages/MetricsAdminPage"));
 const LinksPage = lazyWithRetry(() => import("./pages/LinksPage"));
+const SomeAdminPage = lazyWithRetry(() => import("./pages/SomeAdminPage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
 const MediaPage = lazyWithRetry(() => import("./pages/MediaPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
@@ -231,6 +232,7 @@ export const AppSisalto = () => (
               <Route path="/yritykset/tilaus" element={<BusinessOrderPage />} />
               <Route path="/hallinta/tarjoukset" element={<QuoteAdminPage />} />
               <Route path="/hallinta/mittarit" element={<MetricsAdminPage />} />
+              <Route path="/hallinta/some" element={<SomeAdminPage />} />
               <Route path="/linkit" element={<LinksPage />} />
               <Route path="/personoitu-paita" element={<PersonalizedPage />} />
               <Route path="/kumppanit" element={<PartnersPage />} />

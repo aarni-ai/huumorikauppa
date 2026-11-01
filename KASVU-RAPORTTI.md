@@ -26,6 +26,66 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 1.11.2026 ilta: videot Coworkille (Blob, /hallinta/some), KEISARIT-selitys, 15 trendivideota, Pinterest- ja Shopping-kuvat, yritysmyynnin seuranta
+
+**Videot Coworkin saataville (Vercel Blob, ilmainen taso):**
+- Uusi Blob-varasto huumorikauppa-some (fra1, julkinen, kytketty tuotantoon, BLOB_READ_WRITE_TOKEN). Hobby-tason raja 1 Gt; käytössä noin 80 Mt.
+- Ladattu (scripts/some-blob.mjs): 35 videota, 35 kansikuvaa, JULKAISUT.md, 50 Pinterest-kuvaa, 50 Shopping-kuvaa ja some/manifest.json. Tiedostoilla on satunnainen pääte.
+- Suojattu sivu **/hallinta/some** (allekirjoitettu avain, noindex, robots Disallow /hallinta):
+  - videot julkaisupäivän ja kellonajan järjestyksessä: latauslinkki, kansikuva, kuvateksti, hashtagit ja UTM-linkit kopiointipainikkeineen
+  - tämän päivän videot korostettuina
+  - Pinterest-kuvat otsikon, kuvauksen ja utm_source=pinterest-linkin kanssa
+- **Linkit:** avaimellinen linkki on päivän yhteenvetoviestin lopussa (2.11. alkaen), ja cron `?tehtava=hallinta-linkki` palauttaa sen kentässä `some`.
+- **Tarkistus tuotannossa:** rajapinta palauttaa 35 videota ja 50 kuvaa, väärä avain 404, video ladattavissa (200).
+
+**KEISARIT-koodi:** tarkistettu tuotannon kassalaskennalla, ja koodi toimii oikein.
+- 27,90 €:n paita: -5 %
+- Huppari 52,90 €: -3 % (7 €:n kateehto)
+- 24,90 €:n paita: 0 % (kate ei riitä)
+- Kaksi 27,90 €:n paitaa: 0 %, koska korin oma kahden tuotteen alennus on suurempi. Cowork testasi todennäköisesti 24,90 €:n paidalla tai kahden tuotteen korilla.
+- **Kassaan lisätty selitys:** palvelin palauttaa nyt syyn, ja kassa näyttää 0 %:n tilanteessa "Koodilla ei alennusta tähän tuotteeseen." tai, jos korin oma alennus on suurempi, "Korin oma alennus on suurempi, joten se on käytössä koodin sijaan." Kuuluu edelleen: "Koodi KEISARIT hyväksytty".
+- Testit: src/components/KumppaniKentta.test.tsx, src/test/kumppani.test.ts.
+
+**15 trendivideota (Coworkin tutkimus):** videot 21–35, 9:16, 10,5–11,4 s, koukku ensimmäisestä ruudusta.
+- **POV (8):**
+  - isä ja termostaatti
+  - isä ja sähkö marraskuussa
+  - isä sohvalla klo 20.03
+  - marraskuun pimeä aamu
+  - se yks kaveri saunassa
+  - eläkeläisen menot
+  - se yks kaveri pikkujouluissa klo 22
+  - se yks kaveri, joka muistaa kaiken
+- **Pariskunta (3):** karaokevuoro, riisipuuron manteli ja joulukortit. Ruudussa puhekupla "Hän: ...", vastaus paidan tekstinä.
+- **Äänestys "kumman valitsisit?" (4):** isänpäivä, pikkujoulut, eläkeläinen ja joulupaita. Tuotteet A ja B rinnakkain, kehotus kommentoida.
+- **Julkaisu:** julkaisulistalla (some/JULKAISUT.md, some/julkaisut.json, /hallinta/some) trendivideot ovat klo 11–13 ja alkuperäiset klo 18–20. Isävideot 2.–5.11., ennen isänpäivää 8.11.
+- Kaikkien 35 videon riviväliä kasvatettiin (Ä-pisteet eivät enää osu edelliseen riviin), ja videot renderöitiin uudelleen.
+
+**Pinterest- ja Shopping-kuvat (50 suosituinta, 1000 x 1500, scripts/pinterest-kuvat.mjs):**
+- Kun tuotteella on Printifyn lifestyle-mockup oletusvärille (variant_images), sitä käytetään rajattuna 2:3:ksi. Muuten tuote irrotetaan mockupin taustasta ja ripustetaan henkariin seinälle puulattian eteen. Värivaihtoehto valitaan painatuksen kontrastin mukaan.
+- **Shopping-versio** on ilman tekstiä (Googlen kuvasääntö) ja on Merchant-syötteen ensimmäinen lisäkuva (api/_lib/lisakuvat.generated.js, api/_lib/syote.js). Tuotannon syötteessä 50 kuvaa.
+- **Pinterest-versiossa** on paidan teksti otsikkona ja huumorikauppa.fi.
+- **Havainto:** osassa ikävuosipaitoja (esim. 50 vuotta nuori) on tummansininen värivaihtoehto tummalla painatuksella, joten teksti ei erotu. Ehdotus: poista tumma väri niistä tai vaihda painatus vaaleaksi (ei muutettu ilman päätöstä).
+
+**Yritysmyynnin seuranta:**
+- Mittariin uusi rivi "viestejä lähetetty / vastauksia / tarjouspyyntöjä / tilauksia" sekä kuukauden ja 30 päivän summat, vastausprosentti ja 14 viimeistä päivää. Mukana myös päivän yhteenvetoviestissä.
+- **Coworkin kirjaus:**
+  - lomakkeella /hallinta/mittarit-sivulla
+  - tai rajapintaan `POST /api/sahkoposti { action: "yritysluvut", avain: <mittarisivun avain>, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset, huom }`
+  - Sama päivä uudelleen korvaa luvut, tulevaisuuden päivä hylätään.
+- Koodi: api/_lib/yritysluvut.js, taulu `yritysluvut`. 1.11. kirjattu lähtötaso 0.
+
+**Tavoitemittari 1.11.2026 ilta:**
+- Kate marraskuussa 0,00 €, matka 3000 €
+- Ennuste 5,83 €
+- Tilaukset: marraskuu 0, 30 pv 1
+- Käynnit tänään 11 (suora 9, google 2)
+- Konversio laskelmassa 0,58 % (GA4)
+- Tarjouspyynnöt 0, kumppanimyynti 0, yritysmyynti 0/0/0/0
+- **Tarve:** 10,5 tilausta ja 1 813 käyntiä päivässä
+
+**Tarkistukset:** 1534 testiä läpi. Kolme User-Agentia: 200 sivuilla /, /linkit, /suosituimmat, /hallinta/some, /hallinta/mittarit, /kassa ja /api/product-feed.
+
 ## 1.11.2026: tavoitemittari, oma käyntilaskuri, 20 somevideota, /linkit ja UTM
 
 **Tavoitemittari (totuus päivittäin):**

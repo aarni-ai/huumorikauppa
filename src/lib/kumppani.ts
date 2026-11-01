@@ -36,3 +36,8 @@ export function kumppani(): string | null {
   }
   try { return sessionStorage.getItem(AVAIN); } catch { return null; }
 }
+
+/** Selitys, kun kumppanikoodilla ei tule alennusta (api/checkout.js "kumppanikoodi" syy). */
+export const kumppaniSelitys = (syy: string) => (syy === "muu_alennus"
+  ? "Korin oma alennus on suurempi, joten se on käytössä koodin sijaan."
+  : "Koodilla ei alennusta tähän tuotteeseen.");

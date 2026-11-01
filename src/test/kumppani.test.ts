@@ -29,6 +29,7 @@ describe("kumppanuusohjelma (hyväksytty 29.10.2026: kauppaan jää vähintään
   });
 });
 
+import { kumppaniSelitys } from "@/lib/kumppani";
 import { valitseKumppaniAlennus, ALENNUSMALLI_SAANTO, provisioAsetukset } from "../../api/_lib/kumppani.js";
 import { laskeTilaus, laskettuNettokate, KassaVirhe } from "../../api/_lib/kassa.js";
 
@@ -51,10 +52,12 @@ describe("kumppanimalli 2: ostaja -5 %, kumppani 5 %, kauppaan vähintään 7 �
     expect(v.laskettu.discount).toBeCloseTo(1.4, 1);
   });
   it("24,90 €:n paita: kate ei riitä, alennus ja provisio jäävät pois", () => {
-    expect(valitse(pyynto("b")).prosentti).toBe(0);
+    expect(valitse(pyynto("b"))).toMatchObject({ prosentti: 0, syy: "kate" });
+    expect(kumppaniSelitys("kate")).toBe("Koodilla ei alennusta tähän tuotteeseen.");
   });
   it("kaksi paitaa: kahden tuotteen -5 % on yhtä suuri, joten kumppanialennusta ei lisätä", () => {
-    expect(valitse(pyynto("a", 2)).prosentti).toBe(0);
+    expect(valitse(pyynto("a", 2))).toMatchObject({ prosentti: 0, syy: "muu_alennus" });
+    expect(kumppaniSelitys("muu_alennus")).toMatch(/Korin oma alennus on suurempi/);
   });
   it("sääntöteksti ja provision asetukset tapahtumasta", () => {
     expect(ALENNUSMALLI_SAANTO).toContain("5 %:n alennuksen");

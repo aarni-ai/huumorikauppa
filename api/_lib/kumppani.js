@@ -63,21 +63,23 @@ export async function kumppaninTiedot(db, arvo, { asetukset = KUMPPANUUS } = {})
  * minKateEuroa. laske(p) palauttaa kassan laskennan p %:n alennuksella tai null (kassa hylkäsi), nettokate(l) sen
  * nettokatteen. perus = laskenta ilman kumppanialennusta: jos sen alennus (määrä-, kahden tuotteen tai paketti) on
  * vähintään yhtä suuri, kumppanialennusta ei anneta ja provisio on mallin provisioProsentti kateehdolla.
- * Palauttaa { prosentti, provisioProsentti, laskettu }.
+ * Palauttaa { prosentti, provisioProsentti, laskettu } ja 0 %:n alennuksella myös syy ("muu_alennus" tai "kate").
  */
 export function valitseKumppaniAlennus({ laske, nettokate, perus, asetukset = KUMPPANUUS }) {
   const { alennusProsentti, provisioProsentti } = asetukset.alennusmalli;
+  // syy, kun alennus jää 0 %:iin: "muu_alennus" (korin oma alennus on suurempi) tai "kate" (7 €:n kateehto).
+  let syy = "kate";
   for (let p = alennusProsentti; p >= 1; p--) {
     const l = laske(p);
     if (!l) continue;
-    if (perus && perus.discount >= l.discount) break;
+    if (perus && perus.discount >= l.discount) { syy = "muu_alennus"; break; }
     const nk = nettokate(l);
     if (!Number.isFinite(nk)) continue;
     const tuotteet = l.total - l.shipping;
     const prov = (tuotteet / 1.255) * (Math.min(p, provisioProsentti) / 100);
     if (nk - prov >= asetukset.minKateEuroa) return { prosentti: p, provisioProsentti: Math.min(p, provisioProsentti), laskettu: l };
   }
-  return { prosentti: 0, provisioProsentti, laskettu: perus };
+  return { prosentti: 0, provisioProsentti, laskettu: perus, syy };
 }
 
 /** Provision asetukset tilauksen kumppanitapahtumasta (malli 2 tallentaa prosentin). */

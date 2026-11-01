@@ -1,4 +1,6 @@
 /** Google Merchant -syöte omasta tuotelähteestä (siirretty Supabasen merchant-feed-funktiosta 21.10.2026, sama muoto). */
+import LISAKUVAT from "./lisakuvat.generated.js";
+
 const SITE = "https://huumorikauppa.fi";
 const PRINTIFY_HOST = "images-api.printify.com";
 
@@ -32,9 +34,10 @@ const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").
 export function merchantSyote(tuotteet) {
   const items = tuotteet.filter((p) => Number(p.stock) > 0).map((p) => {
     const image = proxiedImage(p.images?.[0] || "");
-    const additionalImages = p.images && p.images.length > 1
-      ? p.images.slice(1, 11).map((img) => `      <g:additional_image_link>${escapeXml(proxiedImage(img))}</g:additional_image_link>`).join("\n")
-      : "";
+    // Sisustustyylinen lisäkuva (1000 x 1500, ilman tekstiä) 50 suosituimmalle tuotteelle ensimmäiseksi lisäkuvaksi
+    // (api/_lib/lisakuvat.generated.js, Vercel Blob); Merchant sallii enintään 10 lisäkuvaa.
+    const lisaKuvat = [...(LISAKUVAT[p.slug] ? [LISAKUVAT[p.slug]] : []), ...(p.images || []).slice(1).map(proxiedImage)].slice(0, 10);
+    const additionalImages = lisaKuvat.map((img) => `      <g:additional_image_link>${escapeXml(img)}</g:additional_image_link>`).join("\n");
     return `    <item>
       <g:id>${escapeXml(p.id)}</g:id>
       <g:title>${escapeXml(p.name)}</g:title>

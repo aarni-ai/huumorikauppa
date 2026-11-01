@@ -56,3 +56,5 @@ kirjanpito/
 some/videot/*.mp4
 some/videot/*.jpg
 some/.valimuisti/
+.env*
+some/kuvat/

@@ -62,7 +62,8 @@ const KUVAJARJESTYS = ["lifestyle", "context", "front", "front-collar-closeup", 
 export function jarjestaLisakuvat(item) {
   const kuvat = [...item.matchAll(/<g:additional_image_link>([^<]*)<\/g:additional_image_link>/g)].map((m) => m[1]);
   if (kuvat.length < 2) return item;
-  const kulma = (u) => (decodeURIComponent(u).match(/camera_label=([a-z0-9-]+)/) || [])[1] || "";
+  // Oma sisustuskuva (Vercel Blob some/shopping/, api/_lib/lisakuvat.generated.js) rinnastetaan lifestyle-kuvaan.
+  const kulma = (u) => (/\.blob\.vercel-storage\.com\/some\/shopping\//.test(u) ? "lifestyle" : (decodeURIComponent(u).match(/camera_label=([a-z0-9-]+)/) || [])[1] || "");
   const sija = (u) => { const i = KUVAJARJESTYS.indexOf(kulma(u)); return i < 0 ? KUVAJARJESTYS.length : i; };
   const jarjestetty = kuvat.map((u, i) => ({ u, i })).sort((a, b) => sija(a.u) - sija(b.u) || a.i - b.i).map((x) => x.u);
   let k = 0;

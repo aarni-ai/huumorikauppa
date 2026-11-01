@@ -116,14 +116,18 @@ export default async function handler(req, res) {
     if (!kp) return res.status(200).json({ ok: false });
     // Malli 2: alennus, joka kassalla toteutuu tälle korille (7 €:n kateehto). Ilman koria nimellinen alennus.
     let prosentti = kp.malli === "alennus" ? KUMPPANUUS.alennusmalli.alennusProsentti : 0;
+    let syy = null;
     if (kp.malli === "alennus" && Array.isArray(pyynto.items) && pyynto.items.length) {
       try {
         const tuotteet = await kaikkiTuotteet();
         const arvio = { items: pyynto.items, customerEmail: "arvio@huumorikauppa.fi", shippingAddress: { address: "-", zip: "00100", city: "-" } };
-        prosentti = kumppaniValinta(arvio, tuotteet, {}).prosentti;
+        const v = kumppaniValinta(arvio, tuotteet, {});
+        prosentti = v.prosentti;
+        syy = v.prosentti ? null : v.syy || "kate";
       } catch { /* nimellinen */ }
     }
-    return res.status(200).json({ ok: true, koodi: kp.koodi, malli: kp.malli, prosentti });
+    // syy (kun alennus 0 %): "kate" = tuotteen kate ei riitä, "muu_alennus" = korin oma alennus on suurempi (kassan selitys).
+    return res.status(200).json({ ok: true, koodi: kp.koodi, malli: kp.malli, prosentti, syy });
   }
 
   if (pyynto.action === "lasku") return laskuTilaus(pyynto, res);

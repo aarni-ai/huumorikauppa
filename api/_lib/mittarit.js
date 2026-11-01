@@ -10,6 +10,7 @@
 import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilauksenKate } from "./valvonta.js";
 import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
 import { kaynnitValilla } from "./kaynnit.js";
+import { yritysluvutValilla, summaaYritysluvut } from "./yritysluvut.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -138,6 +139,13 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     };
   } catch { /* taulua ei vielä ole */ }
 
+  // Yritysmyynnin päiväluvut (Coworkin kirjaukset, api/_lib/yritysluvut.js).
+  let yritysmyynti = null;
+  try {
+    const rivit = await yritysluvutValilla(db, alku30Pv, h.paiva);
+    yritysmyynti = { kk: summaaYritysluvut(rivit.filter((r) => r.paiva >= kuunAlkuPv)), p30: summaaYritysluvut(rivit), paivat: rivit.slice(0, 14) };
+  } catch { /* taulua ei vielä ole */ }
+
   // Kumppanien myynti tässä kuussa.
   const kumppanit = new Map();
   for (const t of kk) {
@@ -157,7 +165,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -165,7 +173,7 @@ const eur = (x) => `${r2(x).toFixed(2).replace(".", ",")} €`;
 const lu = (x) => String(x).replace(".", ",");
 
 /** Mittarit tekstiriveinä päivän yhteenvetoviestiin. */
-export function mittaririvit(m, linkki = null) {
+export function mittaririvit(m, linkki = null, someLinkki = null) {
   const t = m.tavoite;
   const lahteet = m.kaynnit.p30.lahteet.slice(0, 6).map((l) => `${l.nimi} ${l.kaynnit}`).join(", ") || "ei vielä käyntejä";
   return [
@@ -179,10 +187,14 @@ export function mittaririvit(m, linkki = null) {
     `Konversio laskelmassa: ${lu(m.konversio.prosentti)} % (${m.konversio.lahde})${m.konversio.oma?.prosentti != null ? `; oma laskuri nyt ${lu(m.konversio.oma.prosentti)} %` : ""}`,
     `Lähteet 30 pv: ${lahteet}`,
     `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
+    m.yritysmyynti
+      ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`
+      : "Yritysmyynti (Cowork): ei kirjauksia",
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
     `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,
     `Edellinen kuukausi ${m.edellinen.kuukausi}: ${m.edellinen.tilauksia} tilausta, kate ${eur(m.edellinen.kate)}`,
     ...(linkki ? [`Mittarisivu: ${linkki}`] : []),
+    ...(someLinkki ? [`Somevideot ja Pinterest-kuvat (Cowork): ${someLinkki}`] : []),
   ];
 }

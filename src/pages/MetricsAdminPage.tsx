@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
@@ -17,7 +17,14 @@ type Mittarit = {
   konversio: { prosentti: number; lahde: string; oma: { prosentti: number | null; kaynteja: number; tilauksia: number; paivia: number; alkaen: string } | null };
   tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
   kumppanit: { koodi: string; tilauksia: number; myynti: number; provisio: number }[];
+  yritysmyynti: { kk: YSumma; p30: YSumma; paivat: (Record<YKentta, number> & { paiva: string; huom: string | null })[] } | null;
 };
+type YKentta = "viestit" | "vastaukset" | "tarjouspyynnot" | "tilaukset";
+type YSumma = Record<YKentta, number> & { vastausprosentti: number | null; paivia: number };
+const Y_KENTAT: { k: YKentta; nimi: string }[] = [
+  { k: "viestit", nimi: "Yritysviestejä lähetetty" }, { k: "vastaukset", nimi: "Vastauksia" },
+  { k: "tarjouspyynnot", nimi: "Tarjouspyyntöjä" }, { k: "tilaukset", nimi: "Tilauksia" },
+];
 
 const eur = (x: number | null | undefined) => (x == null ? "-" : `${x.toLocaleString("fi-FI", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`);
 const luku = (x: number | null | undefined, d = 0) => (x == null ? "-" : x.toLocaleString("fi-FI", { maximumFractionDigits: d }));
@@ -41,6 +48,32 @@ const Lista = ({ otsikko, rivit, tyhja }: { otsikko: string; rivit: { nimi: stri
   </section>
 );
 
+/** Coworkin päivän yritysmyyntiluvut (api/sahkoposti.js action "yritysluvut"); sama päivä uudelleen korvaa luvut. */
+const YrityslukuLomake = ({ avain, onTallennettu }: { avain: string; onTallennettu: () => void }) => {
+  const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+  const [arvot, setArvot] = useState<Record<string, string>>({ paiva: tanaan, viestit: "", vastaukset: "", tarjouspyynnot: "", tilaukset: "", huom: "" });
+  const [tila, setTila] = useState<string | null>(null);
+  const laheta = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTila("Tallennetaan...");
+    const body = { action: "yritysluvut", avain, paiva: arvot.paiva, huom: arvot.huom, ...Object.fromEntries(Y_KENTAT.map(({ k }) => [k, Number(arvot[k] || 0)])) };
+    const j = await fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then((r) => r.json()).catch(() => null);
+    setTila(j?.ok ? `Tallennettu ${arvot.paiva}.` : j?.virhe || "Tallennus epäonnistui.");
+    if (j?.ok) onTallennettu();
+  };
+  return (
+    <form onSubmit={laheta} className="grid grid-cols-2 md:grid-cols-6 gap-2 items-end text-sm" aria-label="Yritysmyynnin päiväluvut">
+      <label className="flex flex-col gap-1">Päivä<input type="date" value={arvot.paiva} max={tanaan} onChange={(e) => setArvot({ ...arvot, paiva: e.target.value })} className="h-9 rounded border border-border bg-muted px-2" /></label>
+      {Y_KENTAT.map(({ k, nimi }) => (
+        <label key={k} className="flex flex-col gap-1">{nimi}<input type="number" min={0} inputMode="numeric" value={arvot[k]} onChange={(e) => setArvot({ ...arvot, [k]: e.target.value })} className="h-9 rounded border border-border bg-muted px-2" /></label>
+      ))}
+      <button type="submit" className="h-9 rounded bg-primary px-3 font-medium text-primary-foreground">Tallenna</button>
+      <label className="col-span-2 md:col-span-6 flex flex-col gap-1">Huomio (valinnainen)<input value={arvot.huom} maxLength={300} onChange={(e) => setArvot({ ...arvot, huom: e.target.value })} className="h-9 rounded border border-border bg-muted px-2" /></label>
+      {tila && <p className="col-span-2 md:col-span-6 text-muted-foreground" role="status">{tila}</p>}
+    </form>
+  );
+};
+
 /**
  * /hallinta/mittarit?avain=...: tavoitemittari (api/sahkoposti.js ?mittarit=, api/_lib/mittarit.js). Avain on
  * allekirjoitettu (cron ?tehtava=hallinta-linkki, linkki myös päivän yhteenvetoviestissä); sivu on noindex ja
@@ -51,13 +84,14 @@ const MetricsAdminPage = () => {
   const avain = params.get("avain") || "";
   const [m, setM] = useState<Mittarit | null>(null);
   const [virhe, setVirhe] = useState(false);
-  useEffect(() => {
+  const lataa = useCallback(() => {
     if (!avain) { setVirhe(true); return; }
     fetch(`/api/sahkoposti?mittarit=${encodeURIComponent(avain)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => (j?.ok ? setM(j) : setVirhe(true)))
       .catch(() => setVirhe(true));
   }, [avain]);
+  useEffect(() => { lataa(); }, [lataa]);
 
   const t = m?.tavoite;
   return (
@@ -117,6 +151,22 @@ const MetricsAdminPage = () => {
             <Lista otsikko="Kumppanien myynti (kk)" tyhja="Ei kumppanitilauksia tässä kuussa."
               rivit={m.kumppanit.map((k) => ({ nimi: k.koodi, arvo: `${k.tilauksia} kpl, ${eur(k.myynti)}, provisio ${eur(k.provisio)}` }))} />
           </div>
+
+          <section className="rounded-xl border border-border bg-card p-4 space-y-3">
+            <h2 className="font-semibold text-foreground">Yritysmyynti: viestejä lähetetty / vastauksia / tarjouspyyntöjä / tilauksia</h2>
+            {m.yritysmyynti ? (
+              <div className="text-sm space-y-1">
+                <div>Tässä kuussa: <strong>{Y_KENTAT.map(({ k }) => m.yritysmyynti!.kk[k]).join(" / ")}</strong>{m.yritysmyynti.kk.vastausprosentti != null ? ` (vastausprosentti ${luku(m.yritysmyynti.kk.vastausprosentti, 1)} %)` : ""}</div>
+                <div className="text-muted-foreground">30 päivää: {Y_KENTAT.map(({ k }) => m.yritysmyynti!.p30[k]).join(" / ")}. Lomakkeelta tulleita tarjouspyyntöjä (kanta) tässä kuussa {m.tarjoukset.kk}.</div>
+                {m.yritysmyynti.paivat.length > 0 && (
+                  <ul className="text-xs text-muted-foreground">
+                    {m.yritysmyynti.paivat.map((p) => <li key={p.paiva}>{p.paiva}: {Y_KENTAT.map(({ k }) => p[k]).join(" / ")}{p.huom ? `, ${p.huom}` : ""}</li>)}
+                  </ul>
+                )}
+              </div>
+            ) : <p className="text-sm text-muted-foreground">Ei kirjauksia vielä.</p>}
+            <YrityslukuLomake avain={avain} onTallennettu={lataa} />
+          </section>
 
           <Lista otsikko="Vertailu" tyhja="-" rivit={[
             { nimi: `Tämä kuu (${m.kuukausi})`, arvo: `${m.kk.tilauksia} tilausta, myynti ${eur(m.kk.myynti)}, kate ${eur(m.kk.kate)}` },

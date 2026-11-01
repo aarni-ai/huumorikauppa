@@ -89,3 +89,47 @@ describe("käyntilaskurin testiajot", () => {
     expect(koostaKaynnit([{ paiva: "2026-11-01", lahde: "testi", osio: "linkit", kaynnit: 1 }]).yhteensa).toBe(0);
   });
 });
+
+describe("yritysmyynnin päiväluvut", () => {
+  it("tarkistus: kokonaisluvut, ei tulevaisuutta, oletuspäivä tänään", async () => {
+    const { tarkistaYritysluvut, summaaYritysluvut } = await import("../../api/_lib/yritysluvut.js");
+    expect(tarkistaYritysluvut({ viestit: 20, vastaukset: 3, tarjouspyynnot: 1, tilaukset: 0 }, "2026-11-01")).toMatchObject({ ok: true, rivi: { paiva: "2026-11-01", viestit: 20, vastaukset: 3 } });
+    expect(tarkistaYritysluvut({ paiva: "2026-11-02", viestit: 1 }, "2026-11-01").ok).toBe(false);
+    expect(tarkistaYritysluvut({ viestit: -1 }, "2026-11-01").ok).toBe(false);
+    expect(tarkistaYritysluvut({ viestit: 1.5 }, "2026-11-01").ok).toBe(false);
+    expect(summaaYritysluvut([{ viestit: 10, vastaukset: 2, tarjouspyynnot: 1, tilaukset: 0 }, { viestit: 10, vastaukset: 1, tarjouspyynnot: 0, tilaukset: 1 }]))
+      .toMatchObject({ viestit: 20, vastaukset: 3, tarjouspyynnot: 1, tilaukset: 1, vastausprosentti: 15, paivia: 2 });
+  });
+});
+
+describe("Merchant-syötteen sisustuskuvat", () => {
+  it("suosituimmalla tuotteella oma kuva on ensimmäinen lisäkuva, muilla ei", async () => {
+    const { merchantSyote } = await import("../../api/_lib/syote.js");
+    const { default: LISAKUVAT } = await import("../../api/_lib/lisakuvat.generated.js");
+    const slug = Object.keys(LISAKUVAT)[0];
+    const tuote = (s: string) => ({ id: s, slug: s, name: "Testi | T-Paita", description: "x", price: 27.9, stock: 10, category: "t-paidat",
+      images: ["https://images-api.printify.com/mockup/a/1/2/x.jpg?camera_label=front", "https://images-api.printify.com/mockup/a/1/3/x.jpg?camera_label=back"], variants: {} });
+    const xml = merchantSyote([tuote(slug), tuote("ei-suosittu")]);
+    const [eka, toka] = xml.split("</item>");
+    expect(eka.match(/<g:additional_image_link>([^<]*)</)![1]).toBe(LISAKUVAT[slug]);
+    expect(toka).not.toContain("blob.vercel-storage.com");
+    expect(Object.keys(LISAKUVAT)).toHaveLength(50);
+  });
+});
+
+describe("somevideoiden julkaisulista", () => {
+  it("35 videota, isävideot ennen isänpäivää 8.11., äänestyksissä kaksi tuotetta", async () => {
+    const { julkaisulista, VIDEOT } = await import("../../scripts/some-videot.mjs");
+    const l = julkaisulista();
+    expect(l).toHaveLength(35);
+    expect(new Set(l.map((v) => v.nro)).size).toBe(35);
+    for (const v of l.filter((x) => x.tagit.includes("#isänpäivä"))) expect(v.paiva < "2026-11-08").toBe(true);
+    for (const v of VIDEOT.filter((x) => x.muoto === "aanestys")) expect(v.slugit).toHaveLength(2);
+    for (const v of l) {
+      expect(v.tagit.length).toBeGreaterThanOrEqual(3);
+      expect(v.tagit.length).toBeLessThanOrEqual(5);
+      expect(v.kuvateksti).not.toMatch(/[–—]/);
+      expect(v.utm.tiktok).toContain("utm_source=tiktok");
+    }
+  });
+});

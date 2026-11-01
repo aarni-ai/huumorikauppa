@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { kumppaniSelitys } from "@/lib/kumppani";
 
 /**
  * Kassan Kumppanikoodi-kenttä ja näkyvä vahvistus (api/checkout.js action "kumppanikoodi"). Koodi täyttyy
@@ -20,6 +21,7 @@ export function KumppaniKentta({ arvo, setArvo, items, onTulos, alennus = true }
 }) {
   const [tila, setTila] = useState<"tyhja" | "tarkistetaan" | "ok" | "ei">("tyhja");
   const [prosentti, setProsentti] = useState(0);
+  const [syy, setSyy] = useState<string | null>(null);
   const koriAvain = JSON.stringify(items || []);
   useEffect(() => {
     const koodi = arvo.trim();
@@ -32,6 +34,7 @@ export function KumppaniKentta({ arvo, setArvo, items, onTulos, alennus = true }
           const p = j?.ok ? Number(j.prosentti) || 0 : 0;
           setTila(j?.ok ? "ok" : "ei");
           setProsentti(p);
+          setSyy(j?.ok && !p ? j.syy ?? null : null);
           onTulos?.(j?.ok ? { koodi: koodi.toUpperCase(), prosentti: p } : null);
         })
         .catch(() => setTila("tyhja"));
@@ -47,6 +50,9 @@ export function KumppaniKentta({ arvo, setArvo, items, onTulos, alennus = true }
         className="bg-muted border-border mt-1 max-w-[240px]" placeholder="esim. ANNA-K" aria-describedby="kumppani-tila" />
       <p id="kumppani-tila" className="text-xs mt-1 min-h-[1rem]" role="status">
         {tila === "ok" && <span className="inline-flex items-center gap-1 text-primary font-medium"><Check className="h-3.5 w-3.5" /> {alennus && prosentti > 0 ? `Koodi ${arvo.toUpperCase()}: -${prosentti} %` : `Koodi ${arvo.toUpperCase()} hyväksytty`}</span>}
+        {tila === "ok" && alennus && prosentti === 0 && syy && (
+          <span className="block text-muted-foreground mt-0.5">{kumppaniSelitys(syy)}</span>
+        )}
         {tila === "ei" && <span className="text-muted-foreground">Koodia {arvo.toUpperCase()} ei löytynyt. Tarkista kirjoitusasu.</span>}
       </p>
     </div>

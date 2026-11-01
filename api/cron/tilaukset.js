@@ -107,7 +107,8 @@ export default async function handler(req, res) {
       const { keraaMittarit, mittaririvit } = await import("../_lib/mittarit.js");
       const { allekirjoita } = await import("../_lib/markkinointi.js");
       const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
-      return mittaririvit(await keraaMittarit(db, store, { kuiva }), `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}`);
+      return mittaririvit(await keraaMittarit(db, store, { kuiva }), `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}`,
+        `${pohja}/hallinta/some?avain=${encodeURIComponent(allekirjoita("hallinta", "some"))}`);
     };
     const r = await ajaYhteenveto(store, { laheta, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva, lisarivit });
     return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [], testitilaukset: testit });
@@ -206,7 +207,8 @@ export default async function handler(req, res) {
     const { allekirjoita } = await import("../_lib/markkinointi.js");
     const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
     return res.status(200).json({ ok: true, linkki: `${pohja}/hallinta/tarjoukset?avain=${encodeURIComponent(allekirjoita("hallinta", "tarjoukset"))}`,
-      mittarit: `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}` });
+      mittarit: `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}`,
+      some: `${pohja}/hallinta/some?avain=${encodeURIComponent(allekirjoita("hallinta", "some"))}` });
   }
 
   // Laskupolun testi (yritystilaus laskulla). Ilman avainta: laskun rivit nykyhinnoilla (kuiva). STRIPE_TEST_SECRET_KEY

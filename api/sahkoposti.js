@@ -20,6 +20,8 @@
  * POST { action: "tarjoustila", avain, id, tila }                 tarjouspyynnön tila (uusi, vastattu, tilattu, hylatty)
  * POST { action: "kaynti", polku, viittaaja, utm, ref, gclid }      käyntilaskuri (api/_lib/kaynnit.js, ei tunnisteita)
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
+ * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
+ * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
@@ -112,6 +114,15 @@ export async function kasittele(req, res, store) {
     const m = await keraaMittarit(db, pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}));
     return res.status(200).json({ ok: true, ...m });
   }
+  // Hallinta: somevideot ja Pinterest-kuvat Coworkille (Vercel Blob some/manifest.json, scripts/some-blob.mjs).
+  if (req.method === "GET" && typeof q.some === "string") {
+    if (tarkistaTunniste(q.some, "hallinta") !== "some") return res.status(404).json({ ok: false });
+    const kauppa = (process.env.BLOB_READ_WRITE_TOKEN || "").split("_")[3];
+    if (!kauppa) return res.status(503).json({ ok: false, error: "Blob-varasto puuttuu" });
+    const r = await fetch(`https://${kauppa.toLowerCase()}.public.blob.vercel-storage.com/some/manifest.json`, { cache: "no-store" }).catch(() => null);
+    if (!r?.ok) return res.status(502).json({ ok: false, error: "manifestia ei löytynyt" });
+    return res.status(200).json({ ok: true, ...(await r.json()) });
+  }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
   switch (body.action) {
@@ -182,6 +193,16 @@ export async function kasittele(req, res, store) {
       const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120) });
       await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
+    }
+    case "yritysluvut": {
+      // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.
+      if (tarkistaTunniste(body.avain, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+      const { tarkistaYritysluvut, tallennaYritysluvut } = await import("./_lib/yritysluvut.js");
+      const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+      const t = tarkistaYritysluvut(body, tanaan);
+      if (!t.ok) return res.status(400).json(t);
+      await tallennaYritysluvut(sql(), t.rivi);
+      return res.status(200).json({ ok: true, tallennettu: t.rivi });
     }
     case "kumppaniklikki": {
       const kirjattu = await kirjaaKlikki(sql(), body.koodi);
