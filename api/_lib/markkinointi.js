@@ -235,7 +235,9 @@ export async function ajaMarkkinointi(store, { laheta, nyt = new Date(), rajat =
   // Arviopyynnöt.
   for (const t of await store.arvostelupyyntoEhdokkaat(nyt)) {
     if (!arvosteluAika(t, nyt)) continue;
-    if (await store.onKielto(t.customer_email)) {
+    // Ei koskaan kahdesti samalle asiakkaalle (2.11.2026): jos osoitteelle on jo lähetetty arviopyyntö, tämä tilaus
+    // merkitään käsitellyksi ilman viestiä.
+    if (await store.onKielto(t.customer_email) || (store.arviopyyntoLahetetty && await store.arviopyyntoLahetetty(t.customer_email, t.id))) {
       if (!kuiva) await store.merkitseArvostelupyynto(t.id, nyt);
       continue;
     }

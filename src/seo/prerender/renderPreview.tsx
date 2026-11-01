@@ -94,7 +94,15 @@ export function renderProductPreview(row: Tables<"products">, nowMs = Date.now()
  * kirjasi myöhäisen LCP:n, Lighthouse mobiili 4,5 s kahdessa ikävuosiblogissa).
  */
 export async function renderBlogApp(slug: string, nowMs = Date.now()): Promise<string> {
-  const path = `/blogi/${slug}`;
+  return renderAppHydrated(`/blogi/${slug}`, nowMs);
+}
+
+/**
+ * Mikä tahansa reitti hydratoitavana sovelluksena (2.11.2026: blogiartikkelit ja kategoriasivut). Kategoriasivulla
+ * Lighthouse mobiili 72, LCP 4,6 s ja CLS 0,16, koska React korvasi tyylittömän SEO-rungon vasta laiskan
+ * sivukomponentin latauduttua.
+ */
+export async function renderAppHydrated(path: string, nowMs = Date.now()): Promise<string> {
   await preloadRoute(path);
   asetaEsirenderoinninTeema(activeBannerTheme(nowMs));
   try {

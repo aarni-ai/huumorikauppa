@@ -262,6 +262,18 @@ async function main() {
           previewFailures.push(`${page.path} (${err.message})`);
         }
       }
+      // Kategoriasivut (2.11.2026): sama hydratoitava sovellus kuin blogissa; tuoteruudukko latausnäkymänä.
+      const categoryChunks = chunksFor("src/pages/CategoryPage.tsx");
+      for (const page of previewMod ? pages : []) {
+        if (!/^\/kategoria\/[^/]+$/.test(page.path)) continue;
+        try {
+          page.hydrateHtml = await previewMod.renderAppHydrated(page.path);
+          page.modulePreloads = categoryChunks;
+          previews += 1;
+        } catch (err) {
+          previewFailures.push(`${page.path} (${err.message})`);
+        }
+      }
       const homePage = previewMod ? pages.find((p) => p.path === "/") : undefined;
       if (homePage) {
         try {
@@ -278,7 +290,7 @@ async function main() {
     if (previewFailures.length > 0) {
       log(`VAROITUS: esikatselu epäonnistui ${previewFailures.length} sivulla: ${previewFailures.slice(0, 5).join(", ")}`);
     }
-    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut, blogiartikkelit ja etusivu).`);
+    log(`Näkyvä esikatselu: ${previews} sivua (tuotesivut, blogiartikkelit, kategoriat ja etusivu).`);
 
     const seen = new Set();
     let written = 0;

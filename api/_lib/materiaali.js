@@ -64,8 +64,7 @@ export function painetaanEUssa(slug) {
   return pt ? pt.eu : null;
 }
 
-/** Tuotteen pohja ja painotalo ({ b, p, v }) slugin mukaan, tai null. */
-/** Tuotepohja ilman myynnistä poistettuja värejä (tumma painatus tummalla pohjalla, api/_lib/tummat-varit.js). */
+/** Tuotteen pohja ja painotalo ({ b, p, v }) slugin mukaan, tai null; ilman myynnistä poistettuja värejä (tumma painatus tummalla pohjalla, api/_lib/tummat-varit.js). */
 export const tuotepohja = (slug) => {
   const t = (slug && TUOTEPOHJAT[slug]) || null;
   const pois = t?.v && TUMMAT[slug];

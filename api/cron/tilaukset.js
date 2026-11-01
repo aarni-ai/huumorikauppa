@@ -42,7 +42,7 @@ import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, kasitteleLasku, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
 import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, testitilaus, siivoaTestitilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
-import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti } from "../_lib/sahkoposti.js";
+import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti, omaVahvistusKaytossa, lahetaVarareitilla } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
 import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
 import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
@@ -111,7 +111,6 @@ export default async function handler(req, res) {
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
-    const { lahetaVarareitilla } = await import("../_lib/sahkoposti.js");
     const r = await ajaYhteenveto(store, { laheta: lahetaVarareitilla, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva, lisarivit });
     return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [], testitilaukset: testit });
   }
@@ -210,7 +209,6 @@ export default async function handler(req, res) {
   // palauteta vastauksessa.
   if (req.query.tehtava === "hallintalinkit-viesti") {
     const { hallintaLinkit, hallintalinkkiViesti } = await import("../_lib/hallinta.js");
-    const { lahetaVarareitilla } = await import("../_lib/sahkoposti.js");
     const viesti = hallintalinkkiViesti(hallintaLinkit());
     const to = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.query.to || "") ? req.query.to : "huumorikauppa@gmail.com";
     const yritykset = [];
@@ -234,6 +232,32 @@ export default async function handler(req, res) {
     const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
     res.setHeader("Cache-Control", "private, no-store");
     return res.status(200).json({ ok: true, koodi, sivu: `${pohja}/hallinta/aktivoi`, vanhenee });
+  }
+
+  // Suppilo tietokannasta (2.11.2026): kassalta Stripeen siirtyneet ja maksetut tilaukset, tallennetut korit, käynnit
+  // ja oman suppilolaskurin vaiheet (api/_lib/suppilo.js). &paivia=N (oletus 14). Testitilaukset pois.
+  if (req.query.tehtava === "suppilo") {
+    const { suppiloValilla } = await import("../_lib/suppilo.js");
+    const paivia = Math.min(90, Math.max(1, Number(req.query.paivia) || 14));
+    const testi = (s) => /^kassatesti@|@huumorikauppa\.fi$/i.test(s || "");
+    const tilaukset = (await db`select to_char(created_at at time zone 'Europe/Helsinki', 'YYYY-MM-DD') as paiva, status, customer_email, stripe_session_id
+      from orders where created_at > now() - ${`${paivia} days`}::interval`).filter((t) => !testi(t.customer_email));
+    const per = {};
+    for (const t of tilaukset) {
+      const d = (per[t.paiva] ||= { kassaltaStripeen: 0, maksettu: 0, peruttu: 0, odottaa: 0 });
+      if (t.stripe_session_id) d.kassaltaStripeen++;
+      d[t.status === "maksettu" ? "maksettu" : t.status === "peruttu" ? "peruttu" : "odottaa"]++;
+    }
+    let korit = null;
+    try { korit = await db`select to_char(created_at at time zone 'Europe/Helsinki', 'YYYY-MM-DD') as paiva, count(*)::int as n from abandoned_carts
+      where created_at > now() - ${`${paivia} days`}::interval group by 1 order by 1`; } catch (e) { korit = String(e?.message || e).slice(0, 80); }
+    const kayRivit = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde <> 'testi'
+      and paiva > (now() at time zone 'Europe/Helsinki')::date - ${paivia}::int group by 1`.catch(() => []);
+    const kaynnit = Object.fromEntries(kayRivit.map((r) => [r.paiva, r.n]));
+    const h = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+    const alku = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date(Date.now() - paivia * 864e5));
+    const oma = await suppiloValilla(db, alku, h, kaynnit);
+    return res.status(200).json({ ok: true, paivia, tilaukset: Object.entries(per).sort().map(([paiva, d]) => ({ paiva, ...d })), korit, oma });
   }
 
   if (req.query.tehtava === "hallinta-linkki") {
@@ -929,8 +953,10 @@ export default async function handler(req, res) {
     loki.push(`toimituspäivä: ${e?.message || e}`);
   }
 
-  // 4. Markkinointi: muistutukset ja arviopyynnöt (lähetysraja, api/_lib/markkinointi.js).
-  if (onSahkoposti() && aikaa()) {
+  // 4. Markkinointi: korimuistutukset ja arviopyynnöt (lähetysraja, api/_lib/markkinointi.js). Asiakkaille lähtee
+  // vasta, kun oma domain on vahvistettu Resendissä ja SAHKOPOSTI_VAHVISTETTU=1 (2.11.2026): siihen asti viestit
+  // eivät mene perille, eikä ajo merkitse niitä lähetetyiksi.
+  if (omaVahvistusKaytossa() && aikaa()) {
     try {
       const m = await ajaMarkkinointi(pgMarkkinointi(db), { laheta, kuiva });
       loki.push(...m.loki);
@@ -944,7 +970,7 @@ export default async function handler(req, res) {
   const h = helsinki();
   if (h.tunti >= 9 && (await db`select value from kv where key = ${KV_YHTEENVETO}`)[0]?.value !== h.paiva) {
     try {
-      const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}), { laheta, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
+      const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}), { laheta: lahetaVarareitilla, vastaanottaja: OMISTAJA(), pakota: true, kuiva });
       loki.push(`yhteenveto (myöhässä): ${r.lahetetty ? "lähetetty" : r.syy}`);
     } catch (e) {
       loki.push(`yhteenveto: ${e?.message || e}`);

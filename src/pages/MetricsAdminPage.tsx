@@ -19,11 +19,19 @@ type Mittarit = {
   tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
   kumppanit: { koodi: string; tilauksia: number; myynti: number; provisio: number }[];
   yritysmyynti: { kk: YSumma; p30: YSumma; paivat: (Record<YKentta, number> & { paiva: string; huom: string | null })[] } | null;
+  suppilo?: {
+    paivat: (SuppiloRivi & { paiva: string })[];
+    yhteensa: SuppiloRivi;
+    pudotus: { vaihe: string; jatkoi: number | null; putosi: number | null }[];
+    ab: Record<"a" | "b", Omit<SuppiloRivi, "kaynnit">>;
+  } | null;
   mainonta?: {
     kulut: number; klikit: number; konversiot: number; tilauksia: number; kustannusPerTilaus: number | null; kateMainonnanJalkeen: number;
     paivat: { paiva: string; kanava: string; kulut: string | number; klikit: number; konversiot: number; huom: string | null }[];
   };
 };
+type SuppiloRivi = { kaynnit: number; etusivu: number; tuotesivu: number; kori: number; kassa: number; maksu: number; ostot: number; konversio: number | null };
+const VAIHE_NIMET: Record<string, string> = { kaynnit: "käynnit", tuotesivu: "tuotesivu", kori: "kori", kassa: "kassa", maksu: "maksu (Stripe)", ostot: "osto" };
 type YKentta = "viestit" | "vastaukset" | "tarjouspyynnot" | "tilaukset";
 type YSumma = Record<YKentta, number> & { vastausprosentti: number | null; paivia: number };
 const Y_KENTAT: { k: YKentta; nimi: string }[] = [
@@ -184,6 +192,40 @@ const MetricsAdminPage = () => {
             <Lista otsikko="Kumppanien myynti (kk)" tyhja="Ei kumppanitilauksia tässä kuussa."
               rivit={m.kumppanit.map((k) => ({ nimi: k.koodi, arvo: `${k.tilauksia} kpl, ${eur(k.myynti)}, provisio ${eur(k.provisio)}` }))} />
           </div>
+
+          {m.suppilo && (
+            <section className="rounded-xl border border-border bg-card p-4 space-y-3">
+              <h2 className="font-semibold text-foreground">Ostosuppilo ja konversio päivittäin (14 pv, oma laskuri)</h2>
+              <ul className="text-sm grid gap-1 md:grid-cols-5">
+                {m.suppilo.pudotus.map((p) => (
+                  <li key={p.vaihe} className="rounded border border-border p-2">
+                    <div className="text-xs text-muted-foreground">{p.vaihe.split(" -> ").map((v) => VAIHE_NIMET[v] || v).join(" → ")}</div>
+                    <div>jatkoi <strong>{p.jatkoi == null ? "-" : `${luku(p.jatkoi, 1)} %`}</strong>, putosi {p.putosi == null ? "-" : `${luku(p.putosi, 1)} %`}</div>
+                  </li>
+                ))}
+              </ul>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead><tr className="text-left text-muted-foreground">{["Päivä", "Käynnit", "Tuotesivu", "Kori", "Kassa", "Maksuun", "Ostot", "Konversio"].map((h) => <th key={h} className="py-1 pr-2 font-medium">{h}</th>)}</tr></thead>
+                  <tbody>
+                    {m.suppilo.paivat.map((d) => (
+                      <tr key={d.paiva} className="border-t border-border/60">
+                        <td className="py-1 pr-2">{d.paiva}</td>{[d.kaynnit, d.tuotesivu, d.kori, d.kassa, d.maksu, d.ostot].map((n, i) => <td key={i} className="pr-2">{n}</td>)}
+                        <td>{d.konversio == null ? "-" : `${luku(d.konversio, 2)} %`}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="text-sm">
+                <div className="font-medium">Etusivun A/B-testi (otsikko)</div>
+                {(["a", "b"] as const).map((v) => {
+                  const x = m.suppilo!.ab[v];
+                  return <div key={v} className="text-muted-foreground">Versio {v.toUpperCase()}: {x.etusivu} näyttöä, {x.tuotesivu} tuotesivulle, {x.kori} koriin, {x.kassa} kassalle, {x.ostot} ostoa{x.konversio != null ? ` (${luku(x.konversio, 2)} % näytöistä)` : ""}</div>;
+                })}
+              </div>
+            </section>
+          )}
 
           <section className="rounded-xl border border-border bg-card p-4 space-y-3">
             <h2 className="font-semibold text-foreground">Mainonta (kk)</h2>

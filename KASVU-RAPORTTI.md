@@ -2114,3 +2114,66 @@ Testit 1546 läpi. Kolmen User-Agentin tarkistus (Chrome, iPhone Safari, Googleb
   käyttö 400; evästeillä mittarit, some ja tarjoukset 200, ilman 404. Chromessa erillinen testikoodi: "Aktivoitu",
   mittari ("matka tavoitteeseen") ja some (Pinterest-kuvat) aukeavat ilman avainta. Headless Chrome tyhjällä
   profiililla: molemmat sivut näyttävät "Ei pääsyä. Avaa koko hallintalinkki."
+
+## 2.11.2026: konversioajo (suppilo, mobiilinopeus, tuotesivu, kassa, luottamus, etusivu, A/B, mittari)
+
+### Missä ostajat putoavat
+- **GA4-suppiloa ei saatu:** Huumorikaupan GA4-property (G-8FJ58JNKGK) ei näy tällä Google-tilillä, GA4 Data API
+  -avaimia (GA4_PROPERTY_ID, GA4_PALVELUTILI) ei ole Vercelissä, eikä Supermetricsin GA4-yhteys näe propertya.
+  Suppilo täyttyy automaattisesti, kun avaimet asetetaan (KAYTTOONOTTO.md "GA4 Data API").
+- **Oma data (tietokanta, cron `?tehtava=suppilo`):** uudella kassalla 27.10. alkaen 2 kassalta Stripeen siirtynyttä
+  tilausta, joista 1 maksettu (maksu-vaihe 50 %). Käyntilaskurin 74 käynnistä 1.11. alkaen 0 eteni kassalle; 1
+  tallennettu kori. Pahin mitattu kohta on ennen koria (käynti -> kori/kassa: pudotus 100 % 74 käynnillä); data on
+  vielä liian ohutta vaiheittaisiin prosentteihin.
+- **Uusi oma suppilolaskuri** (api/_lib/suppilo.js, src/lib/suppilo.ts): etusivu, tuotesivu, kori, kassa, maksu
+  (siirto Stripeen) ja ostot maksetuista tilauksista; koostemäärä päivä x vaihe x A/B-versio, ei evästeitä eikä
+  tunnisteita. Mittari näyttää 14 päivän taulukon, päivittäisen konversion ja pudotusprosentit vaiheittain.
+
+### Mobiilinopeus (Lighthouse 12.6.1 mobiili; PageSpeed Insightsin päiväkiintiö oli täynnä)
+| Sivu | Ennen | Jälkeen |
+|---|---|---|
+| Kategoria /kategoria/t-paidat | 72, LCP 4,6 s, CLS 0,162 | 97, LCP 1,3 s, CLS 0,001 |
+| Tuote /tuote/tonnin-seteli-t-paita | 99, LCP 1,3 s, CLS 0 | 98, LCP 1,4 s, CLS 0 |
+| Etusivu | 99, LCP 1,5 s, CLS 0,001 | 6 ajoa: 3 x 99-100 (LCP 1,3-1,5 s), 3 x 62 (LCP 6,8-7,1 s); CLS 0-0,001 |
+
+- Kategoriasivu: React korvasi tyylittömän SEO-rungon vasta laiskan sivukomponentin latauduttua (LCP:n
+  renderöintiviive 3,5 s) ja alatunniste siirtyi tuotteiden latautuessa. Nyt kategoriasivut esirenderöidään
+  hydratoitavana sovelluksena kuten blogiartikkelit (renderAppHydrated, preloadRoute), ja tuoteruudukon paikka
+  varataan latausnäkymällä.
+- Etusivun vaihtelu ei johdu tämän ajon muutoksista: edellinen julkaisu käyttäytyy suoraan Vercel-osoitteella
+  samoin. Huonoissa ajoissa esikatselua ei piirretä ennen sovelluksen vaihtoa (havaittu FCP noin 2 s =
+  PREVIEW_TIMEOUT_MS). Jatkoselvitys: CrUX-kenttädata Search Consolesta ennen muutoksia.
+
+### Tuotesivu
+- Jo ennestään taitteen yläpuolella: hinta, toimitusarvio, "Painetaan tilauksesta EU:ssa", 14 päivän
+  palautusoikeus, maksutapakuvakkeet ja kokotaulukko. "Perillä 5-8 arkipäivässä" ei vastaa EU-painotalojen aikoja
+  (tuotanto 2-5 + kuljetus 4-8 arkipäivää, Printifyn toteutunut P90 pidempi), joten nykyinen laskettu arvio jäi.
+- Uusi rivi "Turvallinen maksu Stripellä: Visa, Mastercard, MobilePay ja Klarna" (MobilePay ja Klarna ovat
+  Stripen oletusmäärityksessä, src/config/maksutavat.ts).
+- "Sopii yhteen" -nosto on nyt "Yhdessä edullisemmin" ja kertoo kahden tuotteen -5 %:n korialennuksen. Otsikko ei
+  väitä tuotteita yhdessä ostetuiksi, koska tilausdataa on liian vähän.
+
+### Ostoskori ja kassa
+- Korissa oli jo toimituskulu ja "X € ilmaiseen toimitukseen" (raja 79 €).
+- Kassa: kumppani-, alennus- ja lahjakorttikoodin kentät avattavien "Onko sinulla kumppanikoodi?" ja "Alennus- tai
+  lahjakorttikoodi" -kohtien taakse (auki, jos koodi on jo annettu). Korimuistutuksen suostumusteksti korjattu
+  vastaamaan toimintaa (yksi viesti vuorokauden kuluttua, ennen "kaksi viestiä").
+- Hylätyn ostoskorin muistutus oli jo valmis (suostumus kassalla, yksi viesti 24 h, lopetus maksun jälkeen).
+  Muistutukset ja arviopyynnöt kytkeytyvät nyt päälle vasta, kun SAHKOPOSTI_VAHVISTETTU=1 (domain vahvistettu
+  Resendissä); ennen tätä ajo yritti lähettää joka tunti turhaan.
+
+### Luottamus
+- Arvostelut: tuotesivu näyttää vain aidot arviot (nyt 0). Arviopyyntö lähtee vain, kun Printify näyttää paketin
+  toimitetuksi (+7 pv). Uutta: ei koskaan kahdesti samalle asiakkaalle (aiemmin kerran tilausta kohden).
+- Tietoa meistä: Uusiku Oy ja Y-tunnus 3653666-7 olivat jo sivulla; teksti "ulkomailla" vaihdettu muotoon
+  "Painetaan tilauksesta EU:ssa" (572/573 myytävää tuotetta EU-painotalossa: OPT CZ, Textildruck DE, Atelier FR).
+
+### Etusivu ja A/B-testi
+- Heti heron alla 8 suosituinta (TOP50-järjestys, myydyimmät ensin, t-paidat ja hupparit, yksi per malli); paikka
+  varattu ennen latausta. Isänpäivän lahjakorttinosto pysyy yläosassa 8.11. asti.
+- A/B-testi yläpalkin otsikolla: A "Löydä hauska lahja meiltä. Tilaa nyt.", B "Hauskat paidat suomalaisella
+  huumorilla." Versio arvotaan sivulatauksessa ja pidetään vain muistissa; se kulkee suppilon kirjauksiin ja
+  tilaukseen (orders.ab_versio). Tulos mittarissa (näytöt, tuotesivu, kori, kassa, ostot versioittain).
+
+Testit 1551 läpi. Kolmen User-Agentin tarkistus: /, /kategoria/t-paidat, /tuote/tonnin-seteli-t-paita, /ostoskori,
+/kassa, /tietoa-meista, /hallinta/mittarit, /hallinta/aktivoi kaikki 200.

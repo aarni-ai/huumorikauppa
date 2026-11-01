@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Factory, RotateCcw, Truck } from "lucide-react";
+import { Factory, RotateCcw, ShieldCheck, Truck } from "lucide-react";
+import { maksutavatTekstina } from "@/config/maksutavat";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 
@@ -49,6 +50,10 @@ export function PurchaseFacts({
         </span>
       </li>
       )}
+      <li className="flex items-start gap-1.5">
+        <ShieldCheck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
+        <span>{compact ? "Turvallinen maksu (Stripe)" : `Turvallinen maksu Stripellä: ${maksutavatTekstina(["visa", "mastercard", "mobilepay", "klarna"])}`}</span>
+      </li>
       <JouluTakarajaRivi as="li" categories={jouluKategoriat} className="text-foreground" />
       <li className="flex items-start gap-1.5">
         <RotateCcw className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />

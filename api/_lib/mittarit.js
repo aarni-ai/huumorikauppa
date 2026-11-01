@@ -12,6 +12,7 @@ import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
 import { kaynnitValilla } from "./kaynnit.js";
 import { yritysluvutValilla, summaaYritysluvut } from "./yritysluvut.js";
 import { mainoskulutValilla, mainontaYhteenveto } from "./mainoskulut.js";
+import { suppiloValilla } from "./suppilo.js";
 
 const r2 = (x) => Math.round(x * 100) / 100;
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -152,6 +153,15 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   try { mainosrivit = await mainoskulutValilla(db, kuunAlkuPv, h.paiva); } catch { /* taulua ei vielä ole */ }
   const mainonta = { ...mainontaYhteenveto(mainosrivit, { tilauksia: kkSumma.tilauksia, kate: kkSumma.kate }), paivat: mainosrivit.slice(0, 14) };
 
+  // Ostosuppilo ja päivittäinen konversio 14 pv (api/_lib/suppilo.js; oma laskuri 2.11.2026 alkaen).
+  let suppilo = null;
+  try {
+    const alku14 = lisaaPaiva(h.paiva, -13);
+    const kayPv = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde <> 'testi'
+      and paiva between ${alku14}::date and ${h.paiva}::date group by 1`;
+    suppilo = await suppiloValilla(db, alku14, h.paiva, Object.fromEntries(kayPv.map((r) => [r.paiva, r.n])));
+  } catch { /* taulua ei vielä ole */ }
+
   // Kumppanien myynti tässä kuussa.
   const kumppanit = new Map();
   for (const t of kk) {
@@ -171,7 +181,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, mainonta, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -197,6 +207,8 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
       ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`
       : "Yritysmyynti (Cowork): ei kirjauksia",
     ...(m.mainonta ? [`Mainoskulut tässä kuussa: ${eur(m.mainonta.kulut)}, kustannus per tilaus ${m.mainonta.kustannusPerTilaus == null ? "-" : eur(m.mainonta.kustannusPerTilaus)}, kate mainoskulujen jälkeen ${eur(m.mainonta.kateMainonnanJalkeen)}${m.mainonta.klikit ? ` (${m.mainonta.klikit} klikkiä)` : ""}`] : []),
+    ...(m.suppilo ? [`Suppilo 14 pv: käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
+      `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
     `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,

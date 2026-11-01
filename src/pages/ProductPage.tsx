@@ -20,6 +20,7 @@ import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { ToimitusarvioRivi } from "@/components/ToimitusarvioRivi";
 import { Textarea } from "@/components/ui/textarea";
 import { ShoppingCart, Share2, Copy, MessageCircle, ChevronDown, Star } from "lucide-react";
+import { KORIALENNUS_PROSENTTI } from "../../api/_lib/vakiot.js";
 import { PurchaseFacts } from "@/components/PurchaseFacts";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { SizeGuide } from "@/components/SizeGuide";
@@ -930,7 +931,10 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         </div>
 
         {/* Sopii yhteen: täydentävät tuotteet ostoalueen alla (src/lib/recommendations.ts) */}
-        <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl" />
+        {/* Kahden tuotteen korialennus näkyviin jo tuotesivulla (api/_lib/vakiot.js KORIALENNUS_*, 7 €:n katesääntö). */}
+        <ComplementaryProducts base={[product]} all={allProducts} className="mt-12 max-w-3xl"
+          title="Yhdessä edullisemmin"
+          note={`Kaksi tuotetta samassa tilauksessa: -${KORIALENNUS_PROSENTTI} % useimmista yhdistelmistä. Ostoskori näyttää alennuksen.`} />
 
         {/* Product description */}
         <section className="mt-12">

@@ -65,6 +65,9 @@ export function pgMarkkinointi(db) {
     },
     arvostelupyyntoEhdokkaat: async () => db`select * from orders where status = 'maksettu' and review_email_sent_at is null
       and delivered_at is not null and delivered_at > now() - interval '60 days' order by delivered_at limit 100`,
+    /** Onko osoitteelle jo lähetetty arviopyyntö jostain toisesta tilauksesta (ei kahdesti samalle asiakkaalle). */
+    arviopyyntoLahetetty: async (email, tilausId) => (await db`select 1 from orders where lower(customer_email) = lower(${email})
+      and id <> ${tilausId} and review_email_sent_at is not null limit 1`).length > 0,
     merkitseArvostelupyynto: async (id, aika) => {
       await db`update orders set review_email_sent_at = ${aika} where id = ${id}`;
     },

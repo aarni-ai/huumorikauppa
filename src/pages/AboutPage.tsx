@@ -36,7 +36,7 @@ const processSteps = [
   {
     number: "03",
     title: "Painatus",
-    body: "Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, esimerkiksi DTG- tai DTF-tekniikalla. Varastoon ei painata tuotteita etukäteen.",
+    body: "Painetaan tilauksesta EU:ssa: tuotteet painetaan painokumppaneiden painotaloissa Tšekissä, Saksassa ja muualla EU:ssa DTG- tai DTF-tekniikalla. Varastoon ei painata tuotteita etukäteen.",
   },
   {
     number: "04",
@@ -172,7 +172,7 @@ const AboutPage = () => {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-3">
-            Tuotteet painetaan tilauksesta painokumppaneiden painotaloissa ulkomailla, ei Suomessa.
+            Painetaan tilauksesta EU:ssa, painokumppaneiden painotaloissa (ei Suomessa).
             Varastoon ei painata tuotteita etukäteen.
           </p>
         </section>

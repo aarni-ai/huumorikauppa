@@ -1,4 +1,6 @@
 import { IsanpaivaLahjakorttiBanneri } from "@/components/IsanpaivaLahjakorttiBanneri";
+import { EtusivunSuosituimmat } from "@/components/EtusivunSuosituimmat";
+import { AB_OTSIKOT, abVersio, kirjaaVaihe } from "@/lib/suppilo";
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { categories } from "@/data/products";
@@ -77,6 +79,12 @@ const CAROUSEL_SLUGS = [
 
 const Index = () => {
   const { data: allProducts = [], isLoading } = useProducts();
+  // Esirenderöity HTML näyttää version A; selain vaihtaa arvotun version heti kiinnityksessä (sama rivikorkeus).
+  const [abOtsikko, setAbOtsikko] = useState<"a" | "b">("a");
+  useEffect(() => {
+    setAbOtsikko(abVersio());
+    kirjaaVaihe("etusivu");
+  }, []);
   // Esirenderöity esikatselu (src/main.tsx) vaihtuu sovellukseen ennen ensimmäistä maalausta: sama
   // näkymä kuin esikatselussa (hero ja latausnäkymät), tuotteet täydentyvät haun jälkeen.
   useLayoutEffect(() => {
@@ -153,8 +161,9 @@ const Index = () => {
           style={{ background: "linear-gradient(90deg, hsl(var(--brand-green-dark)) 0%, hsl(var(--brand-green)) 100%)" }}
         >
           <Gift className="h-4 w-4 shrink-0 opacity-90" />
+          {/* A/B-testi (2.11.2026, src/lib/suppilo.ts): versio arvotaan sivulatauksessa, tulos mittarissa. */}
           <span className="text-sm font-semibold">
-            Löydä hauska lahja meiltä. Tilaa nyt.
+            {AB_OTSIKOT[abOtsikko]}
           </span>
           <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />
         </Link>
@@ -179,6 +188,9 @@ const Index = () => {
         </Link>
       </section>
 
+
+      {/* 8 SUOSITUINTA (2.11.2026): heti heron alla, paikka varattu ennen latausta. */}
+      <EtusivunSuosituimmat tuotteet={allProducts} lataa={isLoading} />
 
       {/* BLACK FRIDAY 27.11.-1.12. (vain kampanjan aikana, src/components/KorialennusVihje.tsx) */}
       <div className="container">

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
@@ -171,6 +172,7 @@ const CheckoutPage = () => {
           recipientName: differentRecipient && recipientName.trim() ? recipientName.trim() : undefined,
           discountCode: appliedDiscount?.code || undefined,
           giftCardCode: appliedGiftCard?.code || undefined,
+          abVersio: nahtyVersio() || undefined,
         }),
       });
       const data = await vastaus.json().catch(() => null);
@@ -178,6 +180,7 @@ const CheckoutPage = () => {
         throw new Error(data?.error || "Maksun aloitus epäonnistui");
       }
       if (data?.url) {
+        kirjaaVaihe("maksu");
         window.location.href = data.url;
       } else {
         throw new Error("Stripe-sessiota ei voitu luoda");
@@ -374,14 +377,20 @@ const CheckoutPage = () => {
               </>
             )}
 
-            <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} onTulos={setKumppaniAle}
-              items={items.filter((i) => i.product.type !== "giftcard").map((i) => ({ id: i.product.id, slug: i.product.slug, quantity: i.quantity, size: i.selectedSize, color: i.selectedColor }))} />
+            {/* Kumppanikoodi avattavana (2.11.2026): useimmilla ei ole koodia; auki, jos koodi tuli linkistä. */}
+            <details className="group rounded-md border border-border px-3 py-2" open={!!kumppaniKoodi.trim() || undefined}>
+              <summary className="cursor-pointer text-sm text-muted-foreground">Onko sinulla kumppanikoodi?</summary>
+              <div className="pt-2">
+                <KumppaniKentta arvo={kumppaniKoodi} setArvo={setKumppaniKoodi} onTulos={setKumppaniAle}
+                  items={items.filter((i) => i.product.type !== "giftcard").map((i) => ({ id: i.product.id, slug: i.product.slug, quantity: i.quantity, size: i.selectedSize, color: i.selectedColor }))} />
+              </div>
+            </details>
 
             {!onlyGiftCards && (
               <div className="flex items-start gap-2">
                 <Checkbox id="muistutus" checked={muistutus} onCheckedChange={(v) => setMuistutus(v === true)} className="mt-0.5" />
                 <Label htmlFor="muistutus" className="text-sm font-normal text-muted-foreground leading-snug">
-                  {SUOSTUMUS_MUISTUTUS} Saat enintään kaksi viestiä (tunnin ja vuorokauden kuluttua), ja jokaisessa on peruutuslinkki.{" "}
+                  {SUOSTUMUS_MUISTUTUS} Saat enintään yhden viestin vuorokauden kuluttua, ja siinä on peruutuslinkki.{" "}
                   <Link to="/tietosuojakaytanto" className="underline underline-offset-2">Tietosuojakäytäntö</Link>
                 </Label>
               </div>
@@ -436,8 +445,10 @@ const CheckoutPage = () => {
               </div>
             ))}
           </div>
-          {/* Discount code */}
-          <div className="border-t border-border pt-3 space-y-2">
+          {/* Alennus- ja lahjakorttikoodi avattavana (2.11.2026); auki, jos koodi on jo käytössä. */}
+          <details className="border-t border-border pt-3" open={!!(appliedDiscount || appliedGiftCard || discountCode) || undefined}>
+          <summary className="cursor-pointer text-sm text-muted-foreground">Alennus- tai lahjakorttikoodi</summary>
+          <div className="pt-2 space-y-2">
             {appliedDiscount ? (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-primary font-medium">✅ {appliedDiscount.code}</span>
@@ -484,6 +495,7 @@ const CheckoutPage = () => {
               )}
             </div>
           )}
+          </details>
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
               <span>Tuotteet</span><span>{totalPrice.toFixed(2)} €</span>

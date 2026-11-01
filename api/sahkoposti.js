@@ -22,6 +22,7 @@
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
+ * POST { action: "suppilo", vaihe, ab }                          oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
@@ -220,6 +221,12 @@ export async function kasittele(req, res, store) {
       const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120) });
       await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
+    }
+    case "suppilo": {
+      // Oma ostosuppilo: koostemäärä päivä x vaihe x A/B-versio (api/_lib/suppilo.js), ei tunnisteita.
+      if (onBotti(String(req.headers["user-agent"] || ""))) return res.status(200).json({ ok: false });
+      const { kirjaaVaihe } = await import("./_lib/suppilo.js");
+      return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "") });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.

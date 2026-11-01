@@ -294,7 +294,8 @@ const ESILADATTAVAT: Record<string, { preload: () => Promise<unknown> }> = {
 export function preloadRoute(pathname: string): Promise<void> {
   const polku = pathname.replace(/(.)\/$/, "$1");
   // Blogiartikkelit hydratoidaan esirenderöidystä merkinnästä: sivun chunk ennen hydratointia.
-  const sivu = ESILADATTAVAT[polku] ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost : undefined);
+  // Kategoriasivut samoin (2.11.2026, scripts/prerender.mjs renderAppHydrated).
+  const sivu = ESILADATTAVAT[polku] ?? (/^\/blogi\/[^/]+$/.test(polku) ? BlogPost : /^\/kategoria\/[^/]+$/.test(polku) ? CategoryPage : undefined);
   return sivu ? sivu.preload().then(() => undefined, () => undefined) : Promise.resolve();
 }
 

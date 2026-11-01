@@ -1,6 +1,8 @@
 // GA4 helper: gtag-funktio määritellään index.html:ssä (Consent Mode v2). gtag.js (G-8FJ58JNKGK) ladataan
 // vasta analytiikkasuostumuksen jälkeen, ja tapahtumat lähetetään vain suostumuksella (src/lib/consent.ts).
 import { CONSENT_CHANGED_EVENT, hasAnalyticsConsent } from "./consent";
+// Oma suppilo kirjataan suostumuksesta riippumatta (koostemäärä ilman tunnisteita, src/lib/suppilo.ts).
+import { kirjaaVaihe } from "./suppilo";
 
 type GtagFn = (...args: unknown[]) => void;
 interface GAWindow {
@@ -45,6 +47,7 @@ export interface GAItem {
  * item_id on kaikissa tuotteen slug, jotta vaiheet yhdistyvät samaan tuotteeseen.
  */
 export function trackViewItem(item: GAItem) {
+  kirjaaVaihe("tuotesivu");
   sendEvent("view_item", {
     currency: "EUR",
     value: +item.price.toFixed(2),
@@ -53,6 +56,7 @@ export function trackViewItem(item: GAItem) {
 }
 
 export function trackAddToCart(item: GAItem) {
+  kirjaaVaihe("kori");
   sendEvent("add_to_cart", {
     currency: "EUR",
     value: +(item.price * item.quantity).toFixed(2),
@@ -61,6 +65,7 @@ export function trackAddToCart(item: GAItem) {
 }
 
 export function trackBeginCheckout(items: GAItem[], value: number) {
+  kirjaaVaihe("kassa");
   sendEvent("begin_checkout", {
     currency: "EUR",
     value: +value.toFixed(2),

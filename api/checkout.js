@@ -164,6 +164,14 @@ export default async function handler(req, res) {
         ${laskettu.only_gift_cards ? "ei_tarvita" : "ei_lahetetty"})
       returning *`;
     tilausId = tilaus.id;
+    // Etusivun A/B-testin versio (src/lib/suppilo.ts, vain muistissa): ostot versioittain mittariin (api/_lib/suppilo.js).
+    if (pyynto.abVersio === "a" || pyynto.abVersio === "b") {
+      try {
+        const { varmistaSuppilo } = await import("./_lib/suppilo.js");
+        await varmistaSuppilo(sql());
+        await sql()`update orders set ab_versio = ${pyynto.abVersio} where id = ${tilaus.id}`;
+      } catch (e) { console.error("ab_versio:", e?.message || e); }
+    }
     const origin = req.headers.origin || `https://${req.headers.host}`;
 
     // Lahjakortti kattaa koko summan: ei Stripeä. Veloitus ja maksetuksi merkintä samassa transaktiossa.
