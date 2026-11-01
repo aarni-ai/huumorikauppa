@@ -77,6 +77,56 @@ export function peruTilaus(printifyTilausId) {
   return kutsu(`/orders/${printifyTilausId}/cancel.json`, { method: "POST" });
 }
 
+/** Testitilauksen nimi Printifyssä: aina "TESTI <nimi> (perutaan)", jotta testi erottuu asiakastilauksista. */
+export const testiNimi = (nimi) => `TESTI ${String(nimi || "").replace(/\bTESTI\b/gi, "").trim()} (perutaan)`.replace(/\s+/g, " ");
+
+/**
+ * Testitilaus Printifyyn (1.11.2026): luo tilauksen nimellä "TESTI ... (perutaan)" ilman lähetysilmoitusta, odottaa
+ * käsittelyn (pending -> on-hold) ja perii sen samassa ajossa. Peruutusta yritetään uudelleen ja lopputila tarkistetaan;
+ * peruttu = true vain, kun Printify kertoo tilaksi canceled. Kutsuja hälyttää, jos peruttu on false.
+ * Palauttaa { luotu, id, virhe, ennen (tilaus ennen peruutusta), peruttu, tilaJalkeen }.
+ */
+export async function testitilaus(runko, nimi, { odota = (ms) => new Promise((ok) => setTimeout(ok, ms)) } = {}) {
+  const tunnus = String(runko.external_id || Date.now().toString(36));
+  const r = await luoTilaus({ ...runko, external_id: /^testi-/i.test(tunnus) ? tunnus : `testi-${tunnus}`, label: testiNimi(nimi), send_shipping_notification: false });
+  const id = r.data?.id;
+  if (!r.ok || !id) return { luotu: false, id: null, virhe: r.virhe || `Printify ${r.status}`, ennen: null, peruttu: false, tilaJalkeen: null };
+  let ennen = await haeTilaus(id);
+  // Funktioraja 60 s: käsittelyä odotetaan enintään noin 30 s, peruutusta yritetään 4 kertaa.
+  for (let i = 0; i < 10 && ennen.data?.status === "pending"; i++) {
+    await odota(3000);
+    ennen = await haeTilaus(id);
+  }
+  let tila = null;
+  for (let i = 0; i < 4; i++) {
+    const p = await peruTilaus(id);
+    tila = (await haeTilaus(id)).data?.status ?? (p.ok ? p.data?.status : null);
+    if (tila === "canceled") break;
+    await odota(3000);
+  }
+  return { luotu: true, id, virhe: null, ennen: ennen.data || null, peruttu: tila === "canceled", tilaJalkeen: tila };
+}
+
+/** Testitilaus tunnistetaan nimestä (sana TESTI) tai testiosoitteesta kassatesti@huumorikauppa.fi. */
+export const onTestitilaus = (o) => /\bTESTI/i.test(`${o?.label || ""} ${o?.metadata?.shop_order_label || ""}`)
+  || String(o?.address_to?.email || "").toLowerCase() === "kassatesti@huumorikauppa.fi";
+
+/**
+ * Varmistus: perii uusimmista 50 Printify-tilauksesta testitilaukset, jotka ovat yhä pending- tai on-hold-tilassa
+ * (esimerkiksi jos testiajo katkesi funktiorajaan). Tuotannossa olevia tai valmiita tilauksia ei kosketa.
+ * Palauttaa { peruttu: [id], jai: [id] } tai { virhe }.
+ */
+export async function siivoaTestitilaukset() {
+  const r = await listaaTilaukset(1, 50);
+  if (!r.ok) return { virhe: r.virhe, peruttu: [], jai: [] };
+  const peruttu = [], jai = [];
+  for (const o of (r.data?.data || []).filter((o) => onTestitilaus(o) && ["pending", "on-hold"].includes(o.status))) {
+    await peruTilaus(o.id);
+    ((await haeTilaus(o.id)).data?.status === "canceled" ? peruttu : jai).push(o.id);
+  }
+  return { peruttu, jai };
+}
+
 /** Personoidun rivin painokuvan osoite: allekirjoitettu { malli, nimi, ika, vari } (api/painokuva.js). */
 export function painokuvaUrl(rivi, tilausId = "", n = 0) {
   const pers = jasennaPersonointi(rivi.custom_text);

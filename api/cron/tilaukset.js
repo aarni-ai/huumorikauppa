@@ -41,7 +41,7 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, kasitteleLasku, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
-import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
+import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, testitilaus, siivoaTestitilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
 import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
 import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
@@ -69,6 +69,25 @@ import { join } from "node:path";
 // Vercelin funktioraja 60 s: valinnaiset vaiheet (3b, 4) jäävät seuraavaan ajoon, jos aikaa on kulunut yli tämän.
 const AIKARAJA_MS = 40000;
 
+/**
+ * Testitilaus Printifyyn (logotesti, personointitesti, kayttoonottotesti): ensin aiempien ajojen perumattomat
+ * testitilaukset perutaan, sitten tilaus luodaan nimellä "TESTI ... (perutaan)" ja perutaan samassa ajossa
+ * (api/_lib/printify.js testitilaus). Jos peruutus ei varmistu, omistajalle lähtee hälytys heti.
+ */
+async function ajaTestitilaus(runko, nimi) {
+  const siivous = await siivoaTestitilaukset();
+  const r = await testitilaus(runko, nimi);
+  const o = r.ennen;
+  const tulos = { id: r.id, nimi: o?.metadata?.shop_order_label || o?.label || null, luotu: r.luotu, virhe: r.virhe, tila: o?.status ?? null,
+    kulut: o ? { tuote: o.total_price / 100, toimitus: o.total_shipping / 100 } : null,
+    rivit: (o?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, kpl: l.quantity, kulu: l.cost / 100 })),
+    peruttu: r.peruttu, tilaJalkeen: r.tilaJalkeen, aiemmatPerutut: siivous.peruttu, ennen: o };
+  if (r.luotu && !r.peruttu) {
+    await halytys(`Printify-testitilaus jäi perumatta (${nimi})`, [`Printify-tilaus ${r.id}, tila ${r.tilaJalkeen || "?"}`, "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
+  }
+  return tulos;
+}
+
 export default async function handler(req, res) {
   if (!process.env.CRON_SECRET || req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) return res.status(401).json({ error: "ei oikeutta" });
   if (!onTietokanta()) return res.status(503).json({ error: "DATABASE_URL puuttuu" });
@@ -79,8 +98,11 @@ export default async function handler(req, res) {
   const aikaa = () => Date.now() - alku < AIKARAJA_MS;
 
   if (req.query.tehtava === "yhteenveto") {
+    // Varmistus päivittäin: yksikään testitilaus ei jää Printifyyn pending- tai on-hold-tilaan.
+    const testit = onPrintify() && !kuiva ? await siivoaTestitilaukset() : null;
+    if (testit?.jai?.length) await halytys("Printify-testitilaus jäi perumatta", [...testit.jai.map((id) => `Printify-tilaus ${id}`), "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
     const r = await ajaYhteenveto(pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}), { laheta, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva });
-    return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [] });
+    return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [], testitilaukset: testit });
   }
 
   if (req.query.tehtava === "saatavuus") {
@@ -355,19 +377,8 @@ export default async function handler(req, res) {
     const kuvaVastaus = await fetch(kuva).then((r) => ({ status: r.status, tyyppi: r.headers.get("content-type"), koko: Number(r.headers.get("content-length")) || null })).catch((e) => ({ virhe: String(e) }));
     const summa = { total: laskettu.total, alennus: laskettu.discount + laskettu.basket_discount, rivit: laskettu.rivit.map((r) => ({ koko: r.size, kpl: r.quantity, hinta: r.unit_cents / 100 })) };
     if (kuiva || !onPrintify() || kuvaVastaus.status !== 200) return res.status(200).json({ ok: kuvaVastaus.status === 200, kuiva, summa, rivi: runko.line_items[0], kuvaVastaus });
-    const luotu = await luoTilaus(runko);
-    const id = luotu.data?.id;
-    let tila = id ? await haeTilaus(id) : null;
-    for (let k = 0; id && k < 8 && tila?.data?.status === "pending"; k++) {
-      await new Promise((r) => setTimeout(r, 3000));
-      tila = await haeTilaus(id);
-    }
-    let peruttu = id ? await peruTilaus(id) : null;
-    if (id && !peruttu?.ok) { await new Promise((r) => setTimeout(r, 5000)); peruttu = await peruTilaus(id); }
-    return res.status(200).json({ ok: !!luotu.ok, kuvaVastaus, summa, printify: { id, luotu: luotu.ok, virhe: luotu.virhe ?? null,
-      tila: tila?.data?.status ?? null, kulut: tila?.data ? { tuote: tila.data.total_price / 100, toimitus: tila.data.total_shipping / 100 } : null,
-      rivit: (tila?.data?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, kpl: l.quantity, tila: l.status, kulu: l.cost / 100 })),
-      peruttu: peruttu?.ok ?? false, peruttuTila: peruttu?.data?.status ?? null } });
+    const { ennen, ...t } = await ajaTestitilaus(runko, "Oma logo");
+    return res.status(200).json({ ok: t.luotu && t.peruttu, kuvaVastaus, summa, printify: t });
   }
 
   // Personoidun t-paidan polkutesti: kassan laskenta (laskeTilaus) ja tilausrunko testiosoitteella, painokuvan haku ja
@@ -386,20 +397,8 @@ export default async function handler(req, res) {
     const kuva = runko.line_items[0].print_areas.front;
     const kuvaVastaus = await fetch(kuva).then((r) => ({ status: r.status, tyyppi: r.headers.get("content-type"), koko: Number(r.headers.get("content-length")) || null })).catch((e) => ({ virhe: String(e) }));
     if (kuiva || !onPrintify()) return res.status(200).json({ ok: true, kuiva, laskettu: { total: laskettu.total, rivit: laskettu.rivit }, rivi: runko.line_items[0], kuvaVastaus });
-    const luotu = await luoTilaus(runko);
-    const id = luotu.data?.id;
-    // Printify käsittelee painokuvan ensin (pending); peruutus onnistuu vasta, kun tila on on-hold.
-    let tila = id ? await haeTilaus(id) : null;
-    for (let k = 0; id && k < 8 && tila?.data?.status === "pending"; k++) {
-      await new Promise((r) => setTimeout(r, 3000));
-      tila = await haeTilaus(id);
-    }
-    let peruttu = id ? await peruTilaus(id) : null;
-    if (id && !peruttu?.ok) { await new Promise((r) => setTimeout(r, 5000)); peruttu = await peruTilaus(id); }
-    return res.status(200).json({ ok: !!luotu.ok, kuvaVastaus, total: laskettu.total, printify: { id, luotu: luotu.ok, virhe: luotu.virhe ?? null,
-      tila: tila?.data?.status ?? null, kulut: tila?.data ? { tuote: tila.data.total_price / 100, toimitus: tila.data.total_shipping / 100 } : null,
-      rivit: (tila?.data?.line_items || []).map((l) => ({ pp: l.print_provider_id, blueprint: l.blueprint_id, variantti: l.variant_id, tila: l.status, kulu: l.cost / 100 })),
-      peruttu: peruttu?.ok ?? false, peruttuTila: peruttu?.data?.status ?? null } });
+    const { ennen, ...t } = await ajaTestitilaus(runko, "Personointi");
+    return res.status(200).json({ ok: t.luotu && t.peruttu, kuvaVastaus, total: laskettu.total, printify: t });
   }
 
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.
@@ -461,27 +460,10 @@ export default async function handler(req, res) {
     }
     const t = tilaukset[0];
     if (onPrintify() && !kuiva) {
-      const r = await luoTilaus({ ...tilausRunko(t), external_id: `${t.id}-testi`, label: "KAYTTOONOTTOTESTI (perutaan)", send_shipping_notification: false });
-      if (!r.ok || !r.data?.id) tulos.printify = { luotu: false, virhe: r.virhe || r.status };
-      else {
-        const id = r.data.id;
-        // Printify laskee uutta tilausta hetken (pending), eikä sitä voi perua ennen tilaa on-hold.
-        let h = await haeTilaus(id);
-        for (let i = 0; i < 10 && h.ok && h.data?.status === "pending"; i++) {
-          await new Promise((ok) => setTimeout(ok, 2000));
-          h = await haeTilaus(id);
-        }
-        const v = h.ok ? await tarkistaEnnenTuotantoa(h.data, t, { haePainotalo }) : null;
-        let p = await peruTilaus(id);
-        for (let i = 0; i < 3 && !p.ok; i++) {
-          await new Promise((ok) => setTimeout(ok, 3000));
-          p = await peruTilaus(id);
-        }
-        if (!p.ok) await halytys("Käyttöönottotestin Printify-tilaus jäi perumatta", [`Printify-tilaus ${id}`, "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
-        const j = await haeTilaus(id);
-        tulos.printify = { luotu: true, id, tila_ennen: h.data?.status, painotalot: v?.rivit.map((x) => `${x.nimi} (${x.maa || "?"}) EU ${x.eu}`),
-          tilausvahti: v?.tulos, kulu_ilman_alv: v?.kulut?.kuluIlmanAlv ?? null, peruutus: p.ok ? "ok" : p.virhe || p.status, tila_jalkeen: j.data?.status };
-      }
+      const { ennen, ...r } = await ajaTestitilaus(tilausRunko(t), "Käyttöönotto");
+      const v = ennen ? await tarkistaEnnenTuotantoa(ennen, t, { haePainotalo }) : null;
+      tulos.printify = { ...r, painotalot: v?.rivit.map((x) => `${x.nimi} (${x.maa || "?"}) EU ${x.eu}`),
+        tilausvahti: v?.tulos, kulu_ilman_alv: v?.kulut?.kuluIlmanAlv ?? null };
     }
     if (!kuiva) {
       const v = vahvistusViesti(t);

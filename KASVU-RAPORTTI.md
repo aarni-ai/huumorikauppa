@@ -26,6 +26,33 @@ kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päiv
 - GitHub Actions: tuntivalvonta, viikoittainen linkki- ja sivukarttatarkistus, viikoittainen katetarkistus,
   päivittäinen saatavuustarkistus. EU-painotalosiirron skripti (ei ajettu).
 
+## 1.11.2026: Printify-testitilausten tarkistus ja pysyvä peruutuskäytäntö
+
+**Tilaus #26630629.38 "TESTI-MV" (Kassa Testi):** oli Oma logo -paidan polkutesti 31.10. klo 21.18 UTC (10 paitaa, Printifyn kulu 89,00 € + toimitus 19,20 €). Se oli jo peruttu samassa ajossa, Printifyn tila canceled, kaikki rivit canceled. Stripessä ei ole maksua, koska testi luodaan suoraan Printifyyn ilman kassaa.
+
+**Kaikki Printify-tilaukset 26.10. alkaen (13 kpl, tarkistettu API:sta 1.11.):**
+
+| Tilaus | Nimi | Tila |
+|---|---|---|
+| .39 | TESTI Oma logo (perutaan) | canceled (uuden käytännön tarkistusajo 1.11.) |
+| .38 | Huumorikauppa #TESTI-MV | canceled |
+| .37 | Huumorikauppa #TESTI-MV | canceled |
+| .36 | asiakastilaus | in-production |
+| .29 to .35 (7 kpl) | KAYTTOONOTTOTESTI (perutaan) | canceled |
+| .28 | asiakastilaus | fulfilled |
+| .27 | asiakastilaus | fulfilled |
+
+Kaikki 10 testitilausta on peruttu. Yksikään tilaus ei ole On hold -tilassa.
+
+**Uusi käytäntö koodissa (api/_lib/printify.js, api/cron/tilaukset.js):**
+- Kaikki testit (logotesti, personointitesti, kayttoonottotesti) käyttävät yhteistä funktiota `testitilaus`.
+- Tilauksen nimi Printifyssä on aina "TESTI <testi> (perutaan)" ja external_id alkaa "testi-". Lähetysilmoitus on pois.
+- Tilaus perutaan samassa ajossa: käsittelyä odotetaan noin 30 s, peruutusta yritetään 4 kertaa, ja onnistuminen hyväksytään vain, kun Printify palauttaa tilaksi canceled. Jos peruutus ei varmistu, omistajalle lähtee hälytys heti.
+- Ennen jokaista uutta testiä aiempien ajojen perumattomat testitilaukset perutaan (`siivoaTestitilaukset`). Testitilaus tunnistetaan sanasta TESTI nimessä tai osoitteesta kassatesti@huumorikauppa.fi. Vain pending- ja on-hold-tilaiset perutaan, tuotannossa oleviin ei kosketa.
+- Päivittäinen yhteenvetoajo tekee saman siivouksen ja hälyttää, jos jokin testitilaus jää perumatta.
+- Testit: src/test/testitilaus.test.ts (3 testiä). Kaikki 1515 testiä menevät läpi.
+- Tarkistusajo tuotannossa: tilaus .39 luotiin nimellä "TESTI Oma logo (perutaan)" ja peruttiin samassa ajossa, tila canceled. Kolme User-Agentia: 200.
+
 ## 1.11.2026: Oma logo -paita yrityksille, Erämaankeisarit (malli 2), 5 yritysopasta
 
 - **Oma logo tai teksti** (/yritykset, osio "Oma logo tai teksti"; /yritykset/tilaus; tarjouspyyntö):
