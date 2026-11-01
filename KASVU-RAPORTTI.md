@@ -2075,3 +2075,24 @@ chatgpt 1); konversio laskelmassa 0,58 %; tarve 10,5 tilausta ja 1 813 käyntiä
 
 Testit 1546 läpi. Kolmen User-Agentin tarkistus (Chrome, iPhone Safari, Googlebot): /, /lahjakortti, /isanpaivalahja,
 /tuote/50-vuotta-nuori-t-paita, /tilaus-vahvistettu, /hallinta/mittarit, /api/product-feed kaikki 200.
+
+## 2.11.2026: hallintalinkit Coworkille ja pysyvä kirjautuminen (eväste 90 pv)
+
+- Cowork näki "Ei pääsyä", koska sivut vaativat avaimen osoitteessa joka kerta. Nyt ensimmäinen avaus avaimellisella
+  linkillä tallentaa avaimen evästeeseen `hk_hallinta_<sivu>` (HttpOnly, Secure, SameSite=Lax, 90 päivää), ja avain
+  poistuu osoiteriviltä. Sivut /hallinta/mittarit, /hallinta/some ja /hallinta/tarjoukset sekä lomakkeet ja
+  kirjausrajapinta (yritysluvut, mainoskulut, tarjoustila) hyväksyvät evästeen. Vastaukset `Cache-Control: private, no-store`.
+- Tarkistettu tuotannossa (huumorikauppa.fi, välityksen läpi): avaimella 200 ja eväste, evästeellä 200, ilman avainta
+  ja väärällä evästeellä 404; lomake evästeellä pääsee tarkistukseen, ilman 404. Headless Chrome tyhjällä profiililla:
+  mittarit ja some aukeavat avaimellisella linkillä, sama profiili ilman avainta aukeaa, toinen profiili ilman avainta
+  näyttää "Ei pääsyä".
+- Viesti "Hallintalinkit Coworkille" (cron `?tehtava=hallintalinkit-viesti`, api/_lib/hallinta.js): avaimelliset
+  linkit kolmelle sivulle ja ohje mittarilomakkeisiin ja kirjausrajapintaan. Lähetetty 2.11. heti. Suora lähetys
+  huumorikauppa@gmail.comiin ja yhteenvedon reitti (OMISTAJA_EMAIL) kaatuivat: huumorikauppa.fi-domainia ei ole
+  vahvistettu Resendissä. Resendin testilähettäjä hyväksyi viestin Resend-tilin omaan osoitteeseen flyapeg@gmail.com
+  (otsikkoon lisätään "(huumorikauppa@gmail.com, kunnes domain vahvistetaan)"). Avaimia ei tallennettu repoon,
+  Driveen eikä keskusteluun.
+- **Korjattu samalla:** päivän yhteenveto käytti suoraa lähetystä ilman varareittiä, joten se kaatui samaan
+  domainivirheeseen. Nyt se käyttää samaa varareittiä kuin hälytykset (lahetaVarareitilla).
+- Päivän yhteenvedossa jatkossa linkit mittariin, someen ja tarjouspyyntöihin sekä muistutus evästeestä.
+- Huumorikauppa@gmail.com saa viestit suoraan vasta, kun domain on vahvistettu Resendissä (DNS, KAYTTOONOTTO.md kohta 5).

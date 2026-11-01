@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { poistaAvainOsoitteesta } from "@/lib/hallinta";
 
 type Lahde = { nimi: string; kaynnit: number; osuus: number };
 type Kaynnit = { yhteensa: number; paivia: number; ensimmainen: string | null; lahteet: Lahde[]; osiot: Lahde[] };
@@ -118,10 +119,9 @@ const MetricsAdminPage = () => {
   const [m, setM] = useState<Mittarit | null>(null);
   const [virhe, setVirhe] = useState(false);
   const lataa = useCallback(() => {
-    if (!avain) { setVirhe(true); return; }
-    fetch(`/api/sahkoposti?mittarit=${encodeURIComponent(avain)}`)
+    fetch(`/api/sahkoposti?mittarit=${encodeURIComponent(avain)}`, { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j) => (j?.ok ? setM(j) : setVirhe(true)))
+      .then((j) => { if (j?.ok) { setM(j); poistaAvainOsoitteesta(); } else setVirhe(true); })
       .catch(() => setVirhe(true));
   }, [avain]);
   useEffect(() => { lataa(); }, [lataa]);

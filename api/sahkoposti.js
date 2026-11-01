@@ -36,6 +36,28 @@ import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopa
 import { kaynninLahde, sivunOsio, onBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
 import { lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
 
+/**
+ * Hallintasivujen pääsy (2.11.2026): allekirjoitettu avain pyynnöstä (?mittarit=, body.avain) tai evästeestä
+ * hk_hallinta_<sivu>. Kelvollinen pyynnön avain tallennetaan evästeeseen 90 päiväksi (HttpOnly, Secure, SameSite=Lax),
+ * joten Coworkin Chrome pysyy sisällä avaamatta avaimellista linkkiä uudelleen. Ilman kelvollista avainta 404.
+ */
+const HALLINTA_EVASTE_IKA = 90 * 24 * 60 * 60;
+function lueEvaste(req, nimi) {
+  const pari = String(req.headers?.cookie || "").split(/;\s*/).find((c) => c.startsWith(`${nimi}=`));
+  try { return pari ? decodeURIComponent(pari.slice(nimi.length + 1)) : ""; } catch { return ""; }
+}
+export function hallintaPaasy(req, res, sivu, annettu) {
+  const nimi = `hk_hallinta_${sivu}`;
+  res.setHeader("Cache-Control", "private, no-store");
+  if (annettu && tarkistaTunniste(annettu, "hallinta") === sivu) {
+    const vanhat = [].concat(res.getHeader?.("Set-Cookie") || []);
+    res.setHeader("Set-Cookie", [...vanhat, `${nimi}=${encodeURIComponent(annettu)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
+    return true;
+  }
+  const evaste = lueEvaste(req, nimi);
+  return !!evaste && tarkistaTunniste(evaste, "hallinta") === sivu;
+}
+
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
 export async function kasittele(req, res, store) {
@@ -102,13 +124,13 @@ export async function kasittele(req, res, store) {
   }
   // Hallinta: tarjouspyynnöt (allekirjoitettu avain, tarkoitus "hallinta"; linkki cron ?tehtava=hallinta-linkki).
   if (req.method === "GET" && typeof q.tarjoukset === "string") {
-    if (tarkistaTunniste(q.tarjoukset, "hallinta") !== "tarjoukset") return res.status(404).json({ ok: false });
+    if (!hallintaPaasy(req, res, "tarjoukset", q.tarjoukset)) return res.status(404).json({ ok: false });
     const rivit = await store.tarjouspyynnot().catch(() => []);
     return res.status(200).json({ ok: true, tarjoukset: rivit });
   }
   // Hallinta: tavoitemittari (allekirjoitettu avain "hallinta" / "mittarit", linkki cron ?tehtava=hallinta-linkki).
   if (req.method === "GET" && typeof q.mittarit === "string") {
-    if (tarkistaTunniste(q.mittarit, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+    if (!hallintaPaasy(req, res, "mittarit", q.mittarit)) return res.status(404).json({ ok: false });
     const [{ keraaMittarit }, { pgValvonta }, { kaikkiTuotteet }] = await Promise.all([
       import("./_lib/mittarit.js"), import("./_lib/valvonta.js"), import("./_lib/tuotteet.js")]);
     const db = sql();
@@ -117,7 +139,7 @@ export async function kasittele(req, res, store) {
   }
   // Hallinta: somevideot ja Pinterest-kuvat Coworkille (Vercel Blob some/manifest.json, scripts/some-blob.mjs).
   if (req.method === "GET" && typeof q.some === "string") {
-    if (tarkistaTunniste(q.some, "hallinta") !== "some") return res.status(404).json({ ok: false });
+    if (!hallintaPaasy(req, res, "some", q.some)) return res.status(404).json({ ok: false });
     const kauppa = (process.env.BLOB_READ_WRITE_TOKEN || "").split("_")[3];
     if (!kauppa) return res.status(503).json({ ok: false, error: "Blob-varasto puuttuu" });
     const r = await fetch(`https://${kauppa.toLowerCase()}.public.blob.vercel-storage.com/some/manifest.json`, { cache: "no-store" }).catch(() => null);
@@ -182,7 +204,7 @@ export async function kasittele(req, res, store) {
       return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at });
     }
     case "tarjoustila": {
-      if (tarkistaTunniste(body.avain, "hallinta") !== "tarjoukset") return res.status(404).json({ ok: false });
+      if (!hallintaPaasy(req, res, "tarjoukset", body.avain)) return res.status(404).json({ ok: false });
       const tila = ["uusi", "vastattu", "tilattu", "hylatty"].includes(body.tila) ? body.tila : null;
       if (!tila || !Number.isInteger(Number(body.id))) return res.status(400).json({ ok: false });
       const r = await store.asetaTarjousTila(Number(body.id), tila);
@@ -197,7 +219,7 @@ export async function kasittele(req, res, store) {
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.
-      if (tarkistaTunniste(body.avain, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+      if (!hallintaPaasy(req, res, "mittarit", body.avain)) return res.status(404).json({ ok: false });
       const { tarkistaYritysluvut, tallennaYritysluvut } = await import("./_lib/yritysluvut.js");
       const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
       const t = tarkistaYritysluvut(body, tanaan);
@@ -207,7 +229,7 @@ export async function kasittele(req, res, store) {
     }
     case "mainoskulut": {
       // Mainoskulut mittariin (api/_lib/mainoskulut.js); avain = mittarisivun avain.
-      if (tarkistaTunniste(body.avain, "hallinta") !== "mittarit") return res.status(404).json({ ok: false });
+      if (!hallintaPaasy(req, res, "mittarit", body.avain)) return res.status(404).json({ ok: false });
       const { tarkistaMainoskulut, tallennaMainoskulut } = await import("./_lib/mainoskulut.js");
       const tanaan = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
       const t = tarkistaMainoskulut(body, tanaan);

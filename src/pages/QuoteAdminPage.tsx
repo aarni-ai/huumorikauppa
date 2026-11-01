@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { poistaAvainOsoitteesta } from "@/lib/hallinta";
 import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
@@ -24,12 +25,12 @@ const QuoteAdminPage = () => {
   const [virhe, setVirhe] = useState(false);
 
   const lataa = useCallback(() => {
-    fetch(`/api/sahkoposti?tarjoukset=${encodeURIComponent(avain)}`)
+    fetch(`/api/sahkoposti?tarjoukset=${encodeURIComponent(avain)}`, { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j) => (j?.ok ? setRivit(j.tarjoukset) : setVirhe(true)))
+      .then((j) => { if (j?.ok) { setRivit(j.tarjoukset); poistaAvainOsoitteesta(); } else setVirhe(true); })
       .catch(() => setVirhe(true));
   }, [avain]);
-  useEffect(() => { if (avain) lataa(); else setVirhe(true); }, [avain, lataa]);
+  useEffect(() => { lataa(); }, [lataa]);
 
   const asetaTila = async (id: number, tila: string) => {
     await fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "tarjoustila", avain, id, tila }) });

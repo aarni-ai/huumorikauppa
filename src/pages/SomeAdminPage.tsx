@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Copy, Download, Loader2 } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { poistaAvainOsoitteesta } from "@/lib/hallinta";
 
 type Video = {
   nro: string; nimi: string; muoto: string; paiva: string; paivaFi: string; aika: string; hook: string; kuvateksti: string; tagit: string[];
@@ -35,8 +36,7 @@ const SomeAdminPage = () => {
   const [tanaan, setTanaan] = useState("");
   useEffect(() => {
     setTanaan(new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date()));
-    if (!avain) { setVirhe(true); return; }
-    fetch(`/api/sahkoposti?some=${encodeURIComponent(avain)}`).then((r) => (r.ok ? r.json() : null)).then((j) => (j?.ok ? setM(j) : setVirhe(true))).catch(() => setVirhe(true));
+    fetch(`/api/sahkoposti?some=${encodeURIComponent(avain)}`, { credentials: "same-origin" }).then((r) => (r.ok ? r.json() : null)).then((j) => { if (j?.ok) { setM(j); poistaAvainOsoitteesta(); } else setVirhe(true); }).catch(() => setVirhe(true));
   }, [avain]);
 
   return (

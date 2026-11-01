@@ -102,15 +102,17 @@ export default async function handler(req, res) {
     const testit = onPrintify() && !kuiva ? await siivoaTestitilaukset() : null;
     if (testit?.jai?.length) await halytys("Printify-testitilaus jäi perumatta", [...testit.jai.map((id) => `Printify-tilaus ${id}`), "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
     const store = pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {});
-    // Tavoitemittari viestin loppuun ja linkki /hallinta/mittarit-sivulle (api/_lib/mittarit.js).
+    // Tavoitemittari viestin loppuun ja avaimelliset hallintalinkit (mittarit, some, tarjoukset; api/_lib/hallinta.js).
     const lisarivit = async () => {
       const { keraaMittarit, mittaririvit } = await import("../_lib/mittarit.js");
-      const { allekirjoita } = await import("../_lib/markkinointi.js");
-      const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
-      return mittaririvit(await keraaMittarit(db, store, { kuiva }), `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}`,
-        `${pohja}/hallinta/some?avain=${encodeURIComponent(allekirjoita("hallinta", "some"))}`);
+      const { hallintaLinkit, yhteenvetoRivit } = await import("../_lib/hallinta.js");
+      const linkit = hallintaLinkit();
+      return [...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...yhteenvetoRivit(linkit)];
     };
-    const r = await ajaYhteenveto(store, { laheta, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva, lisarivit });
+    // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
+    // yhteenveto kaatui "domain is not verified" -virheeseen).
+    const { lahetaVarareitilla } = await import("../_lib/sahkoposti.js");
+    const r = await ajaYhteenveto(store, { laheta: lahetaVarareitilla, vastaanottaja: OMISTAJA(), pakota: req.query.pakota === "1", kuiva, lisarivit });
     return res.status(200).json({ ok: true, kuiva, lahetetty: r.lahetetty, syy: r.syy ?? null, rivit: r.sisalto?.rivit ?? [], testitilaukset: testit });
   }
 
@@ -203,12 +205,32 @@ export default async function handler(req, res) {
   }
 
   // Hallintalinkki /hallinta/tarjoukset (allekirjoitettu avain, ei tallenneta). Annetaan Aarnille ja Coworkille.
+  // Hallintalinkit Coworkille sähköpostilla heti (api/_lib/hallinta.js). Vastaanottaja huumorikauppa@gmail.com (tai &to=);
+  // jos se ei onnistu, päivän yhteenvedon reitti (OMISTAJA_EMAIL) ja lopuksi Resendin testilähettäjä. Linkkejä ei
+  // palauteta vastauksessa.
+  if (req.query.tehtava === "hallintalinkit-viesti") {
+    const { hallintaLinkit, hallintalinkkiViesti } = await import("../_lib/hallinta.js");
+    const { lahetaVarareitilla } = await import("../_lib/sahkoposti.js");
+    const viesti = hallintalinkkiViesti(hallintaLinkit());
+    const to = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.query.to || "") ? req.query.to : "huumorikauppa@gmail.com";
+    const yritykset = [];
+    let r = await laheta({ ...viesti, to });
+    yritykset.push({ reitti: "suora", to, ok: r.ok, virhe: r.virhe?.slice(0, 160) });
+    if (!r.ok && to !== OMISTAJA()) {
+      r = await laheta({ ...viesti, to: OMISTAJA() });
+      yritykset.push({ reitti: "yhteenvedon reitti", to: OMISTAJA(), ok: r.ok, virhe: r.virhe?.slice(0, 160) });
+    }
+    if (!r.ok) {
+      r = await lahetaVarareitilla({ ...viesti, to });
+      yritykset.push({ reitti: "testilähettäjä", to: r.vastaanottaja || to, ok: r.ok, virhe: r.virhe?.slice(0, 160) });
+    }
+    return res.status(200).json({ ok: r.ok, otsikko: viesti.subject, yritykset });
+  }
+
   if (req.query.tehtava === "hallinta-linkki") {
-    const { allekirjoita } = await import("../_lib/markkinointi.js");
-    const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
-    return res.status(200).json({ ok: true, linkki: `${pohja}/hallinta/tarjoukset?avain=${encodeURIComponent(allekirjoita("hallinta", "tarjoukset"))}`,
-      mittarit: `${pohja}/hallinta/mittarit?avain=${encodeURIComponent(allekirjoita("hallinta", "mittarit"))}`,
-      some: `${pohja}/hallinta/some?avain=${encodeURIComponent(allekirjoita("hallinta", "some"))}` });
+    const { hallintaLinkit } = await import("../_lib/hallinta.js");
+    const l = hallintaLinkit();
+    return res.status(200).json({ ok: true, linkki: l.tarjoukset, mittarit: l.mittarit, some: l.some });
   }
 
   // Lahjakorttipolun testi (1.11.2026, scripts/lahjakorttitesti.mjs). vaihe=luo: maksettu testitilaus (TESTI,

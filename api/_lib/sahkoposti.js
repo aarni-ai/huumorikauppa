@@ -144,16 +144,23 @@ export async function halytys(otsikko, rivit) {
     html: kehys(`<h3>${esc(otsikko)}</h3><ul>${rivit.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>`),
     text: `${otsikko}\n${rivit.join("\n")}`,
   };
+  return lahetaVarareitilla(viesti);
+}
+
+/**
+ * Omistajan viestien reitti: ensin tavallisesti; ennen kuin huumorikauppa.fi on vahvistettu Resendissä (DNS), Resendin
+ * testilähettäjältä (toimii vain Resend-tilin omaan osoitteeseen; muuten virhe palautetaan). Palauttaa
+ * { ok, vastaanottaja, virhe }.
+ */
+export async function lahetaVarareitilla(viesti) {
   const r = await laheta(viesti);
-  // Ennen kuin huumorikauppa.fi on vahvistettu Resendissä (DNS), omistajan viestit Resendin testilähettäjältä
-  // (toimii vain Resend-tilin omaan osoitteeseen; muuten virhe kirjataan kuten ennen).
   if (!r.ok && /domain is not verified/i.test(r.virhe || "")) {
     const from = "Huumorikauppa <onboarding@resend.dev>";
     let varalla = await laheta({ ...viesti, from });
     // Testilähettäjä toimii vain Resend-tilin omaan osoitteeseen, jonka Resend kertoo virheessä.
     const oma = /own email address \(([^)\s]+@[^)\s]+)\)/.exec(varalla.virhe || "")?.[1];
-    if (!varalla.ok && oma) varalla = await laheta({ ...viesti, from, to: oma, subject: `${viesti.subject} (huumorikauppa@gmail.com, kunnes domain vahvistetaan)` });
+    if (!varalla.ok && oma) varalla = await laheta({ ...viesti, from, to: oma, subject: `${viesti.subject} (${[].concat(viesti.to).join(", ")}, kunnes domain vahvistetaan)` });
     return varalla.ok ? { ...varalla, vastaanottaja: oma || viesti.to } : { ok: false, virhe: `${r.virhe}; testilähettäjä: ${varalla.virhe}` };
   }
-  return r;
+  return { ...r, vastaanottaja: viesti.to };
 }
