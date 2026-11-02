@@ -35,6 +35,7 @@ import { AIHE_MENU, CHRISTMAS_MENU } from "@/data/landingRoutes";
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { ryhmatilausPage } from "@/data/ryhmatilausPage";
 import { RYHMA_SIVUT, RYHMA_POLUT, RYHMA_PORTAAT } from "@/data/ryhmapaidat";
+import { ABIKAUPUNKI_SIVUT, ABIKAUPUNKI_LINKIT, ABI_PAASIVU, ABI_TYOKALU } from "@/data/abikaupungit";
 import { kategoriaPolku, onKategoriasivu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
@@ -679,6 +680,26 @@ export function buildBusinessVerticalPages(products: Product[]): PrerenderPage[]
   });
 }
 
+/** /abipaidat/<kaupunki> (3.11.2026, src/data/abikaupungit): sama sisältö kuin src/pages/AbiKaupunkiPage.tsx. */
+export function buildAbiKaupunkiPages(): PrerenderPage[] {
+  return ABIKAUPUNKI_SIVUT.map((s) => ({
+    path: s.path,
+    title: s.title,
+    description: s.description,
+    h1: s.h1,
+    breadcrumbs: [HOME, crumb("Abipaidat", ABI_PAASIVU.href), crumb(s.kaupunki, s.path)],
+    intro: s.intro,
+    sections: [
+      { heading: "Suunnittele abipaita", links: [ABI_TYOKALU] },
+      ...s.osiot.map((o) => ({ heading: o.otsikko, paragraphs: o.teksti })),
+      { heading: s.yhteinen.heading, paragraphs: s.yhteinen.paragraphs },
+      { heading: "Abipaidat lähikaupungeissa", links: [...s.lahellaLinkit, ABI_PAASIVU] },
+    ],
+    faqs: s.faqs,
+    jsonLd: [buildFaqJsonLd(s.faqs)],
+  }));
+}
+
 /** /ryhmatilaukset: sama sisältö ja samat esimerkkituotteet kuin src/pages/GroupOrderPage.tsx. */
 export function buildGroupOrderPage(products: Product[]): PrerenderPage {
   const page = ryhmatilausPage;
@@ -814,12 +835,14 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
         sections: [
           { heading: "Hinta paitamäärän mukaan", items: RYHMA_PORTAAT.map((p) => `${p.teksti}: ${p.hintaTeksti} (3XL-5XL ${p.isoTeksti})`) },
           ...s.sections.map((x) => ({ heading: x.heading, paragraphs: x.paragraphs, items: x.items })),
+          ...(polku === "/abipaidat" ? [{ heading: "Abipaidat kaupungeittain", links: ABIKAUPUNKI_LINKIT }] : []),
           { heading: "Muut ryhmäpaidat", links: [...RYHMA_POLUT.filter((p) => p !== polku).map((p) => ({ href: p, label: RYHMA_SIVUT[p].name })), { href: "/ryhmatilaukset", label: "Ryhmätilaukset" }] },
         ],
         faqs: s.faqs,
         jsonLd: [buildFaqJsonLd(s.faqs)],
       });
     }),
+    ...buildAbiKaupunkiPages(),
     buildBusinessPage(products),
     ...buildBusinessVerticalPages(products),
     staticPage("/kumppanit", {
