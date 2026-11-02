@@ -7,6 +7,7 @@
  * Kate: Printifyn todellinen kulu, kun se tiedetään, muuten arvio tuotteen kulusta (api/_lib/valvonta.js toteutuneet),
  * josta vähennetään kumppaniprovisiot. Testitilaukset (kassatesti@huumorikauppa.fi) eivät ole mukana.
  */
+import { lisamyyntiValilla, lisamyyntiRivi } from "./lisamyynti.js";
 import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilauksenKate } from "./valvonta.js";
 import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
 import { kaynnitValilla } from "./kaynnit.js";
@@ -176,6 +177,10 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     suppilo = await suppiloValilla(db, alku14, h.paiva, Object.fromEntries(kayPv.map((r) => [r.paiva, r.n])));
   } catch { /* taulua ei vielä ole */ }
 
+  // Korin lisämyynti 14 pv (api/_lib/lisamyynti.js, 2.11.2026).
+  let lisamyynti = null;
+  try { lisamyynti = await lisamyyntiValilla(db, lisaaPaiva(h.paiva, -13), h.paiva); } catch { /* taulua ei vielä ole */ }
+
   // Kumppanien myynti tässä kuussa.
   const kumppanit = new Map();
   for (const t of kk) {
@@ -199,7 +204,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, uutiskirje, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, uutiskirje, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -224,6 +229,7 @@ export function mittariKooste(m) {
     uutiskirje: m.uutiskirje ? { yhteensa: m.uutiskirje.yhteensa, p7: m.uutiskirje.p7, p28: m.uutiskirje.p28 } : null,
     tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
     suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
+    lisamyynti14: m.lisamyynti ?? null,
     kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
       provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
   };
@@ -255,6 +261,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     ...(m.mainonta ? [`Mainoskulut tässä kuussa: ${eur(m.mainonta.kulut)}, kustannus per tilaus ${m.mainonta.kustannusPerTilaus == null ? "-" : eur(m.mainonta.kustannusPerTilaus)}, kate mainoskulujen jälkeen ${eur(m.mainonta.kateMainonnanJalkeen)}${m.mainonta.klikit ? ` (${m.mainonta.klikit} klikkiä)` : ""}`] : []),
     ...(m.suppilo ? [`Suppilo ${m.suppilo.alku} alkaen (luotettava ${m.suppilo.luotettavaAlkaen} alkaen): käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
       `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
+    ...(m.lisamyynti ? [lisamyyntiRivi(m.lisamyynti)] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
     `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,

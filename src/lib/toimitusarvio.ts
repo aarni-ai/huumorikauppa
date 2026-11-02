@@ -105,7 +105,7 @@ export interface Toimitusarvio {
 
 /** Profiili tuotteelle tai kategorialle (tuotetyypin toimitusaika, src/config/toimitus.ts). */
 const profiiliksi = (p: ToimitusProfiili | string | null | undefined): ToimitusProfiili =>
-  p && typeof p === "object" ? p : toimitusprofiili(p);
+  p && typeof p === "object" ? p : toimitusprofiili(p as string | null | undefined);
 
 /** Arvio, kun tilaus tehdään annettuna päivänä: tuotanto + kuljetus arkipäivinä tilauspäivän jälkeen. */
 export function toimitusarvio(tilauspaiva: Paiva, profiili?: ToimitusProfiili | string | null): Toimitusarvio {

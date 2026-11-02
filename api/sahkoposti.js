@@ -23,6 +23,7 @@
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
  * POST { action: "tuotetapahtumat", tapahtumat, vieritys, aika }   tuotesivun seuranta (api/_lib/tuoteseuranta.js)
+ * POST { action: "lisamyynti", tapahtuma, testi? }               korin lisämyynnin seuranta (api/_lib/lisamyynti.js)
  * POST { action: "suppilo", vaihe, ab, testi? }                  oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
@@ -287,6 +288,13 @@ export async function kasittele(req, res, store) {
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaTuotetapahtumat } = await import("./_lib/tuoteseuranta.js");
       return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(sql(), body)) > 0 });
+    }
+    case "lisamyynti": {
+      // Korin lisämyynnin seuranta (api/_lib/lisamyynti.js): vain koostemäärät.
+      const ohita = omaTaiBotti(req, body);
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaLisamyynti } = await import("./_lib/lisamyynti.js");
+      return res.status(200).json({ ok: await kirjaaLisamyynti(sql(), teksti(body.tapahtuma, 30)) });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.

@@ -24,13 +24,15 @@ interface Props {
   picks?: Product[];
   /** Otsikon alle näytettävä lyhyt teksti. */
   note?: string;
+  /** Kutsutaan, kun suositus lisätään koriin (korin lisämyynnin seuranta). */
+  onAdd?: (p: Product) => void;
 }
 
 /**
  * "Sopii yhteen": 2-3 täydentävää tuotetta (src/lib/recommendations.ts). Ei väitä, että tuotteita
  * ostettaisiin yhdessä. Lisäys koriin kuten tuotesivulla: oletusväri, koko valitaan itse.
  */
-export function ComplementaryProducts({ base, all, title = "Sopii yhteen", layout = "grid", limit = 3, onNavigate, className = "", picks: valmiit, note }: Props) {
+export function ComplementaryProducts({ base, all, title = "Sopii yhteen", layout = "grid", limit = 3, onNavigate, className = "", picks: valmiit, note, onAdd }: Props) {
   // Avain tuotetunnisteista: uusi taulukko joka renderöinnillä ei laske suosituksia uudelleen.
   const baseKey = base.map((b) => b.id).join(",");
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,14 +45,14 @@ export function ComplementaryProducts({ base, all, title = "Sopii yhteen", layou
       {note && <p className="text-sm text-muted-foreground mb-4">{note}</p>}
       <div className={layout === "grid" ? "grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4" : "space-y-3"}>
         {picks.map((p) => (
-          <ComplementaryItem key={p.id} product={p} layout={layout} onNavigate={onNavigate} />
+          <ComplementaryItem key={p.id} product={p} layout={layout} onNavigate={onNavigate} onAdd={onAdd} />
         ))}
       </div>
     </section>
   );
 }
 
-function ComplementaryItem({ product, layout, onNavigate }: { product: Product; layout: "grid" | "list"; onNavigate?: () => void }) {
+function ComplementaryItem({ product, layout, onNavigate, onAdd }: { product: Product; layout: "grid" | "list"; onNavigate?: () => void; onAdd?: (p: Product) => void }) {
   const { addItem } = useCartContext();
   const option = useMemo(() => quickAddOption(product), [product]);
   const [size, setSize] = useState("");
@@ -62,6 +64,7 @@ function ComplementaryItem({ product, layout, onNavigate }: { product: Product; 
     else if (option.kind === "choose-size" && size) addItem(product, 1, size, option.color);
     else return;
     setAdded(true);
+    onAdd?.(product);
   };
 
   return (

@@ -19,6 +19,7 @@ import { availableColors, availableSizes, hasAvailableVariant, isVariantAvailabl
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { getPriorityRank } from "@/lib/productPriority";
 import { isCityProduct, THEME_FAMILIES } from "@/data/themes";
+import { sopiiLahjaksi } from "@/lib/sopiiLahjaksi";
 
 /** Kategoriat, joissa kokoa ei valita (sama kuin tuotesivulla ja tuotekortissa). */
 export const NO_SIZE_CATEGORIES: readonly string[] = ["mukit", "tarrat", "seinataulut", "peitot", "koristeet"];
@@ -78,11 +79,16 @@ export function isRecommendable(p: Product): boolean {
   );
 }
 
+/** Lahjasivut, jotka eivät kerro saajasta mitään (yleinen varasivu): ei pisteitä. */
+const GENERIC_GIFT_PATHS = new Set(["/hauskat-lahjat", "/lahjat", "/joululahjat", "/lahja-kaverille"]);
+
 export function selectComplementary(base: Product[], all: Product[], limit = 3): Product[] {
   if (base.length === 0) return [];
   const baseIds = new Set(base.map((b) => b.id));
   const baseCategories = new Set(base.map((b) => b.category));
   const baseFamilies = base.map(families);
+  // Sama lahjasivu (src/lib/sopiiLahjaksi.ts, esim. /joululahja-isalle): sopii saman saajan lahjaksi (2.11.2026).
+  const baseGiftPaths = new Set(base.map((b) => sopiiLahjaksi(b).polku));
 
   const scored: { p: Product; score: number; i: number }[] = [];
   all.forEach((p, i) => {
@@ -98,6 +104,8 @@ export function selectComplementary(base: Product[], all: Product[], limit = 3):
       else if ([...baseFamilies[bi]].some((f) => pFamilies.has(f))) s = otherCategory ? 2 : 1;
       score = Math.max(score, s);
     });
+    const giftPath = sopiiLahjaksi(p).polku;
+    if (score < 1.5 && baseGiftPaths.has(giftPath) && !GENERIC_GIFT_PATHS.has(giftPath)) score = 1.5;
     // Varalla: muu tuoteryhmä kuin pohjatuotteilla (esim. t-paidan rinnalle huppari), prioriteettijärjestyksessä.
     if (score === 0 && !baseCategories.has(p.category)) score = 0.1;
     if (score > 0) scored.push({ p, score, i });

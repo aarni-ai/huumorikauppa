@@ -6,15 +6,16 @@ import { SEOHead } from "@/components/SEOHead";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { proxiedImage } from "@/lib/imageProxy";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { toimitusTila, ilmaisenToimituksenViesti, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { KorialennusVihje, korialennusNimi } from "@/components/KorialennusVihje";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
-import { selectSecondTshirt } from "@/lib/recommendations";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
+import { korinSuositukset, toinenPaita } from "@/lib/lisamyynti";
+import { kirjaaLisamyynti } from "@/lib/lisamyyntiSeuranta";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
@@ -37,15 +38,32 @@ const CartPage = () => {
   const shippingProgress = tila.edistyminen;
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
   const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
-  // Yksi t-paita korissa: ehdotetaan toista t-paitaa (kate noin 9,60 € -> noin 19 €, KATTEET.md "Hinnoittelu 29.10.2026").
+  // Lisämyynti (src/lib/lisamyynti.ts): toinen paita vain, kun se tekee toimituksesta ilmaisen kassan katesäännöllä, ja
+  // kolme koriin sopivaa suositusta (sama aihe tai lahjasivu).
   const fyysiset = items.filter((i) => !i.giftCard);
   const vainTarroja = fyysiset.length > 0 && fyysiset.every((i) => LISATUOTE_KATEGORIAT.includes(i.product.category));
-  const yksiPaita = fyysiset.length === 1 && fyysiset[0].quantity === 1 && fyysiset[0].product.category === "t-paidat";
-  const toinenPaita = useMemo(
-    () => (yksiPaita ? selectSecondTshirt([fyysiset[0].product], allProducts) : []),
+  const koriAvain = items.map((i) => `${i.product.id}|${i.selectedSize}|${i.selectedColor}|${i.quantity}`).join(",");
+  const toinen = useMemo(
+    () => toinenPaita(items, allProducts),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [yksiPaita, fyysiset[0]?.product.id, allProducts],
+    [koriAvain, allProducts],
   );
+  const suositukset = useMemo(
+    () => (tila.vainLahjakortteja ? [] : korinSuositukset(items, allProducts, toinen.paidat)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [koriAvain, allProducts, toinen.paidat],
+  );
+  const naytetty = useRef({ suositukset: false, toinen: false });
+  useEffect(() => {
+    if (suositukset.length >= 2 && !naytetty.current.suositukset) {
+      naytetty.current.suositukset = true;
+      kirjaaLisamyynti("suositukset_naytetty");
+    }
+    if (toinen.ilmainenToimitus && toinen.paidat.length >= 2 && !naytetty.current.toinen) {
+      naytetty.current.toinen = true;
+      kirjaaLisamyynti("toinen_paita_naytetty");
+    }
+  }, [suositukset, toinen]);
 
   if (items.length === 0) {
     return (
@@ -167,31 +185,34 @@ const CartPage = () => {
           {/* Rajan alittavassa korissa lisätuotetta ehdottaa mittari (MittarinLisatuote). */}
           {shippingFree && !tila.vainLahjakortteja && <TarraLisamyynti kori={items} kaikki={allProducts} />}
 
-          {yksiPaita && toinenPaita.length >= 2 && (
+          {toinen.paidat.length >= 2 && (
             <ComplementaryProducts
               base={[fyysiset[0].product]}
               all={allProducts}
-              picks={toinenPaita}
-              title="Lisää toinen t-paita"
-              note="Kahden tuotteen alennus lasketaan ostoskorissa automaattisesti."
+              picks={toinen.paidat}
+              title={toinen.ilmainenToimitus ? "Lisää toinen paita, niin toimitus on ilmainen" : "Lisää toinen t-paita"}
+              note={toinen.ilmainenToimitus ? "Toimitus on ilmainen millä tahansa koolla ja värillä." : "Kahden tuotteen alennus lasketaan ostoskorissa automaattisesti."}
+              onAdd={() => kirjaaLisamyynti(toinen.ilmainenToimitus ? "toinen_paita_lisatty" : "suositus_lisatty")}
               className="mt-6 pt-6 border-t border-border"
             />
           )}
-          {yksiPaita && (
+          {fyysiset.length === 1 && fyysiset[0].quantity === 1 && fyysiset[0].product.category === "t-paidat" && (
             <Link to="/personoitu-paita" className="flex items-center gap-3 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground hover:border-primary">
               <Gift className="h-5 w-5 text-primary shrink-0" aria-hidden="true" />
               <span><span className="font-semibold">Saajan nimi ja ikä paitaan:</span> personoitu t-paita {eur(PERSONOITU_HINTA)}, esikatselu ennen tilausta.</span>
             </Link>
           )}
 
-          {/* Sopii yhteen (src/lib/recommendations.ts): täydentävät tuotteet, ei väitettä yhteisostoista */}
-          {!tila.vainLahjakortteja && !yksiPaita && (
-          <ComplementaryProducts
-            base={items.map((i) => i.product)}
-            all={allProducts}
-            title={shippingFree ? "Täydennä tilaus" : `Täydennä tilaus: ${toimitusViesti.charAt(0).toLowerCase()}${toimitusViesti.slice(1)}`}
-            className="mt-6 pt-6 border-t border-border"
-          />
+          {/* Sopii yhteen: kolme koriin sopivaa suositusta (sama aihe tai lahjasivu), ei väitettä yhteisostoista. */}
+          {suositukset.length >= 2 && (
+            <ComplementaryProducts
+              base={fyysiset.map((i) => i.product)}
+              all={allProducts}
+              picks={suositukset}
+              title="Sopii yhteen"
+              onAdd={() => kirjaaLisamyynti("suositus_lisatty")}
+              className="mt-6 pt-6 border-t border-border"
+            />
           )}
         </div>
 

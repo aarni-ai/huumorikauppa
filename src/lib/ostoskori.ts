@@ -7,6 +7,7 @@ import { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS, LISATUOTE_KATE
 import { paketinHeikoinNettokate, alennettuSentit, toimitusmaksuKatteella } from "../../api/_lib/kate.js";
 import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
+import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
 import { sovellaPaketit } from "../../api/_lib/paketit.js";
 import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, TPAITAPARI_KAMPANJA, tpaitapariVoimassa, MAARAALENNUS } from "../../api/_lib/korialennus.js";
@@ -69,7 +70,7 @@ export function toimitusTila(items: (Rivi & Partial<Pick<CartItem, "selectedSize
   const osat = items.filter((i) => !onLahjakortti(i)).map((i) => {
     const kartta = (i.product.variants?.variant_map || {}) as Record<string, number>;
     const suora = kartta[`${(i.selectedColor || "").trim()}|${(i.selectedSize || "").trim()}`];
-    return { tuote: i.product, varianttiId: typeof suora === "number" ? suora : kalleinVariantti(i.product), maara: i.quantity, yksikkohinta: i.product.price };
+    return { tuote: i.product, varianttiId: typeof suora === "number" ? suora : kalleinVariantti(i.product), maara: i.quantity, yksikkohinta: Number(rivinHinta(i.product, i.selectedSize)) };
   });
   const maksu = summa > 0 ? toimitusmaksuKatteella({ summa, kpl, alennus, osat }) : { maksu: 0, tavallinen: 0, rajattu: false };
   const ilmainen = vainLahjakortteja || (summa > 0 && maksu.maksu === 0);
