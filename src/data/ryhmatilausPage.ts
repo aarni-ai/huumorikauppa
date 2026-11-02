@@ -95,7 +95,7 @@ export const ryhmatilausPage = {
     },
     {
       q: "Saako ryhmätilauksesta alennusta?",
-      a: "Ei saa. Tuotteet maksavat saman verran kuin verkkokaupassa, ja toimitusmaksu määräytyy tavallisten toimitusehtojen mukaan.",
+      a: "Ei saa. Valikoiman tuotteet maksavat saman verran kuin verkkokaupassa, ja toimitusmaksu määräytyy tavallisten toimitusehtojen mukaan. Omilla nimillä painettavilla ryhmäpaidoilla on oma hinnasto sivuilla Abipaidat, Polttaripaidat, Joukkuepaidat ja Yhdistysten paidat.",
     },
     {
       q: "Voiko kaikkiin paitoihin painaa saman oman tekstin?",
@@ -109,6 +109,10 @@ export const ryhmatilausPage = {
   ],
   /** Sisäiset linkit: ideat ja tilausaikataulu. */
   links: [
+    { href: "/abipaidat", label: "Abipaidat omilla nimillä" },
+    { href: "/polttarit", label: "Polttaripaidat koko porukalle" },
+    { href: "/joukkueet", label: "Joukkuepaidat nimellä ja numerolla" },
+    { href: "/yhdistykset", label: "Paidat yhdistykselle ja kerholle" },
     { href: "/yritykset", label: "Yritysten joululahjat ja määräalennus (10+ t-paitaa)" },
     { href: "/blogi/pikkujoulupaidat-porukalle", label: "Opas: pikkujoulupaidat porukalle" },
     { href: "/blogi/pikkujoulujen-lahjapeli", label: "Opas: pikkujoulujen lahjapeli" },

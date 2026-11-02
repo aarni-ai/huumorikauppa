@@ -131,6 +131,35 @@ export const STATIC_PAGE_META = {
     intro:
       "Valitse malli, kirjoita saajan nimi, vuosiluku tai ikä ja katso esikatselu. Jokainen paita ja huppari painetaan tilauksesta yhdelle saajalle.",
   },
+  // Ryhmäpaidat (2.11.2026, src/data/ryhmapaidat.ts): suunnittelutyökalu, kokotaulukko jaetusta linkistä, määräalennus.
+  "/abipaidat": {
+    title: "Abipaidat penkkareihin omilla nimillä | Huumorikauppa",
+    description: "Abipaidat penkkareihin 2027: abiporukan nimi ja vuosi eteen, jokaisen nimi selkään. Kokotaulukko jaetusta linkistä, määräalennus 10, 25 ja 50 paidasta.",
+    h1: "Abipaidat penkkareihin omilla nimillä",
+    name: "Abipaidat",
+    intro: "Suunnitelkaa abipaita, jakakaa linkki koko vuosikurssille ja antakaa jokaisen täyttää oma nimensä ja kokonsa. Jokainen voi maksaa oman paitansa, tai vetäjä maksaa kaikki kerralla.",
+  },
+  "/polttarit": {
+    title: "Polttaripaidat porukalle omilla nimillä | Huumorikauppa",
+    description: "Polttaripaidat koko porukalle: polttariteksti eteen ja jokaisen lempinimi selkään. Kokotaulukko jaetusta linkistä, jokainen maksaa oman paitansa.",
+    h1: "Polttaripaidat koko porukalle",
+    name: "Polttaripaidat",
+    intro: "Suunnitelkaa polttaripaita, jakakaa linkki porukalle ja antakaa jokaisen täyttää oma lempinimensä ja kokonsa. Kunniavieraan paidan voi maksaa vetäjä.",
+  },
+  "/joukkueet": {
+    title: "Joukkuepaidat nimellä ja numerolla | Huumorikauppa",
+    description: "Joukkuepaidat harrastejoukkueelle: joukkueen nimi ja logo eteen, pelaajan nimi ja numero selkään. Kokotaulukko jaetusta linkistä, määräalennus.",
+    h1: "Joukkuepaidat nimellä ja numerolla",
+    name: "Joukkuepaidat",
+    intro: "Suunnitelkaa joukkuepaita, jakakaa linkki pelaajille ja antakaa jokaisen täyttää nimensä, numeronsa ja kokonsa. Paidat toimitetaan joukkueenjohtajalle.",
+  },
+  "/yhdistykset": {
+    title: "Paidat yhdistykselle, kerholle ja seuralle | Huumorikauppa",
+    description: "Yhdistyksen paidat omilla nimillä: yhdistyksen nimi ja logo eteen, jäsenen nimi selkään. Jokainen täyttää koon ja maksaa jaetusta linkistä.",
+    h1: "Paidat yhdistykselle, kerholle ja seuralle",
+    name: "Yhdistysten paidat",
+    intro: "Suunnitelkaa yhdistyksen paita, jakakaa linkki jäsenille ja antakaa jokaisen täyttää oma nimensä ja kokonsa. Maksun voi hoitaa yhdistys tai jokainen jäsen itse.",
+  },
   "/kumppanit": {
     title: "Kumppanuusohjelma sisällöntuottajille | Huumorikauppa",
     description:

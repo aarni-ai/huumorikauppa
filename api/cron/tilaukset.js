@@ -16,7 +16,13 @@
  *  3b. Toimituspäivä (delivered_at) lähetetyille arviopyyntöä varten.
  *  4. Markkinointi: keskeneräisen tilauksen muistutukset ja arviopyynnöt (api/_lib/markkinointi.js, lähetysraja).
  *  5. Päivän yhteenvedon varmistus: jos klo 7 ajo jäi tekemättä, lähetetään klo 9 jälkeen.
+ *  6. Ryhmätilaukset (api/_lib/ryhmatilaus-db.js ajaRyhmaValvonta): epäonnistuneet palautukset uudelleen, kesken jääneet
+ *     lähetykset ja vanhojen ryhmien poisto. Ryhmätilausten maksut paikataan kohdassa 1 (metadata ryhma_id).
  * ?kuiva=1 listaa vain, mitä tehtäisiin.
+ *
+ * ?tehtava=ryhmatilaustesti[&kuiva=1]: ryhmätilauksen koko polku tuotannossa (scripts/ryhmatilaus-testi.mjs): testiryhmä,
+ * kaksi jäsentä, simuloidut maksut, automaattinen lukitus, painokuvat ja Printify-testitilaus nimellä TESTI, joka perutaan
+ * samassa ajossa, lopuksi testidatan poisto.
  *
  * ?tehtava=yhteenveto: päivän yhteenveto (api/_lib/valvonta.js). Vercel Cron kutsuu 04:00 ja 05:00 UTC; vain
  * Helsingin kello 7 -ajo lähettää (kesä- ja talviaika), kv estää toisen lähetyksen. &pakota=1 ohittaa kellonajan.
@@ -630,6 +636,21 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: t.luotu && t.peruttu, laskettu: yhteenveto, rivit, kuvat, printify: t });
   }
 
+  // Ryhmätilauksen polkutesti (2.11.2026, api/_lib/ryhmatilaus-db.js ryhmatilausTesti). STRIPE_TEST_SECRET_KEY (sk_test_)
+  // -> jäsenten maksuistunnot luodaan Stripen testitilassa ja vanhennetaan; maksu simuloidaan webhookin käsittelijällä.
+  if (req.query.tehtava === "ryhmatilaustesti") {
+    const { ryhmatilausTesti } = await import("../_lib/ryhmatilaus-db.js");
+    let stripeTesti = null;
+    const avain = process.env.STRIPE_TEST_SECRET_KEY;
+    if (avain && avain.startsWith("sk_test_")) {
+      const { default: Stripe } = await import("stripe");
+      stripeTesti = new Stripe(avain, { apiVersion: "2025-08-27.basil" });
+    }
+    const design = req.query.logo ? { nimi: "TESTI Abit", vuosi: "2027", logo: String(req.query.logo) } : null;
+    const t = await ryhmatilausTesti({ db, tilausRunko, ajaTestitilaus, kuiva: kuiva || !onPrintify(), stripeTesti, design });
+    return res.status(200).json(t);
+  }
+
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.
   // Tuotesivu näyttää vain julkaistut (api/sahkoposti.js ?arviot=<slug>).
   if (req.query.tehtava === "arviot") {
@@ -924,6 +945,18 @@ export default async function handler(req, res) {
     const alku = Math.floor(Date.now() / 1000) - 72 * 3600;
     for await (const s of stripe().checkout.sessions.list({ created: { gte: alku }, status: "complete", limit: 100 })) {
       if (s.payment_status !== "paid") continue;
+      // Ryhmätilauksen maksu: oma käsittelijä (idempotentti), ei orders-riviä ennen lähetystä.
+      if (s.metadata?.ryhma_id) {
+        const [j] = s.metadata.ryhma_maksu === "jasen"
+          ? await db`select 1 from ryhmatilaus_jasenet where id = ${s.metadata.ryhma_jasen} and stripe_session_id = ${s.id} and tila = 'maksettu'`.catch(() => [])
+          : await db`select 1 from ryhmatilaukset where id = ${s.metadata.ryhma_id} and vetaja_maksu->>'session' = ${s.id}`.catch(() => []);
+        const [palautettu] = j ? [] : await db`select 1 from ryhmatilaus_palautukset where session = ${s.id}`.catch(() => []);
+        if (palautettu) continue;
+        if (j) continue;
+        loki.push(`paikkaus ryhmä ${s.id}`);
+        if (!kuiva) await kasitteleMaksu(s);
+        continue;
+      }
       const id = s.metadata?.order_id || s.client_reference_id;
       const [t] = id ? await db`select status from orders where id = ${id}` : [];
       if (t?.status === "maksettu") continue;
@@ -1102,6 +1135,16 @@ export default async function handler(req, res) {
       }
     } catch (e) {
       loki.push(`uutiskirje: ${e?.message || e}`);
+    }
+  }
+
+  // 6. Ryhmätilaukset: palautukset, kesken jääneet lähetykset ja vanhojen ryhmien poisto (ei kaada valvontaa).
+  if (aikaa()) {
+    try {
+      const { ajaRyhmaValvonta } = await import("../_lib/ryhmatilaus-db.js");
+      loki.push(...(await ajaRyhmaValvonta(db, { kuiva })));
+    } catch (e) {
+      loki.push(`ryhmätilaukset: ${e?.message || e}`);
     }
   }
 

@@ -13,6 +13,10 @@
  *   POST { action: "logo", tyyppi: "png" | "svg", data: base64 }      logon tarkistus ja tallennus -> { ok, id, ... }
  *   GET  ?logopaita=1&logo=<id>&r1=..&r2=..&design=<slug>&vari=..      esikatselu 600 px (sama kuva kuin painossa)
  *   GET  ?t=<allekirjoitettu "logopainokuva">                          tilauskohtainen painokuva 3461 x 3955
+ *
+ * Ryhmäpaita (api/_lib/ryhmatilaus.js, tunnisteet api/_lib/printify.js ryhmaPainokuvat):
+ *   GET  ?t=<allekirjoitettu "ryhmaetu">    etupuoli { d: { nimi, vuosi, teksti, logo }, v } 3461 x 3955 (logon kanssa logopaidan asettelu)
+ *   GET  ?t=<allekirjoitettu "ryhmaselka">  selkä { s: { nimi, numero }, v } 3461 x 3955
  */
 import { Resvg } from "@resvg/resvg-js";
 import { tarkistaTunniste } from "./_lib/markkinointi.js";
@@ -20,6 +24,7 @@ import { painokuvaSvg, tarkistaPersonointi, PAINOALUE, PAINOALUEET } from "./_li
 import { tarkistaLogopaita } from "./_lib/logopaita.js";
 import { haeFontti, logoPainokuva, tallennaLogo } from "./_lib/logopaita-kuva.js";
 import { onTietokanta } from "./_lib/db.js";
+import { tarkistaDesign, tarkistaJasen, etuSvg, selkaSvg, logoEtuRivit } from "./_lib/ryhmatilaus.js";
 
 const VARIT = new Set(["Musta", "Valkoinen", "Vaaleanharmaa", "Tummansininen"]);
 
@@ -61,7 +66,40 @@ async function logopaita(req, res) {
   }
 }
 
+/** Ryhmäpaidan etu- tai selkäkuva allekirjoitetusta tunnisteesta. */
+async function ryhmaKuva(req, res, data, paikka) {
+  const vari = VARIT.has(data?.v) ? data.v : "Musta";
+  const leveys = req.query?.esikatselu === "1" ? 600 : PAINOALUE.leveys;
+  try {
+    let svg;
+    if (paikka === "etu") {
+      const d = tarkistaDesign(data?.d || {});
+      if (!d.ok) return res.status(400).json({ ok: false, virhe: d.virhe });
+      if (d.logo) return lahetaPng(res, await logoPainokuva({ logo: d.logo, rivit: logoEtuRivit(d), design: null }, vari, { leveys }), "public, max-age=31536000, immutable");
+      svg = etuSvg(d, vari);
+    } else {
+      // Koko ei vaikuta selkäkuvaan: tarkistetaan nimi ja numero mustan paidan koolla M.
+      const j = tarkistaJasen({ ...(data?.s || {}), koko: "M" }, "Musta");
+      if (!j.ok) return res.status(400).json({ ok: false, virhe: j.virhe });
+      svg = selkaSvg(j, vari);
+    }
+    const png = new Resvg(svg, { fitTo: { mode: "width", value: leveys }, font: { fontFiles: [await haeFontti()], loadSystemFonts: false, defaultFontFamily: "Anton" },
+      background: "rgba(0,0,0,0)" }).render().asPng();
+    return lahetaPng(res, png, "public, max-age=31536000, immutable");
+  } catch (e) {
+    console.error("ryhmäpainokuva:", e?.message || e);
+    return res.status(/puuttuu/.test(String(e?.message)) ? 404 : 500).json({ ok: false });
+  }
+}
+
 export default async function handler(req, res) {
+  for (const [tarkoitus, paikka] of [["ryhmaetu", "etu"], ["ryhmaselka", "selka"]]) {
+    const arvo = req.method === "GET" ? tarkistaTunniste(String(req.query?.t || ""), tarkoitus) : null;
+    if (!arvo) continue;
+    let data;
+    try { data = JSON.parse(arvo); } catch { return res.status(400).json({ ok: false }); }
+    return ryhmaKuva(req, res, data, paikka);
+  }
   if (req.method === "POST" || req.query?.logopaita === "1" || tarkistaTunniste(String(req.query?.t || ""), "logopainokuva")) return logopaita(req, res);
   const arvo = tarkistaTunniste(String(req.query?.t || ""), "painokuva");
   if (!arvo) return res.status(404).json({ ok: false });

@@ -17,6 +17,9 @@
  *   fyysistä tuotetta, Y-tunnus (tarkiste ja PRH). Tilaus odottaa maksua; Stripe lähettää laskun (maksuaika 14 pv).
  *   Printify-tilaus lähtee vasta, kun lasku on maksettu (api/_lib/tilaus.js kasitteleLasku: webhook invoice.paid ja
  *   tunnin cron). Vastaus { ok, lasku: hosted_invoice_url, tilaus }.
+ *
+ * POST { action: "ryhma-..." } ryhmätilaukset (/abipaidat, /polttarit, /joukkueet, /yhdistykset ja /ryhma/...):
+ *   api/_lib/ryhmatilaus-db.js ryhmaToiminto.
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
@@ -136,6 +139,11 @@ export default async function handler(req, res) {
   }
 
   if (pyynto.action === "lasku") return laskuTilaus(pyynto, res);
+
+  if (typeof pyynto.action === "string" && pyynto.action.startsWith("ryhma-")) {
+    const { ryhmaToiminto } = await import("./_lib/ryhmatilaus-db.js");
+    return ryhmaToiminto(pyynto, req, res);
+  }
 
   // Lahjakortin koodi ja PDF näytetään kiitossivulla heti maksun jälkeen (api/order.js) ja lähetetään sähköpostilla,
   // kun se toimii: myynti vaatii tietokannan ja Stripen (lahjakortitMyynnissa).

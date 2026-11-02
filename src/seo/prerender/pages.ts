@@ -34,6 +34,7 @@ import {
 import { AIHE_MENU, CHRISTMAS_MENU } from "@/data/landingRoutes";
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { ryhmatilausPage } from "@/data/ryhmatilausPage";
+import { RYHMA_SIVUT, RYHMA_POLUT, RYHMA_PORTAAT } from "@/data/ryhmapaidat";
 import { kategoriaPolku, onKategoriasivu, onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { getPriorityRank } from "@/lib/productPriority";
 import { generateGiftGuideContent } from "@/lib/giftGuideContent";
@@ -805,6 +806,20 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildLandingPages(products),
     buildChristmasDeadlinePage(),
     buildGroupOrderPage(products),
+    // Ryhmäpaidat (2.11.2026, src/data/ryhmapaidat.ts): sama sisältö kuin src/pages/RyhmaPaitaPage.tsx.
+    ...RYHMA_POLUT.map((polku) => {
+      const s = RYHMA_SIVUT[polku];
+      return staticPage(polku, {
+        intro: s.intro,
+        sections: [
+          { heading: "Hinta paitamäärän mukaan", items: RYHMA_PORTAAT.map((p) => `${p.teksti}: ${p.hintaTeksti} (3XL-5XL ${p.isoTeksti})`) },
+          ...s.sections.map((x) => ({ heading: x.heading, paragraphs: x.paragraphs, items: x.items })),
+          { heading: "Muut ryhmäpaidat", links: [...RYHMA_POLUT.filter((p) => p !== polku).map((p) => ({ href: p, label: RYHMA_SIVUT[p].name })), { href: "/ryhmatilaukset", label: "Ryhmätilaukset" }] },
+        ],
+        faqs: s.faqs,
+        jsonLd: [buildFaqJsonLd(s.faqs)],
+      });
+    }),
     buildBusinessPage(products),
     ...buildBusinessVerticalPages(products),
     staticPage("/kumppanit", {

@@ -2,6 +2,7 @@
 import { PERSONOIDUT_POHJAT, jasennaPersonointi } from "./personoitu.js";
 import { LOGOPAITA_PRINTIFY, LOGOPAITA_POHJA, jasennaLogopaita, tarkistaLogopaita } from "./logopaita.js";
 import { allekirjoita } from "./markkinointi.js";
+import { RYHMAPAITA_PRINTIFY, RYHMAPAITA_POHJA, tarkistaDesign, tarkistaJasen } from "./ryhmatilaus.js";
 const API = "https://api.printify.com/v1";
 
 export const onPrintify = () => !!(process.env.PRINTIFY_API_KEY && process.env.PRINTIFY_SHOP_ID);
@@ -153,6 +154,26 @@ export function logoPainokuvaUrl(rivi, tilausId = "", n = 0) {
   return `${pohja}/api/painokuva?t=${encodeURIComponent(tunniste)}`;
 }
 
+/**
+ * Ryhmäpaidan painokuvat (api/_lib/ryhmatilaus.js): etupuoli { d: { nimi, vuosi, teksti, logo }, v: väri } ja selkä
+ * { s: { nimi, numero }, v } allekirjoitettuina (api/painokuva.js). Tiedot luetaan rivin ryhma-kentästä ja
+ * tarkistetaan uudelleen; selkä jätetään pois, jos rivillä ei ole selkänimeä.
+ */
+export function ryhmaPainokuvat(rivi, tilausId = "", n = 0) {
+  const vari = rivi.color || "Musta";
+  const d = tarkistaDesign(rivi.ryhma?.etu || {});
+  if (!d.ok) throw new Error(`Ryhmäpaidan etupuoli puuttuu tai on virheellinen (tilaus ${tilausId}, rivi ${n}): ${d.virhe}`);
+  const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
+  const url = (tarkoitus, data) => `${pohja}/api/painokuva?t=${encodeURIComponent(allekirjoita(tarkoitus, JSON.stringify(data)))}`;
+  const alueet = { front: url("ryhmaetu", { d: { nimi: d.nimi, vuosi: d.vuosi, teksti: d.teksti, logo: d.logo }, v: vari }) };
+  if (rivi.ryhma?.selka?.nimi) {
+    const j = tarkistaJasen({ ...rivi.ryhma.selka, koko: rivi.size }, vari);
+    if (!j.ok) throw new Error(`Ryhmäpaidan selkänimi on virheellinen (tilaus ${tilausId}, rivi ${n}): ${j.virhe}`);
+    alueet.back = url("ryhmaselka", { s: { nimi: j.nimi, numero: j.numero }, v: vari });
+  }
+  return alueet;
+}
+
 /** Printify-tilauksen runko omasta tilausrivistä. */
 export function tilausRunko(tilaus) {
   const nimi = (tilaus.recipient_name || tilaus.customer_name || "Asiakas").trim();
@@ -169,7 +190,10 @@ export function tilausRunko(tilaus) {
       ? { ...PERSONOIDUT_POHJAT[i.printify_product_id].pohja, variant_id: i.variant_id, print_areas: { front: painokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
       : i.printify_product_id === LOGOPAITA_PRINTIFY
         ? { ...LOGOPAITA_POHJA, variant_id: i.variant_id, print_areas: { front: logoPainokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
-        : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
+        : i.printify_product_id === RYHMAPAITA_PRINTIFY
+          // Ryhmäpaita: etupuoli ryhmän yhteinen, selkään jäsenen nimi (api/_lib/ryhmatilaus.js).
+          ? { ...RYHMAPAITA_POHJA, variant_id: i.variant_id, print_areas: ryhmaPainokuvat(i, tilaus.id, n), quantity: i.quantity }
+          : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),
     shipping_method: 1,
     is_printify_express: false,
     is_economy_shipping: false,

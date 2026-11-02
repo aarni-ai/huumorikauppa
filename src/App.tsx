@@ -133,6 +133,9 @@ const MediaGuidePage = lazyWithRetry(() => import("./pages/MediaGuidePage"));
 const PartnerLandingPage = lazyWithRetry(() => import("./pages/PartnerLandingPage"));
 const FriendLandingPage = lazyWithRetry(() => import("./pages/FriendLandingPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
+const RyhmaPaitaPage = lazyWithRetry(() => import("./pages/RyhmaPaitaPage"));
+const RyhmaJasenPage = lazyWithRetry(() => import("./pages/RyhmaJasenPage"));
+const RyhmaHallintaPage = lazyWithRetry(() => import("./pages/RyhmaHallintaPage"));
 
 // Lazy: popups (not needed at initial load) — use safe loader so a fetch failure
 // doesn't trigger a full-page reload loop that blanks the site.
@@ -235,6 +238,12 @@ export const AppSisalto = () => (
               ))}
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
+              <Route path="/abipaidat" element={<RyhmaPaitaPage />} />
+              <Route path="/polttarit" element={<RyhmaPaitaPage />} />
+              <Route path="/joukkueet" element={<RyhmaPaitaPage />} />
+              <Route path="/yhdistykset" element={<RyhmaPaitaPage />} />
+              <Route path="/ryhma/hallinta/:tunnus" element={<RyhmaHallintaPage />} />
+              <Route path="/ryhma/:tunnus" element={<RyhmaJasenPage />} />
               <Route path="/yritykset" element={<BusinessPage />} />
               <Route path="/yritykset/tilaus" element={<BusinessOrderPage />} />
               <Route path="/yritykset/:ala" element={<BusinessVerticalPage />} />
