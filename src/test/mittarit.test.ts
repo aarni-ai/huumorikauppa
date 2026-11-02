@@ -144,7 +144,7 @@ describe("somevideoiden julkaisulista", () => {
       expect(v.tagit.length).toBeGreaterThanOrEqual(3);
       expect(v.tagit.length).toBeLessThanOrEqual(5);
       expect(v.kuvateksti).not.toMatch(/[–—]/);
-      expect(v.utm.tiktok).toContain("utm_source=tiktok");
+      expect(JSON.stringify(v)).not.toContain("utm_"); expect(v.kuvateksti).toContain("Linkki biossa");
     }
   });
 });

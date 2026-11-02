@@ -36,6 +36,27 @@
         wait_for_update: 500
       });
       gtag('set', 'ads_data_redaction', true);
+      // Lyhyet bio-linkit (2.11.2026): /ig, /tt, /fb, /pin, /yt näyttävät sivun /linkit ilman uudelleenohjausta.
+      // Lähde talteen (window.__hkBio: käyntilaskuri src/lib/kaynti.ts ja GA4:n page_location alla), osoiteriville /linkit.
+      (function () {
+        var BIO = { '/ig': 'instagram', '/tt': 'tiktok', '/fb': 'facebook', '/pin': 'pinterest', '/yt': 'youtube' };
+        var lahde = BIO[location.pathname.replace(/\/+$/, '').toLowerCase()];
+        if (lahde) {
+          window.__hkBio = { utm_source: lahde, utm_medium: 'social', utm_campaign: 'bio' };
+          try { history.replaceState(null, '', '/linkit' + location.hash); } catch (e) {}
+          return;
+        }
+        // Somekävijä ilman linkin UTM:iä (bio = pelkkä huumorikauppa.fi): sovelluksen selain tai viittaaja.
+        // Sama tunnistus palvelimella: api/_lib/kaynnit.js someSovellus.
+        if (/[?&]utm_source=/.test(location.search)) return;
+        var ua = navigator.userAgent || '', ref = '';
+        try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; } catch (e) {}
+        var some = /Instagram/i.test(ua) || /(^|\.)instagram\.com$/.test(ref) ? 'instagram'
+          : /musical_ly|BytedanceWebview|TikTok|trill_/i.test(ua) || /(^|\.)tiktok\.com$/.test(ref) ? 'tiktok'
+          : /FBAN|FBAV|FB_IAB|FBIOS/.test(ua) || /(^|\.)(facebook\.com|fb\.com)$/.test(ref) ? 'facebook'
+          : /Pinterest/i.test(ua) || /(^|\.)pinterest\./.test(ref) ? 'pinterest' : '';
+        if (some) window.__hkSome = { utm_source: some, utm_medium: 'social' };
+      })();
       (function () {
         var GA_ID = 'G-8FJ58JNKGK';
         var loaded = false;
@@ -52,6 +73,9 @@
             // Paluu Stripe Checkoutista ei saa muuttua referral-lähteeksi (ylikirjoittaisi utm/alkuperäisen lähteen)
             var cfg = {};
             try { if (/(^|\.)stripe\.com$/.test(new URL(document.referrer).hostname)) cfg.ignore_referrer = true; } catch (e) {}
+            // Bio-linkki: GA4 lukee lähteen page_locationin UTM-parametreista, osoiterivillä ei UTM:iä.
+            if (window.__hkBio) cfg.page_location = location.origin + '/linkit?utm_source=' + window.__hkBio.utm_source + '&utm_medium=social&utm_campaign=bio';
+            else if (window.__hkSome) cfg.page_location = location.origin + location.pathname + (location.search ? location.search + '&' : '?') + 'utm_source=' + window.__hkSome.utm_source + '&utm_medium=social';
             gtag('config', GA_ID, cfg);
             var s = document.createElement('script');
             s.async = true;

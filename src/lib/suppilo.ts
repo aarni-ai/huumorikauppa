@@ -21,7 +21,7 @@ export function abVersio(): "a" | "b" {
 /** Versio vain, jos kävijä on nähnyt etusivun testin (muuten tyhjä). */
 export const nahtyVersio = () => (kirjatut.has("etusivu") ? ab : "");
 
-const onBotti = () => typeof navigator !== "undefined" && (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse/i.test(navigator.userAgent || ""));
+const onBotti = () => typeof navigator !== "undefined" && (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse|inspectiontool|googleother/i.test(navigator.userAgent || ""));
 
 /** Selaintesti (scripts/suppilo-testi.mjs asettaa ennen sivun skriptejä): kirjaus versioon "testi", ei summiin. */
 const onTesti = () => (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;

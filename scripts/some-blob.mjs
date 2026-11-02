@@ -22,7 +22,8 @@ const JUURI = new URL("..", import.meta.url).pathname;
 const KAUPPA = "https://huumorikauppa.fi";
 
 function pinniTiedot(k, pin) {
-  const linkki = `${KAUPPA}/tuote/${k.slug}?utm_source=pinterest&utm_medium=social&utm_campaign=pin`;
+  // 2.11.2026: ilman UTM-parametreja; Pinterest tunnistetaan viittaajasta ja sovelluksen selaimesta.
+  const linkki = `${KAUPPA}/tuote/${k.slug}`;
   return { slug: k.slug, nimi: k.nimi, kuva: pin, lataus: `${pin}?download=1`, otsikko: `${k.teksti} | ${k.kategoria === "hupparit" ? "Hauska huppari" : k.kategoria === "seinataulut" ? "Hauska juliste" : k.kategoria === "tarrat" ? "Hauska tarra" : "Hauska t-paita"}`,
     kuvaus: `${k.teksti}. Suomalaista huumoria paitaan, lahjaksi tai itselle. Katso koot ja värit: huumorikauppa.fi`, linkki };
 }
@@ -38,6 +39,20 @@ export default ${JSON.stringify(shopping, null, 1)};
 async function lataa(polku, pathname, contentType) {
   const r = await put(pathname, await readFile(polku), { access: "public", addRandomSuffix: true, contentType });
   return r.url;
+}
+
+// --tekstit (2.11.2026): kuvatekstit ja Pinterest-linkit manifestiin ilman videoiden uudelleenlatausta (ei UTM-linkkejä).
+if (process.argv.includes("--tekstit")) {
+  const host = process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase();
+  const manifest = await (await fetch(`https://${host}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
+  const uudet = new Map(julkaisulista().map((v) => [v.nro, v]));
+  manifest.videot = manifest.videot.map(({ utm: _pois, ...v }) => ({ ...v, kuvateksti: uudet.get(v.nro)?.kuvateksti ?? v.kuvateksti }));
+  manifest.pinterest = manifest.pinterest.map((p) => ({ ...p, linkki: `${KAUPPA}/tuote/${p.slug}` }));
+  manifest.julkaisut = await lataa(join(JUURI, "some/JULKAISUT.md"), "some/JULKAISUT.md", "text/markdown; charset=utf-8");
+  manifest.paivitetty = new Date().toISOString();
+  await put("some/manifest.json", JSON.stringify(manifest), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", cacheControlMaxAge: 60 });
+  console.log(`valmis: ${manifest.videot.length} kuvatekstiä, ${manifest.pinterest.length} Pinterest-linkkiä`);
+  process.exit(0);
 }
 
 const lisaArg = process.argv.includes("--lisakuvat") ? process.argv[process.argv.indexOf("--lisakuvat") + 1] : null;

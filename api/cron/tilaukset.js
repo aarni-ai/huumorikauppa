@@ -111,7 +111,17 @@ export default async function handler(req, res) {
       const { keraaMittarit, mittaririvit } = await import("../_lib/mittarit.js");
       const { hallintaLinkit, yhteenvetoRivit } = await import("../_lib/hallinta.js");
       const linkit = hallintaLinkit();
-      return [...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...yhteenvetoRivit(linkit)];
+      // Taikalinkki, kun hallinnan eväste on vanhenemassa (yli 80 pv edellisestä aktivoinnista; api/_lib/aktivointi.js).
+      const { evasteenTila, luoAktivointilinkki } = await import("../_lib/aktivointi.js");
+      const ev = await evasteenTila(db).catch(() => null);
+      const linkkirivit = ev?.tarvitaan && !kuiva ? await luoAktivointilinkki(db).then(({ linkki }) => [
+        `Hallinnan eväste vanhenee${ev.vanhenee ? ` ${ev.vanhenee.toISOString().slice(0, 10)}` : ""}. Uusi aktivointilinkki Coworkille (avaa Chromen profiilissa "Huumorikauppa", toimii kerran, voimassa 48 h): ${linkki}`,
+      ]).catch(() => []) : [];
+      // Tuotesivun seuranta viimeiseltä vuorokaudelta (api/_lib/tuoteseuranta.js).
+      const { tuoteseurantaValilla, tuoteseurantaRivit } = await import("../_lib/tuoteseuranta.js");
+      const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
+      const seuranta = await tuoteseurantaValilla(db, hki(new Date(Date.now() - 864e5)), hki(new Date())).then(tuoteseurantaRivit).catch(() => []);
+      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -229,6 +239,27 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: r.ok, otsikko: viesti.subject, yritykset });
   }
 
+  // Taikalinkki Coworkille (2.11.2026): luo 48 tunnin kertakäyttöisen linkin ja lähettää sen sähköpostilla
+  // (&to=, oletus huumorikauppa@gmail.com) samalla varareitillä kuin hallintalinkit. Linkkiä ei palauteta vastauksessa.
+  if (req.query.tehtava === "aktivointilinkki-viesti") {
+    const { luoAktivointilinkki, aktivointilinkkiViesti } = await import("../_lib/aktivointi.js");
+    const { linkki, vanhenee } = await luoAktivointilinkki(sql());
+    res.setHeader("Cache-Control", "private, no-store");
+    // &testi=1: linkki palautetaan testiskriptille (scripts/aktivointilinkki-testi.mjs käyttää sen heti eikä tulosta sitä).
+    if (req.query.testi === "1") return res.status(200).json({ ok: true, linkki, vanhenee });
+    const viesti = aktivointilinkkiViesti(linkki, vanhenee);
+    const to = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.query.to || "") ? req.query.to : "huumorikauppa@gmail.com";
+    const yritykset = [];
+    let r = await laheta({ ...viesti, to });
+    yritykset.push({ reitti: "suora", to, ok: r.ok, virhe: r.virhe?.slice(0, 160) });
+    if (!r.ok) {
+      r = await lahetaVarareitilla({ ...viesti, to });
+      yritykset.push({ reitti: "testilähettäjä", to: r.vastaanottaja || to, ok: r.ok, virhe: r.virhe?.slice(0, 160) });
+    }
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.status(200).json({ ok: r.ok, otsikko: viesti.subject, vanhenee, yritykset });
+  }
+
   // Hallinnan kertakäyttöinen aktivointikoodi (24 h, yksi käyttö; api/_lib/aktivointi.js, sivu /hallinta/aktivoi).
   if (req.query.tehtava === "aktivointikoodi") {
     const { luoAktivointikoodi } = await import("../_lib/aktivointi.js");
@@ -255,7 +286,7 @@ export default async function handler(req, res) {
     let korit = null;
     try { korit = await db`select to_char(created_at at time zone 'Europe/Helsinki', 'YYYY-MM-DD') as paiva, count(*)::int as n from abandoned_carts
       where created_at > now() - ${`${paivia} days`}::interval group by 1 order by 1`; } catch (e) { korit = String(e?.message || e).slice(0, 80); }
-    const kayRivit = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde <> 'testi'
+    const kayRivit = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde not in ('testi', 'oma')
       and paiva > (now() at time zone 'Europe/Helsinki')::date - ${paivia}::int group by 1`.catch(() => []);
     const kaynnit = Object.fromEntries(kayRivit.map((r) => [r.paiva, r.n]));
     const h = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
@@ -281,6 +312,36 @@ export default async function handler(req, res) {
       tila: t.tila ?? null, ilmoitus: t.ilmoitus ?? null, verkkotunnus: String(t.email || "").split("@")[1] || "", viesti: String(t.viesti || "").slice(0, 160),
       ytunnus: !!t.ytunnus }));
     return res.status(200).json({ ok: true, rivit: rivit.map((r) => ({ ...r, ilmoitus: String(r.ilmoitus || "").replace(/\S+@\S+/g, "").trim() })) });
+  }
+
+  // Käyntien raakarivit (2.11.2026): päivä x lähde x osio &alkaen=YYYY-MM-DD; oman liikenteen ja bottien selvitykseen.
+  if (req.query.tehtava === "kaynnit-rivit") {
+    const alkaen = /^\d{4}-\d{2}-\d{2}$/.test(req.query.alkaen || "") ? req.query.alkaen : "2026-11-01";
+    const rivit = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, lahde, osio, kaynnit from kaynnit where paiva >= ${alkaen}::date
+      order by paiva, kaynnit desc`;
+    return res.status(200).json({ ok: true, rivit });
+  }
+
+  // Tuotesivun seuranta (2.11.2026, api/_lib/tuoteseuranta.js): &alkaen=YYYY-MM-DD (oletus eilen), &loppu.
+  if (req.query.tehtava === "tuoteseuranta") {
+    const { tuoteseurantaValilla } = await import("../_lib/tuoteseuranta.js");
+    const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
+    const pv = (x, oletus) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : oletus);
+    return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, pv(req.query.alkaen, hki(new Date(Date.now() - 864e5))), pv(req.query.loppu, hki(new Date())))) });
+  }
+
+  // Oma liikenne jälkikäteen (2.11.2026): päivän lähteen (&lahde=, valinnainen &osio=) käynnit lähteeseen "oma",
+  // joka ei kuulu lukuihin (api/_lib/kaynnit.js EI_LUKUIHIN). Esim. media 2.11.: lahjaoppaan linkkien tarkistus.
+  if (req.query.tehtava === "kaynnit-oma") {
+    const { paiva, lahde, osio } = req.query;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(paiva || "") || !lahde) return res.status(400).json({ ok: false });
+    const siirrettavat = await db`select osio, kaynnit from kaynnit where paiva = ${paiva}::date and lahde = ${lahde} ${osio ? db`and osio = ${osio}` : db``}`;
+    for (const r of siirrettavat) {
+      await db`insert into kaynnit (paiva, lahde, osio, kaynnit) values (${paiva}::date, 'oma', ${r.osio}, ${r.kaynnit})
+        on conflict (paiva, lahde, osio) do update set kaynnit = kaynnit.kaynnit + ${r.kaynnit}`;
+      await db`delete from kaynnit where paiva = ${paiva}::date and lahde = ${lahde} and osio = ${r.osio}`;
+    }
+    return res.status(200).json({ ok: true, siirretty: siirrettavat.reduce((s, r) => s + r.kaynnit, 0) });
   }
 
   if (req.query.tehtava === "hallinta-linkki") {

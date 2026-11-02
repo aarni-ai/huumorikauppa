@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { parseSizeTable } from "@/lib/sizeChart";
 import { mittataulukko, type Mittataulukko } from "@/data/mittataulukot";
 import { ORGANIZATION } from "@/seo/site";
+import { kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
 
 /** Vaatteen nimi ohjetekstiin: perusmuoto ja inessiivi. */
 const GARMENT: Record<string, { noun: string; inessive: string }> = {
@@ -69,7 +70,7 @@ export function SizeGuide({
   const table = cm ? null : parseSizeTable(description);
   const { noun, inessive } = GARMENT[category] ?? DEFAULT_GARMENT;
   return (
-    <Dialog>
+    <Dialog onOpenChange={(auki) => { if (auki) kirjaaTuotetapahtuma("kokotaulukko"); }}>
       <DialogTrigger asChild>
         <button type="button" className="text-xs text-primary underline underline-offset-2 flex items-center gap-1 min-h-[32px]">
           <Ruler className="h-3.5 w-3.5" /> {cm ? "Kokotaulukko (cm)" : "Kokoapu"}

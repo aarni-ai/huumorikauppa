@@ -6,7 +6,7 @@ import { poistaAvainOsoitteesta } from "@/lib/hallinta";
 
 type Video = {
   nro: string; nimi: string; muoto: string; paiva: string; paivaFi: string; aika: string; hook: string; kuvateksti: string; tagit: string[];
-  tuote: string; utm: { youtube: string; instagram: string; tiktok: string }; video: string; lataus: string; kansi: string;
+  tuote: string; video: string; lataus: string; kansi: string;
 };
 type Pinni = { slug: string; nimi: string; kuva: string; lataus: string; otsikko: string; kuvaus: string; linkki: string };
 type Manifest = { paivitetty: string; julkaisut: string; videot: Video[]; pinterest: Pinni[] };
@@ -25,7 +25,7 @@ const Kopioi = ({ teksti, nimi }: { teksti: string; nimi: string }) => {
 
 /**
  * /hallinta/some?avain=...: somevideot julkaisujärjestyksessä latauslinkkeineen, kuvateksteineen, hashtageineen ja
- * UTM-linkkeineen sekä Pinterest-kuvat (api/sahkoposti.js ?some=, Vercel Blob, scripts/some-blob.mjs). Avain on
+ * (bio: pelkkä huumorikauppa.fi, ei UTM-linkkejä 2.11.2026) sekä Pinterest-kuvat (api/sahkoposti.js ?some=, Vercel Blob, scripts/some-blob.mjs). Avain on
  * allekirjoitettu (cron ?tehtava=hallinta-linkki, linkki myös päivän yhteenvetoviestissä); noindex, robots Disallow /hallinta.
  */
 const SomeAdminPage = () => {
@@ -53,6 +53,7 @@ const SomeAdminPage = () => {
           </p>
           <nav className="flex gap-3 text-sm mb-4"><a href="#videot" className="text-primary underline">Videot</a><a href="#pinterest" className="text-primary underline">Pinterest</a></nav>
           <h2 id="videot" className="font-semibold text-lg mb-2">Videot julkaisujärjestyksessä</h2>
+          <p className="text-sm text-muted-foreground mb-3">Bio joka kanavassa: huumorikauppa.fi. Kuvatekstissä mainitaan vain "linkki biossa" tai huumorikauppa.fi. Somen käynnit tunnistetaan automaattisesti.</p>
           <ol className="space-y-3">
             {m.videot.map((v) => (
               <li key={v.nro} className={`rounded-xl border p-3 flex gap-3 ${v.paiva === tanaan ? "border-primary bg-primary/5" : v.paiva < tanaan ? "border-border opacity-60" : "border-border bg-card"}`}>
@@ -65,17 +66,13 @@ const SomeAdminPage = () => {
                     <a href={v.lataus} className="inline-flex items-center gap-1 rounded bg-primary px-2 py-1 text-xs font-medium text-primary-foreground"><Download className="h-3 w-3" aria-hidden="true" /> Lataa video</a>
                     <Kopioi teksti={v.kuvateksti} nimi="kuvateksti" />
                     <Kopioi teksti={v.tagit.join(" ")} nimi="hashtagit" />
-                    <Kopioi teksti={v.utm.youtube} nimi="YouTube-linkki" />
-                    <Kopioi teksti={v.utm.instagram} nimi="Instagram-linkki" />
-                    <Kopioi teksti={v.utm.tiktok} nimi="TikTok-linkki" />
                   </div>
-                  <div className="text-xs text-muted-foreground break-all">UTM (YouTube): {v.utm.youtube}</div>
                 </div>
               </li>
             ))}
           </ol>
           <h2 id="pinterest" className="font-semibold text-lg mt-8 mb-2">Pinterest-kuvat (1000 x 1500)</h2>
-          <p className="text-sm text-muted-foreground mb-3">Pinnin linkki vie tuotesivulle utm_source=pinterest-merkinnällä.</p>
+          <p className="text-sm text-muted-foreground mb-3">Pinnin linkki vie tuotesivulle. Pinterestistä tulevat käynnit tunnistetaan automaattisesti.</p>
           <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {m.pinterest.map((p) => (
               <li key={p.slug} className="rounded-xl border border-border bg-card p-2 space-y-1.5 text-xs">

@@ -22,6 +22,7 @@
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
+ * POST { action: "tuotetapahtumat", tapahtumat, vieritys, aika }   tuotesivun seuranta (api/_lib/tuoteseuranta.js)
  * POST { action: "suppilo", vaihe, ab, testi? }                  oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
@@ -36,7 +37,7 @@ import { haeTilaus, onPrintify } from "./_lib/printify.js";
 import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } from "./_lib/yritysmyynti.js";
 import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
-import { kaynninLahde, sivunOsio, onBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
+import { kaynninLahde, sivunOsio, onBotti, onOmaTaiBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
 import { lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
 
 /**
@@ -75,6 +76,10 @@ export function hallintaPaasy(req, res, sivu, annettu) {
   const evaste = lueEvaste(req, nimi);
   return !!evaste && tarkistaTunniste(evaste, "hallinta") === sivu;
 }
+
+/** Laskureiden suodatus (api/_lib/kaynnit.js onOmaTaiBotti): botit, hallintaselaimet, testit ja ulkoiset kutsut. */
+const omaTaiBotti = (req, body = {}) => onOmaTaiBotti({ ua: req.headers?.["user-agent"], cookie: req.headers?.cookie,
+  secFetchSite: req.headers?.["sec-fetch-site"], testi: body.testi });
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
@@ -263,16 +268,25 @@ export async function kasittele(req, res, store) {
     }
     case "kaynti": {
       // Käyntilaskuri: vain koostemäärä päivä x lähde x osio, ei IP-osoitetta eikä tunnisteita (api/_lib/kaynnit.js).
-      if (onBotti(String(req.headers["user-agent"] || ""))) return res.status(200).json({ ok: false });
-      const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120) });
+      if (omaTaiBotti(req, body)) return res.status(200).json({ ok: false, ohitettu: omaTaiBotti(req, body) });
+      const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120), ua: req.headers["user-agent"] });
       await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
     }
     case "suppilo": {
       // Oma ostosuppilo: koostemäärä päivä x vaihe x A/B-versio (api/_lib/suppilo.js), ei tunnisteita.
-      if (onBotti(String(req.headers["user-agent"] || ""))) return res.status(200).json({ ok: false });
+      // Testiajo (scripts/suppilo-testi.mjs) kirjataan versioon "testi"; muu oma liikenne ja botit ohitetaan.
+      const ohita = omaTaiBotti(req, body);
+      if (ohita && ohita !== "testi") return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaVaihe } = await import("./_lib/suppilo.js");
       return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "", { testi: body.testi === true }) });
+    }
+    case "tuotetapahtumat": {
+      // Tuotesivun seuranta (api/_lib/tuoteseuranta.js): yksi kooste katselua kohden, vain koostemäärät.
+      const ohita = omaTaiBotti(req, body);
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaTuotetapahtumat } = await import("./_lib/tuoteseuranta.js");
+      return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(sql(), body)) > 0 });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.
@@ -287,11 +301,16 @@ export async function kasittele(req, res, store) {
     case "aktivoi": {
       // Kertakäyttöinen aktivointikoodi (api/_lib/aktivointi.js): evästeet mittariin, someen ja tarjouspyyntöihin 90 pv.
       res.setHeader("Cache-Control", "private, no-store");
-      const { kaytaAktivointikoodi } = await import("./_lib/aktivointi.js");
+      // Taikalinkki (body.linkki, 48 h, kerran) tai koodi (body.koodi, 24 h, kerran).
+      const { kaytaAktivointikoodi, kaytaAktivointilinkki } = await import("./_lib/aktivointi.js");
       const { allekirjoita } = await import("./_lib/markkinointi.js");
-      const t = await kaytaAktivointikoodi(sql(), body.koodi);
-      if (!t.ok) return res.status(t.syy === "lukittu" ? 429 : 400).json({ ok: false, virhe: t.syy === "lukittu" ? "Liian monta yritystä. Yritä tunnin päästä." : "Koodi on virheellinen, vanhentunut tai jo käytetty." });
+      const onLinkki = typeof body.linkki === "string" && body.linkki.length > 0;
+      const t = onLinkki ? await kaytaAktivointilinkki(sql(), body.linkki) : await kaytaAktivointikoodi(sql(), body.koodi);
+      if (!t.ok) return res.status(t.syy === "lukittu" ? 429 : 400).json({ ok: false, virhe: t.syy === "lukittu" ? "Liian monta yritystä. Yritä tunnin päästä."
+        : onLinkki ? "Linkki on vanhentunut tai jo käytetty. Pyydä uusi linkki päivän yhteenvedosta tai Aarnilta." : "Koodi on virheellinen, vanhentunut tai jo käytetty." });
       for (const sivu of ["mittarit", "some", "tarjoukset"]) asetaHallintaEvaste(res, sivu, allekirjoita("hallinta", sivu));
+      // Oman liikenteen merkki (api/_lib/kaynnit.js onOmaTaiBotti): tämä selain ei näy käynneissä eikä suppilossa.
+      res.setHeader("Set-Cookie", [...[].concat(res.getHeader?.("Set-Cookie") || []), `hk_oma=1; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
       return res.status(200).json({ ok: true, sivut: ["/hallinta/mittarit", "/hallinta/some", "/hallinta/tarjoukset"] });
     }
     case "mainoskulut": {

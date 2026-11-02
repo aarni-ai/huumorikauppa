@@ -17,10 +17,15 @@ export function kaynninTiedot(loc: { pathname: string; search: string; host: str
 
 export function kirjaaKaynti(): void {
   if (typeof window === "undefined" || typeof fetch !== "function") return;
-  if (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse/i.test(navigator.userAgent || "")) return;
+  if (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse|inspectiontool|googleother/i.test(navigator.userAgent || "")) return;
   let navigointi: string | undefined;
   try { navigointi = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type; } catch { /* vanha selain */ }
   const tiedot = kaynninTiedot(window.location, document.referrer, navigointi);
   if (!tiedot) return;
-  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(tiedot) }).catch(() => undefined);
+  // Lyhyt bio-linkki (/ig, /tt, ...; index.html asettaa __hkBio): lähde ilman UTM-parametreja osoitteessa.
+  const bio = (window as unknown as { __hkBio?: { utm_source: string } }).__hkBio;
+  if (bio?.utm_source && !tiedot.utm) tiedot.utm = bio.utm_source;
+  // Selaintesti (scripts/suppilo-testi.mjs): palvelin ohittaa testikäynnin (api/_lib/kaynnit.js onOmaTaiBotti).
+  const testi = (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
+  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(testi ? { ...tiedot, testi: true } : tiedot) }).catch(() => undefined);
 }

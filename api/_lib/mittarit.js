@@ -171,7 +171,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   let suppilo = null;
   try {
     const alku14 = lisaaPaiva(h.paiva, -13);
-    const kayPv = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde <> 'testi'
+    const kayPv = await db`select to_char(paiva, 'YYYY-MM-DD') as paiva, sum(kaynnit)::int as n from kaynnit where lahde not in ('testi', 'oma')
       and paiva between ${alku14}::date and ${h.paiva}::date group by 1`;
     suppilo = await suppiloValilla(db, alku14, h.paiva, Object.fromEntries(kayPv.map((r) => [r.paiva, r.n])));
   } catch { /* taulua ei vielä ole */ }

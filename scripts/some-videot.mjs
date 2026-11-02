@@ -358,15 +358,18 @@ function paivays(n) {
   return { iso: d.toISOString().slice(0, 10), fi: `${d.getUTCDate()}.${d.getUTCMonth() + 1}.` };
 }
 
-/** Julkaisulista: videot päivän ja kellonajan mukaan, kuvateksti hashtageineen ja UTM-linkit (some/julkaisut.json). */
+/**
+ * Julkaisulista: videot päivän ja kellonajan mukaan, kuvateksti hashtageineen (some/julkaisut.json). 2.11.2026: ei
+ * UTM-linkkejä. Biossa on pelkkä huumorikauppa.fi, ja somekävijät tunnistetaan sovelluksen selaimesta ja viittaajasta
+ * (api/_lib/kaynnit.js someSovellus, index.html GA4).
+ */
 export function julkaisulista() {
   return [...VIDEOT].sort((a, b) => a.paiva - b.paiva || a.aika.localeCompare(b.aika)).map((v) => {
     const polku = v.linkki || `/tuote/${v.slug}`;
     const teksti = /[.!?]$/.test(v.teksti) ? v.teksti : `${v.teksti}.`;
     return {
       nro: v.nro, nimi: videonNimi(v), muoto: v.muoto || "perus", paiva: paivays(v.paiva).iso, paivaFi: paivays(v.paiva).fi, aika: v.aika,
-      hook: v.hook, kuvateksti: `${teksti} Linkki profiilissa. ${v.tagit.join(" ")}`, tagit: v.tagit, tuote: polku,
-      utm: { youtube: utm(polku, "youtube", v.nro), instagram: utm(polku, "instagram", v.nro), tiktok: utm(polku, "tiktok", v.nro) },
+      hook: v.hook, kuvateksti: `${teksti} Linkki biossa. ${v.tagit.join(" ")}`, tagit: v.tagit, tuote: polku,
     };
   });
 }
@@ -374,7 +377,6 @@ export function julkaisulista() {
 /** some/JULKAISUT.md ja some/julkaisut.json: järjestys 2.-21.11., kuvatekstit, hashtagit ja UTM-linkit kanavittain. */
 async function julkaisut() {
   const lista = julkaisulista();
-  const bio = (l) => utm("/linkit", l, "", "bio").replace("&utm_content=video", "");
   const rivit = [
     `# Somevideot: julkaisujärjestys ${lista[0].paivaFi}-${lista[lista.length - 1].paivaFi} (${lista.length} videota)`,
     "",
@@ -388,11 +390,8 @@ async function julkaisut() {
     "- **Isävideot ennen isänpäivää 8.11.** Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.",
     "- **TikTok:** lisää sovelluksen oma musiikki (Commercial Music Library, jos tili on yritystili). Videossa ei ole musiikkia.",
     "- **Instagram Reels ja YouTube Shorts:** voi julkaista sellaisenaan tai lisätä sovelluksen oman äänen.",
-    "- **Bio-linkki joka kanavaan** (laskee käynnit lähteittäin /hallinta/mittarit-sivulle):",
-    `  - TikTok: ${bio("tiktok")}`,
-    `  - Instagram: ${bio("instagram")}`,
-    `  - YouTube: ${bio("youtube")}`,
-    "- **YouTube-kuvaukseen** voi lisätä videon oman tuotelinkin (alla). TikTokissa ja Instagramissa linkki ei ole klikattava, joten kuvatekstissä viitataan profiilin linkkiin.",
+    "- **Bio joka kanavaan:** pelkkä huumorikauppa.fi. Kuvatekstissä mainitaan vain \"linkki biossa\" tai huumorikauppa.fi, ei pitkiä linkkejä.",
+    "- Käynnit tunnistetaan lähteittäin automaattisesti (Instagramin, TikTokin, Facebookin ja Pinterestin sovelluksen selain ja viittaaja).",
     "",
     "## Julkaisujärjestys",
     "",
@@ -402,14 +401,11 @@ async function julkaisut() {
     if (v.paiva !== edellinen) { rivit.push(`### ${v.paivaFi}`, ""); edellinen = v.paiva; }
     rivit.push(`**Klo ${v.aika}: video ${v.nro} (${v.muoto}): ${v.hook}**`, "",
       `- **Video:** \`some/videot/${v.nimi}.mp4\``,
-      `- **Kuvateksti:** ${v.kuvateksti}`,
-      `- **YouTube-kuvauksen linkki:** ${v.utm.youtube}`,
-      `- **Instagram (tarina tai linkkitarra):** ${v.utm.instagram}`,
-      `- **TikTok (jos linkki sallitaan):** ${v.utm.tiktok}`, "");
+      `- **Kuvateksti:** ${v.kuvateksti}`, "");
   }
   rivit.push("## Seuranta", "",
     "- Käynnit lähteittäin (tiktok, instagram, youtube) näkyvät sivulla /hallinta/mittarit ja päivän yhteenvetoviestissä.",
-    "- GA4 näyttää samat utm-parametrit (Hankinta > Liikenteen hankinta), kun kävijä on antanut analytiikkasuostumuksen.",
+    "- GA4 näyttää samat lähteet (Hankinta > Liikenteen hankinta, medium social), kun kävijä on antanut analytiikkasuostumuksen.",
     "- Arvioi 7 päivän jälkeen, mikä muoto ja aihe tuo eniten käyntejä, ja tee siitä lisää versioita.", "");
   await writeFile(join(JUURI, "some/JULKAISUT.md"), rivit.join("\n"));
   await writeFile(join(JUURI, "some/julkaisut.json"), JSON.stringify(lista, null, 1));

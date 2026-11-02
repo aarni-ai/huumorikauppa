@@ -45,6 +45,7 @@ import { revealApp } from "@/lib/prerenderPreview";
 
 import { useOikeatArviot } from "@/hooks/use-oikeat-arviot";
 import { trackViewItem } from "@/lib/analytics";
+import { aloitaTuoteseuranta, kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
 import { painetaanEUssa } from "../../api/_lib/materiaali.js";
 import { mittataulukko } from "@/data/mittataulukot";
 import { MittaTaulukko } from "@/components/SizeGuide";
@@ -272,8 +273,12 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     if (!el || typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
       // Palkki näkyy myös, jos painike on vain osittain näkyvissä (esim. kaksirivinen tuotenimi).
-      ([entry]) => setButtonOutOfView(entry.intersectionRatio < 1),
-      { threshold: [0, 1] }
+      ([entry]) => {
+        setButtonOutOfView(entry.intersectionRatio < 1);
+        // Tuotesivun seuranta (src/lib/tuoteseuranta.ts): painike vähintään puoliksi näkyvissä.
+        if (entry.intersectionRatio >= 0.5) kirjaaTuotetapahtuma("lisaa_nakyvissa");
+      },
+      { threshold: [0, 0.5, 1] }
     );
     observer.observe(el);
     const endObserver = end
@@ -400,6 +405,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     viewItemSent.current = product.slug;
     trackViewItem({ item_id: product.slug, item_name: product.name, price: product.price, quantity: 1, item_category: product.category });
   }, [product, previewOnly]);
+  // Tuotesivun seuranta: yksi kooste katselua kohden (vieritys, aika, koko, väri, kokotaulukko, painike, kori).
+  useEffect(() => {
+    if (!product?.slug || previewOnly) return;
+    return aloitaTuoteseuranta();
+  }, [product?.slug, previewOnly]);
 
   const oikeatArviot = useOikeatArviot(previewOnly ? undefined : product?.slug);
 
@@ -504,6 +514,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       return;
     }
     addItem(product, quantity, size, selectedColor, isCustom ? customText.trim() : undefined);
+    kirjaaTuotetapahtuma("kori");
   };
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -514,6 +525,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   };
 
   const handleColorSelect = (color: string) => {
+    if (color !== selectedColor) kirjaaTuotetapahtuma("vari");
     setSelectedColor(color);
   };
 
@@ -522,6 +534,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // Koon valinta: jos ostaja painoi jo Lisää koriin ilman kokoa (myös esikatselussa ennen sovelluksen latautumista),
   // tuote lisätään koriin heti valitulla koolla.
   const valitseKoko = (size: string) => {
+    kirjaaTuotetapahtuma("koko");
     setSelectedSize(size);
     setKokoMuistutus(false);
     if (lisaaKunKoko) {

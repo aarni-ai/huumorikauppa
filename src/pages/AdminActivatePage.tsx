@@ -1,14 +1,28 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
 
 /**
  * /hallinta/aktivoi: kertakäyttöinen aktivointikoodi (api/sahkoposti.js action "aktivoi"). Onnistunut koodi antaa
  * tälle selaimelle 90 päivän pääsyn sivuille /hallinta/mittarit, /hallinta/some ja /hallinta/tarjoukset.
+ * Taikalinkki /hallinta/aktivoi?t=<tunniste> (2.11.2026): aktivoi heti sivun avautuessa ilman koodia. Tunniste
+ * poistetaan osoiteriviltä, ja se lähetetään vain JavaScriptillä (linkkiskannerit eivät kuluta linkkiä).
  */
 const AdminActivatePage = () => {
   const [koodi, setKoodi] = useState("");
   const [tila, setTila] = useState<"" | "lahetetaan" | "ok" | string>("");
+  const [haku] = useSearchParams();
+  const linkki = useRef(haku.get("t"));
+  useEffect(() => {
+    const t = linkki.current;
+    if (!t) return;
+    linkki.current = null;
+    window.history.replaceState(null, "", "/hallinta/aktivoi");
+    setTila("lahetetaan");
+    fetch("/api/sahkoposti", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "aktivoi", linkki: t }) })
+      .then((r) => r.json()).catch(() => null)
+      .then((j) => setTila(j?.ok ? "ok" : j?.virhe || "Aktivointi epäonnistui."));
+  }, []);
   const laheta = async (e: React.FormEvent) => {
     e.preventDefault();
     setTila("lahetetaan");
