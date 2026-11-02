@@ -30,7 +30,7 @@ describe("oma ostosuppilo", () => {
     const { suppiloValilla, SUPPILO_LUOTETTAVA_ALKAEN } = await import("../../api/_lib/suppilo.js");
     const kyselyt: unknown[][] = [];
     const db = (osat: TemplateStringsArray, ...arvot: unknown[]) => { kyselyt.push(arvot); return Promise.resolve(/orders/.test(osat.join("")) ? [{ paiva: "2026-10-29", versio: "", n: 1 }].filter(() => false) : []); };
-    const s = await suppiloValilla(db, "2026-10-20", "2026-11-02", { "2026-10-29": 10, "2026-11-02": 5 });
+    const s = await suppiloValilla(db, "2026-10-20", "2026-11-03", { "2026-10-29": 10, "2026-11-02": 7, "2026-11-03": 5 });
     expect(s.alku).toBe(SUPPILO_LUOTETTAVA_ALKAEN);
     expect(s.yhteensa.kaynnit).toBe(5);
     expect(kyselyt.slice(-2).every((a) => a.includes(SUPPILO_LUOTETTAVA_ALKAEN))).toBe(true);

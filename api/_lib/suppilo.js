@@ -9,7 +9,9 @@
  * Nyt sekä vaiheet että ostot rajataan samaan jaksoon. Selaintestit (Playwright, scripts/suppilo-testi.mjs)
  * kirjautuvat versioon "testi", joka ei näy summissa.
  */
-export const SUPPILO_LUOTETTAVA_ALKAEN = "2026-11-02";
+// 3.11.2026: oma liikenne ja botit suodatetaan 2.11. iltapäivästä alkaen (api/_lib/kaynnit.js onOmaTaiBotti). 2.11.
+// suppilossa on mukana lahjaoppaan linkkien tarkistus (62 tuotesivua), jota ei voi jälkikäteen erottaa vaiheista.
+export const SUPPILO_LUOTETTAVA_ALKAEN = "2026-11-03";
 export const TESTI = "testi";
 export const VAIHEET = ["etusivu", "tuotesivu", "kori", "kassa", "maksu"];
 export const AB_VERSIOT = ["a", "b"];
