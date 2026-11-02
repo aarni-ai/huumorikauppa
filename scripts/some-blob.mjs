@@ -10,6 +10,8 @@
  *      [--lisakuvat some/kuvat/kuvat-<tiedosto>.json]  vain nämä Shopping- ja Pinterest-kuvat: lisäkuvat yhdistetään
  *      nykyisiin (lisakuvat.generated.js) ja Pinterest-kuvat manifestiin, videoita ei ladata uudelleen.
  *      [--uudet]  vain uudet videot (nimi puuttuu manifestista) ja JULKAISUT.md; manifestin videot julkaisulistan mukaan.
+ *                 Uudelleen tehdyt videot (3.11. alkaen, pääte -v2) ovat uusia nimiä, joten ne ladataan ja manifesti
+ *                 osoittaa niihin; 2.11. julkaistujen videoiden osoitteet säilyvät.
  * (token: vercel env pull --environment production; @vercel/blob ei ole projektin riippuvuus).
  */
 import { readFile, writeFile } from "node:fs/promises";

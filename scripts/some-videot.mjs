@@ -229,6 +229,81 @@ const VIDEOT_KIERROS2 = [
 for (const [nro, paiva] of [["25", 19], ["26", 20]]) VIDEOT.find((v) => v.nro === nro).paiva = paiva;
 VIDEOT.push(...VIDEOT_KIERROS2);
 
+/**
+ * Kolmas kierros (2.11.2026 ilta, Instagramin data: pelkät huumorivideot saivat noin 5 kertaa enemmän katseluja kuin
+ * tuotevideot). Kaikki 3.11. ja myöhemmin julkaistavat videot uusiksi: tilanne tai vitsi ensin ja suurin osa videosta
+ * (tilanne: 3 ruutua, viimeinen on paidan teksti), paita lopussa noin 2 s otsikolla "Tää on nyt paidassa", lopuksi
+ * kommentoimaan houkutteleva kysymys (sama kysymys kuvatekstin alkuun). 2.11. julkaistut videot 21 ja 01 ennallaan.
+ * Uusien versioiden tiedostonimissä pääte -v2, joten some-blob.mjs --uudet lataa ne ja manifesti osoittaa niihin.
+ * teksti = kuvatekstin loppuosa, kun alkuperäinen ei sovi kysymyksen perään (äänestysvideot).
+ */
+export const UUSI_MUOTO_ALKAEN = "2026-11-03";
+export const KASIKIRJOITUKSET = {
+  22: { tilanne: ["POV: marraskuu, kello 17 ja pimeää", "Kaikki valot päällä joka huoneessa", "Isä tulee kotiin: \"Sammuta valot. Sähkö maksaa.\""], kysymys: "Kenen isä sanoo tämän joka ilta?" },
+  "02": { tilanne: ["Pikkujoulujen jälkeinen aamu", "Puhelimessa 46 kuvaa, joita en muista ottaneeni", "\"Pikkujoulut. Muistan osittain.\""], kysymys: "Mitä sinä et muista viime pikkujouluista?" },
+  23: { tilanne: ["POV: isä sohvalla klo 20.03. Silmät kiinni.", "Joku vaihtaa kanavaa", "Isä: \"En nuku. Lepuutan silmiä.\""], kysymys: "Tekeekö teidän isä myös näin?" },
+  "03": { tilanne: ["Passissa 14 tuntia", "Kahvi loppui. Varpaat jäätyi.", "Käännyn hakemaan eväät. \"Hirvi näki minut.\""], kysymys: "Montako tuntia sinä olet istunut passissa?" },
+  24: { tilanne: ["Isä ja navigaattori", "Navigaattori: käänny oikealle", "Isä kääntyy vasemmalle: \"Isä tietää oikotien. Aina.\""], kysymys: "Kumpi on teidän isä, A vai B?",
+    teksti: "Isänpäivä 8.11. huumorikauppa.fi" },
+  "04": { tilanne: ["Sovittiin, että ollaan paikalla klo 18", "Klo 18.40 paikalla olen vain minä", "\"Saatanan tunarit.\""], kysymys: "Kuka teidän porukasta on aina myöhässä?" },
+  36: { tilanne: ["Isänpäivä on sunnuntaina", "Lahja on vielä hankkimatta", "Isän toive: \"Isänpäivä. Lepopäivä. Sama asia.\""], kysymys: "Mitä teidän isä toivoo isänpäiväksi?" },
+  "05": { tilanne: ["Joulupukki kysyy: oletko ollut kiltti?", "Muistelen vuotta hetken", "\"Kiltti. Enimmäkseen.\""], kysymys: "Kuinka kiltti sinä olit tänä vuonna?" },
+  37: { tilanne: ["POV: isänpäivä on huomenna", "Lahja puuttuu ja kaupat sulkevat", "Isä: \"Isänpäivänä minä päätän kaukosäätimestä.\""], kysymys: "Kuka teillä päättää kaukosäätimestä?" },
+  "06": { tilanne: ["Hän täyttää 60", "Joku sanoo kakun ääressä sen sanan: vanha", "\"60v kokenut, ei vanha.\""], kysymys: "Kuka teidän porukasta täyttää seuraavaksi pyöreitä?" },
+  "07": { tilanne: ["Kalastaja tulee kotiin", "Ämpäri on tyhjä", "\"Kala oli tätäkin isompi.\""], kysymys: "Mikä on sinun suurin karannut kala?" },
+  27: { tilanne: ["POV: soitat eläkkeellä olevalle isälle", "Maanantaina sali, tiistaina mökki, keskiviikkona lapsenlapset", "\"Eläkkeellä. Kiireinen silti.\""], kysymys: "Kenen eläkeläisen kalenteri on täynnä?" },
+  "08": { tilanne: ["Synttärilahja on taas hukassa", "Hänellä on jo kaikki", "Paitsi paita, jossa lukee hänen nimensä"], kysymys: "Kenen nimen laitat paitaan?",
+    pers: [{ malli: "synttarisankari", nimi: "Marja", ika: "60", vari: "Musta" }, { malli: "vuosikerta", vuosi: "1966", vari: "Valkoinen" }] },
+  28: { tilanne: ["Hän: Lähdetäänkö pikkujouluista jo kotiin?", "Kello on 22.15", "Minä: \"Karaokevuoro varattu jo syyskuussa.\""], kysymys: "Kumpi teistä lähtee aina ensimmäisenä?" },
+  "09": { tilanne: ["Uusi tonttu aloitti tänään", "Paketoi väärät lahjat väärille lapsille", "\"Tonttu koeajalla.\""], kysymys: "Kuka teidän työpaikalla on tonttu koeajalla?" },
+  29: { tilanne: ["Se yks kaveri, joka lupasi lähteä pikkujouluista klo 22", "Klo 2 hän on yhä tanssilattialla", "\"Tänään tanssin. Huomenna kadun.\""], kysymys: "Kuka teidän porukasta lähtee aina viimeisenä?" },
+  10: { tilanne: ["Lauantaiaamu jäällä", "Puhelin soi kolmannen kerran", "\"Pilkillä. Älä soita.\""], kysymys: "Kuka soittaa aina, kun olet pilkillä?" },
+  30: { tilanne: ["Se yks kaveri, joka muistaa pikkujouluista ihan kaiken", "Ja kertoo siitä vielä kymmenen vuoden päästä", "\"Pikkujoulut 2026: muistetaan 2036.\""], kysymys: "Mikä pikkujoulutarina teillä kerrotaan joka vuosi?" },
+  11: { tilanne: ["Kaveri aloittaa saman tarinan taas", "Kaikki tietävät jo lopun", "\"Se oli tonnin seteli.\""], kysymys: "Kuka teidän porukasta kertoo saman tarinan joka kerta?" },
+  31: { tilanne: ["Pikkujoulujen jälkeen on kahdenlaisia ihmisiä", "Toinen ei muista mitään. Toinen muistaa kaiken, koska ajoi.", "Kumpi sinä olet?"], kysymys: "Kumpi sinä olet, A vai B?",
+    teksti: "Pikkujoulut. Muistan osittain vai Pikkujoulujen nimetty kuski. huumorikauppa.fi" },
+  12: { tilanne: ["Mökillä ei ole kiire", "Puhelimessa yksi palkki. Sitten nolla.", "\"Mökillä ei ole kiire. Eikä kenttää.\""], kysymys: "Missä teidän mökillä on se ainoa kenttäpaikka?" },
+  32: { tilanne: ["Eläkkeelle jäämisen jälkeen", "Kello jää laatikkoon. Mökin työt eivät jää.", "Kumpi kuvaa teidän eläkeläistä?"], kysymys: "Kumpi sopii teidän eläkeläiselle, A vai B?",
+    teksti: "Eläkkeellä. Kello on vain koru vai Työt loppui. Mökki ei. huumorikauppa.fi" },
+  13: { tilanne: ["Joulun oikea järjestys", "Ei siivousta, ei lahjoja, ei kinkkua", "\"Glögi ensin. Sitten joulu.\""], kysymys: "Mikä tulee teillä jouluna ensin?" },
+  33: { tilanne: ["Hän: Kuka sai mantelin tänä vuonna?", "Kaikki katsovat lautasiaan", "Minä: \"Riisipuurosta löysin vain riisiä.\""], kysymys: "Kuka teillä saa mantelin joka vuosi?" },
+  14: { tilanne: ["Kanalintujahti", "Koira seisoo. Minä etsin.", "\"Koira löysi. Minä en.\""], kysymys: "Kumpi teillä löytää linnun ensin, koira vai sinä?" },
+  34: { tilanne: ["Hän: Onko joulukortit jo lähetetty?", "Kortit ovat yhä laatikossa. Ostettu 2024.", "Minä: \"Joulukortit lähtevät ensi vuonna.\""], kysymys: "Lähetätkö sinä vielä joulukortteja?" },
+  15: { tilanne: ["60 vuotta käytössä", "Polvi naksuu. Selkä ennustaa sään.", "\"60v takuu mennyt, toimii silti.\""], kysymys: "Kenelle teidän porukasta tämä sopii?" },
+  35: { tilanne: ["Jouluaatossa on kaksi koulukuntaa", "Toinen aloittaa glögillä. Toinen saunalla.", "Kumpaa koulukuntaa sinä olet?"], kysymys: "Glögi vai sauna, A vai B?",
+    teksti: "Glögi ensin. Sitten joulu vai Joulusaunan löylymestari. huumorikauppa.fi" },
+  16: { tilanne: ["Pikkujoulut, kello 1 yöllä", "Kaikki kääntyvät katsomaan yhtä ihmistä", "\"Pikkujoulujen nimetty kuski.\""], kysymys: "Kuka teidän porukasta ajaa aina?" },
+  17: { tilanne: ["Lauantai-ilta", "Tiskit, pyykit ja sähköpostit odottavat", "\"Sauna lämpiää. Muut asiat odottaa.\""], kysymys: "Mikä asia odottaa teillä saunan ajan?" },
+  18: { tilanne: ["Talvi tulee", "Lumitöissä paikalla taas yksi ihminen", "\"Saatanan tunarit.\""], kysymys: "Kuka teillä luo aina lumet yksin?" },
+  25: { tilanne: ["Marraskuun aamu, kello 7", "Pimeää kuin yöllä. Herätys soi kolmannen kerran.", "\"Herätyskello eläkkeellä myös.\""], kysymys: "Monesko torkku sinulla menee marraskuussa?" },
+  19: { tilanne: ["Par on tavoite", "Kolme lyöntiä vesiesteeseen", "\"Bogey on elämäntapa.\""], kysymys: "Mikä on sinun paras tulos yhdellä reiällä?" },
+  26: { tilanne: ["Se yks kaveri saunassa", "Muut istuvat jo alalauteilla", "\"Löylyä lisää. Ei ole kuuma.\""], kysymys: "Kuka teidän saunaporukasta heittää aina lisää?" },
+  20: { tilanne: ["Kalastaja kertoo saaliistaan", "Viikko sitten kala oli puoli metriä. Nyt metrin.", "\"Kalastan, siis valehtelen.\""], kysymys: "Kuinka iso teidän porukan tarinan kala on nyt?" },
+  38: { tilanne: ["Pikkujoulut, kello 23", "Se yks kaveri nostaa maljan toimitusjohtajalle", "\"Pikkujoulut. Nyt sinuttelen esimiestä.\""], kysymys: "Mitä teidän pikkujouluissa tapahtuu kello 23?" },
+  39: { tilanne: ["Pikkujoulut 2026", "Kaikilla on sama tonttulakki", "Mikko tuli paidalla, jossa on hänen nimensä"], kysymys: "Kenen nimen laitat pikkujoulupaitaan?" },
+  41: { tilanne: ["Se yks kaveri saunassa", "Kiuas sihisee jo. Muut pakenevat ovelle.", "\"Löylymestari. Vain yksi kauha lisää.\""], kysymys: "Kuka teidän saunassa heittää aina vielä yhden?" },
+  40: { tilanne: ["Remonttiviikonloppu", "Hylly on seinällä. Ruuveja jäi yli kuusi.", "\"Amatimies.\""], kysymys: "Kuka teidän porukasta korjaa kaiken itse?" },
+  43: { tilanne: ["Lauantai, sauna on lämmin", "Kolme kierrosta löylyä ja avanto", "\"Saunakalja ei ole neuvoteltavissa.\""], kysymys: "Mitä teillä juodaan saunan jälkeen?" },
+  42: { tilanne: ["Kaljaporukan perjantai", "Joku kysyy, eikö jo riitä", "\"Minulla ei ole alkoholiongelmaa. Hyvin se uppoaa.\""], kysymys: "Kuka teidän kaljaporukasta tarvitsee tämän?" },
+  45: { tilanne: ["Sähkömies tulee kylään", "Ensimmäisenä hän katsoo jatkojohtoa sohvan takana", "\"Sähkömies. Tiedän, mikä johtaa mihinkin.\""], kysymys: "Kuka teidän suvusta tarkistaa aina sähköt?" },
+  44: { tilanne: ["Pomo kysyy: kuka asensi tämän?", "Kaikki katsovat samaan suuntaan", "\"Amatimies.\""], kysymys: "Kuka teidän työmaalla on amatimies?" },
+  47: { tilanne: ["Saunaporukan vanhin", "Istunut ylälauteilla vuodesta 1975", "Nyt se lukee hänen paidassaan"], kysymys: "Kuka on teidän saunan vanhin?" },
+  46: { tilanne: ["Eläkeläinen maanantaiaamuna", "Herätys soi. Hän kääntää kylkeä.", "\"Olen eläkkeellä.\""], kysymys: "Kenelle eläkeläiselle annat tämän jouluna?" },
+  49: { tilanne: ["Hän: Saako kinkkua jo maistaa?", "Kello on 9 aamulla. Aatto.", "Minä: \"Kinkkuvahti. Älä koske.\""], kysymys: "Kuka teillä maistaa kinkkua ennen aattoa?" },
+  48: { tilanne: ["Isä korjaa hanaa kolmatta tuntia", "Äiti soittaa putkimiehen", "Kaksi paitaa, kaksi totuutta"], kysymys: "Kumpi teillä korjaa hanan, äiti vai isä?" },
+  51: { tilanne: ["Yövuoro, kello 3.12", "Kahvi loppui ja kolme hälytystä soi", "\"Sairaanhoitaja. Kahvi on ensiapua.\""], kysymys: "Montako kuppia yövuoro vaatii?" },
+  50: { tilanne: ["Pikkujoulujen lahjanvaihto", "Kaikki saavat suklaarasian. Taas.", "Tiina sai paidan, jossa on hänen nimensä"], kysymys: "Kuka on teidän paras työkaveri?" },
+  53: { tilanne: ["Se yks kaveri: \"Lähden vain yhdelle\"", "Perjantai klo 18. Puhelin hiljenee.", "\"Piipahdan yhdelle. Palaan maanantaina.\""], kysymys: "Kuka teidän porukasta lähtee aina vain yhdelle?" },
+  52: { tilanne: ["POV: anoppi soitti", "Hän tulee jouluksi. Viikoksi.", "\"Anoppi tulee jouluksi. Pysy rauhallisena.\""], kysymys: "Kuka teille tulee jouluksi?" },
+  55: { tilanne: ["Joulukuu alkaa", "Lahjalistalla 12 nimeä. Ostettu nolla.", "\"Lahjapaniikki. Perinteinen joulutapa.\""], kysymys: "Montako lahjaa sinulla on vielä ostamatta?" },
+  54: { tilanne: ["Eläkeläinen perjantaina kello 10", "Saunakalja aukeaa. Kukaan ei sano mitään.", "\"Eläkeläinen. Teen mitä haluan.\""], kysymys: "Kenelle ostat toisen paidan?" },
+};
+for (const v of VIDEOT) {
+  const k = KASIKIRJOITUKSET[v.nro];
+  if (!k) continue;
+  Object.assign(v, { kierros: 3, tilanne: k.tilanne, kysymys: k.kysymys, ...(k.teksti ? { teksti: k.teksti } : {}), ...(k.pers ? { pers: k.pers } : {}) });
+}
+
 const xml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 /** Rivitys arvioidulla merkkileveydellä (Anton noin 0,46 em, Arial Bold noin 0,6 em). */
@@ -419,7 +494,7 @@ async function aanestysruutu(v, kuvat, nimet, kehotus) {
 const kuvaUrlit = (p, kuvat) => kuvat.map((x) => (x === "lifestyle" ? p.images.find((u) => u.includes("lifestyle")) : p.images[x]));
 
 /** Videon tiedostonimi ilman päätettä. */
-export const videonNimi = (v) => `${v.nro}-${v.slug.slice(0, 48).replace(/-+$/, "")}`;
+export const videonNimi = (v) => `${v.nro}-${v.slug.slice(0, 48).replace(/-+$/, "")}${v.kierros === 3 ? "-v2" : ""}`;
 
 async function teeVideo(v) {
   const ruudut = [];
@@ -466,7 +541,7 @@ function lifeUrl(p) {
 async function lifeRuutu(v, kuvaB, otsikko) {
   const m = await sharp(kuvaB).metadata();
   const rajattu = await sharp(kuvaB).extract({ left: Math.round(m.width * 0.19), top: Math.round(m.height * 0.01), width: Math.round(m.width * 0.62), height: Math.round(m.height * 0.62) }).jpeg().toBuffer();
-  return tuoteruutu({ ...v, personoitu: true }, rajattu, otsikko.teksti, otsikko.etuliite);
+  return tuoteruutu({ ...v, personoitu: true }, rajattu, otsikko.teksti, otsikko.etuliite, otsikko.lainaus ?? true);
 }
 
 /** Tietoruutu: otsikko korostusvärillä, rivit valkoisella ja pakollinen pieni teksti (esim. 30 päivän alin hinta). */
@@ -563,6 +638,124 @@ async function teeVideo2(v) {
   return { nimi, kesto };
 }
 
+/**
+ * Tilanneruutu (kolmas kierros): "Hän:" ja "Minä:" puhekuplina, muu iso teksti. Ensimmäisessä ruudussa yläotsikko
+ * (koukku), viimeisessä (paidan teksti) korostusväri.
+ */
+async function tilanneruutu(v, teksti, i, n) {
+  const t = TEEMAT[v.teema];
+  const yla = i === 0 ? v.ala : null;
+  const puhe = teksti.match(/^(Hän|Minä|Isä):\s*(.+)$/);
+  let sisalto, ylin;
+  if (puhe) {
+    const minä = puhe[1] !== "Hän";
+    const { koko, rivit } = sovita(puhe[2], 820, 560, { max: 104, min: 54 });
+    const korkeus = rivit.length * koko * 1.18 + 120;
+    const y0 = 780 - korkeus / 2;
+    const tausta = minä ? t.korostus : "#ffffff";
+    const karki = minä ? `${W - 160},${y0 + korkeus - 4} ${W - 250},${y0 + korkeus - 4} ${W - 150},${y0 + korkeus + 70}` : `160,${y0 + korkeus - 4} 250,${y0 + korkeus - 4} 150,${y0 + korkeus + 70}`;
+    sisalto = `<rect x="80" y="${y0}" width="${W - 160}" height="${korkeus}" rx="48" fill="${tausta}"/><polygon points="${karki}" fill="${tausta}"/>
+      ${tekstiSvg([`${puhe[1].toUpperCase()}:`], 52, y0 + 22, "#15171f", "Arial", 1)}${tekstiSvg(rivit, koko, y0 + 90, "#15171f")}`;
+    ylin = y0;
+  } else {
+    const viimeinen = i === n - 1;
+    const { koko, rivit } = sovita(viimeinen ? teksti : teksti.toUpperCase(), 900, 760, viimeinen ? { max: 130, min: 60 } : undefined);
+    const korkeus = rivit.length * koko * 1.18;
+    const y0 = 780 - korkeus / 2;
+    sisalto = tekstiSvg(rivit, koko, y0, viimeinen ? t.korostus : "#ffffff");
+    ylin = y0;
+  }
+  const pilliSvg = yla ? `<rect x="${W / 2 - pilli(yla) / 2}" y="${ylin - 150}" width="${pilli(yla)}" height="84" rx="42" fill="${t.korostus}"/>${tekstiSvg([yla], 46, ylin - 150 + 6, t.tausta, "Arial", 1)}` : "";
+  return svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${t.tausta}"/>${pilliSvg}${sisalto}</svg>`);
+}
+
+/** Kysymysruutu videon loppuun: kommentoimaan houkutteleva kysymys ja huumorikauppa.fi. */
+async function kysymysruutu(v, pieni) {
+  const t = TEEMAT[v.teema];
+  const { koko, rivit } = sovita(v.kysymys.toUpperCase(), 920, 620, { max: 130, min: 60 });
+  const korkeus = rivit.length * koko * 1.18;
+  const y0 = 700 - korkeus / 2;
+  const p = pieni ? rivita(pieni, 38, 900, 0.56) : [];
+  return svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${t.tausta}"/>
+    ${tekstiSvg(rivit, koko, y0, "#ffffff")}
+    ${tekstiSvg(["Vastaa kommentteihin"], 56, y0 + korkeus + 60, t.korostus, "Arial", 1)}
+    ${tekstiSvg(["huumorikauppa.fi"], 48, y0 + korkeus + 150, "#ffffff", "Arial", 1)}
+    ${p.length ? tekstiSvg(p, 38, 1340, "#d9d9d9", "Arial", 1.35) : ""}</svg>`);
+}
+
+/** Kaksi paitaa rinnakkain lopussa: otsikko, A/B tai hinta ja pakollinen pieni teksti. */
+async function kaksiPaitaa(v, kuvat, nimet, { otsikko, ab, hinta, pieni }) {
+  const t = TEEMAT[v.teema];
+  const lev = 500;
+  const kortit = await Promise.all(kuvat.map(async (k) => {
+    const m = await sharp(k).metadata();
+    const raj = { left: Math.round(m.width * 0.11), top: Math.round(m.height * 0.1), width: Math.round(m.width * 0.78), height: Math.round(m.height * 0.78) };
+    const maski = Buffer.from(`<svg width="${lev}" height="${lev}"><rect width="${lev}" height="${lev}" rx="28" fill="#fff"/></svg>`);
+    return sharp(k).extract(raj).resize(lev, lev, { fit: "cover" }).composite([{ input: maski, blend: "dest-in" }]).png().toBuffer();
+  }));
+  const nimiRivit = nimet.map((n) => sovita(`"${n}"`, 470, 200, { max: 54, min: 34 }));
+  const p = pieni ? rivita(pieni, 38, 900, 0.56) : [];
+  const merkki = (x, i) => `<circle cx="${30 + lev / 2 + i * (lev + 20)}" cy="560" r="62" fill="${t.korostus}"/><text x="${30 + lev / 2 + i * (lev + 20)}" y="588" font-family="Anton" font-size="80" fill="${t.tausta}" text-anchor="middle">${x}</text>`;
+  const pohja = await svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${t.tausta}"/>
+    ${tekstiSvg([otsikko], 100, 300, "#ffffff")}
+    ${ab ? ["A", "B"].map(merkki).join("") : ""}
+    ${nimiRivit.map((n, i) => n.rivit.map((r, j) => `<text x="${30 + lev / 2 + i * (lev + 20)}" y="${1220 + j * n.koko * 1.1}" font-family="Anton" font-size="${n.koko}" fill="#ffffff" text-anchor="middle">${xml(r)}</text>`).join("")).join("")}
+    ${hinta ? `${tekstiSvg([hinta[0]], 46, 1310, "#ffffff", "Arial", 1)}${tekstiSvg([hinta[1]], 130, 1380, t.korostus)}` : ""}
+    ${p.length ? tekstiSvg(p, 38, 1590, "#d9d9d9", "Arial", 1.35) : ""}</svg>`);
+  return sharp(pohja).composite(kortit.map((k, i) => ({ input: k, left: 30 + i * (lev + 20), top: 650 }))).png().toBuffer();
+}
+
+/**
+ * Kolmannen kierroksen video: tilanne (3 ruutua, noin 6,5 s) > paita noin 2 s ("Tää on nyt paidassa") >
+ * [lahjakortti- tai joulun tilauspäiväruutu] > kysymys. Black Friday: hinta ja 30 päivän alin hinta paitaruudussa ja
+ * kysymysruudussa.
+ */
+async function teeVideo3(v) {
+  const ruudut = [];
+  const kestot = [];
+  const tmp = join(VALI, "ruudut");
+  await mkdir(tmp, { recursive: true });
+  const tallenna = async (b, n, kesto) => { const p = join(tmp, `${v.nro}-${n}.png`); await writeFile(p, b); ruudut.push(p); kestot.push(kesto); };
+  const tilanneKestot = [2.4, 2.3, 2.5];
+  let kansi;
+  for (const [i, teksti] of v.tilanne.entries()) {
+    const b = await tilanneruutu(v, teksti, i, v.tilanne.length);
+    if (i === 0) kansi = b;
+    await tallenna(b, `t${i}`, tilanneKestot[i]);
+  }
+  const PAITA = 2.3;
+  const tarjous = v.muoto === "tarjous";
+  if (v.pers) {
+    const { kuva: b } = await personoituEsikatselu(v.pers[0]);
+    const { kuva: b2 } = await personoituEsikatselu(v.pers[1]);
+    const yhd = await sharp({ create: { width: 1100, height: 1100, channels: 4, background: "#e9e6df" } })
+      .composite(await Promise.all([b, b2].map(async (x, i) => ({
+        input: await sharp(x).extract({ left: 175, top: 40, width: 750, height: 1000 }).resize(540, 720).png().toBuffer(), left: 10 + i * 545, top: 190 })))).png().toBuffer();
+    await tallenna(await tuoteruutu({ ...v, personoitu: true }, yhd, "Tää on nyt paidassa. Omalla nimellä.", "", false), "p", PAITA + 0.3);
+  } else if (v.slugit) {
+    const tt = await Promise.all(v.slugit.map((x) => tuote(x)));
+    if (tarjous) for (const p of tt) if (Math.abs(p.price - BF.kappalehinta) > 0.005 || p.category !== BF.kategoria) throw new Error(`${p.slug}: ei Black Friday -paita (${p.price} €)`);
+    const kuvat = await Promise.all(tt.map((p) => kuva(p.images[0], `${p.slug}-0`)));
+    const nimet = tt.map((p) => paidanTeksti(p.name));
+    await tallenna(await kaksiPaitaa(v, kuvat, nimet, tarjous
+      ? { otsikko: "NÄÄ ON NYT PAIDOISSA", hinta: [`Black Friday ${BF_PAIVAT}: kaksi t-paitaa`, eur(BF.parihinta)], pieni: BF_HINTALAUSE }
+      : { otsikko: "NÄÄ ON NYT PAIDOISSA", ab: true }), "p", PAITA + 0.4);
+  } else {
+    const p = await tuote(v.slug);
+    const life = lifeUrl(p);
+    const b = life ? await kuva(life, `${v.slug}-life`) : await kuva(p.images[0], `${v.slug}-0`);
+    if (life) await tallenna(await lifeRuutu(v, b, { teksti: "Tää on nyt paidassa", etuliite: "", lainaus: false }), "p", PAITA);
+    else await tallenna(await tuoteruutu(v, b, "Tää on nyt paidassa", "", false), "p", PAITA);
+  }
+  if (v.info && !tarjous && !v.info.otsikko.startsWith("TEE PAITA")) await tallenna(await inforuutu(v, v.info), "i", 2.6);
+  await tallenna(await kysymysruutu(v, tarjous ? `Black Friday ${BF_PAIVAT} ${BF_HINTALAUSE}` : null), "k", 2.8);
+  await mkdir(ULOS, { recursive: true });
+  const nimi = videonNimi(v);
+  const kesto = koosta(ruudut, kestot, join(ULOS, `${nimi}.mp4`));
+  await sharp(kansi).resize(540, 960).jpeg({ quality: 85 }).toFile(join(ULOS, `${nimi}.jpg`));
+  return { nimi, kesto };
+}
+
 /** Julkaisupäivä (1 = 2.11.2026) muodossa { iso, fi }. */
 const ALKU = "2026-11-02";
 function paivays(n) {
@@ -582,7 +775,8 @@ export function julkaisulista() {
     const teksti = /[.!?]$/.test(v.teksti) ? v.teksti : `${v.teksti}.`;
     return {
       nro: v.nro, nimi: videonNimi(v), muoto: v.muoto || "perus", paiva: paivays(v.paiva).iso, paivaFi: paivays(v.paiva).fi, aika: v.aika,
-      hook: v.hook, kuvateksti: `${teksti} Linkki biossa. ${v.tagit.join(" ")}`, tagit: v.tagit, tuote: polku,
+      hook: v.tilanne ? v.tilanne[0] : v.hook, kuvateksti: `${v.kysymys ? `${v.kysymys} ` : ""}${teksti} Linkki biossa. ${v.tagit.join(" ")}`, tagit: v.tagit, tuote: polku,
+      ...(v.kysymys ? { kysymys: v.kysymys } : {}),
     };
   });
 }
@@ -593,13 +787,14 @@ async function julkaisut() {
   const rivit = [
     `# Somevideot: julkaisujärjestys ${lista[0].paivaFi}-${lista[lista.length - 1].paivaFi} (${lista.length} videota)`,
     "",
-    "Videot: 1080 x 1920, 9:16, 9-13 s, H.264, hiljainen äänirata (ei puheääntä eikä musiikkia). Kansikuva on samanniminen .jpg.",
+    "Videot: 1080 x 1920, 9:16, 10-14 s, H.264, hiljainen äänirata (ei puheääntä eikä musiikkia). Kansikuva on samanniminen .jpg.",
     "Lataus Coworkille: /hallinta/some (avaimellinen linkki päivän yhteenvetoviestissä). Paikallisesti kansiossa `some/videot/`.",
     "Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026). Tuotekuvat ovat kaupan omia Printify-mockupeja ja lifestyle-kuvia.",
     "",
     "## Näin julkaiset",
     "",
-    "- **Videot 1-20** iltaisin klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.",
+    "- **Uusi muoto 3.11. alkaen** (Instagramissa huumorivideot saivat noin 5 kertaa enemmän katseluja kuin tuotevideot): tilanne tai vitsi ensin, paita lopussa noin 2 s (\"Tää on nyt paidassa\") ja lopuksi kysymys. Sama kysymys on kuvatekstin alussa. Vastaa kommentteihin ja kiinnitä paras. Tiedostonimissä pääte -v2.",
+    "- **Videot 1-20** klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.",
     "- **Isävideot ennen isänpäivää 8.11.** Painettu paita ei enää ehdi isänpäiväksi, joten videot 36 ja 37 nostavat lahjakortin. Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.",
     `- **Black Friday ${BF_PAIVAT}** (muoto tarjous): kaksi ${eur(BF.kappalehinta)}:n t-paitaa ${eur(BF.parihinta)}. Kuvatekstissä on aina t-paidan hinta ja 30 päivän alin hinta; älä poista sitä. Joulun viimeinen tilauspäivä on ${JOULU_VIIMEINEN.teksti}`,
     "- **TikTok:** lisää sovelluksen oma musiikki (Commercial Music Library, jos tili on yritystili). Videossa ei ole musiikkia.",
@@ -614,6 +809,7 @@ async function julkaisut() {
   for (const v of lista) {
     if (v.paiva !== edellinen) { rivit.push(`### ${v.paivaFi}`, ""); edellinen = v.paiva; }
     rivit.push(`**Klo ${v.aika}: video ${v.nro} (${v.muoto}): ${v.hook}**`, "",
+      ...(v.kysymys ? [`- **Kysymys lopussa:** ${v.kysymys}`] : []),
       `- **Video:** \`some/videot/${v.nimi}.mp4\``,
       `- **Kuvateksti:** ${v.kuvateksti}`, "");
   }
@@ -632,7 +828,7 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop()
   await julkaisut();
   if (!process.argv.includes("--md")) {
     for (const v of VIDEOT.filter((x) => (!vain || x.nro === vain) && Number(x.nro) >= alkaen)) {
-      const r = v.kierros === 2 ? await teeVideo2(v) : await teeVideo(v);
+      const r = v.kierros === 3 ? await teeVideo3(v) : v.kierros === 2 ? await teeVideo2(v) : await teeVideo(v);
       console.log(`${r.nimi}.mp4 ${r.kesto.toFixed(1)} s`);
     }
   }

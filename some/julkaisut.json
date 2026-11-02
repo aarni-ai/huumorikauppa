@@ -36,569 +36,602 @@
  },
  {
   "nro": "22",
-  "nimi": "22-sammuta-valot-sahko-maksaa-t-paita-isalle",
+  "nimi": "22-sammuta-valot-sahko-maksaa-t-paita-isalle-v2",
   "muoto": "pov",
   "paiva": "2026-11-03",
   "paivaFi": "3.11.",
   "aika": "11-13",
-  "hook": "POV: marraskuu, kaikki valot päällä ja isä tulee kotiin",
-  "kuvateksti": "Sammuta valot. Sähkö maksaa. Isän lempilause marraskuussa. huumorikauppa.fi. Linkki biossa. #isänpäivä #marraskuu #pov #hauskapaita",
+  "hook": "POV: marraskuu, kello 17 ja pimeää",
+  "kuvateksti": "Kenen isä sanoo tämän joka ilta? Sammuta valot. Sähkö maksaa. Isän lempilause marraskuussa. huumorikauppa.fi. Linkki biossa. #isänpäivä #marraskuu #pov #hauskapaita",
   "tagit": [
    "#isänpäivä",
    "#marraskuu",
    "#pov",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/sammuta-valot-sahko-maksaa-t-paita-isalle"
+  "tuote": "/tuote/sammuta-valot-sahko-maksaa-t-paita-isalle",
+  "kysymys": "Kenen isä sanoo tämän joka ilta?"
  },
  {
   "nro": "02",
-  "nimi": "02-pikkujoulut-muistan-osittain-t-paita-pikkujoului",
+  "nimi": "02-pikkujoulut-muistan-osittain-t-paita-pikkujoului-v2",
   "muoto": "perus",
   "paiva": "2026-11-03",
   "paivaFi": "3.11.",
   "aika": "18-20",
   "hook": "Pikkujoulujen jälkeinen aamu",
-  "kuvateksti": "Pikkujoulut. Muistan osittain. T-paitana ja hupparina, huumorikauppa.fi. Linkki biossa. #pikkujoulut #pikkujoulupaita #hauskapaita #joulu",
+  "kuvateksti": "Mitä sinä et muista viime pikkujouluista? Pikkujoulut. Muistan osittain. T-paitana ja hupparina, huumorikauppa.fi. Linkki biossa. #pikkujoulut #pikkujoulupaita #hauskapaita #joulu",
   "tagit": [
    "#pikkujoulut",
    "#pikkujoulupaita",
    "#hauskapaita",
    "#joulu"
   ],
-  "tuote": "/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin"
+  "tuote": "/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin",
+  "kysymys": "Mitä sinä et muista viime pikkujouluista?"
  },
  {
   "nro": "23",
-  "nimi": "23-en-nuku-lepuutan-silmia-t-paita-isalle",
+  "nimi": "23-en-nuku-lepuutan-silmia-t-paita-isalle-v2",
   "muoto": "pov",
   "paiva": "2026-11-04",
   "paivaFi": "4.11.",
   "aika": "11-13",
-  "hook": "POV: isä sohvalla klo 20.03",
-  "kuvateksti": "En nuku. Lepuutan silmiä. Tunnistatko isäsi? huumorikauppa.fi. Linkki biossa. #isänpäivä #isä #pov #suomihuumori",
+  "hook": "POV: isä sohvalla klo 20.03. Silmät kiinni.",
+  "kuvateksti": "Tekeekö teidän isä myös näin? En nuku. Lepuutan silmiä. Tunnistatko isäsi? huumorikauppa.fi. Linkki biossa. #isänpäivä #isä #pov #suomihuumori",
   "tagit": [
    "#isänpäivä",
    "#isä",
    "#pov",
    "#suomihuumori"
   ],
-  "tuote": "/tuote/en-nuku-lepuutan-silmia-t-paita-isalle"
+  "tuote": "/tuote/en-nuku-lepuutan-silmia-t-paita-isalle",
+  "kysymys": "Tekeekö teidän isä myös näin?"
  },
  {
   "nro": "03",
-  "nimi": "03-passissa-14-tuntia-hirvi-naki-minut-t-paita-mets",
+  "nimi": "03-passissa-14-tuntia-hirvi-naki-minut-t-paita-mets-v2",
   "muoto": "perus",
   "paiva": "2026-11-04",
   "paivaFi": "4.11.",
   "aika": "18-20",
-  "hook": "Passissa 14 tuntia.",
-  "kuvateksti": "Ja sitten hirvi näki minut. T-paita metsästäjälle, huumorikauppa.fi. Linkki biossa. #metsästys #hirvijahti #hauskapaita #lahjaidea",
+  "hook": "Passissa 14 tuntia",
+  "kuvateksti": "Montako tuntia sinä olet istunut passissa? Ja sitten hirvi näki minut. T-paita metsästäjälle, huumorikauppa.fi. Linkki biossa. #metsästys #hirvijahti #hauskapaita #lahjaidea",
   "tagit": [
    "#metsästys",
    "#hirvijahti",
    "#hauskapaita",
    "#lahjaidea"
   ],
-  "tuote": "/tuote/passissa-14-tuntia-hirvi-naki-minut-t-paita-metsastajalle"
+  "tuote": "/tuote/passissa-14-tuntia-hirvi-naki-minut-t-paita-metsastajalle",
+  "kysymys": "Montako tuntia sinä olet istunut passissa?"
  },
  {
   "nro": "24",
-  "nimi": "24-isa-tietaa-oikotien-aina-t-paita-isalle",
+  "nimi": "24-isa-tietaa-oikotien-aina-t-paita-isalle-v2",
   "muoto": "aanestys",
   "paiva": "2026-11-05",
   "paivaFi": "5.11.",
   "aika": "11-13",
-  "hook": "Isänpäivälahja: kumman valitsisit?",
-  "kuvateksti": "A vai B? Kerro kommenteissa, kumpi sopii sinun isällesi. Isänpäivä 8.11. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #kummanvalitsisit #hauskapaita",
+  "hook": "Isä ja navigaattori",
+  "kuvateksti": "Kumpi on teidän isä, A vai B? Isänpäivä 8.11. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #kummanvalitsisit #hauskapaita",
   "tagit": [
    "#isänpäivä",
    "#isänpäivälahja",
    "#kummanvalitsisit",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/isa-tietaa-oikotien-aina-t-paita-isalle"
+  "tuote": "/tuote/isa-tietaa-oikotien-aina-t-paita-isalle",
+  "kysymys": "Kumpi on teidän isä, A vai B?"
  },
  {
   "nro": "04",
-  "nimi": "04-saatanan-tunarit-t-paita",
+  "nimi": "04-saatanan-tunarit-t-paita-v2",
   "muoto": "perus",
   "paiva": "2026-11-05",
   "paivaFi": "5.11.",
   "aika": "18-20",
-  "hook": "Kun koko porukka on taas myöhässä",
-  "kuvateksti": "Saatanan tunarit. Klassikko nyt paitana, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #saatanantunarit",
+  "hook": "Sovittiin, että ollaan paikalla klo 18",
+  "kuvateksti": "Kuka teidän porukasta on aina myöhässä? Saatanan tunarit. Klassikko nyt paitana, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #saatanantunarit",
   "tagit": [
    "#hauskapaita",
    "#suomihuumori",
    "#saatanantunarit"
   ],
-  "tuote": "/tuote/saatanan-tunarit-t-paita"
+  "tuote": "/tuote/saatanan-tunarit-t-paita",
+  "kysymys": "Kuka teidän porukasta on aina myöhässä?"
  },
  {
   "nro": "36",
-  "nimi": "36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle",
+  "nimi": "36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle-v2",
   "muoto": "perus",
   "paiva": "2026-11-06",
   "paivaFi": "6.11.",
   "aika": "11-13",
-  "hook": "Isänpäivä on sunnuntaina. Lahja vielä hankkimatta?",
-  "kuvateksti": "Painettu paita ei enää ehdi isänpäiväksi, mutta lahjakortti ehtii: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. Isä valitsee paidan itse. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #lahjakortti #hauskapaita",
+  "hook": "Isänpäivä on sunnuntaina",
+  "kuvateksti": "Mitä teidän isä toivoo isänpäiväksi? Painettu paita ei enää ehdi isänpäiväksi, mutta lahjakortti ehtii: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. Isä valitsee paidan itse. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #lahjakortti #hauskapaita",
   "tagit": [
    "#isänpäivä",
    "#isänpäivälahja",
    "#lahjakortti",
    "#hauskapaita"
   ],
-  "tuote": "/lahjakortti"
+  "tuote": "/lahjakortti",
+  "kysymys": "Mitä teidän isä toivoo isänpäiväksi?"
  },
  {
   "nro": "05",
-  "nimi": "05-kiltti-enimmakseen-t-paita-jouluun",
+  "nimi": "05-kiltti-enimmakseen-t-paita-jouluun-v2",
   "muoto": "perus",
   "paiva": "2026-11-06",
   "paivaFi": "6.11.",
   "aika": "18-20",
-  "hook": "Pukki kysyy: oletko ollut kiltti?",
-  "kuvateksti": "Kiltti. Enimmäkseen. Joulupaita rehelliselle ihmiselle, huumorikauppa.fi. Linkki biossa. #joulupaita #joululahja #hauskapaita #joulu",
+  "hook": "Joulupukki kysyy: oletko ollut kiltti?",
+  "kuvateksti": "Kuinka kiltti sinä olit tänä vuonna? Kiltti. Enimmäkseen. Joulupaita rehelliselle ihmiselle, huumorikauppa.fi. Linkki biossa. #joulupaita #joululahja #hauskapaita #joulu",
   "tagit": [
    "#joulupaita",
    "#joululahja",
    "#hauskapaita",
    "#joulu"
   ],
-  "tuote": "/tuote/kiltti-enimmakseen-t-paita-jouluun"
+  "tuote": "/tuote/kiltti-enimmakseen-t-paita-jouluun",
+  "kysymys": "Kuinka kiltti sinä olit tänä vuonna?"
  },
  {
   "nro": "37",
-  "nimi": "37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita",
+  "nimi": "37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita-v2",
   "muoto": "pov",
   "paiva": "2026-11-07",
   "paivaFi": "7.11.",
   "aika": "11-13",
-  "hook": "POV: isänpäivä on huomenna ja lahja puuttuu",
-  "kuvateksti": "Isänpäivä on huomenna. Lahjakortti ehtii vielä: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. huumorikauppa.fi. Linkki biossa. #isänpäivä #pov #lahjakortti #isänpäivälahja",
+  "hook": "POV: isänpäivä on huomenna",
+  "kuvateksti": "Kuka teillä päättää kaukosäätimestä? Isänpäivä on huomenna. Lahjakortti ehtii vielä: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. huumorikauppa.fi. Linkki biossa. #isänpäivä #pov #lahjakortti #isänpäivälahja",
   "tagit": [
    "#isänpäivä",
    "#pov",
    "#lahjakortti",
    "#isänpäivälahja"
   ],
-  "tuote": "/lahjakortti"
+  "tuote": "/lahjakortti",
+  "kysymys": "Kuka teillä päättää kaukosäätimestä?"
  },
  {
   "nro": "06",
-  "nimi": "06-60v-kokenut-ei-vanha-huppari",
+  "nimi": "06-60v-kokenut-ei-vanha-huppari-v2",
   "muoto": "perus",
   "paiva": "2026-11-07",
   "paivaFi": "7.11.",
   "aika": "18-20",
-  "hook": "Hän täyttää 60. Älä sano vanha.",
-  "kuvateksti": "60v kokenut, ei vanha. Lahja, joka naurattaa päivänsankaria. huumorikauppa.fi. Linkki biossa. #60v #lahjaidea #syntymäpäivä #hauskapaita",
+  "hook": "Hän täyttää 60",
+  "kuvateksti": "Kuka teidän porukasta täyttää seuraavaksi pyöreitä? 60v kokenut, ei vanha. Lahja, joka naurattaa päivänsankaria. huumorikauppa.fi. Linkki biossa. #60v #lahjaidea #syntymäpäivä #hauskapaita",
   "tagit": [
    "#60v",
    "#lahjaidea",
    "#syntymäpäivä",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/60v-kokenut-ei-vanha-huppari"
+  "tuote": "/tuote/60v-kokenut-ei-vanha-huppari",
+  "kysymys": "Kuka teidän porukasta täyttää seuraavaksi pyöreitä?"
  },
  {
   "nro": "07",
-  "nimi": "07-kala-oli-tatakin-isompi-t-paita-kalastajalle",
+  "nimi": "07-kala-oli-tatakin-isompi-t-paita-kalastajalle-v2",
   "muoto": "perus",
   "paiva": "2026-11-08",
   "paivaFi": "8.11.",
   "aika": "18-20",
-  "hook": "Se kala oli näin iso. Oikeasti.",
-  "kuvateksti": "Kala oli tätäkin isompi. Kalastajalle, jolla on aina tarina. huumorikauppa.fi. Linkki biossa. #kalastus #kalastaja #hauskapaita #lahjaidea",
+  "hook": "Kalastaja tulee kotiin",
+  "kuvateksti": "Mikä on sinun suurin karannut kala? Kala oli tätäkin isompi. Kalastajalle, jolla on aina tarina. huumorikauppa.fi. Linkki biossa. #kalastus #kalastaja #hauskapaita #lahjaidea",
   "tagit": [
    "#kalastus",
    "#kalastaja",
    "#hauskapaita",
    "#lahjaidea"
   ],
-  "tuote": "/tuote/kala-oli-tatakin-isompi-t-paita-kalastajalle"
+  "tuote": "/tuote/kala-oli-tatakin-isompi-t-paita-kalastajalle",
+  "kysymys": "Mikä on sinun suurin karannut kala?"
  },
  {
   "nro": "27",
-  "nimi": "27-elakkeella-kiireinen-silti-t-paita-elakelaiselle",
+  "nimi": "27-elakkeella-kiireinen-silti-t-paita-elakelaiselle-v2",
   "muoto": "pov",
   "paiva": "2026-11-09",
   "paivaFi": "9.11.",
   "aika": "11-13",
-  "hook": "POV: eläkeläisellä on enemmän menoja kuin töissä ollessa",
-  "kuvateksti": "Eläkkeellä. Kiireinen silti. Lahja eläkeläiselle, jonka kalenteri on täynnä. huumorikauppa.fi. Linkki biossa. #eläkeläinen #eläkelahja #pov #hauskapaita",
+  "hook": "POV: soitat eläkkeellä olevalle isälle",
+  "kuvateksti": "Kenen eläkeläisen kalenteri on täynnä? Eläkkeellä. Kiireinen silti. Lahja eläkeläiselle, jonka kalenteri on täynnä. huumorikauppa.fi. Linkki biossa. #eläkeläinen #eläkelahja #pov #hauskapaita",
   "tagit": [
    "#eläkeläinen",
    "#eläkelahja",
    "#pov",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/elakkeella-kiireinen-silti-t-paita-elakelaiselle"
+  "tuote": "/tuote/elakkeella-kiireinen-silti-t-paita-elakelaiselle",
+  "kysymys": "Kenen eläkeläisen kalenteri on täynnä?"
  },
  {
   "nro": "08",
-  "nimi": "08-personoitu-ikapaita-t-paita",
+  "nimi": "08-personoitu-ikapaita-t-paita-v2",
   "muoto": "perus",
   "paiva": "2026-11-09",
   "paivaFi": "9.11.",
   "aika": "18-20",
-  "hook": "Paita, jossa lukee hänen nimensä",
-  "kuvateksti": "Kirjoita nimi ja ikä, ja näet paidan heti esikatselussa. Personoitu t-paita: huumorikauppa.fi. Linkki biossa. #personoitupaita #synttärilahja #lahjaidea #hauskapaita",
+  "hook": "Synttärilahja on taas hukassa",
+  "kuvateksti": "Kenen nimen laitat paitaan? Kirjoita nimi ja ikä, ja näet paidan heti esikatselussa. Personoitu t-paita: huumorikauppa.fi. Linkki biossa. #personoitupaita #synttärilahja #lahjaidea #hauskapaita",
   "tagit": [
    "#personoitupaita",
    "#synttärilahja",
    "#lahjaidea",
    "#hauskapaita"
   ],
-  "tuote": "/personoitu-paita"
+  "tuote": "/personoitu-paita",
+  "kysymys": "Kenen nimen laitat paitaan?"
  },
  {
   "nro": "28",
-  "nimi": "28-karaokevuoro-varattu-jo-syyskuussa-t-paita-pikku",
+  "nimi": "28-karaokevuoro-varattu-jo-syyskuussa-t-paita-pikku-v2",
   "muoto": "dialogi",
   "paiva": "2026-11-10",
   "paivaFi": "10.11.",
   "aika": "11-13",
   "hook": "Hän: Lähdetäänkö pikkujouluista jo kotiin?",
-  "kuvateksti": "Karaokevuoro varattu jo syyskuussa. Merkkaa se, joka ei koskaan lähde ajoissa. huumorikauppa.fi. Linkki biossa. #pikkujoulut #pariskunta #karaoke #hauskapaita",
+  "kuvateksti": "Kumpi teistä lähtee aina ensimmäisenä? Karaokevuoro varattu jo syyskuussa. Merkkaa se, joka ei koskaan lähde ajoissa. huumorikauppa.fi. Linkki biossa. #pikkujoulut #pariskunta #karaoke #hauskapaita",
   "tagit": [
    "#pikkujoulut",
    "#pariskunta",
    "#karaoke",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/karaokevuoro-varattu-jo-syyskuussa-t-paita-pikkujouluihin"
+  "tuote": "/tuote/karaokevuoro-varattu-jo-syyskuussa-t-paita-pikkujouluihin",
+  "kysymys": "Kumpi teistä lähtee aina ensimmäisenä?"
  },
  {
   "nro": "09",
-  "nimi": "09-tonttu-koeajalla-t-paita-jouluun",
+  "nimi": "09-tonttu-koeajalla-t-paita-jouluun-v2",
   "muoto": "perus",
   "paiva": "2026-11-10",
   "paivaFi": "10.11.",
   "aika": "18-20",
   "hook": "Uusi tonttu aloitti tänään",
-  "kuvateksti": "Tonttu koeajalla. Joulupaita työpaikan pikkujouluihin, huumorikauppa.fi. Linkki biossa. #joulupaita #pikkujoulut #tonttu #joululahja",
+  "kuvateksti": "Kuka teidän työpaikalla on tonttu koeajalla? Tonttu koeajalla. Joulupaita työpaikan pikkujouluihin, huumorikauppa.fi. Linkki biossa. #joulupaita #pikkujoulut #tonttu #joululahja",
   "tagit": [
    "#joulupaita",
    "#pikkujoulut",
    "#tonttu",
    "#joululahja"
   ],
-  "tuote": "/tuote/tonttu-koeajalla-t-paita-jouluun"
+  "tuote": "/tuote/tonttu-koeajalla-t-paita-jouluun",
+  "kysymys": "Kuka teidän työpaikalla on tonttu koeajalla?"
  },
  {
   "nro": "29",
-  "nimi": "29-tanaan-tanssin-huomenna-kadun-t-paita-pikkujoulu",
+  "nimi": "29-tanaan-tanssin-huomenna-kadun-t-paita-pikkujoulu-v2",
   "muoto": "pov",
   "paiva": "2026-11-11",
   "paivaFi": "11.11.",
   "aika": "11-13",
   "hook": "Se yks kaveri, joka lupasi lähteä pikkujouluista klo 22",
-  "kuvateksti": "Tänään tanssin. Huomenna kadun. Merkkaa kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita",
+  "kuvateksti": "Kuka teidän porukasta lähtee aina viimeisenä? Tänään tanssin. Huomenna kadun. Merkkaa kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita",
   "tagit": [
    "#pikkujoulut",
    "#seykskaveri",
    "#pov",
    "#pikkujoulupaita"
   ],
-  "tuote": "/tuote/tanaan-tanssin-huomenna-kadun-t-paita-pikkujouluihin"
+  "tuote": "/tuote/tanaan-tanssin-huomenna-kadun-t-paita-pikkujouluihin",
+  "kysymys": "Kuka teidän porukasta lähtee aina viimeisenä?"
  },
  {
   "nro": "10",
-  "nimi": "10-pilkilla-ala-soita-t-paita-kalastajalle",
+  "nimi": "10-pilkilla-ala-soita-t-paita-kalastajalle-v2",
   "muoto": "perus",
   "paiva": "2026-11-11",
   "paivaFi": "11.11.",
   "aika": "18-20",
-  "hook": "Lauantaiaamu jäällä. Puhelin äänettömällä.",
-  "kuvateksti": "Pilkillä. Älä soita. huumorikauppa.fi. Linkki biossa. #pilkki #kalastus #talvikalastus #hauskapaita",
+  "hook": "Lauantaiaamu jäällä",
+  "kuvateksti": "Kuka soittaa aina, kun olet pilkillä? Pilkillä. Älä soita. huumorikauppa.fi. Linkki biossa. #pilkki #kalastus #talvikalastus #hauskapaita",
   "tagit": [
    "#pilkki",
    "#kalastus",
    "#talvikalastus",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/pilkilla-ala-soita-t-paita-kalastajalle"
+  "tuote": "/tuote/pilkilla-ala-soita-t-paita-kalastajalle",
+  "kysymys": "Kuka soittaa aina, kun olet pilkillä?"
  },
  {
   "nro": "30",
-  "nimi": "30-hauska-huppari-pikkujouluihin-pikkujoulut-muiste",
+  "nimi": "30-hauska-huppari-pikkujouluihin-pikkujoulut-muiste-v2",
   "muoto": "pov",
   "paiva": "2026-11-12",
   "paivaFi": "12.11.",
   "aika": "11-13",
   "hook": "Se yks kaveri, joka muistaa pikkujouluista ihan kaiken",
-  "kuvateksti": "Pikkujoulut 2026: muistetaan 2036. Huppari pikkujouluihin. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #huppari",
+  "kuvateksti": "Mikä pikkujoulutarina teillä kerrotaan joka vuosi? Pikkujoulut 2026: muistetaan 2036. Huppari pikkujouluihin. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #huppari",
   "tagit": [
    "#pikkujoulut",
    "#seykskaveri",
    "#pov",
    "#huppari"
   ],
-  "tuote": "/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia"
+  "tuote": "/tuote/hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia",
+  "kysymys": "Mikä pikkujoulutarina teillä kerrotaan joka vuosi?"
  },
  {
   "nro": "11",
-  "nimi": "11-se-oli-tonnin-seteli-t-paita",
+  "nimi": "11-se-oli-tonnin-seteli-t-paita-v2",
   "muoto": "perus",
   "paiva": "2026-11-12",
   "paivaFi": "12.11.",
   "aika": "18-20",
-  "hook": "Se oli tonnin seteli.",
-  "kuvateksti": "Tunnistaa jokainen, joka on kuullut tarinan. T-paita ja huppari, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #meemi",
+  "hook": "Kaveri aloittaa saman tarinan taas",
+  "kuvateksti": "Kuka teidän porukasta kertoo saman tarinan joka kerta? Tunnistaa jokainen, joka on kuullut tarinan. T-paita ja huppari, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #meemi",
   "tagit": [
    "#hauskapaita",
    "#suomihuumori",
    "#meemi"
   ],
-  "tuote": "/tuote/se-oli-tonnin-seteli-t-paita"
+  "tuote": "/tuote/se-oli-tonnin-seteli-t-paita",
+  "kysymys": "Kuka teidän porukasta kertoo saman tarinan joka kerta?"
  },
  {
   "nro": "31",
-  "nimi": "31-pikkujoulut-muistan-osittain-t-paita-pikkujoului",
+  "nimi": "31-pikkujoulut-muistan-osittain-t-paita-pikkujoului-v2",
   "muoto": "aanestys",
   "paiva": "2026-11-13",
   "paivaFi": "13.11.",
   "aika": "11-13",
-  "hook": "Pikkujouluihin: kumman paidan valitsisit?",
-  "kuvateksti": "A vai B? Kerro kommenteissa, kumpi kuvaa sinun pikkujoulujasi paremmin. huumorikauppa.fi. Linkki biossa. #pikkujoulut #kummanvalitsisit #pikkujoulupaita #hauskapaita",
+  "hook": "Pikkujoulujen jälkeen on kahdenlaisia ihmisiä",
+  "kuvateksti": "Kumpi sinä olet, A vai B? Pikkujoulut. Muistan osittain vai Pikkujoulujen nimetty kuski. huumorikauppa.fi. Linkki biossa. #pikkujoulut #kummanvalitsisit #pikkujoulupaita #hauskapaita",
   "tagit": [
    "#pikkujoulut",
    "#kummanvalitsisit",
    "#pikkujoulupaita",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin"
+  "tuote": "/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin",
+  "kysymys": "Kumpi sinä olet, A vai B?"
  },
  {
   "nro": "12",
-  "nimi": "12-mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkei",
+  "nimi": "12-mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkei-v2",
   "muoto": "perus",
   "paiva": "2026-11-13",
   "paivaFi": "13.11.",
   "aika": "18-20",
-  "hook": "Mökillä ei ole kiire.",
-  "kuvateksti": "Eikä kenttää. Mökkeilijälle, joka tietää. huumorikauppa.fi. Linkki biossa. #mökki #mökkielämä #hauskapaita #suomihuumori",
+  "hook": "Mökillä ei ole kiire",
+  "kuvateksti": "Missä teidän mökillä on se ainoa kenttäpaikka? Eikä kenttää. Mökkeilijälle, joka tietää. huumorikauppa.fi. Linkki biossa. #mökki #mökkielämä #hauskapaita #suomihuumori",
   "tagit": [
    "#mökki",
    "#mökkielämä",
    "#hauskapaita",
    "#suomihuumori"
   ],
-  "tuote": "/tuote/mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkeilijalle"
+  "tuote": "/tuote/mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkeilijalle",
+  "kysymys": "Missä teidän mökillä on se ainoa kenttäpaikka?"
  },
  {
   "nro": "32",
-  "nimi": "32-elakkeella-kello-on-vain-koru-t-paita-elakelaise",
+  "nimi": "32-elakkeella-kello-on-vain-koru-t-paita-elakelaise-v2",
   "muoto": "aanestys",
   "paiva": "2026-11-14",
   "paivaFi": "14.11.",
   "aika": "11-13",
-  "hook": "Eläkeläiselle joululahjaksi: A vai B?",
-  "kuvateksti": "Kumman antaisit eläkeläiselle? Vastaa kommentteihin A tai B. huumorikauppa.fi. Linkki biossa. #eläkeläinen #joululahja #kummanvalitsisit #hauskapaita",
+  "hook": "Eläkkeelle jäämisen jälkeen",
+  "kuvateksti": "Kumpi sopii teidän eläkeläiselle, A vai B? Eläkkeellä. Kello on vain koru vai Työt loppui. Mökki ei. huumorikauppa.fi. Linkki biossa. #eläkeläinen #joululahja #kummanvalitsisit #hauskapaita",
   "tagit": [
    "#eläkeläinen",
    "#joululahja",
    "#kummanvalitsisit",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/elakkeella-kello-on-vain-koru-t-paita-elakelaiselle"
+  "tuote": "/tuote/elakkeella-kello-on-vain-koru-t-paita-elakelaiselle",
+  "kysymys": "Kumpi sopii teidän eläkeläiselle, A vai B?"
  },
  {
   "nro": "13",
-  "nimi": "13-glogi-ensin-sitten-joulu-t-paita-jouluun",
+  "nimi": "13-glogi-ensin-sitten-joulu-t-paita-jouluun-v2",
   "muoto": "perus",
   "paiva": "2026-11-14",
   "paivaFi": "14.11.",
   "aika": "18-20",
   "hook": "Joulun oikea järjestys",
-  "kuvateksti": "Glögi ensin. Sitten joulu. huumorikauppa.fi. Linkki biossa. #glögi #joulupaita #joululahja #suomihuumori",
+  "kuvateksti": "Mikä tulee teillä jouluna ensin? Glögi ensin. Sitten joulu. huumorikauppa.fi. Linkki biossa. #glögi #joulupaita #joululahja #suomihuumori",
   "tagit": [
    "#glögi",
    "#joulupaita",
    "#joululahja",
    "#suomihuumori"
   ],
-  "tuote": "/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun"
+  "tuote": "/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun",
+  "kysymys": "Mikä tulee teillä jouluna ensin?"
  },
  {
   "nro": "33",
-  "nimi": "33-riisipuurosta-loysin-vain-riisia-t-paita-jouluun",
+  "nimi": "33-riisipuurosta-loysin-vain-riisia-t-paita-jouluun-v2",
   "muoto": "dialogi",
   "paiva": "2026-11-15",
   "paivaFi": "15.11.",
   "aika": "11-13",
   "hook": "Hän: Kuka sai mantelin tänä vuonna?",
-  "kuvateksti": "Riisipuurosta löysin vain riisiä. Joka joulu sama tarina. huumorikauppa.fi. Linkki biossa. #joulu #riisipuuro #pariskunta #joulupaita",
+  "kuvateksti": "Kuka teillä saa mantelin joka vuosi? Riisipuurosta löysin vain riisiä. Joka joulu sama tarina. huumorikauppa.fi. Linkki biossa. #joulu #riisipuuro #pariskunta #joulupaita",
   "tagit": [
    "#joulu",
    "#riisipuuro",
    "#pariskunta",
    "#joulupaita"
   ],
-  "tuote": "/tuote/riisipuurosta-loysin-vain-riisia-t-paita-jouluun"
+  "tuote": "/tuote/riisipuurosta-loysin-vain-riisia-t-paita-jouluun",
+  "kysymys": "Kuka teillä saa mantelin joka vuosi?"
  },
  {
   "nro": "14",
-  "nimi": "14-koira-loysi-mina-en-t-paita-metsastajalle",
+  "nimi": "14-koira-loysi-mina-en-t-paita-metsastajalle-v2",
   "muoto": "perus",
   "paiva": "2026-11-15",
   "paivaFi": "15.11.",
   "aika": "18-20",
-  "hook": "Kun koira löytää linnun ennen sinua",
-  "kuvateksti": "Koira löysi. Minä en. Paita jokaiseen jahtiporukkaan, huumorikauppa.fi. Linkki biossa. #metsästys #lintukoira #hauskapaita",
+  "hook": "Kanalintujahti",
+  "kuvateksti": "Kumpi teillä löytää linnun ensin, koira vai sinä? Koira löysi. Minä en. Paita jokaiseen jahtiporukkaan, huumorikauppa.fi. Linkki biossa. #metsästys #lintukoira #hauskapaita",
   "tagit": [
    "#metsästys",
    "#lintukoira",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/koira-loysi-mina-en-t-paita-metsastajalle"
+  "tuote": "/tuote/koira-loysi-mina-en-t-paita-metsastajalle",
+  "kysymys": "Kumpi teillä löytää linnun ensin, koira vai sinä?"
  },
  {
   "nro": "34",
-  "nimi": "34-joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun",
+  "nimi": "34-joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun-v2",
   "muoto": "dialogi",
   "paiva": "2026-11-16",
   "paivaFi": "16.11.",
   "aika": "11-13",
   "hook": "Hän: Onko joulukortit jo lähetetty?",
-  "kuvateksti": "Joulukortit lähtevät ensi vuonna. Merkkaa puolisosi. huumorikauppa.fi. Linkki biossa. #joulu #joulukortit #pariskunta #joulupaita",
+  "kuvateksti": "Lähetätkö sinä vielä joulukortteja? Joulukortit lähtevät ensi vuonna. Merkkaa puolisosi. huumorikauppa.fi. Linkki biossa. #joulu #joulukortit #pariskunta #joulupaita",
   "tagit": [
    "#joulu",
    "#joulukortit",
    "#pariskunta",
    "#joulupaita"
   ],
-  "tuote": "/tuote/joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun"
+  "tuote": "/tuote/joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun",
+  "kysymys": "Lähetätkö sinä vielä joulukortteja?"
  },
  {
   "nro": "15",
-  "nimi": "15-60v-takuu-mennyt-toimii-silti-t-paita",
+  "nimi": "15-60v-takuu-mennyt-toimii-silti-t-paita-v2",
   "muoto": "perus",
   "paiva": "2026-11-16",
   "paivaFi": "16.11.",
   "aika": "18-20",
-  "hook": "Takuu meni jo. Toimii silti.",
-  "kuvateksti": "Kuusikymppiselle, joka pitää huumorista. huumorikauppa.fi. Linkki biossa. #60v #synttärilahja #hauskapaita #suomihuumori",
+  "hook": "60 vuotta käytössä",
+  "kuvateksti": "Kenelle teidän porukasta tämä sopii? Kuusikymppiselle, joka pitää huumorista. huumorikauppa.fi. Linkki biossa. #60v #synttärilahja #hauskapaita #suomihuumori",
   "tagit": [
    "#60v",
    "#synttärilahja",
    "#hauskapaita",
    "#suomihuumori"
   ],
-  "tuote": "/tuote/60v-takuu-mennyt-toimii-silti-t-paita"
+  "tuote": "/tuote/60v-takuu-mennyt-toimii-silti-t-paita",
+  "kysymys": "Kenelle teidän porukasta tämä sopii?"
  },
  {
   "nro": "35",
-  "nimi": "35-glogi-ensin-sitten-joulu-t-paita-jouluun",
+  "nimi": "35-glogi-ensin-sitten-joulu-t-paita-jouluun-v2",
   "muoto": "aanestys",
   "paiva": "2026-11-17",
   "paivaFi": "17.11.",
   "aika": "11-13",
-  "hook": "Joulupaita: kumman valitsisit?",
-  "kuvateksti": "A vai B? Glögi vai joulusauna, kerro kommenteissa. huumorikauppa.fi. Linkki biossa. #joulupaita #joulu #kummanvalitsisit #suomihuumori",
+  "hook": "Jouluaatossa on kaksi koulukuntaa",
+  "kuvateksti": "Glögi vai sauna, A vai B? Glögi ensin. Sitten joulu vai Joulusaunan löylymestari. huumorikauppa.fi. Linkki biossa. #joulupaita #joulu #kummanvalitsisit #suomihuumori",
   "tagit": [
    "#joulupaita",
    "#joulu",
    "#kummanvalitsisit",
    "#suomihuumori"
   ],
-  "tuote": "/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun"
+  "tuote": "/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun",
+  "kysymys": "Glögi vai sauna, A vai B?"
  },
  {
   "nro": "16",
-  "nimi": "16-pikkujoulujen-nimetty-kuski-t-paita-pikkujouluih",
+  "nimi": "16-pikkujoulujen-nimetty-kuski-t-paita-pikkujouluih-v2",
   "muoto": "perus",
   "paiva": "2026-11-17",
   "paivaFi": "17.11.",
   "aika": "18-20",
-  "hook": "Joku ajaa kotiin. Tänä vuonna sinä.",
-  "kuvateksti": "Pikkujoulujen nimetty kuski. Ansaittu paita. huumorikauppa.fi. Linkki biossa. #pikkujoulut #pikkujoulupaita #hauskapaita",
+  "hook": "Pikkujoulut, kello 1 yöllä",
+  "kuvateksti": "Kuka teidän porukasta ajaa aina? Pikkujoulujen nimetty kuski. Ansaittu paita. huumorikauppa.fi. Linkki biossa. #pikkujoulut #pikkujoulupaita #hauskapaita",
   "tagit": [
    "#pikkujoulut",
    "#pikkujoulupaita",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/pikkujoulujen-nimetty-kuski-t-paita-pikkujouluihin"
+  "tuote": "/tuote/pikkujoulujen-nimetty-kuski-t-paita-pikkujouluihin",
+  "kysymys": "Kuka teidän porukasta ajaa aina?"
  },
  {
   "nro": "17",
-  "nimi": "17-sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeil",
+  "nimi": "17-sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeil-v2",
   "muoto": "perus",
   "paiva": "2026-11-18",
   "paivaFi": "18.11.",
   "aika": "18-20",
-  "hook": "Sauna lämpiää.",
-  "kuvateksti": "Muut asiat odottaa. huumorikauppa.fi. Linkki biossa. #sauna #mökki #suomihuumori #hauskapaita",
+  "hook": "Lauantai-ilta",
+  "kuvateksti": "Mikä asia odottaa teillä saunan ajan? Muut asiat odottaa. huumorikauppa.fi. Linkki biossa. #sauna #mökki #suomihuumori #hauskapaita",
   "tagit": [
    "#sauna",
    "#mökki",
    "#suomihuumori",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeilijalle"
+  "tuote": "/tuote/sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeilijalle",
+  "kysymys": "Mikä asia odottaa teillä saunan ajan?"
  },
  {
   "nro": "18",
-  "nimi": "18-saatanan-tunarit-huppari",
+  "nimi": "18-saatanan-tunarit-huppari-v2",
   "muoto": "perus",
   "paiva": "2026-11-19",
   "paivaFi": "19.11.",
   "aika": "18-20",
-  "hook": "Talvi tulee. Tunarit eivät lähde mihinkään.",
-  "kuvateksti": "Saatanan tunarit, nyt myös huppari. huumorikauppa.fi. Linkki biossa. #huppari #suomihuumori #hauskapaita",
+  "hook": "Talvi tulee",
+  "kuvateksti": "Kuka teillä luo aina lumet yksin? Saatanan tunarit, nyt myös huppari. huumorikauppa.fi. Linkki biossa. #huppari #suomihuumori #hauskapaita",
   "tagit": [
    "#huppari",
    "#suomihuumori",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/saatanan-tunarit-huppari"
+  "tuote": "/tuote/saatanan-tunarit-huppari",
+  "kysymys": "Kuka teillä luo aina lumet yksin?"
  },
  {
   "nro": "25",
-  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel",
+  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel-v2",
   "muoto": "pov",
   "paiva": "2026-11-20",
   "paivaFi": "20.11.",
   "aika": "11-13",
-  "hook": "Marraskuun aamu. Pimeää kuin yöllä.",
-  "kuvateksti": "Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita",
+  "hook": "Marraskuun aamu, kello 7",
+  "kuvateksti": "Monesko torkku sinulla menee marraskuussa? Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita",
   "tagit": [
    "#marraskuu",
    "#eläkeläinen",
    "#suomihuumori",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/heratyskello-elakkeella-myos-t-paita-elakelaiselle"
+  "tuote": "/tuote/heratyskello-elakkeella-myos-t-paita-elakelaiselle",
+  "kysymys": "Monesko torkku sinulla menee marraskuussa?"
  },
  {
   "nro": "19",
-  "nimi": "19-hauska-t-paita-golfaajalle-bogey-on-elamantapa",
+  "nimi": "19-hauska-t-paita-golfaajalle-bogey-on-elamantapa-v2",
   "muoto": "perus",
   "paiva": "2026-11-20",
   "paivaFi": "20.11.",
   "aika": "18-20",
-  "hook": "Par on tavoite. Bogey on elämäntapa.",
-  "kuvateksti": "Golfaajalle, joka tuntee kentän. huumorikauppa.fi. Linkki biossa. #golf #golfhuumori #hauskapaita #lahjaidea",
+  "hook": "Par on tavoite",
+  "kuvateksti": "Mikä on sinun paras tulos yhdellä reiällä? Golfaajalle, joka tuntee kentän. huumorikauppa.fi. Linkki biossa. #golf #golfhuumori #hauskapaita #lahjaidea",
   "tagit": [
    "#golf",
    "#golfhuumori",
    "#hauskapaita",
    "#lahjaidea"
   ],
-  "tuote": "/tuote/hauska-t-paita-golfaajalle-bogey-on-elamantapa"
+  "tuote": "/tuote/hauska-t-paita-golfaajalle-bogey-on-elamantapa",
+  "kysymys": "Mikä on sinun paras tulos yhdellä reiällä?"
  },
  {
   "nro": "26",
-  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
+  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle-v2",
   "muoto": "pov",
   "paiva": "2026-11-21",
   "paivaFi": "21.11.",
   "aika": "11-13",
-  "hook": "Se yks kaveri saunassa, jonka mielestä ei ole kuuma",
-  "kuvateksti": "Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita",
+  "hook": "Se yks kaveri saunassa",
+  "kuvateksti": "Kuka teidän saunaporukasta heittää aina lisää? Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita",
   "tagit": [
    "#sauna",
    "#seykskaveri",
@@ -606,67 +639,71 @@
    "#suomihuumori",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle"
+  "tuote": "/tuote/loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
+  "kysymys": "Kuka teidän saunaporukasta heittää aina lisää?"
  },
  {
   "nro": "20",
-  "nimi": "20-kalastan-siis-valehtelen-t-paita-kalastajalle",
+  "nimi": "20-kalastan-siis-valehtelen-t-paita-kalastajalle-v2",
   "muoto": "perus",
   "paiva": "2026-11-21",
   "paivaFi": "21.11.",
   "aika": "18-20",
   "hook": "Kalastaja kertoo saaliistaan",
-  "kuvateksti": "Kalastan, siis valehtelen. huumorikauppa.fi. Linkki biossa. #kalastus #suomihuumori #hauskapaita",
+  "kuvateksti": "Kuinka iso teidän porukan tarinan kala on nyt? Kalastan, siis valehtelen. huumorikauppa.fi. Linkki biossa. #kalastus #suomihuumori #hauskapaita",
   "tagit": [
    "#kalastus",
    "#suomihuumori",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/kalastan-siis-valehtelen-t-paita-kalastajalle"
+  "tuote": "/tuote/kalastan-siis-valehtelen-t-paita-kalastajalle",
+  "kysymys": "Kuinka iso teidän porukan tarinan kala on nyt?"
  },
  {
   "nro": "38",
-  "nimi": "38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou",
+  "nimi": "38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou-v2",
   "muoto": "pov",
   "paiva": "2026-11-22",
   "paivaFi": "22.11.",
   "aika": "11-13",
-  "hook": "Se yks kaveri, joka sinuttelee esimiestä pikkujouluissa",
-  "kuvateksti": "Pikkujoulut. Nyt sinuttelen esimiestä. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita",
+  "hook": "Pikkujoulut, kello 23",
+  "kuvateksti": "Mitä teidän pikkujouluissa tapahtuu kello 23? Pikkujoulut. Nyt sinuttelen esimiestä. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita",
   "tagit": [
    "#pikkujoulut",
    "#seykskaveri",
    "#pov",
    "#pikkujoulupaita"
   ],
-  "tuote": "/tuote/pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jouluun"
+  "tuote": "/tuote/pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jouluun",
+  "kysymys": "Mitä teidän pikkujouluissa tapahtuu kello 23?"
  },
  {
   "nro": "39",
-  "nimi": "39-personoidut-pikkujoulut",
+  "nimi": "39-personoidut-pikkujoulut-v2",
   "muoto": "perus",
   "paiva": "2026-11-22",
   "paivaFi": "22.11.",
   "aika": "18-20",
-  "hook": "Pikkujouluihin paita, jossa on sinun nimesi",
-  "kuvateksti": "Kirjoita nimi, ja näet paidan heti esikatselussa. Personoidut paidat pikkujouluihin: huumorikauppa.fi. Linkki biossa. #personoitupaita #pikkujoulut #tonttu #lahjaidea",
+  "hook": "Pikkujoulut 2026",
+  "kuvateksti": "Kenen nimen laitat pikkujoulupaitaan? Kirjoita nimi, ja näet paidan heti esikatselussa. Personoidut paidat pikkujouluihin: huumorikauppa.fi. Linkki biossa. #personoitupaita #pikkujoulut #tonttu #lahjaidea",
   "tagit": [
    "#personoitupaita",
    "#pikkujoulut",
    "#tonttu",
    "#lahjaidea"
   ],
-  "tuote": "/personoidut"
+  "tuote": "/personoidut",
+  "kysymys": "Kenen nimen laitat pikkujoulupaitaan?"
  },
  {
   "nro": "41",
-  "nimi": "41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno",
+  "nimi": "41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno-v2",
   "muoto": "pov",
   "paiva": "2026-11-23",
   "paivaFi": "23.11.",
   "aika": "11-13",
-  "hook": "Se yks kaveri, joka heittää aina vielä yhden kauhan",
-  "kuvateksti": "Löylymestari. Vain yksi kauha lisää. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #löylyt #seykskaveri #pov #hauskapaita",
+  "hook": "Se yks kaveri saunassa",
+  "kuvateksti": "Kuka teidän saunassa heittää aina vielä yhden? Löylymestari. Vain yksi kauha lisää. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #löylyt #seykskaveri #pov #hauskapaita",
   "tagit": [
    "#sauna",
    "#löylyt",
@@ -674,261 +711,277 @@
    "#pov",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/loylymestari-vain-yksi-kauha-lisaa-t-paita-saunojalle"
+  "tuote": "/tuote/loylymestari-vain-yksi-kauha-lisaa-t-paita-saunojalle",
+  "kysymys": "Kuka teidän saunassa heittää aina vielä yhden?"
  },
  {
   "nro": "40",
-  "nimi": "40-black-friday-amatimies-t-paita",
+  "nimi": "40-black-friday-amatimies-t-paita-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-23",
   "paivaFi": "23.11.",
   "aika": "18-20",
-  "hook": "Black Friday alkoi: kaksi t-paitaa 44,90 €",
-  "kuvateksti": "Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €. Amatimies ja Minulla ei ole alkoholiongelmaa, tai mitkä tahansa kaksi 24,90 €:n t-paitaa. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #hauskapaita #suomihuumori #amatimies",
+  "hook": "Remonttiviikonloppu",
+  "kuvateksti": "Kuka teidän porukasta korjaa kaiken itse? Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €. Amatimies ja Minulla ei ole alkoholiongelmaa, tai mitkä tahansa kaksi 24,90 €:n t-paitaa. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #hauskapaita #suomihuumori #amatimies",
   "tagit": [
    "#blackfriday",
    "#hauskapaita",
    "#suomihuumori",
    "#amatimies"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kuka teidän porukasta korjaa kaiken itse?"
  },
  {
   "nro": "43",
-  "nimi": "43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen",
+  "nimi": "43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-v2",
   "muoto": "perus",
   "paiva": "2026-11-24",
   "paivaFi": "24.11.",
   "aika": "11-13",
-  "hook": "Saunan jälkeen on yksi asia, josta ei neuvotella",
-  "kuvateksti": "Saunakalja ei ole neuvoteltavissa. Joululahja saunojalle, joka tietää. huumorikauppa.fi. Linkki biossa. #saunakalja #sauna #olut #hauskapaita",
+  "hook": "Lauantai, sauna on lämmin",
+  "kuvateksti": "Mitä teillä juodaan saunan jälkeen? Saunakalja ei ole neuvoteltavissa. Joululahja saunojalle, joka tietää. huumorikauppa.fi. Linkki biossa. #saunakalja #sauna #olut #hauskapaita",
   "tagit": [
    "#saunakalja",
    "#sauna",
    "#olut",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-ystavalle"
+  "tuote": "/tuote/saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-ystavalle",
+  "kysymys": "Mitä teillä juodaan saunan jälkeen?"
  },
  {
   "nro": "42",
-  "nimi": "42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p",
+  "nimi": "42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-24",
   "paivaFi": "24.11.",
   "aika": "18-20",
-  "hook": "Kaljaporukalle kaksi paitaa 44,90 €",
-  "kuvateksti": "Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €, toinen sinulle ja toinen kaverille. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #olut #hauskapaita #suomihuumori",
+  "hook": "Kaljaporukan perjantai",
+  "kuvateksti": "Kuka teidän kaljaporukasta tarvitsee tämän? Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €, toinen sinulle ja toinen kaverille. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #olut #hauskapaita #suomihuumori",
   "tagit": [
    "#blackfriday",
    "#olut",
    "#hauskapaita",
    "#suomihuumori"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kuka teidän kaljaporukasta tarvitsee tämän?"
  },
  {
   "nro": "45",
-  "nimi": "45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa",
+  "nimi": "45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa-v2",
   "muoto": "pov",
   "paiva": "2026-11-25",
   "paivaFi": "25.11.",
   "aika": "11-13",
-  "hook": "Sähkömies kylässä. Katsoo ensin jatkojohtoja.",
-  "kuvateksti": "Sähkömies. Tiedän, mikä johtaa mihinkin. Merkkaa sähkömies. huumorikauppa.fi. Linkki biossa. #sähkömies #ammatit #pov #hauskapaita",
+  "hook": "Sähkömies tulee kylään",
+  "kuvateksti": "Kuka teidän suvusta tarkistaa aina sähköt? Sähkömies. Tiedän, mikä johtaa mihinkin. Merkkaa sähkömies. huumorikauppa.fi. Linkki biossa. #sähkömies #ammatit #pov #hauskapaita",
   "tagit": [
    "#sähkömies",
    "#ammatit",
    "#pov",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sahkomiehelle"
+  "tuote": "/tuote/sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sahkomiehelle",
+  "kysymys": "Kuka teidän suvusta tarkistaa aina sähköt?"
  },
  {
   "nro": "44",
-  "nimi": "44-black-friday-amatimies-t-paita",
+  "nimi": "44-black-friday-amatimies-t-paita-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-25",
   "paivaFi": "25.11.",
   "aika": "18-20",
-  "hook": "Työmaalle kaksi paitaa 44,90 €",
-  "kuvateksti": "Amatimies ja Kalju: kaksi t-paitaa 44,90 € Black Fridayna 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #työmaa #amatimies #hauskapaita",
+  "hook": "Pomo kysyy: kuka asensi tämän?",
+  "kuvateksti": "Kuka teidän työmaalla on amatimies? Amatimies ja Kalju: kaksi t-paitaa 44,90 € Black Fridayna 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #työmaa #amatimies #hauskapaita",
   "tagit": [
    "#blackfriday",
    "#työmaa",
    "#amatimies",
    "#hauskapaita"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kuka teidän työmaalla on amatimies?"
  },
  {
   "nro": "47",
-  "nimi": "47-personoidut-sauna",
+  "nimi": "47-personoidut-sauna-v2",
   "muoto": "perus",
   "paiva": "2026-11-26",
   "paivaFi": "26.11.",
   "aika": "11-13",
-  "hook": "Saunaporukan vanhimmalle paita hänen nimellään",
-  "kuvateksti": "Saunan vanhin ja Löylymestari omalla nimellä. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #sauna #personoitupaita #joululahja #saunojalle",
+  "hook": "Saunaporukan vanhin",
+  "kuvateksti": "Kuka on teidän saunan vanhin? Saunan vanhin ja Löylymestari omalla nimellä. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #sauna #personoitupaita #joululahja #saunojalle",
   "tagit": [
    "#sauna",
    "#personoitupaita",
    "#joululahja",
    "#saunojalle"
   ],
-  "tuote": "/personoidut"
+  "tuote": "/personoidut",
+  "kysymys": "Kuka on teidän saunan vanhin?"
  },
  {
   "nro": "46",
-  "nimi": "46-black-friday-olen-elakkeella-t-paita",
+  "nimi": "46-black-friday-olen-elakkeella-t-paita-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-26",
   "paivaFi": "26.11.",
   "aika": "18-20",
-  "hook": "Kaksi joululahjaa eläkeläisille: 44,90 €",
-  "kuvateksti": "Kaksi joululahjaa eläkeläisille, kaksi t-paitaa 44,90 €. Black Friday 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #eläkeläinen #hauskapaita",
+  "hook": "Eläkeläinen maanantaiaamuna",
+  "kuvateksti": "Kenelle eläkeläiselle annat tämän jouluna? Kaksi joululahjaa eläkeläisille, kaksi t-paitaa 44,90 €. Black Friday 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #eläkeläinen #hauskapaita",
   "tagit": [
    "#blackfriday",
    "#joululahja",
    "#eläkeläinen",
    "#hauskapaita"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kenelle eläkeläiselle annat tämän jouluna?"
  },
  {
   "nro": "49",
-  "nimi": "49-kinkkuvahti-ala-koske-t-paita-jouluun",
+  "nimi": "49-kinkkuvahti-ala-koske-t-paita-jouluun-v2",
   "muoto": "dialogi",
   "paiva": "2026-11-27",
   "paivaFi": "27.11.",
   "aika": "11-13",
   "hook": "Hän: Saako kinkkua jo maistaa?",
-  "kuvateksti": "Kinkkuvahti. Älä koske. Merkkaa kinkun vartija. huumorikauppa.fi. Linkki biossa. #joulu #joulukinkku #pariskunta #joulupaita",
+  "kuvateksti": "Kuka teillä maistaa kinkkua ennen aattoa? Kinkkuvahti. Älä koske. Merkkaa kinkun vartija. huumorikauppa.fi. Linkki biossa. #joulu #joulukinkku #pariskunta #joulupaita",
   "tagit": [
    "#joulu",
    "#joulukinkku",
    "#pariskunta",
    "#joulupaita"
   ],
-  "tuote": "/tuote/kinkkuvahti-ala-koske-t-paita-jouluun"
+  "tuote": "/tuote/kinkkuvahti-ala-koske-t-paita-jouluun",
+  "kysymys": "Kuka teillä maistaa kinkkua ennen aattoa?"
  },
  {
   "nro": "48",
-  "nimi": "48-black-friday-maailman-paras-aiti-t-paita",
+  "nimi": "48-black-friday-maailman-paras-aiti-t-paita-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-27",
   "paivaFi": "27.11.",
   "aika": "18-20",
-  "hook": "Tänään on Black Friday",
-  "kuvateksti": "Joululahja äidille ja isälle. Black Friday -tarjous on voimassa maanantaihin 30.11. asti: kaksi t-paitaa 44,90 €. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #hauskapaita #suomihuumori",
+  "hook": "Isä korjaa hanaa kolmatta tuntia",
+  "kuvateksti": "Kumpi teillä korjaa hanan, äiti vai isä? Joululahja äidille ja isälle. Black Friday -tarjous on voimassa maanantaihin 30.11. asti: kaksi t-paitaa 44,90 €. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #hauskapaita #suomihuumori",
   "tagit": [
    "#blackfriday",
    "#joululahja",
    "#hauskapaita",
    "#suomihuumori"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kumpi teillä korjaa hanan, äiti vai isä?"
  },
  {
   "nro": "51",
-  "nimi": "51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan",
+  "nimi": "51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan-v2",
   "muoto": "pov",
   "paiva": "2026-11-28",
   "paivaFi": "28.11.",
   "aika": "11-13",
-  "hook": "Yövuoro, kello 3.12. Kahvi loppui.",
-  "kuvateksti": "Sairaanhoitaja. Kahvi on ensiapua. Merkkaa hoitaja, joka tarvitsee tämän. huumorikauppa.fi. Linkki biossa. #sairaanhoitaja #yövuoro #ammatit #hauskapaita",
+  "hook": "Yövuoro, kello 3.12",
+  "kuvateksti": "Montako kuppia yövuoro vaatii? Sairaanhoitaja. Kahvi on ensiapua. Merkkaa hoitaja, joka tarvitsee tämän. huumorikauppa.fi. Linkki biossa. #sairaanhoitaja #yövuoro #ammatit #hauskapaita",
   "tagit": [
    "#sairaanhoitaja",
    "#yövuoro",
    "#ammatit",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaanhoitajalle"
+  "tuote": "/tuote/sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaanhoitajalle",
+  "kysymys": "Montako kuppia yövuoro vaatii?"
  },
  {
   "nro": "50",
-  "nimi": "50-personoidut-tyokaveri",
+  "nimi": "50-personoidut-tyokaveri-v2",
   "muoto": "perus",
   "paiva": "2026-11-28",
   "paivaFi": "28.11.",
   "aika": "18-20",
-  "hook": "Paras työkaveri ansaitsee oman paidan",
-  "kuvateksti": "Paras työkaveri, omalla nimellä. Pikkujoululahjaksi tai kiitokseksi. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #työkaveri #personoitupaita #pikkujoulut #lahjaidea",
+  "hook": "Pikkujoulujen lahjanvaihto",
+  "kuvateksti": "Kuka on teidän paras työkaveri? Paras työkaveri, omalla nimellä. Pikkujoululahjaksi tai kiitokseksi. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #työkaveri #personoitupaita #pikkujoulut #lahjaidea",
   "tagit": [
    "#työkaveri",
    "#personoitupaita",
    "#pikkujoulut",
    "#lahjaidea"
   ],
-  "tuote": "/personoidut"
+  "tuote": "/personoidut",
+  "kysymys": "Kuka on teidän paras työkaveri?"
  },
  {
   "nro": "53",
-  "nimi": "53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu",
+  "nimi": "53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu-v2",
   "muoto": "pov",
   "paiva": "2026-11-29",
   "paivaFi": "29.11.",
   "aika": "11-13",
-  "hook": "Se yks kaveri, joka lähtee vain yhdelle",
-  "kuvateksti": "Piipahdan yhdelle. Palaan maanantaina. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #olut #seykskaveri #pov",
+  "hook": "Se yks kaveri: \"Lähden vain yhdelle\"",
+  "kuvateksti": "Kuka teidän porukasta lähtee aina vain yhdelle? Piipahdan yhdelle. Palaan maanantaina. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #olut #seykskaveri #pov",
   "tagit": [
    "#pikkujoulut",
    "#olut",
    "#seykskaveri",
    "#pov"
   ],
-  "tuote": "/tuote/piipahdan-yhdelle-palaan-maanantaina-t-paita-oluen-ystavalle"
+  "tuote": "/tuote/piipahdan-yhdelle-palaan-maanantaina-t-paita-oluen-ystavalle",
+  "kysymys": "Kuka teidän porukasta lähtee aina vain yhdelle?"
  },
  {
   "nro": "52",
-  "nimi": "52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita",
+  "nimi": "52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-v2",
   "muoto": "pov",
   "paiva": "2026-11-29",
   "paivaFi": "29.11.",
   "aika": "18-20",
-  "hook": "POV: anoppi soitti. Hän tulee jouluksi.",
-  "kuvateksti": "Anoppi tulee jouluksi. Pysy rauhallisena. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. huumorikauppa.fi. Linkki biossa. #joulu #anoppi #pov #joulupaita",
+  "hook": "POV: anoppi soitti",
+  "kuvateksti": "Kuka teille tulee jouluksi? Anoppi tulee jouluksi. Pysy rauhallisena. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. huumorikauppa.fi. Linkki biossa. #joulu #anoppi #pov #joulupaita",
   "tagit": [
    "#joulu",
    "#anoppi",
    "#pov",
    "#joulupaita"
   ],
-  "tuote": "/tuote/anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-jouluun"
+  "tuote": "/tuote/anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-jouluun",
+  "kysymys": "Kuka teille tulee jouluksi?"
  },
  {
   "nro": "55",
-  "nimi": "55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul",
+  "nimi": "55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul-v2",
   "muoto": "perus",
   "paiva": "2026-11-30",
   "paivaFi": "30.11.",
   "aika": "11-13",
-  "hook": "Lahjapaniikki? Jouluksi ehtii vielä.",
-  "kuvateksti": "Lahjapaniikki. Perinteinen joulutapa. Tilaa viimeistään ke 2.12., niin tilaus ehtii perille jouluaattoon mennessä. huumorikauppa.fi. Linkki biossa. #joululahja #lahjapaniikki #joulu #joulupaita",
+  "hook": "Joulukuu alkaa",
+  "kuvateksti": "Montako lahjaa sinulla on vielä ostamatta? Lahjapaniikki. Perinteinen joulutapa. Tilaa viimeistään ke 2.12., niin tilaus ehtii perille jouluaattoon mennessä. huumorikauppa.fi. Linkki biossa. #joululahja #lahjapaniikki #joulu #joulupaita",
   "tagit": [
    "#joululahja",
    "#lahjapaniikki",
    "#joulu",
    "#joulupaita"
   ],
-  "tuote": "/tuote/lahjapaniikki-perinteinen-joulutapa-t-paita-jouluun"
+  "tuote": "/tuote/lahjapaniikki-perinteinen-joulutapa-t-paita-jouluun",
+  "kysymys": "Montako lahjaa sinulla on vielä ostamatta?"
  },
  {
   "nro": "54",
-  "nimi": "54-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p",
+  "nimi": "54-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v2",
   "muoto": "tarjous",
   "paiva": "2026-11-30",
   "paivaFi": "30.11.",
   "aika": "18-20",
-  "hook": "Black Friday päättyy tänään klo 23.59",
-  "kuvateksti": "Viimeinen päivä: kaksi t-paitaa 44,90 € tänään klo 23.59 asti. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #viimeinenpäivä #hauskapaita #joululahja",
+  "hook": "Eläkeläinen perjantaina kello 10",
+  "kuvateksti": "Kenelle ostat toisen paidan? Viimeinen päivä: kaksi t-paitaa 44,90 € tänään klo 23.59 asti. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #viimeinenpäivä #hauskapaita #joululahja",
   "tagit": [
    "#blackfriday",
    "#viimeinenpäivä",
    "#hauskapaita",
    "#joululahja"
   ],
-  "tuote": "/black-friday"
+  "tuote": "/black-friday",
+  "kysymys": "Kenelle ostat toisen paidan?"
  }
 ]

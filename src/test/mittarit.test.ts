@@ -171,4 +171,24 @@ describe("somevideoiden julkaisulista", () => {
     expect(JOULU_VIIMEINEN.iso).toBe(JOULU_TILAUSPAIVA_ISO);
     for (const v of l) expect(v.kuvateksti).not.toMatch(/\/ig|\/tt|utm_/);
   });
+
+  it("3.11. alkaen tilanne ensin, paita lopussa ja kysymys: kysymys myös kuvatekstin alussa, uusi tiedostonimi", async () => {
+    const { julkaisulista, VIDEOT, UUSI_MUOTO_ALKAEN, KASIKIRJOITUKSET } = await import("../../scripts/some-videot.mjs");
+    const l = julkaisulista();
+    const jaljella = l.filter((v) => v.paiva >= UUSI_MUOTO_ALKAEN);
+    expect(jaljella).toHaveLength(53);
+    expect(Object.keys(KASIKIRJOITUKSET)).toHaveLength(53);
+    for (const v of jaljella) {
+      const video = VIDEOT.find((x) => x.nro === v.nro);
+      expect(video.tilanne).toHaveLength(3);
+      expect(v.kysymys).toMatch(/\?$/);
+      expect(v.kuvateksti.startsWith(v.kysymys)).toBe(true);
+      expect(v.nimi).toMatch(/-v2$/);
+      expect(`${video.tilanne.join(" ")} ${v.kuvateksti}`).not.toMatch(/[–—]|3-10/);
+    }
+    // Ennen 3.11. julkaistut ennallaan.
+    for (const v of l.filter((x) => x.paiva < UUSI_MUOTO_ALKAEN)) { expect(v.nimi).not.toMatch(/-v2$/); expect(v.kysymys).toBeUndefined(); }
+    // Kysymykset vaihtelevat.
+    expect(new Set(jaljella.map((v) => v.kysymys)).size).toBe(53);
+  });
 });
