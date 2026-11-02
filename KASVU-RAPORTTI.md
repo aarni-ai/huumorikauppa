@@ -2689,3 +2689,90 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 - Uusi testi `src/test/ajonaikaisetImportit.test.ts` seuraa middlewaren ja api/-tiedostojen importit ja kaatuu, jos
   päätettä ei ole. Testi tarkistettu: se kaatuu vanhalla koodilla.
 - Testit: 1 739 läpi. Kolme User-Agentia ja 12 sivua, kaikki 200.
+
+## 2.11.2026 (yö): ryhmätilaukset, 40 ammatti- ja harrastussivua, somevideot uuteen muotoon, korin lisämyynti
+
+### Ryhmätilaukset: /abipaidat, /polttarit, /joukkueet ja /yhdistykset
+- Kaikki sivut ovat tuotannossa (200, kolme User-Agentia). Toimitusaika 4-15 arkipäivää tulee
+  src/config/toimitus.ts:stä, ei 3-10.
+- Suunnittelutyökalu:
+  - ryhmän nimi, vuosiluku, oma teksti tai logo
+  - jäsenen nimi selkään
+  - esikatselu mockupissa
+  - jaettu kokotaulukkolinkki (/ryhma/:tunnus) ja vetäjän hallintasivu (/ryhma/hallinta/:tunnus)
+- **Maksaminen:** vetäjä maksaa kerralla, tai jokainen maksaa oman paitansa.
+  - Kun kaikki ovat maksaneet, tilaus lukittuu ja lähtee Printifyyn automaattisesti.
+  - Vetäjä voi lukita aiemmin. Silloin maksamattomat jäävät pois tai vetäjä maksaa ne.
+  - Määräalennuksen erotus palautetaan Stripellä.
+- **Hinnat (t-paita, etu ja selkä):**
+
+  | Paitoja | Hinta | Pienin kate/paita |
+  |---|---|---|
+  | 5-9 | 37,90 € | 11,22 € |
+  | 10+ | 35,90 € | 10,36 € |
+  | 25+ | 34,90 € | 10,00 € |
+  | 50+ | 33,90 € | 9,35 € |
+
+  Koot 3XL-5XL maksavat 2 € enemmän. Testi käy läpi määrät 5-100, kaikki koot ja värit sekä molemmat maksutavat.
+- **Selkäpainatuksen kulu:** Printifyn testitilauksen mukaan 6,61 € (arvio oli 6,00 €). Hintoja nostettiin
+  eurolla, jotta 9 €:n raja täyttyy.
+- **Polkutesti tuotannossa** (`node scripts/ryhmatilaus-testi.mjs`): luonti, 2 jäsentä, maksu, automaattinen
+  lukitus, painokuvat (3461 x 3955, etu ja selkä) ja Printify-tilaus 6ae8b247d79d719ff80f4c35 "TESTI Ryhmätilaus
+  (perutaan)", joka peruttiin samassa ajossa (canceled). Testidata poistettiin.
+- **Abipaidat:** viimeinen tilauspäivä to 14.1.2027. Paidat ovat perillä 4.2. ennen penkkareita 18.2.2027.
+
+### 40 ammatti- ja harrastussivua /paidat/[slug]
+- Valinta Googlen hakuehdotuksista ja avainsanat.csv:stä: seo/ammattisivut.md.
+  - 24 ammattia, esim. opettaja, insinööri, lääkäri, sairaanhoitaja, poliisi, kampaaja, sähkömies, kokki
+  - 16 harrastusta, esim. jalkapallo, jääkiekko, kissaihminen, koiraihminen, padel ja kahvinjuoja
+- Aiheet, joille kaupassa oli jo sivu (kalastaja, metsästäjä, golffari, mökkeilijä, saunoja, maanviljelijä,
+  koodari), jäivät nykyisille sivuilleen. 21 vanhaa /ammatti/- ja /harrastus/-sivua ohjautuu 301:llä uusille.
+- Jokaisella sivulla on:
+  - 250-400 sanan oma teksti (testi: 5 sanan jaksoista alle 15 % yhteisiä)
+  - 5 kysymyksen UKK ja FAQPage-schema
+  - personoitu vaihtoehto esitäytettynä
+  - sisäiset linkit, esirenderöinti ja sivukartta (40 osoitetta)
+- **Uudet mallit:** jokaisella sivulla oli alle 6 sopivaa tuotetta, joten tehtiin 200 uutta mallia eli 400 tuotetta
+  (t-paita OPT 27,90 €, huppari Katanga 52,90 €).
+  - Kontrastisääntö: valkoinen teksti tummilla pohjilla, musta teksti Sport Greyllä. Tummat-värit-tarkistus koko
+    kaupalle: 0 uutta poistoa.
+  - Yhden tuotteen tilauksen nettokate on t-paidalla 9,57 € ja hupparilla 9,92-11,82 €.
+  - Vitsit tarkistettiin, ja yksi kielivirhe korjattiin ("En kerro mitään").
+  - Kaupassa on nyt 1 173 tuotetta, ja ammattisivuilla on 11-16 tuotetta.
+- **Tuonnin korjaus:** tuonti pysähtyi aikarajaan, koska jo tuodut tarkistettiin kannasta yksitellen. Ne haetaan nyt
+  yhdellä kyselyllä (api/cron/tilaukset.js tuo-aktiiviset).
+
+### Ostoskorin lisämyynti
+- "Lisää toinen paita, niin toimitus on ilmainen" näytetään vain, kun kassa antaa ilmaisen toimituksen jokaisella
+  ehdotetun paidan koolla ja värillä ja kate on vähintään 7 € (testi kassan laskennalla, yli 100 paria).
+- "Sopii yhteen" näyttää kolme koriin sopivaa suositusta (sama aihe tai sama lahjasivu).
+- Seuranta (näytetty ja lisätty) menee mittariin. Botit ja oma liikenne ohitetaan.
+- Tarkistettu tuotannossa puhelimella.
+
+### Somevideot
+- 20 uutta videota (36-55). Lista riittää 30.11. asti: 22.-30.11. kaksi videota päivässä, joten vanhimman videon
+  uusinnat poistuivat.
+- **Instagramin data:** pelkät huumorivideot saivat 5 kertaa enemmän katseluja kuin tuotevideot (23: 132, 21: 83).
+  Siksi kaikki 3.11. alkaen julkaistavat 53 videota tehtiin uudelleen (nimissä -v2):
+  - POV-tilanne ensin, noin 6,5 s
+  - paita lopussa noin 2 s otsikolla "Tää on nyt paidassa"
+  - lopussa kommentointikysymys, esim. "Kuka teidän porukasta on aina myöhässä?", joka on myös kuvatekstin alussa
+  - ei puheääntä eikä ihmishahmoja
+- Black Friday -videoissa on hinta ja 30 päivän alin hinta. Joulun tilauspäivä ke 2.12. tulee koodista.
+- **Blob-lataus odottaa Aarnia (KAYTTOONOTTO kohta 22):** Claude ei saa hakea Blob-avainta koneelle. Siihen asti
+  /hallinta/some näyttää vanhat videot.
+
+### Mittari
+- Uudet rivit:
+  - ammattisivujen käynnit (oma osio)
+  - korin lisämyynti 14 pv
+  - ryhmätilaukset (ryhmät, jäsenet, maksetut, paidat ja kate)
+- **Tuotesivun seuranta:** dataa on vasta 5 katselua (2.11.), mikä ei riitä poistumiskohdan korjaamiseen.
+  Ensimmäinen 24 tunnin raportti tulee 3.11. päivän yhteenvetoon.
+- **Aidot ihmiskäynnit 2.11.: 182** (suora 123, Google 49, Bing 4, Facebook 2, ChatGPT 2, muu 2).
+  - 0 kassalle siirtymistä ja 0 ostoa.
+  - Oma suppilo (koriin, kassalle) on luotettava 3.11. alkaen.
+
+### Jatkoon
+- Ammattisivujen odotuslista (src/test/euReititysMinimi.ts AMMATTISIVUT_ODOTTAA) tyhjennetään, kun testien
+  tuotetilannekuva päivitetään uusilla tuotteilla.
