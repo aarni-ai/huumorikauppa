@@ -4,3 +4,7 @@
 /kirjanpito/
 /KUMPPANIT-*.md
 /some/kuvat/
+
+# Agenttien git-työpuut ja paikalliset työkalukansiot (3.11.2026: tiedostoraja 15 000 ylittyi)
+.claude
+.agents
