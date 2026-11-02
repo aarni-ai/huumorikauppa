@@ -100,7 +100,7 @@ const ISO = /^(3|4|5)XL$/;
 export const MALLIT = {
   meemipaita: { nimi: "Meemipaita (esim. Saatanan tunarit, Tonnin seteli)", hinta: () => HINNASTO.tpaita.suora, iso: () => HINNASTO.tpaita.suoraIso, kulu: 8.9, kuluIso: 10.68, eka: 8.49, lisa: 1.19, maara: true },
   tpaita: { nimi: "T-paita (ammatti-, harrastus-, pikkujoulu- ja muut designit)", hinta: () => HINNASTO.tpaita.uniikki, iso: () => HINNASTO.tpaita.uniikkiIso, kulu: 8.9, kuluIso: 10.68, eka: 8.49, lisa: 1.19, maara: true },
-  logopaita: { nimi: "Oma logo tai teksti (t-paita, halutessa huumoridesign)", hinta: () => HINNASTO.personoitu, iso: () => HINNASTO.personoitu, kulu: 8.9, kuluIso: 9.93, eka: 8.49, lisa: 1.19, maara: true },
+  logopaita: { nimi: "Oma logo tai teksti (t-paita, halutessa huumoridesign)", hinta: () => HINNASTO.logopaita, iso: () => HINNASTO.logopaita, kulu: 8.9, kuluIso: 9.93, eka: 8.49, lisa: 1.19, maara: true },
   huppari: { nimi: "Huppari", hinta: () => HINNASTO.hupparit.perus, iso: () => HINNASTO.hupparit.iso, kulu: 24.77, kuluIso: 27.5, eka: 10.89, lisa: 2.39, maara: false },
 };
 

@@ -19,6 +19,7 @@ import {
 import { SITE_URL } from "@/seo/site";
 import NotFound from "./NotFound";
 import { TpaitapariTila } from "@/components/KorialennusVihje";
+import { PersonoidutNosto } from "@/components/PersonoidutNosto";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 
 const chip =
@@ -114,6 +115,7 @@ const LandingPage = () => {
           </aside>
         )}
 
+        <PersonoidutNosto polku={pathname} className="max-w-5xl mb-8" />
         <h2 className="font-display text-xl text-foreground mb-4">
           Tuotteet{!isLoading && products.length > 0 ? ` (${products.length})` : ""}
         </h2>

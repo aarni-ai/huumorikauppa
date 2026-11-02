@@ -5,6 +5,7 @@
  * Säännöt: title alle 60 merkkiä, ei ajatusviivoja, ei todistamattomia superlatiiveja.
  */
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "../config/toimitus";
+import { HINTA } from "../data/hintatekstit";
 export interface StaticPageMeta {
   title: string;
   description: string;
@@ -113,13 +114,22 @@ export const STATIC_PAGE_META = {
     name: "Äitienpäivälahjat",
   },
   "/personoitu-paita": {
-    title: "Personoitu paita nimellä ja iällä | Huumorikauppa",
+    title: "Personoitu paita tai huppari nimellä | Huumorikauppa",
     description:
-      "Personoitu t-paita nimellä ja iällä, esimerkiksi Marja 50v: kokenut, ei vanha. Esikatselu ennen tilausta, 29,90 €, painetaan tilauksesta EU:ssa.",
-    h1: "Personoitu paita nimellä ja iällä",
+      `Personoitu t-paita ${HINTA.personoitu} tai huppari ${HINTA.personoituHuppari}: saajan nimi, vuosi tai ikä paitaan. Esikatselu ennen tilausta, painetaan EU:ssa.`,
+    h1: "Personoitu paita tai huppari",
     name: "Personoitu paita",
     intro:
-      "Valitse malli, kirjoita saajan nimi ja ikä ja katso esikatselu. Paita painetaan tilauksen jälkeen juuri tällä tekstillä.",
+      "Valitse malli, kirjoita saajan nimi, vuosiluku tai ikä ja katso esikatselu. Paita tai huppari painetaan tilauksen jälkeen juuri tällä tekstillä.",
+  },
+  "/personoidut": {
+    title: "Personoidut lahjat nimellä | Huumorikauppa",
+    description:
+      `Personoidut lahjat isälle, äidille, papalle, mummolle, saunojalle ja mökkeilijälle: nimi tai vuosi paitaan. T-paita ${HINTA.personoitu}.`,
+    h1: "Personoidut lahjat nimellä",
+    name: "Personoidut lahjat",
+    intro:
+      "Valitse malli, kirjoita saajan nimi, vuosiluku tai ikä ja katso esikatselu. Jokainen paita ja huppari painetaan tilauksesta yhdelle saajalle.",
   },
   "/kumppanit": {
     title: "Kumppanuusohjelma sisällöntuottajille | Huumorikauppa",

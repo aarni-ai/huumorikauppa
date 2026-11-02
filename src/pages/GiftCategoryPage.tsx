@@ -1,5 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
+import { PersonoidutNosto } from "@/components/PersonoidutNosto";
 import { Truck, RotateCcw, Shield, Flag } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -128,6 +129,7 @@ const GiftCategoryPage = () => {
           </div>
         )}
 
+        <PersonoidutNosto polku={location.pathname} className="mt-8" />
         {!isLoading && products.length === 0 && (
           <div className="text-center py-20">
             <p className="text-xl text-muted-foreground">Tuotteita tulossa pian 😅</p>

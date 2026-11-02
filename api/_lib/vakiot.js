@@ -59,13 +59,21 @@ export const PRINTIFY_ALV_VAHENNETTAVA = true;
 /**
  * Hinnastot (api/_lib/kokohinnat.js, api/_lib/personoitu.js). perus: hinnoittelu 29.10.2026. alvKulu: jokaisen variantin
  * nettokate vähintään 7 €, kun Printifyn ALV on kulu (tarkistettu tuotannon kuluilla ?tehtava=katetaulu&alv=1).
+ *
+ * Personoidut lahjat (2.11.2026, api/_lib/personoitu.js): personoitu = t-paita (Gildan 64000, OPT OnDemand),
+ * personoituHuppari = huppari (Gildan 18500, Atelier Katanga), iso = 3XL-5XL. Jokaisen variantin nettokate on
+ * vähintään 10 € yhden tuotteen tilauksessa toimitusmaksulla (src/test/personoidut.test.ts). Hupparin 3XL+ kulu on
+ * 31,17 € + toimitus 10,89 €: 59,90 €:lla kate jäisi 9,91 €:oon, joten 3XL+ on 60,90 €. logopaita = Oma logo -paita
+ * (ennen sama kuin personoitu, 29,90 €).
  */
 export const HINNASTOT = {
   perus: {
     tpaita: { suora: 24.9, suoraIso: 28.9, uniikki: 27.9, uniikkiIso: 29.9 },
     hupparit: { perus: 52.9, iso: 59.9 },
     kategoriat: { seinataulut: 24.9, koristeet: 22.9 },
-    personoitu: 29.9,
+    personoitu: 32.9,
+    personoituHuppari: { perus: 57.9, iso: 60.9 },
+    logopaita: 29.9,
     tpaitapari: 44.9,
   },
   // Laskettu 30.10.2026: heikoin variantti 7 € + pyöristys ylöspäin x,90:een (KATTEET.md "ALV-varasuunnitelma").
@@ -73,7 +81,10 @@ export const HINNASTOT = {
     tpaita: { suora: 30.9, suoraIso: 34.9, uniikki: 31.9, uniikkiIso: 35.9 },
     hupparit: { perus: 65.9, iso: 72.9 },
     kategoriat: { seinataulut: 28.9, koristeet: 27.9 },
-    personoitu: 32.9,
+    // Personoidut 2.11.2026: heikoin variantti 10 € Printify-kulu x 1,255:llä.
+    personoitu: 35.9,
+    personoituHuppari: { perus: 62.9, iso: 73.9 },
+    logopaita: 32.9,
     tpaitapari: 49.9,
   },
 };
