@@ -4,7 +4,7 @@
  * joten tuotesivun "perillä viimeistään" -päivä, tekstit ja joulun tilauspäivät käyttävät samoja lukuja.
  * Käsittely 1-3 arkipäivää (KASITTELYAIKA_*), kuljetus loput.
  */
-import { KASITTELYAIKA_MAX_ARKIPAIVAA, KASITTELYAIKA_MIN_ARKIPAIVAA, toimitusaikaKategorialle } from "./toimitus";
+import { KASITTELYAIKA_MAX_ARKIPAIVAA, KASITTELYAIKA_MIN_ARKIPAIVAA, toimitusaikaKategorialle } from "./toimitus.js";
 
 export interface ToimitusProfiili {
   nimi: string;

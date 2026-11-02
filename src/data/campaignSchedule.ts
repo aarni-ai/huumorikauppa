@@ -9,7 +9,7 @@
  * voi edelleen käyttää mistä tahansa (christmas.ts, sivudata). Kampanjavaiheiden kokonaiskuva: src/data/kampanjat.ts.
  */
 import { KAMPANJAPAIVAT } from "../../api/_lib/vakiot.js";
-import { TOIMITUSAIKA_MAX_ARKIPAIVAA, TOIMITUSAIKA_OLETUS, TOIMITUSAJAT_TYYPEITTAIN } from "../config/toimitus";
+import { TOIMITUSAIKA_MAX_ARKIPAIVAA, TOIMITUSAIKA_OLETUS, TOIMITUSAJAT_TYYPEITTAIN } from "../config/toimitus.js";
 
 const HELSINKI_PARTS = new Intl.DateTimeFormat("en-US", {
   timeZone: "Europe/Helsinki",
