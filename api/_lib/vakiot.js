@@ -89,6 +89,11 @@ export const PRINTIFY_ALV_VAHENNETTAVA = true;
  * vähintään 10 € yhden tuotteen tilauksessa toimitusmaksulla (src/test/personoidut.test.ts). Hupparin 3XL+ kulu on
  * 31,17 € + toimitus 10,89 €: 59,90 €:lla kate jäisi 9,91 €:oon, joten 3XL+ on 60,90 €. logopaita = Oma logo -paita
  * (ennen sama kuin personoitu, 29,90 €).
+ *
+ * Ryhmäpaidat (2.11.2026, api/_lib/ryhmatilaus.js, sivut /abipaidat, /polttarit, /joukkueet ja /yhdistykset): t-paita
+ * (Gildan 64000, OPT OnDemand), etupuolelle ryhmän nimi, vuosi ja teksti tai logo, selkään jäsenen nimi. Kappalehinta
+ * tilauksen paitamäärän mukaan (portaat [vähintään kpl, hinta]), 3XL-5XL + isoLisa. Jokaisen paidan nettokate on
+ * vähintään 9 € kaikilla määrillä 5-100 ja jokaisella koko- ja väriyhdistelmällä (src/test/ryhmatilaus.test.ts).
  */
 export const HINNASTOT = {
   perus: {
@@ -99,6 +104,7 @@ export const HINNASTOT = {
     personoituHuppari: { perus: 57.9, iso: 60.9 },
     logopaita: 29.9,
     tpaitapari: 44.9,
+    ryhmapaita: { portaat: [[50, 32.9], [25, 33.9], [10, 34.9], [5, 36.9]], isoLisa: 2 },
   },
   // Laskettu 30.10.2026: heikoin variantti 7 € + pyöristys ylöspäin x,90:een (KATTEET.md "ALV-varasuunnitelma").
   alvKulu: {
@@ -110,6 +116,7 @@ export const HINNASTOT = {
     personoituHuppari: { perus: 62.9, iso: 73.9 },
     logopaita: 32.9,
     tpaitapari: 49.9,
+    ryhmapaita: { portaat: [[50, 38.9], [25, 39.9], [10, 40.9], [5, 42.9]], isoLisa: 2 },
   },
 };
 export const HINNASTO = PRINTIFY_ALV_VAHENNETTAVA ? HINNASTOT.perus : HINNASTOT.alvKulu;

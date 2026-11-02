@@ -46,6 +46,27 @@ async function pienennaPng(tiedosto: File): Promise<ArrayBuffer> {
   return blob.arrayBuffer();
 }
 
+/**
+ * Logotiedoston tarkistus ja lataus palvelimelle (api/painokuva.js action "logo"). Käytössä myös ryhmäpaitojen
+ * suunnittelutyökalussa (src/components/RyhmaSuunnittelija.tsx).
+ */
+export async function lataaLogo(f: File): Promise<{ ok: boolean; logo?: NonNullable<LogoValinta["logo"]>; virhe?: string }> {
+  const svg = f.type === "image/svg+xml" || /\.svg$/i.test(f.name);
+  const png = f.type === "image/png" || /\.png$/i.test(f.name);
+  if (!svg && !png) return { ok: false, virhe: "Logon pitää olla PNG- tai SVG-tiedosto." };
+  if (svg && f.size > LOGO_RAJAT.svgTavua) return { ok: false, virhe: "SVG-tiedosto on yli 1 Mt." };
+  try {
+    const data = png && f.size > LOGO_RAJAT.pngTavua ? await pienennaPng(f) : await f.arrayBuffer();
+    const r = await fetch("/api/painokuva", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "logo", tyyppi: svg ? "svg" : "png", data: base64(data) }) });
+    const j = await r.json().catch(() => null);
+    if (!j?.ok) return { ok: false, virhe: j?.virhe || "Logon lataus epäonnistui. Yritä uudelleen." };
+    return { ok: true, logo: { id: j.id, nimi: f.name, leveys: j.leveys, korkeus: j.korkeus, huomio: j.huomio } };
+  } catch {
+    return { ok: false, virhe: "Logon lataus epäonnistui. Yritä uudelleen." };
+  }
+}
+
 function useViive<T>(arvo: T, ms: number) {
   const [v, setV] = useState(arvo);
   useEffect(() => { const t = setTimeout(() => setV(arvo), ms); return () => clearTimeout(t); }, [arvo, ms]);
@@ -83,24 +104,12 @@ export function LogoEditori({ arvo, setArvo, tunniste = "logo" }: { arvo: LogoVa
 
   const valitseTiedosto = async (f: File | undefined) => {
     if (!f) return;
-    const svg = f.type === "image/svg+xml" || /\.svg$/i.test(f.name);
-    const png = f.type === "image/png" || /\.png$/i.test(f.name);
-    if (!svg && !png) { setLataus("Logon pitää olla PNG- tai SVG-tiedosto."); return; }
-    if (svg && f.size > LOGO_RAJAT.svgTavua) { setLataus("SVG-tiedosto on yli 1 Mt."); return; }
     setLataus("ladataan");
-    try {
-      const data = png && f.size > LOGO_RAJAT.pngTavua ? await pienennaPng(f) : await f.arrayBuffer();
-      const r = await fetch("/api/painokuva", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "logo", tyyppi: svg ? "svg" : "png", data: base64(data) }) });
-      const j = await r.json().catch(() => null);
-      if (!j?.ok) { setLataus(j?.virhe || "Logon lataus epäonnistui. Yritä uudelleen."); return; }
-      setLataus("");
-      aseta({ logo: { id: j.id, nimi: f.name, leveys: j.leveys, korkeus: j.korkeus, huomio: j.huomio } });
-    } catch {
-      setLataus("Logon lataus epäonnistui. Yritä uudelleen.");
-    } finally {
-      if (tiedosto.current) tiedosto.current.value = "";
-    }
+    const r = await lataaLogo(f);
+    if (tiedosto.current) tiedosto.current.value = "";
+    if (!r.ok) { setLataus(r.virhe); return; }
+    setLataus("");
+    aseta({ logo: r.logo });
   };
 
   const osumat = useMemo(() => {

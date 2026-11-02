@@ -55,6 +55,13 @@ const Privacy = () => {
         </section>
 
         <section>
+          <h2 className="font-display text-xl text-foreground">4 a. Ryhmätilaukset</h2>
+          <p>Ryhmätilauksessa (abipaidat, polttaripaidat, joukkuepaidat ja yhdistysten paidat) tallennamme ryhmän vetäjän nimen, sähköpostiosoitteen, puhelinnumeron ja toimitusosoitteen, koska kaikki paidat toimitetaan vetäjälle. Jäsenistä tallennamme vain paitaan painettavan nimen tai lempinimen, valinnaisen numeron ja koon sekä tiedon maksusta. Jäsenten sähköpostiosoitetta emme tallenna: maksunvälittäjä Stripe kysyy sen maksun yhteydessä ja lähettää kuitin.</p>
+          <p>Jäsenlinkin saanut näkee ryhmän paitojen selkänimet ja oman rivinsä, mutta ei vetäjän tietoja eikä muiden kokoja tai maksuja. Vetäjä näkee kokotaulukon nimet, koot ja maksutilanteen omalla hallintalinkillään. Linkit ovat satunnaisia tunnisteita, ja vetäjän linkki on eri kuin jäsenten linkki.</p>
+          <p>Ryhmän tiedot poistetaan 180 päivän kuluttua siitä, kun tilaus lähti painoon tai ryhmä peruttiin, ja maksamattoman ryhmän tiedot 180 päivän kuluttua sen luonnista. Painoon lähteneen tilauksen tiedot (tilausrivit ja toimitusosoite) säilytetään kirjanpitolain mukaisesti kuten muutkin tilaukset. Nimet ja painokuvat välitetään painokumppanille Printifylle paitojen valmistusta varten.</p>
+        </section>
+
+        <section>
           <h2 className="font-display text-xl text-foreground">5. Rekisteröidyn oikeudet</h2>
           <p>Sinulla on oikeus tarkastaa, korjata ja poistaa itseäsi koskevat tiedot. Voit myös vastustaa tietojen käsittelyä ja pyytää tietojen siirtämistä. Ota yhteyttä {ORGANIZATION.email}.</p>
         </section>

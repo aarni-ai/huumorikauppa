@@ -34,6 +34,10 @@ const STATIC_PAGES = [
   { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
   { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
+  { loc: "/abipaidat", changefreq: "weekly", priority: "0.8" },
+  { loc: "/polttarit", changefreq: "monthly", priority: "0.7" },
+  { loc: "/joukkueet", changefreq: "monthly", priority: "0.7" },
+  { loc: "/yhdistykset", changefreq: "monthly", priority: "0.7" },
   { loc: "/yritykset", changefreq: "weekly", priority: "0.8" },
   // Alakohtaiset yrityssivut (2.11.2026, src/data/yritysAlat.ts; src/data/yritysAlat.test.ts tarkistaa listan).
   { loc: "/yritykset/rakennus", changefreq: "weekly", priority: "0.7" },

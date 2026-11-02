@@ -151,6 +151,12 @@ export async function lahetaPrintifyyn(tilausId) {
  */
 export async function kasitteleMaksu(session) {
   if (session.payment_status !== "paid") return null;
+  // Ryhmätilauksen maksu (jäsenen tai vetäjän, api/_lib/ryhmatilaus-db.js): ei omaa tilausriviä ennen lähetystä.
+  if (session.metadata?.ryhma_id) {
+    const { kasitteleRyhmaMaksu } = await import("./ryhmatilaus-db.js");
+    await kasitteleRyhmaMaksu(session);
+    return null;
+  }
   const tilausId = session.metadata?.order_id || session.client_reference_id;
   if (!tilausId) {
     await halytys("Maksu ilman tilausta", [`Stripe-session ${session.id}`, `Asiakas ${session.customer_details?.email || session.customer_email || "?"}`]);
