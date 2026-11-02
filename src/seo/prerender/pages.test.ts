@@ -71,7 +71,7 @@ describe("buildPrerenderPages", () => {
 
   it("product pages carry Product JSON-LD, price and FAQ", () => {
     const page = byPath.get("/tuote/amatimies-t-paita")!;
-    expect(page.title).toBe("Amatimies | T-Paita | Huumorikauppa");
+    expect(page.title).toBe("Hauska t-paita: Amatimies");
     expect(page.price).toBe(24.9);
     expect(page.ogType).toBe("product");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

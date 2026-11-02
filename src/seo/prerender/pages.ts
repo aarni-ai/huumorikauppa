@@ -54,6 +54,7 @@ import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
 import { MALLIT } from "../../../api/_lib/personoitu.js";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
+import { hakuotsikko } from "../../../api/_lib/hakuotsikko.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
 import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
 import {
@@ -754,7 +755,7 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
   const mainImage = productImageSources(lisaaLahikuva(product, defaultColorImages(product))[0]);
   return {
     path,
-    title: override?.seoTitle ?? `${product.name} | Huumorikauppa`,
+    title: override?.seoTitle ?? hakuotsikko(product),
     description: override?.metaDescription ?? (override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription),
     h1: product.name,
     price: product.price,

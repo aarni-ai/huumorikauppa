@@ -48,6 +48,7 @@ import { trackViewItem } from "@/lib/analytics";
 import { aloitaTuoteseuranta, kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
 import { lisaaLahikuva } from "@/lib/lahikuva";
 import { painetaanEUssa } from "../../api/_lib/materiaali.js";
+import { hakuotsikko } from "../../api/_lib/hakuotsikko.js";
 import { mittataulukko } from "@/data/mittataulukot";
 import { MittaTaulukko } from "@/components/SizeGuide";
 import { sameDesignLinks } from "@/lib/sameDesign";
@@ -630,8 +631,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const metaDesc = contentOverride?.metaDescription ?? (contentOverride
     ? truncateAtWord(contentOverride.description.replace(/\s+/g, " "), 155)
     : seoCopy.shortDescription);
-  // Hakukyselyn mukainen title (src/data/productContent.ts seoTitle), sama kuin esirenderöinnissä.
-  const seoTitle = contentOverride?.seoTitle ?? `${product.name} | Huumorikauppa`;
+  // Hakusanaotsikko (api/_lib/hakuotsikko.js; käsin kirjoitettu seoTitle tiedostossa src/data/productContent.ts voittaa), sama kuin esirenderöinnissä.
+  const seoTitle = contentOverride?.seoTitle ?? hakuotsikko(product);
 
   return (
     <div className="min-h-screen">
