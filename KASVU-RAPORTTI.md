@@ -2776,3 +2776,67 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 ### Jatkoon
 - Ammattisivujen odotuslista (src/test/euReititysMinimi.ts AMMATTISIVUT_ODOTTAA) tyhjennetään, kun testien
   tuotetilannekuva päivitetään uusilla tuotteilla.
+
+## 3.11.2026: maksutavat 7 €:n katteella, Product-schema tuotetyypeittäin, 20 abipaitojen kaupunkisivua, aamun tuotesivuraportti, julkaisun esitestaus
+
+### Maksutavat
+- Stripen API:n mukaan kassalla ovat jo käytössä kortti, Apple Pay, Google Pay, Klarna ja MobilePay (myös Link).
+  Stripen hallintapaneelissa ei tarvita Aarnin hyväksyntää.
+- Laskelma on KATTEET.md:ssä ("Maksutavat ja 7 €:n kate 3.11.2026"). Yhden tuotteen tilausten pienin kate:
+
+  | Maksutapa | Pienin kate |
+  |---|---|
+  | Kortti, Apple Pay, Google Pay | 7,05 € |
+  | MobilePay | 6,94 € |
+  | Klarna | 6,31 € |
+
+- Kassa tarjoaa nyt Stripe-istunnossa vain maksutavat, joilla kate on vähintään 7 € (api/_lib/maksutavat.js).
+  Tarkistettu tuotannossa testi-istunnoilla, jotka vanhennettiin heti:
+  - yksi 24,90 €:n t-paita: vain kortti, Apple Pay ja Google Pay
+  - kaksi t-paitaa: kaikki maksutavat
+- Ryhmätilauksissa ovat kortti ja MobilePay, koska Klarnalla 9 €:n kate paidalta ei täyty.
+- Korin maksutapalogot noudattavat samaa sääntöä. Tuotesivulla näkyvät kaikki logot.
+- **Jäljelle jäävä poikkeama:** premium-kortteja ei voi rajata ennen maksua, joten kate voi jäädä enintään 0,42 € alle
+  7 €:n.
+
+### Googlen tuotetiedot
+- Product-schemassa oli jo shippingDetails, hasMerchantReturnPolicy (14 päivää) ja priceValidUntil (2027-12-31).
+- Uutta: toimitusaika tuotetyypin mukaan, t-paidat 4-15 ja hupparit 5-15 arkipäivää (käsittely 1-3 ja kuljetus loput).
+  Sama tieto tulee middlewaresta, esirenderöinnistä ja tuotesivulta.
+- Validointi (scripts/tuotedata-validointi.mjs) hyväksyy tuotetyypin ajan, kun se pysyy kaupan 4-15 arkipäivän
+  lupauksen sisällä. Tuotannossa tarkistettu yksi kelvollinen Product sekä t-paidalle että hupparille.
+
+### Abipaidat kaupungeittain
+- 20 sivua osoitteessa /abipaidat/[kaupunki]: Helsinki, Espoo, Tampere, Vantaa, Oulu, Turku, Jyväskylä, Kuopio,
+  Lahti, Pori, Joensuu, Lappeenranta, Hämeenlinna, Vaasa, Seinäjoki, Rovaniemi, Mikkeli, Kotka, Salo ja Porvoo.
+- Jokaisella sivulla on:
+  - 209-249 sanan oma teksti. Testi: 5 sanan jaksoista enintään 5,3 % on yhteisiä minkä tahansa kahden sivun
+    välillä. Lukioita ei nimetä, ja maamerkit ovat tunnettuja.
+  - penkkarit 18.2.2027 ja takaraja to 14.1.2027 vakioista
+  - ryhmätyökalu, 4 kysymyksen UKK ja FAQPage-schema
+  - linkit lähikaupunkeihin
+- /abipaidat linkittää kaupunkisivuihin, ja kaikki 20 ovat sivukartassa.
+
+### Aamun tuotesivuraportti (päivän yhteenveto klo 7)
+- Raportti kattaa edellisen päivän (Suomen aika): koon ja värin valinta, kokotaulukko, Lisää koriin näkyvissä,
+  koriin, vieritys 25/50/75/100 %, aika sivulla, sekä suppilo katselu -> painike näkyi -> koko valittu -> koriin.
+- Kun aitoja katseluja on vähintään 50, raportti merkitsee suurimman pudotuksen ja antaa valmiin korjausehdotuksen.
+- Sama raportti koneelle: `node scripts/tuoteseuranta-raportti.mjs [pvm]`.
+- **2.11.:** 10 aitoa katselua. Painike näkyi kaikille, mutta kukaan ei valinnut kokoa, ja 60 % poistui alle
+  10 sekunnissa. Data on vielä alle 50 katselun rajan.
+
+### Joulukausi
+- Uusi testi src/test/joulukausi.test.ts käy läpi jokaisen tunnin 3.11.-25.12. Jokaisena tuntina on kampanjavaihe,
+  banneri ja nosto, eikä yhdessäkään näy mennyttä takarajaa.
+- Ke 2.12. jälkeen (3.12.-24.12.) näkyy lahjakorttibanneri ja lahjakortin vaihe. Lahjakortit ovat myynnissä
+  tuotannossa. 25.12. alkaen ei näy mitään.
+
+### Julkaisun esitestaus
+- scripts/julkaise-uusi.sh tekee nyt neljä vaihetta:
+  1. ajaa importtitestin ja tyyppitarkistuksen
+  2. rakentaa tuotantoversion ilman domainia (`--skip-domain`)
+  3. ajaa savutestin 11 sivulle version omaan osoitteeseen (vercel curl)
+  4. siirtää version tuotantoon (`vercel promote`) vain, jos kaikki vastaavat 200
+- Ensimmäinen ajo pysähtyi turvallisesti: agenttien työpuut nostivat tiedostomäärän yli Vercelin 15 000 tiedoston
+  rajan, joten .claude ja .agents lisättiin .vercelignore-tiedostoon. Tuotanto pysyi koko ajan edellisessä versiossa.
+- Kaksi esitestattua julkaisua tehty: savutesti 11/11 ja promote onnistuivat.
