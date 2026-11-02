@@ -1,13 +1,14 @@
-# Somevideot: julkaisujärjestys 2.11.-21.11. (35 videota)
+# Somevideot: julkaisujärjestys 2.11.-30.11. (55 videota)
 
-Videot: 1080 x 1920, 9:16, 9-11 s, H.264, hiljainen äänirata. Kansikuva on samanniminen .jpg.
+Videot: 1080 x 1920, 9:16, 9-13 s, H.264, hiljainen äänirata (ei puheääntä eikä musiikkia). Kansikuva on samanniminen .jpg.
 Lataus Coworkille: /hallinta/some (avaimellinen linkki päivän yhteenvetoviestissä). Paikallisesti kansiossa `some/videot/`.
-Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026). Tuotekuvat ovat kaupan omia Printify-mockupeja.
+Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026). Tuotekuvat ovat kaupan omia Printify-mockupeja ja lifestyle-kuvia.
 
 ## Näin julkaiset
 
-- **Videot 1-20** iltaisin klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. Sama video kaikkiin kolmeen kanavaan.
-- **Isävideot ennen isänpäivää 8.11.** Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.
+- **Videot 1-20** iltaisin klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.
+- **Isävideot ennen isänpäivää 8.11.** Painettu paita ei enää ehdi isänpäiväksi, joten videot 36 ja 37 nostavat lahjakortin. Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.
+- **Black Friday 23.-30.11.** (muoto tarjous): kaksi 24,90 €:n t-paitaa 44,90 €. Kuvatekstissä on aina t-paidan hinta ja 30 päivän alin hinta; älä poista sitä. Joulun viimeinen tilauspäivä on ke 2.12.
 - **TikTok:** lisää sovelluksen oma musiikki (Commercial Music Library, jos tili on yritystili). Videossa ei ole musiikkia.
 - **Instagram Reels ja YouTube Shorts:** voi julkaista sellaisenaan tai lisätä sovelluksen oman äänen.
 - **Bio joka kanavaan:** pelkkä huumorikauppa.fi. Kuvatekstissä mainitaan vain "linkki biossa" tai huumorikauppa.fi, ei pitkiä linkkejä.
@@ -65,10 +66,10 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026). Tuotekuvat ovat kaupan 
 
 ### 6.11.
 
-**Klo 11-13: video 25 (pov): Marraskuun aamu. Pimeää kuin yöllä.**
+**Klo 11-13: video 36 (perus): Isänpäivä on sunnuntaina. Lahja vielä hankkimatta?**
 
-- **Video:** `some/videot/25-heratyskello-elakkeella-myos-t-paita-elakelaisel.mp4`
-- **Kuvateksti:** Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita
+- **Video:** `some/videot/36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle.mp4`
+- **Kuvateksti:** Painettu paita ei enää ehdi isänpäiväksi, mutta lahjakortti ehtii: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. Isä valitsee paidan itse. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #lahjakortti #hauskapaita
 
 **Klo 18-20: video 05 (perus): Pukki kysyy: oletko ollut kiltti?**
 
@@ -77,10 +78,10 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026). Tuotekuvat ovat kaupan 
 
 ### 7.11.
 
-**Klo 11-13: video 26 (pov): Se yks kaveri saunassa, jonka mielestä ei ole kuuma**
+**Klo 11-13: video 37 (pov): POV: isänpäivä on huomenna ja lahja puuttuu**
 
-- **Video:** `some/videot/26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle.mp4`
-- **Kuvateksti:** Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita
+- **Video:** `some/videot/37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita.mp4`
+- **Kuvateksti:** Isänpäivä on huomenna. Lahjakortti ehtii vielä: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. huumorikauppa.fi. Linkki biossa. #isänpäivä #pov #lahjakortti #isänpäivälahja
 
 **Klo 18-20: video 06 (perus): Hän täyttää 60. Älä sano vanha.**
 
@@ -218,6 +219,11 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026). Tuotekuvat ovat kaupan 
 
 ### 20.11.
 
+**Klo 11-13: video 25 (pov): Marraskuun aamu. Pimeää kuin yöllä.**
+
+- **Video:** `some/videot/25-heratyskello-elakkeella-myos-t-paita-elakelaisel.mp4`
+- **Kuvateksti:** Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita
+
 **Klo 18-20: video 19 (perus): Par on tavoite. Bogey on elämäntapa.**
 
 - **Video:** `some/videot/19-hauska-t-paita-golfaajalle-bogey-on-elamantapa.mp4`
@@ -225,10 +231,123 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026). Tuotekuvat ovat kaupan 
 
 ### 21.11.
 
+**Klo 11-13: video 26 (pov): Se yks kaveri saunassa, jonka mielestä ei ole kuuma**
+
+- **Video:** `some/videot/26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle.mp4`
+- **Kuvateksti:** Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita
+
 **Klo 18-20: video 20 (perus): Kalastaja kertoo saaliistaan**
 
 - **Video:** `some/videot/20-kalastan-siis-valehtelen-t-paita-kalastajalle.mp4`
 - **Kuvateksti:** Kalastan, siis valehtelen. huumorikauppa.fi. Linkki biossa. #kalastus #suomihuumori #hauskapaita
+
+### 22.11.
+
+**Klo 11-13: video 38 (pov): Se yks kaveri, joka sinuttelee esimiestä pikkujouluissa**
+
+- **Video:** `some/videot/38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou.mp4`
+- **Kuvateksti:** Pikkujoulut. Nyt sinuttelen esimiestä. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita
+
+**Klo 18-20: video 39 (perus): Pikkujouluihin paita, jossa on sinun nimesi**
+
+- **Video:** `some/videot/39-personoidut-pikkujoulut.mp4`
+- **Kuvateksti:** Kirjoita nimi, ja näet paidan heti esikatselussa. Personoidut paidat pikkujouluihin: huumorikauppa.fi. Linkki biossa. #personoitupaita #pikkujoulut #tonttu #lahjaidea
+
+### 23.11.
+
+**Klo 11-13: video 41 (pov): Se yks kaveri, joka heittää aina vielä yhden kauhan**
+
+- **Video:** `some/videot/41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno.mp4`
+- **Kuvateksti:** Löylymestari. Vain yksi kauha lisää. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #löylyt #seykskaveri #pov #hauskapaita
+
+**Klo 18-20: video 40 (tarjous): Black Friday alkoi: kaksi t-paitaa 44,90 €**
+
+- **Video:** `some/videot/40-black-friday-amatimies-t-paita.mp4`
+- **Kuvateksti:** Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €. Amatimies ja Minulla ei ole alkoholiongelmaa, tai mitkä tahansa kaksi 24,90 €:n t-paitaa. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #hauskapaita #suomihuumori #amatimies
+
+### 24.11.
+
+**Klo 11-13: video 43 (perus): Saunan jälkeen on yksi asia, josta ei neuvotella**
+
+- **Video:** `some/videot/43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen.mp4`
+- **Kuvateksti:** Saunakalja ei ole neuvoteltavissa. Joululahja saunojalle, joka tietää. huumorikauppa.fi. Linkki biossa. #saunakalja #sauna #olut #hauskapaita
+
+**Klo 18-20: video 42 (tarjous): Kaljaporukalle kaksi paitaa 44,90 €**
+
+- **Video:** `some/videot/42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p.mp4`
+- **Kuvateksti:** Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €, toinen sinulle ja toinen kaverille. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #olut #hauskapaita #suomihuumori
+
+### 25.11.
+
+**Klo 11-13: video 45 (pov): Sähkömies kylässä. Katsoo ensin jatkojohtoja.**
+
+- **Video:** `some/videot/45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa.mp4`
+- **Kuvateksti:** Sähkömies. Tiedän, mikä johtaa mihinkin. Merkkaa sähkömies. huumorikauppa.fi. Linkki biossa. #sähkömies #ammatit #pov #hauskapaita
+
+**Klo 18-20: video 44 (tarjous): Työmaalle kaksi paitaa 44,90 €**
+
+- **Video:** `some/videot/44-black-friday-amatimies-t-paita.mp4`
+- **Kuvateksti:** Amatimies ja Kalju: kaksi t-paitaa 44,90 € Black Fridayna 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #työmaa #amatimies #hauskapaita
+
+### 26.11.
+
+**Klo 11-13: video 47 (perus): Saunaporukan vanhimmalle paita hänen nimellään**
+
+- **Video:** `some/videot/47-personoidut-sauna.mp4`
+- **Kuvateksti:** Saunan vanhin ja Löylymestari omalla nimellä. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #sauna #personoitupaita #joululahja #saunojalle
+
+**Klo 18-20: video 46 (tarjous): Kaksi joululahjaa eläkeläisille: 44,90 €**
+
+- **Video:** `some/videot/46-black-friday-olen-elakkeella-t-paita.mp4`
+- **Kuvateksti:** Kaksi joululahjaa eläkeläisille, kaksi t-paitaa 44,90 €. Black Friday 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #eläkeläinen #hauskapaita
+
+### 27.11.
+
+**Klo 11-13: video 49 (dialogi): Hän: Saako kinkkua jo maistaa?**
+
+- **Video:** `some/videot/49-kinkkuvahti-ala-koske-t-paita-jouluun.mp4`
+- **Kuvateksti:** Kinkkuvahti. Älä koske. Merkkaa kinkun vartija. huumorikauppa.fi. Linkki biossa. #joulu #joulukinkku #pariskunta #joulupaita
+
+**Klo 18-20: video 48 (tarjous): Tänään on Black Friday**
+
+- **Video:** `some/videot/48-black-friday-maailman-paras-aiti-t-paita.mp4`
+- **Kuvateksti:** Joululahja äidille ja isälle. Black Friday -tarjous on voimassa maanantaihin 30.11. asti: kaksi t-paitaa 44,90 €. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #hauskapaita #suomihuumori
+
+### 28.11.
+
+**Klo 11-13: video 51 (pov): Yövuoro, kello 3.12. Kahvi loppui.**
+
+- **Video:** `some/videot/51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan.mp4`
+- **Kuvateksti:** Sairaanhoitaja. Kahvi on ensiapua. Merkkaa hoitaja, joka tarvitsee tämän. huumorikauppa.fi. Linkki biossa. #sairaanhoitaja #yövuoro #ammatit #hauskapaita
+
+**Klo 18-20: video 50 (perus): Paras työkaveri ansaitsee oman paidan**
+
+- **Video:** `some/videot/50-personoidut-tyokaveri.mp4`
+- **Kuvateksti:** Paras työkaveri, omalla nimellä. Pikkujoululahjaksi tai kiitokseksi. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #työkaveri #personoitupaita #pikkujoulut #lahjaidea
+
+### 29.11.
+
+**Klo 11-13: video 53 (pov): Se yks kaveri, joka lähtee vain yhdelle**
+
+- **Video:** `some/videot/53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu.mp4`
+- **Kuvateksti:** Piipahdan yhdelle. Palaan maanantaina. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #olut #seykskaveri #pov
+
+**Klo 18-20: video 52 (pov): POV: anoppi soitti. Hän tulee jouluksi.**
+
+- **Video:** `some/videot/52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita.mp4`
+- **Kuvateksti:** Anoppi tulee jouluksi. Pysy rauhallisena. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. huumorikauppa.fi. Linkki biossa. #joulu #anoppi #pov #joulupaita
+
+### 30.11.
+
+**Klo 11-13: video 55 (perus): Lahjapaniikki? Jouluksi ehtii vielä.**
+
+- **Video:** `some/videot/55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul.mp4`
+- **Kuvateksti:** Lahjapaniikki. Perinteinen joulutapa. Tilaa viimeistään ke 2.12., niin tilaus ehtii perille jouluaattoon mennessä. huumorikauppa.fi. Linkki biossa. #joululahja #lahjapaniikki #joulu #joulupaita
+
+**Klo 18-20: video 54 (tarjous): Black Friday päättyy tänään klo 23.59**
+
+- **Video:** `some/videot/54-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p.mp4`
+- **Kuvateksti:** Viimeinen päivä: kaksi t-paitaa 44,90 € tänään klo 23.59 asti. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #viimeinenpäivä #hauskapaita #joululahja
 
 ## Seuranta
 

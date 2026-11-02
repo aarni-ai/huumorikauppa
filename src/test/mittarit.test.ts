@@ -136,11 +136,10 @@ describe("Merchant-syötteen sisustuskuvat", () => {
 });
 
 describe("somevideoiden julkaisulista", () => {
-  it("35 videota, isävideot ennen isänpäivää 8.11., äänestyksissä kaksi tuotetta", async () => {
+  it("yksilölliset numerot, isävideot ennen isänpäivää 8.11., äänestyksissä kaksi tuotetta", async () => {
     const { julkaisulista, VIDEOT } = await import("../../scripts/some-videot.mjs");
     const l = julkaisulista();
-    expect(l).toHaveLength(35);
-    expect(new Set(l.map((v) => v.nro)).size).toBe(35);
+    expect(new Set(l.map((v) => v.nro)).size).toBe(l.length);
     for (const v of l.filter((x) => x.tagit.includes("#isänpäivä"))) expect(v.paiva < "2026-11-08").toBe(true);
     for (const v of VIDEOT.filter((x) => x.muoto === "aanestys")) expect(v.slugit).toHaveLength(2);
     for (const v of l) {
@@ -149,5 +148,27 @@ describe("somevideoiden julkaisulista", () => {
       expect(v.kuvateksti).not.toMatch(/[–—]/);
       expect(JSON.stringify(v)).not.toContain("utm_"); expect(v.kuvateksti).toContain("Linkki biossa");
     }
+  });
+
+  it("toinen kierros: 55 videota, lista riittää 30.11. asti eikä yksikään video toistu", async () => {
+    const { julkaisulista, VIDEOT, JOULU_VIIMEINEN } = await import("../../scripts/some-videot.mjs");
+    const { JOULU_TILAUSPAIVA_ISO } = await import("@/data/campaignSchedule");
+    const { TPAITAPARI_KAMPANJA } = await import("../../api/_lib/vakiot.js");
+    const l = julkaisulista();
+    expect(l).toHaveLength(55);
+    expect(new Set(l.map((v) => v.nimi)).size).toBe(55);
+    expect(new Set(l.map((v) => `${v.paiva} ${v.aika}`)).size).toBe(55);
+    expect(l[l.length - 1].paiva).toBe("2026-11-30");
+    // 22.-30.11. kaksi uutta videota joka päivä (ennen listan loppu oli 21.11.).
+    for (let d = 22; d <= 30; d++) expect(l.filter((v) => v.paiva === `2026-11-${d}`).map((v) => v.aika).sort()).toEqual(["11-13", "18-20"]);
+    // Black Friday -videot vain kampanjaviikolla ja hintatiedot (KSL 2:6 a §) kuvatekstissä.
+    for (const v of l.filter((x) => x.muoto === "tarjous")) {
+      expect(v.paiva >= TPAITAPARI_KAMPANJA.alku && v.paiva <= TPAITAPARI_KAMPANJA.loppu).toBe(true);
+      expect(v.kuvateksti).toContain("alin hinta 30 päivän aikana 24,90 €");
+    }
+    for (const v of l.filter((x) => /black friday/i.test(x.kuvateksti))) expect(v.muoto).toBe("tarjous");
+    for (const v of VIDEOT.filter((x) => x.muoto === "tarjous")) expect(v.slugit).toHaveLength(2);
+    expect(JOULU_VIIMEINEN.iso).toBe(JOULU_TILAUSPAIVA_ISO);
+    for (const v of l) expect(v.kuvateksti).not.toMatch(/\/ig|\/tt|utm_/);
   });
 });

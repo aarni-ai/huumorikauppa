@@ -9,6 +9,7 @@
  * Ajo: BLOB_READ_WRITE_TOKEN=... NODE_PATH=<kansio, jossa @vercel/blob> node scripts/some-blob.mjs
  *      [--lisakuvat some/kuvat/kuvat-<tiedosto>.json]  vain nämä Shopping- ja Pinterest-kuvat: lisäkuvat yhdistetään
  *      nykyisiin (lisakuvat.generated.js) ja Pinterest-kuvat manifestiin, videoita ei ladata uudelleen.
+ *      [--uudet]  vain uudet videot (nimi puuttuu manifestista) ja JULKAISUT.md; manifestin videot julkaisulistan mukaan.
  * (token: vercel env pull --environment production; @vercel/blob ei ole projektin riippuvuus).
  */
 import { readFile, writeFile } from "node:fs/promises";
@@ -52,6 +53,31 @@ if (process.argv.includes("--tekstit")) {
   manifest.paivitetty = new Date().toISOString();
   await put("some/manifest.json", JSON.stringify(manifest), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", cacheControlMaxAge: 60 });
   console.log(`valmis: ${manifest.videot.length} kuvatekstiä, ${manifest.pinterest.length} Pinterest-linkkiä`);
+  process.exit(0);
+}
+
+// --uudet (2.11.2026, toinen kierros): manifestin videot julkaisulistan järjestykseen. Jo ladatut videot (sama nimi)
+// pidetään entisinä osoitteina, vain uudet videot ja kansikuvat sekä JULKAISUT.md ladataan. Pinterest-kuvat ennallaan.
+if (process.argv.includes("--uudet")) {
+  const host = process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase();
+  const manifest = await (await fetch(`https://${host}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
+  const vanhat = new Map(manifest.videot.map((v) => [v.nimi, v]));
+  const videot = [];
+  let uusia = 0;
+  for (const v of julkaisulista()) {
+    const vanha = vanhat.get(v.nimi);
+    if (vanha) { videot.push({ ...v, video: vanha.video, lataus: vanha.lataus, kansi: vanha.kansi }); continue; }
+    const video = await lataa(join(JUURI, "some/videot", `${v.nimi}.mp4`), `some/videot/${v.nimi}.mp4`, "video/mp4");
+    const kansi = await lataa(join(JUURI, "some/videot", `${v.nimi}.jpg`), `some/videot/${v.nimi}.jpg`, "image/jpeg");
+    videot.push({ ...v, video, lataus: `${video}?download=1`, kansi });
+    uusia++;
+    console.log(v.nimi);
+  }
+  manifest.videot = videot;
+  manifest.julkaisut = await lataa(join(JUURI, "some/JULKAISUT.md"), "some/JULKAISUT.md", "text/markdown; charset=utf-8");
+  manifest.paivitetty = new Date().toISOString();
+  await put("some/manifest.json", JSON.stringify(manifest), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", cacheControlMaxAge: 60 });
+  console.log(`valmis: ${videot.length} videota, joista ${uusia} uutta`);
   process.exit(0);
 }
 

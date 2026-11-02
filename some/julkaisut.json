@@ -136,21 +136,21 @@
   "tuote": "/tuote/saatanan-tunarit-t-paita"
  },
  {
-  "nro": "25",
-  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel",
-  "muoto": "pov",
+  "nro": "36",
+  "nimi": "36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle",
+  "muoto": "perus",
   "paiva": "2026-11-06",
   "paivaFi": "6.11.",
   "aika": "11-13",
-  "hook": "Marraskuun aamu. Pimeää kuin yöllä.",
-  "kuvateksti": "Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita",
+  "hook": "Isänpäivä on sunnuntaina. Lahja vielä hankkimatta?",
+  "kuvateksti": "Painettu paita ei enää ehdi isänpäiväksi, mutta lahjakortti ehtii: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. Isä valitsee paidan itse. huumorikauppa.fi. Linkki biossa. #isänpäivä #isänpäivälahja #lahjakortti #hauskapaita",
   "tagit": [
-   "#marraskuu",
-   "#eläkeläinen",
-   "#suomihuumori",
+   "#isänpäivä",
+   "#isänpäivälahja",
+   "#lahjakortti",
    "#hauskapaita"
   ],
-  "tuote": "/tuote/heratyskello-elakkeella-myos-t-paita-elakelaiselle"
+  "tuote": "/lahjakortti"
  },
  {
   "nro": "05",
@@ -170,22 +170,21 @@
   "tuote": "/tuote/kiltti-enimmakseen-t-paita-jouluun"
  },
  {
-  "nro": "26",
-  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
+  "nro": "37",
+  "nimi": "37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita",
   "muoto": "pov",
   "paiva": "2026-11-07",
   "paivaFi": "7.11.",
   "aika": "11-13",
-  "hook": "Se yks kaveri saunassa, jonka mielestä ei ole kuuma",
-  "kuvateksti": "Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita",
+  "hook": "POV: isänpäivä on huomenna ja lahja puuttuu",
+  "kuvateksti": "Isänpäivä on huomenna. Lahjakortti ehtii vielä: koodi ja tulostettava PDF ovat valmiina heti maksun jälkeen. huumorikauppa.fi. Linkki biossa. #isänpäivä #pov #lahjakortti #isänpäivälahja",
   "tagit": [
-   "#sauna",
-   "#seykskaveri",
+   "#isänpäivä",
    "#pov",
-   "#suomihuumori",
-   "#hauskapaita"
+   "#lahjakortti",
+   "#isänpäivälahja"
   ],
-  "tuote": "/tuote/loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle"
+  "tuote": "/lahjakortti"
  },
  {
   "nro": "06",
@@ -558,6 +557,23 @@
   "tuote": "/tuote/saatanan-tunarit-huppari"
  },
  {
+  "nro": "25",
+  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel",
+  "muoto": "pov",
+  "paiva": "2026-11-20",
+  "paivaFi": "20.11.",
+  "aika": "11-13",
+  "hook": "Marraskuun aamu. Pimeää kuin yöllä.",
+  "kuvateksti": "Herätyskello eläkkeellä myös. Marraskuun virallinen asenne. huumorikauppa.fi. Linkki biossa. #marraskuu #eläkeläinen #suomihuumori #hauskapaita",
+  "tagit": [
+   "#marraskuu",
+   "#eläkeläinen",
+   "#suomihuumori",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/heratyskello-elakkeella-myos-t-paita-elakelaiselle"
+ },
+ {
   "nro": "19",
   "nimi": "19-hauska-t-paita-golfaajalle-bogey-on-elamantapa",
   "muoto": "perus",
@@ -575,6 +591,24 @@
   "tuote": "/tuote/hauska-t-paita-golfaajalle-bogey-on-elamantapa"
  },
  {
+  "nro": "26",
+  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
+  "muoto": "pov",
+  "paiva": "2026-11-21",
+  "paivaFi": "21.11.",
+  "aika": "11-13",
+  "hook": "Se yks kaveri saunassa, jonka mielestä ei ole kuuma",
+  "kuvateksti": "Löylyä lisää. Ei ole kuuma. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #seykskaveri #pov #suomihuumori #hauskapaita",
+  "tagit": [
+   "#sauna",
+   "#seykskaveri",
+   "#pov",
+   "#suomihuumori",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle"
+ },
+ {
   "nro": "20",
   "nimi": "20-kalastan-siis-valehtelen-t-paita-kalastajalle",
   "muoto": "perus",
@@ -589,5 +623,312 @@
    "#hauskapaita"
   ],
   "tuote": "/tuote/kalastan-siis-valehtelen-t-paita-kalastajalle"
+ },
+ {
+  "nro": "38",
+  "nimi": "38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou",
+  "muoto": "pov",
+  "paiva": "2026-11-22",
+  "paivaFi": "22.11.",
+  "aika": "11-13",
+  "hook": "Se yks kaveri, joka sinuttelee esimiestä pikkujouluissa",
+  "kuvateksti": "Pikkujoulut. Nyt sinuttelen esimiestä. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #seykskaveri #pov #pikkujoulupaita",
+  "tagit": [
+   "#pikkujoulut",
+   "#seykskaveri",
+   "#pov",
+   "#pikkujoulupaita"
+  ],
+  "tuote": "/tuote/pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jouluun"
+ },
+ {
+  "nro": "39",
+  "nimi": "39-personoidut-pikkujoulut",
+  "muoto": "perus",
+  "paiva": "2026-11-22",
+  "paivaFi": "22.11.",
+  "aika": "18-20",
+  "hook": "Pikkujouluihin paita, jossa on sinun nimesi",
+  "kuvateksti": "Kirjoita nimi, ja näet paidan heti esikatselussa. Personoidut paidat pikkujouluihin: huumorikauppa.fi. Linkki biossa. #personoitupaita #pikkujoulut #tonttu #lahjaidea",
+  "tagit": [
+   "#personoitupaita",
+   "#pikkujoulut",
+   "#tonttu",
+   "#lahjaidea"
+  ],
+  "tuote": "/personoidut"
+ },
+ {
+  "nro": "41",
+  "nimi": "41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno",
+  "muoto": "pov",
+  "paiva": "2026-11-23",
+  "paivaFi": "23.11.",
+  "aika": "11-13",
+  "hook": "Se yks kaveri, joka heittää aina vielä yhden kauhan",
+  "kuvateksti": "Löylymestari. Vain yksi kauha lisää. Jokaisessa saunaporukassa on yksi. huumorikauppa.fi. Linkki biossa. #sauna #löylyt #seykskaveri #pov #hauskapaita",
+  "tagit": [
+   "#sauna",
+   "#löylyt",
+   "#seykskaveri",
+   "#pov",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/loylymestari-vain-yksi-kauha-lisaa-t-paita-saunojalle"
+ },
+ {
+  "nro": "40",
+  "nimi": "40-black-friday-amatimies-t-paita",
+  "muoto": "tarjous",
+  "paiva": "2026-11-23",
+  "paivaFi": "23.11.",
+  "aika": "18-20",
+  "hook": "Black Friday alkoi: kaksi t-paitaa 44,90 €",
+  "kuvateksti": "Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €. Amatimies ja Minulla ei ole alkoholiongelmaa, tai mitkä tahansa kaksi 24,90 €:n t-paitaa. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #hauskapaita #suomihuumori #amatimies",
+  "tagit": [
+   "#blackfriday",
+   "#hauskapaita",
+   "#suomihuumori",
+   "#amatimies"
+  ],
+  "tuote": "/black-friday"
+ },
+ {
+  "nro": "43",
+  "nimi": "43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen",
+  "muoto": "perus",
+  "paiva": "2026-11-24",
+  "paivaFi": "24.11.",
+  "aika": "11-13",
+  "hook": "Saunan jälkeen on yksi asia, josta ei neuvotella",
+  "kuvateksti": "Saunakalja ei ole neuvoteltavissa. Joululahja saunojalle, joka tietää. huumorikauppa.fi. Linkki biossa. #saunakalja #sauna #olut #hauskapaita",
+  "tagit": [
+   "#saunakalja",
+   "#sauna",
+   "#olut",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-ystavalle"
+ },
+ {
+  "nro": "42",
+  "nimi": "42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p",
+  "muoto": "tarjous",
+  "paiva": "2026-11-24",
+  "paivaFi": "24.11.",
+  "aika": "18-20",
+  "hook": "Kaljaporukalle kaksi paitaa 44,90 €",
+  "kuvateksti": "Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €, toinen sinulle ja toinen kaverille. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #olut #hauskapaita #suomihuumori",
+  "tagit": [
+   "#blackfriday",
+   "#olut",
+   "#hauskapaita",
+   "#suomihuumori"
+  ],
+  "tuote": "/black-friday"
+ },
+ {
+  "nro": "45",
+  "nimi": "45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa",
+  "muoto": "pov",
+  "paiva": "2026-11-25",
+  "paivaFi": "25.11.",
+  "aika": "11-13",
+  "hook": "Sähkömies kylässä. Katsoo ensin jatkojohtoja.",
+  "kuvateksti": "Sähkömies. Tiedän, mikä johtaa mihinkin. Merkkaa sähkömies. huumorikauppa.fi. Linkki biossa. #sähkömies #ammatit #pov #hauskapaita",
+  "tagit": [
+   "#sähkömies",
+   "#ammatit",
+   "#pov",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sahkomiehelle"
+ },
+ {
+  "nro": "44",
+  "nimi": "44-black-friday-amatimies-t-paita",
+  "muoto": "tarjous",
+  "paiva": "2026-11-25",
+  "paivaFi": "25.11.",
+  "aika": "18-20",
+  "hook": "Työmaalle kaksi paitaa 44,90 €",
+  "kuvateksti": "Amatimies ja Kalju: kaksi t-paitaa 44,90 € Black Fridayna 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #työmaa #amatimies #hauskapaita",
+  "tagit": [
+   "#blackfriday",
+   "#työmaa",
+   "#amatimies",
+   "#hauskapaita"
+  ],
+  "tuote": "/black-friday"
+ },
+ {
+  "nro": "47",
+  "nimi": "47-personoidut-sauna",
+  "muoto": "perus",
+  "paiva": "2026-11-26",
+  "paivaFi": "26.11.",
+  "aika": "11-13",
+  "hook": "Saunaporukan vanhimmalle paita hänen nimellään",
+  "kuvateksti": "Saunan vanhin ja Löylymestari omalla nimellä. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #sauna #personoitupaita #joululahja #saunojalle",
+  "tagit": [
+   "#sauna",
+   "#personoitupaita",
+   "#joululahja",
+   "#saunojalle"
+  ],
+  "tuote": "/personoidut"
+ },
+ {
+  "nro": "46",
+  "nimi": "46-black-friday-olen-elakkeella-t-paita",
+  "muoto": "tarjous",
+  "paiva": "2026-11-26",
+  "paivaFi": "26.11.",
+  "aika": "18-20",
+  "hook": "Kaksi joululahjaa eläkeläisille: 44,90 €",
+  "kuvateksti": "Kaksi joululahjaa eläkeläisille, kaksi t-paitaa 44,90 €. Black Friday 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #eläkeläinen #hauskapaita",
+  "tagit": [
+   "#blackfriday",
+   "#joululahja",
+   "#eläkeläinen",
+   "#hauskapaita"
+  ],
+  "tuote": "/black-friday"
+ },
+ {
+  "nro": "49",
+  "nimi": "49-kinkkuvahti-ala-koske-t-paita-jouluun",
+  "muoto": "dialogi",
+  "paiva": "2026-11-27",
+  "paivaFi": "27.11.",
+  "aika": "11-13",
+  "hook": "Hän: Saako kinkkua jo maistaa?",
+  "kuvateksti": "Kinkkuvahti. Älä koske. Merkkaa kinkun vartija. huumorikauppa.fi. Linkki biossa. #joulu #joulukinkku #pariskunta #joulupaita",
+  "tagit": [
+   "#joulu",
+   "#joulukinkku",
+   "#pariskunta",
+   "#joulupaita"
+  ],
+  "tuote": "/tuote/kinkkuvahti-ala-koske-t-paita-jouluun"
+ },
+ {
+  "nro": "48",
+  "nimi": "48-black-friday-maailman-paras-aiti-t-paita",
+  "muoto": "tarjous",
+  "paiva": "2026-11-27",
+  "paivaFi": "27.11.",
+  "aika": "18-20",
+  "hook": "Tänään on Black Friday",
+  "kuvateksti": "Joululahja äidille ja isälle. Black Friday -tarjous on voimassa maanantaihin 30.11. asti: kaksi t-paitaa 44,90 €. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #hauskapaita #suomihuumori",
+  "tagit": [
+   "#blackfriday",
+   "#joululahja",
+   "#hauskapaita",
+   "#suomihuumori"
+  ],
+  "tuote": "/black-friday"
+ },
+ {
+  "nro": "51",
+  "nimi": "51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan",
+  "muoto": "pov",
+  "paiva": "2026-11-28",
+  "paivaFi": "28.11.",
+  "aika": "11-13",
+  "hook": "Yövuoro, kello 3.12. Kahvi loppui.",
+  "kuvateksti": "Sairaanhoitaja. Kahvi on ensiapua. Merkkaa hoitaja, joka tarvitsee tämän. huumorikauppa.fi. Linkki biossa. #sairaanhoitaja #yövuoro #ammatit #hauskapaita",
+  "tagit": [
+   "#sairaanhoitaja",
+   "#yövuoro",
+   "#ammatit",
+   "#hauskapaita"
+  ],
+  "tuote": "/tuote/sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaanhoitajalle"
+ },
+ {
+  "nro": "50",
+  "nimi": "50-personoidut-tyokaveri",
+  "muoto": "perus",
+  "paiva": "2026-11-28",
+  "paivaFi": "28.11.",
+  "aika": "18-20",
+  "hook": "Paras työkaveri ansaitsee oman paidan",
+  "kuvateksti": "Paras työkaveri, omalla nimellä. Pikkujoululahjaksi tai kiitokseksi. Kirjoita nimi, ja näet paidan heti esikatselussa. huumorikauppa.fi. Linkki biossa. #työkaveri #personoitupaita #pikkujoulut #lahjaidea",
+  "tagit": [
+   "#työkaveri",
+   "#personoitupaita",
+   "#pikkujoulut",
+   "#lahjaidea"
+  ],
+  "tuote": "/personoidut"
+ },
+ {
+  "nro": "53",
+  "nimi": "53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu",
+  "muoto": "pov",
+  "paiva": "2026-11-29",
+  "paivaFi": "29.11.",
+  "aika": "11-13",
+  "hook": "Se yks kaveri, joka lähtee vain yhdelle",
+  "kuvateksti": "Piipahdan yhdelle. Palaan maanantaina. Merkkaa se kaveri. huumorikauppa.fi. Linkki biossa. #pikkujoulut #olut #seykskaveri #pov",
+  "tagit": [
+   "#pikkujoulut",
+   "#olut",
+   "#seykskaveri",
+   "#pov"
+  ],
+  "tuote": "/tuote/piipahdan-yhdelle-palaan-maanantaina-t-paita-oluen-ystavalle"
+ },
+ {
+  "nro": "52",
+  "nimi": "52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita",
+  "muoto": "pov",
+  "paiva": "2026-11-29",
+  "paivaFi": "29.11.",
+  "aika": "18-20",
+  "hook": "POV: anoppi soitti. Hän tulee jouluksi.",
+  "kuvateksti": "Anoppi tulee jouluksi. Pysy rauhallisena. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. huumorikauppa.fi. Linkki biossa. #joulu #anoppi #pov #joulupaita",
+  "tagit": [
+   "#joulu",
+   "#anoppi",
+   "#pov",
+   "#joulupaita"
+  ],
+  "tuote": "/tuote/anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-jouluun"
+ },
+ {
+  "nro": "55",
+  "nimi": "55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul",
+  "muoto": "perus",
+  "paiva": "2026-11-30",
+  "paivaFi": "30.11.",
+  "aika": "11-13",
+  "hook": "Lahjapaniikki? Jouluksi ehtii vielä.",
+  "kuvateksti": "Lahjapaniikki. Perinteinen joulutapa. Tilaa viimeistään ke 2.12., niin tilaus ehtii perille jouluaattoon mennessä. huumorikauppa.fi. Linkki biossa. #joululahja #lahjapaniikki #joulu #joulupaita",
+  "tagit": [
+   "#joululahja",
+   "#lahjapaniikki",
+   "#joulu",
+   "#joulupaita"
+  ],
+  "tuote": "/tuote/lahjapaniikki-perinteinen-joulutapa-t-paita-jouluun"
+ },
+ {
+  "nro": "54",
+  "nimi": "54-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p",
+  "muoto": "tarjous",
+  "paiva": "2026-11-30",
+  "paivaFi": "30.11.",
+  "aika": "18-20",
+  "hook": "Black Friday päättyy tänään klo 23.59",
+  "kuvateksti": "Viimeinen päivä: kaksi t-paitaa 44,90 € tänään klo 23.59 asti. Jouluksi ehtii, kun tilaat viimeistään ke 2.12. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #viimeinenpäivä #hauskapaita #joululahja",
+  "tagit": [
+   "#blackfriday",
+   "#viimeinenpäivä",
+   "#hauskapaita",
+   "#joululahja"
+  ],
+  "tuote": "/black-friday"
  }
 ]

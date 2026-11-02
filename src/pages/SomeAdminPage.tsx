@@ -11,7 +11,7 @@ type Video = {
 type Pinni = { slug: string; nimi: string; kuva: string; lataus: string; otsikko: string; kuvaus: string; linkki: string };
 type Manifest = { paivitetty: string; julkaisut: string; videot: Video[]; pinterest: Pinni[] };
 
-const MUODOT: Record<string, string> = { perus: "Tuote", pov: "POV", dialogi: "Pariskunta", aanestys: "Äänestys" };
+const MUODOT: Record<string, string> = { perus: "Tuote", pov: "POV", dialogi: "Pariskunta", aanestys: "Äänestys", tarjous: "Black Friday" };
 
 const Kopioi = ({ teksti, nimi }: { teksti: string; nimi: string }) => {
   const [ok, setOk] = useState(false);
