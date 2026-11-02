@@ -203,6 +203,32 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   };
 }
 
+/**
+ * Mittarin koosteluvut koneelle (2.11.2026): cron ?tehtava=mittarit (CRON_SECRET) ja scripts/mittarit.mjs. Vain
+ * summat ja lukumäärät: ei kumppanikoodeja, sähköposteja eikä päiväkohtaisia rivejä.
+ */
+export function mittariKooste(m) {
+  const t = m.tavoite;
+  const lk = m.liikenne?.kk || {};
+  return {
+    paiva: m.paiva, kuukausi: m.kuukausi,
+    tavoite: { tavoite: t.tavoite, kate: t.kate, prosentti: t.prosentti, ennuste: t.ennuste, matka: t.matka,
+      tilauksiaPaivassa: t.tarve?.tilauksiaPaivassa ?? null, kayntejaPaivassa: t.tarve?.kaynteja_paivassa ?? null },
+    kk: { tilauksia: m.kk.tilauksia, myynti: m.kk.myynti, keskiostos: m.kk.keskiostos, kate: m.kk.kate },
+    p30: { tilauksia: m.p30.tilauksia, myynti: m.p30.myynti, kate: m.p30.kate, katePerTilaus: m.p30.katePerTilaus },
+    edellinen: { kuukausi: m.edellinen.kuukausi, tilauksia: m.edellinen.tilauksia, kate: m.edellinen.kate },
+    kaynnit: { kk: m.kaynnit.kk.yhteensa, p30: m.kaynnit.p30.yhteensa, laskuriAlkaen: m.kaynnit.p30.ensimmainen ?? null },
+    konversio: { laskelmassa: m.konversio.prosentti, lahde: m.konversio.lahde, oma: m.konversio.oma?.prosentti ?? null },
+    liikenneKk: { hakukoneet: lk.orgaaninen ?? 0, lahjasivut: lk.lahjasivut ?? 0, media: lk.media ?? 0, kumppanisivut: lk.kumppanisivut ?? 0,
+      blogi: lk.blogi ?? 0, yritysAlat: lk.yritysAlat ?? 0 },
+    uutiskirje: m.uutiskirje ? { yhteensa: m.uutiskirje.yhteensa, p7: m.uutiskirje.p7, p28: m.uutiskirje.p28 } : null,
+    tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
+    suppilo14: m.suppilo?.yhteensa ?? null,
+    kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
+      provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
+  };
+}
+
 const eur = (x) => `${r2(x).toFixed(2).replace(".", ",")} €`;
 const lu = (x) => String(x).replace(".", ",");
 

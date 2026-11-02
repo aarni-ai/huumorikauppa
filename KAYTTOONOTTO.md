@@ -960,3 +960,17 @@ jokaisesta pystykuva 1000 x 1500 ja vaakakuva 1500 x 1000 ladattavina, hinnat, l
 sama sisältö PDF:nä (sivun painike "Lataa lahjaopas PDF:nä"). Tuotelinkeissä `utm_source=media`, joten mediasta tulleet
 käynnit näkyvät mittarissa (Liikenne: Media). Päivitys: muokkaa `data/lahjaopas-media.json` ja aja
 `scripts/lahjaopas-media.mjs` ja `scripts/lahjaopas-media-pdf.mjs` (BLOB_READ_WRITE_TOKEN), sitten julkaisu.
+
+## 17. Merchant Center: ilmainen toimitus kahdesta tuotteesta (Cowork, 2.11.2026)
+
+Syötteen tuotekohtainen g:shipping kertoo yhden tuotteen tilauksen toimitusmaksun (6,90 €, 0 € vähintään 79 €:n
+tuotteille) ja g:free_shipping_threshold 79 €:n rajan. Kappalemäärään perustuvaa sääntöä ei voi ilmaista tuotteen
+tiedoissa, joten se asetetaan Merchant Centerin toimitusasetuksiin. Ilmaista, ei mainoskuluja.
+
+1. Merchant Center > Asetukset > Toimitus ja palautukset > Toimituspalvelut > Lisää palvelu: maa Suomi, valuutta EUR,
+   nimi "Posti kotiinkuljetus".
+2. Käsittelyaika 1-4 arkipäivää, kuljetusaika 2-6 arkipäivää (sama kuin syötteessä ja sivustolla).
+3. Toimitusmaksu: "Tilauksen tuotemäärän mukaan" (Number of items): 1 tuote 6,90 €, 2 tai enemmän 0 €.
+   Lisäksi "Ilmainen toimitus tilauksille, joiden arvo on vähintään" 79 €.
+4. Tallenna. Syötteen tuotekohtainen hinta (6,90 €) ohittaa tilin asetuksen yksittäisen tuotteen kohdalla, joten
+   Googlen näyttämä hinta pysyy oikeana yhdelle tuotteelle ja tilin sääntö kertoo kahden tuotteen ilmaisen toimituksen.

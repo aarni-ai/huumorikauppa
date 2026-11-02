@@ -23,7 +23,7 @@ import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/chri
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
-import { EU_REITITYS_ALLE_MINIMIN, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
+import { EU_REITITYS_ALLE_MINIMIN, UUSI_MALLISTO_ODOTTAA, aukkoTuotteet, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -170,6 +170,32 @@ describe("landing pages: products (snapshot of the live catalog)", () => {
       const euSopivat = euPiilotetut.filter((x) => p.filter(x)).length;
       expect(selectLandingProducts(p, products).length + euSopivat, pagePath).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
     }
+  });
+
+  it("aihesivut täyttyvät kilpailija-aukkojen mallistolla, uudet mallit ensin", () => {
+    const aukot = new Set(aukkoTuotteet().map((t) => t.slug));
+    for (const pagePath of ["/olut", "/sauna", "/ammatit"]) {
+      const p = getLandingPage(pagePath)!;
+      expect(p, pagePath).toBeTruthy();
+      const tuotteet = selectLandingProducts(p, products);
+      expect(tuotteet.length, pagePath).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
+      expect(tuotteet.slice(0, 15).every((x) => aukot.has(x.slug)), pagePath).toBe(true);
+    }
+    expect(UUSI_MALLISTO_ODOTTAA.size).toBe(0);
+  });
+
+  it("uudet mallit näkyvät oikeilla sivuilla ensin", () => {
+    const kaikki = [...products, ...aukkoTuotteet()];
+    const alku = (polku: string, n: number) => selectLandingProducts(getLandingPage(polku)!, kaikki).slice(0, n).map((x) => x.slug);
+    for (const s of alku("/ammatit", 30)) expect(s, "/ammatit").toMatch(/-(t-paita|huppari)-[a-z-]+$/);
+    expect(alku("/ammatit", 30).every((s) => aukkoTuotteet().some((t) => t.slug === s))).toBe(true);
+    expect(alku("/joululahja-isalle", 8).every((s) => s.endsWith("-t-paita-isalle"))).toBe(true);
+    expect(alku("/isanpaivalahja", 8).every((s) => s.endsWith("-t-paita-isalle"))).toBe(true);
+    expect(alku("/hauska-isanpaivalahja", 8).every((s) => s.endsWith("-t-paita-isalle"))).toBe(true);
+    expect(alku("/lahjat/mokkeilijalle", 20).filter((s) => s.endsWith("-t-paita-saunojalle")).length).toBeGreaterThanOrEqual(6);
+    // Isänpäivän huumorisivulla ei alkoholivitsejä; teinien sivulla ei olutpaitoja.
+    for (const x of selectLandingProducts(getLandingPage("/hauska-isanpaivalahja")!, kaikki)) expect(x.name.toLowerCase()).not.toMatch(/kalja|olut/);
+    for (const x of selectLandingProducts(getLandingPage("/joululahja-teinille")!, kaikki)) expect(x.name.toLowerCase()).not.toMatch(/kalja|olut/);
   });
 
   it("price pages respect their budget", () => {

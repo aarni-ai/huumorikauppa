@@ -24,6 +24,8 @@ import { LANDING_REDIRECTS } from "./landingRoutes";
 import { sarjaPages, SARJA_SIVUT } from "./landingPagesSarjat";
 import { LAHJAOPPAAT } from "./lahjaoppaat2026";
 import { JOULUMALLISTO_SLUGIT } from "./joulumallisto2026";
+import { AUKOT_ISA_SLUGIT } from "./aukkomallisto2026";
+import { AIHE_SIVUT, UUSI_AMMATTI, UUSI_OLUT, UUSI_SAUNA } from "./landingPagesAiheet";
 import {
   AMMATTI,
   ELAKE,
@@ -143,13 +145,30 @@ const PERSONAL_ADULT = all(PERSONAL, not(inCategory("bodyt", "tarrat", "pipot"))
 const OMA_KOTIIN = all(OMA_TEKSTI, inCategory("peitot", "seinataulut", "koristeet"));
 
 // -isalle: isänpäivän tuotteet slugin mukaan (28.10.2026, data/uudet-tuotteet-2026-10-28.json).
+/**
+ * Isämalliston (2.11.2026, src/data/aukkomallisto2026.ts) nostot isän lahjasivuille: kahdeksan t-paitaa ensin, loput
+ * mallit suodattimen kautta suosituimpien joukossa (sivuilla enintään 20 tuotetta, joten kaikkia 30 ei nosteta).
+ */
+const isaNostot = (...alut: string[]) => {
+  const s = new Set(AUKOT_ISA_SLUGIT.filter((x) => x.includes("-t-paita-") && alut.some((a) => x.startsWith(a))));
+  return (p: LandingProduct) => s.has(p.slug);
+};
+const ISA_UUDET_JOULU = isaNostot("isa-joka-tietaa", "isa-joka-korjaa", "isa-joka-sammuttaa", "isa-joka-grillaa", "suosikkilapsi",
+  "isa-taksi", "isan-autotalli", "kysy-aidilta");
+const ISA_UUDET_ISANPAIVA = isaNostot("isanpaivana", "isanpaiva-lepopaiva", "isa-joka-tietaa", "isa-joka-korjaa", "suosikkilapsi",
+  "isavitsi", "isa-joka-lukee", "isaksi-2026");
 const ISA = theme(/(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /asuu yksi pomo/, /\bkalju/, /-isalle\b/);
 const AITI = theme(/äiti/, /äiskä/);
 const PAPPA = theme(/\bukki/, /pappa/);
 const NAINEN = theme(/äiti/, /äiskä/, /slay queen/, /my boyfriend/, /swedish boys/, /fabulous/, /hopeanhohtoinen/);
-const MIES = theme(
-  /(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /\bkalju/, /kalamies/, /kalassa/, /\bukki/, /pappa/,
-  /my girlfriend/, /swedish girls/, /museokamaa/, /asuu yksi pomo/,
+// 2.11.2026: uudet olut- ja saunamallit (src/data/aukkomallisto2026.ts) myös miehen lahjasivuille.
+const MIES = any(
+  theme(
+    /(?<![a-zåäö])isä/, /(?<![a-zåäö])iskä/, /amatimies/, /\bkalju/, /kalamies/, /kalassa/, /\bukki/, /pappa/,
+    /my girlfriend/, /swedish girls/, /museokamaa/, /asuu yksi pomo/,
+  ),
+  UUSI_OLUT,
+  UUSI_SAUNA,
 );
 const TYO = theme(
   /etätö/, /palaveri/, /lounastauko/, /tiimipelaaja/, /työkaveri/, /asiakaspalvelija/, /myyntimieh/,
@@ -162,6 +181,7 @@ const KAVERI = any(
     /oispa kaljaa/, /alkoholi/, /tonnin seteli/, /saatanan tunarit/, /ice aatana/, /viisaampi häipyy/,
     /yksi kerta vielä/, /\bkalju/, /paras ystävä ornament/,
   ),
+  UUSI_OLUT,
   all(OMA_TEKSTI, inCategory("tarrat", "koristeet", "t-paidat")),
 );
 /** Teineille: meemit ja harrastukset ilman alkoholi- ja kirosanatekstejä. */
@@ -182,10 +202,11 @@ const SISKO = any(
   theme(/30v.{0,3}paranen/, /paras ystävä ornament/),
   all(OMA_TEKSTI, inCategory("tarrat", "koristeet", "t-paidat")),
 );
-const VELI = theme(
+const VELI_TEEMA = theme(
   /\bkalju/, /oispa kaljaa/, /tonnin seteli/, /amatimies/, /(?<![a-zåäö])pelaaja/, /kuntosali/, /swedish girls/,
   /ice aatana/, /saatanan tunarit/, /grillimest/, /autoharrastaja/,
 );
+const VELI = any(VELI_TEEMA, UUSI_OLUT, UUSI_SAUNA);
 const PIKKUJOULU = any(TYO, theme(/oispa kaljaa/, /yksi kerta vielä/, /paras ystävä ornament/), all(OMA_TEKSTI, inCategory("tarrat", "koristeet")));
 const SALAINEN_PUKKI = all(
   maxPrice(30),
@@ -486,6 +507,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       "Isälle, joka kertoo joulupöydässä saman tarinan rahasta, joka vain katosi: se oli tonnin seteli -huppari tai -t-paita.",
     ),
     filter: ISA,
+    featured: ISA_UUDET_JOULU,
     sort: "hupparit-first",
   },
   {
@@ -641,7 +663,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     extraLinks: [
       { href: "/blogi/joululahja-tyontekijoille", label: "Opas: joululahja työntekijöille" },
     ],
-    filter: any(TYO, all(OMA_TEKSTI, inCategory("tarrat", "koristeet"))),
+    filter: any(TYO, UUSI_AMMATTI, all(OMA_TEKSTI, inCategory("tarrat", "koristeet"))),
     featured: theme(/pikkujoulu/, /kesäloma/, /lounastauko/),
     sort: "hupparit-first",
   },
@@ -1856,7 +1878,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     ],
     related: ["/joululahja-tyokaverille", "/ammattipaidat", "/elakelahjat", "/lahjat/pomolle"],
     categories: ["t-paidat", "hupparit"],
-    filter: TYO,
+    filter: any(TYO, UUSI_AMMATTI),
   },
   {
     path: "/isanpaivalahja",
@@ -1904,6 +1926,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     categories: ["t-paidat", "hupparit"],
     extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }],
     filter: ISA_TYYPIT,
+    featured: ISA_UUDET_ISANPAIVA,
   },
   {
     path: "/hauska-isanpaivalahja",
@@ -1954,6 +1977,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     categories: ["t-paidat", "hupparit"],
     extraLinks: [{ href: "/blogi/hauskat-isanpaivalahjat-opas", label: "Opas: hauskat isänpäivälahjat" }, { href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }],
     filter: ISA_VITSIT,
+    featured: ISA_UUDET_ISANPAIVA,
   },
   {
     path: "/hauskat-lahjat-miehelle",
@@ -2131,7 +2155,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     h1: "Hauskat ammattipaidat",
     intro: [
       "Hauska ammattipaita on t-paita tai huppari, jonka vitsi tulee ammatin arjesta, kuten sähköasentajan Ei kosketa märkänä tai koodarin Ei se ole bugi, se on feature.",
-      "Valikoimassa on paidat sähköasentajalle, putkimiehelle, rakennusmiehelle, maanviljelijälle, poliisille, palomiehelle, kokille, parturille, siivoojalle, linja-autonkuljettajalle, myyntimiehelle, asiakaspalvelijalle ja koodarille. Opettajalle ja hoitajalle ei ole omaa mallia, joten heille sopii personoitava Alalla X vuotta- tai työsankari-paita omalla tekstillä.",
+      "Valikoimassa on paidat sähköasentajalle, putkimiehelle, rakentajalle, maanviljelijälle, poliisille, palomiehelle, kokille, parturille, siivoojalle, linja-autonkuljettajalle, myyntimiehelle, asiakaspalvelijalle ja koodarille sekä uudet mallit sairaanhoitajalle, lähihoitajalle, opettajalle, varhaiskasvattajalle, kuskille, rekkakuskille, IT-tuelle ja insinöörille. Jos omaa ammattia ei löydy, personoitavaan Alalla X vuotta- tai työsankari-paitaan kirjoitat ammatin ja oman tekstin.",
       `Ammattipaita on lahja valmistuneelle, työkaverille tai pitkän uran tehneelle. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
@@ -2141,7 +2165,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Onko opettajalle tai sairaanhoitajalle ammattipaitaa?",
-        a: "Valmista mallia ei ole. Personoitavaan Alalla X vuotta- tai työsankari-paitaan kirjoitat ammatin ja oman tekstin.",
+        a: "On. Opettajalle Opettaja. Kyllä, näin sen ja sairaanhoitajalle Sairaanhoitaja. Kahvi on ensiapua. Muille aloille sopii personoitava Alalla X vuotta -paita omalla tekstillä.",
       },
       {
         q: "Mikä on hauska lahja vastavalmistuneelle?",
@@ -2152,10 +2176,12 @@ const PERUSSIVUT: LandingPageDef[] = [
         a: "Voi. Personoitavissa paidoissa kirjoitat tekstin tuotesivulla, enintään 200 merkkiä.",
       },
     ],
-    related: ["/lahjat/tyokaverille", "/joululahja-tyokaverille", "/lahjat/pomolle", "/lahjat/harrastajalle"],
+    related: ["/ammatit", "/lahjat/tyokaverille", "/joululahja-tyokaverille", "/lahjat/pomolle", "/lahjat/harrastajalle"],
     categories: ["t-paidat", "hupparit"],
     filter: AMMATTI,
   },
+  // 2.11.2026: aihesivut /olut, /sauna ja /ammatit (src/data/landingPagesAiheet.ts)
+  ...AIHE_SIVUT,
 ];
 
 // ── Lahjahakujen sivut ja oppaat (2.11.2026, src/data/lahjaoppaat2026.ts) ─────────────────────────────────────

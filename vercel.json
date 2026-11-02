@@ -83,8 +83,13 @@
       "statusCode": 301
     },
     {
+      "source": "/sauna-t-paidat",
+      "destination": "/sauna",
+      "statusCode": 301
+    },
+    {
       "source": "/harrastus/sauna",
-      "destination": "/lahjat/mokkeilijalle",
+      "destination": "/sauna",
       "statusCode": 301
     },
     {
@@ -114,7 +119,7 @@
     },
     {
       "source": "/lahjat/saunaan",
-      "destination": "/lahjat/mokkeilijalle",
+      "destination": "/sauna",
       "statusCode": 301
     },
     {

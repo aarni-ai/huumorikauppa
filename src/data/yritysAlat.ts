@@ -5,7 +5,8 @@
  * esirenderöintiin (src/seo/prerender/pages.ts buildBusinessVerticalPages).
  *
  * Tuotteet valittu tuotannon /api/products-listalta 2.11.2026 aiheen mukaan (kaikki myynnissä). Jos tuote poistuu
- * myynnistä, sivu näyttää loput (vähintään 8 testataan src/data/yritysAlat.test.ts:ssä fixturea vasten).
+ * myynnistä, sivu näyttää loput (vähintään 8 testataan src/data/yritysAlat.test.ts:ssä fixturea vasten). Lisäksi
+ * alaan sopivat kilpailija-aukkojen mallit (src/data/aukkomallisto2026.ts) ensin; ne näkyvät, kun tuonti on tehty.
  */
 
 export interface YritysAla {
@@ -40,6 +41,9 @@ export const YRITYS_ALAT: YritysAla[] = [
     ideat: ["Yrityksen logo rintaan ja teksti \"Kädet tekee, tulos näkyy\"", "Työmaan nimi ja vuosi muistoksi valmistuneesta kohteesta", "Logo ja huumoridesign samaan paitaan"],
     tuotteetOtsikko: "Paidat rakentajille ja asentajille",
     tuotteet: [
+      "rakentaja-aikataulu-on-arvio-t-paita-rakentajalle",
+      "sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sahkomiehelle",
+      "putkimies-naen-asioita-joita-et-halua-nahda-t-paita-putkimiehelle",
       "hauska-t-paita-rakennusmiehelle-kadet-tekee-tulos-nakyy",
       "hauska-t-paita-sahkoasentajalle-ei-kosketa-markana",
       "ala-kosketa-sahkomiesta-kun-olet-marka-t-paita",
@@ -48,9 +52,6 @@ export const YRITYS_ALAT: YritysAla[] = [
       "mittaa-kerran-sahaa-kolme-kertaa-t-paita-remontoijalle",
       "ei-ole-kantava-seina-oli-t-paita-remontoijalle",
       "rautakaupan-kanta-asiakas-t-paita-remontoijalle",
-      "amatimies-t-paita",
-      "saatanan-tunarit-t-paita",
-      "hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko",
     ],
     katso: { href: "/lahjat/remontoijalle", label: "Paidat remontoijille" },
     faq: {
@@ -71,13 +72,13 @@ export const YRITYS_ALAT: YritysAla[] = [
     ideat: ["Toimiston logo ja teksti \"Laskettu, tarkistettu, laskettu uudelleen\"", "Projektin nimi ja valmistumisvuosi", "Tiimin nimi ja huumoridesign"],
     tuotteetOtsikko: "Paidat insinööreille ja suunnittelijoille",
     tuotteet: [
+      "insinoori-toimii-teoriassa-t-paita-insinoorille",
       "mittaa-kerran-sahaa-kolme-kertaa-t-paita-remontoijalle",
       "toimii-minun-koneellani-t-paita-it-ihmiselle",
       "oletko-kokeillut-sammuttaa-ja-kaynnistaa-t-paita-it-ihmiselle",
       "hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature",
       "hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti",
       "ei-ole-kantava-seina-oli-t-paita-remontoijalle",
-      "viela-yksi-osa-sitten-se-kay-t-paita-autoilijalle",
       "hauska-t-paita-sahkoasentajalle-ei-kosketa-markana",
       "perjantaina-ei-julkaista-t-paita-it-ihmiselle",
       "hauska-t-paita-tiimipelaajalle-tiimipelaaja-vaikka-tiimi-ei-pelaa",
@@ -102,7 +103,9 @@ export const YRITYS_ALAT: YritysAla[] = [
     ideat: ["Palokunnan logo ja perustamisvuosi", "Teksti \"Hälytysosasto\" ja paikkakunta", "Logo ja huumoridesign samaan paitaan"],
     tuotteetOtsikko: "Paidat palokuntalaisille",
     tuotteet: [
+      "palomies-kuumat-paikat-ovat-minun-t-paita-palomiehelle",
       "hauska-t-paita-palomiehelle-sankari-savussa",
+      "kuka-heitti-tuon-loylyn-mina-t-paita-saunojalle",
       "oletko-kokeillut-sammuttaa-ja-kaynnistaa-t-paita-it-ihmiselle",
       "loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle",
       "hauska-t-paita-grillimesterille-grillimestari-saa-ei-esta",
@@ -132,6 +135,8 @@ export const YRITYS_ALAT: YritysAla[] = [
     ideat: ["Aseman logo ja teksti \"Hymyä vastaanotolta\"", "Eläinlääkäriasemalle logo ja teksti \"Tassut ensin\"", "Tiimin nimi ja huumoridesign"],
     tuotteetOtsikko: "Paidat vastaanoton väelle",
     tuotteet: [
+      "sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaanhoitajalle",
+      "lahihoitaja-kiire-on-toinen-nimeni-t-paita-lahihoitajalle",
       "piparivaras-ei-todisteita-t-paita-jouluun",
       "hauska-t-paita-koiranomistajalle-koira-on-perhetta-ihminen-on-lisa",
       "personoitava-t-paita-koiranomistajalle-koiran-nimi-herran-paras-ystava",
@@ -193,6 +198,7 @@ export const YRITYS_ALAT: YritysAla[] = [
     ideat: ["Yrityksen logo ja teksti \"Deploy perjantaina? Ei.\"", "Tiimin nimi ja sprintin numero", "Logo ja huumoridesign samaan paitaan"],
     tuotteetOtsikko: "Paidat koodareille ja IT-tuelle",
     tuotteet: [
+      "it-tuki-kokeilitko-sammuttaa-ja-kaynnistaa-t-paita-it-tuelle",
       "toimii-minun-koneellani-t-paita-it-ihmiselle",
       "oletko-kokeillut-sammuttaa-ja-kaynnistaa-t-paita-it-ihmiselle",
       "kahvi-sisaan-koodia-ulos-t-paita-it-ihmiselle",
@@ -265,6 +271,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "hauska-t-paita-grillimesterille-grillimestari-saa-ei-esta",
       "hauska-t-paita-valokuvaajalle-hetki-kiinni-muisti-vapaana",
       "hauska-huppari-pikkujouluihin-pikkujoulut-muistetaan-vuosia",
+      "kaljavahti-tanaan-ei-lopu-kesken-t-paita-oluen-ystavalle",
     ],
     katso: { href: "/lahjat/pikkujouluihin", label: "Pikkujoulupaidat" },
     faq: {
@@ -291,6 +298,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "hauska-t-paita-juoksijalle-jos-naat-minut-juoksemassa-soita-ambulanssi",
       "hauska-t-paita-pyorailijalle-ylamaki-voitettu-toistaiseksi",
       "19-reika-on-minun-vahvuuteni-t-paita-golfaajalle",
+      "saunominen-on-urheilua-olen-ammattilainen-t-paita-saunojalle",
       "tasoitus-on-mielentila-t-paita-golfaajalle",
       "hauska-t-paita-avantouijalle-20c-sopiva-uimakeli",
       "hauska-huppari-lumilautailijalle-gravity-is-just-a-suggestion",

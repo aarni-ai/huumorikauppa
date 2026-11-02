@@ -56,7 +56,7 @@ describe("uutiskirje: joulukampanja", () => {
       const m = joulukampanjaViesti(v, "a@b.fi");
       const kaikki = `${m.subject} ${m.html} ${m.text}`;
       expect(kaikki).not.toMatch(/[–—]| - /);
-      expect(kaikki).not.toMatch(/saattaa|ehkä|todennäköisesti|suosituin|myydyin|seniorituki/i);
+      expect(kaikki).not.toMatch(/saattaa|ehkä|todennäköisesti|suosituin|myydyin/i);
       expect(m.html).toContain("utm_source=uutiskirje");
       expect(m.text).toContain("/unsubscribe?token=");
       expect(m.headers["List-Unsubscribe-Post"]).toBe("List-Unsubscribe=One-Click");

@@ -79,7 +79,7 @@ const sarjaPagesPohja: LandingPageDef[] = [
       },
       { q: JOULU_KYSYMYS, a: JOULU_VASTAUS },
     ],
-    related: related("/lahjat/remontoijalle"),
+    related: [...related("/lahjat/remontoijalle"), "/ammatit"],
     categories: ["t-paidat", "hupparit"],
     filter: filterOf(
       sarja(
@@ -89,6 +89,9 @@ const sarjaPagesPohja: LandingPageDef[] = [
         /sähköasentajalle/,
         /älä kosketa sähkömiestä/,
         /putkimiehelle/,
+        // 2.11.2026: ammattimalliston rakentaja ja sähkömies (putkimies osuu jo yllä)
+        /rakentajalle/,
+        /sähkömiehelle/,
       ),
     ),
     featured: sarja(/t-paita[ -]remontoijalle/),
@@ -279,7 +282,7 @@ const sarjaPagesPohja: LandingPageDef[] = [
       },
       { q: JOULU_KYSYMYS, a: JOULU_VASTAUS },
     ],
-    related: related("/lahjat/mokkeilijalle"),
+    related: ["/sauna", ...related("/lahjat/mokkeilijalle")],
     categories: ["t-paidat", "hupparit"],
     filter: filterOf(
       sarja(
@@ -291,9 +294,15 @@ const sarjaPagesPohja: LandingPageDef[] = [
         /avantouijalle/,
         /grillimesterille/,
         /retkeilijälle/,
+        // 2.11.2026: saunamallisto (src/data/aukkomallisto2026.ts)
+        /saunojalle/,
       ),
     ),
-    featured: sarja(/t-paita[ -]mökkeilijälle/),
+    // Sivulla enintään 20 tuotetta: mökkisarja ja kuusi uutta saunapaitaa ensin.
+    featured: sarja(
+      /t-paita[ -]mökkeilijälle/,
+      /^(löylymestari|saunassa ei puhuta|vihta vai vasta|mökkisauna hoitaa|kuka heitti tuon löylyn|lauantaisauna).*\| t-paita saunojalle/,
+    ),
   },
   {
     path: "/lahjat/maanviljelijalle",
@@ -329,6 +338,7 @@ const sarjaPagesPohja: LandingPageDef[] = [
         /t-paita[ -]maanviljelijälle/,
         /sää päättää teen silti/,
         /^isäntä \|/,
+        /huppari maanviljelijälle/,
       ),
     ),
     featured: sarja(/t-paita[ -]maanviljelijälle/),
@@ -369,9 +379,10 @@ const sarjaPagesPohja: LandingPageDef[] = [
         /etätöitä tekeville/,
         /palaverien kritisoijalle/,
         /t-paita pelaajalle/,
+        /it-tuelle/,
       ),
     ),
-    featured: sarja(/t-paita[ -]it-ihmiselle/),
+    featured: sarja(/t-paita[ -]it-ihmiselle/, /t-paita it-tuelle/),
   },
 ];
 

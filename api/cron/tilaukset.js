@@ -31,6 +31,9 @@
  * ?tehtava=resend-domain: lisää huumorikauppa.fi Resendiin (alue eu-west-1), jos sitä ei ole, ja palauttaa domainin tilan
  * ja vahvistukseen tarvittavat DNS-tietueet (KAYTTOONOTTO.md). &vahvista=1 pyytää Resendiä tarkistamaan tietueet.
  *
+ * ?tehtava=mittarit: tavoitemittarin koosteluvut (api/_lib/mittarit.js mittariKooste) ilman henkilö- ja kumppanitietoja;
+ * scripts/mittarit.mjs lukee ne paikallisesti .env.cron.local-tiedoston CRON_SECRETillä.
+ *
  * ?tehtava=katetarkistus: näkyvien tuotteiden katevalvonta (api/_lib/katevalvonta.js) maanantaisin; yhteenveto
  * sähköpostilla omistajalle, jos jokin tuote on alle myynnin rajan tai kulut ovat tuntemattomat.
  *
@@ -57,6 +60,7 @@ import { postgresKanta, printifyHaut, tuoPrintifysta, lueEuSiirrot } from "../..
 import { buildProductRow as buildProductRowPrintify } from "../_lib/printify-sync.generated.js";
 import { korjaaNimi, nimiKorjattava } from "../_lib/tuotenimi.js";
 import { ga4Viikot, ga4Suppilo } from "../_lib/ga4.js";
+import { keraaMittarit, mittariKooste } from "../_lib/mittarit.js";
 
 // Printifyn otsikoissa voi olla ajatusviivoja; kantaan tuotaessa nimi siistitään samalla tavalla kuin 28.10.2026 korjatut.
 const buildProductRow = (...a) => {
@@ -605,7 +609,7 @@ export default async function handler(req, res) {
   if (req.query.tehtava === "tuo-aktiiviset") {
     if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
     // ?tiedosto=uudet-tuotteet-2026-10-28 (vain data/-hakemiston nimetyt tuontitiedostot), oletus Lovablen lista.
-    const nimi = /^(lovable-aktiiviset|uudet-tuotteet)-\d{4}-\d{2}-\d{2}$/.test(String(req.query.tiedosto || "")) ? req.query.tiedosto : "lovable-aktiiviset-2026-10-27";
+    const nimi = /^(lovable-aktiiviset|uudet-tuotteet)-\d{4}-\d{2}-\d{2}(-[a-z0-9]+)?$/.test(String(req.query.tiedosto || "")) ? req.query.tiedosto : "lovable-aktiiviset-2026-10-27";
     const data = JSON.parse(readFileSync(join(euSiirtoKansio() || join(process.cwd(), "data"), `${nimi}.json`), "utf8"));
     const { kulutRivi } = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
     const siirrot = lueEuSiirrot(euSiirtoKansio());
@@ -740,6 +744,12 @@ export default async function handler(req, res) {
     const tulos = [...viikot.values()].map((v) => ({ ...v, myynti: Math.round(v.myynti * 100) / 100, kate: Math.round(v.kate * 100) / 100,
       keskiostos: v.tilauksia ? Math.round((v.myynti / v.tilauksia) * 100) / 100 : 0, ga4: ga4?.[v.viikko] ?? null, suppilo: suppilo?.[v.viikko] ?? null }));
     return res.status(200).json({ ok: true, alku, viikot: tulos, ga4Viikot: ga4, ga4Suppilo: suppilo, ga4Lahde: ga4 ? "GA4 Data API" : ga4Virhe || "ei asetettu" });
+  }
+
+  // Mittarin koosteluvut koneelle (scripts/mittarit.mjs, 2.11.2026): samat luvut kuin /hallinta/mittarit, vain summat.
+  if (req.query.tehtava === "mittarit") {
+    const m = await keraaMittarit(db, pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {}));
+    return res.status(200).json({ ok: true, ...mittariKooste(m) });
   }
 
   // Kaikki ajatusviivalliset ja luonnottoman kaksoispisteen nimet kerralla (api/_lib/tuotenimi.js korjaaNimi). Slug ei muutu. Oletuksena kuiva ajo, &kuiva=0 tallentaa.

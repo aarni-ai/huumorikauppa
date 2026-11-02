@@ -5,7 +5,7 @@ import { useCartContext } from "@/context/CartContext";
 import { categories } from "@/data/products";
 import { onKategoriasivu } from "@/lib/hiddenCategories";
 import { Input } from "@/components/ui/input";
-import { CHRISTMAS_MENU, FATHERS_DAY_MENU } from "@/data/landingRoutes";
+import { AIHE_MENU, CHRISTMAS_MENU, FATHERS_DAY_MENU } from "@/data/landingRoutes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
 type CategoryItem = { slug: string; name: string; emoji: string; description: string };
@@ -48,6 +48,11 @@ function MobileMenu({ mainCats, otherCats, onClose }: { mainCats: CategoryItem[]
       {mainCats.map(cat => (
         <Link key={cat.slug} to={`/kategoria/${cat.slug}`} onClick={onClose} className="block px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
           {cat.name}
+        </Link>
+      ))}
+      {AIHE_MENU.map(item => (
+        <Link key={item.href} to={item.href} onClick={onClose} className="block px-6 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          {item.label}
         </Link>
       ))}
       {otherCats.length > 0 && <button
@@ -229,8 +234,8 @@ export function Header() {
             )}
           </div>
 
-          {/* "Muut tuotteet" dropdown */}
-          {otherCats.length > 0 && <div
+          {/* "Muut tuotteet" dropdown: aihesivut (AIHE_MENU) ja muut kategoriat */}
+          <div
             className="relative"
             onMouseEnter={openDropdown}
             onMouseLeave={closeDropdown}
@@ -244,6 +249,17 @@ export function Header() {
             </button>
             {dropdownOpen && (
               <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-lg py-2 min-w-[200px] z-50">
+                {AIHE_MENU.map(item => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setDropdownOpen(false)}
+                    className="block px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                {otherCats.length > 0 && <div className="my-1 border-t border-border" />}
                 {otherCats.map(cat => (
                   <Link
                     key={cat.slug}
@@ -256,7 +272,7 @@ export function Header() {
                 ))}
               </div>
             )}
-          </div>}
+          </div>
         </nav>
 
         {/* Right side */}

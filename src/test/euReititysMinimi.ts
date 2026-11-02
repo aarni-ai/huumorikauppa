@@ -17,11 +17,28 @@ import { onEuReititettySlug } from "../../api/_lib/eu-reititys.js";
 import { lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
 import { onPiilotettuTuotePerus } from "@/lib/hiddenCategories";
 import type { Product } from "@/types/product";
+import { AUKOT_TUOTTEET } from "@/data/aukkomallisto2026";
 import type { ProductRow } from "@/seo/prerender/pages";
 
 export const EU_REITITYS_ALLE_MINIMIN: ReadonlySet<string> = new Set<string>();
 
-export const landingMinimi = (path: string): number => (EU_REITITYS_ALLE_MINIMIN.has(path) ? 0 : LANDING_MIN_PRODUCTS);
+/**
+ * 2.11.2026: aihesivut, joiden tuotteista suurin osa on kilpailija-aukkojen mallistoa (src/data/aukkomallisto2026.ts).
+ * Mallisto tuotiin kauppaan ja tilannekuvaan 2.11.2026, joten lista on tyhjä. landing.test.ts tarkistaa, että sivu täyttyy
+ * malliston kanssa ja että poikkeus poistetaan, kun tilannekuvassa on jo vähintään LANDING_MIN_PRODUCTS tuotetta.
+ */
+export const UUSI_MALLISTO_ODOTTAA: ReadonlySet<string> = new Set<string>();
+
+export const landingMinimi = (path: string): number =>
+  EU_REITITYS_ALLE_MINIMIN.has(path) || UUSI_MALLISTO_ODOTTAA.has(path) ? 0 : LANDING_MIN_PRODUCTS;
+
+/** Kilpailija-aukkojen mallisto tuotteina (nimi ja slug kuten tuonnissa), uusi hinnasto. */
+export function aukkoTuotteet(): Product[] {
+  return AUKOT_TUOTTEET.map((t) => ({
+    id: `aukko-${t.slug}`, name: t.name, slug: t.slug, category: t.category, humor_type: "", price: t.category === "hupparit" ? 52.9 : 27.9,
+    stock: 99, description: "", images: [], variants: {}, is_featured: false, is_new: true, is_gift_idea: false,
+  }));
+}
 
 const JUURI = path.resolve(__dirname, "../..");
 

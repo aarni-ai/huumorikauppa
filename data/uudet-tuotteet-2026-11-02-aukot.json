@@ -1,0 +1,966 @@
+{
+ "paiva": "2026-11-02",
+ "kuvaus": "Kilpailija-aukot: 60 mallia (olut ja kalja, isä, sauna, ammatit) t-paitoina (OPT OnDemand CZ, 27,90 €) ja huppareina (Atelier Katanga FR, 52,90 €), data/uudet-tuotteet/aukot-2026-11-02.json. Tuonti: tehtava=tuo-aktiiviset&tiedosto=uudet-tuotteet-2026-11-02-aukot",
+ "tuotteet": [
+  {
+   "slug": "olut-ei-ratkaise-ongelmia-ei-maitokaan-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81d97a895c5bd4e012579",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Olut ei ratkaise ongelmia. Ei maitokaan"
+  },
+  {
+   "slug": "olut-ei-ratkaise-ongelmia-ei-maitokaan-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81d9e067b6ec4de00eb3b",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Olut ei ratkaise ongelmia. Ei maitokaan"
+  },
+  {
+   "slug": "piipahdan-yhdelle-palaan-maanantaina-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81da5ab2b9c265a00a44a",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Piipahdan yhdelle. Palaan maanantaina"
+  },
+  {
+   "slug": "piipahdan-yhdelle-palaan-maanantaina-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81daa6f1c67a16d0689ec",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Piipahdan yhdelle. Palaan maanantaina"
+  },
+  {
+   "slug": "kaljakoppa-on-mittayksikko-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81db2dceed1e172007038",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Kaljakoppa on mittayksikkö"
+  },
+  {
+   "slug": "kaljakoppa-on-mittayksikko-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81db8d28f69dae2040f25",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Kaljakoppa on mittayksikkö"
+  },
+  {
+   "slug": "mokkikalja-on-eri-asia-kuin-kalja-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81dc0202568f73b03a030",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Mökkikalja on eri asia kuin kalja"
+  },
+  {
+   "slug": "mokkikalja-on-eri-asia-kuin-kalja-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81dc6d28f69dae2040f31",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Mökkikalja on eri asia kuin kalja"
+  },
+  {
+   "slug": "laituri-kalja-ei-muuta-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81dced28f69dae2040f35",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Laituri. Kalja. Ei muuta"
+  },
+  {
+   "slug": "laituri-kalja-ei-muuta-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81dd3202568f73b03a045",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Laituri. Kalja. Ei muuta"
+  },
+  {
+   "slug": "ipa-ei-ole-olut-se-on-tunne-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81dda6f1c67a16d068a11",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Ipa ei ole olut. Se on tunne"
+  },
+  {
+   "slug": "ipa-ei-ole-olut-se-on-tunne-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ddfa895c5bd4e0125c3",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Ipa ei ole olut. Se on tunne"
+  },
+  {
+   "slug": "kotipanimon-panimomestari-ja-ainoa-maistaja-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81de7f5f22e3bbd08d0b0",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Kotipanimon panimomestari. Ja ainoa maistaja"
+  },
+  {
+   "slug": "kotipanimon-panimomestari-ja-ainoa-maistaja-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81decc63dab4b1f0c8aa3",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Kotipanimon panimomestari. Ja ainoa maistaja"
+  },
+  {
+   "slug": "viikonloppu-alkaa-ensimmaisesta-korkista-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81df48e9b48fce40e973e",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Viikonloppu alkaa ensimmäisestä korkista"
+  },
+  {
+   "slug": "viikonloppu-alkaa-ensimmaisesta-korkista-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81df9c63dab4b1f0c8aab",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Viikonloppu alkaa ensimmäisestä korkista"
+  },
+  {
+   "slug": "panttipullot-ovat-minun-elakesaastoni-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e01a895c5bd4e0125e0",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Panttipullot ovat minun eläkesäästöni"
+  },
+  {
+   "slug": "panttipullot-ovat-minun-elakesaastoni-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e07a895c5bd4e0125e4",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Panttipullot ovat minun eläkesäästöni"
+  },
+  {
+   "slug": "puolityhja-puolitaysi-haen-uuden-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e0fa895c5bd4e0125e8",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Puolityhjä? Puolitäysi? Haen uuden"
+  },
+  {
+   "slug": "puolityhja-puolitaysi-haen-uuden-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e15a895c5bd4e0125ec",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Puolityhjä? Puolitäysi? Haen uuden"
+  },
+  {
+   "slug": "lammin-olut-on-kesan-suurin-rikos-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e1c2be8b616c3040928",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Lämmin olut on kesän suurin rikos"
+  },
+  {
+   "slug": "lammin-olut-on-kesan-suurin-rikos-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e21d28f69dae2040f70",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Lämmin olut on kesän suurin rikos"
+  },
+  {
+   "slug": "oluen-puolesta-puhun-mina-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e2af5f22e3bbd08d0cb",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Oluen puolesta puhun minä"
+  },
+  {
+   "slug": "oluen-puolesta-puhun-mina-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e302be8b616c3040935",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Oluen puolesta puhun minä"
+  },
+  {
+   "slug": "kaljavahti-tanaan-ei-lopu-kesken-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e37c63dab4b1f0c8ae1",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Kaljavahti. Tänään ei lopu kesken"
+  },
+  {
+   "slug": "kaljavahti-tanaan-ei-lopu-kesken-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e3cc63dab4b1f0c8ae5",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Kaljavahti. Tänään ei lopu kesken"
+  },
+  {
+   "slug": "olutta-koska-vesi-on-loylyja-varten-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e43c63dab4b1f0c8af0",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Olutta, koska vesi on löylyjä varten"
+  },
+  {
+   "slug": "olutta-koska-vesi-on-loylyja-varten-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e48f5f22e3bbd08d0f7",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Olutta, koska vesi on löylyjä varten"
+  },
+  {
+   "slug": "saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-ystavalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e4fd28f69dae2040f92",
+   "lovable_price": 27.9,
+   "teema": "aukot-olut",
+   "nimi": "Saunakalja ei ole neuvoteltavissa"
+  },
+  {
+   "slug": "saunakalja-ei-ole-neuvoteltavissa-huppari-oluen-ystavalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e542be8b616c304095c",
+   "lovable_price": 52.9,
+   "teema": "aukot-olut",
+   "nimi": "Saunakalja ei ole neuvoteltavissa"
+  },
+  {
+   "slug": "isa-joka-tietaa-kaiken-kysy-silti-aidilta-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e5b1a5085ecf807bb1e",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka tietää kaiken. Kysy silti äidiltä"
+  },
+  {
+   "slug": "isa-joka-tietaa-kaiken-kysy-silti-aidilta-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e611a5085ecf807bb20",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka tietää kaiken. Kysy silti äidiltä"
+  },
+  {
+   "slug": "isa-joka-korjaa-kaiken-ensi-viikolla-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e671a5085ecf807bb26",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka korjaa kaiken. Ensi viikolla"
+  },
+  {
+   "slug": "isa-joka-korjaa-kaiken-ensi-viikolla-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e6da895c5bd4e012627",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka korjaa kaiken. Ensi viikolla"
+  },
+  {
+   "slug": "isa-joka-sammuttaa-valot-jatkuvasti-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e74f5f22e3bbd08d118",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka sammuttaa valot. Jatkuvasti"
+  },
+  {
+   "slug": "isa-joka-sammuttaa-valot-jatkuvasti-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e7a6f1c67a16d068a6a",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka sammuttaa valot. Jatkuvasti"
+  },
+  {
+   "slug": "isa-joka-grillaa-sateellakin-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e82067b6ec4de00ebc9",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka grillaa sateellakin"
+  },
+  {
+   "slug": "isa-joka-grillaa-sateellakin-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e87f5f22e3bbd08d127",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka grillaa sateellakin"
+  },
+  {
+   "slug": "isa-joka-on-aina-auton-alla-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e8e067b6ec4de00ebd1",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka on aina auton alla"
+  },
+  {
+   "slug": "isa-joka-on-aina-auton-alla-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81e942be8b616c304097e",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka on aina auton alla"
+  },
+  {
+   "slug": "isa-joka-lukee-ohjeet-vasta-lopuksi-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81e9ba895c5bd4e012633",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka lukee ohjeet vasta lopuksi"
+  },
+  {
+   "slug": "isa-joka-lukee-ohjeet-vasta-lopuksi-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ea0f5f22e3bbd08d14c",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä, joka lukee ohjeet vasta lopuksi"
+  },
+  {
+   "slug": "isanpaivana-mina-paatan-kaukosaatimesta-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ea7d61e2996c0081a6f",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isänpäivänä minä päätän kaukosäätimestä"
+  },
+  {
+   "slug": "isanpaivana-mina-paatan-kaukosaatimesta-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ead067b6ec4de00ebef",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isänpäivänä minä päätän kaukosäätimestä"
+  },
+  {
+   "slug": "isanpaiva-lepopaiva-sama-asia-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81eb46f1c67a16d068a93",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isänpäivä. Lepopäivä. Sama asia"
+  },
+  {
+   "slug": "isanpaiva-lepopaiva-sama-asia-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81eba6f1c67a16d068a9b",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isänpäivä. Lepopäivä. Sama asia"
+  },
+  {
+   "slug": "isavitsi-nauran-itse-jos-kukaan-ei-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ec0f5f22e3bbd08d169",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isävitsi. Nauran itse, jos kukaan ei"
+  },
+  {
+   "slug": "isavitsi-nauran-itse-jos-kukaan-ei-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ec6ab2b9c265a00a4dc",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isävitsi. Nauran itse, jos kukaan ei"
+  },
+  {
+   "slug": "kysy-aidilta-terveisin-isa-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81eccc63dab4b1f0c8b39",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Kysy äidiltä. Terveisin isä"
+  },
+  {
+   "slug": "kysy-aidilta-terveisin-isa-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ed2f5f22e3bbd08d176",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Kysy äidiltä. Terveisin isä"
+  },
+  {
+   "slug": "isa-taksi-pankki-ei-palautusta-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ed92be8b616c30409a8",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä. Taksi. Pankki. Ei palautusta"
+  },
+  {
+   "slug": "isa-taksi-pankki-ei-palautusta-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81eded28f69dae2040fde",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isä. Taksi. Pankki. Ei palautusta"
+  },
+  {
+   "slug": "kuka-saati-termostaattia-isa-huomaa-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ee58e9b48fce40e97cb",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Kuka sääti termostaattia? Isä huomaa"
+  },
+  {
+   "slug": "kuka-saati-termostaattia-isa-huomaa-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81eeb2be8b616c30409c3",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Kuka sääti termostaattia? Isä huomaa"
+  },
+  {
+   "slug": "isaksi-2026-uni-palaa-arviolta-2044-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ef2d61e2996c0081aa1",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isäksi 2026. Uni palaa arviolta 2044"
+  },
+  {
+   "slug": "isaksi-2026-uni-palaa-arviolta-2044-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ef8f5f22e3bbd08d18e",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isäksi 2026. Uni palaa arviolta 2044"
+  },
+  {
+   "slug": "suosikkilapsi-antoi-taman-paidan-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81eff067b6ec4de00ec0f",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Suosikkilapsi antoi tämän paidan"
+  },
+  {
+   "slug": "suosikkilapsi-antoi-taman-paidan-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f051a5085ecf807bb88",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Suosikkilapsi antoi tämän paidan"
+  },
+  {
+   "slug": "isan-autotalli-kaikki-sailytetaan-varmuuden-vuoksi-t-paita-isalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f0c6f1c67a16d068abf",
+   "lovable_price": 27.9,
+   "teema": "aukot-isa",
+   "nimi": "Isän autotalli. Kaikki säilytetään. Varmuuden vuoksi"
+  },
+  {
+   "slug": "isan-autotalli-kaikki-sailytetaan-varmuuden-vuoksi-huppari-isalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f12d61e2996c0081aaa",
+   "lovable_price": 52.9,
+   "teema": "aukot-isa",
+   "nimi": "Isän autotalli. Kaikki säilytetään. Varmuuden vuoksi"
+  },
+  {
+   "slug": "loylymestari-vain-yksi-kauha-lisaa-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f1a067b6ec4de00ec26",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Löylymestari. Vain yksi kauha lisää"
+  },
+  {
+   "slug": "loylymestari-vain-yksi-kauha-lisaa-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f1ff5f22e3bbd08d1a4",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Löylymestari. Vain yksi kauha lisää"
+  },
+  {
+   "slug": "sauna-on-suomalaisen-terapeutti-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f27a895c5bd4e01267d",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Sauna on suomalaisen terapeutti"
+  },
+  {
+   "slug": "sauna-on-suomalaisen-terapeutti-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f2cd28f69dae2041013",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Sauna on suomalaisen terapeutti"
+  },
+  {
+   "slug": "saunassa-ei-puhuta-toista-ei-muustakaan-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f33f5f22e3bbd08d1bf",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunassa ei puhuta töistä. Ei muustakaan"
+  },
+  {
+   "slug": "saunassa-ei-puhuta-toista-ei-muustakaan-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f398e9b48fce40e97f4",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunassa ei puhuta töistä. Ei muustakaan"
+  },
+  {
+   "slug": "ylalauteilla-syntyvat-paatokset-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f3f067b6ec4de00ec45",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Ylälauteilla syntyvät päätökset"
+  },
+  {
+   "slug": "ylalauteilla-syntyvat-paatokset-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f442be8b616c3040a12",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Ylälauteilla syntyvät päätökset"
+  },
+  {
+   "slug": "kiuas-kuumana-paa-kylmana-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f4b1a5085ecf807bbc5",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Kiuas kuumana. Pää kylmänä"
+  },
+  {
+   "slug": "kiuas-kuumana-paa-kylmana-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f508e9b48fce40e9806",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Kiuas kuumana. Pää kylmänä"
+  },
+  {
+   "slug": "vihta-vai-vasta-riippuu-murteesta-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f576f1c67a16d068ae1",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Vihta vai vasta? Riippuu murteesta"
+  },
+  {
+   "slug": "vihta-vai-vasta-riippuu-murteesta-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f5ca895c5bd4e012697",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Vihta vai vasta? Riippuu murteesta"
+  },
+  {
+   "slug": "100-astetta-hyva-alku-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f636f1c67a16d068ae8",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "100 astetta. Hyvä alku"
+  },
+  {
+   "slug": "100-astetta-hyva-alku-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f692be8b616c3040a1e",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "100 astetta. Hyvä alku"
+  },
+  {
+   "slug": "lauantaisauna-ei-neuvotella-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f6f2be8b616c3040a22",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Lauantaisauna. Ei neuvotella"
+  },
+  {
+   "slug": "lauantaisauna-ei-neuvotella-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f751a5085ecf807bbda",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Lauantaisauna. Ei neuvotella"
+  },
+  {
+   "slug": "saunan-jalkeen-kaikki-on-paremmin-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f7bf5f22e3bbd08d210",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunan jälkeen kaikki on paremmin"
+  },
+  {
+   "slug": "saunan-jalkeen-kaikki-on-paremmin-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f81ab2b9c265a00a52d",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunan jälkeen kaikki on paremmin"
+  },
+  {
+   "slug": "savusaunan-tuoksu-on-minun-hajuveteni-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f878e9b48fce40e9825",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Savusaunan tuoksu on minun hajuveteni"
+  },
+  {
+   "slug": "savusaunan-tuoksu-on-minun-hajuveteni-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f8d8e9b48fce40e9829",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Savusaunan tuoksu on minun hajuveteni"
+  },
+  {
+   "slug": "avanto-sauna-avanto-sama-uudestaan-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81f94d28f69dae204105a",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Avanto. Sauna. Avanto. Sama uudestaan"
+  },
+  {
+   "slug": "avanto-sauna-avanto-sama-uudestaan-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81f9a1a5085ecf807bbe3",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Avanto. Sauna. Avanto. Sama uudestaan"
+  },
+  {
+   "slug": "kuka-heitti-tuon-loylyn-mina-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fa2d61e2996c0081b0c",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Kuka heitti tuon löylyn? Minä"
+  },
+  {
+   "slug": "kuka-heitti-tuon-loylyn-mina-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fa7d28f69dae204106a",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Kuka heitti tuon löylyn? Minä"
+  },
+  {
+   "slug": "saunavuoro-on-varattu-aina-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fafa895c5bd4e0126b8",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunavuoro on varattu. Aina"
+  },
+  {
+   "slug": "saunavuoro-on-varattu-aina-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fb5a895c5bd4e0126be",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunavuoro on varattu. Aina"
+  },
+  {
+   "slug": "mokkisauna-hoitaa-loput-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fbcd28f69dae2041077",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Mökkisauna hoitaa loput"
+  },
+  {
+   "slug": "mokkisauna-hoitaa-loput-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fc1067b6ec4de00ec80",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Mökkisauna hoitaa loput"
+  },
+  {
+   "slug": "saunominen-on-urheilua-olen-ammattilainen-t-paita-saunojalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fc7d61e2996c0081b25",
+   "lovable_price": 27.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunominen on urheilua. Olen ammattilainen"
+  },
+  {
+   "slug": "saunominen-on-urheilua-olen-ammattilainen-huppari-saunojalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fcc067b6ec4de00ec86",
+   "lovable_price": 52.9,
+   "teema": "aukot-sauna",
+   "nimi": "Saunominen on urheilua. Olen ammattilainen"
+  },
+  {
+   "slug": "rakentaja-aikataulu-on-arvio-t-paita-rakentajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fd3067b6ec4de00ec90",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Rakentaja. Aikataulu on arvio"
+  },
+  {
+   "slug": "rakentaja-aikataulu-on-arvio-huppari-rakentajalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fd8c63dab4b1f0c8baf",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Rakentaja. Aikataulu on arvio"
+  },
+  {
+   "slug": "sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sahkomiehelle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fe0a895c5bd4e0126d6",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Sähkömies. Tiedän, mikä johtaa mihinkin"
+  },
+  {
+   "slug": "sahkomies-tiedan-mika-johtaa-mihinkin-huppari-sahkomiehelle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81fe6d28f69dae2041098",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Sähkömies. Tiedän, mikä johtaa mihinkin"
+  },
+  {
+   "slug": "putkimies-naen-asioita-joita-et-halua-nahda-t-paita-putkimiehelle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81fed2be8b616c3040a81",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Putkimies. Näen asioita, joita et halua nähdä"
+  },
+  {
+   "slug": "putkimies-naen-asioita-joita-et-halua-nahda-huppari-putkimiehelle",
+   "category": "hupparit",
+   "printify_product_id": "6ae81ff5d61e2996c0081b86",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Putkimies. Näen asioita, joita et halua nähdä"
+  },
+  {
+   "slug": "sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaanhoitajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae81ffc067b6ec4de00ecc0",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Sairaanhoitaja. Kahvi on ensiapua"
+  },
+  {
+   "slug": "sairaanhoitaja-kahvi-on-ensiapua-huppari-sairaanhoitajalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae820011a5085ecf807bc2f",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Sairaanhoitaja. Kahvi on ensiapua"
+  },
+  {
+   "slug": "opettaja-kylla-nain-sen-t-paita-opettajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae82009d28f69dae20410d2",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Opettaja. Kyllä, näin sen"
+  },
+  {
+   "slug": "opettaja-kylla-nain-sen-huppari-opettajalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae8200ed28f69dae20410da",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Opettaja. Kyllä, näin sen"
+  },
+  {
+   "slug": "kuski-ajan-koska-muut-eivat-osaa-t-paita-kuskille",
+   "category": "t-paidat",
+   "printify_product_id": "6ae82015067b6ec4de00ecce",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Kuski. Ajan, koska muut eivät osaa"
+  },
+  {
+   "slug": "kuski-ajan-koska-muut-eivat-osaa-huppari-kuskille",
+   "category": "hupparit",
+   "printify_product_id": "6ae8201b2be8b616c3040aa2",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Kuski. Ajan, koska muut eivät osaa"
+  },
+  {
+   "slug": "kokki-maistan-vain-varmuuden-vuoksi-t-paita-kokille",
+   "category": "t-paidat",
+   "printify_product_id": "6ae820218e9b48fce40e98a1",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Kokki. Maistan vain varmuuden vuoksi"
+  },
+  {
+   "slug": "kokki-maistan-vain-varmuuden-vuoksi-huppari-kokille",
+   "category": "hupparit",
+   "printify_product_id": "6ae820272be8b616c3040aac",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Kokki. Maistan vain varmuuden vuoksi"
+  },
+  {
+   "slug": "it-tuki-kokeilitko-sammuttaa-ja-kaynnistaa-t-paita-it-tuelle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae8202ed61e2996c0081bc3",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "It-tuki. Kokeilitko sammuttaa ja käynnistää?"
+  },
+  {
+   "slug": "it-tuki-kokeilitko-sammuttaa-ja-kaynnistaa-huppari-it-tuelle",
+   "category": "hupparit",
+   "printify_product_id": "6ae820332be8b616c3040ae7",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "It-tuki. Kokeilitko sammuttaa ja käynnistää?"
+  },
+  {
+   "slug": "insinoori-toimii-teoriassa-t-paita-insinoorille",
+   "category": "t-paidat",
+   "printify_product_id": "6ae8203ad61e2996c0081c13",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Insinööri. Toimii teoriassa"
+  },
+  {
+   "slug": "insinoori-toimii-teoriassa-huppari-insinoorille",
+   "category": "hupparit",
+   "printify_product_id": "6ae8203ff5f22e3bbd08d2de",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Insinööri. Toimii teoriassa"
+  },
+  {
+   "slug": "maanviljelija-kesaloma-on-marraskuussa-t-paita-maanviljelijalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae82046d28f69dae2041151",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Maanviljelijä. Kesäloma on marraskuussa"
+  },
+  {
+   "slug": "maanviljelija-kesaloma-on-marraskuussa-huppari-maanviljelijalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae8204bc63dab4b1f0c8c85",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Maanviljelijä. Kesäloma on marraskuussa"
+  },
+  {
+   "slug": "palomies-kuumat-paikat-ovat-minun-t-paita-palomiehelle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae820522be8b616c3040b2b",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Palomies. Kuumat paikat ovat minun"
+  },
+  {
+   "slug": "palomies-kuumat-paikat-ovat-minun-huppari-palomiehelle",
+   "category": "hupparit",
+   "printify_product_id": "6ae820586f1c67a16d068bdc",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Palomies. Kuumat paikat ovat minun"
+  },
+  {
+   "slug": "poliisi-vapaalla-naen-silti-kaiken-t-paita-poliisille",
+   "category": "t-paidat",
+   "printify_product_id": "6ae8205ff5f22e3bbd08d30a",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Poliisi vapaalla. Näen silti kaiken"
+  },
+  {
+   "slug": "poliisi-vapaalla-naen-silti-kaiken-huppari-poliisille",
+   "category": "hupparit",
+   "printify_product_id": "6ae82064ab2b9c265a00a601",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Poliisi vapaalla. Näen silti kaiken"
+  },
+  {
+   "slug": "lahihoitaja-kiire-on-toinen-nimeni-t-paita-lahihoitajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae8206bd28f69dae2041164",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Lähihoitaja. Kiire on toinen nimeni"
+  },
+  {
+   "slug": "lahihoitaja-kiire-on-toinen-nimeni-huppari-lahihoitajalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae820706f1c67a16d068bec",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Lähihoitaja. Kiire on toinen nimeni"
+  },
+  {
+   "slug": "rekkakuski-minun-toimistoni-liikkuu-t-paita-rekkakuskille",
+   "category": "t-paidat",
+   "printify_product_id": "6ae820766f1c67a16d068bf8",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Rekkakuski. Minun toimistoni liikkuu"
+  },
+  {
+   "slug": "rekkakuski-minun-toimistoni-liikkuu-huppari-rekkakuskille",
+   "category": "hupparit",
+   "printify_product_id": "6ae8207cd28f69dae204116e",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Rekkakuski. Minun toimistoni liikkuu"
+  },
+  {
+   "slug": "varhaiskasvattaja-selvian-valipalalla-t-paita-varhaiskasvattajalle",
+   "category": "t-paidat",
+   "printify_product_id": "6ae82082d28f69dae2041175",
+   "lovable_price": 27.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Varhaiskasvattaja. Selviän välipalalla"
+  },
+  {
+   "slug": "varhaiskasvattaja-selvian-valipalalla-huppari-varhaiskasvattajalle",
+   "category": "hupparit",
+   "printify_product_id": "6ae82088c63dab4b1f0c8cab",
+   "lovable_price": 52.9,
+   "teema": "aukot-ammatti",
+   "nimi": "Varhaiskasvattaja. Selviän välipalalla"
+  }
+ ]
+}

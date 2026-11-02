@@ -30,7 +30,7 @@ import {
   LANDING_REDIRECTS,
   selectLandingProducts,
 } from "@/data/landingPages";
-import { CHRISTMAS_MENU } from "@/data/landingRoutes";
+import { AIHE_MENU, CHRISTMAS_MENU } from "@/data/landingRoutes";
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { ryhmatilausPage } from "@/data/ryhmatilausPage";
 import { kategoriaPolku, onKategoriasivu, onPiilotettuTuote } from "@/lib/hiddenCategories";
@@ -234,6 +234,7 @@ export function buildSiteNav(products: Product[] = []): SiteNav {
     { href: "/hauskat-lahjat-naiselle", label: "Lahjat naiselle" },
     { href: "/joululahjat", label: "Joululahjat" },
     { href: "/isanpaivalahja", label: "Isänpäivälahjat" },
+    ...AIHE_MENU.map((m) => ({ href: m.href, label: m.label })),
     { href: "/blogi", label: "Blogi" },
   ];
   const footer: LinkItem[] = [

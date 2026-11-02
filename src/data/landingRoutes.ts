@@ -60,6 +60,10 @@ export const LANDING_PATHS: readonly string[] = [
   "/lahjat/maanviljelijalle",
   "/lahjat/it-ihmiselle",
   "/ammattipaidat",
+  // Aihesivut (2.11.2026, src/data/landingPagesAiheet.ts)
+  "/olut",
+  "/sauna",
+  "/ammatit",
   // Lahjahakujen sivut (2.11.2026, src/data/lahjaoppaat2026.ts)
   "/joulu",
   "/joululahja-anopille",
@@ -83,12 +87,14 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/harrastus/kalastus": "/lahjat/kalastajalle",
   "/harrastus/metsastys": "/lahjat/metsastajalle",
   "/harrastus/golf": "/lahjat/golfaajalle",
-  "/harrastus/sauna": "/lahjat/mokkeilijalle",
+  "/harrastus/sauna": "/sauna",
   "/ammatti/rakennusmies": "/lahjat/remontoijalle",
   "/ammatti/maanviljelija": "/lahjat/maanviljelijalle",
   "/ammatti/koodari": "/lahjat/it-ihmiselle",
   "/lahjat/kahvinystavalle": "/lahjat/tyokaverille",
-  "/lahjat/saunaan": "/lahjat/mokkeilijalle",
+  "/lahjat/saunaan": "/sauna",
+  // 2.11.2026: oma saunasivu (aiemmin ei luotu, ohjaus /suomalainen-huumori-paidat)
+  "/sauna-t-paidat": "/sauna",
   "/lahjat/opettajalle": "/ammattipaidat",
   "/lahjat/hoitajalle": "/ammattipaidat",
   // Päällekkäiset sivut (sama hakuaikomus kuin laskeutumissivulla)
@@ -140,7 +146,6 @@ export const NOT_CREATED_LANDINGS: Record<string, string> = {
   "/joulupaidat": "/joululahjat",
   "/jouluhupparit": "/joululahjat",
   "/vauvan-ensimmainen-joulu": "/lahjat/vauvalle",
-  "/sauna-t-paidat": "/suomalainen-huumori-paidat",
 };
 
 /** Isänpäivä-valikko (Header, työpöytä ja mobiili). Ikivihreä: jää valikkoon myös isänpäivän jälkeen. */
@@ -149,6 +154,13 @@ export const FATHERS_DAY_MENU: { href: string; label: string }[] = [
   { href: "/hauska-isanpaivalahja", label: "Hauska isänpäivälahja" },
   { href: "/joululahja-isalle", label: "Joululahja isälle" },
   { href: "/lahjat/isoisalle", label: "Lahja isoisälle" },
+];
+
+/** Aiheet-valikko (Header, Muut tuotteet -valikon alla ja mobiilissa): aihesivut 2.11.2026. */
+export const AIHE_MENU: { href: string; label: string }[] = [
+  { href: "/olut", label: "Olut ja kalja" },
+  { href: "/sauna", label: "Sauna" },
+  { href: "/ammatit", label: "Ammatit" },
 ];
 
 /** Joululahjat-valikko (Header, työpöytä ja mobiili). */

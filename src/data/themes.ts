@@ -56,6 +56,9 @@ export const AMMATTI = theme(
   /maanviljelijä/, /sähkömie/, /sähköasentaja/, /putkimie/, /poliisi/, /palomie/, /kokille/, /siivooja/,
   /linja-auto/, /myyntimie/, /asiakaspalvelija/, /parturi/, /rakennusmie/, /koodari/,
   /ammatin/, /alalla x/, /työsankari/,
+  // 2.11.2026: kilpailija-aukkojen ammattimallisto (src/data/aukkomallisto2026.ts)
+  /rakentajalle/, /sairaanhoitaja/, /lähihoitaja/, /opettajalle/, /kuskille/, /rekkakuski/, /it-tuelle/, /insinöörille/,
+  /varhaiskasvattaja/,
 );
 
 /** Huumorisarjat suosituksiin: sama sarja = tuotteet sopivat yhteen. */

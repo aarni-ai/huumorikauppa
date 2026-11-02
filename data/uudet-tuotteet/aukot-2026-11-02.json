@@ -1,0 +1,3248 @@
+{
+ "nimi": "Kilpailija-aukot 2026: olut, isä, sauna, ammatit (2.11.2026)",
+ "_huom": "60 mallia Coworkin kilpailija-aukoista: 15 olut ja kalja, 15 isä (isänpäivä su 8.11. ja isä, joka...), 15 sauna, 15 ammattia ilman virallisia tunnuksia. T-paidat OPT OnDemand (CZ) bp 145 S-2XL, hupparit Atelier Katanga (FR) bp 77 S-3XL, samat värit kuin joulumallistossa (kate vähintään 9 € tilaukselta). Kontrasti: tummilla valkoinen, Sport Grey musta teksti; scripts/tummat-varit.mjs luonnin jälkeen. Ajo: --hintamalli live --kateraja 1.",
+ "oletukset": {
+  "tyyppi": "t-paita",
+  "painotalo": "OPT OnDemand",
+  "blueprint": 145,
+  "koot": [
+   "S",
+   "M",
+   "L",
+   "XL",
+   "2XL"
+  ]
+ },
+ "tuotteet": [
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUT EI RATKAISE",
+    "ONGELMIA.",
+    "EI MAITOKAAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka tietää vaihtoehdot. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUT EI RATKAISE",
+    "ONGELMIA.",
+    "EI MAITOKAAN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka tietää vaihtoehdot. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PIIPAHDAN",
+    "YHDELLE.",
+    "PALAAN MAANANTAINA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka yksi venyy aina. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PIIPAHDAN",
+    "YHDELLE.",
+    "PALAAN MAANANTAINA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka yksi venyy aina. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KALJAKOPPA",
+    "ON MITTAYKSIKKÖ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkireissun suunnittelijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KALJAKOPPA",
+    "ON MITTAYKSIKKÖ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkireissun suunnittelijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "MÖKKIKALJA",
+    "ON ERI ASIA",
+    "KUIN KALJA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jolle laiturin olut maistuu parhaalta. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "MÖKKIKALJA",
+    "ON ERI ASIA",
+    "KUIN KALJA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jolle laiturin olut maistuu parhaalta. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "LAITURI.",
+    "KALJA.",
+    "EI MUUTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kesämökin selkeälle suunnitelmalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "LAITURI.",
+    "KALJA.",
+    "EI MUUTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kesämökin selkeälle suunnitelmalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "IPA EI OLE",
+    "OLUT.",
+    "SE ON TUNNE."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} humalan ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "IPA EI OLE",
+    "OLUT.",
+    "SE ON TUNNE."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} humalan ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KOTIPANIMON",
+    "PANIMOMESTARI.",
+    "JA AINOA MAISTAJA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kotioluen keittäjälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KOTIPANIMON",
+    "PANIMOMESTARI.",
+    "JA AINOA MAISTAJA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kotioluen keittäjälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "VIIKONLOPPU",
+    "ALKAA ENSIMMÄISESTÄ",
+    "KORKISTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} perjantain odottajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "VIIKONLOPPU",
+    "ALKAA ENSIMMÄISESTÄ",
+    "KORKISTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} perjantain odottajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PANTTIPULLOT",
+    "OVAT MINUN",
+    "ELÄKESÄÄSTÖNI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka säästöt kilisevät. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PANTTIPULLOT",
+    "OVAT MINUN",
+    "ELÄKESÄÄSTÖNI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, jonka säästöt kilisevät. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PUOLITYHJÄ?",
+    "PUOLITÄYSI?",
+    "HAEN UUDEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} käytännölliselle optimistille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "PUOLITYHJÄ?",
+    "PUOLITÄYSI?",
+    "HAEN UUDEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} käytännölliselle optimistille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "LÄMMIN OLUT",
+    "ON KESÄN",
+    "SUURIN RIKOS."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kylmälaukun vartijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "LÄMMIN OLUT",
+    "ON KESÄN",
+    "SUURIN RIKOS."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kylmälaukun vartijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUEN PUOLESTA",
+    "PUHUN MINÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pöydän olutasiantuntijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUEN PUOLESTA",
+    "PUHUN MINÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} pöydän olutasiantuntijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KALJAVAHTI.",
+    "TÄNÄÄN EI",
+    "LOPU KESKEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} juhlien huoltopäällikölle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "KALJAVAHTI.",
+    "TÄNÄÄN EI",
+    "LOPU KESKEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} juhlien huoltopäällikölle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUTTA,",
+    "KOSKA VESI ON",
+    "LÖYLYJÄ VARTEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunan ja oluen ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "OLUTTA,",
+    "KOSKA VESI ON",
+    "LÖYLYJÄ VARTEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunan ja oluen ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "SAUNAKALJA",
+    "EI OLE",
+    "NEUVOTELTAVISSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauantain perinteiden vaalijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Olut ja kalja",
+   "otsikko": "{teksti} | {tuote} oluen ystävälle",
+   "tagit": [
+    "Olutpaita",
+    "Kaljapaita",
+    "Lahja oluen ystävälle"
+   ],
+   "teema": "olut",
+   "rivit": [
+    "SAUNAKALJA",
+    "EI OLE",
+    "NEUVOTELTAVISSA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauantain perinteiden vaalijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "TIETÄÄ KAIKEN.",
+    "KYSY SILTI ÄIDILTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jolla on vastaus kaikkeen. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "TIETÄÄ KAIKEN.",
+    "KYSY SILTI ÄIDILTÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jolla on vastaus kaikkeen. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "KORJAA KAIKEN.",
+    "ENSI VIIKOLLA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka työlista on pitkä. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "KORJAA KAIKEN.",
+    "ENSI VIIKOLLA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka työlista on pitkä. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "SAMMUTTAA VALOT.",
+    "JATKUVASTI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sähkölaskun vartijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "SAMMUTTAA VALOT.",
+    "JATKUVASTI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sähkölaskun vartijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "GRILLAA",
+    "SATEELLAKIN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} grillin ääressä viihtyvälle isälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "GRILLAA",
+    "SATEELLAKIN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} grillin ääressä viihtyvälle isälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "ON AINA",
+    "AUTON ALLA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoa korjaavalle isälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "ON AINA",
+    "AUTON ALLA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} autoa korjaavalle isälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "LUKEE OHJEET",
+    "VASTA LOPUKSI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka kokoaa ensin ja lukee sitten. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ, JOKA",
+    "LUKEE OHJEET",
+    "VASTA LOPUKSI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka kokoaa ensin ja lukee sitten. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄNPÄIVÄNÄ",
+    "MINÄ PÄÄTÄN",
+    "KAUKOSÄÄTIMESTÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäivän päähenkilölle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄNPÄIVÄNÄ",
+    "MINÄ PÄÄTÄN",
+    "KAUKOSÄÄTIMESTÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isänpäivän päähenkilölle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄNPÄIVÄ.",
+    "LEPOPÄIVÄ.",
+    "SAMA ASIA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka ansaitsee levon. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄNPÄIVÄ.",
+    "LEPOPÄIVÄ.",
+    "SAMA ASIA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka ansaitsee levon. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄVITSI.",
+    "NAURAN ITSE,",
+    "JOS KUKAAN EI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka vitsit tunnetaan. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄVITSI.",
+    "NAURAN ITSE,",
+    "JOS KUKAAN EI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka vitsit tunnetaan. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "KYSY ÄIDILTÄ.",
+    "TERVEISIN ISÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka tuntee talon säännöt. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "KYSY ÄIDILTÄ.",
+    "TERVEISIN ISÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka tuntee talon säännöt. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ.",
+    "TAKSI. PANKKI.",
+    "EI PALAUTUSTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka hoitaa kuljetukset ja kulut. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄ.",
+    "TAKSI. PANKKI.",
+    "EI PALAUTUSTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, joka hoitaa kuljetukset ja kulut. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "KUKA SÄÄTI",
+    "TERMOSTAATTIA?",
+    "ISÄ HUOMAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lämpötilan valvojalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "KUKA SÄÄTI",
+    "TERMOSTAATTIA?",
+    "ISÄ HUOMAA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lämpötilan valvojalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄKSI 2026.",
+    "UNI PALAA",
+    "ARVIOLTA 2044."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} tuoreelle isälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄKSI 2026.",
+    "UNI PALAA",
+    "ARVIOLTA 2044."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} tuoreelle isälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "SUOSIKKILAPSI",
+    "ANTOI",
+    "TÄMÄN PAIDAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle lahjaksi suosikkilapselta. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "SUOSIKKILAPSI",
+    "ANTOI",
+    "TÄMÄN PAIDAN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle lahjaksi suosikkilapselta. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄN AUTOTALLI.",
+    "KAIKKI SÄILYTETÄÄN.",
+    "VARMUUDEN VUOKSI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka tallista löytyy kaikki. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Isälle",
+   "otsikko": "{teksti} | {tuote} isälle",
+   "tagit": [
+    "Lahja isälle",
+    "Isänpäivälahja",
+    "Isäpaita"
+   ],
+   "teema": "isa",
+   "rivit": [
+    "ISÄN AUTOTALLI.",
+    "KAIKKI SÄILYTETÄÄN.",
+    "VARMUUDEN VUOKSI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} isälle, jonka tallista löytyy kaikki. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "LÖYLYMESTARI.",
+    "VAIN YKSI",
+    "KAUHA LISÄÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} löylyjen heittäjälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "LÖYLYMESTARI.",
+    "VAIN YKSI",
+    "KAUHA LISÄÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} löylyjen heittäjälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNA ON",
+    "SUOMALAISEN",
+    "TERAPEUTTI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka hoitaa asiat lauteilla. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNA ON",
+    "SUOMALAISEN",
+    "TERAPEUTTI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka hoitaa asiat lauteilla. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNASSA EI",
+    "PUHUTA TÖISTÄ.",
+    "EI MUUSTAKAAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} hiljaisen saunan ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNASSA EI",
+    "PUHUTA TÖISTÄ.",
+    "EI MUUSTAKAAN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} hiljaisen saunan ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "YLÄLAUTEILLA",
+    "SYNTYVÄT",
+    "PÄÄTÖKSET."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauteiden puheenjohtajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "YLÄLAUTEILLA",
+    "SYNTYVÄT",
+    "PÄÄTÖKSET."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauteiden puheenjohtajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "KIUAS KUUMANA.",
+    "PÄÄ KYLMÄNÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rauhalliselle saunojalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "KIUAS KUUMANA.",
+    "PÄÄ KYLMÄNÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rauhalliselle saunojalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "VIHTA VAI VASTA?",
+    "RIIPPUU",
+    "MURTEESTA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunakeskustelun aloittajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "VIHTA VAI VASTA?",
+    "RIIPPUU",
+    "MURTEESTA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunakeskustelun aloittajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "100 ASTETTA.",
+    "HYVÄ ALKU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kuuman saunan ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "100 ASTETTA.",
+    "HYVÄ ALKU."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kuuman saunan ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "LAUANTAISAUNA.",
+    "EI",
+    "NEUVOTELLA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauantain saunavuoron vaalijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "LAUANTAISAUNA.",
+    "EI",
+    "NEUVOTELLA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lauantain saunavuoron vaalijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNAN JÄLKEEN",
+    "KAIKKI ON",
+    "PAREMMIN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka tietää, mikä auttaa. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNAN JÄLKEEN",
+    "KAIKKI ON",
+    "PAREMMIN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sille, joka tietää, mikä auttaa. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAVUSAUNAN TUOKSU",
+    "ON MINUN",
+    "HAJUVETENI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} savusaunan ystävälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAVUSAUNAN TUOKSU",
+    "ON MINUN",
+    "HAJUVETENI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} savusaunan ystävälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "AVANTO. SAUNA.",
+    "AVANTO.",
+    "SAMA UUDESTAAN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} avantouinnin harrastajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "AVANTO. SAUNA.",
+    "AVANTO.",
+    "SAMA UUDESTAAN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} avantouinnin harrastajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "KUKA HEITTI",
+    "TUON LÖYLYN?",
+    "MINÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunan rohkeimmalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "KUKA HEITTI",
+    "TUON LÖYLYN?",
+    "MINÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} saunan rohkeimmalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNAVUORO",
+    "ON VARATTU.",
+    "AINA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} taloyhtiön saunavuoron haltijalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNAVUORO",
+    "ON VARATTU.",
+    "AINA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} taloyhtiön saunavuoron haltijalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "MÖKKISAUNA",
+    "HOITAA",
+    "LOPUT."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "MÖKKISAUNA",
+    "HOITAA",
+    "LOPUT."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} mökkeilijälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNOMINEN ON URHEILUA.",
+    "OLEN",
+    "AMMATTILAINEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kokeneelle saunojalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Sauna",
+   "otsikko": "{teksti} | {tuote} saunojalle",
+   "tagit": [
+    "Saunapaita",
+    "Lahja saunojalle",
+    "Löylyt"
+   ],
+   "teema": "sauna",
+   "rivit": [
+    "SAUNOMINEN ON URHEILUA.",
+    "OLEN",
+    "AMMATTILAINEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kokeneelle saunojalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} rakentajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita rakentajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "RAKENTAJA.",
+    "AIKATAULU",
+    "ON ARVIO."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rakentajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} rakentajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita rakentajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "RAKENTAJA.",
+    "AIKATAULU",
+    "ON ARVIO."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rakentajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} sähkömiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita sähkömiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "SÄHKÖMIES.",
+    "TIEDÄN, MIKÄ",
+    "JOHTAA MIHINKIN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sähkömiehelle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} sähkömiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita sähkömiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "SÄHKÖMIES.",
+    "TIEDÄN, MIKÄ",
+    "JOHTAA MIHINKIN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sähkömiehelle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} putkimiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita putkimiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "PUTKIMIES.",
+    "NÄEN ASIOITA,",
+    "JOITA ET HALUA NÄHDÄ."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} putkimiehelle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} putkimiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita putkimiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "PUTKIMIES.",
+    "NÄEN ASIOITA,",
+    "JOITA ET HALUA NÄHDÄ."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} putkimiehelle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} sairaanhoitajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita sairaanhoitajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "SAIRAANHOITAJA.",
+    "KAHVI ON",
+    "ENSIAPUA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sairaanhoitajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} sairaanhoitajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita sairaanhoitajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "SAIRAANHOITAJA.",
+    "KAHVI ON",
+    "ENSIAPUA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} sairaanhoitajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} opettajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita opettajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "OPETTAJA.",
+    "KYLLÄ,",
+    "NÄIN SEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} opettajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} opettajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita opettajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "OPETTAJA.",
+    "KYLLÄ,",
+    "NÄIN SEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} opettajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} kuskille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita kuljettajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "KUSKI.",
+    "AJAN, KOSKA MUUT",
+    "EIVÄT OSAA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kuljettajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} kuskille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita kuljettajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "KUSKI.",
+    "AJAN, KOSKA MUUT",
+    "EIVÄT OSAA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kuljettajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} kokille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita kokille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "KOKKI.",
+    "MAISTAN VAIN",
+    "VARMUUDEN VUOKSI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kokille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} kokille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita kokille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "KOKKI.",
+    "MAISTAN VAIN",
+    "VARMUUDEN VUOKSI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} kokille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} it-tuelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita IT-tuen ammattilaiselle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "IT-TUKI.",
+    "KOKEILITKO",
+    "SAMMUTTAA JA KÄYNNISTÄÄ?"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-tuen ammattilaiselle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} it-tuelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita IT-tuen ammattilaiselle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "IT-TUKI.",
+    "KOKEILITKO",
+    "SAMMUTTAA JA KÄYNNISTÄÄ?"
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} IT-tuen ammattilaiselle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} insinöörille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita insinöörille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "INSINÖÖRI.",
+    "TOIMII",
+    "TEORIASSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} insinöörille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} insinöörille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita insinöörille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "INSINÖÖRI.",
+    "TOIMII",
+    "TEORIASSA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} insinöörille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita maanviljelijälle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "MAANVILJELIJÄ.",
+    "KESÄLOMA ON",
+    "MARRASKUUSSA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} maanviljelijälle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita maanviljelijälle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "MAANVILJELIJÄ.",
+    "KESÄLOMA ON",
+    "MARRASKUUSSA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} maanviljelijälle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} palomiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita palomiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "PALOMIES.",
+    "KUUMAT PAIKAT",
+    "OVAT MINUN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} palomiehelle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} palomiehelle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita palomiehelle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "PALOMIES.",
+    "KUUMAT PAIKAT",
+    "OVAT MINUN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} palomiehelle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} poliisille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita poliisille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "POLIISI VAPAALLA.",
+    "NÄEN SILTI",
+    "KAIKEN."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} poliisille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} poliisille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita poliisille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "POLIISI VAPAALLA.",
+    "NÄEN SILTI",
+    "KAIKEN."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} poliisille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} lähihoitajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita lähihoitajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "LÄHIHOITAJA.",
+    "KIIRE ON",
+    "TOINEN NIMENI."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lähihoitajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} lähihoitajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita lähihoitajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "LÄHIHOITAJA.",
+    "KIIRE ON",
+    "TOINEN NIMENI."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} lähihoitajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} rekkakuskille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita rekkakuskille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "REKKAKUSKI.",
+    "MINUN TOIMISTONI",
+    "LIIKKUU."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rekkakuskille. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} rekkakuskille",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita rekkakuskille"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "REKKAKUSKI.",
+    "MINUN TOIMISTONI",
+    "LIIKKUU."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} rekkakuskille. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Sport Grey",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} varhaiskasvattajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita varhaiskasvattajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "VARHAISKASVATTAJA.",
+    "SELVIÄN",
+    "VÄLIPALALLA."
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} varhaiskasvattajalle. Pehmeä unisex-t-paita, koot S-2XL. Jokainen paita painetaan tilauksesta EU:ssa."
+  },
+  {
+   "varit": [
+    "Black",
+    "Navy",
+    "Red"
+   ],
+   "kategoria": "Ammattipaidat",
+   "otsikko": "{teksti} | {tuote} varhaiskasvattajalle",
+   "tagit": [
+    "Ammattipaita",
+    "Lahja työkaverille",
+    "Ammattipaita varhaiskasvattajalle"
+   ],
+   "teema": "ammatti",
+   "rivit": [
+    "VARHAISKASVATTAJA.",
+    "SELVIÄN",
+    "VÄLIPALALLA."
+   ],
+   "tyyppi": "huppari",
+   "painotalo": "Atelier Katanga",
+   "blueprint": 77,
+   "koot": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ],
+   "kuvaus": "{teksti}. Hauska {tuote_pienella} varhaiskasvattajalle. Lämmin unisex-huppari, koot S-3XL. Jokainen huppari painetaan tilauksesta EU:ssa."
+  }
+ ]
+}

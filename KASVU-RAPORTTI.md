@@ -2353,3 +2353,48 @@ sitemap.xml 200. Mobiilissa (390 x 844) evästepalkki 734-844 px ja tuotesivun o
 "Ilmainen toimitus". Tuotannon syöte: 651 tuotetta, ei puutteita, joulu2026 101 tuotteella. Mittarin lukuja ei saatu
 luettua tässä ajossa: tietokannan muuttujat ovat Vercelissä suojattuja (eivät lataudu paikallisesti) ja hallintasivu vaatii
 aktivoidun selaimen; luvut näkyvät /hallinta/mittarit-sivulla Coworkin aktivoidussa Chromessa.
+
+## 2.11.2026 (myöhäisilta): kilpailija-aukot, hintavertailu, syöte ja mittarin luvut koneelle
+
+### 60 uutta mallia (120 tuotetta)
+- Coworkin kilpailijatutkimuksen aukot: 15 olut ja kalja, 15 isä (isänpäivä su 8.11. ja "Isä, joka..." -sarja),
+  15 sauna ja 15 ammattia (rakentaja, sähkömies, putkimies, sairaanhoitaja, lähihoitaja, opettaja, varhaiskasvattaja,
+  kuski, rekkakuski, kokki, IT-tuki, insinööri, maanviljelijä, palomies, poliisi; ei virallisia tunnuksia). Drivesta ei
+  löytynyt tiedostoa nimellä huumorikauppa-kilpailijat, joten aiheet ovat tehtävänannon mukaiset.
+- Lista data/uudet-tuotteet/aukot-2026-11-02.json, tuonti data/uudet-tuotteet-2026-11-02-aukot.json. T-paidat OPT OnDemand
+  (CZ) 27,90 €, hupparit Atelier Katanga (FR) 52,90 € (3XL 59,90 €). Kaikki 120 Printifyyn ja kauppaan aktiivisina.
+- Kate: kaikki 2 280 varianttia tarkistettu tuotannon kuluilla, pienin nettokate 9,57 € tilaukselta (vaatimus 9 €).
+- Kontrasti: tummilla väreillä valkoinen, Sport Grey -pohjalla musta teksti; scripts/tummat-varit.mjs koko kaupalle:
+  0 uutta poistoa.
+- Merchant-syöte: jokaiselle 120 tuotteelle pystykuva 1000 x 1500 lisäkuvaksi (lisäkuvia nyt 252 tuotteella).
+- Nimikorjaus: "IPA" ja "IT-tuki" isoilla kirjaimilla kaupassa ja Printifyssä.
+
+### Kategoriasivut ja sijoittelu
+- Uudet: /olut, /sauna, /ammatit (otsikko, kuvaus, oma teksti, noin 350 sanan opas, 5 UKK:ta FAQPage-schemalla, uudet
+  mallit ensin, aiheen vanhat tuotteet mukana). Valikossa "Muut tuotteet", sivukartassa ja esirenderöinnissä.
+- /sauna-t-paidat, /harrastus/sauna ja /lahjat/saunaan ohjaavat 301:llä sivulle /sauna. /ammattipaidat säilyi (yli 20
+  sisäistä linkkiä) ja linkittää sivulle /ammatit.
+- Lahjasivut: isämallit ensin sivuilla /joululahja-isalle, /isanpaivalahja ja /hauska-isanpaivalahja; olut- ja
+  saunamallit kaverin, veljen ja miehen lahjasivuilla; sauna /lahjat/mokkeilijalle; ammatit työkaverin sivuilla,
+  /lahjat/remontoijalle, /lahjat/maanviljelijalle, /lahjat/it-ihmiselle, /ammattipaidat ja /ammatti/<ammatti>.
+- Yritysten alasivut: rakennus (rakentaja, sähkömies, putkimies), insinoorit (insinööri), vpk (palomies, löylypaita),
+  terveys (sairaanhoitaja, lähihoitaja), it (IT-tuki), tapahtumat (Kaljavahti), urheiluseurat (saunominen on urheilua).
+  Jokaisella edelleen 8-12 paitaa.
+
+### Hintavertailu (KATTEET.md "25,90 € t-paita vai 4,90 € yhden tuotteen toimitus")
+- Kumpikin laskisi yhden paidan tilauksen keskikatetta 9,51 € -> 7,94 € ja jättäisi 229 t-paitavarianttia alle 7 €:n.
+  Nollaraja vaatisi 19,8 % enemmän tilauksia. Ei käyttöön; ilmainen toimitus kahdesta tuotteesta pysyy hintaviestinä.
+
+### Syöte
+- availability: korjautui viime ajossa. Tuotannon syötteessä kaikilla 651 tuotteella oli g:availability (in_stock) ennen
+  tätä ajoa; uudet 120 tulevat samalla logiikalla.
+- Toimitus: g:shipping 6,90 € (yhden tuotteen tilaus) ja g:free_shipping_threshold 79 € vastaavat sivustoa. Kahden
+  tuotteen sääntöä ei voi ilmaista tuotekohtaisesti, joten se asetetaan Merchant Centerin tilin toimitusasetuksiin:
+  ohje Coworkille KAYTTOONOTTO.md kohta 17.
+
+### Mittarin luvut koneelle
+- Cron ?tehtava=mittarit (CRON_SECRET) palauttaa koosteen ilman henkilö- ja kumppanitietoja (api/_lib/mittarit.js
+  mittariKooste). Paikallisesti: node scripts/mittarit.mjs (lukee .env.cron.local, ei tulosta salaisuutta).
+- Luvut 2.11.2026 illalla: kate tässä kuussa 0,00 € / 3000 €, 30 pv 1 tilaus (kate 5,90 €); käynnit 187 (hakukoneet 58,
+  lahjasivut 24, blogi 40, yritysten alasivut 1, kumppanisivut 1); uutiskirjeen tilaajat 0; tarjouspyynnöt 30 pv 3;
+  suppilo 14 pv: 45 tuotesivua, 0 koriin, 1 osto. Tarve 10,5 tilausta ja 1 813 käyntiä päivässä.

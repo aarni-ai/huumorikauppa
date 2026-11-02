@@ -2148,3 +2148,34 @@ t-paitaparin kampanjahintaan, koska niissä kate jäisi heikoimmilla koilla alle
 heikoin koko 5,32 €). Koodi: api/_lib/vakiot.js toimitusmaksu, api/_lib/kassa.js, src/lib/ostoskori.ts. Korissa näkyy
 "Vielä 1 tuote ilmaiseen toimitukseen" (koodin kanssa "Vielä X € ilmaiseen toimitukseen"). Seuranta: kahden tuotteen
 tilausten osuus tilauksista (Printify-tilausten rivimäärä); jos osuus ei nouse yli 5 %:n neljässä viikossa, palautetaan pelkkä 79 €:n raja.
+
+## 25,90 € t-paita vai 4,90 € yhden tuotteen toimitus (2.11.2026)
+
+Coworkin hintavertailun mukaan 27,90 € on markkinan yläpäässä ja yksi paita toimitettuna on kalleimpia. Laskettu kassan
+funktiolla api/_lib/kate.js laskeTilauksenNettokate tuotannon tuotteista: 418 t-paitaa hintaan 27,90 € (5 541 varianttia,
+kaikkien kulut tiedossa) ja 208 hupparia. Solussa nettokate € tilausta kohden (pienin / mediaani / keskiarvo) ja alle
+7 €:n varianttien määrä.
+
+| Kori | pienin | mediaani | keskiarvo | alle 7 € |
+|---|--:|--:|--:|--:|
+| 1 t-paita nyky (27,90 + 6,90) | 6,25 | 9,57 | 9,51 | 22 |
+| 1 t-paita 25,90 + 6,90 | 4,68 | 8,00 | 7,94 | 229 |
+| 1 t-paita 27,90 + 4,90 | 4,68 | 8,00 | 7,94 | 229 |
+| 2 t-paitaa nyky (27,90, -5 %, ilmainen toimitus) | 7,07 | 13,71 | 13,59 | 0 |
+| 2 t-paitaa 25,90 (-5 %, ilmainen toimitus) | 4,10 | 10,74 | 10,62 | 34 |
+| 1 huppari nyky (52,90 + 6,90) | 2,64 | 10,13 | 9,89 | 460 |
+| 1 huppari 52,90 + 4,90 | 1,08 | 8,57 | 8,33 | 515 |
+
+**Havainnot.**
+- Yhden paidan tilauksessa vaihtoehdot ovat asiakkaalle ja katteelle samat (32,80 € maksettu): keskikate laskee
+  9,51 € -> 7,94 € (-1,57 €, -16,5 %). Nollaraja: tilauksia pitäisi tulla 9,51 / 7,94 = 1,198 eli **19,8 % enemmän**, jotta
+  kokonaiskate pysyy ennallaan.
+- 25,90 € laskee myös kahden ja kolmen paidan korit (2 paitaa 13,59 -> 10,62 €), eli koko ilmaisen toimituksen
+  kahdesta tuotteesta -kannuste heikkenee. 4,90 € laskee lisäksi jokaisen yksittäisen hupparin katetta 1,56 €.
+- Kumpikin rikkoo 7 €:n säännön: 229 t-paitavarianttia (isot koot) jäisi alle 7 €:n yhden paidan tilauksessa.
+- Toteutuneet tilaukset (17/17 yhden tuotteen tilauksia) ja oma laskuri eivät vielä kerro hintajoustoa; 20 %:n
+  tilausmäärän nousua 2 € halvemmalla ei ole näyttöä.
+
+**Päätös:** ei käyttöön. Molemmat vaihtoehdot rikkovat 7 €:n minimin ja vaatisivat lähes 20 % lisää tilauksia pelkkään
+nollatulokseen. Hintaviesti hoidetaan nykyisellä rakenteella: ilmainen toimitus kahdesta tuotteesta (2 paitaa 55,80 €,
+eli 27,90 € kappaleelta toimitettuna), joka on jo korissa ja tuotesivulla.

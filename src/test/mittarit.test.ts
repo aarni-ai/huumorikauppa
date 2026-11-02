@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { kaynninLahde, sivunOsio, onBotti, koostaKaynnit } from "../../api/_lib/kaynnit.js";
-import { tavoitelaskelma, tilausSummat, mittaririvit, KONVERSIO_VARA } from "../../api/_lib/mittarit.js";
+import { tavoitelaskelma, tilausSummat, mittaririvit, mittariKooste, KONVERSIO_VARA } from "../../api/_lib/mittarit.js";
 import { kaynninTiedot } from "@/lib/kaynti";
 import { linkitSivulla, utmPerään } from "@/data/linkit";
 
@@ -69,6 +69,20 @@ describe("tavoitemittari", () => {
     expect(r).toContain("TAVOITEMITTARI 11/2026");
     expect(r).toContain("Tarve 3000 €:oon: 8,3 tilausta ja 1437 käyntiä päivässä");
     expect(r).toContain("Mittarisivu:");
+  });
+
+  it("kooste koneelle: summat ilman kumppanikoodeja ja päivärivejä", () => {
+    const tyhja = { yhteensa: 12, paivia: 1, ensimmainen: "2026-11-02", lahteet: [], osiot: [{ nimi: "blogi", kaynnit: 3 }, { nimi: "yritykset-vpk", kaynnit: 2 }] };
+    const m = { paiva: "2026-11-02", kuukausi: "11/2026", tavoite: tavoitelaskelma({ kate: 20, tavoite: 3000, paivia: 30, kulunut: 1, jaljella: 29, katePerTilaus: 10, konversio: 0.58, kateTahti30: 5 }),
+      kk: { tilauksia: 2, myynti: 60, keskiostos: 30, kate: 20 }, p30: { tilauksia: 6, myynti: 180, kate: 60, katePerTilaus: 10 }, kaynnit: { kk: tyhja, p30: tyhja },
+      liikenne: { kk: { orgaaninen: 1, lahjasivut: 0, media: 0, kumppanisivut: 0, blogi: 3, yritysAlat: 2 } },
+      konversio: { prosentti: 0.58, lahde: "GA4", oma: null }, tarjoukset: { kk: 0, arvoKk: 0, p30: 1 }, uutiskirje: { yhteensa: 4, p7: 4, p28: 4, lahteet: [] },
+      kumppanit: [{ koodi: "salainen", tilauksia: 1, myynti: 30, provisio: 1.5 }], edellinen: { kuukausi: "2026-10", tilauksia: 6, kate: 70 } };
+    const k = mittariKooste(m as never);
+    expect(k.liikenneKk).toMatchObject({ blogi: 3, yritysAlat: 2 });
+    expect(k.uutiskirje).toEqual({ yhteensa: 4, p7: 4, p28: 4 });
+    expect(k.kumppanit).toEqual({ tilauksia: 1, myynti: 30, provisio: 1.5 });
+    expect(JSON.stringify(k)).not.toContain("salainen");
   });
 });
 

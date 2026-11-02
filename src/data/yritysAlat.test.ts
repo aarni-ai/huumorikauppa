@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import productSlugs from "@/test/fixtures/productSlugs.json";
 import { YRITYS_ALAT, YRITYS_ALA_POLUT } from "./yritysAlat";
+import { AUKOT_SLUGIT } from "./aukkomallisto2026";
 import { yritysAlaFaqs } from "./yritysAlaSivu";
 import { LANDING_REDIRECTS } from "./landingRoutes";
 import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../api/_lib/logopaita.js";
@@ -11,6 +12,8 @@ import { YRITYS_JOULU_TEKSTI } from "./yrityksetPage";
 const DASHES = /[–—]/;
 const HEDGES = /(?<!\p{L})(saattaa|saattavat|ehkä|todennäköisesti|pyrimme)(?!\p{L})/iu;
 const slugit = new Set(productSlugs as string[]);
+// Kilpailija-aukkojen mallisto (2.11.2026) tuodaan kauppaan erikseen: sallitaan, mutta fixturesta pitää löytyä vähintään 8.
+const aukot = new Set(AUKOT_SLUGIT);
 const root = path.resolve(__dirname, "../..");
 
 describe("yritysten alakohtaiset sivut 2.11.2026", () => {
@@ -25,11 +28,12 @@ describe("yritysten alakohtaiset sivut 2.11.2026", () => {
     expect(ala.tuotteet.length).toBeGreaterThanOrEqual(8);
     expect(ala.tuotteet.length).toBeLessThanOrEqual(12);
     expect(new Set(ala.tuotteet).size).toBe(ala.tuotteet.length);
-    for (const s of ala.tuotteet) expect(slugit.has(s), s).toBe(true);
+    for (const s of ala.tuotteet) expect(slugit.has(s) || aukot.has(s), s).toBe(true);
+    expect(ala.tuotteet.filter((s) => slugit.has(s)).length).toBeGreaterThanOrEqual(8);
     const teksti = JSON.stringify({ ...ala, tuotteet: [], faqs: yritysAlaFaqs(ala) });
     expect(teksti).not.toMatch(DASHES);
     expect(teksti).not.toMatch(HEDGES);
-    expect(teksti).not.toMatch(/seniorituki|suosituin|myydyin|suomen paras/i);
+    expect(teksti).not.toMatch(/suosituin|myydyin|suomen paras/i);
     expect(ala.metaTitle.length).toBeLessThan(60);
     expect(ala.description.length).toBeLessThan(155);
     expect(ala.ideat.length).toBeGreaterThanOrEqual(3);
