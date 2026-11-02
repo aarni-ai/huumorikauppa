@@ -30,6 +30,7 @@ import { ytunnus as tarkistaYtunnus, haeYritys, laskuData, YRITYS_MIN_KPL } from
 import { onPrintify, haeTuote } from "./_lib/printify.js";
 import { liveSaatavuus } from "./_lib/saatavuus.js";
 import { laskeTilaus, laskettuNettokate, KassaVirhe, OLETUSKOODIT } from "./_lib/kassa.js";
+import { sallitutMaksutavat, istunnonMaksutavat } from "./_lib/maksutavat.js";
 import { KUMPPANUUS } from "./_lib/vakiot.js";
 import { tarkistaLahjakortti, normalisoiKoodi, onLahjakortti } from "./_lib/lahjakortti.js";
 import { haeLahjakortti, veloitaLahjakortti, SaldoEiRiita, lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
@@ -236,7 +237,11 @@ export default async function handler(req, res) {
         lineItems.push({ price_data: { currency: "eur", product_data: { name: "Toimitus, Posti kotiinkuljetus" }, unit_amount: Math.round(laskettu.shipping * 100) }, quantity: 1 });
       }
     }
+    // Maksutavat (api/_lib/maksutavat.js): vain ne, joilla tilauksen kate on vähintään 7 € maksutavan kululla.
+    // Pelkät lahjakortit: ei tuotekuluja, kaikki maksutavat.
+    const maksutavat = laskettu.only_gift_cards ? sallitutMaksutavat(() => Infinity) : sallitutMaksutavat((kulu) => laskettuNettokate(laskettu, tuotteet, kulu));
     const session = await stripe().checkout.sessions.create({
+      ...istunnonMaksutavat(maksutavat),
       customer_email: pyynto.customerEmail.trim(),
       client_reference_id: tilaus.id,
       line_items: lineItems,
@@ -250,7 +255,7 @@ export default async function handler(req, res) {
       locale: "fi",
     });
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;
-    await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount });
+    await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount, maksutavat: maksutavat.tavat });
     // Kumppanuusohjelma (pois päältä, api/_lib/vakiot.js KUMPPANUUS): hyväksytty koodi kirjataan tilaukselle.
     if (kp) await kirjaaTapahtuma(tilaus.id, "kumppani", kp.malli === "alennus"
       ? { koodi: kp.koodi, malli: "alennus", alennus: valinta?.prosentti ?? 0, provisio: valinta?.provisioProsentti ?? KUMPPANUUS.alennusmalli.provisioProsentti }

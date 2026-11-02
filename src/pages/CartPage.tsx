@@ -15,6 +15,7 @@ import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { korinSuositukset, toinenPaita } from "@/lib/lisamyynti";
+import { korinMaksutavat } from "@/lib/ostoskori";
 import { kirjaaLisamyynti } from "@/lib/lisamyyntiSeuranta";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
@@ -286,7 +287,7 @@ const CartPage = () => {
             </Link>
           </Button>
 
-          <MaksuJaToimitus center />
+          <MaksuJaToimitus center tavat={korinMaksutavat(items)} />
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>

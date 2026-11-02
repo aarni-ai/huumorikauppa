@@ -21,6 +21,7 @@
  *
  * Mittari: taulu ryhmatilaus_laskuri (päivä, tapahtuma, määrä, kate), ryhmatilausMittari(db).
  */
+import { RYHMA_MAKSUTAVAT } from "./maksutavat.js";
 import { createHash, randomBytes } from "node:crypto";
 import {
   RYHMATYYPIT, RYHMA_MIN_KPL, RYHMA_MAX_KPL, RYHMA_VARIT, RYHMA_HINNASTO, aktiiviset, maksetut, omaMaksu, kaikkiMaksaneet,
@@ -151,6 +152,8 @@ export function stripeMaksut(st) {
   return {
     async luoIstunto({ rivit, metadata, paluu, email }) {
       const s = await st.checkout.sessions.create({
+        // Kortti (myös Apple Pay ja Google Pay) ja MobilePay: Klarnalla 9 €:n kate paidalta ei täyty (api/_lib/maksutavat.js).
+        payment_method_types: RYHMA_MAKSUTAVAT,
         mode: "payment",
         locale: "fi",
         ...(email ? { customer_email: email } : {}),

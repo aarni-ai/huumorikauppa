@@ -14,14 +14,24 @@ describe("tuotesivun seuranta", () => {
     expect([0.1, 0.3, 0.6, 0.8, 0.99].map(vierityskori)).toEqual([null, "25", "50", "75", "100"]);
     expect([3, 20, 45, 120, 500].map(aikakori)).toEqual(["0-10", "10-30", "30-60", "60-180", "180+"]);
   });
-  it("kooste: osuudet, kertyvä vieritys ja poistumiskohta", () => {
-    const s = koostaTuoteseuranta([{ tapahtuma: "naytto", n: 100 }, { tapahtuma: "koko", n: 20 }, { tapahtuma: "kori", n: 2 },
-      { tapahtuma: "vieritys:25", n: 30 }, { tapahtuma: "vieritys:100", n: 10 }, { tapahtuma: "aika:0-10", n: 40 }]);
+  it("kooste: osuudet, kertyvä vieritys, suppilo ja suurin poistumiskohta korjausehdotuksineen (vähintään 50 katselua)", () => {
+    const s = koostaTuoteseuranta([{ tapahtuma: "naytto", n: 100 }, { tapahtuma: "lisaa_nakyvissa", n: 35 }, { tapahtuma: "koko", n: 20 },
+      { tapahtuma: "kori", n: 2 }, { tapahtuma: "vieritys:25", n: 30 }, { tapahtuma: "vieritys:100", n: 10 }, { tapahtuma: "aika:0-10", n: 40 }]);
     expect(s.osuudet.koko).toBe(20);
     expect(s.vieritys["25"]).toBe(40);
     expect(s.vieritys["100"]).toBe(10);
-    expect(s.poistuminen).toContain("20 % valitsee koon");
-    expect(tuoteseurantaRivit({ alku: "2026-11-02", loppu: "2026-11-03", ...s })[0]).toContain("100 katselua");
+    expect(s.suppilo.map((v) => [v.avain, v.n, v.putosi])).toEqual([["vieritys", 40, 60], ["lisaa_nakyvissa", 35, 5], ["koko", 20, 15], ["kori", 2, 18]]);
+    expect(s.suurin?.avain).toBe("vieritys");
+    expect(s.poistuminen).toContain("Korjausehdotus: Ensimmäinen näkymä");
+    const rivit = tuoteseurantaRivit({ alku: "2026-11-02", loppu: "2026-11-02", ...s });
+    expect(rivit[0]).toContain("100 aitoa katselua");
+    expect(rivit[1]).toBe("Suppilo: vieritti sivua 40 (40 %) -> näki Lisää koriin -painikkeen 35 (35 %) -> valitsi koon 20 (20 %) -> lisäsi koriin 2 (2 %).");
+    for (const r of rivit) expect(r).not.toMatch(/[–—](?!2026)/);
+  });
+  it("alle 50 katselua: poistumiskohtaa ei merkitä", () => {
+    const s = koostaTuoteseuranta([{ tapahtuma: "naytto", n: 5 }, { tapahtuma: "aika:0-10", n: 3 }]);
+    expect(s.suurin).toBeNull();
+    expect(s.poistuminen).toBe("5 aitoa katselua, alle 50: suurinta poistumiskohtaa ei vielä merkitä.");
   });
 });
 

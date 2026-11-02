@@ -597,6 +597,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     price: product.price,
     stock: product.stock,
     categoryName,
+    category: product.category,
     variants: product.variants,
   });
 

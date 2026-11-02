@@ -114,7 +114,7 @@ export function SeasonalBanner() {
 const JOULUAATTO_LOPPU_UTC_MS = Date.UTC(2026, 11, 24, 21, 59, 59);
 
 /**
- * Viimeisen joulun tilauspäivän (t-paidat pe 4.12.) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
+ * Viimeisen joulun tilauspäivän (JOULU_MYOHAISIN_END_UTC_MS) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
  * toimitetaan heti. 2.-4.12. banneri kertoo, että t-paidat ehtivät vielä (kampanjakalenteri 2.11.2026, src/data/kampanjat.ts).
  */
 export const lahjakorttiAika = (nyt: number) => nyt > JOULU_MYOHAISIN_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;

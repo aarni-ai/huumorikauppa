@@ -123,10 +123,11 @@ export default async function handler(req, res) {
       const linkkirivit = ev?.tarvitaan && !kuiva ? await luoAktivointilinkki(db).then(({ linkki }) => [
         `Hallinnan eväste vanhenee${ev.vanhenee ? ` ${ev.vanhenee.toISOString().slice(0, 10)}` : ""}. Uusi aktivointilinkki Coworkille (avaa Chromen profiilissa "Huumorikauppa", toimii kerran, voimassa 48 h): ${linkki}`,
       ]).catch(() => []) : [];
-      // Tuotesivun seuranta viimeiseltä vuorokaudelta (api/_lib/tuoteseuranta.js).
+      // Tuotesivun seuranta edelliseltä päivältä Suomen aikaa (api/_lib/tuoteseuranta.js; klo 7 yhteenvedossa).
       const { tuoteseurantaValilla, tuoteseurantaRivit } = await import("../_lib/tuoteseuranta.js");
       const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
-      const seuranta = await tuoteseurantaValilla(db, hki(new Date(Date.now() - 864e5)), hki(new Date())).then(tuoteseurantaRivit).catch(() => []);
+      const eilen = hki(new Date(Date.now() - 864e5));
+      const seuranta = await tuoteseurantaValilla(db, eilen, eilen).then(tuoteseurantaRivit).catch(() => []);
       return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä

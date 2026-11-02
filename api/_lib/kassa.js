@@ -216,10 +216,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
 const VIRTUAALISET = new Map([PERSONOITU_TUOTE, PERSONOITU_HUPPARI, LOGOPAITA_TUOTE].map((t) => [t.id, t]));
 
 /** Kassan laskennan nettokate (Printifyn kulut tuoteriviltä, api/_lib/kate.js), kumppanimallin 2 valintaan. */
-export function laskettuNettokate(laskettu, tuotteet) {
+export function laskettuNettokate(laskettu, tuotteet, stripeKulu = null) {
   const byId = new Map(tuotteet.map((t) => [t.id, t]));
   const osat = laskettu.rivit.filter((r) => r.type !== "giftcard")
     .map((r) => ({ tuote: byId.get(r.product_id) || VIRTUAALISET.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 }));
-  const k = laskeTilauksenNettokate(osat, laskettu.shipping);
+  const k = laskeTilauksenNettokate(osat, laskettu.shipping, stripeKulu ? { stripeProsentti: stripeKulu.prosentti, stripeKiintea: stripeKulu.kiintea } : {});
   return k.tunnettu ? k.nettokate : NaN;
 }

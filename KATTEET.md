@@ -202,6 +202,49 @@ Aarnin päätettävä:
 
 24,90 €:n paitojen hintaa ei voi nostaa: 25,90 € ylittäisi suoran kilpailijan 25 €:n hinnan.
 
+### Maksutavat ja 7 €:n kate 3.11.2026 (korvaa 31.10. poikkeaman)
+
+Stripen oletuskonfiguraatiossa ovat päällä kortti, Apple Pay, Google Pay, Klarna ja MobilePay (?tehtava=maksutavat,
+3.11.2026). Kassa ei rajannut niitä.
+
+**Hinnasto (Stripe, Suomi, stripe.com/fi/pricing/local-payment-methods):**
+
+| Maksutapa | Kulu | Yksi 24,90 €:n t-paita + toimitus 6,90 € (31,80 €) |
+|---|---|---|
+| Kortti, Apple Pay, Google Pay (ETA) | 1,5 % + 0,25 € | 0,73 € |
+| Premium- tai yrityskortti (ETA) | 2,8 % + 0,25 € | 1,14 € |
+| MobilePay | 1,5 % + 0,36 € | 0,84 € |
+| Klarna | 2,99 % + 0,40 € | 1,35 € |
+
+**Pienin nettokate yhden tuotteen tilauksessa (kaikki 5 000+ myynnissä olevaa varianttia, tuotannon kulut):**
+
+| Maksutapa | Pienin kate | Variantteja alle 7 € |
+|---|---|---|
+| Kortti, Apple Pay, Google Pay | 7,05 € | 0 |
+| MobilePay | 6,94 € (24,90 €:n t-paidat) | 20 |
+| Klarna | 6,31 € (huppari 52,90 €) | 552 |
+| Premium-kortti | 6,58 € | 537 |
+
+- **Ratkaisu** (api/_lib/maksutavat.js, api/checkout.js):
+  - Kassa laskee jokaiselle Stripe-istunnolle tilauksen nettokatteen kunkin maksutavan kululla, kaikkien alennusten
+    ja toimitusmaksun jälkeen.
+  - Istunnossa tarjotaan vain maksutavat, joilla kate on vähintään 7 €.
+  - Kortti (myös Apple Pay ja Google Pay) on aina mukana.
+  - Kun kaikki täyttävät rajan, Stripe näyttää kaikki maksutavat.
+- **Vaikutus:**
+  - MobilePay jää pois vain 24,90 €:n t-paidan yksittäistilauksesta.
+  - Klarna jää pois yhden tuotteen tilauksista, joissa kate jäisi alle 7 €:n.
+  - Kahden tuotteen tilauksissa kaikki maksutavat ovat käytössä.
+  - Testi: src/test/maksutavat-kate.test.ts.
+- **Ryhmätilaukset (9 €/paita):** Klarna laskisi 50+ portaan katteen 8,64 €:oon, joten ryhmien istunnoissa ovat
+  kortti ja MobilePay (MobilePaylla 9,24 €).
+- **Kori** näyttää maksutapojen logot samalla säännöllä (src/lib/ostoskori.ts korinMaksutavat), joten logo ei lupaa
+  maksutapaa, jota kassa ei tarjoa.
+- **Jäljelle jäävä poikkeama:** premium- ja yrityskortteja ei voi erottaa ennen maksua (Stripe ei rajaa korttityyppiä).
+  Niillä heikoimmat yhden tuotteen tilaukset voivat jäädä enintään 0,42 € alle 7 €:n.
+- **Aarnille:** Stripen hallintapaneelissa ei tarvita hyväksyntää. Kaikki maksutavat ovat valmiiksi aktiivisia
+  (card_payments, klarna_payments ja mobilepay_payments active).
+
 ### Printify Premium (34,99 €/kk): kannattavuusraja
 
 Premium alentaa tuotekuluja enintään 20 %, toimituskuluihin se ei vaikuta.

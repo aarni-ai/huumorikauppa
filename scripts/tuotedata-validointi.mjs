@@ -111,7 +111,8 @@ export function validateProduct(p, opts = {}) {
         if (exp && isNum(dt.handlingTime?.minValue) && isNum(dt.transitTime?.minValue)) {
           const min = dt.handlingTime.minValue + dt.transitTime.minValue;
           const max = dt.handlingTime.maxValue + dt.transitTime.maxValue;
-          if (min !== exp.min || max !== exp.max) errors.push(`${w}.deliveryTime yhteensä ${min}-${max} arkipäivää, lupaus ${exp.min}-${exp.max}`);
+          // Tuotetyypin aika (t-paidat 4-15, hupparit 5-15) on kaupan lupauksen sisällä; yläraja on sama kaikille.
+          if (min < exp.min || min > max || max !== exp.max) errors.push(`${w}.deliveryTime yhteensä ${min}-${max} arkipäivää, lupaus ${exp.min}-${exp.max}`);
         }
       }
     }

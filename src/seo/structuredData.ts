@@ -7,6 +7,7 @@
  * Riippuvuudeton tiedosto (vain suhteelliset importit), jotta Edge-middleware voi käyttää sitä.
  */
 import { ORGANIZATION, RETURNS, SHIPPING, SITE_NAME, SITE_URL, absoluteUrl } from "./site.js";
+import { toimitusaikaKategorialle } from "../config/toimitus.js";
 import { isFullyUnavailable } from "../lib/variantAvailability.js";
 import { isCustomTextProduct } from "../lib/customProduct.js";
 
@@ -35,6 +36,8 @@ export interface ProductForSchema {
   price: number;
   stock?: number | null;
   categoryName?: string;
+  /** Kategorian slug (esim. "hupparit"): tuotetyypin toimitusaika (src/config/toimitus.ts TOIMITUSAJAT_TYYPEITTAIN). */
+  category?: string | null;
   /** Tuotteen variants (colors, sizes, variant_map) saatavuuden tarkistukseen; puuttuessa vain generaattorin lista. */
   variants?: unknown;
   /** Personoitu tuote (oma teksti/kuva): ei palautusoikeutta. Puuttuessa päätellään nimestä ja kuvauksesta. */
@@ -197,7 +200,8 @@ export function shippingFeeForPrice(price: number): number {
   return price >= SHIPPING.freeThresholdEur ? 0 : SHIPPING.feeEur;
 }
 
-export function buildOfferShippingDetails(price: number): JsonLd {
+export function buildOfferShippingDetails(price: number, category?: string | null): JsonLd {
+  const [kokoMin, kokoMax] = toimitusaikaKategorialle(category);
   return {
     "@type": "OfferShippingDetails",
     shippingRate: {
@@ -209,7 +213,7 @@ export function buildOfferShippingDetails(price: number): JsonLd {
       "@type": "DefinedRegion",
       addressCountry: SHIPPING.country,
     },
-    // Käsittely + kuljetus = kaupan ehtojen kokonaistoimitusaika (src/config/toimitus.ts).
+    // Käsittely + kuljetus = tuotetyypin toimitusaika (src/config/toimitus.ts): t-paidat 4-15, hupparit 5-15 arkipäivää.
     deliveryTime: {
       "@type": "ShippingDeliveryTime",
       handlingTime: {
@@ -220,8 +224,8 @@ export function buildOfferShippingDetails(price: number): JsonLd {
       },
       transitTime: {
         "@type": "QuantitativeValue",
-        minValue: SHIPPING.transitBusinessDaysMin,
-        maxValue: SHIPPING.transitBusinessDaysMax,
+        minValue: kokoMin - SHIPPING.handlingBusinessDaysMin,
+        maxValue: kokoMax - SHIPPING.handlingBusinessDaysMax,
         unitCode: "DAY",
       },
       businessDays: {
@@ -265,7 +269,7 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
       itemCondition: "https://schema.org/NewCondition",
       priceValidUntil: priceValidUntil(),
       seller: { "@type": "Organization", "@id": ORGANIZATION_ID, name: ORGANIZATION.name },
-      shippingDetails: buildOfferShippingDetails(product.price),
+      shippingDetails: buildOfferShippingDetails(product.price, product.category),
       hasMerchantReturnPolicy: personalised ? noReturnsPolicy() : merchantReturnPolicy(),
     },
   };

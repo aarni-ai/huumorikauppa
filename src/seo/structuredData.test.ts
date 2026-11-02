@@ -89,9 +89,16 @@ describe("buildProductJsonLd", () => {
     const { handlingTime, transitTime } = ship.deliveryTime;
     expect(handlingTime).toMatchObject({ "@type": "QuantitativeValue", unitCode: "DAY" });
     expect(transitTime).toMatchObject({ "@type": "QuantitativeValue", unitCode: "DAY" });
-    // Käsittely + kuljetus = kaupan lupaama 4-15 arkipäivää (src/config/toimitus.ts).
-    expect(handlingTime.minValue + transitTime.minValue).toBe(4);
+    // Käsittely + kuljetus = tuotetyypin toimitusaika (src/config/toimitus.ts): tuntematon tyyppi 5-15, t-paidat 4-15,
+    // hupparit 5-15 arkipäivää.
+    expect(handlingTime.minValue + transitTime.minValue).toBe(5);
     expect(handlingTime.maxValue + transitTime.maxValue).toBe(15);
+    const aika = (category: string) => {
+      const d = (buildProductJsonLd({ ...product, category }) as Node).offers.shippingDetails.deliveryTime;
+      return [d.handlingTime.minValue + d.transitTime.minValue, d.handlingTime.maxValue + d.transitTime.maxValue];
+    };
+    expect(aika("t-paidat")).toEqual([4, 15]);
+    expect(aika("hupparit")).toEqual([5, 15]);
     const expensive = buildProductJsonLd({ ...product, price: 89.9 }) as Node;
     expect(expensive.offers.shippingDetails.shippingRate.value).toBe("0.00");
   });

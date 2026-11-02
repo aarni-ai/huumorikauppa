@@ -1052,6 +1052,7 @@ export default async function middleware(request: Request): Promise<Response | u
         price: Number(pd.price),
         stock: pd.stock,
         categoryName: pd.categoryName,
+        category: pd.category,
         variants: pd.variants,
       });
       const breadcrumbSchema = buildBreadcrumbJsonLd([

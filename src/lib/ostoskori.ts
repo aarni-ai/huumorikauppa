@@ -4,7 +4,9 @@
  * aina kassalla palvelimella.
  */
 import { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS, LISATUOTE_KATEGORIAT, toimitusmaksu } from "../../api/_lib/vakiot.js";
-import { paketinHeikoinNettokate, alennettuSentit, toimitusmaksuKatteella } from "../../api/_lib/kate.js";
+import { paketinHeikoinNettokate, alennettuSentit, toimitusmaksuKatteella, laskeTilauksenNettokate } from "../../api/_lib/kate.js";
+import { sallitutMaksutavat } from "../../api/_lib/maksutavat.js";
+import { MAKSUTAVAT, type Maksutapa } from "@/config/maksutavat";
 import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
@@ -234,3 +236,24 @@ export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennusk
   const k = sovellaKorialennus(paketoitu, bySlug, toimitusTila(items).toimitus);
   return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy, tyyppi: k.tyyppi, prosentti: k.tyyppi === "tpaitapari" ? 0 : k.tyyppi === "maara" ? k.prosentti : pohja.prosentti, kampanjaTpaitoja: kampanjanTpaitat(fyysiset), maaraTpaitoja: maaranTpaitat(fyysiset) };
 }
+
+/**
+ * Korin maksutapakuvakkeet (3.11.2026): samat maksutavat kuin kassa tarjoaa (api/_lib/maksutavat.js, kate vähintään
+ * 7 € maksutavan kululla). Arvio ilman alennuksia; kassa laskee lopullisen. Pelkät lahjakortit: kaikki maksutavat.
+ */
+export function korinMaksutavat(items: (Rivi & Partial<Pick<CartItem, "selectedSize" | "selectedColor">>)[]): readonly Maksutapa[] {
+  const fyysiset = items.filter((i) => !onLahjakortti(i));
+  if (fyysiset.length === 0) return MAKSUTAVAT;
+  const osat = fyysiset.map((i) => {
+    const kartta = (i.product.variants?.variant_map || {}) as Record<string, number>;
+    const suora = kartta[`${(i.selectedColor || "").trim()}|${(i.selectedSize || "").trim()}`];
+    return { tuote: i.product, varianttiId: typeof suora === "number" ? suora : kalleinVariantti(i.product), maara: i.quantity, yksikkohinta: Number(rivinHinta(i.product, i.selectedSize)) };
+  });
+  const toimitus = toimitusTila(items).toimitus;
+  const s = sallitutMaksutavat((kulu: { prosentti: number; kiintea: number }) => {
+    const k = laskeTilauksenNettokate(osat, toimitus, { stripeProsentti: kulu.prosentti, stripeKiintea: kulu.kiintea });
+    return k.tunnettu ? k.nettokate : Infinity;
+  });
+  return MAKSUTAVAT.filter((t) => (t === "mobilepay" || t === "klarna" ? s.tavat.includes(t) : true));
+}
+
