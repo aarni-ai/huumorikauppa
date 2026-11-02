@@ -741,11 +741,16 @@ export default async function handler(req, res) {
     const { kulutRivi } = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
     const siirrot = lueEuSiirrot(euSiirtoKansio());
     const tulos = [];
+    // Jo tuodut ja näkyvät yhdellä kyselyllä (2.11.2026): rivikohtainen kysely kulutti funktion aikarajan 200+ tuotteen
+    // listassa ennen kuin uusia ehdittiin tuoda.
+    const ids = data.tuotteet.map((t) => String(t.printify_product_id));
+    const valmiit = new Map((await db`select printify_product_id, slug, price, is_active from products where printify_product_id = any(${ids}) and is_active = true`)
+      .map((r) => [String(r.printify_product_id), { slug: r.slug, price: r.price, is_active: r.is_active }]));
     for (const t of data.tuotteet) {
-      if (!aikaa()) { tulos.push({ slug: t.slug, tila: "aika loppui, aja uudelleen" }); continue; }
       const id = String(t.printify_product_id);
       // Jo tuotu ja näkyvissä: ohitetaan, jotta uusinta-ajo etenee isoissa erissä funktion aikarajan yli.
-      const valmis = (await db`select slug, price, is_active from products where printify_product_id = ${id} and is_active = true`)[0];
+      const valmis = valmiit.get(id);
+      if (!valmis && !aikaa()) { tulos.push({ slug: t.slug, tila: "aika loppui, aja uudelleen" }); continue; }
       if (valmis && !kuiva && req.query.pakota !== "1") { tulos.push({ slug: t.slug, tuonti: null, rivi: valmis, ohitettu: true }); continue; }
       const h = await haeTuote(id);
       const pf = h.ok ? h.data : null;
