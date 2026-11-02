@@ -2618,3 +2618,74 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 - Suppilon selaintesti (työpöytä ja mobiili) OK.
 - Kolme User-Agentia (Chrome, iPhone, Googlebot), kaikki 200: /, /personoidut, /personoitu-paita, /paketit, tuotesivu,
   /joulu, /hallinta/aktivoi, /hallinta/mittarit, /ig, /tt, /linkit, /product-feed.xml ja /sitemap.xml.
+
+## 2.11.2026 (ilta 3): toimitusajat tuotetyypeittäin, ilmaisen toimituksen katevahti, Merchantin 651 tuotetta, Resend
+
+### Toimitusajat toteutuneista tilauksista
+- Lähteet:
+  - kaupan 24 Printify-tilausta 3–10/2026 (`scripts/joulu-aikataulu.mjs`, mitattu Printify-tilauksesta perille)
+  - Printifyn API v2 `shipping/standard` Suomeen: EU-painotalot 5–15, US-painotalot 10–30
+- Printifyn v1-käsittelyaika "10 päivää" on sama oletus kaikilla painotaloilla, ei Atelier Katangan erityispiirre.
+
+| Tyyppi | Toteutunut | Printify | Lupaus |
+|---|---|---|---|
+| T-paidat (OPT CZ 5, 7, 9; Choice/Latvia 4, 4, 6, 7, 9, 12, 15) | 4–15 | 5–15 | 4–15 |
+| Hupparit (Textildruck DE 11, 13, 14; Katanga FR ei vielä toimituksia) | 11–14 | 5–15 | 5–15 |
+| Julisteet ja tarrat (OPT CZ) | ei toimituksia | 5–15 | 5–15 |
+
+- Sääntö: alaraja on pienempi ja yläraja suurempi luvuista "toteutunut" ja "Printify" (src/config/toimitus.ts
+  `TOIMITUSAJAT_TYYPEITTAIN`). Kaikki syötteen tuotteet valmistetaan EU:ssa.
+- Samat luvut näkyvät:
+  - tuotesivulla ("Perillä 4-15 arkipäivässä, viimeistään …")
+  - korissa ja kassalla (korin tuotteiden vaihteluväli)
+  - toimitusehdoissa (tuotetyypeittäin)
+  - Merchant-syötteessä: käsittely 1–3 ja kuljetus 3–12, hupparit 4–12
+  - rakenteisessa datassa, llms.txt:ssä ja tilausvahvistuksen arviossa
+- "Kaksi viikkoa ennen juhlaa" vaihdettiin muotoon "kolme viikkoa" kaikissa teksteissä. Juhannuksen päivä
+  korjattiin 28.5.:ksi.
+- **Joulu:** viimeinen tilauspäivä on kaikille tuotetyypeille ke 2.12.2026 (15 arkipäivää ennen 23.12.). Aiemmin
+  hupparit olivat 1.12. ja t-paidat 4.12. Samaa päivää käyttävät banneri, kampanjakalenteri, uutiskirje,
+  /joulun-viimeiset-tilauspaivat ja "Ehtii jouluksi".
+- **Kampanjakalenteri:**
+
+  | Ajanjakso | Kampanja |
+  |---|---|
+  | 1.–2.12. | viimeiset tilauspäivät |
+  | 3.12.–24.12. | lahjakortti |
+
+### Ilmaisen toimituksen katevahti
+- Uusi sääntö `api/_lib/kate.js toimitusmaksuKatteella`, sama kassalla ja korissa:
+  - Ilmainen toimitus (kaksi tuotetta tai 79 €) on voimassa vain, jos tilauksen nettokate ilman toimitusmaksua on
+    vähintään 7 €.
+  - Muuten toimitus on pienin porras 2,90 €, 4,90 € tai 6,90 €, jolla raja täyttyy.
+- Kori ja kassa kertovat asiakkaalle: "Tälle tuoteyhdistelmälle toimitus on 2,90 € (tavallisesti 6,90 €)."
+  Toimitusehdot mainitsevat porrastuksen.
+- Testi `src/test/toimituskate.test.ts`:
+  - käy läpi kaikki 299 151 kahden tuotteen yhdistelmää jokaisen tuotteen pahimmalla variantilla
+  - ajaa kassan läpi tuoteluokkaparit ilman koodia, 5 %:n koodilla ja Black Friday -viikolla
+- **Tulos:**
+  - Rajaus koskee 4 851:tä paria (1,6 %), eli hupparin tai koristeen yhdistelmiä.
+  - Kaksi t-paitaa on aina ilmainen.
+  - Pahin kate oli ennen 3,73 € ja on nyt 7,04 €.
+
+### Merchant Center
+- Ero 651 vs. 771 johtuu vain klo 3.00 hausta. 120 uutta tuotetta luotiin 2.11. klo 7.35–7.40, ja 651 + 120 = 771.
+- Syötteessä ei ole rajausta, joka pudottaisi tuotteita. Syötteen osoite on https://huumorikauppa.fi/product-feed.xml.
+- Kauppiaskeskuksen 25 tuotetta Cowork poisti jo, joten KAYTTOONOTTO kohta 18 on merkitty tehdyksi.
+- Kohdan 17 tilin toimitusajat päivitettiin (1–3 + 3–12).
+
+### Resend
+- Viestejä ei voi vielä lähettää osoitteeseen huumorikauppa@gmail.com:
+  - Domain on Resendissä tilassa "failed", koska DNS-tietueet puuttuvat.
+  - Testilähettäjä toimittaa vain tilin omaan osoitteeseen.
+  - Ilmoitustesti 2.11. meni osoitteeseen flyapeg@gmail.com.
+- Koodi vaihtaa vastaanottajan itse, kun domain on vahvistettu.
+- Vaiheet Domainhotellin nimipalvelinmuutoksen jälkeen: KAYTTOONOTTO kohta 21.
+
+### Katko 2.11. klo 17.05–17.15
+- Ensimmäinen julkaisu kaatui (MIDDLEWARE_INVOCATION_FAILED). Syy oli `src/data/campaignSchedule.ts`:n import
+  "../config/toimitus" ilman .js-päätettä: Vercelin Node ESM ei löydä tiedostoa.
+- Korjaus julkaistiin noin 10 minuutissa.
+- Uusi testi `src/test/ajonaikaisetImportit.test.ts` seuraa middlewaren ja api/-tiedostojen importit ja kaatuu, jos
+  päätettä ei ole. Testi tarkistettu: se kaatuu vanhalla koodilla.
+- Testit: 1 739 läpi. Kolme User-Agentia ja 12 sivua, kaikki 200.
