@@ -4,7 +4,7 @@
  * aina kassalla palvelimella.
  */
 import { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS, LISATUOTE_KATEGORIAT, toimitusmaksu } from "../../api/_lib/vakiot.js";
-import { paketinHeikoinKate } from "../../api/_lib/kate.js";
+import { paketinHeikoinNettokate, alennettuSentit } from "../../api/_lib/kate.js";
 import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
@@ -17,10 +17,12 @@ export { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS };
 export interface Paketti {
   slug: string;
   nimi: string;
+  /** Lyhyt kuvaus paketin kortissa ja sivulla (lahjapaketit 2.11.2026). */
+  kuvaus?: string;
   teema: string;
   tuotteet: [string, string];
   alennus_prosentti: number;
-  /** false: alennus pois käytöstä (kate alle 30 % generoitaessa, syy paketit-data.js:ssä). */
+  /** false: alennus pois käytöstä. */
   kaytossa?: boolean;
 }
 export const PAKETTIMAARITYKSET = PAKETIT as Paketti[];
@@ -54,7 +56,8 @@ export function toimitusKpl(items: Rivi[]): number {
 
 /**
  * Ilmainen toimitus rajasta tai kahdesta tuotteesta (api/_lib/vakiot.js toimitusmaksu). alennus = alennuskoodi
- * käytössä (kahden tuotteen sääntö ei yhdisty koodiin). Pakettialennuksen ja t-paitaparin poikkeus lasketaan kassalla.
+ * käytössä (kahden tuotteen sääntö ei yhdisty koodiin). Lahjapaketti saa ilmaisen toimituksen; t-paitaparin poikkeus
+ * lasketaan kassalla.
  */
 export function toimitusTila(items: Rivi[], { alennus = false }: { alennus?: boolean } = {}): ToimitusTila {
   const summa = fyysinenSumma(items);
@@ -99,25 +102,35 @@ export const valitseSuositukset = (items: Rivi[], tuotteet: Product[], maara = 4
 /** Tuotesivun "Usein ostetaan yhdessä": saman teeman pari ensin, sitten ilmaisen toimituksen täyttävät. */
 export const ostetaanYhdessa = (tuote: Product, tuotteet: Product[], maara = 4): Suositus[] => ostetaanYhdessaJs(tuote, tuotteet, maara);
 
-/** Paketin tuotteet ja hinnat. Alennus luvataan vain, jos jokainen varianttiyhdistelmä täyttää paketin 30 %:n katesäännön. */
+/**
+ * Paketin tuotteet ja hinnat (perushinnat, 3XL ja isommat koot maksavat enemmän). Alennus luvataan vain, jos jokainen
+ * koko- ja väriyhdistelmä täyttää palvelimen katesäännön (nettokate ilmaisella toimituksella vähintään 12 €,
+ * api/_lib/kate.js paketinHeikoinNettokate). Pakettihinta lasketaan riveittäin sentteinä kuten kassa.
+ * ilmainenToimitus: paketissa on kaksi tuotetta, joten toimitus on ilmainen (vakiot.js toimitusmaksu).
+ */
 export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
   const bySlug = new Map(tuotteet.map((p) => [p.slug, p]));
   const osat = paketti.tuotteet.map((s) => bySlug.get(s)).filter(Boolean) as Product[];
   if (osat.length !== paketti.tuotteet.length) return null;
   const yhteensa = pyorista(osat.reduce((s, p) => s + p.price, 0));
-  const alennusVoimassa = paketti.kaytossa !== false && paketinHeikoinKate(osat, paketti.alennus_prosentti).sallittu === true;
+  const alennusVoimassa = paketti.kaytossa !== false && paketinHeikoinNettokate(osat, paketti.alennus_prosentti).sallittu === true;
+  const pakettihinta = alennusVoimassa
+    ? osat.reduce((s, p) => s + alennettuSentit(p.price, paketti.alennus_prosentti), 0) / 100
+    : yhteensa;
   return {
     paketti,
     tuotteet: osat,
     yhteensa,
     alennusVoimassa,
-    pakettihinta: alennusVoimassa ? pyorista(yhteensa * (1 - paketti.alennus_prosentti / 100)) : yhteensa,
+    pakettihinta,
+    saasto: pyorista(yhteensa - pakettihinta),
+    ilmainenToimitus: toimitusmaksu({ summa: yhteensa, kpl: osat.length }) === 0,
   };
 }
 
 /**
- * Arvio korin pakettialennuksesta (sama ehto kuin kassalla: molemmat tuotteet korissa, ei alennuskoodia, kate >= 30 %
- * kaikilla variaatioilla). Palvelin laskee lopullisen alennuksen.
+ * Arvio korin pakettialennuksesta (sama ehto kuin kassalla: molemmat tuotteet korissa, ei alennuskoodia, nettokate
+ * vähintään 12 € kaikilla yhdistelmillä). Palvelin laskee lopullisen alennuksen valitulla variantilla.
  */
 export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennuskoodi = false, paketit: Paketti[] = PAKETTIMAARITYKSET): number {
   if (alennuskoodi) return 0;

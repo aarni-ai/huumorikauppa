@@ -87,13 +87,16 @@ describe("tavoitemittari", () => {
 });
 
 describe("/linkit", () => {
-  const kampanja = { alku: "2026-11-27", loppu: "2026-12-01", kaytossa: true };
+  // Vaihe kampanjakalenterista (src/data/kampanjat.ts kampanjaVaihe), testit src/test/kampanjat.test.ts.
   it("viisi linkkiä ennen Black Fridayta, kuusi kampanjan aikana, utm kulkee mukana", () => {
-    expect(linkitSivulla("2026-11-01", kampanja)).toHaveLength(5);
-    const bf = linkitSivulla("2026-11-27", kampanja, "?utm_source=tiktok&utm_medium=social&x=1");
+    expect(linkitSivulla(null)).toHaveLength(5);
+    expect(linkitSivulla("joulu")).toHaveLength(5);
+    const bf = linkitSivulla("black-friday", "?utm_source=tiktok&utm_medium=social&x=1");
     expect(bf).toHaveLength(6);
     expect(bf[0]).toMatchObject({ otsikko: "Black Friday", href: "/black-friday?utm_source=tiktok&utm_medium=social" });
-    expect(linkitSivulla("2026-12-02", kampanja)).toHaveLength(5);
+    expect(linkitSivulla("black-friday", "", { bfKaytossa: false })).toHaveLength(5);
+    expect(linkitSivulla("joulu-takaraja")).toHaveLength(5);
+    expect(linkitSivulla("lahjakortti")[0]).toMatchObject({ otsikko: "Lahjakortti", href: "/lahjakortti" });
     expect(utmPerään("/yritykset", "")).toBe("/yritykset");
   });
 });

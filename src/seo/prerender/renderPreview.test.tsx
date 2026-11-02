@@ -47,6 +47,9 @@ describe("renderProductPreview", () => {
     expect(html).toContain("Testipaita");
     expect(html).toContain("Lisää koriin");
     expect(html).not.toContain("Tuotekuvaus");
+    // Sopii lahjaksi -rivi ostopainikkeen alla (src/lib/sopiiLahjaksi.ts): myös esirenderöidyssä HTML:ssä.
+    expect(html).toContain("Sopii lahjaksi kaverille.");
+    expect(html).toContain('href="/lahja-kaverille"');
   });
 
   it("embeds the product row as a JSON seed for the client (no Supabase round trip before reveal)", () => {

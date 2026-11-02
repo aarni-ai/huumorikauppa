@@ -1,12 +1,16 @@
 /**
- * Paketit (t-paita + huppari samalla teemalla). Puhdas moduuli: kassa (palvelin), pakettisivut ja ostoskori (selain)
- * sekä generointiskripti (scripts/generoi-paketit.mjs) käyttävät samaa logiikkaa.
+ * Paketit. Puhdas moduuli: kassa (palvelin), pakettisivut ja ostoskori (selain) käyttävät samaa logiikkaa.
  *
- * Pakettialennus annetaan palvelimella (api/_lib/kassa.js) vain, kun paketin molemmat tuotteet ovat korissa, mitään
- * alennuskoodia ei käytetä ja paketin nettokate alennuksen jälkeen on vähintään 30 % (api/_lib/kate.js PAKETTI_KATE_RAJA). Jos Printifyn
- * kuluja ei tunneta, alennusta ei anneta.
+ * 2.11.2026 alkaen paketit ovat käsin valittuja lahjapaketteja (api/_lib/paketit-data.js): kaksi tuotetta, hinta
+ * yhteissumma -5 % ja ilmainen toimitus kahden tuotteen säännöllä. Pakettialennus annetaan palvelimella
+ * (api/_lib/kassa.js) vain, kun paketin molemmat tuotteet ovat korissa, mitään alennuskoodia ei käytetä ja paketin
+ * nettokate ilmaisella toimituksella on valitulla koko- ja väriyhdistelmällä vähintään PAKETTI_MIN_KATE_EUROA (12 €,
+ * api/_lib/kate.js laskePaketinNettokate). Jos Printifyn kuluja ei tunneta, alennusta ei anneta.
+ *
+ * muodostaPaketit ja valitsePakettialennus ovat vanhan generoinnin (t-paita + huppari, 30 %:n kateraja) apufunktioita;
+ * kassa ei käytä niitä.
  */
-import { laskePaketinKate, paketinHeikoinKate, PAKETTI_KATE_RAJA } from "./kate.js";
+import { laskePaketinNettokate, paketinHeikoinKate, PAKETTI_KATE_RAJA } from "./kate.js";
 import { onPiilotettu } from "./piilotetut.js";
 
 /** Oletusalennus, jos kuluja ei tunneta generoitaessa. Kassa antaa alennuksen silti vain 30 %:n katteella. */
@@ -109,7 +113,8 @@ export function valitsePakettialennus(tuotteetParissa, alennukset = PAKETTI_ALEN
 /**
  * Pakettialennus kassariveille. Rivit: [{ slug, quantity, unit_price, variant_id, ... }] (vain fyysiset tuotteet).
  * Jakaa rivit niin, että paketteihin kuuluvat kappaleet ovat omina riveinään (paketti, paketti_alennus_prosentti,
- * unit_cents alennettu). Pari muodostetaan vain, jos sen kate alennuksen jälkeen on vähintään 30 %.
+ * unit_cents alennettu). Pari muodostetaan vain, jos sen nettokate alennuksen ja ilmaisen toimituksen jälkeen on vähintään
+ * PAKETTI_MIN_KATE_EUROA.
  * Palauttaa uudet rivit (alkuperäiset ennallaan) ja annetun alennuksen euroina.
  * @param rivit kassan rivit (unit_cents sentteinä)
  * @param tuotteetSlugilla Map slug -> tuoterivi (kulut)
@@ -131,7 +136,7 @@ export function sovellaPaketit(rivit, tuotteetSlugilla, paketit) {
       if (rivit[i].slug !== sa) continue;
       for (let j = 0; j < rivit.length; j++) {
         if (rivit[j].slug !== sb) continue;
-        const kate = laskePaketinKate([{ tuote: ta, varianttiId: rivit[i].variant_id }, { tuote: tb, varianttiId: rivit[j].variant_id }], pros);
+        const kate = laskePaketinNettokate([{ tuote: ta, varianttiId: rivit[i].variant_id }, { tuote: tb, varianttiId: rivit[j].variant_id }], pros);
         if (!kate.tunnettu || !kate.sallittu) continue;
         const parit = Math.min(vapaat[i], vapaat[j]);
         if (parit <= 0) continue;

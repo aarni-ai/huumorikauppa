@@ -40,6 +40,7 @@ import { generateProductCopy, isGenericDescription, sanitizeProductDescription, 
 import { getProductContent } from "@/data/productContent";
 import { isCustomTextProduct } from "@/lib/customProduct";
 import { productImageAlt } from "@/lib/productNames";
+import { sopiiLahjaksi } from "@/lib/sopiiLahjaksi";
 import { proxiedImage } from "@/lib/imageProxy";
 import type { Product } from "@/types/product";
 import { SITE_URL, SHIPPING, RETURNS, formatPriceFi } from "../site";
@@ -750,6 +751,7 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
   const related = all.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 8);
   // Pääkuva samalla valinnalla ja srcsetillä kuin ProductPage (oletusvärin ensimmäinen kuva).
   const mainImage = productImageSources(defaultColorImages(product)[0]);
+  const lahja = sopiiLahjaksi(product);
   return {
     path,
     title: override?.seoTitle ?? `${product.name} | Huumorikauppa`,
@@ -765,6 +767,8 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
       { paragraphs: description.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean) },
       { heading: copy.material ? "Materiaali ja hoito" : "Hoito", paragraphs: [copy.material, copy.care].filter((t): t is string => Boolean(t)) },
       { heading: "Toimitus ja palautus", paragraphs: [DELIVERY_FACTS] },
+      // Sama rivi kuin tuotesivun ostopainikkeen alla (src/lib/sopiiLahjaksi.ts), hakukoneille staattisessa HTML:ssä.
+      { heading: "Sopii lahjaksi", paragraphs: [lahja.teksti], links: [{ href: lahja.polku, label: lahja.linkkiTeksti }] },
       { links: [{ href: kategoriaPolku(product.category), label: onKategoriasivu(product.category) ? `Kaikki ${categoryName.toLowerCase()}` : "Kaikki tuotteet" }] },
     ],
     productsHeading: "Samankaltaisia tuotteita",

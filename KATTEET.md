@@ -506,6 +506,34 @@ vähintään 7,8 % yhden t-paidan tilauksista muuttuu pariksi. B ei ole nykyist�
   T-paitojen tuotesivulla kampanjarivi 30 päivän alimman hinnan kanssa. Näkyy vain kampanja-aikana.
 - Käyttöönotto Aarnin hyväksynnällä: `kaytossa: true`, testit, julkaisu.
 
+## Black Friday -viikko 23.-30.11.2026 ja lahjapaketit (2.11.2026)
+
+**Laskentatapa:** tuotannon kulut 2.11.2026 (`src/test/fixtures/kate-tilannekuva.json`, 773 myynnissä olevaa tuotetta,
+saatavuudettomat variantit pois). Kahden tuotteen tilaus = ilmainen toimitus. Pahin tapaus: jokainen tuotepari kunkin
+tuotteen pahimmalla koko- ja väriyhdistelmällä (`api/_lib/kate.js` `pahinKahdenTuotteenNettokate`). Ehto: nettokate
+vähintään 7 € kaikissa tuotteissa. Testit: `src/test/kampanjat.test.ts`.
+
+| Vaihtoehto | Pahin kahden tuotteen tilaus | Ehto 7 € |
+|---|--:|---|
+| -10 % kahdesta tuotteesta, kaikki tuotteet | -2,22 € (huppari + 24,90 €:n t-paita) | ei |
+| 0 % (nykyinen ilmainen toimitus ilman alennusta) | 3,73 € (24,90 €:n t-paita + koriste) | ei |
+| -10 % vain t-paidoista | 6,97 € | ei |
+| -9 % vain t-paidoista | yli 7 € | kyllä (suurin) |
+| Kaksi 24,90 €:n t-paitaa 44,90 €, toimitus 6,90 € (valittu) | 12,43 € | kyllä |
+
+**Päätös:** Black Friday -viikolla on hyväksytty "Kaksi t-paitaa 44,90 €" (`TPAITAPARI_KAMPANJA`), päivät
+kampanjakalenterista (`api/_lib/vakiot.js` `KAMPANJAPAIVAT`, ennen 27.11.-1.12.). Yhtäläinen prosenttialennus ei täytä
+ehtoa millään prosentilla, koska jo ilman alennusta pahin kahden tuotteen tilaus jää 3,73 €:oon (kassan katevahti estää
+alennukset tällaisissa koreissa). "-9 % t-paidoista" täyttäisi ehdon, mutta 27,90 €:n t-paitojen 30 päivän alin hinta
+on ennen 29.10. myynnissä olleilla paidoilla 24,90 € 28.11. asti (hinnoittelu 29.10.), joten prosenttialennusta ei
+voisi markkinoida niille (KSL 2:6 a §).
+30 päivän alin hinta pariin kuuluville 24,90 €:n t-paidoille: 24,90 € (24.10.-22.11.).
+
+**Lahjapaketit (sivu /paketit):** kuusi kahden t-paidan pakettia (27,90 € + 27,90 €), hinta 53,02 € (yhteissumma -5 %,
+rivikohtainen pyöristys) ja ilmainen toimitus. Pahin koko- ja väriyhdistelmä 13,72 € jokaisessa paketissa (raja 12 €,
+`PAKETTI_MIN_KATE_EUROA`). T-paidan ja hupparin paketti jäisi -5 %:lla pahimmalla yhdistelmällä 3,23-6,01 €:oon
+hupparista riippuen, joten paita + huppari -paketteja ei tehty.
+
 ## Hupparien hinta 27.10.2026 (oma tausta)
 
 **Päätös:** S-2XL 52,90 € ja 3XL+ 59,90 €, mutta korkeintaan kilpailijoiden korkein hinta, jos kate pysyy

@@ -149,13 +149,13 @@ export const STATIC_PAGE_META = {
       "Lahjakortti on digitaalinen: koodi tulee sähköpostiin heti maksun jälkeen, ja voit lähettää sen suoraan saajalle. Saaja kirjoittaa koodin kassalla kenttään Lahjakortin koodi. Lahjakortista ei peritä toimitusmaksua.",
   },
   "/paketit": {
-    title: "Paketit: t-paita ja huppari | Huumorikauppa.fi",
+    title: "Lahjapaketit, ilmainen toimitus | Huumorikauppa.fi",
     description:
-      "Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla.",
-    h1: "Paketit: t-paita ja huppari samalla tekstillä",
-    name: "Paketit",
+      "Kaksi saman aiheen t-paitaa: 5 % edullisemmin kuin erikseen ja toimitus ilmainen. Isälle, saunojalle, mökkeilijälle ja pikkujouluihin.",
+    h1: "Lahjapaketit",
+    name: "Lahjapaketit",
     intro:
-      "Paketissa on saman tekstin t-paita ja huppari. Valitset kummallekin koon ja värin, ja molemmat menevät koriin yhdellä painalluksella.",
+      "Lahjapaketissa on kaksi saman aiheen t-paitaa. Valitset kummallekin koon ja värin, ja molemmat menevät koriin yhdellä painalluksella. Paketin hinta on 5 % pienempi kuin erikseen, ja kahden tuotteen tilauksen toimitus on ilmainen.",
   },
   "/ryhmatilaukset": {
     title: "Ryhmätilaukset: paidat porukalle | Huumorikauppa",

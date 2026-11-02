@@ -158,15 +158,16 @@ describe("Black Friday: kaksi t-paitaa 44,90 € (TPAITAPARI_KAMPANJA)", async (
   const nyt = new Date("2026-11-28T10:00:00Z");
   const rivi = (slug: string, quantity: number, variant_id: number, unit_cents: number) => ({ slug, quantity, variant_id, unit_cents });
 
-  it("käytössä (hyväksytty 29.10.2026), voimassa vain 27.11.-1.12. Suomen aikaa", () => {
+  it("käytössä (hyväksytty 29.10.2026), voimassa vain Black Friday -viikolla 23.-30.11. Suomen aikaa (kampanjakalenteri)", () => {
     expect(TPAITAPARI_KAMPANJA.kaytossa).toBe(true);
+    expect([TPAITAPARI_KAMPANJA.alku, TPAITAPARI_KAMPANJA.loppu]).toEqual(["2026-11-23", "2026-11-30"]);
     expect(tpaitapariVoimassa(TPAITAPARI_KAMPANJA, nyt)).toBe(true);
     expect(tpaitapariVoimassa({ ...TPAITAPARI_KAMPANJA, kaytossa: false }, nyt)).toBe(false);
     expect(tpaitapariVoimassa(kampanja, nyt)).toBe(true);
-    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-26T21:59:00Z"))).toBe(false);
-    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-26T22:01:00Z"))).toBe(true);
-    expect(tpaitapariVoimassa(kampanja, new Date("2026-12-01T21:59:00Z"))).toBe(true);
-    expect(tpaitapariVoimassa(kampanja, new Date("2026-12-01T22:01:00Z"))).toBe(false);
+    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-22T21:59:00Z"))).toBe(false);
+    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-22T22:01:00Z"))).toBe(true);
+    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-30T21:59:00Z"))).toBe(true);
+    expect(tpaitapariVoimassa(kampanja, new Date("2026-11-30T22:01:00Z"))).toBe(false);
   });
   it("kaksi t-paitaa maksaa 44,90 €, korvaa -5 %:n, kate positiivinen", () => {
     const k = sovellaKorialennus([rivi("testi-t-paita", 2, 1, 2490)], bySlug, 6.9, { kampanja, nyt });

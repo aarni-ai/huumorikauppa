@@ -51,6 +51,14 @@ describe("buildPrerenderPages", () => {
     expect(pages.some((p) => p.path.startsWith("/blogi/"))).toBe(true);
   });
 
+  it("product pages carry the Sopii lahjaksi line and gift page link (src/lib/sopiiLahjaksi.ts)", () => {
+    const kala = byPath.get("/tuote/kalamies-huppari")!;
+    const osio = kala.sections?.find((s) => s.heading === "Sopii lahjaksi");
+    expect(osio?.paragraphs).toEqual(["Sopii lahjaksi kalastajalle."]);
+    expect(osio?.links).toEqual([{ href: "/lahjat/kalastajalle", label: "Lisää lahjoja kalastajalle" }]);
+    expect(byPath.get("/tuote/amatimies-t-paita")!.sections?.some((s) => s.heading === "Sopii lahjaksi")).toBe(true);
+  });
+
   it("every gift route is a real route in App.tsx", () => {
     const app = fs.readFileSync(path.resolve(__dirname, "../../App.tsx"), "utf8");
     for (const slug of GIFT_ROUTE_SLUGS) {

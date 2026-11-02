@@ -2,9 +2,11 @@ import { useSyncExternalStore } from "react";
 import { Link } from "react-router-dom";
 import { Gift } from "lucide-react";
 import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
+import { paivanLoppuUtcMs } from "@/data/campaignSchedule";
+import { KAMPANJAPAIVAT } from "../../api/_lib/vakiot.js";
 
-/** Isänpäivä su 8.11.2026 klo 23.59.59 Suomen aikaa (UTC+2). */
-export const ISANPAIVA_LOPPU_UTC_MS = Date.UTC(2026, 10, 8, 21, 59, 59);
+/** Isänpäivä su 8.11.2026 klo 23.59.59 Suomen aikaa (kampanjakalenteri, api/_lib/vakiot.js KAMPANJAPAIVAT). */
+export const ISANPAIVA_LOPPU_UTC_MS = paivanLoppuUtcMs(KAMPANJAPAIVAT.isanpaiva.loppu);
 export const isanpaivaLahjakorttiAika = (nyt: number) => nyt <= ISANPAIVA_LOPPU_UTC_MS;
 
 /** Isä-sivut, joilla banneri näkyy (etusivun lisäksi). */

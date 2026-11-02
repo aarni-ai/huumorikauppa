@@ -5,9 +5,10 @@ import {
   nextBannerChangeMs,
   type BannerTheme,
 } from "@/data/campaignSchedule";
-import { isanpaivaLause, jouluPalkkiLause } from "@/data/tilauspaivat";
+import { isanpaivaLause, jouluPalkkiLause, jouluTpaidatPalkkiLause } from "@/data/tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
-import { JOULU_SIVUSTON_END_UTC_MS } from "@/data/jouluAikataulu";
+import { JOULU_MYOHAISIN_END_UTC_MS } from "@/data/jouluAikataulu";
+import { BLACK_FRIDAY_PALKKI } from "@/data/kampanjat";
 import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
 
 export const FATHERS_DAY_LANDING_PATH = "/isanpaivalahja";
@@ -35,6 +36,22 @@ export const BANNER_CONTENT: Record<BannerTheme, BannerContent> = {
     get text() {
       // Sama lähde kuin tuotesivu, ostoskori ja artikkelit (src/data/tilauspaivat.ts).
       return jouluPalkkiLause();
+    },
+    linkText: "Joulun viimeiset tilauspäivät",
+    href: CHRISTMAS_DEADLINE_PATH,
+    className: "bg-red-900 text-white",
+  },
+  // Black Friday -viikko (src/data/kampanjat.ts): parihinta ja kuluttajansuojalain 30 päivän alin hinta.
+  "black-friday": {
+    text: BLACK_FRIDAY_PALKKI,
+    linkText: "Katso Black Friday -tarjous",
+    href: "/black-friday",
+    className: "bg-red-950 text-white",
+  },
+  // 2.-4.12.2026: hupparien ja muiden tilauspäivä meni, t-paidat ehtivät vielä (src/data/campaignSchedule.ts).
+  "joulu-tpaidat": {
+    get text() {
+      return jouluTpaidatPalkkiLause();
     },
     linkText: "Joulun viimeiset tilauspäivät",
     href: CHRISTMAS_DEADLINE_PATH,
@@ -74,7 +91,7 @@ const serverTheme = (): BannerTheme | null => {
   if (typeof document === "undefined") return esirenderoinninTeema;
   const el = document.querySelector<HTMLElement>("#root [data-banner]");
   const t = el?.dataset.banner;
-  return t === "joulu" || t === "isanpaiva" ? t : null;
+  return t && t in BANNER_CONTENT ? (t as BannerTheme) : null;
 };
 
 /**
@@ -97,10 +114,10 @@ export function SeasonalBanner() {
 const JOULUAATTO_LOPPU_UTC_MS = Date.UTC(2026, 11, 24, 21, 59, 59);
 
 /**
- * Sivuston joulun takarajan (tuotetyyppien varhaisin) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
- * toimitetaan heti (2.11.2026; ennen vasta viimeisimmän tyyppikohtaisen takarajan jälkeen).
+ * Viimeisen joulun tilauspäivän (t-paidat pe 4.12.) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
+ * toimitetaan heti. 2.-4.12. banneri kertoo, että t-paidat ehtivät vielä (kampanjakalenteri 2.11.2026, src/data/kampanjat.ts).
  */
-export const lahjakorttiAika = (nyt: number) => nyt > JOULU_SIVUSTON_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
+export const lahjakorttiAika = (nyt: number) => nyt > JOULU_MYOHAISIN_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
 
 /** Viime hetken lahjakortti -banneri (vain kun lahjakortit ovat myynnissä, useLahjakortitMyynnissa). */
 export function LahjakorttiBanneri() {

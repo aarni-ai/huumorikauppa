@@ -50,19 +50,19 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Mikä on hauska lahja miehelle?", a: "Hauska lahja miehelle on t-paita tai huppari, jonka teksti liittyy hänen harrastukseensa, ammattiinsa tai ikäänsä. Valikoimassa on esimerkiksi kalastus-, eläke- ja ammattiteemoja." },
     { q: "Sopiiko huumoripaita lahjaksi 50-vuotiaalle miehelle?", a: "Sopii: valikoimassa on 50-vuotiaille omia tekstejä, kuten \"50 vuotta nuori\" ja \"50 ja paras vasta tulossa\". Myös ammattihuumori toimii." },
     { q: "Miten valitsen oikean koon lahjaksi?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Jos koko ei osu, tuotteen voi palauttaa 14 päivän peruutusoikeudella." },
-    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapakettia ei ole. Voit kuitenkin lähettää tilauksen suoraan saajalle valitsemalla kassalla toimituksen eri vastaanottajalle." },
+    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapaperia tai lahjarasiaa ei ole. Valmiit kahden paidan lahjapaketit ovat sivulla Lahjapaketit: hinta on 5 % pienempi kuin erikseen, ja toimitus on ilmainen. Tilauksen voi lähettää suoraan saajalle valitsemalla kassalla toimituksen eri vastaanottajalle." },
   ],
   "hauskat-lahjat-naiselle": [
     { q: "Mikä on hauska lahja naiselle?", a: "Hauska lahja naiselle on t-paita tai huppari, jonka teksti osuu hänen arkeensa, kuten \"Maailman paras äiti\" tai \"Super äiskä\"." },
     { q: "Sopiiko huumoripaita lahjaksi naiselle?", a: "Sopii: äiti-, ikävuosi- ja arjen huumorin tekstit toimivat lahjana, ja oman tekstin voi tilata personoitavaan tuotteeseen." },
     { q: "Miten valitsen oikean koon lahjaksi naiselle?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljempää mallia varten valitse koko suuremmaksi." },
-    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapakettia ei ole. Tilauksen voi lähettää suoraan saajalle valitsemalla kassalla toimituksen eri vastaanottajalle." },
+    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapaperia tai lahjarasiaa ei ole. Valmiit kahden paidan lahjapaketit ovat sivulla Lahjapaketit, ja niissä toimitus on ilmainen. Tilauksen voi lähettää suoraan saajalle valitsemalla kassalla toimituksen eri vastaanottajalle." },
   ],
   "lahja-miehelle": [
     { q: "Mikä on hyvä lahja miehelle, joka tykkää huumorista?", a: "Hyvä lahja on t-paita tai huppari, joka liittyy hänen harrastukseensa tai ammattiinsa, esimerkiksi kalastus, sähköala tai eläkeläisyys." },
     { q: "Sopiiko huumoripaita lahjaksi 50-vuotiaalle?", a: "Sopii: tarjolla on 50-vuotisteemoja sekä eläke- ja ammattihuumoria." },
     { q: "Miten valitsen oikean koon lahjaksi?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on varmempi valinta kuin liian pieni." },
-    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapakettia ei ole, mutta tilauksen voi lähettää suoraan saajalle." },
+    { q: "Saako tuotteen lahjapaketissa?", a: "Lahjapaperia ei ole, mutta tilauksen voi lähettää suoraan saajalle. Valmiit kahden paidan lahjapaketit ovat sivulla Lahjapaketit." },
   ],
   "isanpaiva-lahjat": [
     { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita tai huppari, joka liittyy isän harrastukseen tai ammattiin, tai esimerkiksi \"Jos iskä ei osaa korjata sitä...\" -teksti." },

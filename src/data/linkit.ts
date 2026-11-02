@@ -1,3 +1,5 @@
+import type { KampanjaVaiheId } from "./kampanjat";
+
 /**
  * /linkit-sivun linkit (somen bio-linkki). utm-parametrit kulkevat saapumisosoitteesta linkkeihin, jotta GA4 liittää
  * oston somelähteeseen; käyntilaskuri (src/lib/kaynti.ts) kirjaa lähteen jo /linkit-sivulle saavuttaessa.
@@ -12,6 +14,7 @@ export const BIO_LINKIT: BioLinkki[] = [
   { otsikko: "Harrastussarjat", kuvaus: "Metsästäjille, kalastajille, mökkeilijöille", polku: "/lahjat/harrastajalle" },
 ];
 export const BLACK_FRIDAY_LINKKI: BioLinkki = { otsikko: "Black Friday", kuvaus: "Kaksi t-paitaa tarjoushintaan", polku: "/black-friday", korostus: true };
+export const LAHJAKORTTI_LINKKI: BioLinkki = { otsikko: "Lahjakortti", kuvaus: "Perillä heti, koodi ja PDF maksun jälkeen", polku: "/lahjakortti", korostus: true };
 
 const UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
 
@@ -24,8 +27,12 @@ export function utmPerään(polku: string, search: string): string {
   return s ? `${polku}${polku.includes("?") ? "&" : "?"}${s}` : polku;
 }
 
-/** Sivulla näytettävät linkit: Black Friday ensimmäisenä kampanjan aikana (paiva = Helsingin päivä tai null). */
-export function linkitSivulla(paiva: string | null, kampanja: { alku: string; loppu: string; kaytossa?: boolean }, search = "") {
-  const bf = paiva != null && kampanja.kaytossa !== false && paiva >= kampanja.alku && paiva <= kampanja.loppu;
-  return (bf ? [BLACK_FRIDAY_LINKKI, ...BIO_LINKIT] : BIO_LINKIT).map((l) => ({ ...l, href: utmPerään(l.polku, search) }));
+/**
+ * Sivulla näytettävät linkit kampanjakalenterin vaiheen mukaan (src/data/kampanjat.ts kampanjaVaihe; null palvelimella):
+ * Black Friday -viikolla Black Friday ensimmäisenä, joulun tilauspäivien jälkeen lahjakortti ensimmäisenä.
+ * bfKaytossa: TPAITAPARI_KAMPANJA.kaytossa (kytkin pois: ei Black Friday -linkkiä).
+ */
+export function linkitSivulla(vaihe: KampanjaVaiheId | null, search = "", { bfKaytossa = true }: { bfKaytossa?: boolean } = {}) {
+  const ensin = vaihe === "black-friday" && bfKaytossa ? [BLACK_FRIDAY_LINKKI] : vaihe === "lahjakortti" ? [LAHJAKORTTI_LINKKI] : [];
+  return [...ensin, ...BIO_LINKIT].map((l) => ({ ...l, href: utmPerään(l.polku, search) }));
 }

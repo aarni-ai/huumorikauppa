@@ -50,7 +50,7 @@ import { painetaanEUssa } from "../../api/_lib/materiaali.js";
 import { mittataulukko } from "@/data/mittataulukot";
 import { MittaTaulukko } from "@/components/SizeGuide";
 import { sameDesignLinks } from "@/lib/sameDesign";
-import { SopiiLahjaksi } from "@/components/SopiiLahjaksi";
+import { SopiiLahjaksi, SopiiLahjaksiRivi } from "@/components/SopiiLahjaksi";
 import { TpaitapariRivi } from "@/components/KorialennusVihje";
 import { CityProductsSection } from "@/components/CityProductsSection";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
@@ -952,6 +952,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
             {/* Toimitusarvio ja sama design ostopainikkeen alla, jotta koko ja Lisää koriin mahtuvat mobiilin ensinäkymään. */}
             <ToimitusarvioRivi product={product} />
+
+            {/* Sopii lahjaksi (2.11.2026, src/lib/sopiiLahjaksi.ts): kenelle ja linkki lahjasivulle, myös esirenderöitynä. */}
+            <SopiiLahjaksiRivi product={product} />
 
             {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
             <SameDesignLinks product={product} all={allProducts} />

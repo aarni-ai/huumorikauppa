@@ -54,9 +54,16 @@ describe("banner schedule (Europe/Helsinki)", () => {
     expect(activeBannerTheme(fi("2026-10-28T12:00:00"))).toBe("joulu");
   });
 
-  it("Christmas until 1.12.2026 23:59:59, nothing from 2.12.2026 00:00:00", () => {
+  it("Black Friday 23.-30.11., Christmas until 1.12.2026 23:59:59, t-shirts 2.-4.12., nothing from 5.12.2026 00:00:00", () => {
+    // Kampanjakalenteri 2.11.2026 (src/data/kampanjat.ts): Black Friday -viikko ja t-paitojen myöhäisempi tilauspäivä.
+    expect(activeBannerTheme(fi("2026-11-22T23:59:59.999"))).toBe("joulu");
+    expect(activeBannerTheme(fi("2026-11-23T00:00:00"))).toBe("black-friday");
+    expect(activeBannerTheme(fi("2026-11-30T23:59:59.999"))).toBe("black-friday");
+    expect(activeBannerTheme(fi("2026-12-01T00:00:00"))).toBe("joulu");
     expect(activeBannerTheme(fi("2026-12-01T23:59:59"))).toBe("joulu");
-    expect(activeBannerTheme(fi("2026-12-02T00:00:00"))).toBeNull();
+    expect(activeBannerTheme(fi("2026-12-02T00:00:00"))).toBe("joulu-tpaidat");
+    expect(activeBannerTheme(fi("2026-12-04T23:59:59.999"))).toBe("joulu-tpaidat");
+    expect(activeBannerTheme(fi("2026-12-05T00:00:00"))).toBeNull();
     expect(activeBannerTheme(fi("2027-01-01T12:00:00"))).toBeNull();
     expect(isBeforeChristmasDeadline(fi("2026-12-01T23:59:59"))).toBe(true);
     expect(isBeforeChristmasDeadline(fi("2026-12-02T00:00:00"))).toBe(false);
@@ -67,8 +74,11 @@ describe("banner schedule (Europe/Helsinki)", () => {
       expect(BANNER_SCHEDULE[i].fromMs).toBe(BANNER_SCHEDULE[i - 1].untilMs + 1);
     }
     expect(nextBannerChangeMs(fi("2026-10-10T12:00:00"))).toBe(fi("2026-10-15T00:00:00"));
-    expect(nextBannerChangeMs(fi("2026-11-01T12:00:00"))).toBe(fi("2026-12-02T00:00:00"));
-    expect(nextBannerChangeMs(fi("2026-12-02T00:00:00"))).toBeNull();
+    expect(nextBannerChangeMs(fi("2026-11-01T12:00:00"))).toBe(fi("2026-11-23T00:00:00"));
+    expect(nextBannerChangeMs(fi("2026-11-25T12:00:00"))).toBe(fi("2026-12-01T00:00:00"));
+    expect(nextBannerChangeMs(fi("2026-12-01T12:00:00"))).toBe(fi("2026-12-02T00:00:00"));
+    expect(nextBannerChangeMs(fi("2026-12-02T00:00:00"))).toBe(fi("2026-12-05T00:00:00"));
+    expect(nextBannerChangeMs(fi("2026-12-05T00:00:00"))).toBeNull();
   });
 });
 
@@ -101,15 +111,30 @@ describe("SeasonalBanner", () => {
     );
   });
 
-  it("1.12 23:59:59 still shows Christmas, 2.12 00:00:00 shows nothing", () => {
+  it("1.12 23:59:59 still shows Christmas, 2.12 00:00:00 t-shirts until 4.12, 5.12 00:00:00 shows nothing", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(fi("2026-12-01T23:59:59"));
     const first = render(banner());
     expect(first.container.querySelector('[data-banner="joulu"]')).not.toBeNull();
     first.unmount();
     vi.setSystemTime(fi("2026-12-02T00:00:00"));
+    const toinen = render(banner());
+    expect(toinen.container.querySelector('[data-banner="joulu-tpaidat"]')).not.toBeNull();
+    expect(toinen.container.textContent).toContain("T-paidat ehtivät vielä jouluksi, kun tilaat viimeistään pe 4.12.");
+    toinen.unmount();
+    vi.setSystemTime(fi("2026-12-05T00:00:00"));
     const { container } = render(banner());
     expect(container.textContent).toBe("");
+  });
+
+  it("23.11 00:00:00 shows Black Friday with the 30-day lowest price", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(fi("2026-11-23T00:00:00"));
+    const { container } = render(banner());
+    expect(container.querySelector('[data-banner="black-friday"]')).not.toBeNull();
+    expect(container.textContent).toContain("kaksi t-paitaa 44,90 €");
+    expect(container.textContent).toContain("alin hinta 30 päivän aikana 24,90 €");
+    expect(screen.getByRole("link", { name: "Katso Black Friday -tarjous" })).toHaveAttribute("href", "/black-friday");
   });
 
   it("switches theme automatically at midnight while the page is open", () => {

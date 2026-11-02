@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { Package, ArrowRight } from "lucide-react";
+import { Package, ArrowRight, Truck } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,35 +26,45 @@ function useNaytettavatPaketit() {
   return { paketit, isLoading };
 }
 
-function Hinta({ yhteensa, pakettihinta, alennusVoimassa, prosentti }: { yhteensa: number; pakettihinta: number; alennusVoimassa: boolean; prosentti: number }) {
+function Hinta({ yhteensa, pakettihinta, alennusVoimassa }: { yhteensa: number; pakettihinta: number; alennusVoimassa: boolean }) {
   if (!alennusVoimassa) return <span className="font-bold text-primary">{eur(yhteensa)}</span>;
   return (
     <span className="flex items-baseline gap-2">
       <span className="font-bold text-primary">{eur(pakettihinta)}</span>
-      <span className="text-xs text-muted-foreground">pakettialennus {prosentti} % kassalla</span>
+      <span className="text-xs text-muted-foreground">erikseen {eur(yhteensa)}</span>
     </span>
   );
 }
 
-/** /paketit: teemaparit (t-paita ja huppari samalla tekstillä). */
+/** Kahden tuotteen ilmainen toimitus näkyviin paketin kortissa ja sivulla (api/_lib/vakiot.js toimitusmaksu). */
+function IlmainenToimitus({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary ${className}`}>
+      <Truck className="h-3.5 w-3.5" aria-hidden="true" /> Ilmainen toimitus, paketissa kaksi tuotetta
+    </span>
+  );
+}
+
+/** /paketit: lahjapaketit (kaksi saman aiheen tuotetta, api/_lib/paketit-data.js). */
 export const BundlesPage = () => {
   usePrerenderReady();
   const { paketit, isLoading } = useNaytettavatPaketit();
   return (
     <div className="container py-8 md:py-12">
       <SEOHead
-        title="Paketit: t-paita ja huppari | Huumorikauppa.fi"
-        description="Saman tekstin t-paita ja huppari yhdessä paketissa. Valitse koot ja värit, ja lisää molemmat koriin kerralla."
+        title="Lahjapaketit, ilmainen toimitus | Huumorikauppa.fi"
+        description="Kaksi saman aiheen t-paitaa: 5 % edullisemmin kuin erikseen ja toimitus ilmainen. Isälle, saunojalle, mökkeilijälle ja pikkujouluihin."
         canonical={`${URL_POHJA}/paketit`}
-        breadcrumbs={[{ name: "Etusivu", url: `${URL_POHJA}/` }, { name: "Paketit", url: `${URL_POHJA}/paketit` }]}
+        breadcrumbs={[{ name: "Etusivu", url: `${URL_POHJA}/` }, { name: "Lahjapaketit", url: `${URL_POHJA}/paketit` }]}
       />
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3 flex items-center gap-3">
-        <Package className="h-8 w-8 text-primary" /> Paketit
+        <Package className="h-8 w-8 text-primary" /> Lahjapaketit
       </h1>
-      <p className="text-muted-foreground mb-8 max-w-2xl">
-        Sama teksti paitana ja huppariin: toinen arkeen, toinen viileisiin iltoihin. Kun paketin molemmat tuotteet ovat
-        korissa, mahdollinen pakettialennus vähennetään kassalla automaattisesti.
+      <p className="text-muted-foreground mb-3 max-w-2xl">
+        Lahjapaketissa on kaksi saman aiheen t-paitaa. Valitset kummallekin koon ja värin, ja molemmat menevät koriin
+        yhdellä painalluksella. Paketin hinta on 5 % pienempi kuin erikseen, ja kassa vähentää alennuksen automaattisesti.
       </p>
+      <IlmainenToimitus className="mb-8" />
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="h-64" />)}</div>
       ) : (
@@ -72,7 +82,9 @@ export const BundlesPage = () => {
               </div>
               <div className="p-4 space-y-2">
                 <p className="font-medium text-foreground group-hover:text-primary transition-colors">{t.paketti.nimi}</p>
-                <Hinta yhteensa={t.yhteensa} pakettihinta={t.pakettihinta} alennusVoimassa={t.alennusVoimassa} prosentti={t.paketti.alennus_prosentti} />
+                {t.paketti.kuvaus && <p className="text-sm text-muted-foreground">{t.paketti.kuvaus}</p>}
+                <Hinta yhteensa={t.yhteensa} pakettihinta={t.pakettihinta} alennusVoimassa={t.alennusVoimassa} />
+                {t.ilmainenToimitus && <IlmainenToimitus />}
               </div>
             </Link>
           ))}
@@ -165,17 +177,19 @@ export const BundlePage = () => {
     <div className="container py-8 md:py-12 max-w-5xl">
       <SEOHead
         title={`${t.paketti.nimi} | Huumorikauppa.fi`}
-        description={`${t.paketti.nimi}: sama teksti paitana ja huppariin. Valitse koot ja lisää molemmat koriin kerralla.`}
+        description={`${t.paketti.nimi}: ${t.paketti.kuvaus ?? "kaksi tuotetta yhdessä paketissa."} Valitse koot ja lisää molemmat koriin kerralla. Toimitus ilmainen.`}
         canonical={`${URL_POHJA}/paketit/${t.paketti.slug}`}
         noindex={true}
         breadcrumbs={[
           { name: "Etusivu", url: `${URL_POHJA}/` },
-          { name: "Paketit", url: `${URL_POHJA}/paketit` },
+          { name: "Lahjapaketit", url: `${URL_POHJA}/paketit` },
           { name: t.paketti.nimi, url: `${URL_POHJA}/paketit/${t.paketti.slug}` },
         ]}
       />
-      <Link to="/paketit" className="text-sm text-muted-foreground hover:text-primary">Kaikki paketit</Link>
-      <h1 className="font-display text-3xl md:text-4xl text-foreground mt-2 mb-6">{t.paketti.nimi}</h1>
+      <Link to="/paketit" className="text-sm text-muted-foreground hover:text-primary">Kaikki lahjapaketit</Link>
+      <h1 className="font-display text-3xl md:text-4xl text-foreground mt-2 mb-2">{t.paketti.nimi}</h1>
+      {t.paketti.kuvaus && <p className="text-muted-foreground mb-3">{t.paketti.kuvaus}</p>}
+      {t.ilmainenToimitus && <IlmainenToimitus className="mb-6" />}
       <div className="grid gap-6 md:grid-cols-2">
         {t.tuotteet.map((p) => {
           const v = valinta(p);
@@ -208,6 +222,7 @@ export const BundlePage = () => {
           {t.alennusVoimassa && (
             <p className="text-xs text-muted-foreground">Pakettialennus {t.paketti.alennus_prosentti} % vähennetään kassalla, kun molemmat tuotteet ovat korissa. Ei yhdistetä alennuskoodeihin.</p>
           )}
+          {t.ilmainenToimitus && <p className="text-xs font-semibold text-primary">Toimitus ilmainen: paketissa on kaksi tuotetta.</p>}
         </div>
         <Button size="lg" onClick={lisaa} className="bg-primary text-primary-foreground font-bold">
           Lisää molemmat koriin <ArrowRight className="h-4 w-4 ml-2" />
