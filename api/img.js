@@ -51,6 +51,14 @@ export default async function handler(req, res) {
     return res.status(403).send('Host not allowed');
   }
 
+  // Lähikuva painatuksesta (2.11.2026, api/_lib/lahikuva.js): hk_lahi=paita|huppari mockupin osoitteessa. Haetaan
+  // Printifyltä 2048 px:n mockup (?s=2048), jotta rajaus on tarkka.
+  const lahi = target.searchParams.get('hk_lahi');
+  if (lahi) {
+    target.searchParams.delete('hk_lahi');
+    if (target.hostname === 'images-api.printify.com') target.searchParams.set('s', '2048');
+  }
+
   try {
     const upstream = await fetch(target.toString(), {
       headers: { 'User-Agent': 'Mozilla/5.0 (huumorikauppa-image-proxy)' },
@@ -68,6 +76,20 @@ export default async function handler(req, res) {
     res.setHeader('Vary', 'Accept');
     const leveys = valitseLeveys(req.query.w);
     const webp = haluaaWebp(req.headers?.accept);
+
+    if (lahi) {
+      try {
+        const { default: sharp } = await import('sharp');
+        const { teeLahikuva } = await import('./_lib/lahikuva.js');
+        const kuva = await teeLahikuva(sharp, inputBuffer, Math.min(leveys, 1200), { huppari: lahi === 'huppari' });
+        const out = await (webp ? kuva.webp({ quality: 82 }) : kuva.jpeg({ quality: 86, mozjpeg: true })).toBuffer();
+        res.setHeader('Content-Type', webp ? 'image/webp' : 'image/jpeg');
+        res.setHeader('Cache-Control', CACHE_ONNISTUNUT);
+        return res.status(200).send(out);
+      } catch (err) {
+        console.error('lähikuva FAILED, käytetään koko mockupia:', err);
+      }
+    }
 
     try {
       const out = await transcodeWithSharp(inputBuffer, leveys, webp);

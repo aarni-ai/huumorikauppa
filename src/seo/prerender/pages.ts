@@ -5,6 +5,7 @@ import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
  *
  * Ajetaan buildissa scripts/prerender.mjs:n kautta (Viten ssrLoadModule), testataan vitestillä.
  */
+import { lisaaLahikuva } from "@/lib/lahikuva";
 import { PRODUCT_IMAGE_SIZES, defaultColorImages, productImageSources } from "@/lib/productImages";
 import { categories } from "@/data/products";
 import { CATEGORY_H1, CATEGORY_H2_SECTIONS, CATEGORY_PAGE_CONTENT, selectCategoryProducts } from "@/data/categoryContent";
@@ -749,7 +750,8 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
   });
   const related = all.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 8);
   // Pääkuva samalla valinnalla ja srcsetillä kuin ProductPage (oletusvärin ensimmäinen kuva).
-  const mainImage = productImageSources(defaultColorImages(product)[0]);
+  // Sama ensimmäinen kuva kuin tuotesivulla (lähikuva painatuksesta, src/lib/lahikuva.ts), jotta preload osuu.
+  const mainImage = productImageSources(lisaaLahikuva(product, defaultColorImages(product))[0]);
   return {
     path,
     title: override?.seoTitle ?? `${product.name} | Huumorikauppa`,

@@ -46,6 +46,7 @@ import { revealApp } from "@/lib/prerenderPreview";
 import { useOikeatArviot } from "@/hooks/use-oikeat-arviot";
 import { trackViewItem } from "@/lib/analytics";
 import { aloitaTuoteseuranta, kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
+import { lisaaLahikuva } from "@/lib/lahikuva";
 import { painetaanEUssa } from "../../api/_lib/materiaali.js";
 import { mittataulukko } from "@/data/mittataulukot";
 import { MittaTaulukko } from "@/components/SizeGuide";
@@ -353,12 +354,13 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // Ennen kuin oletusväri on asetettu (efekti yllä), kuvat näytetään jo oletusvärille: ensimmäinen
   // renderöinti käyttää samaa pääkuvaa kuin esirenderöinnin preload (ei turhaa toista latausta).
   const imageColor = selectedColor ?? (product ? defaultImageColor(product) : undefined);
+  // Ensimmäinen kuva lähikuvana painatuksesta (src/lib/lahikuva.ts): 50 suosituinta ja uudet mallit.
   const currentImages = useMemo(() => {
     if (imageColor) {
       const variantImgs = (variantImages[imageColor] || []).filter(Boolean);
-      if (variantImgs.length > 0) return variantImgs;
+      if (variantImgs.length > 0) return lisaaLahikuva(product, variantImgs);
     }
-    return (product?.images || []).filter(Boolean);
+    return lisaaLahikuva(product, (product?.images || []).filter(Boolean));
   }, [imageColor, variantImages, product]);
 
   useEffect(() => {
@@ -700,7 +702,6 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {LISATUOTE_KATEGORIAT.includes(product.category) && (
               <p className="mt-1 text-xs text-muted-foreground">Tarra myydään t-paidan, hupparin tai julisteen lisänä samassa tilauksessa.</p>
             )}
-            {onYritysNostoTuote(product.slug) && <YritysNosto className="mt-3" />}
           </div>
 
           {/* Images */}
@@ -957,6 +958,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             <SameDesignLinks product={product} all={allProducts} />
 
             <MaksuJaToimitus />
+            {/* Yritysnosto ostoalueen alla (2.11.2026): ennen otsikon ja kuvan välissä se täytti mobiilin ensinäkymän. */}
+            {onYritysNostoTuote(product.slug) && <YritysNosto className="mt-3" />}
 
             <DeliveryBadge supplier={product.supplier} className="w-fit" />
 
