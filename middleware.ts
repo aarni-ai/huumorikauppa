@@ -17,6 +17,7 @@ import { buildBreadcrumbJsonLd, buildProductJsonLd, serializeJsonLd } from './sr
 import { kategoriaPolku, onPiilotettuTuote } from './src/lib/hiddenCategories.js';
 import { kaksoiskappaleenPerusslug } from './api/_lib/kaksoiskappaleet.js';
 import { euOhjausKohde } from './api/_lib/eu-reititys.js';
+import { hakuotsikko } from './api/_lib/hakuotsikko.js';
 import { proxiedImage } from './src/lib/imageProxy.js';
 import { isPrerenderedHtml } from './src/seo/prerenderDetect.js';
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from './src/config/toimitus.js';
@@ -862,7 +863,7 @@ export default async function middleware(request: Request): Promise<Response | u
     if (product) {
       const catName = CATEGORY_NAMES[product.category] || product.category;
       meta = {
-        title: `${product.name} - ${catName} | Huumorikauppa.fi`,
+        title: hakuotsikko(product),
         description: `${product.name} - hauska ${catName.toLowerCase()} lahjaksi tai itselle. Korkealaatuinen, painetaan tilauksesta. Hinta ${product.price.toFixed(2).replace('.', ',')} €. Tilaa nyt Huumorikauppa.fi:stä.`,
       };
       productData = { ...product, categoryName: catName };
