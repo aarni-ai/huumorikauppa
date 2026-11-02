@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { TOIMITUS, ILMAINEN_TOIMITUS_RAJA } from "../../api/_lib/vakiot.js";
-import { KASITTELY, KULJETUS, lisaaKentat, onJoulutuote, sesonki, teemaluokka } from "../../api/_lib/syote-lisakentat.js";
+import { KASITTELY, KULJETUS, KULJETUS_TYYPEITTAIN, lisaaKentat, onJoulutuote, sesonki, teemaluokka } from "../../api/_lib/syote-lisakentat.js";
 import { korjaaItem, saatavatKoot } from "../../api/_lib/syote-korjaukset.js";
 import { JOULUMALLISTO_SLUGIT } from "@/data/joulumallisto2026";
-import { KASITTELYAIKA_MAX_ARKIPAIVAA, KASITTELYAIKA_MIN_ARKIPAIVAA, KULJETUSAIKA_MAX_ARKIPAIVAA, KULJETUSAIKA_MIN_ARKIPAIVAA } from "@/config/toimitus";
+import { KASITTELYAIKA_MAX_ARKIPAIVAA, KASITTELYAIKA_MIN_ARKIPAIVAA, KULJETUSAIKA_MAX_ARKIPAIVAA, KULJETUSAIKA_MIN_ARKIPAIVAA, toimitusaikaKategorialle } from "@/config/toimitus";
 
 const item = (hinta: string) => `<item>
       <g:id>a1</g:id>
@@ -18,7 +18,7 @@ const item = (hinta: string) => `<item>
 
 describe("Merchant-syötteen lisäkentät", () => {
   it("toimitus kassan säännöllä: toimitusmaksu rajan alle, ilmainen rajasta alkaen", () => {
-    expect(lisaaKentat(item("24.90"))).toMatch(new RegExp(`<g:price>${TOIMITUS.toFixed(2).replace(".", "\\.")} EUR</g:price>\\s*<g:min_handling_time>1</g:min_handling_time>[\\s\\S]*?<g:max_transit_time>6</g:max_transit_time>\\s*</g:shipping>`));
+    expect(lisaaKentat(item("24.90"))).toMatch(new RegExp(`<g:price>${TOIMITUS.toFixed(2).replace(".", "\\.")} EUR</g:price>\\s*<g:min_handling_time>1</g:min_handling_time>[\\s\\S]*?<g:max_transit_time>12</g:max_transit_time>\\s*</g:shipping>`));
     expect(lisaaKentat(item("24.90"))).toContain("<g:shipping_label>vakiotoimitus</g:shipping_label>");
     expect(lisaaKentat(item(ILMAINEN_TOIMITUS_RAJA.toFixed(2)))).toMatch(/<g:price>0\.00 EUR<\/g:price>[\s\S]*?<\/g:shipping>/);
   });
@@ -40,6 +40,14 @@ describe("Merchant-syötteen laatu 2.11.2026", () => {
   it("käsittely- ja kuljetusaika samat kuin src/config/toimitus.ts", () => {
     expect(KASITTELY).toEqual([KASITTELYAIKA_MIN_ARKIPAIVAA, KASITTELYAIKA_MAX_ARKIPAIVAA]);
     expect(KULJETUS).toEqual([KULJETUSAIKA_MIN_ARKIPAIVAA, KULJETUSAIKA_MAX_ARKIPAIVAA]);
+    // Tuotetyypeittäin: käsittely + kuljetus = sivuston "perillä X-Y arkipäivässä".
+    const summa = (k: number[]) => [KASITTELY[0] + k[0], KASITTELY[1] + k[1]];
+    expect(summa(KULJETUS_TYYPEITTAIN.tpaita)).toEqual([...toimitusaikaKategorialle("t-paidat")]);
+    for (const k of ["hupparit", "seinataulut", "tarrat"]) expect(summa(KULJETUS_TYYPEITTAIN.muu), k).toEqual([...toimitusaikaKategorialle(k)]);
+    const item = (nimi: string, slug: string) => lisaaKentat(`<item><g:title>${nimi}</g:title><g:link>https://huumorikauppa.fi/tuote/${slug}</g:link><g:price>27.90 EUR</g:price><g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Shirts &amp; Tops</g:google_product_category><g:shipping><g:country>FI</g:country><g:price>6.90 EUR</g:price></g:shipping></item>`);
+    expect(item("Sauna | T-paita", "sauna-t-paita")).toContain("<g:min_transit_time>3</g:min_transit_time>");
+    expect(item("Sauna | Huppari", "sauna-huppari")).toContain("<g:min_transit_time>4</g:min_transit_time>");
+    expect(item("Sauna | Huppari", "sauna-huppari")).toContain("<g:max_transit_time>12</g:max_transit_time>");
   });
   it("jokainen joulumalliston 2026 tuote ja muut jouluaiheiset saavat custom_label_3 joulu2026", () => {
     expect(JOULUMALLISTO_SLUGIT.length).toBeGreaterThan(0);

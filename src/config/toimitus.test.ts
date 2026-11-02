@@ -49,7 +49,8 @@ describe("toimitusehdot yhdessä konfiguraatiossa", () => {
     expect(toimitus.TOIMITUSMAKSU_TEKSTI).toBe(toimitus.euroluku(toimitus.TOIMITUSMAKSU));
     expect(toimitus.toimitusmaksuSummalle(toimitus.ILMAINEN_TOIMITUS_RAJA)).toBe(0);
     expect(toimitus.toimitusmaksuSummalle(toimitus.ILMAINEN_TOIMITUS_RAJA - 0.01)).toBe(toimitus.TOIMITUSMAKSU);
-    expect(toimitus.TOIMITUSAIKA_TEKSTI).toBe("3-10");
+    expect(toimitus.TOIMITUSAIKA_TEKSTI).toBe("4-15");
+    expect(toimitus.TOIMITUSAIKA_TYYPEITTAIN_LAUSE).toBe("T-paidat ovat perillä 4-15 arkipäivässä ja hupparit 5-15 arkipäivässä tilauksesta.");
   });
 
   it("kassan vakiot (api/_lib/vakiot.js) ovat samat", () => {

@@ -443,7 +443,7 @@ export const situationGifts: SituationGift[] = [
     emoji: "☀️",
     seoTitle: "Hauskat juhannuslahjat 2026 | Huumorikauppa.fi",
     seoDescription: "Hauskat juhannuslahjat ja kesälahjat 2026! Paidat, koristeet ja mökkihuumori. Sopii myös mökinomistajalle 🔥",
-    intro: `Juhannus on suomalaisen kesän kohokohta: kokko, mökki, sauna ja hauskat lahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen juhannusta.`,
+    intro: `Juhannus on suomalaisen kesän kohokohta: kokko, mökki, sauna ja hauskat lahjat. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kolme viikkoa ennen juhannusta.`,
     keywords: ["juhannus", "kesä", "mökki", "sauna", "kokko", "kesämökki"],
     categories: ["t-paidat", "tarrat"],
   },

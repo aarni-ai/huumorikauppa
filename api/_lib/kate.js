@@ -32,7 +32,7 @@ export const ALENNUS_KATE_RAJA = 0.3;
 export const HINNOITTELU_KATE = 0.4;
 export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
-import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, PRINTIFY_ALV_VAHENNETTAVA, PAKETTI_MIN_KATE_EUROA, toimitusmaksu as toimitusmaksuTilaukselle } from "./vakiot.js";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, PRINTIFY_ALV_VAHENNETTAVA, PAKETTI_MIN_KATE_EUROA, TILAUKSEN_MIN_KATE_EUROA, toimitusmaksu as toimitusmaksuTilaukselle } from "./vakiot.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { tuotepohja } from "./materiaali.js";
 
@@ -245,6 +245,31 @@ export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRI
     nettokate: Math.round(nettokate * 100) / 100,
     kate: myyntiAlv0 > 0 ? Math.round((nettokate / myyntiAlv0) * 1000) / 1000 : -1,
   };
+}
+
+/**
+ * Toimitusmaksun portaat (2.11.2026): kun ilmainen toimitus (kaksi tuotetta tai ilmaisen toimituksen raja) jättäisi tilauksen nettokatteen
+ * alle TILAUKSEN_MIN_KATE_EUROA (7 €), toimitus on pienin porras, jolla raja täyttyy, enintään tavallinen toimitusmaksu.
+ * Esimerkki: 24,90 €:n t-paita + keraaminen koriste jäisi ilmaisella toimituksella 3,73 €:oon (KATTEET.md).
+ */
+export const TOIMITUS_PORTAAT = [0, 2.9, 4.9, TOIMITUS];
+
+/**
+ * Tilauksen toimitusmaksu katevahdilla. Sama sääntö kassalla (api/_lib/kassa.js) ja korissa (src/lib/ostoskori.ts).
+ * osat [{ tuote, varianttiId, maara, yksikkohinta }] yksikköhinnat alennuskoodin jälkeen. Palauttaa
+ * { maksu, tavallinen (vakiot.js toimitusmaksu ilman katevahtia), rajattu (maksu on suurempi kuin tavallinen) }.
+ * Jos kuluja ei tunneta, maksu on tavallinen (kassa hylkää tuntemattoman kulun muutenkin).
+ */
+export function toimitusmaksuKatteella({ summa, kpl, alennus = false, osat }) {
+  const tavallinen = toimitusmaksuTilaukselle({ summa, kpl, alennus });
+  if (tavallinen >= TOIMITUS || !Array.isArray(osat) || osat.length === 0) return { maksu: tavallinen, tavallinen, rajattu: false };
+  for (const maksu of TOIMITUS_PORTAAT) {
+    if (maksu < tavallinen) continue;
+    const k = laskeTilauksenNettokate(osat, maksu);
+    if (!k.tunnettu) return { maksu: tavallinen, tavallinen, rajattu: false };
+    if (k.nettokate >= TILAUKSEN_MIN_KATE_EUROA) return { maksu, tavallinen, rajattu: maksu !== tavallinen };
+  }
+  return { maksu: TOIMITUS, tavallinen, rajattu: true };
 }
 
 /** Myytävät variantit [avain "Väri|Koko", id] (unavailable_variants ohitetaan, kuten kassa). */

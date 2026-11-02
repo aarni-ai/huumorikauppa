@@ -16,8 +16,8 @@ import { kauppaUrl, peruutusLinkki, peruutusOtsakkeet, tervetuloViesti, lahetysr
 import { pgMarkkinointi } from "./markkinointi-db.js";
 
 /** Joulun viimeiset tilauspäivät (campaignSchedule.ts joulunTilauspaivaTyypille; testi vertaa). */
-export const JOULU_TILAUSPAIVA = "2026-12-01";
-export const JOULU_TPAITA_TILAUSPAIVA = "2026-12-04";
+export const JOULU_TILAUSPAIVA = "2026-12-02";
+export const JOULU_TPAITA_TILAUSPAIVA = "2026-12-02";
 
 const VIIKONPAIVA = ["su", "ma", "ti", "ke", "to", "pe", "la"];
 /** "2026-12-01" -> "ti 1.12." */
@@ -39,7 +39,9 @@ const nappi = (url, teksti) => `<p><a href="${esc(url)}" style="display:inline-b
 const tuotelista = (tuotteet, kampanja) => `<ul>${tuotteet.map(([slug, nimi]) => `<li><a href="${esc(utm(`/tuote/${slug}`, kampanja))}">${esc(nimi)}</a></li>`).join("")}</ul>`;
 const tekstilista = (tuotteet, kampanja) => tuotteet.map(([slug, nimi]) => `${nimi}: ${utm(`/tuote/${slug}`, kampanja)}`).join("\n");
 
-const AIKATAULU = `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${lyhytPaiva(JOULU_TPAITA_TILAUSPAIVA)} Hupparit ja muut tuotteet tilaa viimeistään ${lyhytPaiva(JOULU_TILAUSPAIVA)}`;
+const AIKATAULU = JOULU_TPAITA_TILAUSPAIVA === JOULU_TILAUSPAIVA
+  ? `T-paidat, hupparit ja julisteet ehtivät jouluksi, kun tilaat viimeistään ${lyhytPaiva(JOULU_TILAUSPAIVA)}`
+  : `T-paidat ehtivät jouluksi, kun tilaat viimeistään ${lyhytPaiva(JOULU_TPAITA_TILAUSPAIVA)} Hupparit ja muut tuotteet tilaa viimeistään ${lyhytPaiva(JOULU_TILAUSPAIVA)}`;
 
 /** Joulukampanjan viestit: lähetysikkuna [alku, loppu] Suomen aikaa (päivät mukaan lukien), klo 9 alkaen. */
 export const JOULUKAMPANJA = [

@@ -21,7 +21,7 @@ import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { jouluAvain } from "@/data/jouluAikataulu";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
-import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { toimitusaikaKorille } from "@/config/toimitus";
 import { naytettavaTeksti } from "../../api/_lib/logopaita.js";
 
 const CartPage = () => {
@@ -90,7 +90,7 @@ const CartPage = () => {
           </div>
           <p className="text-xs text-muted-foreground mt-1">Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta{tila.summa !== totalPrice ? " (lahjakortit eivät kerrytä rajaa)" : ""}.</p>
           {/* Lisätuote, joka kuroo puuttuvan summan umpeen (src/lib/lisatarra.ts, KATTEET.md 28.10.2026) */}
-          {tila.puuttuuKpl === 0 && <MittarinLisatuote items={items} kaikki={allProducts} className="mt-3" />}
+          {tila.puuttuuKpl === 0 && !tila.rajattu && <MittarinLisatuote items={items} kaikki={allProducts} className="mt-3" />}
         </div>
       ) : (
         <div className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 flex items-center gap-2">
@@ -246,7 +246,7 @@ const CartPage = () => {
               <p>
                 AliExpress-tuotteiden toimitusaika on n. 2–4 viikkoa.
                 {items.some((i) => i.product.supplier !== "aliexpress")
-                  ? ` Muut tuotteesi (${TOIMITUSAIKA_TEKSTI} arkipäivää) toimitetaan eri paketissa eri aikataululla.`
+                  ? ` Muut tuotteesi (perillä ${toimitusaikaKorille(items.filter((i) => i.product.type !== "giftcard" && i.product.supplier !== "aliexpress").map((i) => i.product.category))} arkipäivässä) toimitetaan eri paketissa eri aikataululla.`
                   : ""}
               </p>
             </div>
@@ -269,7 +269,7 @@ const CartPage = () => {
 
           <div className="text-center text-xs text-muted-foreground space-y-1">
             <p>🔒 Turvallinen SSL-suojattu maksu</p>
-            <p>🚚 Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</p>
+            <p>🚚 Perillä {toimitusaikaKorille(items.filter((i) => i.product.type !== "giftcard" && i.product.supplier !== "aliexpress").map((i) => i.product.category))} arkipäivässä</p>
             <p>↩️ 14 pv palautusoikeus</p>
           </div>
         </div>

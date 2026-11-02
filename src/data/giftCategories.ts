@@ -203,7 +203,7 @@ Isänpäivä on marraskuun toinen sunnuntai. Se on päivä jolloin isä ansaitse
 
 ## Tilaa isänpäivälahja ajoissa
 
-Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen.`,
+Tilaa viimeistään 3 viikkoa ennen isänpäivää. Toimitamme ${TOIMITUSAIKA_TEKSTI} arkipäivässä koko Suomeen.`,
     relatedBlogSlugs: ["hauskat-isanpaivalahjat-opas", "parhaat-hauskat-lahjat-miehelle"],
   },
   {
@@ -241,7 +241,7 @@ Tilaa viimeistään 2 viikkoa ennen isänpäivää. Toimitamme ${TOIMITUSAIKA_TE
 
 ## Tilaa äitienpäivälahja ajoissa
 
-Tilaa viimeistään 2 viikkoa ennen äitienpäivää.`,
+Tilaa viimeistään 3 viikkoa ennen äitienpäivää.`,
     relatedBlogSlugs: ["hauska-aitienpaivalahja-opas", "hauskat-lahjat-naiselle-opas"],
   },
   {

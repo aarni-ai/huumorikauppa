@@ -27,9 +27,13 @@ export function kateluokka(kate) {
 // kaatuu, jos arvot eroavat; Vercel-funktio ei tuo TypeScript-tiedostoa src/:stä.
 export const ILMAINEN_RAJA = 79;
 export const TOIMITUS = 6.9;
-// Peili: src/config/toimitus.ts KASITTELYAIKA_MIN/MAX ja KULJETUSAIKA_MIN/MAX (src/test/syote.test.ts vertaa).
-export const KASITTELY = [1, 4];
-export const KULJETUS = [2, 6];
+// Peili: src/config/toimitus.ts KASITTELYAIKA_MIN/MAX, KULJETUSAIKA_MIN/MAX ja TOIMITUSAJAT_TYYPEITTAIN
+// (src/test/syote.test.ts vertaa). 2.11.2026: toteutuneet toimitukset ja Printifyn aika Suomeen, t-paidat 4-15 ja
+// hupparit, julisteet ja tarrat 5-15 arkipäivää; KULJETUS on koko kaupan vaihteluväli.
+export const KASITTELY = [1, 3];
+export const KULJETUS = [3, 12];
+/** Kuljetusaika tuotetyypeittäin [min, max] (kokonaisaika - KASITTELY). Muut kuin t-paidat: hitaampi alaraja. */
+export const KULJETUS_TYYPEITTAIN = { tpaita: [3, 12], muu: [4, 12] };
 
 const TUOTETYYPIT = [
   [/T-Shirts/, "Vaatteet > T-paidat"],
@@ -108,16 +112,18 @@ export function lisaaKentat(item, { nyt = new Date(), kate = null, kateluokat = 
   const toimitus = hinta >= ILMAINEN_RAJA ? 0 : TOIMITUS;
   const gkat = (kentta(item, "google_product_category") || "").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
   const tyyppi = (TUOTETYYPIT.find(([re]) => re.test(gkat)) || [null, "Hauskat lahjat"])[1];
-  // Toimitusaika 3-10 arkipäivää (src/config/toimitus.ts): käsittely 1-4 ja kuljetus 2-6 arkipäivää, samat kuin
-  // tuotesivujen OfferShippingDetails (KASITTELYAIKA_*, KULJETUSAIKA_*; aiemmin syötteessä 2-5 ja 1-5).
+  // Toimitusaika tuotetyypeittäin (src/config/toimitus.ts TOIMITUSAJAT_TYYPEITTAIN): käsittely 1-3 ja kuljetus
+  // t-paidoilla 3-12, muilla 4-12 arkipäivää (2.11.2026; aiemmin 1-4 ja 2-6 eli 3-10).
+  const tpaita = /T-paidat/.test(tyyppi) || /t-paita/i.test(`${slugLinkista(item)} ${kentta(item, "title") || ""}`);
+  const kuljetus = tpaita ? KULJETUS_TYYPEITTAIN.tpaita : KULJETUS_TYYPEITTAIN.muu;
   let out = item.replace(/<g:shipping>[\s\S]*?<\/g:shipping>/, `<g:shipping>
         <g:country>FI</g:country>
         <g:service>Posti kotiinkuljetus</g:service>
         <g:price>${toimitus.toFixed(2)} EUR</g:price>
         <g:min_handling_time>${KASITTELY[0]}</g:min_handling_time>
         <g:max_handling_time>${KASITTELY[1]}</g:max_handling_time>
-        <g:min_transit_time>${KULJETUS[0]}</g:min_transit_time>
-        <g:max_transit_time>${KULJETUS[1]}</g:max_transit_time>
+        <g:min_transit_time>${kuljetus[0]}</g:min_transit_time>
+        <g:max_transit_time>${kuljetus[1]}</g:max_transit_time>
       </g:shipping>`);
   out = jarjestaLisakuvat(out);
   const lisat = [];

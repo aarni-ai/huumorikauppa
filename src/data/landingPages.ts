@@ -941,7 +941,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska pikkujoululahja on lahja, joka naurattaa koko porukkaa, kun se avataan muiden edessä: toimistohuumoria, yhteinen vitsi tai pikkujouluaiheinen huppari.",
       "Pieneen lahjanvaihtoon sopii koriste. Isompaan sopivat toimistohuumorin t-paidat, kuten Tärkeintä työssä on lounastauko.",
-      `Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlaa.`,
+      `Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen juhlaa.`,
     ],
     faqs: [
       {
@@ -954,7 +954,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa pikkujoululahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen pikkujouluja.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen pikkujouluja.`,
       },
       {
         q: "Mikä sopii lahjaksi tuntemattomalle työkaverille?",
@@ -1261,7 +1261,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja 30-vuotiaalle miehelle on 30v-paita tai -huppari, jonka teksti nauraa kolmenkympin rajapyykille: 30 nuori, villi ja jo väsynyt, 30v selkä alkaa jo rusahdella tai 30 ja liian vanha tyhmyyksiin, teen ne silti.",
       "Kolmekymppisen vitsi toimii, koska se on puoliksi totta. Juhlat venyvät yhä, mutta palautuminen kestää pidempään, ja kaveriporukka tunnistaa tilanteen heti. Jos sankari ottaa iän kevyesti, valitse rusahteleva selkä tai väsynyt villimies. Jos hän pitää enemmän kehuista, 30v paranen iän myötä kuin viini on varma valinta.",
-      `Kaikki tämän sivun tuotteet ovat 30-vuotistekstejä t-paitoina ja huppareina. Paidat painetaan tilauksesta, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa noin kaksi viikkoa ennen juhlia.`,
+      `Kaikki tämän sivun tuotteet ovat 30-vuotistekstejä t-paitoina ja huppareina. Paidat painetaan tilauksesta, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
     ],
     faqs: [
       {
@@ -1318,7 +1318,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa lahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
       },
       {
         q: "Paljonko 40v-paita maksaa?",
@@ -1374,7 +1374,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa tilaus pitää tehdä?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
       },
     ],
     extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Opas: 50v lahja miehelle" }, { href: "/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea", label: "Mitä antaa 50-vuotiaalle, jolla on jo kaikkea" }],
@@ -1393,7 +1393,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja 60-vuotiaalle miehelle on 60v-paita tai -huppari, jonka teksti kehuu kokemusta tai liioittelee kuntoa, kuten 60v takuu mennyt, toimii silti.",
       "Valikoimassa on useita 60-vuotisaiheita, ja useimmista on sekä t-paita että huppari. Jos 60-vuotias on jäämässä eläkkeelle, eläkelahjoissa ovat Olen eläkkeellä ja muut eläketekstit.",
-      `60-vuotislahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+      `60-vuotislahja kannattaa tilata vähintään kolme viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1438,7 +1438,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja 70-vuotiaalle on paita, jossa ikä on sivuseikka, kuten 70 vuotta, mitä siitä, tai eläkepäivistä nauttiva teksti, kuten Eläkkeellä, kiireinen tekemään ei mitään.",
       "70-vuotiaalle isälle tai isoisälle sopivat ukki- ja pappa-paidat sekä Museokamaa. Eläkeläistekstit eivät ole sukupuolisidonnaisia, joten ne käyvät myös 70-vuotiaalle naiselle.",
-      `Jos juhlija kalastaa tai mökkeilee, harrastuspaidat ovat sivulla Hauskat lahjat harrastajalle. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+      `Jos juhlija kalastaa tai mökkeilee, harrastuspaidat ovat sivulla Hauskat lahjat harrastajalle. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
     ],
     faqs: [
       {
@@ -1474,7 +1474,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja 50-vuotiaalle naiselle on 50v-paita tai -huppari, jonka teksti kehuu, kuten 50 vuotta nuori tai 50 ja hopeanhohtoinen (vain hiukset).",
       "Naiselle valittu ikävitsi toimii, kun se on hänen puolellaan: tekstit kuten 50v puoli vuosisataa, ei naarmuakaan nauravat iälle eivätkä ulkonäölle. Äidille 50-vuotislahjaksi sopii myös Super äiskä -huppari.",
-      `Huppari on t-paitaa näyttävämpi juhlalahja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+      `Huppari on t-paitaa näyttävämpi juhlalahja. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
     ],
     faqs: [
       {
@@ -1543,7 +1543,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa lahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
       },
     ],
     extraLinks: [{ href: "/personoitu-paita", label: "Personoitu paita nimellä ja iällä" }, { href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Opas: hauska lahja 60-vuotiaalle naiselle" }],
@@ -1564,7 +1564,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska eläkelahja on paita tai huppari, joka juhlii vapautta työstä, kuten Olen eläkkeellä, Eläkkeellä, kiireinen tekemään ei mitään tai 40 vuotta töitä, nyt ikuinen viikonloppu.",
       `Eläketekstit eivät ole sukupuolisidonnaisia, joten sama lahja käy eläkkeelle jäävälle miehelle ja naiselle. Työkavereiden yhteislahjaksi sopii huppari, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
-      `Eläkejuhliin tilaa vähintään kaksi viikkoa etukäteen, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+      `Eläkejuhliin tilaa vähintään kolme viikkoa etukäteen, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -1607,7 +1607,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja isoisälle on paita tai huppari, jossa lukee ukki tai pappa, sillä teksti kertoo suoraan, keneltä lahja tulee.",
       "Eläkkeellä olevalle isoisälle sopivat Museokamaa- ja eläkeläisaiheet, kalastavalle KALAMIES. Vaari-tekstiä valikoimassa ei ole, joten vaarille valitse personoitava Lempinimi-paita omalla tekstillä.",
-      `Syntymäpäivälahjaksi tilaa vähintään kaksi viikkoa ennen juhlaa. Joululahjaksi: ${D.charAt(0).toLowerCase()}${D.slice(1)}`,
+      `Syntymäpäivälahjaksi tilaa vähintään kolme viikkoa ennen juhlaa. Joululahjaksi: ${D.charAt(0).toLowerCase()}${D.slice(1)}`,
     ],
     faqs: [
       {
@@ -1642,7 +1642,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska lahja isoäidille on tuote, jossa on lastenlasten oma tervehdys, kuten omalla tekstillä painettu huppari, paita tai koriste.",
       "Valmiita mummo- tai isoäiti-tekstejä valikoimassa ei ole. Siksi tälle sivulle on koottu Oma teksti/kuva -tuotteet, joihin kirjoitetaan oma teksti tai kuvatoive, sekä eläkeläisaiheiset paidat, jotka sopivat isoäidille yhtä hyvin kuin isoisälle.",
-      `Syntymäpäivälahjaksi tilaa vähintään kaksi viikkoa etukäteen. ${D}`,
+      `Syntymäpäivälahjaksi tilaa vähintään kolme viikkoa etukäteen. ${D}`,
     ],
     faqs: [
       {
@@ -2072,7 +2072,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     intro: [
       "Hauska syntymäpäivälahja on ikävuosipaita tai -huppari, jossa juhlijan uusi ikä on vitsinä: 30 ja liian vanha tyhmyyksiin (teen ne silti), 40v ei vanha, vintage tai 60v takuu mennyt, toimii silti.",
       "Ikävuosipaitoja on 30-, 40-, 50-, 60- ja 70-vuotiaille. Valitse teksti juhlijan luonteen mukaan: itseironinen juhlija nauraa selkävaivoille, toinen arvostaa kehua kuten 50 vuotta nuori.",
-      `Synttärilahja kannattaa tilata vähintään kaksi viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+      `Synttärilahja kannattaa tilata vähintään kolme viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
     ],
     faqs: [
       {
@@ -2089,7 +2089,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Kuinka ajoissa synttärilahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kaksi viikkoa ennen juhlia.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
       },
     ],
     related: [

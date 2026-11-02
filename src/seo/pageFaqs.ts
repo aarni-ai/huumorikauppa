@@ -216,7 +216,7 @@ const SITUATION_EXTRA_FAQS: FaqItem[] = [
   },
   {
     q: "Ehtiikö lahja perille ajoissa?",
-    a: `${DELIVERY_SHORT} Tilaa siis viimeistään kaksi viikkoa ennen juhlaa. Jouluksi: ${CHRISTMAS_DEADLINE_TEXT.charAt(0).toLowerCase()}${CHRISTMAS_DEADLINE_TEXT.slice(1)}`,
+    a: `${DELIVERY_SHORT} Tilaa siis viimeistään kolme viikkoa ennen juhlaa. Jouluksi: ${CHRISTMAS_DEADLINE_TEXT.charAt(0).toLowerCase()}${CHRISTMAS_DEADLINE_TEXT.slice(1)}`,
   },
 ];
 

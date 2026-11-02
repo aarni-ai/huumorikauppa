@@ -58,6 +58,6 @@ describe("LandingPage (client)", () => {
   it("renders the Christmas deadline page", () => {
     renderAt("/joulun-viimeiset-tilauspaivat", <ChristmasDeadlinePage />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Joulun viimeiset tilauspäivät 2026");
-    expect(screen.getAllByText(/1\.12\.2026/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/2\.12\.2026/).length).toBeGreaterThan(0);
   });
 });

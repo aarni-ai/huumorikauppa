@@ -4,7 +4,7 @@
  * aina kassalla palvelimella.
  */
 import { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS, LISATUOTE_KATEGORIAT, toimitusmaksu } from "../../api/_lib/vakiot.js";
-import { paketinHeikoinNettokate, alennettuSentit } from "../../api/_lib/kate.js";
+import { paketinHeikoinNettokate, alennettuSentit, toimitusmaksuKatteella } from "../../api/_lib/kate.js";
 import { valitseSuositukset as valitseJs, ostetaanYhdessa as ostetaanYhdessaJs, suoraLisays as suoraLisaysJs } from "../../api/_lib/suositukset.js";
 import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import PAKETIT from "../../api/_lib/paketit-data.js";
@@ -47,6 +47,8 @@ export interface ToimitusTila {
   /** Toimitukseen laskettavat tuotteet (ei tarroja, ei lahjakortteja) ja montako puuttuu ilmaisesta toimituksesta. */
   kpl: number;
   puuttuuKpl: number;
+  /** Ilmainen toimitus rajattu katevahdilla: toimitus on pienempi kuin tavallisesti mutta ei 0 € (kate.js toimitusmaksuKatteella). */
+  rajattu: boolean;
 }
 
 /** Toimitukseen laskettavien tuotteiden määrä (sama sääntö kuin kassalla: tarrat ja lahjakortit eivät lasketa). */
@@ -59,27 +61,43 @@ export function toimitusKpl(items: Rivi[]): number {
  * käytössä (kahden tuotteen sääntö ei yhdisty koodiin). Lahjapaketti saa ilmaisen toimituksen; t-paitaparin poikkeus
  * lasketaan kassalla.
  */
-export function toimitusTila(items: Rivi[], { alennus = false }: { alennus?: boolean } = {}): ToimitusTila {
+export function toimitusTila(items: (Rivi & Partial<Pick<CartItem, "selectedSize" | "selectedColor">>)[], { alennus = false }: { alennus?: boolean } = {}): ToimitusTila {
   const summa = fyysinenSumma(items);
   const kpl = toimitusKpl(items);
   const vainLahjakortteja = items.length > 0 && items.every((i) => onLahjakortti(i));
-  const ilmainen = vainLahjakortteja || (summa > 0 && toimitusmaksu({ summa, kpl, alennus }) === 0);
-  const puuttuuKpl = ilmainen || alennus ? 0 : Math.max(0, ILMAINEN_TOIMITUS_KPL - kpl);
+  // Sama katevahti kuin kassalla: korin variantti (väri|koko), muuten kallein variantti (pienin kate).
+  const osat = items.filter((i) => !onLahjakortti(i)).map((i) => {
+    const kartta = (i.product.variants?.variant_map || {}) as Record<string, number>;
+    const suora = kartta[`${(i.selectedColor || "").trim()}|${(i.selectedSize || "").trim()}`];
+    return { tuote: i.product, varianttiId: typeof suora === "number" ? suora : kalleinVariantti(i.product), maara: i.quantity, yksikkohinta: i.product.price };
+  });
+  const maksu = summa > 0 ? toimitusmaksuKatteella({ summa, kpl, alennus, osat }) : { maksu: 0, tavallinen: 0, rajattu: false };
+  const ilmainen = vainLahjakortteja || (summa > 0 && maksu.maksu === 0);
+  const rajattu = !ilmainen && maksu.rajattu;
+  const puuttuuKpl = ilmainen || alennus || rajattu ? 0 : Math.max(0, ILMAINEN_TOIMITUS_KPL - kpl);
   return {
     summa,
-    puuttuu: ilmainen ? 0 : pyorista(ILMAINEN_TOIMITUS_RAJA - summa),
+    puuttuu: ilmainen || rajattu ? 0 : pyorista(ILMAINEN_TOIMITUS_RAJA - summa),
     ilmainen,
-    toimitus: ilmainen || summa === 0 ? 0 : TOIMITUS,
-    edistyminen: ilmainen ? 100 : alennus ? Math.min(100, (summa / ILMAINEN_TOIMITUS_RAJA) * 100) : Math.min(100, (kpl / ILMAINEN_TOIMITUS_KPL) * 100),
+    toimitus: ilmainen || summa === 0 ? 0 : maksu.maksu,
+    edistyminen: ilmainen || rajattu ? 100 : alennus ? Math.min(100, (summa / ILMAINEN_TOIMITUS_RAJA) * 100) : Math.min(100, (kpl / ILMAINEN_TOIMITUS_KPL) * 100),
     vainLahjakortteja,
     kpl,
     puuttuuKpl,
+    rajattu,
   };
 }
+
+/** Katevahdin viesti korissa (toimitusmaksu ja tavallinen maksu euroina, esim. src/test/toimituskate.test.ts). */
+export const toimitusRajattuViesti = (maksu: number): string =>
+  maksu >= TOIMITUS
+    ? `Ilmainen toimitus ei koske tätä tuoteyhdistelmää. Toimitus ${TOIMITUS.toFixed(2).replace(".", ",")} €.`
+    : `Tälle tuoteyhdistelmälle toimitus on ${maksu.toFixed(2).replace(".", ",")} € (tavallisesti ${TOIMITUS.toFixed(2).replace(".", ",")} €).`;
 
 /** Korin viesti: "Vielä 1 tuote ilmaiseen toimitukseen" tai "Vielä 12,10 € ilmaiseen toimitukseen" (tyhjä, kun ilmainen). */
 export function ilmaisenToimituksenViesti(tila: ToimitusTila): string {
   if (tila.ilmainen || tila.vainLahjakortteja || tila.summa === 0) return "";
+  if (tila.rajattu) return toimitusRajattuViesti(tila.toimitus);
   if (tila.puuttuuKpl > 0) return `Vielä ${tila.puuttuuKpl} ${tila.puuttuuKpl === 1 ? "tuote" : "tuotetta"} ilmaiseen toimitukseen`;
   return `Vielä ${tila.puuttuu.toFixed(2).replace(".", ",")} € ilmaiseen toimitukseen`;
 }

@@ -830,7 +830,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}
                   </p>
                 )}
-                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} className="mt-2 text-sm" />
+                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} className="mt-2 text-sm" />
                 <TpaitapariRivi kategoria={product.category} hinta={product.price} className="mt-1" />
               </div>
             </div>
@@ -944,7 +944,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {/* Mobiili (2.11.2026): toimitus, maksu, joulun takaraja ja palautus ostopainikkeen alla, jotta väri, koko ja
                 Lisää koriin mahtuvat 390 x 844 -ensinäkymään (ennen painike alkoi 844 px:n kohdalta, taitteen alla). */}
             <div className="md:hidden space-y-1">
-              <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} compact />
+              <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} compact />
               {(product.category === "t-paidat" || product.category === "hupparit") && (
                 <Link to="/personoitu-paita" className="inline-block text-xs text-primary underline">
                   Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}

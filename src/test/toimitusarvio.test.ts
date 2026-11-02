@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   paasiainen, suomenPyhat, onArkipaiva, lisaaArkipaivia, toimitusarvio, ehtiiJouluksi, joulunViimeinenTilauspaiva,
-  joulunViimeisetTilauspaivat, muotoilePaiva, tanaanSuomessa, toimitusalue,
+  muotoilePaiva, tanaanSuomessa,
 } from "@/lib/toimitusarvio";
+import { JOULU_TILAUSPAIVA_ISO, JOULU_TPAIDAT_ISO } from "@/data/campaignSchedule";
 
 describe("Suomen arkipyhät", () => {
   it("pääsiäinen ja siitä johdetut pyhät", () => {
@@ -32,15 +33,14 @@ describe("Arkipäivälaskenta", () => {
     expect(lisaaArkipaivia("2027-01-05", 1)).toBe("2027-01-07"); // loppiainen ke
     expect(lisaaArkipaivia("2026-12-21", 5)).toBe("2026-12-30"); // 22, 23, 28, 29, 30
   });
-  it("toimitusarvio: tuotanto + kuljetus arkipäivinä", () => {
-    // EU: 2-5 + 4-8 = 6-13 arkipäivää, US: 2-5 + 7-12 = 9-17 arkipäivää
-    expect(toimitusarvio("2026-10-21", "eu")).toEqual({ aikaisin: "2026-10-29", viimeistaan: "2026-11-09" });
-    expect(toimitusarvio("2026-10-21", "us")).toEqual({ aikaisin: "2026-11-03", viimeistaan: "2026-11-13" });
+  it("toimitusarvio: tuotetyypin toimitusaika arkipäivinä (src/config/toimitus.ts)", () => {
+    // T-paidat 4-15, hupparit 5-15 arkipäivää; 31.10.2026 (pyhäinpäivä) on lauantai.
+    expect(toimitusarvio("2026-10-21", "t-paidat")).toEqual({ aikaisin: "2026-10-27", viimeistaan: "2026-11-11" });
+    expect(toimitusarvio("2026-10-21", "hupparit")).toEqual({ aikaisin: "2026-10-28", viimeistaan: "2026-11-11" });
   });
-  it("tuntematon painotalo käyttää hitainta profiilia", () => {
-    expect(toimitusalue({ variants: {} })).toBe("us");
-    expect(toimitusalue({ variants: { toimitusalue: "eu" } })).toBe("eu");
-    expect(toimitusalue(null)).toBe("us");
+  it("tuntematon tuotetyyppi käyttää hitainta aikaa", () => {
+    expect(toimitusarvio("2026-10-21", "tuntematon")).toEqual(toimitusarvio("2026-10-21", "hupparit"));
+    expect(toimitusarvio("2026-10-21", null)).toEqual(toimitusarvio("2026-10-21", "hupparit"));
   });
   it("päivän muotoilu ja Suomen aika", () => {
     expect(muotoilePaiva("2026-11-13")).toBe("pe 13.11.");
@@ -49,23 +49,22 @@ describe("Arkipäivälaskenta", () => {
 });
 
 describe("Joulu", () => {
-  it("viimeiset tilauspäivät 2026", () => {
-    // Laskettu arvio olisi 30.11. (us) ja 6.12. (eu), mutta Printifyn takarajat (src/config/toimitusajat.ts) rajaavat.
-    expect(joulunViimeinenTilauspaiva(2026, "us")).toBe("2026-11-20");
-    expect(joulunViimeinenTilauspaiva(2026, "eu")).toBe("2026-12-01");
-    expect(joulunViimeisetTilauspaivat(2026)).toEqual({ eu: "2026-12-01", us: "2026-11-20" });
+  it("viimeiset tilauspäivät 2026 ovat samat kuin bannerin ja kampanjakalenterin", () => {
+    expect(joulunViimeinenTilauspaiva(2026, "t-paidat")).toBe("2026-12-02");
+    expect(joulunViimeinenTilauspaiva(2026, "hupparit")).toBe("2026-12-02");
+    expect(joulunViimeinenTilauspaiva(2026, "t-paidat")).toBe(JOULU_TPAIDAT_ISO);
+    expect(joulunViimeinenTilauspaiva(2026, "hupparit")).toBe(JOULU_TILAUSPAIVA_ISO);
   });
   it("Ehtii jouluksi vain, kun myöhäisin arvio on viimeistään 23.12.", () => {
-    expect(ehtiiJouluksi("2026-10-21", "us")).toBe(true);
-    expect(ehtiiJouluksi("2026-11-20", "us")).toBe(true);
-    expect(ehtiiJouluksi("2026-11-21", "us")).toBe(false);
-    expect(ehtiiJouluksi("2026-12-01", "eu")).toBe(true);
-    expect(ehtiiJouluksi("2026-12-02", "eu")).toBe(false);
+    expect(ehtiiJouluksi("2026-10-21", "t-paidat")).toBe(true);
+    expect(ehtiiJouluksi("2026-12-02", "t-paidat")).toBe(true);
+    expect(ehtiiJouluksi("2026-12-02", "hupparit")).toBe(true);
+    expect(ehtiiJouluksi("2026-12-03", "t-paidat")).toBe(false);
   });
   it("ei koskaan joulun jälkeen eikä ennen sesonkia", () => {
-    expect(ehtiiJouluksi("2026-12-24", "eu")).toBe(false);
-    expect(ehtiiJouluksi("2026-12-28", "eu")).toBe(false);
-    expect(ehtiiJouluksi("2027-01-10", "eu")).toBe(false);
-    expect(ehtiiJouluksi("2026-06-01", "eu")).toBe(false);
+    expect(ehtiiJouluksi("2026-12-24", "t-paidat")).toBe(false);
+    expect(ehtiiJouluksi("2026-12-28", "t-paidat")).toBe(false);
+    expect(ehtiiJouluksi("2027-01-10", "t-paidat")).toBe(false);
+    expect(ehtiiJouluksi("2026-06-01", "t-paidat")).toBe(false);
   });
 });

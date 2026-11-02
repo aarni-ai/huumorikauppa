@@ -5,7 +5,7 @@
  * Käyttö: tuotesivun "Toimitusarvio: perillä viimeistään <päivä>" ja "Ehtii jouluksi" -merkki, sekä
  * joulunViimeisetTilauspaivat() muille sivuille (esim. joululahjasivu).
  */
-import { JOULU_VIIMEINEN_TILAUSPAIVA, TOIMITUSPROFIILIT, OLETUSALUE, JOULU_RAJA, JOULUSESONKI_ALKAA, type ToimitusAlue, type ToimitusProfiili } from "@/config/toimitusajat";
+import { toimitusprofiili, JOULU_RAJA, JOULUSESONKI_ALKAA, type ToimitusProfiili } from "@/config/toimitusajat";
 
 export type Paiva = string; // "YYYY-MM-DD"
 
@@ -98,20 +98,18 @@ export function tanaanSuomessa(nyt: Date = new Date()): Paiva {
   return `${o.year}-${o.month}-${o.day}`;
 }
 
-/** Tuotteen toimitusalue: variants.toimitusalue ("eu" tai "us"), muuten varovainen oletus. */
-export function toimitusalue(tuote?: { variants?: Record<string, unknown> } | null): ToimitusAlue {
-  const a = tuote?.variants?.toimitusalue;
-  return a === "eu" || a === "us" ? a : OLETUSALUE;
-}
-
 export interface Toimitusarvio {
   aikaisin: Paiva;
   viimeistaan: Paiva;
 }
 
+/** Profiili tuotteelle tai kategorialle (tuotetyypin toimitusaika, src/config/toimitus.ts). */
+const profiiliksi = (p: ToimitusProfiili | string | null | undefined): ToimitusProfiili =>
+  p && typeof p === "object" ? p : toimitusprofiili(p);
+
 /** Arvio, kun tilaus tehdään annettuna päivänä: tuotanto + kuljetus arkipäivinä tilauspäivän jälkeen. */
-export function toimitusarvio(tilauspaiva: Paiva, profiili: ToimitusProfiili | ToimitusAlue = OLETUSALUE): Toimitusarvio {
-  const p = typeof profiili === "string" ? TOIMITUSPROFIILIT[profiili] : profiili;
+export function toimitusarvio(tilauspaiva: Paiva, profiili?: ToimitusProfiili | string | null): Toimitusarvio {
+  const p = profiiliksi(profiili);
   return {
     aikaisin: lisaaArkipaivia(tilauspaiva, p.tuotanto[0] + p.kuljetus[0]),
     viimeistaan: lisaaArkipaivia(tilauspaiva, p.tuotanto[1] + p.kuljetus[1]),
@@ -125,31 +123,20 @@ export const joulunRaja = (paiva: Paiva): Paiva => `${paiva.slice(0, 4)}-${JOULU
  * "Ehtii jouluksi" vain, kun tilauspäivä on joulusesongissa (15.10. alkaen) ja arvion myöhäisin päivä on
  * viimeistään 23.12. samana vuonna. Muulloin ei koskaan.
  */
-export function ehtiiJouluksi(tilauspaiva: Paiva, profiili: ToimitusProfiili | ToimitusAlue = OLETUSALUE): boolean {
+export function ehtiiJouluksi(tilauspaiva: Paiva, profiili?: ToimitusProfiili | string | null): boolean {
   const vuosi = tilauspaiva.slice(0, 4);
   if (tilauspaiva < `${vuosi}-${JOULUSESONKI_ALKAA}`) return false;
-  if (typeof profiili === "string" && tilauspaiva > `${vuosi}-${JOULU_VIIMEINEN_TILAUSPAIVA[profiili]}`) return false;
   const raja = joulunRaja(tilauspaiva);
   if (tilauspaiva > raja) return false;
   return toimitusarvio(tilauspaiva, profiili).viimeistaan <= raja;
 }
 
 /** Viimeinen tilauspäivä, jolla paketti on arvion mukaan perillä viimeistään 23.12. annettuna vuonna. */
-export function joulunViimeinenTilauspaiva(vuosi: number, profiili: ToimitusProfiili | ToimitusAlue = OLETUSALUE): Paiva {
+export function joulunViimeinenTilauspaiva(vuosi: number, profiili?: ToimitusProfiili | string | null): Paiva {
   const raja = `${vuosi}-${JOULU_RAJA}`;
   let d = raja;
   while (toimitusarvio(d, profiili).viimeistaan > raja) d = lisaaPaivia(d, -1);
-  // Printifyn takaraja (src/config/toimitusajat.ts) ei saa jäädä ylittämättä.
-  const katto = typeof profiili === "string" ? `${vuosi}-${JOULU_VIIMEINEN_TILAUSPAIVA[profiili]}` : null;
-  return katto && katto < d ? katto : d;
-}
-
-/** Joulun viimeiset tilauspäivät kaikille toimitusalueille (muiden sivujen käyttöön). */
-export function joulunViimeisetTilauspaivat(vuosi: number): Record<ToimitusAlue, Paiva> {
-  return {
-    eu: joulunViimeinenTilauspaiva(vuosi, "eu"),
-    us: joulunViimeinenTilauspaiva(vuosi, "us"),
-  };
+  return d;
 }
 
 /** "ti 10.11." -muoto asiakkaalle. */

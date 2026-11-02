@@ -1,39 +1,28 @@
 /**
- * Toimitusajat arkipäivinä (tuotanto painotalossa + kuljetus Suomeen). Tuotesivun toimitusarvio ja joulun
- * viimeiset tilauspäivät (src/lib/toimitusarvio.ts) laskevat näistä. Arvot ovat tarkoituksella varovaisia:
- * arvio kertoo, mihin mennessä paketti on perillä viimeistään.
- *
- * TODO: tarkenna painotalokohtaiset ajat tiedostosta seo/toimitusajat.md (toinen agentti kokoaa sen) ja lisää
- * tuotteille painotalon alue (variants.toimitusalue "eu" tai "us"), kun EU-painotalosiirto on ajettu
- * (scripts/printify-eu-painotalot.mjs). Tuotteiden origin_country-kenttään ei voi luottaa (kaikilla "EU").
+ * Tuotesivun toimitusarvion profiilit (src/lib/toimitusarvio.ts). Kokonaisajat tuotetyypeittäin tulevat tiedostosta
+ * src/config/toimitus.ts (TOIMITUSAJAT_TYYPEITTAIN, toteutuneet tilaukset ja Printifyn toimitusaika Suomeen 2.11.2026),
+ * joten tuotesivun "perillä viimeistään" -päivä, tekstit ja joulun tilauspäivät käyttävät samoja lukuja.
+ * Käsittely 1-3 arkipäivää (KASITTELYAIKA_*), kuljetus loput.
  */
-export type ToimitusAlue = "eu" | "us";
+import { KASITTELYAIKA_MAX_ARKIPAIVAA, KASITTELYAIKA_MIN_ARKIPAIVAA, toimitusaikaKategorialle } from "./toimitus";
 
 export interface ToimitusProfiili {
   nimi: string;
-  /** Tuotanto arkipäivinä [vähintään, enintään]. */
+  /** Käsittely ja tuotanto arkipäivinä [vähintään, enintään]. */
   tuotanto: [number, number];
   /** Kuljetus Suomeen arkipäivinä [vähintään, enintään]. */
   kuljetus: [number, number];
 }
 
-export const TOIMITUSPROFIILIT: Record<ToimitusAlue, ToimitusProfiili> = {
-  eu: { nimi: "EU-painotalo", tuotanto: [2, 5], kuljetus: [4, 8] },
-  us: { nimi: "Yhdysvaltalainen painotalo", tuotanto: [2, 5], kuljetus: [7, 12] },
-};
-
-/** Kun painotaloa ei tiedetä, käytetään hitainta profiilia. */
-export const OLETUSALUE: ToimitusAlue = "us";
-
-/**
- * Joulun viimeinen tilauspäivä enintään (kuukausi-päivä), alueittain. Printifyn 2025 Eurooppa-takarajat miinus 7 päivää
- * Suomen kuljetusta varten (seo/toimitusajat.md): Monster Digital, MWW ja Print Clever 27.11. -> 20.11.; OPT OnDemand
- * ja Jondo 4.-5.12. -> 27.11. Laskettu arvio ei voi olla tätä myöhäisempi. Sama 20.11. on luvattu tuotannon UKK:ssa.
- * Päivitä, kun Printify julkaisee vuoden 2026 takarajat (printify.com/network-fulfillment-status).
- */
-// EU 2.11.2026: sivuston yhteinen joulun tilauspäivä (src/data/campaignSchedule.ts), jotta "Ehtii jouluksi" ja banneri
-// eivät ristiriitaisesti eroa toisistaan.
-export const JOULU_VIIMEINEN_TILAUSPAIVA: Record<ToimitusAlue, string> = { us: "11-20", eu: "12-01" };
+/** Tuotetyypin profiili: tuotanto + kuljetus = TOIMITUSAJAT_TYYPEITTAIN. */
+export function toimitusprofiili(kategoria?: string | null): ToimitusProfiili {
+  const [min, max] = toimitusaikaKategorialle(kategoria);
+  return {
+    nimi: kategoria || "muut",
+    tuotanto: [KASITTELYAIKA_MIN_ARKIPAIVAA, KASITTELYAIKA_MAX_ARKIPAIVAA],
+    kuljetus: [min - KASITTELYAIKA_MIN_ARKIPAIVAA, max - KASITTELYAIKA_MAX_ARKIPAIVAA],
+  };
+}
 
 /** Joulun raja: paketti perillä viimeistään tänä päivänä (kuukausi-päivä). */
 export const JOULU_RAJA = "12-23";

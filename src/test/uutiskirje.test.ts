@@ -71,8 +71,10 @@ describe("uutiskirje: joulukampanja", () => {
     expect(avoinKampanjaviesti(new Date("2026-11-16T06:30:00Z"))).toBeNull();
     expect(avoinKampanjaviesti(new Date("2026-11-16T07:30:00Z"))?.id).toBe("joulu2026-1");
     expect(avoinKampanjaviesti(new Date("2026-11-27T10:00:00Z"))?.id).toBe("joulu2026-2");
-    expect(avoinKampanjaviesti(new Date("2026-11-30T10:00:00Z"))?.id).toBe("joulu2026-3");
-    expect(avoinKampanjaviesti(new Date("2026-12-02T10:00:00Z"))).toBeNull();
+    expect(avoinKampanjaviesti(new Date("2026-11-30T10:00:00Z"))?.id).toBe("joulu2026-2");
+    expect(avoinKampanjaviesti(new Date("2026-12-01T10:00:00Z"))?.id).toBe("joulu2026-3");
+    expect(avoinKampanjaviesti(new Date("2026-12-02T10:00:00Z"))?.id).toBe("joulu2026-3");
+    expect(avoinKampanjaviesti(new Date("2026-12-03T10:00:00Z"))).toBeNull();
     expect(avoinKampanjaviesti(new Date("2026-11-02T10:00:00Z"))).toBeNull();
   });
 });

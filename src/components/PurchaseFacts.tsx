@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Factory, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 import { maksutavatTekstina } from "@/config/maksutavat";
-import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
+import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI, toimitusaikaTeksti } from "@/config/toimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 
 /**
@@ -14,6 +14,7 @@ export function PurchaseFacts({
   showDeliveryTime = true,
   euPaino = false,
   jouluKategoriat = [],
+  kategoria = null,
   compact = false,
   className = "",
 }: {
@@ -26,15 +27,18 @@ export function PurchaseFacts({
   euPaino?: boolean;
   /** Tuotteen kategoria joulun tilauspäivää varten; tyhjä = ei joulurivia (esim. AliExpress). */
   jouluKategoriat?: readonly (string | null)[];
+  /** Tuotteen kategoria: tuotetyypin toimitusaika (src/config/toimitus.ts TOIMITUSAJAT_TYYPEITTAIN). */
+  kategoria?: string | null;
   className?: string;
 }) {
+  const aika = toimitusaikaTeksti(kategoria);
   return (
     <ul className={`space-y-1 text-[13px] leading-snug text-muted-foreground ${className}`}>
       {euPaino && showDeliveryTime ? (
         <>
           <li className="flex items-start gap-1.5">
             <Factory className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
-            <span>Painetaan tilauksesta EU:ssa, toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</span>
+            <span>Painetaan tilauksesta EU:ssa, perillä {aika} arkipäivässä</span>
           </li>
           <li className="flex items-start gap-1.5">
             <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
@@ -45,7 +49,7 @@ export function PurchaseFacts({
       <li className="flex items-start gap-1.5">
         <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
         <span>
-          {showDeliveryTime && <>Toimitus {TOIMITUSAIKA_TEKSTI} {compact ? "pv" : "arkipäivää"} · </>}
+          {showDeliveryTime && <>Perillä {aika} {compact ? "pv" : "arkipäivässä"} · </>}
           {TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta
         </span>
       </li>

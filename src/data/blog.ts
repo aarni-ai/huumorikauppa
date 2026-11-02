@@ -242,7 +242,7 @@ Polttarit ovat ikimuistoinen juhla - ja polttaripaidat tekevät niistä vieläki
 
 ### 1. Tilaa ajoissa
 
-Polttaripaidat kannattaa tilata vähintään 2 viikkoa ennen polttareita.
+Polttaripaidat kannattaa tilata vähintään 3 viikkoa ennen polttareita.
 
 ### 2. Selvitä koot etukäteen
 
@@ -537,7 +537,7 @@ Harrastuksesta on turvallista vitsailla. Kalastajalle sopii [Huonokin päivä ka
 
 - Valitse vitsi, jolle saaja nauraa itsekin. Kehuva teksti on varmempi kuin piikittelevä.
 - Huppari on t-paitaa näyttävämpi juhlalahja, ja sama teksti on usein molempina.
-- Tilaa noin kaksi viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.
+- Tilaa vähintään kolme viikkoa ennen juhlia, sillä toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.
 
 Kaikki 50-vuotistuotteet ovat sivuilla [lahja 50-vuotiaalle miehelle](/lahjat/50-vuotiaalle-miehelle) ja [lahja 50-vuotiaalle naiselle](/lahjat/50-vuotiaalle-naiselle).
 
@@ -573,7 +573,7 @@ Kaikki 50-vuotistuotteet ovat sivuilla [lahja 50-vuotiaalle miehelle](/lahjat/50
       },
       {
         q: "Kuinka ajoissa 50-vuotislahja pitää tilata?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa noin kaksi viikkoa ennen juhlia.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen juhlia.`,
       },
     ],
   },
@@ -638,7 +638,7 @@ Isäkin käy kaupassa - ja hauska kangaskassi tekee siitä hauskempaa.
 
 ## Milloin tilata isänpäivälahja?
 
-Isänpäivä on marraskuun 2. sunnuntai. Tilaa lahja viimeistään 2 viikkoa etukäteen varmistaaksesi toimituksen ajoissa.
+Isänpäivä on marraskuun 2. sunnuntai. Tilaa lahja viimeistään 3 viikkoa etukäteen varmistaaksesi toimituksen ajoissa.
 
 ## Tilaa Huumorikaupasta
 
@@ -1183,7 +1183,7 @@ Kaikki tuotteet: [lahjat 40-vuotiaalle miehelle](/lahjat/40-vuotiaalle-miehelle)
 
 ## Miten valitsen koon ja ehtiikö lahja juhliin?
 
-Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on kokotaulukko senttimetreinä, ja jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlaa.
+Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on kokotaulukko senttimetreinä, ja jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlaa.
 
 ## Tilaa miehen lahja Huumorikaupasta
 
@@ -1216,7 +1216,7 @@ Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on ko
       },
       {
         q: "Kuinka nopeasti lahja toimitetaan?",
-        a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Tilaa vähintään kaksi viikkoa ennen juhlapäivää.`,
+        a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen. Tilaa vähintään kolme viikkoa ennen juhlapäivää.`,
       },
     ],
   },
@@ -1273,7 +1273,7 @@ Jos juhlija on äiti, [Maailman paras ÄITI](/tuote/maailman-paras-aiti-huppari)
 
 ## Miten valitsen koon ja ehtiikö lahja juhliin?
 
-Vertaa kokotaulukon leveyttä ja pituutta saajan omaan hyvin istuvaan paitaan. Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kaksi viikkoa ennen juhlaa.
+Vertaa kokotaulukon leveyttä ja pituutta saajan omaan hyvin istuvaan paitaan. Jos koko ei sovi, tuotteella on 14 päivän palautusoikeus. Paidat painetaan tilauksesta EU:ssa, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa vähintään kolme viikkoa ennen juhlaa.
 
 ## Tilaa naisen lahja Huumorikaupasta
 
@@ -1633,7 +1633,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa - ja nörttihuumori on oma laji
     updatedAt: "2026-03-28",
     category: "lahjaideat",
     tags: ["valmistujaislahjat", "ylioppilaslahja", "hauska lahja opiskelijalle", "valmistuminen"],
-    content: `## Hauskat valmistujaislahjat - ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä - vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** - hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** - valitse huumori joka sopii valmistujaan\n- **Edullinen** - hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** - paita tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** - Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Meemihuppari** - Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** - Koodihuumoripaita tai -huppari.\n\n**Opettajan lahja** - Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus: paita ja koriste.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska koriste**\n- **Hauska pipo** (15-20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 2 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus\n- 14 päivän palautusoikeus`,
+    content: `## Hauskat valmistujaislahjat - ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä - vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** - hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** - valitse huumori joka sopii valmistujaan\n- **Edullinen** - hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** - paita tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** - Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Meemihuppari** - Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** - Koodihuumoripaita tai -huppari.\n\n**Opettajan lahja** - Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus: paita ja koriste.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska koriste**\n- **Hauska pipo** (15-20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 3 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus\n- 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit"],
     productLinks: [
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita - yhteislahja kaveriporukalta" },
@@ -1659,7 +1659,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa - ja nörttihuumori on oma laji
       },
       {
         q: "Milloin valmistujaislahja kannattaa tilata?",
-        a: "Tilaa hauska valmistujaislahja vähintään 2 viikkoa ennen valmistujaisia, jotta toimitus ja mahdollinen personointi ehditään tehdä rauhassa.",
+        a: "Tilaa hauska valmistujaislahja vähintään 3 viikkoa ennen valmistujaisia, jotta toimitus ja mahdollinen personointi ehditään tehdä rauhassa.",
       },
     ],
   },
@@ -2033,7 +2033,7 @@ Maisteri on käyttänyt vähintään 5 vuotta opiskeluun. He arvostavat lahjaa j
 
 ## Milloin tilata?
 
-Tilaa vähintään kaksi viikkoa ennen juhlaa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.
+Tilaa vähintään kolme viikkoa ennen juhlaa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.
 
 ## Tilaa Huumorikaupasta
 
@@ -2097,7 +2097,7 @@ Parisuhdehuumori toimii kesässäkin. "I ❤ My" -paidat ovat tuttu ja toimiva v
 
 ## Milloin tilata ennen juhannusta?
 
-Juhannus 2026 on perjantaina 19.6.2026. Tilaa **viimeistään maanantai 8.6.** varmistaaksesi toimitus ennen juhlaa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.
+Juhannus 2026 on perjantaina 19.6.2026. Tilaa **viimeistään torstaina 28.5.**, niin lahja on perillä ennen juhannusaattoa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.
 
 ⚠️ Älä jätä viime hetkeen - kesäkuussa on paljon tilauksia ja toimitus voi kestää normaalia kauemmin.
 

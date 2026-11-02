@@ -116,7 +116,7 @@ describe("landing pages: data and copy rules", () => {
     expect(christmasDeadlinePage.description.length).toBeLessThan(155);
     expect(CHRISTMAS_DEADLINE_PROMISE).toBe(jouluLause());
     // Laskettu arvo tänä jouluna (muutos vaatii tietoisen päätöksen).
-    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-12-01");
+    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-12-02");
   });
 
   it("links to at least 3 other landing pages and to a visible category", () => {

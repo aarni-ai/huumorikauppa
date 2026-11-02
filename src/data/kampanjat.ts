@@ -6,15 +6,15 @@
  * Päivien lähteet (ei käsin kirjoitettuja päiviä tässä tiedostossa):
  * - Isänpäivä ja Black Friday -viikko: api/_lib/vakiot.js KAMPANJAPAIVAT. Black Fridayn parihinta toimii kassalla samoilla
  *   päivillä (TPAITAPARI_KAMPANJA, api/_lib/korialennus.js tpaitapariVoimassa), joten ennen 23.11. se ei näy eikä vaikuta.
- * - Joulun tilauspäivät toteutuneista toimitusajoista (src/data/campaignSchedule.ts): JOULU_TILAUSPAIVA_ISO hupparit,
- *   julisteet ja muut tuotteet (sivuston yhteinen päivä, 2026 tiistai), JOULU_TPAIDAT_ISO t-paidat (OPT OnDemand, 2026
- *   perjantai). Tarkat päivät: src/test/kampanjat.test.ts.
+ * - Joulun tilauspäivät tuotetyyppien toimitusajoista (src/config/toimitus.ts -> src/data/campaignSchedule.ts):
+ *   JOULU_TILAUSPAIVA_ISO hupparit, julisteet ja muut tuotteet, JOULU_TPAIDAT_ISO t-paidat. 2.11.2026 alkaen molemmat
+ *   15 arkipäivää. Tarkat päivät: src/test/kampanjat.test.ts.
  *
  * Vaiheet:
  *   isanpaiva       1.10.-8.11.   isänpäivä (painettu lahja ei enää ehdi 14.10. jälkeen: lahjakortti)
  *   joulu           9.11.-22.11.  joululahjat ja tilauspäivät
  *   black-friday    23.11.-30.11. kaksi t-paitaa 44,90 €
- *   joulu-takaraja  JOULU_TILAUSPAIVA_ISO - JOULU_TPAIDAT_ISO   viimeiset tilauspäivät (ensin muut, sitten t-paidat)
+ *   joulu-takaraja  Black Fridayn jälkeen - JOULU_TPAIDAT_ISO  viimeiset tilauspäivät
  *   lahjakortti     JOULU_TPAIDAT_ISO + 1 - 24.12.             lahjakortti perille heti
  */
 import { KAMPANJAPAIVAT, TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
@@ -48,7 +48,7 @@ export const KAMPANJAVAIHEET: readonly KampanjaVaihe[] = [
   { id: "isanpaiva", alku: KAMPANJAPAIVAT.isanpaiva.alku, loppu: KAMPANJAPAIVAT.isanpaiva.loppu },
   { id: "joulu", alku: lisaaPaivia(KAMPANJAPAIVAT.isanpaiva.loppu, 1), loppu: lisaaPaivia(KAMPANJAPAIVAT.blackFriday.alku, -1) },
   { id: "black-friday", alku: KAMPANJAPAIVAT.blackFriday.alku, loppu: KAMPANJAPAIVAT.blackFriday.loppu },
-  { id: "joulu-takaraja", alku: JOULU_TILAUSPAIVA_ISO, loppu: JOULU_TPAIDAT_ISO },
+  { id: "joulu-takaraja", alku: lisaaPaivia(KAMPANJAPAIVAT.blackFriday.loppu, 1), loppu: JOULU_TPAIDAT_ISO },
   { id: "lahjakortti", alku: lisaaPaivia(JOULU_TPAIDAT_ISO, 1), loppu: KAMPANJAPAIVAT.lahjakorttiLoppu },
 ];
 
@@ -124,6 +124,16 @@ export function kampanjaNosto(nowMs: number = Date.now()): KampanjaNostonSisalto
     case "joulu-takaraja": {
       const tanaan = helsinginPaiva(nowMs);
       const muutAuki = tanaan <= JOULU_TILAUSPAIVA_ISO;
+      // Sama päivä kaikille tuotetyypeille (src/config/toimitus.ts): yksi lause.
+      if (JOULU_TILAUSPAIVA_ISO === JOULU_TPAIDAT_ISO) {
+        return {
+          vaihe,
+          otsikko: "Viimeiset tilauspäivät jouluksi",
+          teksti: `T-paidat, hupparit ja julisteet ehtivät jouluksi, kun tilaat viimeistään ${ilmanVuotta(JOULU_TILAUSPAIVA_ISO)}`,
+          linkki: { polku: "/joululahjat", teksti: "Katso joululahjat" },
+          lisalinkki: { polku: "/joulun-viimeiset-tilauspaivat", teksti: "Joulun viimeiset tilauspäivät" },
+        };
+      }
       return {
         vaihe,
         otsikko: muutAuki ? "Viimeinen tilauspäivä jouluksi" : "T-paidat ehtivät vielä jouluksi",

@@ -33,17 +33,17 @@ describe("Kampanjakalenteri: vaiheet", () => {
       ["isanpaiva", "2026-10-01", "2026-11-08"],
       ["joulu", "2026-11-09", "2026-11-22"],
       ["black-friday", "2026-11-23", "2026-11-30"],
-      ["joulu-takaraja", "2026-12-01", "2026-12-04"],
-      ["lahjakortti", "2026-12-05", "2026-12-24"],
+      ["joulu-takaraja", "2026-12-01", "2026-12-02"],
+      ["lahjakortti", "2026-12-03", "2026-12-24"],
     ]);
     for (let i = 1; i < KAMPANJAVAIHEET.length; i++) {
       const edellinen = new Date(`${KAMPANJAVAIHEET[i - 1].loppu}T00:00:00Z`);
       edellinen.setUTCDate(edellinen.getUTCDate() + 1);
       expect(KAMPANJAVAIHEET[i].alku).toBe(edellinen.toISOString().slice(0, 10));
     }
-    // Joulun tilauspäivät toteutuneista toimitusajoista: 1.12. hupparit ja muut, 4.12. t-paidat.
-    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-12-01");
-    expect(JOULU_TPAIDAT_ISO).toBe("2026-12-04");
+    // Joulun tilauspäivät tuotetyyppien toimitusajoista (src/config/toimitus.ts, 15 arkipäivää): ke 2.12. kaikille.
+    expect(JOULU_TILAUSPAIVA_ISO).toBe("2026-12-02");
+    expect(JOULU_TPAIDAT_ISO).toBe("2026-12-02");
     // Black Friday samoilla päivillä selaimessa ja kassalla.
     expect([TPAITAPARI_KAMPANJA.alku, TPAITAPARI_KAMPANJA.loppu]).toEqual([KAMPANJAPAIVAT.blackFriday.alku, KAMPANJAPAIVAT.blackFriday.loppu]);
   });
@@ -59,8 +59,8 @@ describe("Kampanjakalenteri: vaiheet", () => {
       ["2026-11-23T00:00:00", "black-friday"],
       ["2026-11-30T23:59:59.999", "black-friday"],
       ["2026-12-01T00:00:00", "joulu-takaraja"],
-      ["2026-12-04T23:59:59.999", "joulu-takaraja"],
-      ["2026-12-05T00:00:00", "lahjakortti"],
+      ["2026-12-02T23:59:59.999", "joulu-takaraja"],
+      ["2026-12-03T00:00:00", "lahjakortti"],
       ["2026-12-24T23:59:59.999", "lahjakortti"],
       ["2026-12-25T00:00:00", null],
     ];
@@ -74,14 +74,13 @@ describe("Kampanjakalenteri: vaiheet", () => {
     const n = (s: string) => kampanjaNosto(fi(s));
     expect(n("2026-11-08T20:00:00")).toMatchObject({ vaihe: "isanpaiva", linkki: { polku: "/lahjakortti" }, lisalinkki: { polku: "/isanpaivalahja" } });
     expect(n("2026-11-09T00:00:00")).toMatchObject({ vaihe: "joulu", linkki: { polku: "/joululahjat" }, lisalinkki: { polku: "/paketit" } });
-    expect(n("2026-11-09T00:00:00")!.teksti).toContain("1.12.2026");
+    expect(n("2026-11-09T00:00:00")!.teksti).toContain("2.12.2026");
     expect(n("2026-11-23T00:00:00")).toMatchObject({ vaihe: "black-friday", linkki: { polku: "/black-friday" } });
     const tanaan = n("2026-12-01T10:00:00")!;
-    expect(tanaan.otsikko).toBe("Viimeinen tilauspäivä jouluksi");
-    expect(tanaan.teksti).toBe("Hupparit, julisteet ja muut tuotteet ehtivät jouluksi, kun tilaat viimeistään ti 1.12. T-paidat ehtivät, kun tilaat viimeistään pe 4.12.");
-    const tpaidat = n("2026-12-02T00:00:00")!;
-    expect(tpaidat).toMatchObject({ vaihe: "joulu-takaraja", otsikko: "T-paidat ehtivät vielä jouluksi", linkki: { polku: "/kategoria/t-paidat" } });
-    expect(n("2026-12-05T00:00:00")).toMatchObject({ vaihe: "lahjakortti", linkki: { polku: "/lahjakortti" }, vaatiiLahjakortin: true });
+    expect(tanaan.otsikko).toBe("Viimeiset tilauspäivät jouluksi");
+    expect(tanaan.teksti).toBe("T-paidat, hupparit ja julisteet ehtivät jouluksi, kun tilaat viimeistään ke 2.12.");
+    expect(n("2026-12-02T23:00:00")).toMatchObject({ vaihe: "joulu-takaraja", linkki: { polku: "/joululahjat" } });
+    expect(n("2026-12-03T00:00:00")).toMatchObject({ vaihe: "lahjakortti", linkki: { polku: "/lahjakortti" }, vaatiiLahjakortin: true });
     expect(n("2026-12-25T00:00:00")).toBeNull();
     for (const s of ["2026-11-02T12:00:00", "2026-11-15T12:00:00", "2026-11-25T12:00:00", "2026-12-01T12:00:00", "2026-12-03T12:00:00", "2026-12-10T12:00:00"]) {
       const x = n(s)!;

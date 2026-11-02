@@ -19,10 +19,10 @@ import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
 import { useProducts } from "@/hooks/use-products";
-import { toimitusTila, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
+import { toimitusTila, toimitusRajattuViesti, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
-import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { toimitusaikaKorille } from "@/config/toimitus";
 import { naytettavaTeksti } from "../../api/_lib/logopaita.js";
 
 /** Kiinteät koodit poistettiin 29.10.2026 (KATTEET.md "Alennuskoodit"); koodit tarkistetaan palvelimella. */
@@ -382,8 +382,11 @@ const CheckoutPage = () => {
                 {/* Joulun takaraja korin tuotteille (2.11.2026, src/data/jouluAikataulu.ts): näkyy takarajaan asti. */}
                 <JouluTakarajaRivi categories={items.some((i) => i.product.supplier === "aliexpress") ? [] : items.filter((i) => i.product.type !== "giftcard").map((i) => jouluAvain(i.product))} className="text-sm text-foreground" />
                 <p className="text-sm text-muted-foreground">
-                  📦 Kotiinkuljetus {TOIMITUSAIKA_TEKSTI} arkipäivää · {shippingFree ? "ilmainen toimitus" : `toimitus ${shippingCost.toFixed(2).replace(".", ",")} €`}
+                  📦 Kotiinkuljetus, perillä {toimitusaikaKorille(items.filter((i) => i.product.type !== "giftcard" && i.product.supplier !== "aliexpress").map((i) => i.product.category))} arkipäivässä · {shippingFree ? "ilmainen toimitus" : `toimitus ${shippingCost.toFixed(2).replace(".", ",")} €`}
                 </p>
+                {toimitusKassalla.rajattu && (
+                  <p className="text-sm text-foreground" role="status">{toimitusRajattuViesti(shippingCost)}</p>
+                )}
               </>
             )}
 

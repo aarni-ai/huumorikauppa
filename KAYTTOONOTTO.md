@@ -969,13 +969,19 @@ tiedoissa, joten se asetetaan Merchant Centerin toimitusasetuksiin. Ilmaista, ei
 
 1. Merchant Center > Asetukset > Toimitus ja palautukset > Toimituspalvelut > Lisää palvelu: maa Suomi, valuutta EUR,
    nimi "Posti kotiinkuljetus".
-2. Käsittelyaika 1-4 arkipäivää, kuljetusaika 2-6 arkipäivää (sama kuin syötteessä ja sivustolla).
+2. Käsittelyaika 1-3 arkipäivää, kuljetusaika 3-12 arkipäivää (2.11.2026 alkaen; sama kuin syötteessä ja sivustolla:
+   t-paidat perillä 4-15 ja hupparit 5-15 arkipäivässä). Jos palvelu on jo luotu arvoilla 1-4 ja 2-6, muokkaa ne.
 3. Toimitusmaksu: "Tilauksen tuotemäärän mukaan" (Number of items): 1 tuote 6,90 €, 2 tai enemmän 0 €.
    Lisäksi "Ilmainen toimitus tilauksille, joiden arvo on vähintään" 79 €.
 4. Tallenna. Syötteen tuotekohtainen hinta (6,90 €) ohittaa tilin asetuksen yksittäisen tuotteen kohdalla, joten
    Googlen näyttämä hinta pysyy oikeana yhdelle tuotteelle ja tilin sääntö kertoo kahden tuotteen ilmaisen toimituksen.
 
-## 18. Merchant Center: 25 käsin lisättyä tuotetta ilman saatavuutta (Cowork, 2.11.2026)
+## 18. Merchant Center: 25 käsin lisättyä tuotetta ilman saatavuutta (Cowork, 2.11.2026) — TEHTY
+
+**Tehty 2.11.2026:** Cowork poisti Kauppiaskeskus-lähteen ja sen 25 tuotetta. Merchantin 651 tuotetta selittyy
+klo 3.00 haulla: 120 uutta tuotetta luotiin 2.11. klo 7.35-7.40, eli 651 + 120 = 771, joka on syötteen nykyinen määrä.
+Syötteessä ei ole rajausta, joka pudottaisi niitä. Seuraava haku 3.11. klo 3.00 tuo ne.
+
 
 Tarkistettu Merchant Centeristä 2.11.2026. Syötteen haku on kunnossa: ensisijainen lähde "PRODUCTS SOURCE 3" hakee
 oikean osoitteen https://huumorikauppa.fi/product-feed.xml joka päivä klo 3.00. Viimeisin haku 2.11. klo 3.00 toi 651
@@ -1022,3 +1028,32 @@ pois kävijäluvuista.
 - Päivän yhteenveto lisää uuden linkin automaattisesti, kun edellisestä aktivoinnista on kulunut yli 80 päivää.
 - Testi: `PLAYWRIGHT=<polku>/playwright/index.mjs node scripts/aktivointilinkki-testi.mjs`. Se käyttää oman
   testilinkkinsä eikä tulosta sitä.
+
+## 21. Resend: hallinnan viestit suoraan osoitteeseen huumorikauppa@gmail.com (Domainhotellin nimipalvelinmuutoksen jälkeen)
+
+**Miksi viestit menevät nyt osoitteeseen flyapeg@gmail.com:** Resend lähettää huumorikauppa.fi-osoitteesta vasta, kun
+domain on vahvistettu. Domain on Resendissä tilassa "failed", koska sen kolmea DNS-tietuetta ei ole vielä
+nimipalvelimissa (tarkistettu 2.11.2026, `?tehtava=resend-domain&kuiva=1`). Siihen asti ainoa toimiva lähettäjä on
+Resendin testiosoite onboarding@resend.dev. Se toimittaa vain Resend-tilin omaan osoitteeseen, joka on
+flyapeg@gmail.com, joten viestiä ei voi ohjata osoitteeseen huumorikauppa@gmail.com koodilla. Ilmaisia
+vaihtoehtoja ilman domainia ei ole: toinen lähetyspalvelu vaatisi samoin vahvistetun domainin.
+Koodi ei vaadi muutoksia: api/_lib/sahkoposti.js `lahetaVarareitilla` yrittää ensin tavallista reittiä osoitteeseen
+OMISTAJA_EMAIL (oletus huumorikauppa@gmail.com) ja käyttää testilähettäjää vain, jos Resend vastaa "domain is not
+verified". Heti kun domain on vahvistettu, päivän yhteenveto, hälytykset ja aktivointilinkit menevät osoitteeseen
+huumorikauppa@gmail.com.
+
+**Domainhotellin nimipalvelinmuutoksen jälkeen (Cowork tai Aarni lisää tietueet, Claude tekee loput):**
+1. Lisää nimipalvelimen DNS-hallintaan kolme tietuetta (arvot Resendistä, Domains > huumorikauppa.fi, tai
+   `?tehtava=resend-domain&kuiva=1`):
+   - TXT, nimi `resend._domainkey`, arvo `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUF9+...` (koko arvo Resendistä)
+   - MX, nimi `send`, arvo `feedback-smtp.eu-west-1.amazonses.com`, prioriteetti 10
+   - TXT, nimi `send`, arvo `v=spf1 include:amazonses.com ~all`
+2. **Claude:** aja `?tehtava=resend-domain&vahvista=1` suoraan osoitteeseen huumorikauppa-five.vercel.app. Toista
+   tunnin välein, kunnes tila on `verified` (DNS leviää yleensä alle tunnissa).
+3. **Claude:** tarkista, että Vercelin OMISTAJA_EMAIL on huumorikauppa@gmail.com tai tyhjä (oletus), ja lähetä testiviesti
+   (`?tehtava=ilmoitustesti`). Viestin vastaanottajan on oltava huumorikauppa@gmail.com eikä otsikossa saa lukea
+   "kunnes domain vahvistetaan".
+4. **Claude:** aseta Vercelin SAHKOPOSTI_VAHVISTETTU=1 (oma tilausvahvistus korvaa Stripen kuitin) ja julkaise. Aja
+   kassatesti ja tarkista, että vahvistusviesti tulee.
+5. Kirjaa KASVU-RAPORTTI.md:hen.
+

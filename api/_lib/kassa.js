@@ -20,7 +20,7 @@
  * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
-import { laskeKate, laskeTilauksenNettokate } from "./kate.js";
+import { laskeKate, laskeTilauksenNettokate, toimitusmaksuKatteella } from "./kate.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT, toimitusmaksu } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
@@ -151,15 +151,18 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   // Ilmainen toimitus rajasta tai kahdesta tuotteesta (tarrat eivät lasketa); kahden tuotteen sääntö ei yhdisty
   // alennuskoodiin eikä t-paitapariin (vakiot.js ILMAINEN_TOIMITUS_KPL). Lahjapaketti saa sen (2.11.2026).
   const toimitusKpl = rivit.filter((r) => !LISATUOTE_KATEGORIAT.includes(byId.get(r.product_id)?.category)).reduce((s, r) => s + r.quantity, 0);
-  const normaaliToimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: true });
-  let toimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: !!alennus });
   // Rivikohtainen hinta sentteinä kuten Stripe veloittaa.
   let fyysiset = rivit.map((r) => ({ ...r, unit_cents: Math.max(0, Math.round(sentit(r.unit_price) * (1 - prosentti / 100) * suhde)) }));
+  const osat = (rr) => rr.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 }));
+  // Ilmainen toimitus vain, kun tilauksen nettokate ilman toimitusmaksua on vähintään 7 € (kate.js toimitusmaksuKatteella,
+  // 2.11.2026); muuten pienin toimitusporras, jolla raja täyttyy.
+  const maksuKatteella = (alennusKoodi) => (rivit.length === 0 ? { maksu: 0, rajattu: false }
+    : toimitusmaksuKatteella({ summa: valisumma, kpl: toimitusKpl, alennus: alennusKoodi, osat: osat(fyysiset) }));
+  const normaaliToimitus = maksuKatteella(true).maksu;
+  const toimitusTila = maksuKatteella(!!alennus);
+  let toimitus = toimitusTila.maksu;
   // Vähimmäiskate 7 €: alennuskoodi hylätään ja pakettialennus jätetään antamatta, jos kate jäisi alle rajan.
-  const nettokate = (rr, maksu = toimitus) => laskeTilauksenNettokate(
-    rr.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 })),
-    maksu,
-  );
+  const nettokate = (rr, maksu = toimitus) => laskeTilauksenNettokate(osat(rr), maksu);
   if (alennus && fyysiset.length) {
     const k = nettokate(fyysiset);
     if (!k.tunnettu || k.nettokate < TILAUKSEN_MIN_KATE_EUROA) throw new KassaVirhe("Alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
@@ -197,6 +200,8 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     rivit: stripeRivit,
     subtotal: Math.round((valisumma + korttienSumma) * 100) / 100,
     shipping: toimitus,
+    /** Ilmainen toimitus rajattu katevahdilla (toimitus pienempi kuin tavallinen mutta ei 0 €). */
+    shipping_reduced: toimitusTila.rajattu && toimitus === toimitusTila.maksu,
     discount: Math.round((valisumma - tuotteetYht) * 100) / 100,
     bundle_discount: Math.round(pakettiAlennus * 100) / 100,
     basket_discount: Math.round(koriAlennus * 100) / 100,

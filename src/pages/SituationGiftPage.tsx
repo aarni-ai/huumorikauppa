@@ -113,7 +113,7 @@ const SituationGiftPage = () => {
   const decisionSteps = [
     `1. Mieti vastaanottaja: harrastus, ammatti tai sisäpiirin vitsi (${situation.h1.toLowerCase()}).`,
     "2. Valitse tuotemuoto: t-paita arkikäyttöön, huppari kylmille päiville tai personoitava tuote omalla tekstillä.",
-    `3. Tarkista koko ja toimitusaika: toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kaksi viikkoa ennen lahjapäivää.`,
+    `3. Tarkista koko ja toimitusaika: toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää, joten tilaa viimeistään kolme viikkoa ennen lahjapäivää.`,
   ];
 
   // FAQ enhancement layer — only adds if guide has fewer than 5 FAQs

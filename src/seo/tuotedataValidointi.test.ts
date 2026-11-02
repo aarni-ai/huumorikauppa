@@ -74,7 +74,7 @@ describe("validoi-tuotedata: virheiden tunnistus", () => {
     p.offers.shippingDetails.deliveryTime.transitTime.maxValue = 20;
     const errors = validateProduct(p, { expectedDeliveryDays, personalised: true }).join("\n");
     expect(errors).toMatch(/menneisyydessä/);
-    expect(errors).toMatch(/lupaus 3-10/);
+    expect(errors).toMatch(/lupaus 4-15/);
     expect(errors).toMatch(/MerchantReturnNotPermitted/);
   });
 

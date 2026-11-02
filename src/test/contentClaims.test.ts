@@ -157,7 +157,7 @@ describe("productContent", () => {
       expect(text, slug).not.toMatch(DASH);
       expect(text, slug).not.toMatch(FALSE_PRINT_CLAIM);
       expect(text, slug).not.toMatch(/\bmuki|kahvikupp|saattaa|todennäköisesti|pyrimme|\behkä\b/i);
-      expect(text, slug).toContain("3-10 arkipäiv");
+      expect(text, slug).toContain("4-15 arkipäiv");
     }
   });
 });

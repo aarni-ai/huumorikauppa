@@ -66,7 +66,7 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
   ],
   "isanpaiva-lahjat": [
     { q: "Mikä on hauska isänpäivälahja?", a: "Hauska isänpäivälahja on t-paita tai huppari, joka liittyy isän harrastukseen tai ammattiin, tai esimerkiksi \"Jos iskä ei osaa korjata sitä...\" -teksti." },
-    { q: "Milloin isänpäivälahja pitää tilata?", a: `Tilaa viimeistään kaksi viikkoa ennen isänpäivää (marraskuun toinen sunnuntai), koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
+    { q: "Milloin isänpäivälahja pitää tilata?", a: `Tilaa viimeistään kolme viikkoa ennen isänpäivää (marraskuun toinen sunnuntai), koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     { q: "Miten valitsen oikean koon isänpäivälahjaan?", a: "Mittaa isän hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on varmempi valinta kuin liian pieni." },
     { q: "Voiko isänpäivälahjan palauttaa?", a: RETURNS },
   ],
@@ -80,7 +80,7 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Mikä on hauska syntymäpäivälahja huumorin ystävälle?", a: "Hauska syntymäpäivälahja on t-paita tai huppari, jossa on ikävuoteen sopiva teksti, kuten \"40v - ei vanha, vintage\" tai \"60v - takuu mennyt, toimii silti\"." },
     { q: "Sopiiko huumoripaita syntymäpäivälahjaksi?", a: "Sopii: hauska paita on henkilökohtainen lahja, joka päätyy käyttöön." },
     { q: "Miten valitsen oikean koon syntymäpäivälahjaan?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on varmempi valinta kuin liian pieni." },
-    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa.` },
+    { q: "Kuinka nopeasti syntymäpäivälahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kolme viikkoa ennen juhlaa.` },
   ],
   "polttari-lahjat": [
     { q: "Millaisia polttaripaitoja on tarjolla?", a: "Polttareihin sopivat personoitavat t-paidat ja hupparit, joihin kirjoitat porukan oman tekstin tuotesivun kenttään." },
@@ -92,19 +92,19 @@ export const GIFT_FAQS: Record<string, FAQ[]> = {
     { q: "Mikä on hauska eläkelahja?", a: "Hauska eläkelahja on t-paita tai huppari eläketeemalla, kuten \"Olen eläkkeellä\" tai \"100% Eläkeläinen\"." },
     { q: "Sopiiko huumoripaita eläkkeelle jäävälle työkaverille?", a: "Sopii: hauska paita on työporukan yhteinen tapa toivottaa hyvää eläkettä." },
     { q: "Miten valitsen oikean koon eläkelahjaan?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on varmempi valinta kuin liian pieni." },
-    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen eläkejuhlia.` },
+    { q: "Kuinka nopeasti eläkelahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kolme viikkoa ennen eläkejuhlia.` },
   ],
   "lahja-kaverille": [
     { q: "Mikä on hauska lahja kaverille?", a: "Hauska lahja kaverille on t-paita tai huppari, joka liittyy kaverin harrastukseen tai luonteeseen." },
     { q: "Sopiiko huumoripaita kaverin synttärilahjaksi?", a: "Sopii: hauska paita on henkilökohtainen lahja, joka päätyy käyttöön." },
     { q: "Miten valitsen oikean koon kaverille?", a: "Mittaa kaverin hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen juhlaa.` },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kolme viikkoa ennen juhlaa.` },
   ],
   "lahja-tyokaverille": [
     { q: "Mikä on hauska lahja työkaverille?", a: "Hauska lahja työkaverille on t-paita tai huppari työpaikkahuumorilla, esimerkiksi \"Tämäkin olisi voinut olla sähköposti\"." },
     { q: "Sopiiko huumoripaita työkaverin läksiäislahjaksi?", a: "Sopii: hauska paita on muisto yhteisistä vuosista, ja eläkkeelle jäävälle on omia eläketeemoja." },
     { q: "Miten valitsen oikean koon työkaverin lahjaksi?", a: "Jos kokoa ei tiedä, mittaa jonkun hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan ja valitse mieluummin väljä koko." },
-    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kaksi viikkoa ennen läksiäisiä.` },
+    { q: "Kuinka nopeasti lahja toimitetaan?", a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa viimeistään kolme viikkoa ennen läksiäisiä.` },
   ],
   "hauskat-t-paidat": [
     { q: "Mistä materiaalista hauskat t-paidat on tehty?", a: "T-paidat ovat Gildan Softstyle 64000 -paitoja (153 g/m²): yksiväriset ovat 100 % rengaskehrättyä puuvillaa ja meleeratut sävyt puuvillan ja polyesterin sekoitetta. Muutama malli on Gildan 5000 (180 g/m², 100 % puuvillaa). Tuotesivulla näkyy tuotteen värikohtainen materiaali." },

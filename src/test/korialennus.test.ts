@@ -85,11 +85,13 @@ describe("Kahden tuotteen alennus kassalla", () => {
     const r = laskeTilaus(pyynto([{ ...t("testi-t-paita", 2), price: 1, unit_price: 1 }]), tuotteet, null);
     expect(r.rivit[0].unit_cents).toBe(2366);
   });
-  it("t-paita + huppari: ilmainen toimitus, -5 % jää pois, kun kate jäisi alle 7 €", () => {
+  it("t-paita + huppari: -5 % jää pois, ja ilmainen toimitus rajataan 2,90 €:oon, kun kate jäisi alle 7 €", () => {
+    // Toimituksen katevahti 2.11.2026 (api/_lib/kate.js toimitusmaksuKatteella, src/test/toimituskate.test.ts).
     const r = laskeTilaus(pyynto([t("testi-t-paita"), t("testi-huppari")]), tuotteet, null);
-    expect(r.shipping).toBe(0);
+    expect(r.shipping).toBe(2.9);
+    expect(r.shipping_reduced).toBe(true);
     expect(r.basket_discount).toBe(0);
-    expect(r.total).toBe(74.8);
+    expect(r.total).toBe(77.7);
   });
   it("t-paita + tarra: tarra ei kerrytä kahden tuotteen ilmaista toimitusta", () => {
     const tarra = tuotteet.find((x: { category: string }) => x.category === "tarrat");

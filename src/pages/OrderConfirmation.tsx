@@ -1,3 +1,5 @@
+import { lisaaArkipaivia, tanaanSuomessa } from "@/lib/toimitusarvio";
+import { TOIMITUSAIKA_MAX_ARKIPAIVAA } from "@/config/toimitus";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -74,13 +76,9 @@ const OrderConfirmation = () => {
     if (!order || optInRendered) return;
     if (typeof window === "undefined") return;
 
-    // Estimated delivery: created_at + 7 days (3–10 business day window midpoint)
+    // Arvioitu toimituspäivä: tilauspäivä + kaupan pisin toimitusaika arkipäivinä (src/config/toimitus.ts).
     const created = order.created_at ? new Date(order.created_at) : new Date();
-    const eta = new Date(created.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const yyyy = eta.getFullYear();
-    const mm = String(eta.getMonth() + 1).padStart(2, "0");
-    const dd = String(eta.getDate()).padStart(2, "0");
-    const estimatedDeliveryDate = `${yyyy}-${mm}-${dd}`;
+    const estimatedDeliveryDate = lisaaArkipaivia(tanaanSuomessa(created), TOIMITUSAIKA_MAX_ARKIPAIVAA);
 
     const country = (order.shipping_country || "FI").toUpperCase();
     const email = order.customer_email || "";

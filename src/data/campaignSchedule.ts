@@ -4,10 +4,12 @@
  * aikataulusta. Ajat ovat Suomen aikaa (Europe/Helsinki), ja ne muunnetaan UTC-millisekunneiksi
  * aikavyöhyketiedon avulla, joten kesä- ja normaaliaika menevät oikein.
  *
- * Ainoa import on riippuvuudeton api/_lib/vakiot.js (kampanjakalenterin päivät, sama lähde kuin kassalla), joten tiedostoa
+ * Importit ovat riippuvuudettomat api/_lib/vakiot.js (kampanjakalenterin päivät, sama lähde kuin kassalla) ja
+ * src/config/toimitus.ts (toimitusajat), joten tiedostoa
  * voi edelleen käyttää mistä tahansa (christmas.ts, sivudata). Kampanjavaiheiden kokonaiskuva: src/data/kampanjat.ts.
  */
 import { KAMPANJAPAIVAT } from "../../api/_lib/vakiot.js";
+import { TOIMITUSAIKA_MAX_ARKIPAIVAA, TOIMITUSAIKA_OLETUS, TOIMITUSAJAT_TYYPEITTAIN } from "../config/toimitus";
 
 const HELSINKI_PARTS = new Intl.DateTimeFormat("en-US", {
   timeZone: "Europe/Helsinki",
@@ -47,11 +49,10 @@ export function helsinkiTimeToUtcMs(
 // ── Viimeiset tilauspäivät toteutuneista toimitusajoista ─────────────────────
 
 /**
- * Pahin toteutunut toimitusaika arkipäivinä: Printifyn tilaukset 3-10/2026 (scripts/joulu-aikataulu.mjs, ajettu
- * 26.10.2026, 22 tilausta): pahin tuotanto 2 + pahin kuljetus Suomeen 13 + puskuri 2 = 17 arkipäivää (t-paidat ja
- * hupparit; muut tuotetyypit nopeampia). Päivitä tämä, kun skripti ajetaan uudelleen: kaikki päivät seuraavat.
+ * Pisin toimitusaika arkipäivinä (src/config/toimitus.ts TOIMITUSAIKA_MAX_ARKIPAIVAA, 2.11.2026: toteutuneet
+ * Printify-tilaukset ja Printifyn toimitusaika Suomeen). Sama luku kuin sivuston "perillä 4-15 arkipäivässä".
  */
-export const TOIMITUS_PAHIN_ARKIPAIVAA = 17;
+export const TOIMITUS_PAHIN_ARKIPAIVAA = TOIMITUSAIKA_MAX_ARKIPAIVAA;
 
 /** Suomen arkipyhät 2026-2027 (lauantaipyhät mukana; laskenta ohittaa myös viikonloput). */
 export const SUOMEN_PYHAT: ReadonlySet<string> = new Set([
@@ -119,20 +120,18 @@ export const FATHERS_DAY_ORDER_END_UTC_MS = paivanLoppuUtcMs(ISANPAIVA_TILAUSPAI
 /** Joululahjan on oltava perillä viimeistään jouluaattoa edeltävänä päivänä. */
 export const JOULU_PERILLA_ISO = "2026-12-23";
 /**
- * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug), painotaloittain Printifyn toteutuneista
- * tilauksista (scripts/joulu-aikataulu.mjs, päivitetty 2.11.2026): pahin havaittu käsittely + tuotanto + kuljetus
- * Suomeen + 2 arkipäivän varmuus, perillä viimeistään JOULU_PERILLA_ISO (ennen jouluaattoa).
- *  - T-paidat, OPT OnDemand (CZ, JOULU_TPAITA_PAINOTALOT): käsittely 1 + tuotanto 1 + kuljetus 8 (4 toimitusta)
- *    = 10 + 2 = 12 (maanantai 7. joulukuuta). Printifyn oma Europe-takaraja OPT:lle oli 5. joulukuuta 2025
- *    (seo/toimitusajat.md), joten myöhäisempää ei luvata: 13 arkipäivää (perjantai 4. joulukuuta).
- *  - Hupparit ja muut, Textildruck Europa (DE): käsittely 1 + tuotanto 2 + kuljetus 11 (3 toimitusta) = 14 + 2 = 16.
- *    Sama oletus muille tuotteille ja muiden painotalojen t-paidoille (src/data/jouluAikataulu.ts jouluAvain).
+ * Joulun toimitusaika arkipäivinä tuotetyypeittäin (kategorian slug): tuotetyypin toimitusajan yläraja
+ * (src/config/toimitus.ts TOIMITUSAJAT_TYYPEITTAIN, 2.11.2026), perillä viimeistään JOULU_PERILLA_ISO. Samat luvut
+ * kuin tuotesivun ja kassan "perillä X-Y arkipäivässä", joten tilauspäivä ja toimitusaika eivät voi olla ristiriidassa.
+ * 2026: t-paidat ja hupparit 15 arkipäivää (päivä: src/test/kampanjat.test.ts).
  * Sivuston yhteinen päivä (banneri, kassa) on tyyppien varhaisin.
  */
-export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = { "t-paidat": 13, hupparit: 16 };
-/** Painotalot (Printify print_provider_id), joiden t-paidoille t-paitojen aika pätee: OPT OnDemand. */
-export const JOULU_TPAITA_PAINOTALOT: readonly number[] = [30];
-export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = 16;
+export const JOULU_TOIMITUS_ARKIPAIVAA: Readonly<Record<string, number>> = Object.fromEntries(
+  Object.entries(TOIMITUSAJAT_TYYPEITTAIN).map(([k, [, max]]) => [k, max]),
+);
+/** Painotalot (Printify print_provider_id), joiden t-paidoille t-paitojen aika pätee: kaikki kaupan t-paitojen painotalot. */
+export const JOULU_TPAITA_PAINOTALOT: readonly number[] = [30, 26, 99, 402];
+export const JOULU_TOIMITUS_OLETUS_ARKIPAIVAA = TOIMITUSAIKA_OLETUS[1];
 /** Tuotetyypin viimeinen tilauspäivä jouluksi (tuntematon tyyppi: oletusaika). */
 export const joulunTilauspaivaTyypille = (kategoria?: string | null): string =>
   viimeinenTilauspaiva(JOULU_PERILLA_ISO, (kategoria && JOULU_TOIMITUS_ARKIPAIVAA[kategoria]) || JOULU_TOIMITUS_OLETUS_ARKIPAIVAA);

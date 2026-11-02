@@ -46,7 +46,7 @@ const FAQS = [
   },
   {
     q: "Milloin pitää tilata että ehtii äitienpäiväksi?",
-    a: `Tilaa viimeistään kaksi viikkoa ennen äitienpäivää, koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
+    a: `Tilaa viimeistään kolme viikkoa ennen äitienpäivää, koska toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
   },
   {
     q: "Mikä on hauska lahja äidille?",
@@ -309,7 +309,7 @@ const MothersDayPage = () => {
             oikeasti äidin näköistä huumoria. Meiltä löytyy <strong>hauska äitienpäivälahja</strong> sekä
             kahvia rakastavalle mammalle, salilla käyvälle äidille että anopille jolle ei tunnu mikään
             kelpaavan. Kaikki tuotteet painetaan tilauksesta ja toimitetaan {TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta,
-            joten tilaa viimeistään kaksi viikkoa ennen äitienpäivää.
+            joten tilaa viimeistään kolme viikkoa ennen äitienpäivää.
           </p>
           <p>
             <strong>Ilmainen toimitus vähintään {ILMAINEN_RAJA_TEKSTI} € tilauksiin</strong> ja <strong>14 päivän palautusoikeus</strong>{" "}
