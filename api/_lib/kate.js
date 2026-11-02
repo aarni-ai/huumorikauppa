@@ -32,7 +32,7 @@ export const ALENNUS_KATE_RAJA = 0.3;
 export const HINNOITTELU_KATE = 0.4;
 export const STRIPE_PROSENTTI = 0.015;
 export const STRIPE_KIINTEA = 0.25;
-import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, PRINTIFY_ALV_VAHENNETTAVA } from "./vakiot.js";
+import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, PRINTIFY_ALV_VAHENNETTAVA, PAKETTI_MIN_KATE_EUROA, toimitusmaksu as toimitusmaksuTilaukselle } from "./vakiot.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { tuotepohja } from "./materiaali.js";
 
@@ -245,4 +245,98 @@ export function laskeTilauksenNettokate(osat, toimitusmaksu = 0, { kerroin = PRI
     nettokate: Math.round(nettokate * 100) / 100,
     kate: myyntiAlv0 > 0 ? Math.round((nettokate / myyntiAlv0) * 1000) / 1000 : -1,
   };
+}
+
+/** Myytävät variantit [avain "Väri|Koko", id] (unavailable_variants ohitetaan, kuten kassa). */
+export function myytavatVariantit(tuote) {
+  let pois = tuote?.unavailable_variants;
+  if (typeof pois === "string") {
+    try { pois = JSON.parse(pois); } catch { pois = []; }
+  }
+  const poissa = new Set(Array.isArray(pois) ? pois : []);
+  return Object.entries(tuote?.variants?.variant_map || {}).filter(([a]) => !poissa.has(a));
+}
+
+/** Rivin hinta sentteinä alennuksen jälkeen, pyöristys kuten kassa (api/_lib/paketit.js sovellaPaketit). */
+export const alennettuSentit = (hinta, prosentti) => Math.round(Math.round(Number(hinta) * 100) * (1 - prosentti / 100));
+
+/**
+ * Lahjapaketin nettokate (2.11.2026): paketti omana tilauksenaan, rivit alennettuina ja toimitus kahden tuotteen
+ * säännöllä (vakiot.js toimitusmaksu: kaksi tuotetta = ilmainen). Kassan kaava (laskeTilauksenNettokate).
+ * @param osat [{ tuote, varianttiId }]
+ * Palauttaa { tunnettu, nettokate, sallittu } (sallittu = nettokate >= PAKETTI_MIN_KATE_EUROA).
+ */
+export function laskePaketinNettokate(osat, alennusProsentti = 0, raja = PAKETTI_MIN_KATE_EUROA) {
+  if (!Array.isArray(osat) || osat.length === 0) return { tunnettu: false, nettokate: null, sallittu: null };
+  const rivit = [];
+  let summa = 0;
+  for (const { tuote, varianttiId } of osat) {
+    const kartta = Object.entries(tuote?.variants?.variant_map || {});
+    const id = varianttiId ?? kartta[0]?.[1];
+    const avain = kartta.find(([, v]) => Number(v) === Number(id))?.[0];
+    const hinta = Number(rivinHinta(tuote, avain ? avain.split("|")[1] : null));
+    if (!Number.isFinite(hinta)) return { tunnettu: false, nettokate: null, sallittu: null };
+    summa += hinta;
+    rivit.push({ tuote, varianttiId: id, maara: 1, yksikkohinta: alennettuSentit(hinta, alennusProsentti) / 100 });
+  }
+  const k = laskeTilauksenNettokate(rivit, toimitusmaksuTilaukselle({ summa, kpl: osat.length }));
+  if (!k.tunnettu) return { tunnettu: false, nettokate: null, sallittu: null };
+  return { tunnettu: true, nettokate: k.nettokate, sallittu: k.nettokate >= raja };
+}
+
+/**
+ * Lahjapaketin heikoin nettokate kaikilla myytävillä koko- ja väriyhdistelmillä (näyttö ja testit: alennus luvataan vain,
+ * jos jokainen yhdistelmä täyttää rajan). Palauttaa { tunnettu, nettokate, sallittu, variantit } (variantit = pahin
+ * yhdistelmä avaimina).
+ */
+export function paketinHeikoinNettokate(tuotteet, alennusProsentti = 0, raja = PAKETTI_MIN_KATE_EUROA) {
+  const listat = tuotteet.map((t) => myytavatVariantit(t));
+  if (listat.some((l) => l.length === 0)) return { tunnettu: false, nettokate: null, sallittu: null };
+  let heikoin = null;
+  const kayLapi = (i, valitut, avaimet) => {
+    if (heikoin?.tunnettu === false) return;
+    if (i === tuotteet.length) {
+      const k = laskePaketinNettokate(valitut, alennusProsentti, raja);
+      if (!k.tunnettu) heikoin = { tunnettu: false, nettokate: null, sallittu: null };
+      else if (!heikoin || k.nettokate < heikoin.nettokate) heikoin = { ...k, variantit: avaimet };
+      return;
+    }
+    for (const [avain, id] of listat[i]) kayLapi(i + 1, [...valitut, { tuote: tuotteet[i], varianttiId: id }], [...avaimet, avain]);
+  };
+  kayLapi(0, [], []);
+  return heikoin || { tunnettu: false, nettokate: null, sallittu: null };
+}
+
+/**
+ * Pahin kahden tuotteen tilaus (kampanjalaskelmat, src/test/kampanjat.test.ts): jokainen tuotepari (myös sama tuote kahdesti)
+ * kunkin tuotteen pahimmalla variantilla, rivit alennettuina prosentin verran ja toimitusmaksu annettuna. Nettokate on
+ * jokaisen rivin osalta lineaarinen ja Printifyn toimitus riippuu vain tuotteista, joten tuotteen pahin variantti on sama
+ * parista riippumatta. Palauttaa { nettokate, a, b } (a ja b: "slug Väri|Koko") tai null, jos kuluja ei tunneta.
+ */
+export function pahinKahdenTuotteenNettokate(tuotteet, alennusProsentti = 0, toimitusmaksu = 0) {
+  const pahimmat = [];
+  for (const t of tuotteet) {
+    let w = null;
+    for (const [avain, id] of myytavatVariantit(t)) {
+      const kulu = t?.variants?.costs?.[String(id)];
+      if (typeof kulu !== "number") continue;
+      const hinta = alennettuSentit(rivinHinta(t, avain.split("|")[1]), alennusProsentti) / 100;
+      const osuus = hinta / (1 + ALV) - hinta * STRIPE_PROSENTTI - (kulu / 100) * PRINTIFY_KULUKERROIN;
+      if (!w || osuus < w.osuus) w = { osuus, id, hinta, avain };
+    }
+    if (w) pahimmat.push([t, w]);
+  }
+  let pahin = null;
+  for (let i = 0; i < pahimmat.length; i++) {
+    for (let j = i; j < pahimmat.length; j++) {
+      const [A, a] = pahimmat[i];
+      const [B, b] = pahimmat[j];
+      const k = laskeTilauksenNettokate(
+        [{ tuote: A, varianttiId: a.id, maara: 1, yksikkohinta: a.hinta }, { tuote: B, varianttiId: b.id, maara: 1, yksikkohinta: b.hinta }],
+        toimitusmaksu,
+      );
+      if (k.tunnettu && (!pahin || k.nettokate < pahin.nettokate)) pahin = { nettokate: k.nettokate, a: `${A.slug} ${a.avain}`, b: `${B.slug} ${b.avain}` };
+    }
+  }
+  return pahin;
 }

@@ -7,7 +7,8 @@
  * - Lahjakortit (type "giftcard", api/_lib/lahjakortti.js): ei Printifyä, ei katesääntöä, ei toimitusmaksua, eivät
  *   kerrytä ilmaisen toimituksen rajaa eikä alennuskoodi koske niitä. Pelkkä lahjakorttitilaus ei vaadi osoitetta.
  * - Pakettialennus (api/_lib/paketit.js): kun paketin molemmat tuotteet ovat korissa eikä alennuskoodia käytetä,
- *   ja vain jos paketin kate alennuksen jälkeen on vähintään 30 % (PAKETTI_KATE_RAJA).
+ *   ja vain jos paketin nettokate ilmaisella toimituksella on vähintään PAKETTI_MIN_KATE_EUROA (12 €). Lahjapaketti
+ *   saa kahden tuotteen ilmaisen toimituksen (2.11.2026).
  * - Saatavuus (api/_lib/saatavuus.js): variantti, joka on tuoterivin unavailable_variants-listassa (päivittäinen
  *   Printify-tarkistus, kassalla tuoreella haulla täydennettynä), hylätään ennen maksua.
  * - Lahjakortilla maksu: tarkistettu saldo vähennetään maksettavasta (lahjakortti { koodi, saldo }).
@@ -148,7 +149,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const euroa = alennus?.type === "fixed" ? alennus.value : 0;
   const suhde = valisumma > 0 ? Math.max(0, valisumma - euroa) / valisumma : 1;
   // Ilmainen toimitus rajasta tai kahdesta tuotteesta (tarrat eivät lasketa); kahden tuotteen sääntö ei yhdisty
-  // alennuskoodiin, pakettialennukseen eikä t-paitapariin (vakiot.js ILMAINEN_TOIMITUS_KPL).
+  // alennuskoodiin eikä t-paitapariin (vakiot.js ILMAINEN_TOIMITUS_KPL). Lahjapaketti saa sen (2.11.2026).
   const toimitusKpl = rivit.filter((r) => !LISATUOTE_KATEGORIAT.includes(byId.get(r.product_id)?.category)).reduce((s, r) => s + r.quantity, 0);
   const normaaliToimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: true });
   let toimitus = rivit.length === 0 ? 0 : toimitusmaksu({ summa: valisumma, kpl: toimitusKpl, alennus: !!alennus });
@@ -166,11 +167,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   let pakettiAlennus = 0;
   if (!alennus && lisat.paketit?.length) {
     const p = sovellaPaketit(fyysiset, bySlug, lisat.paketit);
-    const k = p.alennus > 0 ? nettokate(p.rivit, normaaliToimitus) : null;
+    const k = p.alennus > 0 ? nettokate(p.rivit, toimitus) : null;
     if (!k || (k.tunnettu && k.nettokate >= TILAUKSEN_MIN_KATE_EUROA)) {
       fyysiset = p.rivit;
       pakettiAlennus = p.alennus;
-      if (pakettiAlennus > 0) toimitus = normaaliToimitus;
     }
   }
   let koriAlennus = 0;

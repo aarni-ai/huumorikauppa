@@ -1,248 +1,69 @@
 /**
- * Generoitu: node scripts/generoi-paketit.mjs --kulut <kulutiedosto> (20 pakettia tilannekuvasta). Älä muokkaa käsin.
- * Alennus valittu kuluista (2026-10-26): suurin 10..5 %, jolla paketin kate >= 30 %. Pois käytöstä: 20/20.
+ * Lahjapaketit (2.11.2026, käsin valitut, sivu /paketit). Korvaa aiemmat 20 generoitua t-paita + huppari -pakettia, joiden
+ * alennus oli kokonaan pois käytöstä (kate jäi alle 30 %:n).
+ *
+ * Säännöt (api/_lib/vakiot.js LAHJAPAKETTI_ALENNUS_PROSENTTI ja PAKETTI_MIN_KATE_EUROA):
+ * - Kaksi myynnissä olevaa tuotetta, hinta yhteissumma -5 % (rivikohtainen pyöristys kuten kassa) ja ilmainen toimitus
+ *   kahden tuotteen säännöllä.
+ * - Paketin nettokate ilmaisella toimituksella vähintään 12 € jokaisella koko- ja väriyhdistelmällä. Tuotannon kuluilla
+ *   (2.11.2026) jokaisen paketin heikoin yhdistelmä on 13,72 €; src/test/lahjapaketit.test.ts käy läpi kaikki yhdistelmät.
+ * - T-paita + huppari ei täytä rajaa (t-paita 27,90 € + huppari 52,90 € -5 %: pahin yhdistelmä 3,23-6,01 € hupparista
+ *   riippuen), joten paketit ovat kahden t-paidan pareja. Kahden 24,90 €:n t-paidan pari jäisi noin 9 €:oon.
+ *
+ * Kassa (api/checkout.js) ja selain (src/lib/ostoskori.ts) lukevat tämän tiedoston. scripts/generoi-paketit.mjs ei enää
+ * kirjoita tätä tiedostoa.
  */
+import { LAHJAPAKETTI_ALENNUS_PROSENTTI } from "./vakiot.js";
+
 const PAKETIT = [
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -7,4 %, raja 30 %; vaatisi parin hinnaksi vähintään 116,00 € (nyt 74,80 €).
   {
-    "slug": "tonnin-seteli-t-paita-ja-huppari",
-    "nimi": "Tonnin Seteli: T-paita ja huppari",
-    "teema": "tonnin-seteli",
-    "tuotteet": [
-      "tonnin-seteli-t-paita",
-      "tonnin-seteli-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "isan-paketti",
+    nimi: "Isän paketti",
+    kuvaus: "Kaksi paitaa isälle: korjaaja ja grillaaja samassa paketissa.",
+    teema: "isa",
+    tuotteet: ["isa-joka-korjaa-kaiken-ensi-viikolla-t-paita-isalle", "isa-joka-grillaa-sateellakin-t-paita-isalle"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -7,4 %, raja 30 %; vaatisi parin hinnaksi vähintään 116,00 € (nyt 74,80 €).
   {
-    "slug": "100-elakelainen-t-paita-ja-huppari",
-    "nimi": "100% Eläkeläinen: T-paita ja huppari",
-    "teema": "100-elakelainen",
-    "tuotteet": [
-      "100-elakelainen-t-paita",
-      "100-elakelainen-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "saunojan-paketti",
+    nimi: "Saunojan paketti",
+    kuvaus: "Kaksi saunapaitaa: toinen lauteille, toinen löylyjen jälkeen.",
+    teema: "sauna",
+    tuotteet: ["saunan-jalkeen-kaikki-on-paremmin-t-paita-saunojalle", "kiuas-kuumana-paa-kylmana-t-paita-saunojalle"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
   {
-    "slug": "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita-ja-huppari",
-    "nimi": "30 ja liian vanha tyhmyyksiin (teen ne silti): T-paita ja huppari",
-    "teema": "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti",
-    "tuotteet": [
-      "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-t-paita",
-      "30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "pikkujoulupari-kahdelle",
+    nimi: "Pikkujoulupari kahdelle",
+    kuvaus: "Parille tai kaverukselle: toinen muistaa osittain, toinen ajaa kotiin.",
+    teema: "pikkujoulu",
+    tuotteet: ["pikkujoulut-muistan-osittain-t-paita-pikkujouluihin", "pikkujoulujen-nimetty-kuski-t-paita-pikkujouluihin"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
   {
-    "slug": "30-nuori-villi-ja-jo-vasynyt-t-paita-ja-huppari",
-    "nimi": "30, nuori, villi ja jo väsynyt: T-paita ja huppari",
-    "teema": "30-nuori-villi-ja-jo-vasynyt",
-    "tuotteet": [
-      "30-nuori-villi-ja-jo-vasynyt-t-paita",
-      "30-nuori-villi-ja-jo-vasynyt-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "mokkipaketti",
+    nimi: "Mökkipaketti",
+    kuvaus: "Kaksi paitaa mökkeilijälle: ei kiirettä, ei kenttää, laituri odottaa.",
+    teema: "mokki",
+    tuotteet: ["mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkeilijalle", "laiturilla-istuminen-on-harrastus-t-paita-mokkeilijalle"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
   {
-    "slug": "30v-paranen-ian-myota-kuin-viini-t-paita-ja-huppari",
-    "nimi": "30v, paranen iän myötä kuin viini: T-paita ja huppari",
-    "teema": "30v-paranen-ian-myota-kuin-viini",
-    "tuotteet": [
-      "30v-paranen-ian-myota-kuin-viini-t-paita",
-      "30v-paranen-ian-myota-kuin-viini-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "kalastajan-paketti",
+    nimi: "Kalastajan paketti",
+    kuvaus: "Kaksi paitaa kalastajalle: iso kala ja loppunut syötti.",
+    teema: "kalastus",
+    tuotteet: ["kala-oli-tatakin-isompi-t-paita-kalastajalle", "syotti-loppui-kahvi-ei-t-paita-kalastajalle"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
   {
-    "slug": "30v-selka-alkaa-jo-rusahdella-t-paita-ja-huppari",
-    "nimi": "30v, selkä alkaa jo rusahdella: T-paita ja huppari",
-    "teema": "30v-selka-alkaa-jo-rusahdella",
-    "tuotteet": [
-      "30v-selka-alkaa-jo-rusahdella-t-paita",
-      "30v-selka-alkaa-jo-rusahdella-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
+    slug: "elakelaisen-paketti",
+    nimi: "Eläkeläisen paketti",
+    kuvaus: "Kaksi paitaa eläkeläiselle: kello on koru ja jokainen päivä lauantai.",
+    teema: "elake",
+    tuotteet: ["elakkeella-kello-on-vain-koru-t-paita-elakelaiselle", "elakelainen-kaikki-paivat-ovat-lauantaita-t-paita-elakelaiselle"],
+    alennus_prosentti: LAHJAPAKETTI_ALENNUS_PROSENTTI,
   },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40-ja-fabulous-t-paita-ja-huppari",
-    "nimi": "40 ja fabulous: T-paita ja huppari",
-    "teema": "40-ja-fabulous",
-    "tuotteet": [
-      "40-ja-fabulous-t-paita",
-      "40-ja-fabulous-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40-vuotta-henkisesti-18-t-paita-ja-huppari",
-    "nimi": "40 vuotta, henkisesti 18: T-paita ja huppari",
-    "teema": "40-vuotta-henkisesti-18",
-    "tuotteet": [
-      "40-vuotta-henkisesti-18-t-paita",
-      "40-vuotta-henkisesti-18-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita-ja-huppari",
-    "nimi": "40 vuotta töitä, nyt ikuinen viikonloppu: T-paita ja huppari",
-    "teema": "40-vuotta-toita-nyt-ikuinen-viikonloppu",
-    "tuotteet": [
-      "40-vuotta-toita-nyt-ikuinen-viikonloppu-t-paita",
-      "40-vuotta-toita-nyt-ikuinen-viikonloppu-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40v-ei-keski-ika-klassikko-t-paita-ja-huppari",
-    "nimi": "40v, ei keski-ikä, klassikko: T-paita ja huppari",
-    "teema": "40v-ei-keski-ika-klassikko",
-    "tuotteet": [
-      "40v-ei-keski-ika-klassikko-t-paita",
-      "40v-ei-keski-ika-klassikko-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40v-ei-vanha-vintage-t-paita-ja-huppari",
-    "nimi": "40v, ei vanha, vintage: T-paita ja huppari",
-    "teema": "40v-ei-vanha-vintage",
-    "tuotteet": [
-      "40v-ei-vanha-vintage-t-paita",
-      "40v-ei-vanha-vintage-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40v-henkisesti-18-tyylilla-40-t-paita-ja-huppari",
-    "nimi": "40v, henkisesti 18, tyylillä 40: T-paita ja huppari",
-    "teema": "40v-henkisesti-18-tyylilla-40",
-    "tuotteet": [
-      "40v-henkisesti-18-tyylilla-40-t-paita",
-      "40v-henkisesti-18-tyylilla-40-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "40v-kunnossa-niinku-20v-t-paita-ja-huppari",
-    "nimi": "40v, kunnossa niinku 20v: T-paita ja huppari",
-    "teema": "40v-kunnossa-niinku-20v",
-    "tuotteet": [
-      "40v-kunnossa-niinku-20v-t-paita",
-      "40v-kunnossa-niinku-20v-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "50-ja-hopeanhohtoinen-vain-hiukset-t-paita-ja-huppari",
-    "nimi": "50 ja hopeanhohtoinen (vain hiukset): T-paita ja huppari",
-    "teema": "50-ja-hopeanhohtoinen-vain-hiukset",
-    "tuotteet": [
-      "50-ja-hopeanhohtoinen-vain-hiukset-t-paita",
-      "50-ja-hopeanhohtoinen-vain-hiukset-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "50-ja-paras-vasta-tulossa-t-paita-ja-huppari",
-    "nimi": "50 ja paras vasta tulossa: T-paita ja huppari",
-    "teema": "50-ja-paras-vasta-tulossa",
-    "tuotteet": [
-      "50-ja-paras-vasta-tulossa-t-paita",
-      "50-ja-paras-vasta-tulossa-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "50-vuotta-nuori-t-paita-ja-huppari",
-    "nimi": "50 vuotta nuori: T-paita ja huppari",
-    "teema": "50-vuotta-nuori",
-    "tuotteet": [
-      "50-vuotta-nuori-t-paita",
-      "50-vuotta-nuori-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita-ja-huppari",
-    "nimi": "50v, puoli vuosisataa, ei naarmuakaan: T-paita ja huppari",
-    "teema": "50v-puoli-vuosisataa-ei-naarmuakaan",
-    "tuotteet": [
-      "50v-puoli-vuosisataa-ei-naarmuakaan-t-paita",
-      "50v-puoli-vuosisataa-ei-naarmuakaan-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "60-vuotta-nuori-ja-nokkela-t-paita-ja-huppari",
-    "nimi": "60 vuotta nuori ja nokkela: T-paita ja huppari",
-    "teema": "60-vuotta-nuori-ja-nokkela",
-    "tuotteet": [
-      "60-vuotta-nuori-ja-nokkela-t-paita",
-      "60-vuotta-nuori-ja-nokkela-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "60-vuotta-nuori-t-paita-ja-huppari",
-    "nimi": "60 vuotta nuori: T-paita ja huppari",
-    "teema": "60-vuotta-nuori",
-    "tuotteet": [
-      "60-vuotta-nuori-t-paita",
-      "60-vuotta-nuori-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  },
-  // Alennus pois käytöstä (2026-10-26): kate 5 %:n alennuksella -2,6 %, raja 30 %; vaatisi parin hinnaksi vähintään 111,00 € (nyt 74,80 €).
-  {
-    "slug": "60v-kokenut-ei-vanha-t-paita-ja-huppari",
-    "nimi": "60v, kokenut, ei vanha: T-paita ja huppari",
-    "teema": "60v-kokenut-ei-vanha",
-    "tuotteet": [
-      "60v-kokenut-ei-vanha-t-paita",
-      "60v-kokenut-ei-vanha-huppari"
-    ],
-    "alennus_prosentti": 5,
-    "kaytossa": false
-  }
 ];
 
 export default PAKETIT;

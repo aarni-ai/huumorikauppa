@@ -12,8 +12,10 @@ export const TOIMITUS = 6.9;
 /**
  * Ilmainen toimitus kahdesta tuotteesta (2.11.2026, KATTEET.md "Ilmainen toimitus kahdesta tuotteesta"): kun tilauksessa
  * on vähintään ILMAINEN_TOIMITUS_KPL tuotetta (tarrat eivät lasketa, lahjakortit eivät lasketa), toimitus on ilmainen.
- * Ei yhdisty alennuskoodiin, pakettialennukseen eikä t-paitaparin kampanjahintaan: niissä toimitus kuten ennen
- * (ilmainen rajasta alkaen). Kahden t-paidan kori jää ilmaisella toimituksella ja -5 %:lla 13,71 € katteelle (heikoin koko 11,65 €).
+ * Ei yhdisty alennuskoodiin eikä t-paitaparin kampanjahintaan: niissä toimitus kuten ennen (ilmainen rajasta alkaen).
+ * Kahden t-paidan kori jää ilmaisella toimituksella ja -5 %:lla 13,71 € katteelle (heikoin koko 11,65 €). Lahjapaketit
+ * (api/_lib/paketit-data.js, 2.11.2026) saavat ilmaisen toimituksen, koska jokaisen paketin kate on ilmaisella
+ * toimituksella ja pakettialennuksella vähintään PAKETTI_MIN_KATE_EUROA kaikilla koko- ja väriyhdistelmillä.
  */
 export const ILMAINEN_TOIMITUS_KPL = 2;
 
@@ -44,6 +46,28 @@ export const KORIALENNUS_MIN_KATE_EUROA = 7;
  */
 export const TILAUKSEN_MIN_KATE_EUROA = 7;
 
+/**
+ * Lahjapaketit (2.11.2026, api/_lib/paketit-data.js, sivu /paketit): kaksi valmiiksi valittua tuotetta, hinta yhteissumma
+ * -LAHJAPAKETTI_ALENNUS_PROSENTTI (rivikohtainen pyöristys sentteinä kuten kassa) ja ilmainen toimitus kahden tuotteen
+ * säännöllä. Palvelin (api/_lib/paketit.js sovellaPaketit) antaa alennuksen vain, jos paketin nettokate ilmaisella
+ * toimituksella on vähintään PAKETTI_MIN_KATE_EUROA valitulla koko- ja väriyhdistelmällä; src/test/lahjapaketit.test.ts
+ * käy läpi jokaisen yhdistelmän tuotannon kuluilla (2.11.2026), joten raja täyttyy kaikilla.
+ */
+export const LAHJAPAKETTI_ALENNUS_PROSENTTI = 5;
+export const PAKETTI_MIN_KATE_EUROA = 12;
+
+/**
+ * Kampanjakalenteri 2026 (päivät Suomen aikaa, alku ja loppu mukaan lukien). Vaiheet ja etusivun nostot kootaan
+ * tiedostossa src/data/kampanjat.ts näistä ja joulun tilauspäivistä (src/data/campaignSchedule.ts). Black Friday -viikko
+ * on sama päivämäärä selaimessa ja kassalla (TPAITAPARI_KAMPANJA, api/_lib/korialennus.js tpaitapariVoimassa).
+ */
+export const KAMPANJAPAIVAT = {
+  isanpaiva: { alku: "2026-10-01", loppu: "2026-11-08" },
+  blackFriday: { alku: "2026-11-23", loppu: "2026-11-30" },
+  /** Lahjakorttinosto päättyy jouluaattoon. */
+  lahjakorttiLoppu: "2026-12-24",
+};
+
 /** Kategoriat, joita myydään vain toisen tuotteen lisänä (tarra yksin jättäisi katetta alle 5 €). */
 export const LISATUOTE_KATEGORIAT = ["tarrat"];
 
@@ -52,7 +76,7 @@ export const LISATUOTE_KATEGORIAT = ["tarrat"];
  * perimän 25,5 %:n ALV:n (katteet ilman ALV:tä, hinnasto HINNASTOT.perus). Jos kirjanpitäjä toteaa, ettei ALV ole
  * vähennettävissä, aseta false ja julkaise: kate lasketaan Printify-kulu x 1,255 (api/_lib/kate.js) ja hinnasto vaihtuu
  * HINNASTOT.alvKulu:un. Black Friday -pari ja määräalennus seuraavat hinnastoa; 30 päivän alin hinta pysyy 24,90 €:ssa,
- * koska kampanjaa edeltäneiden 30 päivän aikana (28.10.-26.11.) paita on maksanut 24,90 € (KSL 2:6 a §).
+ * koska kampanjaa edeltäneiden 30 päivän aikana (24.10.-22.11.) paita on maksanut 24,90 € (KSL 2:6 a §).
  */
 export const PRINTIFY_ALV_VAHENNETTAVA = true;
 
@@ -91,17 +115,19 @@ export const HINNASTOT = {
 export const HINNASTO = PRINTIFY_ALV_VAHENNETTAVA ? HINNASTOT.perus : HINNASTOT.alvKulu;
 
 /**
- * Black Friday ja joulu 2026 (KATTEET.md "Black Friday ja joulu 2026"): "Kaksi t-paitaa 44,90 €". Aarni hyväksyi
- * 29.10.2026; laskeutumissivu /black-friday. Voimassa vain alku-loppu Suomen aikaa. Koskee t-paitoja, joiden kappalehinta
- * on 24,90 €; korvaa kahden tuotteen -5 %:n, kun pari on asiakkaalle edullisempi (ei molempia). Katevahti kuten
- * korialennuksessa. Kuluttajansuojalaki 2:6 a §: markkinoinnissa kerrotaan t-paidan 30 päivän alin hinta
- * (alinHinta30pv); tarkista se ennen käyttöönottoa. Ei ennen-hintoja.
+ * Black Friday 2026 (KATTEET.md "Black Friday ja joulu 2026" ja "Black Friday -viikko 23.-30.11.2026"): "Kaksi t-paitaa
+ * 44,90 €". Aarni hyväksyi 29.10.2026; laskeutumissivu /black-friday. Päivät kampanjakalenterista (KAMPANJAPAIVAT, 2.11.2026:
+ * Black Friday -viikko ma 23.11. - ma 30.11., aiemmin 27.11.-1.12.). Voimassa vain alku-loppu Suomen aikaa. Koskee t-paitoja,
+ * joiden kappalehinta on 24,90 €; korvaa kahden tuotteen -5 %:n, kun pari on asiakkaalle edullisempi (ei molempia).
+ * Katevahti kuten korialennuksessa. Laajempi "-10 % kahdesta tuotteesta" hylättiin: pahin kahden tuotteen tilaus jäisi
+ * tappiolle (src/test/kampanjat.test.ts). Kuluttajansuojalaki 2:6 a §: markkinoinnissa kerrotaan t-paidan 30 päivän alin
+ * hinta (alinHinta30pv). Kampanjaa edeltäneet 30 päivää (24.10.-22.11.) paita on maksanut 24,90 €. Ei ennen-hintoja.
  */
 export const TPAITAPARI_KAMPANJA = {
   // Hyväksytty 29.10.2026. Hinta 24,90 € todennettu (hintatarkistus, KASVU-RAPORTTI.md 29.10.2026 iltapäivä).
   kaytossa: true,
-  alku: "2026-11-27",
-  loppu: "2026-12-01",
+  alku: KAMPANJAPAIVAT.blackFriday.alku,
+  loppu: KAMPANJAPAIVAT.blackFriday.loppu,
   kategoria: "t-paidat",
   kappalehinta: HINNASTO.tpaita.suora,
   parihinta: HINNASTO.tpaitapari,

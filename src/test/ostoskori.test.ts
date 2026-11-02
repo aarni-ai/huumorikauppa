@@ -80,7 +80,7 @@ describe("Suositukset", () => {
 });
 
 describe("Pakettialennuksen arvio", () => {
-  // Generoidut paketit ovat nyt pois käytöstä (kate alle 30 %); arvio testataan käytössä olevalla määrityksellä.
+  // Lahjapaketit (2.11.2026): katesääntö nettokate vähintään 12 € ilmaisella toimituksella; testi 10 %:n alennuksella.
   const pk = { ...PAKETTIMAARITYKSET[0], alennus_prosentti: 10, kaytossa: undefined };
   const [a, b] = pk.tuotteet;
   const kulut = { variant_map: { "Musta|M": 1 }, costs: { "1": 700 }, shipping_cents: 400 };
@@ -90,12 +90,12 @@ describe("Pakettialennuksen arvio", () => {
     expect(paketinTiedot(pk, [tuote(a, 24.9), tuote(b, 49.9, "hupparit")])?.alennusVoimassa).toBe(false);
     expect(arvioiPakettialennus([rivi(tuote(a, 24.9)), rivi(tuote(b, 49.9, "hupparit"))], [tuote(a, 24.9), tuote(b, 49.9, "hupparit")])).toBe(0);
   });
-  it("tunnetut kulut ja kate >= 30 %: alennus, ei alennuskoodin kanssa", () => {
+  it("tunnetut kulut ja nettokate >= 12 €: alennus, ei alennuskoodin kanssa", () => {
     expect(paketinTiedot(pk, [ta, tb])).toMatchObject({ alennusVoimassa: true, yhteensa: 74.8, pakettihinta: 67.32 });
     expect(paketinTiedot({ ...pk, kaytossa: false }, [ta, tb])).toMatchObject({ alennusVoimassa: false, pakettihinta: 74.8 });
     expect(arvioiPakettialennus([rivi(ta), rivi(tb)], [ta, tb], false, [pk])).toBe(7.48);
-    // Generoitu määritys on pois käytöstä: ei arviota.
-    expect(arvioiPakettialennus([rivi(ta), rivi(tb)], [ta, tb])).toBe(0);
+    // Lahjapaketin oma määritys (-5 %): 2490 -> 2366 ja 4990 -> 4741 senttiä.
+    expect(arvioiPakettialennus([rivi(ta), rivi(tb)], [ta, tb])).toBe(3.73);
     expect(arvioiPakettialennus([rivi(ta)], [ta, tb])).toBe(0);
     expect(arvioiPakettialennus([rivi(ta), rivi(tb)], [ta, tb], true)).toBe(0);
   });

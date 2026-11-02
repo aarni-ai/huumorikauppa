@@ -3,6 +3,24 @@ import { Gift } from "lucide-react";
 import { useJouluTakaraja } from "@/components/JouluTakaraja";
 import { jouluRivi } from "@/data/jouluAikataulu";
 import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
+import { sopiiLahjaksi } from "@/lib/sopiiLahjaksi";
+
+/**
+ * Tiivis "Sopii lahjaksi" -rivi ostopainikkeen alle (2.11.2026): kenelle tuote sopii ja linkki saman aiheen lahjasivulle
+ * (src/lib/sopiiLahjaksi.ts). Ei hookeja eikä aikaa, joten sama rivi on esirenderöidyssä HTML:ssä (ProductPage previewOnly).
+ */
+export function SopiiLahjaksiRivi({ product, className = "" }: { product: { slug: string; category?: string | null }; className?: string }) {
+  const r = sopiiLahjaksi(product);
+  return (
+    <p className={`flex items-start gap-1.5 text-[13px] leading-snug text-foreground ${className}`} data-sopii-lahjaksi="">
+      <Gift className="h-4 w-4 text-primary shrink-0 mt-px" aria-hidden="true" />
+      <span>
+        {r.teksti}{" "}
+        <Link to={r.polku} className="text-primary underline underline-offset-2 whitespace-nowrap">{r.linkkiTeksti}</Link>
+      </span>
+    </p>
+  );
+}
 
 /**
  * "Sopii lahjaksi" tuotesivulle. Vain todennettavia asioita: kassan vastaanottajavalinta (CheckoutPage),

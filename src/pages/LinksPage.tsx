@@ -4,17 +4,18 @@ import { ChevronRight } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
 import { linkitSivulla } from "@/data/linkit";
+import { kampanjaVaihe, type KampanjaVaiheId } from "@/data/kampanjat";
 
 /**
- * /linkit: somen bio-linkki (TikTok, Instagram, YouTube). Kuusi tärkeintä linkkiä; Black Friday näkyy kampanjan
- * alusta (27.11.) loppuun. Saapuminen kirjataan käyntilaskuriin somen utm_source-lähteellä (src/lib/kaynti.ts), ja
+ * /linkit: somen bio-linkki (TikTok, Instagram, YouTube). Kuusi tärkeintä linkkiä; kampanjakalenterin mukaan (src/data/kampanjat.ts)
+ * Black Friday näkyy Black Friday -viikolla (23.-30.11.) ja lahjakortti joulun tilauspäivien jälkeen. Saapuminen kirjataan käyntilaskuriin somen utm_source-lähteellä (src/lib/kaynti.ts), ja
  * linkkeihin lisätään sama utm_source, jotta GA4 yhdistää ostot somelähteeseen.
  */
 const LinksPage = () => {
   const { search } = useLocation();
-  const [paiva, setPaiva] = useState<string | null>(null);
-  useEffect(() => setPaiva(new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date())), []);
-  const linkit = linkitSivulla(paiva, TPAITAPARI_KAMPANJA, search);
+  const [vaihe, setVaihe] = useState<KampanjaVaiheId | null>(null);
+  useEffect(() => setVaihe(kampanjaVaihe(Date.now())), []);
+  const linkit = linkitSivulla(vaihe, search, { bfKaytossa: TPAITAPARI_KAMPANJA.kaytossa });
   return (
     <div className="container max-w-md py-10">
       <SEOHead title="Linkit | Huumorikauppa" description="Huumorikaupan tärkeimmät linkit: joululahjat, yrityksille, personoitu paita, suosituimmat ja harrastussarjat." noindex={true} />

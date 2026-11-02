@@ -57,20 +57,12 @@ describe("Paketit: muodostus", () => {
       tuotteet: ["oispa-kaljaa-t-paita", "oispa-kaljaa-huppari"], alennus_prosentti: 10,
     }]);
   });
-  it("generoitu tiedosto vastaa tilannekuvaa (aja node scripts/generoi-paketit.mjs --kulut ...)", () => {
-    const d = JSON.parse(readFileSync("data/products-snapshot.json", "utf8"));
-    expect(PAKETIT).toHaveLength(20);
-    const ilmanAlennusta = (p: Record<string, unknown>) => { const { alennus_prosentti, kaytossa, ...muut } = p; return muut; };
-    expect(muodostaPaketit(d, 20).map(ilmanAlennusta)).toEqual(PAKETIT.map(ilmanAlennusta));
-    // Tonnin seteli (t-paita + huppari) ensimmäisenä ja vähintään neljä muuta teemaparia.
-    expect(PAKETIT[0].tuotteet).toEqual(["tonnin-seteli-t-paita", "tonnin-seteli-huppari"]);
-    expect(new Set(PAKETIT.map((p: { teema: string }) => p.teema)).size).toBeGreaterThanOrEqual(5);
+  it("paketit-data.js on käsin valittu lahjapakettilista (2.11.2026, src/test/lahjapaketit.test.ts)", () => {
+    expect(PAKETIT).toHaveLength(6);
+    const kulut = JSON.parse(readFileSync("src/test/fixtures/kate-tilannekuva.json", "utf8")).tuotteet;
+    const slugit = new Set(kulut.map((p: { slug: string }) => p.slug));
     for (const pk of PAKETIT) {
-      expect(pk.alennus_prosentti).toBeGreaterThanOrEqual(5);
-      expect(pk.alennus_prosentti).toBeLessThanOrEqual(10);
-    }
-    const slugit = new Set(d.map((p: { slug: string }) => p.slug));
-    for (const pk of PAKETIT) {
+      expect(pk.alennus_prosentti).toBe(5);
       expect(pk.tuotteet.every((s: string) => slugit.has(s))).toBe(true);
       expect(pk.nimi).not.toMatch(/[–—]/);
     }
@@ -99,8 +91,9 @@ describe("Paketit: kate ja alennus", () => {
     expect(molemmat.bundle_discount).toBe(7.48);
     expect(molemmat.rivit.map((r: { unit_cents: number }) => r.unit_cents)).toEqual([2241, 4491]);
     expect(molemmat.rivit.every((r: { paketti?: string }) => r.paketti === "oispa-kaljaa-t-paita-ja-huppari")).toBe(true);
-    expect(molemmat.shipping).toBe(toimitusSummalle(74.8));
-    expect(molemmat.total).toBe(r2(74.8 * 0.9 + toimitusSummalle(74.8)));
+    // Paketti saa kahden tuotteen ilmaisen toimituksen (2.11.2026).
+    expect(molemmat.shipping).toBe(0);
+    expect(molemmat.total).toBe(r2(74.8 * 0.9));
   });
   it("toimitusmaksun raja lasketaan ennen alennusta", () => {
     // Välisumma ylittää rajan, mutta alennettu summa jää sen alle: toimitus on silti ilmainen.
@@ -121,7 +114,7 @@ describe("Paketit: kate ja alennus", () => {
     expect(r.shipping).toBe(0);
     expect(r.total).toBe(92.22);
   });
-  it("katevahti: paketin kate alle 30 % tai tuntematon kulu, ei alennusta", () => {
+  it("katevahti: paketin nettokate alle 12 € tai tuntematon kulu, ei alennusta", () => {
     const r = laskeTilaus(pyynto([t("kallis-t-paita"), t("kallis-huppari")]), tuotteet, null, { paketit, korialennus: eiKorialennusta });
     expect(r.bundle_discount).toBe(0);
     // Kaksi tuotetta ilman paketti- tai koodialennusta: ilmainen toimitus (2.11.2026).

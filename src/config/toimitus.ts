@@ -55,7 +55,7 @@ export const TOIMITUSAIKA_LAUSE = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkip�
 export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja kun tilaat kaksi tuotetta tai vähintään ${ILMAINEN_RAJA_TEKSTI} eurolla, toimitus on ilmainen.`;
 
 /** Kahden tuotteen säännön ehdot (toimitusehdot, UKK). */
-export const KAHDEN_TUOTTEEN_EHTO = `Kahden tuotteen ilmainen toimitus koskee t-paitoja, huppareita ja julisteita (tarrat eivät lasketa), eikä se yhdisty alennuskoodiin, pakettialennukseen eikä t-paitaparin kampanjahintaan. Niissä toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
+export const KAHDEN_TUOTTEEN_EHTO = `Kahden tuotteen ilmainen toimitus koskee t-paitoja, huppareita ja julisteita (tarrat eivät lasketa), eikä se yhdisty alennuskoodiin eikä t-paitaparin kampanjahintaan. Niissä toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta. Lahjapaketeissa on kaksi tuotetta, joten niiden toimitus on ilmainen.`;
 
 /** Toimitusmaksu tilauksen välisummalle (sama sääntö kuin kassalla). */
 export function toimitusmaksuSummalle(valisumma: number): number {

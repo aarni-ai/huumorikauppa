@@ -1,4 +1,4 @@
-import { IsanpaivaLahjakorttiBanneri } from "@/components/IsanpaivaLahjakorttiBanneri";
+import { KampanjaNosto } from "@/components/KampanjaNosto";
 import { EtusivunSuosituimmat } from "@/components/EtusivunSuosituimmat";
 import { AB_OTSIKOT, abVersio, kirjaaVaihe } from "@/lib/suppilo";
 import { Link } from "react-router-dom";
@@ -25,7 +25,6 @@ import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo, lazy, Suspense, Fragment } from "react";
 import { revealApp } from "@/lib/prerenderPreview";
-import { BlackFridayNosto } from "@/components/KorialennusVihje";
 import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
 import { getPriorityRank } from "@/lib/productPriority";
 import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
@@ -140,8 +139,9 @@ const Index = () => {
         ogImage="https://huumorikauppa.fi/images/etusivu-joulu.png"
       />
 
-      {/* ISÄNPÄIVÄN LAHJAKORTTI (1.11.2026): su 8.11. loppuun. */}
-      <IsanpaivaLahjakorttiBanneri />
+      {/* KAMPANJANOSTO (2.11.2026): isänpäivä, joulu, Black Friday, joulun takarajat ja lahjakortti vaihtuvat itsestään
+          kampanjakalenterin mukaan (src/data/kampanjat.ts). */}
+      <KampanjaNosto />
 
       {/* YRITYSTEN JOULULAHJAT (30.10.2026): takaraja api/_lib/yritysmyynti.js, näkyy takarajaan asti. */}
       {aikataulu(null).jouluun && (
@@ -192,11 +192,6 @@ const Index = () => {
 
       {/* 8 SUOSITUINTA (2.11.2026): heti heron alla, paikka varattu ennen latausta. */}
       <EtusivunSuosituimmat tuotteet={allProducts} lataa={isLoading} />
-
-      {/* BLACK FRIDAY 27.11.-1.12. (vain kampanjan aikana, src/components/KorialennusVihje.tsx) */}
-      <div className="container">
-        <BlackFridayNosto className="mt-3" />
-      </div>
 
       {/* TRUST BADGES */}
       <section className="border-y border-border bg-muted/40 py-2.5 mt-2">

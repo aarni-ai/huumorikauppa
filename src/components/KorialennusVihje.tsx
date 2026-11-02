@@ -143,7 +143,7 @@ export function TpaitapariTila({ className = "" }: { className?: string }) {
   );
 }
 
-/** Etusivun Black Friday -nosto vain kampanjan aikana (27.11.-1.12.). */
+/** Black Friday -nosto vain kampanjan aikana (kampanjakalenteri 23.-30.11., src/components/KampanjaNosto.tsx). */
 export function BlackFridayNosto({ className = "" }: { className?: string }) {
   const tila = useKampanjanTila();
   if (tila !== "voimassa") return null;

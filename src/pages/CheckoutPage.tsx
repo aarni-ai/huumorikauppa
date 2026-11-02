@@ -261,8 +261,9 @@ const CheckoutPage = () => {
   // Kahden tuotteen alennus vain ilman alennuskoodia (api/_lib/korialennus.js).
   const kori = korialennusTila(items, allProducts, !!appliedDiscount || !!kumppaniProsentti);
   const basketDiscount = kori.alennus;
-  // Ilmainen toimitus kahdesta tuotteesta ei yhdisty alennuskoodiin, kumppani- eikä pakettialennukseen (api/_lib/kassa.js).
-  const toimitusKassalla = toimitusTila(items, { alennus: !!appliedDiscount || !!kumppaniProsentti || bundleDiscount > 0 || kori.tyyppi === "tpaitapari" });
+  // Ilmainen toimitus kahdesta tuotteesta ei yhdisty alennuskoodiin, kumppanialennukseen eikä t-paitapariin; lahjapaketti
+  // saa sen (api/_lib/kassa.js, 2.11.2026).
+  const toimitusKassalla = toimitusTila(items, { alennus: !!appliedDiscount || !!kumppaniProsentti || kori.tyyppi === "tpaitapari" });
   const shippingFree = toimitusKassalla.ilmainen;
   const shippingCost = toimitusKassalla.toimitus;
   const grandTotal = Math.round((totalPrice - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;

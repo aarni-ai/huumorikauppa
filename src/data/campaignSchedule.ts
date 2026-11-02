@@ -4,8 +4,10 @@
  * aikataulusta. Ajat ovat Suomen aikaa (Europe/Helsinki), ja ne muunnetaan UTC-millisekunneiksi
  * aikavyöhyketiedon avulla, joten kesä- ja normaaliaika menevät oikein.
  *
- * Tiedostolla ei ole importteja, jotta sitä voi käyttää mistä tahansa (christmas.ts, sivudata).
+ * Ainoa import on riippuvuudeton api/_lib/vakiot.js (kampanjakalenterin päivät, sama lähde kuin kassalla), joten tiedostoa
+ * voi edelleen käyttää mistä tahansa (christmas.ts, sivudata). Kampanjavaiheiden kokonaiskuva: src/data/kampanjat.ts.
  */
+import { KAMPANJAPAIVAT } from "../../api/_lib/vakiot.js";
 
 const HELSINKI_PARTS = new Intl.DateTimeFormat("en-US", {
   timeZone: "Europe/Helsinki",
@@ -141,7 +143,7 @@ export const CHRISTMAS_ORDER_END_UTC_MS = paivanLoppuUtcMs(JOULU_TILAUSPAIVA_ISO
 
 // ── Bannerin aikataulu ────────────────────────────────────────────────────────
 
-export type BannerTheme = "isanpaiva" | "joulu";
+export type BannerTheme = "isanpaiva" | "joulu" | "black-friday" | "joulu-tpaidat";
 
 export interface BannerSlot {
   theme: BannerTheme;
@@ -151,10 +153,24 @@ export interface BannerSlot {
   untilMs: number;
 }
 
+/** T-paitojen (myöhäisin) joulun tilauspäivä ja sen loppu Suomen aikaa (2026: perjantai, src/test/kampanjat.test.ts). */
+export const JOULU_TPAIDAT_ISO = joulunTilauspaivaTyypille("t-paidat");
+export const JOULU_TPAIDAT_END_UTC_MS = paivanLoppuUtcMs(JOULU_TPAIDAT_ISO);
+/** Päivän alku 00.00 Suomen aikaa (UTC ms). */
+export const paivanAlkuUtcMs = (iso: string): number => {
+  const [y, m, d] = osat(iso);
+  return helsinkiTimeToUtcMs(y, m, d);
+};
+/** Black Friday -viikko (kampanjakalenteri, api/_lib/vakiot.js KAMPANJAPAIVAT; sama päivä kassalla). */
+export const BLACK_FRIDAY_ALKU_UTC_MS = paivanAlkuUtcMs(KAMPANJAPAIVAT.blackFriday.alku);
+export const BLACK_FRIDAY_LOPPU_UTC_MS = paivanLoppuUtcMs(KAMPANJAPAIVAT.blackFriday.loppu);
+
 /**
  * Järjestyksessä, ei päällekkäisyyksiä. Isänpäivän banneri 1.10. alkaen isänpäivän viimeisen tilauspäivän loppuun,
- * joulun banneri heti sen jälkeen joulun viimeisen tilauspäivän loppuun, sen jälkeen ei banneria. Päivät lasketaan
- * toimitusajoista (yllä), joten vanhentunutta päivää ei näytetä koskaan.
+ * joulun banneri heti sen jälkeen, Black Friday -viikolla Black Friday, sitten joulu sivuston joulun tilauspäivän
+ * (hupparit ja muut) loppuun ja t-paitojen tilauspäivän (JOULU_TPAIDAT_ISO) loppuun t-paitojen banneri. Sen jälkeen
+ * lahjakortti (SeasonalBanner, vain kun lahjakortit ovat myynnissä). Päivät lasketaan toimitusajoista (yllä), joten
+ * vanhentunutta päivää ei näytetä koskaan.
  */
 const SLOTIT: BannerSlot[] = [
   {
@@ -165,7 +181,22 @@ const SLOTIT: BannerSlot[] = [
   {
     theme: "joulu",
     fromMs: Math.max(FATHERS_DAY_ORDER_END_UTC_MS + 1, helsinkiTimeToUtcMs(2026, 10, 1)),
+    untilMs: Math.min(CHRISTMAS_ORDER_END_UTC_MS, BLACK_FRIDAY_ALKU_UTC_MS - 1),
+  },
+  {
+    theme: "black-friday",
+    fromMs: BLACK_FRIDAY_ALKU_UTC_MS,
+    untilMs: BLACK_FRIDAY_LOPPU_UTC_MS,
+  },
+  {
+    theme: "joulu",
+    fromMs: BLACK_FRIDAY_LOPPU_UTC_MS + 1,
     untilMs: CHRISTMAS_ORDER_END_UTC_MS,
+  },
+  {
+    theme: "joulu-tpaidat",
+    fromMs: CHRISTMAS_ORDER_END_UTC_MS + 1,
+    untilMs: JOULU_TPAIDAT_END_UTC_MS,
   },
 ];
 export const BANNER_SCHEDULE: readonly BannerSlot[] = SLOTIT.filter((s) => s.untilMs >= s.fromMs);

@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * Generoi pakettimääritykset (api/_lib/paketit-data.js) tuotteiden tilannekuvasta: 20 parasta teemaparia
+ * 2.11.2026: lahjapaketit valitaan käsin (api/_lib/paketit-data.js), eikä tämä skripti enää kirjoita sitä. Skripti
+ * tulostaa teemaparien ehdotukset analyysia varten.
+ *
+ * Generoi pakettimääritykset tuotteiden tilannekuvasta: 20 parasta teemaparia
  * (t-paita + huppari tai paita + pipo samalla tekstillä, sama slugin runko), kiinnitetyt teemat (Tonnin seteli) ensin.
  * Aja uudelleen, kun tuotteet tai hinnat muuttuvat:
  *   node scripts/generoi-paketit.mjs [--maara 20] [--kulut katteet.json]
@@ -11,7 +14,7 @@
  * (kaytossa: false) ja syy kirjoitetaan kommenttina. Ilman --kulut-tiedostoa alennus on 10 % ja kassan katevahti
  * päättää sen käytöstä tilaushetkellä.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { muodostaPaketit, valitsePakettialennus, PAKETTI_ALENNUKSET } from "../api/_lib/paketit.js";
 import { paketinHeikoinKate } from "../api/_lib/kate.js";
 
@@ -67,11 +70,9 @@ const rivit = paketit.map(({ paketti, syy }) => {
   const json = JSON.stringify(paketti, null, 2).replace(/^/gm, "  ");
   return `${syy ? `  // Alennus pois käytöstä (${pvm}): ${syy}.\n` : ""}${json}`;
 });
-const kohde = new URL("../api/_lib/paketit-data.js", import.meta.url);
-writeFileSync(
-  kohde,
-  `/**\n * Generoitu: node scripts/generoi-paketit.mjs${kulutPolku ? " --kulut <kulutiedosto>" : ""} (${paketit.length} pakettia tilannekuvasta). Älä muokkaa käsin.\n` +
+// Tulostetaan vain ehdotukset: api/_lib/paketit-data.js on käsin valittu (lahjapaketit 2.11.2026).
+console.log(
+  `/**\n * Ehdotus: node scripts/generoi-paketit.mjs${kulutPolku ? " --kulut <kulutiedosto>" : ""} (${paketit.length} pakettia tilannekuvasta).\n` +
     (kulutPolku ? ` * Alennus valittu kuluista (${pvm}): suurin 10..5 %, jolla paketin kate >= 30 %. Pois käytöstä: ${pois}/${paketit.length}.\n` : "") +
-    ` */\nconst PAKETIT = [\n${rivit.join(",\n")}\n];\n\nexport default PAKETIT;\n`,
+    ` */\nconst PAKETIT = [\n${rivit.join(",\n")}\n];\n`,
 );
-console.log(`Kirjoitettu ${paketit.length} pakettia (alennus pois käytöstä ${pois}): api/_lib/paketit-data.js`);

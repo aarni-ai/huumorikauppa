@@ -14,6 +14,7 @@ import {
   joulunTilauspaivaTyypille,
   paivaLyhyt,
   paivaTeksti,
+  paivanLoppuUtcMs,
 } from "./campaignSchedule.js";
 import { TOIMITUSAIKA_LAUSE, TOIMITUSAIKA_TEKSTI } from "../config/toimitus.js";
 
@@ -42,6 +43,16 @@ export function jouluPalkkiLause(nowMs: number = Date.now()): string {
   if (!jouluAuki(nowMs)) return "";
   // 2.11.2026: yksi päivä (tuotetyyppien varhaisin), muoto "Tilaa viimeistään X, niin ehtii jouluksi".
   return `Tilaa viimeistään ${lyhyt(JOULU_TILAUSPAIVA_ISO)}, niin ehtii jouluksi`;
+}
+
+/**
+ * Yläpalkki sivuston joulun tilauspäivän (hupparit ja muut) jälkeen t-paitojen tilauspäivän loppuun: "T-paidat ehtivät
+ * vielä jouluksi, kun tilaat viimeistään <t-paitojen päivä>." Muulloin tyhjä.
+ */
+export function jouluTpaidatPalkkiLause(nowMs: number = Date.now()): string {
+  const tpaidat = joulunTilauspaivaTyypille("t-paidat");
+  if (jouluAuki(nowMs) || tpaidat <= JOULU_TILAUSPAIVA_ISO || nowMs > paivanLoppuUtcMs(tpaidat)) return "";
+  return `T-paidat ehtivät vielä jouluksi, kun tilaat viimeistään ${lyhyt(tpaidat)} Muiden tuotteiden tilausaika päättyi.`;
 }
 
 /** Joulun lupaus tai, tilausajan jälkeen, pelkkä toimitusaika. */
