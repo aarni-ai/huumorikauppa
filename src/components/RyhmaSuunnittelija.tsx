@@ -42,11 +42,11 @@ export function Hintataulukko() {
 }
 
 /**
- * Ryhmäpaidan suunnittelutyökalu ja ryhmän luonti (/abipaidat, /polttarit, /joukkueet, /yhdistykset): etupuoli
+ * Ryhmäpaidan suunnittelutyökalu ja ryhmän luonti (/abipaidat, /abipaidat/<kaupunki>, /polttarit, /joukkueet, /yhdistykset): etupuoli
  * (nimi, vuosi, teksti tai logo), väri, esikatselu edestä ja takaa, maksutapa, paitamäärä ja vetäjän tiedot. Luonnin
  * jälkeen näytetään jäsenlinkki ja vetäjän hallintalinkki.
  */
-export function RyhmaSuunnittelija({ sivu }: { sivu: RyhmaSivu }) {
+export function RyhmaSuunnittelija({ sivu }: { sivu: Pick<RyhmaSivu, "tyyppi" | "esimerkki" | "takaraja"> }) {
   const [nimi, setNimi] = useState(sivu.esimerkki.nimi);
   const [vuosi, setVuosi] = useState(sivu.esimerkki.vuosi);
   const [teksti, setTeksti] = useState(sivu.esimerkki.teksti);

@@ -70,6 +70,9 @@ export function paivaTeksti(iso: string): string {
 export const ABI_PERILLA_VIIMEISTAAN = arkipaiviaTaaksepain(PENKKARIT_2027, ABI_VARMUUS_ARKIPAIVAA);
 /** Viimeinen lukituspäivä: toimitusajan yläraja (t-paidat) ennen perilläpäivää. */
 export const ABI_VIIMEINEN_TILAUSPAIVA = arkipaiviaTaaksepain(ABI_PERILLA_VIIMEISTAAN, TOIMITUS_MAX);
+/** "to 14.1.2027" ja "to 18.2.2027" kaupunkisivujen teksteihin (src/data/abikaupungit). */
+export const ABI_TAKARAJA_TEKSTI = paivaTeksti(ABI_VIIMEINEN_TILAUSPAIVA);
+export const PENKKARIT_TEKSTI = paivaTeksti(PENKKARIT_2027);
 export const ABI_AIKATAULU = `Lukitkaa abipaitojen tilaus viimeistään ${paivaTeksti(ABI_VIIMEINEN_TILAUSPAIVA)}. Paidat ovat perillä enintään ${TOIMITUS_MAX} arkipäivässä, eli viimeistään ${paivaTeksti(ABI_PERILLA_VIIMEISTAAN)}, kaksi viikkoa ennen penkkareita ${paivaTeksti(PENKKARIT_2027)}.`;
 
 // ── Sivut ──────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -90,12 +93,14 @@ export interface RyhmaSivu {
   takaraja?: string;
 }
 
+export const KOKOTAULUKKO_FAQ: Faq = {
+  q: "Miten kokotaulukko toimii?",
+  a: "Vetäjä luo ryhmän ja jakaa jäsenlinkin, ja jokainen kirjoittaa siihen oman selkänimensä ja kokonsa. Vetäjä näkee koot, nimet ja maksut omalla hallintasivullaan, jonka linkki on eri kuin jäsenten linkki.",
+};
+
 const yhteisetFaqs = (paita: string): Faq[] => [
   { q: `Paljonko ${paita} maksaa?`, a: RYHMA_HINTALAUSE },
-  {
-    q: "Miten kokotaulukko toimii?",
-    a: "Vetäjä luo ryhmän ja jakaa jäsenlinkin, ja jokainen kirjoittaa siihen oman selkänimensä ja kokonsa. Vetäjä näkee koot, nimet ja maksut omalla hallintasivullaan, jonka linkki on eri kuin jäsenten linkki.",
-  },
+  KOKOTAULUKKO_FAQ,
   { q: "Kuka paidat maksaa?", a: `${RYHMA_SAANNOT[0]} Maksu tehdään Stripen suojatulla kassalla.` },
   { q: "Mitä tapahtuu, jos kaikki eivät maksa?", a: `${RYHMA_SAANNOT[2]} ${RYHMA_SAANNOT[1]}` },
   { q: "Mitä selkään voi kirjoittaa?", a: `Selkään painetaan jäsenen nimi tai lempinimi, enintään ${SELKA_NIMI_MAX} merkkiä, ja halutessa numero 0-99. Kirosanoja, tuotemerkkejä ja tunnettujen joukkueiden nimiä ei paineta.` },

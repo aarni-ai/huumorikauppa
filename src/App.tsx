@@ -134,6 +134,7 @@ const PartnerLandingPage = lazyWithRetry(() => import("./pages/PartnerLandingPag
 const FriendLandingPage = lazyWithRetry(() => import("./pages/FriendLandingPage"));
 const GroupOrderPage = lazyWithRetry(() => import("./pages/GroupOrderPage"));
 const RyhmaPaitaPage = lazyWithRetry(() => import("./pages/RyhmaPaitaPage"));
+const AbiKaupunkiPage = lazyWithRetry(() => import("./pages/AbiKaupunkiPage"));
 const RyhmaJasenPage = lazyWithRetry(() => import("./pages/RyhmaJasenPage"));
 const RyhmaHallintaPage = lazyWithRetry(() => import("./pages/RyhmaHallintaPage"));
 
@@ -239,6 +240,7 @@ export const AppSisalto = () => (
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               <Route path="/abipaidat" element={<RyhmaPaitaPage />} />
+              <Route path="/abipaidat/:kaupunki" element={<AbiKaupunkiPage />} />
               <Route path="/polttarit" element={<RyhmaPaitaPage />} />
               <Route path="/joukkueet" element={<RyhmaPaitaPage />} />
               <Route path="/yhdistykset" element={<RyhmaPaitaPage />} />

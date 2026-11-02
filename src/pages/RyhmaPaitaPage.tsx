@@ -6,6 +6,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { buildFaqJsonLd } from "@/seo/structuredData";
 import { SITE_URL } from "@/seo/site";
 import { RYHMA_SIVUT, RYHMA_POLUT, type RyhmaPolku } from "@/data/ryhmapaidat";
+import { ABIKAUPUNKI_LINKIT } from "@/data/abikaupungit";
 
 /** /abipaidat, /polttarit, /joukkueet, /yhdistykset: SEO-teksti, suunnittelutyökalu ja UKK (src/data/ryhmapaidat.ts). */
 const RyhmaPaitaPage = () => {
@@ -35,7 +36,7 @@ const RyhmaPaitaPage = () => {
         {sivu.intro.map((p, i) => <p key={p} className={i === 0 ? "text-lg text-foreground font-medium" : undefined}>{p}</p>)}
       </div>
 
-      <section aria-label="Suunnittele ryhmäpaita" className="mb-12">
+      <section id="suunnittele" aria-label="Suunnittele ryhmäpaita" className="mb-12 scroll-mt-24">
         <RyhmaSuunnittelija key={sivu.path} sivu={sivu} />
       </section>
 
@@ -65,6 +66,17 @@ const RyhmaPaitaPage = () => {
             ))}
           </div>
         </section>
+
+        {sivu.path === "/abipaidat" && (
+          <section className="space-y-3">
+            <h2 className="font-display text-2xl text-foreground">Abipaidat kaupungeittain</h2>
+            <div className="flex flex-wrap gap-2">
+              {ABIKAUPUNKI_LINKIT.map((l) => (
+                <Link key={l.href} to={l.href} className="inline-flex items-center px-3 py-1.5 rounded-full border border-border text-sm hover:text-primary hover:border-primary/50">{l.label}</Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="space-y-3">
           <h2 className="font-display text-2xl text-foreground">Muut ryhmäpaidat</h2>
