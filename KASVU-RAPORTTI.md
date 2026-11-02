@@ -2398,3 +2398,10 @@ aktivoidun selaimen; luvut näkyvät /hallinta/mittarit-sivulla Coworkin aktivoi
 - Luvut 2.11.2026 illalla: kate tässä kuussa 0,00 € / 3000 €, 30 pv 1 tilaus (kate 5,90 €); käynnit 187 (hakukoneet 58,
   lahjasivut 24, blogi 40, yritysten alasivut 1, kumppanisivut 1); uutiskirjeen tilaajat 0; tarjouspyynnöt 30 pv 3;
   suppilo 14 pv: 45 tuotesivua, 0 koriin, 1 osto. Tarve 10,5 tilausta ja 1 813 käyntiä päivässä.
+
+### Julkaisun tarkistus (2.11.2026 myöhäisilta)
+- Julkaisu READY. Chrome, iPhone ja Googlebot: 200 etusivulle, /olut, /sauna, /ammatit, /ammattipaidat,
+  /joululahja-isalle, /isanpaivalahja, /lahjat/mokkeilijalle, /yritykset/rakennus, /yritykset/terveys, kahdelle uudelle
+  tuotesivulle ja sitemap.xml:lle (sisältää /olut, /sauna, /ammatit). /sauna-t-paidat 301 -> /sauna. Palvelimen HTML:ssä
+  /olut-sivun oma title ja H1.
+- Syöte: 771 tuotetta (ennen 651), kaikilla availability; kaikilla 120 uudella pystykuva lisäkuvana ja toimitus 6,90 €.
