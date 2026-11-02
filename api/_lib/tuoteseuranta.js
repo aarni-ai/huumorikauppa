@@ -43,12 +43,12 @@ const pros = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
 export const RAPORTTI_MIN_KATSELUT = 50;
 
 /**
- * Tuotesivun suppilo järjestyksessä: katselu -> vieritti vähintään 25 % -> Lisää koriin -painike näkyi -> koko
- * valittu -> lisätty koriin. Jokaiselle vaiheelle valmis korjausehdotus, kun se on suurin poistumiskohta.
+ * Tuotesivun suppilo järjestyksessä: katselu -> Lisää koriin -painike näkyi -> koko valittu -> lisätty koriin.
+ * Vieritys raportoidaan erikseen, koska isolla näytöllä painike näkyy ilman vieritystä. Jokaiselle vaiheelle valmis
+ * korjausehdotus, kun se on suurin poistumiskohta.
  */
 export const SUPPILO_VAIHEET = [
-  { avain: "vieritys", nimi: "vieritti sivua", ehdotus: "Ensimmäinen näkymä ei saa vierittämään: lähikuva painatuksesta ensimmäiseksi kuvaksi, lyhyempi otsikko ja hinta sekä toimitusaika heti kuvan alle." },
-  { avain: "lisaa_nakyvissa", nimi: "näki Lisää koriin -painikkeen", ehdotus: "Ostopainike jää näkymättä: kiinteä ostopalkki mobiilissa heti sivun auetessa ja koon valinta kuvan alle." },
+  { avain: "lisaa_nakyvissa", nimi: "näki Lisää koriin -painikkeen", ehdotus: "Ostopainike jää näkymättä: kiinteä ostopalkki mobiilissa heti sivun auetessa, lähikuva ja hinta ensimmäiseen näkymään ja koon valinta kuvan alle." },
   { avain: "koko", nimi: "valitsi koon", ehdotus: "Painike näkyy, mutta kokoa ei valita: koot isoina painikkeina, kokotaulukko suoraan näkyviin ja suosituin koko korostettuna." },
   { avain: "kori", nimi: "lisäsi koriin", ehdotus: "Koko valitaan, mutta koriin ei lisätä: ilmainen toimitus kahdesta tuotteesta, 14 päivän palautusoikeus ja toimitusaika painikkeen viereen." },
 ];
@@ -65,11 +65,10 @@ export function koostaTuoteseuranta(rivit) {
   // Vieritys kertyy: 100 % vierittänyt on myös ohittanut 25, 50 ja 75 %.
   const vieritys = Object.fromEntries(VIERITYS.map((v, i) => [v, pros(VIERITYS.slice(i).reduce((s, x) => s + (n[`vieritys:${x}`] || 0), 0), nayttoja)]));
   const aika = Object.fromEntries(AIKA.map((a) => [a, pros(n[`aika:${a}`] || 0, nayttoja)]));
-  const vierittaneet = VIERITYS.reduce((s, x) => s + (n[`vieritys:${x}`] || 0), 0);
-  // Vaiheen määrä ei voi olla edellistä suurempi (esim. painike näkyy ilman vieritystä isolla näytöllä).
+  // Vaiheen määrä ei voi olla edellistä suurempi (koosteet kirjataan katselua kohden, joten tämä on varmistus).
   let edellinen = nayttoja;
   const suppilo = SUPPILO_VAIHEET.map((v) => {
-    const raaka = v.avain === "vieritys" ? vierittaneet : n[v.avain] || 0;
+    const raaka = n[v.avain] || 0;
     const maara = Math.min(raaka, edellinen);
     const vaihe = { ...v, n: maara, pros: pros(maara, nayttoja), putosi: edellinen - maara, putosiPros: pros(edellinen - maara, edellinen) };
     edellinen = maara;

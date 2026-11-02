@@ -20,12 +20,12 @@ describe("tuotesivun seuranta", () => {
     expect(s.osuudet.koko).toBe(20);
     expect(s.vieritys["25"]).toBe(40);
     expect(s.vieritys["100"]).toBe(10);
-    expect(s.suppilo.map((v) => [v.avain, v.n, v.putosi])).toEqual([["vieritys", 40, 60], ["lisaa_nakyvissa", 35, 5], ["koko", 20, 15], ["kori", 2, 18]]);
-    expect(s.suurin?.avain).toBe("vieritys");
-    expect(s.poistuminen).toContain("Korjausehdotus: Ensimmäinen näkymä");
+    expect(s.suppilo.map((v) => [v.avain, v.n, v.putosi])).toEqual([["lisaa_nakyvissa", 35, 65], ["koko", 20, 15], ["kori", 2, 18]]);
+    expect(s.suurin?.avain).toBe("lisaa_nakyvissa");
+    expect(s.poistuminen).toContain("Korjausehdotus: Ostopainike jää näkymättä");
     const rivit = tuoteseurantaRivit({ alku: "2026-11-02", loppu: "2026-11-02", ...s });
     expect(rivit[0]).toContain("100 aitoa katselua");
-    expect(rivit[1]).toBe("Suppilo: vieritti sivua 40 (40 %) -> näki Lisää koriin -painikkeen 35 (35 %) -> valitsi koon 20 (20 %) -> lisäsi koriin 2 (2 %).");
+    expect(rivit[1]).toBe("Suppilo: näki Lisää koriin -painikkeen 35 (35 %) -> valitsi koon 20 (20 %) -> lisäsi koriin 2 (2 %).");
     for (const r of rivit) expect(r).not.toMatch(/[–—](?!2026)/);
   });
   it("alle 50 katselua: poistumiskohtaa ei merkitä", () => {
