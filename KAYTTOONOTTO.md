@@ -991,3 +991,34 @@ mallit ovat syötteessä oikeilla tiedoilla. Esimerkkejä: "Kinkkukooma alkaa kl
 2. Valitse kaikki 25 ja poista ne. Älä koske lähteeseen "PRODUCTS SOURCE 3" äläkä Googlen löytämään lähteeseen.
 3. Valinnainen: "PRODUCTS SOURCE 3" > Päivitä. Silloin uudet 120 tuotetta tulevat heti eivätkä vasta 3.11. klo 3.00.
 4. Diagnostiikka päivittyy 1–3 vuorokaudessa. Sen jälkeen saatavuusvirheitä ei pitäisi olla.
+
+## 19. Microsoft Clarity (ilmainen; Aarni luo tilin, Cowork lisää tunnisteen)
+
+Clarity tallentaa sivun käytön (klikkaukset, vierityksen ja lämpökartat) ilman lomakkeisiin kirjoitettua tekstiä. Koodi
+on valmiina, mutta se on pois päältä. Skripti latautuu vain, jos kävijä hyväksyy analytiikkaevästeet
+(src/lib/clarity.ts), ja hallintasivuilla sitä ei ladata. Tietosuojaseloste mainitsee Clarityn automaattisesti, kun
+tunniste on asetettu.
+
+1. **Aarni:** clarity.microsoft.com > kirjaudu Microsoft- tai Google-tilillä (ilmainen) > New project: nimi
+   Huumorikauppa, osoite https://huumorikauppa.fi, kategoria E-commerce.
+2. **Cowork:** Settings > Overview > kopioi Project ID (noin 10 merkkiä, kirjaimia ja numeroita).
+3. **Cowork:** Vercel > projekti huumorikauppa (uusi projekti, ei vanha) > Settings > Environment Variables > Add:
+   nimi `VITE_CLARITY_ID`, arvo Project ID, ympäristö Production > Save. Tämän jälkeen julkaisu tarvitaan: kirjaa
+   KASVU-RAPORTTI.md:hen tai kerro Aarnille, niin seuraava ajo julkaisee. Vaihtoehto: lähetä Project ID Aarnille, joka
+   kirjoittaa sen tiedostoon src/config/clarity.ts (CLARITY_PROJEKTI).
+4. **Cowork:** Clarity > Settings > Setup: älä asenna koodia uudelleen (se on sivustolla). Masking: Strict.
+5. Tarkistus: hyväksy evästeet huumorikauppa.fi:ssä ja avaa muutama sivu. Clarity näyttää ensimmäiset tallenteet
+   noin 2 tunnin kuluttua.
+
+## 20. Hallinnan aktivointilinkki Coworkin Chromeen (taikalinkki, 2.11.2026)
+
+Avaa linkki Chromen profiilissa "Huumorikauppa". Avaus antaa 90 päivän pääsyn sivuille /hallinta/mittarit, /hallinta/some
+ja /hallinta/tarjoukset, eikä koodia tarvitse syöttää. Linkki toimii kerran ja vanhenee 48 tunnissa. Sama selain jätetään
+pois kävijäluvuista.
+
+- Linkki lähtee cron-tehtävällä `?tehtava=aktivointilinkki-viesti` (oletusvastaanottaja huumorikauppa@gmail.com). Kunnes
+  huumorikauppa.fi on vahvistettu Resendissä, viesti menee Resendin testilähettäjällä vain osoitteeseen flyapeg@gmail.com.
+  **Aarni:** välitä viesti "Hallinnan aktivointilinkki Coworkille" osoitteeseen huumorikauppa@gmail.com.
+- Päivän yhteenveto lisää uuden linkin automaattisesti, kun edellisestä aktivoinnista on kulunut yli 80 päivää.
+- Testi: `PLAYWRIGHT=<polku>/playwright/index.mjs node scripts/aktivointilinkki-testi.mjs`. Se käyttää oman
+  testilinkkinsä eikä tulosta sitä.
