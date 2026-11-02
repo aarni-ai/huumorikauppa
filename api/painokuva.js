@@ -1,8 +1,10 @@
 /**
- * /api/painokuva?t=<allekirjoitettu tunniste>: personoidun t-paidan tilauskohtainen painokuva PNG:nä (3461 x 3955,
- * läpinäkyvä tausta), jonka Printify hakee tilausta luodessa (api/_lib/printify.js painokuvaUrl). Tunniste on
- * allekirjoitettu (MARKKINOINTI_SALAISUUS), joten ulkopuolinen ei voi tilata omaa tekstiä painettavaksi; teksti
- * tarkistetaan lisäksi uudelleen (api/_lib/personoitu.js tarkistaPersonointi).
+ * /api/painokuva?t=<allekirjoitettu tunniste>: personoidun tuotteen tilauskohtainen painokuva PNG:nä, läpinäkyvä tausta
+ * (t-paita 3461 x 3955, huppari 3709 x 2472), jonka Printify hakee tilausta luodessa (api/_lib/printify.js
+ * painokuvaUrl). Tunniste on allekirjoitettu (MARKKINOINTI_SALAISUUS), joten ulkopuolinen ei voi tilata omaa tekstiä
+ * painettavaksi; teksti tarkistetaan lisäksi uudelleen (api/_lib/personoitu.js tarkistaPersonointi: merkit, kirosanat,
+ * tavaramerkit ja mahtuminen painoalueelle). Tunnisteen data: { m: malli, a: { nimi, nimi2, vuosi, ika }, v: väri,
+ * t: "t-paita" | "huppari" }; ennen 2.11.2026 luodut { m, n, i, v } (t-paita) toimivat yhä.
  *
  * Fontti Anton (SIL Open Font License) haetaan Google Fontsista ja pidetään muistissa funktion elinajan.
  * ?esikatselu=1 palauttaa 600 px leveän version.
@@ -14,7 +16,7 @@
  */
 import { Resvg } from "@resvg/resvg-js";
 import { tarkistaTunniste } from "./_lib/markkinointi.js";
-import { painokuvaSvg, tarkistaPersonointi, PAINOALUE } from "./_lib/personoitu.js";
+import { painokuvaSvg, tarkistaPersonointi, PAINOALUE, PAINOALUEET } from "./_lib/personoitu.js";
 import { tarkistaLogopaita } from "./_lib/logopaita.js";
 import { haeFontti, logoPainokuva, tallennaLogo } from "./_lib/logopaita-kuva.js";
 import { onTietokanta } from "./_lib/db.js";
@@ -65,11 +67,12 @@ export default async function handler(req, res) {
   if (!arvo) return res.status(404).json({ ok: false });
   let data;
   try { data = JSON.parse(arvo); } catch { return res.status(400).json({ ok: false }); }
-  const pers = tarkistaPersonointi({ malli: data.m, nimi: data.n, ika: data.i });
+  const tuote = data.t === "huppari" ? "huppari" : "t-paita";
+  const pers = tarkistaPersonointi({ malli: data.m, ...(data.a || { nimi: data.n, ika: data.i }) }, { tuote });
   if (!pers.ok) return res.status(400).json({ ok: false, error: pers.virhe });
   try {
-    const svg = painokuvaSvg(pers, data.v);
-    const leveys = req.query?.esikatselu === "1" ? 600 : PAINOALUE.leveys;
+    const svg = painokuvaSvg(pers, VARIT.has(data.v) ? data.v : "Musta", { tuote });
+    const leveys = req.query?.esikatselu === "1" ? 600 : PAINOALUEET[tuote].leveys;
     const png = new Resvg(svg, {
       fitTo: { mode: "width", value: leveys },
       font: { fontFiles: [await haeFontti()], loadSystemFonts: false, defaultFontFamily: "Anton" },

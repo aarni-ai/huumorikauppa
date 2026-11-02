@@ -584,24 +584,50 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: t.luotu && t.peruttu, kuvaVastaus, summa, printify: t });
   }
 
-  // Personoidun t-paidan polkutesti: kassan laskenta (laskeTilaus) ja tilausrunko testiosoitteella, painokuvan haku ja
-  // Printify-tilaus lennosta luotavalla tuotteella. Tilausta EI lähetetä tuotantoon: se perutaan heti (peruTilaus).
-  // &nimi=..&ika=..&malli=..&vari=..&koko=..
+  // Personoitujen lahjojen polkutesti (29.10.2026 t-paita, 2.11.2026 myös huppari ja uudet mallit): kassan laskenta
+  // (laskeTilaus) testiosoitteella, tilausrunko, jokaisen rivin painokuvan haku (PNG ja painoalueen mitat) ja yksi
+  // Printify-tilaus lennosta luotavilla tuotteilla nimellä "TESTI Personointi (perutaan)". Tilausta EI lähetetä
+  // tuotantoon: se perutaan samassa ajossa (ajaTestitilaus). Ajo: scripts/personoitu-testi.mjs.
+  // &tuotteet=t-paita,huppari (oletus molemmat) &malli=..&nimi=..&nimi2=..&vuosi=..&ika=.. (oletus t-paidalle
+  // paras-isa, hupparille naimisissa) &vari=..&koko=.. &kuiva=1 (ei Printify-tilausta)
   if (req.query.tehtava === "personointitesti") {
     const { laskeTilaus } = await import("../_lib/kassa.js");
-    const { personointiTeksti, tarkistaPersonointi } = await import("../_lib/personoitu.js");
-    const pers = tarkistaPersonointi({ malli: req.query.malli || "kokenut", nimi: req.query.nimi || "Marja", ika: req.query.ika || "50" });
-    if (!pers.ok) return res.status(400).json({ ok: false, virhe: pers.virhe });
+    const P = await import("../_lib/personoitu.js");
+    const tyypit = String(req.query.tuotteet || "t-paita,huppari").split(",").filter((t) => P.TUOTETYYPIT.includes(t));
+    if (!tyypit.length) return res.status(400).json({ ok: false, virhe: "tuotteet: t-paita, huppari" });
+    const oletus = { "t-paita": { malli: "paras-isa", nimi: "Testi" }, huppari: { malli: "naimisissa", nimi: "Testi", nimi2: "Kokeilu", vuosi: "2026" } };
+    const items = [];
+    for (const t of tyypit) {
+      const q = req.query.malli ? { malli: req.query.malli, nimi: req.query.nimi, nimi2: req.query.nimi2, vuosi: req.query.vuosi, ika: req.query.ika } : oletus[t];
+      const pers = P.tarkistaPersonointi(q, { tuote: t });
+      if (!pers.ok) return res.status(400).json({ ok: false, tuote: t, virhe: pers.virhe });
+      items.push({ slug: P.PERSONOIDUT_TUOTTEET[t].slug, quantity: 1, size: req.query.koko || "L", color: req.query.vari || (t === "huppari" ? "Tummansininen" : "Musta"), customText: P.personointiTeksti(pers) });
+    }
     const osoite = { address: "Testikatu 1", zip: "00100", city: "Helsinki", phone: "0401234567" };
-    const laskettu = laskeTilaus({ items: [{ slug: "personoitu-ikapaita-t-paita", quantity: 1, size: req.query.koko || "L", color: req.query.vari || "Musta",
-      customText: personointiTeksti(pers) }], customerEmail: "kassatesti@huumorikauppa.fi", shippingAddress: osoite }, [], null);
+    const laskettu = laskeTilaus({ items, customerEmail: "kassatesti@huumorikauppa.fi", shippingAddress: osoite }, [], null);
     const runko = tilausRunko({ id: `testi-${Date.now().toString(36)}-0000`, customer_email: "kassatesti@huumorikauppa.fi", customer_name: "Kassa Testi",
       shipping_address: osoite, items: laskettu.rivit });
-    const kuva = runko.line_items[0].print_areas.front;
-    const kuvaVastaus = await fetch(kuva).then((r) => ({ status: r.status, tyyppi: r.headers.get("content-type"), koko: Number(r.headers.get("content-length")) || null })).catch((e) => ({ virhe: String(e) }));
-    if (kuiva || !onPrintify()) return res.status(200).json({ ok: true, kuiva, laskettu: { total: laskettu.total, rivit: laskettu.rivit }, rivi: runko.line_items[0], kuvaVastaus });
+    // Painokuva: HTTP 200, image/png ja PNG:n mitat (IHDR) = tuotteen painoalue.
+    const kuvat = await Promise.all(runko.line_items.map(async (l, n) => {
+      const t = P.PERSONOIDUT_POHJAT[laskettu.rivit[n].printify_product_id]?.tuote;
+      const odotettu = P.PAINOALUEET[t];
+      try {
+        const r = await fetch(l.print_areas.front, { signal: AbortSignal.timeout(20000) });
+        const b = Buffer.from(await r.arrayBuffer());
+        const png = b.length > 24 && b.toString("ascii", 1, 4) === "PNG";
+        const mitat = png ? { leveys: b.readUInt32BE(16), korkeus: b.readUInt32BE(20) } : null;
+        return { tuote: t, status: r.status, tyyppi: r.headers.get("content-type"), tavuja: b.length, mitat,
+          ok: r.status === 200 && png && mitat.leveys === odotettu.leveys && mitat.korkeus === odotettu.korkeus };
+      } catch (e) {
+        return { tuote: t, ok: false, virhe: String(e?.message || e) };
+      }
+    }));
+    const kuvatOk = kuvat.every((k) => k.ok);
+    const yhteenveto = { total: laskettu.total, shipping: laskettu.shipping, rivit: laskettu.rivit.map((r) => ({ tuote: r.name, koko: r.size, vari: r.color, teksti: r.custom_text, hinta: r.unit_cents / 100, variantti: r.variant_id })) };
+    const rivit = runko.line_items.map(({ print_areas, ...l }) => ({ ...l, painokuva: print_areas.front.replace(/\?t=.*/, "?t=...") }));
+    if (kuiva || !onPrintify() || !kuvatOk) return res.status(200).json({ ok: kuvatOk, kuiva, laskettu: yhteenveto, rivit, kuvat });
     const { ennen, ...t } = await ajaTestitilaus(runko, "Personointi");
-    return res.status(200).json({ ok: t.luotu && t.peruttu, kuvaVastaus, total: laskettu.total, printify: t });
+    return res.status(200).json({ ok: t.luotu && t.peruttu, laskettu: yhteenveto, rivit, kuvat, printify: t });
   }
 
   // Arvioiden moderointi: ?tehtava=arviot listaa odottavat; &julkaise=<id> tai &hylkaa=<id> vaihtaa tilan.

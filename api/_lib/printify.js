@@ -1,5 +1,5 @@
 /** Printify API (PRINTIFY_API_KEY, PRINTIFY_SHOP_ID). Kaikki kutsut palauttavat { ok, status, data, virhe }. */
-import { PERSONOITU_PRINTIFY, PERSONOITU_POHJA, jasennaPersonointi } from "./personoitu.js";
+import { PERSONOIDUT_POHJAT, jasennaPersonointi } from "./personoitu.js";
 import { LOGOPAITA_PRINTIFY, LOGOPAITA_POHJA, jasennaLogopaita, tarkistaLogopaita } from "./logopaita.js";
 import { allekirjoita } from "./markkinointi.js";
 const API = "https://api.printify.com/v1";
@@ -127,11 +127,16 @@ export async function siivoaTestitilaukset() {
   return { peruttu, jai };
 }
 
-/** Personoidun rivin painokuvan osoite: allekirjoitettu { malli, nimi, ika, vari } (api/painokuva.js). */
+/**
+ * Personoidun rivin painokuvan osoite: allekirjoitettu { m: malli, a: arvot, v: väri, t: tuotetyyppi } (api/painokuva.js).
+ * Tuotetyyppi rivin printify_product_id:stä (PERSONOITU = t-paita, PERSONOITU_HUPPARI = huppari).
+ */
 export function painokuvaUrl(rivi, tilausId = "", n = 0) {
-  const pers = jasennaPersonointi(rivi.custom_text);
-  if (!pers.ok) throw new Error(`Personointi puuttuu tai on virheellinen (tilaus ${tilausId}, rivi ${n})`);
-  const tunniste = allekirjoita("painokuva", JSON.stringify({ m: pers.malli, n: pers.nimi, i: pers.ika, v: rivi.color || "Musta" }));
+  const tuote = PERSONOIDUT_POHJAT[rivi.printify_product_id]?.tuote || "t-paita";
+  const pers = jasennaPersonointi(rivi.custom_text, { tuote });
+  if (!pers.ok) throw new Error(`Personointi puuttuu tai on virheellinen (tilaus ${tilausId}, rivi ${n}): ${pers.virhe}`);
+  const arvot = Object.fromEntries(["nimi", "nimi2", "vuosi", "ika"].filter((k) => pers[k] !== null && pers[k] !== undefined).map((k) => [k, pers[k]]));
+  const tunniste = allekirjoita("painokuva", JSON.stringify({ m: pers.malli, a: arvot, v: rivi.color || "Musta", t: tuote }));
   const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
   return `${pohja}/api/painokuva?t=${encodeURIComponent(tunniste)}`;
 }
@@ -157,10 +162,11 @@ export function tilausRunko(tilaus) {
     external_id: tilaus.id,
     label: `Huumorikauppa #${tilaus.id.slice(0, 8).toUpperCase()}`,
     // Lahjakortit (type "giftcard") eivät ole Printify-tuotteita.
-    // Personoitu t-paita: lennosta luotava tuote, painokuva tilausriville (api/painokuva.js, allekirjoitettu osoite).
-    // Oma logo -paita: sama pohja ja painotalo (OPT, Tšekki), painokuva api/painokuva.js (logopainokuva).
-    line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i, n) => (i.printify_product_id === PERSONOITU_PRINTIFY
-      ? { ...PERSONOITU_POHJA, variant_id: i.variant_id, print_areas: { front: painokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
+    // Personoitu t-paita (OPT, bp 145) ja huppari (Atelier Katanga, bp 77): lennosta luotava tuote, painokuva
+    // tilausriville (api/painokuva.js, allekirjoitettu osoite).
+    // Oma logo -paita: sama pohja ja painotalo kuin personoitu t-paita, painokuva api/painokuva.js (logopainokuva).
+    line_items: (tilaus.items || []).filter((i) => i.type !== "giftcard").map((i, n) => (PERSONOIDUT_POHJAT[i.printify_product_id]
+      ? { ...PERSONOIDUT_POHJAT[i.printify_product_id].pohja, variant_id: i.variant_id, print_areas: { front: painokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
       : i.printify_product_id === LOGOPAITA_PRINTIFY
         ? { ...LOGOPAITA_POHJA, variant_id: i.variant_id, print_areas: { front: logoPainokuvaUrl(i, tilaus.id, n) }, quantity: i.quantity }
         : { product_id: i.printify_product_id, variant_id: i.variant_id, quantity: i.quantity })),

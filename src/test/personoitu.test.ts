@@ -2,7 +2,7 @@ import { describe, expect, it, beforeAll } from "vitest";
 import { laskeTilaus, KassaVirhe } from "../../api/_lib/kassa.js";
 import { tilausRunko } from "../../api/_lib/printify.js";
 import { laskeKate } from "../../api/_lib/kate.js";
-import { PERSONOITU_TUOTE, PERSONOITU_SLUG, jasennaPersonointi, tarkistaPersonointi, sallittuTeksti } from "../../api/_lib/personoitu.js";
+import { PERSONOITU_TUOTE, PERSONOITU_SLUG, PERSONOITU_HINTA, jasennaPersonointi, tarkistaPersonointi, sallittuTeksti } from "../../api/_lib/personoitu.js";
 
 beforeAll(() => { process.env.MARKKINOINTI_SALAISUUS = process.env.MARKKINOINTI_SALAISUUS || "testisalaisuus"; });
 const osoite = { address: "Katu 1", zip: "00100", city: "Helsinki" };
@@ -19,9 +19,9 @@ describe("personoitu t-paita", () => {
     for (const n of ["Tapani", "Panu", "Kalle"]) expect(sallittuTeksti(n)).toBe(true);
     for (const n of ["Vittu", "P3rkele", "Homo"]) expect(sallittuTeksti(n)).toBe(false);
   });
-  it("kassa hyväksyy kelvollisen personoinnin hinnalla 29,90 € ja hylkää puuttuvan tai estetyn", () => {
+  it("kassa hyväksyy kelvollisen personoinnin t-paidan hinnalla (32,90 €) ja hylkää puuttuvan tai estetyn", () => {
     const r = laskeTilaus(pyynto("Kokenut, ei vanha: Marja 50v"), [], null);
-    expect(r.rivit[0]).toMatchObject({ slug: PERSONOITU_SLUG, unit_price: 29.9, custom_text: "Kokenut, ei vanha: Marja 50v", printify_product_id: "PERSONOITU" });
+    expect(r.rivit[0]).toMatchObject({ slug: PERSONOITU_SLUG, unit_price: PERSONOITU_HINTA, custom_text: "Kokenut, ei vanha: Marja 50v", printify_product_id: "PERSONOITU" });
     expect(() => laskeTilaus(pyynto("Marja"), [], null)).toThrow(KassaVirhe);
     expect(() => laskeTilaus(pyynto("Kokenut, ei vanha: Vittu 50v"), [], null)).toThrow(KassaVirhe);
   });

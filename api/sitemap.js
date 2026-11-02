@@ -46,6 +46,7 @@ const STATIC_PAGES = [
   { loc: "/yritykset/tapahtumat", changefreq: "weekly", priority: "0.7" },
   { loc: "/yritykset/urheiluseurat", changefreq: "weekly", priority: "0.7" },
   { loc: "/personoitu-paita", changefreq: "weekly", priority: "0.8" },
+  { loc: "/personoidut", changefreq: "weekly", priority: "0.8" },
   { loc: "/kumppanit", changefreq: "monthly", priority: "0.5" },
   { loc: "/media", changefreq: "monthly", priority: "0.4" },
   { loc: "/lahjaopas-media", changefreq: "weekly", priority: "0.5" },

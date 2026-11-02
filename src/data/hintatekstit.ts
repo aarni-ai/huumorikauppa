@@ -15,7 +15,9 @@ export const HINTA = {
   /** T-paitojen koko hintahaarukka, esim. "24,90-29,90 €". */
   tpaitaHaarukka: `${luku(HINNASTO.tpaita.suora)}-${eur(Math.max(HINNASTO.tpaita.uniikkiIso, HINNASTO.tpaita.suoraIso))}`,
   huppariAlkaen: eur(HINNASTO.hupparit.perus),
+  /** Personoitu t-paita ja huppari (S-2XL), api/_lib/personoitu.js. */
   personoitu: eur(HINNASTO.personoitu),
+  personoituHuppari: eur(HINNASTO.personoituHuppari.perus),
   koriste: eur(HINNASTO.kategoriat.koristeet),
   juliste: eur(HINNASTO.kategoriat.seinataulut),
   /** Yhteishinnat esimerkkeihin. */

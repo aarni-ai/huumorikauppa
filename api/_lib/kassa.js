@@ -26,7 +26,7 @@ import { sovellaPaketit } from "./paketit.js";
 import { sovellaKorialennus } from "./korialennus.js";
 import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.js";
 import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
-import { PERSONOITU_TUOTE, onPersonoitu, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
+import { PERSONOITU_TUOTE, PERSONOITU_HUPPARI, onPersonoitu, personoitujenTyyppi, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
 import { LOGOPAITA_TUOTE, LOGOPAITA_MIN_KPL, onLogopaita, jasennaLogopaita, logopaitaTeksti, sallitutVarit } from "./logopaita.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
@@ -78,8 +78,8 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   if (!vainLahjakortteja && (!shippingAddress?.address || !shippingAddress?.zip || !shippingAddress?.city)) {
     throw new KassaVirhe("Toimitusosoite puuttuu.", "missing_address");
   }
-  // Personoitu t-paita ja Oma logo -paita ovat virtuaalisia tuoterivejä (api/_lib/personoitu.js, logopaita.js).
-  const kaikki = [...tuotteet, PERSONOITU_TUOTE, LOGOPAITA_TUOTE];
+  // Personoitu t-paita ja huppari sekä Oma logo -paita ovat virtuaalisia tuoterivejä (api/_lib/personoitu.js, logopaita.js).
+  const kaikki = [...tuotteet, PERSONOITU_TUOTE, PERSONOITU_HUPPARI, LOGOPAITA_TUOTE];
   const byId = new Map(kaikki.map((p) => [p.id, p]));
   const bySlug = new Map(kaikki.map((p) => [p.slug, p]));
   const lahjakortit = [];
@@ -105,10 +105,11 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     const kate = laskeKate(p, variantti);
     if (!kate.tunnettu) throw new KassaVirhe(`Tuotteen ${p.name} hintaa ei voitu vahvistaa. Yritä hetken kuluttua uudelleen.`, "unknown_cost");
     if (!kate.sallittu) throw new KassaVirhe(`Tuote ${p.name} ei ole tällä hetkellä tilattavissa.`, "low_margin");
-    // Personoitu: nimi ja ikä tarkistetaan palvelimella uudelleen (merkkimäärä, estetyt sanat).
+    // Personoitu: teksti tarkistetaan palvelimella uudelleen (merkkimäärä, estetyt sanat, tavaramerkit ja se, että
+    // teksti mahtuu tuotteen painoalueelle).
     let customText = teksti(it.customText, 200);
     if (onPersonoitu(p)) {
-      const pers = jasennaPersonointi(customText);
+      const pers = jasennaPersonointi(customText, { tuote: personoitujenTyyppi(p) });
       if (!pers.ok) throw new KassaVirhe(`Personoitu paita: ${pers.virhe}`, "invalid_personalization");
       customText = personointiTeksti(pers);
     }
@@ -207,7 +208,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   };
 }
 
-const VIRTUAALISET = new Map([PERSONOITU_TUOTE, LOGOPAITA_TUOTE].map((t) => [t.id, t]));
+const VIRTUAALISET = new Map([PERSONOITU_TUOTE, PERSONOITU_HUPPARI, LOGOPAITA_TUOTE].map((t) => [t.id, t]));
 
 /** Kassan laskennan nettokate (Printifyn kulut tuoteriviltä, api/_lib/kate.js), kumppanimallin 2 valintaan. */
 export function laskettuNettokate(laskettu, tuotteet) {

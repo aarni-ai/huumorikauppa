@@ -19,7 +19,7 @@ export { PAINOALUE, tekstinVari };
 export const LOGOPAITA_SLUG = "oma-logo-t-paita";
 export const LOGOPAITA_PRINTIFY = "LOGOPAITA";
 export const LOGOPAITA_POHJA = PERSONOITU_POHJA;
-export const LOGOPAITA_HINTA = HINNASTO.personoitu;
+export const LOGOPAITA_HINTA = HINNASTO.logopaita;
 export const LOGOPAITA_MIN_KPL = 10;
 export const TEKSTI_MAX = 28;
 

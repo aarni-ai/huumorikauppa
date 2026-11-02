@@ -52,7 +52,7 @@ import { esimerkkiHinnat } from "../../../api/_lib/yritysmyynti.js";
 import { LOGO_RAJAT, LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
-import { MALLIT } from "../../../api/_lib/personoitu.js";
+import { PERSONOIDUT_FAQS, PERSONOIDUT_HINNAT, PERSONOIDUT_INTRO, PERSONOIDUT_MALLIT, PERSONOIDUT_PATH } from "@/data/personoidutPage";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
 import { hakuotsikko } from "../../../api/_lib/hakuotsikko.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
@@ -815,10 +815,20 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
       jsonLd: [buildFaqJsonLd(kumppanitPage.faqs)],
     }),
     staticPage("/personoitu-paita", { sections: [
-      { heading: "Mallit", items: MALLIT.map((m: { nimi: string }) => m.nimi) },
-      { heading: "Hinta ja toimitus", paragraphs: [`Personoitu t-paita ${HINTA.personoitu}. Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta.`] },
-      { heading: "Lisää ideoita", links: [{ href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Lahja naiselle 30v, 40v, 50v ja 60v" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Lahja miehelle 30v, 40v, 50v ja 60v" }] },
+      { heading: "Mallit", links: PERSONOIDUT_MALLIT.map((m) => ({ href: m.polku, label: m.nimi })) },
+      { heading: "Hinta ja toimitus", paragraphs: [`Personoitu t-paita ${PERSONOIDUT_HINNAT.tpaita}, huppari ${PERSONOIDUT_HINNAT.huppari} (3XL-5XL ${PERSONOIDUT_HINNAT.huppariIso}). Painetaan tilauksesta EU:ssa. Personoidulla tuotteella ei ole 14 päivän palautusoikeutta.`] },
+      { heading: "Lisää ideoita", links: [{ href: PERSONOIDUT_PATH, label: "Kaikki personoidut lahjat" }, { href: "/blogi/lahja-naiselle-30v-40v-50v-60v", label: "Lahja naiselle 30v, 40v, 50v ja 60v" }, { href: "/blogi/lahja-miehelle-30v-40v-50v-60v", label: "Lahja miehelle 30v, 40v, 50v ja 60v" }] },
     ] }),
+    // Personoidut lahjat -kategoriasivu (2.11.2026, src/data/personoidutPage.ts).
+    staticPage(PERSONOIDUT_PATH, {
+      intro: PERSONOIDUT_INTRO,
+      sections: [...new Set(PERSONOIDUT_MALLIT.map((m) => m.aiheNimi))].map((aihe) => ({
+        heading: aihe,
+        links: PERSONOIDUT_MALLIT.filter((m) => m.aiheNimi === aihe).map((m) => ({ href: m.polku, label: `${m.nimi}: ${m.kuvaus}` })),
+      })),
+      faqs: PERSONOIDUT_FAQS,
+      jsonLd: [buildFaqJsonLd(PERSONOIDUT_FAQS)],
+    }),
     ...buildGiftCardAndBundlePages(),
     buildMediaPage(products),
     buildMothersDay(products),

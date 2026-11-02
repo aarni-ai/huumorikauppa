@@ -32,6 +32,7 @@ import { TONNIN_SETELI, TONNIN_SETELI_PATH } from "@/data/themes";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { JOULU_TILAUSPAIVAT } from "@/data/jouluAikataulu";
+import { PersonoidutNosto } from "@/components/PersonoidutNosto";
 
 /** Etusivun hero: sama srcset ja sizes kuin index.html:n preload-linkissä (muuten kuva ladataan kahdesti). */
 const HERO_SRC = "/images/etusivu-joulu-800.webp";
@@ -246,6 +247,8 @@ const Index = () => {
           </span>
         </Link>
       </section>
+
+      <div className="container pt-6"><PersonoidutNosto polku="/" /></div>
 
       <h1 className="sr-only">{STATIC_PAGE_META["/"].h1}</h1>
 
