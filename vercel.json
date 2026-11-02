@@ -109,12 +109,117 @@
     },
     {
       "source": "/harrastus/videopelit",
-      "destination": "/lahjat/harrastajalle",
+      "destination": "/paidat/pelaaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/sahkoasentaja",
+      "destination": "/paidat/sahkomies",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/putkimies",
+      "destination": "/paidat/putkimies",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/sairaanhoitaja",
+      "destination": "/paidat/sairaanhoitaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/lahihoitaja",
+      "destination": "/paidat/lahihoitaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/laakari",
+      "destination": "/paidat/laakari",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/opettaja",
+      "destination": "/paidat/opettaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/kokki",
+      "destination": "/paidat/kokki",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/poliisi",
+      "destination": "/paidat/poliisi",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/palomies",
+      "destination": "/paidat/palomies",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/yrittaja",
+      "destination": "/paidat/yrittaja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/fysioterapeutti",
+      "destination": "/paidat/fysioterapeutti",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/hammaslaakari",
+      "destination": "/paidat/hammaslaakari",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/insinoori",
+      "destination": "/paidat/insinoori",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/siivoja",
+      "destination": "/paidat/siivooja",
+      "statusCode": 301
+    },
+    {
+      "source": "/ammatti/rekkakuljettaja",
+      "destination": "/paidat/rekkakuski",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/juokseminen",
+      "destination": "/paidat/juoksija",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/kuntosali",
+      "destination": "/paidat/kuntosali",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/pyoraily",
+      "destination": "/paidat/pyorailija",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/koiraharrastus",
+      "destination": "/paidat/koiraihminen",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/kissaharrastus",
+      "destination": "/paidat/kissaihminen",
+      "statusCode": 301
+    },
+    {
+      "source": "/harrastus/retkily",
+      "destination": "/paidat/retkeilija",
       "statusCode": 301
     },
     {
       "source": "/lahjat/kahvinystavalle",
-      "destination": "/lahjat/tyokaverille",
+      "destination": "/paidat/kahvinjuoja",
       "statusCode": 301
     },
     {
@@ -124,12 +229,12 @@
     },
     {
       "source": "/lahjat/opettajalle",
-      "destination": "/ammattipaidat",
+      "destination": "/paidat/opettaja",
       "statusCode": 301
     },
     {
       "source": "/lahjat/hoitajalle",
-      "destination": "/ammattipaidat",
+      "destination": "/paidat/sairaanhoitaja",
       "statusCode": 301
     },
     {
@@ -164,7 +269,7 @@
     },
     {
       "source": "/ammatti/insin%c3%b6ori",
-      "destination": "/ammatti/insinoori",
+      "destination": "/paidat/insinoori",
       "statusCode": 301
     },
     {
@@ -189,12 +294,12 @@
     },
     {
       "source": "/ammatti/insinöori",
-      "destination": "/ammatti/insinoori",
+      "destination": "/paidat/insinoori",
       "statusCode": 301
     },
     {
       "source": "/ammatti/insin%C3%B6ori",
-      "destination": "/ammatti/insinoori",
+      "destination": "/paidat/insinoori",
       "statusCode": 301
     },
     {
@@ -314,7 +419,7 @@
     },
     {
       "source": "/lahjat/yrittajalle",
-      "destination": "/ammatti/yrittaja",
+      "destination": "/paidat/yrittaja",
       "statusCode": 301
     },
     {

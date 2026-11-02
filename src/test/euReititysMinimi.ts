@@ -18,6 +18,7 @@ import { lueEuSiirrot } from "../../scripts/lib/eu-kanta.mjs";
 import { onPiilotettuTuotePerus } from "@/lib/hiddenCategories";
 import type { Product } from "@/types/product";
 import { AUKOT_TUOTTEET } from "@/data/aukkomallisto2026";
+import { AMMATTISIVU_SLUGIT } from "@/data/ammattisivut/polut";
 import type { ProductRow } from "@/seo/prerender/pages";
 
 export const EU_REITITYS_ALLE_MINIMIN: ReadonlySet<string> = new Set<string>();
@@ -29,8 +30,17 @@ export const EU_REITITYS_ALLE_MINIMIN: ReadonlySet<string> = new Set<string>();
  */
 export const UUSI_MALLISTO_ODOTTAA: ReadonlySet<string> = new Set<string>();
 
+/**
+ * 2.11.2026: ammatti- ja harrastussivut /paidat/<slug> (src/data/ammattisivut). Sivujen uudet mallit (200 mallia
+ * t-paitana ja hupparina, data/uudet-tuotteet/ammattisivut-2026-11-02.json) luodaan Printifyyn ja tuodaan kauppaan
+ * ohjaajan ajolla, joten tilannekuvassa niitä ei vielä ole. src/test/ammattisivut.test.ts tarkistaa, että jokaisella
+ * sivulla on uusien mallien kanssa vähintään LANDING_MIN_PRODUCTS tuotetta, ja vaatii poistamaan sivun tältä listalta,
+ * kun sen uudet mallit ovat tilannekuvassa.
+ */
+export const AMMATTISIVUT_ODOTTAA: ReadonlySet<string> = new Set<string>(AMMATTISIVU_SLUGIT.map((s) => `/paidat/${s}`));
+
 export const landingMinimi = (path: string): number =>
-  EU_REITITYS_ALLE_MINIMIN.has(path) || UUSI_MALLISTO_ODOTTAA.has(path) ? 0 : LANDING_MIN_PRODUCTS;
+  EU_REITITYS_ALLE_MINIMIN.has(path) || UUSI_MALLISTO_ODOTTAA.has(path) || AMMATTISIVUT_ODOTTAA.has(path) ? 0 : LANDING_MIN_PRODUCTS;
 
 /** Kilpailija-aukkojen mallisto tuotteina (nimi ja slug kuten tuonnissa), uusi hinnasto. */
 export function aukkoTuotteet(): Product[] {

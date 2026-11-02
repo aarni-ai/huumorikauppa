@@ -105,7 +105,7 @@ Paita on yksinkertainen lahja, mutta sen voi tehdä harkituksi. Kolme vinkkiä:
 2. **Kirjoita mukaan kortti.** Kerro, miksi valitsit juuri tämän paidan: "Sinä olet ainoa, jonka kalenteri on täydempi eläkkeellä kuin töissä."
 3. **Yhdistä paita tekemiseen.** Anna paita yhdessä mökkiviikonlopun, teatteri-illan tai yhteisen kalaretken kanssa. Silloin lahjasta tulee muisto.
 
-Jos eläkeläinen harrastaa ulkoilua, katso myös sivu [retkeily](/harrastus/retkily). Mökkeilijälle sopivat myös sivun [lahjat mökkeilijälle](/lahjat/mokkeilijalle) tuotteet.
+Jos eläkeläinen harrastaa ulkoilua, katso myös sivu [retkeily](/paidat/retkeilija). Mökkeilijälle sopivat myös sivun [lahjat mökkeilijälle](/lahjat/mokkeilijalle) tuotteet.
 
 ## Lahja, joka ei vie tilaa
 
@@ -199,7 +199,7 @@ Jos saunoja on myös kova liikkuja, sauna on hänelle palautumisen paikka. Sillo
 
 **Mökin tuliaiset.** Kun menet kylään toisen mökille, saunapaita on hauskempi tuliainen kuin kukkakimppu.
 
-**Harrastajan lahja.** Jos saunoja liikkuu myös luonnossa, katso sivut [lahjat harrastajalle](/lahjat/harrastajalle) ja [retkeily](/harrastus/retkily).
+**Harrastajan lahja.** Jos saunoja liikkuu myös luonnossa, katso sivut [lahjat harrastajalle](/lahjat/harrastajalle) ja [retkeily](/paidat/retkeilija).
 
 ## Näin saunalahjasta tulee muistettava
 
@@ -307,7 +307,7 @@ Kaikki työkaverit eivät ole samanlaisia, ja salaisen joulupukin lahjassa täm�
 
 ## Pikkujoululahja muualle kuin töihin
 
-Samat ohjeet sopivat myös harrastusporukan, urheiluseuran tai kaveriporukan pikkujouluihin. Kun lahjajako on yhteinen, valitse yleinen vitsi. Kun tiedät saajan, valitse vitsi hänen harrastuksensa mukaan. Kuntoilijalle sopivia ideoita on esimerkiksi sivulla [kuntosali](/harrastus/kuntosali).
+Samat ohjeet sopivat myös harrastusporukan, urheiluseuran tai kaveriporukan pikkujouluihin. Kun lahjajako on yhteinen, valitse yleinen vitsi. Kun tiedät saajan, valitse vitsi hänen harrastuksensa mukaan. Kuntoilijalle sopivia ideoita on esimerkiksi sivulla [kuntosali](/paidat/kuntosali).
 
 ## Pikkujoulujen jälkeen
 

@@ -23,7 +23,7 @@ import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/chri
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
-import { EU_REITITYS_ALLE_MINIMIN, UUSI_MALLISTO_ODOTTAA, aukkoTuotteet, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
+import { AMMATTISIVUT_ODOTTAA, EU_REITITYS_ALLE_MINIMIN, UUSI_MALLISTO_ODOTTAA, aukkoTuotteet, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -221,7 +221,8 @@ describe("landing pages: prerendered HTML", () => {
     expect(html.match(/<h1[\s>]/g)?.length).toBe(1);
     expect(html).toContain(`<title>${def.title.replace(/&/g, "&amp;")}</title>`);
     expect(html).toContain('"@type":"BreadcrumbList"');
-    expect(html).toContain('"@type":"ItemList"');
+    // Ammattisivu ilman tuotteita tilannekuvassa (uudet mallit odottavat tuontia, AMMATTISIVUT_ODOTTAA): ei ItemListiä.
+    if (!AMMATTISIVUT_ODOTTAA.has(pagePath) || (page.products?.length ?? 0) > 0) expect(html).toContain('"@type":"ItemList"');
     expect(html).toContain('"@type":"FAQPage"');
     const productLinks = html.match(/href="\/tuote\//g) ?? [];
     expect(productLinks.length).toBeGreaterThanOrEqual(landingMinimi(pagePath));

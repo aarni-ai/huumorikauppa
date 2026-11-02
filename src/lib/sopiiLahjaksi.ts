@@ -7,6 +7,8 @@
  * LANDING_PATHS, testi src/lib/sopiiLahjaksi.test.ts). Tekstit ilman ajatusviivoja.
  */
 
+import { AMMATTISIVU_KOHTEET } from "@/data/ammattisivut/polut";
+
 export interface SopiiLahjaksi {
   /** Esim. ["isälle", "saunojalle"] (enintään kaksi). */
   kenelle: string[];
@@ -48,6 +50,17 @@ const HARRASTUKSET: Record<string, string> = {
 };
 
 const sanat = (...s: string[]) => new RegExp(`^(${s.join("|")})$`);
+
+const ascii = (s: string) => s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/å/g, "a").replace(/\s+/g, "-");
+
+/**
+ * Ammatti- ja harrastussivut /paidat/<slug> (2.11.2026): kohde slugin muodossa ("padelin-pelaajalle") -> sivu.
+ * Uusien mallien slug päättyy "-t-paita-<kohde>" tai "-huppari-<kohde>"; aiemmissa tuotteissa kohde on sanana slugissa.
+ */
+const PAIDAT_SIVUT = Object.entries(AMMATTISIVU_KOHTEET).map(([slug, kohde]) => ({
+  kohde: ascii(kohde), saanto: { kenelle: kohde, polku: `/paidat/${slug}`, linkkiTeksti: `Lisää paitoja ${kohde}` } as Saanto,
+}));
+const paidatSivu = (kohdeAscii: string) => PAIDAT_SIVUT.find((x) => x.kohde === kohdeAscii)?.saanto;
 
 /** Järjestyksessä: ensimmäinen osuma määrää linkin, toinen eri vastaanottaja täydentää lauseen. */
 const SAANNOT: Saanto[] = [
@@ -94,14 +107,18 @@ export function sopiiLahjaksi(tuote: TuoteTiedot): SopiiLahjaksi {
     if (!osumat.some((o) => o.kenelle === s.kenelle)) osumat.push(s);
   };
 
+  // Uusi ammatti- tai harrastusmalli: tuotteen kohde nimen lopussa määrää sivun.
+  const kohdeSivu = PAIDAT_SIVUT.find((x) => slug.endsWith(`-t-paita-${x.kohde}`) || slug.endsWith(`-huppari-${x.kohde}`));
+  if (kohdeSivu) lisaa(kohdeSivu.saanto);
+
   for (const s of SAANNOT) if (s.sanat && osat.some((o) => s.sanat!.test(o))) lisaa(s);
 
   // Ammatit ja harrastukset (uudet sarjat: "-t-paita-<kenelle>" tai "-huppari-<kenelle>").
-  for (const o of osat) {
+  for (const o of kohdeSivu ? [] : osat) {
     if (AMMATIT[o] && !osumat.some((x) => x.polku === "/lahjat/remontoijalle" || x.polku === "/lahjat/it-ihmiselle")) {
-      lisaa({ kenelle: AMMATIT[o], polku: "/ammattipaidat", linkkiTeksti: "Katso ammattipaidat" });
+      lisaa(paidatSivu(o) ?? { kenelle: AMMATIT[o], polku: "/ammattipaidat", linkkiTeksti: "Katso ammattipaidat" });
     }
-    if (HARRASTUKSET[o]) lisaa({ kenelle: HARRASTUKSET[o], polku: "/lahjat/harrastajalle", linkkiTeksti: "Katso harrastajan lahjat" });
+    if (HARRASTUKSET[o]) lisaa(paidatSivu(o) ?? { kenelle: HARRASTUKSET[o], polku: "/lahjat/harrastajalle", linkkiTeksti: "Katso harrastajan lahjat" });
   }
 
   // Ikävuosi (pyöreät vuodet 30-70).

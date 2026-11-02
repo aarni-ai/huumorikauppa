@@ -18,14 +18,17 @@ import { LANDING_PATHS } from "../sitemap.js";
 
 /** Liikenteen erittely (2.11.2026): blogi, yritysten alasivut, hakukoneet, lahjasivut (laskeutumissivujen osiot), media (utm_source=media), kumppanisivut (/k/). */
 const HAKUKONEET = new Set(["google", "bing", "duckduckgo", "yahoo", "ecosia"]);
-const LAHJAOSIOT = new Set([...LANDING_PATHS.map((p) => p.split("/")[1]), "lahjat"].filter(Boolean));
+// 2.11.2026: ammatti- ja harrastussivut /paidat/<slug> lasketaan omana osionaan (ammattisivut), ei lahjasivuina.
+export const AMMATTISIVU_OSIO = "paidat";
+const LAHJAOSIOT = new Set([...LANDING_PATHS.map((p) => p.split("/")[1]), "lahjat"].filter((o) => o && o !== AMMATTISIVU_OSIO));
 export function liikenne(k) {
   const lahde = (f) => k.lahteet.filter((l) => f(l.nimi)).reduce((s, l) => s + l.kaynnit, 0);
   const osio = (f) => k.osiot.filter((o) => f(o.nimi)).reduce((s, o) => s + o.kaynnit, 0);
   return { orgaaninen: lahde((n) => HAKUKONEET.has(n)), lahjasivut: osio((n) => LAHJAOSIOT.has(n)), media: lahde((n) => n === "media"),
     kumppanisivut: osio((n) => n === "k"), kumppanilinkit: lahde((n) => n === "kumppani"),
     // 2.11.2026: blogin ja yritysten alakohtaisten sivujen (/yritykset/<ala>) saapumiskäynnit.
-    blogi: osio((n) => n === "blogi"), yritysAlat: osio((n) => n.startsWith("yritykset-")) };
+    blogi: osio((n) => n === "blogi"), yritysAlat: osio((n) => n.startsWith("yritykset-")),
+    ammattisivut: osio((n) => n === AMMATTISIVU_OSIO) };
 }
 
 const r2 = (x) => Math.round(x * 100) / 100;
@@ -220,7 +223,7 @@ export function mittariKooste(m) {
     kaynnit: { kk: m.kaynnit.kk.yhteensa, p30: m.kaynnit.p30.yhteensa, laskuriAlkaen: m.kaynnit.p30.ensimmainen ?? null },
     konversio: { laskelmassa: m.konversio.prosentti, lahde: m.konversio.lahde, oma: m.konversio.oma?.prosentti ?? null },
     liikenneKk: { hakukoneet: lk.orgaaninen ?? 0, lahjasivut: lk.lahjasivut ?? 0, media: lk.media ?? 0, kumppanisivut: lk.kumppanisivut ?? 0,
-      blogi: lk.blogi ?? 0, yritysAlat: lk.yritysAlat ?? 0 },
+      blogi: lk.blogi ?? 0, yritysAlat: lk.yritysAlat ?? 0, ammattisivut: lk.ammattisivut ?? 0 },
     uutiskirje: m.uutiskirje ? { yhteensa: m.uutiskirje.yhteensa, p7: m.uutiskirje.p7, p28: m.uutiskirje.p28 } : null,
     tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
     suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
@@ -246,7 +249,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     `Käynnit (oma laskuri): tässä kuussa ${m.kaynnit.kk.yhteensa}, 30 pv ${m.kaynnit.p30.yhteensa}${m.kaynnit.p30.ensimmainen ? ` (laskuri alkaen ${m.kaynnit.p30.ensimmainen})` : ""}`,
     `Konversio laskelmassa: ${lu(m.konversio.prosentti)} % (${m.konversio.lahde})${m.konversio.oma?.prosentti != null ? `; oma laskuri nyt ${lu(m.konversio.oma.prosentti)} %` : ""}`,
     `Lähteet 30 pv: ${lahteet}`,
-    ...(m.liikenne ? [`Liikenne tässä kuussa: hakukoneet ${m.liikenne.kk.orgaaninen}, lahjasivut ${m.liikenne.kk.lahjasivut}, media ${m.liikenne.kk.media}, kumppanisivut ${m.liikenne.kk.kumppanisivut} (kumppanilinkit ${m.liikenne.kk.kumppanilinkit}), blogi ${m.liikenne.kk.blogi ?? 0}, yritysten alasivut ${m.liikenne.kk.yritysAlat ?? 0}`] : []),
+    ...(m.liikenne ? [`Liikenne tässä kuussa: hakukoneet ${m.liikenne.kk.orgaaninen}, lahjasivut ${m.liikenne.kk.lahjasivut}, media ${m.liikenne.kk.media}, kumppanisivut ${m.liikenne.kk.kumppanisivut} (kumppanilinkit ${m.liikenne.kk.kumppanilinkit}), blogi ${m.liikenne.kk.blogi ?? 0}, yritysten alasivut ${m.liikenne.kk.yritysAlat ?? 0}, ammattisivut ${m.liikenne.kk.ammattisivut ?? 0}`] : []),
     ...(m.uutiskirje ? [`Uutiskirjeen tilaajat: ${m.uutiskirje.yhteensa} (7 pv +${m.uutiskirje.p7}, 28 pv +${m.uutiskirje.p28})`] : []),
     `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
     m.yritysmyynti

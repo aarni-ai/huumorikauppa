@@ -252,7 +252,10 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const [quantity, setQuantity] = useState(1);
   const [descExpanded, setDescExpanded] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
-  const [customText, setCustomText] = useState("");
+  // Esitäytetty teksti personoitavaan tuotteeseen (?teksti=, ammatti- ja harrastussivut /paidat/<slug>).
+  const [customText, setCustomText] = useState(() =>
+    typeof window === "undefined" ? "" : (new URLSearchParams(window.location.search).get("teksti") ?? "").slice(0, 200),
+  );
 
   const addToCartBtnRef = useRef<HTMLButtonElement>(null);
   const variantSectionRef = useRef<HTMLDivElement>(null);

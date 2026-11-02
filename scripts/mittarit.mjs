@@ -34,7 +34,7 @@ console.log([
   `Tilaukset: kuu ${m.kk.tilauksia} (myynti ${eur(m.kk.myynti)}, keskiostos ${eur(m.kk.keskiostos)}), 30 pv ${m.p30.tilauksia} (kate ${eur(m.p30.kate)})`,
   `Edellinen kuu ${m.edellinen.kuukausi}: ${m.edellinen.tilauksia} tilausta, kate ${eur(m.edellinen.kate)}`,
   `Käynnit: kuu ${m.kaynnit.kk}, 30 pv ${m.kaynnit.p30}; konversio laskelmassa ${lu(m.konversio.laskelmassa)} % (oma ${lu(m.konversio.oma)} %)`,
-  `Liikenne kuu: hakukoneet ${l.hakukoneet}, lahjasivut ${l.lahjasivut}, blogi ${l.blogi}, yritysten alasivut ${l.yritysAlat}, media ${l.media}, kumppanisivut ${l.kumppanisivut}`,
+  `Liikenne kuu: hakukoneet ${l.hakukoneet}, lahjasivut ${l.lahjasivut}, blogi ${l.blogi}, yritysten alasivut ${l.yritysAlat}, ammattisivut ${l.ammattisivut ?? 0}, media ${l.media}, kumppanisivut ${l.kumppanisivut}`,
   `Uutiskirje: ${m.uutiskirje ? `${m.uutiskirje.yhteensa} tilaajaa (7 pv +${m.uutiskirje.p7}, 28 pv +${m.uutiskirje.p28})` : "-"}`,
   `Tarjouspyynnöt: kuu ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
   m.suppilo14 ? `Suppilo ${m.suppilo14.alku ?? "14 pv"} alkaen (data luotettavaa ${m.suppilo14.luotettavaAlkaen ?? "-"} alkaen): käynnit ${m.suppilo14.kaynnit}, tuotesivut ${m.suppilo14.tuotesivu}, koriin ${m.suppilo14.kori}, kassalle ${m.suppilo14.kassa}, maksuun ${m.suppilo14.maksu}, ostot ${m.suppilo14.ostot}` : "Suppilo: -",
