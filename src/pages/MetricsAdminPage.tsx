@@ -15,7 +15,7 @@ type Mittarit = {
   };
   kk: Summat; p30: Summat & { katePerTilaus: number | null; katePerTilausLahde: string }; edellinen: Summat & { kuukausi: string };
   kaynnit: { kk: Kaynnit; p30: Kaynnit };
-  liikenne?: Record<"kk" | "p30", { orgaaninen: number; lahjasivut: number; media: number; kumppanisivut: number; kumppanilinkit: number; blogi?: number; yritysAlat?: number }>;
+  liikenne?: Record<"kk" | "p30", { orgaaninen: number; lahjasivut: number; media: number; kumppanisivut: number; kumppanilinkit: number; blogi?: number; yritysAlat?: number; ammattisivut?: number }>;
   uutiskirje?: { yhteensa: number; p7: number; p28: number } | null;
   konversio: { prosentti: number; lahde: string; oma: { prosentti: number | null; kaynteja: number; tilauksia: number; paivia: number; alkaen: string } | null };
   tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
@@ -205,6 +205,7 @@ const MetricsAdminPage = () => {
               <Kortti otsikko="Kumppanisivut (kk)" arvo={luku(m.liikenne.kk.kumppanisivut)} ala={`/k/-sivut; kumppanilinkit ${m.liikenne.kk.kumppanilinkit}`} />
               <Kortti otsikko="Blogin käynnit (kk)" arvo={luku(m.liikenne.kk.blogi ?? 0)} ala={`saapumissivu /blogi, 30 pv: ${m.liikenne.p30.blogi ?? 0}`} />
               <Kortti otsikko="Yritysten alasivut (kk)" arvo={luku(m.liikenne.kk.yritysAlat ?? 0)} ala={`/yritykset/<ala>, 30 pv: ${m.liikenne.p30.yritysAlat ?? 0}`} />
+              <Kortti otsikko="Ammatti- ja harrastussivut (kk)" arvo={luku(m.liikenne.kk.ammattisivut ?? 0)} ala={`/paidat/<ammatti>, 30 pv: ${m.liikenne.p30.ammattisivut ?? 0}`} />
               {m.uutiskirje && (
                 <Kortti otsikko="Uutiskirjeen tilaajat" arvo={luku(m.uutiskirje.yhteensa)} ala={`7 pv: +${m.uutiskirje.p7}, 28 pv: +${m.uutiskirje.p28}`} />
               )}

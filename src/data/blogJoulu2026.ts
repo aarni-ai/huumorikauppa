@@ -569,7 +569,7 @@ Asiakasrajapinnassa työskentelevä nauraa [Asiakas on aina oikeassa, lähes -pa
 
 ### Ammattikohtainen lahja
 
-Jos työpaikalla on selvä ammatti, lahja voi viitata siihen. Esimerkiksi hoitoalan kollegoille sopivia lahjoja on sivulla [sairaanhoitajan lahjat](/ammatti/sairaanhoitaja). Ammattiylpeys huumorilla on usein mieluisampi lahja kuin geneerinen toimistovitsi.
+Jos työpaikalla on selvä ammatti, lahja voi viitata siihen. Esimerkiksi hoitoalan kollegoille sopivia lahjoja on sivulla [sairaanhoitajan lahjat](/paidat/sairaanhoitaja). Ammattiylpeys huumorilla on usein mieluisampi lahja kuin geneerinen toimistovitsi.
 
 ## Pieni budjetti: alle 10 euroa
 
@@ -960,7 +960,7 @@ Rinteessä talvensa viettävälle sopii [Gravity is just a suggestion -huppari](
 
 ### Kuntosalilla kävijälle
 
-Moni nuori aloittaa salitreenin lukioiässä. [Jalkapäivä ohitettu jälleen -paita](/tuote/hauska-t-paita-kuntosaliharrastajalle-jalkapaiva-ohitettu-jalleen) on salihuumoria, jonka jokainen treenaaja tunnistaa. Lisää ideoita on sivulla [kuntosaliharrastajan lahjat](/harrastus/kuntosali).
+Moni nuori aloittaa salitreenin lukioiässä. [Jalkapäivä ohitettu jälleen -paita](/tuote/hauska-t-paita-kuntosaliharrastajalle-jalkapaiva-ohitettu-jalleen) on salihuumoria, jonka jokainen treenaaja tunnistaa. Lisää ideoita on sivulla [kuntosaliharrastajan lahjat](/paidat/kuntosali).
 
 ### Koodaavalle nuorelle
 
@@ -1099,7 +1099,7 @@ Mökkeilijälle mökki ei ole paikka vaan elämäntapa. Hän laskee viikkoja kev
 
 - **Mökkiterapeutille:** [Mökki on terapiaa -huppari](/tuote/hauska-huppari-mokkeilijalle-mokki-on-terapiaa) on mökkeilijän huppari, joka jää mökin naulakkoon odottamaan seuraavaa viikonloppua.
 - **Muisto mökiltä:** [Huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari) on lahja, joka lämmittää talvella kotisohvalla ja kesällä laiturilla. Valitse kuva mökin rannasta, auringonlaskusta tai perheen yhteisestä juhannuksesta.
-- **Retkeilevälle mökkeilijälle:** [GPS ei tarvita, eksytään tarkoituksella -huppari](/tuote/hauska-huppari-retkeilijalle-gps-ei-tarvita-eksytaan-tarkoituksella) sopii mökkeilijälle, joka lähtee metsään marjaan ja palaa eri reittiä. Lisää retkeilijän ideoita on sivulla [retkeilyn tuotteet](/harrastus/retkily).
+- **Retkeilevälle mökkeilijälle:** [GPS ei tarvita, eksytään tarkoituksella -huppari](/tuote/hauska-huppari-retkeilijalle-gps-ei-tarvita-eksytaan-tarkoituksella) sopii mökkeilijälle, joka lähtee metsään marjaan ja palaa eri reittiä. Lisää retkeilijän ideoita on sivulla [retkeilyn tuotteet](/paidat/retkeilija).
 
 Jos mökkeilijän mökillä on sauna, katso myös [suomalaisen huumorin paidat](/suomalainen-huumori-paidat). Lisää mökkiaiheisia vinkkejä löydät oppaasta [hauska lahja mökkiläiselle](/blogi/hauska-lahja-mokkilaiselle).
 

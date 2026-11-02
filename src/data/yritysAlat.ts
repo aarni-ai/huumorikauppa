@@ -84,7 +84,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "hauska-t-paita-tiimipelaajalle-tiimipelaaja-vaikka-tiimi-ei-pelaa",
       "personoitava-t-paita-alalla-x-vuotta",
     ],
-    katso: { href: "/ammatti/insinoori", label: "Paidat insinööreille" },
+    katso: { href: "/paidat/insinoori", label: "Paidat insinööreille" },
     faq: {
       q: "Voiko paitaan painaa jokaiselle oman nimen?",
       a: "Personoitavaan paitaan \"Alalla X vuotta\" kirjoitetaan teksti tilauksen yhteydessä. Oma logo -paidassa teksti on sama koko tilauksessa, joten eri nimet tilataan omina riveinä.",
@@ -116,7 +116,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "amatimies-t-paita",
       "personoitava-t-paita-nimi-legendaarinen-tyosankari",
     ],
-    katso: { href: "/ammatti/palomies", label: "Paidat palomiehille" },
+    katso: { href: "/paidat/palomies", label: "Paidat palomiehille" },
     faq: {
       q: "Voiko yhdistys tilata laskulla?",
       a: "Voi. Yhdistys, jolla on Y-tunnus, voi tilata vähintään 10 tuotetta laskulla. Lähetä tarjouspyyntö lomakkeella, niin vastaamme sähköpostilla.",
@@ -148,7 +148,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "hauska-t-paita-tyokaverillle-selvian-tyokaverit-auttaa",
       "personoitava-t-paita-alalla-x-vuotta",
     ],
-    katso: { href: "/ammatti/hammaslaakari", label: "Paidat hammaslääkäreille" },
+    katso: { href: "/paidat/hammaslaakari", label: "Paidat hammaslääkäreille" },
     faq: {
       q: "Sopiiko paita työvaatteeksi vastaanotolle?",
       a: "Paidat ovat t-paitoja vapaa-aikaan, virkistyspäiviin ja juhliin. Hygieniavaatimukset täyttävät työasut hankitaan erikseen.",
@@ -305,7 +305,7 @@ export const YRITYS_ALAT: YritysAla[] = [
       "saatanan-tunarit-t-paita",
       "personoitava-t-paita-kapteeni",
     ],
-    katso: { href: "/harrastus/kuntosali", label: "Paidat treenaajille" },
+    katso: { href: "/paidat/kuntosali", label: "Paidat treenaajille" },
     faq: {
       q: "Sopivatko paidat urheiluun?",
       a: "Paidat ovat t-paitoja kannattajille, vapaa-aikaan ja seuran tapahtumiin. Kilpailuasuiksi tarkoitetut tekniset paidat hankitaan erikseen.",

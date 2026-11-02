@@ -26,6 +26,7 @@ import { LAHJAOPPAAT } from "./lahjaoppaat2026";
 import { JOULUMALLISTO_SLUGIT } from "./joulumallisto2026";
 import { AUKOT_ISA_SLUGIT } from "./aukkomallisto2026";
 import { AIHE_SIVUT, UUSI_AMMATTI, UUSI_OLUT, UUSI_SAUNA } from "./landingPagesAiheet";
+import { AMMATTI_SIVUT, AMMATTISIVU_LINKIT } from "./ammattisivut";
 import {
   AMMATTI,
   ELAKE,
@@ -2260,7 +2261,21 @@ function lisaaOppaat(sivut: LandingPageDef[]): LandingPageDef[] {
   });
 }
 
-export const landingPages: LandingPageDef[] = lisaaOppaat([...PERUSSIVUT, ...UUDET_LAHJASIVUT]);
+/**
+ * Ammatti- ja harrastussivut /paidat/<slug> (2.11.2026, src/data/ammattisivut): hub-sivut /ammatit ja
+ * /lahjat/harrastajalle linkittävät niihin.
+ */
+function lisaaAmmattisivuLinkit(sivut: LandingPageDef[]): LandingPageDef[] {
+  return sivut.map((p) => {
+    const linkit = p.path === "/ammatit" ? AMMATTISIVU_LINKIT.ammatti : p.path === "/lahjat/harrastajalle" ? AMMATTISIVU_LINKIT.harrastus : null;
+    return linkit ? { ...p, extraLinks: [...(p.extraLinks ?? []), ...linkit] } : p;
+  });
+}
+
+export const landingPages: LandingPageDef[] = [
+  ...lisaaAmmattisivuLinkit(lisaaOppaat([...PERUSSIVUT, ...UUDET_LAHJASIVUT])),
+  ...AMMATTI_SIVUT,
+];
 
 /** Polku, johon vanha polku ohjautuu (tai polku itse). */
 export function resolveLandingRedirect(path: string): string {

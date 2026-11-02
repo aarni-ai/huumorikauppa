@@ -3,6 +3,7 @@
  * src/data/landingPages.ts:ssä; testi varmistaa, että LANDING_PATHS vastaa sitä.
  */
 import { YHDISTETYT_KATEGORIAT } from "@/lib/hiddenCategories";
+import { AMMATTISIVU_SLUGIT } from "./ammattisivut/polut";
 
 export const LANDING_PATHS: readonly string[] = [
   "/joululahjat",
@@ -72,6 +73,8 @@ export const LANDING_PATHS: readonly string[] = [
   "/40-vuotislahja",
   "/50-vuotislahja",
   "/60-vuotislahja",
+  // Ammatti- ja harrastussivut (2.11.2026, src/data/ammattisivut)
+  ...AMMATTISIVU_SLUGIT.map((s) => `/paidat/${s}`),
 ];
 
 /**
@@ -82,7 +85,7 @@ export const LANDING_PATHS: readonly string[] = [
 export const LANDING_REDIRECTS: Record<string, string> = {
   // Alle 8 sopivaa tuotetta -> lähin sivu
   "/lahjat/alle-20-euroa": "/lahjat/alle-30-euroa",
-  "/harrastus/videopelit": "/lahjat/harrastajalle",
+  "/harrastus/videopelit": "/paidat/pelaaja",
   // 29.10.2026: harrastus- ja ammattisarjojen laskeutumissivut korvaavat päällekkäiset harrastus- ja ammattisivut
   "/harrastus/kalastus": "/lahjat/kalastajalle",
   "/harrastus/metsastys": "/lahjat/metsastajalle",
@@ -91,12 +94,35 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/ammatti/rakennusmies": "/lahjat/remontoijalle",
   "/ammatti/maanviljelija": "/lahjat/maanviljelijalle",
   "/ammatti/koodari": "/lahjat/it-ihmiselle",
-  "/lahjat/kahvinystavalle": "/lahjat/tyokaverille",
+  // 2.11.2026: ammatti- ja harrastussivut /paidat/<slug> (src/data/ammattisivut) korvaavat päällekkäiset
+  // /ammatti/- ja /harrastus/-sivut (sama hakuaikomus, ohuempi sisältö). Valinta: seo/ammattisivut.md.
+  "/ammatti/sahkoasentaja": "/paidat/sahkomies",
+  "/ammatti/putkimies": "/paidat/putkimies",
+  "/ammatti/sairaanhoitaja": "/paidat/sairaanhoitaja",
+  "/ammatti/lahihoitaja": "/paidat/lahihoitaja",
+  "/ammatti/laakari": "/paidat/laakari",
+  "/ammatti/opettaja": "/paidat/opettaja",
+  "/ammatti/kokki": "/paidat/kokki",
+  "/ammatti/poliisi": "/paidat/poliisi",
+  "/ammatti/palomies": "/paidat/palomies",
+  "/ammatti/yrittaja": "/paidat/yrittaja",
+  "/ammatti/fysioterapeutti": "/paidat/fysioterapeutti",
+  "/ammatti/hammaslaakari": "/paidat/hammaslaakari",
+  "/ammatti/insinoori": "/paidat/insinoori",
+  "/ammatti/siivoja": "/paidat/siivooja",
+  "/ammatti/rekkakuljettaja": "/paidat/rekkakuski",
+  "/harrastus/juokseminen": "/paidat/juoksija",
+  "/harrastus/kuntosali": "/paidat/kuntosali",
+  "/harrastus/pyoraily": "/paidat/pyorailija",
+  "/harrastus/koiraharrastus": "/paidat/koiraihminen",
+  "/harrastus/kissaharrastus": "/paidat/kissaihminen",
+  "/harrastus/retkily": "/paidat/retkeilija",
+  "/lahjat/kahvinystavalle": "/paidat/kahvinjuoja",
   "/lahjat/saunaan": "/sauna",
   // 2.11.2026: oma saunasivu (aiemmin ei luotu, ohjaus /suomalainen-huumori-paidat)
   "/sauna-t-paidat": "/sauna",
-  "/lahjat/opettajalle": "/ammattipaidat",
-  "/lahjat/hoitajalle": "/ammattipaidat",
+  "/lahjat/opettajalle": "/paidat/opettaja",
+  "/lahjat/hoitajalle": "/paidat/sairaanhoitaja",
   // Päällekkäiset sivut (sama hakuaikomus kuin laskeutumissivulla)
   "/lahja-tyokaverille": "/lahjat/tyokaverille",
   "/lahjat/joulu": "/joululahjat",
@@ -105,7 +131,7 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/lahjat/isanpaiva": "/hauska-isanpaivalahja",
   // Ääkköset slugeissa -> ASCII
   "/lahjat/isoäidille": "/lahjat/isoaidille",
-  "/ammatti/insinöori": "/ammatti/insinoori",
+  "/ammatti/insinöori": "/paidat/insinoori",
   "/ammatti/maanviljelijä": "/lahjat/maanviljelijalle",
   "/kaupunki/ylojärvi": "/kaupunki/ylojarvi",
   "/kaupunki/lempäälä": "/kaupunki/lempaala",
@@ -122,7 +148,7 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   "/lahjat/huumorilahjat": "/kaikki-tuotteet",
   "/lahjat/koodaajalle": "/lahjat/it-ihmiselle",
   "/lahjat/rakennusmiehelle": "/lahjat/remontoijalle",
-  "/lahjat/yrittajalle": "/ammatti/yrittaja",
+  "/lahjat/yrittajalle": "/paidat/yrittaja",
   "/hauskat-t-paidat": "/kategoria/t-paidat",
   "/hauskat-hupparit": "/kategoria/hupparit",
   "/opiskelijan-haalarimerkit": "/haalarimerkit",
