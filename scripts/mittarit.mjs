@@ -39,6 +39,7 @@ console.log([
   `Tarjouspyynnöt: kuu ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
   m.suppilo14 ? `Suppilo ${m.suppilo14.alku ?? "14 pv"} alkaen (data luotettavaa ${m.suppilo14.luotettavaAlkaen ?? "-"} alkaen): käynnit ${m.suppilo14.kaynnit}, tuotesivut ${m.suppilo14.tuotesivu}, koriin ${m.suppilo14.kori}, kassalle ${m.suppilo14.kassa}, maksuun ${m.suppilo14.maksu}, ostot ${m.suppilo14.ostot}` : "Suppilo: -",
   m.lisamyynti14 ? `Korin lisämyynti ${m.lisamyynti14.alku}–${m.lisamyynti14.loppu}: suositukset näytetty ${m.lisamyynti14.suositukset_naytetty}, lisätty ${m.lisamyynti14.suositus_lisatty}; toinen paita näytetty ${m.lisamyynti14.toinen_paita_naytetty}, lisätty ${m.lisamyynti14.toinen_paita_lisatty}` : "Korin lisämyynti: -",
+  m.ryhmatilaukset ? `Ryhmätilaukset kuu: ryhmiä ${m.ryhmatilaukset.kk.ryhmiaLuotu}, jäseniä ${m.ryhmatilaukset.kk.jaseniaLiittynyt}, maksettuja ${m.ryhmatilaukset.kk.maksettujaRyhmia} (${m.ryhmatilaukset.kk.paitoja} paitaa), kate ${eur(m.ryhmatilaukset.kk.kate)}` : "Ryhmätilaukset: -",
   `Kumppanit kuu: ${m.kumppanit.tilauksia} tilausta, myynti ${eur(m.kumppanit.myynti)}, provisio ${eur(m.kumppanit.provisio)}`,
   `Tarve: ${lu(t.tilauksiaPaivassa)} tilausta ja ${lu(t.kayntejaPaivassa)} käyntiä päivässä`,
 ].join("\n"));

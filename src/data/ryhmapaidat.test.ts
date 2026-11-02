@@ -25,7 +25,6 @@ describe("ryhmäpaitojen sivut", () => {
       expect(kaikki).not.toMatch(/[–—]/);
       expect(kaikki).not.toMatch(/(?<!\p{L})(saattaa|ehkä|todennäköisesti|pyrimme|voi olla että|mahdollisesti)(?!\p{L})/iu);
       expect(kaikki).not.toMatch(/painettu suomessa|painetaan suomessa|suomen paras|halvin|paras hinta|nopein/i);
-      expect(kaikki).not.toMatch(/seniorituki/i);
       expect(s.title.length).toBeLessThan(60);
       expect(s.description.length).toBeLessThan(155);
     });

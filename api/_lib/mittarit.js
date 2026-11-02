@@ -181,6 +181,10 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   let lisamyynti = null;
   try { lisamyynti = await lisamyyntiValilla(db, lisaaPaiva(h.paiva, -13), h.paiva); } catch { /* taulua ei vielä ole */ }
 
+  // Ryhmätilaukset (api/_lib/ryhmatilaus-db.js, 2.11.2026): ryhmät, jäsenet, maksetut ryhmät, paidat ja kate.
+  let ryhmatilaukset = null;
+  try { ryhmatilaukset = await (await import("./ryhmatilaus-db.js")).ryhmatilausMittari(db); } catch { /* taulua ei vielä ole */ }
+
   // Kumppanien myynti tässä kuussa.
   const kumppanit = new Map();
   for (const t of kk) {
@@ -204,7 +208,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, uutiskirje, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, ryhmatilaukset, uutiskirje, kumppanit: [...kumppanit.values()],
   };
 }
 
@@ -230,12 +234,19 @@ export function mittariKooste(m) {
     tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
     suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
     lisamyynti14: m.lisamyynti ?? null,
+    ryhmatilaukset: m.ryhmatilaukset ?? null,
     kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
       provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
   };
 }
 
 const eur = (x) => `${r2(x).toFixed(2).replace(".", ",")} €`;
+
+/** Ryhmätilausten rivi (tässä kuussa). */
+export function ryhmatilausRivi(r) {
+  const k = r.kk;
+  return `Ryhmätilaukset tässä kuussa: ryhmiä luotu ${k.ryhmiaLuotu}, jäseniä ${k.jaseniaLiittynyt}, maksettuja ryhmiä ${k.maksettujaRyhmia} (${k.paitoja} paitaa), kate ${eur(k.kate)}`;
+}
 const lu = (x) => String(x).replace(".", ",");
 
 /** Mittarit tekstiriveinä päivän yhteenvetoviestiin. */
@@ -262,6 +273,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     ...(m.suppilo ? [`Suppilo ${m.suppilo.alku} alkaen (luotettava ${m.suppilo.luotettavaAlkaen} alkaen): käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
       `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
     ...(m.lisamyynti ? [lisamyyntiRivi(m.lisamyynti)] : []),
+    ...(m.ryhmatilaukset ? [ryhmatilausRivi(m.ryhmatilaukset)] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,
     `Loppukuulle tämän kuun tavoitteeseen: ${lu(t.tarve.jaljellaTilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.jaljellaKaynteja_paivassa ?? "?"} käyntiä päivässä`,
