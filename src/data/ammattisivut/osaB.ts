@@ -350,14 +350,14 @@ export const SIVUT_B: AmmattiSivuSisalto[] = [
     kuvaus: "Hauska lahja kampaajalle ja parturille: paidat ja hupparit latvoista, sakseista ja omista hiuksista, jotka odottavat vuoroaan.",
     h1: "Hauskat paidat kampaajalle ja parturille",
     intro: [
-      "Lahja kampaajalle naurattaa, kun vitsi tulee tuolin vierestä: Vain latvat? Tiedän, tiedän ja Kampaaja. Kuulen kaiken. Kerron en mitään.",
+      "Lahja kampaajalle naurattaa, kun vitsi tulee tuolin vierestä: Vain latvat? Tiedän, tiedän ja Kampaaja. Kuulen kaiken. En kerro mitään.",
       "Sivulla on viisi uutta mallia parturi-kampaajalle t-paitana ja hupparina sekä aiempi Leikkaa myös tukkaa -paita parturille.",
     ],
     opas: [
       {
         otsikko: "Tuolissa kerrotaan kaikki",
         teksti: [
-          "Kampaamossa puhutaan asioista, joita ei kerrota edes läheisimmälle ystävälle. Asiakas istuu tuoliin, peili on edessä ja tunnin aikana käydään läpi lomat, remontit ja anopin syntymäpäivät. Kampaaja kuuntelee, nyökkää ja pitää kaiken omana tietonaan. Siksi Kampaaja. Kuulen kaiken. Kerron en mitään on luottamuksen paita.",
+          "Kampaamossa puhutaan asioista, joita ei kerrota edes läheisimmälle ystävälle. Asiakas istuu tuoliin, peili on edessä ja tunnin aikana käydään läpi lomat, remontit ja anopin syntymäpäivät. Kampaaja kuuntelee, nyökkää ja pitää kaiken omana tietonaan. Siksi Kampaaja. Kuulen kaiken. En kerro mitään on luottamuksen paita.",
           "Sakset kädessä. Terapia samaan hintaan kertoo saman asian toisin päin. Hiuspäivä huono? Minä hoidan sopii kampaajalle, joka korjaa itse leikatun otsatukan ilman ainuttakaan kommenttia. Vain latvat? Tiedän, tiedän on vastaus pyyntöön, jonka jokainen alan ihminen on kuullut kymmeniä kertoja.",
         ],
       },
@@ -393,7 +393,7 @@ export const SIVUT_B: AmmattiSivuSisalto[] = [
     tuotteet: [/parturi/, /kampaaja/],
     mallit: [
       ["VAIN LATVAT?", "TIEDÄN, TIEDÄN."],
-      ["KAMPAAJA.", "KUULEN KAIKEN.", "KERRON EN MITÄÄN."],
+      ["KAMPAAJA.", "KUULEN KAIKEN.", "EN KERRO MITÄÄN."],
       ["HIUSPÄIVÄ HUONO?", "MINÄ HOIDAN."],
       ["SAKSET KÄDESSÄ.", "TERAPIA", "SAMAAN HINTAAN."],
       ["OMAT HIUKSET", "ODOTTAVAT", "VIELÄ VUOROAAN."],
