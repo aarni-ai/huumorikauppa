@@ -1057,3 +1057,19 @@ huumorikauppa@gmail.com.
    kassatesti ja tarkista, että vahvistusviesti tulee.
 5. Kirjaa KASVU-RAPORTTI.md:hen.
 
+
+## 22. Somevideot Blobiin (Aarni, 2.11.2026): 53 uudelleen tehtyä videota /hallinta/some-sivulle
+
+**Tilanne:** Uudet videot 36-55 ja kaikki 3.11. alkaen julkaistavat videot uudessa muodossa (tilanne ensin, paita
+lopussa, kommentointikysymys, nimissä pääte -v2) ovat valmiina koneella kansiossa
+`~/huumorikauppa/.claude/worktrees/agent-a85e931dc489aebd5/some/videot/`. Ne eivät ole vielä Vercel Blobissa, joten
+/hallinta/some näyttää vielä vanhat videot. Clauden ei sallita hakea Blob-avainta koneelle. Lataus vie noin 5 minuuttia.
+
+1. Vercel > projekti huumorikauppa > Storage > huumorikauppa-some > välilehti ".env.local" > kopioi
+   `BLOB_READ_WRITE_TOKEN`-arvo (älä liitä sitä chattiin).
+2. Terminaalissa:
+   ```
+   mkdir -p /tmp/blob && cd /tmp/blob && npm i --no-save @vercel/blob >/dev/null && cd ~/huumorikauppa/.claude/worktrees/agent-a85e931dc489aebd5 && read -s "K?Blob-avain: " && echo && BLOB_READ_WRITE_TOKEN="$K" NODE_PATH=/tmp/blob/node_modules node scripts/some-blob.mjs --uudet; unset K
+   ```
+3. Tulosteen lopussa pitää lukea "valmis: 55 videota, joista 53 uutta". Avaa /hallinta/some ja tarkista, että
+   3.11. videoissa on otsikko "Tää on nyt paidassa" ja kuvatekstin alussa kysymys.
