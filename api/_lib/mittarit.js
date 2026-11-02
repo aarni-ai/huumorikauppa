@@ -143,10 +143,10 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     }
   }
 
-  // Yritysten tarjouspyynnöt.
+  // Yritysten tarjouspyynnöt (tila 'testi' pois, 2.11.2026).
   let tarjoukset = { kk: 0, p30: 0, tilat: {}, arvoKk: 0, kateKk: 0 };
   try {
-    const t = await db`select tila, hinta, kate, created_at from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)}`;
+    const t = await db`select tila, hinta, kate, created_at from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)} and tila <> 'testi'`;
     const kkT = t.filter((x) => new Date(x.created_at) >= kuunAlku);
     tarjoukset = {
       kk: kkT.length, p30: t.length,
@@ -167,7 +167,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   try { mainosrivit = await mainoskulutValilla(db, kuunAlkuPv, h.paiva); } catch { /* taulua ei vielä ole */ }
   const mainonta = { ...mainontaYhteenveto(mainosrivit, { tilauksia: kkSumma.tilauksia, kate: kkSumma.kate }), paivat: mainosrivit.slice(0, 14) };
 
-  // Ostosuppilo ja päivittäinen konversio 14 pv (api/_lib/suppilo.js; oma laskuri 2.11.2026 alkaen).
+  // Ostosuppilo ja päivittäinen konversio 14 pv (api/_lib/suppilo.js; luotettava 2.11.2026 alkaen, jakso rajataan siihen).
   let suppilo = null;
   try {
     const alku14 = lisaaPaiva(h.paiva, -13);
@@ -223,7 +223,7 @@ export function mittariKooste(m) {
       blogi: lk.blogi ?? 0, yritysAlat: lk.yritysAlat ?? 0 },
     uutiskirje: m.uutiskirje ? { yhteensa: m.uutiskirje.yhteensa, p7: m.uutiskirje.p7, p28: m.uutiskirje.p28 } : null,
     tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
-    suppilo14: m.suppilo?.yhteensa ?? null,
+    suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
     kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
       provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
   };
@@ -253,7 +253,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
       ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`
       : "Yritysmyynti (Cowork): ei kirjauksia",
     ...(m.mainonta ? [`Mainoskulut tässä kuussa: ${eur(m.mainonta.kulut)}, kustannus per tilaus ${m.mainonta.kustannusPerTilaus == null ? "-" : eur(m.mainonta.kustannusPerTilaus)}, kate mainoskulujen jälkeen ${eur(m.mainonta.kateMainonnanJalkeen)}${m.mainonta.klikit ? ` (${m.mainonta.klikit} klikkiä)` : ""}`] : []),
-    ...(m.suppilo ? [`Suppilo 14 pv: käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
+    ...(m.suppilo ? [`Suppilo ${m.suppilo.alku} alkaen (luotettava ${m.suppilo.luotettavaAlkaen} alkaen): käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
       `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,

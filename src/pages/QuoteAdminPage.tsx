@@ -10,7 +10,7 @@ type Tarjous = {
   toivottu_paiva: string | null; ehtii: boolean | null; jouluun: boolean | null; ytunnus: string | null; tila: string; created_at: string; ilmoitus: string | null;
   logo: { kuvaus: string; vari: string; esikatselu: string } | null;
 };
-const TILAT = ["uusi", "vastattu", "tilattu", "hylatty"] as const;
+const TILAT = ["uusi", "vastattu", "tilattu", "hylatty", "testi"] as const;
 const eur = (x: string | null) => (x == null ? "-" : `${Number(x).toFixed(2).replace(".", ",")} €`);
 const pvm = (s: string | null) => (s ? new Date(s).toLocaleDateString("fi-FI", { timeZone: "Europe/Helsinki" }) : "-");
 

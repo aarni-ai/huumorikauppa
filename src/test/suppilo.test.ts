@@ -19,6 +19,22 @@ describe("oma ostosuppilo", () => {
     expect(s.ab.a).toMatchObject({ etusivu: 30, kori: 6, ostot: 2, konversio: 6.7 });
     expect(s.ab.b).toMatchObject({ etusivu: 28, kori: 4, ostot: 0, konversio: 0 });
   });
+
+  it("selaintestin kirjaukset erikseen, eivät summiin", () => {
+    const s = koostaSuppilo([{ paiva: "2026-11-02", vaihe: "kori", versio: "testi", n: 2 }, { paiva: "2026-11-02", vaihe: "kori", versio: "", n: 1 }], [], {});
+    expect(s.yhteensa.kori).toBe(1);
+    expect(s.testi.kori).toBe(2);
+  });
+
+  it("jakso alkaa aikaisintaan luotettavasta päivästä, myös ostot ja käynnit", async () => {
+    const { suppiloValilla, SUPPILO_LUOTETTAVA_ALKAEN } = await import("../../api/_lib/suppilo.js");
+    const kyselyt: unknown[][] = [];
+    const db = (osat: TemplateStringsArray, ...arvot: unknown[]) => { kyselyt.push(arvot); return Promise.resolve(/orders/.test(osat.join("")) ? [{ paiva: "2026-10-29", versio: "", n: 1 }].filter(() => false) : []); };
+    const s = await suppiloValilla(db, "2026-10-20", "2026-11-02", { "2026-10-29": 10, "2026-11-02": 5 });
+    expect(s.alku).toBe(SUPPILO_LUOTETTAVA_ALKAEN);
+    expect(s.yhteensa.kaynnit).toBe(5);
+    expect(kyselyt.slice(-2).every((a) => a.includes(SUPPILO_LUOTETTAVA_ALKAEN))).toBe(true);
+  });
 });
 
 describe("etusivun 8 suosituinta", () => {

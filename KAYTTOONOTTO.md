@@ -974,3 +974,20 @@ tiedoissa, joten se asetetaan Merchant Centerin toimitusasetuksiin. Ilmaista, ei
    Lisäksi "Ilmainen toimitus tilauksille, joiden arvo on vähintään" 79 €.
 4. Tallenna. Syötteen tuotekohtainen hinta (6,90 €) ohittaa tilin asetuksen yksittäisen tuotteen kohdalla, joten
    Googlen näyttämä hinta pysyy oikeana yhdelle tuotteelle ja tilin sääntö kertoo kahden tuotteen ilmaisen toimituksen.
+
+## 18. Merchant Center: 25 käsin lisättyä tuotetta ilman saatavuutta (Cowork, 2.11.2026)
+
+Tarkistettu Merchant Centeristä 2.11.2026. Syötteen haku on kunnossa: ensisijainen lähde "PRODUCTS SOURCE 3" hakee
+oikean osoitteen https://huumorikauppa.fi/product-feed.xml joka päivä klo 3.00. Viimeisin haku 2.11. klo 3.00 toi 651
+tuotetta. Syötteessä on nyt 771 tuotetta, ja kaikilla on g:availability. Vanhaa syöteosoitetta tai välimuistia ei käytetä.
+
+Ne 25 tuotetta, joilta saatavuus puuttuu, tulevat toisesta lähteestä: "Kauppiaskeskus", eli lähde "Lisätty
+Kauppiaskeskuksessa", kielenä englanti. Tuotteet on lisätty käsin Merchant Centerissä 27.–28.10.2026. Niiden tunnisteita
+ei ole kummassakaan syötteessä, ja hinnat ovat vanhoja (t-paita 24,90 €, huppari 49,99 €; nyt 27,90 € ja 52,90 €). Samat
+mallit ovat syötteessä oikeilla tiedoilla. Esimerkkejä: "Kinkkukooma alkaa klo 14 | T-paita jouluun",
+"Olen eläkkeellä | Huppari" ja "Saatanan Tunarit | T-paita".
+
+1. Merchant Center > Asetukset > Datalähteet > Sinun lisäämäsi > rivi "Kauppiaskeskus" > Tuotteet (25).
+2. Valitse kaikki 25 ja poista ne. Älä koske lähteeseen "PRODUCTS SOURCE 3" äläkä Googlen löytämään lähteeseen.
+3. Valinnainen: "PRODUCTS SOURCE 3" > Päivitä. Silloin uudet 120 tuotetta tulevat heti eivätkä vasta 3.11. klo 3.00.
+4. Diagnostiikka päivittyy 1–3 vuorokaudessa. Sen jälkeen saatavuusvirheitä ei pitäisi olla.

@@ -2405,3 +2405,52 @@ aktivoidun selaimen; luvut näkyvät /hallinta/mittarit-sivulla Coworkin aktivoi
   tuotesivulle ja sitemap.xml:lle (sisältää /olut, /sauna, /ammatit). /sauna-t-paidat 301 -> /sauna. Palvelimen HTML:ssä
   /olut-sivun oma title ja H1.
 - Syöte: 771 tuotetta (ennen 651), kaikilla availability; kaikilla 120 uudella pystykuva lisäkuvana ja toimitus 6,90 €.
+
+## 2.11.2026 (yö): suppilon seuranta, tarjouspyynnöt ja Merchantin 25 tuotetta
+
+### Suppilo: miksi koriin lisäyksiä oli 0 ja ostoja 1
+- **Syy 1, mittarin jakso.** Oma laskuri julkaistiin 1.11. iltapäivällä, mutta mittari laski ostot 14 päivältä
+  tilauksista. Ainoa osto (29.10.) oli ajalta ennen laskuria, joten suppilossa oli osto ilman yhtään kirjattua vaihetta.
+  Korjaus: vaiheet, käynnit ja ostot rajataan samaan jaksoon, aikaisintaan päivästä `SUPPILO_LUOTETTAVA_ALKAEN`
+  (api/_lib/suppilo.js). **Suppilon data on luotettavaa 2.11.2026 alkaen.** Päivä näkyy mittarissa
+  (`scripts/mittarit.mjs`, /hallinta/mittarit).
+- **Syy 2, GA4 view_item.** Tuotesivu avautuu yleensä ennen evästebannerin hyväksyntää, jolloin view_item jäi
+  lähettämättä. add_to_cart ja begin_checkout lähtivät normaalisti. GA4:n suppilossa oli siksi koriin lisäyksiä ilman
+  tuotenäyttöä. Korjaus: viimeisin view_item lähetetään kerran, jos suostumus annetaan samalla sivulatauksella
+  (src/lib/analytics.ts).
+- **Koriin lisäys ja kassalle siirtyminen kirjautuvat.** Playwright-testi kulki polun tuotesivu > Lisää koriin >
+  Siirry kassalle > Jatka kassalle > Siirry maksamaan työpöydällä (1366 x 900) ja iPhone 13 -näkymällä tuotantoa vasten.
+  Tulos molemmissa: oma laskuri tuotesivu 1, kori 1, kassa 1 ja maksu 1, palvelin vastasi ok. GA4: view_item 1,
+  add_to_cart 1 ja begin_checkout 1. Ennen korjausta view_item oli 0.
+- 2.11. tuotesivuja 116 ja koriin lisäyksiä 0 on siis oikea luku eikä mittausvirhe: tuotesivulta ei lisätty koriin.
+- Testi: `PLAYWRIGHT=<polku>/playwright/index.mjs node scripts/suppilo-testi.mjs`. Oma laskuri kirjaa testin
+  versioon "testi", joka ei näy summissa. GA4-pyynnöt, käyntilaskuri ja /api/checkout kaapataan, joten testistä ei
+  synny tilausta, Stripe-istuntoa eikä GA4-tapahtumia.
+- GA4 Data API ei ole asetettu (viikkomittarit: "ei asetettu"), joten GA4:n suppilo luetaan GA4:n omasta näkymästä.
+
+### Tarjouspyynnöt (30 pv)
+| Päivä | Yritys | Ala | Määrä | Vastattu | Tila nyt |
+|---|---|---|---|---|---|
+| 29.10. | TESTI Claude (ei oikea) | - | 25 | ei (testi) | testi |
+| 31.10. | TESTI Claude Oy (testipyyntö) | - | 12 (pikkujoulu) | ei (testi) | testi |
+| 31.10. | Testi Oy (Claude testi) | - | 12 (oma logo) | ei (testi) | testi |
+
+Kaikki kolme olivat omia tuotantotestejä (osoite @huumorikauppa.fi), eikä aitoja pyyntöjä ollut. Ne on merkitty tilaan
+"testi", eikä mittari laske niitä (tarjoukset 30 pv: 3 -> 0). Uusi cron-tehtävä `?tehtava=tarjoukset` listaa pyynnöt
+ilman yhteystietoja ja vaihtaa tilan (`&merkitse=<id>&tila=testi`). /hallinta/tarjoukset tuntee tilan "testi".
+
+### Merchant: 25 tuotetta ilman availabilitya
+- Merchantin syötelähde "PRODUCTS SOURCE 3" hakee oikean osoitteen /product-feed.xml joka päivä klo 3.00 (2.11.: 651
+  tuotetta). Vanhaa osoitetta tai välimuistia ei käytetä. Syötteessä on 771 tuotetta, ja kaikilla on availability.
+- Ne 25 tuotetta ovat Merchant Centerissä käsin lisätyn lähteen "Kauppiaskeskus" tuotteita (27.–28.10., englanti,
+  vanhat hinnat 24,90 € ja 49,99 €). Niitä ei ole kummassakaan syötteessä.
+- **Coworkille:** poista lähteen "Kauppiaskeskus" 25 tuotetta. Ohje on KAYTTOONOTTO.md:n kohdassa 18.
+- Vanha Lovable-syöte (Supabase-funktio merchant-feed, 994 tuotetta) vastaa yhä, mutta Merchant ei käytä sitä.
+
+**Tarkistukset:** tsc puhdas, 1 663 testiä läpi (1 ohitettu). Kolme User-Agentia (Chrome, iPhone, Googlebot): /,
+tuotesivu, /ostoskori, /kassa, /hallinta/mittarit, /hallinta/tarjoukset, /product-feed.xml ja /sitemap.xml kaikki 200.
+
+**Mittari 2.11.2026:** kate tässä kuussa 0 € / 3 000 € (ennuste 5,60 €). Tilauksia 30 päivässä 1 (kate 5,90 €).
+Käyntejä tässä kuussa 349: hakukoneet 68, media 68, blogi 43, lahjasivut 31, yritysten alasivut 1, kumppanisivut 1.
+Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käyntiä, 116 tuotesivua, 0 koriin, 0 kassalle,
+0 ostoa. Tarve: 10,5 tilausta ja 1 813 käyntiä päivässä.

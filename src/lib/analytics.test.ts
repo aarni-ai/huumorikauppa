@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { buildPurchaseParams, trackPurchaseOnce, _resetPurchaseTracking, isPaymentReferrer, type PurchaseOrder } from "./analytics";
+import { buildPurchaseParams, trackPurchaseOnce, trackViewItem, _resetPurchaseTracking, isPaymentReferrer, type PurchaseOrder } from "./analytics";
 import { CONSENT_KEY, saveConsent } from "./consent";
 import { redirectWithQuery } from "@/data/landingRoutes";
 
@@ -57,6 +57,18 @@ describe("trackPurchaseOnce", () => {
     expect(purchases()).toHaveLength(1);
     saveConsent({ analytics: true, marketing: true });
     expect(purchases()).toHaveLength(1);
+  });
+
+  it("view_item ennen suostumusta lähetetään kerran, kun suostumus annetaan samalla sivulatauksella", () => {
+    vi.stubGlobal("fetch", vi.fn(() => Promise.resolve(new Response("{}"))));
+    const naytot = () => gtag.mock.calls.filter((c) => c[0] === "event" && c[1] === "view_item");
+    trackViewItem({ item_id: "paita-a", item_name: "Paita", price: 27.9, quantity: 1 });
+    expect(naytot()).toHaveLength(0);
+    saveConsent({ analytics: true, marketing: false });
+    saveConsent({ analytics: true, marketing: true });
+    expect(naytot()).toHaveLength(1);
+    expect(naytot()[0][2]).toMatchObject({ currency: "EUR", value: 27.9 });
+    vi.unstubAllGlobals();
   });
 
   it("toimii vaikka localStorage on estetty (muistinvarainen suoja)", () => {

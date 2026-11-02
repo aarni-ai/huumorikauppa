@@ -48,11 +48,33 @@ export interface GAItem {
  */
 export function trackViewItem(item: GAItem) {
   kirjaaVaihe("tuotesivu");
-  sendEvent("view_item", {
-    currency: "EUR",
-    value: +item.price.toFixed(2),
-    items: [item],
-  });
+  const params = { currency: "EUR", value: +item.price.toFixed(2), items: [item] };
+  if (typeof window !== "undefined" && !hasAnalyticsConsent()) {
+    odotaSuostumusta("view_item", params);
+    return;
+  }
+  sendEvent("view_item", params);
+}
+
+/**
+ * Tuotesivu avautuu yleensä ennen evästebannerin hyväksyntää, jolloin view_item jäi lähettämättä ja GA4:n suppilossa
+ * oli koriin lisäyksiä ilman tuotenäyttöä (2.11.2026). Viimeisin näyttö lähetetään kerran, jos suostumus annetaan
+ * samalla sivulatauksella.
+ */
+let odottavaNaytto: { name: string; params: Record<string, unknown> } | null = null;
+let naytonKuuntelija: (() => void) | null = null;
+function odotaSuostumusta(name: string, params: Record<string, unknown>) {
+  odottavaNaytto = { name, params };
+  if (naytonKuuntelija) return;
+  naytonKuuntelija = () => {
+    if (!hasAnalyticsConsent() || !odottavaNaytto) return;
+    window.removeEventListener(CONSENT_CHANGED_EVENT, naytonKuuntelija!);
+    naytonKuuntelija = null;
+    const n = odottavaNaytto;
+    odottavaNaytto = null;
+    sendEvent(n.name, n.params);
+  };
+  window.addEventListener(CONSENT_CHANGED_EVENT, naytonKuuntelija);
 }
 
 export function trackAddToCart(item: GAItem) {
@@ -175,6 +197,9 @@ export function trackPurchaseOnce(params: PurchaseParams) {
 /** Testikäyttöön: tyhjentää muistinvaraisen tilan. */
 export function _resetPurchaseTracking() {
   sentInMemory.clear();
+  if (naytonKuuntelija) window.removeEventListener(CONSENT_CHANGED_EVENT, naytonKuuntelija);
+  naytonKuuntelija = null;
+  odottavaNaytto = null;
   for (const h of waiting.values()) window.removeEventListener(CONSENT_CHANGED_EVENT, h);
   waiting.clear();
 }

@@ -22,7 +22,7 @@
  * GET  ?mittarit=<avain>                                          /hallinta/mittarit: tavoitemittari (api/_lib/mittarit.js)
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
- * POST { action: "suppilo", vaihe, ab }                          oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
+ * POST { action: "suppilo", vaihe, ab, testi? }                  oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
@@ -256,7 +256,7 @@ export async function kasittele(req, res, store) {
     }
     case "tarjoustila": {
       if (!hallintaPaasy(req, res, "tarjoukset", body.avain)) return res.status(404).json({ ok: false });
-      const tila = ["uusi", "vastattu", "tilattu", "hylatty"].includes(body.tila) ? body.tila : null;
+      const tila = ["uusi", "vastattu", "tilattu", "hylatty", "testi"].includes(body.tila) ? body.tila : null;
       if (!tila || !Number.isInteger(Number(body.id))) return res.status(400).json({ ok: false });
       const r = await store.asetaTarjousTila(Number(body.id), tila);
       return res.status(200).json({ ok: r.length > 0 });
@@ -272,7 +272,7 @@ export async function kasittele(req, res, store) {
       // Oma ostosuppilo: koostemäärä päivä x vaihe x A/B-versio (api/_lib/suppilo.js), ei tunnisteita.
       if (onBotti(String(req.headers["user-agent"] || ""))) return res.status(200).json({ ok: false });
       const { kirjaaVaihe } = await import("./_lib/suppilo.js");
-      return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "") });
+      return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "", { testi: body.testi === true }) });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.

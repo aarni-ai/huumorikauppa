@@ -264,6 +264,25 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, paivia, tilaukset: Object.entries(per).sort().map(([paiva, d]) => ({ paiva, ...d })), korit, oma });
   }
 
+  // Tarjouspyynnöt raporttiin (2.11.2026): päivä, yritys, ala, määrä, tila ja ilmoitus ilman yhteystietoja (vain
+  // sähköpostin verkkotunnus testien tunnistamiseen). &merkitse=<id>&tila=testi|uusi|vastattu|tilattu|hylatty vaihtaa tilan.
+  if (req.query.tehtava === "tarjoukset") {
+    const TILAT = ["uusi", "vastattu", "tilattu", "hylatty", "testi"];
+    if (req.query.merkitse) {
+      if (!TILAT.includes(req.query.tila)) return res.status(400).json({ ok: false, virhe: "tila" });
+      const r = await db`update tarjouspyynnot set tila = ${req.query.tila} where id = ${Number(req.query.merkitse)} returning id`;
+      return res.status(200).json({ ok: r.length > 0 });
+    }
+    const paivia = Math.min(90, Math.max(1, Number(req.query.paivia) || 30));
+    // select *: sarakkeet (esim. ala) lisätään vasta ensimmäisessä uudessa pyynnössä (api/_lib/markkinointi-db.js).
+    const rivit = (await db`select * from tarjouspyynnot where created_at > now() - ${`${paivia} days`}::interval order by created_at`).map((t) => ({
+      id: t.id, aika: new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki", dateStyle: "short", timeStyle: "short" }).format(new Date(t.created_at)),
+      yritys: t.yritys, ala: t.ala ?? null, maara: t.maara, paketti: t.paketti ?? null, malli: t.malli ?? null, hinta: t.hinta ?? null,
+      tila: t.tila ?? null, ilmoitus: t.ilmoitus ?? null, verkkotunnus: String(t.email || "").split("@")[1] || "", viesti: String(t.viesti || "").slice(0, 160),
+      ytunnus: !!t.ytunnus }));
+    return res.status(200).json({ ok: true, rivit: rivit.map((r) => ({ ...r, ilmoitus: String(r.ilmoitus || "").replace(/\S+@\S+/g, "").trim() })) });
+  }
+
   if (req.query.tehtava === "hallinta-linkki") {
     const { hallintaLinkit } = await import("../_lib/hallinta.js");
     const l = hallintaLinkit();

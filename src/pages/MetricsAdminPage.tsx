@@ -26,6 +26,8 @@ type Mittarit = {
     yhteensa: SuppiloRivi;
     pudotus: { vaihe: string; jatkoi: number | null; putosi: number | null }[];
     ab: Record<"a" | "b", Omit<SuppiloRivi, "kaynnit">>;
+    alku?: string;
+    luotettavaAlkaen?: string;
   } | null;
   mainonta?: {
     kulut: number; klikit: number; konversiot: number; tilauksia: number; kustannusPerTilaus: number | null; kateMainonnanJalkeen: number;
@@ -212,6 +214,7 @@ const MetricsAdminPage = () => {
           {m.suppilo && (
             <section className="rounded-xl border border-border bg-card p-4 space-y-3">
               <h2 className="font-semibold text-foreground">Ostosuppilo ja konversio päivittäin (14 pv, oma laskuri)</h2>
+              {m.suppilo.luotettavaAlkaen && <p className="text-xs text-muted-foreground">Data luotettavaa {m.suppilo.luotettavaAlkaen} alkaen; vaiheet, käynnit ja ostot lasketaan samalta jaksolta ({m.suppilo.alku} alkaen).</p>}
               <ul className="text-sm grid gap-1 md:grid-cols-5">
                 {m.suppilo.pudotus.map((p) => (
                   <li key={p.vaihe} className="rounded border border-border p-2">

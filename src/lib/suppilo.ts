@@ -23,9 +23,12 @@ export const nahtyVersio = () => (kirjatut.has("etusivu") ? ab : "");
 
 const onBotti = () => typeof navigator !== "undefined" && (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse/i.test(navigator.userAgent || ""));
 
+/** Selaintesti (scripts/suppilo-testi.mjs asettaa ennen sivun skriptejä): kirjaus versioon "testi", ei summiin. */
+const onTesti = () => (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
+
 export function kirjaaVaihe(vaihe: Vaihe): void {
   if (typeof window === "undefined" || typeof fetch !== "function" || kirjatut.has(vaihe) || onBotti()) return;
   if (window.location.pathname.startsWith("/hallinta")) return;
   kirjatut.add(vaihe);
-  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ action: "suppilo", vaihe, ab: nahtyVersio() }) }).catch(() => undefined);
+  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ action: "suppilo", vaihe, ab: nahtyVersio(), ...(onTesti() ? { testi: true } : {}) }) }).catch(() => undefined);
 }
