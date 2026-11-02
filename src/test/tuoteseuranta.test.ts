@@ -48,3 +48,16 @@ describe("hallinnan taikalinkki", () => {
     expect([LINKKI_VOIMASSA_TUNTIA, EVASTE_PAIVAA]).toEqual([48, 90]);
   });
 });
+
+describe("somekävijät ilman UTM-linkkiä", () => {
+  it("sovelluksen selain ja viittaaja", async () => {
+    const { kaynninLahde } = await import("../../api/_lib/kaynnit.js");
+    expect(kaynninLahde({ ua: "Mozilla/5.0 (iPhone) Mobile/15E148 Instagram 300.0.0.0" })).toBe("instagram");
+    expect(kaynninLahde({ ua: "Mozilla/5.0 (Linux; Android 13) musical_ly_2023 BytedanceWebview/d8a21c6" })).toBe("tiktok");
+    expect(kaynninLahde({ ua: "Mozilla/5.0 (iPhone) [FBAN/FBIOS;FBAV/440.0]" })).toBe("facebook");
+    expect(kaynninLahde({ ua: "Mozilla/5.0 (iPhone) Pinterest for iOS/12.0" })).toBe("pinterest");
+    expect(kaynninLahde({ viittaaja: "l.instagram.com" })).toBe("instagram");
+    expect(kaynninLahde({ viittaaja: "www.tiktok.com" })).toBe("tiktok");
+    expect(kaynninLahde({ utm: "testi", ua: "Instagram" })).toBe("testi");
+  });
+});
