@@ -19,7 +19,7 @@ const e = (x: number) => `${euroluku(x).includes(",") ? euroluku(x) : `${euroluk
 const [TOIMITUS_MIN, TOIMITUS_MAX] = TOIMITUSAJAT_TYYPEITTAIN["t-paidat"];
 export const RYHMA_TOIMITUSAIKA = `${TOIMITUS_MIN}-${TOIMITUS_MAX}`;
 
-/** Hintaportaat tekstinä: "5-9 paitaa 36,90 €" jne. */
+/** Hintaportaat tekstinä: "5-9 paitaa 37,90 €" jne. */
 export const RYHMA_PORTAAT = hintaportaat().map((p: { min: number; max: number | null; hinta: number; isoHinta: number }) => ({
   ...p,
   teksti: p.max ? `${p.min}-${p.max} paitaa` : `${p.min} paitaa tai enemmän`,

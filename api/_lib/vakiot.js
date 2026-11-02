@@ -104,7 +104,7 @@ export const HINNASTOT = {
     personoituHuppari: { perus: 57.9, iso: 60.9 },
     logopaita: 29.9,
     tpaitapari: 44.9,
-    ryhmapaita: { portaat: [[50, 32.9], [25, 33.9], [10, 34.9], [5, 36.9]], isoLisa: 2 },
+    ryhmapaita: { portaat: [[50, 33.9], [25, 34.9], [10, 35.9], [5, 37.9]], isoLisa: 2 },
   },
   // Laskettu 30.10.2026: heikoin variantti 7 € + pyöristys ylöspäin x,90:een (KATTEET.md "ALV-varasuunnitelma").
   alvKulu: {
@@ -116,7 +116,7 @@ export const HINNASTOT = {
     personoituHuppari: { perus: 62.9, iso: 73.9 },
     logopaita: 32.9,
     tpaitapari: 49.9,
-    ryhmapaita: { portaat: [[50, 38.9], [25, 39.9], [10, 40.9], [5, 42.9]], isoLisa: 2 },
+    ryhmapaita: { portaat: [[50, 39.9], [25, 40.9], [10, 41.9], [5, 43.9]], isoLisa: 2 },
   },
 };
 export const HINNASTO = PRINTIFY_ALV_VAHENNETTAVA ? HINNASTOT.perus : HINNASTOT.alvKulu;

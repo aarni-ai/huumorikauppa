@@ -34,8 +34,8 @@ export const RYHMA_MIN_KPL = 5;
 export const RYHMA_MAX_KPL = 100;
 /** Jokaisen paidan nettokate vähintään (kaikki kulut, Stripe ja hyvitykset mukana). */
 export const RYHMA_MIN_KATE_PER_PAITA = 9;
-/** Selkäpainatuksen kulu (arvio, sentit): lisätään jokaisen variantin etupainatuksen kuluun. */
-export const RYHMA_SELKA_KULU_SENTIT = 600;
+/** Selkäpainatuksen kulu (sentit; Printifyn todellinen rivikulu 2.11.2026 testitilauksesta: 15,51 € - etu 8,90 €). */
+export const RYHMA_SELKA_KULU_SENTIT = 661;
 export const RYHMAPAITA_PRINTIFY = "RYHMAPAITA";
 export const RYHMAPAITA_SLUG = "ryhmapaita";
 export const RYHMAPAITA_POHJA = PERSONOITU_POHJA;

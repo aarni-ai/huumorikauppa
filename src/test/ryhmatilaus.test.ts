@@ -25,12 +25,12 @@ const VARIANTIT = Object.keys(RYHMAPAITA_TUOTE.variants.variant_map) as string[]
 describe("ryhmäpaidan hinnat", () => {
   it("portaat 5+, 10+, 25+ ja 50+, hinta laskee määrän kasvaessa, 3XL-5XL + 2 €", () => {
     expect(HINNASTO.ryhmapaita).toBe(HINNASTOT.perus.ryhmapaita);
-    expect([5, 9, 10, 24, 25, 49, 50, 100].map((n) => kappalehinta(n, "M"))).toEqual([36.9, 36.9, 34.9, 34.9, 33.9, 33.9, 32.9, 32.9]);
-    expect(kappalehinta(10, "3XL")).toBe(36.9);
-    expect(perushinta("L")).toBe(36.9);
-    expect(perushinta("5XL")).toBe(38.9);
+    expect([5,9, 10, 24, 25, 49, 50, 100].map((n) => kappalehinta(n, "M"))).toEqual([37.9, 37.9, 35.9, 35.9, 34.9, 34.9, 33.9, 33.9]);
+    expect(kappalehinta(10, "3XL")).toBe(37.9);
+    expect(perushinta("L")).toBe(37.9);
+    expect(perushinta("5XL")).toBe(39.9);
     for (let n = 2; n <= 100; n++) expect(kappalehinta(n, "M")).toBeLessThanOrEqual(kappalehinta(n - 1, "M"));
-    expect(hintaporras(1)).toEqual({ min: 5, hinta: 36.9 });
+    expect(hintaporras(1)).toEqual({ min: 5, hinta: 37.9 });
   });
 
   it("kulut: tuotannon OPT-t-paidan kulu + selkäpainatuksen arvio jokaiselle variantille", () => {
@@ -94,18 +94,18 @@ describe("ryhmäpaidan hinnat", () => {
     const ryhma = { id: "r", tila: "avoin", maksutapa: "vetaja", paikat: 10, vari: "Musta", design: { nimi: "Abit" } };
     const jasenet = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `j${i}`, tila: "tayttanyt", koko: "M", nimi: "Aino" }));
     for (let n = 1; n < RYHMA_MIN_KPL; n++) expect(lukitusSuunnitelma(ryhma, jasenet(n), "vetaja").ok, `${n}`).toBe(false);
-    expect(lukitusSuunnitelma(ryhma, jasenet(5), "vetaja")).toMatchObject({ ok: true, kpl: 5, vetajanSumma: 184.5 });
+    expect(lukitusSuunnitelma(ryhma, jasenet(5), "vetaja")).toMatchObject({ ok: true, kpl: 5, vetajanSumma: 189.5 });
   });
 
   it("lukituksen suunnitelma: lopullinen hinta paitamäärästä ja hyvitys itse maksaneille", () => {
     const ryhma = { id: "r", tila: "avoin", maksutapa: "jasenet", paikat: 12, vari: "Valkoinen", design: { nimi: "Abit" } };
-    const jasenet = Array.from({ length: 12 }, (_, i) => ({ id: `j${i}`, tila: i < 10 ? "maksettu" : "tayttanyt", maksaja: i < 10 ? "jasen" : null, maksettu: i < 10 ? 36.9 : null, hyvitetty: 0, koko: "L", nimi: "Eetu" }));
+    const jasenet = Array.from({ length: 12 }, (_, i) => ({ id: `j${i}`, tila: i < 10 ? "maksettu" : "tayttanyt", maksaja: i < 10 ? "jasen" : null, maksettu: i < 10 ? 37.9 : null, hyvitetty: 0, koko: "L", nimi: "Eetu" }));
     const pois = lukitusSuunnitelma(ryhma, jasenet, "jata-pois");
     expect(pois).toMatchObject({ ok: true, kpl: 10, pois: ["j10", "j11"], vetajaMaksaa: [], vetajanSumma: 0 });
     expect(pois.hyvitykset).toHaveLength(10);
     expect(pois.hyvitykset[0]).toEqual({ id: "j0", summa: 2 });
     const loput = lukitusSuunnitelma(ryhma, jasenet, "maksa-loput");
-    expect(loput).toMatchObject({ ok: true, kpl: 12, vetajaMaksaa: ["j10", "j11"], vetajanSumma: 69.8 });
+    expect(loput).toMatchObject({ ok: true, kpl: 12, vetajaMaksaa: ["j10", "j11"], vetajanSumma: 71.8 });
     expect(lukitusSuunnitelma(ryhma, jasenet, "jotain").ok).toBe(false);
   });
 });
@@ -284,7 +284,7 @@ describe("ryhmän tilakone", () => {
       const m = await t.palvelu.maksa(r.jasenTunnus, oma, "https://huumorikauppa.fi");
       expect(m.url).toMatch(/^https:/);
       const s = t.istunnot.at(-1)!;
-      expect(s.rivit[0].sentit).toBe(i === 4 ? 3890 : 3690);
+      expect(s.rivit[0].sentit).toBe(i === 4 ? 3990 : 3790);
       expect(s.metadata).toMatchObject({ ryhma_maksu: "jasen" });
       const k = await t.palvelu.kasitteleMaksu(t.maksettu(s.id));
       expect(k.ok).toBe(true);
@@ -296,8 +296,8 @@ describe("ryhmän tilakone", () => {
     expect(t.valmiit).toEqual([t.store.tilaukset[0].id]);
     const o = t.store.tilaukset[0] as unknown as { items: { unit_price: number; size: string; ryhma: { selka: { nimi: string } } }[]; total: number; customer_email: string; shipping_address: { zip: string } };
     expect(o.items).toHaveLength(5);
-    expect(o.items.map((x) => x.unit_price)).toEqual([36.9, 36.9, 36.9, 36.9, 38.9]);
-    expect(o.total).toBe(186.5);
+    expect(o.items.map((x) => x.unit_price)).toEqual([37.9, 37.9, 37.9, 37.9, 39.9]);
+    expect(o.total).toBe(191.5);
     expect(o.customer_email).toBe("vera@example.com");
     expect(o.shipping_address.zip).toBe("00100");
     expect(t.palautukset).toEqual([]);
@@ -323,8 +323,8 @@ describe("ryhmän tilakone", () => {
     expect(lukitus.ok).toBe(true);
     expect(t.store.tilaukset).toHaveLength(1);
     expect((t.store.tilaukset[0] as unknown as { items: unknown[]; total: number }).items).toHaveLength(10);
-    expect((t.store.tilaukset[0] as unknown as { total: number }).total).toBe(349);
-    // 10 paitaa: 34,90 €; jokainen maksoi 36,90 € -> 2,00 € takaisin.
+    expect((t.store.tilaukset[0] as unknown as { total: number }).total).toBe(359);
+    // 10 paitaa: 35,90 €; jokainen maksoi 37,90 € -> 2,00 € takaisin.
     expect(t.palautukset).toHaveLength(10);
     expect(t.palautukset.every((p) => p.sentit === 200)).toBe(true);
     const jasenet = await t.store.jasenet([...t.store.ryhmat.keys()][0]);
@@ -345,7 +345,7 @@ describe("ryhmän tilakone", () => {
     }
     const l = await t.palvelu.lukitse(r.hallinta, "maksa-loput", "https://huumorikauppa.fi");
     expect(l.url).toMatch(/^https:/);
-    expect(l.summa).toBe(147.6);
+    expect(l.summa).toBe(151.6);
     const s = t.istunnot.at(-1)!;
     expect(s.metadata).toEqual({ ryhma_id: expect.any(String), ryhma_maksu: "vetaja" });
     expect(t.store.tilaukset).toHaveLength(0);
@@ -353,7 +353,7 @@ describe("ryhmän tilakone", () => {
     await expect(t.palvelu.maksa(r.jasenTunnus, omat[3], "https://huumorikauppa.fi")).rejects.toThrow(/lukittu/);
     await t.palvelu.kasitteleMaksu(t.maksettu(s.id));
     expect(t.store.tilaukset).toHaveLength(1);
-    expect((t.store.tilaukset[0] as unknown as { total: number }).total).toBe(221.4);
+    expect((t.store.tilaukset[0] as unknown as { total: number }).total).toBe(227.4);
     expect(t.palautukset).toEqual([]);
     expect((await t.store.jasenet([...t.store.ryhmat.keys()][0])).filter((j) => j.maksaja === "vetaja")).toHaveLength(4);
   });
@@ -367,15 +367,15 @@ describe("ryhmän tilakone", () => {
     await expect(t.palvelu.lukitse(r.hallinta, null, "https://huumorikauppa.fi")).rejects.toThrow(/vähintään 5/);
     omat.push((await t.palvelu.liity(r.jasenTunnus, { nimi: "Viides", koko: "S" })).oma);
     const eka = await t.palvelu.lukitse(r.hallinta, null, "https://huumorikauppa.fi");
-    expect(eka.summa).toBe(184.5);
+    expect(eka.summa).toBe(189.5);
     const vanha = t.istunnot.at(-1)!.id;
     await t.palvelu.avaa(r.hallinta);
     await t.palvelu.liity(r.jasenTunnus, { nimi: "Kuudes", koko: "S" });
     const toka = await t.palvelu.lukitse(r.hallinta, null, "https://huumorikauppa.fi");
-    expect(toka.summa).toBe(221.4);
+    expect(toka.summa).toBe(227.4);
     const vanhaTulos = await t.palvelu.kasitteleMaksu(t.maksettu(vanha));
     expect(vanhaTulos.palautettu).toBe(true);
-    expect(t.palautukset).toEqual([{ pi: `pi_${vanha}`, sentit: 18450 }]);
+    expect(t.palautukset).toEqual([{ pi: `pi_${vanha}`, sentit: 18950 }]);
     // Tunnin paikkaus käsittelee saman istunnon uudelleen: ei toista palautusta.
     expect((await t.palvelu.kasitteleMaksu(t.maksettu(vanha))).jo).toBe(true);
     expect(t.palautukset).toHaveLength(1);
@@ -401,7 +401,7 @@ describe("ryhmän tilakone", () => {
     const ryhmaId = [...t.store.ryhmat.keys()][0];
     const eetu = (await t.store.jasenet(ryhmaId)).find((j) => j.nimi === "Eetu")!;
     await t.palvelu.poistaJasen(r.hallinta, eetu.id);
-    expect(t.palautukset).toEqual([{ pi: expect.stringMatching(/^pi_/), sentit: 3690 }]);
+    expect(t.palautukset).toEqual([{ pi: expect.stringMatching(/^pi_/), sentit: 3790 }]);
     await t.palvelu.peru(r.hallinta);
     expect(t.palautukset).toHaveLength(2);
     expect((await t.store.haeRyhma(ryhmaId))!.tila).toBe("peruttu");
@@ -425,7 +425,7 @@ describe("ryhmätilaus Printifyyn", () => {
     const jasenet = NIMET.slice(0, 5).map((nimi, i) => ({ id: `j${i}`, tila: "tayttanyt", koko: i === 0 ? "3XL" : "L", nimi, numero: i === 0 ? "10" : null }));
     const s = lukitusSuunnitelma(ryhma, jasenet, "vetaja");
     const rivit = tilausRivit(ryhma, jasenet, s);
-    expect(rivit[0]).toMatchObject({ unit_price: 38.9, variant_id: variantti("Tummansininen", "3XL"), printify_product_id: "RYHMAPAITA", quantity: 1, custom_text: "Selkä: Aino 10" });
+    expect(rivit[0]).toMatchObject({ unit_price: 39.9, variant_id: variantti("Tummansininen", "3XL"), printify_product_id: "RYHMAPAITA", quantity: 1, custom_text: "Selkä: Aino 10" });
     const runko = tilausRunko({ id: "abcdef12-0000", customer_email: "a@b.fi", shipping_address: { address: "Katu 1", zip: "00100", city: "Helsinki" }, items: rivit });
     expect(runko.line_items).toHaveLength(5);
     for (const l of runko.line_items) {

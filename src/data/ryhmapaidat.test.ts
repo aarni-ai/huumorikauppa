@@ -52,7 +52,7 @@ describe("ryhmäpaitojen sivut", () => {
   }
 
   it("hintalause vastaa kassan hintoja", () => {
-    expect(RYHMA_HINTALAUSE).toBe("T-paita maksaa 36,90 €, kun paitoja on 5-9. Määräalennuksella hinta on 10 paidasta 34,90 €, 25 paidasta 33,90 € ja 50 paidasta 32,90 €. Koot 3XL-5XL maksavat 2,00 € enemmän, ja toimitus vetäjän osoitteeseen sisältyy hintaan.");
+    expect(RYHMA_HINTALAUSE).toBe("T-paita maksaa 37,90 €, kun paitoja on 5-9. Määräalennuksella hinta on 10 paidasta 35,90 €, 25 paidasta 34,90 € ja 50 paidasta 33,90 €. Koot 3XL-5XL maksavat 2,00 € enemmän, ja toimitus vetäjän osoitteeseen sisältyy hintaan.");
     for (const p of RYHMA_PORTAAT) expect(kappalehinta(p.min, "M")).toBe(p.hinta);
   });
 
