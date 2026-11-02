@@ -2454,3 +2454,167 @@ tuotesivu, /ostoskori, /kassa, /hallinta/mittarit, /hallinta/tarjoukset, /produc
 Käyntejä tässä kuussa 349: hakukoneet 68, media 68, blogi 43, lahjasivut 31, yritysten alasivut 1, kumppanisivut 1.
 Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käyntiä, 116 tuotesivua, 0 koriin, 0 kassalle,
 0 ostoa. Tarve: 10,5 tilausta ja 1 813 käyntiä päivässä.
+
+## 2.11.2026 (ilta 2): hallinnan taikalinkki, oma liikenne pois, tuotesivun seuranta, lähikuvat, personoidut lahjat, hakuotsikot, lahjapaketit ja kampanjakalenteri
+
+**Coworkille ja Aarnille ensin**
+- **Aktivointilinkki:** Resend lähettää huumorikauppa.fi-domainista vasta vahvistuksen jälkeen, joten viesti "Hallinnan
+  aktivointilinkki Coworkille" meni varareittiä osoitteeseen flyapeg@gmail.com. **Aarni:** välitä se osoitteeseen
+  huumorikauppa@gmail.com. Linkki toimii kerran ja vanhenee 4.11. klo 13.11. Ohje on KAYTTOONOTTO.md:n kohdassa 20.
+- **Clarity:** Aarni luo tilin, ja Cowork lisää tunnisteen. Ohje on KAYTTOONOTTO.md:n kohdassa 19.
+- **Merchant Center:** edellisen ajon kohta 18 (25 käsin lisättyä tuotetta pois) on yhä tekemättä.
+
+### Hallinnan taikalinkki
+- Osoite on /hallinta/aktivoi?t=<256-bittinen tunniste>. Linkki vanhenee 48 tunnissa ja toimii kerran.
+- Avaus antaa evästeet hk_hallinta_mittarit, _some ja _tarjoukset sekä hk_oma, kaikki 90 päiväksi. Tunniste poistuu
+  osoiteriviltä.
+- Sivu lähettää tunnisteen JavaScriptillä, joten sähköpostin linkkiskannerit eivät kuluta linkkiä.
+- Päivän yhteenveto lisää uuden linkin, kun edellisestä aktivoinnista on yli 80 päivää.
+- Testi `scripts/aktivointilinkki-testi.mjs` (Playwright, tuotanto), 8/8 OK:
+  - skannerin GET ei aktivoi
+  - avaus aktivoi
+  - tunniste poistuu osoiteriviltä
+  - kaikki neljä evästettä asettuvat
+  - evästeet ovat voimassa 90 päivää
+  - /hallinta/mittarit aukeaa
+  - toinen avaus hylätään
+  - toinen selain ei saa evästettä
+
+### Oma liikenne ja botit pois mittarista ja suppilosta
+- Käyntilaskuri, suppilo ja tuotesivun seuranta ohittavat (api/_lib/kaynnit.js onOmaTaiBotti):
+  - bottien User-Agentit; mukaan lisättiin Google-InspectionTool, GoogleOther, Playwright, Puppeteer, Selenium, node,
+    undici ja tekoälybotit
+  - hallintaselaimet, joilla on eväste hk_oma tai hk_hallinta_* (Coworkin Chrome aktivoinnin jälkeen)
+  - testiajot (testi: true)
+  - muualta kuin sivustolta tulevat kutsut (Sec-Fetch-Site ei same-origin), eli skriptit ja palvelimen omat pyynnöt
+- **Media 68 käyntiä (2.11.):** 62 tuotesivulle ja 6 sivulle /lahjaopas-media, kaikki utm_source=media-parametrilla. Parametri
+  on vain lahjaoppaan (sivu ja PDF) tuotelinkeissä, eikä mediaviestejä ole lähetetty. Käynnit olivat siis oppaan linkkien
+  tarkistusta oikealla selaimella.
+- Samoin pääteltiin tietosuojasivun suorat saapumiset (1.11. 6 ja 2.11. 17) sekä /lahjaopas-media 1.11. ja 2.11. (2 + 2).
+- Rivit siirrettiin lähteeseen "oma", jota ei lasketa (cron ?tehtava=kaynnit-oma).
+- **Aidot ihmiskäynnit 2.11.: 114.** Suora 92, Google 16, Facebook 2, ChatGPT 2, Bing 1, muu 1.
+- 1.11.: 154 - 3 testiä - 8 omaa = 143.
+- Suppilon vaiheita ei voi erotella jälkikäteen lähteittäin (2.11. mukana oppaan tarkistuksen 62 tuotesivua), joten
+  suppilo on luotettava 3.11.2026 alkaen.
+
+### Somekävijät ilman linkkiä
+- Bioissa on pelkkä huumorikauppa.fi. Lähde tunnistetaan sovelluksen selaimesta ja viittaajasta, sekä palvelimella
+  (kaynninLahde) että GA4:ssä (index.html, page_location utm_source + utm_medium=social):
+  - Instagram: User-Agent "Instagram" tai viittaaja instagram.com / l.instagram.com
+  - TikTok: musical_ly, BytedanceWebview, TikTok tai viittaaja tiktok.com
+  - Facebook: FBAN/FBAV tai viittaaja l.facebook.com
+  - Pinterest
+- Kuvatekstit: "Linkki biossa" (35 videota). Pinterest-linkit ovat ilman UTM-parametreja (252), ja manifesti päivitettiin
+  Blobiin.
+- /hallinta/some: UTM-linkit poistettu, ohjeena "Bio: huumorikauppa.fi".
+- Lyhyet osoitteet /ig, /tt, /fb, /pin ja /yt toimivat (sivu /linkit ilman uudelleenohjausta, lähde talteen), mutta niitä
+  ei käytetä eikä mainita missään.
+
+### Tuotesivun seuranta (24 h raportti päivän yhteenvetoon)
+- Yksi kooste katselua kohden, kun sivu suljetaan tai vaihdetaan. Mukana:
+  - vierityssyvyys 25/50/75/100
+  - aika sivulla
+  - koon valinta
+  - värin vaihto
+  - kokotaulukon avaus
+  - "Lisää koriin" -painike vähintään puoliksi näkyvissä
+  - lisäys koriin
+- Tallennetaan vain koostemäärä päivä x tapahtuma (api/_lib/tuoteseuranta.js). Ei evästeitä eikä tunnisteita.
+- Päivän yhteenvetoon tulee automaattisesti viimeisen vuorokauden luvut ja poistumiskohta. Luvut saa myös cron-tehtävällä
+  ?tehtava=tuoteseuranta.
+- Ensimmäinen raportti on 3.11. yhteenvedossa.
+
+### 10 suosituimman tuotesivun mobiilitarkistus ja korjaukset
+- **Vika:** neljällä kymmenestä (Maailman paras äiti, Saatanan Tunarit t-paita, Tonnin seteli t-paita ja huppari)
+  yritysnosto "Tilaa koko tiimille: 10+ t-paitaa -10 %" oli otsikon ja tuotekuvan välissä. Puhelimen ensinäkymässä näkyi
+  yritystarjous eikä tuote.
+  - **Korjaus:** nosto siirrettiin ostoalueen alle.
+- **Vika:** monessa mockupissa vitsi oli pieni (esim. "minulla ei ole alkoholiongelmaa... hyvin se uppoaa", "se oli tonnin
+  seteli").
+  - **Korjaus:** ensimmäinen kuva on nyt lähikuva painatuksesta.
+- **Kunnossa:** hinta, toimitusraja (yläpalkki "Ilmainen toimitus kahdesta tuotteesta"), joulun tilauspäivä,
+  palautusehto ja arviot.
+
+### Ensimmäinen kuva lähikuvana
+- api/_lib/lahikuva.js rajaa painatuksen tuotteen omasta Printify-mockupista (2048 px). Paidan väri tunnistetaan, ja
+  painatuksen tiheät rivit rajataan neliöksi. Hupparissa haku alkaa hupun alapuolelta.
+- api/img.js tekee rajauksen parametrilla hk_lahi, joten lähikuva vaihtuu värin mukana.
+- Kohteena 318 tuotetta: 45 TOP50-vaatetta ja 273 uutta mallia (scripts/lahikuva-tuotteet.mjs; aja uudelleen, kun malleja
+  tuodaan).
+- Tarkistettu silmämääräisesti kuudella tuotteella, myös vaaleansinisellä hupparilla.
+- Merchant-syötteen kuvat ennallaan.
+
+### Personoidut lahjat (/personoidut)
+- 25 mallia, joista 20 uutta. Esimerkkejä: "Maailman paras isä: [NIMI]", "[NIMI], saunan vanhin", "Eläkkeellä vuodesta
+  [VUOSI]", "[NIMI] ja [NIMI], naimisissa [VUOSI] lähtien", "Mökkimestari [NIMI]", Löylymestari, Jahtimestari,
+  Synttärisankari, Vuosikerta, Paras työkaveri, Pikkujoulut, Tonttu ja Golfari.
+- Hinnat ja pienin kate:
+
+  | Tuote | Hinta | Pienin kate |
+  |---|---|---|
+  | T-paita | 32,90 € | 12,45 € |
+  | Huppari | 57,90 € | 15,73 € |
+  | Huppari 3XL+ | 60,90 € | 10,70 € (59,90 €:lla kate olisi ollut 9,91 €) |
+
+- Tuotesivulla on mallikohtaiset kentät, merkkilaskuri ja reaaliaikainen esikatselu valitun värin paidan tai hupparin
+  päällä.
+- Kirosana- ja tavaramerkkisuodatus sekä mahtumistarkistus (Anton-fontin merkkileveydet, fonttikoon alaraja) ovat samat
+  selaimessa, kassassa ja painokuvassa.
+- Maksun jälkeen palvelin tekee PNG:n ja Printify-tilauksen uniikilla tuotteella. T-paita: bp 145, OPT OnDemand.
+  Huppari: bp 77, Atelier Katanga.
+- Nosto on etusivulla, lahjasivuilla ja sivulla /joulu.
+- **Testitilaus tuotannossa:**
+  - kassa 86,27 €
+  - painokuvat: t-paita 3461 x 3955 ja huppari 3709 x 2472
+  - Printify-tilaus 6ae87617cc3dc073380fdccb "TESTI Personointi (perutaan)", jonka kulut olivat tuotteet 32,69 € ja
+    toimitus 19,38 €
+  - tilaus peruttiin samassa ajossa (canceled)
+- **Huomio:** Atelier Katangan käsittelyaika on Printifyssä 10 päivää, mutta kauppa lupaa 3–10 arkipäivää. Kaupan
+  nykyiset hupparit tehdään samassa painotalossa.
+
+### Hakuotsikot
+- Sivun title, og:title, bottimetat ja Merchantin g:title tulevat yhdestä funktiosta (api/_lib/hakuotsikko.js).
+- Esimerkit:
+  - "Hauska t-paita isälle: Isä, joka on aina auton alla"
+  - "Saunapaita: Sauna lämpiää. muut asiat odottaa"
+  - "Pikkujouluhuppari: Pikkujoulut muistetaan vuosia"
+- Kaikki 969 tilannekuvan tuotetta ovat alle 70 merkkiä (pisin 69).
+- H1, JSON-LD:n name ja tuoteosoitteet ovat ennallaan, joten 301-ohjauksia ei tarvittu.
+- Tietovirhe: muki `30-ja-liian-vanha-tyhmyyksiin-teen-ne-silti-muki` on kategoriassa t-paidat.
+
+### Lahjapaketit (/paketit)
+- Kuusi pakettia: Isän, Saunojan, Pikkujoulupari kahdelle, Mökki, Kalastajan ja Eläkeläisen.
+- Jokainen on kahden 27,90 €:n t-paidan pari: 55,80 € -> 53,02 € (-5 %), ilmainen toimitus näkyy kortissa ja sivulla.
+  Pienin kate on 13,72 € paketilta.
+- Paita ja huppari -paketti ei täytä 12 €:n katetta -5 %:lla (3,23–6,01 €), joten sitä ei tehty.
+- Kassa myöntää pakettialennuksen vain, jos kate ilmaisella toimituksella on vähintään 12 €.
+
+### Sopii lahjaksi
+- Jokaisella tuotesivulla on ostopainikkeen alla rivi siitä, kenelle tuote sopii, ja linkki vastaavalle lahjasivulle
+  (src/lib/sopiiLahjaksi.ts). Rivi on myös esirenderöidyssä HTML:ssä.
+- Testattu noin 1 000 tuotteella. Jokainen linkki osoittaa olemassa olevaan sivuun, joka ei ole ohjaus.
+
+### Kampanjakalenteri (src/data/kampanjat.ts)
+
+| Jakso | Kampanja |
+|---|---|
+| 8.11. asti | isänpäivä |
+| 9.–22.11. | joulu |
+| 23.–30.11. | Black Friday |
+| 1.12. | viimeiset tilauspäivät: hupparit ja muut ti 1.12., t-paidat pe 4.12. |
+| 2.–4.12. | vain t-paidat ehtivät |
+| 5.–24.12. | lahjakortti |
+
+- Bannerit ja etusivun nosto vaihtuvat päivämäärän mukaan.
+- **Black Friday:** -10 % kahdesta tuotteesta ei täytä 7 €:n ehtoa (pahin -2,22 €). Suurin ehdon täyttävä alennus olisi
+  t-paidat -9 %, mutta sitä ei voi markkinoida, koska 30 päivän alin hinta on 24,90 €.
+  - **Valinta:** "kaksi t-paitaa 44,90 €", pienin kate 12,43 €, sama sääntö kassassa 23.–30.11.
+  - Laskelma on KATTEET.md:ssä.
+- **Huomio:** kahden tuotteen ilmainen toimitus ilman alennusta voi jättää yksittäisen tilauksen alle 7 €:n (pahin 3,73 €,
+  t-paita + koriste). Tilanne oli sama jo ennen tätä ajoa.
+
+**Tarkistukset**
+- tsc puhdas, 1 733 testiä (1 ohitettu).
+- Suppilon selaintesti (työpöytä ja mobiili) OK.
+- Kolme User-Agentia (Chrome, iPhone, Googlebot), kaikki 200: /, /personoidut, /personoitu-paita, /paketit, tuotesivu,
+  /joulu, /hallinta/aktivoi, /hallinta/mittarit, /ig, /tt, /linkit, /product-feed.xml ja /sitemap.xml.
