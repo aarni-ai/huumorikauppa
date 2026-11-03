@@ -51,7 +51,7 @@ const kansio = await mkdtemp(join(tmpdir(), "lahjaopas-"));
 try {
   await writeFile(join(kansio, "opas.html"), html);
   execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--no-first-run", `--user-data-dir=${join(kansio, "profiili")}`, "--no-pdf-header-footer",
-    "--virtual-time-budget=20000", `--print-to-pdf=${join(kansio, "opas.pdf")}`, `file://${join(kansio, "opas.html")}`], { stdio: "ignore", timeout: 120000 });
+    "--virtual-time-budget=120000", `--print-to-pdf=${join(kansio, "opas.pdf")}`, `file://${join(kansio, "opas.html")}`], { stdio: "ignore", timeout: Number(process.env.PDF_AIKARAJA_MS || 600000) });
   const pdf = await readFile(join(kansio, "opas.pdf"));
   await writeFile(join(JUURI, "some/kuvat/lahjaopas-media-2026.pdf"), pdf);
   const url = (await put("media/huumorikauppa-lahjaopas-2026.pdf", pdf, { access: "public", addRandomSuffix: true, contentType: "application/pdf" })).url;

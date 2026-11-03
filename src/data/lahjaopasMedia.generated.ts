@@ -1,4 +1,4 @@
-/** Generoitu 2026-11-01 (scripts/lahjaopas-media.mjs): /lahjaopas-media, 20 lahjaideaa kuvineen. */
+/** Generoitu 2026-11-03 (scripts/lahjaopas-media.mjs): /lahjaopas-media, 20 lahjaideaa kuvineen. */
 export interface MediaLahjaidea { slug: string; nimi: string; tuote: string; ryhma: string; hinta: number; kuvaus: string; pysty: string; vaaka: string; linkki: string }
 export const MEDIA_LAHJAIDEAT: MediaLahjaidea[] = [
  {
@@ -19,8 +19,8 @@ export const MEDIA_LAHJAIDEAT: MediaLahjaidea[] = [
   "ryhma": "Klassikot",
   "hinta": 24.9,
   "kuvaus": "Suomalaisen internetin tuttu rahameemi t-paidassa. Lahja kaverille, joka muistaa vielä markka-ajan.",
-  "pysty": "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/some/shopping/tonnin-seteli-t-paita-Nipg6LSDtccyWqjHLr8QPxynBfPSV0.jpg",
-  "vaaka": "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/lahjaopas/tonnin-seteli-t-paita-vaaka-JAy1M3pYIYADnik9itd5sEpwGotPBi.jpg",
+  "pysty": "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/some/shopping/tonnin-seteli-t-paita-nZKbnZSWwHIUGSBOGyctmbE7q2rPOS.jpg",
+  "vaaka": "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/lahjaopas/tonnin-seteli-t-paita-vaaka-DHmDYYr8QE8SsONnY1qfF19gjD4jbT.jpg",
   "linkki": "https://huumorikauppa.fi/tuote/tonnin-seteli-t-paita?utm_source=media&utm_medium=lahjaopas&utm_campaign=joulu2026"
  },
  {
@@ -224,4 +224,4 @@ export const MEDIA_LAHJAIDEAT: MediaLahjaidea[] = [
 ];
 
 /** PDF-versio (scripts/lahjaopas-media-pdf.mjs, Vercel Blob); tyhjä, kunnes PDF on tehty. */
-export const MEDIA_LAHJAOPAS_PDF = "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/huumorikauppa-lahjaopas-2026-hBYKwjrbpQtevIVeRw6Tvcy1LedQTq.pdf";
+export const MEDIA_LAHJAOPAS_PDF = "https://f9rxc7ndxeb58y5f.public.blob.vercel-storage.com/media/huumorikauppa-lahjaopas-2026-NLJLMGYhzsLCFzUiT5PGImpigQfOub.pdf";
