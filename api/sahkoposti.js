@@ -23,6 +23,7 @@
  * POST { action: "yritysluvut", avain, paiva, viestit, vastaukset, tarjouspyynnot, tilaukset }  Coworkin yritysmyyntiluvut
  * POST { action: "mainoskulut", avain, paiva, kanava, kulut, klikit, konversiot, huom }  mainoskulut mittariin (api/_lib/mainoskulut.js)
  * POST { action: "tuotetapahtumat", tapahtumat, vieritys, aika }   tuotesivun seuranta (api/_lib/tuoteseuranta.js)
+ * POST { action: "toimitustesti", versio, tapahtuma }   ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js)
  * POST { action: "lisamyynti", tapahtuma, testi? }               korin lisämyynnin seuranta (api/_lib/lisamyynti.js)
  * POST { action: "suppilo", vaihe, ab, testi? }                  oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
@@ -317,6 +318,13 @@ export async function kasittele(req, res, store) {
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaTuotetapahtumat } = await import("./_lib/tuoteseuranta.js");
       return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(sql(), body)) > 0 });
+    }
+    case "toimitustesti": {
+      // Ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js): käynti, tuotesivu, kori, kassa versioittain.
+      const ohita = await ohitaTaiBotti(req, body, "toimitustesti");
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaToimitustesti } = await import("./_lib/toimitustesti.js");
+      return res.status(200).json({ ok: await kirjaaToimitustesti(sql(), body) });
     }
     case "lisamyynti": {
       // Korin lisämyynnin seuranta (api/_lib/lisamyynti.js): vain koostemäärät.

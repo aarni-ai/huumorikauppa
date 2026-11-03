@@ -37,6 +37,9 @@ const CartPage = () => {
   const shippingCost = tila.toimitus;
   const toimitusViesti = ilmaisenToimituksenViesti(tila);
   const shippingProgress = tila.edistyminen;
+  // Hintatesti B (src/lib/toimitustesti.ts): yhden tuotteen korissa toimitus sisältyy tuotteen hintaan.
+  const sisaltyy = tila.sisaltyy;
+  const rivinSumma = (item: (typeof items)[number]) => item.product.price * item.quantity + (tila.sisaltyvaTuote === item.product.id ? sisaltyy : 0);
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
   const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
   // Lisämyynti (src/lib/lisamyynti.ts): toinen paita vain, kun se tekee toimituksesta ilmaisen kassan katesäännöllä, ja
@@ -167,7 +170,7 @@ const CartPage = () => {
                     </button>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-primary">{(item.product.price * item.quantity).toFixed(2)} €</span>
+                    <span className="font-bold text-primary">{rivinSumma(item).toFixed(2)} €</span>
                     <button
                       onClick={() => removeItem(item.product.id, item.selectedSize, item.selectedColor, item.customText, item.lineId)}
                       className="text-muted-foreground hover:text-destructive p-1"
@@ -224,7 +227,7 @@ const CartPage = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between text-muted-foreground">
               <span>Tuotteet ({totalItems} kpl)</span>
-              <span>{totalPrice.toFixed(2)} €</span>
+              <span>{(totalPrice + sisaltyy).toFixed(2)} €</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
               <span>Toimitus</span>
@@ -253,7 +256,7 @@ const CartPage = () => {
           <div className="border-t border-border pt-3">
             <div className="flex justify-between text-lg font-bold text-foreground">
               <span>Yhteensä</span>
-              <span className="text-primary">{(totalPrice - pakettialennus - kori.alennus + shippingCost).toFixed(2)} €</span>
+              <span className="text-primary">{(totalPrice + sisaltyy - pakettialennus - kori.alennus + shippingCost).toFixed(2)} €</span>
             </div>
           </div>
 
@@ -302,7 +305,7 @@ const CartPage = () => {
         <div className="container flex items-center gap-3 py-3">
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground">Yhteensä{tila.vainLahjakortteja ? "" : shippingFree ? ", ilmainen toimitus" : `, sis. toimitus ${eur(shippingCost)}`}</p>
-            <p className="text-lg font-bold text-foreground">{eur((totalPrice - pakettialennus - kori.alennus + shippingCost))}</p>
+            <p className="text-lg font-bold text-foreground">{eur((totalPrice + sisaltyy - pakettialennus - kori.alennus + shippingCost))}</p>
           </div>
           <Button asChild size="lg" className="bg-primary text-primary-foreground font-bold shrink-0 shadow-glow-lime">
             <Link to="/kassa" className="flex items-center gap-2">Jatka kassalle <ArrowRight className="h-4 w-4" /></Link>

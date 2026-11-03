@@ -18,3 +18,4 @@ if (typeof window !== "undefined") Object.defineProperty(window, "matchMedia", {
 import { asetaAbVersio } from "@/lib/abTestit";
 asetaAbVersio("koko", "a");
 asetaAbVersio("blogi", "a");
+asetaAbVersio("toimitus", "a");

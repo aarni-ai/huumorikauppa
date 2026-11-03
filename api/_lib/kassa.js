@@ -21,6 +21,7 @@
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
 import { laskeKate, laskeTilauksenNettokate, toimitusmaksuKatteella } from "./kate.js";
+import { sovellaKassaan } from "./toimitustesti.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT, toimitusmaksu } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
@@ -187,6 +188,16 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     fyysiset = k.rivit;
     koriAlennus = k.alennus;
   }
+  // Ilmaisen toimituksen hintatesti (4.11.2026, api/_lib/toimitustesti.js): versiossa B yhden tuotteen tilauksen toimitus
+  // sisältyy tuotteen hintaan (hinta + toimitusmaksu pyöristettynä ,90:aan), toimitus 0 €. Muut korit kuten A.
+  let toimitusTesti = null;
+  if (fyysiset.length && lisat.toimitusVersio === "b") {
+    toimitusTesti = sovellaKassaan({ versio: lisat.toimitusVersio, rivit: fyysiset, toimitus, alennus: !!alennus || pakettiAlennus > 0 || koriAlennus > 0, tuote: (id) => byId.get(id) });
+    if (toimitusTesti) {
+      fyysiset = toimitusTesti.rivit;
+      toimitus = toimitusTesti.toimitus;
+    }
+  }
   // Lopullinen katevahti (3.11.2026, Tiinan muki -10,07 €): tilaus kaikkien alennusten ja toimitusmaksun jälkeen
   // jättää vähintään 7 € nettokatetta, tai sitä ei voi maksaa. Toimituksen porraskaan ei aina riitä yksin.
   if (fyysiset.length) {
@@ -204,13 +215,17 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   // Stripen pienin veloitus on 0,50 €: jos lahjakortin jälkeen jäisi vähemmän, lahjakortilta käytetään sen verran vähemmän.
   const jaa = Math.round((total - lahjakortilla) * 100);
   if (jaa > 0 && jaa < STRIPE_MINIMI_SENTIT) lahjakortilla = Math.max(0, Math.round(total * 100) - STRIPE_MINIMI_SENTIT) / 100;
+  const testiLisa = toimitusTesti ? toimitusTesti.hintaLisaSentit / 100 : 0;
   return {
     rivit: stripeRivit,
-    subtotal: Math.round((valisumma + korttienSumma) * 100) / 100,
+    subtotal: Math.round((valisumma + testiLisa + korttienSumma) * 100) / 100,
     shipping: toimitus,
     /** Ilmainen toimitus rajattu katevahdilla (toimitus pienempi kuin tavallinen mutta ei 0 €). */
-    shipping_reduced: toimitusTila.rajattu && toimitus === toimitusTila.maksu,
-    discount: Math.round((valisumma - tuotteetYht) * 100) / 100,
+    shipping_reduced: !toimitusTesti && toimitusTila.rajattu && toimitus === toimitusTila.maksu,
+    /** Hintatestin B: toimitus sisältyy tuotteen hintaan (api/_lib/toimitustesti.js). */
+    shipping_included: !!toimitusTesti,
+    toimitus_versio: lisat.toimitusVersio === "b" ? "b" : "a",
+    discount: Math.round((valisumma + testiLisa - tuotteetYht) * 100) / 100,
     bundle_discount: Math.round(pakettiAlennus * 100) / 100,
     basket_discount: Math.round(koriAlennus * 100) / 100,
     total,

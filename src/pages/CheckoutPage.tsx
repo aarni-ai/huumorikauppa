@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
+import { toimitusVersio } from "@/lib/toimitustesti";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
@@ -178,6 +179,7 @@ const CheckoutPage = () => {
           discountCode: appliedDiscount?.code || undefined,
           giftCardCode: appliedGiftCard?.code || undefined,
           abVersio: nahtyVersio() || undefined,
+          toimitusVersio: toimitusVersio(),
         }),
       });
       const data = await vastaus.json().catch(() => null);
@@ -266,7 +268,9 @@ const CheckoutPage = () => {
   const toimitusKassalla = toimitusTila(items, { alennus: !!appliedDiscount || !!kumppaniProsentti || kori.tyyppi === "tpaitapari" });
   const shippingFree = toimitusKassalla.ilmainen;
   const shippingCost = toimitusKassalla.toimitus;
-  const grandTotal = Math.round((totalPrice - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
+  // Hintatesti B (src/lib/toimitustesti.ts): yhden tuotteen tilauksessa toimitus sisältyy tuotteen hintaan.
+  const sisaltyy = toimitusKassalla.sisaltyy;
+  const grandTotal = Math.round((totalPrice + sisaltyy - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
   // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
   const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
   const giftCardUse = grandTotal - giftCardRaw > 0 && grandTotal - giftCardRaw < 0.5 ? Math.max(0, grandTotal - 0.5) : giftCardRaw;
@@ -444,7 +448,7 @@ const CheckoutPage = () => {
                 <img src={proxiedImage(item.product.images[0]) || "/placeholder.svg"} alt={`${item.product.name} – kassalla`} className="w-12 h-12 rounded bg-muted object-cover" loading="lazy" width={48} height={48} />
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground line-clamp-1">{item.product.name}</p>
-                  <p className="text-muted-foreground">{item.quantity} × {item.product.price.toFixed(2)} €</p>
+                  <p className="text-muted-foreground">{item.quantity} × {(item.product.price + (toimitusKassalla.sisaltyvaTuote === item.product.id ? sisaltyy : 0)).toFixed(2)} €{toimitusKassalla.sisaltyvaTuote === item.product.id ? ", sis. toimituksen" : ""}</p>
                   <ProductRating
                     product={{ id: item.product.id, name: item.product.name, category: item.product.category }}
                     size="sm"
@@ -511,7 +515,7 @@ const CheckoutPage = () => {
           </details>
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
-              <span>Tuotteet</span><span>{totalPrice.toFixed(2)} €</span>
+              <span>Tuotteet</span><span>{(totalPrice + sisaltyy).toFixed(2)} €</span>
             </div>
             {appliedDiscount && (
               <div className="flex justify-between text-primary">

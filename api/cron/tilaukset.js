@@ -137,12 +137,15 @@ export default async function handler(req, res) {
       const seuranta = await tuoteseurantaValilla(db, eilen, eilen).then(tuoteseurantaRivit).catch(() => []);
       const { laskeutumisetValilla, laskeutumisRivit } = await import("../_lib/laskeutumiset.js");
       const laskeutumiset = await laskeutumisetValilla(db, eilen, eilen).then((x) => laskeutumisRivit(x)).catch(() => []);
+      // Ilmaisen toimituksen hintatesti alusta asti (api/_lib/toimitustesti.js): päätös, kun kummassakin versiossa 300 katselua.
+      const { toimitustestiValilla, toimitustestiRivit } = await import("../_lib/toimitustesti.js");
+      const toimitustesti = await toimitustestiValilla(db).then(toimitustestiRivit).catch(() => []);
       // Printifyn käsitilaukset edelliseltä vuorokaudelta (api/_lib/kasitilaukset.js; Tiinan korvausmuki 3.11.2026).
       const { kasitilausHuomiot, kasitilausRivit } = await import("../_lib/kasitilaukset.js");
       const kasin = onPrintify()
         ? await listaaTilaukset(1, 20).then((r) => (r.ok ? kasitilausRivit(kasitilausHuomiot(r.data?.data, new Date(Date.now() - 864e5), new Date())) : [])).catch(() => [])
         : [];
-      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...kasin, ...yhteenvetoRivit(linkit)];
+      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...toimitustesti, ...kasin, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -353,8 +356,10 @@ export default async function handler(req, res) {
     const { laskeutumisetValilla } = await import("../_lib/laskeutumiset.js");
     // Bottisuodatus samalta väliltä (api/_lib/botit.js): kaikki, botit syittäin ja aidot.
     const { aitousValilla } = await import("../_lib/botit.js");
+    // Ilmaisen toimituksen hintatesti aina testin alusta (päätössääntö tarvitsee kertymän), api/_lib/toimitustesti.js.
+    const { toimitustestiValilla } = await import("../_lib/toimitustesti.js");
     return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, alkaen, loppu)), laskeutumiset: await laskeutumisetValilla(db, alkaen, loppu),
-      aitous: await aitousValilla(db, alkaen, loppu).catch(() => null) });
+      aitous: await aitousValilla(db, alkaen, loppu).catch(() => null), toimitustesti: await toimitustestiValilla(db).catch(() => null) });
   }
 
   // Oma liikenne jälkikäteen (2.11.2026): päivän lähteen (&lahde=, valinnainen &osio=) käynnit lähteeseen "oma",

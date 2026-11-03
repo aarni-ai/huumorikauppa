@@ -11,6 +11,7 @@ import { join } from "node:path";
 import { laskeutumisRivit } from "../api/_lib/laskeutumiset.js";
 import { tuoteseurantaRivit } from "../api/_lib/tuoteseuranta.js";
 import { aitousRivit } from "../api/_lib/botit.js";
+import { toimitustestiRivit } from "../api/_lib/toimitustesti.js";
 
 const JUURI = new URL("..", import.meta.url).pathname;
 const tiedosto = join(JUURI, ".env.cron.local");
@@ -29,3 +30,5 @@ if (data.aitous) console.log([...aitousRivit(data.aitous), ""].join("\n"));
 console.log(tuoteseurantaRivit(data).join("\n"));
 // Laskeutumiset (3.11.2026): lähde, laite, selain, laskeutumissivu ja A/B, poistui alle 10 s.
 if (data.laskeutumiset) console.log(["", ...laskeutumisRivit(data.laskeutumiset)].join("\n"));
+// Ilmaisen toimituksen hintatesti (4.11.2026) testin alusta: versioittain käynnit, kori, kassa, ostot ja kate per käynti.
+if (data.toimitustesti) console.log(["", ...toimitustestiRivit(data.toimitustesti)].join("\n"));

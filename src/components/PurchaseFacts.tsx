@@ -17,8 +17,11 @@ export function PurchaseFacts({
   kategoria = null,
   compact = false,
   className = "",
+  toimitusSisaltyy = null,
 }: {
   isCustom: boolean;
+  /** Hintatesti B (src/lib/toimitustesti.ts): hinta sisältää toimituksen; arvo = kappalehinta kahden tuotteen tilauksessa. */
+  toimitusSisaltyy?: number | null;
   /** Mobiilin lyhyt muoto, joka mahtuu yhdelle riville 360 px leveällä näytöllä. */
   compact?: boolean;
   /** false, kun tuotteella on oma toimitusaikansa (DeliveryBadge, AliExpress). */
@@ -32,6 +35,9 @@ export function PurchaseFacts({
   className?: string;
 }) {
   const aika = toimitusaikaTeksti(kategoria);
+  const toimitusTeksti = toimitusSisaltyy
+    ? `Ilmainen toimitus${compact ? "" : `, kahden tuotteen tilauksessa ${toimitusSisaltyy.toFixed(2).replace(".", ",")} €/kpl`}`
+    : null;
   return (
     <ul className={`space-y-1 text-[13px] leading-snug text-muted-foreground ${className}`}>
       {euPaino && showDeliveryTime ? (
@@ -42,7 +48,7 @@ export function PurchaseFacts({
           </li>
           <li className="flex items-start gap-1.5">
             <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
-            <span>Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta</span>
+            <span>{toimitusTeksti ?? `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`}</span>
           </li>
         </>
       ) : (
@@ -50,7 +56,7 @@ export function PurchaseFacts({
         <Truck className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
         <span>
           {showDeliveryTime && <>Perillä {aika} {compact ? "pv" : "arkipäivässä"} · </>}
-          {TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta
+          {toimitusTeksti ?? `${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`}
         </span>
       </li>
       )}

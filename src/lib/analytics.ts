@@ -3,6 +3,7 @@
 import { CONSENT_CHANGED_EVENT, hasAnalyticsConsent } from "./consent";
 // Oma suppilo kirjataan suostumuksesta riippumatta (koostemäärä ilman tunnisteita, src/lib/suppilo.ts).
 import { kirjaaVaihe } from "./suppilo";
+import { kirjaaToimitustesti } from "./toimitustesti";
 
 type GtagFn = (...args: unknown[]) => void;
 interface GAWindow {
@@ -48,6 +49,7 @@ export interface GAItem {
  */
 export function trackViewItem(item: GAItem) {
   kirjaaVaihe("tuotesivu");
+  kirjaaToimitustesti("tuotesivu");
   const params = { currency: "EUR", value: +item.price.toFixed(2), items: [item] };
   if (typeof window !== "undefined" && !hasAnalyticsConsent()) {
     odotaSuostumusta("view_item", params);
@@ -79,6 +81,7 @@ function odotaSuostumusta(name: string, params: Record<string, unknown>) {
 
 export function trackAddToCart(item: GAItem) {
   kirjaaVaihe("kori");
+  kirjaaToimitustesti("kori");
   sendEvent("add_to_cart", {
     currency: "EUR",
     value: +(item.price * item.quantity).toFixed(2),
@@ -88,6 +91,7 @@ export function trackAddToCart(item: GAItem) {
 
 export function trackBeginCheckout(items: GAItem[], value: number) {
   kirjaaVaihe("kassa");
+  kirjaaToimitustesti("kassa");
   sendEvent("begin_checkout", {
     currency: "EUR",
     value: +value.toFixed(2),
