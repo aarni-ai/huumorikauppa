@@ -3163,7 +3163,10 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 - **Päivitetty:**
   - Printifyssä Tonnin seteli -t-paita ja -huppari sekä Se oli tonnin seteli -t-paita ja -huppari.
   - Kaupan tuotekuvat uudella cron-tehtävällä `?tehtava=tuotekuvat`, joka päivittää vain kuvat Printifyn uusista mockupeista.
-  - Shopping- ja Pinterest-lisäkuvat, lahjaoppaan mediakuvat ja somevideot: katso julkaisun kohta.
+  - 12 tuotteen Shopping- ja Pinterest-lisäkuvat (Merchant-syötteen lisäkuvat) on tehty uudelleen ja ladattu Blobiin (api/_lib/lisakuvat.generated.js).
+  - Lahjaoppaan vaakakuva ja PDF on tehty uudelleen, ja tarkistettu kuvasta, ettei kasvoja ole.
+  - Mediapaketin zipit (public/media) on tehty uudelleen.
+  - Somevideot 01 ja 11 on tehty uudelleen.
 - **Tarrat ja julisteet** ovat pelkkää tekstiä, joten niihin ei tarvittu muutosta.
 
 ### Search Console (Coworkin havainnot)
@@ -3198,7 +3201,8 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
   - personoidut 08, 39, 47 ja 50, koska mockupissa ei ole nimeä
   - 30, 46 ja 54, koska niillä ei ole henkilökuvaa
   - jo julkaistut
-  - videot, joissa on palautettu tai uudistettu tuote (Tonnin seteli 11, Saatanan tunarit 04 ja 18, Amatimies ja Kalju 40, 42, 44 ja 48): katso julkaisun kohta
+  - videot 01, 11, 04, 18, 40, 42, 44 ja 48 (Tonnin seteli, Saatanan tunarit, Amatimies ja Kalju) tehtiin uudelleen uusilla malleilla (-v3) ja ladattiin Blobiin. Näillä tuotteilla Printifyssä ei ole henkilömockupia, joten ensimmäinen ruutu on uusi etukuva ja vitsi isolla.
+  - jo julkaistussa videossa 01 näkyvät oikean henkilön kasvot: julkaisut.json, JULKAISUT.md ja /hallinta/some neuvovat poistamaan vanhan julkaisun ja korvaamaan sen
 - **Hupparivideot:** videossa 06 ja videon 24 B-kohdassa avausruudussa on saman mallin t-paita, koska huppareilla ei ole lifestyle-kuvaa.
 
 ### Ilmaisen toimituksen hintatesti (A/B, yhden tuotteen tilaukset)
