@@ -12,17 +12,44 @@
  *      [--uudet]  vain uudet videot (nimi puuttuu manifestista) ja JULKAISUT.md; manifestin videot julkaisulistan mukaan.
  *                 Uudelleen tehdyt videot (3.11. alkaen, pääte -v2) ovat uusia nimiä, joten ne ladataan ja manifesti
  *                 osoittaa niihin; 2.11. julkaistujen videoiden osoitteet säilyvät.
- * (token: vercel env pull --environment production; @vercel/blob ei ole projektin riippuvuus).
+ * (token: vercel env pull --environment production).
+ *
+ * --palvelin (3.11.2026): ilman Blob-avainta koneella. Jokaiselle tiedostolle haetaan lyhytikäinen lataustoken kaupan
+ * palvelimelta (POST /api/cron/tilaukset?tehtava=blob-lataus, CRON_SECRET tiedostosta .env.cron.local; api/_lib/blob-lataus.js),
+ * ja tiedosto ladataan suoraan Blobiin (@vercel/blob client upload). Esim. node scripts/some-blob.mjs --palvelin --uudet
+ *   [--kansio <polku>]  videoiden ja kansikuvien kansio (oletus some/videot)
  */
 import { readFile, writeFile } from "node:fs/promises";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { julkaisulista } from "./some-videot.mjs";
 
-const require = createRequire(join(process.env.NODE_PATH || process.cwd(), "x.js"));
-const { put } = require("@vercel/blob");
 const JUURI = new URL("..", import.meta.url).pathname;
 const KAUPPA = "https://huumorikauppa.fi";
+const PALVELIN = process.argv.includes("--palvelin");
+const KANSIO = process.argv.includes("--kansio") ? process.argv[process.argv.indexOf("--kansio") + 1] : join(JUURI, "some/videot");
+const BLOB_HOST = "f9rxc7ndxeb58y5f";
+
+/** Blob-varaston julkinen isäntä: avaimesta, tai palvelintilassa tunnettu varasto huumorikauppa-some. */
+const blobHost = () => (PALVELIN ? BLOB_HOST : process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase());
+
+async function palvelimenPut(pathname, body, { contentType, multipart }) {
+  const { put: clientPut } = await import("@vercel/blob/client");
+  const tiedosto = join(JUURI, ".env.cron.local");
+  const salaisuus = process.env.CRON_SECRET || (existsSync(tiedosto) ? (readFileSync(tiedosto, "utf8").match(/^CRON_SECRET=["']?([^"'\n]+)/m) || [])[1] : "");
+  const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
+  const r = await fetch(`${kauppa}/api/cron/tilaukset?tehtava=blob-lataus`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${salaisuus}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ type: "blob.generate-client-token", payload: { pathname, clientPayload: null, multipart: Boolean(multipart) } }),
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.clientToken) throw new Error(`lataustoken ${pathname}: ${r.status} ${j.error || ""}`);
+  return clientPut(pathname, body, { access: "public", token: j.clientToken, contentType, multipart });
+}
+
+const put = PALVELIN ? palvelimenPut : createRequire(join(process.env.NODE_PATH || process.cwd(), "x.js"))("@vercel/blob").put;
 
 function pinniTiedot(k, pin) {
   // 2.11.2026: ilman UTM-parametreja; Pinterest tunnistetaan viittaajasta ja sovelluksen selaimesta.
@@ -61,16 +88,15 @@ if (process.argv.includes("--tekstit")) {
 // --uudet (2.11.2026, toinen kierros): manifestin videot julkaisulistan järjestykseen. Jo ladatut videot (sama nimi)
 // pidetään entisinä osoitteina, vain uudet videot ja kansikuvat sekä JULKAISUT.md ladataan. Pinterest-kuvat ennallaan.
 if (process.argv.includes("--uudet")) {
-  const host = process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase();
-  const manifest = await (await fetch(`https://${host}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
+  const manifest = await (await fetch(`https://${blobHost()}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
   const vanhat = new Map(manifest.videot.map((v) => [v.nimi, v]));
   const videot = [];
   let uusia = 0;
   for (const v of julkaisulista()) {
     const vanha = vanhat.get(v.nimi);
     if (vanha) { videot.push({ ...v, video: vanha.video, lataus: vanha.lataus, kansi: vanha.kansi }); continue; }
-    const video = await lataa(join(JUURI, "some/videot", `${v.nimi}.mp4`), `some/videot/${v.nimi}.mp4`, "video/mp4");
-    const kansi = await lataa(join(JUURI, "some/videot", `${v.nimi}.jpg`), `some/videot/${v.nimi}.jpg`, "image/jpeg");
+    const video = await lataa(join(KANSIO, `${v.nimi}.mp4`), `some/videot/${v.nimi}.mp4`, "video/mp4");
+    const kansi = await lataa(join(KANSIO, `${v.nimi}.jpg`), `some/videot/${v.nimi}.jpg`, "image/jpeg");
     videot.push({ ...v, video, lataus: `${video}?download=1`, kansi });
     uusia++;
     console.log(v.nimi);

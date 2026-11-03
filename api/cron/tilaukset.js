@@ -100,6 +100,13 @@ async function ajaTestitilaus(runko, nimi) {
 
 export default async function handler(req, res) {
   if (!process.env.CRON_SECRET || req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) return res.status(401).json({ error: "ei oikeutta" });
+  if (req.query.tehtava === "blob-lataus" && req.method === "POST") {
+    // Somevideoiden lataustoken (api/_lib/blob-lataus.js, scripts/some-blob.mjs --palvelin).
+    const { luoLatausToken } = await import("../_lib/blob-lataus.js");
+    const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body;
+    const r = await luoLatausToken(req, body);
+    return res.status(r.status).json(r.json);
+  }
   if (!onTietokanta()) return res.status(503).json({ error: "DATABASE_URL puuttuu" });
   const kuiva = req.query.kuiva === "1";
   const loki = [];
