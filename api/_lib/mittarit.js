@@ -7,6 +7,7 @@
  * Kate: Printifyn todellinen kulu, kun se tiedetään, muuten arvio tuotteen kulusta (api/_lib/valvonta.js toteutuneet),
  * josta vähennetään kumppaniprovisiot. Testitilaukset (kassatesti@huumorikauppa.fi) eivät ole mukana.
  */
+import { aitousRivit } from "./botit.js";
 import { lisamyyntiValilla, lisamyyntiRivi } from "./lisamyynti.js";
 import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilauksenKate } from "./valvonta.js";
 import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
@@ -202,6 +203,10 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   let uutiskirje = null;
   try { const u = await uutiskirjeLuvut(db); uutiskirje = { yhteensa: u.yhteensa, p7: u.pv7, p28: u.pv28, lahteet: u.lahteet }; } catch { /* taulua ei vielä ole */ }
 
+  // Bottisuodatus 30 pv (api/_lib/botit.js): käynnit ja suppilo ovat vain aitoja, botit erikseen syittäin.
+  let aitous = null;
+  try { const { aitousValilla } = await import("./botit.js"); aitous = await aitousValilla(db, alku30Pv, h.paiva); } catch { /* taulua ei vielä ole */ }
+
   const toteutunutPerTilaus = s30.tilauksia ? r2(s30.kate / s30.tilauksia) : null;
   const riittaa = s30.tilauksia >= TILAUKSIA_RIITTAA;
   const katePerTilaus = riittaa ? toteutunutPerTilaus : KATE_PER_TILAUS_VARA.kate;
@@ -212,6 +217,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
     kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, ryhmatilaukset, uutiskirje, kumppanit: [...kumppanit.values()],
+    aitous,
   };
 }
 
@@ -238,6 +244,7 @@ export function mittariKooste(m) {
     suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
     lisamyynti14: m.lisamyynti ?? null,
     ryhmatilaukset: m.ryhmatilaukset ?? null,
+    aitous: m.aitous ?? null,
     kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
       provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
   };
@@ -276,6 +283,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     ...(m.suppilo ? [`Suppilo ${m.suppilo.alku} alkaen (luotettava ${m.suppilo.luotettavaAlkaen} alkaen): käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
       `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
     ...(m.lisamyynti ? [lisamyyntiRivi(m.lisamyynti)] : []),
+    ...(m.aitous ? aitousRivit(m.aitous) : []),
     ...(m.ryhmatilaukset ? [ryhmatilausRivi(m.ryhmatilaukset)] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,

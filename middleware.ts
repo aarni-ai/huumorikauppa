@@ -783,6 +783,11 @@ async function valitaFetch(request: Request, kohde: string, julkinen: string): P
   const otsakkeet = new Headers(request.headers);
   otsakkeet.delete('host');
   otsakkeet.set(PROXY_OTSAKE, julkinen);
+  // Kävijän IP bottisuodatukseen (api/_lib/botit.js asiakkaanIp): uusi projekti näkee muuten vain välittäjän osoitteen.
+  // Vain tarkistukseen, ei tallenneta.
+  const ip = (request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for') || '').split(',')[0].trim();
+  if (ip) otsakkeet.set('x-huumorikauppa-ip', ip);
+  else otsakkeet.delete('x-huumorikauppa-ip');
   const runko = request.method === 'GET' || request.method === 'HEAD' ? undefined : await request.arrayBuffer();
   const vastaus = await fetch(kohde, { method: request.method, headers: otsakkeet, body: runko, redirect: 'manual' });
   const ulos = new Headers(vastaus.headers);

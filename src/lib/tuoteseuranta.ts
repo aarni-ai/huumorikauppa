@@ -4,6 +4,7 @@
  * tunnisteita (kuten oma suppilo src/lib/suppilo.ts). Botit ja testiselaimet ohitetaan.
  */
 import { abVersio } from "./abTestit";
+import { aitousLuokka, seuraaVuorovaikutusta } from "./aitous";
 
 export type Tuotetapahtuma = "koko" | "vari" | "kokotaulukko" | "lisaa_nakyvissa" | "kori" | "koko_esivalittu";
 
@@ -28,7 +29,7 @@ function laheta() {
   mittaaVieritys();
   // Esivalittu koko lasketaan vain, jos kävijä ei valinnut kokoa itse (A/B-testi src/lib/abTestit.ts).
   if (n.tapahtumat.has("koko")) n.tapahtumat.delete("koko_esivalittu");
-  const body = { action: "tuotetapahtumat", ab: `koko-${abVersio("koko")}`, tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), ...(onTesti() ? { testi: true } : {}) };
+  const body = { action: "tuotetapahtumat", ab: `koko-${abVersio("koko")}`, tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), aitous: aitousLuokka(), ...(onTesti() ? { testi: true } : {}) };
   fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(body) }).catch(() => undefined);
 }
 
@@ -37,6 +38,7 @@ const piilossa = () => { if (document.visibilityState === "hidden") laheta(); };
 /** Tuotesivun katselu alkaa; palauttaa lopetuksen (React-efektin siivous: lähettää koosteen). */
 export function aloitaTuoteseuranta(): () => void {
   if (typeof window === "undefined" || typeof fetch !== "function" || onBotti()) return () => undefined;
+  seuraaVuorovaikutusta();
   laheta();
   nykyinen = { tapahtumat: new Set(), alku: Date.now(), syvin: 0, lahetetty: false };
   mittaaVieritys();

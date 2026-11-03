@@ -8,6 +8,8 @@
 /** Etusivun A/B-testin otsikot (2.11.2026; A = alkuperäinen). Tulos: /hallinta/mittarit, Ostosuppilo. */
 export const AB_OTSIKOT = { a: "Löydä hauska lahja meiltä. Tilaa nyt.", b: "Hauskat paidat suomalaisella huumorilla." } as const;
 
+import { lahetaKunLuokiteltu } from "./aitous";
+
 export type Vaihe = "etusivu" | "tuotesivu" | "kori" | "kassa" | "maksu";
 
 const kirjatut = new Set<Vaihe>();
@@ -30,5 +32,9 @@ export function kirjaaVaihe(vaihe: Vaihe): void {
   if (typeof window === "undefined" || typeof fetch !== "function" || kirjatut.has(vaihe) || onBotti()) return;
   if (window.location.pathname.startsWith("/hallinta")) return;
   kirjatut.add(vaihe);
-  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ action: "suppilo", vaihe, ab: nahtyVersio(), ...(onTesti() ? { testi: true } : {}) }) }).catch(() => undefined);
+  const versio = nahtyVersio();
+  // Näyttövaiheet odottavat luokitusta (src/lib/aitous.ts); kori, kassa ja maksu tulevat klikkauksesta, joten ne lähtevät heti.
+  lahetaKunLuokiteltu((aitous) => {
+    fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ action: "suppilo", vaihe, ab: versio, aitous, ...(onTesti() ? { testi: true } : {}) }) }).catch(() => undefined);
+  });
 }

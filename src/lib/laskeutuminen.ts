@@ -6,6 +6,7 @@
  */
 import { kaynninTiedot } from "./kaynti";
 import { laskeutumisenAb } from "./abTestit";
+import { aitousLuokka, seuraaVuorovaikutusta } from "./aitous";
 
 export const aikaKori = (s: number) => (s < 3 ? "0-3" : s < 10 ? "3-10" : s < 30 ? "10-30" : s < 60 ? "30-60" : "60+");
 export const lcpKori = (ms: number) => (!ms ? "?" : ms <= 2500 ? "0-2.5" : ms <= 4000 ? "2.5-4" : "4+");
@@ -16,7 +17,7 @@ function laheta(jatkoi: boolean) {
   const t = tila;
   if (!t || t.lahetetty) return;
   t.lahetetty = true;
-  const body = { ...t.runko, action: "laskeutuminen", aika: aikaKori((performance.now() - t.alku) / 1000), jatkoi, lcp: lcpKori(t.lcp) };
+  const body = { ...t.runko, action: "laskeutuminen", aika: aikaKori((performance.now() - t.alku) / 1000), jatkoi, lcp: lcpKori(t.lcp), aitous: aitousLuokka() };
   fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(body) }).catch(() => undefined);
 }
 
@@ -29,6 +30,7 @@ export function aloitaLaskeutuminen(): void {
   try { navigointi = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type; } catch { /* vanha selain */ }
   const tiedot = kaynninTiedot(window.location, document.referrer, navigointi);
   if (!tiedot) return;
+  seuraaVuorovaikutusta();
   const bio = (window as unknown as { __hkBio?: { utm_source: string } }).__hkBio;
   const testi = (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
   const { action: _pois, ...runko } = tiedot;

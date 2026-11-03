@@ -10,6 +10,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { laskeutumisRivit } from "../api/_lib/laskeutumiset.js";
 import { tuoteseurantaRivit } from "../api/_lib/tuoteseuranta.js";
+import { aitousRivit } from "../api/_lib/botit.js";
 
 const JUURI = new URL("..", import.meta.url).pathname;
 const tiedosto = join(JUURI, ".env.cron.local");
@@ -23,6 +24,8 @@ const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
 const r = await fetch(`${kauppa}/api/cron/tilaukset?tehtava=tuoteseuranta&alkaen=${alkaen}&loppu=${loppu}`, { headers: { authorization: `Bearer ${salaisuus}` } });
 if (!r.ok) { console.error(`Reitti vastasi ${r.status}.`); process.exit(1); }
 const data = await r.json();
+// Bottisuodatus (3.11.2026): luvut ovat aitoja käyntejä; botit syittäin erikseen.
+if (data.aitous) console.log([...aitousRivit(data.aitous), ""].join("\n"));
 console.log(tuoteseurantaRivit(data).join("\n"));
 // Laskeutumiset (3.11.2026): lähde, laite, selain, laskeutumissivu ja A/B, poistui alle 10 s.
 if (data.laskeutumiset) console.log(["", ...laskeutumisRivit(data.laskeutumiset)].join("\n"));
