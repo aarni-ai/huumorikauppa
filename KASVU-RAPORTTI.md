@@ -2983,3 +2983,134 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 - Suppilo 3.11. alkaen: 47 käyntiä, 39 tuotesivua, 0 koriin, 0 kassalle, 0 ostoa.
 - Lisämyynti 0. Ryhmätilaukset 0. Uutiskirjeen tilaajia 1.
 - Tarve: 10,5 tilausta ja 1 813 käyntiä päivässä.
+
+## 3.11.2026 (ilta): asiakaspalautteet, painotiedostot, kassan katevahti, alle 10 s poistujat, A/B-testit, koon esivalinta, Gmail-reitti
+
+### Asiakaspalautteet: juurisyyt ja korjaukset
+
+| Palaute | Juurisyy | Korjaus | Tila |
+|---|---|---|---|
+| Tero H. 26630629.22, Tonnin seteli -t-paita: painatus ja homeen haju | Painotiedosto on kuvakaappaus (noin 95 DPI). Painotalo 417 (Latvia) | Tonnin seteli -t-paita ja -huppari pienennetty Printifyssä 150 DPI:hin. Painotaloa 417 ei käytä yksikään myynnissä oleva tuote | Korjattu |
+| Johanna H., Tonnin seteli -huppari, korvaava tilaus 21.10. | Sama painotiedosto (93 DPI) eri painotalolla (Saksa): vika on tiedostossa | Sama pienennys | Korjattu |
+| Tiina K., muki 24.9., Klarna-kiista, korvausmuki -10,07 € | Alkuperäinen muki painettiin Yhdysvalloissa ja peruttiin. Korvausmuki tilattiin käsin Printifyssä Priority-toimituksella (17,00 €, tavallinen 9,99 €) | Mukit pois myynnistä. Kassan lopullinen 7 €:n katevahti. Päivän yhteenveto listaa käsitilaukset, joissa toimitus ei ole tavallinen tai painotalo on EU:n ulkopuolella | Korjattu. Kiista auki vanhalla Stripe-tilillä |
+| Auli H., Olen eläkkeellä 27.9., viive | Vanha Lovable-kassa ei lähettänyt tilausta Printifyyn | Uusi kassa ja tilausvahti hälyttävät jumiin jääneistä tilauksista | Korjattu |
+| Jaana V., Amatimies-huppari 29.10. | Printifyssä ei ollut maksutapaa (tilaus jumissa), tilausvahvistus ei lähtenyt (Resend), painotiedosto 74 DPI | Tilaus tuotannossa. Gmail-reitti vahvistuksille. Amatimies piilotettu | Painatus voi olla pehmeä |
+| Elias L., Saatanan tunarit 27.10. (matkalla) | Painotiedosto 250 x 202 px (noin 18 DPI) | Tuote piilotettu | Laatuvalitus odotettavissa |
+| Koristetilaus kesäkuussa painettiin Yhdysvalloissa | EU-reitityksen piilotus puuttui kassalta ja /api/productsista | myynnissa() noudattaa EU-reititystä myös kassalla | Korjattu |
+| 53 tuotteen painatus ylitti osan kokojen painoalueen | Tuotegeneraattori otti leveyden ja korkeuden eri varianteista | 52 korjattu Printifyssä (yksi lukittu ja piilotettu), generaattori korjattu ja testattu | Korjattu |
+
+**Painotiedostojen tarkistus (1 173 tuotetta, scripts/painotiedostot-tarkistus.mjs):**
+- **Resoluutio:** 22 löydöstä 20 tuotteessa.
+  - 2 pienennetty 150 DPI:hin (Tonnin seteli -t-paita ja -huppari).
+  - 14 piilotettu, koska ne ovat alle 90 DPI:n eikä pienennys riitä. Piilotetut ovat Amatimies, ICE AATANA, Kalju, Saatanan tunarit, Slay queen, Suomi Finland ja Tässä talossa asuu yksi pomo, kustakin t-paita ja huppari.
+  - Printify-tuotteita ei poistettu. Lista on api/_lib/painolaatu-data.js:ssä.
+  - 4 jää myyntiin (99-121 DPI), ja ne korjataan käsin Printifyn editorissa.
+- **Painoalue:** 53 ylitystä, joista 52 korjattu. Lisäksi 188 löydöstä koski vain läpinäkyvää reunaa, eli ne eivät ole virheitä.
+- Piilotus on tietoinen valinta katteen hyväksi, vaikka Kalju ja Amatimies ovat isänpäivän myyntituotteita: yksi reklamaatio tai maksukiista vie useamman tilauksen katteen. Lisäksi Kalju, ICE AATANA ja Saatanan tunarit sisältävät oikeudellisen riskin (olutmerkin logo, elokuvahahmo, todellisen henkilön kuva).
+
+**Tiinan muki -10,07 €:**
+- Myynti 16,70 € (ilman alv:tä 13,31 €).
+- Printifyn kulu 22,88 €: tuote 5,88 € ja Priority-toimitus 17,00 €.
+- Stripe 0,50 €.
+- Tulos 13,31 - 22,88 - 0,50 = -10,07 €.
+- Syy: käsin tehty korvaustilaus kalliilla toimituksella kassan katevahdin ohi.
+
+**Kassan esto:**
+- **Lopputarkistus:** kassa tarkistaa tilauksen katteen kaikkien alennusten ja toimitusmaksun jälkeen. Jos kate jää alle 7 €:n, tilaus estetään (order_low_margin), ja asiakkaalle näytetään ohje lisätä koriin toinen paita tai huppari.
+- **Variantit:** variantti piilotetaan, jos se yksin tilattuna jäisi alle 7 €:n. Kaikki 19 801 myynnissä olevaa varianttia jäävät yksin tilattuna vähintään 7,05 €:oon.
+- **Testi:** kaikki yhden tuotteen tilaukset ja kaikki kahden tuotteen yhdistelmät tuoteluokittain (src/test/kassaKatevahti.test.ts).
+- **Käsitilaukset:** päivän yhteenveto ilmoittaa poikkeavat käsitilaukset (api/_lib/kasitilaukset.js).
+
+### 64 % poistuu alle 10 sekunnissa: mistä he tulevat
+
+**Data ennen tätä ajoa:**
+- **Tuoteseuranta:** vain 11 aitoa tuotesivun katselua (2.-3.11.). 64 % poistui alle 10 sekunnissa, eikä kukaan valinnut kokoa.
+- **Käyntilaskuri:** 2.11. alkaen tuotesivuille tuli 215 suoraa käyntiä ilman viittaajaa. Ne eivät näy tuoteseurannassa, koska seuranta kirjaa katselun vasta sivun sulkeutuessa. Suurin osa niistä on todennäköisesti JavaScriptiä ajavia indeksoijia ja linkkien tarkistajia, jotka eivät sulje sivua.
+- **Puuttuvat tiedot:** omasta datasta puuttuivat lähde, laite, selain ja aika käyntiä kohden. GA4 Data API ei ole käytössä eikä Clarity päällä.
+
+**Uusi laskeutumislaskuri (api/_lib/laskeutumiset.js, src/lib/laskeutuminen.ts):**
+- Jokaisesta ulkopuolelta tulleesta käynnistä tallentuu koostemääränä:
+  - laskeutumissivu ja lähde
+  - laite ja selain, myös Instagramin, TikTokin ja Facebookin sovelluksen selain
+  - aika sivustolla (0-3, 3-10, 10-30, 30-60 s ja yli 60 s)
+  - jatkoiko kävijä toiselle sivulle
+  - LCP-kori ja A/B-versio
+- Tietoja tallennetaan ilman evästeitä ja tunnisteita.
+- Raportti tulee päivän yhteenvetoon klo 7 ja komennolla `node scripts/tuoteseuranta-raportti.mjs`.
+
+**Mobiilikuvakaappaukset (scripts/mobiilikuvat.mjs):**
+- 10 laskeutumissivua ja 10 tuotesivua kuvattiin iPhone 14:llä, Pixel 7:llä ja Pixel 7:llä hitaalla 4G:llä, jossa prosessori on 4x hitaampi.
+- Kuvat otettiin 3 sekunnin kohdalla ja latauksen jälkeen.
+- Ajoitukset vaihtelivat rinnakkaisajon takia, joten arvio perustuu kuviin.
+
+| Sivutyyppi | Mitä näkyy 3 sekunnissa | Arvio | Korjaus |
+|---|---|---|---|
+| Tuotesivu | Otsikko, hinta 24,90 €, koot ja Lisää koriin näkyvät heti. Tuotekuva on harmaa laatikko | Hinta on selvä, mutta vitsi (kuva) puuttuu. Kuvafunktion välimuistihuti kestää 1,1-2,5 s (Printifyn 2 048 px:n kuva ja rajaus), ja vähällä liikenteellä huteja on paljon | Kuvan paikalla näkyy tuotteen vitsiteksti isolla, kunnes kuva latautuu |
+| Lahja- ja isänpäiväsivut (/lahjat/..., /hauska-isanpaivalahja) | Kaksi palkkia, toimituspalkki, murupolku, otsikko ja 2-3 kappaletta tekstiä. Ei yhtään tuotetta | Ei vastaa hakua: lahjasivulle tuleva haluaa ideoita | Mobiilissa toimituspalkki piiloon (yläpalkki kertoo saman), ennen tuotteita vain 1. kappale, muut kappaleet ja personoitujen nosto tuotteiden jälkeen (CSS order, teksti sivulla kerran) |
+| Lahja- ja kategoriasivut | Palkki "Toimitus 6,90 €, ilmainen 79 eurosta" | Ristiriidassa yläpalkin "ilmainen toimitus kahdesta tuotteesta" kanssa | Kaikkialla "Ilmainen toimitus kahdesta tuotteesta tai 79 eurosta" |
+| Blogi | Otsikko, päiväykset ja johdanto. Ensimmäinen tuotenosto toisen ruudun jälkeen | Blogista tuleva hakee ideoita | A/B-testi: versio b näyttää tuoteideat heti otsikon alla |
+| Etusivu | Yritysten joululahjabanneri, A/B-otsikko ja joulubanneri. Suosituimmat näkymän alla | Yritysbanneri kuluttajalle ensimmäisenä | Yritysbanneri pois mobiilin yläosasta (sama nosto on tuotteiden alla) |
+
+### A/B-testit kahdelle suurimmalle laskeutumissivutyypille
+
+- **Tuotesivu "koko"** (suurin laskeutumisosio):
+  - a = koko valitaan itse.
+  - b = t-paidoissa ja hupparissa esivalittu L ja teksti "Vaihda kokoa tarvittaessa", joten yksi napautus riittää koriin.
+  - Esikatselussa valittu koko menee aina esivalinnan edelle.
+  - Tämä on myös "Ensimmäinen ostos helpoksi" -muutoksen mittaus: voittaja otetaan käyttöön kaikille, kun dataa on tarpeeksi.
+- **Blogi "blogi"** (toiseksi suurin):
+  - a = nykyinen.
+  - b = artikkelin tuoteideat heti otsikon alla.
+- **Arvonta:** versio arvotaan sivulatauksessa ja pidetään vain muistissa. Pakotus onnistuu osoitteella ?ab=koko-b. Esirenderöinti ja testit käyttävät versiota a.
+
+**Mittarit:**
+- Tuoteseuranta kirjaa versiokohtaisesti: poistui alle 10 s, valitsi koon itse, koko valmiina ja lisäsi koriin.
+- Laskeutumislaskuri kirjaa poistumisen alle 10 s versioittain.
+
+| Mittari | Ennen (2.-3.11., 11 katselua) | Jälkeen |
+|---|---|---|
+| Poistuu alle 10 s (tuotesivu) | 64 % | Kertyy 4.11. alkaen versioittain |
+| Koon valinta (tuotesivu) | 0 % | Kertyy 4.11. alkaen versioittain |
+
+### Sähköpostit Gmailin kautta
+
+- **Reitin valinta:** Resend-domain vahvistettu, jolloin käytetään Resendiä. Muuten käytetään Gmailia (smtp.gmail.com:465, huumorikauppa@gmail.com, Nodemailer), jos sovellussalasana on asetettu. Valinta tehdään joka lähetyksellä, joten paluu Resendiin tapahtuu ilman koodimuutosta.
+- **Mitä Gmail lähettää:** tilausvahvistukset (korvaavat silloin Stripen kuitin), lahjakorttien PDF:t liitteinä, hallinnan viestit, hälytykset ja päivän yhteenveto.
+- **Markkinointiviestit:** korimuistutukset, arviopyynnöt ja uutiskirje menevät vain suostumuksen antaneille. Niillä on kova 100 viestin päiväkatto (Helsingin päivä), ja peruutuslinkki sekä List-Unsubscribe säilyvät.
+- **Aarnin komento:** `bash ~/huumorikauppa/scripts/gmail-salasana.sh`
+  - Kysyy salasanan piilotettuna ja kokeilee kirjautumista.
+  - Tallentaa salasanan Verceliin (GMAIL_APP_PASSWORD, production) ja tiedostoon .env.gmail.local.
+  - Seuraava julkaisu ottaa reitin käyttöön.
+- **Tarkistus:** `?tehtava=sahkopostireitti` ja `?tehtava=ilmoitustesti` (KAYTTOONOTTO.md kohta 23).
+
+### Julkaisu
+- Julkaistu esitestatulla scripts/julkaise-uusi.sh:lla (savutesti 11/11, promote onnistui).
+- Kolmen User-Agentin tarkistus: 200 sivuille /, tuotesivu, /hauska-isanpaivalahja, /lahjat/60-vuotiaalle-miehelle, blogi, /abipaidat/helsinki, /kassa ja /ostoskori. Piilotetut tuotteet ohjautuvat 301:llä sivulle /kaikki-tuotteet.
+- Koon esivalinta tarkistettu tuotantokäännöksellä Playwrightilla:
+  - ?ab=koko-b: valittuina Valkoinen ja L sekä "Koko: L Vaihda kokoa tarvittaessa".
+  - ?ab=koko-a: kokoa ei ole valittu.
+- Jälkikuvat:
+  - Lahjasivulla tuotteet alkavat heti ensimmäisen kappaleen jälkeen ensimmäisessä näkymässä.
+  - Tuotesivun kuvan paikalla näkyy vitsiteksti.
+- Ajoitusmittaukset tältä koneelta eivät ole luotettavia (yhteys noin 26 kt/s, Chromiumin hidas 4G -emulointi on nopeampi kuin itse yhteys). Arvio perustuu kuviin.
+- Jatkokehitys: laskeutumissivujen tuoteruudukko odottaa koko luettelon (250 kt pakattuna). Sivukohtainen haku nopeuttaisi tuotteiden näkymistä hitaalla yhteydellä.
+- Savutesti sai 300 sekunnin aikarajan, koska tämän koneen yhteys on hidas (noin 26 kt/s; /api/products 4,5 Mt).
+- Epäonnistunut pyyntö kirjataan nyt virheeksi, eikä se kaada skriptiä hiljaa.
+
+### Aarnille ja Coworkille
+1. **Tiinan Klarna-kiista (kiireellinen):**
+   - Kiista on vanhalla Stripe-tilillä acct_1THtN1AhUyocG7PO, ja sen määräpäivä voi olla 3.11.
+   - Vastaa Stripen hallintapaneelissa ja liitä näytöksi korvausmukin toimitus: Printify 6ad92ed15d2b6b33ab00d5e7, UPS, toimitettu 28.10.
+2. **Gmail-salasana:** aja `bash ~/huumorikauppa/scripts/gmail-salasana.sh`.
+3. **Printifyn editorissa käsin** (siirrä tekstiä kuvan alle):
+
+   | Tuote | Skaala nyt | Uusi skaala | Uusi y |
+   |---|---|---|---|
+   | se-oli-tonnin-seteli-huppari | 0,784 | 0,560 | 0,292 |
+   | se-oli-tonnin-seteli-t-paita | 0,790 | 0,536 | 0,251 |
+   | olen-elakkeella-huppari | 0,739 | 0,590 | 0,533 |
+   | olen-elakkeella-t-paita | 0,864 | 0,564 | 0,364 |
+
+4. **Piilotettujen palautus:** uusi vähintään 150 DPI:n painotiedosto Printifyyn, sitten `node scripts/painotiedostot-tarkistus.mjs`.
+5. **Laatuvalitukset:** varaudu Elias L.:n (Saatanan tunarit) ja Jaana V.:n (Amatimies) mahdollisiin laatuvalituksiin.
+6. **Blogit:** linkit piilotettuihin tuotteisiin (Kalju, Amatimies, Tässä talossa) ohjautuvat /kaikki-tuotteet-sivulle. Tekstit kannattaa päivittää.
