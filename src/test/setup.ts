@@ -13,3 +13,8 @@ if (typeof window !== "undefined") Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => {},
   }),
 });
+
+// Laskeutumissivujen A/B-testit (src/lib/abTestit.ts): testeissä aina versio a, ettei arvonta tee testeistä satunnaisia.
+import { asetaAbVersio } from "@/lib/abTestit";
+asetaAbVersio("koko", "a");
+asetaAbVersio("blogi", "a");

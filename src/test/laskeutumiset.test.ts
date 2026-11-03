@@ -93,3 +93,13 @@ describe("koon esivalinnan A/B tuoteseurannassa", () => {
     expect(tuoteseurantaRivit(s).at(-1)).toMatch(/^Koon esivalinta A\/B: A \(valitse itse\) 10 katselua, alle 10 s 60 %/);
   });
 });
+
+describe("A/B-version pakotus", () => {
+  it("asetaAbVersio kiinnittää ja vapauttaa version", async () => {
+    const { abVersio, asetaAbVersio } = await import("@/lib/abTestit");
+    asetaAbVersio("blogi", "b");
+    expect(abVersio("blogi")).toBe("b");
+    asetaAbVersio("blogi", "a");
+    expect(abVersio("blogi")).toBe("a");
+  });
+});

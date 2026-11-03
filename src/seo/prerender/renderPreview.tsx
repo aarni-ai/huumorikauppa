@@ -26,6 +26,11 @@ import ProductPage from "@/pages/ProductPage";
 import Index from "@/pages/Index";
 import { AppTarjoajat, AppSisalto, preloadRoute } from "@/App";
 import { asetaEsirenderoinninTeema } from "@/components/SeasonalBanner";
+import { asetaAbVersio } from "@/lib/abTestit";
+
+// Esirenderöinti näyttää aina A/B-testien version a (src/lib/abTestit.ts); selain arpoo version itse.
+asetaAbVersio("koko", "a");
+asetaAbVersio("blogi", "a");
 import type { ReactNode } from "react";
 import { mapProduct } from "@/hooks/use-products";
 import type { Tables } from "@/integrations/supabase/types";

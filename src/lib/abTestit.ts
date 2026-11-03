@@ -26,3 +26,9 @@ export function laskeutumisenAb(polku: string): string {
   if (/^\/blogi\/[^/]+/.test(polku)) return `blogi-${abVersio("blogi")}`;
   return "";
 }
+
+/** Testeille ja esirenderöinnille: kiinteä versio (null palauttaa arvonnan). */
+export function asetaAbVersio(testi: AbTesti, versio: "a" | "b" | null): void {
+  if (versio) versiot[testi] = versio;
+  else delete versiot[testi];
+}

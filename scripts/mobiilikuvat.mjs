@@ -25,7 +25,7 @@ const OLETUSPOLUT = [
   "/tuote/tonnin-seteli-t-paita", "/tuote/tonnin-seteli-huppari", "/tuote/kuka-koski-termostaattiin-huppari-isalle",
   "/tuote/sammuta-valot-sahko-maksaa-t-paita-isalle", "/tuote/en-nuku-lepuutan-silmia-t-paita-isalle",
   "/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin", "/tuote/passissa-14-tuntia-hirvi-naki-minut-t-paita-metsastajalle",
-  "/tuote/isa-tietaa-oikotien-aina-t-paita-isalle", "/tuote/saatanan-tunarit-t-paita", "/tuote/maailman-paras-aiti-huppari",
+  "/tuote/isa-tietaa-oikotien-aina-t-paita-isalle", "/tuote/kiltti-enimmakseen-t-paita-jouluun", "/tuote/maailman-paras-aiti-huppari",
 ];
 const polut = process.argv.length > 3 ? process.argv.slice(3) : OLETUSPOLUT;
 const PROFIILIT = [
