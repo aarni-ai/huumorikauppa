@@ -34,9 +34,9 @@ describe("designKey", () => {
     expect(designKey("60v – kokenut, ei vanha | Muki")).toBe(designKey("60v kokenut, ei vanha | Juliste (poster)"));
   });
 
-  it("leveä erotin ｜ (ICE AATANA｜T-Paita)", () => {
-    expect(designKey("ICE AATANA｜T-Paita")).toBe("ice aatana");
-    expect(designKey("ICE AATANA | Tarra")).toBe("ice aatana");
+  it("leveä erotin ｜ (JÄÄ AATANA｜T-Paita)", () => {
+    expect(designKey("JÄÄ AATANA｜T-Paita")).toBe("jää aatana");
+    expect(designKey("JÄÄ AATANA | Tarra")).toBe("jää aatana");
   });
 
   it("eri teksti on eri design", () => {
@@ -111,9 +111,9 @@ describe("sameDesignLinks", () => {
 });
 
 describe("<SameDesignLinks>", () => {
-  const paita = make({ slug: "ice-aatanat-paita", name: "ICE AATANA｜T-Paita", category: "t-paidat" });
-  const huppari = make({ slug: "ice-aatanahuppari", name: "ICE AATANA｜Huppari", category: "hupparit" });
-  const juliste = make({ slug: "ice-aatana-juliste-poster", name: "ICE AATANA | Juliste (poster)", category: "seinataulut" });
+  const paita = make({ slug: "jaa-aatana-t-paita", name: "JÄÄ AATANA｜T-Paita", category: "t-paidat" });
+  const huppari = make({ slug: "jaa-aatana-huppari", name: "JÄÄ AATANA｜Huppari", category: "hupparit" });
+  const juliste = make({ slug: "jaa-aatana-juliste-poster", name: "JÄÄ AATANA | Juliste (poster)", category: "seinataulut" });
 
   it("linkit tuotesivuille erottimella", () => {
     render(
@@ -123,8 +123,8 @@ describe("<SameDesignLinks>", () => {
     );
     const nav = screen.getByRole("navigation", { name: "Sama design muina tuotteina" });
     expect(nav.textContent).toBe("Sama design myös: Huppari · Juliste");
-    expect(screen.getByRole("link", { name: "Huppari" }).getAttribute("href")).toBe("/tuote/ice-aatanahuppari");
-    expect(screen.getByRole("link", { name: "Juliste" }).getAttribute("href")).toBe("/tuote/ice-aatana-juliste-poster");
+    expect(screen.getByRole("link", { name: "Huppari" }).getAttribute("href")).toBe("/tuote/jaa-aatana-huppari");
+    expect(screen.getByRole("link", { name: "Juliste" }).getAttribute("href")).toBe("/tuote/jaa-aatana-juliste-poster");
   });
 
   it("ei mitään, kun muita tyyppejä ei ole", () => {

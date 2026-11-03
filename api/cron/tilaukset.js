@@ -135,7 +135,12 @@ export default async function handler(req, res) {
       const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
       const eilen = hki(new Date(Date.now() - 864e5));
       const seuranta = await tuoteseurantaValilla(db, eilen, eilen).then(tuoteseurantaRivit).catch(() => []);
-      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...yhteenvetoRivit(linkit)];
+      // Printifyn käsitilaukset edelliseltä vuorokaudelta (api/_lib/kasitilaukset.js; Tiinan korvausmuki 3.11.2026).
+      const { kasitilausHuomiot, kasitilausRivit } = await import("../_lib/kasitilaukset.js");
+      const kasin = onPrintify()
+        ? await listaaTilaukset(1, 20).then((r) => (r.ok ? kasitilausRivit(kasitilausHuomiot(r.data?.data, new Date(Date.now() - 864e5), new Date())) : [])).catch(() => [])
+        : [];
+      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...kasin, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).

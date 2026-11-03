@@ -12,7 +12,7 @@ import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow }
 import { renderPageHtml } from "./prerender/html";
 import { LANDING_REDIRECTS } from "@/data/landingRoutes";
 import { YHDISTETYT_KATEGORIAT, kategoriaPolku } from "@/lib/hiddenCategories";
-import { kannanRivit } from "@/test/euReititysMinimi";
+import { kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (f: string) => fs.readFileSync(path.join(ROOT, f), "utf8");
@@ -88,7 +88,7 @@ describe("canonical: /lahjat/ ja /kategoria/ -sivut ovat keskenään erilaisia",
   it("tuoteruudukko eroaa muista lahjasivuista (12 ensimmäistä tuotetta eivät ole samat samassa järjestyksessä)", () => {
     const head = (p: (typeof pages)[number]) => (p.products ?? []).slice(0, 12).map((x) => x.slug).join(",");
     for (const p of family) {
-      expect((p.products ?? []).length, p.path).toBeGreaterThanOrEqual(8);
+      expect((p.products ?? []).length, p.path).toBeGreaterThanOrEqual(Math.min(8, landingMinimi(p.path)));
       for (const other of giftLike) {
         if (other.path === p.path) continue;
         expect(head(other), `${p.path} ja ${other.path}: sama tuoteruudukko`).not.toBe(head(p));

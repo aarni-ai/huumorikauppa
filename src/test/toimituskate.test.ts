@@ -13,6 +13,7 @@ import { TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT, TOIMITUS } from "../../
 import { laskeTilauksenNettokate, myytavatVariantit, toimitusmaksuKatteella, TOIMITUS_PORTAAT, ALV, STRIPE_PROSENTTI, PRINTIFY_KULUKERROIN } from "../../api/_lib/kate.js";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { laskeTilaus, laskettuNettokate } from "../../api/_lib/kassa.js";
+import { myynnissa } from "../../api/_lib/tuotteet.js";
 import { helsinkiTimeToUtcMs } from "@/data/campaignSchedule";
 import { toimitusTila, ilmaisenToimituksenViesti } from "@/lib/ostoskori";
 import type { Product } from "@/types/product";
@@ -92,21 +93,23 @@ describe("Toimituksen katevahti: kaikki kahden tuotteen yhdistelmät", () => {
 describe("Kassa: toimitus, alennuskoodi, korialennus ja Black Friday samalla katevahdilla", () => {
   // Tuoteluokat: kassan kannalta samanlaiset tuotteet (kategoria, pahimman variantin hinta ja kulu, Printifyn toimitus).
   const luokat = new Map<string, readonly [Tuote, NonNullable<ReturnType<typeof pahinVariantti>>]>();
+  // Kassa myy vain myynnissä olevia (3.11.2026: EU:n ulkopuolella painettava koriste ei ole myynnissä).
   for (const x of PAHIMMAT) {
     const [t, v] = x;
+    if (!myynnissa(t)) continue;
     const raw = t as unknown as { variants: { shipping_cents?: number; shipping_additional_cents?: number; print_provider_id?: number } };
     const avain = [t.category, v.hinta, t.variants.costs?.[String(v.id)], raw.variants.shipping_cents, raw.variants.shipping_additional_cents, raw.variants.print_provider_id].join("|");
     if (!luokat.has(avain)) luokat.set(avain, x);
   }
   const edustajat = [...luokat.values()];
   const fi = (y: number, m: number, d: number) => new Date(helsinkiTimeToUtcMs(y, m, d, 12));
-  const tilaus = (A: Tuote, a: { avain: string }, B: Tuote, b: { avain: string }, alennus: { type: string; value: number } | null, nyt: Date) => {
+  const tilaus = (A: Tuote, a: { avain: string }, B: Tuote, b: { avain: string }, alennus: { type: string; value: number } | null, nyt: Date, tuotteet: Tuote[] = KAIKKI) => {
     const [ca, sa] = a.avain.split("|");
     const [cb, sb] = b.avain.split("|");
     const items = A.id === B.id && a.avain === b.avain
       ? [{ id: A.id, quantity: 2, size: sa, color: ca }]
       : [{ id: A.id, quantity: 1, size: sa, color: ca }, { id: B.id, quantity: 1, size: sb, color: cb }];
-    return laskeTilaus({ items, customerEmail: "a@b.fi", shippingAddress: { address: "K 1", zip: "00100", city: "Hki" } }, KAIKKI, alennus, { korialennus: { nyt } });
+    return laskeTilaus({ items, customerEmail: "a@b.fi", shippingAddress: { address: "K 1", zip: "00100", city: "Hki" } }, tuotteet, alennus, { korialennus: { nyt } });
   };
 
   it("kaikki tuoteluokkaparit: ilman koodia, 5 %:n koodilla ja Black Friday -viikolla kate vähintään 7 €", () => {
@@ -137,8 +140,10 @@ describe("Kassa: toimitus, alennuskoodi, korialennus ja Black Friday samalla kat
 
   it("kassa kertoo rajatusta toimituksesta, ja kori näyttää saman maksun ja viestin", () => {
     const [paita, pv] = PAHIMMAT.find(([t, v]) => t.category === "t-paidat" && v.hinta === 24.9)!;
-    const [koriste, kv] = PAHIMMAT.find(([t]) => t.category === "koristeet")!;
-    const r = tilaus(paita, pv, koriste, kv, null, fi(2026, 11, 10));
+    // Koriste painetaan Yhdysvalloissa eikä ole myynnissä (api/_lib/eu-reititys.js); sen EU-kopio samoilla kuluilla.
+    const [alkup, kv] = PAHIMMAT.find(([t]) => t.category === "koristeet")!;
+    const koriste = { ...alkup, id: "koriste-eu", slug: "koriste-eu-testi", printify_product_id: "eu-kopio-testi" } as Tuote;
+    const r = tilaus(paita, pv, koriste, kv, null, fi(2026, 11, 10), [...KAIKKI, koriste]);
     expect(r.shipping_reduced).toBe(true);
     expect(r.shipping).toBeGreaterThan(0);
     expect(r.shipping).toBeLessThanOrEqual(TOIMITUS);

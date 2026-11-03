@@ -1,0 +1,162 @@
+{
+  "korjaukset": [
+    {
+      "aika": "2026-11-03T11:38:24.170Z",
+      "slug": "tonnin-seteli-huppari",
+      "printify": "69acb50bd9d11928ed08a235",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69acb3694998ee2d899e1802",
+          "dpi": 93,
+          "vanha": {
+            "x": 0.4999999999999998,
+            "y": 0.4465926319067032,
+            "scale": 0.9127670697779536
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.289629,
+            "scale": 0.560259
+          }
+        }
+      ],
+      "poistetut": [
+        {
+          "paikka": "neck",
+          "kuva": "text_layer.svg"
+        }
+      ]
+    },
+    {
+      "aika": "2026-11-03T11:38:30.438Z",
+      "slug": "tonnin-seteli-t-paita",
+      "printify": "69acb40b5ef4eca23b039dd6",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69acb3694998ee2d899e1802",
+          "dpi": 95,
+          "vanha": {
+            "x": 0.5,
+            "y": 0.3215932897939733,
+            "scale": 0.859063894202388
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.217852,
+            "scale": 0.535714
+          }
+        }
+      ],
+      "poistetut": [
+        {
+          "paikka": "neck",
+          "kuva": "text_layer.svg"
+        }
+      ]
+    }
+  ],
+  "piilotetut": {
+    "saatanan-tunarit-huppari": 21,
+    "slay-queen-t-paita": 22,
+    "slay-queen-huppari": 37,
+    "tassa-talossa-asuu-yksi-pomo-huppari": 61,
+    "tassa-talossa-asuu-yksi-pomo-t-paita": 48,
+    "suomi-finland-huppari": 37,
+    "suomi-finland-t-paita": 26,
+    "amatimies-huppari": 74,
+    "amatimies-t-paita": 66,
+    "kalju-huppari": 52,
+    "kalju-t-paita": 44,
+    "saatanan-tunarit-t-paita": 18,
+    "ice-aatanat-paita": 56,
+    "ice-aatanahuppari": 69
+  },
+  "kasin": [
+    {
+      "slug": "se-oli-tonnin-seteli-huppari",
+      "printify": "69acb70811b15c29da02127a",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69acb3694998ee2d899e1802",
+          "dpi": 109,
+          "vanha": {
+            "x": 0.49999999999999983,
+            "y": 0.3917401801889238,
+            "scale": 0.7838823529411763
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.292166,
+            "scale": 0.560259
+          }
+        }
+      ]
+    },
+    {
+      "slug": "se-oli-tonnin-seteli-t-paita",
+      "printify": "69acb60d581a48c85001b2e4",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69acb3694998ee2d899e1802",
+          "dpi": 103,
+          "vanha": {
+            "x": 0.5000000000000001,
+            "y": 0.3328473788360289,
+            "scale": 0.7900797837098368
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.251238,
+            "scale": 0.535714
+          }
+        }
+      ]
+    },
+    {
+      "slug": "olen-elakkeella-huppari",
+      "printify": "69a7ef7eb824e8c75004d232",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69a7461a7db395fbeef03c46",
+          "dpi": 121,
+          "vanha": {
+            "x": 0.4999999999999999,
+            "y": 0.580711393732961,
+            "scale": 0.7394961424814572
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.532974,
+            "scale": 0.589746
+          }
+        }
+      ]
+    },
+    {
+      "slug": "olen-elakkeella-t-paita",
+      "printify": "69a7474cdfcf29443f0f8be0",
+      "muutokset": [
+        {
+          "paikka": "front",
+          "kuva": "69a7461a7db395fbeef03c46",
+          "dpi": 99,
+          "vanha": {
+            "x": 0.5000000000000001,
+            "y": 0.4328432368588913,
+            "scale": 0.8642061375572534
+          },
+          "uusi": {
+            "x": 0.5,
+            "y": 0.363869,
+            "scale": 0.56391
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -13,6 +13,8 @@ import { heikoinKate, laskeKate } from "./kate.js";
 import { kaikkiPoissa, liitaSaatavuusTiedosto, saatavuusLista } from "./saatavuus.js";
 import { hinnoitteleRivi } from "./kokohinnat.js";
 import { poistaTummatVarit } from "./tummat-varit.js";
+import { LISATUOTE_KATEGORIAT, TILAUKSEN_MIN_KATE_EUROA } from "./vakiot.js";
+import { onEuReititetty } from "./eu-reititys.js";
 
 const VALIMUISTI_MS = 5 * 60 * 1000;
 let valimuisti = null;
@@ -43,7 +45,13 @@ export function valmisteleRivi(rivi) {
   const p = hinnoitteleRivi(poistaTummatVarit(rivi));
   const kartta = p?.variants?.variant_map;
   if (!kartta || typeof kartta !== "object") return p;
-  const alle = Object.entries(kartta).filter(([, id]) => laskeKate(p, id).sallittu === false).map(([a]) => a);
+  // 3.11.2026: myös variantit, joiden yhden kappaleen tilaus (tavallisella toimitusmaksulla) jäisi alle 7 €:n
+  // nettokatteen. Lisätuotteita (tarrat) ei myydä yksin, joten niille ei tätä rajaa.
+  const yksin = !LISATUOTE_KATEGORIAT.includes(p.category);
+  const alle = Object.entries(kartta).filter(([, id]) => {
+    const k = laskeKate(p, id);
+    return k.sallittu === false || (yksin && k.tunnettu && k.nettokate < TILAUKSEN_MIN_KATE_EUROA);
+  }).map(([a]) => a);
   if (!alle.length) return p;
   return { ...p, unavailable_variants: [...new Set([...saatavuusLista(p), ...alle])] };
 }
@@ -72,7 +80,9 @@ export async function kaikkiTuotteet() {
  * saatavan variantin tunnettu kate on alle rajan (api/_lib/kate.js), eikä tuotteita, joiden yksikään variantti ei ole
  * saatavilla tai katerajan yllä (api/_lib/saatavuus.js, valmisteleRivi). Tuntematon kate ei piilota (kassa estää ostamisen).
  */
-export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && heikoinKate(p).sallittu !== false && !kaikkiPoissa(p);
+// 3.11.2026: myös EU:n ulkopuolella painettavat (api/_lib/eu-reititys.js). Selain ja sivukartta piilottivat ne jo, mutta
+// kassa hyväksyi ne (esim. palautetusta korista): kesäkuun koristetilaus painettiin Yhdysvalloissa.
+export const myynnissa = (p) => p.is_active !== false && !onPiilotettuTuote(p) && !onEuReititetty(p) && heikoinKate(p).sallittu !== false && !kaikkiPoissa(p);
 
 export async function naytettavatTuotteet() {
   return (await kaikkiTuotteet()).filter(myynnissa);

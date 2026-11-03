@@ -23,7 +23,7 @@ import { CHRISTMAS_DEADLINE_PATH, CHRISTMAS_DEADLINE_PROMISE } from "@/data/chri
 import { christmasDeadlinePage } from "@/data/christmasDeadlinePage";
 import { buildPrerenderPages, buildSiteNav, normalizeProducts, type ProductRow } from "./prerender/pages";
 import { renderPageHtml } from "./prerender/html";
-import { AMMATTISIVUT_ODOTTAA, EU_REITITYS_ALLE_MINIMIN, UUSI_MALLISTO_ODOTTAA, aukkoTuotteet, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
+import { AMMATTISIVUT_ODOTTAA, EU_REITITYS_ALLE_MINIMIN, PAINOLAATU_ODOTTAA, UUSI_MALLISTO_ODOTTAA, aukkoTuotteet, euPiilotetutTuotteet, kannanRivit, landingMinimi } from "@/test/euReititysMinimi";
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (rel: string) => fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -157,6 +157,25 @@ describe("landing pages: products (snapshot of the live catalog)", () => {
     for (const item of list) {
       expect(item.category).not.toBe("mukit");
       expect(looksLikeMug(item), item.slug).toBe(false);
+    }
+  });
+
+  it("painolaadun poikkeussivut täyttyvät tuotannon valikoimalla ja poikkeus poistetaan, kun tilannekuva on täynnä", () => {
+    const live = (JSON.parse(read("src/test/fixtures/kate-kaikki-2026-11-03.json")) as { tuotteet: ProductRow[] }).tuotteet
+      .map((t) => {
+        // Tuotannon aineistossa ei ole värejä ja kokoja: ne johdetaan variant_mapista kuten kaupan tuoterivillä.
+        const avaimet = Object.keys((t as unknown as { variants: { variant_map: Record<string, number> } }).variants.variant_map);
+        const colors = [...new Set(avaimet.map((a) => a.split("|")[0]))];
+        const sizes = [...new Set(avaimet.map((a) => a.split("|")[1]))];
+        const v = (t as unknown as { variants: Record<string, unknown> }).variants;
+        return { ...t, description: "", humor_type: null, stock: 10, images: ["https://images-api.printify.com/x.jpg"], variants: { ...v, colors, sizes } };
+      }) as unknown as ProductRow[];
+    const tuotanto = normalizeProducts(live);
+    for (const pagePath of PAINOLAATU_ODOTTAA) {
+      const p = getLandingPage(pagePath)!;
+      expect(p, pagePath).toBeTruthy();
+      expect(selectLandingProducts(p, products).length, `${pagePath}: poista PAINOLAATU_ODOTTAA-listalta`).toBeLessThan(LANDING_MIN_PRODUCTS);
+      expect(selectLandingProducts(p, tuotanto).length, pagePath).toBeGreaterThanOrEqual(LANDING_MIN_PRODUCTS);
     }
   });
 
