@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { yrityksetPage, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
-import { laskeTarjous, aikataulu, esimerkkiHinnat, MALLIT, KOOT } from "../../../api/_lib/yritysmyynti.js";
+import { laskeTarjous, aikataulu, esimerkkiHinnat, joulutilausLaskuriTeksti, MALLIT, KOOT } from "../../../api/_lib/yritysmyynti.js";
+import { TILAUKSEN_MIN_KATE_EUROA } from "../../../api/_lib/vakiot.js";
 import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { LogoEditori, logoTarkistus, tallennaLogoValinta, type LogoValinta } from "@/components/LogoEditori";
 
@@ -18,6 +19,26 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 const pvm = (iso: string) => { const [v, k, p] = iso.split("-"); return `${Number(p)}.${Number(k)}.${v}`; };
 export type Malli = "meemipaita" | "tpaita" | "logopaita" | "huppari";
+type ArvioRivi = { malli: string; nimi: string; kpl: number; yhteensa: number; perKpl: number; alennusProsentti: number; toimitus: number };
+
+/**
+ * Yritysten joulutilausten laskuri (takaraja api/_lib/yritysmyynti.js YRITYS_JOULU_TAKARAJA_ISO, Helsingin päivä).
+ * Esirenderöinnissä rakennushetken luku, selaimessa päivitetään heti ja tunnin välein. Takarajan jälkeen ei näy.
+ */
+export function YritysJouluLaskuri({ className = "" }: { className?: string }) {
+  const [teksti, setTeksti] = useState(() => joulutilausLaskuriTeksti());
+  useEffect(() => {
+    setTeksti(joulutilausLaskuriTeksti());
+    const id = window.setInterval(() => setTeksti(joulutilausLaskuriTeksti()), 3600e3);
+    return () => window.clearInterval(id);
+  }, []);
+  if (!teksti) return null;
+  return (
+    <p className={`rounded-lg border border-primary/40 bg-primary/5 px-3 py-2 text-sm font-medium text-foreground ${className}`} role="status" data-yritys-laskuri>
+      {teksti} (takaraja {YRITYS_JOULU_TEKSTI})
+    </p>
+  );
+}
 
 /**
  * Tarjouspyyntölomake ja laskuri: /api/sahkoposti action "tarjouspyynto" (tallennus kantaan, ilmoitus omistajalle).
@@ -30,11 +51,13 @@ export function Tarjouspyynto({ paketti, malli, setMalli, logo, setLogo, ala = "
 }) {
   const [lomake, setLomake] = useState({ ala, yritys: "", ytunnus: "", nimi: "", email: "", puhelin: "", viesti: "", kotisivu: "", toimituspaiva: "" });
   const [koot, setKoot] = useState<Record<string, string>>({});
+  const [maara, setMaara] = useState("");
+  const [arvio, setArvio] = useState<ArvioRivi[]>([]);
   const [tila, setTila] = useState<"lomake" | "lahetetaan" | "valmis" | "virhe">("lomake");
   const [virhe, setVirhe] = useState("");
   const aseta = (k: keyof typeof lomake, v: string) => setLomake((l) => ({ ...l, [k]: v }));
   const kootLuvut = useMemo(() => Object.fromEntries(KOOT.map((k) => [k, Number(koot[k]) || 0])), [koot]);
-  const laskettu = useMemo(() => laskeTarjous({ malli, koot: kootLuvut }), [malli, kootLuvut]);
+  const laskettu = useMemo(() => laskeTarjous({ malli, koot: kootLuvut }, { minKatePerKpl: TILAUKSEN_MIN_KATE_EUROA }), [malli, kootLuvut]);
   const at = useMemo(() => aikataulu(lomake.toimituspaiva), [lomake.toimituspaiva]);
 
   const laheta = async (e: React.FormEvent) => {
@@ -52,10 +75,10 @@ export function Tarjouspyynto({ paketti, malli, setMalli, logo, setLogo, ala = "
       const r = await fetch("/api/sahkoposti", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "tarjouspyynto", ...lomake, paketti, malli, koot: kootLuvut, maara: laskettu?.kpl || "", ...logoKentat }),
+        body: JSON.stringify({ action: "tarjouspyynto", ...lomake, paketti, malli, koot: kootLuvut, maara: laskettu?.kpl || Number(maara) || "", ...logoKentat }),
       });
       const j = await r.json().catch(() => null);
-      if (r.ok && j?.ok) setTila("valmis");
+      if (r.ok && j?.ok) { setArvio(Array.isArray(j.arvio) ? j.arvio : []); setTila("valmis"); }
       else { setTila("virhe"); setVirhe(j?.error || "Lähetys epäonnistui. Lähetä pyyntö sähköpostilla huumorikauppa@gmail.com."); }
     } catch {
       setTila("virhe");
@@ -65,9 +88,29 @@ export function Tarjouspyynto({ paketti, malli, setMalli, logo, setLogo, ala = "
 
   if (tila === "valmis") {
     return (
-      <p className="flex items-start gap-2 rounded-lg border border-primary/40 bg-primary/5 p-4 text-sm text-foreground" role="status">
-        <Check className="h-5 w-5 text-primary shrink-0" aria-hidden="true" /> Kiitos! Tarjouspyyntö on vastaanotettu, ja vastaamme sähköpostiin {lomake.email}.
-      </p>
+      <div className="space-y-3" role="status">
+        <p className="flex items-start gap-2 rounded-lg border border-primary/40 bg-primary/5 p-4 text-sm text-foreground">
+          <Check className="h-5 w-5 text-primary shrink-0" aria-hidden="true" /> Kiitos! Tarjouspyyntö on vastaanotettu, ja vastaamme sähköpostiin {lomake.email}.
+        </p>
+        {arvio.length > 0 && (
+          <div className="rounded-lg border border-border p-4">
+            <h3 className="font-medium text-foreground mb-2">Hinta-arvio {arvio[0].kpl} kappaleelle</h3>
+            <table className="w-full text-sm">
+              <thead><tr className="text-left text-muted-foreground"><th className="font-normal pb-1">Malli</th><th className="font-normal pb-1 text-right">€/kpl</th><th className="font-normal pb-1 text-right">Yhteensä</th></tr></thead>
+              <tbody>
+                {arvio.map((a) => (
+                  <tr key={a.malli} className="border-t border-border">
+                    <td className="py-1.5 pr-2">{a.nimi}{a.alennusProsentti ? ` (määräalennus -${a.alennusProsentti} %)` : ""}</td>
+                    <td className="py-1.5 text-right whitespace-nowrap">{eur(a.perKpl)}</td>
+                    <td className="py-1.5 text-right whitespace-nowrap font-medium">{eur(a.yhteensa)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="text-xs text-muted-foreground mt-2">Hinnat sisältävät ALV:n. Arvio olettaa koot M, L ja XL; koot 3XL ja suuremmat maksavat enemmän. Lopullinen hinta vahvistetaan tarjouksessa.</p>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -99,6 +142,14 @@ export function Tarjouspyynto({ paketti, malli, setMalli, logo, setLogo, ala = "
             ))}
           </div>
         </div>
+        {!(laskettu && laskettu.kpl > 0) && (
+          <div>
+            <Label htmlFor="ty-maara">Kappalemäärä, jos koot eivät ole vielä tiedossa</Label>
+            <Input id="ty-maara" inputMode="numeric" value={maara} onChange={(e) => setMaara(e.target.value.replace(/[^0-9]/g, "").slice(0, 3))}
+              placeholder="esim. 25" className="bg-muted border-border mt-1 max-w-[140px]" />
+            <p className="text-xs mt-1 text-muted-foreground">Saat hinta-arvion heti lähetyksen jälkeen.</p>
+          </div>
+        )}
         {laskettu && laskettu.kpl > 0 && (
           <p className="text-sm text-foreground" role="status">
             {laskettu.kpl} kpl: <span className="font-bold text-primary">{eur(laskettu.yhteensa)}</span> ({eur(laskettu.yhteensa / laskettu.kpl)}/kpl

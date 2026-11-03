@@ -40,13 +40,15 @@ describe("asiakasarviot: vain todennettavat", () => {
     expect(importers.map((f) => path.relative(ROOT, f))).toEqual([]);
   });
 
-  it("rakenteisessa datassa ei ole aggregateRatingia eikä Reviewta", () => {
+  it("rakenteisessa datassa ei ole aggregateRatingia eikä Reviewta ilman aitoja arvioita", () => {
     const p = (fixture as Array<{ id: string; slug: string; name: string; price: number }>)[0];
     const jsonLd = JSON.stringify(buildProductJsonLd({ id: p.id, slug: p.slug, name: p.name, description: "", images: [], price: p.price }));
     expect(jsonLd).not.toMatch(/aggregateRating|"Review"|reviewRating/);
     const sources = [...walk(path.join(ROOT, "src")), path.join(ROOT, "middleware.ts"), ...walk(path.join(ROOT, "scripts")), ...walk(path.join(ROOT, "api"))]
       .filter((f) => !/\.test\.[jt]sx?$/.test(f) && !f.endsWith("arvostelut-arkisto.ts"))
       .filter((f) => /["']?aggregateRating["']?\s*:|["']@type["']\s*:\s*["'](Review|AggregateRating)["']|reviewRating["']?\s*:/.test(fs.readFileSync(f, "utf8")));
-    expect(sources.map((f) => path.relative(ROOT, f))).toEqual([]);
+    // Ainoa sallittu paikka: structuredData.ts arviotJsonLd, jota syötetään vain reviews-taulun julkaistuilla arvioilla
+    // (ProductPage useOikeatArviot, 3.11.2026). Ei kovakoodattuja arvioita eikä arviomääriä.
+    expect(sources.map((f) => path.relative(ROOT, f))).toEqual(["src/seo/structuredData.ts"]);
   });
 });

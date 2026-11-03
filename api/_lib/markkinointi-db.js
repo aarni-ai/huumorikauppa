@@ -104,6 +104,8 @@ export function pgMarkkinointi(db) {
     /** Moderointi (cron ?tehtava=arviot): odottavat arviot ja tilan vaihto. */
     odottavatArviot: async () => db`select r.id, r.product_name, r.stars, r.body, r.customer_name, r.created_at from reviews r
       where r.status = 'odottaa' order by r.created_at`,
+    /** Arvioiden määrät tiloittain (seurantaa varten, ei asiakastietoja). */
+    arviotTiloittain: async () => db`select status, count(*)::int as maara from reviews group by status`,
     asetaArvionTila: async (id, tila) => (await db`update reviews set status = ${tila} where id = ${id} returning id`).length > 0,
     tallennaArvio: async (a) =>
       (await db`insert into reviews (order_id, product_name, stars, body, customer_name)

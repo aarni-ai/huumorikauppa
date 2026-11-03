@@ -678,7 +678,8 @@ export default async function handler(req, res) {
       const ok = kuiva || await store.asetaArvionTila(id, req.query.julkaise ? "julkaistu" : "hylatty");
       return res.status(ok ? 200 : 404).json({ ok, kuiva, id, tila: req.query.julkaise ? "julkaistu" : "hylatty" });
     }
-    return res.status(200).json({ ok: true, odottavat: await store.odottavatArviot() });
+    const tilat = await store.arviotTiloittain().catch(() => []);
+    return res.status(200).json({ ok: true, odottavat: await store.odottavatArviot(), tiloittain: Object.fromEntries(tilat.map((r) => [r.status, r.maara])) });
   }
 
   if (req.query.tehtava === "resend-domain") {

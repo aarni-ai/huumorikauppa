@@ -612,7 +612,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const allProductImages = currentImages.length > 0 ? currentImages : (product.images.length > 0 ? product.images : ["/placeholder.svg"]);
 
   // Product + Offer (toimitus, palautusehdot) samasta rakentajasta kuin esirenderöinti.
-  // Ei aggregateRatingia eikä Reviewta: arvioita ei ole todennetusta lähteestä (src/data/arvostelut-arkisto.ts).
+  // aggregateRating ja Review vain aidoista, julkaistuista arvioista (reviews-taulu, useOikeatArviot). Arkiston
+  // (src/data/arvostelut-arkisto.ts) todentamattomia arvioita ei käytetä.
 
   const productJsonLd = buildProductJsonLd({
     id: product.id,
@@ -625,6 +626,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     categoryName,
     category: product.category,
     variants: product.variants,
+    reviews: oikeatArviot,
   });
 
   const { faqs: genericProductFaqs, audience, occasion, whyFunny } = buildProductFaqs(product, categoryName, { isCustom });

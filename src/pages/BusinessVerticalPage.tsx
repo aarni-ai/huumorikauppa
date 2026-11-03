@@ -9,7 +9,7 @@ import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
 import { YRITYS_ALAT, YRITYS_ALA_POLKU, yritysAla, type YritysAla } from "@/data/yritysAlat";
 import { yritysAlaFaqs, yritysAlaTeema, valitseAlanTuotteet } from "@/data/yritysAlaSivu";
 import { TYHJA_LOGO, type LogoValinta } from "@/components/LogoEditori";
-import { Maaraalennus, OmaLogo, Tarjouspyynto, type Malli } from "@/components/yritys/YritysOsat";
+import { Maaraalennus, OmaLogo, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { buildFaqJsonLd } from "@/seo/structuredData";
 import { SITE_URL } from "@/seo/site";
 import NotFound from "./NotFound";
@@ -51,6 +51,7 @@ function AlaSivu({ ala }: { ala: YritysAla }) {
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-4 flex items-center gap-3">
         <Building2 className="h-8 w-8 text-primary shrink-0" aria-hidden="true" /> {ala.h1}
       </h1>
+      <YritysJouluLaskuri className="mb-4" />
       <div className="space-y-3 text-muted-foreground mb-6">
         {ala.intro.map((p) => <p key={p}>{p}</p>)}
       </div>

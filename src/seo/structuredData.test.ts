@@ -5,6 +5,7 @@ import {
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
   buildProductJsonLd,
+  arviotJsonLd,
   buildSiteJsonLd,
   serializeJsonLd,
   shippingFeeForPrice,
@@ -179,5 +180,25 @@ describe("isPrerenderedHtml", () => {
   it("does not match other paths or the SPA shell", () => {
     expect(isPrerenderedHtml(html, "/tuote/uusi")).toBe(false);
     expect(isPrerenderedHtml('<div id="root"><div data-prerender="true"></div></div>', "/tuote/uusi")).toBe(false);
+  });
+});
+
+describe("aidot arviot rakenteisessa datassa (3.11.2026)", () => {
+  const tuote = { id: "1", slug: "testi-t-paita", name: "Testi", images: ["https://huumorikauppa.fi/x.png"], price: 24.9 };
+  it("ilman aitoja arvioita ei aggregateRatingia eikä Reviewta", () => {
+    const p = buildProductJsonLd(tuote);
+    expect("aggregateRating" in p || "review" in p).toBe(false);
+    expect(arviotJsonLd([])).toEqual({});
+    expect(arviotJsonLd([{ name: "X", stars: 9, date: "1.4.2026" }, { name: "Y", stars: 5, date: "" }])).toEqual({});
+  });
+  it("aidoista arvioista keskiarvo, määrä ja Review-objektit", () => {
+    const p = buildProductJsonLd({ ...tuote, reviews: [
+      { name: "Auli H.", stars: 5, text: "Hyvä", date: "4.11.2026" },
+      { name: "Tero H.", stars: 4, date: "2026-11-05" },
+    ] }) as Record<string, any>;
+    expect(p.aggregateRating).toEqual({ "@type": "AggregateRating", ratingValue: "4.5", reviewCount: 2, bestRating: 5, worstRating: 1 });
+    expect(p.review).toHaveLength(2);
+    expect(p.review[0]).toMatchObject({ "@type": "Review", author: { name: "Auli H." }, datePublished: "2026-11-04", reviewBody: "Hyvä" });
+    expect(p.review[1].datePublished).toBe("2026-11-05");
   });
 });
