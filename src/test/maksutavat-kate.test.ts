@@ -9,6 +9,7 @@ import { laskeTilaus, laskettuNettokate } from "../../api/_lib/kassa.js";
 import { myytavatVariantit } from "../../api/_lib/kate.js";
 import { TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { korinMaksutavat } from "@/lib/ostoskori";
+import { myynnissa } from "../../api/_lib/tuotteet.js";
 import type { Product } from "@/types/product";
 
 type T = { id: string; slug: string; category: string; variants: { variant_map: Record<string, number> } };
@@ -23,7 +24,7 @@ describe("Maksutavat: kate vähintään 7 € jokaisella tarjotulla maksutavalla
     let mobilepayAlle7 = 0;
     let mobilepayPienin = Infinity;
     for (const t of KAIKKI) {
-      if (LISATUOTE_KATEGORIAT.includes(t.category)) continue;
+      if (LISATUOTE_KATEGORIAT.includes(t.category) || !myynnissa(t)) continue;
       for (const [avain] of myytavatVariantit(t) as [string, number][]) {
         const [color, size] = avain.split("|");
         const r = tilaus([{ id: t.id, quantity: 1, size, color }]);
@@ -43,10 +44,11 @@ describe("Maksutavat: kate vähintään 7 € jokaisella tarjotulla maksutavalla
       }
     }
     expect(n).toBeGreaterThan(5000);
-    // MobilePay ei jää koskaan pois; alle 7 € jäävät vain 24,90 €:n t-paidan yksittäistilaukset (6,94 €).
+    // MobilePay ei jää koskaan pois; alle 7 € jäävät enintään 24,90 €:n t-paidan yksittäistilaukset (6,94 €). 3.11.2026
+    // alkaen ne olivat painolaadun takia piilotettuja vanhoja paitoja (api/_lib/painolaatu.js).
     expect(pois.mobilepay).toBe(0);
-    expect(mobilepayAlle7).toBeGreaterThan(0);
-    expect(mobilepayPienin).toBeCloseTo(6.94, 2);
+    expect(mobilepayAlle7).toBeGreaterThanOrEqual(0);
+    expect(mobilepayPienin).toBeGreaterThanOrEqual(6.94 - 1e-9);
     expect(pois.klarna).toBeGreaterThan(0);
   }, 240000);
 

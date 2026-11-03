@@ -8,12 +8,16 @@
  * (src/lib/variantAvailability.ts: tuotteen variant_map sekä src/data/printify-saatavuus.json), sekä Lovable-
  * synkronoinnin kaksoiskappaleet ja Printify-testikopiot (api/_lib/kaksoiskappaleet.js).
  *
+ * 3.11.2026: myös tuotteet, joiden painotiedosto jää alle 150 DPI:n (api/_lib/painolaatu.js). Ne ohjataan 301:llä
+ * /kaikki-tuotteet (middleware.ts).
+ *
  * 27.10.2026: myös EU:n ulkopuolella tai Printify Choicen reitityksellä valmistettavat tuotteet (api/_lib/eu-reititys.js,
  * generaattori scripts/eu-reititys.mjs). Ne, joilla on näkyvä EU-kopio, ohjataan 301:llä kopioon (middleware.ts).
  */
 import { isFullyUnavailable } from "./variantAvailability.js";
 import { onKaksoiskappaleTaiTestikopio } from "../../api/_lib/kaksoiskappaleet.js";
 import { onEuReititetty } from "../../api/_lib/eu-reititys.js";
+import { onPainolaatuPiilotettu } from "../../api/_lib/painolaatu.js";
 
 export const PIILOTETUT_KATEGORIAT: readonly string[] = ["mukit"];
 
@@ -37,6 +41,7 @@ type TuoteRivi = { category?: string | null; slug?: string | null; name?: string
 export function onPiilotettuTuotePerus(p: TuoteRivi): boolean {
   if (onPiilotettu(p.category)) return true;
   if (onKaksoiskappaleTaiTestikopio(p.slug)) return true;
+  if (onPainolaatuPiilotettu(p.slug)) return true;
   if (isFullyUnavailable(p)) return true;
   if (MUKI_TUNNISTE.test(`${p.slug ?? ""} ${p.name ?? ""}`)) return true;
   const koot = (p.variants as { sizes?: unknown } | null | undefined)?.sizes;

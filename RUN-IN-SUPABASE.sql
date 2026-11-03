@@ -6,8 +6,8 @@
 
 
 -- ============================================================
--- OSA A: Auli Hurskaisen tilaus (auli.hurskainen@gmail.com, 27.9.2026, t-paita 27,56 e)
--- Vastaanottaja: Toini Aro c/o Auli Hurskainen, Tarvasjoentie 619, 21530 Paimio
+-- OSA A: Auli H.:n tilaus (<asiakkaan sähköposti>, 27.9.2026, t-paita 27,56 e)
+-- Vastaanottaja: katso OSA A -kyselyn shipping_address
 -- ============================================================
 
 SELECT
@@ -30,7 +30,7 @@ SELECT
   total,
   items
 FROM orders
-WHERE customer_email ILIKE 'auli.hurskainen@gmail.com'
+WHERE customer_email ILIKE '<asiakkaan sähköposti>'
   AND created_at >= '2026-09-27 00:00:00'
   AND created_at <  '2026-09-28 23:59:59'
 ORDER BY created_at DESC
@@ -43,7 +43,7 @@ LIMIT 5;
 
 
 -- ============================================================
--- OSA A2: Tiina Kivivirran tilaus (tiina.kivivirta@gmail.com, 24.9.2026, muki 23,80 e)
+-- OSA A2: Tiina K.:n tilaus (<asiakkaan sähköposti>, 24.9.2026, muki 23,80 e)
 -- ============================================================
 
 SELECT
@@ -66,7 +66,7 @@ SELECT
   total,
   items
 FROM orders
-WHERE customer_email ILIKE 'tiina.kivivirta@gmail.com'
+WHERE customer_email ILIKE '<asiakkaan sähköposti>'
   AND created_at >= '2026-09-24 00:00:00'
   AND created_at <  '2026-09-25 23:59:59'
 ORDER BY created_at DESC

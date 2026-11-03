@@ -1,6 +1,6 @@
-# Auli Hurskainen - vastausluonnos
+# Auli H. - vastausluonnos
 
-Tilaus: 27.9.2026, t-paita "Olen eläkkeellä", 27,56 e. Vastaanottaja Toini Aro c/o Auli Hurskainen, Tarvasjoentie 619, 21530 Paimio.
+Tilaus: 27.9.2026, t-paita "Olen eläkkeellä", 27,56 e. Vastaanottaja [VASTAANOTTAJA JA OSOITE OSA A -kyselystä].
 
 Tilauksen tiedot haetaan `RUN-IN-SUPABASE.sql` osiolla OSA A. Korvaa hakasulkeiset kohdat ennen lähettämistä. Älä lähetä, jos jokin kohta on vielä täyttämättä.
 
@@ -11,7 +11,7 @@ pahoittelut, että vastaus on viipynyt. Tässä tilauksesi tilanne.
 
 Tilausnumero on [TILAUSNUMERO]. Paita "Olen eläkkeellä" lähtee painosta [LÄHETYSPÄIVÄ TAI ARVIO] ja on perillä yleensä 3-10 arkipäivässä lähetyksestä.
 
-Paketti on osoitettu nimellä Toini Aro c/o Auli Hurskainen, Tarvasjoentie 619, 21530 Paimio. Jos vastaanottajan nimi pitää olla toisin, kerro se vastauksena tähän viestiin, niin korjaamme ennen lähetystä.
+Paketti on osoitettu nimellä [VASTAANOTTAJA JA OSOITE OSA A -kyselystä]. Jos vastaanottajan nimi pitää olla toisin, kerro se vastauksena tähän viestiin, niin korjaamme ennen lähetystä.
 
 Seurantalinkki: [SEURANTAURL]
 

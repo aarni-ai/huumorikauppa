@@ -1,11 +1,11 @@
 # Huumorikauppa – Sessioraportti 2026-10-08
 
-## OSA A – Auli Hurskainen
+## OSA A – Auli H.
 
 - Tilaus tehty 27.9.2026, asiakas odottanut 11 paivaa.
 - Tilauksen hakeminen vaatii tietokantapaasyä: kyselyt kirjoitettu `RUN-IN-SUPABASE.sql`.
 - Aja OSA A -kysely Supabasen SQL Editorissa: https://supabase.com/dashboard/project/exhzrrbvipqwhjhjgnxs/editor
-- Vastausluonnos valmiina: `vastaukset/auli-hurskainen.md` (paikkamerkit [TILAUSNUMERO], [SEURANTAKOODI], [SEURANTAURL]).
+- Vastausluonnos valmiina: `vastaukset/auli-h.md` (paikkamerkit [TILAUSNUMERO], [SEURANTAKOODI], [SEURANTAURL]).
 - Jos printify_status = 'failed' tai 'pending', laheta manuaalisesti Printify-hallinnassa tai nollaa tila SQL:lla (ohjeet tiedostossa).
 
 ## OSA B – Kaikki tilaukset 1.8.2026 lahtien
@@ -83,7 +83,7 @@ tai RUN-IN-SUPABASE.sql:n F-osion kommentoidulla net.http_post-kutsulla (poista 
    - `20261008080000_shipping_notification.sql` (uudet sarakkeet + indeksi)
    - `20261008090000_schedule_new_crons.sql` (pg_cron-ajastukset)
 
-2. **Aja OSA A -kysely** Aulin tilauksen selvittamiseksi, tayta `vastaukset/auli-hurskainen.md`.
+2. **Aja OSA A -kysely** Aulin tilauksen selvittamiseksi, tayta `vastaukset/auli-h.md`.
 
 3. **Aja OSA B -kysely** tilannekartoitukseksi.
 
@@ -118,4 +118,4 @@ tai RUN-IN-SUPABASE.sql:n F-osion kommentoidulla net.http_post-kutsulla (poista 
 | supabase/migrations/20261008080000_shipping_notification.sql | uusi | Sarakkeet ja indeksi |
 | supabase/migrations/20261008090000_schedule_new_crons.sql | uusi | pg_cron-ajastukset |
 | RUN-IN-SUPABASE.sql | uusi | Kaikki manuaalikyselyt |
-| vastaukset/auli-hurskainen.md | uusi | Vastausluonnos Aulille |
+| vastaukset/auli-h.md | uusi | Vastausluonnos Aulille |

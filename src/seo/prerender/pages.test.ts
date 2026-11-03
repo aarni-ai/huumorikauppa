@@ -7,7 +7,7 @@ import { TOIMITUSMAKSU_TEKSTI, ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { buildLlmsFullTxt, buildLlmsTxt } from "../llms";
 
 const rows: ProductRow[] = [
-  { id: "1", slug: "amatimies-t-paita", name: "Amatimies | T-Paita", category: "t-paidat", price: "24.90", description: "Amatimies isälle.", images: ["https://images-api.printify.com/a.jpg"], stock: 100 },
+  { id: "1", slug: "isamies-t-paita", name: "Isämies | T-Paita", category: "t-paidat", price: "24.90", description: "Isämies isälle.", images: ["https://images-api.printify.com/a.jpg"], stock: 100 },
   { id: "2", slug: "kalamies-huppari", name: "Kalamies | Huppari", category: "hupparit", price: 49.9, description: "Kalastus", images: [], stock: 100 },
   { id: "3", slug: "luonnos", name: "Luonnos", category: "t-paidat", price: 24.9, is_active: false },
   { id: "4", slug: "kahvimuki", name: "Kahvimuki", category: "mukit", price: 19.9 },
@@ -19,7 +19,7 @@ const byPath = new Map(pages.map((p) => [p.path, p]));
 
 describe("normalizeProducts", () => {
   it("uses the same filter as the shop: drafts and hidden categories (mukit) are excluded", () => {
-    expect(products.map((p) => p.slug)).toEqual(["amatimies-t-paita", "kalamies-huppari"]);
+    expect(products.map((p) => p.slug)).toEqual(["isamies-t-paita", "kalamies-huppari"]);
     expect(products[0].price).toBe(24.9);
   });
 });
@@ -35,7 +35,7 @@ describe("buildPrerenderPages", () => {
       "/kaikki-tuotteet",
       "/joululahjat",
       "/kategoria/t-paidat",
-      "/tuote/amatimies-t-paita",
+      "/tuote/isamies-t-paita",
       "/blogi",
       "/usein-kysytyt-kysymykset",
       "/toimitusehdot",
@@ -56,7 +56,7 @@ describe("buildPrerenderPages", () => {
     const osio = kala.sections?.find((s) => s.heading === "Sopii lahjaksi");
     expect(osio?.paragraphs).toEqual(["Sopii lahjaksi kalastajalle."]);
     expect(osio?.links).toEqual([{ href: "/lahjat/kalastajalle", label: "Lisää lahjoja kalastajalle" }]);
-    expect(byPath.get("/tuote/amatimies-t-paita")!.sections?.some((s) => s.heading === "Sopii lahjaksi")).toBe(true);
+    expect(byPath.get("/tuote/isamies-t-paita")!.sections?.some((s) => s.heading === "Sopii lahjaksi")).toBe(true);
   });
 
   it("every gift route is a real route in App.tsx", () => {
@@ -78,8 +78,8 @@ describe("buildPrerenderPages", () => {
   });
 
   it("product pages carry Product JSON-LD, price and FAQ", () => {
-    const page = byPath.get("/tuote/amatimies-t-paita")!;
-    expect(page.title).toBe("Hauska t-paita: Amatimies");
+    const page = byPath.get("/tuote/isamies-t-paita")!;
+    expect(page.title).toBe("Hauska t-paita: Isämies");
     expect(page.price).toBe(24.9);
     expect(page.ogType).toBe("product");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,12 +87,12 @@ describe("buildPrerenderPages", () => {
     expect(product.sku).toBe("1");
     expect(product.offers.price).toBe("24.90");
     expect(page.faqs!.length).toBeGreaterThan(0);
-    expect(page.breadcrumbs.map((b) => b.name)).toEqual(["Etusivu", "T-Paidat", "Amatimies | T-Paita"]);
+    expect(page.breadcrumbs.map((b) => b.name)).toEqual(["Etusivu", "T-Paidat", "Isämies | T-Paita"]);
   });
 
   it("category pages list their products and have FAQ JSON-LD", () => {
     const page = byPath.get("/kategoria/t-paidat")!;
-    expect(page.products!.map((p) => p.slug)).toEqual(["amatimies-t-paita"]);
+    expect(page.products!.map((p) => p.slug)).toEqual(["isamies-t-paita"]);
     expect(page.jsonLd.map((j) => j["@type"])).toEqual(["CollectionPage", "FAQPage"]);
   });
 
@@ -143,6 +143,6 @@ describe("llms.txt", () => {
     expect(short + full).not.toMatch(/[–—]/);
   });
   it("lists products with prices in the full version", () => {
-    expect(full).toContain("- Amatimies | T-Paita, 24,90 €: https://huumorikauppa.fi/tuote/amatimies-t-paita");
+    expect(full).toContain("- Isämies | T-Paita, 24,90 €: https://huumorikauppa.fi/tuote/isamies-t-paita");
   });
 });

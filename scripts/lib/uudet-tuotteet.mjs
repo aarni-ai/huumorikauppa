@@ -340,12 +340,20 @@ export function valitseVariantit(variantit, { varit = [], koot = [] } = {}) {
 }
 
 /** Painoalue (front, muuten ensimmäinen) ja suurin koko valituista varianteista. */
+/**
+ * Painopohjan koko. Printify sovittaa kuvan (scale 1) jokaisen variantin painoalueen leveyteen, joten pohjan korkeus
+ * on leveys kertaa pienin korkeus/leveys-suhde: kuva mahtuu silloin kaikkiin kokoihin. 3.11.2026: aiemmin leveys ja
+ * korkeus otettiin eri varianteista (maksimit), ja 53 tuotteen kuva ylitti osan kokojen painoalueen
+ * (data/painotiedostot-tarkistus.json, scripts/painotiedostot-korjaus.mjs).
+ */
 export function painoalue(valitut, oletus = { width: 3600, height: 4800 }) {
   const kaikki = valitut.flatMap((v) => v.placeholders || []);
   const position = kaikki.some((p) => p.position === "front") ? "front" : kaikki[0]?.position || "front";
   const samat = kaikki.filter((p) => p.position === position && p.width && p.height);
   if (!samat.length) return { position, width: oletus.width, height: oletus.height, katalogista: false };
-  return { position, width: Math.max(...samat.map((p) => p.width)), height: Math.max(...samat.map((p) => p.height)), katalogista: true };
+  const width = Math.max(...samat.map((p) => p.width));
+  const suhde = Math.min(...samat.map((p) => p.height / p.width));
+  return { position, width, height: Math.floor(width * suhde), katalogista: true };
 }
 
 /** Variantit tekstivärin mukaan ryhmiin: tummat tuotteet valkoisella, vaaleat mustalla tekstillä. */

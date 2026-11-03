@@ -1,4 +1,4 @@
-# Tiina Kivivirta - vastausluonnos
+# Tiina K. - vastausluonnos
 
 Tilaus: 24.9.2026, muki, 23,80 e.
 

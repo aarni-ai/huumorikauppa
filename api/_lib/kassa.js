@@ -187,6 +187,14 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     fyysiset = k.rivit;
     koriAlennus = k.alennus;
   }
+  // Lopullinen katevahti (3.11.2026, Tiinan muki -10,07 €): tilaus kaikkien alennusten ja toimitusmaksun jälkeen
+  // jättää vähintään 7 € nettokatetta, tai sitä ei voi maksaa. Toimituksen porraskaan ei aina riitä yksin.
+  if (fyysiset.length) {
+    const k = nettokate(fyysiset, toimitus);
+    if (k.tunnettu && k.nettokate < TILAUKSEN_MIN_KATE_EUROA) {
+      throw new KassaVirhe("Tätä tuoteyhdistelmää ei voi tilata. Lisää koriin toinen paita tai huppari, niin tilaus onnistuu.", "order_low_margin");
+    }
+  }
   const kortit = lahjakortit.map((r) => ({ ...r, unit_cents: sentit(r.unit_price) }));
   const stripeRivit = [...fyysiset, ...kortit];
   const tuotteetYht = fyysiset.reduce((s, r) => s + r.unit_cents * r.quantity, 0) / 100;

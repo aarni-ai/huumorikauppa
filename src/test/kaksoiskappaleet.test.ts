@@ -19,11 +19,11 @@ describe("Lovable-synkronoinnin kaksoiskappaleet", () => {
     expect(onKaksoiskappaleTaiTestikopio("copy-of-x")).toBe(true);
   });
   it("piilotetaan kaupasta ja syötteestä", () => {
-    expect(onPiilotettuTuote({ slug: "amatimies-t-paita-02f10a", category: "t-paidat" })).toBe(true);
-    expect(onPiilotettuTuote({ slug: "amatimies-t-paita", category: "t-paidat" })).toBe(false);
-    const xml = `<channel><item><g:link>https://huumorikauppa.fi/tuote/amatimies-t-paita-02f10a</g:link></item><item><g:link>https://huumorikauppa.fi/tuote/amatimies-t-paita</g:link></item></channel>`;
+    expect(onPiilotettuTuote({ slug: "olen-elakkeella-t-paita-02f10a", category: "t-paidat" })).toBe(true);
+    expect(onPiilotettuTuote({ slug: "olen-elakkeella-t-paita", category: "t-paidat" })).toBe(false);
+    const xml = `<channel><item><g:link>https://huumorikauppa.fi/tuote/olen-elakkeella-t-paita-02f10a</g:link></item><item><g:link>https://huumorikauppa.fi/tuote/olen-elakkeella-t-paita</g:link></item></channel>`;
     const out = dropHiddenItems(xml);
     expect(out).not.toContain("02f10a");
-    expect(out).toContain("/tuote/amatimies-t-paita</g:link>");
+    expect(out).toContain("/tuote/olen-elakkeella-t-paita</g:link>");
   });
 });

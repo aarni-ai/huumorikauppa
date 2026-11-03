@@ -42,10 +42,10 @@ describe("selectComplementary", () => {
     for (const p of picks) expect(p.slug).toContain("tonnin-seteli");
   });
 
-  // 27.10.2026: saatanan-tunarit-huppari piilotettu (Printify Choice, api/_lib/eu-reititys.js), esimerkkinä amatimies.
+  // 27.10.2026: saatanan-tunarit-huppari piilotettu (Printify Choice, api/_lib/eu-reititys.js), esimerkkinä olen eläkkeellä (3.11.2026: amatimies piilotettu painolaadun takia, api/_lib/painolaatu.js).
   it("huppari -> saman tekstin t-paita ensin", () => {
-    const picks = selectComplementary([bySlug("amatimies-huppari")], products);
-    expect(picks[0].slug).toBe("amatimies-t-paita");
+    const picks = selectComplementary([bySlug("olen-elakkeella-huppari")], products);
+    expect(picks[0].slug).toBe("olen-elakkeella-t-paita");
     expect(picks.length).toBeGreaterThanOrEqual(2);
   });
 

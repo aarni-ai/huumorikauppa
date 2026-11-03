@@ -175,7 +175,7 @@ const TYO = theme(
   /etätö/, /palaveri/, /lounastauko/, /tiimipelaaja/, /työkaveri/, /asiakaspalvelija/, /myyntimieh/,
   /paras pomo/, /työsankari/, /alalla x/, /pikkujoulu/, /kesäloma/,
 );
-const POMO = theme(/pomo/, /palaveri/, /tiimipelaaja/, /työsankari/, /kapteeni/, /alalla x/, /myyntimieh/);
+const POMO = theme(/pomo/, /palaveri/, /tiimipelaaja/, /työsankari/, /kapteeni/, /alalla x/, /myyntimieh/, /toimitusjohtaja/);
 /** Sisäpiirin huumori aikuisille kavereille. */
 const KAVERI = any(
   theme(
@@ -678,13 +678,13 @@ const PERUSSIVUT: LandingPageDef[] = [
     h1: "Hauska lahja pomolle",
     intro: [
       "Hauska lahja pomolle on paita, jossa vitsi kohdistuu pomon rooliin eikä häneen henkilönä: pomo itse, palaverit, tiimityö tai kapteenin paikka.",
-      "Turvallinen valinta on teksti, jonka pomo voi näyttää muulle tiimille, kuten Tässä talossa asuu yksi pomo tai Tämäkin olisi voinut olla sähköposti. Personoitavaan Kapteeni- tai Alalla X vuotta -paitaan kirjoitetaan tiimin oma teksti.",
+      "Turvallinen valinta on teksti, jonka pomo voi näyttää muulle tiimille, kuten Tämäkin olisi voinut olla sähköposti tai Tiimipelaaja, vaikka tiimi ei pelaa. Yrittäjäpomolle sopii Toimitusjohtaja. Myös siivooja. Personoitavaan Kapteeni- tai Alalla X vuotta -paitaan kirjoitetaan tiimin oma teksti.",
       `Joululahjan pomolle voi antaa koko tiimin nimissä, jolloin huppari on jaettuna kohtuullinen yhteislahja. ${D}`,
     ],
     faqs: [
       {
         q: "Mikä on hauska lahja pomolle?",
-        a: "Paita, jonka vitsi koskee pomon roolia, kuten Tässä talossa asuu yksi pomo tai personoitava Kapteeni-paita. Henkilökohtaiset vitsit kannattaa jättää pois.",
+        a: "Paita, jonka vitsi koskee pomon roolia, kuten Toimitusjohtaja. Myös siivooja tai personoitava Kapteeni-paita. Henkilökohtaiset vitsit kannattaa jättää pois.",
       },
       {
         q: "Sopiiko huumorilahja pomolle?",
@@ -1935,17 +1935,17 @@ const PERUSSIVUT: LandingPageDef[] = [
     group: "lahjat",
     title: "Hauska isänpäivälahja 2026 | Huumorikauppa",
     description:
-      "Hauska isänpäivälahja setähuumorilla: Kalju-, Isäntä-, Amatimies- ja Museokamaa-paidat sekä iskä-vitsit hupparissa. Isänpäivä on su 8.11.2026.",
+      "Hauska isänpäivälahja setähuumorilla: Isäntä- ja Museokamaa-paidat sekä iskä-vitsit hupparissa. Isänpäivä on su 8.11.2026.",
     h1: "Hauska isänpäivälahja",
     intro: [
-      "Hauska isänpäivälahja on paita tai huppari, jossa on isän oma vitsi: Kalju, Isäntä, Amatimies, Museokamaa tai Tässä talossa asuu yksi pomo.",
-      "Setähuumori toimii, kun isä nauraa vitsille itse. Kaljulle isälle sopii Kalju, kaiken itse korjaavalle Jos iskä ei osaa korjata sitä ja kalajuttujen kertojalle Kala pääsi tällä kertaa tai Huonokin päivä kalassa on parempi kuin hyvä päivä töissä.",
+      "Hauska isänpäivälahja on paita tai huppari, jossa on isän oma vitsi: Isäntä, Museokamaa tai Jos iskä ei osaa korjata sitä.",
+      "Setähuumori toimii, kun isä nauraa vitsille itse. Kaiken itse korjaavalle isälle sopii Jos iskä ei osaa korjata sitä ja kalajuttujen kertojalle Kala pääsi tällä kertaa tai Huonokin päivä kalassa on parempi kuin hyvä päivä töissä.",
       `${isanpaivaLause()} Jos haluat valita lahjan isän harrastuksen tai elämänvaiheen mukaan, katso sivu Isänpäivälahja isän tyypin mukaan.`,
     ],
     faqs: [
       {
         q: "Mikä on hauska isänpäivälahja?",
-        a: "Paita tai huppari, jossa on isän oma vitsi, esimerkiksi Kalju, Isäntä, Amatimies tai Museokamaa.",
+        a: "Paita tai huppari, jossa on isän oma vitsi, esimerkiksi Isäntä, Museokamaa tai Jos iskä ei osaa korjata sitä.",
       },
       {
         q: "Mitä setähuumori tarkoittaa?",
@@ -1953,7 +1953,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Mikä paita sopii isälle, joka kertoo isävitsejä?",
-        a: "Paita, jonka teksti on itsessään isävitsi, kuten Museokamaa, Kalju tai Grillimestari, sää ei estä. Isä saa vitsin mukaansa joka kerta, kun pukee paidan päälle.",
+        a: "Paita, jonka teksti on itsessään isävitsi, kuten Museokamaa tai Grillimestari, sää ei estä. Isä saa vitsin mukaansa joka kerta, kun pukee paidan päälle.",
       },
       {
         q: "Loukkaako kalju- tai ikävitsi isää?",
@@ -1961,7 +1961,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Onko isänpäivälahjaksi huppareita?",
-        a: "On. Useimmat isävitsit, kuten Kalju, Isäntä, Amatimies ja Jos iskä ei osaa korjata sitä, ovat sekä t-paitana että hupparina.",
+        a: "On. Useimmat isävitsit, kuten Isäntä ja Jos iskä ei osaa korjata sitä, ovat sekä t-paitana että hupparina.",
       },
       {
         q: "Paljonko hauska isänpäivälahja maksaa?",

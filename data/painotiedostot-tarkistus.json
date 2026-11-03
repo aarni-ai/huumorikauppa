@@ -1,0 +1,1484 @@
+{
+  "ajettu": "2026-11-03T04:45:50.373Z",
+  "kauppa": "https://huumorikauppa.fi",
+  "myynnissa": 1173,
+  "tarkistettu": 1173,
+  "puuttuu_printifysta": [],
+  "ylitys_vain_lapinakyva": 188,
+  "min_dpi_raja": 150,
+  "pienin_dpi": 4,
+  "syyt": {
+    "resoluutio": 22,
+    "ylitys": 53
+  },
+  "painotalot": {
+    "26": 163,
+    "30": 704,
+    "59": 1,
+    "402": 305
+  },
+  "reklamaatio_painotalolla": [],
+  "loydot": [
+    {
+      "slug": "saatanan-tunarit-huppari",
+      "kategoria": "hupparit",
+      "printify": "6ae0ab7ab7c2757e960191b8",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Kuva 16.jpg",
+      "syy": "resoluutio",
+      "dpi": 21
+    },
+    {
+      "slug": "slay-queen-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "6ae0aac75f138b16e30c0d4c",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "slay.jpeg",
+      "syy": "resoluutio",
+      "dpi": 22
+    },
+    {
+      "slug": "slay-queen-huppari",
+      "kategoria": "hupparit",
+      "printify": "6ae0aaacc03126692306fad4",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "slay.jpeg",
+      "syy": "resoluutio",
+      "dpi": 37
+    },
+    {
+      "slug": "hauska-huppari-mokkeilijalle-mokki-on-terapiaa",
+      "kategoria": "hupparit",
+      "printify": "6adf6363250930614e0f339b",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Mkki_on_terapiaa__mulla_on_p.png",
+      "syy": "ylitys",
+      "dpi": 336,
+      "reunat": [
+        0,
+        1,
+        -0.229,
+        1.229
+      ],
+      "sisalto": [
+        0.103,
+        0.895,
+        -0.097,
+        1.219
+      ]
+    },
+    {
+      "slug": "hauska-huppari-metsastajalle-ei-ole-kiire-olen-metsassa",
+      "kategoria": "hupparit",
+      "printify": "6adf635e250930614e0f3396",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Ei_ole_kiire__olen_metsss.png",
+      "syy": "ylitys",
+      "dpi": 336,
+      "reunat": [
+        0,
+        1,
+        -0.229,
+        1.229
+      ],
+      "sisalto": [
+        0.103,
+        0.897,
+        0.281,
+        1.219
+      ]
+    },
+    {
+      "slug": "hauska-huppari-retkeilijalle-gps-ei-tarvita-eksytaan-tarkoituksella",
+      "kategoria": "hupparit",
+      "printify": "6adf635810aa455cb00a0dae",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "GPS_ei_tarvita__eksytn_tark.png",
+      "syy": "ylitys",
+      "dpi": 336,
+      "reunat": [
+        0,
+        1,
+        -0.229,
+        1.229
+      ],
+      "sisalto": [
+        0.102,
+        0.897,
+        0.154,
+        1.219
+      ]
+    },
+    {
+      "slug": "hauska-huppari-lumilautailijalle-gravity-is-just-a-suggestion",
+      "kategoria": "hupparit",
+      "printify": "6adf6353250930614e0f338f",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Gravity_is_just_a_suggestion.png",
+      "syy": "ylitys",
+      "dpi": 336,
+      "reunat": [
+        0,
+        1,
+        -0.229,
+        1.229
+      ],
+      "sisalto": [
+        0.102,
+        0.895,
+        0.081,
+        1.219
+      ]
+    },
+    {
+      "slug": "hauska-huppari-etatoita-tekeville-konttori-3-metria-sangysta",
+      "kategoria": "hupparit",
+      "printify": "6adf6344eaeecea48804c776",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Konttori_3_metri_sngyst.png",
+      "syy": "ylitys",
+      "dpi": 336,
+      "reunat": [
+        0,
+        1,
+        -0.229,
+        1.229
+      ],
+      "sisalto": [
+        0.107,
+        0.897,
+        0.049,
+        1.219
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-koodarille-ei-se-ole-bugi-se-on-feature",
+      "kategoria": "t-paidat",
+      "printify": "6ade6767580ff194290bdfc9",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Ei_se_ole_bugi__se_on_feature.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.237,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-sahkoasentajalle-ei-kosketa-markana",
+      "kategoria": "t-paidat",
+      "printify": "6ade676145d39c48e60d711b",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Ei_kosketa_mrkn.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.107,
+        0.893,
+        0.29,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-putkimiehelle-loytaa-aina-lekkauksen",
+      "kategoria": "t-paidat",
+      "printify": "6ade675780e75cb4ea0991fe",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Lyt_aina_lekkauksen.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.307,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-palomiehelle-sankari-savussa",
+      "kategoria": "t-paidat",
+      "printify": "6ade674a9760402ba10b6353",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Sankari_savussa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.893,
+        0.249,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-poliisille-lain-kasi-myos-kahvitunnilla",
+      "kategoria": "t-paidat",
+      "printify": "6ade6743a99bc95ee30c3cfb",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Lain_ksi__mys_kahvitunnilla.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.233,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-kokille-keittio-on-valtakuntani",
+      "kategoria": "t-paidat",
+      "printify": "6ade6737f878c7d14b0adca2",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Keitti_on_valtakuntani.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.895,
+        0.318,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-myyntimiehelle-kaupat-klousattu",
+      "kategoria": "t-paidat",
+      "printify": "6ade6722f878c7d14b0adc74",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kaupat_klousattu.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.107,
+        0.893,
+        0.287,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-rakennusmiehelle-kadet-tekee-tulos-nakyy",
+      "kategoria": "t-paidat",
+      "printify": "6ade671b580ff194290bdf7f",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kdet_tekee__tulos_nkyy.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.897,
+        0.326,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-maanviljelijalle-saa-paattaa-teen-silti",
+      "kategoria": "t-paidat",
+      "printify": "6ade6704265c71475d058c4a",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "S_ptt__teen_silti.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.897,
+        0.325,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-parturille-leikkaa-myos-tukkaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade66fcaa1ddebc870c02d5",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Leikkaa_mys_tukkaa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.898,
+        0.331,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-linja-autonkuljettajalle-kuljetan-suomen",
+      "kategoria": "t-paidat",
+      "printify": "6ade66f69760402ba10b6302",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kuljetan_Suomen.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.108,
+        0.893,
+        0.243,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-siivoojalle-puhtaus-on-puoli-elamaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade66f0265c71475d058c41",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Puhtaus_on_puoli_elm__teen.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.897,
+        0.179,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-kalastajalle-kala-paasi-talla-kertaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade66e2aa1ddebc870c02cd",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kala_psi__tll_kertaa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.307,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-koiranomistajalle-koira-on-perhetta-ihminen-on-lisa",
+      "kategoria": "t-paidat",
+      "printify": "6ade66d3a0cf4fb5aa0efb3c",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Koira_on_perhett__ihminen_on.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.09,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-pelaajalle-just-one-more-level",
+      "kategoria": "t-paidat",
+      "printify": "6ade66cd0c780a7b480c960d",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Just_one_more_level.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.897,
+        0.347,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-golfaajalle-bogey-on-elamantapa",
+      "kategoria": "t-paidat",
+      "printify": "6ade66c5265c71475d058c1e",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Bogey_on_elmntapa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.322,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-juoksijalle-jos-naat-minut-juoksemassa-soita-ambulanssi",
+      "kategoria": "t-paidat",
+      "printify": "6ade66bfaa1ddebc870c029d",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Jos_nt_minut_juoksemassa__s.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.898,
+        0.184,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-kuntosaliharrastajalle-jalkapaiva-ohitettu-jalleen",
+      "kategoria": "t-paidat",
+      "printify": "6ade66b5d4524eaf210e3851",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Jalkapiv_ohitettu_jlleen.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.895,
+        0.201,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-pyorailijalle-ylamaki-voitettu-toistaiseksi",
+      "kategoria": "t-paidat",
+      "printify": "6ade669a580ff194290bdf27",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Ylmki_voitettu_toistaiseks.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.897,
+        0.237,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-avantouijalle-20c-sopiva-uimakeli",
+      "kategoria": "t-paidat",
+      "printify": "6ade6682a0cf4fb5aa0efb15",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "-20C_sopiva_uimakeli.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.897,
+        0.328,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-grillimesterille-grillimestari-saa-ei-esta",
+      "kategoria": "t-paidat",
+      "printify": "6ade667c580ff194290bdf0a",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Grillimestari_s_ei_est.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.895,
+        0.325,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-autoharrastajalle-ei-myyda-ei-koskaan",
+      "kategoria": "t-paidat",
+      "printify": "6ade6672aa1ddebc870c026b",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Ei_myyd__ei_koskaan.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.321,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-kitaristille-one-more-song-aina-yksi-lisaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade666c80e75cb4ea099145",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "One_more_song__aina_yksi_lis.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.897,
+        0.271,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-valokuvaajalle-hetki-kiinni-muisti-vapaana",
+      "kategoria": "t-paidat",
+      "printify": "6ade6667265c71475d058be8",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Hetki_kiinni__muisti_vapaana.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.347,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-pilkkijalle-jaa-kantaa-pilkki-tulee",
+      "kategoria": "t-paidat",
+      "printify": "6ade6661f878c7d14b0adc12",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "J_kantaa__pilkki_tulee.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.897,
+        0.318,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-rottaharrastajalle-rotta-vaarinymmarretty-nero",
+      "kategoria": "t-paidat",
+      "printify": "6ade665a580ff194290bdef1",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Rotta_vrinymmrretty_nero.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.897,
+        0.348,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko",
+      "kategoria": "t-paidat",
+      "printify": "6ade6640580ff194290bdee5",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Trkeint_tyss_on_lounastauk.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.897,
+        0.221,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-pomolle-maailman-paras-pomo-itse-sanoo",
+      "kategoria": "t-paidat",
+      "printify": "6ade663ad4524eaf210e37f7",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Maailman_paras_pomo__itse_san.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.898,
+        0.278,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-tyokaverillle-selvian-tyokaverit-auttaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade6634d4524eaf210e37f2",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Selvin__tykaverit_auttaa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.897,
+        0.169,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-kesalomalle-kesaloma-ansaittu",
+      "kategoria": "t-paidat",
+      "printify": "6ade661ef878c7d14b0adbd6",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kesloma_ansaittu.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.107,
+        0.895,
+        0.289,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-elakelaiselle-vapautunut-virallisesti",
+      "kategoria": "t-paidat",
+      "printify": "6ade6618f878c7d14b0adbd3",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Vapautunut_virallisesti.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.895,
+        0.322,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti",
+      "kategoria": "t-paidat",
+      "printify": "6ade6600a0cf4fb5aa0efadc",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Tmkin_olisi_voinut_olla_shk.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.1,
+        0.897,
+        0.236,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-tiimipelaajalle-tiimipelaaja-vaikka-tiimi-ei-pelaa",
+      "kategoria": "t-paidat",
+      "printify": "6ade65fba0cf4fb5aa0efad7",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Tiimipelaaja_vaikka_tiimi_ei_.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.1,
+        0.895,
+        0.229,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-asiakaspalvelijalle-asiakas-on-aina-oikeassa-lahes",
+      "kategoria": "t-paidat",
+      "printify": "6ade65f17c5b06c74906f9e6",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Asiakas_on_aina_oikeassa..._l.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.895,
+        0.081,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-nimi-legendaarinen-tyosankari",
+      "kategoria": "t-paidat",
+      "printify": "6ade65e74a5b7acef0062e25",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "NIMI__Legendaarinen_Tysank.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.897,
+        0.265,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-60-vuotiaalle-60-vuotta-kokemusta-loytyy",
+      "kategoria": "t-paidat",
+      "printify": "6ade65d9a99bc95ee30c3c22",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "60_vuotta__kokemusta_lytyy.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.207,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-isalle-maailman-paras-isa",
+      "kategoria": "t-paidat",
+      "printify": "6ade65d3a99bc95ee30c3c21",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Maailman_paras_NIMI-is.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.898,
+        0.353,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-koiranomistajalle-koiran-nimi-herran-paras-ystava",
+      "kategoria": "t-paidat",
+      "printify": "6ade65c07c5b06c74906f9c5",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "KOIRAN_NIMI_herran_paras_ys.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.249,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-kaupunkilaiselle-kaupunki-lainen-ylpeasti",
+      "kategoria": "t-paidat",
+      "printify": "6ade65ba4a5b7acef0062e06",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "KAUPUNKI-lainen_ylpesti.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.895,
+        0.332,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-elava-legenda",
+      "kategoria": "t-paidat",
+      "printify": "6ade65af580ff194290bde92",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "NIMI_elv_legenda.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.318,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-30-vuotiaalle-30-vuotta-vasta-alkamassa",
+      "kategoria": "t-paidat",
+      "printify": "6ade65a1a99bc95ee30c3bf3",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "30_vuotta__vasta_alkamassa.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.895,
+        0.2,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-harrastusmestari",
+      "kategoria": "t-paidat",
+      "printify": "6ade659a3757c8061507410b",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "NIMI_HARRASTUS-mestari.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.898,
+        0.338,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-kapteeni",
+      "kategoria": "t-paidat",
+      "printify": "6ade6594580ff194290bde82",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kapteeni_NIMI.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.108,
+        0.893,
+        0.258,
+        1.018
+      ]
+    },
+    {
+      "slug": "hauska-t-paita-70-vuotiaalle-70-vuotta-mita-siita",
+      "kategoria": "t-paidat",
+      "printify": "6ade656fa99bc95ee30c3bd6",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "70_vuotta__mit_siit.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.306,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-alalla-x-vuotta",
+      "kategoria": "t-paidat",
+      "printify": "6ade655f45d39c48e60d700f",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Vuodesta_VUOSI_alalla_X_v.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.102,
+        0.893,
+        0.086,
+        1.021
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-lempinimi",
+      "kategoria": "t-paidat",
+      "printify": "6ade65559760402ba10b6232",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Tunnettu_nimell_LEMPINIMI.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.105,
+        0.895,
+        0.213,
+        1.018
+      ]
+    },
+    {
+      "slug": "personoitava-t-paita-ylpea-ammatin-vanhempi",
+      "kategoria": "t-paidat",
+      "printify": "6ade654a7c5b06c74906f98d",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Ylpe_AMMATTIn_vanhempi.png",
+      "syy": "ylitys",
+      "dpi": 321,
+      "reunat": [
+        0,
+        1,
+        -0.025,
+        1.025
+      ],
+      "sisalto": [
+        0.103,
+        0.895,
+        0.216,
+        1.018
+      ]
+    },
+    {
+      "slug": "tassa-talossa-asuu-yksi-pomo-huppari",
+      "kategoria": "hupparit",
+      "printify": "6a2deeb5050ad4a8a1121475",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Gemini_Generated_Image_djet7hdjet7hdjet.png",
+      "syy": "resoluutio",
+      "dpi": 61
+    },
+    {
+      "slug": "tassa-talossa-asuu-yksi-pomo-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "6a2dee07be63d55ae20b3473",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Gemini_Generated_Image_djet7hdjet7hdjet.png",
+      "syy": "resoluutio",
+      "dpi": 48
+    },
+    {
+      "slug": "suomi-finland-huppari",
+      "kategoria": "hupparit",
+      "printify": "6a20322fd250819b4c0d77fd",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "9B1751A0-9B12-4583-8613-24CE69CAB7FA_4_5005_c.jpeg",
+      "syy": "resoluutio",
+      "dpi": 37
+    },
+    {
+      "slug": "suomi-finland-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "6a203133c0275c207f06c370",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "9B1751A0-9B12-4583-8613-24CE69CAB7FA_4_5005_c.jpeg",
+      "syy": "resoluutio",
+      "dpi": 26
+    },
+    {
+      "slug": "se-oli-tonnin-seteli-huppari",
+      "kategoria": "hupparit",
+      "printify": "69acb70811b15c29da02127a",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-08 kello 1.22.43.png",
+      "syy": "resoluutio",
+      "dpi": 109
+    },
+    {
+      "slug": "se-oli-tonnin-seteli-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69acb60d581a48c85001b2e4",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-08 kello 1.22.43.png",
+      "syy": "resoluutio",
+      "dpi": 103
+    },
+    {
+      "slug": "tonnin-seteli-huppari",
+      "kategoria": "hupparit",
+      "printify": "69acb50bd9d11928ed08a235",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-08 kello 1.22.43.png",
+      "syy": "resoluutio",
+      "dpi": 93
+    },
+    {
+      "slug": "tonnin-seteli-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69acb40b5ef4eca23b039dd6",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-08 kello 1.22.43.png",
+      "syy": "resoluutio",
+      "dpi": 95
+    },
+    {
+      "slug": "amatimies-huppari",
+      "kategoria": "hupparit",
+      "printify": "69ab27e0d9d11928ed085814",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-06 kello 21.05.32.png",
+      "syy": "resoluutio",
+      "dpi": 74
+    },
+    {
+      "slug": "amatimies-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69ab26cad959867b0506f526",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-06 kello 21.05.32.png",
+      "syy": "resoluutio",
+      "dpi": 66
+    },
+    {
+      "slug": "kalju-huppari",
+      "kategoria": "hupparit",
+      "printify": "69a941dff144caf1210545dd",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-05 kello 10.26.16.png",
+      "syy": "resoluutio",
+      "dpi": 52
+    },
+    {
+      "slug": "kalju-huppari",
+      "kategoria": "hupparit",
+      "printify": "69a941dff144caf1210545dd",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-05 kello 10.24.31.png",
+      "syy": "resoluutio",
+      "dpi": 52
+    },
+    {
+      "slug": "kalju-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69a9400c62ee189316052dcc",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-05 kello 10.26.16.png",
+      "syy": "resoluutio",
+      "dpi": 44
+    },
+    {
+      "slug": "kalju-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69a9400c62ee189316052dcc",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Nyttkuva 2026-03-05 kello 10.24.31.png",
+      "syy": "resoluutio",
+      "dpi": 44
+    },
+    {
+      "slug": "olen-elakkeella-huppari",
+      "kategoria": "hupparit",
+      "printify": "69a7ef7eb824e8c75004d232",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "02D65B5E-2D45-4479-974C-D0198EFD038B.jpeg",
+      "syy": "resoluutio",
+      "dpi": 121
+    },
+    {
+      "slug": "olen-elakkeella-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69a7474cdfcf29443f0f8be0",
+      "blueprint": 145,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "02D65B5E-2D45-4479-974C-D0198EFD038B.jpeg",
+      "syy": "resoluutio",
+      "dpi": 99
+    },
+    {
+      "slug": "saatanan-tunarit-t-paita",
+      "kategoria": "t-paidat",
+      "printify": "69a495c5e2c6888b040e01b2",
+      "blueprint": 6,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "Kuva 16.jpg",
+      "syy": "resoluutio",
+      "dpi": 18
+    },
+    {
+      "slug": "ice-aatanat-paita",
+      "kategoria": "t-paidat",
+      "printify": "69a48d1394ca9fbf1d0216e2",
+      "blueprint": 6,
+      "painotalo": 30,
+      "paikka": "front",
+      "kuva": "image.jpeg",
+      "syy": "resoluutio",
+      "dpi": 56
+    },
+    {
+      "slug": "ice-aatanahuppari",
+      "kategoria": "hupparit",
+      "printify": "69a485977ab6ca0074091988",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "image.jpeg",
+      "syy": "resoluutio",
+      "dpi": 69
+    },
+    {
+      "slug": "ice-aatanahuppari",
+      "kategoria": "hupparit",
+      "printify": "69a485977ab6ca0074091988",
+      "blueprint": 77,
+      "painotalo": 26,
+      "paikka": "front",
+      "kuva": "image.jpeg",
+      "syy": "ylitys",
+      "dpi": 69,
+      "reunat": [
+        -0.053,
+        1.053,
+        -0.171,
+        1.171
+      ],
+      "sisalto": [
+        0.087,
+        0.904,
+        0.003,
+        1.008
+      ]
+    }
+  ]
+}

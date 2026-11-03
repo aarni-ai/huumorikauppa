@@ -39,8 +39,16 @@ export const UUSI_MALLISTO_ODOTTAA: ReadonlySet<string> = new Set<string>();
  */
 export const AMMATTISIVUT_ODOTTAA: ReadonlySet<string> = new Set<string>(AMMATTISIVU_SLUGIT.map((s) => `/paidat/${s}`));
 
+/**
+ * 3.11.2026: painolaadun takia piilotetut tuotteet (api/_lib/painolaatu.js, alle 90 DPI). /lahjat/pomolle menetti
+ * Tässä talossa asuu yksi pomo -paidat; tuotannossa sivun täyttävät 2.11. tuodut Toimitusjohtaja. Myös siivooja -paidat,
+ * joita testien tilannekuvassa ei vielä ole. landing.test.ts tarkistaa sivun tuotannon aineistolla
+ * (src/test/fixtures/kate-kaikki-2026-11-03.json).
+ */
+export const PAINOLAATU_ODOTTAA: ReadonlySet<string> = new Set<string>(["/lahjat/pomolle"]);
+
 export const landingMinimi = (path: string): number =>
-  EU_REITITYS_ALLE_MINIMIN.has(path) || UUSI_MALLISTO_ODOTTAA.has(path) || AMMATTISIVUT_ODOTTAA.has(path) ? 0 : LANDING_MIN_PRODUCTS;
+  EU_REITITYS_ALLE_MINIMIN.has(path) || UUSI_MALLISTO_ODOTTAA.has(path) || AMMATTISIVUT_ODOTTAA.has(path) || PAINOLAATU_ODOTTAA.has(path) ? 0 : LANDING_MIN_PRODUCTS;
 
 /** Kilpailija-aukkojen mallisto tuotteina (nimi ja slug kuten tuonnissa), uusi hinnasto. */
 export function aukkoTuotteet(): Product[] {
