@@ -805,6 +805,12 @@ export default async function handler(req, res) {
       const h = await haeTuote(id);
       const rivi = h.ok ? buildProductRow(h.data, []) : null;
       if (!rivi?.images?.length) { tulos.push({ id, tila: h.ok ? "ei kuvia" : "ei Printifyssä" }); continue; }
+      // Printifyn mockup-osoite pysyy samana, kun painokuva vaihtuu, ja kuvafunktio (api/img.js) välimuistittaa kuvan
+      // vuodeksi: versioparametri (?v=) vaihtaa osoitteen, jotta uusi mockup näkyy heti.
+      const versio = /^[a-z0-9-]{1,20}$/.test(String(req.query.v || "")) ? String(req.query.v) : null;
+      const vaihda = (u) => (versio && typeof u === "string" && !/[?&]v=/.test(u) ? `${u}${u.includes("?") ? "&" : "?"}v=${versio}` : u);
+      rivi.images = rivi.images.map(vaihda);
+      if (rivi.variants?.variant_images) rivi.variants.variant_images = Object.fromEntries(Object.entries(rivi.variants.variant_images).map(([k, v]) => [k, Array.isArray(v) ? v.map(vaihda) : vaihda(v)]));
       const vi = rivi.variants?.variant_images;
       const p = vi
         ? await db`update products set images = ${db.json(rivi.images)}, variants = jsonb_set(coalesce(variants, '{}'::jsonb), '{variant_images}', ${db.json(vi)}::jsonb),
