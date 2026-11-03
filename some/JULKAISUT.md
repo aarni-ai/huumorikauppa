@@ -7,7 +7,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 ## Näin julkaiset
 
 - **Uusi muoto 3.11. alkaen** (Instagramissa huumorivideot saivat noin 5 kertaa enemmän katseluja kuin tuotevideot): tilanne tai vitsi ensin, paita lopussa noin 2 s ("Tää on nyt paidassa") ja lopuksi kysymys. Sama kysymys on kuvatekstin alussa. Vastaa kommentteihin ja kiinnitä paras. Tiedostonimissä pääte -v2.
-- **4.11. alkaen ensimmäinen ruutu on malli paita päällä** (Printifyn lifestyle-kuva) ja vitsi isolla ruudulla, koska katseluaika on 1-3 s. Tiedostonimissä pääte -v3. Ilman: personoidut, Tonnin seteli (uusi malli tulossa) ja piilotettujen tuotteiden videot (04, 18, 40, 42, 44, 48), sekä 30, 46 ja 54 (ei henkilökuvaa).
+- **4.11. alkaen ensimmäinen ruutu on malli paita päällä** (Printifyn lifestyle-kuva) ja vitsi isolla ruudulla, koska katseluaika on 1-3 s. Tiedostonimissä pääte -v3. Ilman: personoidut sekä 30, 46 ja 54 (ei henkilökuvaa). Tonnin seteli, Saatanan tunarit, Amatimies ja Kalju (01, 04, 11, 18, 40, 42, 44, 48) on tehty uudelleen piirretyillä painokuvilla; niiden tuotteilla ei ole Printifyssä henkilökuvaa, joten ensimmäisessä ruudussa on paidan etukuva ja vitsi. Tonnin seteli -malleissa ei ole enää oikean henkilön kasvoja: 2.11. julkaistu video 01 kannattaa poistaa tai korvata.
 - **Videot 1-20** klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.
 - **Isävideot ennen isänpäivää 8.11.** Painettu paita ei enää ehdi isänpäiväksi, joten videot 36 ja 37 nostavat lahjakortin. Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.
 - **Black Friday 23.-30.11.** (muoto tarjous): kaksi 24,90 €:n t-paitaa 44,90 €. Kuvatekstissä on aina t-paidan hinta ja 30 päivän alin hinta; älä poista sitä. Joulun viimeinen tilauspäivä on ke 2.12.
@@ -27,7 +27,8 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 
 **Klo 18-20: video 01 (perus): Kun kaveri kysyy, paljonko se maksoi**
 
-- **Video:** `some/videot/01-tonnin-seteli-t-paita.mp4`
+- **HUOM:** Julkaistu 2.11. vanhalla mallilla, jossa oli oikean henkilön kasvot ja setelin kuva. Poista vanha julkaisu kaikista kanavista tai korvaa se tällä videolla.
+- **Video:** `some/videot/01-tonnin-seteli-t-paita-v3.mp4`
 - **Kuvateksti:** Vastaus on aina sama: tonnin seteli. T-paita ja huppari löytyvät osoitteesta huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #tonninseteli #lahjaidea
 
 ### 3.11.
@@ -69,7 +70,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 04 (perus): Sovittiin, että ollaan paikalla klo 18**
 
 - **Kysymys lopussa:** Kuka teidän porukasta on aina myöhässä?
-- **Video:** `some/videot/04-saatanan-tunarit-t-paita-v2.mp4`
+- **Video:** `some/videot/04-saatanan-tunarit-t-paita-v3.mp4`
 - **Kuvateksti:** Kuka teidän porukasta on aina myöhässä? Saatanan tunarit. Klassikko nyt paitana, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #saatanantunarit
 
 ### 6.11.
@@ -161,7 +162,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 11 (perus): Kaveri aloittaa saman tarinan taas**
 
 - **Kysymys lopussa:** Kuka teidän porukasta kertoo saman tarinan joka kerta?
-- **Video:** `some/videot/11-se-oli-tonnin-seteli-t-paita-v2.mp4`
+- **Video:** `some/videot/11-se-oli-tonnin-seteli-t-paita-v3.mp4`
 - **Kuvateksti:** Kuka teidän porukasta kertoo saman tarinan joka kerta? Tunnistaa jokainen, joka on kuullut tarinan. T-paita ja huppari, huumorikauppa.fi. Linkki biossa. #hauskapaita #suomihuumori #meemi
 
 ### 13.11.
@@ -247,7 +248,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 18 (perus): Talvi tulee**
 
 - **Kysymys lopussa:** Kuka teillä luo aina lumet yksin?
-- **Video:** `some/videot/18-saatanan-tunarit-huppari-v2.mp4`
+- **Video:** `some/videot/18-saatanan-tunarit-huppari-v3.mp4`
 - **Kuvateksti:** Kuka teillä luo aina lumet yksin? Saatanan tunarit, nyt myös huppari. huumorikauppa.fi. Linkki biossa. #huppari #suomihuumori #hauskapaita
 
 ### 20.11.
@@ -303,7 +304,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 40 (tarjous): Remonttiviikonloppu**
 
 - **Kysymys lopussa:** Kuka teidän porukasta korjaa kaiken itse?
-- **Video:** `some/videot/40-black-friday-amatimies-t-paita-v2.mp4`
+- **Video:** `some/videot/40-black-friday-amatimies-t-paita-v3.mp4`
 - **Kuvateksti:** Kuka teidän porukasta korjaa kaiken itse? Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €. Amatimies ja Minulla ei ole alkoholiongelmaa, tai mitkä tahansa kaksi 24,90 €:n t-paitaa. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #hauskapaita #suomihuumori #amatimies
 
 ### 24.11.
@@ -317,7 +318,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 42 (tarjous): Kaljaporukan perjantai**
 
 - **Kysymys lopussa:** Kuka teidän kaljaporukasta tarvitsee tämän?
-- **Video:** `some/videot/42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v2.mp4`
+- **Video:** `some/videot/42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v3.mp4`
 - **Kuvateksti:** Kuka teidän kaljaporukasta tarvitsee tämän? Black Friday 23.-30.11.: kaksi t-paitaa 44,90 €, toinen sinulle ja toinen kaverille. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #olut #hauskapaita #suomihuumori
 
 ### 25.11.
@@ -331,7 +332,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 44 (tarjous): Pomo kysyy: kuka asensi tämän?**
 
 - **Kysymys lopussa:** Kuka teidän työmaalla on amatimies?
-- **Video:** `some/videot/44-black-friday-amatimies-t-paita-v2.mp4`
+- **Video:** `some/videot/44-black-friday-amatimies-t-paita-v3.mp4`
 - **Kuvateksti:** Kuka teidän työmaalla on amatimies? Amatimies ja Kalju: kaksi t-paitaa 44,90 € Black Fridayna 23.-30.11. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #työmaa #amatimies #hauskapaita
 
 ### 26.11.
@@ -359,7 +360,7 @@ Tehty skriptillä `scripts/some-videot.mjs` (1.11.2026, videot 36-55 2.11.2026).
 **Klo 18-20: video 48 (tarjous): Isä korjaa hanaa kolmatta tuntia**
 
 - **Kysymys lopussa:** Kumpi teillä korjaa hanan, äiti vai isä?
-- **Video:** `some/videot/48-black-friday-maailman-paras-aiti-t-paita-v2.mp4`
+- **Video:** `some/videot/48-black-friday-maailman-paras-aiti-t-paita-v3.mp4`
 - **Kuvateksti:** Kumpi teillä korjaa hanan, äiti vai isä? Joululahja äidille ja isälle. Black Friday -tarjous on voimassa maanantaihin 30.11. asti: kaksi t-paitaa 44,90 €. T-paidan hinta 24,90 €, alin hinta 30 päivän aikana 24,90 €. Tarjous koskee 24,90 €:n t-paitoja. huumorikauppa.fi. Linkki biossa. #blackfriday #joululahja #hauskapaita #suomihuumori
 
 ### 28.11.

@@ -20,10 +20,10 @@
  *   [--kansio <polku>]  videoiden ja kansikuvien kansio (oletus some/videot)
  */
 import { readFile, writeFile } from "node:fs/promises";
-import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { julkaisulista } from "./some-videot.mjs";
+import { palvelimenPut } from "./lib/blob-palvelin.mjs";
 
 const JUURI = new URL("..", import.meta.url).pathname;
 const KAUPPA = "https://huumorikauppa.fi";
@@ -33,21 +33,6 @@ const BLOB_HOST = "f9rxc7ndxeb58y5f";
 
 /** Blob-varaston julkinen isäntä: avaimesta, tai palvelintilassa tunnettu varasto huumorikauppa-some. */
 const blobHost = () => (PALVELIN ? BLOB_HOST : process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase());
-
-async function palvelimenPut(pathname, body, { contentType, multipart }) {
-  const { put: clientPut } = await import("@vercel/blob/client");
-  const tiedosto = join(JUURI, ".env.cron.local");
-  const salaisuus = process.env.CRON_SECRET || (existsSync(tiedosto) ? (readFileSync(tiedosto, "utf8").match(/^CRON_SECRET=["']?([^"'\n]+)/m) || [])[1] : "");
-  const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
-  const r = await fetch(`${kauppa}/api/cron/tilaukset?tehtava=blob-lataus`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${salaisuus}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ type: "blob.generate-client-token", payload: { pathname, clientPayload: null, multipart: Boolean(multipart) } }),
-  });
-  const j = await r.json().catch(() => ({}));
-  if (!r.ok || !j.clientToken) throw new Error(`lataustoken ${pathname}: ${r.status} ${j.error || ""}`);
-  return clientPut(pathname, body, { access: "public", token: j.clientToken, contentType, multipart });
-}
 
 const put = PALVELIN ? palvelimenPut : createRequire(join(process.env.NODE_PATH || process.cwd(), "x.js"))("@vercel/blob").put;
 
@@ -131,8 +116,7 @@ if (lisaArg) {
     pinterest.push(pinniTiedot(k, pin));
     console.log(k.slug);
   }
-  const host = process.env.BLOB_READ_WRITE_TOKEN.split("_")[3].toLowerCase();
-  const manifest = await (await fetch(`https://${host}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
+  const manifest = await (await fetch(`https://${blobHost()}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
   // Saman tuotteen aiempi Pinterest-kuva korvataan (esim. uusi kuva, kun väri on poistettu myynnistä).
   const uudet = new Set(pinterest.map((p) => p.slug));
   manifest.pinterest = [...manifest.pinterest.filter((p) => !uudet.has(p.slug)), ...pinterest];

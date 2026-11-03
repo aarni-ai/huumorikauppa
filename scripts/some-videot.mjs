@@ -15,6 +15,7 @@
  */
 import { mkdir, readFile, writeFile, access } from "node:fs/promises";
 import { join } from "node:path";
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import sharp from "sharp";
 import { Resvg } from "@resvg/resvg-js";
@@ -410,7 +411,8 @@ async function tuote(slug) {
 }
 
 async function kuva(url, nimi) {
-  const polku = join(VALI, `${nimi}.jpg`);
+  // Välimuistin nimessä osoitteen tiiviste: kun Printifyn mockup vaihtuu (versioparametri &v=), kuva haetaan uudelleen.
+  const polku = join(VALI, `${nimi}-${createHash("sha1").update(url).digest("hex").slice(0, 10)}.jpg`);
   try { return await readFile(polku); } catch { /* haetaan */ }
   const r = await fetch(url);
   if (!r.ok) throw new Error(`kuva ${r.status}: ${url}`);
@@ -500,18 +502,23 @@ async function aanestysruutu(v, kuvat, nimet, kehotus) {
  * videoiden ensimmäinen ruutu (myös kansikuva) on Printifyn oma lifestyle-mockup (oikea malli, paita päällä), ja vitsi
  * luetaan ruudulta isolla tekstillä TikTokin ja Reelsin turva-alueella (ei ylimmät 220 px eikä alimmat 380 px).
  * Sen jälkeen tilanne ja kysymys kuten kolmannella kierroksella. Tiedostonimissä pääte -v3.
- * Ei mukana: personoidut (08, 39, 47, 50: mockupissa ei ole nimeä), Tonnin seteli (11: malli piirretään uudelleen) ja
- * painolaadun vuoksi piilotettujen tuotteiden videot (04, 18 Saatanan tunarit; 40, 42, 44, 48 Amatimies ja Kalju):
- * niille ajetaan --vain NN, kun tuote on palautettu myyntiin ja Printify on päivittänyt mockupit. Ilman henkilömockupia
+ * Ei mukana: personoidut (08, 39, 47, 50: mockupissa ei ole nimeä). Tonnin seteli (11) sekä Saatanan tunarit (04, 18),
+ * Amatimies ja Kalju (40, 42, 44, 48) tehtiin, kun painokuvat oli piirretty uudelleen ja tuotteet palautettu myyntiin
+ * (3.11.2026 ilta). Ilman henkilömockupia
  * (eikä sitä ole saman mallin t-paidalla): 30 (Pikkujoulut 2026 -huppari), 46 ja 54 (vanhat t-paidat, vain taiteltu kuva).
  * Huppareille, joilla ei ole lifestyle-kuvaa, käytetään saman mallin t-paidan kuvaa (LIFE_SISAR).
  */
-export const LIFE_ALKU_EI = new Set(["08", "39", "47", "50", "11", "04", "18", "40", "42", "44", "48", "30", "46", "54"]);
+export const LIFE_ALKU_EI = new Set(["08", "39", "47", "50", "30", "46", "54"]);
 export const LIFE_SISAR = {
   "60v-kokenut-ei-vanha-huppari": "60v-kokenut-ei-vanha-t-paita",
   "en-nuku-lepuutan-silmia-huppari-isalle": "en-nuku-lepuutan-silmia-t-paita-isalle",
 };
 export const LIFE_ALKU_ALKAEN = "2026-11-04";
+/** Jo julkaistut videot, joiden tilalle tehdään uusi (-v3): huomio näkyy julkaisulistassa ja /hallinta/somessa. */
+export const KORVAAVAT = {
+  "01": "Julkaistu 2.11. vanhalla mallilla, jossa oli oikean henkilön kasvot ja setelin kuva. Poista vanha julkaisu kaikista kanavista tai korvaa se tällä videolla.",
+};
+for (const v of VIDEOT) if (KORVAAVAT[v.nro]) Object.assign(v, { lifeAlku: true, huomio: KORVAAVAT[v.nro] });
 for (const v of VIDEOT) {
   if (v.kierros !== 3 || LIFE_ALKU_EI.has(v.nro) || paivays(v.paiva).iso < LIFE_ALKU_ALKAEN) continue;
   v.lifeAlku = true;
@@ -528,6 +535,8 @@ async function teeVideo(v) {
   await mkdir(tmp, { recursive: true });
   const tallenna = async (b, n) => { const p = join(tmp, `${v.nro}-${n}.png`); await writeFile(p, b); ruudut.push(p); };
   let kestot = [2.6, 3.2, 3.2, 2.6];
+  let kansi = null;
+  if (v.lifeAlku) { kansi = await avausruutu(v); await tallenna(kansi, "l"); }
   const k = v.muoto === "dialogi" ? await dialogi(v) : await koukku(v);
   await tallenna(k, "a");
   if (v.personoitu) {
@@ -549,10 +558,11 @@ async function teeVideo(v) {
     if (v.muoto === "dialogi") kestot = [2.8, 3.4, 2.8, 2.6];
   }
   await tallenna(await loppu(v), "z");
+  if (kansi) kestot = [2.6, 2.2, ...kestot.slice(1)];
   await mkdir(ULOS, { recursive: true });
   const nimi = videonNimi(v);
   const kesto = koosta(ruudut, kestot, join(ULOS, `${nimi}.mp4`));
-  await sharp(k).resize(540, 960).jpeg({ quality: 85 }).toFile(join(ULOS, `${nimi}.jpg`));
+  await sharp(kansi || k).resize(540, 960).jpeg({ quality: 85 }).toFile(join(ULOS, `${nimi}.jpg`));
   return { nimi, kesto };
 }
 
@@ -577,18 +587,31 @@ function henkiloUrl(p) {
   return (vi[p.variants?.default_color] || []).find(onHenkilo) || Object.values(vi).flat().find(onHenkilo) || (p.images || []).find(onHenkilo) || null;
 }
 
-/** Lifestyle-kuva tuotteelle tai saman mallin t-paidalle (LIFE_SISAR). */
+/**
+ * Lifestyle-kuva tuotteelle tai saman mallin t-paidalle (LIFE_SISAR). Jos tuotepohjalla ei ole henkilömockupia
+ * (Lovable-ajan tuotteet, esim. Tonnin seteli, Saatanan tunarit, Amatimies, Kalju: Printify tarjoaa vain etu-, taka- ja
+ * taiteltu-kuvat), käytetään tuotteen etukuvaa. Ihmistä ei lisätä keinotekoisesti.
+ */
 async function henkiloKuva(slug) {
   let p = await tuote(slug);
   let u = henkiloUrl(p);
   if (!u && LIFE_SISAR[slug]) { p = await tuote(LIFE_SISAR[slug]); u = henkiloUrl(p); }
-  if (!u) throw new Error(`${slug}: ei henkilömockupia (lisää LIFE_ALKU_EI-listaan)`);
-  return kuva(u, `${p.slug}-henkilo`);
+  if (!u) return { b: await kuva(p.images[0], `${p.slug}-0`), henkilo: false };
+  return { b: await kuva(u, `${p.slug}-henkilo`), henkilo: true };
 }
 
-/** Lifestyle-kuvasta rajataan malli olkapäistä lantioon, jotta paidan teksti on luettava puhelimessa. */
-async function henkiloRajaus(b, leveys, korkeus) {
+/**
+ * Lifestyle-kuvasta rajataan malli olkapäistä lantioon, jotta paidan teksti on luettava puhelimessa. Etukuvasta
+ * (henkilo false) rajataan paita keskeltä.
+ */
+async function henkiloRajaus({ b, henkilo }, leveys, korkeus) {
   const m = await sharp(b).metadata();
+  if (!henkilo) {
+    const h = Math.round(m.height * 0.8);
+    const w = Math.min(Math.round(m.width * 0.84), Math.round(h * leveys / korkeus));
+    const hh = Math.round(w * korkeus / leveys);
+    return sharp(b).extract({ left: Math.round((m.width - w) / 2), top: Math.round((m.height - hh) / 2), width: w, height: hh }).resize(leveys, korkeus).toBuffer();
+  }
   const top = Math.round(m.height * 0.02);
   // Leveys 70 % kuvasta; pystyrajauksessa (kahden paidan ruutu) korkeus rajoittaa ja leveys kapenee keskeltä.
   const h = Math.min(m.height - top, Math.round(m.width * 0.7 * korkeus / leveys));
@@ -865,6 +888,7 @@ export function julkaisulista() {
       nro: v.nro, nimi: videonNimi(v), muoto: v.muoto || "perus", paiva: paivays(v.paiva).iso, paivaFi: paivays(v.paiva).fi, aika: v.aika,
       hook: v.tilanne ? v.tilanne[0] : v.hook, kuvateksti: `${v.kysymys ? `${v.kysymys} ` : ""}${teksti} Linkki biossa. ${v.tagit.join(" ")}`, tagit: v.tagit, tuote: polku,
       ...(v.kysymys ? { kysymys: v.kysymys } : {}),
+      ...(v.huomio ? { huomio: v.huomio } : {}),
     };
   });
 }
@@ -882,7 +906,7 @@ async function julkaisut() {
     "## Näin julkaiset",
     "",
     "- **Uusi muoto 3.11. alkaen** (Instagramissa huumorivideot saivat noin 5 kertaa enemmän katseluja kuin tuotevideot): tilanne tai vitsi ensin, paita lopussa noin 2 s (\"Tää on nyt paidassa\") ja lopuksi kysymys. Sama kysymys on kuvatekstin alussa. Vastaa kommentteihin ja kiinnitä paras. Tiedostonimissä pääte -v2.",
-    "- **4.11. alkaen ensimmäinen ruutu on malli paita päällä** (Printifyn lifestyle-kuva) ja vitsi isolla ruudulla, koska katseluaika on 1-3 s. Tiedostonimissä pääte -v3. Ilman: personoidut, Tonnin seteli (uusi malli tulossa) ja piilotettujen tuotteiden videot (04, 18, 40, 42, 44, 48), sekä 30, 46 ja 54 (ei henkilökuvaa).",
+    "- **4.11. alkaen ensimmäinen ruutu on malli paita päällä** (Printifyn lifestyle-kuva) ja vitsi isolla ruudulla, koska katseluaika on 1-3 s. Tiedostonimissä pääte -v3. Ilman: personoidut sekä 30, 46 ja 54 (ei henkilökuvaa). Tonnin seteli, Saatanan tunarit, Amatimies ja Kalju (01, 04, 11, 18, 40, 42, 44, 48) on tehty uudelleen piirretyillä painokuvilla; niiden tuotteilla ei ole Printifyssä henkilökuvaa, joten ensimmäisessä ruudussa on paidan etukuva ja vitsi. Tonnin seteli -malleissa ei ole enää oikean henkilön kasvoja: 2.11. julkaistu video 01 kannattaa poistaa tai korvata.",
     "- **Videot 1-20** klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.",
     "- **Isävideot ennen isänpäivää 8.11.** Painettu paita ei enää ehdi isänpäiväksi, joten videot 36 ja 37 nostavat lahjakortin. Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.",
     `- **Black Friday ${BF_PAIVAT}** (muoto tarjous): kaksi ${eur(BF.kappalehinta)}:n t-paitaa ${eur(BF.parihinta)}. Kuvatekstissä on aina t-paidan hinta ja 30 päivän alin hinta; älä poista sitä. Joulun viimeinen tilauspäivä on ${JOULU_VIIMEINEN.teksti}`,
@@ -898,6 +922,7 @@ async function julkaisut() {
   for (const v of lista) {
     if (v.paiva !== edellinen) { rivit.push(`### ${v.paivaFi}`, ""); edellinen = v.paiva; }
     rivit.push(`**Klo ${v.aika}: video ${v.nro} (${v.muoto}): ${v.hook}**`, "",
+      ...(v.huomio ? [`- **HUOM:** ${v.huomio}`] : []),
       ...(v.kysymys ? [`- **Kysymys lopussa:** ${v.kysymys}`] : []),
       `- **Video:** \`some/videot/${v.nimi}.mp4\``,
       `- **Kuvateksti:** ${v.kuvateksti}`, "");

@@ -19,7 +19,7 @@
  },
  {
   "nro": "01",
-  "nimi": "01-tonnin-seteli-t-paita",
+  "nimi": "01-tonnin-seteli-t-paita-v3",
   "muoto": "perus",
   "paiva": "2026-11-02",
   "paivaFi": "2.11.",
@@ -32,7 +32,8 @@
    "#tonninseteli",
    "#lahjaidea"
   ],
-  "tuote": "/tuote/tonnin-seteli-t-paita"
+  "tuote": "/tuote/tonnin-seteli-t-paita",
+  "huomio": "Julkaistu 2.11. vanhalla mallilla, jossa oli oikean henkilön kasvot ja setelin kuva. Poista vanha julkaisu kaikista kanavista tai korvaa se tällä videolla."
  },
  {
   "nro": "22",
@@ -126,7 +127,7 @@
  },
  {
   "nro": "04",
-  "nimi": "04-saatanan-tunarit-t-paita-v2",
+  "nimi": "04-saatanan-tunarit-t-paita-v3",
   "muoto": "perus",
   "paiva": "2026-11-05",
   "paivaFi": "5.11.",
@@ -359,7 +360,7 @@
  },
  {
   "nro": "11",
-  "nimi": "11-se-oli-tonnin-seteli-t-paita-v2",
+  "nimi": "11-se-oli-tonnin-seteli-t-paita-v3",
   "muoto": "perus",
   "paiva": "2026-11-12",
   "paivaFi": "12.11.",
@@ -572,7 +573,7 @@
  },
  {
   "nro": "18",
-  "nimi": "18-saatanan-tunarit-huppari-v2",
+  "nimi": "18-saatanan-tunarit-huppari-v3",
   "muoto": "perus",
   "paiva": "2026-11-19",
   "paivaFi": "19.11.",
@@ -716,7 +717,7 @@
  },
  {
   "nro": "40",
-  "nimi": "40-black-friday-amatimies-t-paita-v2",
+  "nimi": "40-black-friday-amatimies-t-paita-v3",
   "muoto": "tarjous",
   "paiva": "2026-11-23",
   "paivaFi": "23.11.",
@@ -752,7 +753,7 @@
  },
  {
   "nro": "42",
-  "nimi": "42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v2",
+  "nimi": "42-black-friday-minulla-ei-ole-alkoholiongelmaa-t-p-v3",
   "muoto": "tarjous",
   "paiva": "2026-11-24",
   "paivaFi": "24.11.",
@@ -788,7 +789,7 @@
  },
  {
   "nro": "44",
-  "nimi": "44-black-friday-amatimies-t-paita-v2",
+  "nimi": "44-black-friday-amatimies-t-paita-v3",
   "muoto": "tarjous",
   "paiva": "2026-11-25",
   "paivaFi": "25.11.",
@@ -860,7 +861,7 @@
  },
  {
   "nro": "48",
-  "nimi": "48-black-friday-maailman-paras-aiti-t-paita-v2",
+  "nimi": "48-black-friday-maailman-paras-aiti-t-paita-v3",
   "muoto": "tarjous",
   "paiva": "2026-11-27",
   "paivaFi": "27.11.",

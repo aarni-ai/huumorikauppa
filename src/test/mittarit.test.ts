@@ -197,12 +197,13 @@ describe("somevideoiden julkaisulista", () => {
     const l = julkaisulista();
     for (const v of l) {
       const video = VIDEOT.find((x) => x.nro === v.nro);
-      const odotus = v.paiva >= LIFE_ALKU_ALKAEN && !LIFE_ALKU_EI.has(v.nro);
+      const odotus = (v.paiva >= LIFE_ALKU_ALKAEN && !LIFE_ALKU_EI.has(v.nro)) || v.nro === "01";
       expect(Boolean(video.lifeAlku)).toBe(odotus);
       expect(v.nimi.endsWith("-v3")).toBe(odotus);
     }
-    expect(l.filter((v) => v.nimi.endsWith("-v3"))).toHaveLength(37);
-    // Tonnin seteli (11) piirretään uudelleen, personoiduissa ei ole henkilömockupia.
-    for (const nro of ["11", "08", "39", "47", "50"]) expect(LIFE_ALKU_EI.has(nro)).toBe(true);
+    expect(l.filter((v) => v.nimi.endsWith("-v3"))).toHaveLength(45);
+    // Personoiduissa ei ole henkilömockupia. Tonnin seteli -video 01 (julkaistu 2.11., vanha malli kasvoineen) korvataan.
+    for (const nro of ["08", "39", "47", "50"]) expect(LIFE_ALKU_EI.has(nro)).toBe(true);
+    expect(l.find((v) => v.nro === "01").huomio).toMatch(/Poista vanha julkaisu/);
   });
 });
