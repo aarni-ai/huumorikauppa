@@ -4,7 +4,7 @@
  * ja videot ovat julkisia Blob-osoitteita. Sivu näyttää manifestin videot sen järjestyksessä (src/pages/SomeAdminPage.tsx),
  * joten tarkistetaan, että manifesti vastaa julkaisulistaa some/julkaisut.json:
  *   - sama määrä videoita samassa järjestyksessä (nimi, päivä, aika)
- *   - uudelleen tehdyt videot (-v2) ovat mukana
+ *   - uudelleen tehdyt videot (-v2, -v3 = avausruutu henkilömockupilla 4.11. alkaen) ovat mukana
  *   - päivät eivät mene taaksepäin
  *   - jokainen video vastaa 200 ja on video/mp4
  *
@@ -27,9 +27,11 @@ lista.forEach((j, i) => {
 });
 for (let i = 1; i < videot.length; i++) if (videot[i].paiva < videot[i - 1].paiva) virheet.push(`järjestys: ${videot[i].nimi} (${videot[i].paiva}) ennen ${videot[i - 1].paiva}`);
 
-const v2Listassa = lista.filter((j) => j.nimi.endsWith("-v2")).length;
-const v2Manifestissa = videot.filter((v) => v.nimi.endsWith("-v2")).length;
-if (v2Manifestissa !== v2Listassa) virheet.push(`-v2-videoita manifestissa ${v2Manifestissa}, listassa ${v2Listassa}`);
+const uusi = (n) => /-v[23]$/.test(n);
+const v2Listassa = lista.filter((j) => uusi(j.nimi)).length;
+const v2Manifestissa = videot.filter((v) => uusi(v.nimi)).length;
+const v3Manifestissa = videot.filter((v) => v.nimi.endsWith("-v3")).length;
+if (v2Manifestissa !== v2Listassa) virheet.push(`-v2/-v3-videoita manifestissa ${v2Manifestissa}, listassa ${v2Listassa}`);
 
 const tilat = await Promise.all(videot.map(async (v) => {
   const r = await fetch(v.video, { method: "HEAD" }).catch(() => null);
@@ -37,7 +39,7 @@ const tilat = await Promise.all(videot.map(async (v) => {
 }));
 virheet.push(...tilat.filter(Boolean));
 
-console.log(`Manifesti päivitetty ${manifest.paivitetty}: ${videot.length} videota, joista ${v2Manifestissa} uutta (-v2). Julkaisulistassa ${lista.length}, joista ${v2Listassa} uutta.`);
+console.log(`Manifesti päivitetty ${manifest.paivitetty}: ${videot.length} videota, joista ${v2Manifestissa} uutta (-v2/-v3, henkilömockup alussa ${v3Manifestissa}). Julkaisulistassa ${lista.length}, joista ${v2Listassa} uutta.`);
 if (virheet.length) {
   console.log(`EI VALMIS (${virheet.length} eroa):`);
   for (const v of virheet.slice(0, 15)) console.log(`- ${v}`);

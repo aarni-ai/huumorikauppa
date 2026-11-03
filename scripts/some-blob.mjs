@@ -90,17 +90,27 @@ if (process.argv.includes("--tekstit")) {
 if (process.argv.includes("--uudet")) {
   const manifest = await (await fetch(`https://${blobHost()}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
   const vanhat = new Map(manifest.videot.map((v) => [v.nimi, v]));
-  const videot = [];
+  const lista = julkaisulista();
+  const videot = new Array(lista.length);
   let uusia = 0;
-  for (const v of julkaisulista()) {
+  // 3.11.2026: uudet ladataan rinnakkain (RINNAKKAIN, oletus 6), koska yhteys on hidas; manifestin järjestys säilyy.
+  const jono = [];
+  lista.forEach((v, i) => {
     const vanha = vanhat.get(v.nimi);
-    if (vanha) { videot.push({ ...v, video: vanha.video, lataus: vanha.lataus, kansi: vanha.kansi }); continue; }
-    const video = await lataa(join(KANSIO, `${v.nimi}.mp4`), `some/videot/${v.nimi}.mp4`, "video/mp4");
-    const kansi = await lataa(join(KANSIO, `${v.nimi}.jpg`), `some/videot/${v.nimi}.jpg`, "image/jpeg");
-    videot.push({ ...v, video, lataus: `${video}?download=1`, kansi });
-    uusia++;
-    console.log(v.nimi);
-  }
+    if (vanha) videot[i] = { ...v, video: vanha.video, lataus: vanha.lataus, kansi: vanha.kansi };
+    else jono.push([v, i]);
+  });
+  const tyontekija = async () => {
+    for (let t = jono.shift(); t; t = jono.shift()) {
+      const [v, i] = t;
+      const video = await lataa(join(KANSIO, `${v.nimi}.mp4`), `some/videot/${v.nimi}.mp4`, "video/mp4");
+      const kansi = await lataa(join(KANSIO, `${v.nimi}.jpg`), `some/videot/${v.nimi}.jpg`, "image/jpeg");
+      videot[i] = { ...v, video, lataus: `${video}?download=1`, kansi };
+      uusia++;
+      console.log(v.nimi);
+    }
+  };
+  await Promise.all(Array.from({ length: Number(process.env.RINNAKKAIN || 6) }, tyontekija));
   manifest.videot = videot;
   manifest.julkaisut = await lataa(join(JUURI, "some/JULKAISUT.md"), "some/JULKAISUT.md", "text/markdown; charset=utf-8");
   manifest.paivitetty = new Date().toISOString();

@@ -72,7 +72,7 @@
  },
  {
   "nro": "23",
-  "nimi": "23-en-nuku-lepuutan-silmia-t-paita-isalle-v2",
+  "nimi": "23-en-nuku-lepuutan-silmia-t-paita-isalle-v3",
   "muoto": "pov",
   "paiva": "2026-11-04",
   "paivaFi": "4.11.",
@@ -90,7 +90,7 @@
  },
  {
   "nro": "03",
-  "nimi": "03-passissa-14-tuntia-hirvi-naki-minut-t-paita-mets-v2",
+  "nimi": "03-passissa-14-tuntia-hirvi-naki-minut-t-paita-mets-v3",
   "muoto": "perus",
   "paiva": "2026-11-04",
   "paivaFi": "4.11.",
@@ -108,7 +108,7 @@
  },
  {
   "nro": "24",
-  "nimi": "24-isa-tietaa-oikotien-aina-t-paita-isalle-v2",
+  "nimi": "24-isa-tietaa-oikotien-aina-t-paita-isalle-v3",
   "muoto": "aanestys",
   "paiva": "2026-11-05",
   "paivaFi": "5.11.",
@@ -143,7 +143,7 @@
  },
  {
   "nro": "36",
-  "nimi": "36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle-v2",
+  "nimi": "36-isanpaiva-lepopaiva-sama-asia-t-paita-isalle-v3",
   "muoto": "perus",
   "paiva": "2026-11-06",
   "paivaFi": "6.11.",
@@ -161,7 +161,7 @@
  },
  {
   "nro": "05",
-  "nimi": "05-kiltti-enimmakseen-t-paita-jouluun-v2",
+  "nimi": "05-kiltti-enimmakseen-t-paita-jouluun-v3",
   "muoto": "perus",
   "paiva": "2026-11-06",
   "paivaFi": "6.11.",
@@ -179,7 +179,7 @@
  },
  {
   "nro": "37",
-  "nimi": "37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita-v2",
+  "nimi": "37-isanpaivana-mina-paatan-kaukosaatimesta-t-paita-v3",
   "muoto": "pov",
   "paiva": "2026-11-07",
   "paivaFi": "7.11.",
@@ -197,7 +197,7 @@
  },
  {
   "nro": "06",
-  "nimi": "06-60v-kokenut-ei-vanha-huppari-v2",
+  "nimi": "06-60v-kokenut-ei-vanha-huppari-v3",
   "muoto": "perus",
   "paiva": "2026-11-07",
   "paivaFi": "7.11.",
@@ -215,7 +215,7 @@
  },
  {
   "nro": "07",
-  "nimi": "07-kala-oli-tatakin-isompi-t-paita-kalastajalle-v2",
+  "nimi": "07-kala-oli-tatakin-isompi-t-paita-kalastajalle-v3",
   "muoto": "perus",
   "paiva": "2026-11-08",
   "paivaFi": "8.11.",
@@ -233,7 +233,7 @@
  },
  {
   "nro": "27",
-  "nimi": "27-elakkeella-kiireinen-silti-t-paita-elakelaiselle-v2",
+  "nimi": "27-elakkeella-kiireinen-silti-t-paita-elakelaiselle-v3",
   "muoto": "pov",
   "paiva": "2026-11-09",
   "paivaFi": "9.11.",
@@ -269,7 +269,7 @@
  },
  {
   "nro": "28",
-  "nimi": "28-karaokevuoro-varattu-jo-syyskuussa-t-paita-pikku-v2",
+  "nimi": "28-karaokevuoro-varattu-jo-syyskuussa-t-paita-pikku-v3",
   "muoto": "dialogi",
   "paiva": "2026-11-10",
   "paivaFi": "10.11.",
@@ -287,7 +287,7 @@
  },
  {
   "nro": "09",
-  "nimi": "09-tonttu-koeajalla-t-paita-jouluun-v2",
+  "nimi": "09-tonttu-koeajalla-t-paita-jouluun-v3",
   "muoto": "perus",
   "paiva": "2026-11-10",
   "paivaFi": "10.11.",
@@ -305,7 +305,7 @@
  },
  {
   "nro": "29",
-  "nimi": "29-tanaan-tanssin-huomenna-kadun-t-paita-pikkujoulu-v2",
+  "nimi": "29-tanaan-tanssin-huomenna-kadun-t-paita-pikkujoulu-v3",
   "muoto": "pov",
   "paiva": "2026-11-11",
   "paivaFi": "11.11.",
@@ -323,7 +323,7 @@
  },
  {
   "nro": "10",
-  "nimi": "10-pilkilla-ala-soita-t-paita-kalastajalle-v2",
+  "nimi": "10-pilkilla-ala-soita-t-paita-kalastajalle-v3",
   "muoto": "perus",
   "paiva": "2026-11-11",
   "paivaFi": "11.11.",
@@ -376,7 +376,7 @@
  },
  {
   "nro": "31",
-  "nimi": "31-pikkujoulut-muistan-osittain-t-paita-pikkujoului-v2",
+  "nimi": "31-pikkujoulut-muistan-osittain-t-paita-pikkujoului-v3",
   "muoto": "aanestys",
   "paiva": "2026-11-13",
   "paivaFi": "13.11.",
@@ -394,7 +394,7 @@
  },
  {
   "nro": "12",
-  "nimi": "12-mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkei-v2",
+  "nimi": "12-mokilla-ei-ole-kiire-eika-kenttaa-t-paita-mokkei-v3",
   "muoto": "perus",
   "paiva": "2026-11-13",
   "paivaFi": "13.11.",
@@ -412,7 +412,7 @@
  },
  {
   "nro": "32",
-  "nimi": "32-elakkeella-kello-on-vain-koru-t-paita-elakelaise-v2",
+  "nimi": "32-elakkeella-kello-on-vain-koru-t-paita-elakelaise-v3",
   "muoto": "aanestys",
   "paiva": "2026-11-14",
   "paivaFi": "14.11.",
@@ -430,7 +430,7 @@
  },
  {
   "nro": "13",
-  "nimi": "13-glogi-ensin-sitten-joulu-t-paita-jouluun-v2",
+  "nimi": "13-glogi-ensin-sitten-joulu-t-paita-jouluun-v3",
   "muoto": "perus",
   "paiva": "2026-11-14",
   "paivaFi": "14.11.",
@@ -448,7 +448,7 @@
  },
  {
   "nro": "33",
-  "nimi": "33-riisipuurosta-loysin-vain-riisia-t-paita-jouluun-v2",
+  "nimi": "33-riisipuurosta-loysin-vain-riisia-t-paita-jouluun-v3",
   "muoto": "dialogi",
   "paiva": "2026-11-15",
   "paivaFi": "15.11.",
@@ -466,7 +466,7 @@
  },
  {
   "nro": "14",
-  "nimi": "14-koira-loysi-mina-en-t-paita-metsastajalle-v2",
+  "nimi": "14-koira-loysi-mina-en-t-paita-metsastajalle-v3",
   "muoto": "perus",
   "paiva": "2026-11-15",
   "paivaFi": "15.11.",
@@ -483,7 +483,7 @@
  },
  {
   "nro": "34",
-  "nimi": "34-joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun-v2",
+  "nimi": "34-joulukortit-lahtevat-ensi-vuonna-t-paita-jouluun-v3",
   "muoto": "dialogi",
   "paiva": "2026-11-16",
   "paivaFi": "16.11.",
@@ -501,7 +501,7 @@
  },
  {
   "nro": "15",
-  "nimi": "15-60v-takuu-mennyt-toimii-silti-t-paita-v2",
+  "nimi": "15-60v-takuu-mennyt-toimii-silti-t-paita-v3",
   "muoto": "perus",
   "paiva": "2026-11-16",
   "paivaFi": "16.11.",
@@ -519,7 +519,7 @@
  },
  {
   "nro": "35",
-  "nimi": "35-glogi-ensin-sitten-joulu-t-paita-jouluun-v2",
+  "nimi": "35-glogi-ensin-sitten-joulu-t-paita-jouluun-v3",
   "muoto": "aanestys",
   "paiva": "2026-11-17",
   "paivaFi": "17.11.",
@@ -537,7 +537,7 @@
  },
  {
   "nro": "16",
-  "nimi": "16-pikkujoulujen-nimetty-kuski-t-paita-pikkujouluih-v2",
+  "nimi": "16-pikkujoulujen-nimetty-kuski-t-paita-pikkujouluih-v3",
   "muoto": "perus",
   "paiva": "2026-11-17",
   "paivaFi": "17.11.",
@@ -554,7 +554,7 @@
  },
  {
   "nro": "17",
-  "nimi": "17-sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeil-v2",
+  "nimi": "17-sauna-lampiaa-muut-asiat-odottaa-t-paita-mokkeil-v3",
   "muoto": "perus",
   "paiva": "2026-11-18",
   "paivaFi": "18.11.",
@@ -589,7 +589,7 @@
  },
  {
   "nro": "25",
-  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel-v2",
+  "nimi": "25-heratyskello-elakkeella-myos-t-paita-elakelaisel-v3",
   "muoto": "pov",
   "paiva": "2026-11-20",
   "paivaFi": "20.11.",
@@ -607,7 +607,7 @@
  },
  {
   "nro": "19",
-  "nimi": "19-hauska-t-paita-golfaajalle-bogey-on-elamantapa-v2",
+  "nimi": "19-hauska-t-paita-golfaajalle-bogey-on-elamantapa-v3",
   "muoto": "perus",
   "paiva": "2026-11-20",
   "paivaFi": "20.11.",
@@ -625,7 +625,7 @@
  },
  {
   "nro": "26",
-  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle-v2",
+  "nimi": "26-loylya-lisaa-ei-ole-kuuma-t-paita-mokkeilijalle-v3",
   "muoto": "pov",
   "paiva": "2026-11-21",
   "paivaFi": "21.11.",
@@ -644,7 +644,7 @@
  },
  {
   "nro": "20",
-  "nimi": "20-kalastan-siis-valehtelen-t-paita-kalastajalle-v2",
+  "nimi": "20-kalastan-siis-valehtelen-t-paita-kalastajalle-v3",
   "muoto": "perus",
   "paiva": "2026-11-21",
   "paivaFi": "21.11.",
@@ -661,7 +661,7 @@
  },
  {
   "nro": "38",
-  "nimi": "38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou-v2",
+  "nimi": "38-pikkujoulut-nyt-sinuttelen-esimiesta-t-paita-jou-v3",
   "muoto": "pov",
   "paiva": "2026-11-22",
   "paivaFi": "22.11.",
@@ -697,7 +697,7 @@
  },
  {
   "nro": "41",
-  "nimi": "41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno-v2",
+  "nimi": "41-loylymestari-vain-yksi-kauha-lisaa-t-paita-sauno-v3",
   "muoto": "pov",
   "paiva": "2026-11-23",
   "paivaFi": "23.11.",
@@ -734,7 +734,7 @@
  },
  {
   "nro": "43",
-  "nimi": "43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-v2",
+  "nimi": "43-saunakalja-ei-ole-neuvoteltavissa-t-paita-oluen-v3",
   "muoto": "perus",
   "paiva": "2026-11-24",
   "paivaFi": "24.11.",
@@ -770,7 +770,7 @@
  },
  {
   "nro": "45",
-  "nimi": "45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa-v2",
+  "nimi": "45-sahkomies-tiedan-mika-johtaa-mihinkin-t-paita-sa-v3",
   "muoto": "pov",
   "paiva": "2026-11-25",
   "paivaFi": "25.11.",
@@ -842,7 +842,7 @@
  },
  {
   "nro": "49",
-  "nimi": "49-kinkkuvahti-ala-koske-t-paita-jouluun-v2",
+  "nimi": "49-kinkkuvahti-ala-koske-t-paita-jouluun-v3",
   "muoto": "dialogi",
   "paiva": "2026-11-27",
   "paivaFi": "27.11.",
@@ -878,7 +878,7 @@
  },
  {
   "nro": "51",
-  "nimi": "51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan-v2",
+  "nimi": "51-sairaanhoitaja-kahvi-on-ensiapua-t-paita-sairaan-v3",
   "muoto": "pov",
   "paiva": "2026-11-28",
   "paivaFi": "28.11.",
@@ -914,7 +914,7 @@
  },
  {
   "nro": "53",
-  "nimi": "53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu-v2",
+  "nimi": "53-piipahdan-yhdelle-palaan-maanantaina-t-paita-olu-v3",
   "muoto": "pov",
   "paiva": "2026-11-29",
   "paivaFi": "29.11.",
@@ -932,7 +932,7 @@
  },
  {
   "nro": "52",
-  "nimi": "52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-v2",
+  "nimi": "52-anoppi-tulee-jouluksi-pysy-rauhallisena-t-paita-v3",
   "muoto": "pov",
   "paiva": "2026-11-29",
   "paivaFi": "29.11.",
@@ -950,7 +950,7 @@
  },
  {
   "nro": "55",
-  "nimi": "55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul-v2",
+  "nimi": "55-lahjapaniikki-perinteinen-joulutapa-t-paita-joul-v3",
   "muoto": "perus",
   "paiva": "2026-11-30",
   "paivaFi": "30.11.",
