@@ -298,7 +298,7 @@ const PERUSSIVUT: LandingPageDef[] = [
       },
       {
         q: "Mitä joululahjoja saa alle 30 eurolla?",
-        a: "T-paidat ja koristeet mahtuvat alle 30 euron budjettiin. Hupparit ovat kalliimpia, ja ne löytyvät alle 50 euron joululahjoista.",
+        a: "T-paidat mahtuvat alle 30 euron budjettiin. Hupparit ovat kalliimpia, ja ne löytyvät alle 50 euron joululahjoista.",
       },
       {
         q: "Voiko joululahjan palauttaa?",
@@ -890,9 +890,9 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/lahjat/alle-30-euroa",
     name: "Lahjat alle 30 €",
     group: "joulu",
-    title: "Lahjat alle 30 euroa: paidat ja koristeet | Huumorikauppa",
+    title: "Lahjat alle 30 euroa: hauskat t-paidat | Huumorikauppa",
     description:
-      `Lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. ${JOULU_META}`,
+      `Lahjat alle 30 eurolla: hauskat t-paidat valmiilla tai omalla tekstillä. ${JOULU_META}`,
     h1: "Lahjat alle 30 euroa",
     intro: [
       "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan tai koristeen: kaikki tämän sivun tuotteet maksavat enintään 30 euroa. Koko valikoima ilman hintarajaa on sivulla hauskat lahjat.",

@@ -3114,3 +3114,167 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 4. **Piilotettujen palautus:** uusi vähintään 150 DPI:n painotiedosto Printifyyn, sitten `node scripts/painotiedostot-tarkistus.mjs`.
 5. **Laatuvalitukset:** varaudu Elias L.:n (Saatanan tunarit) ja Jaana V.:n (Amatimies) mahdollisiin laatuvalituksiin.
 6. **Blogit:** linkit piilotettuihin tuotteisiin (Kalju, Amatimies, Tässä talossa) ohjautuvat /kaikki-tuotteet-sivulle. Tekstit kannattaa päivittää.
+
+## 3.11.2026 (myöhäisilta): painotiedostot uudelleen, Tonnin seteli ilman henkilön kuvaa, Search Console, somevideot, hintatesti, bottisuodatus, arvostelut, yritysten takaraja
+
+### Piilotetut 14 tuotetta takaisin myyntiin
+- **Uudelleenpiirto:** jokainen matala painokuva korvattiin omalla vektoripiirroksella, ja Printifyn tekstitasot muutettiin kuviksi. Kaikki on vähintään 300 DPI:n tarkkuudella painoalueella.
+  - Skriptit: scripts/painotiedostot-uudelleenpiirto.mjs ja scripts/lib/painopiirrokset.mjs.
+  - Sanamuoto ja sijoittelu ovat ennallaan, koska piirros tehtiin alkuperäisen kuvan kuvasuhteeseen ja näkyvän alueen sisään.
+- **Tarkistus Printifyssä (20 tuotetta):**
+  - Pienin painokuvan resoluutio on 300 DPI, aiemmin 18-74 DPI.
+  - Tekstitasoja ei ole jäljellä, lukitukset on avattu ja tuotteet näkyvät.
+  - Vanhat painoalueet on tallessa perumista varten: data/painotiedostot-uudelleenpiirto.json.
+- **Oikeudellinen riski pois samalla:**
+
+| Tuote | Ennen | Nyt |
+|---|---|---|
+| Saatanan tunarit | Valokuva tunnetusta henkilöstä (250 px) | Paksusankaiset silmälasit, teksti ennallaan |
+| Kalju | Olutmerkin karhulogo kaljuna | Oma piirretty kaljupäinen karhu ja KALJU |
+| ICE AATANA | Elokuvahahmo | Oma tammenterhohahmo, jonka toinen silmä on musta |
+| Slay queen, Olen eläkkeellä | Applen emoji | Omat hymiöt |
+| Amatimies | Kuvakaappaus tietyömerkistä | Vektorimerkki |
+| Suomi Finland | 293 px:n leijona | Valtion vaakunan leijona (Wikimedia, julkinen) ilman kilpeä ja ruusuja |
+| Tässä talossa asuu yksi pomo | Tekoälykuva (1200 px) | Oma koira aurinkolaseissa ja POMO-rusetissa, teksti vektorina |
+
+- **Kontrasti tarkistettiin mockupeista valkoisella ja mustalla paidalla.** Löytyi ja korjattiin:
+  - Amatimies: valkoisissa väreissä oli keltainen teksti.
+  - Olen eläkkeellä: mustassa oli musta teksti.
+  - Molemmissa syy oli tekstikuvien välimuistiavaimen törmäys, ja se on korjattu.
+  - Saatanan tunarit -t-paita: Monoton-fontti näkyi harmaana kaikilla pohjilla. Fontti vaihdettiin paksuun slab-fonttiin, ja Dark Heatherille tehtiin oma valkoinen painoalue.
+- **Neljän tuotteen käsikorjaus Printifyn editorissa tehtiin API:lla, eikä Coworkin tarvitse tehdä mitään.**
+  - Kyseessä olivat Se oli tonnin seteli ja Olen eläkkeellä, kummastakin t-paita ja huppari.
+  - Tekstitasot ovat nyt kuvia samassa kohdassa, ja painokuvat ovat 300 DPI:ssä.
+- **Myynnissä:** api/_lib/painolaatu-data.js on tyhjä, joten 301-ohjaukset /kaikki-tuotteet-sivulle päättyvät.
+- **Blogit:**
+  - Linkit 14 palautettuun tuotteeseen toimivat taas.
+  - Lisäksi blogeissa oli 4 linkkiä tuotteisiin, joita ei ole myynnissä: koristeet, pitkähihainen ja Yksi kerta vielä. Ne vaihdettiin oma teksti/kuva -paitaan ja -huppariin.
+  - Myyntiä vastaamattomat koristehinnat poistettiin teksteistä.
+  - Artikkeli "hauskat koristeet lahjaksi" jäi ennalleen. Se odottaa päätöstä: ohjataanko, poistetaanko vai kirjoitetaanko se uudelleen.
+
+### Tonnin seteli ilman oikean henkilön kuvaa
+- **Suomen Pankin ohje (17.11.2023):**
+  - Markkasetelien kuvien kaupallinen käyttö kuuluu Suomen lakiin, myös tekijänoikeuslakiin, eikä pankki vastaa käytöstä.
+  - Eurosetelien jäljennöksiin sovelletaan EKP:n päätöstä EKP/2013/10, jonka mukaan jäljennöstä ei saa voida sekoittaa aitoon.
+- **Uusi malli:** oma piirretty setelimäinen kehys, jossa on vihreä guillosiruusuke, "TONNIN SETELI", "1000" ja "YKSI TONNI".
+  - Ei muotokuvaa, ei pankin nimeä, ei rahayksikköä, ei sarjanumeroita eikä virallisia merkintöjä.
+  - Malli on yksivärinen ja selvästi paidan kuva eikä seteli.
+  - Se oli tonnin seteli -tuotteissa teksti on ennallaan kehyksen alla.
+- **Päivitetty:**
+  - Printifyssä Tonnin seteli -t-paita ja -huppari sekä Se oli tonnin seteli -t-paita ja -huppari.
+  - Kaupan tuotekuvat uudella cron-tehtävällä `?tehtava=tuotekuvat`, joka päivittää vain kuvat Printifyn uusista mockupeista.
+  - Shopping- ja Pinterest-lisäkuvat, lahjaoppaan mediakuvat ja somevideot: katso julkaisun kohta.
+- **Tarrat ja julisteet** ovat pelkkää tekstiä, joten niihin ei tarvittu muutosta.
+
+### Search Console (Coworkin havainnot)
+- **Hakulausekkeiden kohdesivut:** jokaiselle hakulausekkeelle on nyt yksi kohdesivu.
+
+| Hakulauseke | Kohdesivu | Muutos |
+|---|---|---|
+| hauskat lahjat, huumorilahjat | Etusivu | Title ja H1 "Hauskat lahjat ja huumorilahjat" |
+| hauskat joululahjat | /joululahjat | Title oli jo oikein |
+
+- **Kilpailevat sivut:** hintasivujen ja blogien titlet vaihdettiin omaan kulmaansa:
+  - "Lahjat alle 30 euroa: paidat ja koristeet"
+  - "Joululahja alle 50 €"
+  - "Pikkujoululahjat ja edulliset lahjaideat 2026"
+  - "10 lahjaideaa alle 30 euroa"
+- **Sisäiset linkit:** hintasivuilta ja blogeista sekä alatunnisteesta linkit kohdesivuille tarkalla ankkuritekstillä.
+- **Kaksoiskappaleet:** kaikilla kolmella sivulla oli jo oma canonical, eli syy oli päällekkäinen sisältö.
+  - **/lahjat/pikkujouluihin:** 66-69 % samoista tuotteista ja 43-57 % samasta tekstistä kuin salaisen joulupukin ja työkaverin sivuilla. Sivulla on nyt vain juhlan omat mallit, oma intro ja kaksi opasosiota.
+  - **/lahjat/pomolle:** ohut sivu. Lisättiin kolme opasosiota ja uusi kuvaus, ja palautetut Tässä talossa asuu yksi pomo -paidat ovat taas sivulla.
+  - **/kategoria/hupparit:** kaksi yleistekstiä poistettiin. Tilalle tuli faktoja mittataulukosta (Gildan 18500, 50/50, koot XS-5XL) ja UKK.
+- **www:** www.huumorikauppa.fi palauttaa 307:n vanhan Vercel-projektin domain-asetuksesta. Tämän koneen Vercel-tunnus ei näe sitä tiimiä.
+  - Koodissa middleware ja vercel.json ohjaavat www:n 301:llä apexiin, jos www päätyy sovellukseen asti.
+  - Canonical-, og:url- ja sivukarttaosoitteet ovat aina ilman www:tä.
+  - **Coworkille:** katso lista alla.
+
+### Somevideot: ensimmäinen ruutu ihmisen päällä
+- **Päivitetyt videot:** 37 julkaisematonta videota (-v3). Ensimmäinen ruutu ja kansikuva on Printifyn oma lifestyle-kuva, jossa oikea malli istuu paita päällä.
+  - Vitsi on ruudulla isolla korostusvärillä turva-alueella.
+  - Ei tekoälyihmisiä eikä puhuvia hahmoja.
+- **Blob ja /hallinta/some:** molemmat päivitetty. `node scripts/some-tarkistus.mjs` antaa OK: 55 videota oikeassa järjestyksessä.
+- **Ennalleen jäi:**
+  - personoidut 08, 39, 47 ja 50, koska mockupissa ei ole nimeä
+  - 30, 46 ja 54, koska niillä ei ole henkilökuvaa
+  - jo julkaistut
+  - videot, joissa on palautettu tai uudistettu tuote (Tonnin seteli 11, Saatanan tunarit 04 ja 18, Amatimies ja Kalju 40, 42, 44 ja 48): katso julkaisun kohta
+- **Hupparivideot:** videossa 06 ja videon 24 B-kohdassa avausruudussa on saman mallin t-paita, koska huppareilla ei ole lifestyle-kuvaa.
+
+### Ilmaisen toimituksen hintatesti (A/B, yhden tuotteen tilaukset)
+- **Versiot:**
+  - A = nykyinen: tuote ja toimitus 6,90 €.
+  - B = hinta sisältää toimituksen ja teksti "Ilmainen toimitus". Hinta on tuote + 6,90 € pyöristettynä ylöspäin ,90:aan.
+- **Katelaskelma:** yhden kappaleen tilaukset, kaikki myynnissä olevat variantit, Stripen kulut mukana.
+
+| Tuote | A yhteensä | B | Kate A pienin | Kate B pienin |
+|---|---|---|---|---|
+| T-paita 24,90 | 31,80 | 31,90 | 7,22 | 7,30 |
+| T-paita 27,90 | 34,80 | 34,90 | 9,40 | 9,48 |
+| T-paita 29,90 | 36,80 | 36,90 | 8,55 | 8,63 |
+| Huppari 52,90 | 59,80 | 59,90 | 10,13 | 10,21 |
+| Huppari 59,90 | 66,80 | 66,90 | 9,92 | 9,99 |
+
+- **Ehdot:**
+  - B:n kate on aina vähintään A:n tasolla ja vähintään 7 € (testattu kaikilla yhden tuotteen tilauksilla).
+  - Kahden tai useamman tuotteen korissa summa on sama kuin A:ssa.
+  - Alennuskoodeissa, paketeissa ja alennusmyynnissä B ei ole käytössä.
+- **Versio pysyy koko käynnin:** istuntoeväste hk_ab_toimitus (arvo a tai b, ei tunnistetta) on lisätty tietosuojaselosteeseen.
+- **Hinta palvelimella:** kassa laskee hinnan versiosta itse eikä luota selaimen hintaan.
+- **Google näkee version A:** Merchant-syöte, JSON-LD, metatagit, esirenderöinti ja botit käyttävät aina A:ta, kunnes testi on ratkaistu.
+- **Mittarit versioittain** (vain aidot käynnit):
+  - käynti, tuotesivu, kori ja kassa
+  - osto ja kate tilauksilta (orders.toimitus_versio, toimitus_kate)
+  - kate per käynti
+- **Päätössääntö:** kun kummassakin versiossa on vähintään 300 aitoa tuotesivun katselua, voittaja on suurempi kate per käynti. Tasapelissä A jää. Raportti nimeää voittajan (`node scripts/tuoteseuranta-raportti.mjs`, päivän yhteenveto).
+- **Pakotus tarkistusta varten:** ?ab=toimitus-b.
+
+### Bottiliikenne pois mittareista
+- **Käynti on aito vain, kun kaikki ehdot täyttyvät:**
+  - tavallinen selaimen User-Agent: ei bottilistaa, ei HeadlessChromea tai PhantomJS:ää, ei ikivanhoja versioita
+  - ei datakeskuksen IP-osoitetta: staattinen lista AWS:n, GCP:n, Azuren, Hetznerin, OVH:n, DigitalOceanin ja muiden alueista, eikä IP:tä tallenneta
+  - ei headless-merkkejä: webdriver, 0 x 0 -ikkuna, tyhjä kielilista
+  - ihmisen vuorovaikutus: kosketus, hiiri, rulla tai näppäin (pelkkä ohjelmallinen vieritys ei riitä)
+- **Suodatus koskee:**
+  - käyntilaskuria, mittaria ja konversiota
+  - suppiloa, tuoteseurantaa ja laskeutumisia
+  - kaikkia A/B-testejä: koko, blogi ja toimitus
+  - lisämyyntiä
+- **Botit omaan laskuriin:** taulu aitous (päivä x mittari x luokka). Raportti näyttää rivin "kaikki / aidot (%) / botit syittäin". Esimerkki muodosta: "tuotesivun katselut: kaikki 100, aidot 30 (30 %), botit 70 (ei vuorovaikutusta 60, datakeskus 10)".
+- **Välitetyt pyynnöt:** vanha projekti välittää kävijän IP:n otsakkeessa x-huumorikauppa-ip, koska uusi projekti näkee muuten vain välittäjän osoitteen. Tämä toimii, kun main on julkaistu myös vanhaan projektiin (GitHub-push).
+- **Katko aikasarjassa:** ennen tätä julkaisua luvut sisältävät botit, jälkeen vain aidot. Vanhaa dataa ei voi jakaa jälkikäteen.
+
+### Arvostelut aidosti
+- **Arvostelupyyntö:**
+  - Lähtee vain toimitetuille tilauksille: Printifyn toimituspäivä + 1 päivä (aiemmin 7 päivää lähetyksestä).
+  - Lähtee kerran tilausta ja asiakasta kohden, tallennettuna kantaan.
+  - Ei lähde kenellekään ennen toimitusta.
+  - Lähtee vain, kun Gmail-reitti on päällä tai Resendin domain on vahvistettu.
+- **Jaana V.:**
+  - Tilaus on Printifyssä tilassa in-production, eikä lähetystä vielä ole.
+  - Pyyntö lähtee automaattisesti päivä toimituksen jälkeen, kun Gmail toimii.
+- **Tuotesivu ja JSON-LD:**
+  - Tuotesivu näyttää vain tilaukseen sidotut, julkaistut arviot.
+  - JSON-LD saa aggregateRatingin ja reviewin vain niistä. Ilman aitoja arvioita schemassa ei ole arvosanaa.
+  - Keksityt arviot oli poistettu jo 21.10.
+  - Arvioiden määrä tiloittain: `?tehtava=arviot`.
+
+### Yritysten joulutilausten takaraja to 26.11.
+- **Laskuri:** "Yritysten joulutilaukset: X päivää jäljellä (takaraja to 26.11.)".
+  - Näkyy sivuilla /yritykset, yritysten alasivuilla ja /yritykset/tilaus.
+  - Helsingin aika, päivittyy selaimessa.
+  - Viimeisenä päivänä teksti on "viimeinen tilauspäivä tänään", ja sen jälkeen laskuri piiloutuu.
+- **Hinta-arvio:** tarjouspyynnön vastauksessa on automaattinen hinta-arvio määrän mukaan nykyisistä määräalennuksista (ALV mukana, ilmainen toimitus, alle 10 kpl ei arviota). Määräalennus rajataan suurimpaan portaaseen, jolla kate pysyy vähintään 7 €:ssa kappaleelta. Meemipaidalla se tarkoittaa, että 10 kpl on 249 € (aiemmin 224,10 €).
+
+| Malli | 10 kpl | 25 kpl | 50 kpl |
+|---|---|---|---|
+| Meemipaita | 24,90 € | 22,41 € | 22,41 € |
+| T-paita | 25,11 € | 24,55 € | 23,99 € |
+| Oma logo | 26,91 € | 26,31 € | 25,71 € |
+| Huppari | 52,90 € | 52,90 € | 52,90 € |
+
+- **Huomio:** kassan oma määräalennus antaa meemipaidalle yhä täyden alennuksen. Kassan lopullinen 7 €:n vahti katsoo koko tilauksen katetta, ei kappalekohtaista. Jatkossa samaa porrasrajausta kannattaa käyttää myös kassassa.
+
+### Gmail-reitti
+- `?tehtava=sahkopostireitti` palauttaa 3.11. klo 22: reitti resend, gmail false. Aarni ei ole vielä ajanut salasanaskriptiä.
+- Testiviesti osoitteeseen huumorikauppa@gmail.com ja tilausvahvistuksen tarkistus tehdään, kun gmail on true. Reitti näyttää sen suoraan, ja tarkistus on `?tehtava=ilmoitustesti`.
