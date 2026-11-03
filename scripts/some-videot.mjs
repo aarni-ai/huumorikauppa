@@ -26,6 +26,8 @@ const ULOS = join(JUURI, "some/videot");
 const VALI = join(JUURI, "some/.valimuisti");
 const FFMPEG = process.env.FFMPEG || "ffmpeg";
 const W = 1080, H = 1920, FPS = 30;
+/** Julkaisupäivä 1 (paivays). */
+const ALKU = "2026-11-02";
 const KAUPPA = "https://huumorikauppa.fi";
 const ANTON = "https://fonts.gstatic.com/s/anton/v27/1Ptgg87LROyAm0K0.ttf";
 const ARIAL = "/System/Library/Fonts/Supplemental/Arial Bold.ttf";
@@ -397,8 +399,9 @@ async function personoituKuva(malli, nimi, ika, vari) {
 let tuotteet;
 async function tuote(slug) {
   if (!tuotteet) {
-    const r = await fetch(`${KAUPPA}/api/products?fields=slug,name,images,price,category,variants`);
-    const j = await r.json();
+    // TUOTTEET_JSON: aiemmin tallennettu /api/products-vastaus (hidas yhteys, 4,5 Mt).
+    const j = process.env.TUOTTEET_JSON ? JSON.parse(await readFile(process.env.TUOTTEET_JSON, "utf8"))
+      : await (await fetch(`${KAUPPA}/api/products?fields=slug,name,images,price,category,variants`)).json();
     tuotteet = new Map((Array.isArray(j) ? j : j.products).map((p) => [p.slug, p]));
   }
   const p = tuotteet.get(slug);
@@ -491,10 +494,33 @@ async function aanestysruutu(v, kuvat, nimet, kehotus) {
   return sharp(pohja).composite(kortit.map((k, i) => ({ input: k, left: 30 + i * (lev + 20), top: 650 }))).png().toBuffer();
 }
 
+/**
+ * Neljäs kierros (3.11.2026 ilta, Instagramin data: katseluaika 1-3 s, tykkäyksiä ei tule; Coworkin havainto: parhaiten
+ * toimii tuote ihmisen päällä heti alussa, heikoimmat alkavat pelkällä tekstikuvalla). 4.11. alkaen julkaistavien
+ * videoiden ensimmäinen ruutu (myös kansikuva) on Printifyn oma lifestyle-mockup (oikea malli, paita päällä), ja vitsi
+ * luetaan ruudulta isolla tekstillä TikTokin ja Reelsin turva-alueella (ei ylimmät 220 px eikä alimmat 380 px).
+ * Sen jälkeen tilanne ja kysymys kuten kolmannella kierroksella. Tiedostonimissä pääte -v3.
+ * Ei mukana: personoidut (08, 39, 47, 50: mockupissa ei ole nimeä), Tonnin seteli (11: malli piirretään uudelleen) ja
+ * painolaadun vuoksi piilotettujen tuotteiden videot (04, 18 Saatanan tunarit; 40, 42, 44, 48 Amatimies ja Kalju):
+ * niille ajetaan --vain NN, kun tuote on palautettu myyntiin ja Printify on päivittänyt mockupit. Ilman henkilömockupia
+ * (eikä sitä ole saman mallin t-paidalla): 30 (Pikkujoulut 2026 -huppari), 46 ja 54 (vanhat t-paidat, vain taiteltu kuva).
+ * Huppareille, joilla ei ole lifestyle-kuvaa, käytetään saman mallin t-paidan kuvaa (LIFE_SISAR).
+ */
+export const LIFE_ALKU_EI = new Set(["08", "39", "47", "50", "11", "04", "18", "40", "42", "44", "48", "30", "46", "54"]);
+export const LIFE_SISAR = {
+  "60v-kokenut-ei-vanha-huppari": "60v-kokenut-ei-vanha-t-paita",
+  "en-nuku-lepuutan-silmia-huppari-isalle": "en-nuku-lepuutan-silmia-t-paita-isalle",
+};
+export const LIFE_ALKU_ALKAEN = "2026-11-04";
+for (const v of VIDEOT) {
+  if (v.kierros !== 3 || LIFE_ALKU_EI.has(v.nro) || paivays(v.paiva).iso < LIFE_ALKU_ALKAEN) continue;
+  v.lifeAlku = true;
+}
+
 const kuvaUrlit = (p, kuvat) => kuvat.map((x) => (x === "lifestyle" ? p.images.find((u) => u.includes("lifestyle")) : p.images[x]));
 
 /** Videon tiedostonimi ilman päätettä. */
-export const videonNimi = (v) => `${v.nro}-${v.slug.slice(0, 48).replace(/-+$/, "")}${v.kierros === 3 ? "-v2" : ""}`;
+export const videonNimi = (v) => `${v.nro}-${v.slug.slice(0, 48).replace(/-+$/, "")}${v.lifeAlku ? "-v3" : v.kierros === 3 ? "-v2" : ""}`;
 
 async function teeVideo(v) {
   const ruudut = [];
@@ -542,6 +568,62 @@ async function lifeRuutu(v, kuvaB, otsikko) {
   const m = await sharp(kuvaB).metadata();
   const rajattu = await sharp(kuvaB).extract({ left: Math.round(m.width * 0.19), top: Math.round(m.height * 0.01), width: Math.round(m.width * 0.62), height: Math.round(m.height * 0.62) }).jpeg().toBuffer();
   return tuoteruutu({ ...v, personoitu: true }, rajattu, otsikko.teksti, otsikko.etuliite, otsikko.lainaus ?? true);
+}
+
+/** Henkilömockup (Printifyn camera_label=lifestyle: oikea malli, paita päällä); context-kuvat eivät kelpaa. */
+function henkiloUrl(p) {
+  const vi = p.variants?.variant_images || {};
+  const onHenkilo = (u) => /camera_label=lifestyle(?:&|$)/.test(u);
+  return (vi[p.variants?.default_color] || []).find(onHenkilo) || Object.values(vi).flat().find(onHenkilo) || (p.images || []).find(onHenkilo) || null;
+}
+
+/** Lifestyle-kuva tuotteelle tai saman mallin t-paidalle (LIFE_SISAR). */
+async function henkiloKuva(slug) {
+  let p = await tuote(slug);
+  let u = henkiloUrl(p);
+  if (!u && LIFE_SISAR[slug]) { p = await tuote(LIFE_SISAR[slug]); u = henkiloUrl(p); }
+  if (!u) throw new Error(`${slug}: ei henkilömockupia (lisää LIFE_ALKU_EI-listaan)`);
+  return kuva(u, `${p.slug}-henkilo`);
+}
+
+/** Lifestyle-kuvasta rajataan malli olkapäistä lantioon, jotta paidan teksti on luettava puhelimessa. */
+async function henkiloRajaus(b, leveys, korkeus) {
+  const m = await sharp(b).metadata();
+  const top = Math.round(m.height * 0.02);
+  // Leveys 70 % kuvasta; pystyrajauksessa (kahden paidan ruutu) korkeus rajoittaa ja leveys kapenee keskeltä.
+  const h = Math.min(m.height - top, Math.round(m.width * 0.7 * korkeus / leveys));
+  const w = Math.round(h * leveys / korkeus);
+  return sharp(b).extract({ left: Math.round((m.width - w) / 2), top, width: w, height: h }).resize(leveys, korkeus).toBuffer();
+}
+
+/**
+ * Avausruutu (neljäs kierros): lifestyle-mockup koko leveydeltä (y 220-1230) ja paidan vitsi isolla korostusvärillä sen
+ * alla (y 1250-1540). Kaikki sisältö turva-alueella: ei ylimmät 220 px (sovelluksen yläpalkki) eikä alimmat 380 px.
+ */
+async function avausruutu(v) {
+  const t = TEEMAT[v.teema];
+  const p = await tuote(v.slug);
+  const kuvaB = await henkiloRajaus(await henkiloKuva(v.slug), W, 1010);
+  const { koko, rivit } = sovita(`"${paidanTeksti(p.name)}"`, 980, 270, { max: 120, min: 56 });
+  const kork = rivit.length * koko * 1.18;
+  const pohja = await svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${t.tausta}"/>
+    ${tekstiSvg(rivit, koko, 1395 - kork / 2 - koko * 0.12, t.korostus)}</svg>`);
+  return sharp(pohja).composite([{ input: kuvaB, left: 0, top: 220 }]).png().toBuffer();
+}
+
+/** Avausruutu kahdelle paidalle (äänestys ja Black Friday -pari): mallit rinnakkain, A/B ja vitsit alla. */
+async function avausruutuPari(v) {
+  const t = TEEMAT[v.teema];
+  const tt = await Promise.all(v.slugit.map((x) => tuote(x)));
+  const lev = 530, kork = 760;
+  const kuvat = await Promise.all(v.slugit.map(async (x) => henkiloRajaus(await henkiloKuva(x), lev, kork)));
+  const nimet = tt.map((p) => sovita(`"${paidanTeksti(p.name)}"`, 500, 300, { max: 76, min: 40 }));
+  const x0 = (i) => 6 + i * (lev + 8);
+  const ab = v.muoto === "aanestys" ? ["A", "B"].map((m, i) => `<circle cx="${x0(i) + 70}" cy="${220 + kork - 70}" r="54" fill="${t.korostus}"/><text x="${x0(i) + 70}" y="${220 + kork - 46}" font-family="Anton" font-size="70" fill="${t.tausta}" text-anchor="middle">${m}</text>`).join("") : "";
+  const pohja = await svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="${t.tausta}"/>
+    ${nimet.map((n, i) => n.rivit.map((r, j) => `<text x="${x0(i) + lev / 2}" y="${1010 + n.koko + j * n.koko * 1.12}" font-family="Anton" font-size="${n.koko}" fill="${t.korostus}" text-anchor="middle">${xml(r)}</text>`).join("")).join("")}</svg>`);
+  const merkit = ab ? await svgPng(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${ab}</svg>`) : null;
+  return sharp(pohja).composite([...kuvat.map((k, i) => ({ input: k, left: x0(i), top: 220 })), ...(merkit ? [{ input: merkit, left: 0, top: 0 }] : [])]).png().toBuffer();
 }
 
 /** Tietoruutu: otsikko korostusvärillä, rivit valkoisella ja pakollinen pieni teksti (esim. 30 päivän alin hinta). */
@@ -620,6 +702,8 @@ async function teeVideo2(v) {
     for (const p of tt) if (Math.abs(p.price - BF.kappalehinta) > 0.005 || p.category !== BF.kategoria) throw new Error(`${p.slug}: ei Black Friday -paita (${p.price} €)`);
     const kuvat = await Promise.all(tt.map((p) => kuva(p.images[0], `${p.slug}-0`)));
     await tallenna(await pariruutu(v, kuvat, tt.map((p) => paidanTeksti(p.name))), "b", 4.0);
+  } else if (v.lifeAlku) {
+    // Paita on jo avausruudussa; yksittäisen paidan video päättyy suoraan kysymykseen (lyhyempi katseluaika).
   } else {
     const p = await tuote(v.slug);
     const life = lifeUrl(p);
@@ -718,9 +802,14 @@ async function teeVideo3(v) {
   const tallenna = async (b, n, kesto) => { const p = join(tmp, `${v.nro}-${n}.png`); await writeFile(p, b); ruudut.push(p); kestot.push(kesto); };
   const tilanneKestot = [2.4, 2.3, 2.5];
   let kansi;
+  if (v.lifeAlku) {
+    // Neljäs kierros: malli paita päällä ja vitsi ensimmäisessä ruudussa (myös kansikuva).
+    kansi = v.slugit ? await avausruutuPari(v) : await avausruutu(v);
+    await tallenna(kansi, "l", 2.6);
+  }
   for (const [i, teksti] of v.tilanne.entries()) {
     const b = await tilanneruutu(v, teksti, i, v.tilanne.length);
-    if (i === 0) kansi = b;
+    if (i === 0 && !kansi) kansi = b;
     await tallenna(b, `t${i}`, tilanneKestot[i]);
   }
   const PAITA = 2.3;
@@ -757,7 +846,6 @@ async function teeVideo3(v) {
 }
 
 /** Julkaisupäivä (1 = 2.11.2026) muodossa { iso, fi }. */
-const ALKU = "2026-11-02";
 function paivays(n) {
   const d = new Date(`${ALKU}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() + n - 1);
@@ -794,6 +882,7 @@ async function julkaisut() {
     "## Näin julkaiset",
     "",
     "- **Uusi muoto 3.11. alkaen** (Instagramissa huumorivideot saivat noin 5 kertaa enemmän katseluja kuin tuotevideot): tilanne tai vitsi ensin, paita lopussa noin 2 s (\"Tää on nyt paidassa\") ja lopuksi kysymys. Sama kysymys on kuvatekstin alussa. Vastaa kommentteihin ja kiinnitä paras. Tiedostonimissä pääte -v2.",
+    "- **4.11. alkaen ensimmäinen ruutu on malli paita päällä** (Printifyn lifestyle-kuva) ja vitsi isolla ruudulla, koska katseluaika on 1-3 s. Tiedostonimissä pääte -v3. Ilman: personoidut, Tonnin seteli (uusi malli tulossa) ja piilotettujen tuotteiden videot (04, 18, 40, 42, 44, 48), sekä 30, 46 ja 54 (ei henkilökuvaa).",
     "- **Videot 1-20** klo 18-20, **trendivideot 21-35** (POV, pariskunta, äänestys, vuodenaika) päivisin klo 11-13. **Videot 36-55** 6.11. ja 22.-30.11. molemmissa ajoissa. Sama video kaikkiin kolmeen kanavaan.",
     "- **Isävideot ennen isänpäivää 8.11.** Painettu paita ei enää ehdi isänpäiväksi, joten videot 36 ja 37 nostavat lahjakortin. Äänestysvideoissa vastaa kommentteihin ja kiinnitä paras kommentti.",
     `- **Black Friday ${BF_PAIVAT}** (muoto tarjous): kaksi ${eur(BF.kappalehinta)}:n t-paitaa ${eur(BF.parihinta)}. Kuvatekstissä on aina t-paidan hinta ja 30 päivän alin hinta; älä poista sitä. Joulun viimeinen tilauspäivä on ${JOULU_VIIMEINEN.teksti}`,

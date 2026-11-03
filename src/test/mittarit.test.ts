@@ -183,12 +183,26 @@ describe("somevideoiden julkaisulista", () => {
       expect(video.tilanne).toHaveLength(3);
       expect(v.kysymys).toMatch(/\?$/);
       expect(v.kuvateksti.startsWith(v.kysymys)).toBe(true);
-      expect(v.nimi).toMatch(/-v2$/);
+      expect(v.nimi).toMatch(/-v[23]$/);
       expect(`${video.tilanne.join(" ")} ${v.kuvateksti}`).not.toMatch(/[–—]|3-10/);
     }
     // Ennen 3.11. julkaistut ennallaan.
     for (const v of l.filter((x) => x.paiva < UUSI_MUOTO_ALKAEN)) { expect(v.nimi).not.toMatch(/-v2$/); expect(v.kysymys).toBeUndefined(); }
     // Kysymykset vaihtelevat.
     expect(new Set(jaljella.map((v) => v.kysymys)).size).toBe(53);
+  });
+
+  it("4.11. alkaen avausruutu on henkilömockup (-v3), poikkeukset listattu ja jo julkaistut ennallaan", async () => {
+    const { julkaisulista, VIDEOT, LIFE_ALKU_EI, LIFE_ALKU_ALKAEN } = await import("../../scripts/some-videot.mjs");
+    const l = julkaisulista();
+    for (const v of l) {
+      const video = VIDEOT.find((x) => x.nro === v.nro);
+      const odotus = v.paiva >= LIFE_ALKU_ALKAEN && !LIFE_ALKU_EI.has(v.nro);
+      expect(Boolean(video.lifeAlku)).toBe(odotus);
+      expect(v.nimi.endsWith("-v3")).toBe(odotus);
+    }
+    expect(l.filter((v) => v.nimi.endsWith("-v3"))).toHaveLength(37);
+    // Tonnin seteli (11) piirretään uudelleen, personoiduissa ei ole henkilömockupia.
+    for (const nro of ["11", "08", "39", "47", "50"]) expect(LIFE_ALKU_EI.has(nro)).toBe(true);
   });
 });
