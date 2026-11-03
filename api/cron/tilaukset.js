@@ -785,6 +785,27 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, kuiva, tulos });
   }
 
+  // Tuotekuvat uudelleen Printifyn mockupeista (3.11.2026, painotiedostojen uudelleenpiirto): ?ids=<printify-id>,...
+  // Päivittää vain kuvat (images ja variants.variant_images), ei hintoja, nimiä eikä näkyvyyttä.
+  if (req.query.tehtava === "tuotekuvat") {
+    if (!onPrintify()) return res.status(503).json({ error: "Printify-avain puuttuu" });
+    const ids = String(req.query.ids || "").split(",").filter((x) => /^[0-9a-f]{24}$/.test(x)).slice(0, 30);
+    const tulos = [];
+    for (const id of ids) {
+      if (!aikaa()) { tulos.push({ id, tila: "aika loppui, aja uudelleen" }); continue; }
+      const h = await haeTuote(id);
+      const rivi = h.ok ? buildProductRow(h.data, []) : null;
+      if (!rivi?.images?.length) { tulos.push({ id, tila: h.ok ? "ei kuvia" : "ei Printifyssä" }); continue; }
+      const vi = rivi.variants?.variant_images;
+      const p = vi
+        ? await db`update products set images = ${db.json(rivi.images)}, variants = jsonb_set(coalesce(variants, '{}'::jsonb), '{variant_images}', ${db.json(vi)}::jsonb),
+            updated_at = now() where printify_product_id = ${id} returning slug`
+        : await db`update products set images = ${db.json(rivi.images)}, updated_at = now() where printify_product_id = ${id} returning slug`;
+      tulos.push({ id, slugit: p.map((r) => r.slug), kuvia: rivi.images.length });
+    }
+    return res.status(200).json({ ok: true, tulos });
+  }
+
   // Maksetut tilaukset (uusin ensin), ilman henkilötietoja: ensimmäisen oikean tilauksen seuranta.
   if (req.query.tehtava === "maksetut") {
     const rivit = await db`select id, paid_at, amount_paid, total, shipping, items, printify_status, printify_order_id, printify_error,

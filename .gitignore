@@ -58,3 +58,5 @@ some/videot/*.jpg
 some/.valimuisti/
 .env*
 some/kuvat/
+scripts/.fontit/
+scripts/.painopiirrokset/
