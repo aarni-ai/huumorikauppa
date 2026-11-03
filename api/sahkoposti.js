@@ -82,6 +82,21 @@ export function hallintaPaasy(req, res, sivu, annettu) {
 const omaTaiBotti = (req, body = {}) => onOmaTaiBotti({ ua: req.headers?.["user-agent"], cookie: req.headers?.cookie,
   secFetchSite: req.headers?.["sec-fetch-site"], testi: body.testi });
 
+/**
+ * Bottisuodatus (api/_lib/botit.js, 3.11.2026): oma liikenne ja testit ohitetaan kuten ennen (omaTaiBotti). Muut
+ * luokitellaan: aito kirjataan mittariin, botti vain aitouslaskuriin syineen. Palauttaa ohitussyyn tai null.
+ * vaadiAitous=false: klikkauksesta syntyvät kirjaukset (lisämyynti), joilta ei odoteta selaimen luokkaa.
+ */
+async function ohitaTaiBotti(req, body, mittari, { vaadiAitous = true, sallitut = [] } = {}) {
+  const oma = omaTaiBotti(req, body);
+  if (oma && sallitut.includes(oma)) return null;
+  const { bottiSyy, asiakkaanIp, kirjaaAitous } = await import("./_lib/botit.js");
+  const syy = oma === "botti" ? "ua-botti" : oma ? null : bottiSyy({ ua: req.headers?.["user-agent"], ip: asiakkaanIp(req.headers || {}), aitous: body.aitous, vaadiAitous });
+  if (oma && oma !== "botti") return oma;
+  try { await kirjaaAitous(sql(), mittari, syy || "aito"); } catch { /* laskuri ei saa estää kirjausta */ }
+  return syy;
+}
+
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
 export async function kasittele(req, res, store) {
@@ -269,14 +284,15 @@ export async function kasittele(req, res, store) {
     }
     case "kaynti": {
       // Käyntilaskuri: vain koostemäärä päivä x lähde x osio, ei IP-osoitetta eikä tunnisteita (api/_lib/kaynnit.js).
-      if (omaTaiBotti(req, body)) return res.status(200).json({ ok: false, ohitettu: omaTaiBotti(req, body) });
+      const ohitaK = await ohitaTaiBotti(req, body, "kaynti");
+      if (ohitaK) return res.status(200).json({ ok: false, ohitettu: ohitaK });
       const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120), ua: req.headers["user-agent"] });
       await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
     }
     case "laskeutuminen": {
       // Laskeutumisen kooste (api/_lib/laskeutumiset.js): vain koostemäärä, ei IP-osoitetta eikä tunnisteita.
-      const ohita = omaTaiBotti(req, body);
+      const ohita = await ohitaTaiBotti(req, body, "laskeutuminen");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { laskeutumisRivi, kirjaaLaskeutuminen } = await import("./_lib/laskeutumiset.js");
       const rivi = laskeutumisRivi(body, req.headers["user-agent"]);
@@ -287,21 +303,21 @@ export async function kasittele(req, res, store) {
     case "suppilo": {
       // Oma ostosuppilo: koostemäärä päivä x vaihe x A/B-versio (api/_lib/suppilo.js), ei tunnisteita.
       // Testiajo (scripts/suppilo-testi.mjs) kirjataan versioon "testi"; muu oma liikenne ja botit ohitetaan.
-      const ohita = omaTaiBotti(req, body);
-      if (ohita && ohita !== "testi") return res.status(200).json({ ok: false, ohitettu: ohita });
+      const ohita = await ohitaTaiBotti(req, body, "suppilo", { sallitut: ["testi"] });
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaVaihe } = await import("./_lib/suppilo.js");
       return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "", { testi: body.testi === true }) });
     }
     case "tuotetapahtumat": {
       // Tuotesivun seuranta (api/_lib/tuoteseuranta.js): yksi kooste katselua kohden, vain koostemäärät.
-      const ohita = omaTaiBotti(req, body);
+      const ohita = await ohitaTaiBotti(req, body, "tuotesivu");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaTuotetapahtumat } = await import("./_lib/tuoteseuranta.js");
       return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(sql(), body)) > 0 });
     }
     case "lisamyynti": {
       // Korin lisämyynnin seuranta (api/_lib/lisamyynti.js): vain koostemäärät.
-      const ohita = omaTaiBotti(req, body);
+      const ohita = await ohitaTaiBotti(req, body, "lisamyynti", { vaadiAitous: false });
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaLisamyynti } = await import("./_lib/lisamyynti.js");
       return res.status(200).json({ ok: await kirjaaLisamyynti(sql(), teksti(body.tapahtuma, 30)) });

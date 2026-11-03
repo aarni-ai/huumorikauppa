@@ -8,6 +8,7 @@
  */
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { aitousRivit } from "../api/_lib/botit.js";
 
 const JUURI = new URL("..", import.meta.url).pathname;
 const tiedosto = join(JUURI, ".env.cron.local");
@@ -42,4 +43,5 @@ console.log([
   m.ryhmatilaukset ? `Ryhmätilaukset kuu: ryhmiä ${m.ryhmatilaukset.kk.ryhmiaLuotu}, jäseniä ${m.ryhmatilaukset.kk.jaseniaLiittynyt}, maksettuja ${m.ryhmatilaukset.kk.maksettujaRyhmia} (${m.ryhmatilaukset.kk.paitoja} paitaa), kate ${eur(m.ryhmatilaukset.kk.kate)}` : "Ryhmätilaukset: -",
   `Kumppanit kuu: ${m.kumppanit.tilauksia} tilausta, myynti ${eur(m.kumppanit.myynti)}, provisio ${eur(m.kumppanit.provisio)}`,
   `Tarve: ${lu(t.tilauksiaPaivassa)} tilausta ja ${lu(t.kayntejaPaivassa)} käyntiä päivässä`,
+  ...(m.aitous ? aitousRivit(m.aitous) : ["Bottisuodatus: -"]),
 ].join("\n"));

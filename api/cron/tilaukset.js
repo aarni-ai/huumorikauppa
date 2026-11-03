@@ -351,7 +351,10 @@ export default async function handler(req, res) {
     const alkaen = pv(req.query.alkaen, hki(new Date(Date.now() - 864e5))), loppu = pv(req.query.loppu, hki(new Date()));
     // Laskeutumiset samalta väliltä (api/_lib/laskeutumiset.js): mistä alle 10 s poistuvat tulevat.
     const { laskeutumisetValilla } = await import("../_lib/laskeutumiset.js");
-    return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, alkaen, loppu)), laskeutumiset: await laskeutumisetValilla(db, alkaen, loppu) });
+    // Bottisuodatus samalta väliltä (api/_lib/botit.js): kaikki, botit syittäin ja aidot.
+    const { aitousValilla } = await import("../_lib/botit.js");
+    return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, alkaen, loppu)), laskeutumiset: await laskeutumisetValilla(db, alkaen, loppu),
+      aitous: await aitousValilla(db, alkaen, loppu).catch(() => null) });
   }
 
   // Oma liikenne jälkikäteen (2.11.2026): päivän lähteen (&lahde=, valinnainen &osio=) käynnit lähteeseen "oma",

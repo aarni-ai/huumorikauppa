@@ -4,6 +4,8 @@
  * utm_source / ref. Ei evästeitä, ei selaimen tallennusta eikä tunnisteita, joten suostumusta ei tarvita.
  * Sisäiset siirtymät, uudelleenlataukset ja hallintasivut eivät ole käyntejä.
  */
+import { lahetaKunLuokiteltu } from "./aitous";
+
 export function kaynninTiedot(loc: { pathname: string; search: string; host: string }, viittaaja: string, navigointi?: string) {
   if (loc.pathname.startsWith("/hallinta")) return null;
   if (navigointi === "reload" || navigointi === "back_forward") return null;
@@ -27,5 +29,8 @@ export function kirjaaKaynti(): void {
   if (bio?.utm_source && !tiedot.utm) tiedot.utm = bio.utm_source;
   // Selaintesti (scripts/suppilo-testi.mjs): palvelin ohittaa testikäynnin (api/_lib/kaynnit.js onOmaTaiBotti).
   const testi = (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
-  fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(testi ? { ...tiedot, testi: true } : tiedot) }).catch(() => undefined);
+  // Lähtee vasta, kun käynti on luokiteltu (src/lib/aitous.ts): ihminen, headless tai passiivinen (bottilaskuriin).
+  lahetaKunLuokiteltu((aitous) => {
+    fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ ...tiedot, aitous, ...(testi ? { testi: true } : {}) }) }).catch(() => undefined);
+  });
 }
