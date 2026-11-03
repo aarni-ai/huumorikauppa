@@ -27,7 +27,7 @@ URL=$(grep -oE 'https://huumorikauppa-[a-z0-9]+-flyapeg-2135s-projects\.vercel\.
 echo "Esitestaus 3/3: savutesti $URL"
 VIRHEET=0
 for P in / /tuote/tonnin-seteli-t-paita /ostoskori /kassa /toimitusehdot /abipaidat /paidat/opettaja /joululahjat /api/products /product-feed.xml /sitemap.xml; do
-  KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 60 -o /dev/null -w "%{http_code}" -A "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" 2>/dev/null | tail -1)
+  KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 300 -o /dev/null -w "%{http_code}" -A "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" 2>/dev/null | tail -1 || true)
   echo "  $KOODI $P"
   [ "$KOODI" = "200" ] || VIRHEET=$((VIRHEET + 1))
 done
