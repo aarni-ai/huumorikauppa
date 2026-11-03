@@ -179,8 +179,9 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split("/").pop()
   await mkdir(join(ULOS, "shopping"), { recursive: true });
   await mkdir(join(ULOS, "pinterest"), { recursive: true });
   const fontit = [join(VALI, "anton.ttf")];
-  const r = await fetch(`${KAUPPA}/api/products?fields=slug,name,images,price,category,variants`);
-  const j = await r.json();
+  // TUOTTEET_JSON: aiemmin tallennettu /api/products-vastaus (hidas yhteys, 4,5 Mt).
+  const j = process.env.TUOTTEET_JSON ? JSON.parse(await readFile(process.env.TUOTTEET_JSON, "utf8"))
+    : await (await fetch(`${KAUPPA}/api/products?fields=slug,name,images,price,category,variants`)).json();
   const tuotteet = new Map((Array.isArray(j) ? j : j.products).map((p) => [p.slug, p]));
   const lista = [];
   let i = 0;

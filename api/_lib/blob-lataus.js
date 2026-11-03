@@ -4,22 +4,24 @@
  * tällä tokenilla (scripts/some-blob.mjs --palvelin). Lukuavainta ei tarvita koneella.
  *
  * Reitti: POST /api/cron/tilaukset?tehtava=blob-lataus (Authorization: Bearer CRON_SECRET). Token annetaan vain
- * somekansion tiedostoille, oikealle tiedostotyypille, enintään 50 Mt ja 10 minuutiksi. Manifesti ylikirjoitetaan
+ * somekansion ja lahjaoppaan (media/lahjaopas, PDF) tiedostoille, oikealle tiedostotyypille, enintään 50 Mt ja 10 minuutiksi. Manifesti ylikirjoitetaan
  * samaan osoitteeseen (/hallinta/some lukee sen), muut tiedostot saavat satunnaisen päätteen.
  */
-export const BLOB_POLKU = /^some\/(?:videot\/[a-z0-9-]{1,120}\.(mp4|jpg)|(JULKAISUT\.md)|(manifest\.json))$/;
-const TYYPIT = { mp4: "video/mp4", jpg: "image/jpeg" };
+// 3.11.2026 ilta: myös Pinterest- ja Shopping-lisäkuvat (some/pinterest, some/shopping) sekä lahjaoppaan medialle
+// vaakakuvat ja PDF (scripts/pinterest-kuvat.mjs, some-blob.mjs --lisakuvat, lahjaopas-media*.mjs --palvelin).
+export const BLOB_POLKU = /^(?:some\/(?:videot\/[a-z0-9-]{1,120}\.(?:mp4|jpg)|(?:pinterest|shopping)\/[a-z0-9-]{1,120}\.jpg|JULKAISUT\.md|manifest\.json)|media\/lahjaopas\/[a-z0-9-]{1,120}\.jpg|media\/huumorikauppa-lahjaopas-2026\.pdf)$/;
+const TYYPIT = { mp4: "video/mp4", jpg: "image/jpeg", pdf: "application/pdf" };
 export const MAKS_TAVUA = 50 * 1024 * 1024;
 export const VOIMASSA_MS = 10 * 60 * 1000;
 
 /** Tokenin ehdot polulle, tai null, jos polkua ei sallita. */
 export function latausEhdot(pathname, nyt = Date.now()) {
-  const m = BLOB_POLKU.exec(String(pathname || ""));
-  if (!m) return null;
+  const polku = String(pathname || "");
+  if (!BLOB_POLKU.test(polku)) return null;
   const yhteiset = { maximumSizeInBytes: MAKS_TAVUA, validUntil: nyt + VOIMASSA_MS };
-  if (m[3]) return { ...yhteiset, allowedContentTypes: ["application/json"], addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 60 };
-  if (m[2]) return { ...yhteiset, allowedContentTypes: ["text/*"], addRandomSuffix: true, allowOverwrite: false };
-  return { ...yhteiset, allowedContentTypes: [TYYPIT[m[1]]], addRandomSuffix: true, allowOverwrite: false };
+  if (polku === "some/manifest.json") return { ...yhteiset, allowedContentTypes: ["application/json"], addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 60 };
+  if (polku === "some/JULKAISUT.md") return { ...yhteiset, allowedContentTypes: ["text/*"], addRandomSuffix: true, allowOverwrite: false };
+  return { ...yhteiset, allowedContentTypes: [TYYPIT[polku.split(".").pop()]], addRandomSuffix: true, allowOverwrite: false };
 }
 
 /** handleUpload-kutsu: vain tokenin luonti (valmistumisilmoituksia ei käytetä). */

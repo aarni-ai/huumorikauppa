@@ -4,6 +4,7 @@
  * MEDIA_LAHJAOPAS_PDF-osoitteen datatiedostoon.
  *
  * Ajo: BLOB_READ_WRITE_TOKEN=... NODE_PATH=<kansio, jossa @vercel/blob> node scripts/lahjaopas-media-pdf.mjs
+ *      tai ilman avainta: node scripts/lahjaopas-media-pdf.mjs --palvelin
  */
 import { readFile, writeFile, mkdtemp, rm } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -11,8 +12,10 @@ import { createRequire } from "node:module";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
-const require = createRequire(join(process.env.NODE_PATH || process.cwd(), "x.js"));
-const { put } = require("@vercel/blob");
+import { palvelimenPut } from "./lib/blob-palvelin.mjs";
+
+// --palvelin (3.11.2026): lataus kaupan palvelimen lataustokenilla ilman Blob-avainta (scripts/lib/blob-palvelin.mjs).
+const put = process.argv.includes("--palvelin") ? palvelimenPut : createRequire(join(process.env.NODE_PATH || process.cwd(), "x.js"))("@vercel/blob").put;
 const JUURI = new URL("..", import.meta.url).pathname;
 const CHROME = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const DATA = join(JUURI, "src/data/lahjaopasMedia.generated.ts");

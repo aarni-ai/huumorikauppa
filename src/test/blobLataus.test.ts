@@ -15,8 +15,19 @@ describe("Blob-lataustoken", () => {
     expect(latausEhdot("some/manifest.json", nyt)).toMatchObject({ addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 60, allowedContentTypes: ["application/json"] });
   });
 
+  it("Pinterest- ja Shopping-lisäkuvat sallitaan jpg-kuvina", () => {
+    expect(latausEhdot("some/pinterest/tonnin-seteli-t-paita.jpg")).toMatchObject({ allowedContentTypes: ["image/jpeg"], addRandomSuffix: true, allowOverwrite: false });
+    expect(latausEhdot("some/shopping/kalju-huppari.jpg")?.allowedContentTypes).toEqual(["image/jpeg"]);
+    expect(latausEhdot("some/shopping/kalju-huppari.mp4")).toBeNull();
+  });
+
+  it("lahjaoppaan vaakakuva ja PDF sallitaan omalla tyypillään", () => {
+    expect(latausEhdot("media/lahjaopas/tonnin-seteli-t-paita-vaaka.jpg")).toMatchObject({ allowedContentTypes: ["image/jpeg"], addRandomSuffix: true, allowOverwrite: false });
+    expect(latausEhdot("media/huumorikauppa-lahjaopas-2026.pdf")).toMatchObject({ allowedContentTypes: ["application/pdf"], addRandomSuffix: true, allowOverwrite: false });
+  });
+
   it("muut polut hylätään", () => {
-    for (const p of ["some/../api/x.js", "tuotteet/kuva.jpg", "some/videot/x.exe", "some/videot/X.mp4", "some/videot/a/b.mp4", "some/manifest.json.bak", "", null]) {
+    for (const p of ["media/lahjaopas/x.pdf", "media/lahjaopas/a/b.jpg", "media/muu.pdf", "media/huumorikauppa-lahjaopas-2026.pdf.js", "some/../api/x.js", "tuotteet/kuva.jpg", "some/videot/x.exe", "some/videot/X.mp4", "some/videot/a/b.mp4", "some/manifest.json.bak", "", null]) {
       expect(latausEhdot(p as string)).toBeNull();
     }
   });

@@ -7,6 +7,8 @@ import { poistaAvainOsoitteesta } from "@/lib/hallinta";
 type Video = {
   nro: string; nimi: string; muoto: string; paiva: string; paivaFi: string; aika: string; hook: string; kuvateksti: string; tagit: string[];
   tuote: string; video: string; lataus: string; kansi: string;
+  /** Jo julkaistun videon korvaava versio (scripts/some-videot.mjs KORVAAVAT): mitä vanhalle julkaisulle tehdään. */
+  huomio?: string;
 };
 type Pinni = { slug: string; nimi: string; kuva: string; lataus: string; otsikko: string; kuvaus: string; linkki: string };
 type Manifest = { paivitetty: string; julkaisut: string; videot: Video[]; pinterest: Pinni[] };
@@ -56,11 +58,12 @@ const SomeAdminPage = () => {
           <p className="text-sm text-muted-foreground mb-3">Bio joka kanavassa: huumorikauppa.fi. Kuvatekstissä mainitaan vain "linkki biossa" tai huumorikauppa.fi. Somen käynnit tunnistetaan automaattisesti.</p>
           <ol className="space-y-3">
             {m.videot.map((v) => (
-              <li key={v.nro} className={`rounded-xl border p-3 flex gap-3 ${v.paiva === tanaan ? "border-primary bg-primary/5" : v.paiva < tanaan ? "border-border opacity-60" : "border-border bg-card"}`}>
+              <li key={v.nro} className={`rounded-xl border p-3 flex gap-3 ${v.paiva === tanaan ? "border-primary bg-primary/5" : v.paiva < tanaan && !v.huomio ? "border-border opacity-60" : "border-border bg-card"}`}>
                 <img src={v.kansi} alt="" width={90} height={160} loading="lazy" className="w-[90px] h-[160px] rounded object-cover shrink-0" />
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="text-xs text-muted-foreground">{v.paivaFi} klo {v.aika} · video {v.nro} · {MUODOT[v.muoto] || v.muoto}{v.paiva === tanaan ? " · TÄNÄÄN" : ""}</div>
                   <div className="font-semibold">{v.hook}</div>
+                  {v.huomio && <p className="text-sm font-semibold text-destructive">{v.huomio}</p>}
                   <p className="text-sm whitespace-pre-wrap break-words">{v.kuvateksti}</p>
                   <div className="flex flex-wrap gap-2">
                     <a href={v.lataus} className="inline-flex items-center gap-1 rounded bg-primary px-2 py-1 text-xs font-medium text-primary-foreground"><Download className="h-3 w-3" aria-hidden="true" /> Lataa video</a>

@@ -39,7 +39,7 @@ const tilat = await Promise.all(videot.map(async (v) => {
 }));
 virheet.push(...tilat.filter(Boolean));
 
-console.log(`Manifesti päivitetty ${manifest.paivitetty}: ${videot.length} videota, joista ${v2Manifestissa} uutta (-v2/-v3, henkilömockup alussa ${v3Manifestissa}). Julkaisulistassa ${lista.length}, joista ${v2Listassa} uutta.`);
+console.log(`Manifesti päivitetty ${manifest.paivitetty}: ${videot.length} videota, joista ${v2Manifestissa} uutta (-v2/-v3, avausruutu paita ja vitsi -v3: ${v3Manifestissa}). Julkaisulistassa ${lista.length}, joista ${v2Listassa} uutta.`);
 if (virheet.length) {
   console.log(`EI VALMIS (${virheet.length} eroa):`);
   for (const v of virheet.slice(0, 15)) console.log(`- ${v}`);
