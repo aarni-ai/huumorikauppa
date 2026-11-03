@@ -57,7 +57,7 @@ Lisää lajikohtaisia ideoita löydät esimerkiksi [harrastajan lahjoista](/lahj
 - **13. Avantouijalle:** "-20 °C, sopiva uimakeli" naurattaa jokaista, joka on joskus kastautunut avannossa.
 - **14. Retkeilijälle:** "GPS ei tarvita, eksytään tarkoituksella" sopii polkujen kulkijalle.
 - **15. Metsästäjälle:** "Ei ole kiire, olen metsässä" kertoo jahtikauden tunnelman viidellä sanalla.
-- **16. Mökille:** Oma valokuva tai teksti koristeessa tekee mökistä vielä enemmän hänen omansa.
+- **16. Mökille:** Oma valokuva tai teksti paidassa tai hupparissa tekee mökkilahjasta vielä enemmän hänen omansa.
 - **17. Saunojalle:** Oma teksti t-paidassa, esimerkiksi saunaporukan nimi, ilahduttaa miestä, jolle löylyt ovat viikon kohokohta.
 - **18. Huppari laiturille:** Oma kuva hupparissa lämmittää syysillan nuotiolla ja muistuttaa yhteisestä reissusta.
 
@@ -106,8 +106,8 @@ Kun mikään valmis teksti ei osu, tee oma. Personoitu lahja on se, jota ei voi 
 - **46. Elävä legenda:** [Personoitava Elävä legenda -paita](/tuote/personoitava-t-paita-elava-legenda) sopii miehelle, josta kerrotaan tarinoita.
 - **47. Oma kuva hupparissa:** [Oma teksti tai kuva -huppari](/tuote/oma-tekstikuva-huppari) on lämmin talvilahja, jossa voi olla vaikka koiran kuva.
 - **48. Oma lippis:** Lippis omalla tekstillä sopii kesää odottavalle.
-- **49. Oma koriste:** Koriste omalla kuvalla on pieni lisä varsinaisen lahjan kylkeen.
-- **50. Oma koriste kuuseen:** Kuusenkoriste omalla kuvalla on lahja, joka kaivetaan esiin joka joulu.
+- **49. Oma kuva t-paitaan:** T-paita omalla kuvalla on lahja, jollaista ei ole kenelläkään muulla.
+- **50. Oma kuva hupparissa:** Huppari omalla kuvalla on lämmin lahja, joka on käytössä koko talven.
 
 ## Kolme esimerkkiä listan käytöstä
 
@@ -147,7 +147,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä 
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["pikkujoululahja", "pikkujoululahja alle 20 euroa", "pikkujoulut", "edullinen lahja", "joulu 2026"],
-    relatedCategories: ["koristeet", "t-paidat"],
+    relatedCategories: ["hupparit", "t-paidat"],
     content: `## Mitä 20 euron budjetti oikeasti tarkoittaa
 
 Pikkujoulujen lahjanvaihdossa hintaraja on yleensä 10, 15 tai 20 euroa. Raja ei ole tavoite, vaan katto: sen tarkoitus on, ettei kukaan joudu nolon tilanteeseen ja että jokainen saa jotain samanarvoista. Siksi hyvä pikkujoululahja ei näytä halvalta, mutta ei myöskään selvästi kalliimmalta kuin muiden.
@@ -158,7 +158,7 @@ Verkosta ostaessa kannattaa muistaa yksi asia, jonka moni unohtaa: toimituskulut
 
 Pikkujoululahjan saaja on usein arvoituksen takana. Arvonnassa nimesi voi osua kollegaan, jota tunnet vain kahvihuoneesta. Nämä viisi kriteeriä auttavat valitsemaan lahjan, joka toimii lähes kenelle tahansa.
 
-- **Ei kokoa:** Vaatteet ovat riski, jos et tiedä saajan kokoa. Kuusenkoriste tai muu kokoon sitomaton tuote poistaa ongelman kokonaan.
+- **Ei kokoa:** Vaatteet ovat riski, jos et tiedä saajan kokoa. Jos et tiedä kokoa, huppari on väljän mallin vuoksi t-paitaa varmempi valinta.
 - **Neutraali huumori:** Pikkujouluissa vitsi saa naurattaa, mutta ei loukata. Jätä pois alkoholi-, paino- ja ikävitsit, jos et tunne saajaa.
 - **Käyttöarvo:** Tavara, jolla ei ole käyttöä, päätyy laatikkoon. Kysy itseltäsi, mihin saaja laittaa lahjan seuraavana päivänä.
 - **Pieni koko:** Pikkujouluissa lahja kulkee usein laukussa, junassa tai bussissa. Kevyt ja pieni lahja on helppo kuljettaa kotiin.
@@ -166,11 +166,11 @@ Pikkujoululahjan saaja on usein arvoituksen takana. Arvonnassa nimesi voi osua k
 
 ## Ideat alle 20 eurolla
 
-Tätä kirjoitettaessa Huumorikaupan valikoimassa alle 20 euron rajan alle jää kuusenkoriste. Se täyttää yllä olevat kriteerit hyvin, koska siinä ei ole kokoa ja sitä käytetään.
+Tätä kirjoitettaessa Huumorikaupan edullisin t-paita maksaa alkaen ${HINTA.tpaitaAlkaen}, joten alle 20 euron rajalla t-paitaa ei saa. Jos porukan raja on tiukka, ehdota 25 euron rajaa.
 
-### Oma kuusenkoriste (${HINTA.koriste})
+### Oma teksti tai kuva paitaan (${HINTA.personoitu})
 
-[Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) on lahja, joka kaivetaan esiin joka joulu uudelleen. Koriste toimii erityisen hyvin, jos pikkujoulut ovat tiimin perinne: vuosiluku ja porukan nimi koristeessa tekevät siitä pienen muiston. Valmis vaihtoehto on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjanvaihtoon.
+[T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) maksaa tätä kirjoitettaessa ${HINTA.personoitu}. Se toimii erityisen hyvin, jos pikkujoulut ovat tiimin perinne: vuosiluku ja porukan nimi paidassa tekevät siitä pienen muiston. Valmiita paitoja ilman omaa suunnittelua ovat esimerkiksi [Saatanan tunarit](/tuote/saatanan-tunarit-t-paita) ja [Se oli tonnin seteli](/tuote/tonnin-seteli-t-paita). Lisää vaihtoehtoja löydät sivulta [hauskat t-paidat](/kategoria/t-paidat).
 
 Koko valikoiman löydät sivulta [kaikki tuotteet](/kaikki-tuotteet).
 
@@ -190,13 +190,13 @@ Työpaikalla turvallinen linja on työhön liittyvä huumori, joka koskee kaikki
 
 ### Kaveriporukka
 
-Kavereiden kesken saa olla rohkeampi. Sisäpiirin vitsi omassa koristeessa on lähes aina hauskempi kuin mikään valmis tuote, koska sen ymmärtää vain teidän porukkanne.
+Kavereiden kesken saa olla rohkeampi. Sisäpiirin vitsi omassa paidassa on lähes aina hauskempi kuin mikään valmis tuote, koska sen ymmärtää vain teidän porukkanne.
 
 ### Harrastusseura tai joukkue
 
-Seuran pikkujouluissa lahjan voi sitoa lajiin. Koriste, jossa on joukkueen kauden mieleenpainuvin hetki, on hauska ja edullinen. Jos budjetti joustaa, lajiaiheinen paita on hyvä vaihtoehto.
+Seuran pikkujouluissa lahjan voi sitoa lajiin. Paita, jossa on joukkueen kauden mieleenpainuvin hetki, on hauska lahja. Myös valmis lajiaiheinen paita sopii.
 
-## Valmiita tekstejä koristeeseen
+## Valmiita tekstejä paitaan
 
 Oman tekstin keksiminen on usein vaikea osa. Tässä esimerkkejä, joita voit käyttää sellaisenaan tai muokata oman porukan näköisiksi:
 
@@ -209,13 +209,13 @@ Oman tekstin keksiminen on usein vaikea osa. Tässä esimerkkejä, joita voit k�
 - porukan nimi ja vuosiluku
 - kuva toimiston kahvinkeittimestä, kasvista tai maskotista
 
-Pidä teksti lyhyenä. Koristeessa on vähän tilaa, ja lyhyt teksti on helpompi lukea. Tarkista oikeinkirjoitus ennen tilausta, koska tuote painetaan juuri sellaisena kuin sen kirjoitat.
+Pidä teksti lyhyenä. Lyhyt teksti on paidassa helpompi lukea. Tarkista oikeinkirjoitus ennen tilausta, koska tuote painetaan juuri sellaisena kuin sen kirjoitat.
 
 ## Lahjapelit pikkujouluissa
 
 Moni porukka ei anna lahjoja suoraan, vaan pelaa niistä. Yleinen tapa on noppapeli: lahjat ovat kasassa pöydällä, ja kuutosen heittänyt saa ottaa yhden. Kun kaikki lahjat on jaettu, alkaa toinen kierros, jossa kuutosella saa viedä lahjan toiselta. Peli päättyy ajastimen soidessa.
 
-Noppapelissä lahjan valintaan kannattaa kiinnittää huomiota kahdesta syystä. Ensinnäkin et tiedä, kenelle lahja päätyy, joten neutraali huumori on tärkeää. Toiseksi pelissä hauskoista lahjoista kilpaillaan, joten persoonallinen koriste herättää enemmän naurua kuin tavallinen suklaarasia.
+Noppapelissä lahjan valintaan kannattaa kiinnittää huomiota kahdesta syystä. Ensinnäkin et tiedä, kenelle lahja päätyy, joten neutraali huumori on tärkeää. Toiseksi pelissä hauskoista lahjoista kilpaillaan, joten persoonallinen paita herättää enemmän naurua kuin tavallinen suklaarasia.
 
 ## Tavallisia virheitä
 
@@ -228,7 +228,7 @@ Noppapelissä lahjan valintaan kannattaa kiinnittää huomiota kahdesta syystä.
 Yksittäisen pienen lahjan iso kuluerä on toimitus. Tässä kolme tapaa välttää se:
 
 - **Tilaa omien joululahjojen kanssa:** Jos tilaat joululahjoja perheelle, lisää pikkujoululahja samaan tilaukseen. ${ILMAINEN_RAJA_TEKSTI} euron raja ylittyy esimerkiksi kahdella t-paidalla ja hupparilla.
-- **Kokoa tiimin tilaus:** Jos koko tiimi ostaa lahjat samasta kaupasta, yksi ihminen voi tilata kaikkien lahjat kerralla. Neljä koristetta (79,60 €) ylittää jo ilmaisen toimituksen rajan.
+- **Kokoa tiimin tilaus:** Jos koko tiimi ostaa lahjat samasta kaupasta, yksi ihminen voi tilata kaikkien lahjat kerralla. Usean paidan tilaus voi ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
 - **Paketoi itse:** Tilaa lahja omaan osoitteeseesi, niin voit tarkistaa sen ennen juhlia ja paketoida sen haluamallasi tavalla.
 
 ## Paketointi pienellä budjetilla
@@ -238,7 +238,7 @@ Pieni lahja näyttää huolitellulta, kun paketointiin käyttää viisi minuutti
 - **Ruskea voimapaperi ja naru:** Edullinen, siisti ja helppo yhdistää mihin tahansa lahjaan.
 - **Käsin kirjoitettu nimilappu:** Pahvinpala, johon kirjoitat saajan nimen tai noppapelissä numeron, tekee paketista persoonallisen.
 - **Käsin kirjoitettu kortti:** Pieni kortti, jossa kerrot sisäpiirin vitsin, täydentää lahjan.
-- **Koriste rasiassa:** Kuusenkoriste kannattaa paketoida pieneen rasiaan, jotta se kestää kuljetuksen pikkujouluihin ja takaisin.
+- **Taiteltu paita nauhalla:** Taita paita siististi ja sido se narulla, niin paketti kestää kuljetuksen pikkujouluihin ja takaisin.
 
 Paketoinnissa tärkeintä on, että lahja kestää matkan. Pikkujouluissa paketit kulkevat laukuissa, takin taskuissa ja pöydältä toiselle, joten ohut paperi ilman teippiä ei riitä.
 
@@ -257,9 +257,9 @@ Kun nämä kuusi asiaa ovat kunnossa, lahja toimii riippumatta siitä, kenelle s
 
 Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. ${jouluLause()} Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
     faq: [
-      { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: `Huumorikaupan edullisin lahja on kuusenkoriste omalla kuvalla, ${HINTA.koriste}. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin.` },
+      { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: `Tätä kirjoitettaessa Huumorikaupan edullisin t-paita maksaa alkaen ${HINTA.tpaitaAlkaen}, joten alle 20 euron rajalla t-paitaa ei saa. Ehdota porukalle 25 euron rajaa.` },
       { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: `Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa.` },
-      { q: "Onko t-paita hyvä pikkujoululahja?", a: "T-paita on hyvä pikkujoululahja, jos tiedät saajan koon ja hintaraja on vähintään 25 euroa. Jos kokoa ei tiedä, koriste on turvallisempi valinta." },
+      { q: "Onko t-paita hyvä pikkujoululahja?", a: "T-paita on hyvä pikkujoululahja, jos tiedät saajan koon ja hintaraja on vähintään 25 euroa. Jos kokoa ei tiedä, huppari on väljän mallin vuoksi turvallisempi valinta." },
       { q: "Milloin pikkujoululahja pitää tilata?", a: `Tilaa heti, kun tiedät saajan, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
     ],
   },
@@ -298,7 +298,7 @@ Mies, jolla on kaikki, on usein myös itsevarma. Silloin hellä piikittely toimi
 
 ### 4. Tallenna yhteinen muisto
 
-Valokuva on vahva muisto, ja oma kuva tuotteessa tekee siitä esineen, jota ei löydy mistään muualta. [Kuusenkoriste omalla kuvalla tai tekstillä](/tuote/oma-tekstikuva-koriste) sopii kotiin tai mökille: kuva ensimmäisestä yhteisestä kalareissusta, perheen koirasta tai rakennusprojektin aloituspäivästä. [Huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari) taas on lämmin lahja sohvalle tai laiturille. Katso myös koko [koristeiden](/kaikki-tuotteet) valikoima.
+Valokuva on vahva muisto, ja oma kuva tuotteessa tekee siitä esineen, jota ei löydy mistään muualta. [T-paita omalla kuvalla tai tekstillä](/tuote/oma-tekstikuva-t-paita) sopii mökille: kuva ensimmäisestä yhteisestä kalareissusta, perheen koirasta tai rakennusprojektin aloituspäivästä. [Huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari) taas on lämmin lahja sohvalle tai laiturille. Katso myös koko [valikoima](/kaikki-tuotteet).
 
 ### 5. Vahvista hänen identiteettiään harrastajana
 
@@ -326,18 +326,18 @@ Kirjoita jokaisen vastauksen viereen yksi tuote tai teksti, joka siihen liittyis
 
 ## Kolme esimerkkiä käytännöstä
 
-**Esimerkki 1: 62-vuotias isä, joka jäi juuri eläkkeelle ja viettää kesät mökillä.** Hänelle sopii koriste, jossa on kuva mökin laiturilta ja teksti "Eläkkeellä, virallisesti". Koriste menee mökille, ja se muistuttaa merkittävästä vuodesta.
+**Esimerkki 1: 62-vuotias isä, joka jäi juuri eläkkeelle ja viettää kesät mökillä.** Hänelle sopii t-paita, jossa on kuva mökin laiturilta ja teksti "Eläkkeellä, virallisesti". Paita on mökillä käytössä, ja se muistuttaa merkittävästä vuodesta.
 
 **Esimerkki 2: 45-vuotias veli, jolla on kaikki uusimmat urheiluvälineet.** Hänelle sopii personoitu paita, jossa on veljesten lapsuuden lempinimi. Sitä hän ei olisi ikinä ostanut itse, ja se naurattaa jokaisella perhetapaamisella.
 
-**Esimerkki 3: 70-vuotias appiukko, joka rakastaa vanhaa autoaan.** Museokamaa-paita on sopivan hellä piikki, ja jos haluat panostaa, liitä mukaan koriste, jossa on kuva autosta.
+**Esimerkki 3: 70-vuotias appiukko, joka rakastaa vanhaa autoaan.** Museokamaa-paita on sopivan hellä piikki, ja jos haluat panostaa, tilaa rinnalle t-paita, jossa on kuva autosta.
 
 ## Paljonko lahjaan kannattaa käyttää
 
 Mies, jolla on kaikki, ei mittaa lahjaa hinnalla. Hyvä uutinen on, että personoitu tai hauska lahja ei vaadi suurta budjettia. Tätä kirjoitettaessa hintatasot ovat seuraavat:
 
 - **T-paita valmiilla tekstillä:** ${HINTA.tpaitaHaarukka}
-- **Kuusenkoriste omalla kuvalla:** ${HINTA.koriste}
+- **T-paita omalla kuvalla:** ${HINTA.personoitu}
 - **Huppari:** alkaen ${HINTA.huppariAlkaen}
 
 Kun lahjoja ostaa useammalle, ${ILMAINEN_RAJA_TEKSTI} euron raja ilmaiseen toimitukseen tulee nopeasti täyteen. Esimerkiksi t-paita ja huppari yhdessä (74,80 €) jäävät vielä hieman alle rajan, mutta kaksi hupparia (99,80 €) ylittää sen.
@@ -347,12 +347,12 @@ Kun lahjoja ostaa useammalle, ${ILMAINEN_RAJA_TEKSTI} euron raja ilmaiseen toimi
 Miehelle, jolla on kaikki, lahjan antamisen tapa on lähes yhtä tärkeä kuin itse lahja. Kolme vinkkiä:
 
 - **Kerro, miksi valitsit sen.** Lyhyt kortti, jossa kerrot, mihin muistoon tai vitsiin lahja viittaa, tekee siitä henkilökohtaisen. "Muistatko, kun kesällä..." on hyvä alku.
-- **Anna hänen avata lahja muiden nähden.** Hauska paita tai muistoja herättävä koriste ilahduttaa eniten, kun koko perhe näkee reaktion.
+- **Anna hänen avata lahja muiden nähden.** Hauska paita tai muistoja herättävä kuvahuppari ilahduttaa eniten, kun koko perhe näkee reaktion.
 - **Älä selitä vitsiä.** Jos vitsi vaatii selittämistä, se ei ollut oikea valinta. Siksi kannattaa valita vitsi, joka on hänelle tuttu.
 
 ## Kun mikään ei tunnu oikealta
 
-Jos kysymyslista ei tuota ideaa, palaa yksinkertaiseen: valokuvaan. Lähes jokaisella on puhelimessaan kuva, joka on hänelle tärkeä: lapset, lapsenlapset, koira, mökki, vene tai auto. Sama kuva koristeessa tai hupparissa on lahja, joka ei koskaan mene väärin, koska sen sisältö on hänen oma elämänsä.
+Jos kysymyslista ei tuota ideaa, palaa yksinkertaiseen: valokuvaan. Lähes jokaisella on puhelimessaan kuva, joka on hänelle tärkeä: lapset, lapsenlapset, koira, mökki, vene tai auto. Sama kuva t-paidassa tai hupparissa on lahja, joka ei koskaan mene väärin, koska sen sisältö on hänen oma elämänsä.
 
 ## Tavaran rinnalle yhteistä aikaa
 
@@ -376,7 +376,7 @@ Personoidut tuotteet ja muut tuotteet painetaan tilauksesta painokumppaneillamme
 Jos haluat lisää ideoita, selaa [hauskat lahjat miehelle](/hauskat-lahjat-miehelle) tai lue oppaamme [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea). Valmiita jouluideoita löydät myös sivulta [joululahjat miehelle](/lahjat/joululahjaksi-miehelle).`,
     faq: [
       { q: "Mitä ostaa miehelle, jolla on jo kaikkea?", a: "Osta jotain, mitä hän ei ostaisi itselleen: personoitu lahja, sisäpiirin vitsi tai yhteinen muisto omana kuvana. Tarvelahjat hän on jo ostanut itse." },
-      { q: "Onko personoitu lahja hyvä valinta miehelle, jolla on kaikki?", a: "Personoitu lahja on hyvä valinta, koska sitä ei ole kenelläkään muulla. Oma teksti tai kuva paidassa, hupparissa tai koristeessa tekee tuotteesta ainutlaatuisen." },
+      { q: "Onko personoitu lahja hyvä valinta miehelle, jolla on kaikki?", a: "Personoitu lahja on hyvä valinta, koska sitä ei ole kenelläkään muulla. Oma teksti tai kuva paidassa tai hupparissa tekee tuotteesta ainutlaatuisen." },
       { q: "Mitä vitsejä kannattaa välttää lahjassa?", a: "Vältä vitsejä hänen arasta aiheestaan, kuten iästä, painosta tai hiusrajasta, jos hän ei itse naura niille. Valitse vitsi, jonka hän kertoisi itsekin." },
       { q: "Ehtiikö personoitu lahja jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
@@ -431,11 +431,11 @@ Eläkelahja annetaan usein työyhteisön puolesta. Yhteislahjassa on kolme vaihe
 
 **1. Nimeä vastuuhenkilö.** Yksi ihminen kerää rahat, tilaa lahjan ja hoitaa kortin. Muuten lahja jää helposti viime tippaan.
 
-**2. Sovi summa per henkilö.** Pieni ja tasainen summa, esimerkiksi 5 tai 10 euroa, on helppo kaikille. Kymmenen hengen tiimi kokoaa tällöin 50-100 euroa. Kymmenen euron osuuksilla summa riittää esimerkiksi hupparin ja koristeen yhdistelmään.
+**2. Sovi summa per henkilö.** Pieni ja tasainen summa, esimerkiksi 5 tai 10 euroa, on helppo kaikille. Kymmenen hengen tiimi kokoaa tällöin 50-100 euroa. Kymmenen euron osuuksilla summa riittää esimerkiksi hupparin ja t-paidan yhdistelmään.
 
-**3. Lisää henkilökohtainen osa.** Yhteislahjaan sopii hyvin [kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste): tiimikuva, kuva työpisteestä tai kuvakollaasi vuosien varrelta. Painetun lahjan rinnalle kortti, johon jokainen kirjoittaa yhden muiston, tekee kokonaisuudesta lämpimän.
+**3. Lisää henkilökohtainen osa.** Yhteislahjaan sopii hyvin [huppari omalla kuvalla](/tuote/oma-tekstikuva-huppari): tiimikuva, kuva työpisteestä tai kuvakollaasi vuosien varrelta. Painetun lahjan rinnalle kortti, johon jokainen kirjoittaa yhden muiston, tekee kokonaisuudesta lämpimän.
 
-Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}, joten yhteishinta on alkaen ${HINTA.huppariJaKoriste}. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
+Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen} ja t-paita alkaen ${HINTA.tpaitaAlkaen}. Lisää ideoita työyhteisön lahjoihin on sivulla [lahja työkaverille](/lahjat/tyokaverille).
 
 ## Näin annat lahjan eläkejuhlissa
 
@@ -491,7 +491,7 @@ Kaikki eivät halua eläkejuhlia. Osa jää eläkkeelle hiljaa, viimeisen työp�
 - Juhli vapautta, työuraa tai tulevia harrastuksia, älä vuosien määrää.
 - Valitse tuote, jota hän käyttää myös juhlien jälkeen.
 - Työyhteisön lahjassa nimeä vastuuhenkilö ja sovi summa per henkilö.
-- Lisää yhteislahjaan henkilökohtainen osa, kuten tiimikuva koristeessa.
+- Lisää yhteislahjaan henkilökohtainen osa, kuten tiimikuva hupparissa.
 - Kirjoita korttiin yksi konkreettinen muisto yhteiseltä ajalta.
 - Anna lahja lyhyen tarinan kanssa ja anna hänen avata se kaikkien edessä.
 
@@ -504,7 +504,7 @@ Moni jää eläkkeelle vuoden vaihteessa, jolloin eläkejuhlat ja pikkujoulut os
 Eläkeläiselle sopivia lahjoja ikävuosien mukaan löydät sivuilta [lahja 60-vuotiaalle miehelle](/lahjat/60-vuotiaalle-miehelle), [lahja 60-vuotiaalle naiselle](/lahjat/60-vuotiaalle-naiselle) ja [lahja 70-vuotiaalle](/lahjat/70-vuotiaalle). Koko valikoima on koottu sivulle [eläkelahjat](/elakelahjat), ja lisää vinkkejä saat oppaasta [hauskimmat eläkelahjat](/blogi/hauskimmat-elakelahjat-selviytymisopas).`,
     faq: [
       { q: "Mikä on hauska eläkelahja?", a: "Hauska eläkelahja juhlii vapautta tai työuraa, ei ikää. Esimerkiksi paita tekstillä \"Eläkeläinen, aamuherätys vapaaehtoinen\" naurattaa ja on käytössä myös juhlien jälkeen." },
-      { q: "Paljonko eläkelahjaan kannattaa laittaa rahaa?", a: "Työyhteisön yhteislahjassa 5-10 euroa per henkilö on tavallinen summa. Kymmenen hengen tiimi kokoaa silloin 50-100 euroa, ja kymmenen euron osuuksilla summa riittää esimerkiksi hupparin ja koristeen yhdistelmään." },
+      { q: "Paljonko eläkelahjaan kannattaa laittaa rahaa?", a: "Työyhteisön yhteislahjassa 5-10 euroa per henkilö on tavallinen summa. Kymmenen hengen tiimi kokoaa silloin 50-100 euroa, ja kymmenen euron osuuksilla summa riittää esimerkiksi hupparin ja t-paidan yhdistelmään." },
       { q: "Sopiiko eläkelahjaksi ikävitsi?", a: "Ikävitsi sopii vain, jos tunnet saajan hyvin ja tiedät hänen nauravan sille itse. Varmempi valinta on vitsi vapaudesta, työurasta tai tulevista harrastuksista." },
       { q: "Kuinka ajoissa eläkelahja pitää tilata?", a: `Tilaa heti, kun juhlapäivä on tiedossa, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
     ],
@@ -573,7 +573,7 @@ Jos työpaikalla on selvä ammatti, lahja voi viitata siihen. Esimerkiksi hoitoa
 
 ## Pieni budjetti: alle 10 euroa
 
-Jos hintaraja on matala, [kuusenkoriste omalla tekstillä](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}. Koristeeseen voi painaa tiimin sisäpiirin lausahduksen tai vaikka projektin nimen. Lue lisää edullisista vaihtoehdoista oppaasta [pikkujoululahja alle 20 euroa](/blogi/pikkujoululahja-alle-20-euroa).
+Jos hintaraja on matala, [t-paita omalla tekstillä](/tuote/oma-tekstikuva-t-paita) maksaa tätä kirjoitettaessa ${HINTA.personoitu}. Paitaan voi painaa tiimin sisäpiirin lausahduksen tai vaikka projektin nimen. Lue lisää edullisista vaihtoehdoista oppaasta [pikkujoululahja alle 20 euroa](/blogi/pikkujoululahja-alle-20-euroa).
 
 ## Koko tiimin lahja
 
@@ -587,7 +587,7 @@ Pomolle ostetaan lahja yleensä koko tiimin nimissä. Hyvä pomon lahja on itsei
 
 ## Kolme esimerkkitilannetta
 
-**Tilanne 1: avokonttori, 12 hengen tiimi, lahja-arvonta 20 euron rajalla.** Valitse lahja ilman kokoa, esimerkiksi koriste, jossa on tiimin sisäpiirin lausahdus. Se mahtuu budjettiin, ja jokainen tunnistaa vitsit.
+**Tilanne 1: avokonttori, 12 hengen tiimi, lahja-arvonta 20 euron rajalla.** Valitse t-paita, jossa on tiimin sisäpiirin lausahdus, ja kerää koot etukäteen. Jos 20 euron raja on kova, ehdota 25 euron rajaa, sillä t-paidat alkavat tätä kirjoitettaessa hinnasta ${HINTA.tpaitaAlkaen}.
 
 **Tilanne 2: lähin työkaveri, jonka kanssa olet jakanut työhuoneen viisi vuotta.** Hänelle voit ostaa henkilökohtaisemman lahjan, koska tiedät hänen kokonsa ja huumorintajunsa. Paita, joka viittaa teidän yhteiseen juttuunne, on mieluisampi kuin yleinen toimistovitsi.
 
@@ -620,7 +620,7 @@ Lisää vinkkejä arvonnan järjestämiseen ja ideoita eri budjeteille löydät 
 
 ## Uudelle työkaverille
 
-Kollega, joka aloitti syksyllä, on lahjan saajana hankala, koska et tunne häntä vielä hyvin. Valitse silloin lahja, joka liittyy työpaikkaan eikä hänen persoonaansa: koriste, jossa on tiimin nimi, tai yleinen toimistohuumori. Uudelle työkaverille lahja on myös tervetulotoivotus, joten pieni kortti, jossa toivotat hänet tervetulleeksi tiimiin, on tässä tärkeämpi kuin itse lahja.
+Kollega, joka aloitti syksyllä, on lahjan saajana hankala, koska et tunne häntä vielä hyvin. Valitse silloin lahja, joka liittyy työpaikkaan eikä hänen persoonaansa: paita, jossa on tiimin nimi, tai yleinen toimistohuumori. Uudelle työkaverille lahja on myös tervetulotoivotus, joten pieni kortti, jossa toivotat hänet tervetulleeksi tiimiin, on tässä tärkeämpi kuin itse lahja.
 
 ## Muistatko myös heidät?
 
@@ -732,9 +732,9 @@ Jos lahjoja kertyy samaan tilaukseen useammalle perheenjäsenelle, ${ILMAINEN_RA
 
 **Isä 1: 45-vuotias, kaksi pientä lasta, remontoi omakotitaloa.** Hänelle sopii lasten piirustus paidassa tai "Jos iskä ei osaa korjata sitä" -huppari. Molemmat ovat lahjoja, jotka hän käyttää remonttipäivinä ja kehuu kavereille.
 
-**Isä 2: 60-vuotias, aikuiset lapset, kalastaa kesät ja grillaa talvet.** Sisarusten yhteislahjaksi sopii kalastus- tai grillipaita. Jos haluatte panostaa, lisätkää mukaan koriste, jossa on kuva yhteiseltä kalareissulta.
+**Isä 2: 60-vuotias, aikuiset lapset, kalastaa kesät ja grillaa talvet.** Sisarusten yhteislahjaksi sopii kalastus- tai grillipaita. Jos haluatte panostaa, painakaa paitaan kuva yhteiseltä kalareissulta.
 
-**Isä 3: 68-vuotias tuore pappa.** Hänelle sopii Maailman paras pappa -huppari, jonka antaa lastenlapsi. Lahjan voi täydentää kuusenkoristeella, jossa on lapsenlapsen kuva.
+**Isä 3: 68-vuotias tuore pappa.** Hänelle sopii Maailman paras pappa -huppari, jonka antaa lastenlapsi. Lahjan voi täydentää t-paidalla, jossa on lapsenlapsen kuva.
 
 ## Mitä välttää isän lahjassa
 
@@ -802,7 +802,7 @@ Lisää valmiita ideoita löydät sivuilta [isänpäivän lahjaideat](/isanpaiva
     updatedAt: "2026-10-21",
     category: "lahjaideat",
     tags: ["salainen joulupukki", "salaisen joulupukin lahja", "pikkujoululahja", "joululahja alle 20 euroa", "joulu 2026"],
-    relatedCategories: ["koristeet", "t-paidat"],
+    relatedCategories: ["hupparit", "t-paidat"],
     content: `## Näin salainen joulupukki toimii
 
 Salaisessa joulupukissa jokainen osallistuja arvotaan ostamaan lahja yhdelle toiselle osallistujalle. Lahjan antaja pysyy salaisena, ja kaikki lahjat avataan yhdessä. Tapa on suosittu työpaikoilla, kaveriporukoissa ja suvun joulussa, koska kenenkään ei tarvitse ostaa lahjaa kaikille.
@@ -834,13 +834,13 @@ Jos porukka on sopinut tiukasta rajasta, puhu asiasta etukäteen. Moni on valmis
 
 ## 20 euron budjetti
 
-Kahdellakymmenellä eurolla saat lahjan, jonka saaja muistaa joka joulu. [Kuusenkoriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}. Koristeeseen sopii esimerkiksi:
+Kahdellakymmenellä eurolla Huumorikaupasta ei saa t-paitaa, sillä edullisin t-paita maksaa tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen}. Jos raja on 25 tai 30 euroa, [t-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) maksaa ${HINTA.personoitu}. Paitaan sopii esimerkiksi:
 
 - kuva porukan yhteisestä reissusta
 - teksti "Salainen joulupukki 2026" ja porukan nimi
 - saajan lemmikin kuva ja nimi
 
-Valmis vaihtoehto ilman omaa suunnittelua on [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament), joka sopii kaveriporukan lahjaksi. Selaa [koko valikoima](/kaikki-tuotteet) tai katso koottu valikoima [salaisen joulupukin lahjat](/salainen-joulupukki-lahja).
+Valmiita paitoja ilman omaa suunnittelua löydät sivulta [hauskat t-paidat](/kategoria/t-paidat). Selaa [koko valikoima](/kaikki-tuotteet) tai katso koottu valikoima [salaisen joulupukin lahjat](/salainen-joulupukki-lahja).
 
 ## 30 euron budjetti
 
@@ -850,7 +850,7 @@ Kun saaja on tuttu, valitse paita hänen omasta jutustaan. Kun saaja on vähemm�
 
 - **Pelaajalle:** [Just one more level](/tuote/hauska-t-paita-pelaajalle-just-one-more-level) sopii jokaiselle, joka on luvannut lopettaa pelaamisen "ihan kohta".
 - **Talviuimarille:** [-20 °C sopiva uimakeli](/tuote/hauska-t-paita-avantouijalle-20c-sopiva-uimakeli) naurattaa erityisesti avantouinnin aloittaneita.
-- **Sinnikkäälle:** [Yksi kerta vielä](/tuote/yksi-kerta-viela-t-paita) sopii kenelle tahansa, joka ei luovuta.
+- **Remontoijalle:** [Mittaa kerran. Sahaa kolme kertaa](/tuote/mittaa-kerran-sahaa-kolme-kertaa-t-paita-remontoijalle) sopii jokaiselle, joka korjaa asiat itse ja jatkaa, vaikka ensimmäinen yritys ei onnistu.
 - **Turvallinen valinta:** [Suomi Finland -paita](/tuote/suomi-finland-t-paita) toimii, kun et tiedä saajan huumorintajusta mitään.
 
 Lisää vaihtoehtoja on sivuilla [hauskat t-paidat](/kategoria/t-paidat) ja [lahjat alle 30 euroa](/lahjat/alle-30-euroa).
@@ -870,9 +870,9 @@ Toivelista ei vie leikistä yllätystä, mutta se poistaa isot riskit. Kukaan ei
 
 Järjestäjä arpoo parit ja lähettää jokaiselle sähköpostin, jossa on saajan nimi ja toivelista. Lahjat avataan tiimin joululounaalla.
 
-- Kolme osallistujaa valitsee kuusenkoristeen saajan lemmikin kuvalla.
-- Kaksi valitsee koristeen, jossa on tiimin sisäpiirin vitsi.
-- Kolme valitsee koristeen, jossa on tiimin nimi ja vuosiluku.
+- Kolme osallistujaa valitsee t-paidan, jossa on saajan lemmikin kuva.
+- Kaksi valitsee t-paidan, jossa on tiimin sisäpiirin vitsi.
+- Kolme valitsee t-paidan, jossa on tiimin nimi ja vuosiluku.
 
 Jos tiimi tilaa kaikki lahjat yhdellä tilauksella, kahdeksan lahjan yhteissumma ylittää ${ILMAINEN_RAJA_TEKSTI} euron rajan, ja toimitus on ilmainen. Lahjat tulevat järjestäjälle, joka jakaa ne nimettöminä.
 
@@ -898,12 +898,12 @@ Järjestäjän tärkeä tehtävä on pitää aikataulu sellaisena, että verkost
 
 ## Kun joku jää pois
 
-Salaisessa joulupukissa joku sairastuu tai joutuu perumaan aina. Järjestäjän kannattaa varautua tähän etukäteen. Pyydä jokaista tuomaan lahja, vaikka hän itse ei pääsisi paikalle, tai sopia toimittavansa sen jollekulle toiselle etukäteen. Jos lahja jää puuttumaan, järjestäjällä voi olla yksi varalahja, esimerkiksi kuusenkoriste tai tarrapaketti. Kun lahja on neutraali, se sopii kenelle tahansa, ja kukaan ei jää ilman pakettia.
+Salaisessa joulupukissa joku sairastuu tai joutuu perumaan aina. Järjestäjän kannattaa varautua tähän etukäteen. Pyydä jokaista tuomaan lahja, vaikka hän itse ei pääsisi paikalle, tai sopia toimittavansa sen jollekulle toiselle etukäteen. Jos lahja jää puuttumaan, järjestäjällä voi olla yksi varalahja, esimerkiksi hauska kortti. Kun lahja on neutraali, se sopii kenelle tahansa, ja kukaan ei jää ilman pakettia.
 
 ## Yhteenveto budjeteittain
 
-- **10 euroa:** tiukka budjetti. Nosta summa 20 euroon, niin kuusenkoriste mahtuu mukaan.
-- **20 euroa:** kuusenkoriste omalla kuvalla tai valmis koriste. Muisto, joka otetaan esiin joka joulu.
+- **10 euroa:** tiukka budjetti. Nosta summa 25 euroon, niin t-paita mahtuu mukaan.
+- **25 euroa:** t-paita alkaen ${HINTA.tpaitaAlkaen}. Valmis meemipaita sopii, kun et tunne saajaa hyvin.
 - **30 euroa:** hauska t-paita saajan omasta jutusta. Vaatii koon, joten pyydä se toivelistassa.
 
 Kaikissa budjeteissa sama sääntö pätee: valitse lahja, jota saaja käyttää, ja huumori, joka ei loukkaa. Muista myös toimituskulut, ja tilaa lahja mieluiten samaan ostoskoriin muiden joululahjojen kanssa.
@@ -916,8 +916,8 @@ Salaisen joulupukin lahja menee joskus ohi: koko on väärä tai saajalla on sam
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Jos lahjojen avaus on jo marraskuun lopussa tai joulukuun alussa, tilaa heti arvonnan jälkeen. Lisää ideoita porukan juhliin löydät sivuilta [pikkujoululahjat](/lahjat/pikkujouluihin) ja [lahja kaverille](/lahja-kaverille).`,
     faq: [
-      { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: `10 euron budjetti on Huumorikaupassa tiukka. Kun budjettia nostetaan, kuusenkoriste omalla kuvalla (${HINTA.koriste}) mahtuu mukaan. Siinä ei ole kokoa, joten se sopii myös saajalle, jota et tunne hyvin.` },
-      { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: `Kahdellakymmenellä eurolla Huumorikaupasta ei saa valmista lahjaa. Edullisin vaihtoehto on kuusenkoriste omalla tekstillä tai kuvalla, ${HINTA.koriste}. Se on lahja, joka otetaan esiin joka joulu uudelleen.` },
+      { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: `10 euron budjetti on Huumorikaupassa tiukka, sillä edullisin t-paita maksaa tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen}. Nosta budjetti 25 euroon, niin t-paita mahtuu mukaan.` },
+      { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: `Kahdellakymmenellä eurolla Huumorikaupasta ei saa valmista lahjaa. Edullisin t-paita maksaa tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen}, joten nosta budjetti 25 euroon.` },
       { q: "Kuuluvatko toimituskulut salaisen joulupukin hintarajaan?", a: `Järjestäjän kannattaa sopia asia etukäteen. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten lahja kannattaa tilata omien joululahjojen kanssa.` },
       { q: "Mitä teen, jos salaisen joulupukin lahja on väärää kokoa?", a: "Ota yhteyttä 14 päivän sisällä tuotteen vastaanottamisesta. Avaa paketti heti saapumisen jälkeen, koska peruutusaika lasketaan vastaanottopäivästä." },
     ],
@@ -974,13 +974,13 @@ Nuorelle, joka käyttää somen kieltä myös arjessa, [Slay queen -huppari](/tu
 
 Teinin lahjassa riski on aina se, että osut väärään vitsiin. Varma tapa välttää se on antaa nuoren itse päättää tekstistä tai kuvasta. Kaksi tapaa toteuttaa tämä:
 
-**1. Kysy ovelasti.** Kysy esimerkiksi illallisella, mikä on hänen kaveriporukkansa tämän syksyn sisäpiirin vitsi tai mitä tekstiä hän laittaisi paitaan, jos saisi päättää. Kirjoita vastaus muistiin ja tilaa [huppari omalla tekstillä](/tuote/oma-tekstikuva-huppari) tai [pitkähihainen omalla tekstillä](/tuote/oma-tekstikuva-pitkahihainen).
+**1. Kysy ovelasti.** Kysy esimerkiksi illallisella, mikä on hänen kaveriporukkansa tämän syksyn sisäpiirin vitsi tai mitä tekstiä hän laittaisi paitaan, jos saisi päättää. Kirjoita vastaus muistiin ja tilaa [huppari omalla tekstillä](/tuote/oma-tekstikuva-huppari) tai [t-paita omalla tekstillä](/tuote/oma-tekstikuva-t-paita).
 
 **2. Anna suunnittelu lahjaksi.** Paketoi kuusen alle kortti, jossa lukee, että joululahja on oma suunnittelemasi huppari. Suunnitelkaa ja tilatkaa se yhdessä joulun jälkeen. Lahja ei ole paketissa aattona, mutta se on varmasti mieleinen.
 
 ## Pienet lisälahjat
 
-Koristeet ovat nuorille hauska lisälahja huoneeseen. [Kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste) maksaa tätä kirjoitettaessa ${HINTA.koriste}, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat sivulla [kaikki tuotteet](/kaikki-tuotteet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
+[T-paita omalla kuvalla](/tuote/oma-tekstikuva-t-paita) maksaa tätä kirjoitettaessa ${HINTA.personoitu}, ja siihen voi painaa vaikka lemmikin kuvan tai kaveriporukan nimen. Kaikki vaihtoehdot ovat sivulla [kaikki tuotteet](/kaikki-tuotteet). Valitse teksti niin, että nuori voi esitellä lahjaa kavereilleen ilman kiusaantumista. Jos olet epävarma, kysy neuvoa nuoren sisarukselta tai kaverilta.
 
 ## Mitä välttää
 
@@ -1006,7 +1006,7 @@ Sisaruksen apu tekee lahjasta myös yhteisen, ja voitte antaa sen yhdessä.
 
 ## Kolme esimerkkiä
 
-**14-vuotias pelaaja:** Just one more level -paita ja koriste, jossa on hänen pelihahmonsa nimi.
+**14-vuotias pelaaja:** Just one more level -paita tai oma paita, jossa on hänen pelihahmonsa nimi.
 
 **17-vuotias lumilautailija:** Gravity is just a suggestion -huppari, joka toimii rinteessä ja koulussa.
 
@@ -1024,7 +1024,7 @@ Kolme tapaa edetä:
 
 ## Budjetti
 
-Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, pitkähihainen 39,90 € ja huppari alkaen ${HINTA.huppariAlkaen}. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
+Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen}. Isovanhemmille ja kummeille hyvä yhdistelmä on huppari ja t-paita (74,80 €). Jos ostatte sisarusten kanssa yhdessä, kaksi hupparia (99,80 €) ylittää ilmaisen toimituksen ${ILMAINEN_RAJA_TEKSTI} euron rajan.
 
 ## Anna avata rauhassa
 
@@ -1036,11 +1036,11 @@ Kummit ja isovanhemmat ostavat usein teinille lahjan tietämättä hänen tämä
 
 ## Yhteenveto
 
-Hauska lahja teinille onnistuu, kun huumori on nuoren omaa. Valitse lahja harrastuksen tai tyylin mukaan, vältä vanhempien vitsejä teinistä itsestään ja kysy apua sisaruksilta tai kavereilta. Jos et ole varma tekstistä, anna nuoren suunnitella oma huppari ja tilatkaa se yhdessä. Pieni lisälahja, kuten koriste, on helppo tapa täydentää isompaa lahjaa.
+Hauska lahja teinille onnistuu, kun huumori on nuoren omaa. Valitse lahja harrastuksen tai tyylin mukaan, vältä vanhempien vitsejä teinistä itsestään ja kysy apua sisaruksilta tai kavereilta. Jos et ole varma tekstistä, anna nuoren suunnitella oma huppari ja tilatkaa se yhdessä. T-paita on helppo lisälahja hupparin rinnalle, ja siihen voi painaa nuoren oman lempilauseen tai kuvan, kunhan teksti tarkistetaan yhdessä ennen tilausta.
 
-## Hupparit ja pitkähihaiset talveen
+## Hupparit talveen
 
-Joululahjaksi huppari ja pitkähihainen ovat käytännöllisiä, koska ne ovat käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen} ja pitkähihainen 39,90 €.
+Joululahjaksi huppari on käytännöllinen, koska se on käytössä heti talvella. Selaa koko valikoima: [hupparit](/kategoria/hupparit) ja [t-paidat](/kategoria/t-paidat). Tätä kirjoitettaessa huppari maksaa alkaen ${HINTA.huppariAlkaen}.
 
 ## Tilaa ajoissa
 
@@ -1131,7 +1131,7 @@ Harrastajan lahja ilahduttaa eniten, kun sen voi ottaa käyttöön pian. Joulula
 
 ## Harrastusporukan pikkujoulut
 
-Kalastusseuroilla, metsästysseuroilla ja mökkinaapurustoilla on usein omat pikkujoulunsa. Niissä lahjanvaihto kannattaa sitoa yhteiseen harrastukseen. Pieni lahja, kuten koriste seuran nimellä tai kuva kauden mieleenpainuvimmasta saaliista, on hauska ja edullinen. Jos porukka haluaa yhteisen muiston kaudesta, yhteiset paidat ovat lahja, joka näkyy myös ensi kauden reissuilla.
+Kalastusseuroilla, metsästysseuroilla ja mökkinaapurustoilla on usein omat pikkujoulunsa. Niissä lahjanvaihto kannattaa sitoa yhteiseen harrastukseen. Pieni lahja, kuten paita seuran nimellä tai kuva kauden mieleenpainuvimmasta saaliista, on hauska. Jos porukka haluaa yhteisen muiston kaudesta, yhteiset paidat ovat lahja, joka näkyy myös ensi kauden reissuilla.
 
 ## Harrastuksen aloittajalle
 
@@ -1141,7 +1141,7 @@ Uudelle mökinomistajalle taas sopii lahja, jossa on kuva uudesta mökistä ja e
 
 ## Lahja koko perheen mökille
 
-Kun mökki on koko suvun yhteinen, lahja voi olla mökille itselleen. Koriste, jossa on vanha valokuva mökin ensimmäiseltä kesältä, kuuluu kaikille, jotka mökillä käyvät. Sellainen lahja ei kilpaile kenenkään henkilökohtaisten tavaroiden kanssa, ja se kertoo mökin tarinaa myös seuraaville sukupolville. Joululahjana se on hauska yllätys, jonka paikka löytyy mökiltä heti ensimmäisenä kevätviikonloppuna.
+Kun mökki on koko suvun yhteinen, lahja voi olla mökille itselleen. Yhteinen paita, jossa on vanha valokuva mökin ensimmäiseltä kesältä, sopii kaikille, jotka mökillä käyvät. Sellainen lahja ei kilpaile kenenkään henkilökohtaisten tavaroiden kanssa, ja se kertoo mökin tarinaa myös seuraaville sukupolville. Joululahjana se on hauska yllätys, joka on mökillä käytössä heti ensimmäisenä kevätviikonloppuna.
 
 ## Yhteenveto
 
@@ -1212,7 +1212,7 @@ Kun lista on valmis, tee kaikki tilaukset kerralla. Se säästää aikaa ja raha
 
 ## Personoidut lahjat
 
-Personoitu tuote on hyvä joululahja, koska samaa ei ole kenelläkään muulla. Vaihtoehtoja ovat esimerkiksi [t-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita), [huppari omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-huppari) ja [kuusenkoriste omalla kuvalla](/tuote/oma-tekstikuva-koriste).
+Personoitu tuote on hyvä joululahja, koska samaa ei ole kenelläkään muulla. Vaihtoehtoja ovat esimerkiksi [t-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) ja [huppari omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-huppari).
 
 Personoidussa lahjassa suunnitteluun kuluu oma aikansa: kuvan etsiminen, tekstin miettiminen ja tarkistaminen. Varaa tähän aikaa ennen viimeistä tilauspäivää, äläkä jätä suunnittelua viimeiselle päivälle.
 
@@ -1238,7 +1238,7 @@ Toimituslupauksemme jouluaattoon koskee vain ajoissa tehtyjä tilauksia. Jos huo
 
 ## Pikkujoulut ja muut juhlat ennen joulua
 
-Joulun alla on muitakin juhlia: pikkujoulut, salaisen joulupukin lahjanvaihdot ja eläkejuhlat. Koska kaikki tuotteet painetaan tilauksesta, sama periaate pätee niihin: mitä aikaisemmin tilaat, sitä varmemmin lahja on perillä juhlapäivänä. Pieni lisälahja on esimerkiksi [kuusenkoriste omalla tekstillä](/tuote/oma-tekstikuva-koriste), jonka voi tilata samaan ostoskoriin joululahjojen kanssa.
+Joulun alla on muitakin juhlia: pikkujoulut, salaisen joulupukin lahjanvaihdot ja eläkejuhlat. Koska kaikki tuotteet painetaan tilauksesta, sama periaate pätee niihin: mitä aikaisemmin tilaat, sitä varmemmin lahja on perillä juhlapäivänä. Pikkujoululahjan voi tilata samaan ostoskoriin joululahjojen kanssa, esimerkiksi [t-paidan omalla tekstillä](/tuote/oma-tekstikuva-t-paita).
 
 ## Kenelle lahja ensin?
 
@@ -1246,7 +1246,7 @@ Kun lahjalista on pitkä, kaikkea ei tarvitse tilata samana päivänä. Prioriso
 
 - **Ensin vaatelahjat, joiden koko on varmistettava:** Ne vievät eniten aikaa, koska koot pitää selvittää ja tuote pitää tarkistaa saapumisen jälkeen.
 - **Sitten personoidut tuotteet:** Niiden suunnitteluun kuluu oma aikansa. Tekstien ja kuvien pitää olla valmiina ennen tilausta.
-- **Lopuksi pienet lisälahjat:** Koristeet ja muut pienet tuotteet on helppo lisätä samaan ostoskoriin viimeisenä.
+- **Lopuksi lisälahjat:** T-paidat ja muut lahjat on helppo lisätä samaan ostoskoriin viimeisenä.
 
 Kun ostoskorissa ovat kaikki listan lahjat, tee yksi tilaus ennen viimeistä tilauspäivää.
 

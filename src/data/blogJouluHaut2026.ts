@@ -481,7 +481,7 @@ Tuotteemme painetaan tilauksesta painokumppaneillamme. ${TOIMITUS} Tilaa lahja h
     slug: "joululahja-tyttoystavalle",
     title: "Joululahja tyttöystävälle: hauskat ja henkilökohtaiset ideat",
     metaTitle: "Joululahja tyttöystävälle: hauskat ideat | Huumorikauppa",
-    metaDescription: "Joululahja tyttöystävälle: parin yhteinen vitsi, oma teksti paidassa, kuusenkoriste ja jouluiset paidat. Vinkit koon valintaan ja korttiin.",
+    metaDescription: "Joululahja tyttöystävälle: parin yhteinen vitsi, oma teksti paidassa ja jouluiset paidat. Vinkit koon valintaan ja korttiin.",
     excerpt: "Paras joululahja tyttöystävälle kertoo, että tunnet hänet. Tässä hauskat ideat, joissa on mukana teidän oma juttunne, ja vinkit koon valintaan.",
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
@@ -502,7 +502,7 @@ Mieti ennen valintaa kolmea asiaa:
 
 Henkilökohtaisin lahja on sellainen, jota ei voi ostaa kenellekään muulle. [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) on tähän hyvä: kirjoita siihen lempinimi, teidän sisäpiirin vitsinne tai päivämäärä, jolloin tapasitte. Kirjoitat tekstin tuotesivulla ennen ostoskoriin lisäämistä. Personoitu tuote tehdään juuri hänelle, joten sitä ei voi palauttaa. Tarkista siis kirjoitusasu ennen tilausta.
 
-Pieni ja pysyvä lahja on [Maailman paras ystävä -kuusenkoriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament). Se kaivetaan esiin joka joulu ja muistuttaa, että tyttöystävä on myös paras ystäväsi.
+Pysyvä lahja on [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita), johon voi painaa yhteisen kuvan tai teidän oman vitsinne.
 
 ## Parin yhteinen vitsi
 
@@ -518,7 +518,7 @@ Lisää ideoita löydät sivuilta [hauskat lahjat naiselle](/hauskat-lahjat-nais
 
 ## Koko ilman kysymistä
 
-Koko on tyttöystävän lahjassa herkkä asia. Katso hänen eniten käyttämänsä paidan leveys kainaloiden alta ja vertaa sitä tuotesivun mittoihin. Jos hän käyttää huppareita mielellään reilun kokoisina, valitse huppari koon isompana. Jos et halua arvata, valitse koriste, joka ei vaadi kokoa ollenkaan.
+Koko on tyttöystävän lahjassa herkkä asia. Katso hänen eniten käyttämänsä paidan leveys kainaloiden alta ja vertaa sitä tuotesivun mittoihin. Jos hän käyttää huppareita mielellään reilun kokoisina, valitse huppari koon isompana. Jos et halua arvata, kysy koko hänen kaveriltaan tai sisareltaan.
 
 ## Kortti tekee lahjasta muistettavan
 
@@ -550,9 +550,9 @@ Jos annat myös isomman lahjan, hauska paita sopii pikkupaketiksi, joka avataan 
 
 Tuotteemme painetaan tilauksesta painokumppaneillamme. ${TOIMITUS} ${AIKATAULU}`,
     faq: [
-      { q: "Mikä on hyvä hauska joululahja tyttöystävälle?", a: "Lahja, jossa on teidän oma vitsinne. Oma teksti paidassa, parin paidat tai kuusenkoriste ovat hyviä vaihtoehtoja." },
+      { q: "Mikä on hyvä hauska joululahja tyttöystävälle?", a: "Lahja, jossa on teidän oma vitsinne. Oma teksti paidassa, parin paidat tai huppari omalla tekstillä ovat hyviä vaihtoehtoja." },
       { q: "Mitä antaa tyttöystävälle ensimmäisenä jouluna?", a: "Kevyt ja hauska lahja toimii parhaiten, esimerkiksi parin paidat ja kortti, jossa muistelet yhteistä hetkeä." },
-      { q: "Miten valitsen koon, jos en halua kysyä?", a: "Mittaa hänen eniten käyttämänsä paidan leveys kainaloiden alta ja vertaa tuotesivun mittoihin, tai valitse koriste, joka ei vaadi kokoa." },
+      { q: "Miten valitsen koon, jos en halua kysyä?", a: "Mittaa hänen eniten käyttämänsä paidan leveys kainaloiden alta ja vertaa tuotesivun mittoihin, tai valitse huppari, joka on väljän mallin vuoksi armollisempi." },
       JOULU_FAQ,
     ],
   },
@@ -647,7 +647,7 @@ Tuotteemme painetaan tilauksesta painokumppaneillamme. ${TOIMITUS} ${AIKATAULU}`
     slug: "hauska-joululahja-ystavalle",
     title: "Hauska joululahja ystävälle: ideat parhaalle ystävälle ja kaveriporukalle",
     metaTitle: "Hauska joululahja ystävälle | Huumorikauppa",
-    metaDescription: "Hauska joululahja ystävälle: meemipaidat, oma teksti, lempinimipaita ja kuusenkoriste parhaalle ystävälle. Vinkit kaveriporukan yhteislahjaan.",
+    metaDescription: "Hauska joululahja ystävälle: meemipaidat, oma teksti, lempinimipaita ja oma kuva paidassa. Vinkit kaveriporukan yhteislahjaan.",
     excerpt: "Ystävälle annetaan lahja, jossa saa olla rohkea vitsi. Tässä hauskat ideat parhaalle ystävälle, kaveriporukalle ja ystävälle, joka asuu kaukana.",
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
@@ -668,7 +668,7 @@ Ennen valintaa mieti:
 
 Parhaan ystävän lahjassa saa näkyä, kuinka tärkeä hän on.
 
-- **Pysyvä muisto:** [Maailman paras ystävä -kuusenkoriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament) ripustetaan kuuseen joka joulu. Se sanoo ääneen sen, mitä ei aina muisteta sanoa.
+- **Pysyvä muisto:** [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) kantaa yhteistä kuvaa tai vitsiä mukana arjessa. Se sanoo ääneen sen, mitä ei aina muisteta sanoa.
 - **Teidän oma vitsinne:** [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) on lahja, jota ei ole kenelläkään muulla. Kirjoita siihen lause, jonka vain te kaksi ymmärrätte.
 - **Lempinimi paitaan:** [Personoitava lempinimipaita](/tuote/personoitava-t-paita-lempinimi) sopii ystävälle, jolla on nimi, jota käytetään vain teidän porukassa.
 
@@ -700,7 +700,7 @@ Kaukana asuvalle ystävälle lahja kannattaa tilata ajoissa. Voit tilata paketin
 
 ## Kun et tiedä kokoa
 
-Valitse koriste, joka ei vaadi kokoa, tai huppari, joka on väljän mallin vuoksi armollisempi. Kaveriporukassa koon saa usein selville kysymällä toiselta ystävältä tai puolisolta.
+Valitse huppari, joka on väljän mallin vuoksi armollisempi kuin t-paita. Kaveriporukassa koon saa usein selville kysymällä toiselta ystävältä tai puolisolta.
 
 ## Ystävä, joka ei halua lahjaa
 
@@ -729,7 +729,7 @@ Jos etsit lahjaa myös kaverille, katso sivu [joululahja kaverille](/joululahja-
 Tuotteemme painetaan tilauksesta painokumppaneillamme. ${TOIMITUS} ${AIKATAULU}`,
     faq: [
       { q: "Mikä on hauska joululahja ystävälle?", a: "Lahja, jossa on teidän yhteinen vitsinne, kuten oma teksti paidassa, lempinimipaita tai suomalainen meemi, jonka ystävä tuntee." },
-      { q: "Mitä antaa parhaalle ystävälle jouluksi?", a: "Maailman paras ystävä -kuusenkoriste on pysyvä muisto, ja oma teksti paidassa tekee lahjasta ainutlaatuisen." },
+      { q: "Mitä antaa parhaalle ystävälle jouluksi?", a: "Oma teksti paidassa tai hupparissa tekee lahjasta henkilökohtaisen." },
       { q: "Voiko kaveriporukka tilata samat paidat?", a: "Voi. Samaan tilaukseen saa eri koot, ja toimitusmaksu maksetaan kerran." },
       JOULU_FAQ,
     ],
