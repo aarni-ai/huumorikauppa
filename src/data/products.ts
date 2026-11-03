@@ -31,21 +31,17 @@ Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjat
     description: "Hauskat hupparit sopivat lahjaksi syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja: löydä sopiva huppari äidille, kaverille tai itsellesi.",
     seoTitle: "Hauskat Hupparit - Huumorihupparit | Huumorikauppa.fi",
     seoDescription: `Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat - ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} €. 🧥`,
-    seoText: `## Hauskat hupparit - lämpöä, asennetta ja huumoria
+    seoText: `## Näin valitset hupparin aiheen
 
-Huumorikaupan hauskat hupparit yhdistävät lämmön ja huumorin. Löydä meemihuppari, huumorihuppari tai sarkastinen huppari joka sopii arkeen, vapaa-aikaan ja viikonloppuihin. Hupparimme ovat pehmeää, laadukasta materiaalia ja niissä on kestävä painatus.
+Ikävuosihuppari sopii pyöreille vuosille, ja eläkeläishuppari eläkejuhliin. Ammattihuppareissa vitsi koskee saajan työtä, esimerkiksi sairaanhoitajan, opettajan tai putkimiehen arkea. Kotikaupunkihuppari on lahja sille, joka on muuttanut pois mutta puhuu kotiseudustaan edelleen.
 
-## Valikoiman huumorihupparit
+## Saman vitsin voi valita t-paitana
 
-Valikoimastamme löydät huppareita moneen makuun: setähuumoripaidat, äiti-aiheiset hupparit, ammattihuumorit ja meemihupparit. Mukana on myös "Maailman paras" -sarjan huppareita, sarkastisia tekstihuppareita ja kalastushuumorihuppareita.
+Moni huppareiden teksti on myynnissä myös t-paitana. T-paita maksaa vähemmän ja sopii kesään, huppari talveen ja mökille. Kahden tuotteen tilaus toimitetaan ilman toimituskuluja, joten hupparin ja t-paidan voi tilata samalla kertaa.
 
-## Hauska huppari lahjaksi
+## Pesu ja painatus
 
-Hauska huppari on erinomainen lahja syntymäpäiviin, jouluun, isänpäivään tai äitienpäivään. Se on käytännöllinen, lämmin ja hauska, kolme ominaisuutta jotka tekevät siitä hyvän lahjan. Hupparimme sopivat miehille, naisille ja nuorille.
-
-## Laatu ja materiaalit
-
-Kaikki hupparimme ovat valmistettu laadukkaista materiaaleista. Ne kestävät konepesun ja säilyttävät muotonsa ja painatuksensa pitkään. Saatavilla olevat koot näet jokaisen tuotteen sivulta. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin ja 14 päivän palautusoikeus.`,
+Hupparit painetaan tilauksesta suoraan kankaaseen. Pese huppari nurin käännettynä, niin painatus säilyy pidempään.`,
   },
   {
     slug: "pitkahihaiset",

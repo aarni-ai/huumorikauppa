@@ -43,7 +43,10 @@ export const contentHubLinks: SiteLink[] = [
 
 /** Footer-visible gift links — curated subset that covers all non-linked hub pages */
 export const footerGiftLinks: SiteLink[] = [
-  ...giftHubLinks,
+  // Hakulausekkeiden kohdesivut tarkalla ankkuritekstillä (Search Console 3.11.2026): "hauskat lahjat" ja
+  // "huumorilahjat" -> etusivu, "hauskat joululahjat" -> /joululahjat.
+  { path: "/",                            label: "Hauskat lahjat ja huumorilahjat", emoji: "🎁", tags: [] },
+  ...giftHubLinks.map((l) => (l.path === "/joululahjat" ? { ...l, label: "Hauskat joululahjat" } : l)),
   { path: "/lahjat/alle-30-euroa",        label: "Lahjat alle 30 €",          emoji: "🪙", tags: [] },
   { path: "/blogi/hauskat-valmistujaislahjat-2026", label: "Valmistujaislahjat", emoji: "🎓", tags: [] },
   { path: "/lahjat/tyokaverille",         label: "Lahjat työkavereille",      emoji: "💼", tags: [] },

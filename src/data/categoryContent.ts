@@ -52,21 +52,23 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     ],
   },
   hupparit: {
-    title: "Hauskat hupparit miehille ja naisille | Huumorikauppa",
-    description: `Hauskat hupparit suomalaisella huumorilla: eläkeläis-, ikävuosi-, meemi- ja kaupunkihupparit sekä oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+    // 3.11.2026 (Search Console: Google piti sivua kaksoiskappaleena). Oma teksti hupparin valintaan: materiaali,
+    // koko ja hinta, ei t-paitasivun rakennetta. Mitat: src/data/mittataulukot.ts (Gildan Heavy Blend 18500).
+    title: "Hauskat hupparit ja huumorihupparit | Huumorikauppa",
+    description: `Huumorihupparit alkaen 52,90 €: Gildan Heavy Blend, 50 % puuvillaa ja 50 % polyesteriä, koot XS-5XL. Eläkeläis-, ikävuosi-, ammatti- ja kaupunkihupparit sekä oma teksti.`,
     intro: [
-      "Hauska huppari on huppari, jonka painatus on vitsi: valikoimassa on eläkeläis- ja ikävuosihuppareita, meemejä kuten se oli tonnin seteli, äiti- ja isäaiheisia huppareita sekä kotikaupunkihuppareita.",
-      "Huppari on talven lahjoista käytännöllinen, koska sitä käytetään sisällä ja ulkona, ja väljä istuvuus antaa anteeksi, jos koko ei osu täsmälleen. Moni teksti on saatavilla sekä huppariksi että t-paidaksi, joten voit valita saman vitsin lämpimämpänä. Kaupunkihuppareissa paikkakuntalainen selviää mistä vain, ja Oma teksti/kuva -hupparin teksti kirjoitetaan tuotesivulla. Jos saaja on vilukissa tai viettää talven mökillä, huppari on t-paitaa varmempi valinta.",
-      `Tällä sivulla ovat kaikki myynnissä olevat hupparit. Hupparit painetaan tilauksesta ja toimitetaan Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${jouluLause()}`,
+      "Hauska huppari on lämmin collegehuppari, jonka rintaan on painettu vitsi. Valikoimassa on eläkeläis- ja ikävuosihuppareita, ammattihuppareita, isä- ja äitiaiheisia huppareita sekä kotikaupunkihuppareita, ja Oma teksti/kuva -hupparin teksti kirjoitetaan tuotesivulla.",
+      "Hupparin pohja on Gildan Heavy Blend 18500: 50 % puuvillaa ja 50 % polyesteriä, kaksinkertainen huppu ja kengurutasku. Koot ovat XS-5XL. L-koon leveys on noin 56 cm rinnan kohdalta tasaisella alustalla mitattuna, ja jokaisen tuotesivun mittataulukossa ovat kaikkien kokojen mitat.",
+      `Hupparit maksavat alkaen 52,90 €. Ne painetaan tilauksesta ja toimitetaan Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja kahden tuotteen tilaus toimitetaan ilman toimituskuluja. ${jouluLause()}`,
     ],
     faqs: [
       {
-        q: "Millaisia hauskoja huppareita on?",
-        a: "Eläkeläis- ja ikävuosihuppareita, meemihuppareita kuten se oli tonnin seteli, äiti- ja isäaiheisia huppareita, kaupunkihuppareita ja Oma teksti/kuva -huppari.",
+        q: "Minkä kokoinen huppari lahjaksi?",
+        a: "Mittaa saajan oma huppari rinnan kohdalta tasaisella alustalla ja vertaa tuotesivun mittataulukkoon. L-koko on noin 56 cm leveä. Jos olet kahden koon välissä, valitse isompi: huppari käytetään väljänä.",
       },
       {
-        q: "Onko hauskoja huppareita miehille?",
-        a: "On. Esimerkiksi Isäntä, Kalju, Amatimies ja Museokamaa. Lisää ideoita on sivulla Hauskat lahjat miehelle.",
+        q: "Mistä materiaalista hupparit ovat?",
+        a: "Gildan Heavy Blend 18500: 50 % puuvillaa ja 50 % polyesteriä. Huppu on kaksinkertainen, ja edessä on kengurutasku.",
       },
       {
         q: "Huppari vai t-paita lahjaksi?",
@@ -97,10 +99,6 @@ export const CATEGORY_H2_SECTIONS: Record<string, { h2: string; text: string }[]
   "t-paidat": [
     { h2: "Miksi hauska t-paita on hyvä lahja?", text: "Hauskat t-paidat ja huumoripaidat ovat lahjoja jotka naurattavat, ilahduttavat ja tulevat oikeasti käyttöön. Ne sopivat syntymäpäiviin, polttareihin, joululahjaksi ja kaikkeen muuhun. Meiltä löydät satoja erilaisia huumoripaitoja - meemipaitoja, setähuumoripaitoja, kalastuspaitoja ja paljon muuta." },
     { h2: "Huumoripaidat ja hauskat t-paidat", text: "Valikoimastamme löydät muun muassa setähuumoripaitoja, eläkeläispaitoja, ammattihuumoripaitoja ja meemipaitoja. Kaikissa hauskoissa t-paidoissa on laadukas DTG-painatus ja mukava istuvuus koissa XS-3XL." },
-  ],
-  "hupparit": [
-    { h2: "Miksi hauska huppari on hyvä lahja?", text: "Hauska huppari yhdistää lämmön ja huumorin. Se on käytännöllinen, mukava ja hauska lahja kenelle tahansa. Valikoimastamme löydät meemihuppareita, setähuumorihuppareita ja sarkastisia tekstihuppareita." },
-    { h2: "Huumorihupparit", text: "Valikoimastamme löydät muun muassa 'Maailman paras' -sarjan huppareita, kalastushuppareita ja eläkehuumorihuppareita. Laadukas materiaali ja kestävä painatus." },
   ],
   "tarrat": [
     { h2: "Mihin hauskoja tarroja voi käyttää?", text: "Hauskat tarrat sopivat läppäriin, vesipulloon ja lahjan kylkeen. Tarra on myös pieni lahja tai lisä isomman paketin oheen." },

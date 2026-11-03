@@ -60,7 +60,7 @@
         }
       ],
       "destination": "https://huumorikauppa.fi/$1",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/lahjat/alle-20-euroa",

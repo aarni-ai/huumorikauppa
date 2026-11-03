@@ -100,15 +100,17 @@ Selaa valikoimaamme ja löydä vuoden 2026 hauskin t-paita!`,
   },
   {
     slug: "hauskat-lahjat-miehelle-naiselle-syntymapaivaLahjat",
-    title: "Hauskat lahjat miehelle, naiselle ja syntymäpäiväksi - Paras lahjaopas 2026",
-    metaTitle: "Hauska lahja miehelle ja naiselle | Huumorikauppa.fi",
+    title: "Syntymäpäivälahja miehelle ja naiselle: lahjaopas 2026",
+    metaTitle: "Syntymäpäivälahja miehelle ja naiselle | Huumorikauppa.fi",
     metaDescription: "Etsitkö hauskaa syntymäpäivälahjaa? Lahjaideat miehelle ja naiselle. Toimitus koko Suomeen. 🎂",
     excerpt: "Etsitkö hauskaa lahjaa miehelle, naiselle tai syntymäpäiväksi? Tässä parhaat lahjaideat jotka naurattavat ja ilahduttavat.",
     publishedAt: "2023-09-10",
     updatedAt: "2026-03-08",
     category: "lahjaideat",
     tags: ["hauska lahja miehelle", "hauska lahja naiselle", "hauska syntymäpäivälahja", "hauska lahja kaverille", "hauska lahja isälle"],
-    content: `## Hauskat lahjat miehelle, naiselle ja syntymäpäiväksi
+    content: `Koko valikoima on sivulla [hauskat lahjat](/). Tässä oppaassa ideat on rajattu syntymäpäiviin.
+
+## Syntymäpäivälahja miehelle ja naiselle
 
 Lahjan valitseminen voi olla vaikeaa - mutta ei enää! Tämä lahjaopas auttaa sinua löytämään täydellisen hauskan lahjan miehelle, naiselle, kaverille tai syntymäpäiväsankarille.
 
@@ -261,25 +263,27 @@ Laadukas puuvilla hengittää ja tuntuu mukavalta.
   },
   {
     slug: "parhaat-joululahjat-ja-pikkujoululahjat-2026",
-    title: "Parhaat hauskat joululahjat ja pikkujoululahjat 2026 - Edullisia lahjaideoita",
-    metaTitle: "Hauskat joululahjat 2026 koko perheelle | Huumorikauppa.fi",
-    metaDescription: `Hauskat ja yllättävät joululahjaideat 2026 koko perheelle. Tilaa ajoissa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää. 🎄`,
-    excerpt: "Hauskat joululahjat ja pikkujoululahjat 2026 - löydä edulliset ja naurattavat lahjaideat koko perheelle ja työkavereille.",
+    title: "Pikkujoululahjat ja edulliset joululahjaideat 2026",
+    metaTitle: "Pikkujoululahjat ja edulliset lahjaideat 2026 | Huumorikauppa",
+    metaDescription: `Pikkujoululahjat ja edulliset joululahjaideat 2026 työkavereille ja kavereille. Tilaa ajoissa, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivää.`,
+    excerpt: "Pikkujoululahjat ja edulliset joululahjaideat 2026 työkavereille, kavereille ja perheelle.",
     publishedAt: "2025-12-18",
     updatedAt: "2026-03-08",
     category: "lahjaideat",
     tags: ["hauska joululahja", "pikkujoululahja", "joululahja miehelle", "joululahja naiselle", "edullinen joululahja"],
-    content: `## Parhaat hauskat joululahjat ja pikkujoululahjat 2026
+    content: `Koko joulun valikoima saajan ja budjetin mukaan on sivulla [hauskat joululahjat](/joululahjat). Tämä artikkeli keskittyy pikkujoululahjoihin ja edullisiin ideoihin.
+
+## Pikkujoululahjat ja edulliset joululahjaideat 2026
 
 Joulu on Suomen suurin lahjanantosesonki. Hauska joululahja naurattaa, ilahduttaa ja jää mieleen.
 
-## Hauskat joululahjat miehelle 🎅
+## Edulliset joululahjat miehelle 🎅
 
 **Hauska t-paita joululahjaksi** - Setähuumoripaidat, kalastuspaidat ja meemipaidat ovat suosituimpia joululahjoja miehelle.
 
 **Hauska huppari joululahjaksi** - Talvella huppari on käytännöllinen ja lämmin.
 
-## Hauskat joululahjat naiselle 🎄
+## Edulliset joululahjat naiselle 🎄
 
 **Hauska huppari naiselle** - Pehmeä ja lämmin huppari on täydellinen joululahja.
 
@@ -2111,15 +2115,17 @@ Juhannus 2026 on perjantaina 19.6.2026. Tilaa **viimeistään torstaina 28.5.**,
   },
   {
     slug: "hauskat-lahjat-alle-30-euroa",
-    title: "10 hauskaa lahjaa alle 30 euroa - Parhaat budjettivaihtoehdot",
-    metaTitle: "10 Hauskaa Lahjaa Alle 30 Euroa | Huumorikauppa.fi",
+    title: "10 lahjaideaa alle 30 euroa: budjettivinkit",
+    metaTitle: "10 lahjaideaa alle 30 euroa | Huumorikauppa.fi",
     metaDescription: "Hauskat lahjat alle 30 euroa! T-paidat, koristeet ja pipot edullisesti. Toimitus koko Suomeen 🪙",
     excerpt: "Hauska lahja ei vaadi isoa budjettia. Tässä 10 parasta alle 30 euron lahjaa jotka naurattavat.",
     publishedAt: "2026-05-17",
     updatedAt: "2026-05-17",
     category: "lahjaideat",
     tags: ["hauska lahja alle 30 euroa", "edullinen lahja", "hauska budjettilahja", "hauska lahja halvalla"],
-    content: `## 10 hauskaa lahjaa alle 30 euroa - Hauska ei tarkoita kallista
+    content: `Kaikki alle 30 euron tuotteet ovat sivulla [lahjat alle 30 euroa](/lahjat/alle-30-euroa), ja koko valikoima ilman hintarajaa sivulla [hauskat lahjat](/).
+
+## 10 lahjaideaa alle 30 euroa
 
 Paras lahja ei aina maksa eniten. Alle 30 euron budjettilla saa yllättävän hauskoja ja muistettavia lahjoja - kunhan tietää mistä hakea.
 

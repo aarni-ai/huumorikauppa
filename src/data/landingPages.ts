@@ -208,10 +208,19 @@ const VELI_TEEMA = theme(
   /ice aatana/, /saatanan tunarit/, /grillimest/, /autoharrastaja/,
 );
 const VELI = any(VELI_TEEMA, UUSI_OLUT, UUSI_SAUNA);
-const PIKKUJOULU = any(TYO, theme(/oispa kaljaa/, /yksi kerta vielä/, /paras ystävä ornament/), all(OMA_TEKSTI, inCategory("tarrat", "koristeet")));
+/**
+ * Pikkujoulusivu (Search Console 3.11.2026: Google piti sivua kaksoiskappaleena). Vain juhlan omat mallit: pikkujoulu-,
+ * tanssi-, karaoke- ja kuskipaidat sekä olutvitsit. Toimistohuumori on työkaveri- ja salaisen joulupukin sivuilla.
+ */
+const PIKKUJOULU = any(
+  theme(/pikkujoulu/, /karaokevuoro/, /tanssin huomenna/, /tanssilattian/, /oispa kaljaa/, /yksi kerta vielä/),
+  all(OMA_TEKSTI, inCategory("koristeet")),
+);
+/** Salaisen joulupukin lahja: alle 30 € toimistohuumoria ja pientä, ilman pikkujoulusivun juhlapaitoja. */
 const SALAINEN_PUKKI = all(
   maxPrice(30),
   not(inCategory("bodyt")),
+  not(theme(/pikkujoulu/)),
   any(TYO, inCategory("tarrat", "koristeet")),
 );
 /** Isänpäivälahja isän tyypin mukaan: kalastaja, mökkeilijä, grillaaja, eläkeläinen, isoisä, nuori isä, työmies. */
@@ -672,9 +681,9 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/lahjat/pomolle",
     name: "Lahja pomolle",
     group: "joulu",
-    title: "Hauska lahja pomolle | Huumorikauppa",
+    title: "Lahja pomolle: tiimin yhteislahja | Huumorikauppa",
     description:
-      "Lahja pomolle huumorilla, joka ei loukkaa: pomo-, palaveri- ja tiimipelaaja-paidat sekä personoitava Kapteeni-paita. Sopii joululahjaksi ja läksiäisiin.",
+      "Lahja pomolle tiimin nimissä: Toimitusjohtaja. Myös siivooja, palaveripaita ja personoitava Kapteeni-paita. Näin valitset vitsin, joka ei loukkaa.",
     h1: "Hauska lahja pomolle",
     intro: [
       "Hauska lahja pomolle on paita, jossa vitsi kohdistuu pomon rooliin eikä häneen henkilönä: pomo itse, palaverit, tiimityö tai kapteenin paikka.",
@@ -701,6 +710,28 @@ const PERUSSIVUT: LandingPageDef[] = [
     ],
     related: ["/joululahja-tyokaverille", "/lahjat/tyokaverille", "/lahjat/pikkujouluihin", "/ammattipaidat"],
     categories: ["t-paidat", "hupparit"],
+    opas: [
+      {
+        otsikko: "Näin tiimi valitsee pomolle sopivan vitsin",
+        teksti: [
+          "Pomolle annettu lahja avataan yleensä muiden edessä, joten tekstin pitää toimia myös silloin, kun koko tiimi lukee sen. Helpoin tapa on kysyä, voisiko pomo itse kertoa saman vitsin palaverissa. Jos voisi, teksti on turvallinen.",
+          "Rooliin kohdistuvat tekstit toimivat, koska ne nauravat työlle eivätkä ihmiselle: Maailman paras pomo itse sanoo leikittelee tittelillä, Tämäkin olisi voinut olla sähköposti kokouksilla ja Toimitusjohtaja. Myös siivooja pienen yrityksen arjella. Ulkonäköön, ikään tai yksityiselämään liittyvät vitsit kannattaa jättää kaveriporukan lahjoihin.",
+        ],
+      },
+      {
+        otsikko: "Yhteislahja: kuka maksaa ja mitä se maksaa",
+        teksti: [
+          "T-paita maksaa 27,90 € ja huppari 52,90 €. Viiden hengen tiimissä huppari on noin 11 € henkeä kohden. Kun samaan tilaukseen lisää toisen tuotteen, esimerkiksi oman paidan tiimin jäsenelle, toimitus on ilmainen.",
+          "Personoitavaan Kapteeni- tai Legendaarinen työsankari -paitaan voi kirjoittaa pomon nimen tai tiimin oman sisäpiirin lauseen. Kirjoita teksti tuotesivulle ennen kuin lisäät paidan ostoskoriin. Omalla tekstillä tehtyä tuotetta ei voi palauttaa, joten tarkista oikeinkirjoitus kahteen kertaan.",
+        ],
+      },
+      {
+        otsikko: "Läksiäiset, merkkipäivät ja joulu",
+        teksti: [
+          "Läksiäisiin sopii Alalla X vuotta -paita, johon kirjoitetaan pomon vuodet talossa. Joululahjaksi tiimi valitsee usein hupparin, koska sitä käytetään talvella myös vapaa-ajalla. Jos lahja annetaan pikkujouluissa, katso myös pikkujoululahjat, joissa on juhlan omat mallit.",
+        ],
+      },
+    ],
     filter: POMO,
   },
   {
@@ -859,12 +890,12 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/lahjat/alle-30-euroa",
     name: "Lahjat alle 30 €",
     group: "joulu",
-    title: "Hauskat lahjat ja joululahjat alle 30 € | Huumorikauppa",
+    title: "Lahjat alle 30 euroa: paidat ja koristeet | Huumorikauppa",
     description:
-      `Hauskat lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. ${JOULU_META}`,
-    h1: "Hauskat lahjat alle 30 euroa",
+      `Lahjat alle 30 eurolla: t-paidat ja koristeet, myös alle 20 euron lahjat. ${JOULU_META}`,
+    h1: "Lahjat alle 30 euroa",
     intro: [
-      "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan tai koristeen: kaikki tämän sivun tuotteet maksavat enintään 30 euroa.",
+      "Alle 30 eurolla saat Huumorikaupasta hauskan t-paidan tai koristeen: kaikki tämän sivun tuotteet maksavat enintään 30 euroa. Koko valikoima ilman hintarajaa on sivulla hauskat lahjat.",
       "Alle 20 euron lahjaksi sopii koriste. Alle 20 euron lahjat on koottu tälle samalle sivulle.",
       `Pieni joululahja miehelle tai naiselle löytyy t-paidoista: valitse teksti saajan iän, ammatin tai harrastuksen mukaan. ${D}`,
     ],
@@ -897,10 +928,10 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/joululahja-alle-50-euroa",
     name: "Joululahjat alle 50 €",
     group: "joulu",
-    title: "Hauska joululahja alle 50 euroa | Huumorikauppa",
+    title: "Joululahja alle 50 €: hupparit ja paidat | Huumorikauppa",
     description:
       `Joululahja alle 50 eurolla: hauskat hupparit ja t-paidat sekä omalla tekstillä painettu koriste. ${JOULU_META}`,
-    h1: "Hauskat joululahjat alle 50 euroa",
+    h1: "Joululahjat alle 50 euroa",
     intro: [
       "Alle 50 eurolla saat hauskan hupparin, joka on talvella t-paitaa käytännöllisempi joululahja, tai t-paidan ja pienen lisälahjan yhdessä.",
       "Hupparit maksavat 30 ja 50 euron välillä, ja ne näkyvät tällä sivulla ensin. 50 euron budjettiin mahtuvat myös t-paita ja koriste yhdessä.",
@@ -935,13 +966,13 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/lahjat/pikkujouluihin",
     name: "Pikkujoululahjat",
     group: "joulu",
-    title: "Hauskat pikkujoululahjat 2026 | Huumorikauppa",
+    title: "Pikkujoululahjat ja pikkujoulupaidat 2026 | Huumorikauppa",
     description:
-      "Pikkujoululahja työkaverille tai kaveriporukkaan: toimistohuumorin paidat, pikkujouluhuppari ja koriste.",
-    h1: "Hauskat pikkujoululahjat",
+      "Pikkujoululahjat ja juhlan omat paidat: Muistan osittain, Karaokevuoro varattu jo syyskuussa, Pikkujoulujen nimetty kuski ja koriste omalla tekstillä.",
+    h1: "Hauskat pikkujoululahjat ja pikkujoulupaidat",
     intro: [
-      "Hauska pikkujoululahja on lahja, joka naurattaa koko porukkaa, kun se avataan muiden edessä: toimistohuumoria, yhteinen vitsi tai pikkujouluaiheinen huppari.",
-      "Pieneen lahjanvaihtoon sopii koriste. Isompaan sopivat toimistohuumorin t-paidat, kuten Tärkeintä työssä on lounastauko.",
+      "Hauska pikkujoululahja on paita tai koriste, jonka vitsi syntyy itse juhlasta: tanssilattiasta, karaokesta, illan kuskista tai siitä, mitä muistetaan seuraavana aamuna.",
+      "Tämän sivun mallit on tehty pikkujouluja varten, ja moni pukee paidan päälle jo juhlaan. Pikkujoulujen nimetty kuski on kohtelias kiitos sille, joka ajaa muut kotiin. Pieneen lahjanvaihtoon sopii koriste omalla tekstillä.",
       `Pikkujouluja vietetään marras- ja joulukuussa, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, joten tilaa vähintään kolme viikkoa ennen juhlaa.`,
     ],
     faqs: [
@@ -969,6 +1000,22 @@ const PERUSSIVUT: LandingPageDef[] = [
       { href: "/blogi/pikkujoulu-teema-ideat", label: "Opas: pikkujoulu teema ideoita" },
       { href: "/blogi/pikkujouluohjelma-tyopaikalle", label: "Opas: pikkujouluohjelmaa työpaikalle" },
       { href: "/blogi/pikkujoululahja-miehelle", label: "Opas: pikkujoululahja miehelle" },
+    ],
+    opas: [
+      {
+        otsikko: "Paita juhla-asuksi vai lahjaksi",
+        teksti: [
+          "Pikkujoulupaidan voi antaa lahjana ennen juhlaa, jolloin saaja ehtii pukea sen illaksi. Silloin tilaus kannattaa tehdä vähintään kolme viikkoa ennen pikkujouluja. Jos porukka sopii yhteisestä teemasta, kaikki voivat tilata saman mallin samaan tilaukseen, ja kahdesta tuotteesta alkaen toimitus on ilmainen.",
+          "Lahjanvaihtoon paita sopii, kun hintaraja on noin 30 euroa: t-paita maksaa 27,90 €. Huppari maksaa 52,90 €, joten se on lahja, jonka koko porukka antaa yhdelle, esimerkiksi illan järjestäjälle.",
+        ],
+      },
+      {
+        otsikko: "Mikä malli kenellekin",
+        teksti: [
+          "Tanssilattian kuningas ja Tänään tanssin, huomenna kadun sopivat sille, joka on ensimmäisenä tanssimassa. Karaokevuoro varattu jo syyskuussa on mikrofonin ystävälle. Pikkujoulut. Muistan osittain ja Pikkujouluissa kaikki on salaista ovat koko porukan yhteinen vitsi. Pikkujoulujen nimetty kuski on kiitos kuljettajalle.",
+          "Jos saaja ei ole tuttu, valitse toimistoaiheinen lahja salaisen joulupukin sivulta. Pomolle annettavat lahjat ovat omalla sivullaan.",
+        ],
+      },
     ],
     filter: PIKKUJOULU,
   },

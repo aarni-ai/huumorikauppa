@@ -419,9 +419,9 @@ export const situationGifts: SituationGift[] = [
   },
   {
     slug: "alle-20-euroa",
-    h1: "Hauskat lahjat alle 20 euron",
+    h1: "Lahjat alle 20 euroa",
     emoji: "💸",
-    seoTitle: "Hauskat lahjat alle 20 euron | Huumorikauppa.fi",
+    seoTitle: "Lahjat alle 20 euroa | Huumorikauppa.fi",
     seoDescription: "Hauskat lahjat alle 20 euron: koristeet. Edullinen ja muistettava 💸",
     intro: "Edullinen lahja voi olla yhtä hauska ja muistettava kuin kallis. Kokosimme hauskoja lahjoja alle 20 euron budjetilla.",
     keywords: ["edullinen", "tarra"],
@@ -449,9 +449,9 @@ export const situationGifts: SituationGift[] = [
   },
   {
     slug: "alle-30-euroa",
-    h1: "Hauskat lahjat alle 30 euroa",
+    h1: "Lahjat alle 30 euroa",
     emoji: "🪙",
-    seoTitle: "Hauskat lahjat alle 30 euroa: budjettilahja | Huumorikauppa",
+    seoTitle: "Lahjat alle 30 euroa: budjettilahja | Huumorikauppa",
     seoDescription: "Hauskat lahjat alle 30 euroa! T-paidat ja koristeet edullisesti. Nopea toimitus koko Suomeen 🪙",
     intro: "Hyvä lahja ei vaadi isoa budjettia. Alle 30 euron huumorilahjat ovat yllättävän mieleenpainuvia - ja paljon hauskempia kuin tavalliset lahjat samaan hintaan.",
     keywords: ["edullinen", "halpa", "budjetti", "tarra", "t-paita"],

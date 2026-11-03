@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { valitysKohde, julkinenOrigin, fetchValitys, UUSI_TUOTANTO } from "../../middleware";
+import { valitysKohde, julkinenOrigin, fetchValitys, wwwOhjaus, UUSI_TUOTANTO } from "../../middleware";
+import { STATIC_PAGE_META } from "../seo/staticPageMeta";
+import { SITE_URL } from "../seo/site";
 
 describe("vanhan projektin välitys uuteen", () => {
   it("vanha projekti (ei UUSI_TAUSTA) välittää kaiken uuden projektin tuotantoon", () => {
@@ -24,5 +26,24 @@ describe("välitystapa", () => {
     expect(fetchValitys("GET", "/api/products")).toBe(true);
     expect(fetchValitys("GET", "/tuote/x")).toBe(false);
     expect(fetchValitys("GET", "/assets/a.js")).toBe(false);
+  });
+});
+
+describe("www-osoite (Search Console 3.11.2026)", () => {
+  it("www ohjataan 301-kohteeseen ilman www:tä, polku ja kysely säilyvät", () => {
+    expect(wwwOhjaus("https://www.huumorikauppa.fi/lahjat/pomolle?a=1")).toBe("https://huumorikauppa.fi/lahjat/pomolle?a=1");
+    expect(wwwOhjaus("https://huumorikauppa.fi/")).toBeNull();
+    expect(wwwOhjaus(`${UUSI_TUOTANTO}/x`)).toBeNull();
+  });
+  it("välitetyn www-pyynnön julkinen osoite (uudelleenohjaukset, canonical) on ilman www:tä", () => {
+    const u = new URL(`${UUSI_TUOTANTO}/x`);
+    expect(julkinenOrigin(new Request(u, { headers: { "x-huumorikauppa-proxy": "https://www.huumorikauppa.fi" } }), u)).toBe("https://huumorikauppa.fi");
+  });
+  it("sivuston perusosoite on ilman www:tä", () => {
+    expect(SITE_URL).toBe("https://huumorikauppa.fi");
+  });
+  it("etusivu on hakulausekkeiden hauskat lahjat ja huumorilahjat kohdesivu", () => {
+    expect(STATIC_PAGE_META["/"].title.toLowerCase()).toContain("hauskat lahjat");
+    expect(STATIC_PAGE_META["/"].h1.toLowerCase()).toContain("huumorilahjat");
   });
 });

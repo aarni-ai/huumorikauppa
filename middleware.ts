@@ -59,10 +59,23 @@ function valita(kohde: string, julkinen: string): Response {
   });
 }
 
-/** Julkinen osoite: välitetyssä pyynnössä otsakkeesta (vain huumorikauppa.fi), muuten pyynnön oma. */
+/** Ainoa julkinen osoite: www-osoite ohjataan aina tähän (Search Console 3.11.2026: www oli hakemistossa). */
+export const JULKINEN_ORIGIN = 'https://huumorikauppa.fi';
+
+/** Julkinen osoite: välitetyssä pyynnössä otsakkeesta (vain huumorikauppa.fi, www -> ilman www:tä), muuten pyynnön oma. */
 export function julkinenOrigin(request: Request, url: URL): string {
   const v = request.headers.get(PROXY_OTSAKE);
-  return v && /^https:\/\/(www\.)?huumorikauppa\.fi$/.test(v) ? v : url.origin;
+  return v && /^https:\/\/(www\.)?huumorikauppa\.fi$/.test(v) ? JULKINEN_ORIGIN : url.origin;
+}
+
+/**
+ * www.huumorikauppa.fi -> 301 osoitteeseen https://huumorikauppa.fi (sama polku ja kysely). Vanhan projektin
+ * domain-asetus ohjaa www:n nyt 307:llä ennen middlewarea; tämä ottaa ohjauksen hoitaakseen 301:llä, jos www
+ * liitetään projektiin ilman domain-tason ohjausta (KASVU-RAPORTTI.md, Coworkin vaihe).
+ */
+export function wwwOhjaus(requestUrl: string): string | null {
+  const url = new URL(requestUrl);
+  return url.hostname === 'www.huumorikauppa.fi' ? JULKINEN_ORIGIN + url.pathname + url.search : null;
 }
 
 const BOT_REGEX =
@@ -785,6 +798,8 @@ export const fetchValitys = (method: string, polku: string): boolean =>
   (method !== 'GET' && method !== 'HEAD') || polku.startsWith('/api/');
 
 export default async function middleware(request: Request): Promise<Response | undefined> {
+  const www = wwwOhjaus(request.url);
+  if (www) return Response.redirect(www, 301);
   const kohde = valitysKohde(request.url, process.env.UUSI_TAUSTA);
   if (kohde) {
     const julkinen = new URL(request.url).origin;

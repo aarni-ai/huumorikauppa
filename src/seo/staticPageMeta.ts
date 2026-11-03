@@ -17,10 +17,10 @@ export interface StaticPageMeta {
 
 export const STATIC_PAGE_META = {
   "/": {
-    title: "Hauskat lahjat ja huumorituotteet | Huumorikauppa.fi",
+    title: "Hauskat lahjat ja huumorilahjat | Huumorikauppa.fi",
     description:
-      `Hauskat t-paidat, hupparit ja muut huumorituotteet suomalaisella huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
-    h1: "Hauskat lahjat ja huumorituotteet",
+      `Hauskat lahjat ja huumorilahjat: t-paidat, hupparit ja oma teksti suomalaisella huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
+    h1: "Hauskat lahjat ja huumorilahjat",
     name: "Etusivu",
     intro:
       `Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`,
