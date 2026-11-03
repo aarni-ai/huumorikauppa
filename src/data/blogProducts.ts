@@ -380,8 +380,8 @@ export const BLOG_PRODUCT_THEMES = {
   seinataulut: {
     href: "/kategoria/t-paidat",
     name: "T-paidat",
-    heading: "Hauskat koristeet ja lahjat kotiin",
-    filters: [inCategory("koristeet")],
+    heading: "Hauskat t-paidat lahjaksi",
+    filters: [inCategory("t-paidat")],
     related: ["/kaikki-tuotteet", "/kategoria/hupparit", "/syntymapaivalahjat"],
   },
   pipot: {

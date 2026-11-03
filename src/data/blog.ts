@@ -140,7 +140,7 @@ Syntymäpäivälahjan pitää olla hauska ja persoonallinen.
 
 ### Parhaat syntymäpäivälahjat:
 
-**Hauska syntymäpäivälahja kaverille** - Meemipaita, hauska pipo tai koriste ovat edullisia ja hauskoja syntymäpäivälahjoja.
+**Hauska syntymäpäivälahja kaverille** - Meemipaita, hauska pipo tai oma teksti paidassa ovat hauskoja syntymäpäivälahjoja.
 
 **Hauska syntymäpäivälahja isälle** - Kalastuspaita, setähuumoripaita tai huppari ovat osuvia isän synttärilahjoja.
 
@@ -289,9 +289,9 @@ Joulu on Suomen suurin lahjanantosesonki. Hauska joululahja naurattaa, ilahdutta
 
 **Hauska t-paita naiselle** - "Maailman paras äiti" ja muut naisille suunnatut huumoripaidat ilahduttavat.
 
-## Pikkujoululahjat alle 20 € 🎉
+## Pikkujoululahjat alle 30 € 🎉
 
-**Hauska koriste** - Koriste on edullinen ja hauska pikkujoululahja.
+**Hauska t-paita omalla tekstillä** - T-paita on hauska pikkujoululahja.
 
 ## Joululahjat koko perheelle 👨‍👩‍👧‍👦
 
@@ -355,11 +355,11 @@ Eläkkeelle siirtyminen on iso elämänmuutos - ja se ansaitsee kunnon lahjan. "
 
 **Kenelle sopii:** Työkavereille, isälle tai sedälle joka jää eläkkeelle.
 
-## 5. Hauska pitkähihainen 👕
+## 5. Oma teksti t-paidassa 👕
 
-Pitkähihainen paita hauskalla tekstillä sopii syksyyn ja talveen, kun t-paita ei yksin riitä.
+[T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on lahja, johon voi painaa vastaanottajan oman vitsin.
 
-**Kenelle sopii:** Kaikille, jotka arvostavat mukavaa arkivaatetta. Toimii myös pikkujoululahjana.
+**Kenelle sopii:** Kaikille, jotka haluavat lahjan, jollaista ei ole kenelläkään muulla. Toimii myös pikkujoululahjana.
 
 ## 6. Meemipaidat 📱
 
@@ -379,9 +379,9 @@ Huppari hauskalla painatuksella on lämmin lahja joka päätyy varmasti käyttö
 
 **Kenelle sopii:** Miehille jotka arvostavat sohvalla löhöilyä.
 
-## 9. Hauska koriste ✨
+## 9. Oma kuva hupparissa ✨
 
-Hauska koriste on edullinen lahja tai lisä isomman lahjan oheen.
+[Huppari omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-huppari) on lämmin lahja, johon voi painaa yhteisen kuvan.
 
 **Kenelle sopii:** Kaikille, erityisesti nuorille miehille.
 
@@ -436,9 +436,9 @@ Tämä on myydyin tuotteemme naisille - ja syystä. Jokainen äiti ansaitsee tie
 
 **Milloin antaa:** Äitienpäivä, syntymäpäivä, joulu.
 
-## 2. Hauska pitkähihainen 👕
+## 2. Oma teksti t-paidassa 👕
 
-Pitkähihainen paita hauskalla tekstillä on lahja, joka tulee käyttöön syksyllä ja talvella. Valitse teksti vastaanottajan huumorintajun mukaan.
+[T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on lahja, jonka voi tehdä vastaanottajan huumorintajun mukaan.
 
 **Milloin antaa:** Pikkujoulut, ystävänpäivä, syntymäpäivä.
 
@@ -454,15 +454,15 @@ Ekologinen ja hauska - kangaskassi hauskalla tekstillä on käytännöllinen lah
 
 **Milloin antaa:** Syntymäpäivä, tuparit, joulu.
 
-## 5. Pehmis ja hauska pitkähihainen 🛋️
+## 5. Oma kuva hupparissa 🛋️
 
-Pitkähihainen paita on lämmin lahja joka saa vastaanottajan tuntemaan olonsa erityiseksi. Hauska teksti tai kuva tekee siitä uniikin.
+[Huppari omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-huppari) on lämmin lahja, josta tulee henkilökohtainen, kun siihen painetaan hauska teksti tai kuva.
 
 **Milloin antaa:** Joulu, syntymäpäivä, tuparit.
 
-## 6. Hauska koriste ✨
+## 6. Hauska t-paita ✨
 
-Hauska koriste on sisustusesine joka naurattaa päivittäin. Oma teksti tai kuva tekee siitä persoonallisen.
+Hauska t-paita naurattaa päivittäin. Oma teksti tai kuva tekee siitä persoonallisen.
 
 **Milloin antaa:** Tuparit, syntymäpäivä, häälahja.
 
@@ -533,9 +533,9 @@ Harrastuksesta on turvallista vitsailla. Kalastajalle sopii [Huonokin päivä ka
 
 50-vuotiaalle miehelle, joka kertoo isävitsejä, sopivat [Amatimies](/tuote/amatimies-t-paita), [Kalju](/tuote/kalju-t-paita) ja [Isäntä](/tuote/isanta-t-paita). Lisää on sivulla [setämiespaidat](/setamiespaidat).
 
-## 10. Koriste omalla tekstillä
+## 10. T-paita omalla tekstillä
 
-[Koriste omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-koriste) on pieni lisälahja, johon voi painaa juhlapäivän ja yhteisen kuvan. Koriste maksaa ${HINTA.koriste}.
+[T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on lahja, johon voi painaa juhlapäivän ja yhteisen kuvan. Tätä kirjoitettaessa se maksaa ${HINTA.personoitu}.
 
 ## Näin valitset 50v lahjan
 
@@ -632,9 +632,9 @@ Isän ammattiin liittyvä huumoripaita osoittaa, että arvostat hänen työtää
 
 Käytännöllinen ja hauska - talvipipo hauskalla tekstillä on isänpäivälahja joka tulee käyttöön.
 
-## 9. Koriste kotiin ✨
+## 9. T-paita omalla kuvalla ✨
 
-Hauska koriste on edullinen lisälahja tai itsenäinen pieni lahja.
+Oma kuva t-paidassa on lahja, joka naurattaa joka päivä.
 
 ## 10. Hauska kangaskassi 👜
 
@@ -817,7 +817,7 @@ Vintage-tyyliset tarrat tuovat nostalgian tuntua läppärin kanteen.
 
 ## Hauska lahja Huumorikaupasta
 
-Huumorikaupasta löydät [hauskoja t-paitoja](/kategoria/t-paidat), [meemipaitoja](/meemipaidat), [huppareita](/kategoria/hupparit) ja [koristeita](/kaikki-tuotteet), joihin saa myös oman tekstin.
+Huumorikaupasta löydät [hauskoja t-paitoja](/kategoria/t-paidat), [meemipaitoja](/meemipaidat), [huppareita](/kategoria/hupparit) sekä [t-paidan omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita).
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
@@ -878,7 +878,7 @@ Vanhemmat ilahtuvat myös omasta lahjasta. Katso [hauskat t-paidat](/kategoria/t
     slug: "lahja-tuoreille-vanhemmille",
     title: "Lahja tuoreille vanhemmille - Hauskat ideat vauvaperheelle",
     metaTitle: "Lahja tuoreille vanhemmille | Huumorikauppa.fi",
-    metaDescription: "Hauska lahja tuoreille vanhemmille! T-paita, huppari tai koriste ilahduttaa vauvaperheen äitiä ja isää. 👶",
+    metaDescription: "Hauska lahja tuoreille vanhemmille! T-paita tai huppari ilahduttaa vauvaperheen äitiä ja isää. 👶",
     excerpt: "Hauska lahja tuoreille vanhemmille - ideat baby showeriin, kastelahjaksi ja vauvan syntymäpäiväksi.",
     publishedAt: "2026-10-26",
     updatedAt: "2026-10-26",
@@ -898,7 +898,7 @@ Vauvan syntymä on yksi elämän suurimmista juhlista. Ja mitä parempi tapa juh
 
 - Hauska t-paita isälle tai äidille, katso [hauskat t-paidat](/kategoria/t-paidat)
 - Lämmin huppari valvottuihin öihin, katso [hauskat hupparit](/kategoria/hupparit)
-- Koriste, johon saa oman tekstin tai kuvan, katso [koristeet](/kaikki-tuotteet)
+- T-paita omalla tekstillä tai kuvalla, katso [oma teksti -t-paita](/tuote/oma-tekstikuva-t-paita)
 
 ## Milloin antaa hauska lahja?
 
@@ -953,9 +953,9 @@ Meemipaidat ovat tuotekategoriamme suosikki. Ne sopivat arkeen, vapaa-aikaan ja 
 
 Meemihupparit yhdistävät mukavuuden ja huumorin. Ne sopivat erityisesti nuorille ja nuorille aikuisille.
 
-## Meemikoristeet
+## Meemitekstit paidassa
 
-Meemiteksti koristeessa on edullinen pikkujoululahja tai syntymäpäivälahja.
+Meemiteksti paidassa on hauska pikkujoululahja tai syntymäpäivälahja.
 
 ## Kenelle meemituotteet sopivat?
 
@@ -1012,7 +1012,7 @@ Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajust
 
 ## Huumoria kotiin Huumorikaupasta
 
-Samaa huumoria kotiin tuovat myös [hauskat koristeet](/kaikki-tuotteet), joihin saa oman tekstin. Tuparilahjaksi sopii myös [hauska huppari](/kategoria/hupparit).
+Samaa huumoria tuovat myös [hauskat t-paidat](/kategoria/t-paidat). Tuparilahjaksi sopii myös [hauska huppari](/kategoria/hupparit).
 
 **Lue myös:** [Hauskat koristeet lahjaksi](/blogi/hauskat-koristeet-lahjaksi)
 
@@ -1373,17 +1373,17 @@ Hauska paita on jotain mitä tavaroiden omistajalla ei vielä ole. Se on persoon
 
 Lämmin, mukava ja hauska - huppari on lahja jota käytetään oikeasti.
 
-## 3. Hauska pitkähihainen 👕
+## 3. Oma teksti t-paidassa 👕
 
-Pitkähihainen paita hauskalla tekstillä on lahja, jota käytetään syksystä kevääseen.
+[T-paita omalla tekstillä tai kuvalla](/tuote/oma-tekstikuva-t-paita) on lahja, johon voi painaa vastaanottajan oman vitsin.
 
 ## 4. Hauska huppari 🛋️
 
 Lämmin ja hauska - huppari on lahja joka yllättää.
 
-## 5. Hauska koriste ✨
+## 5. Oma kuva t-paidassa ✨
 
-Sisustusesine joka naurattaa päivittäin.
+Paita, johon voi painaa oman kuvan, naurattaa päivittäin.
 
 ## 6. Hauska t-paita 👕
 
@@ -1442,7 +1442,7 @@ Työporukan yhteislahjaksi huppari on hyvä valinta, koska hinta jakautuu useall
 
 ## Pikkujoululahja ja joululahja työkaverille
 
-Pikkujouluihin sopii meemipaita, kuten [Saatanan tunarit](/tuote/saatanan-tunarit-t-paita), tai koriste. Jos lahjojen hintaraja on 25 euroa, meemipaidat maksavat alkaen ${HINTA.tpaitaAlkaen}. Joululahjaideat on koottu sivulle [joululahja työkaverille](/joululahja-tyokaverille).
+Pikkujouluihin sopii meemipaita, kuten [Saatanan tunarit](/tuote/saatanan-tunarit-t-paita), tai [t-paita omalla tekstillä](/tuote/oma-tekstikuva-t-paita). Jos lahjojen hintaraja on 25 euroa, meemipaidat maksavat alkaen ${HINTA.tpaitaAlkaen}. Joululahjaideat on koottu sivulle [joululahja työkaverille](/joululahja-tyokaverille).
 
 ## Lahja koko tiimille
 
@@ -1525,7 +1525,7 @@ Kalastus on Suomen suosituin harrastus - yli 1,5 miljoonaa suomalaista kalastaa.
     title: "Hauska lahja alle 20 euroa - 10 edullista lahjaa jotka naurattavat",
     metaTitle: "Hauska lahja alle 20 euroa | Huumorikauppa.fi",
     metaDescription: "Hauskat lahjat alle 20 euroa! Edullisia ideoita kaikkiin tilaisuuksiin. Toimitus koko Suomeen. 💰",
-    excerpt: "Edulliset hauskat lahjat alle 20 eurolla: koristeet, pipot ja muut lahjat, jotka eivät maksa maltaita.",
+    excerpt: "Edulliset hauskat lahjat alle 20 eurolla: pipot ja muut lahjat, jotka eivät maksa maltaita.",
     publishedAt: "2025-01-05",
     updatedAt: "2025-11-10",
     category: "lahjaideat",
@@ -1534,9 +1534,9 @@ Kalastus on Suomen suosituin harrastus - yli 1,5 miljoonaa suomalaista kalastaa.
 
 Hyvän lahjan ei tarvitse olla kallis. Alle 20 eurolla saat hauskan, persoonallisen lahjan joka naurattaa ja ilahduttaa. Tässä edullisia lahjaideoita.
 
-## 1. Hauska koriste ✨
+## 1. Hauska kortti ✨
 
-Omalla tekstillä tai meemillä. Erityisesti nuorille.
+Kirjoita korttiin yhteinen vitsi, joka naurattaa saajaa.
 
 ## 2. Hauska pipo (15-20 €) 🧢
 
@@ -1544,7 +1544,7 @@ Talvipipo hauskalla brodeerauksella on käytännöllinen ja hauska.
 
 ## 3. Pieni lisälahja 🎁
 
-Pieni ja hauska koriste lisälahjaksi.
+Käsin kirjoitettu viesti lahjan kylkeen.
 
 ## 4. Hauska avaimenperä (8-12 €) 🔑
 
@@ -1637,7 +1637,7 @@ IT-ala, pelaaminen ja nörttiys ovat valtavirtaa - ja nörttihuumori on oma laji
     updatedAt: "2026-03-28",
     category: "lahjaideat",
     tags: ["valmistujaislahjat", "ylioppilaslahja", "hauska lahja opiskelijalle", "valmistuminen"],
-    content: `## Hauskat valmistujaislahjat - ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä - vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** - hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** - valitse huumori joka sopii valmistujaan\n- **Edullinen** - hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** - paita tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** - Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Meemihuppari** - Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** - Koodihuumoripaita tai -huppari.\n\n**Opettajan lahja** - Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus: paita ja koriste.\n\n## Valmistujaislahjat alle 20€ 💰\n\n- **Hauska koriste**\n- **Hauska pipo** (15-20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 3 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus\n- 14 päivän palautusoikeus`,
+    content: `## Hauskat valmistujaislahjat - ideat ylioppilaalle ja opiskelijalle\n\nValmistuminen on yksi elämän suurista virstanpylväistä - vuosien kova työ palkitaan vihdoin. Hauska valmistujaislahja naurattaa, ilahduttaa ja muistuttaa saavutuksesta vielä vuosien jälkeen.\n\n## Miksi hauska valmistujaislahja toimii parhaiten?\n\nValmistuminen on stressaavan ajanjakson päätös. Hauska lahja keventää tunnelmaa ja erottuu perinteisistä kukista ja korteista.\n\n- **Muistettava** - hauska lahja jää mieleen paremmin kuin lahjakortti\n- **Persoonallinen** - valitse huumori joka sopii valmistujaan\n- **Edullinen** - hyvä hauska lahja ei maksa maltaita\n- **Käytännöllinen** - paita tai huppari tulee käyttöön\n\n## Parhaat lahjat ylioppilaalle 🎓\n\n**Hauska t-paita** - Ylioppilaalle sopivat tulevaisuuteen viittaavat huumoripaidat.\n\n**Meemihuppari** - Rento ja hauska arjen perusvaate uudelle opiskelijalle.\n\n## Parhaat lahjat opiskelijalle 📚\n\n**IT-alan valmistumislahja** - Koodihuumoripaita tai -huppari.\n\n**Opettajan lahja** - Valmistuva opettaja arvostaa opettajahuumoria.\n\n## Valmistujaislahjat ryhmältä 👥\n\nKaveriporukan yhteislahja on helppo toteuttaa. Yhteinen hauska huppari tai lahjakokonaisuus: paita ja tarra.\n\n## Valmistujaislahjat alle 30€ 💰\n\n- **Hauska t-paita**\n- **Hauska pipo** (15-20 €)\n\n## Usein kysyttyä\n\n**Milloin tilata?** Tilaa vähintään 3 viikkoa ennen valmistujaisia.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus\n- 14 päivän palautusoikeus`,
     relatedCategories: ["t-paidat", "hupparit"],
     productLinks: [
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan Tunarit | T-Paita - yhteislahja kaveriporukalta" },
@@ -1787,7 +1787,7 @@ Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
     updatedAt: "2026-03-28",
     category: "lahjaideat",
     tags: ["lahja opettajalle", "opettajanlahja", "hauska lahja opettajalle", "opettajahuumori"],
-    content: `## Hauska lahja opettajalle - parhaat opettajanlahjavinkit\n\nOpettaja on yksi elämän tärkeimmistä ihmisistä. Hauska lahja on paras tapa osoittaa kiitosta.\n\n## Miksi hauska lahja toimii opettajalle? 📚\n\n- **Erottuu massasta** - ei taas yksi kukkakimppu\n- **Naurattaa arjessa**: hauska paita piristää koulupäivää\n- **Osoittaa tuntemista** - opettajahuumori osuu\n\n## T-paidat opettajalle 👕\n\nOpettajahuumoripaita on hauska lahja koulun viimeiselle päivälle.\n\n## Opettajanlahja alle 20€ 💰\n- **Hauska koriste**\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
+    content: `## Hauska lahja opettajalle - parhaat opettajanlahjavinkit\n\nOpettaja on yksi elämän tärkeimmistä ihmisistä. Hauska lahja on paras tapa osoittaa kiitosta.\n\n## Miksi hauska lahja toimii opettajalle? 📚\n\n- **Erottuu massasta** - ei taas yksi kukkakimppu\n- **Naurattaa arjessa**: hauska paita piristää koulupäivää\n- **Osoittaa tuntemista** - opettajahuumori osuu\n\n## T-paidat opettajalle 👕\n\nOpettajahuumoripaita on hauska lahja koulun viimeiselle päivälle.\n\n## Opettajanlahja alle 30€ 💰\n- **Hauska t-paita**\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
     relatedCategories: ["t-paidat"],
   },
   {
@@ -1800,7 +1800,7 @@ Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja urheilijalle", "kuntosalilahja", "hauska urheilulahja", "lahja juoksijalle"],
-    content: `## Hauska lahja urheilijalle - parhaat liikuntalahjaideat\n\nUrheilijat rakastavat huumoria yhtä paljon kuin treenejä.\n\n## Hauskat lahjat juoksijalle 🏃\n\n**Juoksuhuumoripaita** - "Juoksen koska rakastan ruokaa" naurattaa.\n\n## Hauskat lahjat kuntosaliharrastajalle 🏋️\n\n**Treenihuumoripaita** - "No pain, no gain" -paidat ovat suosittuja.\n\n## Urheilulahja alle 20€ 💰\n- **Hauska koriste**\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
+    content: `## Hauska lahja urheilijalle - parhaat liikuntalahjaideat\n\nUrheilijat rakastavat huumoria yhtä paljon kuin treenejä.\n\n## Hauskat lahjat juoksijalle 🏃\n\n**Juoksuhuumoripaita** - "Juoksen koska rakastan ruokaa" naurattaa.\n\n## Hauskat lahjat kuntosaliharrastajalle 🏋️\n\n**Treenihuumoripaita** - "No pain, no gain" -paidat ovat suosittuja.\n\n## Urheilulahja alle 30€ 💰\n- **Hauska t-paita**\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
     relatedCategories: ["t-paidat"],
   },
   {
@@ -1826,7 +1826,7 @@ Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja koiraihmiselle", "koiralahja", "hauska lahja koiranomistajalle", "koirahuumori"],
-    content: `## Hauska lahja koiraihmiselle - ideat koiraharrastajalle\n\nKoiraihminen tunnistaa helposti: puhelimen kuvagalleria on täynnä koiran kuvia ja paras ystävä kävelee neljällä jalalla.\n\n## Parhaat lahjat koiraihmiselle 🐕\n\n**Koirahuumoripaita** - "Paras koiraisä/koiraäiti" -paidat ovat suosittuja.\n\n## Kenelle koiralahja sopii?\n\n- **Koiran omistajalle** - aina ajankohtainen\n- **Koiraharrastajalle** - agilityn ystävälle\n- **Eläinrakkaalle** - kaikille jotka rakastavat koiria\n\n## Koiralahja alle 20€ 💰\n\nHauska koriste koira-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
+    content: `## Hauska lahja koiraihmiselle - ideat koiraharrastajalle\n\nKoiraihminen tunnistaa helposti: puhelimen kuvagalleria on täynnä koiran kuvia ja paras ystävä kävelee neljällä jalalla.\n\n## Parhaat lahjat koiraihmiselle 🐕\n\n**Koirahuumoripaita** - "Paras koiraisä/koiraäiti" -paidat ovat suosittuja.\n\n## Kenelle koiralahja sopii?\n\n- **Koiran omistajalle** - aina ajankohtainen\n- **Koiraharrastajalle** - agilityn ystävälle\n- **Eläinrakkaalle** - kaikille jotka rakastavat koiria\n\n## Koiralahja alle 30€ 💰\n\nHauska t-paita koira-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -1839,14 +1839,14 @@ Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
     updatedAt: "2026-03-28",
     category: "harrastukset",
     tags: ["lahja kissaihmiselle", "kissalahja", "hauska lahja kissanomistajalle", "kissahuumori"],
-    content: `## Hauska lahja kissaihmiselle - ideat kissan omistajalle\n\nKissaihminen on erityinen laji. Hän puhuu kissalle kuin ihmiselle ja myöntää avoimesti, että kissa on perheen pomo.\n\n## Parhaat lahjat kissaihmiselle 🐱\n\n**Kissahuumoripaita** - "Kissaäiti" tai "Kissan palvelija" -paidat.\n\n## Kenelle kissalahja sopii?\n\n- **Kissanomistajalle** - aina varma valinta\n- **Kissafanille** - ei tarvitse edes omistaa kissaa\n- **Ystävälle** - hauska ja persoonallinen lahja\n\n## Kissalahja alle 20€ 💰\n\nHauska koriste kissa-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
+    content: `## Hauska lahja kissaihmiselle - ideat kissan omistajalle\n\nKissaihminen on erityinen laji. Hän puhuu kissalle kuin ihmiselle ja myöntää avoimesti, että kissa on perheen pomo.\n\n## Parhaat lahjat kissaihmiselle 🐱\n\n**Kissahuumoripaita** - "Kissaäiti" tai "Kissan palvelija" -paidat.\n\n## Kenelle kissalahja sopii?\n\n- **Kissanomistajalle** - aina varma valinta\n- **Kissafanille** - ei tarvitse edes omistaa kissaa\n- **Ystävälle** - hauska ja persoonallinen lahja\n\n## Kissalahja alle 30€ 💰\n\nHauska t-paita kissa-aiheella.\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
     slug: "hauska-lahja-kaverille",
     title: "Hauska lahja kaverille: 12 ideaa synttäreille ja jouluun",
     metaTitle: "Hauska lahja kaverille ja ystävälle | Huumorikauppa",
-    metaDescription: `Mitä ostaa kaverille synttärilahjaksi? Meemipaidat, ikävuosipaidat, kotikaupungin paidat ja Maailman paras ystävä -koriste. T-paidat alkaen ${HINTA.tpaitaAlkaen}.`,
+    metaDescription: `Mitä ostaa kaverille synttärilahjaksi? Meemipaidat, ikävuosipaidat, kotikaupungin paidat ja oma teksti paidassa. T-paidat alkaen ${HINTA.tpaitaAlkaen}.`,
     excerpt: "Hauska lahja kaverille on vitsi, jonka vain te kaksi ymmärrätte. Tässä 12 ideaa synttäreille, jouluun ja tupaantuliaisiin.",
     publishedAt: "2025-08-20",
     updatedAt: "2026-10-30",
@@ -1875,8 +1875,8 @@ Kaikki meemipaidat ovat sivulla [meemipaidat](/meemipaidat).
 
 ## Lahja ystävälle
 
-8. [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament) on pieni lahja, joka otetaan esiin joka joulu.
-9. [Koriste omalla kuvalla](/tuote/oma-tekstikuva-koriste), johon painetaan yhteinen kuva.
+8. [T-paita omalla kuvalla](/tuote/oma-tekstikuva-t-paita), johon painetaan yhteinen kuva.
+9. [Huppari omalla tekstillä](/tuote/oma-tekstikuva-huppari), johon voi painaa teidän oman vitsinne.
 
 ## Harrastus ja kotikaupunki
 
@@ -1887,8 +1887,8 @@ Kaikki meemipaidat ovat sivulla [meemipaidat](/meemipaidat).
 ## Lahja tilanteen mukaan
 
 - **Synttärit:** ikävuosipaita tai personoitu paita.
-- **Joulu:** meemipaita tai koriste. Joulun viimeiset tilauspäivät ovat sivulla [joulun viimeiset tilauspäivät](/joulun-viimeiset-tilauspaivat).
-- **Tupaantuliaiset:** koriste omalla kuvalla.
+- **Joulu:** meemipaita tai huppari omalla tekstillä. Joulun viimeiset tilauspäivät ovat sivulla [joulun viimeiset tilauspäivät](/joulun-viimeiset-tilauspaivat).
+- **Tupaantuliaiset:** t-paita tai huppari omalla kuvalla.
 - **Polttarit ja porukan reissu:** samat paidat koko porukalle. Vähintään 10 t-paidan tilauksessa kassa vähentää [määräalennuksen](/yritykset) automaattisesti.
 
 Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
@@ -1904,7 +1904,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
       { slug: "saatanan-tunarit-t-paita", label: "Saatanan tunarit | T-paita" },
       { slug: "tonnin-seteli-t-paita", label: "Se oli tonnin seteli | T-paita" },
       { slug: "personoitava-t-paita-lempinimi", label: "Personoitava t-paita: lempinimi" },
-      { slug: "maailman-paras-ystava-ornament-ceramic-ornament", label: "Maailman paras ystävä | Koriste" },
+      { slug: "oma-tekstikuva-t-paita", label: "Oma Teksti/Kuva | T-Paita" },
     ],
     faq: [
       {
@@ -1913,7 +1913,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
       },
       {
         q: "Mikä on hauska lahja ystävälle?",
-        a: "Maailman paras ystävä -koriste, koriste yhteisellä kuvalla tai paita ystävän harrastuksesta.",
+        a: "T-paita yhteisellä kuvalla tai paita ystävän harrastuksesta.",
       },
       {
         q: "Mitä kaverille lahjaksi, jos hänellä on jo kaikkea?",
@@ -1921,7 +1921,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
       },
       {
         q: "Paljonko hauska lahja kaverille maksaa?",
-        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, koriste ${HINTA.koriste} ja personoitu paita ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `T-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu paita ${HINTA.personoitu}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
       },
     ],
   },
@@ -1935,7 +1935,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["lahja pomolle", "lahja esimiehelle", "hauska työlahja", "pomon lahja"],
-    content: `## Hauska lahja pomolle - ideat joista pomokin tykkää\n\nLahja pomolle on aina vähän hankala. Sen pitää olla huomaavainen mutta ei imartelevana, hauska mutta ei loukkaava. Tässä testatut ideat.\n\n## Hauska t-paita pomolle 👕\n\nVaroitus: tunne pomosi! Kuiva setähuumori toimii parhaiten - jätä rohkein meemihumor kavereille.\n\n## Hauska koriste työhuoneeseen ✨\n\nMotivaatioposterin parodia on klassikko, jonka voi antaa koristeena esimiehen työhuoneeseen.\n\n## Lahja yhteisellä kolehdilla\n\nKun koko tiimi osallistuu, voi budjetti olla suurempi. Huppari ja koriste samassa paketissa on toimiva yhdistelmä.\n\n## Milloin lahja pomolle?\n\n- **Joululahja pomolle** - tiimin yhteinen lahja\n- **Synttärilahja pomolle**: t-paita tai huppari\n- **Eläkelahja pomolle** - isompi paketti uralle\n- **Viimeinen päivä** - kun pomo lähtee, hauska lahja jää muistoksi\n\n## Vältä näitä\n\n- Liian henkilökohtainen huumori\n- Poliittiset tai uskonnolliset vitsit\n- Liian rohkeat aiheet\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- Lasku- ja yritystilausvaihtoehdot\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
+    content: `## Hauska lahja pomolle - ideat joista pomokin tykkää\n\nLahja pomolle on aina vähän hankala. Sen pitää olla huomaavainen mutta ei imartelevana, hauska mutta ei loukkaava. Tässä testatut ideat.\n\n## Hauska t-paita pomolle 👕\n\nVaroitus: tunne pomosi! Kuiva setähuumori toimii parhaiten - jätä rohkein meemihumor kavereille.\n\n## Motivaatioposterin parodia paidassa ✨\n\nMotivaatioposterin parodia on klassikko, jonka voi antaa t-paitana esimiehelle.\n\n## Lahja yhteisellä kolehdilla\n\nKun koko tiimi osallistuu, voi budjetti olla suurempi. Huppari ja t-paita samassa paketissa on toimiva yhdistelmä.\n\n## Milloin lahja pomolle?\n\n- **Joululahja pomolle** - tiimin yhteinen lahja\n- **Synttärilahja pomolle**: t-paita tai huppari\n- **Eläkelahja pomolle** - isompi paketti uralle\n- **Viimeinen päivä** - kun pomo lähtee, hauska lahja jää muistoksi\n\n## Vältä näitä\n\n- Liian henkilökohtainen huumori\n- Poliittiset tai uskonnolliset vitsit\n- Liian rohkeat aiheet\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- Lasku- ja yritystilausvaihtoehdot\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -1948,7 +1948,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["pikkujoululahjat", "pikkujoulu lahja", "lahja työkaverille", "yritysjoululahja"],
-    content: `## Hauskat pikkujoululahjat työkavereille 2026\n\nPikkujoulujen lahjanvaihto on yksi vuoden hauskimpia perinteitä - ja samalla yksi stressaavimpia. Mitä antaa työkaverille, jonka tunnet vain käytäväkohtaamisista?\n\n## Salainen tonttu -lahjat 🎅\n\n**Koriste** - hauska koriste on edullinen ja persoonallinen.\n\n**Hauskat sukat tai pipo** - käytännöllinen ja lämmin.\n\n## Lahja koko tiimille 🎁\n\nKun haluat ilahduttaa koko tiimiä, ryhmäpaidat tai -hupparit yhteisellä vitsillä luovat yhteenkuuluvuutta.\n\n## Pikkujoululahja alle 20 €\n\n- Hauska koriste työpisteelle\n- Hauska kangaskassi\n- Pipo suomalaisella huumorilla\n\n## Pikkujoululahja alle 30 €\n\n- Hauska t-paita\n- Hauska koriste työhuoneeseen\n\n## Yritystilaus pikkujouluihin\n\nIsommat määrät hoituvat suoraan - ota yhteyttä, hoidamme yritystilaukset laskulla.\n\n## Vinkkejä onnistuneeseen pikkujoululahjaan\n\n1. **Pidä huumori turvallisena** - ei poliittista, ei henkilökohtaista\n2. **Käytännöllinen voittaa**: paita, pipo tai koriste tulee käyttöön\n3. **Pakkaa kauniisti** - pieni vaiva, iso vaikutus\n4. **Tilaa ajoissa** - joulukuussa toimitusajat venyvät\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- Yritystilaukset laskulla\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
+    content: `## Hauskat pikkujoululahjat työkavereille 2026\n\nPikkujoulujen lahjanvaihto on yksi vuoden hauskimpia perinteitä - ja samalla yksi stressaavimpia. Mitä antaa työkaverille, jonka tunnet vain käytäväkohtaamisista?\n\n## Salainen tonttu -lahjat 🎅\n\n**Hauska t-paita** - t-paita omalla tekstillä on persoonallinen.\n\n**Hauskat sukat tai pipo** - käytännöllinen ja lämmin.\n\n## Lahja koko tiimille 🎁\n\nKun haluat ilahduttaa koko tiimiä, ryhmäpaidat tai -hupparit yhteisellä vitsillä luovat yhteenkuuluvuutta.\n\n## Pikkujoululahja alle 20 €\n\n- Hauska kortti lahjan mukaan\n- Hauska kangaskassi\n- Pipo suomalaisella huumorilla\n\n## Pikkujoululahja alle 30 €\n\n- Hauska t-paita\n- T-paita omalla tekstillä\n\n## Yritystilaus pikkujouluihin\n\nIsommat määrät hoituvat suoraan - ota yhteyttä, hoidamme yritystilaukset laskulla.\n\n## Vinkkejä onnistuneeseen pikkujoululahjaan\n\n1. **Pidä huumori turvallisena** - ei poliittista, ei henkilökohtaista\n2. **Käytännöllinen voittaa**: paita, pipo tai huppari tulee käyttöön\n3. **Pakkaa kauniisti** - pieni vaiva, iso vaikutus\n4. **Tilaa ajoissa** - joulukuussa toimitusajat venyvät\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- Yritystilaukset laskulla\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -1961,7 +1961,7 @@ Lisää ideoita on sivulla [lahja kaverille](/lahja-kaverille).
     updatedAt: "2026-04-12",
     category: "lahjaideat",
     tags: ["lahja teinille", "lahja teinipojalle", "lahja teinitytölle", "meemilahja"],
-    content: `## Hauskat lahjat teinille - ideat teinipojalle ja teinitytölle\n\nTeini-iän lahjanvalinta on legendaarisen vaikeaa. Liian lapsellinen ja teini katsoo silmiä pyöräyttäen, liian aikuinen ja lahja jää käyttämättä. Hauska huumorituote on usein juuri sopiva.\n\n## Meemipaidat ja -hupparit 👕\n\nMeemit ovat teinien kieli. Hauska meemipaita tai -huppari on lahja, jota teini oikeasti käyttää - ja näyttää kavereille.\n\n## Koriste huoneeseen ✨\n\nTeinit personoivat kaiken ympärillään. Hauska koriste on edullinen mutta osuva lahja.\n\n## Nörttipaidat ja -hupparit 🎮\n\nGaming, anime, sci-fi - jos teini harrastaa jotain spesifiä, sieltä löytyy aina sopiva huumorituote.\n\n## Hauska huppari teinille 🧥\n\nIsoympyräinen, mukava huppari hauskalla painatuksella on klassikkolahja.\n\n## Lahja teinipojalle\n\n- Meemipaita tai gaming-aiheinen huppari\n- Hauska koriste huoneeseen\n\n## Lahja teinitytölle\n\n- Hauska huppari pehmeällä materiaalilla\n- Kangaskassi sarkastisella tekstillä\n- Hauska pitkähihainen paita\n\n## Vinkkejä lahjan valintaan\n\n1. **Tarkkaile mitä teini katsoo netissä** - meemit kertovat huumorintajusta\n2. **Vältä vanhanaikaisia vitsejä** - setähuumori ei toimi\n3. **Anna lahjakortti varmuuden vuoksi** - jos olet täysin pihalla\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- 14 päivän palautusoikeus\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
+    content: `## Hauskat lahjat teinille - ideat teinipojalle ja teinitytölle\n\nTeini-iän lahjanvalinta on legendaarisen vaikeaa. Liian lapsellinen ja teini katsoo silmiä pyöräyttäen, liian aikuinen ja lahja jää käyttämättä. Hauska huumorituote on usein juuri sopiva.\n\n## Meemipaidat ja -hupparit 👕\n\nMeemit ovat teinien kieli. Hauska meemipaita tai -huppari on lahja, jota teini oikeasti käyttää - ja näyttää kavereille.\n\n## Oma kuva paitaan ✨\n\nTeinit personoivat kaiken ympärillään. T-paita omalla kuvalla on osuva lahja.\n\n## Nörttipaidat ja -hupparit 🎮\n\nGaming, anime, sci-fi - jos teini harrastaa jotain spesifiä, sieltä löytyy aina sopiva huumorituote.\n\n## Hauska huppari teinille 🧥\n\nIsoympyräinen, mukava huppari hauskalla painatuksella on klassikkolahja.\n\n## Lahja teinipojalle\n\n- Meemipaita tai gaming-aiheinen huppari\n- T-paita omalla kuvalla\n\n## Lahja teinitytölle\n\n- Hauska huppari pehmeällä materiaalilla\n- Kangaskassi sarkastisella tekstillä\n- Hauska t-paita\n\n## Vinkkejä lahjan valintaan\n\n1. **Tarkkaile mitä teini katsoo netissä** - meemit kertovat huumorintajusta\n2. **Vältä vanhanaikaisia vitsejä** - setähuumori ei toimi\n3. **Anna lahjakortti varmuuden vuoksi** - jos olet täysin pihalla\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- 14 päivän palautusoikeus\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -2007,7 +2007,7 @@ Huppari on hieman kalliimpi lahja mutta myös käytetyin. Se on lahja jota käyt
 
 | Budjetti | Suositeltu lahja |
 |---|---|
-| Alle 20 € | Hauska koriste |
+| Alle 20 € | Hauska kortti lahjan mukaan |
 | Alle 30 € | Hauska t-paita |
 | Alle ${ILMAINEN_RAJA_TEKSTI} € | Hauska huppari |
 | ${ILMAINEN_RAJA_TEKSTI} € tai yli | Useampi tuote samaan tilaukseen (ilmainen toimitus) |
@@ -2093,7 +2093,7 @@ Jos vierailet toisten mökillä, saunahuumoripaita on osuva "tuominen". Ei liian
 
 ### Lahja mökkiporukalle
 
-Jos ostat koko porukalle, hauska koriste on edullinen vaihtoehto. Jokainen saa oman tekstinsä.
+Jos ostat koko porukalle, t-paita omalla tekstillä on toimiva vaihtoehto. Jokainen saa oman tekstinsä.
 
 ### Lahja pariskunnalle juhannukseksi
 
@@ -2117,7 +2117,7 @@ Juhannus 2026 on perjantaina 19.6.2026. Tilaa **viimeistään torstaina 28.5.**,
     slug: "hauskat-lahjat-alle-30-euroa",
     title: "10 lahjaideaa alle 30 euroa: budjettivinkit",
     metaTitle: "10 lahjaideaa alle 30 euroa | Huumorikauppa.fi",
-    metaDescription: "Hauskat lahjat alle 30 euroa! T-paidat, koristeet ja pipot edullisesti. Toimitus koko Suomeen 🪙",
+    metaDescription: "Hauskat lahjat alle 30 euroa! T-paidat ja pipot edullisesti. Toimitus koko Suomeen 🪙",
     excerpt: "Hauska lahja ei vaadi isoa budjettia. Tässä 10 parasta alle 30 euron lahjaa jotka naurattavat.",
     publishedAt: "2026-05-17",
     updatedAt: "2026-05-17",
@@ -2145,9 +2145,9 @@ Paita on henkilökohtaisempi lahja. Valitse teema joka sopii vastaanottajalle - 
 
 **Parhaiten toimii:** isälle, kaverille, syntymäpäivälahjaksi
 
-### 3. Hauska pitkähihainen paita 🧥
+### 3. Meemipaita 👕
 
-Pitkähihainen paita hauskalla tekstillä on lämmin ja käytännöllinen lahja.
+Meemipaita sopii, kun haluat lahjan, jossa on yhteinen vitsi.
 
 **Parhaiten toimii:** työkavereille, syntymäpäivälahjaksi
 
@@ -2163,9 +2163,9 @@ Oma teksti tai kuva paidassa on lahja, jota ei löydy muualta. Valitse teksti jo
 
 **Parhaiten toimii:** toimistoihmisille, mökkiläisille, kaverille
 
-### 6. Hauska pipo + koriste -paketti 🧢✨
+### 6. Hauska pipo + kortti -paketti 🧢✨
 
-Yhdistä pipo ja koriste, niin saat valmiin lahjakokonaisuuden. Pakkaa lahjapussiin niin näyttää isommalta kuin on.
+Yhdistä pipo ja kortti, niin saat valmiin lahjakokonaisuuden. Pakkaa lahjapussiin niin näyttää isommalta kuin on.
 
 **Parhaiten toimii:** työkavereille, salaisen tontun lahjaksi
 
@@ -2175,9 +2175,9 @@ Talvella pipo on käytännöllinen, kesällä ihastuttavan ironinen lahja. Hausk
 
 **Parhaiten toimii:** ulkoiluharrastajille, talvilahjaksi
 
-### 8. Koriste humoristisella tekstillä (alle 25 €) ✨
+### 8. Oma kuva t-paidassa (alle 30 €) ✨
 
-Pienet koristeet toimistoon tai kotiin ovat hauskoja ja edullisia. Ne jäävät paikalleen ja muistuttavat lahjasta joka kerta.
+T-paita omalla kuvalla toimii lahjana toimistoon tai kotiin. Se muistuttaa lahjasta joka kerta, kun sen pukee päälleen.
 
 **Parhaiten toimii:** kodinomistajille, toimistoihmisille
 
@@ -2187,7 +2187,7 @@ Jos vastaanottajalla on vauva tai hän odottaa sellaista - hauska paita on lahja
 
 **Parhaiten toimii:** vauvaperheille, ristiäislahjaksi
 
-### 10. Yhdistä t-paita ja koriste
+### 10. Yhdistä t-paita ja kortti
 
 Kahden tuotteen paketti lahjapussissa näyttää paljon kalliimmalta.
 
@@ -2218,7 +2218,7 @@ Jos tilaat kahdelle henkilölle alle 30 euron lahjan, saat ilmaisen toimituksen 
     updatedAt: "2026-04-12",
     category: "harrastukset",
     tags: ["lahja mökkiläiselle", "mökkihuumori", "kesämökki lahja", "saunalahja"],
-    content: `## Hauska lahja mökkiläiselle - ideat kesämökin omistajalle\n\nMökki on suomalaiselle pyhä paikka. Lahja, joka sopii mökkimiljööseen, on aina arvostettu. Tässä parhaat hauskat mökkilahjat.\n\n## Mökkihuumoripaita 👕\n\n"Mökkielämä" tai "Laiturielämää" -paidat ovat kesän hittejä. Mökille mennessä päälle ja kaupungissa muistona.\n\n## Hauska koriste mökille ✨\n\nMökki kaipaa hauskaa koristetta. Kalastusaiheinen, sauna-aiheinen tai yleisesti suomalainen huumori toimii parhaiten.\n\n## Kalastuslahja mökkiläiselle 🎣\n\nMonet mökkiläiset kalastavat. Kalastushuumoripaita tai -huppari on osuva lahja.\n\n## Lahja mökille muuttoon\n\nKun joku ostaa mökin, voit antaa:\n\n- **Koriste** takkahuoneeseen\n- **Kangaskassi** kauppareissuille\n- **Pipo** kylminä iltoina\n\n## Mökkilahja eri budjeteille\n\n- **Alle 20 €**: koriste\n- **Alle 30 €** - t-paita tai pipo\n- **Alle 50 €** - huppari\n- **Yli 50 €** - useampi tuote yhdessä\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- 14 päivän palautusoikeus\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
+    content: `## Hauska lahja mökkiläiselle - ideat kesämökin omistajalle\n\nMökki on suomalaiselle pyhä paikka. Lahja, joka sopii mökkimiljööseen, on aina arvostettu. Tässä parhaat hauskat mökkilahjat.\n\n## Mökkihuumoripaita 👕\n\n"Mökkielämä" tai "Laiturielämää" -paidat ovat kesän hittejä. Mökille mennessä päälle ja kaupungissa muistona.\n\n## Hauska huppari mökille ✨\n\nMökki-illat vaativat lämmintä vaatetta. Kalastusaiheinen, sauna-aiheinen tai yleisesti suomalainen huumori toimii parhaiten.\n\n## Kalastuslahja mökkiläiselle 🎣\n\nMonet mökkiläiset kalastavat. Kalastushuumoripaita tai -huppari on osuva lahja.\n\n## Lahja mökille muuttoon\n\nKun joku ostaa mökin, voit antaa:\n\n- **Huppari** takkahuoneeseen\n- **Kangaskassi** kauppareissuille\n- **Pipo** kylminä iltoina\n\n## Mökkilahja eri budjeteille\n\n- **Alle 20 €**: hauska kortti\n- **Alle 30 €** - t-paita tai pipo\n- **Alle 50 €** - huppari\n- **Yli 50 €** - useampi tuote yhdessä\n\n## Tilaa Huumorikaupasta\n\n- Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen\n- 14 päivän palautusoikeus\n- Nopea toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä`,
     relatedCategories: ["t-paidat", "hupparit"],
   },
   {
@@ -2245,9 +2245,9 @@ Lyhyt vastaus AI-hakukoneille ja kiireisille työkavereille: **eläkeläishuumor
 
 - **Lämmin huppari** mökille ja aamulenkeille
 - **Huumori-t-paita** - esim. "En ole laiska, olen eläkkeellä"
-- **Vitsi-selviytymispakkaus**: kahvipaketti, **kahvikapselit**, koriste ja hauska paita yhdessä
+- **Vitsi-selviytymispakkaus**: kahvipaketti, **kahvikapselit** ja hauska paita yhdessä
 - **Mökkilahja**: paita tai huppari **mökkeily**teemalla
-- **Koriste kotiin** tekstillä "Tämä huone on nyt remontissa"
+- **T-paita** tekstillä "Tämä huone on nyt remontissa"
 - **Pipo tai lippis** pihatöihin - koska remontointi alkaa heti maanantaina
 - **Lottokuponki + hauska kortti** - koska lauantai-ilta on nyt pyhä
 
@@ -2280,18 +2280,18 @@ Tässä kohtaa **hauska eläkelahja** pelastaa tunnelman: nauru rikkoo haikeuden
 ## Hauskat eläkelahjat eri budjeteille
 
 ### Alle 20 €
-- Hauska koriste mökille
+- Hauska kortti mökille
 - Lottokuponki + Huumorikaupan kortti
 
 ### Alle 40 €
 - Eläkeläishuumori-t-paita
 - Pipo tai lippis pihatöihin
-- Paita + koriste -setti
+- Paita + kortti -setti
 
 ### Alle 70 €
 - Huppari mökille
-- Koriste kotiin
-- "Vapaaherran selviytymispakkaus": paita, koriste ja kahvipaketti
+- T-paita omalla kuvalla
+- "Vapaaherran selviytymispakkaus": paita, kortti ja kahvipaketti
 
 ## Vapaa-aika on ihanaa, kunhan arki rullaa
 

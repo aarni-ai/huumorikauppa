@@ -64,7 +64,7 @@ Harrastus on varma valinta, koska siitä hän puhuu muutenkin. Kun lahja kertoo,
 
 **Sisko tai sisar.** Sisarusten välinen huumori on usein suorempaa kuin muiden. Valitse vitsi, jonka vain sisarus voi antaa, ja katso lisää ideoita sivulta [lahja siskolle](/lahjat/siskolle).
 
-**Ystävä.** Ystävälle sopii lahja, jossa on teidän oma juttunne. Jos mikään valmis teksti ei osu, [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) tai [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on lahja, jota ei ole kenelläkään muulla. Kirjoitat tekstin tai kuvatoiveen tuotesivulla ennen ostoskoriin lisäämistä.
+**Ystävä.** Ystävälle sopii lahja, jossa on teidän oma juttunne. Jos mikään valmis teksti ei osu, [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) tai [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) on lahja, jota ei ole kenelläkään muulla. Kirjoitat tekstin tai kuvatoiveen tuotesivulla ennen ostoskoriin lisäämistä.
 
 **Työkaveri.** Työkaverille sopii yleinen tai työhön liittyvä vitsi, joka ei nolaa ketään. Sovi ensin hintaraja, jos lahjoja vaihdetaan koko porukassa.
 
@@ -80,9 +80,9 @@ Hyvä nyrkkisääntö on tämä: jos joutuisit selittämään vitsin hänen äid
 
 Toinen sudenkuoppa on liian yleinen teksti. Jos sama paita sopisi kenelle tahansa naiselle, se ei kerro saajalle mitään. Kun vitsi on valittu juuri hänelle, lahja tuntuu ajatellulta, vaikka hinta olisi pieni.
 
-## Huppari, t-paita vai koriste
+## Huppari vai t-paita
 
-Valinta riippuu siitä, missä ja milloin hän lahjaa käyttää. Huppari on talvilahja: se lämmittää kotona, mökillä ja koiralenkillä, ja se on käytössä heti joulupäivästä alkaen. T-paita on hyvä valinta, jos hän pukeutuu kerroksittain, käy salilla tai lähtee talvella lämpimään. Koriste sopii, kun et tiedä kokoa tai haluat antaa pienen lahjan isomman rinnalle. Se ripustetaan kuuseen ja kaivetaan esiin joka joulu, joten vitsi palaa mieleen vuosi toisensa jälkeen.
+Valinta riippuu siitä, missä ja milloin hän lahjaa käyttää. Huppari on talvilahja: se lämmittää kotona, mökillä ja koiralenkillä, ja se on käytössä heti joulupäivästä alkaen. T-paita on hyvä valinta, jos hän pukeutuu kerroksittain, käy salilla tai lähtee talvella lämpimään. Jos et tiedä kokoa, huppari on väljän mallin vuoksi varmempi valinta.
 
 ## Esimerkkejä valinnasta
 
@@ -90,13 +90,13 @@ Valinta riippuu siitä, missä ja milloin hän lahjaa käyttää. Huppari on tal
 
 **Esimerkki 2: 48-vuotias ystävä, joka täyttää pian 50.** Viisikymppisen paita käy joulu- ja synttärilahjaksi samaan aikaan. Hän nauraa iälleen, joten itseironinen teksti toimii.
 
-**Esimerkki 3: tiimin naiskollega, jota et tunne hyvin.** Valitse neutraali työhön liittyvä teksti tai koriste. Pieni lahja on turvallisempi kuin vaate, jos et tiedä kokoa.
+**Esimerkki 3: tiimin naiskollega, jota et tunne hyvin.** Valitse neutraali työhön liittyvä teksti. Jos et tiedä kokoa, huppari on väljän mallin vuoksi turvallisempi valinta.
 
-**Esimerkki 4: anoppi, johon olet vasta tutustumassa.** Valitse lempeä harrastusaihe tai koriste. Lahja, joka kertoo, että olet kuunnellut hänen juttujaan, toimii paremmin kuin rohkea vitsi.
+**Esimerkki 4: anoppi, johon olet vasta tutustumassa.** Valitse lempeä harrastusaihe. Lahja, joka kertoo, että olet kuunnellut hänen juttujaan, toimii paremmin kuin rohkea vitsi.
 
 ## Koko ja malli
 
-Vaatelahjan iso riski on väärä koko. Katso hänen eniten käyttämänsä paidan leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com ja vertaa niitä, älä pelkkää kokomerkintää. Jos olet epävarma, huppari on väljän mallin vuoksi t-paitaa varmempi valinta, ja koriste ei vaadi kokoa ollenkaan.
+Vaatelahjan iso riski on väärä koko. Katso hänen eniten käyttämänsä paidan leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com ja vertaa niitä, älä pelkkää kokomerkintää. Jos olet epävarma, huppari on väljän mallin vuoksi t-paitaa varmempi valinta.
 
 ## Kortti ja paketointi viimeistelevät lahjan
 
@@ -108,18 +108,18 @@ Jos annat lahjan aattona koko perheen nähden, mieti, avautuuko vitsi kaikille. 
 
 Joulun alla lahjalistalla on usein monta naista: sisko, äiti, anoppi, ystävä ja työkaveri. Tee lista ja kirjoita jokaisen nimen viereen yksi asia, josta hän puhuu eniten. Valitse lahjat sen pohjalta, niin jokainen saa oman vitsinsä eikä kaikille tule samaa paitaa.
 
-Kokoa lahjat samaan tilaukseen, niin toimitusmaksu maksetaan vain kerran. Tarkista koot ennen tilausta, sillä vaihtaminen joulukiireen keskellä vie aikaa, jota ei ole. Jos jonkun koko on epävarma, valitse hänelle koriste tai huppari. Kun lista on valmis hyvissä ajoin, ehdit myös vertailla vaihtoehtoja rauhassa etkä joudu valitsemaan viime hetkellä sitä, mikä sattuu olemaan esillä.
+Kokoa lahjat samaan tilaukseen, niin toimitusmaksu maksetaan vain kerran. Tarkista koot ennen tilausta, sillä vaihtaminen joulukiireen keskellä vie aikaa, jota ei ole. Jos jonkun koko on epävarma, valitse hänelle huppari. Kun lista on valmis hyvissä ajoin, ehdit myös vertailla vaihtoehtoja rauhassa etkä joudu valitsemaan viime hetkellä sitä, mikä sattuu olemaan esillä.
 
 ## Hinnat ja tilausaikataulu
 
-Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS} Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu t-paita ${HINTA.personoitu}. ${TOIMITUS} Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten ne eivät lähde hyllystä. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja naiselle?", a: "Hyvä hauska joululahja liittyy naisen omaan ikään, harrastukseen tai teidän yhteiseen vitsiinne. Esimerkiksi koiraihmiselle koira-aiheinen paita ja kotikokille keittiöaiheinen paita osuvat, koska vitsi koskee hänen arkeaan." },
       { q: "Mitä antaa naiselle, jolla on jo kaikkea?", a: "Anna personoitu lahja omalla tekstillä tai kuvalla. Sellaista ei ole hänellä valmiina, koska teksti on teidän oma." },
       { q: "Onko huppari vai t-paita parempi joululahja?", a: "Huppari on talvella käytössä useammin ja väljän mallin vuoksi koon suhteen varmempi. T-paita sopii, jos hän pukeutuu kerroksittain tai haluat pysyä pienemmässä budjetissa." },
-      { q: "Paljonko hauska joululahja naiselle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}. ${TOIMITUS}` },
+      { q: "Paljonko hauska joululahja naiselle maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja personoitu t-paita ${HINTA.personoitu}. ${TOIMITUS}` },
       TOIMITUS_FAQ,
     ],
   },
@@ -170,13 +170,13 @@ Kotikokille sopii [Keittiö on valtakuntani](/tuote/hauska-t-paita-kokille-keitt
 
 ## Lahja, joka on käytössä vielä tammikuussa
 
-Moni joululahja jää kaappiin, koska se on hauska vain hetken. Vaate, jota käytetään, toimii toisin: äiti pukee hupparin päälle aamukahvilla, pihalla ja mökkimatkalla, ja jokainen kerta muistuttaa antajasta. Siksi kannattaa miettiä, missä äiti viettää talven arkensa. Jos hän ulkoilee paljon, valitse huppari. Jos hän on paljon sisällä tai salilla, t-paita on parempi. Jos hän sisustaa joulua varten, koriste on lahja, joka näkyy koko perheelle.
+Moni joululahja jää kaappiin, koska se on hauska vain hetken. Vaate, jota käytetään, toimii toisin: äiti pukee hupparin päälle aamukahvilla, pihalla ja mökkimatkalla, ja jokainen kerta muistuttaa antajasta. Siksi kannattaa miettiä, missä äiti viettää talven arkensa. Jos hän ulkoilee paljon, valitse huppari. Jos hän on paljon sisällä tai salilla, t-paita on parempi.
 
 ## Personoitu lahja lapsilta
 
 Jos haluat lahjaan perheen oman jutun, valitse tuote, johon kirjoitat tekstin itse. Personoitu lahja on hyvä ratkaisu äidille, jolla on jo kaikkea, koska samanlaista ei ole kenelläkään.
 
-- **Kuusenkoriste:** [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on pieni lahja, joka kaivetaan esiin joka joulu. Siihen sopivat lasten nimet ja vuosiluku tai perheen yhteiskuva.
+- **Oma kuva:** [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) on lahja, johon sopivat lasten nimet ja vuosiluku tai perheen yhteiskuva.
 - **Huppari:** [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) toimii, kun haluat lahjaan sisäpiirin vitsin, lempinimen tai lauseen, jonka äiti sanoo joka päivä.
 
 Kirjoita teksti tai kuvatoive tuotesivun kenttään ennen kuin lisäät tuotteen ostoskoriin. Kenttään mahtuu enintään 200 merkkiä, joten lyhyt teksti on varmin valinta.
@@ -191,19 +191,19 @@ Toinen virhe on lahja, joka on oikeasti antajalle. Jos sinua naurattaa vitsi, jo
 
 **Esimerkki 1: kolmen lapsen äiti, joka hoitaa kaiken.** Pomo-huppari ja lasten kirjoittama kortti ovat yhdessä lahja, joka naurattaa koko perhettä aattona.
 
-**Esimerkki 2: äiti, joka sanoo, ettei tarvitse mitään.** Kuusenkoriste lasten nimillä ja vuosiluvulla on pieni, mutta se on esillä joka joulu.
+**Esimerkki 2: äiti, joka sanoo, ettei tarvitse mitään.** T-paita lasten nimillä ja vuosiluvulla on lahja, jollaista hänellä ei ole valmiina.
 
-**Esimerkki 3: äiti, jolle annetaan lahja yhdessä sisarusten kanssa.** Yhteisellä budjetilla saa hupparin ja koristeen. Sopikaa etukäteen, kuka tilaa, ja kootkaa lahjat samaan tilaukseen.
+**Esimerkki 3: äiti, jolle annetaan lahja yhdessä sisarusten kanssa.** Yhteisellä budjetilla saa hupparin ja t-paidan. Sopikaa etukäteen, kuka tilaa, ja kootkaa lahjat samaan tilaukseen.
 
 **Esimerkki 4: äiti, joka asuu toisella paikkakunnalla.** Anna toimitusosoitteeksi hänen osoitteensa ja kerro puhelimessa, että paketti on tulossa. Soittakaa videopuhelu, kun hän avaa sen, niin lapset näkevät reaktion.
 
 ## Lahjan antaminen aattona
 
-Kun äiti avaa lahjan koko perheen edessä, pieni valmistelu tekee hetkestä paremman. Kirjoittakaa korttiin yhdessä lause, joka kertoo, miksi valitsitte juuri tämän tekstin. Pienet lapset voivat piirtää korttiin kuvan, ja isommat kirjoittaa muiston kuluneelta vuodelta. Jos lahja on huppari, pyytäkää äitiä pukemaan se heti päälle. Yhteiskuva aattoillalta on muisto, jonka voi seuraavana jouluna painaa kuusenkoristeeseen. Näin lahja jatkuu vuodesta toiseen.
+Kun äiti avaa lahjan koko perheen edessä, pieni valmistelu tekee hetkestä paremman. Kirjoittakaa korttiin yhdessä lause, joka kertoo, miksi valitsitte juuri tämän tekstin. Pienet lapset voivat piirtää korttiin kuvan, ja isommat kirjoittaa muiston kuluneelta vuodelta. Jos lahja on huppari, pyytäkää äitiä pukemaan se heti päälle. Yhteiskuva aattoillalta on muisto, jonka voi seuraavana jouluna painaa t-paitaan. Näin lahja jatkuu vuodesta toiseen.
 
 ## Lapset mukaan suunnittelemaan
 
-Pienet lapset haluavat usein antaa äidille jotain, minkä he ovat keksineet itse. Anna heidän osallistua: he voivat valita hupparin värin, keksiä lauseen koristeeseen tai päättää, kenen nimet tekstiin tulevat. Kirjoita lasten keksimä teksti sellaisenaan, vaikka kielioppi ontuisi, sillä juuri se tekee lahjasta muiston. Äidille lahja, jonka lapsi on suunnitellut, merkitsee enemmän kuin mikään valmis tuote. Kertokaa aattona, kuka keksi minkäkin osan.
+Pienet lapset haluavat usein antaa äidille jotain, minkä he ovat keksineet itse. Anna heidän osallistua: he voivat valita hupparin värin, keksiä lauseen paitaan tai päättää, kenen nimet tekstiin tulevat. Kirjoita lasten keksimä teksti sellaisenaan, vaikka kielioppi ontuisi, sillä juuri se tekee lahjasta muiston. Äidille lahja, jonka lapsi on suunnitellut, merkitsee enemmän kuin mikään valmis tuote. Kertokaa aattona, kuka keksi minkäkin osan.
 
 ## Hauska vai tunteellinen lahja?
 
@@ -211,24 +211,24 @@ Monen äidin lahjassa on kaksi puolta: halu naurattaa ja halu sanoa kiitos. Niit
 
 ## Äiti, mummo ja anoppi
 
-Sama perhe tarvitsee usein useamman lahjan. Mummolle on omat ideansa sivulla [joululahja mummolle](/joululahja-mummolle), ja jos haluat lahjan, jossa ei ole äiti-tekstiä, katso [hauskat joululahjat naiselle](/lahjat/joululahjaksi-naiselle). Anopille kannattaa valita lempeä teksti, josta hän voi nauraa ilman, että kukaan joutuu selittämään vitsiä. Kysy puolisolta, mille hänen äitinsä nauraa ja mistä hän puhuu eniten. Turvallinen valinta on harrastus- tai mökkiaihe tai personoitu koriste, jossa ovat lastenlasten nimet.
+Sama perhe tarvitsee usein useamman lahjan. Mummolle on omat ideansa sivulla [joululahja mummolle](/joululahja-mummolle), ja jos haluat lahjan, jossa ei ole äiti-tekstiä, katso [hauskat joululahjat naiselle](/lahjat/joululahjaksi-naiselle). Anopille kannattaa valita lempeä teksti, josta hän voi nauraa ilman, että kukaan joutuu selittämään vitsiä. Kysy puolisolta, mille hänen äitinsä nauraa ja mistä hän puhuu eniten. Turvallinen valinta on harrastus- tai mökkiaihe tai personoitu t-paita, jossa ovat lastenlasten nimet.
 
 Kevään äitienpäivää varten on oma oppaansa: [hauska äitienpäivälahja](/blogi/hauska-aitienpaivalahja-opas). Jos et halua antaa äiti-tekstiä sekä jouluna että äitienpäivänä, valitse jouluksi personoitu tuote ja säästä äitiaiheinen paita kevääseen.
 
 ## Koko ja hinnat
 
-Katso äidin eniten käyttämästä paidasta leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com, jos haluat varmistaa koon. Huppari on väljän mallin vuoksi t-paitaa varmempi valinta, ja koriste ei vaadi kokoa ollenkaan.
+Katso äidin eniten käyttämästä paidasta leveys kainaloiden alta ja pituus olkasaumasta helmaan. Kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com, jos haluat varmistaa koon. Huppari on väljän mallin vuoksi t-paitaa varmempi valinta.
 
-Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu t-paita ${HINTA.personoitu}. ${TOIMITUS}
 
 ## Tilaa ajoissa
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä joululahja äidille?", a: "Hyvä joululahja äidille on lahja, jota hän käyttää arjessa, kuten äitiaiheinen huppari. Jos haluat perheen oman jutun, valitse tuote, johon kirjoitat tekstin itse." },
-      { q: "Mitä antaa äidille, jolla on jo kaikkea?", a: "Anna personoitu lahja, esimerkiksi kuusenkoriste lasten nimillä ja vuosiluvulla. Samanlaista ei ole hänellä valmiina." },
+      { q: "Mitä antaa äidille, jolla on jo kaikkea?", a: "Anna personoitu lahja, esimerkiksi t-paita tai huppari lasten nimillä ja vuosiluvulla. Samanlaista ei ole hänellä valmiina." },
       { q: "Voiko lahjan antaa lasten nimissä?", a: "Voi. Kirjoita lasten nimet Oma teksti/kuva -tuotteen tekstikenttään, johon mahtuu enintään 200 merkkiä." },
-      { q: "Paljonko hauska joululahja äidille maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja koriste ${HINTA.koriste}. ${TOIMITUS}` },
+      { q: "Paljonko hauska joululahja äidille maksaa?", a: `Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, huppari alkaen ${HINTA.huppariAlkaen} ja personoitu t-paita ${HINTA.personoitu}. ${TOIMITUS}` },
       TOIMITUS_FAQ,
     ],
   },
@@ -301,7 +301,7 @@ Kaikki papat eivät kalasta. Golfaava pappa, mökillä viihtyvä ukki ja metsäs
 
 Jos haluat lahjaan suvun oman tervehdyksen, valitse tuote, johon kirjoitat tekstin itse.
 
-- [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on kuusenkoriste lastenlasten nimillä tai yhteisellä kuvalla. Se on esillä joka joulu, ja siitä tulee perinne.
+- [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita) lastenlasten nimillä tai yhteisellä kuvalla muistuttaa lahjan antajista aina, kun hän pukee sen päälleen.
 - [Personoitava Elävä legenda -paita](/tuote/personoitava-t-paita-elava-legenda) sopii papalle, josta suvussa kerrotaan tarinoita.
 
 Kirjoita teksti tuotesivun kenttään ennen ostoskoriin lisäämistä. Lyhyt teksti on varmin valinta.
@@ -310,11 +310,11 @@ Kirjoita teksti tuotesivun kenttään ennen ostoskoriin lisäämistä. Lyhyt tek
 
 Kun lapset ovat mukana lahjan valinnassa, papan lahjasta tulee yhteinen projekti. Pienet lapset voivat valita värin ja piirtää kortin, isommat voivat ehdottaa tekstiä personoitavaan tuotteeseen. Kertokaa papalle aattona, kuka keksi minkäkin osan, niin lahjalla on tarina.
 
-Jos lastenlapsia on monesta perheestä, sopikaa yhteinen budjetti ja yksi tilaaja. Yhteisellä budjetilla saa esimerkiksi hupparin ja kuusenkoristeen, jossa ovat kaikkien lastenlasten nimet. Kun lahjat ovat samassa tilauksessa, toimitusmaksu maksetaan vain kerran.
+Jos lastenlapsia on monesta perheestä, sopikaa yhteinen budjetti ja yksi tilaaja. Yhteisellä budjetilla saa esimerkiksi hupparin ja t-paidan, jossa ovat kaikkien lastenlasten nimet. Kun lahjat ovat samassa tilauksessa, toimitusmaksu maksetaan vain kerran.
 
 ## Kun pappa asuu kaukana
 
-Jos pappa asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitteensa. Kerro hänelle puhelimessa, että paketti on tulossa, ja soittakaa videopuhelu, kun hän avaa sen. Lastenlapset näkevät reaktion, vaikka eivät pääse paikalle. Kuusenkoriste sopii tähän hyvin, koska se on kevyt ja menee suoraan esille.
+Jos pappa asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitteensa. Kerro hänelle puhelimessa, että paketti on tulossa, ja soittakaa videopuhelu, kun hän avaa sen. Lastenlapset näkevät reaktion, vaikka eivät pääse paikalle. T-paidasta on helppo kertoa puhelimessa etukäteen, mitä siihen on painettu.
 
 ## Neljä esimerkkiä
 
@@ -322,17 +322,17 @@ Jos pappa asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoittee
 
 **Esimerkki 2: ukki, jolla on vanha auto tallissa.** Museokamaa-huppari naurattaa koko sukua, kun hän kertoo, kumpaa teksti tarkoittaa.
 
-**Esimerkki 3: pappa, joka sanoo, ettei tarvitse mitään.** Kuusenkoriste lastenlasten nimillä. Pieni lahja, joka kaivetaan esiin joka joulu.
+**Esimerkki 3: pappa, joka sanoo, ettei tarvitse mitään.** T-paita lastenlasten nimillä. Se muistuttaa lahjan antajista aina, kun hän pukee sen päälleen.
 
 **Esimerkki 4: isoisä, joka jäi juuri eläkkeelle.** Olen eläkkeellä -paita ja kortti, jossa lastenlapset kutsuvat hänet viikoittaiselle retkelle. Lahja kertoo, että hänen uudelle vapaa-ajalleen on jo suunnitelma.
 
 ## Papan lahja pienellä budjetilla
 
-Lastenlasten lahjan papalle ei tarvitse olla kallis. Tätä kirjoitettaessa kuusenkoriste maksaa ${HINTA.koriste} ja t-paita ${HINTA.tpaitaHaarukka}, joten koululaisetkin voivat koota rahat yhdessä. Isommat lapset voivat maksaa osan omista säästöistään, ja vanhemmat lisäävät loput. Kun lapset tietävät osallistuneensa lahjaan, he odottavat aattona papan reaktiota yhtä innokkaasti kuin omia pakettejaan.
+Lastenlasten lahjan papalle ei tarvitse olla kallis. Tätä kirjoitettaessa t-paita maksaa ${HINTA.tpaitaHaarukka}, joten koululaisetkin voivat koota rahat yhdessä. Isommat lapset voivat maksaa osan omista säästöistään, ja vanhemmat lisäävät loput. Kun lapset tietävät osallistuneensa lahjaan, he odottavat aattona papan reaktiota yhtä innokkaasti kuin omia pakettejaan.
 
-## Koristeesta suvun perinne
+## Paidasta suvun perinne
 
-Kuusenkoristeesta voi tehdä suvun oman perinteen. Joka joulu pappa saa uuden koristeen, jossa on vuosiluku ja kuluneen vuoden tärkein tapahtuma tai uusin lapsenlapsi. Muutamassa vuodessa papan kuusessa on suvun tarina, jota lastenlapset käyvät katsomassa. Perinne on helppo aloittaa, ja se on edullinen jatkaa.
+T-paidasta voi tehdä suvun oman perinteen. Joka joulu pappa saa uuden paidan, jossa on vuosiluku ja kuluneen vuoden tärkein tapahtuma tai uusin lapsenlapsi. Muutamassa vuodessa paitojen teksteistä kertyy suvun tarina. Perinne on helppo aloittaa.
 
 ## Kun syntymäpäivä on lähellä joulua
 
@@ -346,12 +346,12 @@ Moni ostaa jouluksi lahjan sekä isälle että papalle. Silloin kannattaa valita
 
 Papalle huppari on usein t-paitaa käytännöllisempi, koska talvella sitä käytetään joka päivä. Ota mitta hänen eniten käyttämästään paidasta ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Väljä koko on papalle usein mieluisampi kuin tiukka.
 
-Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja koristeet ${HINTA.koriste}. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, hupparit alkaen ${HINTA.huppariAlkaen} ja personoitu t-paita ${HINTA.personoitu}. ${TOIMITUS}
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat). Mummolle löydät ideat sivulta [joululahja mummolle](/joululahja-mummolle).`,
     faq: [
       { q: "Mikä on hauska joululahja papalle?", a: "Hauska joululahja papalle on pappa- tai ukkiteksti paidassa tai hupparissa, tai eläkepäiviin liittyvä huumoripaita kuten Museokamaa. Kalastavalle papalle sopii kalastusaiheinen paita." },
-      { q: "Mitä antaa papalle, jolla on jo kaikkea?", a: "Anna lahja, jossa on lastenlasten oma tervehdys, kuten kuusenkoriste lastenlasten nimillä. Sellaista hänellä ei ole valmiina." },
+      { q: "Mitä antaa papalle, jolla on jo kaikkea?", a: "Anna lahja, jossa on lastenlasten oma tervehdys, kuten t-paita lastenlasten nimillä. Sellaista hänellä ei ole valmiina." },
       { q: "Onko huppari vai t-paita parempi lahja papalle?", a: "Huppari on talvella käytössä useammin, ja väljä malli on papalle usein mieluisampi. T-paita sopii, jos hän viettää talven sisällä tai matkoilla." },
       { q: "Voiko lahjan antaa lastenlasten nimissä?", a: "Voi. Pappa- ja ukkitekstit sopivat siihen sellaisenaan, ja personoitavaan tuotteeseen voit kirjoittaa lastenlasten nimet." },
       TOIMITUS_FAQ,
@@ -405,7 +405,7 @@ Muut lajit löydät sivulta [lahjat harrastajalle](/lahjat/harrastajalle).
 
 ## Mitä eläkeläiselle ei kannata antaa
 
-Eläkeläisellä on usein koti täynnä tavaraa, joka on kertynyt vuosikymmenten aikana. Siksi uusi esine ilman käyttöä tai merkitystä on huono lahja, vaikka se olisi kaunis. Myös laitteet, jotka vaativat sovelluksen asentamista tai salasanojen muistamista, jäävät helposti laatikkoon. Hyvä lahja on joko käytössä viikoittain, kuten huppari, tai se kantaa muistoa, kuten koriste lastenlasten nimillä.
+Eläkeläisellä on usein koti täynnä tavaraa, joka on kertynyt vuosikymmenten aikana. Siksi uusi esine ilman käyttöä tai merkitystä on huono lahja, vaikka se olisi kaunis. Myös laitteet, jotka vaativat sovelluksen asentamista tai salasanojen muistamista, jäävät helposti laatikkoon. Hyvä lahja on joko käytössä viikoittain, kuten huppari, tai se kantaa muistoa, kuten t-paita lastenlasten nimillä.
 
 Toinen sudenkuoppa on vitsi, joka koskee hidastumista, unohtelua tai terveyttä. Vaikka eläkeläinen itse vitsailisi niistä, lahjaksi annettuna sama vitsi kuulostaa erilaiselta. Eläkepäivien vapaus ja harrastukset ovat turvallisempia aiheita, koska ne kertovat siitä, mitä hän tekee, eikä siitä, mitä hän ei enää jaksa.
 
@@ -417,7 +417,7 @@ Jos et ole varma, kestääkö hän ikävitsin, valitse harrastus- tai eläkeläi
 
 ## Lahja, joka on käytössä heti
 
-Joululahja ilahduttaa eniten, kun saaja ottaa sen käyttöön jo joulun pyhinä. Talvella se tarkoittaa lämmintä vaatetta: huppari tai pitkähihainen on käytössä pihalla, kävelyllä ja mökillä. Pilkkijälle talven paita on ajankohtainen heti, kun jäät kestävät, ja hiihtäjälle huppari sopii välikerrokseksi. Kesän harrastuksiin liittyvä lahja, kuten golfpaita, odottaa kevättä, mutta muistuttaa koko talven siitä, mitä on tulossa.
+Joululahja ilahduttaa eniten, kun saaja ottaa sen käyttöön jo joulun pyhinä. Talvella se tarkoittaa lämmintä vaatetta: huppari on käytössä pihalla, kävelyllä ja mökillä. Pilkkijälle talven paita on ajankohtainen heti, kun jäät kestävät, ja hiihtäjälle huppari sopii välikerrokseksi. Kesän harrastuksiin liittyvä lahja, kuten golfpaita, odottaa kevättä, mutta muistuttaa koko talven siitä, mitä on tulossa.
 
 ## Eläkeläinen, joka tekee vielä töitä
 
@@ -425,7 +425,7 @@ Moni eläkeläinen tekee edelleen keikkatöitä, vapaaehtoistyötä tai hoitaa l
 
 ## Personoitu lahja lapsilta tai lastenlapsilta
 
-Personoitu lahja on hyvä valinta eläkeläiselle, jolla on jo kaikkea. [Oma teksti/kuva -pitkähihainen](/tuote/oma-tekstikuva-pitkahihainen) on lämpimämpi kuin t-paita ja kevyempi kuin huppari, joten se sopii sisäkäyttöön koko talven. Kirjoita siihen lastenlasten nimet, mökin nimi tai lause, jonka hän sanoo joka päivä.
+Personoitu lahja on hyvä valinta eläkeläiselle, jolla on jo kaikkea. [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) on lämmin lahja, joka sopii sisäkäyttöön koko talven. Kirjoita siihen lastenlasten nimet, mökin nimi tai lause, jonka hän sanoo joka päivä.
 
 Kun lahja tulee lastenlapsilta, anna heidän valita teksti ja kirjoittaa kortti itse. Lahjasta tulee silloin yhteinen, ja eläkeläinen tietää, keneltä se tuli. Isovanhemmille on omat oppaansa: [joululahja papalle](/joululahja-papalle) ja [joululahja mummolle](/joululahja-mummolle).
 
@@ -447,7 +447,7 @@ Eläkeläisen joululahjan ei tarvitse olla kallis ollakseen mieluinen. Tätä ki
 
 ## Kun eläkeläinen asuu kaukana tai palvelutalossa
 
-Jos eläkeläinen asuu toisella paikkakunnalla tai palvelutalossa, anna toimitusosoitteeksi hänen osoitteensa ja kerro puhelimessa, että paketti on tulossa. Valitse vaate, joka on helppo pukea: väljä t-paita tai pitkähihainen on monelle mieluisampi kuin tiukka malli. Palvelutalossa hauska teksti herättää keskustelua myös muiden asukkaiden ja hoitajien kanssa, ja lahjasta tulee yhteinen ilonaihe.
+Jos eläkeläinen asuu toisella paikkakunnalla tai palvelutalossa, anna toimitusosoitteeksi hänen osoitteensa ja kerro puhelimessa, että paketti on tulossa. Valitse vaate, joka on helppo pukea: väljä t-paita tai huppari on monelle mieluisampi kuin tiukka malli. Palvelutalossa hauska teksti herättää keskustelua myös muiden asukkaiden ja hoitajien kanssa, ja lahjasta tulee yhteinen ilonaihe.
 
 ## Neljä esimerkkiä
 
@@ -463,7 +463,7 @@ Jos eläkeläinen asuu toisella paikkakunnalla tai palvelutalossa, anna toimitus
 
 Eläkeläiselle väljä malli on usein mieluisampi. Ota mitta hänen eniten käyttämästään paidasta ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com.
 
-Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}, pitkähihaiset 39,90 € ja hupparit alkaen ${HINTA.huppariAlkaen}. ${TOIMITUS}
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alkaen ${HINTA.huppariAlkaen}. ${TOIMITUS}
 
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
@@ -480,13 +480,13 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemm
     slug: "joululahja-kaverille-alle-30-euroa",
     title: "Joululahja kaverille alle 30 €: hauskat ideat ja budjettivinkit",
     metaTitle: "Joululahja kaverille alle 30 € | Huumorikauppa",
-    metaDescription: "Joululahja kaverille alle 30 €: meemipaidat, oma teksti ja koristeet. Vinkit yhteiseen vitsiin, budjettiin ja toimituskulujen jakamiseen.",
-    excerpt: "Hauska joululahja kaverille alle 30 eurolla: meemipaidat, sisäpiirin vitsi omalla tekstillä ja koristeet sekä vinkit siihen, miten budjetti pysyy kasassa.",
+    metaDescription: "Joululahja kaverille alle 30 €: meemipaidat, oma teksti ja huppari. Vinkit yhteiseen vitsiin, budjettiin ja toimituskulujen jakamiseen.",
+    excerpt: "Hauska joululahja kaverille alle 30 eurolla: meemipaidat, sisäpiirin vitsi omalla tekstillä ja huppari sekä vinkit siihen, miten budjetti pysyy kasassa.",
     publishedAt: "2026-10-26",
     updatedAt: "2026-10-26",
     category: "lahjaideat",
     tags: ["joululahja kaverille", "joululahja kaverille alle 30 euroa", "hauska joululahja kaverille", "joulu 2026"],
-    relatedCategories: ["t-paidat", "koristeet"],
+    relatedCategories: ["t-paidat", "hupparit"],
     content: `## Mikä tekee kaverin joululahjasta hyvän
 
 Kaverin joululahjan ei tarvitse olla kallis, mutta sen pitää osua. Varmin tapa onnistua on rakentaa lahja yhteisen jutun ympärille: meemi, jota toistatte, lausahdus reissulta tai vitsi, jota kukaan muu ei ymmärrä. Kun lahja muistuttaa teidän yhteisestä historiastanne, hinnalla ei ole väliä.
@@ -494,7 +494,7 @@ Kaverin joululahjan ei tarvitse olla kallis, mutta sen pitää osua. Varmin tapa
 Tässä oppaassa kaikki ideat ovat tuotehinnaltaan alle 30 €. Kun budjetti on sovittu, mieti kolmea asiaa:
 
 - **Mikä on teidän oma juttunne?** Jos sellainen on, lahja kannattaa rakentaa sen ympärille.
-- **Käyttääkö hän vaatteita, joissa on tekstiä?** Jos ei, koriste on turvallisempi valinta.
+- **Käyttääkö hän vaatteita, joissa on tekstiä?** Jos ei, valitse neutraali teksti tai oma kuva.
 - **Annetaanko lahja kahden kesken vai porukassa?** Porukassa vitsin pitää avautua muillekin.
 
 Valmiita vaihtoehtoja voit selata sivulta [joululahja kaverille](/joululahja-kaverille).
@@ -520,7 +520,7 @@ Jos tunnette toisenne harrastuksen kautta, harrastuspaita on osuva lahja. Pelika
 Kun mikään valmis teksti ei osu, kirjoita oma. Personoitu lahja on suora tapa nostaa teidän oma juttunne esiin, ja se pysyy silti budjetissa.
 
 - [Personoitava t-paita lempinimellä](/tuote/personoitava-t-paita-lempinimi) nostaa kaveriporukan sisäpiirin nimen paitaan.
-- [Oma teksti/kuva -koriste](/tuote/oma-tekstikuva-koriste) on kuusenkoriste, johon tulee yhteinen kuva tai lause. Tätä kirjoitettaessa se maksaa ${HINTA.koriste}.
+- [Oma teksti/kuva -t-paita](/tuote/oma-tekstikuva-t-paita), johon tulee yhteinen kuva tai lause. Tätä kirjoitettaessa se maksaa ${HINTA.personoitu}.
 
 Kirjoita teksti tai kuvatoive tuotesivun kenttään ennen kuin lisäät tuotteen ostoskoriin.
 
@@ -528,9 +528,9 @@ Kirjoita teksti tai kuvatoive tuotesivun kenttään ennen kuin lisäät tuotteen
 
 Vaatelahjan vaikein osa on koko. Kaverilta ei voi kysyä suoraan paljastamatta lahjaa, mutta on muita keinoja. Kysy hänen puolisoltaan, kämppikseltään tai sisarukseltaan. Katso, minkä kokoisia paitoja hän käyttää yhteisillä reissuilla tai salilla. Jos kaveri on joskus lainannut sinun vaatteitasi, vertaa omaan kokoosi. Kun olet epävarma, valitse isompi koko, sillä väljä paita on käytössä useammin kuin liian tiukka. Tuotteen mitat saat sähköpostilla huumorikauppa@gmail.com.
 
-## Pienempi lahja: koriste
+## Epävarmalle kaverille: huppari tai hillitty teksti
 
-Jos budjetti on 20 euron tuntumassa tai kaveri ei käytä tekstipaitoja, koriste on hyvä ratkaisu. [Maailman Paras Ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament) on valmis lahja, joka ripustetaan kuuseen joka vuosi. Se sopii myös pikkulahjaksi isomman lahjan kylkeen.
+Jos kaveri ei käytä tekstipaitoja, valitse hillitty teksti tai oma kuva. [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) on väljän mallin vuoksi varmempi valinta, kun koko ei ole tiedossa.
 
 ## Budjettivinkit: näin pysyt alle 30 eurossa
 
@@ -548,7 +548,7 @@ Kaveriporukka voi tehdä joululahjoista yhteisen jutun. Yksi vaihtoehto on tilat
 
 ## Kortti tekee edullisesta lahjasta henkilökohtaisen
 
-Alle 30 euron lahja ei tunnu halvalta, kun sen mukana on oma viesti. Kirjoita korttiin, mistä vitsi on peräisin: reissu, ilta tai lause, joka jäi elämään. Kortti maksaa vähän, mutta se tekee lahjasta muiston. Jos annat koristeen, kirjoita korttiin vuosiluku, niin muistatte joka joulu, mistä vitsi alkoi.
+Alle 30 euron lahja ei tunnu halvalta, kun sen mukana on oma viesti. Kirjoita korttiin, mistä vitsi on peräisin: reissu, ilta tai lause, joka jäi elämään. Kortti maksaa vähän, mutta se tekee lahjasta muiston. Jos painatat paitaan vuosiluvun, muistatte vielä myöhemmin, mistä vitsi alkoi.
 
 ## Mitä alle 30 eurolla kannattaa välttää
 
@@ -564,7 +564,7 @@ Jos kaverilla on puoliso, jonka tunnet hyvin, voit antaa lahjan molemmille. Kaks
 
 ## Hintaesimerkit
 
-Tätä kirjoitettaessa suosituimmat meemipaidat maksavat alkaen ${HINTA.tpaitaAlkaen} ja koriste ${HINTA.koriste}. Kahdelle kaverille meemipaidat maksavat yhteensä alkaen ${HINTA.kaksiMeemipaitaa}, ja meemipaita ja koriste yhdelle kaverille alkaen ${HINTA.meemipaitaJaKoriste}. Toimitusmaksu tulee tilaukseen kerran, joten mitä useamman lahjan kokoat samaan tilaukseen, sitä pienempi osuus toimituksesta jää yhdelle lahjalle.
+Tätä kirjoitettaessa suosituimmat meemipaidat maksavat alkaen ${HINTA.tpaitaAlkaen} ja personoitu t-paita ${HINTA.personoitu}. Kahdelle kaverille meemipaidat maksavat yhteensä alkaen ${HINTA.kaksiMeemipaitaa}. Toimitusmaksu tulee tilaukseen kerran, joten mitä useamman lahjan kokoat samaan tilaukseen, sitä pienempi osuus toimituksesta jää yhdelle lahjalle.
 
 ## Joululahja vai pikkujoululahja?
 
@@ -572,7 +572,7 @@ Jos näette kaverin kanssa pikkujouluissa mutta ette jouluna, lahja kannattaa an
 
 ## Kaverille, jolla on jo kaikkea
 
-Kaverille, joka ostaa itse kaiken tarvitsemansa, tavara ei ole hyvä lahja. Hänelle sopii lahja, jota ei voi ostaa kaupasta valmiina: teidän yhteinen vitsinne paidassa tai koristeessa. Personoitu tuote on tähän ratkaisu, koska siinä on teksti, jonka vain te tunnette. Lisää pakettiin kortti, jossa kerrot, mistä vitsi alkoi.
+Kaverille, joka ostaa itse kaiken tarvitsemansa, tavara ei ole hyvä lahja. Hänelle sopii lahja, jota ei voi ostaa kaupasta valmiina: teidän yhteinen vitsinne paidassa tai hupparissa. Personoitu tuote on tähän ratkaisu, koska siinä on teksti, jonka vain te tunnette. Lisää pakettiin kortti, jossa kerrot, mistä vitsi alkoi.
 
 ## Kun kaveri asuu kaukana
 
@@ -584,7 +584,7 @@ Jos kaveri asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitte
 
 **Esimerkki 2: kaveriporukan neljä jäsentä.** Neljä personoitua paitaa, joissa jokaisella on oma lempinimi, samaan tilaukseen. Toimitus jaetaan.
 
-**Esimerkki 3: uusi kaveri, jota et vielä tunne hyvin.** Koriste on turvallinen valinta, koska se ei vaadi kokoa eikä sisäpiirin vitsiä.
+**Esimerkki 3: uusi kaveri, jota et vielä tunne hyvin.** Valitse lempeä, neutraali teksti. Jos et tiedä kokoa, huppari on väljän mallin vuoksi varmempi valinta.
 
 **Esimerkki 4: kaveri, joka pelaa joka ilta.** Pelaajan paita on hänelle helppo valinta, ja se mahtuu budjettiin, vaikka toimitus tulee päälle.
 
@@ -593,7 +593,7 @@ Jos kaveri asuu toisella paikkakunnalla, anna toimitusosoitteeksi hänen osoitte
 Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat).`,
     faq: [
       { q: "Mikä on hyvä joululahja kaverille alle 30 eurolla?", a: `Hyvä joululahja kaverille alle 30 eurolla on meemipaita tai personoitu paita, jossa on teidän yhteinen vitsinne. Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka}.` },
-      { q: "Mitä antaa kaverille, joka ei käytä tekstipaitoja?", a: "Anna koriste, esimerkiksi kuusenkoriste omalla tekstillä tai kuvalla. Se ei vaadi kokoa, ja se on esillä joka joulu." },
+      { q: "Mitä antaa kaverille, joka ei käytä tekstipaitoja?", a: "Valitse hillitty teksti tai oma kuva. Huppari on väljän mallin vuoksi varmempi valinta, jos et tiedä kokoa." },
       { q: "Miten säästän toimituskuluissa?", a: `Kokoa usean kaverin lahjat samaan tilaukseen, niin toimitusmaksu maksetaan kerran. ${TOIMITUS}` },
       { q: "Voiko paitaan laittaa kaverin lempinimen?", a: "Voi. Valitse personoitava paita ja kirjoita lempinimi tuotesivun kenttään ennen ostoskoriin lisäämistä." },
       TOIMITUS_FAQ,

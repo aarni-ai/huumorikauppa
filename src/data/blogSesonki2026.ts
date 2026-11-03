@@ -592,7 +592,7 @@ Jos paidat jaetaan etukäteen, sopikaa, että kaikki tulevat juhliin paita pää
 
 Työpaikan tai seuran porukassa on usein eri ikäisiä ihmisiä, ja kaikki eivät halua samaa vitsiä. Tähän on kaksi helppoa ratkaisua. Voitte valita lempeän jouluvitsin, joka sopii kaikille, tai antaa jokaisen valita oman tekstinsä samasta sarjasta. Tärkeintä on, että kukaan ei joudu pukemaan paitaa, joka tuntuu hänestä nololta.
 
-Muista myös, että kaikki eivät halua t-paitaa. Hupparin, pitkähihaisen tai väljemmän mallin tarjoaminen vaihtoehtona tekee ryhmätilauksesta mukavamman kaikille.
+Muista myös, että kaikki eivät halua t-paitaa. Hupparin tai väljemmän mallin tarjoaminen vaihtoehtona tekee ryhmätilauksesta mukavamman kaikille.
 
 ## Muistilista järjestäjälle
 
@@ -938,7 +938,7 @@ Paras joululahja siskolle on usein se, jossa on teidän lapsuutenne vitsi. Lause
 
 [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) sopii tähän. Kirjoitat tekstin tai kuvatoiveen tuotesivulla ennen ostoskoriin lisäämistä. Personoitu tuote tehdään juuri hänelle, joten sitä ei voi palauttaa. Tarkista siis kirjoitusasu ennen tilausta.
 
-Jos et tiedä siskosi kokoa, valitse pieni lahja, joka ei vaadi kokoa. [Maailman paras ystävä -koriste](/tuote/maailman-paras-ystava-ornament-ceramic-ornament) on kuusenkoriste, joka kaivetaan esiin joka joulu. Siskolle se kertoo, että hän on myös paras ystäväsi.
+Jos et tiedä siskosi kokoa, valitse huppari, joka on väljän mallin vuoksi t-paitaa varmempi. [Oma teksti/kuva -huppari](/tuote/oma-tekstikuva-huppari) kertoo siskolle, että olet miettinyt juuri häntä.
 
 ## Iso- vai pikkusisko
 
@@ -954,7 +954,7 @@ Jos vitsi on liian sisäpiiri, anna lahja kahden kesken ennen joulua tai kirjoit
 
 ## Koko ja malli
 
-Katso siskosi eniten käyttämän paidan leveys kainaloiden alta ja pituus olkasaumasta helmaan. Vertaa niitä tuotteen mittoihin. Huppari on väljän mallin vuoksi t-paitaa varmempi valinta, ja koriste ei vaadi kokoa ollenkaan.
+Katso siskosi eniten käyttämän paidan leveys kainaloiden alta ja pituus olkasaumasta helmaan. Vertaa niitä tuotteen mittoihin. Huppari on väljän mallin vuoksi t-paitaa varmempi valinta.
 
 ## Esimerkkejä valinnasta
 
@@ -978,7 +978,7 @@ Toinen perinne on sisarusten yhteinen kuva. Kun kaikki sisarukset saavat samasta
 
 ## Pieni lahja isomman rinnalle
 
-Jos sisko saa sinulta myös isomman lahjan, hauska paita tai koriste toimii pienenä lisänä, joka avataan ensin. Nauru heti alussa tekee lahjojen avaamisesta hauskempaa, ja varsinainen lahja tuntuu sen jälkeen vielä paremmalta.
+Jos sisko saa sinulta myös isomman lahjan, hauska t-paita toimii pienenä lisänä, joka avataan ensin. Nauru heti alussa tekee lahjojen avaamisesta hauskempaa, ja varsinainen lahja tuntuu sen jälkeen vielä paremmalta.
 
 ## Lahja siskolle, jolla on perhe
 
@@ -992,7 +992,7 @@ Opiskeleva pikkusisko arvostaa lahjaa, joka on käytössä joka päivä. Huppari
 
 ## Kun sisko on myös paras ystäväsi
 
-Monelle sisko on myös paras ystävä. Silloin lahja voi kertoa molemmista rooleista. Maailman paras ystävä -koriste on pieni lahja, joka sanoo sen ääneen, ja oma teksti hupparissa kertoo, mitä te kaksi olette kokeneet yhdessä. Kun lahjan mukana on kortti, jossa muistelet yhteistä hetkeä, lahja on samaan aikaan hauska ja koskettava.
+Monelle sisko on myös paras ystävä. Silloin lahja voi kertoa molemmista rooleista. Oma teksti t-paidassa voi sanoa sen ääneen, ja oma kuva hupparissa kertoo, mitä te kaksi olette kokeneet yhdessä. Kun lahjan mukana on kortti, jossa muistelet yhteistä hetkeä, lahja on samaan aikaan hauska ja koskettava.
 
 ## Lahja, joka naurattaa koko perhettä
 
@@ -1007,7 +1007,7 @@ Jos lahjalistalla on myös veli, katso opas [joululahja veljelle](/blogi/joulula
 Hinnat näet tuotekorteista. ${TOIMITUS} Tuotteemme painetaan tilauksesta painokumppaneillamme. ${CHRISTMAS_DEADLINE_PROMISE} Lue tarkemmin [joulun viimeisistä tilauspäivistä](/joulun-viimeiset-tilauspaivat) tai selaa kaikkia [hauskoja joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja siskolle?", a: "Hyvä lahja liittyy hänen luonteeseensa, harrastukseensa tai teidän yhteiseen vitsiinne. Sisarusten oma vitsi omalla tekstillä on lahja, jota kukaan muu ei voi antaa." },
-      { q: "Mitä antaa siskolle, jonka kokoa en tiedä?", a: "Valitse koriste tai huppari. Koriste ei vaadi kokoa, ja huppari on väljän mallin vuoksi armollisempi kuin t-paita." },
+      { q: "Mitä antaa siskolle, jonka kokoa en tiedä?", a: "Valitse huppari, joka on väljän mallin vuoksi armollisempi kuin t-paita." },
       { q: "Kannattaako sisarusten oma vitsi antaa kahden kesken?", a: "Kannattaa, jos vitsi avautuu vain teille kahdelle. Koko suvun edessä toimii parhaiten vitsi, joka avautuu kaikille, tai kortti, joka kertoo taustan." },
       JOULU_FAQ,
     ],
