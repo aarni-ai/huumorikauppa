@@ -42,6 +42,43 @@ export interface ProductForSchema {
   variants?: unknown;
   /** Personoitu tuote (oma teksti/kuva): ei palautusoikeutta. Puuttuessa päätellään nimestä ja kuvauksesta. */
   personalised?: boolean;
+  /**
+   * Aidot, julkaistut asiakasarviot (reviews-taulu, /api/sahkoposti?arviot=): vain tilauksen tehneiltä, arviolinkki
+   * on allekirjoitettu tilauskohtaisesti ja omistaja julkaisee. Tyhjä tai puuttuva: ei aggregateRatingia eikä Reviewta.
+   */
+  reviews?: SchemaReview[];
+}
+
+/** Aito arvio rakenteiseen dataan. date: "p.k.vvvv" tai "vvvv-kk-pp". */
+export interface SchemaReview {
+  name: string;
+  stars: number;
+  text?: string;
+  date: string;
+}
+
+const isoPaiva = (d: string): string | null => {
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
+  if (iso) return d;
+  const m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(d.trim());
+  return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : null;
+};
+
+/** aggregateRating ja review vain aidoista arvioista (tähdet 1-5, päivämäärä). Muuten tyhjä objekti. */
+export function arviotJsonLd(reviews: SchemaReview[] | undefined): JsonLd {
+  const aidot = (reviews || []).filter((r) => Number.isInteger(r.stars) && r.stars >= 1 && r.stars <= 5 && isoPaiva(r.date));
+  if (!aidot.length) return {};
+  const ka = aidot.reduce((s, r) => s + r.stars, 0) / aidot.length;
+  return {
+    aggregateRating: { "@type": "AggregateRating", ratingValue: ka.toFixed(1), reviewCount: aidot.length, bestRating: 5, worstRating: 1 },
+    review: aidot.slice(0, 10).map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name || "Asiakas" },
+      datePublished: isoPaiva(r.date),
+      reviewRating: { "@type": "Rating", ratingValue: r.stars, bestRating: 5, worstRating: 1 },
+      ...(r.text ? { reviewBody: r.text.slice(0, 2000) } : {}),
+    })),
+  };
 }
 
 /**
@@ -272,6 +309,7 @@ export function buildProductJsonLd(product: ProductForSchema): JsonLd {
       shippingDetails: buildOfferShippingDetails(product.price, product.category),
       hasMerchantReturnPolicy: personalised ? noReturnsPolicy() : merchantReturnPolicy(),
     },
+    ...arviotJsonLd(product.reviews),
   };
 }
 

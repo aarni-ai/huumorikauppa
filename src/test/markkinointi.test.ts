@@ -308,9 +308,9 @@ describe("Keskeneräisen tilauksen muistutus", () => {
 
 describe("Arviopyyntö", () => {
   const tilaus = (extra: Rivi) => ({ id: "abcdef12-0000", status: "maksettu", customer_email: "a@b.fi", customer_name: "Anna A", items: [{ name: "Paita" }, { name: "Kortti", type: "giftcard" }], ...extra });
-  it("vain varmistetun perillemenon jälkeen: 7 pv toimituksesta, pelkkä lähetys ei riitä", () => {
-    expect(arvosteluAika(tilaus({ delivered_at: T0, shipped_at: min(-3000) }), min(6 * 24 * 60))).toBe(false);
-    expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(7 * 24 * 60))).toBe(true);
+  it("vain varmistetun perillemenon jälkeen: vuorokausi toimituksesta, pelkkä lähetys ei riitä", () => {
+    expect(arvosteluAika(tilaus({ delivered_at: T0, shipped_at: min(-3000) }), min(23 * 60))).toBe(false);
+    expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(24 * 60))).toBe(true);
     expect(arvosteluAika(tilaus({ shipped_at: T0 }), min(30 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({ delivered_at: T0, review_email_sent_at: T0 }), min(20 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({}), min(20 * 24 * 60))).toBe(false);
@@ -346,11 +346,19 @@ describe("/api/sahkoposti tarjouspyyntö (/yritykset)", () => {
     expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", kotisivu: "http://x" })).body).toEqual({ ok: true });
     expect(st.tarjouspyynnot.length).toBe(0);
     expect((await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "A@B.fi", maara: "25", viesti: "Joulupaidat" })).body).toMatchObject({ ok: true, hinta: null });
+    // Pelkästä määrästä automaattinen hinta-arvio kaikille malleille (kate vähintään 7 €/kpl, kate ei vastauksessa).
+    const pelkka = (await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", maara: "25" })) as { body: { arvio: Array<Record<string, unknown>> } };
+    expect(pelkka.body.arvio.map((a) => a.malli)).toEqual(["meemipaita", "tpaita", "logopaita", "huppari"]);
+    expect(pelkka.body.arvio[1]).toMatchObject({ kpl: 25, yhteensa: 613.8, alennusProsentti: 12 });
+    expect(JSON.stringify(pelkka.body)).not.toContain("kate");
+    st.tarjouspyynnot.pop();
     expect(st.tarjouspyynnot[0]).toMatchObject({ yritys: "Oy Ab", email: "a@b.fi", maara: 25 });
     // Laskuri: palvelin laskee hinnan ja kateen uudelleen; koot ja toivottu päivä tallentuvat.
     const r = await kutsu(st, { yritys: "Oy Ab", nimi: "Anna", email: "a@b.fi", malli: "meemipaita", koot: { M: 5, L: 5 }, toimituspaiva: "2099-12-01", ytunnus: "3653666-7" });
-    expect(r.body).toMatchObject({ ok: true, hinta: 224.1, aikataulu: { ehtii: true } });
-    expect(st.tarjouspyynnot[1]).toMatchObject({ maara: 10, malli: "meemipaita", koot: { M: 5, L: 5 }, hinta: 224.1, ytunnus: "3653666-7", toivottu_paiva: "2099-12-01", ehtii: true });
+    // Meemipaidan 10 %:n alennus veisi katteen alle 7 €/kpl: hinta ilman alennusta (24,90 €/kpl).
+    expect(r.body).toMatchObject({ ok: true, hinta: 249, aikataulu: { ehtii: true } });
+    expect((r.body as { arvio: unknown[] }).arvio[0]).toMatchObject({ malli: "meemipaita", kpl: 10, yhteensa: 249 });
+    expect(st.tarjouspyynnot[1]).toMatchObject({ maara: 10, malli: "meemipaita", koot: { M: 5, L: 5 }, hinta: 249, ytunnus: "3653666-7", toivottu_paiva: "2099-12-01", ehtii: true });
     expect(st.tarjouspyynnot[1].kate).toBeGreaterThan(50);
     expect(String(viestit[0].subject)).toContain("Tarjouspyyntö: Oy Ab, 25 kpl");
   });

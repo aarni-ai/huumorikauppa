@@ -109,8 +109,10 @@ const r2 = (x) => Math.round(x * 100) / 100;
 /**
  * { malli, koot: { S: 3, M: 5, ... } } -> { kpl, ennen, alennusProsentti, hinta, toimitus, yhteensa, kate, katePerKpl }.
  * hinta = asiakkaan maksama tuotteiden summa (ALV 25,5 % sis.), kate = arvio (vain sisäiseen käyttöön).
+ * minKatePerKpl (tarjoukset 3.11.2026): määräalennuksesta käytetään suurinta olemassa olevaa porrasta (tai ei alennusta),
+ * jolla arvioitu kate on vähintään tämän verran kappaleelta. Ei uusia hintoja: vain portaat MAARAALENNUS-taulusta.
  */
-export function laskeTarjous({ malli, koot } = {}, { kerroin = 1 } = {}) {
+export function laskeTarjous({ malli, koot } = {}, { kerroin = 1, minKatePerKpl = null } = {}) {
   const m = MALLIT[malli];
   if (!m) return null;
   let kpl = 0, ennen = 0, kulut = 0;
@@ -122,14 +124,58 @@ export function laskeTarjous({ malli, koot } = {}, { kerroin = 1 } = {}) {
     kulut += n * (ISO.test(k) ? m.kuluIso : m.kulu);
   }
   if (!kpl) return { kpl: 0, ennen: 0, alennusProsentti: 0, hinta: 0, toimitus: 0, yhteensa: 0, kate: 0, katePerKpl: 0 };
-  const porras = m.maara ? maaraPorras(kpl) : null;
-  const alennusProsentti = porras?.prosentti ?? 0;
-  const hinta = r2(ennen * (1 - alennusProsentti / 100));
-  const toimitus = ennen >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS;
-  const yhteensa = r2(hinta + toimitus);
   kulut += m.eka + (kpl - 1) * m.lisa;
-  const kate = r2(yhteensa / 1.255 - kulut * kerroin - (yhteensa * 0.015 + 0.25));
-  return { kpl, ennen: r2(ennen), alennusProsentti, hinta, toimitus, yhteensa, kate, katePerKpl: r2(kate / kpl) };
+  const porras = m.maara ? maaraPorras(kpl) : null;
+  const laske = (alennusProsentti) => {
+    const hinta = r2(ennen * (1 - alennusProsentti / 100));
+    const toimitus = ennen >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS;
+    const yhteensa = r2(hinta + toimitus);
+    const kate = r2(yhteensa / 1.255 - kulut * kerroin - (yhteensa * 0.015 + 0.25));
+    return { kpl, ennen: r2(ennen), alennusProsentti, hinta, toimitus, yhteensa, kate, katePerKpl: r2(kate / kpl) };
+  };
+  const tulos = laske(porras?.prosentti ?? 0);
+  if (minKatePerKpl == null || tulos.katePerKpl >= minKatePerKpl) return tulos;
+  // Pienemmät portaat suurimmasta alkaen, lopuksi ilman alennusta.
+  const vaihtoehdot = [...MAARAALENNUS.portaat].map((p) => p.prosentti).filter((p) => p < tulos.alennusProsentti).sort((a, b) => b - a);
+  for (const p of [...vaihtoehdot, 0]) {
+    const t = laske(p);
+    if (t.katePerKpl >= minKatePerKpl) return t;
+  }
+  return laske(0);
+}
+
+/**
+ * Automaattinen hinta-arvio tarjouspyyntöön määrän mukaan (3.11.2026): jokaiselle mallille kokojakaumalla M, L ja XL
+ * tasan, määräalennuksen portaat ja kate vähintään TILAUKSEN_MIN_KATE_EUROA (7 €) kappaleelta. Malli, jonka kate jää
+ * ilman alennustakin alle rajan, jätetään pois (hinta vahvistetaan tarjouksessa). Palauttaa [] alle YRITYS_MIN_KPL:n.
+ * Kate ei ole tuloksessa (vain sisäiseen käyttöön).
+ */
+export function hintaArvio(kpl, { mallit = Object.keys(MALLIT), kerroin = 1 } = {}) {
+  const n = Math.min(999, Math.floor(Number(kpl) || 0));
+  if (n < YRITYS_MIN_KPL) return [];
+  const koot = { M: Math.ceil(n / 3), L: Math.ceil(n / 3), XL: n - 2 * Math.ceil(n / 3) };
+  return mallit.filter((m) => MALLIT[m]).map((malli) => {
+    const t = laskeTarjous({ malli, koot }, { kerroin, minKatePerKpl: TILAUKSEN_MIN_KATE_EUROA });
+    if (t.katePerKpl < TILAUKSEN_MIN_KATE_EUROA) return null;
+    return { malli, nimi: MALLIT[malli].nimi, kpl: n, yhteensa: t.yhteensa, perKpl: r2(t.yhteensa / n), alennusProsentti: t.alennusProsentti, toimitus: t.toimitus };
+  }).filter(Boolean);
+}
+
+/**
+ * Yritysten joulutilausten laskuri: päiviä takarajaan (Helsingin päivä). 0 = viimeinen päivä tänään, null = takaraja
+ * mennyt.
+ */
+export function joulutilauksiaJaljella(nyt = new Date(), takaraja = YRITYS_JOULU_TAKARAJA_ISO) {
+  const paivia = Math.round((paiva(takaraja).getTime() - paiva(tanaanHelsinki(nyt)).getTime()) / 864e5);
+  return paivia >= 0 ? paivia : null;
+}
+
+/** Laskurin teksti: "Yritysten joulutilaukset: 23 päivää jäljellä" tai null takarajan jälkeen. */
+export function joulutilausLaskuriTeksti(nyt = new Date(), takaraja = YRITYS_JOULU_TAKARAJA_ISO) {
+  const p = joulutilauksiaJaljella(nyt, takaraja);
+  if (p === null) return null;
+  if (p === 0) return "Yritysten joulutilaukset: viimeinen tilauspäivä tänään";
+  return `Yritysten joulutilaukset: ${p} ${p === 1 ? "päivä" : "päivää"} jäljellä`;
 }
 
 /** Pakettitarjousten esimerkkihinnat (10, 25 ja 50 kappaletta, koot M-XL tasan). */

@@ -35,7 +35,8 @@ import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
 import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS } from "./_lib/kumppani.js";
 import { haeTilaus, onPrintify } from "./_lib/printify.js";
-import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT } from "./_lib/yritysmyynti.js";
+import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT, hintaArvio } from "./_lib/yritysmyynti.js";
+import { TILAUKSEN_MIN_KATE_EUROA } from "./_lib/vakiot.js";
 import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
 import { kaynninLahde, sivunOsio, onBotti, onOmaTaiBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
@@ -241,7 +242,7 @@ export async function kasittele(req, res, store) {
       // Laskuri ja aikataulu lasketaan palvelimella uudelleen (selaimen arvoihin ei luoteta).
       const koot = Object.fromEntries(KOOT.map((k) => [k, Math.max(0, Math.min(999, Math.floor(Number(body.koot?.[k]) || 0)))]).filter(([, n]) => n > 0));
       const malli = MALLIT[body.malli] ? body.malli : null;
-      const laskuri = malli && Object.keys(koot).length ? laskeTarjous({ malli, koot }, { kerroin: PRINTIFY_KULUKERROIN }) : null;
+      const laskuri = malli && Object.keys(koot).length ? laskeTarjous({ malli, koot }, { kerroin: PRINTIFY_KULUKERROIN, minKatePerKpl: TILAUKSEN_MIN_KATE_EUROA }) : null;
       const at = aikataulu(teksti(body.toimituspaiva, 10));
       // Oma logo tai teksti: sama tarkistus kuin kassalla; esikatselulinkki ilmoitukseen ja hallintaan.
       let logo = null;
@@ -273,7 +274,9 @@ export async function kasittele(req, res, store) {
       ]).catch((e) => ({ ok: false, virhe: String(e?.message || e) }));
       // Ilmoituksen tila talteen (/hallinta/tarjoukset): epäonnistunut ilmoitus näkyy, eikä pyyntö jää huomaamatta.
       await store.merkitseTarjousIlmoitus?.(id, ilmoitus?.ok ? `lähetetty ${ilmoitus.vastaanottaja || ""}`.trim() : `virhe: ${String(ilmoitus?.virhe || "").slice(0, 200)}`).catch(() => null);
-      return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at });
+      // Automaattinen hinta-arvio määrän mukaan (valittu malli ensin, sitten muut), kate vähintään 7 €/kpl.
+      const arvio = t.maara ? hintaArvio(t.maara, { kerroin: PRINTIFY_KULUKERROIN, mallit: malli ? [malli, ...Object.keys(MALLIT).filter((m) => m !== malli)] : undefined }) : [];
+      return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at, arvio });
     }
     case "tarjoustila": {
       if (!hallintaPaasy(req, res, "tarjoukset", body.avain)) return res.status(404).json({ ok: false });

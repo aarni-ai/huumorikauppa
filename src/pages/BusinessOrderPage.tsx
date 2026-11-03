@@ -14,6 +14,7 @@ import { kumppani } from "@/lib/kumppani";
 import { SITE_URL } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { MAARAALENNUS } from "../../api/_lib/vakiot.js";
 import { YRITYS_MIN_KPL, LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
@@ -195,6 +196,7 @@ const BusinessOrderPage = () => {
       <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3 flex items-center gap-3">
         <Building2 className="h-8 w-8 text-primary shrink-0" aria-hidden="true" /> Yritystilaus
       </h1>
+      <YritysJouluLaskuri className="mb-4" />
       <p className="text-muted-foreground mb-2">Valitse designit ja värit ja kirjoita määrät koon mukaan. Määräalennus lasketaan vähintään {MAARAALENNUS.portaat.map((p) => p.min).sort((a, b) => a - b)[0]} t-paidan tilauksesta automaattisesti.</p>
       <p className="text-sm text-foreground mb-6">Jouluksi: tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI} <Link to="/yritykset" className="text-primary underline">Valmiit paketit ja tarjouspyyntö</Link></p>
 

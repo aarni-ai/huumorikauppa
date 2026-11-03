@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ytunnus, aikataulu, laskeTarjous, laskuData, YRITYS_JOULU_TAKARAJA_ISO, arkipaivat, esimerkkiHinnat } from "../../api/_lib/yritysmyynti.js";
+import { ytunnus, aikataulu, laskeTarjous, laskuData, YRITYS_JOULU_TAKARAJA_ISO, arkipaivat, esimerkkiHinnat, hintaArvio, joulutilauksiaJaljella, joulutilausLaskuriTeksti, MALLIT } from "../../api/_lib/yritysmyynti.js";
 
 describe("yritysmyynti", () => {
   it("Y-tunnuksen tarkiste", () => {
@@ -30,5 +30,40 @@ describe("yritysmyynti", () => {
     expect(d.asiakas.tax_id_data[0]).toEqual({ type: "eu_vat", value: "FI36536667" });
     expect(d.summa).toBe(224.1);
     expect(d.lasku.custom_fields).toContainEqual({ name: "Viite", value: "123" });
+  });
+});
+
+describe("yritysten joulutilaukset: laskuri ja hinta-arvio (3.11.2026)", () => {
+  it("laskuri Helsingin päivän mukaan, takarajan jälkeen ei mitään", () => {
+    expect(joulutilausLaskuriTeksti(new Date("2026-11-03T10:00:00Z"))).toBe("Yritysten joulutilaukset: 23 päivää jäljellä");
+    expect(joulutilausLaskuriTeksti(new Date("2026-11-25T12:00:00Z"))).toBe("Yritysten joulutilaukset: 1 päivä jäljellä");
+    expect(joulutilausLaskuriTeksti(new Date("2026-11-26T21:00:00Z"))).toBe("Yritysten joulutilaukset: viimeinen tilauspäivä tänään");
+    // 27.11. klo 0.30 Helsingin aikaa
+    expect(joulutilauksiaJaljella(new Date("2026-11-26T22:30:00Z"))).toBeNull();
+    expect(joulutilausLaskuriTeksti(new Date("2026-12-01T10:00:00Z"))).toBeNull();
+  });
+  it("hinta-arvio: kate vähintään 7 €/kpl jokaisella mallilla ja määrällä, alle 10 kpl ei arviota", () => {
+    expect(hintaArvio(9)).toEqual([]);
+    for (const n of [10, 11, 24, 25, 49, 50, 99, 250]) {
+      const rivit = hintaArvio(n);
+      expect(rivit.length).toBeGreaterThan(0);
+      for (const r of rivit) {
+        const koot = { M: Math.ceil(n / 3), L: Math.ceil(n / 3), XL: n - 2 * Math.ceil(n / 3) };
+        const t = laskeTarjous({ malli: r.malli, koot }, { minKatePerKpl: 7 });
+        expect(t.yhteensa).toBe(r.yhteensa);
+        expect(t.katePerKpl, `${r.malli} ${n}`).toBeGreaterThanOrEqual(7);
+        expect(Object.keys(MALLIT)).toContain(r.malli);
+        expect(r).not.toHaveProperty("kate");
+      }
+    }
+  });
+  it("määräalennus vain olemassa olevista portaista: meemipaidan alennus rajataan katteen mukaan", () => {
+    const koot = { M: 17, L: 17, XL: 16 };
+    expect(laskeTarjous({ malli: "meemipaita", koot }).alennusProsentti).toBe(14);
+    const rajattu = laskeTarjous({ malli: "meemipaita", koot }, { minKatePerKpl: 7 });
+    expect([0, 10, 12]).toContain(rajattu.alennusProsentti);
+    expect(rajattu.katePerKpl).toBeGreaterThanOrEqual(7);
+    // T-paidassa kate riittää täyteen portaaseen.
+    expect(laskeTarjous({ malli: "tpaita", koot }, { minKatePerKpl: 7 }).alennusProsentti).toBe(14);
   });
 });

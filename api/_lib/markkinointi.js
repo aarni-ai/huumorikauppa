@@ -6,8 +6,8 @@
  *    vain ensimmäiseen maksettuun tilaukseen ja vain samalla osoitteella.
  *  - Keskeneräisen tilauksen muistutus kerran 24 h kuluttua (taulu abandoned_carts): vain, jos asiakas valitsi kassalla
  *    "Lähetä minulle muistutus". Muistutukset loppuvat, kun samalla osoitteella maksetaan tilaus.
- *  - Arviopyyntö kerran per tilaus, vain varmistetun perillemenon jälkeen: 7 päivää Printifyn delivered_at-päivästä.
- *    Ilman toimituspäivää pyyntöä ei lähetetä. Viestissä on suora arviolinkki jokaiselle tuotteelle.
+ *  - Arviopyyntö kerran per tilaus ja kerran per asiakas, vain varmistetun perillemenon jälkeen: vuorokausi Printifyn
+ *    delivered_at-päivästä (3.11.2026, aiemmin 7 pv). Ilman toimituspäivää pyyntöä ei lähetetä kenellekään. Viestissä on suora arviolinkki jokaiselle tuotteelle.
  *  - Jokaisessa viestissä on allekirjoitettu peruutuslinkki ja List-Unsubscribe (yhden klikkauksen peruutus).
  *    Peruutus kirjaa osoitteen tauluun email_optouts, ja siihen osoitteeseen ei lähetetä enää markkinointia.
  *  - Lähetysraja: enintään MARKKINOINTI_RAJA_AJO viestiä ajossa (oletus 20) ja MARKKINOINTI_RAJA_PAIVA päivässä
@@ -24,7 +24,7 @@ export { SUOSTUMUS_UUTISKIRJE, SUOSTUMUS_MUISTUTUS };
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const MUISTUTUS_1_MIN = 60;
 export const MUISTUTUS_2_MIN = 24 * 60;
-export const ARVOSTELU_TOIMITUKSESTA_PV = 7;
+export const ARVOSTELU_TOIMITUKSESTA_PV = 1;
 export const ARVOSTELU_LAHETYKSESTA_PV = 10;
 const KORI_VANHENEE_PV = 7;
 
@@ -174,7 +174,7 @@ export function muistutusVaihe(kori, nyt = new Date()) {
   return ika >= MUISTUTUS_2_MIN ? 2 : null;
 }
 
-/** Onko arviopyynnön aika: 7 pv toimituksesta tai, jos toimituspäivää ei ole, 10 pv lähetyksestä. */
+/** Onko arviopyynnön aika: vuorokausi Printifyn toimituspäivästä. Ilman toimituspäivää ei koskaan (pelkkä lähetys ei riitä). */
 export function arvosteluAika(tilaus, nyt = new Date()) {
   if (tilaus.review_email_sent_at || tilaus.status !== "maksettu") return false;
   // Vain varmistettu perillemeno (Printifyn delivered_at); pelkkä lähetyspäivä ei riitä.
