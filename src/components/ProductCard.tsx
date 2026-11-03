@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Product } from "@/types/product";
 import { formatPriceFi } from "@/seo/site";
+import { naytettavaHinta } from "@/lib/toimitustesti";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, X } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
@@ -200,6 +201,8 @@ export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
   };
 
   const hasDiscount = product.original_price && product.original_price > product.price;
+  // Hintatesti B (src/lib/toimitustesti.ts): hinta, johon toimitus sisältyy. Esirenderöinti ja JSON-LD: perushinta.
+  const naytettava = naytettavaHinta(product);
   const discountPercent = hasDiscount
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
     : 0;
@@ -354,8 +357,9 @@ export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
             </span>
           )}
           <span className={`text-lg md:text-xl font-black tracking-tight ${hasDiscount ? "text-destructive" : "text-black"}`}>
-            {formatPriceFi(product.price)}
+            {formatPriceFi(naytettava)}
           </span>
+          {naytettava !== product.price && <span className="text-[11px] font-semibold text-primary">Ilmainen toimitus</span>}
         </div>
         {ostaNappi && (
           <span className="mt-1 flex items-center justify-center gap-1.5 w-full min-h-[40px] rounded-md bg-primary text-primary-foreground text-sm font-bold">

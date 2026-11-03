@@ -10,7 +10,7 @@ import { productAlt } from "@/lib/seoAlt";
 import { ComplementaryProducts } from "@/components/ComplementaryProducts";
 import { FreeShippingProgress } from "@/components/FreeShippingProgress";
 import { KorialennusVihje } from "@/components/KorialennusVihje";
-import { korialennusTila } from "@/lib/ostoskori";
+import { korialennusTila, toimitusTila } from "@/lib/ostoskori";
 import { proxiedImage } from "@/lib/imageProxy";
 
 export function AddToCartDrawer() {
@@ -18,6 +18,8 @@ export function AddToCartDrawer() {
     useCartContext();
   // Lisämyyntisuositukset tarvitaan vasta, kun koriin on lisätty jotain: ei luettelohakua sivun latauksessa.
   const { data: allProducts = [] } = useProducts({ enabled: !!lastAddedItem });
+  // Hintatesti B (src/lib/toimitustesti.ts): yhden tuotteen korissa toimitus sisältyy tuotteen hintaan.
+  const testi = toimitusTila(items);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export function AddToCartDrawer() {
                   {lastAddedItem.product.name}
                 </p>
                 <p className="text-primary font-bold mt-1">
-                  {formatPriceFi(lastAddedItem.product.price)}
+                  {formatPriceFi(lastAddedItem.product.price + (testi.sisaltyvaTuote === lastAddedItem.product.id ? testi.sisaltyy : 0))}
                 </p>
                 <div className="text-xs text-muted-foreground mt-0.5 space-x-2">
                   {lastAddedItem.size && <span>Koko: {lastAddedItem.size}</span>}
@@ -80,7 +82,7 @@ export function AddToCartDrawer() {
                   Korissa {totalItems} tuotetta
                 </span>
                 <span className="font-bold text-foreground">
-                  {formatPriceFi(totalPrice)}
+                  {formatPriceFi(totalPrice + testi.sisaltyy)}
                 </span>
               </div>
               <FreeShippingProgress items={items} className="pt-1" />

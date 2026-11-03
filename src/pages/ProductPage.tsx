@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } from "react";
 import { sortSizes } from "@/lib/sortSizes";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
+import { naytettavaHinta } from "@/lib/toimitustesti";
 import { availableColors, availableSizes, isVariantAvailable } from "@/lib/variantAvailability";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -500,6 +501,10 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const cmTaulukko = isClothingCategory(product.category) && hasSizes ? mittataulukko(product.slug, sellableSizes) : null;
   // Valitun koon hinta (api/_lib/kokohinnat.js: hupparit 3XL+), ilman kokoa tuotteen perushinta.
   const kokoHinta = rivinHinta(product, selectedSize);
+  // Ilmaisen toimituksen hintatesti (src/lib/toimitustesti.ts): B:ssä näytetään hinta, johon toimitus sisältyy. Ei
+  // alennusmyynnissä olevissa tuotteissa. JSON-LD, metatagit ja esirenderöinti käyttävät aina perushintaa.
+  const naytettava = naytettavaHinta(product, selectedSize);
+  const toimitusSisaltyy = naytettava !== Number(kokoHinta);
   const hasDiscount = product.original_price && product.original_price > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
@@ -720,8 +725,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 <span className="text-sm text-muted-foreground line-through">{formatPriceFi(product.original_price!)}</span>
               )}
               <span className={`text-xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                {formatPriceFi(kokoHinta)}
+                {formatPriceFi(naytettava)}
               </span>
+              {toimitusSisaltyy && <span className="text-xs font-semibold text-primary">Ilmainen toimitus</span>}
               {hasDiscount && (
                 <Badge className="bg-destructive text-destructive-foreground text-xs font-bold">-{discountPercent}%</Badge>
               )}
@@ -854,8 +860,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     </span>
                   )}
                   <span className={`text-2xl md:text-3xl font-bold ${hasDiscount ? "text-destructive" : "text-primary"}`}>
-                    {formatPriceFi(kokoHinta)}
+                    {formatPriceFi(naytettava)}
                   </span>
+                  {toimitusSisaltyy && <span className="text-sm font-semibold text-primary">Ilmainen toimitus</span>}
                   {hasDiscount && (
                     <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
                   )}
@@ -865,7 +872,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     Alin hinta 30 päivän ajalta: {formatPriceFi(product.original_price!)}
                   </p>
                 )}
-                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} className="mt-2 text-sm" />
+                <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} toimitusSisaltyy={toimitusSisaltyy ? Number(kokoHinta) : null} className="mt-2 text-sm" />
                 <TpaitapariRivi kategoria={product.category} hinta={product.price} className="mt-1" />
               </div>
             </div>
@@ -982,7 +989,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {/* Mobiili (2.11.2026): toimitus, maksu, joulun takaraja ja palautus ostopainikkeen alla, jotta väri, koko ja
                 Lisää koriin mahtuvat 390 x 844 -ensinäkymään (ennen painike alkoi 844 px:n kohdalta, taitteen alla). */}
             <div className="md:hidden space-y-1">
-              <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} compact />
+              <PurchaseFacts isCustom={isCustom} showDeliveryTime={product.supplier !== "aliexpress"} euPaino={euPaino} jouluKategoriat={jouluKategoriat} kategoria={product.category} toimitusSisaltyy={toimitusSisaltyy ? Number(kokoHinta) : null} compact />
               {(product.category === "t-paidat" || product.category === "hupparit") && (
                 <Link to="/personoitu-paita" className="inline-block text-xs text-primary underline">
                   Saajan nimi ja ikä paitaan: personoitu t-paita {formatPriceFi(PERSONOITU_HINTA)}
@@ -999,7 +1006,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             {/* Sama design muina tuotetyyppeinä (src/lib/sameDesign.ts) */}
             <SameDesignLinks product={product} all={allProducts} />
 
-            <MaksuJaToimitus />
+            <MaksuJaToimitus {...(toimitusSisaltyy ? { toimitusrivi: "Ilmainen toimitus" } : {})} />
             {/* Yritysnosto ostoalueen alla (2.11.2026): ennen otsikon ja kuvan välissä se täytti mobiilin ensinäkymän. */}
             {onYritysNostoTuote(product.slug) && <YritysNosto className="mt-3" />}
 
@@ -1273,7 +1280,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
-            <p className="text-sm font-bold text-primary">{formatPriceFi(kokoHinta)}</p>
+            <p className="text-sm font-bold text-primary">{formatPriceFi(naytettava)}</p>
           </div>
           <Button
             onClick={() => {

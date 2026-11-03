@@ -31,6 +31,8 @@ import { asetaAbVersio } from "@/lib/abTestit";
 // Esirenderöinti näyttää aina A/B-testien version a (src/lib/abTestit.ts); selain arpoo version itse.
 asetaAbVersio("koko", "a");
 asetaAbVersio("blogi", "a");
+// Hintatesti: esirenderöity HTML, JSON-LD ja Googlen näkemä hinta aina A (api/_lib/toimitustesti.js).
+asetaAbVersio("toimitus", "a");
 import type { ReactNode } from "react";
 import { mapProduct } from "@/hooks/use-products";
 import type { Tables } from "@/integrations/supabase/types";

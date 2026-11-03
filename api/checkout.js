@@ -81,7 +81,7 @@ async function lahjakortti(koodi) {
 }
 
 const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${naytettavaTeksti(r.custom_text)}"`,
-  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
+  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.toimitus_sisaltyy && "Ilmainen toimitus (sisältyy hintaan)", r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
@@ -161,7 +161,8 @@ export default async function handler(req, res) {
     let tuotteet = await kaikkiTuotteet();
     if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
     const koodiAlennus = await alennus(pyynto.discountCode, pyynto.customerEmail);
-    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode) };
+    // Ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js): versio selaimelta, hinta lasketaan täällä.
+    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a" };
     // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen.
     const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
     const valinta = kp?.malli === "alennus" && !koodiAlennus ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
@@ -185,6 +186,13 @@ export default async function handler(req, res) {
         await varmistaSuppilo(sql());
         await sql()`update orders set ab_versio = ${pyynto.abVersio} where id = ${tilaus.id}`;
       } catch (e) { console.error("ab_versio:", e?.message || e); }
+    }
+    // Hintatestin versio ja tilauksen nettokate (kate per käynti, api/_lib/toimitustesti.js).
+    if ((pyynto.toimitusVersio === "a" || pyynto.toimitusVersio === "b") && !laskettu.only_gift_cards) {
+      try {
+        const { merkitseTilaukselle } = await import("./_lib/toimitustesti.js");
+        await merkitseTilaukselle(sql(), tilaus.id, pyynto.toimitusVersio, laskettuNettokate(laskettu, tuotteet));
+      } catch (e) { console.error("toimitus_versio:", e?.message || e); }
     }
     const origin = req.headers.origin || `https://${req.headers.host}`;
 

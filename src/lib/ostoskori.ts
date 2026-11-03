@@ -14,6 +14,7 @@ import PAKETIT from "../../api/_lib/paketit-data.js";
 import { sovellaPaketit } from "../../api/_lib/paketit.js";
 import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, TPAITAPARI_KAMPANJA, tpaitapariVoimassa, MAARAALENNUS } from "../../api/_lib/korialennus.js";
 import type { CartItem, Product } from "@/types/product";
+import { toimitustestiKorissa } from "./toimitustesti";
 
 export { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS };
 
@@ -52,6 +53,12 @@ export interface ToimitusTila {
   puuttuuKpl: number;
   /** Ilmainen toimitus rajattu katevahdilla: toimitus on pienempi kuin tavallisesti mutta ei 0 € (kate.js toimitusmaksuKatteella). */
   rajattu: boolean;
+  /**
+   * Ilmaisen toimituksen hintatesti B (src/lib/toimitustesti.ts): toimitus sisältyy tuotteen hintaan. Summa euroina,
+   * joka lisätään korin tuotteiden summaan (toimitus on silloin 0 €), ja tuote, jonka hintaan se sisältyy.
+   */
+  sisaltyy: number;
+  sisaltyvaTuote: string | null;
 }
 
 /** Toimitukseen laskettavien tuotteiden määrä (sama sääntö kuin kassalla: tarrat ja lahjakortit eivät lasketa). */
@@ -78,7 +85,13 @@ export function toimitusTila(items: (Rivi & Partial<Pick<CartItem, "selectedSize
   const ilmainen = vainLahjakortteja || (summa > 0 && maksu.maksu === 0);
   const rajattu = !ilmainen && maksu.rajattu;
   const puuttuuKpl = ilmainen || alennus || rajattu ? 0 : Math.max(0, ILMAINEN_TOIMITUS_KPL - kpl);
+  const testi = toimitustestiKorissa(items, ilmainen || summa === 0 ? 0 : maksu.maksu, alennus);
+  if (testi.kaytossa) {
+    return { summa, puuttuu: 0, ilmainen: true, toimitus: 0, edistyminen: 100, vainLahjakortteja, kpl, puuttuuKpl: 0, rajattu: false, sisaltyy: testi.lisa, sisaltyvaTuote: testi.rivi?.product.id ?? null };
+  }
   return {
+    sisaltyy: 0,
+    sisaltyvaTuote: null,
     summa,
     puuttuu: ilmainen || rajattu ? 0 : pyorista(ILMAINEN_TOIMITUS_RAJA - summa),
     ilmainen,
