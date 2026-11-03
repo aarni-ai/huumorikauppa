@@ -3278,3 +3278,57 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 ### Gmail-reitti
 - `?tehtava=sahkopostireitti` palauttaa 3.11. klo 22: reitti resend, gmail false. Aarni ei ole vielä ajanut salasanaskriptiä.
 - Testiviesti osoitteeseen huumorikauppa@gmail.com ja tilausvahvistuksen tarkistus tehdään, kun gmail on true. Reitti näyttää sen suoraan, ja tarkistus on `?tehtava=ilmoitustesti`.
+
+### Julkaisu
+- **Julkaisut:** esitestatulla scripts/julkaise-uusi.sh:lla kaksi kertaa, savutesti 11/11 ja promote onnistui molemmilla kerroilla.
+  - Kaksi muuta yritystä keskeytyi tämän koneen nimipalvelukatkoon (Vercel API `fetch failed`, ohitusavain puuttui ja SSO 302). Silloin tuotanto pysyi edellisessä versiossa, kuten pitää.
+- **Tuotekuvat:** päivitetty 20 tuotteelle tehtävällä `?tehtava=tuotekuvat&v=20261103`.
+  - Printifyn mockup-osoite pysyy samana, vaikka painokuva vaihtuu, ja kuvafunktio välimuistittaa vuodeksi.
+  - Versioparametri vaihtaa osoitteen, jotta uusi kuva näkyy heti.
+  - Tarkistettu: tonnin-seteli-t-paidan tuotekuvassa on uusi setelikehys.
+- **GitHub:** pushattu haaroihin main ja oma-tausta. Vanha projekti rakentaa mainin, jolloin kävijän IP välittyy bottisuodatukseen.
+
+### Mittari 3.11. (aidot käynnit)
+- **Kate ja tilaukset:**
+  - Kate marraskuussa 0 € / 3 000 €.
+  - 30 päivän ajalta 1 tilaus, kate 5,90 €. Tarjouspyyntöjä 0.
+- **Käynnit:** marraskuussa 626, joista hakukoneet 171, blogi 114, lahjasivut 61 ja media 44.
+  - Luvut ovat ennen bottisuodatusta, joten mukana on myös automaattista liikennettä.
+- **Suppilo 3.11.:** 260 käyntiä, 172 tuotesivua, 0 koriin, 0 ostoa.
+- **Bottisuodatus:** ensimmäisen tunnin aikana kaikki 2 kirjausta olivat aitoja (2/2).
+  - Suodatus koskee nyt kaikkia mittareita.
+  - Aidosti vertailukelpoinen luku saadaan 4.11. alkaen.
+- **Arvio vanhasta datasta (2.-3.11., tuotesivun seuranta 69 katselua):**
+  - 65 % pysyi sivulla 10-30 s.
+  - Koon valintoja 0, ja vain 2,9 % käytti värivalintaa tai kokotaulukkoa.
+  - Vieritys pysähtyi 25 %:iin (76,8 % vieritti vähintään 25 %, vain 7,2 % vähintään 50 %).
+  - Nämä noin 45 katselua vastaavat automaattisen liikenteen kuvaa. Aitoja katseluja jää arviolta noin 24 eli noin 35 %.
+- **Koon esivalinta A/B (pieni otos):**
+
+| Versio | Katseluja | Alle 10 s | Koon valinta | Koriin |
+|---|---|---|---|---|
+| A, kävijä valitsee koon | 5 | 80 % | 0 % | 0 % |
+| B, L esivalittu | 5 | 40 % | koko valmiina 100 % | 0 % |
+
+- **Laskeutumiset (36):**
+  - Alle 10 s poistui 38,9 %.
+  - Google 24, joista alle 10 s 41,7 %.
+  - Mobiili 26, joista alle 10 s 46,2 %.
+- **Ilmaisen toimituksen hintatesti** alkaa 4.11. Ratkaisu tehdään, kun kummassakin versiossa on 300 aitoa tuotesivun katselua.
+
+### Aarnille ja Coworkille
+1. **Aarni, Gmail:** aja `bash ~/huumorikauppa/scripts/gmail-salasana.sh`.
+   - Sen jälkeen seuraava julkaisu ottaa Gmail-reitin käyttöön.
+   - Tarkistetaan reitti ja lähetetään testiviesti osoitteeseen huumorikauppa@gmail.com (`?tehtava=ilmoitustesti`).
+   - Tilausvahvistukset ja Jaanan arvostelupyyntö lähtevät Gmailin kautta.
+2. **Cowork, www-osoite:**
+   - Avaa Vercelissä tiimin aarni-ais-projects vanha huumorikauppa-projekti: Settings → Domains → www.huumorikauppa.fi.
+   - Vaihda uudelleenohjauksen tilakoodiksi 308 Permanent tai 301 (nyt 307 Temporary).
+   - Aja sen jälkeen Search Consolessa www-osoitteen URL-tarkistus ja pyydä indeksointi apex-osoitteelle.
+3. **Cowork, some:**
+   - Jo julkaistussa Tonnin seteli -videossa (01) on oikean henkilön kasvot. Poista julkaisu ja korvaa se uudella videolla 01 (Blob, /hallinta/some).
+   - Tarkista samalla, onko kasvokuvaa käytetty muissa julkaisuissa tai Pinterestissä.
+4. **Aarni, päätös:**
+   - Artikkeli "hauskat koristeet lahjaksi" esittelee koristeita, joita ei myydä. Vaihtoehdot: uudelleenohjaus, poisto tai uudelleenkirjoitus paidoista.
+   - Kassan määräalennus antaa meemipaidalle täyden portaan (kate alle 7 €/kpl yli 25 kappaleen tilauksessa, kokonaiskate silti vahdissa). Ehdotus: sama porrasrajaus kuin tarjouksissa.
+5. **Tiinan Klarna-kiista:** edellisen ajon kohta 1 on yhä auki, jos sitä ei ole vastattu.
