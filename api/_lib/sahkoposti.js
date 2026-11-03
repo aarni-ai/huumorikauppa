@@ -2,23 +2,83 @@
  * Sähköposti Resendillä (RESEND_API_KEY, lähettäjä EMAIL_FROM, esim. "Huumorikauppa <tilaukset@huumorikauppa.fi>",
  * domain vahvistettava Resendissä). Omistajan hälytykset osoitteeseen OMISTAJA_EMAIL (Vercelin ympäristömuuttuja; oletus huumorikauppa@gmail.com).
  * Ilman avainta viesti kirjataan lokiin eikä mitään lähetetä.
+ *
+ * Gmail-väliaikaisreitti (3.11.2026): kun huumorikauppa.fi ei ole vielä vahvistettu Resendissä (domainhotellin DNS) ja
+ * Vercelissä on GMAIL_APP_PASSWORD (scripts/gmail-salasana.sh), kaikki viestit lähtevät Gmailin SMTP:llä tililtä
+ * GMAIL_USER (oletus huumorikauppa@gmail.com, smtp.gmail.com:465, Nodemailer). Reitti valitaan joka lähetyksellä
+ * (lahetysreitti): domain vahvistettu -> Resend, muuten Gmail, jos salasana on asetettu, muuten Resend kuten ennen.
+ * Paluu Resendiin on siis automaattinen, kun domain vahvistuu (SAHKOPOSTI_VAHVISTETTU=1 tai Resendin API: verified,
+ * api/_lib/uutiskirje.js domainVahvistettu, tunnin muisti). Salasanan voi poistaa Vercelistä sen jälkeen.
  */
 import { yritystiedot, postiosoite } from "./yritys.js";
 
 export const OMISTAJA = () => process.env.OMISTAJA_EMAIL || "huumorikauppa@gmail.com";
-export const onSahkoposti = () => !!process.env.RESEND_API_KEY;
+export const GMAIL_KAYTTAJA = () => process.env.GMAIL_USER || "huumorikauppa@gmail.com";
+export const gmailKaytossa = () => !!process.env.GMAIL_APP_PASSWORD;
+export const onSahkoposti = () => !!process.env.RESEND_API_KEY || gmailKaytossa();
 /**
- * Oma tilausvahvistus korvaa Stripen kuitin vasta, kun Resend-domain on vahvistettu (DNS) ja Vercelissä on
- * SAHKOPOSTI_VAHVISTETTU=1. Siihen asti kassa pyytää Stripen kuitin (api/checkout.js receipt_email).
+ * Oma tilausvahvistus korvaa Stripen kuitin, kun Resend-domain on vahvistettu (DNS) ja Vercelissä on
+ * SAHKOPOSTI_VAHVISTETTU=1, tai kun Gmail-reitti on käytössä. Muuten kassa pyytää Stripen kuitin (api/checkout.js receipt_email).
  */
-export const omaVahvistusKaytossa = () => onSahkoposti() && process.env.SAHKOPOSTI_VAHVISTETTU === "1";
+export const omaVahvistusKaytossa = () => (!!process.env.RESEND_API_KEY && process.env.SAHKOPOSTI_VAHVISTETTU === "1") || gmailKaytossa();
+
+/** "resend" tai "gmail": domain vahvistettu -> Resend; muuten Gmail, jos salasana on asetettu; muuten Resend. */
+export async function lahetysreitti({ vahvistettu } = {}) {
+  if (!gmailKaytossa()) return "resend";
+  if (!process.env.RESEND_API_KEY) return "gmail";
+  const ok = vahvistettu ?? (await (await import("./uutiskirje.js")).domainVahvistettu());
+  return ok ? "resend" : "gmail";
+}
+
+/** Markkinointiviestit (korimuistutukset, arviopyynnöt, uutiskirje) saavat lähteä: domain vahvistettu tai Gmail-reitti. */
+export async function markkinointiKaytossa({ vahvistettu } = {}) {
+  if (gmailKaytossa()) return true;
+  return vahvistettu ?? (await (await import("./uutiskirje.js")).domainVahvistettu());
+}
+
+let gmailKuljetin = null;
+/** Testeille: korvaava kuljetin ({ sendMail }); null palauttaa oikean. */
+export const asetaGmailKuljetin = (k) => { gmailKuljetin = k; };
+async function gmail() {
+  if (gmailKuljetin) return gmailKuljetin;
+  const { default: nodemailer } = await import("nodemailer");
+  gmailKuljetin = nodemailer.createTransport({ host: "smtp.gmail.com", port: 465, secure: true,
+    auth: { user: GMAIL_KAYTTAJA(), pass: String(process.env.GMAIL_APP_PASSWORD).replace(/\s+/g, "") },
+    connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 20000 });
+  return gmailKuljetin;
+}
+
+/** Resendin liitteet ({ filename, content: base64 }) Nodemailerin muotoon. */
+export const gmailLiitteet = (attachments) => (Array.isArray(attachments) ? attachments : [])
+  .map((a) => ({ filename: a.filename, content: Buffer.from(String(a.content || ""), "base64") }));
+
+async function lahetaGmaililla({ to, subject, html, text, replyTo, headers, attachments }) {
+  try {
+    const k = await gmail();
+    await k.sendMail({
+      from: { name: "Huumorikauppa", address: GMAIL_KAYTTAJA() },
+      to: Array.isArray(to) ? to.join(", ") : to,
+      subject,
+      html,
+      text,
+      replyTo: replyTo || "huumorikauppa@gmail.com",
+      ...(headers && Object.keys(headers).length ? { headers } : {}),
+      ...(Array.isArray(attachments) && attachments.length ? { attachments: gmailLiitteet(attachments) } : {}),
+    });
+    return { ok: true, reitti: "gmail" };
+  } catch (e) {
+    return { ok: false, reitti: "gmail", virhe: `Gmail: ${String(e?.message || e).slice(0, 300)}` };
+  }
+}
 
 /** headers: lisäotsakkeet (markkinointiviesteissä List-Unsubscribe ja List-Unsubscribe-Post). */
-export async function laheta({ to, subject, html, text, replyTo, headers, from, attachments }) {
+export async function laheta(viesti) {
+  const { to, subject, html, text, replyTo, headers, from, attachments } = viesti;
   if (!onSahkoposti()) {
     console.warn(`[sahkoposti] RESEND_API_KEY puuttuu, ei lähetetty: ${subject}`);
     return { ok: false, virhe: "RESEND_API_KEY puuttuu" };
   }
+  if ((await lahetysreitti()) === "gmail") return lahetaGmaililla(viesti);
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -37,7 +97,7 @@ export async function laheta({ to, subject, html, text, replyTo, headers, from, 
       signal: AbortSignal.timeout(15000),
     });
     if (!res.ok) return { ok: false, virhe: `Resend ${res.status}: ${(await res.text()).slice(0, 300)}` };
-    return { ok: true };
+    return { ok: true, reitti: "resend" };
   } catch (e) {
     return { ok: false, virhe: String(e?.message || e) };
   }
