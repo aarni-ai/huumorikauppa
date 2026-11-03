@@ -61,9 +61,11 @@ const LandingPage = () => {
         ogImage={proxiedImage(products[0]?.images[0], { absolute: true })}
       />
 
-      <section className="bg-muted/50 py-3 border-b border-border">
+      {/* Mobiilissa piilossa (3.11.2026): sivun yläpalkki kertoo jo ilmaisen toimituksen ja toimitusajan, ja tämä palkki
+          työnsi tuotteet ensimmäisen näkymän alle. */}
+      <section className="hidden md:block bg-muted/50 py-3 border-b border-border">
         <div className="container flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta</div>
+          <div className="flex items-center gap-2"><Truck className="h-4 w-4 text-primary" /> Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta, perillä {TOIMITUSAIKA_TEKSTI} arkipäivässä</div>
           <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-primary" /> 14 päivän peruutusoikeus</div>
           {page.group === "joulu" && (
             <Link to={CHRISTMAS_DEADLINE_PATH} className="flex items-center gap-2 hover:text-foreground">
@@ -73,8 +75,8 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <div className="container py-8 md:py-12">
-        <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-6">
+      <div className="container py-4 md:py-12">
+        <nav aria-label="Murupolku" className="text-sm text-muted-foreground mb-3 md:mb-6">
           {breadcrumbs.map((b, i) => {
             const href = b.url.replace(SITE_URL, "") || "/";
             const last = i === breadcrumbs.length - 1;
@@ -92,12 +94,19 @@ const LandingPage = () => {
         </nav>
 
         {ISA_POLUT.includes(pathname) && <IsanpaivaLahjakorttiBanneri className="mb-4" />}
-        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-4">{page.h1}</h1>
-        <div className="max-w-3xl space-y-3 text-muted-foreground mb-6">
-          {page.intro.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
+        <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3 md:mb-4">{page.h1}</h1>
+        {/* Mobiilissa ennen tuotteita vain ensimmäinen kappale (3.11.2026): lahjasivulle tuleva hakee ideoita, joten
+            tuotteet näkyvät heti. Loput kappaleet ja personoitujen nosto siirtyvät mobiilissa tuotteiden jälkeen
+            (CSS order); teksti on sivulla kerran ja kokonaan. */}
+        {page.intro[0] && <p className="max-w-3xl text-muted-foreground mb-6">{page.intro[0]}</p>}
+        <div className="flex flex-col">
+        {page.intro.length > 1 && (
+          <div className="order-last md:order-first max-w-3xl space-y-3 text-muted-foreground mt-8 md:mt-0 mb-6">
+            {page.intro.slice(1).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        )}
 
         {page.path === "/black-friday" && <TpaitapariTila className="max-w-3xl mb-6" />}
 
@@ -115,7 +124,7 @@ const LandingPage = () => {
           </aside>
         )}
 
-        <PersonoidutNosto polku={pathname} className="max-w-5xl mb-8" />
+        <PersonoidutNosto polku={pathname} className="order-last md:order-none max-w-5xl mt-8 md:mt-0 mb-8" />
         <h2 className="font-display text-xl text-foreground mb-4">
           Tuotteet{!isLoading && products.length > 0 ? ` (${products.length})` : ""}
         </h2>
@@ -136,6 +145,7 @@ const LandingPage = () => {
             Tuotteita ei juuri nyt löytynyt. <Link to="/kaikki-tuotteet" className="text-primary hover:underline">Selaa kaikkia tuotteita</Link>.
           </p>
         )}
+        </div>
         {products.length > shown.length && (
           <p className="mt-6 text-sm text-muted-foreground">
             Näytetään {shown.length} / {products.length} tuotetta.{" "}

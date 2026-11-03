@@ -34,7 +34,7 @@ const MediaGuidePage = () => {
       </p>
       <p className="font-semibold text-foreground max-w-3xl mb-4">{KUVIEN_KAYTTO}</p>
       <ul className="text-sm text-muted-foreground mb-6 space-y-1">
-        <li>Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta.</li>
+        <li>Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta, muuten {TOIMITUSMAKSU_TEKSTI} €.</li>
         <li>14 päivän palautusoikeus (ei personoiduilla tuotteilla). Digitaalinen lahjakortti 25, 35 tai 50 € toimitetaan heti.</li>
       </ul>
       <div className="flex flex-wrap gap-3 mb-10">

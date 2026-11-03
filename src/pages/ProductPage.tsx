@@ -48,6 +48,9 @@ import { trackViewItem } from "@/lib/analytics";
 import { aloitaTuoteseuranta, kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
 import { abVersio } from "@/lib/abTestit";
 
+/** Tuotenimen vitsiosa ennen tuotetyyppiä: "Tonnin seteli | T-paita" -> "Tonnin seteli". */
+export const vitsiTeksti = (nimi: string) => String(nimi || "").split(/\s+\|\s+/)[0].trim();
+
 /** Koon esivalinnan A/B-testin (versio b) koko: yleisin myyty koko t-paidoissa ja hupparissa. */
 const ESIVALITTU_KOKO = "L";
 import { lisaaLahikuva } from "@/lib/lahikuva";
@@ -735,9 +738,14 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           {/* Images */}
           <div className="space-y-3">
             {/* Mobile: koko näytön levyinen pyyhkäistävä galleria */}
-            <div className="md:hidden -mx-4 relative">
+            <div className="md:hidden -mx-4 relative bg-muted">
+              {/* Vitsi heti (3.11.2026): kuvafunktion välimuistihuti voi viedä 1-3 s, joten kuvan paikalla näkyy siihen
+                  asti tuotteen teksti. Ladattu kuva peittää sen. */}
+              <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center px-8 text-center font-display text-3xl leading-tight text-foreground/60 uppercase">
+                {vitsiTeksti(product.name)}
+              </div>
               <div
-                className="flex overflow-x-auto snap-x snap-mandatory bg-muted"
+                className="relative flex overflow-x-auto snap-x snap-mandatory"
                 style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none" }}
                 onScroll={(e) => {
                   const el = e.currentTarget;

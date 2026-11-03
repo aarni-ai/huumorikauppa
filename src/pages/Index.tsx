@@ -144,8 +144,9 @@ const Index = () => {
       <KampanjaNosto />
 
       {/* YRITYSTEN JOULULAHJAT (30.10.2026): takaraja api/_lib/yritysmyynti.js, näkyy takarajaan asti. */}
+      {/* Mobiilissa piilossa (3.11.2026): ensimmäinen näkymä kuluttajalle, yrityksille sama nosto tuotteiden alla. */}
       {aikataulu(null).jouluun && (
-        <div className="container pt-3">
+        <div className="container pt-3 hidden md:block">
           <Link to="/yritykset" className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground hover:opacity-95">
             <Building2 className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>Yritysten joululahjat: tilaa viimeistään {YRITYS_JOULU_TEKSTI}</span>
@@ -200,7 +201,7 @@ const Index = () => {
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">
               <Truck className="h-3 w-3 text-foreground" strokeWidth={2.5} />
             </span>
-            Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta
+            Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta, muuten {TOIMITUSMAKSU_TEKSTI} €
           </div>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border">

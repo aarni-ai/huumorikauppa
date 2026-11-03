@@ -87,7 +87,7 @@ const PersonalizedPage = () => {
       <p className="text-xl font-bold text-primary mb-1">{eur(hinta)}</p>
       <ul className="text-[13px] text-muted-foreground space-y-1 mb-6">
         <li>Painetaan tilauksesta EU:ssa, toimitus {TOIMITUSAIKA_TEKSTI} arkipäivää</li>
-        <li>Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta</li>
+        <li>Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta, muuten {TOIMITUSMAKSU_TEKSTI} €</li>
         <JouluTakarajaRivi as="li" categories={[tuote === "huppari" ? "hupparit" : "t-paidat"]} className="text-foreground" />
         <li>Personoidulla tuotteella ei ole 14 päivän palautusoikeutta, joten tarkista teksti ja koko. <Link to="/palautusehdot" className="underline">Palautusehdot</Link></li>
       </ul>

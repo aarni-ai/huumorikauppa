@@ -317,7 +317,7 @@ const BlogPost = () => {
               )}
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              Toimitus {TOIMITUSMAKSU_TEKSTI} €, ilmainen {ILMAINEN_RAJA_TEKSTI} eurosta · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
+              Ilmainen toimitus kahdesta tuotteesta tai {ILMAINEN_RAJA_TEKSTI} eurosta, muuten {TOIMITUSMAKSU_TEKSTI} € · 14 pv palautusoikeus · Toimitus {TOIMITUSAIKA_TEKSTI} arkipäivässä
             </p>
           </section>
         )}
