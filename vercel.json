@@ -78,6 +78,16 @@
       "statusCode": 301
     },
     {
+      "source": "/paidat/metsastaja",
+      "destination": "/lahjat/metsastajalle",
+      "statusCode": 301
+    },
+    {
+      "source": "/paidat/kalastaja",
+      "destination": "/lahjat/kalastajalle",
+      "statusCode": 301
+    },
+    {
       "source": "/harrastus/golf",
       "destination": "/lahjat/golfaajalle",
       "statusCode": 301

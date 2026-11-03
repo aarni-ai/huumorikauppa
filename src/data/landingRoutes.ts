@@ -89,6 +89,9 @@ export const LANDING_REDIRECTS: Record<string, string> = {
   // 29.10.2026: harrastus- ja ammattisarjojen laskeutumissivut korvaavat päällekkäiset harrastus- ja ammattisivut
   "/harrastus/kalastus": "/lahjat/kalastajalle",
   "/harrastus/metsastys": "/lahjat/metsastajalle",
+  // 3.11.2026: metsästäjän ja kalastajan sivut ovat /lahjat/-sarjassa; /paidat/-muotoinen osoite ohjaa niihin
+  "/paidat/metsastaja": "/lahjat/metsastajalle",
+  "/paidat/kalastaja": "/lahjat/kalastajalle",
   "/harrastus/golf": "/lahjat/golfaajalle",
   "/harrastus/sauna": "/sauna",
   "/ammatti/rakennusmies": "/lahjat/remontoijalle",

@@ -226,13 +226,15 @@ Stripen oletuskonfiguraatiossa ovat päällä kortti, Apple Pay, Google Pay, Kla
 | Premium-kortti | 6,58 € | 537 |
 
 - **Ratkaisu** (api/_lib/maksutavat.js, api/checkout.js):
-  - Kassa laskee jokaiselle Stripe-istunnolle tilauksen nettokatteen kunkin maksutavan kululla, kaikkien alennusten
-    ja toimitusmaksun jälkeen.
-  - Istunnossa tarjotaan vain maksutavat, joilla kate on vähintään 7 €.
-  - Kortti (myös Apple Pay ja Google Pay) on aina mukana.
+  - Kassa laskee jokaiselle Stripe-istunnolle tilauksen nettokatteen Klarnan kululla, kaikkien alennusten ja
+    toimitusmaksun jälkeen. Klarna tarjotaan vain, kun kate on vähintään 7 €.
+  - Kortti (myös Apple Pay ja Google Pay) ja MobilePay ovat aina mukana.
   - Kun kaikki täyttävät rajan, Stripe näyttää kaikki maksutavat.
+- **MobilePay aina (Aarnin päätös 3.11.2026):** MobilePay näytetään myös yhden 24,90 €:n t-paidan tilauksessa.
+  - Kate on silloin 6,94 € (20 varianttia), eli poikkeama on enintään 0,06 € tilaukselta.
+  - Muissa tilauksissa MobilePayn kate on vähintään 7 €.
+  - Poikkeaman raja on koodissa (MOBILEPAY_POIKKEAMA_EUROA), ja testi kaatuu, jos MobilePayn kate laskee alle 6,94 €:n.
 - **Vaikutus:**
-  - MobilePay jää pois vain 24,90 €:n t-paidan yksittäistilauksesta.
   - Klarna jää pois yhden tuotteen tilauksista, joissa kate jäisi alle 7 €:n.
   - Kahden tuotteen tilauksissa kaikki maksutavat ovat käytössä.
   - Testi: src/test/maksutavat-kate.test.ts.

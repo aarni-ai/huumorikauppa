@@ -2840,3 +2840,146 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
 - Ensimmäinen ajo pysähtyi turvallisesti: agenttien työpuut nostivat tiedostomäärän yli Vercelin 15 000 tiedoston
   rajan, joten .claude ja .agents lisättiin .vercelignore-tiedostoon. Tuotanto pysyi koko ajan edellisessä versiossa.
 - Kaksi esitestattua julkaisua tehty: savutesti 11/11 ja promote onnistuivat.
+
+## 3.11.2026 (aamu): MobilePay aina, kaupunki- ja ammattisivujen osoitteet, somevideoiden tarkistus
+
+### MobilePay näytetään aina
+- Aarnin päätös: MobilePay näkyy kassassa ja korissa myös yhden 24,90 €:n t-paidan tilauksessa.
+  - Kate on silloin 6,94 €, eli poikkeama on enintään 0,06 €.
+  - Muissa tilauksissa MobilePayn kate on vähintään 7 €.
+- Klarna pysyy 7 €:n katteen säännössä.
+- Muutokset:
+  - api/_lib/maksutavat.js: AINA_SALLITUT = kortti ja MobilePay. MOBILEPAY_POIKKEAMA_EUROA = 0,06.
+  - Kori (korinMaksutavat) käyttää samaa sääntöä.
+  - Testi (src/test/maksutavat-kate.test.ts) kattaa kaikki yli 5 000 yhden tuotteen varianttia:
+    - MobilePay ei jää koskaan pois.
+    - Sen kate on vähintään 6,94 €.
+    - Klarna tarjotaan vain vähintään 7 €:n katteella.
+    - Kassa ja kori näyttävät samat maksutavat.
+- KATTEET.md päivitetty.
+- Tuotannossa tarkistettu Stripe-istunnoilla, jotka vanhennettiin heti:
+  - 1 × 24,90 €:n t-paita (31,80 €): kortti ja MobilePay
+  - 2 t-paitaa: kortti, Klarna, Link ja MobilePay
+- Julkaistu esitestatulla scripts/julkaise-uusi.sh:lla (savutesti 11/11). Kolmen User-Agentin tarkistus: 200.
+
+### Kaupunki- ja ammattisivut tuotannossa (Coworkia varten)
+- Tarkistettu huumorikauppa.fi:stä 3.11. klo 6 Googlebot-, Chrome- ja iPhone-User-Agentilla:
+  - kaikki 20 abipaitojen kaupunkisivua ja 40 ammatti- ja harrastussivua vastaavat 200
+  - jokaisella on oma otsikkonsa
+- Cowork näki kaupunkisivut 404:nä yöllä ennen 3.11. julkaisua.
+- **Huom. Coworkille:** tuntematon osoite (esim. /abipaidat/olematon) vastaa myös 200, mutta näyttää etusivun
+  otsikon "Hauskat lahjat ja huumorituotteet". Sivun olemassaolo tarkistetaan otsikosta, ei pelkästä 200:sta.
+- **Metsästäjä ja kalastaja eivät ole /paidat/-sivuja.** Niiden sivut ovat:
+  - https://huumorikauppa.fi/lahjat/metsastajalle
+  - https://huumorikauppa.fi/lahjat/kalastajalle
+- Uudet 301-ohjaukset /paidat/metsastaja ja /paidat/kalastaja vievät näille sivuille (vercel.json, landingRoutes.ts).
+
+**Abipaidat, 20 kaupunkisivua:**
+
+| Osoite | Otsikko |
+|---|---|
+| https://huumorikauppa.fi/abipaidat/helsinki | Abipaidat Helsinki penkkareihin 2027 |
+| https://huumorikauppa.fi/abipaidat/espoo | Abipaidat Espoo: nimet selkään penkkareihin |
+| https://huumorikauppa.fi/abipaidat/tampere | Abipaidat Tampere: Manse-abit penkkareihin |
+| https://huumorikauppa.fi/abipaidat/vantaa | Abipaidat Vantaa: penkkaripaidat nimillä |
+| https://huumorikauppa.fi/abipaidat/oulu | Abipaidat Oulu: penkkareihin pakkasellakin |
+| https://huumorikauppa.fi/abipaidat/turku | Turun abipaidat omilla nimillä |
+| https://huumorikauppa.fi/abipaidat/jyvaskyla | Abipaidat Jyväskylä: oma logo ja nimet |
+| https://huumorikauppa.fi/abipaidat/kuopio | Abipaidat Kuopio: nimet ja numerot selkään |
+| https://huumorikauppa.fi/abipaidat/lahti | Abipaidat Lahti penkkareihin 2027 |
+| https://huumorikauppa.fi/abipaidat/pori | Abipaidat Pori: porukan oma teksti eteen |
+| https://huumorikauppa.fi/abipaidat/joensuu | Abipaidat Joensuu: vetäjä kokoaa porukan |
+| https://huumorikauppa.fi/abipaidat/lappeenranta | Abipaidat Lappeenranta penkkareihin 2027 |
+| https://huumorikauppa.fi/abipaidat/hameenlinna | Abipaidat Hämeenlinna: väri ja teksti |
+| https://huumorikauppa.fi/abipaidat/vaasa | Abipaidat Vaasa: suomeksi tai ruotsiksi |
+| https://huumorikauppa.fi/abipaidat/seinajoki | Abipaidat Seinäjoki: pienikin porukka |
+| https://huumorikauppa.fi/abipaidat/rovaniemi | Abipaidat Rovaniemi: penkkarit napapiirillä |
+| https://huumorikauppa.fi/abipaidat/mikkeli | Mikkelin abipaidat omilla nimillä |
+| https://huumorikauppa.fi/abipaidat/kotka | Abipaidat Kotka: satamakaupungin abit |
+| https://huumorikauppa.fi/abipaidat/salo | Abipaidat Salo penkkareihin 2027 |
+| https://huumorikauppa.fi/abipaidat/porvoo | Abipaidat Porvoo: kuva Vanhassa Porvoossa |
+
+**Ammatti- ja harrastussivut, 40 sivua (24 ammattia, 16 harrastusta):**
+
+| Osoite | Otsikko |
+|---|---|
+| https://huumorikauppa.fi/paidat/opettaja | Lahja opettajalle: hauskat paidat |
+| https://huumorikauppa.fi/paidat/insinoori | Insinööri paita: hauskat lahjat |
+| https://huumorikauppa.fi/paidat/laakari | Lahja lääkärille: hauskat lääkäripaidat |
+| https://huumorikauppa.fi/paidat/sairaanhoitaja | Lahja sairaanhoitajalle: hoitajapaidat |
+| https://huumorikauppa.fi/paidat/poliisi | Lahja poliisille: hauskat paidat |
+| https://huumorikauppa.fi/paidat/kampaaja | Lahja kampaajalle ja parturille |
+| https://huumorikauppa.fi/paidat/palomies | Lahja palomiehelle: hauskat paidat |
+| https://huumorikauppa.fi/paidat/lahihoitaja | Lahja lähihoitajalle: kotihoidon huumori |
+| https://huumorikauppa.fi/paidat/metsuri | Metsurin paidat ja hupparit huumorilla |
+| https://huumorikauppa.fi/paidat/fysioterapeutti | Lahja fysioterapeutille: fysiohuumoria |
+| https://huumorikauppa.fi/paidat/ensihoitaja | Ensihoitaja paita ja lahjat ensihoitajalle |
+| https://huumorikauppa.fi/paidat/sahkomies | Sähkömies paita ja huppari huumorilla |
+| https://huumorikauppa.fi/paidat/kokki | Kokki paita: hauskat lahjat kokille |
+| https://huumorikauppa.fi/paidat/hammaslaakari | Lahja hammaslääkärille: hymypaidat |
+| https://huumorikauppa.fi/paidat/yrittaja | Lahja yrittäjälle: hauskat paidat |
+| https://huumorikauppa.fi/paidat/siivooja | Lahja siivoojalle: hauskat paidat |
+| https://huumorikauppa.fi/paidat/katilo | Lahja kätilölle: paidat synnytyssalista |
+| https://huumorikauppa.fi/paidat/lentaja | Lentäjä paita ja lahja lentäjälle |
+| https://huumorikauppa.fi/paidat/putkimies | Putkimies paita: LVI-huumoria |
+| https://huumorikauppa.fi/paidat/rekkakuski | Rekkakuski paita ja kuljettajan huppari |
+| https://huumorikauppa.fi/paidat/elainlaakari | Lahja eläinlääkärille: paidat ja hupparit |
+| https://huumorikauppa.fi/paidat/mekaanikko | Mekaanikko paita: hauskat korjaamopaidat |
+| https://huumorikauppa.fi/paidat/arkkitehti | Lahja arkkitehdille: hauskat paidat |
+| https://huumorikauppa.fi/paidat/juristi | Lahja juristille: hauskat paidat |
+| https://huumorikauppa.fi/paidat/kissaihminen | Lahja kissaihmiselle: hauskat kissapaidat |
+| https://huumorikauppa.fi/paidat/koiraihminen | Lahja koiraihmiselle: hauskat koirapaidat |
+| https://huumorikauppa.fi/paidat/kahvinjuoja | Lahja kahvinjuojalle: hauskat kahvipaidat |
+| https://huumorikauppa.fi/paidat/kuntosali | Kuntosalipaita ja lahja salilla kävijälle |
+| https://huumorikauppa.fi/paidat/padel | Padel paita ja lahja padelin pelaajalle |
+| https://huumorikauppa.fi/paidat/jalkapallo | Jalkapallo lahja: hauskat futispaidat |
+| https://huumorikauppa.fi/paidat/jaakiekko | Jääkiekko lahja: hauskat kiekkopaidat |
+| https://huumorikauppa.fi/paidat/hiihtaja | Lahja hiihtäjälle: hauskat hiihtopaidat |
+| https://huumorikauppa.fi/paidat/salibandy | Salibandy paita ja lahja säbän pelaajalle |
+| https://huumorikauppa.fi/paidat/muusikko | Lahja muusikolle: hauskat muusikkopaidat |
+| https://huumorikauppa.fi/paidat/pyorailija | Lahja pyöräilijälle: hauskat pyöräilypaidat |
+| https://huumorikauppa.fi/paidat/juoksija | Lahja juoksijalle: hauskat juoksupaidat |
+| https://huumorikauppa.fi/paidat/puutarhuri | Puutarhurin paidat ja lahjat huumorilla |
+| https://huumorikauppa.fi/paidat/hevosihminen | Lahja hevosihmiselle: hauskat tallipaidat |
+| https://huumorikauppa.fi/paidat/retkeilija | Lahja retkeilijälle: hauskat retkipaidat |
+| https://huumorikauppa.fi/paidat/pelaaja | Lahja pelaajalle: hauskat pelipaidat |
+
+**Metsästäjä ja kalastaja (lahjasivut):**
+
+| Osoite | Otsikko |
+|---|---|
+| https://huumorikauppa.fi/lahjat/metsastajalle | Hauska lahja metsästäjälle: t-paidat |
+| https://huumorikauppa.fi/lahjat/kalastajalle | Hauska lahja kalastajalle: t-paidat |
+
+### Somevideot /hallinta/somessa
+- 3.11. klo 6 Blobissa on yhä 2.11. manifesti: 35 vanhaa videota, ei yhtään uudelleen tehtyä (-v2).
+  - Aarnin lataus (KAYTTOONOTTO.md kohta 22) on siis tekemättä.
+  - /hallinta/some näyttää vanhat videot myös 3.11. julkaisuille.
+- Uusi tarkistus ilman avainta: `node scripts/some-tarkistus.mjs`. Se vertaa Blobin manifestia
+  some/julkaisut.json-listaan:
+  - 55 videota, joista 53 -v2
+  - sama järjestys, päivät ja kellonajat
+  - jokainen video vastaa video/mp4:nä
+- Tulostaa "OK", kun lataus on tehty. Nyt tulos on "EI VALMIS" (35 / 55 videota).
+
+### Tuotesivuraportti
+- 2.11.: 11 aitoa katselua.
+  - Painike näkyi kaikille, mutta koon valitsi 0 ja koriin lisäsi 0.
+  - 64 % poistui alle 10 sekunnissa.
+- Data on alle 50 katselun rajan, joten suurinta pudotusta ei vielä merkitä.
+- Suppilo kirjasi 3.11. klo 0-6 39 tuotesivua mutta tuoteseuranta ei yhtään. Selitys on tämä:
+  - Suppilo kirjaa sivun latauksen.
+  - Tuoteseuranta kirjaa vasta, kun sivu suljetaan tai piilotetaan.
+  - Yön lataukset ovat todennäköisesti JavaScriptiä ajavia indeksoijia, jotka eivät sulje sivua. Tuoteseurannan
+    luvut ovat siksi aitoja ihmisiä.
+
+### Mittari 3.11.
+- Kate tässä kuussa 0 € / 3 000 €. 30 päivässä 1 tilaus, kate 5,90 €.
+- Käynnit tässä kuussa 413:
+  - hakukoneet 121
+  - blogi 78
+  - lahjasivut 48
+  - ammattisivut 0
+- Suppilo 3.11. alkaen: 47 käyntiä, 39 tuotesivua, 0 koriin, 0 kassalle, 0 ostoa.
+- Lisämyynti 0. Ryhmätilaukset 0. Uutiskirjeen tilaajia 1.
+- Tarve: 10,5 tilausta ja 1 813 käyntiä päivässä.

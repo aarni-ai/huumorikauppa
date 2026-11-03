@@ -238,8 +238,8 @@ export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennusk
 }
 
 /**
- * Korin maksutapakuvakkeet (3.11.2026): samat maksutavat kuin kassa tarjoaa (api/_lib/maksutavat.js, kate vähintään
- * 7 € maksutavan kululla). Arvio ilman alennuksia; kassa laskee lopullisen. Pelkät lahjakortit: kaikki maksutavat.
+ * Korin maksutapakuvakkeet (3.11.2026): samat maksutavat kuin kassa tarjoaa (api/_lib/maksutavat.js: kortti ja
+ * MobilePay aina, Klarna kun kate on vähintään 7 € Klarnan kululla). Arvio ilman alennuksia; kassa laskee lopullisen. Pelkät lahjakortit: kaikki maksutavat.
  */
 export function korinMaksutavat(items: (Rivi & Partial<Pick<CartItem, "selectedSize" | "selectedColor">>)[]): readonly Maksutapa[] {
   const fyysiset = items.filter((i) => !onLahjakortti(i));

@@ -1073,3 +1073,6 @@ lopussa, kommentointikysymys, nimissä pääte -v2) ovat valmiina koneella kansi
    ```
 3. Tulosteen lopussa pitää lukea "valmis: 55 videota, joista 53 uutta". Avaa /hallinta/some ja tarkista, että
    3.11. videoissa on otsikko "Tää on nyt paidassa" ja kuvatekstin alussa kysymys.
+4. Tarkistus ilman avainta: `node scripts/some-tarkistus.mjs`. Valmis, kun se tulostaa "OK" (55 videota, joista 53
+   -v2, julkaisulistan järjestyksessä, jokainen video vastaa). 3.11. aamulla Blobissa oli vielä 2.11. manifesti
+   (35 vanhaa videota), joten 3.11. videot ovat Blobissa vanhassa muodossa.
