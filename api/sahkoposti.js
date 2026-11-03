@@ -206,8 +206,8 @@ export async function kasittele(req, res, store) {
       // Lähde ja sivun polku suostumuksen yhteyteen (esim. "tuotesivu:/tuote/x"). Viestit vain vahvistetulla domainilla.
       const polku = typeof body.polku === "string" && /^\/[^\s]{0,100}$/.test(body.polku) ? body.polku : "";
       const lahde = `${teksti(body.lahde, 40) || "lomake"}${polku ? `:${polku}` : ""}`;
-      const { domainVahvistettu } = await import("./_lib/uutiskirje.js");
-      const r = await tilaaUutiskirje(store, { email: body.email, suostumus: body.suostumus, lahde }, { laheta, voiLahettaa: await domainVahvistettu() });
+      const { markkinointiKaytossa } = await import("./_lib/sahkoposti.js");
+      const r = await tilaaUutiskirje(store, { email: body.email, suostumus: body.suostumus, lahde }, { laheta, voiLahettaa: await markkinointiKaytossa() });
       return res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true, koodiLahetetty: r.koodiLahetetty, koodi: r.koodi || null, prosentti: r.prosentti || null } : r);
     }
     case "kori": {

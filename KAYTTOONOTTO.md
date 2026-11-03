@@ -1068,3 +1068,36 @@ Claude latasi 53 uutta videota ja kansikuvat kaupan palvelimen kautta:
 `node scripts/some-tarkistus.mjs` tulostaa OK: 55 videota julkaisulistan järjestyksessä. Seuraavat lataukset tehdään
 samalla komennolla.
 
+
+## 23. Gmail-sovellussalasana: sähköpostit Gmailin kautta ennen domainin vahvistusta (Aarni, 3.11.2026)
+
+**Miksi:** Domainhotelli ei ole vielä lisännyt Resendin DNS-tietueita (kohta 21), joten Resend ei lähetä asiakkaille.
+Väliaikaisreitti lähettää kaikki viestit Gmailin SMTP:llä tililtä huumorikauppa@gmail.com (api/_lib/sahkoposti.js,
+Nodemailer, ilmainen):
+- tilausvahvistukset (korvaavat Stripen kuitin)
+- lahjakorttien viestit PDF-liitteineen
+- ryhmätilausten viestit
+- hallinnan viestit, hälytykset, päivän yhteenveto ja kuukausiraportti
+- korimuistutukset ja uutiskirje vain suostumuksen antaneille (peruutuslinkki ja List-Unsubscribe mukana)
+
+Markkinointiviestejä lähtee yhteensä enintään 100 Helsingin päivässä (api/_lib/markkinointi.js
+MARKKINOINTI_PAIVAKATTO, laskuri tietokannan kv-taulussa).
+
+**Aarni, yksi komento Macin Päätteessä:**
+
+    bash ~/huumorikauppa/scripts/gmail-salasana.sh
+
+Skripti neuvoo luomaan sovellussalasanan osoitteessa https://myaccount.google.com/apppasswords. Luo se tilille
+huumorikauppa@gmail.com; se vaatii kaksivaiheisen tunnistuksen. Liitä salasana kysyttäessä: se ei näy ruudulla. Skripti
+kokeilee kirjautumista ja tallentaa salasanan Verceliin (GMAIL_APP_PASSWORD, production, salainen) ja tiedostoon
+.env.gmail.local (gitignoroitu). Älä liitä salasanaa chattiin.
+
+**Claude seuraavalla ajolla:**
+1. Julkaise (scripts/julkaise-uusi.sh).
+2. Tarkista, että `?tehtava=sahkopostireitti` näyttää `"reitti":"gmail"` ja `"markkinointi":true`.
+3. Lähetä testi `?tehtava=ilmoitustesti`; vastauksessa `"reitti":"gmail"`.
+
+**Paluu Resendiin on automaattinen:** reitti valitaan joka lähetyksellä. Kun Resend kertoo huumorikauppa.fi:n
+vahvistetuksi (tarkistus tunnin välein) tai Vercelissä on SAHKOPOSTI_VAHVISTETTU=1, viestit lähtevät taas Resendillä
+osoitteesta tilaukset@huumorikauppa.fi. Sen jälkeen GMAIL_APP_PASSWORD poistetaan Vercelistä
+(`npx vercel env rm GMAIL_APP_PASSWORD production --yes`) ja sovellussalasana Googlelta.

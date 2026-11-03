@@ -51,7 +51,7 @@ import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, kasitteleLasku, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
 import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, testitilaus, siivoaTestitilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
-import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti, omaVahvistusKaytossa, lahetaVarareitilla } from "../_lib/sahkoposti.js";
+import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti, lahetaVarareitilla, markkinointiKaytossa, lahetysreitti, gmailKaytossa } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
 import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
 import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
@@ -672,7 +672,7 @@ export default async function handler(req, res) {
   }
 
   if (req.query.tehtava === "resend-domain") {
-    if (!onSahkoposti()) return res.status(503).json({ error: "RESEND_API_KEY puuttuu" });
+    if (!process.env.RESEND_API_KEY) return res.status(503).json({ error: "RESEND_API_KEY puuttuu" });
     const resend = async (polku, init = {}) => {
       const r = await fetch(`https://api.resend.com${polku}`, { ...init, headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" } });
       return { status: r.status, body: await r.json().catch(() => ({})) };
@@ -943,7 +943,12 @@ export default async function handler(req, res) {
   // Omistajan ilmoituksen testi (OMISTAJA_EMAIL): sama reitti kuin uuden tilauksen ilmoitus (halytys).
   if (req.query.tehtava === "ilmoitustesti") {
     const r = await halytys("Testi: uuden tilauksen ilmoitus", ["Tämä on testiviesti. Oikea ilmoitus lähtee, kun maksu tulee."]);
-    return res.status(200).json({ ok: r.ok, vastaanottaja: r.vastaanottaja || OMISTAJA(), virhe: r.ok ? null : r.virhe });
+    return res.status(200).json({ ok: r.ok, reitti: r.reitti || (await lahetysreitti()), vastaanottaja: r.vastaanottaja || OMISTAJA(), virhe: r.ok ? null : r.virhe });
+  }
+
+  if (req.query.tehtava === "sahkopostireitti") {
+    // Gmailin väliaikaisreitti (api/_lib/sahkoposti.js): mikä reitti on nyt käytössä, ilman lähetystä.
+    return res.status(200).json({ ok: true, reitti: await lahetysreitti(), gmail: gmailKaytossa(), resend: !!process.env.RESEND_API_KEY, markkinointi: await markkinointiKaytossa() });
   }
 
   if (req.query.tehtava === "eu-siirrot") {
@@ -1123,10 +1128,10 @@ export default async function handler(req, res) {
     loki.push(`toimituspäivä: ${e?.message || e}`);
   }
 
-  // 4. Markkinointi: korimuistutukset ja arviopyynnöt (lähetysraja, api/_lib/markkinointi.js). Asiakkaille lähtee
-  // vasta, kun oma domain on vahvistettu Resendissä ja SAHKOPOSTI_VAHVISTETTU=1 (2.11.2026): siihen asti viestit
-  // eivät mene perille, eikä ajo merkitse niitä lähetetyiksi.
-  if (omaVahvistusKaytossa() && aikaa()) {
+  // 4. Markkinointi: korimuistutukset ja arviopyynnöt (lähetysraja, api/_lib/markkinointi.js, enintään 100 viestiä
+  // Helsingin päivässä yhdessä uutiskirjeen kanssa). Asiakkaille lähtee, kun oma domain on vahvistettu Resendissä tai
+  // Gmailin väliaikaisreitti on käytössä (sahkoposti.js markkinointiKaytossa, 3.11.2026); muuten viestejä ei merkitä.
+  if (aikaa() && (await markkinointiKaytossa())) {
     try {
       const m = await ajaMarkkinointi(pgMarkkinointi(db), { laheta, kuiva });
       loki.push(...m.loki);
@@ -1137,11 +1142,12 @@ export default async function handler(req, res) {
   }
 
   // 4b. Uutiskirje (2.11.2026): tervetuloviestien jono ja joulukampanjan kolme viestiä (api/_lib/uutiskirje.js). Lähtee
-  // vain, kun lähetysdomain on vahvistettu Resendissä (SAHKOPOSTI_VAHVISTETTU=1 tai Resendin API: verified).
+  // vain suostumuksen antaneille, kun lähetysdomain on vahvistettu Resendissä (SAHKOPOSTI_VAHVISTETTU=1 tai Resendin
+  // API: verified) tai Gmailin väliaikaisreitti on käytössä.
   if (aikaa()) {
     try {
-      const { ajaUutiskirje, pgUutiskirje, domainVahvistettu } = await import("../_lib/uutiskirje.js");
-      const vahvistettu = await domainVahvistettu();
+      const { ajaUutiskirje, pgUutiskirje } = await import("../_lib/uutiskirje.js");
+      const vahvistettu = await markkinointiKaytossa();
       if (vahvistettu) {
         const u = await ajaUutiskirje(pgUutiskirje(db), { laheta, vahvistettu, kuiva });
         loki.push(...u.loki);

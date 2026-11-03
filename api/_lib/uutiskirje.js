@@ -4,15 +4,17 @@
  *  - Tilaus: /api/sahkoposti action "tilaa" (api/_lib/markkinointi.js tilaaUutiskirje, taulu subscribers suostumuksen
  *    ajan, tekstin ja lähteen kanssa). Lomake näyttää 5 %:n ensitilauksen koodin (TERVE-xxxxxx) heti.
  *  - Lähetys vain, kun lähetysdomain on vahvistettu Resendissä (domainVahvistettu): SAHKOPOSTI_VAHVISTETTU=1 tai Resendin
- *    API kertoo EMAIL_FROM-osoitteen domainin tilaksi "verified". Ilman avainta tai vastausta: ei lähetetä.
+ *    API kertoo EMAIL_FROM-osoitteen domainin tilaksi "verified", tai kun Gmailin väliaikaisreitti on käytössä
+ *    (sahkoposti.js markkinointiKaytossa, 3.11.2026). Muuten ei lähetetä.
  *  - Ajastus: api/cron/tilaukset.js (tunnin välein) kutsuu ajaUutiskirje. Jokainen viesti lähtee osoitteelle kerran
  *    (taulu uutiskirje_lahetykset, perusavain viesti + email), vain tilaajille, jotka eivät ole peruneet (email_optouts),
- *    ja markkinoinnin yhteisen päivärajan sisällä (markkinointi.js lahetysrajat, sama kv-laskuri).
+ *    ja markkinoinnin yhteisen päivärajan sisällä (markkinointi.js lahetysrajat, sama kv-laskuri, enintään 100
+ *    viestiä Helsingin päivässä).
  *  - Joulukampanjan päivät: JOULUKAMPANJA alla; src/test/uutiskirje.test.ts tarkistaa, että ne vastaavat
  *    src/data/campaignSchedule.ts:n joulun tilauspäiviä ja Black Fridayn kampanjaa (vakiot.js TPAITAPARI_KAMPANJA).
  */
 import { TPAITAPARI_KAMPANJA, ENSITILAUS_ALENNUS_PROSENTTI } from "./vakiot.js";
-import { kauppaUrl, peruutusLinkki, peruutusOtsakkeet, tervetuloViesti, lahetysrajat, onAllekirjoitus } from "./markkinointi.js";
+import { kauppaUrl, peruutusLinkki, peruutusOtsakkeet, tervetuloViesti, lahetysrajat, onAllekirjoitus, kvAvain, rajatKatolla } from "./markkinointi.js";
 import { pgMarkkinointi } from "./markkinointi-db.js";
 
 /** Joulun viimeiset tilauspäivät (campaignSchedule.ts joulunTilauspaivaTyypille; testi vertaa). */
@@ -171,14 +173,14 @@ export function pgUutiskirje(db) {
   };
 }
 
-const kvAvain = (nyt) => `markkinointi_lahetetty_${new Date(nyt).toISOString().slice(0, 10)}`;
 
 /**
  * Cron: tervetuloviestit jonosta ja avoimen kampanjaviestin lähetys. Vain vahvistetulla domainilla (vahvistettu).
  * Palauttaa { lahetetty, loki }.
  */
-export async function ajaUutiskirje(store, { laheta, vahvistettu, nyt = new Date(), rajat = lahetysrajat(), kuiva = false, prosentti = ENSITILAUS_ALENNUS_PROSENTTI } = {}) {
+export async function ajaUutiskirje(store, { laheta, vahvistettu, nyt = new Date(), rajat: annetut = lahetysrajat(), kuiva = false, prosentti = ENSITILAUS_ALENNUS_PROSENTTI } = {}) {
   const loki = [];
+  const rajat = rajatKatolla(annetut);
   if (!vahvistettu) return { lahetetty: 0, loki: ["uutiskirje ohitettu: lähetysdomainia ei ole vahvistettu"] };
   if (!onAllekirjoitus()) return { lahetetty: 0, loki: ["uutiskirje ohitettu: MARKKINOINTI_SALAISUUS tai CRON_SECRET puuttuu"] };
   await store.varmista?.();

@@ -182,18 +182,29 @@ export function arvosteluAika(tilaus, nyt = new Date()) {
   return minuuttia(nyt, tilaus.delivered_at) >= ARVOSTELU_TOIMITUKSESTA_PV * 24 * 60;
 }
 
-export const lahetysrajat = () => ({
+/**
+ * Markkinointiviestien päiväkatto (3.11.2026, Gmailin väliaikaisreitti): korimuistutukset, arviopyynnöt ja uutiskirje
+ * yhteensä enintään 100 viestiä Helsingin päivässä. Laskuri on tietokannan kv-taulussa (kvAvain), ja ympäristömuuttuja
+ * MARKKINOINTI_RAJA_PAIVA voi vain laskea rajaa.
+ */
+export const MARKKINOINTI_PAIVAKATTO = 100;
+const katto = (rajat) => ({ ...rajat, paiva: Math.min(MARKKINOINTI_PAIVAKATTO, Math.max(0, Number(rajat.paiva) || 0)) });
+export const lahetysrajat = () => katto({
   ajo: Math.max(0, Number(process.env.MARKKINOINTI_RAJA_AJO ?? 20)),
-  paiva: Math.max(0, Number(process.env.MARKKINOINTI_RAJA_PAIVA ?? 60)),
+  paiva: Number(process.env.MARKKINOINTI_RAJA_PAIVA ?? MARKKINOINTI_PAIVAKATTO),
 });
-const kvAvain = (nyt) => `markkinointi_lahetetty_${new Date(nyt).toISOString().slice(0, 10)}`;
+export { katto as rajatKatolla };
+const helsinginPaiva = (nyt) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date(nyt));
+/** Yhteinen päivälaskuri (Helsingin päivä): markkinointi ja uutiskirje kasvattavat samaa avainta. */
+export const kvAvain = (nyt) => `markkinointi_lahetetty_${helsinginPaiva(nyt)}`;
 
 /**
  * Lähettää erääntyneet muistutukset ja arviopyynnöt. store: pgMarkkinointi tai muistivarasto. laheta: sahkoposti.js
  * laheta. Palauttaa { lahetetty, ohitettu, loki }.
  */
-export async function ajaMarkkinointi(store, { laheta, nyt = new Date(), rajat = lahetysrajat(), kuiva = false } = {}) {
+export async function ajaMarkkinointi(store, { laheta, nyt = new Date(), rajat: annetut = lahetysrajat(), kuiva = false } = {}) {
   const loki = [];
+  const rajat = katto(annetut);
   if (!onAllekirjoitus()) return { lahetetty: 0, ohitettu: 0, loki: ["markkinointi ohitettu: MARKKINOINTI_SALAISUUS tai CRON_SECRET puuttuu"] };
   const avain = kvAvain(nyt);
   let tanaan = Number(await store.lueKv(avain)) || 0;
