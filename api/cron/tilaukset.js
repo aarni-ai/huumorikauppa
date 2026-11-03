@@ -135,7 +135,9 @@ export default async function handler(req, res) {
       const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
       const eilen = hki(new Date(Date.now() - 864e5));
       const seuranta = await tuoteseurantaValilla(db, eilen, eilen).then(tuoteseurantaRivit).catch(() => []);
-      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...yhteenvetoRivit(linkit)];
+      const { laskeutumisetValilla, laskeutumisRivit } = await import("../_lib/laskeutumiset.js");
+      const laskeutumiset = await laskeutumisetValilla(db, eilen, eilen).then((x) => laskeutumisRivit(x)).catch(() => []);
+      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -341,7 +343,10 @@ export default async function handler(req, res) {
     const { tuoteseurantaValilla } = await import("../_lib/tuoteseuranta.js");
     const hki = (d) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(d);
     const pv = (x, oletus) => (/^\d{4}-\d{2}-\d{2}$/.test(x || "") ? x : oletus);
-    return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, pv(req.query.alkaen, hki(new Date(Date.now() - 864e5))), pv(req.query.loppu, hki(new Date())))) });
+    const alkaen = pv(req.query.alkaen, hki(new Date(Date.now() - 864e5))), loppu = pv(req.query.loppu, hki(new Date()));
+    // Laskeutumiset samalta väliltä (api/_lib/laskeutumiset.js): mistä alle 10 s poistuvat tulevat.
+    const { laskeutumisetValilla } = await import("../_lib/laskeutumiset.js");
+    return res.status(200).json({ ok: true, ...(await tuoteseurantaValilla(db, alkaen, loppu)), laskeutumiset: await laskeutumisetValilla(db, alkaen, loppu) });
   }
 
   // Oma liikenne jälkikäteen (2.11.2026): päivän lähteen (&lahde=, valinnainen &osio=) käynnit lähteeseen "oma",

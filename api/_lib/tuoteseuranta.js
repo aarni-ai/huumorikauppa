@@ -7,7 +7,9 @@
  * avattu), lisaa_nakyvissa (Lisää koriin -painike vähintään puoliksi näkyvissä), kori (lisätty koriin),
  * vieritys:25|50|75|100 (syvin kohta), aika:0-10|10-30|30-60|60-180|180+ (sekuntia sivulla).
  */
-export const TAPAHTUMAT = ["naytto", "koko", "vari", "kokotaulukko", "lisaa_nakyvissa", "kori"];
+export const TAPAHTUMAT = ["naytto", "koko", "vari", "kokotaulukko", "lisaa_nakyvissa", "kori", "koko_esivalittu"];
+/** Koon esivalinnan A/B-testi (3.11.2026, src/lib/abTestit.ts): sama kooste myös versiokohtaisena "koko-b|koko". */
+export const TUOTE_AB = ["koko-a", "koko-b"];
 export const VIERITYS = ["25", "50", "75", "100"];
 export const AIKA = ["0-10", "10-30", "30-60", "60-180", "180+"];
 
@@ -27,14 +29,15 @@ export async function varmistaTuoteseuranta(db) {
 }
 
 export async function kirjaaTuotetapahtumat(db, body) {
-  const avaimet = puhdista(body);
+  const perus = puhdista(body);
+  const avaimet = TUOTE_AB.includes(body?.ab) ? [...perus, ...perus.map((a) => `${body.ab}|${a}`)] : perus;
   await varmistaTuoteseuranta(db);
   const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
   for (const a of avaimet) {
     await db`insert into tuotesivu_seuranta (paiva, tapahtuma, n) values (${paiva}::date, ${a}, 1)
       on conflict (paiva, tapahtuma) do update set n = tuotesivu_seuranta.n + 1`;
   }
-  return avaimet.length;
+  return perus.length;
 }
 
 const pros = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
@@ -85,10 +88,23 @@ export function koostaTuoteseuranta(rivit) {
   return { nayttoja, osuudet, vieritys, aika, suppilo, suurin, poistuminen };
 }
 
+/**
+ * Koon esivalinnan A/B-vertailu: versioittain katselut, poistui alle 10 s (aika 0-10), valitsi koon itse, koko valmiina
+ * (itse valittu tai esivalittu) ja lisäsi koriin.
+ */
+export function koostaTuoteAb(rivit) {
+  return Object.fromEntries(TUOTE_AB.map((v) => {
+    const omat = rivit.filter((r) => r.tapahtuma.startsWith(`${v}|`)).map((r) => ({ tapahtuma: r.tapahtuma.slice(v.length + 1), n: r.n }));
+    const n = Object.fromEntries(omat.map((r) => [r.tapahtuma, Number(r.n) || 0]));
+    const k = n.naytto || 0;
+    return [v, { nayttoja: k, alle10: pros(n["aika:0-10"] || 0, k), koko: pros(n.koko || 0, k), kokoValmiina: pros(Math.min(k, (n.koko || 0) + (n.koko_esivalittu || 0)), k), kori: pros(n.kori || 0, k) }];
+  }));
+}
+
 export async function tuoteseurantaValilla(db, alku, loppu) {
   await varmistaTuoteseuranta(db);
   const rivit = await db`select tapahtuma, sum(n)::int as n from tuotesivu_seuranta where paiva between ${alku}::date and ${loppu}::date group by 1`;
-  return { alku, loppu, ...koostaTuoteseuranta(rivit) };
+  return { alku, loppu, ...koostaTuoteseuranta(rivit), ab: koostaTuoteAb(rivit) };
 }
 
 /** Päivän yhteenvedon rivit (klo 7, api/cron/tilaukset.js ?tehtava=yhteenveto). */
@@ -100,5 +116,6 @@ export function tuoteseurantaRivit(s) {
     `Suppilo: ${s.suppilo.map((v) => `${v.nimi} ${v.n} (${v.pros} %)`).join(" -> ")}.`,
     `Vieritys vähintään 25/50/75/100 %: ${VIERITYS.map((v) => `${s.vieritys[v]} %`).join(" / ")}. Aika sivulla 0-10 s ${s.aika["0-10"]} %, 10-30 s ${s.aika["10-30"]} %, 30-60 s ${s.aika["30-60"]} %, 1-3 min ${s.aika["60-180"]} %, yli 3 min ${s.aika["180+"]} %.`,
     `Poistumiskohta: ${s.poistuminen}`,
+    ...(s.ab && TUOTE_AB.some((v) => s.ab[v]?.nayttoja) ? [`Koon esivalinta A/B: ${TUOTE_AB.map((v) => { const x = s.ab[v]; return `${v === "koko-a" ? "A (valitse itse)" : "B (L esivalittu)"} ${x.nayttoja} katselua, alle 10 s ${x.alle10 ?? "-"} %, valitsi koon ${x.koko ?? "-"} %, koko valmiina ${x.kokoValmiina ?? "-"} %, koriin ${x.kori ?? "-"} %`; }).join("; ")}.`] : []),
   ];
 }

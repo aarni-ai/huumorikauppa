@@ -274,6 +274,16 @@ export async function kasittele(req, res, store) {
       await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
     }
+    case "laskeutuminen": {
+      // Laskeutumisen kooste (api/_lib/laskeutumiset.js): vain koostemäärä, ei IP-osoitetta eikä tunnisteita.
+      const ohita = omaTaiBotti(req, body);
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { laskeutumisRivi, kirjaaLaskeutuminen } = await import("./_lib/laskeutumiset.js");
+      const rivi = laskeutumisRivi(body, req.headers["user-agent"]);
+      if (!rivi) return res.status(400).json({ ok: false });
+      await kirjaaLaskeutuminen(sql(), rivi);
+      return res.status(200).json({ ok: true });
+    }
     case "suppilo": {
       // Oma ostosuppilo: koostemäärä päivä x vaihe x A/B-versio (api/_lib/suppilo.js), ei tunnisteita.
       // Testiajo (scripts/suppilo-testi.mjs) kirjataan versioon "testi"; muu oma liikenne ja botit ohitetaan.

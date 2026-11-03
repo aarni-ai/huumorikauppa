@@ -8,6 +8,7 @@
  */
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { laskeutumisRivit } from "../api/_lib/laskeutumiset.js";
 import { tuoteseurantaRivit } from "../api/_lib/tuoteseuranta.js";
 
 const JUURI = new URL("..", import.meta.url).pathname;
@@ -21,4 +22,7 @@ const [alkaen = eilen, loppu = alkaen] = process.argv.slice(2);
 const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
 const r = await fetch(`${kauppa}/api/cron/tilaukset?tehtava=tuoteseuranta&alkaen=${alkaen}&loppu=${loppu}`, { headers: { authorization: `Bearer ${salaisuus}` } });
 if (!r.ok) { console.error(`Reitti vastasi ${r.status}.`); process.exit(1); }
-console.log(tuoteseurantaRivit(await r.json()).join("\n"));
+const data = await r.json();
+console.log(tuoteseurantaRivit(data).join("\n"));
+// Laskeutumiset (3.11.2026): lähde, laite, selain, laskeutumissivu ja A/B, poistui alle 10 s.
+if (data.laskeutumiset) console.log(["", ...laskeutumisRivit(data.laskeutumiset)].join("\n"));

@@ -5,6 +5,7 @@ import "./index.css";
 import { revealApp, setPreviewReveal, setProductSeed } from "./lib/prerenderPreview";
 import { tallennaKumppaniUrlista } from "./lib/kumppani";
 import { kirjaaKaynti } from "./lib/kaynti";
+import { aloitaLaskeutuminen } from "./lib/laskeutuminen";
 import { kaynnistaClarity } from "./lib/clarity";
 
 // Sovelluksen moduulit latautuivat: esirenderöidyn HTML:n käynnistysvahti (BOOT_GUARD_SCRIPT,
@@ -16,6 +17,8 @@ const rootElement = document.getElementById('root')!;
 tallennaKumppaniUrlista(window.location.search);
 // Käyntilaskuri /hallinta/mittarit-sivulle (src/lib/kaynti.ts): ei evästeitä eikä tunnisteita.
 kirjaaKaynti();
+// Laskeutumisen kooste (src/lib/laskeutuminen.ts): poistuiko alle 10 s, mistä tuli, millä laitteella ja selaimella.
+aloitaLaskeutuminen();
 // Microsoft Clarity vain analytiikkasuostumuksella ja vain, kun tunniste on asetettu (src/config/clarity.ts).
 kaynnistaClarity();
 // Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):

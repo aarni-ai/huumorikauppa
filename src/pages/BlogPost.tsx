@@ -10,6 +10,7 @@ import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { ShoppingBag } from "lucide-react";
 import { GuideProductRecommendations } from "@/components/GuideProductRecommendations";
 import { BlogProductStrip } from "@/components/BlogProductStrip";
+import { abVersio } from "@/lib/abTestit";
 import { YritysNosto } from "@/components/YritysNosto";
 import { onYritysNostoBlogi } from "@/data/yritysNostot";
 import { NewsletterBoxLazy } from "@/components/NewsletterBoxLazy";
@@ -181,6 +182,7 @@ const BlogPost = () => {
   const blogFaqs = post.faq && post.faq.length > 0 ? post.faq : DEFAULT_BLOG_FAQS;
 
   // Ladattaessa varataan korttien tila; jos haku epäonnistuu, lohkot jätetään pois.
+  const ideatEnsin = abVersio("blogi") === "b";
   const split = blogProducts ? splitBlogProducts(blogProducts) : null;
   const midProducts = split ? split.mid : isError ? [] : null;
   const endProducts = split ? split.end : isError ? [] : null;
@@ -250,10 +252,14 @@ const BlogPost = () => {
           </div>
         </header>
 
+        {/* A/B-testi blogi (src/lib/abTestit.ts): versio b näyttää artikkelin tuoteideat heti otsikon alla, koska
+            blogista tuleva kävijä hakee ideoita; versio a tekstin keskellä kuten ennen. */}
+        {ideatEnsin && <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />}
+
         <div className="text-muted-foreground">
           {renderContent(
             post.content,
-            <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />,
+            ideatEnsin ? null : <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />,
           )}
         </div>
 

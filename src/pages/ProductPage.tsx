@@ -46,6 +46,10 @@ import { revealApp } from "@/lib/prerenderPreview";
 import { useOikeatArviot } from "@/hooks/use-oikeat-arviot";
 import { trackViewItem } from "@/lib/analytics";
 import { aloitaTuoteseuranta, kirjaaTuotetapahtuma } from "@/lib/tuoteseuranta";
+import { abVersio } from "@/lib/abTestit";
+
+/** Koon esivalinnan A/B-testin (versio b) koko: yleisin myyty koko t-paidoissa ja hupparissa. */
+const ESIVALITTU_KOKO = "L";
 import { lisaaLahikuva } from "@/lib/lahikuva";
 import { painetaanEUssa } from "../../api/_lib/materiaali.js";
 import { hakuotsikko } from "../../api/_lib/hakuotsikko.js";
@@ -321,6 +325,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
 
   // Esikatselussa (ennen sovelluksen latautumista) tehdyt valinnat: src/seo/prerender/renderPreview.tsx ESIVALINTA_SCRIPT.
   const esivalintaKaytetty = useRef(false);
+  const esikatselunKoko = useRef<string | undefined>();
   useEffect(() => {
     if (previewOnly || !product || esivalintaKaytetty.current || !sellableColors.length) return;
     esivalintaKaytetty.current = true;
@@ -335,7 +340,10 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
       : selectedColor ?? (oletus && sellableColors.includes(oletus) ? oletus : sellableColors[0]);
     if (vari && vari !== selectedColor) setSelectedColor(vari);
     const koko = e.koko && isVariantAvailable(product, vari, e.koko) ? e.koko : undefined;
-    if (koko) setSelectedSize(koko);
+    if (koko) {
+      esikatselunKoko.current = koko;
+      setSelectedSize(koko);
+    }
     if (e.lisaa) setEsilisays(koko ?? "");
   }, [previewOnly, product, sellableColors, selectedColor]);
   const [esilisays, setEsilisays] = useState<string | null>(null);
@@ -347,6 +355,20 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
     if (!esilisays) setLisaaKunKoko(true);
     lisaaRef.current?.(esilisays || undefined);
   }, [esilisays, selectedColor, selectedSize]);
+
+  // Koon esivalinta (A/B-testi src/lib/abTestit.ts, versio b): yleisin koko L t-paidoille ja hupparille, kun kokoa ei
+  // ole valittu, jotta yksi napautus riittää koriin. Esikatselun valinta (yllä) menee edelle: funktiopäivitys näkee sen.
+  const [kokoEsivalittu, setKokoEsivalittu] = useState(false);
+  const esivalintaTehty = useRef<string | null>(null);
+  useEffect(() => {
+    if (previewOnly || !product || !selectedColor || esivalintaTehty.current === product.slug) return;
+    if (!["t-paidat", "hupparit"].includes(product.category) || abVersio("koko") !== "b") return;
+    esivalintaTehty.current = product.slug;
+    if (selectedSize || esikatselunKoko.current || !isVariantAvailable(product, selectedColor, ESIVALITTU_KOKO)) return;
+    setSelectedSize(ESIVALITTU_KOKO);
+    setKokoEsivalittu(true);
+    kirjaaTuotetapahtuma("koko_esivalittu");
+  }, [previewOnly, product, selectedColor, selectedSize]);
 
   useEffect(() => {
     // Värin vaihto: koko, jota ei valmisteta uudella värillä, poistetaan valinnasta.
@@ -541,6 +563,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // tuote lisätään koriin heti valitulla koolla.
   const valitseKoko = (size: string) => {
     kirjaaTuotetapahtuma("koko");
+    setKokoEsivalittu(false);
     setSelectedSize(size);
     setKokoMuistutus(false);
     if (lisaaKunKoko) {
@@ -877,6 +900,9 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 <div className="flex items-center justify-between mb-1 md:mb-2 min-h-[20px]">
                   <span className={`text-xs md:text-sm font-medium ${kokoMuistutus ? "text-primary font-bold" : "text-foreground"}`}>
                     {selectedSize ? `Koko: ${selectedSize}` : kokoMuistutus ? "Valitse koko" : "Koko"}
+                    {kokoEsivalittu && selectedSize === ESIVALITTU_KOKO && (
+                      <span className="ml-2 font-normal text-muted-foreground">Vaihda kokoa tarvittaessa</span>
+                    )}
                   </span>
                   {isClothingCategory(product.category) && (
                     <SizeGuide

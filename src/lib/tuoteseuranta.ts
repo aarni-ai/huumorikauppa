@@ -3,7 +3,9 @@
  * kun sivu suljetaan, piilotetaan tai vaihdetaan toiseen tuotteeseen. Ei evästeitä, ei selaimen tallennusta eikä
  * tunnisteita (kuten oma suppilo src/lib/suppilo.ts). Botit ja testiselaimet ohitetaan.
  */
-export type Tuotetapahtuma = "koko" | "vari" | "kokotaulukko" | "lisaa_nakyvissa" | "kori";
+import { abVersio } from "./abTestit";
+
+export type Tuotetapahtuma = "koko" | "vari" | "kokotaulukko" | "lisaa_nakyvissa" | "kori" | "koko_esivalittu";
 
 let nykyinen: { tapahtumat: Set<Tuotetapahtuma>; alku: number; syvin: number; lahetetty: boolean } | null = null;
 
@@ -24,7 +26,9 @@ function laheta() {
   if (!n || n.lahetetty) return;
   n.lahetetty = true;
   mittaaVieritys();
-  const body = { action: "tuotetapahtumat", tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), ...(onTesti() ? { testi: true } : {}) };
+  // Esivalittu koko lasketaan vain, jos kävijä ei valinnut kokoa itse (A/B-testi src/lib/abTestit.ts).
+  if (n.tapahtumat.has("koko")) n.tapahtumat.delete("koko_esivalittu");
+  const body = { action: "tuotetapahtumat", ab: `koko-${abVersio("koko")}`, tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), ...(onTesti() ? { testi: true } : {}) };
   fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(body) }).catch(() => undefined);
 }
 
