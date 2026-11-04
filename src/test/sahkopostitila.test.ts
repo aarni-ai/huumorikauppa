@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 vi.mock("nodemailer", () => ({ default: { createTransport: () => ({}) } }));
-// @ts-expect-error JS-moduuli
 import { puutteet, sahkopostiRivit, dnsTila, testiviestit } from "../../api/_lib/sahkopostitila.js";
 
 const valmisDns = { nimipalvelimet: ["annabel.ns.cloudflare.com", "vick.ns.cloudflare.com"], uusiCloudflare: true, vanhaCloudflare: false, dkim: true, sendMx: true, sendSpf: true, dmarc: "v=DMARC1; p=none; rua=mailto:huumorikauppa@gmail.com", dmarcLovable: false };
