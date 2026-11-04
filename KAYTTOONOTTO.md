@@ -1214,3 +1214,52 @@ vyöhykkeessä. Tarkista vaiheen 1 jälkeen Search Console > Asetukset > Omistaj
 3. Ilmoita Claudelle, kun Cloudflare näyttää Active.
 4. Clauden pyynnöstä vaiheen 3 kohdat 1 ja 3.
 5. Viikon päästä vanhat `_vercel`-arvot pois.
+
+## 25. Kumppanikoodit itse: /hallinta/kumppanit (Cowork, 4.11.2026)
+
+Cowork luo kumppanikoodit ja /k/-linkit itse ilman Claudea. Sivu: `huumorikauppa.fi/hallinta/kumppanit`
+(src/pages/PartnerAdminPage.tsx, rajapinta api/sahkoposti.js `?kumppanit=`, `kumppani-luo`, `kumppani-tila`).
+
+**Pääsy (kerran):** avaa linkki "Kumppanikoodit ja /k/-linkit (hallinta)" päivän yhteenvetoviestistä tai
+"Hallintalinkit Coworkille" -viestistä Coworkin Chromessa (profiili "Huumorikauppa"). Sivu tallentaa pääsyn
+evästeeseen 90 päiväksi, ja sen jälkeen `huumorikauppa.fi/hallinta/kumppanit` aukeaa suoraan. Aiemmat aktivoinnit
+(ennen 4.11.2026) eivät kata tätä sivua, koska jokaisella hallintasivulla on oma eväste. Jos sivu sanoo "Ei pääsyä",
+pyydä Claudea lähettämään uudet linkit: cron `?tehtava=hallintalinkit-viesti` (kaikki neljä hallintalinkkiä) tai
+`?tehtava=aktivointilinkki-viesti` (taikalinkki, joka avaa nyt kaikki hallintasivut kerralla).
+
+**Kierros 3 (22 kumppania):**
+1. Avaa Drivessä taulukko `huumorikauppa-kumppanit-kierros3`.
+2. Kopioi nimet ja mallit muodossa `Nimi; malli`, yksi kumppani per rivi. Malli on `1` (provisio 10 %) tai `2`
+   (ostaja saa 5 % alennuksen, kumppani 5 % provision). Sarakkeet voi kopioida suoraan taulukosta (sarakkeet nimi
+   ja malli vierekkäin); sarkain, puolipiste ja pilkku käyvät erottimiksi, ja otsikkorivi "Nimi" ohitetaan. Oman
+   koodin voi antaa muodossa `Nimi; koodi; malli`, ja sähköpostin voi lisätä mihin tahansa sarakkeeseen nimen jälkeen.
+3. Liitä rivit kenttään "Monta kerralla" ja paina **Esikatsele**. Esikatselu näyttää jokaisen koodin ja tiedon "uusi"
+   tai "päivitetään". Virheelliset rivit näkyvät punaisella rivinumeron kanssa; korjaa ne ja esikatsele uudelleen.
+4. Paina **Luo kaikki**. Enintään 100 riviä kerralla.
+5. Paina **Kopioi taulukko** ja liitä tulos taulukon uudelle välilehdelle tai vapaisiin sarakkeisiin. Sarakkeet:
+   nimi, koodi, malli, linkki (/k/), raportti (kumppanin oma raporttilinkki).
+6. Lähetä viestit (KUMPPANIT-VIESTIPOHJA.md) niin, että jokaisessa on kumppanin oma /k/-linkki ja raporttilinkki.
+
+**Koodit:** ilman annettua koodia koodi tehdään nimestä: pienet kirjaimet, ä ja å -> a, ö -> o, muut merkit
+väliviivaksi, enintään 30 merkkiä (esim. "Äijä Öljynen" -> `aija-oljynen`). Jos koodi on jo toisella kumppanilla,
+loppuun tulee `-2`, `-3` jne. Sama nimi uudelleen päivittää saman koodin (malli vaihtuu vain, jos se annetaan), joten
+saman listan liittäminen kahdesti ei tee kaksoiskappaleita. Annettu koodi luodaan tai päivitetään aina sellaisenaan.
+
+**Yksittäinen kumppani:** lomake "Uusi kumppani" (nimi pakollinen, koodi ja sähköposti valinnaisia, malli 1 tai 2).
+Tulos näyttää koodin, /k/-linkin ja raporttilinkin kopiointipainikkeineen.
+
+**Seuranta (lista "Kumppanit"):**
+- **Ensimmäinen käynti:** aika, jolloin joku avasi kumppanin /k/-linkin ensimmäisen kerran. "ei vielä" tarkoittaa,
+  ettei linkkiä ole avattu. Botit, linkkien esikatselut (WhatsApp, Facebook ym.) ja hallintaselaimet (Coworkin oma
+  Chrome) eivät merkitse käyntiä, joten oman linkin testiavaus ei sotke tietoa.
+- **Klikit:** /k/-linkin ja ?ref=-linkin avaukset yhteensä (botit pois).
+- **Tilaukset:** maksetut tilaukset kumppanin koodilla. Asiakastietoja sivulla ei näy.
+- Linkit-sarakkeesta saa /k/-linkin ja raporttilinkin uudelleen milloin tahansa (raporttilinkkiä ei tallenneta,
+  vaan se muodostetaan joka kerta samaksi).
+
+**Poisto käytöstä:** paina rivin **Poista käytöstä**. Koodi ei enää toimi kassalla eikä /k/-sivulla, mutta
+tilaushistoria säilyy. **Aktivoi** palauttaa sen. Myös uudelleenluonti samalla koodilla aktivoi kumppanin.
+
+**Vanha tapa toimii yhä:** cron `?tehtava=kumppani-lisaa&koodi=...&nimi=...&malli=alennus` ja
+`?tehtava=kumppani-poista&koodi=...` (CRON_SECRET) käyttävät samaa luontia (api/_lib/kumppanihallinta.js) ja
+palauttavat samat linkit.

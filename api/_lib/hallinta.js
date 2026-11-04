@@ -1,5 +1,6 @@
 /**
- * Hallintasivujen avaimelliset linkit (2.11.2026): /hallinta/mittarit, /hallinta/some ja /hallinta/tarjoukset.
+ * Hallintasivujen avaimelliset linkit (2.11.2026): /hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset ja
+ * /hallinta/kumppanit (4.11.2026). Jokaisella sivulla on oma avain ja eväste hk_hallinta_<sivu>.
  * Linkit lähtevät vain sähköpostilla (päivän yhteenveto ja cron ?tehtava=hallintalinkit-viesti); niitä ei tallenneta
  * repoon eikä tulosteta. Ensimmäinen avaus tallentaa avaimen evästeeseen 90 päiväksi (api/sahkoposti.js hallintaPaasy).
  */
@@ -9,6 +10,7 @@ export const HALLINTASIVUT = [
   { sivu: "mittarit", nimi: "Tavoitemittari", kuvaus: "kate, tilaukset, käynnit, mainoskulut ja yritysmyynti; lomakkeet päivän luvuille" },
   { sivu: "some", nimi: "Somevideot ja Pinterest-kuvat", kuvaus: "päivän videot latauslinkkeineen, kuvatekstit, hashtagit ja UTM-linkit" },
   { sivu: "tarjoukset", nimi: "Yritysten tarjouspyynnöt", kuvaus: "tarjouspyynnöt katteineen ja tilan vaihto" },
+  { sivu: "kumppanit", nimi: "Kumppanikoodit", kuvaus: "kumppanikoodien ja /k/-linkkien luonti, klikit ja ensimmäinen käynti" },
 ];
 
 export function hallintaLinkit(pohja = process.env.KAUPPA_URL || "https://huumorikauppa.fi") {
@@ -19,6 +21,7 @@ export function hallintaLinkit(pohja = process.env.KAUPPA_URL || "https://huumor
 /** Päivän yhteenvetoviestin rivit (mittarin ja somen linkit ovat jo mittaririveissä). */
 export const yhteenvetoRivit = (linkit) => [
   `Tarjouspyynnöt (hallinta): ${linkit.tarjoukset}`,
+  `Kumppanikoodit ja /k/-linkit (hallinta): ${linkit.kumppanit}`,
   "Hallintalinkit pysyvät kirjautuneina Chromessa 90 päivää ensimmäisestä avauksesta; avaa linkki uudelleen, jos sivu sanoo \"Ei pääsyä\".",
 ];
 
@@ -31,7 +34,7 @@ export function hallintalinkkiViesti(linkit) {
   const rivit = [
     "Hallintalinkit Coworkille",
     "",
-    "Avaa jokainen linkki kerran Coworkin Chromessa. Sivu tallentaa pääsyn evästeeseen 90 päiväksi, ja avain poistuu osoiteriviltä. Sen jälkeen sivut aukeavat suoraan osoitteista huumorikauppa.fi/hallinta/mittarit, /hallinta/some ja /hallinta/tarjoukset. Jos sivu sanoo \"Ei pääsyä\", avaa linkki uudelleen tästä viestistä tai päivän yhteenvetoviestistä.",
+    "Avaa jokainen linkki kerran Coworkin Chromessa. Sivu tallentaa pääsyn evästeeseen 90 päiväksi, ja avain poistuu osoiteriviltä. Sen jälkeen sivut aukeavat suoraan osoitteista huumorikauppa.fi/hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset ja /hallinta/kumppanit. Jos sivu sanoo \"Ei pääsyä\", avaa linkki uudelleen tästä viestistä tai päivän yhteenvetoviestistä.",
     "",
     ...HALLINTASIVUT.flatMap(({ sivu, nimi, kuvaus }) => [`${nimi} (${kuvaus}):`, linkit[sivu], ""]),
     "MITTARILOMAKKEET (/hallinta/mittarit)",

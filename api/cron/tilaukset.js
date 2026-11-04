@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     const testit = onPrintify() && !kuiva ? await siivoaTestitilaukset() : null;
     if (testit?.jai?.length) await halytys("Printify-testitilaus jäi perumatta", [...testit.jai.map((id) => `Printify-tilaus ${id}`), "Peru se Printifyn hallinnassa (Orders > Cancel)."]);
     const store = pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {});
-    // Tavoitemittari viestin loppuun ja avaimelliset hallintalinkit (mittarit, some, tarjoukset; api/_lib/hallinta.js).
+    // Tavoitemittari viestin loppuun ja avaimelliset hallintalinkit (mittarit, some, tarjoukset, kumppanit; api/_lib/hallinta.js).
     const lisarivit = async () => {
       const { keraaMittarit, mittaririvit } = await import("../_lib/mittarit.js");
       const { hallintaLinkit, yhteenvetoRivit } = await import("../_lib/hallinta.js");
@@ -388,7 +388,7 @@ export default async function handler(req, res) {
   if (req.query.tehtava === "hallinta-linkki") {
     const { hallintaLinkit } = await import("../_lib/hallinta.js");
     const l = hallintaLinkit();
-    return res.status(200).json({ ok: true, linkki: l.tarjoukset, mittarit: l.mittarit, some: l.some });
+    return res.status(200).json({ ok: true, linkki: l.tarjoukset, mittarit: l.mittarit, some: l.some, kumppanit: l.kumppanit });
   }
 
   // Lahjakorttipolun testi (1.11.2026, scripts/lahjakorttitesti.mjs). vaihe=luo: maksettu testitilaus (TESTI,
@@ -546,20 +546,14 @@ export default async function handler(req, res) {
       const r = await db`update kumppanit set aktiivinen = false where koodi = ${koodi} returning koodi`;
       return res.status(r.length ? 200 : 404).json({ ok: r.length > 0, koodi });
     }
-    const nimi = String(req.query.nimi || "").trim().slice(0, 100);
-    if (!nimi) return res.status(400).json({ ok: false, virhe: "nimi puuttuu" });
-    const email = String(req.query.email || "").trim().slice(0, 200) || null;
     // &malli=alennus: kumppanimalli 2 (ostaja -5 %, kumppani 5 %); oletus provisio (malli 1). Päivitys säilyttää mallin, jos sitä ei anneta.
+    // Sama luonti kuin sivulla /hallinta/kumppanit (api/_lib/kumppanihallinta.js luoKumppani); raporttilinkin avain
+    // on allekirjoitettu eikä sitä tallenneta mihinkään.
+    const { luoKumppani } = await import("../_lib/kumppanihallinta.js");
     const malli = ["provisio", "alennus"].includes(req.query.malli) ? req.query.malli : null;
-    await db`insert into kumppanit (koodi, nimi, email, malli) values (${koodi}, ${nimi}, ${email}, ${malli || "provisio"})
-      on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true,
-        malli = coalesce(${malli}, kumppanit.malli)`;
-    const pohja = (process.env.KAUPPA_URL || "https://huumorikauppa.fi").replace(/\/$/, "");
-    // Kumppanin oma raportti (/kumppanit/raportti): allekirjoitettu avain, jota ei tallenneta mihinkään.
-    const { allekirjoita } = await import("../_lib/markkinointi.js");
-    const { RAPORTTI_TARKOITUS } = await import("../_lib/kumppani.js");
-    const raportti = `${pohja}/kumppanit/raportti?koodi=${koodi}&avain=${encodeURIComponent(allekirjoita(RAPORTTI_TARKOITUS, koodi))}`;
-    return res.status(200).json({ ok: true, koodi, nimi, linkki: `${pohja}/k/${koodi}`, raportti });
+    const t = await luoKumppani(db, { nimi: req.query.nimi, koodi, malli, email: req.query.email });
+    if (t.virhe) return res.status(400).json({ ok: false, virhe: t.virhe });
+    return res.status(200).json({ ok: true, koodi: t.koodi, nimi: t.nimi, linkki: t.linkki, raportti: t.raportti });
   }
 
   // Kumppaniraportti kuukaudelta (&kuukausi=YYYY-MM, oletus kuluva kuukausi Suomen aikaa): tilaukset kumppaneittain,

@@ -27,12 +27,12 @@ describe("hallintasivujen pääsy evästeellä", () => {
     expect(hallintaPaasy({ headers: { cookie: "hk_hallinta_mittarit=vaara.avain" } }, res(), "mittarit", undefined)).toBe(false);
   });
 
-  it("viesti: otsikko, kolme avaimellista linkkiä ja ohjeet", async () => {
+  it("viesti: otsikko, neljä avaimellista linkkiä ja ohjeet", async () => {
     const { hallintaLinkit, hallintalinkkiViesti, yhteenvetoRivit } = await import("../../api/_lib/hallinta.js");
     const l = hallintaLinkit("https://huumorikauppa.fi");
     const v = hallintalinkkiViesti(l);
     expect(v.subject).toBe("Hallintalinkit Coworkille");
-    for (const s of ["mittarit", "some", "tarjoukset"]) expect(v.text).toContain(`https://huumorikauppa.fi/hallinta/${s}?avain=`);
+    for (const s of ["mittarit", "some", "tarjoukset", "kumppanit"]) expect(v.text).toContain(`https://huumorikauppa.fi/hallinta/${s}?avain=`);
     expect(v.text).toContain('"action":"mainoskulut"');
     expect(v.text).toContain('"action":"yritysluvut"');
     expect(v.text).not.toMatch(/[–—]/);
