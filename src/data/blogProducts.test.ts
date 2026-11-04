@@ -100,7 +100,6 @@ describe("blogiartikkelien tuotenostot", () => {
       "hauskat-peitot-lahjaksi": "peitot",
       "hauskat-hupparit-lahjaksi": "peitot",
       "hauskat-seinataulut-sisusta-huumorilla": "seinataulut",
-      "hauskat-koristeet-lahjaksi": "seinataulut",
       "hauska-vauvalahja-parhaat-bodyt": "vauva",
       "lahja-tuoreille-vanhemmille": "vauva",
       "parhaat-hauskat-tarrat-lappariin": "tarrat",

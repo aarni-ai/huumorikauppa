@@ -311,7 +311,7 @@ const BLOG_SLUGS = [
   "hauska-lahja-opettajalle",
   "hauska-lahja-urheilijalle",
   "hauskat-hupparit-lahjaksi",
-  "hauskat-koristeet-lahjaksi",
+  "hauskat-pikkulahjat-alle-30-euroa",
   "lahja-tuoreille-vanhemmille",
 ];
 

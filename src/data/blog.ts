@@ -1014,60 +1014,82 @@ Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajust
 
 Samaa huumoria tuovat myös [hauskat t-paidat](/kategoria/t-paidat). Tuparilahjaksi sopii myös [hauska huppari](/kategoria/hupparit).
 
-**Lue myös:** [Hauskat koristeet lahjaksi](/blogi/hauskat-koristeet-lahjaksi)
+**Lue myös:** [Hauskat pikkulahjat alle 30 €](/blogi/hauskat-pikkulahjat-alle-30-euroa)
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
 - 14 päivän palautusoikeus`,
     relatedCategories: ["koristeet", "hupparit"],
   },
   {
-    slug: "hauskat-koristeet-lahjaksi",
-    title: "Hauskat koristeet lahjaksi - Huumoria kotiin ja toimistoon",
-    metaTitle: "Hauskat koristeet lahjaksi | Huumorikauppa.fi",
-    metaDescription: "Hauskat koristeet kotiin ja lahjaksi. Piristä kotia suomalaisella huumorilla ja omalla tekstillä. ✨",
-    excerpt: "Hauskat koristeet tuovat huumoria ja persoonallisuutta kotiin. Löydä täydellinen koriste kotiisi.",
-    publishedAt: "2026-10-26",
-    updatedAt: "2026-10-26",
-    category: "koristeet",
-    tags: ["hauskat koristeet", "hauska koriste", "sisustus", "tuparilahja"],
-    content: `## Hauskat koristeet - Sisusta kotisi huumorilla
+    slug: "hauskat-pikkulahjat-alle-30-euroa",
+    title: "Hauskat pikkulahjat alle 30 €",
+    metaTitle: "Hauskat pikkulahjat alle 30 € | Huumorikauppa.fi",
+    metaDescription: "Hauskat pikkulahjat alle 30 €: ideoita pikkujouluihin, salaiselle joulupukille ja työkaverille. T-paidat 24,90 € alkaen.",
+    excerpt: "Pikkulahja ei tarvitse suurta budjettia. Tässä ideoita pikkujouluihin, salaiselle joulupukille ja työkaverille alle 30 eurolla.",
+    publishedAt: "2026-11-04",
+    updatedAt: "2026-11-04",
+    category: "lahjaideat",
+    tags: ["pikkulahja", "lahja alle 30 euroa", "salainen joulupukki", "pikkujoululahja", "työkaverin lahja"],
+    content: `## Hauskat pikkulahjat alle 30 euron budjetilla
 
-Kodin sisustus kertoo asukkaistaan. Miksei se siis kertoisi myös huumorintajusta? Hauskat koristeet tuovat persoonallisuutta, naurua ja asennetta kotiin tai toimiston kahvihuoneeseen.
+Pikkujoulut, salainen joulupukki ja työkaverin merkkipäivä tulevat usein samaan aikaan. Budjetti on tyypillisesti 20 tai 30 euroa, ja lahjan pitäisi silti naurattaa. Tässä on ideoita, jotka mahtuvat rajaan ja jotka saaja oikeasti käyttää.
 
-## Miksi hauska koriste?
+## Mikä tekee hyvästä pikkulahjasta hyvän?
 
-- **Piristää tilaa** - hauska koriste kääntää katseen ja hymyilyttää
-- **Persoonallinen** - kertoo sinun tyylistäsi
-- **Helppo lahja** - sopii tupareihin, syntymäpäiviin ja jouluun
+- **Hinta pysyy rajassa.** Sovittu summa kannattaa pitää, ettei kukaan jää nolommaksi kuin muut.
+- **Huumori sopii yhteiseen tilaan.** Teksti, jonka voi lukea kenen tahansa kuullen, toimii työpaikalla.
+- **Lahja on käytännöllinen.** Vaate tulee käyttöön, ja koriste jää helposti kaapin perälle.
+- **Saajan tyyli on tiedossa.** Pieni vihje kiinnostuksen kohteesta riittää, ei tarvita pitkää selvitystä.
 
-## Suosituimmat koristeaiheet
+## T-paita on pikkulahjaksi yllättävän toimiva
 
-### Sarkastiset lainaukset
+Huumorikaupassa t-paidat maksavat tätä kirjoitettaessa ${HINTA.tpaitaHaarukka}, joten ne mahtuvat alle 30 euron rajaan. Perushinta on pääosin ${HINTA.tpaitaAlkaen} tai ${HINTA.tpaitaUniikki}, ja suurimmat koot maksavat hieman enemmän. Hinnat ovat ilman toimitusta. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.
 
-"Tässä talossa ei siivota, tässä eletään" -tyyliset sarkastiset tekstit ovat aina suosittuja.
+## Ideoita pikkujouluihin
 
-### Keittiöhuumori
+Pikkujouluissa lahja voi olla osa illan ohjelmaa. Jos järjestätte arvonnan tai vitsikkään palkintojenjaon, valitse teksti, joka sopii koko porukalle.
 
-"Tämä keittiö on suljettu - syödään ulkona" -tyylinen teksti sopii keittiöön.
+- [Pikkujoulut. Muistan osittain](/tuote/pikkujoulut-muistan-osittain-t-paita-pikkujouluihin) kertoo sen, minkä moni tuntee seuraavana aamuna.
+- [Tonttu koeajalla](/tuote/tonttu-koeajalla-t-paita-jouluun) sopii henkilölle, joka suhtautuu jouluun kevyesti.
+- [Glögi ensin. Sitten joulu](/tuote/glogi-ensin-sitten-joulu-t-paita-jouluun) toimii, kun saaja nauttii joulun odotuksesta.
 
-### Toimistohuumori
+## Ideoita salaiselle joulupukille
 
-"Tämä toimisto pyörii kahvilla ja sarkasmilla" - täydellinen työpaikan kahvihuoneeseen.
+Salaisessa joulupukissa saaja ei tiedä, kuka lahjan antaa, joten turvallinen valinta on teksti, joka ei kosketa henkilökohtaisia asioita. Vältä vitsejä ulkonäöstä, iästä tai juomisesta, ellet tunne saajaa hyvin.
 
-### Perhehuumori
+Hyviä apuja valintaan ovat saajan työtehtävä, työpaikan arki ja yhteiset sisäpiirivitsit. Jos et tiedä saajan kokoa, kysy se järjestäjältä tai pyydä koko mukaan toivelistaan. Lisää ideoita löydät sivulta [salainen joulupukki -lahjat](/salainen-joulupukki-lahja).
 
-"Tässä talossa asuu hullu perhe ja yksi normaali koira" - perheille suunnattu teksti.
+## Ideoita työkaverille
 
-## Tilaa koristeet Huumorikaupasta
+Työkaverille kannattaa valita huumori, joka liittyy työn arkeen.
 
-Katso [hauskat koristeet](/kaikki-tuotteet). Lisää lahjaideoita löydät [syntymäpäivälahjoista](/syntymapaivalahjat).
+- [Tässä talossa asuu yksi pomo](/tuote/tassa-talossa-asuu-yksi-pomo-t-paita) sopii työkaverille, joka on valmis nauramaan oman työpaikkansa arjelle.
+- [Tämäkin olisi voinut olla sähköposti](/tuote/hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti) on lahja palaverien kriitikolle.
+- [Tärkeintä työssä on lounastauko](/tuote/hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko) sopii jokaiselle, jonka päivän kohokohta on ruokatunti.
 
-**Lue myös:** [Hauskat seinätaulut](/blogi/hauskat-seinataulut-sisusta-huumorilla)
+Lisää vaihtoehtoja on sivuilla [lahjat työkaverille](/lahjat/tyokaverille) ja [pikkujoululahjat](/lahjat/pikkujouluihin).
+
+## Muista toimitusaika
+
+T-paidat valmistetaan tilauksesta, joten niiden toimitusaika on pidempi kuin kaupan hyllyltä ostetun lahjan. Tilaa hyvissä ajoin, jos lahjalle on tietty päivämäärä. Tämän hetken viimeiset tilauspäivät löydät sivulta [joulun viimeiset tilauspäivät](/joulun-viimeiset-tilauspaivat).
+
+## Katso lisää lahjoja alle 30 eurolla
+
+Koko valikoiman näet sivulta [lahjat alle 30 euroa](/lahjat/alle-30-euroa). Jos haluat jotain isompaa, katso [hauskat t-paidat](/kategoria/t-paidat) tai [hupparit](/kategoria/hupparit).
+
+**Lue myös:** [Hauska lahja alle 20 euroa](/blogi/hauska-lahja-alle-20-euroa)
 
 - Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen
-- ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
-- 14 päivän palautusoikeus`,
-    relatedCategories: ["koristeet", "hupparit"],
+- 14 päivän palautusoikeus (ei personoiduilla tuotteilla)`,
+    relatedCategories: ["t-paidat", "hupparit"],
+    productLinks: [
+      { slug: "pikkujoulut-muistan-osittain-t-paita-pikkujouluihin", label: "Pikkujoulut. Muistan osittain | T-paita pikkujouluihin" },
+      { slug: "tonttu-koeajalla-t-paita-jouluun", label: "Tonttu koeajalla | T-paita jouluun" },
+      { slug: "glogi-ensin-sitten-joulu-t-paita-jouluun", label: "Glögi ensin. Sitten joulu | T-paita jouluun" },
+      { slug: "tassa-talossa-asuu-yksi-pomo-t-paita", label: "Tässä talossa asuu yksi pomo | T-paita" },
+      { slug: "hauska-t-paita-palaverien-kritisoijalle-tamakin-olisi-voinut-olla-sahkoposti", label: "Tämäkin olisi voinut olla sähköposti | T-paita" },
+      { slug: "hauska-t-paita-lounastaukoa-rakastaville-tarkeinta-tyossa-on-lounastauko", label: "Tärkeintä työssä on lounastauko | T-paita" },
+    ],
   },
 
   {

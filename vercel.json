@@ -63,6 +63,11 @@
       "statusCode": 301
     },
     {
+      "source": "/blogi/hauskat-koristeet-lahjaksi",
+      "destination": "/blogi/hauskat-pikkulahjat-alle-30-euroa",
+      "statusCode": 301
+    },
+    {
       "source": "/lahjat/alle-20-euroa",
       "destination": "/lahjat/alle-30-euroa",
       "statusCode": 301

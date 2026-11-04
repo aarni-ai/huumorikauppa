@@ -655,7 +655,7 @@ export const BLOG_POST_THEMES: Record<string, BlogThemeKey> = {
   "hauskat-pipot-suomi": "pipot",
   "hauskat-peitot-lahjaksi": "peitot",
   "hauskat-hupparit-lahjaksi": "peitot",
-  "hauskat-koristeet-lahjaksi": "seinataulut",
+  "hauskat-pikkulahjat-alle-30-euroa": "alle30",
   "lahja-tuoreille-vanhemmille": "vauva",
   "hauska-lahja-opettajalle": "opettaja",
   "hauska-lahja-urheilijalle": "urheilija",

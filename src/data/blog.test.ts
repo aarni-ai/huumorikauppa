@@ -119,7 +119,6 @@ describe("blogi: palautetut artikkelit ja niiden uudet vastinparit", () => {
   // julkaistiin omissa osoitteissaan. Myynnistä poistettuja tuotteita (peitto, seinätaulu, tarra, body) ei luvata.
   const parit: [string, string][] = [
     ["hauskat-peitot-lahjaksi", "hauskat-hupparit-lahjaksi"],
-    ["hauskat-seinataulut-sisusta-huumorilla", "hauskat-koristeet-lahjaksi"],
     ["hauska-vauvalahja-parhaat-bodyt", "lahja-tuoreille-vanhemmille"],
   ];
   const post = (slug: string) => blogPosts.find((p) => p.slug === slug)!;
