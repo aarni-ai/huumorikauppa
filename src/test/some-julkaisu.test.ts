@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-// @ts-expect-error js-moduuli ilman tyyppejä
+// @ts-ignore js-moduuli ilman tyyppejä (tsconfigista riippuen)
 import { seuraava, osiin, ajoikkuna } from "../../scripts/some-julkaisu.mjs";
 
 const lista = [
