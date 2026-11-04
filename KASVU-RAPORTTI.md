@@ -3541,3 +3541,67 @@ vaihe 3): uudessa projektissa www ohjaa juureen jo 308:lla.
   - laskeutumiset 75/81
   - tuotesivun katselut 14/16
 - Uutiskirjeen tilaajia 1, tarjouspyyntöjä 0.
+
+### 4.11.2026 myöhäisilta: somen julkaisuketju (selvitys, ei tilejä luotu)
+
+**Ongelma:** Coworkin selain ei saa videotiedostoa Instagramin eikä TikTokin latauskenttään Blobista. Ratkaisu on
+julkaisu palvelimelta rajapinnan kautta (Vercel-funktio hakee videon Blobista). Molemmat rajapinnat ovat
+dokumentaation mukaan maksuttomia; hintaa ei mainita missään (ei vahvistettu erikseen). Lähteet:
+developers.facebook.com/docs/instagram-platform/content-publishing ja developers.tiktok.com/doc/content-posting-api-get-started.
+
+**Instagram (Reels): toteutettavissa heti, ei tarkastusta omalle tilille.**
+- Vaatimus: Instagramin ammattilaistili (Business tai Creator). Variantti "Instagram API with Instagram Login" ei
+  vaadi Facebook-sivua.
+- Oikeudet: instagram_business_basic ja instagram_business_content_publish, Standard Access. Kun sovellus julkaisee vain
+  omistajan omalle tilille, App Review ja yrityksen vahvistus eivät Metan ohjeen mukaan ole tarpeen (vaaditaan vain
+  Advanced Accessille). Varmistetaan ensimmäisellä testijulkaisulla.
+- Julkaisu Blob-URL:sta: kyllä. POST /{ig-user-id}/media (media_type=REELS, video_url=Blob-URL, caption), sitten
+  status_code-kysely kerran minuutissa, kunnes FINISHED, sitten POST /{ig-user-id}/media_publish. Meta hakee videon
+  itse URL:sta, joten julkisen Blob-osoitteen pitäisi kelvata (ei erikseen vahvistettu; jos ei kelpaa, video tarjoillaan
+  omasta domainista). Videon vaatimukset: MP4/MOV, H.264 tai HEVC, 3 s - 15 min, enintään 300 Mt, 9:16, 23-60 fps,
+  AAC-ääni, moov-atomi alussa.
+- Raja: 100 rajapintajulkaisua vuorokaudessa (dokumentaatiossa paikoin 50; tarkistus /content_publishing_limit).
+- Avain: pitkäikäinen token 60 päivää, uusitaan palvelimelta (refresh_access_token) ennen vanhenemista. Token
+  tallennetaan vain Vercelin ympäristömuuttujaan, ei repoon eikä chattiin.
+- Vaiheet:
+  1. **AARNI (tili ja hyväksyntä):** Meta-kehittäjätili developers.facebook.com, käyttöehtojen hyväksyntä.
+  2. **AARNI:** uusi sovellus, tyyppi Business, käyttötapaus "Instagram API with Instagram login".
+  3. **AARNI:** Huumorikaupan Instagram-tili ammattilaistiliksi, jos ei jo ole (Instagram > Asetukset > Tilin tyyppi).
+  4. **AARNI:** tili sovelluksen rooliin (Instagram Tester) ja kutsun hyväksyntä Instagramissa.
+  5. **AARNI:** API setup > Generate token, kirjautuminen Instagramiin; token Vercelin ympäristömuuttujaksi
+     IG_ACCESS_TOKEN (Aarni liittää sen itse Verceliin, ei chattiin).
+  6. Claude: reitti /api/cron/some?tehtava=ig-julkaise (CRON_SECRET), tokenin uusinta ajastettuna, testijulkaisu ja
+     Coworkin ohje (Cowork antaa vain Blob-URL:n ja tekstin).
+
+**TikTok (Content Posting API): julkinen automaattijulkaisu vasta TikTokin auditin jälkeen.**
+- Ilman auditia kaikki julkaisut ovat yksityisiä (SELF_ONLY), enintään 5 käyttäjää vuorokaudessa, ja tilin pitää olla
+  yksityinen. Julkiseksi muuttaminen tehdään käsin TikTokin sovelluksessa julkaisu kerrallaan.
+- Audit vaatii käyttöliittymän TikTokin ohjeiden mukaan (tekijän nimimerkki, näkyvyysvalinta ilman oletusta,
+  musiikin käyttövahvistus, kaupallisen sisällön merkintä, esikatselu) ja edellyttää, että sovellus on tehty laajalle
+  käyttäjäjoukolle eikä vain sisäiseen käyttöön. Yhden kaupan sisäinen työkalu voi siksi jäädä hyväksymättä. Kestoa
+  TikTok ei kerro.
+- Blob-URL suoraan: ei. PULL_FROM_URL vaatii, että URL:n domain tai etuliite on vahvistettu TikTokille (DNS-tietue
+  tai tiedosto) eikä URL saa uudelleenohjata. vercel-storage.com-osoitetta ei voi vahvistaa. Vaihtoehdot:
+  (a) FILE_UPLOAD: palvelin hakee videon Blobista ja lähettää sen paloina TikTokin upload_url-osoitteeseen (toimii ilman
+  domainvahvistusta julkaisussa); (b) huumorikauppa.fi/media/... -rewrite Blobiin ja huumorikauppa.fi:n vahvistus
+  DNS-tietueella (tehdään nimipalvelinvaihdon jälkeen, KAYTTOONOTTO.md kohta 24).
+- Välivaihe ilman auditia: luonnosjulkaisu (inbox, oikeus video.upload). Video menee Huumorikaupan TikTokin
+  saapuneisiin, ja Cowork viimeistelee julkaisun TikTokin sovelluksessa tai selaimessa (ei tiedoston latausta).
+  Raja 5 odottavaa luonnosta vuorokaudessa. Toimiiko inbox ennen auditia, ei käy ilmi dokumentaatiosta; testataan.
+- Avaimet: access token ja refresh token (dokumentaation esimerkeissä 24 h ja 365 pv, tekstissä 2 h ja 180 pv), uusi
+  refresh token tallennetaan joka uusinnassa. Raja 6 pyyntöä minuutissa ja noin 15 julkaisua tekijää kohden päivässä.
+- Vaiheet:
+  1. **AARNI (tili):** TikTok-kehittäjätili developers.tiktok.com (omistajaksi mieluiten organisaatio Uusiku Oy).
+  2. **AARNI:** sovellus (kuvake 1024x1024, nimi, kuvaus, verkkosivu https://huumorikauppa.fi), tuotteet Login Kit ja
+     Content Posting API, Direct Post päälle, oikeudet video.upload ja video.publish, Redirect URI
+     https://huumorikauppa.fi/api/tiktok/paluu.
+  3. **AARNI (hyväksyntä):** käyttöehtojen, tietosuojaselosteen ja sivuston URL-vahvistus (DNS-tietue Cloudflareen, Cowork
+     voi lisätä tietueen).
+  4. **AARNI:** sovelluksen tarkastukseen lähetys: kuvaus käyttötavasta ja 1-5 demovideota koko ketjusta. Claude tekee
+     ensin julkaisusivun ja demon.
+  5. **AARNI (hyväksyntä):** Content Posting API -auditin hakemus lomakkeella (julkinen julkaisu).
+  6. **AARNI:** kirjautuminen Huumorikaupan TikTok-tilillä kerran sovelluksen OAuth-sivulla.
+  7. Claude: palvelinreitit (OAuth-paluu, tokenien uusinta, FILE_UPLOAD- ja inbox-julkaisu), Coworkin ohje.
+
+**Suositus:** Instagram ensin (Aarnin vaiheet 1-5, ei tarkastusta). TikTokissa haetaan tarkastus ja audit rinnakkain.
+Siihen asti TikTok-videot julkaistaan inbox-luonnoksina, jos se toimii ilman auditia, ja muuten käsin puhelimesta.

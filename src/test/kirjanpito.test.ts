@@ -33,7 +33,7 @@ describe("kirjanpidon kuukausiraportti", () => {
     expect((await kuukausiraportti(db as never, { alku: "2026-11-01", loppu: "2026-11-30", stripe })).muut).toEqual([]);
   });
   it("Printifyn veloitukset aikaväliltä ilman peruttuja, Stripen saldotapahtumat", async () => {
-    const o = (id: string, created_at: string, status = "fulfilled") => ({ id, external_id: "2ed0a626-x", status, created_at, total_price: 1500, total_shipping: 469, total_tax: 503 });
+    const o = (id: string, created_at: string, status = "fulfilled") => ({ id, metadata: { shop_order_label: "Huumorikauppa #2ed0a626" }, status, created_at, total_price: 1500, total_shipping: 469, total_tax: 503 });
     const listaa = async () => ({ ok: true, data: { data: [o("a", "2026-11-01 10:00:00+00:00"), o("b", "2026-10-29 10:00:00+00:00"), o("c", "2026-10-29 11:00:00+00:00", "canceled"), o("d", "2026-10-20 10:00:00+00:00")], next_page_url: "x" } });
     const p = await printifyKulut(listaa, { alku: "2026-10-27", loppu: "2026-10-31" });
     expect(p.rivit).toEqual([expect.objectContaining({ printify: "b", oma: "2ED0A626", yhteensa: 24.72, vero: 5.03 })]);

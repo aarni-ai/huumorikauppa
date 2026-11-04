@@ -121,7 +121,7 @@ export async function printifyKulut(listaa, { alku, loppu, sivuja = 10 }) {
       if (pvm < alku) { vanhempia = true; continue; }
       if (pvm > loppu || o.status === "canceled") continue;
       const e = (x) => r2((Number(x) || 0) / 100);
-      rivit.push({ pvm, printify: o.id, oma: String(o.external_id || o.label || "").slice(0, 8).toUpperCase(), tila: o.status,
+      rivit.push({ pvm, printify: o.id, oma: String(o.metadata?.shop_order_label || o.external_id || "").replace(/^.*#/, "").slice(0, 8).toUpperCase(), tila: o.status,
         tuotteet: e(o.total_price), toimitus: e(o.total_shipping), vero: e(o.total_tax), yhteensa: e((o.total_price || 0) + (o.total_shipping || 0) + (o.total_tax || 0)) });
     }
     if (vanhempia || !r.data?.next_page_url) break;
