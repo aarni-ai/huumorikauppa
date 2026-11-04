@@ -582,8 +582,8 @@ export async function kasitteleRyhmaMaksu(session) {
 /** Vetäjän linkit sähköpostiin (vain, kun oma lähetysdomain on vahvistettu). */
 async function lahetaLinkit(vetaja, origin, hallinta, jasenTunnus, nimi) {
   try {
-    const { laheta, omaVahvistusKaytossa } = await import("./sahkoposti.js");
-    if (!omaVahvistusKaytossa()) return false;
+    const { laheta, omaVahvistusKaytossaNyt } = await import("./sahkoposti.js");
+    if (!(await omaVahvistusKaytossaNyt())) return false;
     const h = `${origin}/ryhma/hallinta/${hallinta}`;
     const j = `${origin}/ryhma/${jasenTunnus}`;
     const r = await laheta({ to: vetaja.email, subject: `Ryhmätilaus ${nimi}: linkit`,

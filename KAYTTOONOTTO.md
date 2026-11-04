@@ -64,7 +64,7 @@ koko IBAN ei ole tässä. Täysi numero on Holvissa ja Aarnilla.
 | 9 | Domain suoraan uuteen projektiin (ohje alla: "Domain suoraan uuteen Vercel-projektiin") | Cloudflare, Vercel | - |
 | 13 | Automaatio: schema.sql uudelleen, sähköpostit, valvonta, päivän yhteenveto | oma kone, GitHub | - |
 
-## Domain suoraan uuteen Vercel-projektiin (valmisteltu 29.10.2026, EI vielä tehty)
+## Domain suoraan uuteen Vercel-projektiin (valmisteltu 29.10.2026, EI vielä tehty; ajantasainen suunnitelma kohdassa 24)
 
 **Nykytila 29.10.2026.** huumorikauppa.fi on vanhassa Vercel-projektissa (tiimi aarni-ais-projects), joka välittää
 pyynnöt uuteen projektiin `huumorikauppa` (tiimi flyapeg-2135s-projects, `huumorikauppa-five.vercel.app`,
@@ -1101,3 +1101,116 @@ kokeilee kirjautumista ja tallentaa salasanan Verceliin (GMAIL_APP_PASSWORD, pro
 vahvistetuksi (tarkistus tunnin välein) tai Vercelissä on SAHKOPOSTI_VAHVISTETTU=1, viestit lähtevät taas Resendillä
 osoitteesta tilaukset@huumorikauppa.fi. Sen jälkeen GMAIL_APP_PASSWORD poistetaan Vercelistä
 (`npx vercel env rm GMAIL_APP_PASSWORD production --yes`) ja sovellussalasana Googlelta.
+
+
+## 24. Nimipalvelinvaihto uuteen Cloudflareen ja domain uuteen Vercel-projektiin (valmisteltu 4.11.2026)
+
+**Tilanne 4.11.2026 klo 11.** Rekisteröijä on Domainhotelli (whois: Planeetta Internet Oy, voimassa 27.2.2027 asti,
+DNSSEC pois päältä). .fi-rekisterin nimipalvelimet ovat `aria`/`huxley.ns.cloudflare.com` (tuntematon vanha
+Cloudflare-tili), TTL 21600 s (6 h). Uusi vyöhyke huumorikaupan omalla Cloudflare-tilillä (`annabel`/`vick`) on jo
+olemassa ja vastaa. `node scripts/dns-vertailu.mjs` vertasi molempia vyöhykkeitä suoraan nimipalvelimilta, eikä
+estäviä eroja löytynyt:
+
+| Nimi | Tyyppi | Vanha vyöhyke (julkinen DNS nyt) | Uusi vyöhyke (annabel/vick) | Tarvitaan |
+|---|---|---|---|---|
+| `@` | A | 216.198.79.1, 64.29.17.1 | 216.198.79.65, 64.29.17.65 | kyllä, Vercel (kaikki Vercelin osoitteita, toimivat samoin) |
+| `@` | AAAA, CAA | ei ole | ei ole | ei. **Älä lisää CAA:ta**; jos joskus lisätään, siinä pitää olla `letsencrypt.org` (Vercelin varmenteet) |
+| `@` | MX | 50 mx3.zoho.eu | sama | kyllä, nykyinen Zoho-posti ennallaan |
+| `@` | TXT | v=spf1 +a +mx +ip4:31.217.196.126 +ip4:31.217.196.127 ~all | sama | kyllä, juuren SPF ennallaan (Resend käyttää alidomainia `send`) |
+| `@` | TXT | google-site-verification=Afupwj3f... ja =snmSsxma... | sama | kyllä, **Search Consolen vahvistus** (molemmat arvot) |
+| `@` | TXT | trustpilot-one-time-verification-id=f57afbee... | sama | ei haittaa |
+| `www` | CNAME | 529bd05f3b0cb29b.vercel-dns-017.com | sama | kyllä, vaihe 2 vaihtaa |
+| `_vercel` | TXT | vanhan Vercel-tiimin kaksi vc-domain-verify-arvoa | sama | kyllä vaiheeseen 2 asti |
+| `default._domainkey` | TXT | v=DKIM1; k=rsa; p=MIIBIjAN... | sama | kyllä (vanhan postipalvelun DKIM) |
+| `_acme-challenge` | TXT | YYDIo6w20V8U7UINBGCVtj4VOBocrJ1ILvqp_l5cLk8 | sama | ei haittaa (Vercel käyttää http-01:tä) |
+| `_dmarc` | TXT | v=DMARC1; p=none; pct=100; rua=mailto:dmarcreports@lovable.dev | rua=mailto:huumorikauppa@gmail.com | kyllä, uusi arvo |
+| `resend._domainkey` | TXT | ei ole | p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUF9+... | kyllä, Resend DKIM |
+| `send` | MX | ei ole | 10 feedback-smtp.eu-west-1.amazonses.com | kyllä, Resend |
+| `send` | TXT | ei ole | v=spf1 include:amazonses.com ~all | kyllä, Resend |
+
+Muita alidomaineja ei löytynyt (yleisimmät nimet kysytty, jokerimerkkiä ei ole). Uuden vyöhykkeen A- ja CNAME-tietueet
+palauttavat Vercelin osoitteet eivätkä Cloudflaren, joten ne ovat oikein **DNS only** (harmaa pilvi). Oranssi pilvi
+rikkoisi Vercelin varmenteen ja www-ohjauksen.
+
+**DMARC:** gmail.com ei hyväksy toisen domainin DMARC-raportteja, joten raportteja ei todennäköisesti tule. Ilmainen
+korjaus: Cloudflare > huumorikauppa.fi > Email > DMARC Management > Enable. Cloudflare antaa osoitteen
+`...@dmarc-reports.cloudflare.net` ja lisää sen `_dmarc`-tietueeseen. Pidä `p=none`, kunnes raporteissa näkyy
+Resendin DKIM-läpäisy kahden viikon ajan.
+
+### Vaihtosuunnitelma (ei katkoa)
+
+Periaate: vyöhykkeet ovat samat, joten vaihdon aikana ei ole väliä, kumman kävijän resolveri näkee. Domain siirretään
+uuteen Vercel-projektiin vasta, kun nimipalvelimet ovat vaihtuneet ja tarkistukset ovat menneet läpi. Älä poista
+mitään vanhalta Cloudflare-tililtä; se on palautustie.
+
+**Vaihe 0 (ennen vaihtoa, Claude tai Cowork):**
+`node scripts/dns-vertailu.mjs`: on oltava "Ei estäviä eroja". Jos uuteen vyöhykkeeseen tehdään muutoksia, aja uudelleen.
+
+**Vaihe 1: nimipalvelimet (Cowork, Domainhotelli, arkiaamuna klo 7-9, ei kampanjapäivänä):**
+1. Domainhotelli > huumorikauppa.fi > Nimipalvelimet. Kirjoita ylös nykyiset arvot (`aria.ns.cloudflare.com`,
+   `huxley.ns.cloudflare.com`).
+2. Vaihda tilalle täsmälleen ne kaksi, jotka uusi Cloudflare näyttää (Overview > "Replace your nameservers"):
+   `annabel.ns.cloudflare.com` ja `vick.ns.cloudflare.com`. Älä ota DNSSECiä käyttöön kummassakaan päässä.
+3. Cloudflare > Overview > **Check nameservers now**. Tila muuttuu Activeksi yleensä alle tunnissa.
+4. Tarkistukset (Claude, heti ja 1 h ja 6 h kuluttua):
+   - `dig +short NS huumorikauppa.fi @a.fi`: annabel ja vick
+   - `curl -sI https://huumorikauppa.fi | head -1`: 200
+   - `curl -sI https://www.huumorikauppa.fi | head -3`: ohjaus juureen
+   - `node scripts/sahkoposti-tila.mjs`: DNS-rivit ok
+   - Zohon posti: lähetä testiviesti Zoho-osoitteeseen, jos sellaista käytetään
+   Vanhoja nimipalvelimia välimuistissaan pitävät resolverit (enintään 6 h) saavat samat vastaukset vanhasta vyöhykkeestä.
+
+**Vaihe 2: sähköposti Resendiin (Claude, kun vaihe 1 on Active):**
+1. `curl ... "https://huumorikauppa-five.vercel.app/api/cron/tilaukset?tehtava=resend-domain&vahvista=1"`
+   (CRON_SECRET). Toista tunnin välein, kunnes tila on `verified`.
+2. Vaihto on automaattinen: `lahetysreitti` ja `omaVahvistusKaytossaNyt` (api/_lib/sahkoposti.js) ottavat Resendin
+   käyttöön tunnin kuluessa vahvistuksesta. Silloin kaikki viestit lähtevät osoitteesta tilaukset@huumorikauppa.fi, ja
+   kassa lakkaa pyytämästä Stripen kuittia. Viestit ovat tilausvahvistukset, lähetysilmoitukset, lahjakortit,
+   korimuistutukset, uutiskirje, arvostelupyynnöt ja hallinnan viestit.
+3. `node scripts/sahkoposti-tila.mjs --testi`: yksi TESTI-viesti kustakin tyypistä osoitteeseen
+   huumorikauppa@gmail.com. Tarkista Gmailissa, ettei yksikään ole roskapostissa, ja katso Näytä alkuperäinen:
+   `dkim=pass header.d=huumorikauppa.fi` ja `dmarc=pass`.
+4. `printf '1' | npx vercel env add SAHKOPOSTI_VAHVISTETTU production` (varmistus, ei pakollinen) ja julkaisu.
+5. Jos Gmail-sovellussalasana on asetettu: `npx vercel env rm GMAIL_APP_PASSWORD production --yes` ja salasanan poisto
+   Googlelta.
+
+**Vaihe 3: domain uuteen Vercel-projektiin ja www 308 (Cowork + Claude samaan aikaan, vaiheen 2 jälkeen):**
+Uudessa projektissa on jo `huumorikauppa.fi` ja `www.huumorikauppa.fi` (www ohjaa 308:lla juureen), tila
+pending_domain_verification. Arvot tarkistettiin Vercelin API:sta 4.11.2026.
+1. Cowork, Cloudflare > DNS > Records, lisää kaksi TXT-tietuetta nimellä `_vercel` (vanhat jäävät rinnalle):
+   - `vc-domain-verify=huumorikauppa.fi,f6db53b10f680ae452fe`
+   - `vc-domain-verify=www.huumorikauppa.fi,795afe3a11413258ab01`
+   **Tämä on siirtohetki**: Vercel siirtää domainin uuteen projektiin heti vahvistettuaan sen.
+2. Claude vahvistaa heti: `POST /v9/projects/<projekti>/domains/huumorikauppa.fi/verify` ja sama www:lle.
+3. Cowork muuttaa: juuren A-tietueet 216.150.1.1 ja 216.150.16.1 (poista .65-arvot) ja `www` CNAME
+   `bffaf7b5fcbd90db.vercel-dns-016.com`, kaikki DNS only.
+4. Claude tarkistaa:
+   - `node scripts/dns-vertailu.mjs --vaihe 2`
+   - `curl -sI https://www.huumorikauppa.fi`: **308** ja `location: https://huumorikauppa.fi/`
+   - kassatesti `node scripts/kassatesti.mjs --url https://huumorikauppa.fi`
+   - `/api/products`, sivukartta ja Search Consolen URL-tarkistus
+5. Kun kaikki on kunnossa, Claude:
+   - poistaa välityskoodin (middleware.ts `valitysKohde`)
+   - palauttaa ajastukset `vercel.json`-tiedostoon (scripts/julkaise-uusi.sh)
+   - julkaisee
+   Vanhaa Vercel-projektia ei enää tarvita. Viikon kuluttua Cowork poistaa vanhan tiimin kaksi `_vercel`-arvoa.
+
+**Palautus:**
+- Vaihe 1 epäonnistuu (sivu tai posti ei toimi 15 minuutissa): Domainhotellissa nimipalvelimet takaisin `aria` ja
+  `huxley`. Vanha vyöhyke on koskematon.
+- Vaihe 3 epäonnistuu:
+  1. Claude poistaa domainin uudesta projektista API:lla.
+  2. Cowork poistaa uudet `_vercel`-arvot ja palauttaa A-tietueet .65-arvoihin ja www CNAME
+     `529bd05f3b0cb29b.vercel-dns-017.com`.
+  Vanhan tiimin varmennus on yhä DNS:ssä.
+Stripen webhook on koko ajan `huumorikauppa-five.vercel.app`-osoitteessa, joten maksut eivät katkea missään vaiheessa.
+
+**Search Console:** domain-ominaisuus pysyy vahvistettuna, koska molemmat google-site-verification-arvot ovat uudessa
+vyöhykkeessä. Tarkista vaiheen 1 jälkeen Search Console > Asetukset > Omistajuuden vahvistus.
+
+**Coworkin vaiheet lyhyesti:**
+1. (valmiina) Uuden Cloudflaren vyöhyke. Lisäksi Email > DMARC Management > Enable.
+2. Domainhotelli: nimipalvelimet annabel ja vick, arkiaamuna. Cloudflare: Check nameservers.
+3. Ilmoita Claudelle, kun Cloudflare näyttää Active.
+4. Clauden pyynnöstä vaiheen 3 kohdat 1 ja 3.
+5. Viikon päästä vanhat `_vercel`-arvot pois.

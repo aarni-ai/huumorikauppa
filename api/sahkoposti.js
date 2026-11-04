@@ -31,7 +31,7 @@
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
  */
 import { onTietokanta, sql } from "./_lib/db.js";
-import { laheta, omaVahvistusKaytossa, halytys } from "./_lib/sahkoposti.js";
+import { laheta, omaVahvistusKaytossaNyt, halytys } from "./_lib/sahkoposti.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
 import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS } from "./_lib/kumppani.js";
@@ -139,7 +139,7 @@ export async function kasittele(req, res, store) {
   // Lahjakorttien myyntitila sivustolle: sama ehto kuin kassalla (api/checkout.js, lahjakortitMyynnissa).
   if (req.method === "GET" && q.tila === "1") {
     res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
-    return res.status(200).json({ lahjakortit: lahjakortitMyynnissa(), sahkoposti: omaVahvistusKaytossa() });
+    return res.status(200).json({ lahjakortit: lahjakortitMyynnissa(), sahkoposti: await omaVahvistusKaytossaNyt() });
   }
   if (req.method === "GET" && typeof q.arviot === "string") {
     const slug = teksti(q.arviot, 200);

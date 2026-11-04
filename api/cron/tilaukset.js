@@ -51,7 +51,7 @@ import { onTietokanta, sql, kirjaaTapahtuma } from "../_lib/db.js";
 import { onStripe, stripe } from "../_lib/stripe.js";
 import { kasitteleMaksu, kasitteleLasku, lahetaPrintifyyn, halytetaanko, seuraavaYritys } from "../_lib/tilaus.js";
 import { haeTilaus, lahetys, onPrintify, haeTuote, haeKatalogiVariantit, luoTilaus, tilausRunko, peruTilaus, haePainotalo, listaaTilaukset, testitilaus, siivoaTestitilaukset, listaaTuotteet, haeToimitusajat } from "../_lib/printify.js";
-import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti, lahetaVarareitilla, markkinointiKaytossa, lahetysreitti, gmailKaytossa } from "../_lib/sahkoposti.js";
+import { laheta, lahetysViesti, halytys, tilausnumero, OMISTAJA, onSahkoposti, vahvistusViesti, lahetaVarareitilla, markkinointiKaytossa, lahetysreitti, gmailKaytossa, omaVahvistusKaytossaNyt } from "../_lib/sahkoposti.js";
 import { tarkistaEnnenTuotantoa } from "../_lib/tilausvahti.js";
 import { hinnoitteleRivi } from "../_lib/kokohinnat.js";
 import { ajaSaatavuus, pgVarasto, teeKuristin, muutosRivit } from "../_lib/saatavuus.js";
@@ -145,7 +145,10 @@ export default async function handler(req, res) {
       const kasin = onPrintify()
         ? await listaaTilaukset(1, 20).then((r) => (r.ok ? kasitilausRivit(kasitilausHuomiot(r.data?.data, new Date(Date.now() - 864e5), new Date())) : [])).catch(() => [])
         : [];
-      return [...linkkirivit, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...toimitustesti, ...kasin, ...yhteenvetoRivit(linkit)];
+      // Sähköpostin valmiustila (nimipalvelimet, Resend, reitti; api/_lib/sahkopostitila.js).
+      const { sahkopostiTila, sahkopostiRivit } = await import("../_lib/sahkopostitila.js");
+      const sposti = await sahkopostiTila({ db, lahetysreitti, markkinointiKaytossa, omaVahvistusKaytossaNyt }).then(sahkopostiRivit).catch(() => []);
+      return [...linkkirivit, ...sposti, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...toimitustesti, ...kasin, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -688,6 +691,26 @@ export default async function handler(req, res) {
     }
     const tilat = await store.arviotTiloittain().catch(() => []);
     return res.status(200).json({ ok: true, odottavat: await store.odottavatArviot(), tiloittain: Object.fromEntries(tilat.map((r) => [r.status, r.maara])) });
+  }
+
+  // Sähköpostin valmiustila (api/_lib/sahkopostitila.js, scripts/sahkoposti-tila.mjs). &testi=1: TESTI-viesti jokaisesta
+  // viestityypistä omistajalle, vain kun Resend on vahvistettu ja reitti on resend (&pakota=1 ohittaa).
+  if (req.query.tehtava === "sahkopostitila") {
+    const { sahkopostiTila, testiviestit } = await import("../_lib/sahkopostitila.js");
+    const tila = await sahkopostiTila({ db, lahetysreitti, markkinointiKaytossa, omaVahvistusKaytossaNyt });
+    let testit = null;
+    if (req.query.testi === "1" && !kuiva) {
+      if (!(tila.resend.status === "verified" && tila.reitti === "resend") && req.query.pakota !== "1") {
+        testit = { lahetetty: false, syy: "Resend ei ole vielä vahvistettu tai reitti ei ole resend" };
+      } else {
+        testit = [];
+        for (const { tyyppi, viesti } of await testiviestit(OMISTAJA())) {
+          const r = await laheta(viesti);
+          testit.push({ tyyppi, ok: r.ok, reitti: r.reitti || null, virhe: r.ok ? null : r.virhe });
+        }
+      }
+    }
+    return res.status(200).json({ ok: true, ...tila, testit });
   }
 
   if (req.query.tehtava === "resend-domain") {

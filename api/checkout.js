@@ -24,7 +24,7 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
-import { omaVahvistusKaytossa } from "./_lib/sahkoposti.js";
+import { omaVahvistusKaytossaNyt } from "./_lib/sahkoposti.js";
 import { kumppaninTiedot, valitseKumppaniAlennus } from "./_lib/kumppani.js";
 import { ytunnus as tarkistaYtunnus, haeYritys, laskuData, YRITYS_MIN_KPL } from "./_lib/yritysmyynti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
@@ -259,7 +259,7 @@ export default async function handler(req, res) {
       metadata: { order_id: tilaus.id },
       // Kunnes oma tilausvahvistus on käytössä (Resend-domain vahvistettu, SAHKOPOSTI_VAHVISTETTU=1), Stripe lähettää
       // kuitin: receipt_email live-tilassa lähettää sen Stripen sähköpostiasetuksista riippumatta.
-      payment_intent_data: { metadata: { order_id: tilaus.id }, ...(omaVahvistusKaytossa() ? {} : { receipt_email: pyynto.customerEmail.trim() }) },
+      payment_intent_data: { metadata: { order_id: tilaus.id }, ...((await omaVahvistusKaytossaNyt()) ? {} : { receipt_email: pyynto.customerEmail.trim() }) },
       locale: "fi",
     });
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;

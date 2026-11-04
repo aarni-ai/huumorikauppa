@@ -21,6 +21,15 @@ export const onSahkoposti = () => !!process.env.RESEND_API_KEY || gmailKaytossa(
  * SAHKOPOSTI_VAHVISTETTU=1, tai kun Gmail-reitti on käytössä. Muuten kassa pyytää Stripen kuitin (api/checkout.js receipt_email).
  */
 export const omaVahvistusKaytossa = () => (!!process.env.RESEND_API_KEY && process.env.SAHKOPOSTI_VAHVISTETTU === "1") || gmailKaytossa();
+/**
+ * Sama, mutta ottaa käyttöön oman vahvistuksen myös automaattisesti, kun Resend kertoo domainin vahvistetuksi
+ * (uutiskirje.js domainVahvistettu, muisti tunnin). Ei vaadi SAHKOPOSTI_VAHVISTETTU-muuttujaa (4.11.2026).
+ */
+export async function omaVahvistusKaytossaNyt() {
+  if (omaVahvistusKaytossa()) return true;
+  if (!process.env.RESEND_API_KEY) return false;
+  return (await import("./uutiskirje.js")).domainVahvistettu();
+}
 
 /** "resend" tai "gmail": domain vahvistettu -> Resend; muuten Gmail, jos salasana on asetettu; muuten Resend. */
 export async function lahetysreitti({ vahvistettu } = {}) {
