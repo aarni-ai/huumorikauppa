@@ -11,3 +11,7 @@
 
 # Coworkin aktivointilinkki (4.11.2026): ei koskaan tuotantoon
 .cowork
+
+# Somejulkaisu koneelta (5.11.2026): kuvakaappaukset ja loki vain paikallisesti
+some/kuvakaappaukset/
+some/julkaisuloki.txt

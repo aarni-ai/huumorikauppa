@@ -3626,3 +3626,54 @@ developers.facebook.com/docs/instagram-platform/content-publishing ja developers
 
 **Suositus:** Instagram ensin (Aarnin vaiheet 1-5, ei tarkastusta). TikTokissa haetaan tarkastus ja audit rinnakkain.
 Siihen asti TikTok-videot julkaistaan inbox-luonnoksina, jos se toimii ilman auditia, ja muuten käsin puhelimesta.
+
+### 5.11.2026: somevideot julkaistaan koneelta (Instagram ja TikTok)
+
+**Miksi:** Cowork ei saa videotiedostoja selaimen kautta Instagramiin eikä TikTokiin (CSP, CORS ja verkon esto).
+Julkaisu tehdään nyt Aarnin koneelta Playwrightilla (playwright-core, devDependency, ilmainen).
+
+**scripts/some-julkaisu.mjs:**
+- Profiili: Chrome-profiili "Huumorikauppa" on kansio "Profile 8" (tunnistetaan joka ajossa Preferences-tiedoston
+  profile.name-kentästä). Muihin profiileihin ei kosketa. Profiili kopioidaan ennen jokaista ajoa kansioon
+  ~/.huumorikauppa-some/chrome ilman välimuisteja, jotta käynnissä oleva Chrome ei lukitse sitä. Kopio käyttää macOS:n
+  avainnippua, joten kirjautumiset toimivat ilman salasanoja. Selain näkyy palveluille automaation ohjaamana
+  (tunnistusta ei piiloteta).
+- Valinta: some/julkaisut.json järjestyksessä vanhin video, jonka päivä on tänään tai aiemmin ja joka puuttuu
+  kanavalta (some/julkaistut.csv). Enintään yksi video per palvelu per ajo. Black Friday -videot eivät siis lähde ennen
+  23.11.
+- Turvat: tili tarkistetaan ennen julkaisua (Instagram huumorikauppa_fi asetussivulta, TikTok @huumorikauppa
+  tilitiedoista). Väärä tili, puuttuva kirjautuminen, CAPTCHA tai tarkistus lopettaa kyseisen palvelun ja kirjataan
+  lokiin some/julkaisuloki.txt kuvakaappauksen kanssa (some/kuvakaappaukset/, ei repossa). CAPTCHAa ei ratkaista.
+- Tahti: tauot 1-3 s vaiheiden välissä, kirjoitus merkki kerrallaan, 20-45 s palveluiden välissä.
+- Hashtagit: kirjoitetaan #tagi ja valitaan sama tagi ehdotuslistasta (rivi, jossa on tagi ja julkaisumäärä).
+  Ensimmäisessä testissä valinta osui TikTokissa viereiseen ehdotukseen (#suomihuumori🇫🇮); korjattu ennen julkaisua.
+- TikTokin ponnahdusikkunat: ohjevihjeet suljetaan. Kysymykseen "Otetaanko sisällön automaattiset tarkistukset
+  käyttöön?" vastataan Peruuta, koska se muuttaisi tilin asetusta.
+- Tilastot: julkaisuista, joista on 7 päivää, luetaan Instagramin kelan tilastot ja TikTok Studion analytiikka
+  some/tilastot.csv:hen (yksi per palvelu per ajo). Jos lukuja ei saa luettua, se kirjataan lokiin.
+- Puuttuvat videotiedostot kirjataan lokiin. 9 listan -v2-videota puuttui koneelta (02, 08, 22, 30, 39, 46, 47, 50,
+  54); tehty uudelleen scripts/some-videot.mjs:llä (ffmpeg ~/.huumorikauppa-some/tyokalut, ilmainen npm-paketti).
+- JULKAISUT.md:n Cowork-ohjeen rivi "Luvut talteen" lisättiin generaattoriin, koska uudelleenajo olisi poistanut sen.
+
+**Testijulkaisut 4.11. illalla:**
+- Instagram, video 01 (Tonnin seteli, uusi malli ilman kasvoja): https://www.instagram.com/reel/DfVPPr4hVH2/
+  Kuvakaappaus: kela näkyy tilillä huumorikauppa_fi oikealla kuvatekstillä, 4 hashtagia ehdotuksista.
+- TikTok, video 21 (termostaatti): https://www.tiktok.com/@huumorikauppa/video/7704408158004890902
+  Ensin tila "Vain minä, Sisältöä tarkastetaan", muutaman minuutin päästä julkinen ("Kaikki"). 5 hashtagia
+  ehdotuksista.
+- TikTokin profiilisivulla tuli CAPTCHA (liukupalapeli) ensimmäisellä avauksella; TikTok Studion lataussivulla ei.
+  Skripti käyttää Studiota ja pysähtyy, jos CAPTCHA tulee.
+- some/julkaistut.csv: Instagramin 21, 22 ja 23 (Coworkin julkaisemat, tila "julkaistu (Cowork)"), 01 Instagram ja
+  21 TikTok. TikTokissa ei ollut aiempia sarjan videoita (15 vanhaa julkaisua kesältä).
+- Seuraavat: Instagram 02 (tiedosto nyt olemassa), 03, 24, ...; TikTok 01, 22, 02, ... Kuiva ajo 4.11. valitsi
+  Instagramille 03, koska 02:n tiedosto puuttui silloin.
+
+**Ajastus:** launchd fi.huumorikauppa.some-julkaisu asennettu (scripts/some-julkaisu.plist,
+scripts/some-julkaisu-asennus.sh). Käynnistyy joka tunti :30; skripti julkaisee ikkunoissa 11.30-17.59 ja
+18.30-23.29 Suomen aikaa kerran ikkunaa kohden (koneen aikavyöhyke UTC+5 ei haittaa, ja unen takia väliin jäänyt ajo
+tehdään myöhemmin samana päivänä). Viimeinen ajopäivä 24.12.2026. Ajon aikana koneelle aukeaa Chrome-ikkuna
+muutamaksi minuutiksi. Poisto: launchctl unload ~/Library/LaunchAgents/fi.huumorikauppa.some-julkaisu.plist.
+
+**Coworkille:** julkaisu Instagramiin ja TikTokiin tapahtuu nyt koneelta. Coworkin some-ajot tekevät vain
+vuorovaikutuksen (kommentteihin vastaaminen, parhaan kommentin kiinnitys) ja tilastot. YouTube Shorts on yhä käsin.
+Sama ohje on some/JULKAISUT.md:ssä. Älä julkaise samaa videota käsin: tarkista some/julkaistut.csv.

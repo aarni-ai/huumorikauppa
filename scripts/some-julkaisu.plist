@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Somevideoiden julkaisu koneelta (5.11.2026), scripts/some-julkaisu.mjs --ajastettu.
+     Käynnistyy joka tunti :30. Skripti julkaisee vain ikkunoissa 11.30-17.59 ja 18.30-23.29 Suomen aikaa, kerran
+     ikkunaa kohden, ja lopettaa 24.12.2026 jälkeen. Asennus (Aarni, kerran): bash ~/huumorikauppa/scripts/some-julkaisu-asennus.sh
+     NODE ja KOTI korvataan asennuksessa. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>fi.huumorikauppa.some-julkaisu</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>NODE</string>
+    <string>KOTI/huumorikauppa/scripts/some-julkaisu.mjs</string>
+    <string>--ajastettu</string>
+  </array>
+  <key>WorkingDirectory</key><string>KOTI/huumorikauppa</string>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
+  <key>StartCalendarInterval</key><dict><key>Minute</key><integer>30</integer></dict>
+  <key>RunAtLoad</key><false/>
+  <key>StandardOutPath</key><string>KOTI/.huumorikauppa-some/launchd.log</string>
+  <key>StandardErrorPath</key><string>KOTI/.huumorikauppa-some/launchd.log</string>
+</dict>
+</plist>

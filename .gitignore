@@ -63,3 +63,7 @@ scripts/.painopiirrokset/
 
 # Coworkin aktivointilinkki (4.11.2026, scripts/cowork-aktivointi.mjs): ei koskaan repoon
 .cowork/
+
+# Somejulkaisu koneelta (5.11.2026): kuvakaappaukset ja loki vain paikallisesti
+some/kuvakaappaukset/
+some/julkaisuloki.txt
