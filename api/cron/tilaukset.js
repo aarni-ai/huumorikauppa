@@ -241,17 +241,23 @@ export default async function handler(req, res) {
     const raportti = await k.kuukausiraportti(db, { alku, loppu, stripe: onStripe() ? stripe() : null, haeTilaus: onPrintify() ? haeTilaus : null });
     const nimi = `myyntiraportti-huumorikauppa-${alku}-${loppu}`;
     const csv = k.csv(raportti), pdf = k.pdf(raportti);
+    // Liitteet (4.11.2026): Printifyn veloitukset ja Stripen saldotapahtumat täsmäytykseen.
+    const liitteet = [];
+    if (onPrintify()) liitteet.push({ nimi: `printify-veloitukset-${alku}-${loppu}.csv`, csv: k.printifyCsv(await k.printifyKulut(listaaTilaukset, { alku, loppu }), { alku, loppu }) });
+    if (onStripe()) liitteet.push({ nimi: `stripe-tapahtumat-${alku}-${loppu}.csv`, csv: k.stripeCsv(await k.stripeTapahtumat(stripe(), { alku, loppu }), { alku, loppu }) });
     let lahetetty = null;
     if (req.query.laheta === "1" && !kuiva && onSahkoposti()) {
       const y = raportti.yhteenveto;
       lahetetty = await laheta({
         to: OMISTAJA(), subject: `Myyntiraportti kirjanpitoon ${alku} - ${loppu}: ${y.tilauksia} tilausta, ${y.myyntiAlvKanssa.toFixed(2).replace(".", ",")} €`,
         text: `Liitteenä Huumorikaupan (Uusiku Oy) myyntiraportti ${alku} - ${loppu} CSV- ja PDF-muodossa kirjanpitäjälle.\n\nMyynti sis. ALV ${y.myyntiAlvKanssa} €, ALV ${y.alv} €, Stripen kulut ${y.stripeKulut} €, palautukset ${y.palautukset} €, provisiot ${y.provisiot} €.`,
-        attachments: [{ filename: `${nimi}.csv`, content: Buffer.from(csv, "utf8").toString("base64") }, { filename: `${nimi}.pdf`, content: pdf.toString("base64") }],
+        attachments: [{ filename: `${nimi}.csv`, content: Buffer.from(csv, "utf8").toString("base64") }, { filename: `${nimi}.pdf`, content: pdf.toString("base64") },
+          ...liitteet.map((l) => ({ filename: l.nimi, content: Buffer.from(l.csv, "utf8").toString("base64") }))],
       });
     }
     return res.status(200).json({ ok: true, alku, loppu, nimi, yhteenveto: raportti.yhteenveto, rivit: raportti.rivit.length, lahetetty,
-      csv: req.query.tiedostot === "1" ? csv : undefined, pdf: req.query.tiedostot === "1" ? pdf.toString("base64") : undefined });
+      csv: req.query.tiedostot === "1" ? csv : undefined, pdf: req.query.tiedostot === "1" ? pdf.toString("base64") : undefined,
+      liitteet: req.query.tiedostot === "1" ? liitteet : liitteet.map((l) => l.nimi), muut: raportti.muut });
   }
 
   // Hallintalinkki /hallinta/tarjoukset (allekirjoitettu avain, ei tallenneta). Annetaan Aarnille ja Coworkille.

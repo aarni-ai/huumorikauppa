@@ -13,6 +13,15 @@
 import { provisioJaTila, tilauksenKate, provisioAsetukset } from "./kumppani.js";
 
 export const UUSIKU_ALKU = "2026-10-27";
+
+/**
+ * Kuukauden muut erät, jotka eivät tule tilauksista eivätkä Stripestä (kirjanpitäjän ohjeet). Avain YYYY-MM.
+ * 4.11.2026: lokakuun raporttiin Uusiku Oy:n velka Tmi Intellerille kirjanpitäjän ohjeen mukaan.
+ */
+export const MUUT_ERAT = {
+  "2026-10": [{ selite: "Uusiku Oy:n velka Tmi Intellerille", summa: 15.28, peruste: "kirjanpitäjän ohje 4.11.2026" }],
+};
+export const muutErat = (alku) => MUUT_ERAT[String(alku).slice(0, 7)] || [];
 export const ALV_KANTA = 0.255;
 const r2 = (x) => Math.round((Number(x) || 0) * 100) / 100;
 const alv0 = (x) => r2(x / (1 + ALV_KANTA));
@@ -92,7 +101,68 @@ export async function kuukausiraportti(db, { alku, loppu, stripe = null, haeTila
     palautukset: r2(palautukset.reduce((s, p) => s + p.summa, 0)), palautuksetAlv: r2(palautukset.reduce((s, p) => s + p.summa - alv0(p.summa), 0)),
     provisiot: summa("provisio"), tilitykset: r2(tilitykset.reduce((s, p) => s + p.summa, 0)),
   };
-  return { yritys: "Huumorikauppa (Uusiku Oy, Y-tunnus 3653666-7, ALV FI36536667)", alku, loppu, luotu: new Date().toISOString(), rivit, palautukset, tilitykset, yhteenveto };
+  return { yritys: "Huumorikauppa (Uusiku Oy, Y-tunnus 3653666-7, ALV FI36536667)", alku, loppu, luotu: new Date().toISOString(), rivit, palautukset, tilitykset, yhteenveto, muut: muutErat(alku) };
+}
+
+/**
+ * Printifyn veloitukset aikaväliltä (tilauksen luontipäivä Suomen aikaa, perutut pois). listaa = printify.js
+ * listaaTilaukset. Summat Printifyn rajapinnasta senttiä -> euroa: tuotteet, toimitus, vero (Printifyn perimä ALV).
+ * Tämä on täsmäytyslista; viralliset laskut (PDF) ladataan Printifyn hallinnasta (My account > Billing).
+ */
+export async function printifyKulut(listaa, { alku, loppu, sivuja = 10 }) {
+  const rivit = [];
+  for (let sivu = 1; sivu <= sivuja; sivu++) {
+    const r = await listaa(sivu, 50);
+    if (!r.ok) return { virhe: r.virhe || "Printify", rivit };
+    const data = r.data?.data || [];
+    let vanhempia = false;
+    for (const o of data) {
+      const pvm = hki(o.created_at.replace(" ", "T").replace(/\+00:?00$/, "Z"));
+      if (pvm < alku) { vanhempia = true; continue; }
+      if (pvm > loppu || o.status === "canceled") continue;
+      const e = (x) => r2((Number(x) || 0) / 100);
+      rivit.push({ pvm, printify: o.id, oma: String(o.external_id || o.label || "").slice(0, 8).toUpperCase(), tila: o.status,
+        tuotteet: e(o.total_price), toimitus: e(o.total_shipping), vero: e(o.total_tax), yhteensa: e((o.total_price || 0) + (o.total_shipping || 0) + (o.total_tax || 0)) });
+    }
+    if (vanhempia || !r.data?.next_page_url) break;
+  }
+  rivit.sort((a, b) => a.pvm.localeCompare(b.pvm));
+  return { rivit };
+}
+
+/** Stripen saldotapahtumat aikaväliltä (maksut, kulut, palautukset, tilitykset): täsmäytys Holvin tiliotteeseen. */
+export async function stripeTapahtumat(stripe, { alku, loppu }) {
+  const rivit = [];
+  try {
+    for await (const b of stripe.balanceTransactions.list({ created: { gte: unix(alku), lte: unix(loppu, true) }, limit: 100 })) {
+      rivit.push({ pvm: hki(b.created * 1000), tyyppi: b.type, brutto: r2(b.amount / 100), kulu: r2(b.fee / 100), netto: r2(b.net / 100),
+        valuutta: String(b.currency || "").toUpperCase(), kaytettavissa: hki(b.available_on * 1000), kuvaus: b.description || "", id: b.id });
+    }
+  } catch (e) {
+    return { virhe: String(e?.message || e).slice(0, 200), rivit };
+  }
+  rivit.sort((a, b) => a.pvm.localeCompare(b.pvm));
+  return { rivit };
+}
+
+const liiteCsv = (otsikot, rivit, avaimet, alku = []) => "\ufeff" + [...alku, otsikot, ...rivit.map((x) => avaimet.map((k) => (typeof x[k] === "number" ? luku(x[k]) : x[k])))]
+  .map((rr) => rr.map(solu).join(";")).join("\r\n") + "\r\n";
+
+export function printifyCsv(p, { alku, loppu }) {
+  const s = (k) => r2(p.rivit.reduce((a, x) => a + x[k], 0));
+  return liiteCsv(["Päivä", "Printify-tilaus", "Oma tilaus", "Tila", "Tuotteet", "Toimitus", "Vero", "Yhteensä"], [
+    ...p.rivit, { pvm: "Yhteensä", printify: "", oma: "", tila: "", tuotteet: s("tuotteet"), toimitus: s("toimitus"), vero: s("vero"), yhteensa: s("yhteensa") },
+  ], ["pvm", "printify", "oma", "tila", "tuotteet", "toimitus", "vero", "yhteensa"], [
+    [`Printifyn veloitukset ${alku} - ${loppu} (Uusiku Oy). Täsmäytyslista Printifyn rajapinnasta; viralliset laskut Printifyn Billing-sivulta.`],
+    ...(p.virhe ? [[`Virhe: ${p.virhe}`]] : []), [],
+  ]);
+}
+
+export function stripeCsv(t, { alku, loppu }) {
+  return liiteCsv(["Päivä", "Tyyppi", "Brutto", "Kulu", "Netto", "Valuutta", "Käytettävissä", "Kuvaus", "Tapahtuma"], t.rivit,
+    ["pvm", "tyyppi", "brutto", "kulu", "netto", "valuutta", "kaytettavissa", "kuvaus", "id"], [
+      [`Stripen saldotapahtumat ${alku} - ${loppu} (Uusiku Oy, Stripe API balance transactions)`], ...(t.virhe ? [[`Virhe: ${t.virhe}`]] : []), [],
+    ]);
 }
 
 // ── CSV ──────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -120,6 +190,7 @@ export function csv(r) {
     ["Kumppaniprovisiot", luku(y.provisiot)], ["Stripe-tilitykset tilille", luku(y.tilitykset)],
     [], ["Palautukset"], ["Päivä", "Summa", "Tilaus", "Syy"], ...r.palautukset.map((p) => [p.pvm, luku(p.summa), p.tilaus, p.syy]),
     [], ["Stripe-tilitykset"], ["Päivä", "Summa", "Tila"], ...r.tilitykset.map((p) => [p.pvm, luku(p.summa), p.tila]),
+    ...((r.muut || []).length ? [[], ["Muut erät"], ["Selite", "Summa", "Peruste"], ...r.muut.map((m) => [m.selite, luku(m.summa), m.peruste])] : []),
   ];
   return "﻿" + rivit.map((rr) => rr.map(solu).join(";")).join("\r\n") + "\r\n";
 }
@@ -188,6 +259,7 @@ export function pdf(r) {
     ...(r.rivit.length ? [] : ["  Ei maksettuja tilauksia aikavälillä."]), "",
     "PALAUTUKSET", ...(r.palautukset.length ? r.palautukset.map((p) => `  ${p.pvm}  ${s(e(p.summa), 12, true)}  tilaus ${p.tilaus}  ${p.syy}`) : ["  Ei palautuksia."]), "",
     "STRIPE-TILITYKSET", ...(r.tilitykset.length ? r.tilitykset.map((p) => `  ${p.pvm}  ${s(e(p.summa), 12, true)}  ${p.tila}`) : ["  Ei tilityksiä aikavälillä."]), "",
+    ...((r.muut || []).length ? ["MUUT ERÄT", ...r.muut.map((m) => `  ${s(m.selite, 50)}${s(e(m.summa), 12, true)}  (${m.peruste})`), ""] : []),
     "Hinnat sisältävät ALV:n 25,5 %. Myydyt lahjakortit ovat monikäyttöisiä arvoseteleitä (ALV lahjakortilla ostettaessa).",
     "Printifyn ostolaskut (ALV vähennettävissä) ja Stripen kululaskut tulevat erikseen. Lähde: Neon (orders) ja Stripe API.",
   ];

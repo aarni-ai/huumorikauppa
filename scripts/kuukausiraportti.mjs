@@ -2,7 +2,8 @@
 /**
  * Kuukauden myyntiraportti kirjanpitoon (api/_lib/kirjanpito.js) tiedostoiksi:
  *   node scripts/kuukausiraportti.mjs [ALKU LOPPU]      esim. 2026-10-27 2026-10-31
- * Ilman päiviä edellinen kuukausi. Raportti lasketaan tuotannossa (Neon ja Stripe, cron ?tehtava=kuukausiraportti),
+ * Ilman päiviä edellinen kuukausi. Tallentaa myös Printifyn veloitukset ja Stripen saldotapahtumat (CSV, 4.11.2026).
+ * Printifyn viralliset PDF-laskut ladataan Printifyn hallinnasta (My account > Billing), koska rajapinta ei anna niitä. Raportti lasketaan tuotannossa (Neon ja Stripe, cron ?tehtava=kuukausiraportti),
  * koska tietokannan avaimet eivät ole koneella. Tallentaa kirjanpito/YYYY-MM/<nimi>.csv ja .pdf (.gitignore).
  * Vaatii .env.cron.local (CRON_SECRET).
  */
@@ -22,5 +23,7 @@ const kansio = join(juuri, "kirjanpito", j.alku.slice(0, 7));
 mkdirSync(kansio, { recursive: true });
 writeFileSync(join(kansio, `${j.nimi}.csv`), j.csv, "utf8");
 writeFileSync(join(kansio, `${j.nimi}.pdf`), Buffer.from(j.pdf, "base64"));
-console.log(`Tallennettu ${kansio}/${j.nimi}.csv ja .pdf`);
+for (const l of j.liitteet || []) writeFileSync(join(kansio, l.nimi), l.csv, "utf8");
+console.log(`Tallennettu ${kansio}/${j.nimi}.csv ja .pdf${(j.liitteet || []).length ? ` sekä ${j.liitteet.map((l) => l.nimi).join(", ")}` : ""}`);
+if (j.muut?.length) console.log(`Muut erät: ${j.muut.map((m) => `${m.selite} ${m.summa} €`).join("; ")}`);
 console.log(JSON.stringify(j.yhteenveto, null, 2));
