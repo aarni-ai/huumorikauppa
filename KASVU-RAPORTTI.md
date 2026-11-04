@@ -3457,3 +3457,87 @@ vaihe 3): uudessa projektissa www ohjaa juureen jo 308:lla.
 - Rajoitus: Stripe kirjoittaa kuitin englanniksi ("Receipt from Huumorikauppa"). Kuitin kieltä tai leipätekstiä ei voi
   muuttaa API:lla. Tilauksen yhteenveto Stripen laskulla (invoice_creation) olisi maksullinen, joten sitä ei otettu
   käyttöön.
+
+### 4.11.2026 ilta
+
+**Coworkin hallintapääsy ilman sähköpostia**
+- `node scripts/cowork-aktivointi.mjs` kirjoittaa kertakäyttöisen 48 tunnin aktivointilinkin tiedostoon
+  ~/huumorikauppa/.cowork/aktivointi.txt (oikeudet 600). Kansio on .gitignoressa ja .vercelignoressa.
+- Linkki kirjoitettiin 4.11. klo 15.16. Se on voimassa 6.11. klo 15.16 asti ja avaa kaikki hallintasivut.
+- `--jos-tarvitaan` kirjoittaa uuden linkin vain, kun eväste on vanhenemassa (yli 80 pv viimeisestä aktivoinnista).
+  Tilan antaa cron `?tehtava=aktivointi-tila`.
+- Aamuajon asentaminen Macin launchd:hen estettiin tämän ajon oikeuksissa. Aarni asentaa sen kerran:
+  `bash ~/huumorikauppa/scripts/cowork-aktivointi-asennus.sh`. Ajo on joka aamu noin klo 8.15 Helsingin aikaa.
+- Yksi aktivointi kattaa nyt kaikki /hallinta-sivut, myös tulevat. Minkä tahansa hallintasivun kelvollinen eväste
+  (myös 2.11. aktivoidut mittarit, some ja tarjoukset) avaa kaikki sivut ja asettaa yleisen evästeen hk_hallinta.
+  Coworkin Chrome pääsee siis sivulle /hallinta/kumppanit ilman uutta aktivointia. Testit: src/test/hallinta-paasy.test.ts.
+
+**Kumppanit**
+- Tiedostoa ~/huumorikauppa/.cowork/kumppanit-kierros3.txt ei ole, joten 22 koodia ei tehty. Cowork tekee ne sivun
+  /hallinta/kumppanit massalisäyksellä ("Nimi; malli" -rivit, Esikatsele, Luo kaikki; KAYTTOONOTTO.md kohta 25).
+  Kun tiedosto on olemassa, Claude luo koodit siitä.
+- Erämaiden Kulkijat luotiin koodilla ERAMAANKULKIJAT, malli 2 (ostaja -5 %, kumppani 5 %, kaupalle vähintään 7 €
+  katetta tilaukselta).
+  - Kumppanisivu: https://huumorikauppa.fi/k/eramaankulkijat
+  - Tervehdys korjattiin muotoon "Tervetuloa Erämaiden Kulkijoiden kautta" uudella &kautta=-valinnalla.
+  - Raporttilinkki on tiedostossa .cowork/kumppanit.txt eikä tässä. Repo on julkinen, ja linkki on allekirjoitettu
+    avain, jolla näkee kumppanin myynnin.
+
+**Joulukalenteri /joulukalenteri (1.-24.12.)**
+- Joka päivä aukeaa yksi luukku, joka on voimassa vain sen päivän Helsingin aikaa. Palvelin ei paljasta tulevia
+  luukkuja, eikä luukkudata ole selaimen koodissa eikä esirenderöidyllä sivulla.
+- Hinta on luukun päivänä -3 €: t-paita 27,90 → 24,90 € ja huppari 52,90 → 49,90 €. Kate on huonoimmallakin
+  variantilla vähintään 7,22 €.
+  - 24,90 €:n paitoja ei voi alentaa 7 €:n säännöllä, joten ne eivät ole luukuissa.
+  - Luukkuhinta ei yhdisty muihin alennuksiin. Asiakas maksaa aina pienemmän summan.
+- Tuotteet valittiin myydyimmistä (etusivun järjestys) ja katsotuimmista:
+  - parittomina päivinä t-paita ja parillisina huppari
+  - luukut 10-24 jouluaiheita
+- Uusi cron `?tehtava=suosituimmat-tuotteet` (ostot 90 pv × 25 + aidot tuotesivun katselut tuotekohtaisesti) ja
+  `scripts/joulukalenteri-valinta.mjs` päivittävät valinnan ennen joulukuuta. Tuotekohtainen katselutaulu
+  tuotesivu_katselut on otettu käyttöön.
+- Joulun viimeinen tilauspäivä on ke 2.12., joten luukkujen 3.-24. tilaukset tulevat perille joulun jälkeen. Sivu ja
+  viesti kertovat sen.
+- Nostot:
+  - Banneri: 16.-22.11. "Joulukalenteri aukeaa ti 1.12.", 1.-24.12. "päivän luukku auki". Black Friday 23.-30.11.
+    on ennallaan.
+  - Etusivun osio, joulun valikko, kampanjakalenteri ja sivukartta.
+- Uutiskirjeen tilaajat saavat päivän luukun aamulla 1.-24.12. vain, kun lähetys on sallittu (Resend vahvistettu).
+  Kukin saa enintään yhden viestin päivässä, ja viestit mahtuvat 100 viestin päivärajaan.
+- Seuranta: käynnit, luukun avaukset, koriin ja ostot (botit suodatettu). Päivän yhteenvedossa on rivi joulukuussa.
+
+**Yritysten pikkujoulupaketit /pikkujoulut-yritykset**
+- Paketit (eri mallit sekaisin, kokojakauma valittavissa, ilmainen toimitus yhteen osoitteeseen):
+
+  | Paketti | Hinta | Yhteensä | Huonoin kate/paita |
+  |---|---|---|---|
+  | 10 paitaa | 27,90 €/kpl | 279,00 € | 10,97 € |
+  | 25 paitaa | 25,11 €/kpl (-10 %) | 627,75 € | 9,24 € |
+  | 50 paitaa | 25,11 €/kpl (-10 %) | 1 255,50 € | 9,39 € |
+
+- 9 €:n katesääntö estää -12 %:n ja -14 %:n portaat.
+- Takarajan laskuri näyttää to 26.11.
+- Lomake käyttää olemassa olevaa tarjouspyyntöjen putkea (lähde pikkujoulut-yritykset, paketti näkyy sivulla
+  /hallinta/tarjoukset ja automaattisessa vastauksessa).
+- Linkit ovat sivuilla /yritykset, yritysten alasivuilla ja tilaussivulla. Seuranta mittarissa.
+
+**A/B-testit ja tuotesivu (4.11. klo 19)**
+- Tuotesivun suurin poistumiskohta on koon valinta: 0 % valitsi koon, kun 98 % näki Lisää koriin -painikkeen. Tämä
+  on 3.11. dataa, joka on pääosin ajalta ennen bottisuodatusta.
+- Aidot tuotesivun katselut suodatuksen alusta: 14.
+- Testien tilanne:
+  - Koon esivalinta: A 7 ja B 5 katselua.
+  - Hintatesti: A 6 ja B 6 (raja 300 + 300).
+  - Ensitilaus alkaa 5.11.
+  - Yksikään ei ole vielä lisännyt koriin.
+- Korjausta ei tehty vielä, koska koon esivalinta on itse testi juuri tähän kohtaan. Sivun muuttaminen nyt sotkisi
+  testin. Kun koon testissä on vähintään 100 aitoa katselua per versio, voittaja otetaan käyttöön ja koon valinta
+  korjataan sen mukaan (koot isoina painikkeina, kokotaulukko näkyviin).
+
+**Mittari 4.11. ilta**
+- Kate kuussa 0 € / 3 000 €, 30 päivässä 1 tilaus (5,90 €).
+- Suodatuksen alusta aitoja:
+  - käynnit 75/88 (85 %)
+  - laskeutumiset 75/81
+  - tuotesivun katselut 14/16
+- Uutiskirjeen tilaajia 1, tarjouspyyntöjä 0.
