@@ -560,7 +560,13 @@ export default async function handler(req, res) {
     const malli = ["provisio", "alennus"].includes(req.query.malli) ? req.query.malli : null;
     const t = await luoKumppani(db, { nimi: req.query.nimi, koodi, malli, email: req.query.email });
     if (t.virhe) return res.status(400).json({ ok: false, virhe: t.virhe });
-    return res.status(200).json({ ok: true, koodi: t.koodi, nimi: t.nimi, linkki: t.linkki, raportti: t.raportti });
+    // &kautta=Erämaiden%20Kulkijoiden: tervehdyksen genetiivi ("Tervetuloa X kautta"), kun automaattinen ei osu (monikko).
+    const kautta = String(req.query.kautta || "").trim().slice(0, 100);
+    if (kautta) {
+      await db`alter table kumppanit add column if not exists kautta_nimi text`;
+      await db`update kumppanit set kautta_nimi = ${kautta} where koodi = ${t.koodi}`;
+    }
+    return res.status(200).json({ ok: true, koodi: t.koodi, nimi: t.nimi, malli: t.malli, kautta: kautta || null, linkki: t.linkki, raportti: t.raportti });
   }
 
   // Kumppaniraportti kuukaudelta (&kuukausi=YYYY-MM, oletus kuluva kuukausi Suomen aikaa): tilaukset kumppaneittain,
