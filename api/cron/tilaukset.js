@@ -305,6 +305,11 @@ export default async function handler(req, res) {
   }
 
   // Hallinnan evästeen tila ilman linkkiä (scripts/cowork-aktivointi.mjs --jos-tarvitaan).
+  // Coworkin syöte koneelle (5.11.2026, scripts/syote-lue.mjs): &id=, &otsikko= (osa), &maara= (oletus 5).
+  if (req.query.tehtava === "syote") {
+    const { haeSyotteet } = await import("../_lib/hallintasyote.js");
+    return res.status(200).json({ ok: true, merkinnat: await haeSyotteet(db, { id: req.query.id || null, otsikko: req.query.otsikko || null, maara: req.query.maara }) });
+  }
   if (req.query.tehtava === "aktivointi-tila") {
     const { evasteenTila } = await import("../_lib/aktivointi.js");
     return res.status(200).json({ ok: true, ...(await evasteenTila(sql())) });

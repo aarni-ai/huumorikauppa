@@ -262,6 +262,12 @@ export async function kasittele(req, res, store) {
     const { kumppaniLista } = await import("./_lib/kumppanihallinta.js");
     return res.status(200).json({ ok: true, kumppanit: await kumppaniLista(sql()) });
   }
+  // Hallinta: syöte (5.11.2026, /hallinta/syote). Coworkin liittämät tekstit ja CSV:t (api/_lib/hallintasyote.js).
+  if (req.method === "GET" && typeof q.syote === "string") {
+    if (!hallintaPaasy(req, res, "syote", q.syote)) return res.status(404).json({ ok: false });
+    const { listaaSyotteet, EHDOTUKSET } = await import("./_lib/hallintasyote.js");
+    return res.status(200).json({ ok: true, merkinnat: await listaaSyotteet(sql()), ehdotukset: EHDOTUKSET });
+  }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
   switch (body.action) {
@@ -480,6 +486,12 @@ export async function kasittele(req, res, store) {
       const syotteet = lista.map((k, i) => (k && typeof k === "object" ? { rivi: Number.isInteger(k.rivi) ? k.rivi : i + 1, nimi: k.nimi, koodi: k.koodi, malli: k.malli, email: k.email } : { rivi: i + 1 }));
       const { tulokset } = await luoKumppanit(sql(), syotteet, { esikatselu: body.esikatselu === true });
       return res.status(200).json({ ok: tulokset.every((t) => !t.virhe), esikatselu: body.esikatselu === true, tulokset });
+    }
+    case "syote-tallenna": {
+      if (!hallintaPaasy(req, res, "syote", body.avain)) return res.status(404).json({ ok: false });
+      const { tallennaSyote } = await import("./_lib/hallintasyote.js");
+      const r = await tallennaSyote(sql(), { otsikko: body.otsikko, sisalto: body.sisalto });
+      return res.status(r.ok ? 200 : 400).json(r);
     }
     case "kumppani-tila": {
       if (!hallintaPaasy(req, res, "kumppanit", body.avain)) return res.status(404).json({ ok: false });

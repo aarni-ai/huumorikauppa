@@ -25,6 +25,9 @@ export const INTELLER = {
 };
 
 /** Kaupan pitäjä 1.11.2026 alkaen. */
+/** Edellinen kaupan pitäjä (ennen 27.10.2026) neutraalilla nimellä muualle koodiin, esim. kirjanpidon muut erät. */
+export const EDELLINEN_PITAJA = INTELLER;
+
 export const UUSIKU = {
   name: "Uusiku Oy",
   legalName: "Uusiku Oy",

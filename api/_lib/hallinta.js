@@ -11,6 +11,7 @@ export const HALLINTASIVUT = [
   { sivu: "some", nimi: "Somevideot ja Pinterest-kuvat", kuvaus: "päivän videot latauslinkkeineen, kuvatekstit, hashtagit ja UTM-linkit" },
   { sivu: "tarjoukset", nimi: "Yritysten tarjouspyynnöt", kuvaus: "tarjouspyynnöt katteineen ja tilan vaihto" },
   { sivu: "kumppanit", nimi: "Kumppanikoodit", kuvaus: "kumppanikoodien ja /k/-linkkien luonti, klikit ja ensimmäinen käynti" },
+  { sivu: "syote", nimi: "Syöte Claudelle", kuvaus: "Search Consolen, Merchantin ja somen luvut tekstinä tai CSV:nä otsikolla" },
 ];
 
 export function hallintaLinkit(pohja = process.env.KAUPPA_URL || "https://huumorikauppa.fi") {
@@ -34,7 +35,7 @@ export function hallintalinkkiViesti(linkit) {
   const rivit = [
     "Hallintalinkit Coworkille",
     "",
-    "Avaa jokainen linkki kerran Coworkin Chromessa. Sivu tallentaa pääsyn evästeeseen 90 päiväksi, ja avain poistuu osoiteriviltä. Sen jälkeen sivut aukeavat suoraan osoitteista huumorikauppa.fi/hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset ja /hallinta/kumppanit. Jos sivu sanoo \"Ei pääsyä\", avaa linkki uudelleen tästä viestistä tai päivän yhteenvetoviestistä.",
+    "Avaa jokainen linkki kerran Coworkin Chromessa. Sivu tallentaa pääsyn evästeeseen 90 päiväksi, ja avain poistuu osoiteriviltä. Sen jälkeen sivut aukeavat suoraan osoitteista huumorikauppa.fi/hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset, /hallinta/kumppanit ja /hallinta/syote. Jos sivu sanoo \"Ei pääsyä\", avaa linkki uudelleen tästä viestistä tai päivän yhteenvetoviestistä.",
     "",
     ...HALLINTASIVUT.flatMap(({ sivu, nimi, kuvaus }) => [`${nimi} (${kuvaus}):`, linkit[sivu], ""]),
     "MITTARILOMAKKEET (/hallinta/mittarit)",

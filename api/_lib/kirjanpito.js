@@ -11,15 +11,16 @@
  * alaisia myyntihetkellä; ALV syntyy, kun lahjakortilla ostetaan, joten lahjakortilla maksettu tilaus on ALV-pohjassa.
  */
 import { provisioJaTila, tilauksenKate, provisioAsetukset } from "./kumppani.js";
+import { EDELLINEN_PITAJA } from "./yritys.js";
 
 export const UUSIKU_ALKU = "2026-10-27";
 
 /**
  * Kuukauden muut erät, jotka eivät tule tilauksista eivätkä Stripestä (kirjanpitäjän ohjeet). Avain YYYY-MM.
- * 4.11.2026: lokakuun raporttiin Uusiku Oy:n velka Tmi Intellerille kirjanpitäjän ohjeen mukaan.
+ * 4.11.2026: lokakuun raporttiin Uusiku Oy:n velka edelliselle pitäjälle (yritys.js) kirjanpitäjän ohjeen mukaan.
  */
 export const MUUT_ERAT = {
-  "2026-10": [{ selite: "Uusiku Oy:n velka Tmi Intellerille", summa: 15.28, peruste: "kirjanpitäjän ohje 4.11.2026" }],
+  "2026-10": [{ selite: `Uusiku Oy:n velka Tmi ${EDELLINEN_PITAJA.legalName}ille`, summa: 15.28, peruste: "kirjanpitäjän ohje 4.11.2026" }],
 };
 export const muutErat = (alku) => MUUT_ERAT[String(alku).slice(0, 7)] || [];
 export const ALV_KANTA = 0.255;

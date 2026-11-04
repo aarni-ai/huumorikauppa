@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { EDELLINEN_PITAJA } from "../../api/_lib/yritys.js";
 import { csv, pdf, edellinenKuukausi, kuukausiraportti, printifyKulut, printifyCsv, stripeTapahtumat, stripeCsv } from "../../api/_lib/kirjanpito.js";
 
 const tilaus = { id: "abcdef12-0000", paid_at: "2026-10-28T10:00:00Z", total: 41.89, shipping: 6.9, discount: 0, bundle_discount: 0,
@@ -26,10 +27,11 @@ describe("kirjanpidon kuukausiraportti", () => {
     expect(p.toString("latin1")).toContain("%%EOF");
     expect(p.toString("latin1")).toMatch(/startxref\n\d+/);
   });
-  it("lokakuun muut erät: Uusiku Oy:n velka Tmi Intellerille CSV:ssä ja PDF:ssä, marraskuussa ei", async () => {
+  it("lokakuun muut erät: Uusiku Oy:n velka edelliselle pitäjälle CSV:ssä ja PDF:ssä, marraskuussa ei", async () => {
+    const velka = `Uusiku Oy:n velka Tmi ${EDELLINEN_PITAJA.legalName}ille`;
     const r = await kuukausiraportti(db as never, { alku: "2026-10-27", loppu: "2026-10-31", stripe });
-    expect(csv(r)).toContain("Uusiku Oy:n velka Tmi Intellerille;15,28");
-    expect(pdf(r).toString("latin1")).toContain("Uusiku Oy:n velka Tmi Intellerille");
+    expect(csv(r)).toContain(`${velka};15,28`);
+    expect(pdf(r).toString("latin1")).toContain(velka);
     expect((await kuukausiraportti(db as never, { alku: "2026-11-01", loppu: "2026-11-30", stripe })).muut).toEqual([]);
   });
   it("Printifyn veloitukset aikaväliltä ilman peruttuja, Stripen saldotapahtumat", async () => {

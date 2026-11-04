@@ -99,7 +99,7 @@ export function aktivointilinkkiViesti(linkki, vanhenee) {
   const pvm = new Intl.DateTimeFormat("fi-FI", { timeZone: "Europe/Helsinki", dateStyle: "short", timeStyle: "short" }).format(new Date(vanhenee));
   const rivit = [
     "Hallinnan aktivointilinkki Coworkille",
-    "Avaa linkki Chromen profiilissa \"Huumorikauppa\". Avaus antaa tälle selaimelle 90 päivän pääsyn sivuille /hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset ja /hallinta/kumppanit. Koodia ei tarvitse syöttää.",
+    "Avaa linkki Chromen profiilissa \"Huumorikauppa\". Avaus antaa tälle selaimelle 90 päivän pääsyn sivuille /hallinta/mittarit, /hallinta/some, /hallinta/tarjoukset, /hallinta/kumppanit ja /hallinta/syote. Koodia ei tarvitse syöttää.",
     `Linkki toimii kerran ja vanhenee ${pvm}. Älä jaa sitä eteenpäin.`,
     "Sama selain jätetään jatkossa pois kävijäluvuista, joten Coworkin omat käynnit eivät näy mittarissa.",
   ];

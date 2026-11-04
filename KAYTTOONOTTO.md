@@ -1263,3 +1263,37 @@ tilaushistoria säilyy. **Aktivoi** palauttaa sen. Myös uudelleenluonti samalla
 **Vanha tapa toimii yhä:** cron `?tehtava=kumppani-lisaa&koodi=...&nimi=...&malli=alennus` ja
 `?tehtava=kumppani-poista&koodi=...` (CRON_SECRET) käyttävät samaa luontia (api/_lib/kumppanihallinta.js) ja
 palauttavat samat linkit.
+
+## 26. Syöte Claudelle: /hallinta/syote (Cowork, 5.11.2026)
+
+**Mihin:** Cowork välittää Claudelle raportteja, joita Claude ei itse saa (Search Console, Merchant Center, somen
+tilastot). Sivu on suojattu kuten muut hallintasivut: Coworkin Chromen hallintaeväste avaa sen suoraan osoitteesta
+https://huumorikauppa.fi/hallinta/syote. Jos sivu sanoo "Ei pääsyä", avaa aktivointilinkki (kohta 20).
+
+**Näin liität:**
+1. Kirjoita otsikko. Käytä aina samaa otsikkoa samalle raportille, jotta viikot voi verrata:
+   - **Search Console 28 pv:** Search Console > Tehokkuus > Hakutulokset, aikaväli 28 päivää, välilehti Kyselyt, Vie > Lataa
+     CSV (tai kopioi taulukko). Sarakkeet: kysely, klikkaukset, näyttökerrat, CTR, sijainti. **Joka maanantai.**
+   - **Search Console sivut 28 pv:** sama, välilehti Sivut. Joka maanantai.
+   - **Merchant klikit:** Merchant Center > Tehokkuus (Performance) > tuotteittain, 28 päivää, sarakkeet tuotteen nimi,
+     tuotetunnus, klikkaukset ja näyttökerrat. Joka maanantai.
+   - **Instagram tilastot**, **TikTok tilastot**, **Pinterest tilastot:** vapaa teksti tai taulukko, kun on uutta.
+2. Liitä sisältö tekstikenttään (CSV-tiedoston sisältö, kopioitu taulukko tai teksti). Voit myös valita tiedoston,
+   jos selain sallii sen; sivu lukee tiedoston tekstikenttään.
+3. Paina **Tallenna.** Sivu näyttää "Tallennettu (#id, muoto, rivit)", ja merkintä näkyy Uusimmat-listassa.
+   Sarkain-, puolipiste- ja pilkkuerotellut taulukot tunnistetaan automaattisesti. Enintään 1 000 000 merkkiä kerralla.
+
+**Claudelle (kone):**
+- `node scripts/syote-lue.mjs`: uusimmat merkinnät (otsikko, aika, alku).
+- `--otsikko "search" --maara 10`, `--id 12 --koko` ja `--tallenna` (kansioon .cowork/syote/, ei repoon).
+- `node scripts/syote-lue.mjs --analyysi`:
+  - Search Consolen hakulausekkeet sijainnilla 5-30 näyttökertojen mukaan, ja sijainti viikoittain kaikista
+    "Search Console 28 pv" -merkinnöistä.
+  - Merchantin tuotteet, joilla on vähintään 100 näyttöä ja klikkausprosentti alle puolet keskiarvosta.
+- **Toimenpiteet datan tultua:**
+  - Hakulausekkeet sijainnilla 5-30: vastaavan sivun title, meta description, H1, sisältö ja sisäiset linkit; jos
+    sopivaa sivua ei ole, uusi sivu.
+  - Merchant: tuotteiden otsikot (api/_lib/hakuotsikko.js) ja ensimmäinen kuva.
+  - Muutokset ja sijainnit kirjataan KASVU-RAPORTTI.md:hen.
+- Tekniikka: taulu hallinta_syote (Neon), api/_lib/hallintasyote.js, api/sahkoposti.js `?syote=` ja POST
+  `syote-tallenna`, cron `?tehtava=syote` (CRON_SECRET).
