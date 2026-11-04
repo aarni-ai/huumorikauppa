@@ -12,7 +12,8 @@ import { LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
  * päivät vakioista (tilauspaivat.ts, yrityksetPage.ts). Pituus 600-900 sanaa. Tarkistus: src/data/blog.test.ts.
  */
 const TOIMITUS = `${TOIMITUSMAKSU_LAUSE} Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
-const PORTAAT = YRITYS_PORTAAT.map((p) => `${p.min} paitaa -${p.prosentti} %`).join(", ");
+// Portaat ja niiden ehto (meemipaidoissa pienempi porras, 7 €:n katesääntö 4.11.2026, src/data/yrityksetPage.ts).
+const PORTAAT = `${YRITYS_PORTAAT.map((p) => `${p.min} paitaa -${p.prosentti} %`).join(", ")}. Meemipaidoissa porras on pienempi tai sitä ei ole`;
 const YRITYS_JOULU = `Yritystilauksessa kokojen keruuseen ja maksuun kuluu muutama päivä, joten tilatkaa ja maksakaa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`;
 const AIKATAULU = `${jouluLause()} ${YRITYS_JOULU} Katso tarkempi aikataulu sivulta [joulun viimeiset tilauspäivät](/joulun-viimeiset-tilauspaivat).`;
 const JOULU_FAQ = {

@@ -21,7 +21,9 @@ describe("yritysmyynti", () => {
     expect(t.ennen).toBeCloseTo(9 * 27.9 + 29.9, 2);
     expect(t.katePerKpl).toBeGreaterThan(5);
     expect(laskeTarjous({ malli: "huppari", koot: { M: 10 } }).alennusProsentti).toBe(0);
-    expect(esimerkkiHinnat("meemipaita").map((e) => e.yhteensa)).toEqual([224.1, 547.8, 1070.7]);
+    // Meemipaita 7 €:n katesäännöllä kappaleelta (4.11.2026): 10 kpl ilman määräalennusta, 25 ja 50 kpl -10 %.
+    expect(esimerkkiHinnat("meemipaita").map((e) => [e.alennusProsentti, e.yhteensa])).toEqual([[0, 249], [10, 560.25], [10, 1120.5]]);
+    expect(esimerkkiHinnat("tpaita").map((e) => e.alennusProsentti)).toEqual([10, 12, 14]);
   });
   it("Stripe-laskun data: rivit, toimitus, 14 pv, Y-tunnus ja ALV-tunniste", () => {
     const d = laskuData({ rivit: [{ name: "Paita", size: "M", color: "Musta", quantity: 10, unit_cents: 2241 }], toimitus: 0, tilausId: "o1",

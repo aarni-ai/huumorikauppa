@@ -14,6 +14,7 @@ import { useState, useEffect, useLayoutEffect, useMemo, useCallback, useRef } fr
 import { sortSizes } from "@/lib/sortSizes";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { naytettavaHinta } from "@/lib/toimitustesti";
+import { tuotteenEnsitilaus, ENSITILAUS_MERKKI } from "@/lib/ensitilaus";
 import { availableColors, availableSizes, isVariantAvailable } from "@/lib/variantAvailability";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -505,6 +506,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // alennusmyynnissä olevissa tuotteissa. JSON-LD, metatagit ja esirenderöinti käyttävät aina perushintaa.
   const naytettava = naytettavaHinta(product, selectedSize);
   const toimitusSisaltyy = naytettava !== Number(kokoHinta);
+  // Ensitilaustesti B (src/lib/ensitilaus.ts): merkki vain, kun alennus koskee valittua koko- ja värivaihtoehtoa.
+  const ensitilausMerkki = tuotteenEnsitilaus(product, { koko: selectedSize, vari: selectedColor });
   const hasDiscount = product.original_price && product.original_price > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.original_price! - product.price) / product.original_price!) * 100)
@@ -730,6 +733,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                 {formatPriceFi(naytettava)}
               </span>
               {toimitusSisaltyy && <span className="text-xs font-semibold text-primary">Ilmainen toimitus</span>}
+              {ensitilausMerkki && <span className="rounded bg-primary/10 px-1.5 py-0.5 text-xs font-semibold text-primary" data-ensitilaus="">{ENSITILAUS_MERKKI}</span>}
               {hasDiscount && (
                 <Badge className="bg-destructive text-destructive-foreground text-xs font-bold">-{discountPercent}%</Badge>
               )}
@@ -865,6 +869,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
                     {formatPriceFi(naytettava)}
                   </span>
                   {toimitusSisaltyy && <span className="text-sm font-semibold text-primary">Ilmainen toimitus</span>}
+                  {ensitilausMerkki && <span className="rounded bg-primary/10 px-2 py-0.5 text-sm font-semibold text-primary" data-ensitilaus="">{ENSITILAUS_MERKKI}</span>}
                   {hasDiscount && (
                     <Badge className="bg-destructive text-destructive-foreground font-bold text-sm">-{discountPercent}%</Badge>
                   )}

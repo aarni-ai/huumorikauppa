@@ -70,6 +70,20 @@ async function alennus(koodi, email) {
   return OLETUSKOODIT[k] ?? null;
 }
 
+/**
+ * Ensimmäinen tilaus (api/_lib/ensitilaus.js): samalla sähköpostiosoitteella ei maksettuja tilauksia. Sama tarkistus
+ * kuin TERVE-koodissa (markkinointi-db.js maksettujaTilauksia). Virheessä false: alennusta ei anneta.
+ */
+async function ensimmainenTilaus(email) {
+  if (!onTietokanta() || !kelpaaEmail(email)) return false;
+  try {
+    return (await pgMarkkinointi(sql()).maksettujaTilauksia(normalisoiEmail(email))) === 0;
+  } catch (e) {
+    console.error("ensimmainenTilaus:", e?.message || e);
+    return false;
+  }
+}
+
 /** Lahjakortti koodista: { koodi, saldo } tai KassaVirhe. */
 async function lahjakortti(koodi) {
   if (!koodi) return null;
@@ -81,7 +95,7 @@ async function lahjakortti(koodi) {
 }
 
 const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${naytettavaTeksti(r.custom_text)}"`,
-  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.toimitus_sisaltyy && "Ilmainen toimitus (sisältyy hintaan)", r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
+  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.toimitus_sisaltyy && "Ilmainen toimitus (sisältyy hintaan)", r.ensitilaus_prosentti && `Ensimmäinen tilaus −${r.ensitilaus_prosentti} %`, r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
@@ -162,7 +176,10 @@ export default async function handler(req, res) {
     if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
     const koodiAlennus = await alennus(pyynto.discountCode, pyynto.customerEmail);
     // Ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js): versio selaimelta, hinta lasketaan täällä.
-    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a" };
+    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a",
+      // Ensimmäisen tilauksen -5 % (A/B-testi, api/_lib/ensitilaus.js): versio selaimelta, ensimmäisyys tarkistetaan täällä.
+      ensitilausVersio: pyynto.ensitilausVersio === "b" ? "b" : "a",
+      ensimmainenTilaus: pyynto.ensitilausVersio === "b" && !koodiAlennus ? await ensimmainenTilaus(pyynto.customerEmail) : false };
     // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen.
     const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
     const valinta = kp?.malli === "alennus" && !koodiAlennus ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
@@ -193,6 +210,13 @@ export default async function handler(req, res) {
         const { merkitseTilaukselle } = await import("./_lib/toimitustesti.js");
         await merkitseTilaukselle(sql(), tilaus.id, pyynto.toimitusVersio, laskettuNettokate(laskettu, tuotteet));
       } catch (e) { console.error("toimitus_versio:", e?.message || e); }
+    }
+    // Ensimmäisen tilauksen testin versio, nettokate ja annettu alennus (kate per käynti, api/_lib/ensitilaus.js).
+    if ((pyynto.ensitilausVersio === "a" || pyynto.ensitilausVersio === "b") && !laskettu.only_gift_cards) {
+      try {
+        const { merkitseEnsitilaus } = await import("./_lib/ensitilaus.js");
+        await merkitseEnsitilaus(sql(), tilaus.id, pyynto.ensitilausVersio, laskettuNettokate(laskettu, tuotteet), laskettu.first_order_discount);
+      } catch (e) { console.error("ensitilaus_versio:", e?.message || e); }
     }
     const origin = req.headers.origin || `https://${req.headers.host}`;
 

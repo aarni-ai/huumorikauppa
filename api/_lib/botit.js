@@ -15,7 +15,7 @@
 
 const AITOUS = ["aito", "headless", "passiivinen"];
 export const BOTTISYYT = ["ua-botti", "ua-epatavallinen", "datakeskus", "headless", "ei-vuorovaikutusta", "ei-signaalia"];
-export const AITOUS_MITTARIT = ["kaynti", "laskeutuminen", "tuotesivu", "suppilo", "lisamyynti", "toimitustesti"];
+export const AITOUS_MITTARIT = ["kaynti", "laskeutuminen", "tuotesivu", "suppilo", "lisamyynti", "toimitustesti", "ensitilaus"];
 
 /** Epätavallinen User-Agent: ei selaimen muotoa, kirjasto, headless tai vanhentunut selainversio (bottien vakio-UA). */
 export function epatavallinenUa(ua) {
@@ -155,7 +155,7 @@ export async function aitousValilla(db, alku, loppu) {
   return { alku, loppu, mittarit: koostaAitous(rivit) };
 }
 
-const NIMET = { kaynti: "käynnit", laskeutuminen: "laskeutumiset", tuotesivu: "tuotesivun katselut", suppilo: "suppilon kirjaukset", lisamyynti: "lisämyynnin kirjaukset", toimitustesti: "hintatestin kirjaukset" };
+const NIMET = { kaynti: "käynnit", laskeutuminen: "laskeutumiset", tuotesivu: "tuotesivun katselut", suppilo: "suppilon kirjaukset", lisamyynti: "lisämyynnin kirjaukset", toimitustesti: "hintatestin kirjaukset", ensitilaus: "ensitilaustestin kirjaukset" };
 const SYYT = { "ua-botti": "botti-UA", "ua-epatavallinen": "epätavallinen UA", datakeskus: "datakeskus", headless: "headless", "ei-vuorovaikutusta": "ei vuorovaikutusta", "ei-signaalia": "ei signaalia" };
 
 /** Raporttirivit: kaikki, botit syittäin, aidot ja aitojen osuus. */

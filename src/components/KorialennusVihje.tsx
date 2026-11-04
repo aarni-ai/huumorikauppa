@@ -23,25 +23,26 @@ export const TPAITAPARI_ALIN_HINTA = `T-paidan hinta ${eur(TPAITAPARI_KAMPANJA.k
  */
 export function KorialennusVihje({ tila, className = "" }: { tila: KorialennusTila; className?: string }) {
   if (tila.kpl === 0 || tila.syy === "pois" || tila.syy === "koodi" || tila.syy === "ei_rivia") return null;
+  // Seuraava porras luvataan vain, kun se kassan 7 €:n katesäännöllä toteutuisi (src/lib/ostoskori.ts seuraavaPorras).
+  const seuraava = tila.seuraavaPorras ?? null;
   if (tila.voimassa && tila.tyyppi === "maara") {
-    const seuraava = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min).find((p) => (tila.maaraTpaitoja ?? 0) < p.min);
     return (
       <p className={`flex items-start gap-2 text-xs font-medium text-primary ${className}`}>
         <Percent className="h-4 w-4 shrink-0" />
         <span>
           Määräalennus -{tila.prosentti} % t-paidoista on mukana.
-          {seuraava ? ` ${seuraava.min - (tila.maaraTpaitoja ?? 0)} t-paitaa lisää: -${seuraava.prosentti} %.` : ""}
+          {seuraava ? ` ${seuraava.lisaa} t-paitaa lisää: -${seuraava.prosentti} %.` : ""}
         </span>
       </p>
     );
   }
   // Määräalennuksen vihje, kun t-paitoja on 5-9: seuraava porras 10 kappaleessa.
   const ensimmainen = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min)[0];
-  if (MAARAALENNUS.kaytossa && (tila.maaraTpaitoja ?? 0) >= 5 && (tila.maaraTpaitoja ?? 0) < ensimmainen.min) {
+  if (MAARAALENNUS.kaytossa && seuraava && (tila.maaraTpaitoja ?? 0) >= 5 && (tila.maaraTpaitoja ?? 0) < ensimmainen.min) {
     return (
       <p className={`flex items-start gap-2 text-xs text-foreground ${className}`}>
         <Percent className="h-4 w-4 text-primary shrink-0" />
-        <span>Lisää {ensimmainen.min - (tila.maaraTpaitoja ?? 0)} t-paitaa: määräalennus <span className="font-bold text-primary">-{ensimmainen.prosentti} %</span> kaikista t-paidoista.</span>
+        <span>Lisää {seuraava.lisaa} t-paitaa: määräalennus <span className="font-bold text-primary">-{seuraava.prosentti} %</span> kaikista t-paidoista.</span>
       </p>
     );
   }

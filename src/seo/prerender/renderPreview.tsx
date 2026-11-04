@@ -33,6 +33,8 @@ asetaAbVersio("koko", "a");
 asetaAbVersio("blogi", "a");
 // Hintatesti: esirenderöity HTML, JSON-LD ja Googlen näkemä hinta aina A (api/_lib/toimitustesti.js).
 asetaAbVersio("toimitus", "a");
+// Ensitilaustesti: esirenderöity HTML ja JSON-LD aina A (ei merkkiä, api/_lib/ensitilaus.js).
+asetaAbVersio("ensitilaus", "a");
 import type { ReactNode } from "react";
 import { mapProduct } from "@/hooks/use-products";
 import type { Tables } from "@/integrations/supabase/types";

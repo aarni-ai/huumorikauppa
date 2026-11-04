@@ -18,10 +18,16 @@
  *   vähintään kaksi fyysistä tuotetta; koskee pakettiin kuulumattomia rivejä ja annetaan vain, jos tilauksen nettokate
  *   alennuksen jälkeen pysyy katevahdin rajalla. Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta.
  * - Riveille tallentuu Printifyn kulu tilaushetkellä (kulu_sentit, toimitus_sentit): päivän yhteenvedon kate.
+ * - TERVE-koodi (4.11.2026): lisäksi nettokate vähintään 7 € jokaista tilauksen kappaletta kohden (api/_lib/katesaanto.js).
+ * - Ensimmäisen tilauksen -5 % (A/B-testi 5.11.2026, api/_lib/ensitilaus.js): vain versiossa B, kun palvelin on todennut
+ *   tilauksen ensimmäiseksi (lisat.ensimmainenTilaus), ei minkään muun alennuksen kanssa, ja vain jos nettokate
+ *   alennuksen jälkeen on vähintään 7 € kappaletta kohden. Lasketaan hintatestin (toimitustesti.js) jälkeen.
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
 import { laskeKate, laskeTilauksenNettokate, toimitusmaksuKatteella } from "./kate.js";
 import { sovellaKassaan } from "./toimitustesti.js";
+import { ensitilausAlennus, alennaRivit, pohjaSentit } from "./ensitilaus.js";
+import { riittaaPerKpl } from "./katesaanto.js";
 import { rivinHinta } from "./kokohinnat.js";
 import { ILMAINEN_TOIMITUS_RAJA, TOIMITUS, TILAUKSEN_MIN_KATE_EUROA, LISATUOTE_KATEGORIAT, toimitusmaksu } from "./vakiot.js";
 import { sovellaPaketit } from "./paketit.js";
@@ -70,7 +76,8 @@ function lahjakorttiRivi(it) {
  * @param tuotteet kaikki tuoterivit
  * @param alennus { type, value } tai null
  * @param lisat { paketit: pakettimääritykset, lahjakortti: { koodi, saldo } tarkistettu kortti tai null,
- *   korialennus: asetukset ({ prosentti, minKpl, minKateEuroa }, oletus vakiot.js) }
+ *   korialennus: asetukset ({ prosentti, minKpl, minKateEuroa }, oletus vakiot.js), toimitusVersio: "a" | "b",
+ *   ensitilausVersio: "a" | "b", ensimmainenTilaus: true vain, kun palvelin on todennut, ettei osoitteella ole maksettuja tilauksia }
  */
 export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   const { items, customerEmail, shippingAddress } = pyynto || {};
@@ -167,6 +174,10 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   if (alennus && fyysiset.length) {
     const k = nettokate(fyysiset);
     if (!k.tunnettu || k.nettokate < TILAUKSEN_MIN_KATE_EUROA) throw new KassaVirhe("Alennuskoodia ei voi käyttää tähän tilaukseen.", "discount_low_margin");
+    // TERVE-koodi: sama 7 €:n raja kappaletta kohden kuin ensimmäisen tilauksen alennuksessa (4.11.2026).
+    if (alennus.ensitilaus && !riittaaPerKpl(k.nettokate, fyysiset.reduce((s, r) => s + r.quantity, 0))) {
+      throw new KassaVirhe("Ensitilauksen koodia ei voi käyttää tähän tuoteyhdistelmään.", "discount_low_margin");
+    }
   }
   let pakettiAlennus = 0;
   if (!alennus && lisat.paketit?.length) {
@@ -198,6 +209,16 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
       toimitus = toimitusTesti.toimitus;
     }
   }
+  // Ensimmäisen tilauksen -5 % (A/B-testi, api/_lib/ensitilaus.js): ei muiden alennusten kanssa, 7 € kappaleelta.
+  const ensitilausVersio = lisat.ensitilausVersio === "b" ? "b" : "a";
+  let ensitilausAlennettu = 0;
+  if (fyysiset.length && ensitilausVersio === "b" && lisat.ensimmainenTilaus === true && !alennus && pakettiAlennus === 0 && koriAlennus === 0) {
+    const e = ensitilausAlennus(fyysiset.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100, pohja: pohjaSentit(r) / 100 })), toimitus);
+    if (e.kaytossa) {
+      fyysiset = alennaRivit(fyysiset, e.prosentti);
+      ensitilausAlennettu = e.alennus;
+    }
+  }
   // Lopullinen katevahti (3.11.2026, Tiinan muki -10,07 €): tilaus kaikkien alennusten ja toimitusmaksun jälkeen
   // jättää vähintään 7 € nettokatetta, tai sitä ei voi maksaa. Toimituksen porraskaan ei aina riitä yksin.
   if (fyysiset.length) {
@@ -225,6 +246,9 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     /** Hintatestin B: toimitus sisältyy tuotteen hintaan (api/_lib/toimitustesti.js). */
     shipping_included: !!toimitusTesti,
     toimitus_versio: lisat.toimitusVersio === "b" ? "b" : "a",
+    /** Ensimmäisen tilauksen alennus euroina (A/B-testi, api/_lib/ensitilaus.js); sisältyy discount-kenttään. */
+    ensitilaus_versio: ensitilausVersio,
+    first_order_discount: Math.round(ensitilausAlennettu * 100) / 100,
     discount: Math.round((valisumma + testiLisa - tuotteetYht) * 100) / 100,
     bundle_discount: Math.round(pakettiAlennus * 100) / 100,
     basket_discount: Math.round(koriAlennus * 100) / 100,

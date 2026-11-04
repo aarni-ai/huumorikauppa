@@ -3,7 +3,7 @@
  * esirenderöintiin (src/seo/prerender/pages.ts). Portaat api/_lib/vakiot.js MAARAALENNUS (KATTEET.md
  * "Määräalennus yrityksille"), joulun päivä lasketaan (src/data/tilauspaivat.ts).
  */
-import { MAARAALENNUS } from "../../api/_lib/vakiot.js";
+import { MAARAALENNUS, HINNASTO } from "../../api/_lib/vakiot.js";
 import { esimerkkiHinnat, YRITYS_JOULU_TAKARAJA_ISO, paivaTeksti } from "../../api/_lib/yritysmyynti.js";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
 import { jouluAuki, JOULU_TPAITA_PAIVA_TEKSTI } from "./tilauspaivat";
@@ -14,13 +14,36 @@ const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 /** Portaat pienimmästä suurimpaan. */
 export const YRITYS_PORTAAT = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min);
 
+/**
+ * Esimerkkien t-paidan hinta: 27,90 €:n t-paita, jolle kassa antaa kaikki portaat 7 €:n katesäännöllä (4.11.2026,
+ * src/test/ensitilaus.test.ts). 24,90 €:n meemipaidoissa porras on pienempi (MEEMI_PORRAS_TEKSTI).
+ */
+export const YRITYS_ESIMERKKI_HINTA = HINNASTO.tpaita.uniikki;
+
 /** Esimerkkilasku: N t-paitaa portaan alennuksella. */
 export function yritysEsimerkki(n: number): { kpl: number; ennen: string; prosentti: number; jalkeen: string } {
   const porras = [...YRITYS_PORTAAT].reverse().find((p) => n >= p.min);
-  const summa = n * MAARAALENNUS.kappalehinta;
+  const summa = n * YRITYS_ESIMERKKI_HINTA;
   const prosentti = porras?.prosentti ?? 0;
   return { kpl: n, ennen: eur(summa), prosentti, jalkeen: eur(summa * (1 - prosentti / 100)) };
 }
+
+/**
+ * Porrastaulukon ehto teksteihin (blogit, yritysalat, UKK): portaat koskevat 27,90 €:n t-paitoja kaikilla portailla;
+ * meemipaidoissa porras on pienempi 7 €:n katesäännön vuoksi (4.11.2026).
+ */
+export const portaatEhto = () => `Täydet portaat koskevat ${eur(YRITYS_ESIMERKKI_HINTA)}:n t-paitoja. ${MEEMI_PORRAS_TEKSTI}`;
+
+/**
+ * Meemipaitojen (24,90 €) portaat 7 €:n katesäännöllä (api/_lib/yritysmyynti.js esimerkkiHinnat), esim.
+ * "24,90 €:n meemipaidoissa määräalennus on 25 paidasta -10 % ja 50 paidasta -10 %."
+ */
+export const MEEMI_PORRAS_TEKSTI = (() => {
+  const portaat = esimerkkiHinnat("meemipaita", YRITYS_PORTAAT.map((p) => p.min)).filter((e) => e.alennusProsentti > 0);
+  const hinta = eur(HINNASTO.tpaita.suora);
+  if (!portaat.length) return `${hinta}:n meemipaidoissa määräalennusta ei ole.`;
+  return `${hinta}:n meemipaidoissa määräalennus on ${portaat.map((e) => `${e.kpl} paidasta -${e.alennusProsentti} %`).join(" ja ")}.`;
+})();
 
 const JOULU = jouluAuki()
   ? `T-paidat ehtivät jouluksi, kun tilaus on tehty viimeistään ${JOULU_TPAITA_PAIVA_TEKSTI}. Isossa tilauksessa jätä aikaa myös kokojen keräämiseen.`
@@ -61,7 +84,7 @@ export const yrityksetPage = {
   path: "/yritykset",
   intro: [
     `Huumorikaupan t-paidat ovat yrityksen joululahja tai tiimipaita, joka tulee käyttöön. Kun samassa tilauksessa on vähintään ${YRITYS_PORTAAT[0].min} t-paitaa, kassa vähentää määräalennuksen automaattisesti ilman koodia.`,
-    `Määräalennus koskee kaikkia t-paitoja, ja paidat voivat olla eri designeja, kokoja ja värejä. Esimerkit on laskettu ${eur(MAARAALENNUS.kappalehinta)}:n t-paidoilla.`,
+    `Määräalennus koskee kaikkia t-paitoja, ja paidat voivat olla eri designeja, kokoja ja värejä. Esimerkit on laskettu ${eur(YRITYS_ESIMERKKI_HINTA)}:n t-paidoilla. ${MEEMI_PORRAS_TEKSTI}`,
   ],
   portaat: YRITYS_PORTAAT.map((p) => ({ teksti: `${p.min}+ t-paitaa`, prosentti: p.prosentti })),
   esimerkit: [10, 25, 50].map(yritysEsimerkki),
@@ -69,7 +92,7 @@ export const yrityksetPage = {
     {
       heading: "Edut yritykselle",
       items: [
-        `Määräalennus ${YRITYS_PORTAAT.map((p) => `${p.min}+ paitaa -${p.prosentti} %`).join(", ")} lasketaan kassalla automaattisesti.`,
+        `Määräalennus ${YRITYS_PORTAAT.map((p) => `${p.min}+ paitaa -${p.prosentti} %`).join(", ")} lasketaan kassalla automaattisesti ${eur(YRITYS_ESIMERKKI_HINTA)}:n t-paidoille. ${MEEMI_PORRAS_TEKSTI}`,
         `Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen, joten kymmenen t-paidan tilaus toimitetaan ilman toimituskuluja.`,
         "Paidat painetaan tilauksesta EU:ssa, ja jokaisella tuotesivulla on kokotaulukko senttimetreinä.",
         "Valikoimassa on satoja valmiita designeja, esimerkiksi ammatti-, harrastus- ja meemipaidat.",
@@ -107,7 +130,7 @@ export const yrityksetPage = {
   faqs: [
     {
       q: "Miten määräalennus toimii?",
-      a: `Lisää koriin vähintään ${YRITYS_PORTAAT[0].min} t-paitaa. Kassa laskee alennuksen automaattisesti: ${YRITYS_PORTAAT.map((p) => `${p.min}+ t-paitaa -${p.prosentti} %`).join(", ")}. Alennuskoodia ei tarvita.`,
+      a: `Lisää koriin vähintään ${YRITYS_PORTAAT[0].min} t-paitaa. Kassa laskee alennuksen automaattisesti: ${YRITYS_PORTAAT.map((p) => `${p.min}+ t-paitaa -${p.prosentti} %`).join(", ")}. ${portaatEhto()} Alennuskoodia ei tarvita.`,
     },
     {
       q: "Voiko paidat olla eri designeja ja kokoja?",
