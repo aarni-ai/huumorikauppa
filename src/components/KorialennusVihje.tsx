@@ -23,6 +23,14 @@ export const TPAITAPARI_ALIN_HINTA = `T-paidan hinta ${eur(TPAITAPARI_KAMPANJA.k
  */
 export function KorialennusVihje({ tila, className = "" }: { tila: KorialennusTila; className?: string }) {
   if (tila.kpl === 0 || tila.syy === "pois" || tila.syy === "koodi" || tila.syy === "ei_rivia") return null;
+  // Joulukalenterin luukun hinta ei yhdisty muihin alennuksiin (api/_lib/kassa.js).
+  if (tila.syy === "joulukalenteri") {
+    return (
+      <p className={`flex items-center gap-2 text-xs text-muted-foreground ${className}`}>
+        <Percent className="h-4 w-4 shrink-0" /> Korissa on joulukalenterin luukun hinta. Se ei yhdisty muihin alennuksiin.
+      </p>
+    );
+  }
   // Seuraava porras luvataan vain, kun se kassan 7 €:n katesäännöllä toteutuisi (src/lib/ostoskori.ts seuraavaPorras).
   const seuraava = tila.seuraavaPorras ?? null;
   if (tila.voimassa && tila.tyyppi === "maara") {

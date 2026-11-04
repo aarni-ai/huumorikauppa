@@ -16,6 +16,9 @@
  *   black-friday    23.11.-30.11. kaksi t-paitaa 44,90 €
  *   joulu-takaraja  Black Fridayn jälkeen - JOULU_TPAIDAT_ISO  viimeiset tilauspäivät
  *   lahjakortti     JOULU_TPAIDAT_ISO + 1 - 24.12.             lahjakortti perille heti
+ *
+ * Rinnakkain (JOULUKALENTERI_VAIHE, 4.11.2026): joulukalenteri joulukuun alusta jouluaattoon (päivän luukku, banneri ja
+ * etusivun nosto), ennakkonosto KAMPANJAPAIVAT.joulukalenteri.esittely-päivästä. Ei korvaa yllä olevia vaiheita.
  */
 import { KAMPANJAPAIVAT, TPAITAPARI_KAMPANJA } from "../../api/_lib/vakiot.js";
 import {
@@ -51,6 +54,14 @@ export const KAMPANJAVAIHEET: readonly KampanjaVaihe[] = [
   { id: "joulu-takaraja", alku: lisaaPaivia(KAMPANJAPAIVAT.blackFriday.loppu, 1), loppu: JOULU_TPAIDAT_ISO },
   { id: "lahjakortti", alku: lisaaPaivia(JOULU_TPAIDAT_ISO, 1), loppu: KAMPANJAPAIVAT.lahjakorttiLoppu },
 ];
+
+/** Joulukalenteri (api/_lib/joulukalenteri.js): kulkee vaiheiden rinnalla, ei ole osa KAMPANJAVAIHEET-ketjua. */
+export const JOULUKALENTERI_VAIHE = {
+  id: "joulukalenteri" as const,
+  esittely: KAMPANJAPAIVAT.joulukalenteri.esittely,
+  alku: KAMPANJAPAIVAT.joulukalenteri.alku,
+  loppu: KAMPANJAPAIVAT.joulukalenteri.loppu,
+};
 
 const HELSINKI_PAIVA = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" });
 /** Päivä Suomen aikaa (YYYY-MM-DD) annettuna hetkenä. */

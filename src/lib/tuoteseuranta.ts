@@ -8,7 +8,7 @@ import { aitousLuokka, seuraaVuorovaikutusta } from "./aitous";
 
 export type Tuotetapahtuma = "koko" | "vari" | "kokotaulukko" | "lisaa_nakyvissa" | "kori" | "koko_esivalittu";
 
-let nykyinen: { tapahtumat: Set<Tuotetapahtuma>; alku: number; syvin: number; lahetetty: boolean } | null = null;
+let nykyinen: { tapahtumat: Set<Tuotetapahtuma>; alku: number; syvin: number; lahetetty: boolean; slug?: string } | null = null;
 
 const onBotti = () => typeof navigator !== "undefined" && (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse|inspectiontool|googleother/i.test(navigator.userAgent || ""));
 const onTesti = () => (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
@@ -29,18 +29,21 @@ function laheta() {
   mittaaVieritys();
   // Esivalittu koko lasketaan vain, jos kävijä ei valinnut kokoa itse (A/B-testi src/lib/abTestit.ts).
   if (n.tapahtumat.has("koko")) n.tapahtumat.delete("koko_esivalittu");
-  const body = { action: "tuotetapahtumat", ab: `koko-${abVersio("koko")}`, tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), aitous: aitousLuokka(), ...(onTesti() ? { testi: true } : {}) };
+  const body = { action: "tuotetapahtumat", ...(n.slug ? { slug: n.slug } : {}), ab: `koko-${abVersio("koko")}`, tapahtumat: [...n.tapahtumat], vieritys: vierityskori(n.syvin), aika: aikakori((Date.now() - n.alku) / 1000), aitous: aitousLuokka(), ...(onTesti() ? { testi: true } : {}) };
   fetch("/api/sahkoposti", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify(body) }).catch(() => undefined);
 }
 
 const piilossa = () => { if (document.visibilityState === "hidden") laheta(); };
 
-/** Tuotesivun katselu alkaa; palauttaa lopetuksen (React-efektin siivous: lähettää koosteen). */
-export function aloitaTuoteseuranta(): () => void {
+/**
+ * Tuotesivun katselu alkaa; palauttaa lopetuksen (React-efektin siivous: lähettää koosteen). slug: tuotekohtainen
+ * katselulaskuri (4.11.2026, joulukalenterin tuotevalinta, api/_lib/tuoteseuranta.js tuotesivu_katselut).
+ */
+export function aloitaTuoteseuranta(slug?: string): () => void {
   if (typeof window === "undefined" || typeof fetch !== "function" || onBotti()) return () => undefined;
   seuraaVuorovaikutusta();
   laheta();
-  nykyinen = { tapahtumat: new Set(), alku: Date.now(), syvin: 0, lahetetty: false };
+  nykyinen = { tapahtumat: new Set(), alku: Date.now(), syvin: 0, lahetetty: false, slug };
   mittaaVieritys();
   window.addEventListener("scroll", mittaaVieritys, { passive: true });
   document.addEventListener("visibilitychange", piilossa);

@@ -59,6 +59,7 @@ import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
 import { PERSONOIDUT_FAQS, PERSONOIDUT_HINNAT, PERSONOIDUT_INTRO, PERSONOIDUT_MALLIT, PERSONOIDUT_PATH } from "@/data/personoidutPage";
 import { LAHJAKORTTI_EHDOT } from "../../../api/_lib/lahjakortti.js";
+import { JOULUKALENTERI_OHJEET, JOULUKALENTERI_FAQS } from "@/data/joulukalenteriPage";
 import { hakuotsikko } from "../../../api/_lib/hakuotsikko.js";
 import { STATIC_PAGE_META, type StaticPageMeta, type StaticPagePath } from "../staticPageMeta";
 import { buildLandingJsonLd, landingBreadcrumbs, landingCategoryLinks, landingRelatedLinks } from "../landing";
@@ -596,6 +597,21 @@ export function buildChristmasDeadlinePage(): PrerenderPage {
   };
 }
 
+/**
+ * /joulukalenteri (4.11.2026): indeksoitava laskeutumissivu ilman luukkujen tuotteita tai hintoja. Päivän luukku
+ * haetaan selaimessa rajapinnasta (api/products.js ?joulukalenteri=1), joten staattinen HTML ei paljasta tulevia luukkuja.
+ */
+export function buildJoulukalenteriPage(): PrerenderPage {
+  return staticPage("/joulukalenteri", {
+    sections: [
+      { heading: "Näin kalenteri toimii", items: JOULUKALENTERI_OHJEET },
+      { heading: "Joululahjat", links: CHRISTMAS_MENU.filter((m) => m.href !== "/joulukalenteri").map((m) => ({ href: m.href, label: m.label })) },
+    ],
+    faqs: JOULUKALENTERI_FAQS,
+    jsonLd: [buildFaqJsonLd(JOULUKALENTERI_FAQS)],
+  });
+}
+
 /** /lahjakortti ja /paketit (29.10.2026): oma canonical ja sisältö staattisessa HTML:ssä (aiemmin vain SPA-kuori). */
 export function buildGiftCardAndBundlePages(): PrerenderPage[] {
   return [
@@ -894,6 +910,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
       jsonLd: [buildFaqJsonLd(PERSONOIDUT_FAQS)],
     }),
     ...buildGiftCardAndBundlePages(),
+    buildJoulukalenteriPage(),
     buildMediaPage(products),
     buildMothersDay(products),
     ...buildSituationPages(products),

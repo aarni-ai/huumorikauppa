@@ -1,4 +1,5 @@
 import { KampanjaNosto } from "@/components/KampanjaNosto";
+import { JoulukalenteriNosto } from "@/components/JoulukalenteriNosto";
 import { EtusivunSuosituimmat } from "@/components/EtusivunSuosituimmat";
 import { AB_OTSIKOT, abVersio, kirjaaVaihe } from "@/lib/suppilo";
 import { Link } from "react-router-dom";
@@ -142,6 +143,7 @@ const Index = () => {
       {/* KAMPANJANOSTO (2.11.2026): isänpäivä, joulu, Black Friday, joulun takarajat ja lahjakortti vaihtuvat itsestään
           kampanjakalenterin mukaan (src/data/kampanjat.ts). */}
       <KampanjaNosto />
+      <JoulukalenteriNosto />
 
       {/* YRITYSTEN JOULULAHJAT (30.10.2026): takaraja api/_lib/yritysmyynti.js, näkyy takarajaan asti. */}
       {/* Mobiilissa piilossa (3.11.2026): ensimmäinen näkymä kuluttajalle, yrityksille sama nosto tuotteiden alla. */}

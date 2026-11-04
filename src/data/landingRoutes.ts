@@ -212,6 +212,8 @@ export const CHRISTMAS_MENU: { href: string; label: string }[] = [
   { href: "/joululahja-alle-50-euroa", label: "Alle 50 €" },
   { href: "/lahjat/pikkujouluihin", label: "Pikkujoululahjat" },
   { href: "/joulun-viimeiset-tilauspaivat", label: "Viimeiset tilauspäivät" },
+  // Joulukalenteri (src/pages/JoulukalenteriPage.tsx, api/_lib/joulukalenteri.js): päivän luukku joulukuussa.
+  { href: "/joulukalenteri", label: "Joulukalenteri" },
 ];
 
 /** Uudelleenohjauksen kohde säilyttäen kyselymerkkijono (utm-parametrit) ja hash. Navigate-komponentti pudottaisi ne. */

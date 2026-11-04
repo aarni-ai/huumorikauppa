@@ -22,6 +22,12 @@
  * - Ensimmäisen tilauksen -5 % (A/B-testi 5.11.2026, api/_lib/ensitilaus.js): vain versiossa B, kun palvelin on todennut
  *   tilauksen ensimmäiseksi (lisat.ensimmainenTilaus), ei minkään muun alennuksen kanssa, ja vain jos nettokate
  *   alennuksen jälkeen on vähintään 7 € kappaletta kohden. Lasketaan hintatestin (toimitustesti.js) jälkeen.
+ * - Joulukalenteri (4.11.2026, api/_lib/joulukalenteri.js): lisat.joulukalenteri { luukut, nyt } (api/checkout.js).
+ *   Tämän päivän (Suomen aika) luukun tuotteen rivit saavat luukun hinnan, kun alennuskoodia ei ole. Silloin tilaukselle
+ *   ei anneta paketti-, kahden tuotteen-, määrä- eikä ensitilauksen alennusta eikä hintatestin B-hintaa, ja toimitus on
+ *   pienin porras, jolla nettokate on vähintään 7 € kappaletta kohden. Jos raja ei täyty, luukun hintaa ei anneta.
+ *   Jos tilaus olisi tavallisilla säännöillä (kahden tuotteen alennus, ilmainen toimitus, määräalennus) edullisempi,
+ *   käytetään niitä (laskeTilaus vertaa, joulukalenteri.syy "edullisempi_ilman").
  */
 import { myynnissa, printifyVariantti } from "./tuotteet.js";
 import { laskeKate, laskeTilauksenNettokate, toimitusmaksuKatteella } from "./kate.js";
@@ -36,6 +42,7 @@ import { lahjakorttiTuote, onLahjakortti, kaytettavaSumma } from "./lahjakortti.
 import { varianttiSaatavilla, EI_SAATAVILLA_VIESTI } from "./saatavuus.js";
 import { PERSONOITU_TUOTE, PERSONOITU_HUPPARI, onPersonoitu, personoitujenTyyppi, jasennaPersonointi, personointiTeksti } from "./personoitu.js";
 import { LOGOPAITA_TUOTE, LOGOPAITA_MIN_KPL, onLogopaita, jasennaLogopaita, logopaitaTeksti, sallitutVarit } from "./logopaita.js";
+import { avoinLuukku, sovellaLuukku, luukunToimitus } from "./joulukalenteri.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, TOIMITUS };
 /**
@@ -80,6 +87,20 @@ function lahjakorttiRivi(it) {
  *   ensitilausVersio: "a" | "b", ensimmainenTilaus: true vain, kun palvelin on todennut, ettei osoitteella ole maksettuja tilauksia }
  */
 export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
+  // Joulukalenteri: luukun hinta vain, jos tilaus on sillä asiakkaalle vähintään yhtä edullinen kuin tavallisilla
+  // säännöillä (esim. kahden tuotteen -5 % ja ilmainen toimitus voivat olla edullisempia). Ei koskaan molempia.
+  const tulos = laskeTilausKerran(pyynto, tuotteet, alennus, lisat);
+  if (!tulos.joulukalenteri?.paiva) return tulos;
+  let ilman = null;
+  try {
+    ilman = laskeTilausKerran(pyynto, tuotteet, alennus, { ...lisat, joulukalenteri: null });
+  } catch {
+    ilman = null;
+  }
+  return ilman && ilman.total < tulos.total ? { ...ilman, joulukalenteri: { syy: "edullisempi_ilman" } } : tulos;
+}
+
+function laskeTilausKerran(pyynto, tuotteet, alennus, lisat = {}) {
   const { items, customerEmail, shippingAddress } = pyynto || {};
   if (!Array.isArray(items) || items.length === 0) throw new KassaVirhe("Ostoskori on tyhjä.", "missing_items");
   if (!customerEmail || !EMAIL_RE.test(customerEmail)) throw new KassaVirhe("Sähköpostiosoite puuttuu tai on virheellinen.", "missing_email");
@@ -179,8 +200,27 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
       throw new KassaVirhe("Ensitilauksen koodia ei voi käyttää tähän tuoteyhdistelmään.", "discount_low_margin");
     }
   }
+  // Joulukalenteri: tämän päivän luukun hinta ilman alennuskoodia; ei yhdisty muihin alennuksiin (alla luukkuKaytossa).
+  let luukkuTulos = null;
+  let luukkuSyy = null;
+  const luukku = lisat.joulukalenteri ? avoinLuukku(lisat.joulukalenteri.luukut, lisat.joulukalenteri.nyt ?? new Date()) : null;
+  if (luukku && fyysiset.length && rivit.some((r) => r.slug === luukku.slug)) {
+    const s = alennus ? null : sovellaLuukku(fyysiset, luukku, bySlug);
+    if (alennus) luukkuSyy = "alennuskoodi";
+    else if (!s) luukkuSyy = "ei_rivia";
+    else {
+      const kplKaikki = s.rivit.reduce((a, r) => a + r.quantity, 0);
+      const t = luukunToimitus({ osat: osat(s.rivit), summa: s.rivit.reduce((a, r) => a + r.unit_cents * r.quantity, 0) / 100, toimitusKpl, kpl: kplKaikki });
+      if (t) {
+        fyysiset = s.rivit;
+        toimitus = t.maksu;
+        luukkuTulos = { paiva: luukku.pvm, luukku: luukku.paiva, alennus: s.alennusSentit / 100, kpl: s.kpl, rajattu: t.rajattu };
+      } else luukkuSyy = "kate";
+    }
+  }
+  const luukkuKaytossa = !!luukkuTulos;
   let pakettiAlennus = 0;
-  if (!alennus && lisat.paketit?.length) {
+  if (!alennus && !luukkuKaytossa && lisat.paketit?.length) {
     const p = sovellaPaketit(fyysiset, bySlug, lisat.paketit);
     const k = p.alennus > 0 ? nettokate(p.rivit, toimitus) : null;
     if (!k || (k.tunnettu && k.nettokate >= TILAUKSEN_MIN_KATE_EUROA)) {
@@ -189,7 +229,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     }
   }
   let koriAlennus = 0;
-  if (!alennus && fyysiset.length) {
+  if (!alennus && !luukkuKaytossa && fyysiset.length) {
     let k = sovellaKorialennus(fyysiset, bySlug, toimitus, lisat.korialennus);
     // T-paitapari: kampanjahinta ja toimitus kuten ennen (ei kahden tuotteen ilmaista toimitusta).
     if (k.tyyppi === "tpaitapari" && toimitus !== normaaliToimitus) {
@@ -202,7 +242,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   // Ilmaisen toimituksen hintatesti (4.11.2026, api/_lib/toimitustesti.js): versiossa B yhden tuotteen tilauksen toimitus
   // sisältyy tuotteen hintaan (hinta + toimitusmaksu pyöristettynä ,90:aan), toimitus 0 €. Muut korit kuten A.
   let toimitusTesti = null;
-  if (fyysiset.length && lisat.toimitusVersio === "b") {
+  if (fyysiset.length && lisat.toimitusVersio === "b" && !luukkuKaytossa) {
     toimitusTesti = sovellaKassaan({ versio: lisat.toimitusVersio, rivit: fyysiset, toimitus, alennus: !!alennus || pakettiAlennus > 0 || koriAlennus > 0, tuote: (id) => byId.get(id) });
     if (toimitusTesti) {
       fyysiset = toimitusTesti.rivit;
@@ -212,7 +252,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
   // Ensimmäisen tilauksen -5 % (A/B-testi, api/_lib/ensitilaus.js): ei muiden alennusten kanssa, 7 € kappaleelta.
   const ensitilausVersio = lisat.ensitilausVersio === "b" ? "b" : "a";
   let ensitilausAlennettu = 0;
-  if (fyysiset.length && ensitilausVersio === "b" && lisat.ensimmainenTilaus === true && !alennus && pakettiAlennus === 0 && koriAlennus === 0) {
+  if (fyysiset.length && ensitilausVersio === "b" && lisat.ensimmainenTilaus === true && !alennus && !luukkuKaytossa && pakettiAlennus === 0 && koriAlennus === 0) {
     const e = ensitilausAlennus(fyysiset.map((r) => ({ tuote: byId.get(r.product_id), varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100, pohja: pohjaSentit(r) / 100 })), toimitus);
     if (e.kaytossa) {
       fyysiset = alennaRivit(fyysiset, e.prosentti);
@@ -242,7 +282,7 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     subtotal: Math.round((valisumma + testiLisa + korttienSumma) * 100) / 100,
     shipping: toimitus,
     /** Ilmainen toimitus rajattu katevahdilla (toimitus pienempi kuin tavallinen mutta ei 0 €). */
-    shipping_reduced: !toimitusTesti && toimitusTila.rajattu && toimitus === toimitusTila.maksu,
+    shipping_reduced: luukkuTulos ? luukkuTulos.rajattu : !toimitusTesti && toimitusTila.rajattu && toimitus === toimitusTila.maksu,
     /** Hintatestin B: toimitus sisältyy tuotteen hintaan (api/_lib/toimitustesti.js). */
     shipping_included: !!toimitusTesti,
     toimitus_versio: lisat.toimitusVersio === "b" ? "b" : "a",
@@ -252,6 +292,8 @@ export function laskeTilaus(pyynto, tuotteet, alennus, lisat = {}) {
     discount: Math.round((valisumma + testiLisa - tuotteetYht) * 100) / 100,
     bundle_discount: Math.round(pakettiAlennus * 100) / 100,
     basket_discount: Math.round(koriAlennus * 100) / 100,
+    /** Joulukalenterin luukku: { paiva, luukku, alennus (euroa), kpl } kun luukun hinta on käytössä; muuten { syy } tai null. */
+    joulukalenteri: luukkuTulos ? { paiva: luukkuTulos.paiva, luukku: luukkuTulos.luukku, alennus: Math.round(luukkuTulos.alennus * 100) / 100, kpl: luukkuTulos.kpl } : luukkuSyy ? { syy: luukkuSyy } : null,
     total,
     gift_card_code: lisat.lahjakortti && lahjakortilla > 0 ? lisat.lahjakortti.koodi : null,
     gift_card_amount: lahjakortilla,

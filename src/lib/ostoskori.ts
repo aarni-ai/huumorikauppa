@@ -15,6 +15,7 @@ import { sovellaPaketit } from "../../api/_lib/paketit.js";
 import { sovellaKorialennus, kalleinVariantti, KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, TPAITAPARI_KAMPANJA, tpaitapariVoimassa, MAARAALENNUS } from "../../api/_lib/korialennus.js";
 import type { CartItem, Product } from "@/types/product";
 import { toimitustestiKorissa } from "./toimitustesti";
+import { helsinginPaiva, luukunToimitus } from "../../api/_lib/joulukalenteri.js";
 
 export { ILMAINEN_TOIMITUS_RAJA, ILMAINEN_TOIMITUS_KPL, TOIMITUS };
 
@@ -35,6 +36,25 @@ type Rivi = Pick<CartItem, "product" | "quantity">;
 type KoriRivi = Rivi & Pick<CartItem, "selectedSize" | "selectedColor">;
 
 const pyorista = (x: number) => Math.round(x * 100) / 100;
+
+/**
+ * Korissa on joulukalenterin tämän päivän luukun hinta (CartItem.luukku, src/lib/joulukalenteri.ts). Silloin kassa ei anna
+ * muita alennuksia, ja toimitus on pienin porras, jolla kate on 7 € kappaleelta (api/_lib/joulukalenteri.js).
+ */
+export const luukkuKorissaNyt = (items: Pick<CartItem, "product">[], nyt: number = Date.now()): boolean =>
+  items.some((i) => { const l = (i as Partial<CartItem>).luukku; return !!l && l.pvm === helsinginPaiva(nyt); });
+
+/** Paljonko korin summa nousee, jos luukun hinta ei ole käytössä (alennuskoodi korvaa sen): tavallinen hinta - luukun hinta. */
+export function luukunPalautusSumma(items: Pick<CartItem, "product" | "quantity" | "selectedSize">[]): number {
+  let lisa = 0;
+  for (const i of items) {
+    const l = (i as Partial<CartItem>).luukku;
+    if (!l) continue;
+    const tavallinen = { ...i.product, price: l.normaali, variants: { ...(i.product.variants || {}), size_prices: l.kokohinnat ?? undefined } };
+    lisa += (Number(rivinHinta(tavallinen, i.selectedSize)) - i.product.price) * i.quantity;
+  }
+  return pyorista(Math.max(0, lisa));
+}
 
 /** Fyysisten tuotteiden summa (lahjakortit eivät kerrytä ilmaisen toimituksen rajaa). */
 export function fyysinenSumma(items: Rivi[]): number {
@@ -81,11 +101,14 @@ export function toimitusTila(items: (Rivi & Partial<Pick<CartItem, "selectedSize
     const suora = kartta[`${(i.selectedColor || "").trim()}|${(i.selectedSize || "").trim()}`];
     return { tuote: i.product, varianttiId: typeof suora === "number" ? suora : kalleinVariantti(i.product), maara: i.quantity, yksikkohinta: Number(rivinHinta(i.product, i.selectedSize)) };
   });
-  const maksu = summa > 0 ? toimitusmaksuKatteella({ summa, kpl, alennus, osat }) : { maksu: 0, tavallinen: 0, rajattu: false };
+  const luukku = !alennus && summa > 0 && luukkuKorissaNyt(items);
+  const luukunMaksu = luukku ? luukunToimitus({ osat, summa, toimitusKpl: kpl, kpl: osat.reduce((s, o) => s + o.maara, 0) }) : null;
+  const maksu = luukunMaksu ? { maksu: luukunMaksu.maksu, tavallinen: luukunMaksu.tavallinen, rajattu: luukunMaksu.rajattu }
+    : summa > 0 ? toimitusmaksuKatteella({ summa, kpl, alennus, osat }) : { maksu: 0, tavallinen: 0, rajattu: false };
   const ilmainen = vainLahjakortteja || (summa > 0 && maksu.maksu === 0);
   const rajattu = !ilmainen && maksu.rajattu;
   const puuttuuKpl = ilmainen || alennus || rajattu ? 0 : Math.max(0, ILMAINEN_TOIMITUS_KPL - kpl);
-  const testi = toimitustestiKorissa(items, ilmainen || summa === 0 ? 0 : maksu.maksu, alennus);
+  const testi = toimitustestiKorissa(items, ilmainen || summa === 0 ? 0 : maksu.maksu, alennus || !!luukunMaksu);
   if (testi.kaytossa) {
     return { summa, puuttuu: 0, ilmainen: true, toimitus: 0, edistyminen: 100, vainLahjakortteja, kpl, puuttuuKpl: 0, rajattu: false, sisaltyy: testi.lisa, sisaltyvaTuote: testi.rivi?.product.id ?? null };
   }
@@ -167,7 +190,7 @@ export function paketinTiedot(paketti: Paketti, tuotteet: Product[]) {
  * vähintään 12 € kaikilla yhdistelmillä). Palvelin laskee lopullisen alennuksen valitulla variantilla.
  */
 export function arvioiPakettialennus(items: Rivi[], tuotteet: Product[], alennuskoodi = false, paketit: Paketti[] = PAKETTIMAARITYKSET): number {
-  if (alennuskoodi) return 0;
+  if (alennuskoodi || luukkuKorissaNyt(items)) return 0;
   const kpl = new Map<string, number>();
   for (const i of items) if (!onLahjakortti(i)) kpl.set(i.product.slug, (kpl.get(i.product.slug) || 0) + i.quantity);
   let alennus = 0;
@@ -207,7 +230,7 @@ export interface KorialennusTila {
   seuraavaPorras?: { lisaa: number; prosentti: number } | null;
   /** T-paitaparikampanja voimassa: korissa on näin monta kampanjan t-paitaa (vihjettä "lisää toinen t-paita" varten). */
   kampanjaTpaitoja?: number;
-  /** Miksi alennusta ei ole: null, "kpl", "pois", "koodi", "ei_rivia" (kaikki paketissa), "kulu", "kate" (katevahti). */
+  /** Miksi alennusta ei ole: null, "kpl", "pois", "koodi", "ei_rivia" (kaikki paketissa), "kulu", "kate" (katevahti), "joulukalenteri". */
   syy: string | null;
 }
 
@@ -238,6 +261,7 @@ export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennusk
   const pohja = { kpl, puuttuu: Math.max(0, KORIALENNUS_MIN_KPL - kpl), prosentti: KORIALENNUS_PROSENTTI, alennus: 0, voimassa: false };
   if (!(KORIALENNUS_PROSENTTI > 0)) return { ...pohja, syy: "pois" };
   if (alennuskoodi) return { ...pohja, syy: "koodi" };
+  if (luukkuKorissaNyt(items)) return { ...pohja, syy: "joulukalenteri" };
   if (kpl < KORIALENNUS_MIN_KPL) return { ...pohja, syy: "kpl", kampanjaTpaitoja: kampanjanTpaitat(fyysiset) };
   const bySlug = new Map<string, Product>(tuotteet.map((p) => [p.slug, p]));
   for (const i of fyysiset) if (!bySlug.has(i.product.slug)) bySlug.set(i.product.slug, i.product);

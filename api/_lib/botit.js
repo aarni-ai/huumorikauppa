@@ -15,7 +15,7 @@
 
 const AITOUS = ["aito", "headless", "passiivinen"];
 export const BOTTISYYT = ["ua-botti", "ua-epatavallinen", "datakeskus", "headless", "ei-vuorovaikutusta", "ei-signaalia"];
-export const AITOUS_MITTARIT = ["kaynti", "laskeutuminen", "tuotesivu", "suppilo", "lisamyynti", "toimitustesti", "ensitilaus"];
+export const AITOUS_MITTARIT = ["kaynti", "laskeutuminen", "tuotesivu", "suppilo", "lisamyynti", "toimitustesti", "ensitilaus", "joulukalenteri"];
 
 /** Epätavallinen User-Agent: ei selaimen muotoa, kirjasto, headless tai vanhentunut selainversio (bottien vakio-UA). */
 export function epatavallinenUa(ua) {

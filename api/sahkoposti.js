@@ -28,6 +28,7 @@
  * POST { action: "toimitustesti", versio, tapahtuma }   ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js)
  * POST { action: "ensitilaus", versio, tapahtuma }      ensimmäisen tilauksen -5 % -testi (api/_lib/ensitilaus.js)
  * POST { action: "lisamyynti", tapahtuma, testi? }               korin lisämyynnin seuranta (api/_lib/lisamyynti.js)
+ * POST { action: "joulukalenteri", tapahtuma, aitous }            joulukalenterin käynti, luukun avaus ja koriin (api/_lib/joulukalenteri-seuranta.js)
  * POST { action: "suppilo", vaihe, ab, testi? }                  oma ostosuppilo (api/_lib/suppilo.js, ei tunnisteita)
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
@@ -403,6 +404,13 @@ export async function kasittele(req, res, store) {
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaEnsitilaustesti } = await import("./_lib/ensitilaus.js");
       return res.status(200).json({ ok: await kirjaaEnsitilaustesti(sql(), body) });
+    }
+    case "joulukalenteri": {
+      // Joulukalenteri (api/_lib/joulukalenteri-seuranta.js): kaynti, luukku, kori; vain koostemäärät, botit pois.
+      const ohita = await ohitaTaiBotti(req, body, "joulukalenteri");
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaJoulukalenteri } = await import("./_lib/joulukalenteri-seuranta.js");
+      return res.status(200).json({ ok: await kirjaaJoulukalenteri(sql(), teksti(body.tapahtuma, 20)) });
     }
     case "lisamyynti": {
       // Korin lisämyynnin seuranta (api/_lib/lisamyynti.js): vain koostemäärät.

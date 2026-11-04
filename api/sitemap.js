@@ -33,6 +33,8 @@ const STATIC_PAGES = [
   { loc: "/polttari-lahjat", changefreq: "weekly", priority: "0.7" },
   { loc: "/aitienpaiva", changefreq: "weekly", priority: "0.7" },
   { loc: "/joulun-viimeiset-tilauspaivat", changefreq: "weekly", priority: "0.8" },
+  // Joulukalenteri 1.-24.12.2026 (api/_lib/joulukalenteri.js): sivu indeksoitavissa jo ennen joulukuuta, ei tulevia luukkuja.
+  { loc: "/joulukalenteri", changefreq: "daily", priority: "0.7" },
   { loc: "/ryhmatilaukset", changefreq: "monthly", priority: "0.7" },
   { loc: "/abipaidat", changefreq: "weekly", priority: "0.8" },
   // Abipaitojen kaupunkisivut 3.11.2026 (src/data/abikaupungit/polut.ts, sama järjestys; src/test/abikaupungit.test.ts).

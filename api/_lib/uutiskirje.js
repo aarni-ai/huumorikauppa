@@ -10,6 +10,10 @@
  *    (taulu uutiskirje_lahetykset, perusavain viesti + email), vain tilaajille, jotka eivät ole peruneet (email_optouts),
  *    ja markkinoinnin yhteisen päivärajan sisällä (markkinointi.js lahetysrajat, sama kv-laskuri, enintään 100
  *    viestiä Helsingin päivässä).
+ *  - Joulukalenteri (4.11.2026): 1.-24.12. klo 7 alkaen päivän luukku (joulukalenteriViesti, viesti joulukalenteri-<päivä>)
+ *    tilaajille, jotka eivät ole saaneet uutiskirjeviestiä samana päivänä (joulukampanjan viesti ensin). Sama kerran per
+ *    viesti ja osoite -sääntö, sama päiväraja ja sama domainin vahvistuksen ehto. Luukun tiedot antaa cron
+ *    (api/_lib/joulukalenteri-seuranta.js luukkuViestiin) vain luukun omana päivänä.
  *  - Joulukampanjan päivät: JOULUKAMPANJA alla; src/test/uutiskirje.test.ts tarkistaa, että ne vastaavat
  *    src/data/campaignSchedule.ts:n joulun tilauspäiviä ja Black Fridayn kampanjaa (vakiot.js TPAITAPARI_KAMPANJA).
  */
@@ -104,6 +108,44 @@ export function joulukampanjaViesti(viesti, email) {
   };
 }
 
+// ---------- Joulukalenteri ----------
+
+/** Luukun aamuviesti lähtee aikaisintaan tällä tunnilla Suomen aikaa. */
+export const LUUKKU_TUNTI = 7;
+
+/**
+ * Joulukalenterin päivän luukku viestinä. luukku: { id, paiva, pvm, slug, nimi, hinta, kpl, normaali, alin30 }
+ * (api/_lib/joulukalenteri-seuranta.js luukkuViestiin). Hinta on voimassa vain luukun päivän (Suomen aika).
+ */
+export function joulukalenteriViesti(luukku, email) {
+  const peruutus = peruutusLinkki(email);
+  const [, m, d] = luukku.pvm.split("-").map(Number);
+  const hinta = Number(luukku.kpl) > 1 ? `${luukku.kpl} kpl yhteensä ${eur(luukku.hinta)}` : eur(luukku.hinta);
+  const otsikko = `Joulukalenterin luukku ${luukku.paiva}: ${luukku.nimi}`;
+  const teksti = [
+    `Tämän päivän luukussa on ${luukku.nimi}: ${hinta} (normaalihinta ${eur(luukku.normaali)}). Hinta on voimassa vain tänään ${d}.${m}. klo 23.59 asti, ja se lasketaan kassalla ilman koodia.`,
+    `Alin hinta 30 päivän aikana ennen tarjousta: ${eur(luukku.alin30 ?? luukku.normaali)}. Luukun hinta ei yhdisty muihin alennuksiin.`,
+    luukku.pvm > JOULU_TILAUSPAIVA
+      ? `Joulun viimeinen tilauspäivä oli ${lyhytPaiva(JOULU_TILAUSPAIVA)}, joten tänään tilattu paita on perillä joulun jälkeen.`
+      : AIKATAULU,
+  ];
+  const sivu = utm("/joulukalenteri", luukku.id);
+  const tuote = utm(`/tuote/${luukku.slug}`, luukku.id);
+  return {
+    subject: `Luukku ${luukku.paiva}: ${luukku.nimi.split(" | ")[0]} ${hinta} tänään | Huumorikauppa`,
+    html: kehys(`<h2>${esc(otsikko)}</h2>${teksti.map((t) => `<p>${esc(t)}</p>`).join("")}<p><a href="${esc(tuote)}">${esc(luukku.nimi)}</a></p>${nappi(sivu, "Avaa päivän luukku")}`, peruutus),
+    text: `${otsikko}\n\n${teksti.join("\n\n")}\n\n${luukku.nimi}: ${tuote}\n\nAvaa päivän luukku: ${sivu}\n\nPeru viestit: ${peruutus}`,
+    headers: peruutusOtsakkeet(email),
+  };
+}
+
+/** Lähetetäänkö luukun viesti nyt: luukun oma päivä Suomen aikaa ja klo LUUKKU_TUNTI jälkeen. */
+export function luukkuViestiAuki(luukku, nyt = new Date()) {
+  if (!luukku?.id || !luukku?.pvm) return false;
+  const h = helsinki(nyt);
+  return h.paiva === luukku.pvm && h.tunti >= LUUKKU_TUNTI;
+}
+
 /** Helsingin päivä (YYYY-MM-DD) ja tunti. */
 export function helsinki(nyt = new Date()) {
   const osat = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Helsinki", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hour12: false })
@@ -162,9 +204,12 @@ export function pgUutiskirje(db) {
     tervetulojono: async (raja) => db`select s.email from subscribers s where s.welcome_sent_at is null and s.consent_at is not null
       and s.created_at > now() - interval '60 days' and not exists (select 1 from email_optouts o where o.email = s.email)
       order by s.created_at limit ${raja}`,
-    kampanjanVastaanottajat: async (viesti, raja) => db`select s.email from subscribers s
+    /** eiTanaan (YYYY-MM-DD): ei osoitteille, joille on lähtenyt jokin uutiskirjeviesti sinä päivänä (Suomen aika). */
+    kampanjanVastaanottajat: async (viesti, raja, { eiTanaan = null } = {}) => db`select s.email from subscribers s
       where s.consent_at is not null and not exists (select 1 from email_optouts o where o.email = s.email)
         and not exists (select 1 from uutiskirje_lahetykset l where l.viesti = ${viesti} and l.email = s.email)
+        ${eiTanaan ? db`and not exists (select 1 from uutiskirje_lahetykset l2 where l2.email = s.email
+          and (l2.sent_at at time zone 'Europe/Helsinki')::date = ${eiTanaan}::date)` : db``}
       order by s.created_at limit ${raja}`,
     /** Varaa lähetyksen (true = tämä ajo lähettää); epäonnistunut lähetys vapautetaan. */
     varaaLahetys: async (viesti, email) => (await db`insert into uutiskirje_lahetykset (viesti, email) values (${viesti}, ${email})
@@ -178,7 +223,7 @@ export function pgUutiskirje(db) {
  * Cron: tervetuloviestit jonosta ja avoimen kampanjaviestin lähetys. Vain vahvistetulla domainilla (vahvistettu).
  * Palauttaa { lahetetty, loki }.
  */
-export async function ajaUutiskirje(store, { laheta, vahvistettu, nyt = new Date(), rajat: annetut = lahetysrajat(), kuiva = false, prosentti = ENSITILAUS_ALENNUS_PROSENTTI } = {}) {
+export async function ajaUutiskirje(store, { laheta, vahvistettu, nyt = new Date(), rajat: annetut = lahetysrajat(), kuiva = false, prosentti = ENSITILAUS_ALENNUS_PROSENTTI, luukku = null } = {}) {
   const loki = [];
   const rajat = rajatKatolla(annetut);
   if (!vahvistettu) return { lahetetty: 0, loki: ["uutiskirje ohitettu: lähetysdomainia ei ole vahvistettu"] };
@@ -213,6 +258,20 @@ export async function ajaUutiskirje(store, { laheta, vahvistettu, nyt = new Date
       if (r.ok) { await kirjaa(); n++; } else { await store.vapautaLahetys(viesti.id, email); loki.push(`${viesti.id} epäonnistui ${email}: ${r.virhe}`); }
     }
     if (n) loki.push(`${viesti.id}: ${n} viestiä${kuiva ? " (kuiva)" : ""}`);
+  }
+
+  // Joulukalenterin päivän luukku: vain luukun päivänä, kerran per osoite, ei osoitteille, jotka saivat jo tänään viestin.
+  if (luukkuViestiAuki(luukku, nyt)) {
+    let n = 0;
+    const paiva = helsinki(nyt).paiva;
+    for (const { email } of tilaa() ? await store.kampanjanVastaanottajat(luukku.id, tilaa(), { eiTanaan: paiva }) : []) {
+      if (!tilaa()) break;
+      if (kuiva) { n++; continue; }
+      if (!(await store.varaaLahetys(luukku.id, email))) continue;
+      const r = await laheta({ to: email, ...joulukalenteriViesti(luukku, email) });
+      if (r.ok) { await kirjaa(); n++; } else { await store.vapautaLahetys(luukku.id, email); loki.push(`${luukku.id} epäonnistui ${email}: ${r.virhe}`); }
+    }
+    if (n) loki.push(`${luukku.id}: ${n} viestiä${kuiva ? " (kuiva)" : ""}`);
   }
   return { lahetetty, loki };
 }

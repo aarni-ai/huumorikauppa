@@ -4,6 +4,7 @@ import { trackAddToCart } from "@/lib/analytics";
 import { onPiilotettuTuote } from "@/lib/hiddenCategories";
 import { LOVABLE_KASSA_TAPPIO } from "../../api/_lib/lovable-kassa-tappio.js";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
+import { palautaTavallinen, luukkuVoimassa } from "@/lib/joulukalenteri";
 
 const CART_KEY = "huumorikauppa-cart";
 
@@ -26,6 +27,8 @@ function loadCart(): CartItem[] {
     // Lisäksi Lovablen kassan tappiolliset koot (27.10.2026).
     return items
       .filter((i) => i?.product && !onPiilotettuTuote(i.product) && !onTappioVariantti(i.product, i.selectedSize, i.selectedColor))
+      // Joulukalenterin luukun hinta vain luukun päivänä (src/lib/joulukalenteri.ts), sen jälkeen tavallinen hinta.
+      .map((i) => palautaTavallinen(i))
       .map((i) => (i.giftCard || i.lineId ? i : { ...i, product: kokoHinnalla(i.product, i.selectedSize) }));
   } catch {
     return [];
@@ -56,18 +59,21 @@ export function useCart() {
     saveCart(items);
   }, [items]);
 
-  const addItem = useCallback((tuote: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string) => {
+  /** luukku: joulukalenterin luukun hinta (tuote valmiiksi luukun hinnalla, src/lib/joulukalenteri.ts luukkuTuote). */
+  const addItem = useCallback((tuote: Product, quantity = 1, selectedSize?: string, selectedColor?: string, customText?: string, luukku?: CartItem["luukku"]) => {
     if (onPiilotettuTuote(tuote) || onTappioVariantti(tuote, selectedSize, selectedColor)) return;
     const product = kokoHinnalla(tuote, selectedSize);
     const trimmedText = customText?.trim() ? customText.trim().slice(0, 200) : undefined;
     setItems(prev => {
       const existing = prev.find(i => samaRivi(i, product.id, selectedSize, selectedColor, trimmedText));
       if (existing) {
+        // Luukun hinta koskee kassalla kaikkia saman tuotteen kappaleita: sama hinta myös korin rivillä.
+        const paivitetty = luukku && !luukkuVoimassa(existing.luukku) ? { product, luukku } : {};
         return prev.map(i =>
-          i === existing ? { ...i, quantity: i.quantity + quantity } : i
+          i === existing ? { ...i, ...paivitetty, quantity: i.quantity + quantity } : i
         );
       }
-      return [...prev, { product, quantity, selectedSize, selectedColor, customText: trimmedText }];
+      return [...prev, { product, quantity, selectedSize, selectedColor, customText: trimmedText, ...(luukku ? { luukku } : {}) }];
     });
     setLastAddedItem({ product, size: selectedSize, color: selectedColor, customText: trimmedText });
     // GA4 add_to_cart

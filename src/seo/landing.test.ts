@@ -140,7 +140,7 @@ describe("landing pages: data and copy rules", () => {
 
   it("Christmas menu links only to real pages", () => {
     for (const item of CHRISTMAS_MENU) {
-      expect(landingSet.has(item.href) || item.href === CHRISTMAS_DEADLINE_PATH, item.href).toBe(true);
+      expect(landingSet.has(item.href) || item.href === CHRISTMAS_DEADLINE_PATH || item.href === "/joulukalenteri", item.href).toBe(true);
     }
   });
 });

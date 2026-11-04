@@ -197,6 +197,15 @@ export const STATIC_PAGE_META = {
     intro:
       "Lahjakortti on digitaalinen: koodi tulee sähköpostiin heti maksun jälkeen, ja voit lähettää sen suoraan saajalle. Saaja kirjoittaa koodin kassalla kenttään Lahjakortin koodi. Lahjakortista ei peritä toimitusmaksua.",
   },
+  "/joulukalenteri": {
+    title: "Joulukalenteri 2026: päivän luukku | Huumorikauppa.fi",
+    description:
+      "Huumorikaupan joulukalenteri: joulukuun alusta jouluaattoon joka päivä yksi luukku ja yhden päivän tarjous t-paidasta tai hupparista.",
+    h1: "Joulukalenteri 2026",
+    name: "Joulukalenteri",
+    intro:
+      "Joulukalenterissa on 24 luukkua. Joka päivä aukeaa yksi luukku, ja sen t-paita tai huppari on tarjoushintaan vain sen päivän ajan, keskiyöhön asti Suomen aikaa. Tulevia luukkuja ei voi avata etukäteen. Luukun hinta lasketaan kassalla ilman koodia, eikä se yhdisty muihin alennuksiin.",
+  },
   "/paketit": {
     title: "Lahjapaketit, ilmainen toimitus | Huumorikauppa.fi",
     description:

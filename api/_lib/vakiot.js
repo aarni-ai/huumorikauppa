@@ -67,6 +67,11 @@ export const KAMPANJAPAIVAT = {
   blackFriday: { alku: "2026-11-23", loppu: "2026-11-30" },
   /** Lahjakorttinosto päättyy jouluaattoon. */
   lahjakorttiLoppu: "2026-12-24",
+  /**
+   * Joulukalenteri /joulukalenteri (4.11.2026, api/_lib/joulukalenteri.js): luukku päivässä alku-loppu, ennakkonosto
+   * (banneri ja etusivu) esittely-päivästä alkaen. Kulkee muiden vaiheiden rinnalla (src/data/kampanjat.ts).
+   */
+  joulukalenteri: { esittely: "2026-11-16", alku: "2026-12-01", loppu: "2026-12-24" },
 };
 
 /** Kategoriat, joita myydään vain toisen tuotteen lisänä (tarra yksin jättäisi katetta alle 5 €). */
