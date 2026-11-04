@@ -3336,3 +3336,87 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
    - Artikkeli "hauskat koristeet lahjaksi" esittelee koristeita, joita ei myydä. Vaihtoehdot: uudelleenohjaus, poisto tai uudelleenkirjoitus paidoista.
    - Kassan määräalennus antaa meemipaidalle täyden portaan (kate alle 7 €/kpl yli 25 kappaleen tilauksessa, kokonaiskate silti vahdissa). Ehdotus: sama porrasrajaus kuin tarjouksissa.
 5. **Tiinan Klarna-kiista:** edellisen ajon kohta 1 on yhä auki, jos sitä ei ole vastattu.
+
+## 4.11.2026
+
+**Aarnin päätökset toteutettu**
+- Blogi: "Hauskat koristeet lahjaksi" on nyt "Hauskat pikkulahjat alle 30 €" (/blogi/hauskat-pikkulahjat-alle-30-euroa).
+  - Mukana kuusi myynnissä olevaa t-paitaa (24,90 tai 27,90 €).
+  - Vanha osoite ohjaa uuteen 301:llä (vercel.json), ja sivukartassa on vain uusi osoite.
+  - Mukeja ei voinut käyttää, koska ne ovat piilossa myynnistä.
+- Määräalennus samaan 7 €:n katesääntöön kuin tarjouksissa (api/_lib/katesaanto.js, yhteinen yritysmyynti.js:n kanssa).
+  - 24,90 €:n meemipaidoissa portaat ovat nyt: 10 kpl ei porrasta (kahden paidan -5 % jää voimaan), 25 kpl ja 50 kpl
+    -10 %.
+  - 27,90 €:n paidoissa portaat ovat ennallaan.
+  - Yrityssivujen, etusivun, blogien ja korivihjeiden tekstit kertovat nyt vain portaat, jotka kassa oikeasti antaa.
+  - TERVE-ensitilauskoodi vaatii nyt myös 7 € katetta kappaleelta.
+
+**Ensimmäinen tilaus -kannustin (A/B, alkaa 5.11.2026)**
+- Printify ei tarjoa EU-painotaloille omaa pakkausliitettä tai kiitoskorttia, joten kannustin on -5 % ensimmäisestä
+  tilauksesta.
+- Versio B näyttää merkin tuotesivulla hinnan vieressä ja korissa erillisenä rivinä.
+- Ehdot:
+  - Kassa tarkistaa sähköpostiosoitteesta, ettei aiempia maksettuja tilauksia ole.
+  - Alennus ei yhdisty muihin alennuksiin.
+  - Alennus annetaan vain, jos kate jää vähintään 7 €:oon kappaleelta, myös hintatestin B-version kanssa.
+- Käytännössä alennus koskee 27,90 €:n t-paitoja (kate -5 %:n jälkeen 8,48 €) ja huppareita (9,76 €). 24,90 €:n paita
+  jää ilman, koska kate jäisi 6,25 €:oon.
+- Seuranta:
+  - Eväste hk_ab_ensitilaus; testauslinkki ?ab=ensitilaus-b.
+  - Botit, syöte ja prerender saavat aina version A.
+  - Mittarit: aidot katselut, kori, kassa, ostot ja kate per käynti.
+  - Päätös tehdään, kun kummassakin versiossa on 300 aitoa katselua.
+  - Tulokset näkyvät tuoteseurantaraportissa ja päivän yhteenvedossa.
+- Tietokanta: db/schema.sql (ensitilaustesti ja orders.ensitilaus_*). Taulut luodaan myös ajossa.
+
+**Nimipalvelinvaihto (KAYTTOONOTTO.md kohta 24)**
+- Julkinen DNS luettiin 4.11.2026:
+  - A: Vercel
+  - www: CNAME Verceliin
+  - MX: Zoho mx3
+  - TXT: SPF, kaksi Google-vahvistusta ja Trustpilot
+  - default._domainkey, _vercel (vanha tiimi), _acme-challenge
+  - _dmarc: lovable.dev
+  - Ei AAAA- eikä CAA-tietueita. DNSSEC on pois päältä.
+- Uusi Cloudflare-vyöhyke (annabel/vick) on jo olemassa. `node scripts/dns-vertailu.mjs` vertasi vyöhykkeitä suoraan
+  nimipalvelimilta, eikä estäviä eroja ole.
+  - Resendin kolme tietuetta ja uusi DMARC ovat jo uudessa vyöhykkeessä.
+  - A-tietueet ovat DNS only.
+- Kirjattu vaihtosuunnitelma:
+  1. Nimipalvelimet.
+  2. Resend.
+  3. Domain uuteen Vercel-projektiin `_vercel`-TXT:llä, A 216.150.1.1/216.150.16.1 ja www CNAME. www-ohjaus 308 on jo
+     valmiina uudessa projektissa.
+  Mukana ovat myös tarkistukset, palautus ja Coworkin vaiheet. DMARC-raportit kannattaa ohjata Cloudflaren ilmaiseen
+  DMARC Managementiin, koska gmail.com ei vastaanota toisen domainin raportteja.
+
+**Sähköposti Resendiin**
+- Vaihto on automaattinen: kun Resend vahvistaa domainin, kaikki viestit lähtevät Resendillä, ja kassa lakkaa
+  pyytämästä Stripen kuittia. Tähän ei enää tarvita SAHKOPOSTI_VAHVISTETTU-muuttujaa (omaVahvistusKaytossaNyt).
+- `node scripts/sahkoposti-tila.mjs` tulostaa:
+  - nimipalvelimet
+  - DNS-tietueet
+  - DMARC
+  - Resendin tilan
+  - reitin
+  - viikon tilausvahvistukset
+- `--testi` lähettää omistajalle TESTI-viestin jokaisesta viestityypistä: tilausvahvistus, lähetysilmoitus,
+  lahjakortti, korimuistutus, tervetuloviesti, uutiskirje, arvostelupyyntö ja hallinta.
+- Sama tila näkyy päivän yhteenvedossa.
+- Nyt: Resend `failed`, koska nimipalvelimet ovat vielä vanhat.
+
+**Somevideot**
+- Instagramin lukuja ei ole koneelle saatavilla, ja 37 uutta videota julkaistaan 30.11. mennessä.
+- Cowork kirjaa luvut tiedostoon some/tilastot.csv 7 päivää julkaisusta (ohje JULKAISUT.md:ssä).
+- `node scripts/some-analyysi.mjs` vertaa muotoja, versioita ja julkaisuaikoja katseluajan mukaan ja suosittelee
+  muodon 20 seuraavalle videolle, kun dataa on vähintään 5 videosta kahdessa muodossa.
+
+**Mittari 4.11. klo 12**
+- Kate marraskuussa 0 € / 3 000 €, 30 päivässä 1 tilaus.
+- Käynnit kuussa 649 (ennen suodatusta).
+- Bottisuodatus on ollut päällä 3.11. illasta. Siitä alkaen:
+  - käynnit 25/30 aitoja (83 %)
+  - laskeutumiset 25/25
+  - tuotesivun katselut 3/4
+- Hintatesti 4.11.: A 1 tuotesivu, B 0. Raja on 300 + 300.
+- Koon esivalinta: A 7, B 5 katselua, kumpikaan ei vielä koriin.
