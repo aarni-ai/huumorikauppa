@@ -8,6 +8,7 @@
  */
 import { HINNASTO, MAARAALENNUS, TOIMITUS, ILMAINEN_TOIMITUS_RAJA, TILAUKSEN_MIN_KATE_EUROA } from "./vakiot.js";
 import { logopaitaKuvaus } from "./logopaita.js";
+import { suurinSallittuAlennus, MIN_KATE_PER_KPL } from "./katesaanto.js";
 
 const maaraPorras = (kpl) => (MAARAALENNUS.kaytossa ? [...MAARAALENNUS.portaat].sort((a, b) => b.min - a.min).find((p) => kpl >= p.min) ?? null : null);
 
@@ -135,13 +136,10 @@ export function laskeTarjous({ malli, koot } = {}, { kerroin = 1, minKatePerKpl 
   };
   const tulos = laske(porras?.prosentti ?? 0);
   if (minKatePerKpl == null || tulos.katePerKpl >= minKatePerKpl) return tulos;
-  // Pienemmät portaat suurimmasta alkaen, lopuksi ilman alennusta.
-  const vaihtoehdot = [...MAARAALENNUS.portaat].map((p) => p.prosentti).filter((p) => p < tulos.alennusProsentti).sort((a, b) => b - a);
-  for (const p of [...vaihtoehdot, 0]) {
-    const t = laske(p);
-    if (t.katePerKpl >= minKatePerKpl) return t;
-  }
-  return laske(0);
+  // Pienemmät portaat suurimmasta alkaen, lopuksi ilman alennusta (sama apufunktio kuin kassan määräalennuksessa,
+  // api/_lib/katesaanto.js).
+  const vaihtoehdot = MAARAALENNUS.portaat.map((p) => p.prosentti).filter((p) => p < tulos.alennusProsentti);
+  return laske(suurinSallittuAlennus(vaihtoehdot, (p) => laske(p).katePerKpl, minKatePerKpl) ?? 0);
 }
 
 /**
@@ -178,11 +176,14 @@ export function joulutilausLaskuriTeksti(nyt = new Date(), takaraja = YRITYS_JOU
   return `Yritysten joulutilaukset: ${p} ${p === 1 ? "päivä" : "päivää"} jäljellä`;
 }
 
-/** Pakettitarjousten esimerkkihinnat (10, 25 ja 50 kappaletta, koot M-XL tasan). */
+/**
+ * Pakettitarjousten esimerkkihinnat (10, 25 ja 50 kappaletta, koot M-XL tasan). Määräalennuksen porras 7 €:n
+ * katesäännöllä kuten kassalla (4.11.2026): meemipaidoissa porras voi olla pienempi tai puuttua.
+ */
 export function esimerkkiHinnat(malli, maarat = [10, 25, 50]) {
   return maarat.map((n) => {
     const koot = { M: Math.ceil(n / 3), L: Math.ceil(n / 3), XL: n - 2 * Math.ceil(n / 3) };
-    const t = laskeTarjous({ malli, koot });
+    const t = laskeTarjous({ malli, koot }, { minKatePerKpl: MIN_KATE_PER_KPL });
     return { kpl: n, yhteensa: t.yhteensa, perKpl: r2(t.yhteensa / n), alennusProsentti: t.alennusProsentti };
   });
 }
@@ -218,5 +219,5 @@ export function laskuData({ rivit, toimitus, tilausId, asiakas }) {
   };
 }
 
-/** Vähimmäiskate yritystilaukselle: 5 €/paita (MAARAALENNUS), muuten tavallinen 7 €. */
-export const yritysMinKate = (kpl) => Math.max(TILAUKSEN_MIN_KATE_EUROA, MAARAALENNUS.minKatePerPaita * kpl);
+/** Vähimmäiskate yritystilaukselle: 7 €/paita (MAARAALENNUS.minKatePerKpl, 4.11.2026), vähintään tavallinen 7 €. */
+export const yritysMinKate = (kpl) => Math.max(TILAUKSEN_MIN_KATE_EUROA, MAARAALENNUS.minKatePerKpl * kpl);

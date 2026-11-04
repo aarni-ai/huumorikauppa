@@ -172,7 +172,7 @@ export const STATIC_PAGE_META = {
   "/yritykset": {
     title: "Yritysten joululahjat ja tiimipaidat | Huumorikauppa",
     description:
-      "Yritysten joululahjat ja tiimipaidat: määräalennus 10+ t-paidasta -10 %, 25+ -12 % ja 50+ -14 % automaattisesti kassalla. Toimitus yhteen osoitteeseen.",
+      "Yritysten joululahjat ja tiimipaidat: määräalennus 27,90 €:n t-paidoista 10+ -10 %, 25+ -12 % ja 50+ -14 % kassalla. Toimitus yhteen osoitteeseen.",
     h1: "Yritysten joululahjat ja tiimipaidat",
     name: "Yritykset",
     intro:

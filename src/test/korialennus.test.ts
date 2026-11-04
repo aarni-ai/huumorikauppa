@@ -204,13 +204,35 @@ describe("Määräalennus (MAARAALENNUS): 10+ -10 %, 25+ -12 %, 50+ -14 % t-paid
     expect(maaraPorras(25)?.prosentti).toBe(12);
     expect(maaraPorras(50)?.prosentti).toBe(14);
   });
-  it.each([[10, 10], [25, 12], [50, 14]])("%i t-paitaa: -%i %, kate vähintään 5 € paitaa kohden heikoimmallakin koolla", (n, pros) => {
-    for (const variant of [1, 2]) {
-      const k = sovellaKorialennus([rivi(n, variant)], bySlug, 0, { nyt: ulkona });
+  // 7 €:n katesääntö kappaletta kohden (omistajan päätös 4.11.2026, api/_lib/katesaanto.js): suurin porras, jolla raja
+  // täyttyy. 24,90 €:n meemipaita: 10 kpl ei määräalennusta (kahden tuotteen -5 % tilalla), 25 ja 50 kpl -10 %.
+  it.each([[10, null], [25, 10], [50, 10]])("%i meemipaitaa (24,90 €, koko M): määräalennus %s %, kate vähintään 7 € kappaleelta", (n, pros) => {
+    const k = sovellaKorialennus([rivi(n, 1)], bySlug, 0, { nyt: ulkona });
+    if (pros === null) expect(k.tyyppi).not.toBe("maara");
+    else {
       expect(k.tyyppi).toBe("maara");
       expect(k.prosentti).toBe(pros);
-      expect(k.nettokate / n).toBeGreaterThanOrEqual(5);
+      expect(k.nettokate / n).toBeGreaterThanOrEqual(7);
     }
+  });
+  it.each([10, 25, 50])("%i meemipaitaa 3XL (28,90 €, kulu 9,93 €): annettu porras jättää vähintään 7 € kappaleelta", (n) => {
+    const k = sovellaKorialennus([{ ...rivi(n, 2), unit_cents: 2890 }], bySlug, 0, { nyt: ulkona });
+    if (k.tyyppi === "maara") expect(k.nettokate / n).toBeGreaterThanOrEqual(7);
+    else expect(k.nettokate).toBeGreaterThanOrEqual(7);
+  });
+  it.each([[10, 10], [25, 12], [50, 14]])("%i t-paitaa à 27,90 €: -%i %, kate vähintään 7 € kappaleelta heikoimmallakin koolla", (n, pros) => {
+    for (const variant of [1, 2]) {
+      const k = sovellaKorialennus([{ ...rivi(n, variant), unit_cents: 2790 }], bySlug, 0, { nyt: ulkona });
+      expect(k.tyyppi).toBe("maara");
+      expect(k.prosentti).toBe(pros);
+      expect(k.nettokate / n).toBeGreaterThanOrEqual(7);
+    }
+  });
+  it("porras ei koske, jos muu kori painaa katteen alle 7 € kappaleelta: pienempi porras", () => {
+    // 25 kpl à 27,90 € saa -12 %; samassa korissa olevat 24,90 €:n paidat laskevat porrasta.
+    const k = sovellaKorialennus([{ ...rivi(13), unit_cents: 2790 }, rivi(12)], bySlug, 0, { nyt: ulkona });
+    expect(k.tyyppi).toBe("maara");
+    expect(k.nettokate / 25).toBeGreaterThanOrEqual(7);
   });
   it("alle 10 t-paitaa: kahden tuotteen -5 % ennallaan", () => {
     expect(sovellaKorialennus([rivi(9)], bySlug, 0, { nyt: ulkona }).tyyppi).toBe("prosentti");

@@ -41,8 +41,9 @@ export const KORIALENNUS_MIN_KATE_EUROA = 7;
 /**
  * Tilauksen vähimmäiskate (Aarnin päätös 29.10.2026, KATTEET.md "Hinnoittelu 29.10.2026"): jokaisesta tavallisesta
  * tilauksesta jää kaikkien kulujen jälkeen (Printify ilman ALV:tä, Stripe, provisio, alennukset) vähintään 7,00 €.
- * Alennuskoodi, pakettialennus ja kahden tuotteen alennus annetaan vain, jos raja täyttyy. Yritystilauksissa (10+
- * t-paitaa) raja on MAARAALENNUS.minKatePerPaita paitaa kohden.
+ * Alennuskoodi, pakettialennus ja kahden tuotteen alennus annetaan vain, jos raja täyttyy. Määräalennuksessa (10+
+ * t-paitaa), ensimmäisen tilauksen alennuksessa ja TERVE-koodissa raja on 7 € jokaista tilauksen kappaletta kohden
+ * (api/_lib/katesaanto.js, 4.11.2026).
  */
 export const TILAUKSEN_MIN_KATE_EUROA = 7;
 
@@ -148,6 +149,9 @@ export const TPAITAPARI_KAMPANJA = {
  * (t-paidan kulu 8,90 €, Printifyn toimitus 8,49 €, asiakas maksaa toimitusmaksun): yksi 24,90 €:n t-paita 6,25 € (hylätään),
  * yksi 27,90 €:n t-paita 8,48 €, kaksi 24,90 €:n t-paitaa 14,65 €, huppari 2,85 € (hylätään).
  * Aiempi 30 %:n katteen raja (ALENNUS_KATE_RAJA) ei enää koske ensitilauksen koodia (omistajan ohje 2.11.2026: 7 €).
+ * 4.11.2026: lisäksi vähintään 7 € jokaista tilauksen kappaletta kohden (api/_lib/katesaanto.js; kaksi 24,90 €:n t-paitaa
+ * 14,65 € = 7,33 €/kpl käy). Sama prosentti on ensimmäisen tilauksen A/B-testin alennus (api/_lib/ensitilaus.js); niitä
+ * ei yhdistetä, joten tilauksessa on enintään yksi 5 %:n ensitilausalennus.
  */
 export const ENSITILAUS_ALENNUS_PROSENTTI = 5;
 
@@ -159,8 +163,14 @@ export const SUOSTUMUS_MUISTUTUS = "Lähetä minulle muistutus, jos tilaus jää
 /**
  * Määräalennus yrityksille ja ryhmille (KATTEET.md "Määräalennus yrityksille", sivu /yritykset): kaikki t-paidat
  * (24,90 € ja 27,90 €, kappalehinta = edullisin hinta esimerkeissä) samassa tilauksessa, toimitus yhteen osoitteeseen.
- * Katevahti pitää katteen vähintään 5 € paitaa kohden. Korvaa kahden tuotteen alennuksen ja t-paitaparin, kun se on
- * suurempi.
+ * Korvaa kahden tuotteen alennuksen ja t-paitaparin, kun se on suurempi.
+ *
+ * Katesääntö (omistajan päätös 4.11.2026, sama kuin tarjouksissa 3.11.2026): porras annetaan vain, jos tilauksen
+ * nettokate alennuksen jälkeen on vähintään minKatePerKpl (7 €) jokaista tilauksen kappaletta kohden; muuten suurin
+ * porras, jolla raja täyttyy, tai ei määräalennusta (api/_lib/katesaanto.js suurinSallittuAlennus). Esimerkki
+ * (24,90 €:n meemipaita, OPT 8,90 € + toimitus 8,49 € + 1,19 €/kpl): 10 kpl -10 % jättäisi 6,68 €/kpl, joten
+ * määräalennusta ei anneta; 25 kpl ja 50 kpl saavat -10 % (-12 % ja -14 % jäisivät alle 7 €/kpl). 27,90 €:n
+ * t-paidat saavat kaikki portaat. Aiemmin raja oli 5 € paitaa kohden.
  */
 export const MAARAALENNUS = {
   kaytossa: true,
@@ -171,7 +181,7 @@ export const MAARAALENNUS = {
     { min: 25, prosentti: 12 },
     { min: 10, prosentti: 10 },
   ],
-  minKatePerPaita: 5,
+  minKatePerKpl: TILAUKSEN_MIN_KATE_EUROA,
 };
 
 /**

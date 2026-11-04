@@ -223,9 +223,12 @@ describe("Ensitilauksen alennus ja kate", () => {
     // Joulumalliston 27,90 €:n t-paita: nettokate yli 7 €, vaikka kate on alle 30 %:n heikoimmalla koolla.
     expect(laskeTilaus(pyynto, [paita(27.9)], koodi).discount).toBe(1.39);
     expect(laskeTilaus(pyynto, [paita(27.9, 993)], koodi).discount).toBe(1.39);
-    // Kaksi 24,90 €:n t-paitaa: koodi käy.
+    // Kaksi 24,90 €:n t-paitaa (tässä kumpikin Printify-toimitus 8,49 €): tilauksen kate yli 7 €, mutta alle 7 €
+    // kappaletta kohden, joten TERVE-koodi ei käy (4.11.2026, api/_lib/katesaanto.js). 29,90 €:n paidoilla käy.
     const kaksi = { ...pyynto, items: [{ id: "p1", quantity: 2, size: "M", color: "Musta" }] };
-    expect(laskeTilaus(kaksi, [paita(24.9)], koodi).discount).toBeGreaterThan(0);
+    expect(() => laskeTilaus(kaksi, [paita(24.9)], koodi)).toThrow(/Ensitilauksen koodia ei voi käyttää/);
+    expect(laskeTilaus(kaksi, [paita(24.9)], { type: "percent", value: 5 }).discount).toBeGreaterThan(0);
+    expect(laskeTilaus(kaksi, [paita(29.9)], koodi).discount).toBeGreaterThan(0);
     // Tavallinen koodi: sama 7 €:n sääntö.
     expect(() => laskeTilaus(pyynto, [paita(24.9)], { type: "percent", value: 10 })).toThrow(/Alennuskoodia ei voi käyttää/);
     expect(laskeTilaus(pyynto, [paita(29.9)], { type: "percent", value: 5 }).discount).toBe(1.49);

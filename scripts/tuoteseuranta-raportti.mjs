@@ -12,6 +12,7 @@ import { laskeutumisRivit } from "../api/_lib/laskeutumiset.js";
 import { tuoteseurantaRivit } from "../api/_lib/tuoteseuranta.js";
 import { aitousRivit } from "../api/_lib/botit.js";
 import { toimitustestiRivit } from "../api/_lib/toimitustesti.js";
+import { ensitilaustestiRivit } from "../api/_lib/ensitilaus.js";
 
 const JUURI = new URL("..", import.meta.url).pathname;
 const tiedosto = join(JUURI, ".env.cron.local");
@@ -32,3 +33,5 @@ console.log(tuoteseurantaRivit(data).join("\n"));
 if (data.laskeutumiset) console.log(["", ...laskeutumisRivit(data.laskeutumiset)].join("\n"));
 // Ilmaisen toimituksen hintatesti (4.11.2026) testin alusta: versioittain käynnit, kori, kassa, ostot ja kate per käynti.
 if (data.toimitustesti) console.log(["", ...toimitustestiRivit(data.toimitustesti)].join("\n"));
+// Ensimmäisen tilauksen -5 % -testi (5.11.2026) testin alusta: versioittain käynnit, kori, kassa, ostot, kate per käynti.
+if (data.ensitilaus) console.log(["", ...ensitilaustestiRivit(data.ensitilaus)].join("\n"));

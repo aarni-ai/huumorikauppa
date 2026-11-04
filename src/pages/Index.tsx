@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { formatPriceFi } from "@/seo/site";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
-import { YRITYS_PORTAAT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { YRITYS_PORTAAT, YRITYS_JOULU_TEKSTI, YRITYS_ESIMERKKI_HINTA } from "@/data/yrityksetPage";
 import { aikataulu } from "../../api/_lib/yritysmyynti.js";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SEOHead } from "@/components/SEOHead";
@@ -239,7 +239,7 @@ const Index = () => {
           <Building2 className="h-8 w-8 text-primary shrink-0" aria-hidden="true" />
           <span>
             <span className="block font-display text-lg text-foreground">Yrityksille ja porukoille</span>
-            <span className="block text-sm text-muted-foreground">Määräalennus {YRITYS_PORTAAT[0].min}+ t-paidasta alkaen -{YRITYS_PORTAAT[0].prosentti} %, ilman koodia.</span>
+            <span className="block text-sm text-muted-foreground">Määräalennus t-paidoista ilman koodia, esimerkiksi {YRITYS_ESIMERKKI_HINTA.toFixed(2).replace(".", ",")} €:n t-paidoista {YRITYS_PORTAAT[0].min}+ kpl -{YRITYS_PORTAAT[0].prosentti} %.</span>
           </span>
         </Link>
       </section>

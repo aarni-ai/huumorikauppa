@@ -12,6 +12,7 @@
  * - Ilmaisen toimituksen raja lasketaan alennusta edeltävästä summasta (kassa).
  */
 import { laskeTilauksenNettokate } from "./kate.js";
+import { suurinSallittuAlennus, katePerKpl, MIN_KATE_PER_KPL } from "./katesaanto.js";
 import { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA, MAARAALENNUS } from "./vakiot.js";
 
 export { KORIALENNUS_PROSENTTI, KORIALENNUS_MIN_KPL, KORIALENNUS_MIN_KATE_EUROA, TPAITAPARI_KAMPANJA, MAARAALENNUS };
@@ -28,7 +29,10 @@ export function tpaitapariVoimassa(kampanja = TPAITAPARI_KAMPANJA, nyt = new Dat
   return p >= kampanja.alku && p <= kampanja.loppu;
 }
 
-/** Määräalennuksen porras kampanjan t-paitojen määrälle (suurin, jonka minimi täyttyy), tai null. */
+/**
+ * Määräalennuksen porras kampanjan t-paitojen määrälle (suurin, jonka minimi täyttyy), tai null. Kassalla annettava
+ * porras voi olla pienempi (7 €:n katesääntö kappaletta kohden, sovellaKorialennus).
+ */
 export function maaraPorras(kpl, maara = MAARAALENNUS) {
   if (!maara?.kaytossa) return null;
   return [...maara.portaat].sort((a, b) => b.min - a.min).find((p) => kpl >= p.min) ?? null;
@@ -96,17 +100,35 @@ export function sovellaKorialennus(rivit, tuotteetSlugilla, toimitusmaksu, asetu
     if (p) vaihtoehdot.push({ ...p, prosentti: 0, tyyppi: "tpaitapari" });
   }
   // Määräalennus (yritykset, ryhmät): porras t-paitojen määrän mukaan, koskee vain kelpaavia t-paitarivejä.
+  // Katesääntö (4.11.2026, api/_lib/katesaanto.js): suurin porras, jolla tilauksen nettokate on vähintään
+  // minKatePerKpl (7 €) jokaista tilauksen kappaletta kohden; muuten ei määräalennusta (esim. 10 meemipaitaa).
   const kelpaavat = maara?.kaytossa ? maaraKelpaavat(rivit, tuotteetSlugilla, maara) : 0;
   const porras = maaraPorras(kelpaavat, maara);
   if (porras) {
-    let alennusSentteina = 0;
-    const uudet = rivit.map((r) => {
-      if (r.paketti || tuotteetSlugilla.get(r.slug)?.category !== maara.kategoria) return r;
-      const alennettu = Math.round(r.unit_cents * (1 - porras.prosentti / 100));
-      alennusSentteina += (r.unit_cents - alennettu) * r.quantity;
-      return { ...r, unit_cents: alennettu, maaraalennus_prosentti: porras.prosentti };
-    });
-    vaihtoehdot.push({ rivit: uudet, alennusSentteina, prosentti: porras.prosentti, tyyppi: "maara", minKate: maara.minKatePerPaita * kelpaavat });
+    const minPerKpl = maara.minKatePerKpl ?? MIN_KATE_PER_KPL;
+    const maaraRivit = (prosentti) => {
+      let alennusSentteina = 0;
+      const uudet = rivit.map((r) => {
+        if (r.paketti || tuotteetSlugilla.get(r.slug)?.category !== maara.kategoria) return r;
+        const alennettu = Math.round(r.unit_cents * (1 - prosentti / 100));
+        alennusSentteina += (r.unit_cents - alennettu) * r.quantity;
+        return { ...r, unit_cents: alennettu, maaraalennus_prosentti: prosentti };
+      });
+      return { rivit: uudet, alennusSentteina };
+    };
+    const kateKappaleelta = (prosentti) => {
+      const osat = [];
+      for (const r of maaraRivit(prosentti).rivit) {
+        const tuote = tuotteetSlugilla.get(r.slug);
+        if (!tuote) return null;
+        osat.push({ tuote, varianttiId: r.variant_id, maara: r.quantity, yksikkohinta: r.unit_cents / 100 });
+      }
+      const k = laskeTilauksenNettokate(osat, toimitusmaksu);
+      return k.tunnettu ? katePerKpl(k.nettokate, kpl) : null;
+    };
+    const sallittuja = maara.portaat.filter((p) => kelpaavat >= p.min).map((p) => p.prosentti);
+    const prosentti = suurinSallittuAlennus(sallittuja, kateKappaleelta, minPerKpl);
+    if (prosentti) vaihtoehdot.push({ ...maaraRivit(prosentti), prosentti, tyyppi: "maara", minKate: minPerKpl * kpl });
   }
   vaihtoehdot.sort((a, b) => b.alennusSentteina - a.alennusSentteina);
 

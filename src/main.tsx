@@ -7,6 +7,7 @@ import { tallennaKumppaniUrlista } from "./lib/kumppani";
 import { kirjaaKaynti } from "./lib/kaynti";
 import { aloitaLaskeutuminen } from "./lib/laskeutuminen";
 import { aloitaToimitustesti } from "./lib/toimitustesti";
+import { aloitaEnsitilaustesti } from "./lib/ensitilaus";
 import { kaynnistaClarity } from "./lib/clarity";
 
 // Sovelluksen moduulit latautuivat: esirenderöidyn HTML:n käynnistysvahti (BOOT_GUARD_SCRIPT,
@@ -21,6 +22,8 @@ kirjaaKaynti();
 // Laskeutumisen kooste (src/lib/laskeutuminen.ts): poistuiko alle 10 s, mistä tuli, millä laitteella ja selaimella.
 aloitaLaskeutuminen();
 aloitaToimitustesti();
+// Ensimmäisen tilauksen -5 % -testi (src/lib/ensitilaus.ts), oma eväste hk_ab_ensitilaus.
+aloitaEnsitilaustesti();
 // Microsoft Clarity vain analytiikkasuostumuksella ja vain, kun tunniste on asetettu (src/config/clarity.ts).
 kaynnistaClarity();
 // Tuote- ja etusivun näkyvä esikatselu (data-prerender-visual, src/seo/prerender/renderPreview.tsx):

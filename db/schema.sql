@@ -234,3 +234,17 @@ create table if not exists kumppanit (
   aktiivinen boolean not null default true,
   created_at timestamptz not null default now()
 );
+
+-- Ensimmäisen tilauksen -5 % A/B-testi (5.11.2026, api/_lib/ensitilaus.js). Sama rakenne kuin hintatestissä
+-- (api/_lib/toimitustesti.js): koosteet päivä x versio x tapahtuma, ei tunnisteita. Ajonaikainen varmistus
+-- varmistaEnsitilaustesti luo samat, jos tätä ei ole ajettu.
+create table if not exists ensitilaustesti (
+  paiva date not null,
+  versio text not null,
+  tapahtuma text not null,
+  n integer not null default 0,
+  primary key (paiva, versio, tapahtuma)
+);
+alter table orders add column if not exists ensitilaus_versio text;
+alter table orders add column if not exists ensitilaus_kate numeric;
+alter table orders add column if not exists ensitilaus_alennus numeric(10,2);

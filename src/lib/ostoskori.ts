@@ -200,6 +200,11 @@ export interface KorialennusTila {
   tyyppi?: "prosentti" | "tpaitapari" | "maara";
   /** Määräalennukseen kelpaavat t-paidat korissa (kaikki t-paidat 29.10.2026 alkaen). */
   maaraTpaitoja?: number;
+  /**
+   * Seuraava määräalennuksen porras, joka kassalla toteutuisi (7 €:n katesääntö kappaletta kohden, 4.11.2026): lisättävät
+   * t-paidat ja prosentti, kun korin halvinta t-paitaa lisätään. null, jos porrasta ei voi luvata (esim. 10 meemipaitaa).
+   */
+  seuraavaPorras?: { lisaa: number; prosentti: number } | null;
   /** T-paitaparikampanja voimassa: korissa on näin monta kampanjan t-paitaa (vihjettä "lisää toinen t-paita" varten). */
   kampanjaTpaitoja?: number;
   /** Miksi alennusta ei ole: null, "kpl", "pois", "koodi", "ei_rivia" (kaikki paketissa), "kulu", "kate" (katevahti). */
@@ -247,7 +252,27 @@ export function korialennusTila(items: KoriRivi[], tuotteet: Product[], alennusk
   });
   const paketoitu = sovellaPaketit(rivit, bySlug, paketit).rivit;
   const k = sovellaKorialennus(paketoitu, bySlug, toimitusTila(items).toimitus);
-  return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy, tyyppi: k.tyyppi, prosentti: k.tyyppi === "tpaitapari" ? 0 : k.tyyppi === "maara" ? k.prosentti : pohja.prosentti, kampanjaTpaitoja: kampanjanTpaitat(fyysiset), maaraTpaitoja: maaranTpaitat(fyysiset) };
+  const maaraTpaitoja = maaranTpaitat(fyysiset);
+  const nykyinen = k.tyyppi === "maara" ? k.prosentti : 0;
+  return { ...pohja, alennus: k.alennus, voimassa: k.alennus > 0, syy: k.syy, tyyppi: k.tyyppi, prosentti: k.tyyppi === "tpaitapari" ? 0 : k.tyyppi === "maara" ? k.prosentti : pohja.prosentti, kampanjaTpaitoja: kampanjanTpaitat(fyysiset), maaraTpaitoja, seuraavaPorras: seuraavaMaaraPorras(rivit, bySlug, paketit, maaraTpaitoja, nykyinen) };
+}
+
+/**
+ * Seuraava määräalennuksen porras, joka kassalla toteutuisi: korin halvinta t-paitariviä lisätään portaan minimiin asti ja
+ * lasketaan kassan säännöllä (api/_lib/korialennus.js, 7 €:n katesääntö kappaletta kohden). Ilmainen toimitus, koska
+ * korissa on silloin vähintään kaksi tuotetta.
+ */
+function seuraavaMaaraPorras(rivit: { slug: string; quantity: number; unit_cents: number; variant_id: number | null }[], bySlug: Map<string, Product>, paketit: Paketti[], tpaitoja: number, nykyinen: number): { lisaa: number; prosentti: number } | null {
+  if (!MAARAALENNUS.kaytossa || tpaitoja === 0) return null;
+  const seuraava = [...MAARAALENNUS.portaat].sort((a, b) => a.min - b.min).find((p) => tpaitoja < p.min);
+  if (!seuraava) return null;
+  const tpaitaRivit = rivit.filter((r) => bySlug.get(r.slug)?.category === MAARAALENNUS.kategoria);
+  if (!tpaitaRivit.length) return null;
+  const halvin = tpaitaRivit.reduce((a, b) => (b.unit_cents < a.unit_cents ? b : a));
+  const lisaa = seuraava.min - tpaitoja;
+  const lisatty = rivit.map((r) => (r === halvin ? { ...r, quantity: r.quantity + lisaa } : r));
+  const k = sovellaKorialennus(sovellaPaketit(lisatty, bySlug, paketit).rivit, bySlug, 0);
+  return k.tyyppi === "maara" && k.prosentti > nykyinen ? { lisaa, prosentti: k.prosentti } : null;
 }
 
 /**

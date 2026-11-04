@@ -16,6 +16,7 @@ import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { TarraLisamyynti } from "@/components/TarraLisamyynti";
 import { korinSuositukset, toinenPaita } from "@/lib/lisamyynti";
 import { korinMaksutavat } from "@/lib/ostoskori";
+import { ensitilausKorissa, ENSITILAUS_MERKKI } from "@/lib/ensitilaus";
 import { kirjaaLisamyynti } from "@/lib/lisamyyntiSeuranta";
 import { MittarinLisatuote } from "@/components/MittarinLisatuote";
 import { MaksuJaToimitus } from "@/components/MaksuJaToimitus";
@@ -42,6 +43,9 @@ const CartPage = () => {
   const rivinSumma = (item: (typeof items)[number]) => item.product.price * item.quantity + (tila.sisaltyvaTuote === item.product.id ? sisaltyy : 0);
   const pakettialennus = useMemo(() => arvioiPakettialennus(items, allProducts), [items, allProducts]);
   const kori = useMemo(() => korialennusTila(items, allProducts), [items, allProducts]);
+  // Ensitilaustesti B (src/lib/ensitilaus.ts): merkki, kun alennus koskee koria. Kassa tarkistaa ensimmäisyyden
+  // sähköpostiosoitteesta, joten arviota ei vähennetä korin summasta.
+  const ensitilaus = useMemo(() => ensitilausKorissa(items, pakettialennus > 0 || kori.voimassa), [items, pakettialennus, kori.voimassa]);
   // Lisämyynti (src/lib/lisamyynti.ts): toinen paita vain, kun se tekee toimituksesta ilmaisen kassan katesäännöllä, ja
   // kolme koriin sopivaa suositusta (sama aihe tai lahjasivu).
   const fyysiset = items.filter((i) => !i.giftCard);
@@ -246,6 +250,12 @@ const CartPage = () => {
               </div>
             )}
             {!tila.vainLahjakortteja && <KorialennusVihje tila={kori} />}
+            {ensitilaus.kaytossa && (
+              <div className="rounded-md bg-primary/10 p-2 text-xs text-foreground" data-ensitilaus="">
+                <p className="font-semibold text-primary">{ENSITILAUS_MERKKI}</p>
+                <p>Kassa vähentää {eur(ensitilaus.alennus)}, jos sähköpostiosoitteellasi ei ole aiempia tilauksia.</p>
+              </div>
+            )}
             {!shippingFree && (
               <p className="text-xs text-primary font-medium">
                 {toimitusViesti}

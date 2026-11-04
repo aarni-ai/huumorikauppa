@@ -3,6 +3,7 @@ import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
 import { toimitusVersio } from "@/lib/toimitustesti";
+import { ensitilausVersio, ensitilausKorissa, ENSITILAUS_MERKKI } from "@/lib/ensitilaus";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
 import { Button } from "@/components/ui/button";
@@ -180,6 +181,7 @@ const CheckoutPage = () => {
           giftCardCode: appliedGiftCard?.code || undefined,
           abVersio: nahtyVersio() || undefined,
           toimitusVersio: toimitusVersio(),
+          ensitilausVersio: ensitilausVersio(),
         }),
       });
       const data = await vastaus.json().catch(() => null);
@@ -271,6 +273,9 @@ const CheckoutPage = () => {
   // Hintatesti B (src/lib/toimitustesti.ts): yhden tuotteen tilauksessa toimitus sisältyy tuotteen hintaan.
   const sisaltyy = toimitusKassalla.sisaltyy;
   const grandTotal = Math.round((totalPrice + sisaltyy - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
+  // Ensitilaustesti B (src/lib/ensitilaus.ts): ei minkään muun alennuksen kanssa. Palvelin tarkistaa ensimmäisyyden
+  // sähköpostiosoitteesta ennen maksua, ja Stripen maksusivu näyttää alennetun hinnan.
+  const ensitilaus = ensitilausKorissa(items, !!appliedDiscount || !!kumppaniProsentti || bundleDiscount > 0 || basketDiscount > 0);
   // Sama sääntö kuin palvelimella: Stripen pienin veloitus 0,50 €, joten alle 0,50 €:n loppusummaa ei jätetä.
   const giftCardRaw = appliedGiftCard ? Math.min(appliedGiftCard.saldo, grandTotal) : 0;
   const giftCardUse = grandTotal - giftCardRaw > 0 && grandTotal - giftCardRaw < 0.5 ? Math.max(0, grandTotal - 0.5) : giftCardRaw;
@@ -544,6 +549,12 @@ const CheckoutPage = () => {
             <div className="flex justify-between font-bold text-foreground text-base pt-2 border-t border-border">
               <span>Yhteensä</span><span className="text-primary">{grandTotal.toFixed(2)} €</span>
             </div>
+            {ensitilaus.kaytossa && (
+              <div className="rounded-md bg-primary/10 p-2 text-xs text-foreground" data-ensitilaus="">
+                <p className="flex justify-between font-semibold text-primary"><span>{ENSITILAUS_MERKKI}</span><span>-{ensitilaus.alennus.toFixed(2)} €</span></p>
+                <p>Vähennetään maksusivulla, jos sähköpostiosoitteella ei ole aiempia tilauksia.</p>
+              </div>
+            )}
             {appliedGiftCard && (
               <>
                 <div className="flex justify-between text-primary">

@@ -16,7 +16,9 @@ const ESIMERKIT = [
   { kori: "1 meemipaita, 24,90 €", tuotteet: 24.9, kate: 7.22 },
   { kori: "2 t-paitaa, 53,01 € (kahden tuotteen -5 %)", tuotteet: 53.01, kate: 19.11 },
   { kori: "1 huppari, 52,90 €", tuotteet: 52.9, kate: 10.14 },
-  { kori: "25 meemipaitaa yritykselle, 547,80 € (määräalennus -12 %)", tuotteet: 547.8, kate: 158.89 },
+  // 4.11.2026: meemipaitojen määräalennus 7 €:n katesäännöllä kappaletta kohden, 25 kpl -10 % (ennen -12 %, 547,80 €,
+  // kate 158,89 €); kate päivitetty samalla kaavalla: + (560,25 - 547,80) / 1,255 - 1,5 % erotuksesta.
+  { kori: "25 meemipaitaa yritykselle, 560,25 € (määräalennus -10 %)", tuotteet: 560.25, kate: 168.62 },
 ];
 
 /**

@@ -17,6 +17,7 @@ import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
 import { YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
 import { MAARAALENNUS } from "../../api/_lib/vakiot.js";
+import { korialennusTila } from "@/lib/ostoskori";
 import { YRITYS_MIN_KPL, LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
 import type { Product } from "@/types/product";
 import { LogoEditori, TYHJA_LOGO, logoTarkistus, lueLogoValinta, type LogoValinta } from "@/components/LogoEditori";
@@ -154,7 +155,10 @@ const BusinessOrderPage = () => {
   const kpl = kappaleet.reduce((s, x) => s + x.maara, 0);
   const summa = kappaleet.reduce((s, x) => s + x.maara * rivinHinta(x.tuote, x.koko), 0);
   const tpaitoja = kappaleet.filter((x) => x.tuote.category === MAARAALENNUS.kategoria).reduce((s, x) => s + x.maara, 0);
-  const porras = [...MAARAALENNUS.portaat].sort((a, b) => b.min - a.min).find((p) => tpaitoja >= p.min);
+  // Määräalennus kassan säännöllä (src/lib/ostoskori.ts korialennusTila, 7 €:n katesääntö kappaletta kohden 4.11.2026):
+  // esimerkiksi 10 meemipaitaa ei saa määräalennusta.
+  const koriTila = useMemo(() => korialennusTila(kappaleet.map((x) => ({ product: x.tuote, quantity: x.maara, selectedSize: x.koko, selectedColor: x.vari })), valikoima), [kappaleet, valikoima]);
+  const porras = tpaitoja > 0 && koriTila.voimassa && koriTila.tyyppi === "maara" ? { prosentti: koriTila.prosentti } : null;
 
   const tilaa = async () => {
     setVirhe("");

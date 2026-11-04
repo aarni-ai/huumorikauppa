@@ -19,3 +19,4 @@ import { asetaAbVersio } from "@/lib/abTestit";
 asetaAbVersio("koko", "a");
 asetaAbVersio("blogi", "a");
 asetaAbVersio("toimitus", "a");
+asetaAbVersio("ensitilaus", "a");
