@@ -210,3 +210,29 @@ export function nextBannerChangeMs(nowMs: number, schedule: readonly BannerSlot[
   const edges = schedule.flatMap((s) => [s.fromMs, s.untilMs + 1]).filter((t) => t > nowMs);
   return edges.length > 0 ? Math.min(...edges) : null;
 }
+
+// ── Joulukalenteri ────────────────────────────────────────────────────────────
+
+/**
+ * Joulukalenteri /joulukalenteri (api/_lib/vakiot.js KAMPANJAPAIVAT.joulukalenteri, api/_lib/joulukalenteri.js): kulkee
+ * bannerin teemojen rinnalla. Ennakkonostosta alkaen banneri kertoo avautumispäivän ("tulossa"), joulukuun luukkupäivinä
+ * päivän luukusta ("auki"). Black Friday -viikon banneri pysyy ennallaan (SeasonalBanner).
+ */
+export type JoulukalenteriNosto = "tulossa" | "auki";
+export const JOULUKALENTERI_ESITTELY_UTC_MS = paivanAlkuUtcMs(KAMPANJAPAIVAT.joulukalenteri.esittely);
+export const JOULUKALENTERI_ALKU_UTC_MS = paivanAlkuUtcMs(KAMPANJAPAIVAT.joulukalenteri.alku);
+export const JOULUKALENTERI_LOPPU_UTC_MS = paivanLoppuUtcMs(KAMPANJAPAIVAT.joulukalenteri.loppu);
+/** Avautumispäivä tekstinä (viikonpäivä ja päivä ilman vuotta). */
+export const JOULUKALENTERI_ALKU_TEKSTI = paivaLyhyt(KAMPANJAPAIVAT.joulukalenteri.alku).replace(/\d{4}$/, "");
+
+export function joulukalenteriNosto(nowMs: number): JoulukalenteriNosto | null {
+  if (nowMs >= JOULUKALENTERI_ALKU_UTC_MS && nowMs <= JOULUKALENTERI_LOPPU_UTC_MS) return "auki";
+  if (nowMs >= JOULUKALENTERI_ESITTELY_UTC_MS && nowMs < JOULUKALENTERI_ALKU_UTC_MS) return "tulossa";
+  return null;
+}
+
+/** Seuraava hetki, jolloin joulukalenterin nosto vaihtuu (tai null). */
+export function seuraavaKalenteriVaihtoMs(nowMs: number): number | null {
+  const rajat = [JOULUKALENTERI_ESITTELY_UTC_MS, JOULUKALENTERI_ALKU_UTC_MS, JOULUKALENTERI_LOPPU_UTC_MS + 1].filter((t) => t > nowMs);
+  return rajat.length ? Math.min(...rajat) : null;
+}

@@ -108,15 +108,43 @@ describe("SeasonalBanner", () => {
     );
   });
 
-  it("2.12 23:59:59 still shows Christmas, 3.12 00:00:00 shows nothing", () => {
+  it("2.12 23:59:59 still shows Christmas, 3.12 00:00:00 only the joulukalenteri (no deadline)", () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(fi("2026-12-02T23:59:59"));
     const first = render(banner());
     expect(first.container.querySelector('[data-banner="joulu"]')).not.toBeNull();
+    // Joulukuussa joulun banneriin lisätään joulukalenterin linkki (src/data/campaignSchedule.ts joulukalenteriNosto).
+    expect(screen.getByRole("link", { name: "Joulukalenteri: päivän luukku auki" })).toHaveAttribute("href", "/joulukalenteri");
     first.unmount();
     vi.setSystemTime(fi("2026-12-03T00:00:00"));
     const { container } = render(banner());
-    expect(container.textContent).toBe("");
+    expect(container.querySelector('[data-banner="joulu"]')).toBeNull();
+    expect(container.querySelector('[data-banner="joulukalenteri"]')).not.toBeNull();
+    expect(container.textContent).not.toMatch(/tilauspäivä|tilaa viimeistään/i);
+  });
+
+  it("joulukalenteri: teaser before Black Friday, not during Black Friday, open 1.-24.12., nothing on 25.12.", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(fi("2026-11-15T23:59:59"));
+    let r = render(banner());
+    expect(r.container.querySelector("[data-kalenteri]")).toBeNull();
+    r.unmount();
+    vi.setSystemTime(fi("2026-11-16T00:00:00"));
+    r = render(banner());
+    expect(screen.getByRole("link", { name: "Joulukalenteri aukeaa ti 1.12." })).toHaveAttribute("href", "/joulukalenteri");
+    r.unmount();
+    vi.setSystemTime(fi("2026-11-25T12:00:00"));
+    r = render(banner());
+    expect(r.container.querySelector('[data-banner="black-friday"]')).not.toBeNull();
+    expect(r.container.querySelector("[data-kalenteri]")).toBeNull();
+    r.unmount();
+    vi.setSystemTime(fi("2026-12-24T23:59:59"));
+    r = render(banner());
+    expect(r.container.querySelector('[data-kalenteri="auki"]')).not.toBeNull();
+    r.unmount();
+    vi.setSystemTime(fi("2026-12-25T00:00:00"));
+    r = render(banner());
+    expect(r.container.textContent).toBe("");
   });
 
   it("23.11 00:00:00 shows Black Friday with the 30-day lowest price", () => {

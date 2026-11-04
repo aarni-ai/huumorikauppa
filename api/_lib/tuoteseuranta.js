@@ -28,6 +28,19 @@ export async function varmistaTuoteseuranta(db) {
     primary key (paiva, tapahtuma))`;
 }
 
+/** Tuotteen slug selaimen koosteesta (vain muoto tarkistetaan; tuntematon slug ei haittaa, se ei vain nouse listalle). */
+export const katselunSlug = (x) => (typeof x === "string" && /^[a-z0-9][a-z0-9-]{1,150}$/.test(x) ? x : null);
+
+/**
+ * Tuotekohtaiset aidot katselut (4.11.2026): päivä x slug x katselut ja koriin lisäykset, ei tunnisteita. Lähde
+ * joulukalenterin tuotevalinnalle (api/cron/tilaukset.js ?tehtava=suosituimmat-tuotteet). Botit ja oma liikenne on
+ * ohitettu ennen tätä (api/sahkoposti.js ohitaTaiBotti).
+ */
+export async function varmistaTuotekatselut(db) {
+  await db`create table if not exists tuotesivu_katselut (paiva date not null, slug text not null, katselut integer not null default 0,
+    kori integer not null default 0, primary key (paiva, slug))`;
+}
+
 export async function kirjaaTuotetapahtumat(db, body) {
   const perus = puhdista(body);
   const avaimet = TUOTE_AB.includes(body?.ab) ? [...perus, ...perus.map((a) => `${body.ab}|${a}`)] : perus;
@@ -36,6 +49,13 @@ export async function kirjaaTuotetapahtumat(db, body) {
   for (const a of avaimet) {
     await db`insert into tuotesivu_seuranta (paiva, tapahtuma, n) values (${paiva}::date, ${a}, 1)
       on conflict (paiva, tapahtuma) do update set n = tuotesivu_seuranta.n + 1`;
+  }
+  const slug = katselunSlug(body?.slug);
+  if (slug) {
+    const kori = perus.includes("kori") ? 1 : 0;
+    await varmistaTuotekatselut(db);
+    await db`insert into tuotesivu_katselut (paiva, slug, katselut, kori) values (${paiva}::date, ${slug}, 1, ${kori})
+      on conflict (paiva, slug) do update set katselut = tuotesivu_katselut.katselut + 1, kori = tuotesivu_katselut.kori + ${kori}`;
   }
   return perus.length;
 }

@@ -24,6 +24,8 @@
  * kaksi jäsentä, simuloidut maksut, automaattinen lukitus, painokuvat ja Printify-testitilaus nimellä TESTI, joka perutaan
  * samassa ajossa, lopuksi testidatan poisto.
  *
+ * ?tehtava=suosituimmat-tuotteet[&paivia=90]: tuotteiden suosio (maksetut tilausrivit painotettuna ja aidot tuotesivun
+ *   katselut), vain slugit ja lukumäärät; joulukalenterin valinta (scripts/joulukalenteri-valinta.mjs).
  * ?tehtava=yhteenveto: päivän yhteenveto (api/_lib/valvonta.js). Vercel Cron kutsuu 04:00 ja 05:00 UTC; vain
  * Helsingin kello 7 -ajo lähettää (kesä- ja talviaika), kv estää toisen lähetyksen. &pakota=1 ohittaa kellonajan.
  *
@@ -151,7 +153,11 @@ export default async function handler(req, res) {
       // Sähköpostin valmiustila (nimipalvelimet, Resend, reitti; api/_lib/sahkopostitila.js).
       const { sahkopostiTila, sahkopostiRivit } = await import("../_lib/sahkopostitila.js");
       const sposti = await sahkopostiTila({ db, lahetysreitti, markkinointiKaytossa, omaVahvistusKaytossaNyt }).then(sahkopostiRivit).catch(() => []);
-      return [...linkkirivit, ...sposti, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...seuranta, ...laskeutumiset, ...toimitustesti, ...ensitilaus, ...kasin, ...yhteenvetoRivit(linkit)];
+      // Joulukalenteri (api/_lib/joulukalenteri-seuranta.js): edellisen päivän käynnit, luukun avaukset, koriin ja ostot 1.-24.12.
+      const { joulukalenteriPaivalta, joulukalenteriRivit } = await import("../_lib/joulukalenteri-seuranta.js");
+      const { luukunNumero } = await import("../_lib/joulukalenteri.js");
+      const kalenteri = luukunNumero(eilen) ? await joulukalenteriPaivalta(db, eilen).then(joulukalenteriRivit).catch(() => []) : [];
+      return [...linkkirivit, ...sposti, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...kalenteri, ...seuranta, ...laskeutumiset, ...toimitustesti, ...ensitilaus, ...kasin, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -187,7 +193,8 @@ export default async function handler(req, res) {
     const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
     // Todellinen myyntihinta (perushinta, S-2XL) kokohinnat.js:n säännöillä, ei tuotetaulun price-saraketta (29.10.2026).
     const { onSuoraVertailu } = await import("../_lib/kokohinnat.js");
-    const paidat = (await kaikkiTuotteet()).filter((t) => t.category === K.kategoria && t.is_active !== false && !t.variants?.personoitu);
+    // Hupparit mukana 4.11.2026 alkaen: joulukalenterin 30 päivän alin hinta (api/_lib/joulukalenteri-seuranta.js hintahistoria30).
+    const paidat = (await kaikkiTuotteet()).filter((t) => [K.kategoria, "hupparit"].includes(t.category) && t.is_active !== false && !t.variants?.personoitu);
     if (!kuiva && paidat.length) {
       const slugit = paidat.map((t) => t.slug);
       const hinnat = paidat.map((t) => Number(t.price));
@@ -342,6 +349,14 @@ export default async function handler(req, res) {
       tila: t.tila ?? null, ilmoitus: t.ilmoitus ?? null, verkkotunnus: String(t.email || "").split("@")[1] || "", viesti: String(t.viesti || "").slice(0, 160),
       ytunnus: !!t.ytunnus }));
     return res.status(200).json({ ok: true, rivit: rivit.map((r) => ({ ...r, ilmoitus: String(r.ilmoitus || "").replace(/\S+@\S+/g, "").trim() })) });
+  }
+
+  // Suosituimmat tuotteet (4.11.2026, joulukalenterin valinta scripts/joulukalenteri-valinta.mjs): maksetut tilausrivit
+  // 90 päivältä painotettuna ja aidot tuotesivun katselut (api/_lib/joulukalenteri-seuranta.js). Vain slugit ja lukumäärät.
+  if (req.query.tehtava === "suosituimmat-tuotteet") {
+    const { suosituimmatTuotteet } = await import("../_lib/joulukalenteri-seuranta.js");
+    const paivia = Math.min(365, Math.max(7, Number(req.query.paivia) || 90));
+    return res.status(200).json({ ok: true, ...(await suosituimmatTuotteet(db, { paivia })) });
   }
 
   // Käyntien raakarivit (2.11.2026): päivä x lähde x osio &alkaen=YYYY-MM-DD; oman liikenteen ja bottien selvitykseen.
@@ -1210,7 +1225,8 @@ export default async function handler(req, res) {
     }
   }
 
-  // 4b. Uutiskirje (2.11.2026): tervetuloviestien jono ja joulukampanjan kolme viestiä (api/_lib/uutiskirje.js). Lähtee
+  // 4b. Uutiskirje (2.11.2026): tervetuloviestien jono, joulukampanjan kolme viestiä ja 1.-24.12. joulukalenterin päivän
+  // luukku aamuisin (api/_lib/uutiskirje.js, sama päiväraja). Lähtee
   // vain suostumuksen antaneille, kun lähetysdomain on vahvistettu Resendissä (SAHKOPOSTI_VAHVISTETTU=1 tai Resendin
   // API: verified) tai Gmailin väliaikaisreitti on käytössä.
   if (aikaa()) {
@@ -1218,7 +1234,11 @@ export default async function handler(req, res) {
       const { ajaUutiskirje, pgUutiskirje } = await import("../_lib/uutiskirje.js");
       const vahvistettu = await markkinointiKaytossa();
       if (vahvistettu) {
-        const u = await ajaUutiskirje(pgUutiskirje(db), { laheta, vahvistettu, kuiva });
+        // Joulukalenterin päivän luukku aamun viestiin 1.-24.12. (vain tämän päivän luukku, api/_lib/joulukalenteri-seuranta.js).
+        const { luukkuViestiin } = await import("../_lib/joulukalenteri-seuranta.js");
+        const { default: JOULUKALENTERI } = await import("../_lib/joulukalenteri-data.js");
+        const luukku = await luukkuViestiin({ luukut: JOULUKALENTERI, tuotteet: await kaikkiTuotteet(), db }).catch(() => null);
+        const u = await ajaUutiskirje(pgUutiskirje(db), { laheta, vahvistettu, kuiva, luukku });
         loki.push(...u.loki);
       }
     } catch (e) {

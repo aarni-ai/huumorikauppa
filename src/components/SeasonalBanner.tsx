@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import {
   activeBannerTheme,
   nextBannerChangeMs,
+  joulukalenteriNosto,
+  seuraavaKalenteriVaihtoMs,
+  JOULUKALENTERI_ALKU_TEKSTI,
   type BannerTheme,
+  type JoulukalenteriNosto,
 } from "@/data/campaignSchedule";
+import { JOULUKALENTERI_POLKU } from "../../api/_lib/joulukalenteri.js";
 import { isanpaivaLause, jouluPalkkiLause, jouluTpaidatPalkkiLause } from "@/data/tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
 import { JOULU_MYOHAISIN_END_UTC_MS } from "@/data/jouluAikataulu";
@@ -66,7 +71,9 @@ const MAX_TIMEOUT_MS = 2_147_483_647;
 function subscribe(onChange: () => void): () => void {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const arm = () => {
-    const next = nextBannerChangeMs(Date.now());
+    const nyt = Date.now();
+    const vaihdot = [nextBannerChangeMs(nyt), seuraavaKalenteriVaihtoMs(nyt)].filter((t): t is number => t !== null);
+    const next = vaihdot.length ? Math.min(...vaihdot) : null;
     if (next === null) return;
     timer = setTimeout(() => {
       onChange();
@@ -104,10 +111,46 @@ const serverTheme = (): BannerTheme | null => {
  */
 export function SeasonalBanner() {
   const theme = useSyncExternalStore(subscribe, clientTheme, serverTheme);
+  const kalenteri = useSyncExternalStore(subscribe, clientKalenteri, serverKalenteri);
   const lahjakortit = useLahjakortitMyynnissa();
   const viimeHetki = useSyncExternalStore(subscribe, () => lahjakorttiAika(Date.now()), () => false);
-  if (!theme && lahjakortit && viimeHetki) return <LahjakorttiBanneri />;
-  return <SeasonalBannerView theme={theme} />;
+  if (!theme && lahjakortit && viimeHetki) return <LahjakorttiBanneri kalenteri={kalenteri} />;
+  if (!theme && kalenteri) return <JoulukalenteriBanneri tila={kalenteri} />;
+  return <SeasonalBannerView theme={theme} kalenteri={kalenteri} />;
+}
+
+const clientKalenteri = () => joulukalenteriNosto(Date.now());
+/** Esirenderöity HTML ei sisällä kalenterin linkkiä; hydratoinnissa sama arvo HTML:stä (kuten teema). */
+const serverKalenteri = (): JoulukalenteriNosto | null => {
+  if (typeof document === "undefined") return null;
+  const t = document.querySelector<HTMLElement>("#root [data-kalenteri]")?.dataset.kalenteri;
+  return t === "tulossa" || t === "auki" ? t : null;
+};
+
+/** Joulukalenterin linkki bannerin perään (src/data/campaignSchedule.ts joulukalenteriNosto). */
+export function KalenteriLinkki({ tila }: { tila: JoulukalenteriNosto }) {
+  return (
+    <>
+      {" "}
+      <Link
+        to={JOULUKALENTERI_POLKU}
+        data-kalenteri={tila}
+        className="underline underline-offset-2 font-semibold whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        {tila === "auki" ? "Joulukalenteri: päivän luukku auki" : `Joulukalenteri aukeaa ${JOULUKALENTERI_ALKU_TEKSTI}`}
+      </Link>
+    </>
+  );
+}
+
+/** Pelkkä joulukalenterin banneri, kun muuta teemaa ei ole (joulun tilauspäivien jälkeen ilman lahjakorttia). */
+export function JoulukalenteriBanneri({ tila }: { tila: JoulukalenteriNosto }) {
+  return (
+    <aside aria-label="Joulukalenteri" data-banner="joulukalenteri" className="bg-red-900 text-white text-center text-xs md:text-sm px-4 py-2">
+      <span>{tila === "auki" ? "Joka päivä uusi luukku ja päivän tarjous jouluaattoon asti." : `Joka päivä uusi luukku ja päivän tarjous ${JOULUKALENTERI_ALKU_TEKSTI} alkaen.`}</span>
+      <KalenteriLinkki tila={tila} />
+    </aside>
+  );
 }
 
 /** Jouluaatto 24.12.2026 klo 23.59.59 Suomen aikaa (UTC+2). */
@@ -120,7 +163,7 @@ const JOULUAATTO_LOPPU_UTC_MS = Date.UTC(2026, 11, 24, 21, 59, 59);
 export const lahjakorttiAika = (nyt: number) => nyt > JOULU_MYOHAISIN_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
 
 /** Viime hetken lahjakortti -banneri (vain kun lahjakortit ovat myynnissä, useLahjakortitMyynnissa). */
-export function LahjakorttiBanneri() {
+export function LahjakorttiBanneri({ kalenteri = null }: { kalenteri?: JoulukalenteriNosto | null } = {}) {
   return (
     <aside aria-label="Viime hetken lahja" data-banner="lahjakortti" className="bg-red-900 text-white text-center text-xs md:text-sm px-4 py-2">
       <span>Joulun tilauspäivä meni, mutta lahjakortti on perillä heti: koodi ja tulostettava PDF maksun jälkeen. </span>
@@ -130,14 +173,17 @@ export function LahjakorttiBanneri() {
       >
         Osta lahjakortti
       </Link>
+      {kalenteri && <KalenteriLinkki tila={kalenteri} />}
     </aside>
   );
 }
 
 /** Bannerin merkintä annetulle teemalle (myös tuotesivun esirenderöity esikatselu). */
-export function SeasonalBannerView({ theme }: { theme: BannerTheme | null }) {
+export function SeasonalBannerView({ theme, kalenteri = null }: { theme: BannerTheme | null; kalenteri?: JoulukalenteriNosto | null }) {
   if (!theme) return null;
   const c = BANNER_CONTENT[theme];
+  // Black Friday -viikon banneri ennallaan (kampanjan teksti ja 30 päivän alin hinta).
+  const lisa = kalenteri && theme !== "black-friday" ? kalenteri : null;
   return (
     <aside
       aria-label="Tilausmuistutus"
@@ -151,6 +197,7 @@ export function SeasonalBannerView({ theme }: { theme: BannerTheme | null }) {
       >
         {c.linkText}
       </Link>
+      {lisa && <KalenteriLinkki tila={lisa} />}
     </aside>
   );
 }

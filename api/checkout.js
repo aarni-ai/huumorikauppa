@@ -39,6 +39,8 @@ import PAKETIT from "./_lib/paketit-data.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
 import { tarkistaEnsitilausKoodi, normalisoiEmail, kelpaaEmail } from "./_lib/markkinointi.js";
 import { naytettavaTeksti } from "./_lib/logopaita.js";
+import JOULUKALENTERI from "./_lib/joulukalenteri-data.js";
+import { avoinLuukku } from "./_lib/joulukalenteri.js";
 
 /**
  * Alennuskoodi: discount_codes-taulu, ensitilauksen koodi (TERVE-..., api/_lib/markkinointi.js: sama sähköposti,
@@ -95,7 +97,7 @@ async function lahjakortti(koodi) {
 }
 
 const kuvaus = (r) => [r.size && `Koko: ${r.size}`, r.color && `Väri: ${r.color}`, r.custom_text && `Oma teksti: "${naytettavaTeksti(r.custom_text)}"`,
-  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.toimitus_sisaltyy && "Ilmainen toimitus (sisältyy hintaan)", r.ensitilaus_prosentti && `Ensimmäinen tilaus −${r.ensitilaus_prosentti} %`, r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
+  r.paketti && `Pakettialennus ${r.paketti_alennus_prosentti} %`, r.korialennus_prosentti && `Kahden tuotteen alennus ${r.korialennus_prosentti} %`, r.tpaitapari && "Kaksi t-paitaa 44,90 €", r.maaraalennus_prosentti && `Määräalennus ${r.maaraalennus_prosentti} %`, r.toimitus_sisaltyy && "Ilmainen toimitus (sisältyy hintaan)", r.ensitilaus_prosentti && `Ensimmäinen tilaus −${r.ensitilaus_prosentti} %`, r.joulukalenteri && "Joulukalenterin luukun hinta", r.recipient_name && `Saaja: ${r.recipient_name}`].filter(Boolean).join(" | ");
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
@@ -179,10 +181,16 @@ export default async function handler(req, res) {
     const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a",
       // Ensimmäisen tilauksen -5 % (A/B-testi, api/_lib/ensitilaus.js): versio selaimelta, ensimmäisyys tarkistetaan täällä.
       ensitilausVersio: pyynto.ensitilausVersio === "b" ? "b" : "a",
-      ensimmainenTilaus: pyynto.ensitilausVersio === "b" && !koodiAlennus ? await ensimmainenTilaus(pyynto.customerEmail) : false };
-    // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen.
+      ensimmainenTilaus: pyynto.ensitilausVersio === "b" && !koodiAlennus ? await ensimmainenTilaus(pyynto.customerEmail) : false,
+      // Joulukalenteri (api/_lib/joulukalenteri.js): tämän päivän luukun hinta Suomen ajan mukaan, palvelimen kellosta.
+      joulukalenteri: { luukut: JOULUKALENTERI, nyt: new Date() } };
+    // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen. Ei, kun korissa
+    // on tämän päivän luukun tuote: luukun hinta ei yhdisty muihin alennuksiin (kumppanin provisio kirjataan silti).
     const kp = await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null);
-    const valinta = kp?.malli === "alennus" && !koodiAlennus ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
+    const luukku = avoinLuukku(JOULUKALENTERI, lisat.joulukalenteri.nyt);
+    const luukkuKorissa = !!luukku && !koodiAlennus && (pyynto.items || []).some((i) => i?.slug === luukku.slug)
+      && (() => { try { return !!laskeTilaus(pyynto, tuotteet, null, lisat).joulukalenteri?.paiva; } catch { return false; } })();
+    const valinta = kp?.malli === "alennus" && !koodiAlennus && !luukkuKorissa ? kumppaniValinta(pyynto, tuotteet, lisat) : null;
     const laskettu = valinta?.laskettu ?? laskeTilaus(pyynto, tuotteet, koodiAlennus, lisat);
     await varmistaLogot(laskettu.rivit);
     const osoite = laskettu.only_gift_cards ? {} : { ...pyynto.shippingAddress, country: "FI" };
@@ -295,7 +303,7 @@ export default async function handler(req, res) {
       locale: "fi",
     });
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;
-    await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount, maksutavat: maksutavat.tavat });
+    await kirjaaTapahtuma(tilaus.id, "kassa", { session: session.id, total: laskettu.total, lahjakortti: laskettu.gift_card_amount, maksutavat: maksutavat.tavat, ...(laskettu.joulukalenteri ? { joulukalenteri: laskettu.joulukalenteri } : {}) });
     // Kumppanuusohjelma (pois päältä, api/_lib/vakiot.js KUMPPANUUS): hyväksytty koodi kirjataan tilaukselle.
     if (kp) await kirjaaTapahtuma(tilaus.id, "kumppani", kp.malli === "alennus"
       ? { koodi: kp.koodi, malli: "alennus", alennus: valinta?.prosentti ?? 0, provisio: valinta?.provisioProsentti ?? KUMPPANUUS.alennusmalli.provisioProsentti }

@@ -441,7 +441,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // Tuotesivun seuranta: yksi kooste katselua kohden (vieritys, aika, koko, väri, kokotaulukko, painike, kori).
   useEffect(() => {
     if (!product?.slug || previewOnly) return;
-    return aloitaTuoteseuranta();
+    return aloitaTuoteseuranta(product.slug);
   }, [product?.slug, previewOnly]);
 
   const oikeatArviot = useOikeatArviot(previewOnly ? undefined : product?.slug);

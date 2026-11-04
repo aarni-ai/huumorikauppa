@@ -41,4 +41,9 @@ export interface CartItem {
   /** Oma rivitunnus (lahjakortit: jokainen saaja omalla rivillään). */
   lineId?: string;
   giftCard?: GiftCardDetails;
+  /**
+   * Joulukalenterin luukun hinta (src/lib/joulukalenteri.ts): luukun päivä ja tavallinen hinta. Voimassa vain luukun
+   * päivän Suomen aikaa; kassa (api/_lib/kassa.js) laskee hinnan itse.
+   */
+  luukku?: { pvm: string; normaali: number; kokohinnat?: Record<string, number> | null };
 }

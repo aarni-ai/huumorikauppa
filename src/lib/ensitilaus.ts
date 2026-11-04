@@ -16,7 +16,7 @@ import { onLahjakortti } from "../../api/_lib/lahjakortti.js";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import type { CartItem, Product } from "@/types/product";
 import { naytettavaHinta, toimitusVersio } from "./toimitustesti";
-import { toimitusTila } from "./ostoskori";
+import { toimitusTila, luukkuKorissaNyt } from "./ostoskori";
 import { lahetaKunLuokiteltu } from "./aitous";
 
 export { ENSITILAUS_PROSENTTI };
@@ -66,7 +66,8 @@ export interface EnsitilausKori {
 export function ensitilausKorissa(items: Pick<CartItem, "product" | "quantity" | "selectedSize" | "selectedColor">[], muuAlennus: boolean, versio: "a" | "b" = ensitilausVersio()): EnsitilausKori {
   const ei = { kaytossa: false, alennus: 0 };
   const fyysiset = items.filter((i) => !onLahjakortti(i));
-  if (versio !== "b" || muuAlennus || fyysiset.length === 0) return ei;
+  // Joulukalenterin luukun hinta ei yhdisty ensitilauksen alennukseen (api/_lib/kassa.js).
+  if (versio !== "b" || muuAlennus || fyysiset.length === 0 || luukkuKorissaNyt(items)) return ei;
   if (fyysiset.every((i) => LISATUOTE_KATEGORIAT.includes(i.product.category))) return ei;
   const tila = toimitusTila(items);
   const osat = fyysiset.map((i) => {

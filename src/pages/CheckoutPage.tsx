@@ -21,7 +21,7 @@ import { toast } from "@/hooks/use-toast";
 import { proxiedImage } from "@/lib/imageProxy";
 import { trackBeginCheckout } from "@/lib/analytics";
 import { useProducts } from "@/hooks/use-products";
-import { toimitusTila, toimitusRajattuViesti, arvioiPakettialennus, korialennusTila } from "@/lib/ostoskori";
+import { toimitusTila, toimitusRajattuViesti, arvioiPakettialennus, korialennusTila, luukkuKorissaNyt, luukunPalautusSumma } from "@/lib/ostoskori";
 import { PaymentIcons } from "@/components/PaymentIcons";
 import { PAYMENT_METHODS_TEXT } from "@/config/maksutavat";
 import { toimitusaikaKorille } from "@/config/toimitus";
@@ -257,9 +257,13 @@ const CheckoutPage = () => {
 
   // Alennuskoodi koskee vain fyysisiä tuotteita (ei lahjakortteja). Pakettialennus vain ilman alennuskoodia.
   // Lopullinen summa lasketaan palvelimella (api/_lib/kassa.js).
-  const discountAmount = appliedDiscount ? Math.round(tila.summa * appliedDiscount.percent) / 100 : 0;
+  // Joulukalenterin luukun hinta ei yhdisty muihin alennuksiin: alennuskoodi korvaa sen (arvio tavallisilla hinnoilla),
+  // eikä kumppanialennusta anneta (api/_lib/kassa.js, api/checkout.js).
+  const luukku = luukkuKorissaNyt(items);
+  const luukunPalautus = appliedDiscount && luukku ? luukunPalautusSumma(items) : 0;
+  const discountAmount = appliedDiscount ? Math.round((tila.summa + luukunPalautus) * appliedDiscount.percent) / 100 : 0;
   // Kumppanimalli 2: palvelin valitsee kumppanialennuksen vain, kun se on suurempi kuin paketti- ja korialennus.
-  const kumppaniProsentti = !appliedDiscount && kumppaniAle?.prosentti ? kumppaniAle.prosentti : 0;
+  const kumppaniProsentti = !appliedDiscount && !luukku && kumppaniAle?.prosentti ? kumppaniAle.prosentti : 0;
   const partnerDiscount = kumppaniProsentti ? Math.round(tila.summa * kumppaniProsentti) / 100 : 0;
   const bundleDiscount = appliedDiscount || kumppaniProsentti ? 0 : arvioiPakettialennus(items, allProducts);
   // Kahden tuotteen alennus vain ilman alennuskoodia (api/_lib/korialennus.js).
@@ -272,7 +276,7 @@ const CheckoutPage = () => {
   const shippingCost = toimitusKassalla.toimitus;
   // Hintatesti B (src/lib/toimitustesti.ts): yhden tuotteen tilauksessa toimitus sisältyy tuotteen hintaan.
   const sisaltyy = toimitusKassalla.sisaltyy;
-  const grandTotal = Math.round((totalPrice + sisaltyy - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
+  const grandTotal = Math.round((totalPrice + luukunPalautus + sisaltyy - discountAmount - partnerDiscount - bundleDiscount - basketDiscount + shippingCost) * 100) / 100;
   // Ensitilaustesti B (src/lib/ensitilaus.ts): ei minkään muun alennuksen kanssa. Palvelin tarkistaa ensimmäisyyden
   // sähköpostiosoitteesta ennen maksua, ja Stripen maksusivu näyttää alennetun hinnan.
   const ensitilaus = ensitilausKorissa(items, !!appliedDiscount || !!kumppaniProsentti || bundleDiscount > 0 || basketDiscount > 0);
@@ -520,8 +524,13 @@ const CheckoutPage = () => {
           </details>
           <div className="border-t border-border pt-3 space-y-1 text-sm">
             <div className="flex justify-between text-muted-foreground">
-              <span>Tuotteet</span><span>{(totalPrice + sisaltyy).toFixed(2)} €</span>
+              <span>Tuotteet</span><span>{(totalPrice + luukunPalautus + sisaltyy).toFixed(2)} €</span>
             </div>
+            {luukku && (
+              <p className="text-xs text-muted-foreground">
+                {appliedDiscount ? "Alennuskoodi korvaa joulukalenterin luukun hinnan, koska ne eivät yhdisty." : `Joulukalenterin luukun hinta on voimassa tänään klo 23.59 asti.${tila.kpl > 1 ? " Kun korissa on useampi tuote, kassa käyttää edullisempaa: luukun hintaa tai tavallisia alennuksia, ei molempia." : ""}`}
+              </p>
+            )}
             {appliedDiscount && (
               <div className="flex justify-between text-primary">
                 <span>Alennus ({appliedDiscount.percent}%)</span><span>-{discountAmount.toFixed(2)} €</span>

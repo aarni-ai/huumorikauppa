@@ -129,6 +129,7 @@ const SomeAdminPage = lazyWithRetry(() => import("./pages/SomeAdminPage"));
 const AdminActivatePage = lazyWithRetry(() => import("./pages/AdminActivatePage"));
 const PartnerAdminPage = lazyWithRetry(() => import("./pages/PartnerAdminPage"));
 const ChristmasDeadlinePage = lazyWithRetry(() => import("./pages/ChristmasDeadlinePage"));
+const JoulukalenteriPage = lazyWithRetry(() => import("./pages/JoulukalenteriPage"));
 const MediaPage = lazyWithRetry(() => import("./pages/MediaPage"));
 const MediaGuidePage = lazyWithRetry(() => import("./pages/MediaGuidePage"));
 const PartnerLandingPage = lazyWithRetry(() => import("./pages/PartnerLandingPage"));
@@ -239,6 +240,7 @@ export const AppSisalto = () => (
                 <Route key={path} path={path} element={<LandingPage />} />
               ))}
               <Route path={CHRISTMAS_DEADLINE_PATH} element={<ChristmasDeadlinePage />} />
+              <Route path="/joulukalenteri" element={<JoulukalenteriPage />} />
               <Route path="/ryhmatilaukset" element={<GroupOrderPage />} />
               <Route path="/abipaidat" element={<RyhmaPaitaPage />} />
               <Route path="/abipaidat/:kaupunki" element={<AbiKaupunkiPage />} />
