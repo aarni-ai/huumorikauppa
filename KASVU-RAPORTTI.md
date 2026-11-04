@@ -3677,3 +3677,38 @@ muutamaksi minuutiksi. Poisto: launchctl unload ~/Library/LaunchAgents/fi.huumor
 **Coworkille:** julkaisu Instagramiin ja TikTokiin tapahtuu nyt koneelta. Coworkin some-ajot tekevät vain
 vuorovaikutuksen (kommentteihin vastaaminen, parhaan kommentin kiinnitys) ja tilastot. YouTube Shorts on yhä käsin.
 Sama ohje on some/JULKAISUT.md:ssä. Älä julkaise samaa videota käsin: tarkista some/julkaistut.csv.
+
+### 5.11.2026: syöte Coworkilta, haku- ja Merchant-korjausten valmistelu, mittari
+
+**/hallinta/syote (tiedonvälitys Coworkilta):**
+- Cowork liittää tekstiä tai CSV:tä otsikolla ("Search Console 28 pv", "Merchant klikit", "Instagram tilastot").
+  Tallennus Neonin tauluun hallinta_syote. Pääsy kuten muilla hallintasivuilla (yleinen hallintaeväste).
+- Koneelle `node scripts/syote-lue.mjs` (uusimmat, `--otsikko`, `--id --koko`, `--tallenna` kansioon .cowork/syote/).
+- `--analyysi`:
+  - Search Console: hakulausekkeet sijainnilla 5-30 näyttökertojen mukaan ja sijainti viikoittain.
+  - Merchant: tuotteet, joilla on vähintään 100 näyttöä ja klikkausprosentti alle puolet keskiarvosta.
+- Ohje Coworkille: KAYTTOONOTTO.md kohta 26. Search Console ja Merchant liitetään joka maanantai samalla otsikolla.
+- Toteutus: api/_lib/hallintasyote.js, api/sahkoposti.js (`?syote=`, POST `syote-tallenna`), cron `?tehtava=syote`,
+  src/pages/FeedAdminPage.tsx, testit src/test/hallintasyote.test.ts.
+
+**Hakudata ja Merchant:** dataa ei ole vielä liitetty, joten korjauksia ei tehty. Kun Cowork liittää datan, seuraava
+ajo tekee:
+- hakulausekkeille sijainnilla 5-30 vastaavan sivun title, meta description, H1, sisällön ja sisäiset linkit, tai
+  uuden sivun, jos sopivaa ei ole;
+- Merchantin heikon klikkausprosentin tuotteille paremman otsikon (api/_lib/hakuotsikko.js) ja ensimmäisen kuvan;
+- kirjauksen tänne ja sijaintien seurannan viikoittain (`--analyysi`).
+
+**Kirjanpito:** velkarivin nimi tulee nyt api/_lib/yritys.js:stä (EDELLINEN_PITAJA). Testi sallii edellisen pitäjän
+nimen vain yritystiedostoissa; raportin teksti on sama.
+
+**Mittari 4.11. illalla:**
+- Kate kuussa 7,22 € / 3000 € (uusi tilaus 31,80 €, hintatestin A-versio), 30 pv 2 tilausta, kate 13,12 €.
+- Käynnit kuussa 743. Aidot bottisuodatuksen alusta: käynnit 119/135, tuotesivut 27/30.
+- Suppilo 3.11. alkaen: käynnit 377, tuotesivut 189, koriin 1, kassalle 1, ostoja 1.
+- Uutiskirje 1 tilaaja, tarjouspyyntöjä 0.
+- Testit kesken: koko A 7 / B 5 katselua; toimitus A 17 / B 8 tuotesivua (raja 300 + 300); ensitilaus alkaa 5.11.
+- Tuotesivun suurin pudotus on yhä koon valinta (0 % valitsi koon). Korjaus tehdään kokotestin voittajan mukaan
+  100 aidon katselun jälkeen per versio.
+
+**Somejulkaisut koneelta:** Instagram 01 ja TikTok 21 julkaistu 4.11. illalla. Ajastus käynnissä: seuraava ajo
+5.11. klo 11.30 (Instagram 02, TikTok 01), sitten 18.30 (Instagram 03, TikTok 22).
