@@ -3542,6 +3542,27 @@ vaihe 3): uudessa projektissa www ohjaa juureen jo 308:lla.
   - tuotesivun katselut 14/16
 - Uutiskirjeen tilaajia 1, tarjouspyyntöjä 0.
 
+### 4.11.2026 myöhäisilta: lokakuun kirjanpito
+
+- **Tarkistus:** kirjanpito/2026-10 sisälsi vain myyntiraportin (CSV ja PDF). Printifyn ja Stripen osat puuttuivat, koska
+  scripts/kuukausiraportti.mjs ei tehnyt niitä.
+- **Korjaus (api/_lib/kirjanpito.js, cron kuukausiraportti, scripts/kuukausiraportti.mjs):**
+  - "Muut erät" kuukausittain (MUUT_ERAT). Lokakuulle rivi "Uusiku Oy:n velka Tmi Intellerille 15,28 €"
+    kirjanpitäjän ohjeen mukaan, CSV:ssä ja PDF:ssä.
+  - Liite printify-veloitukset-ALKU-LOPPU.csv: Printifyn tilaukset aikaväliltä (perutut pois), tuotteet, toimitus, vero.
+  - Liite stripe-tapahtumat-ALKU-LOPPU.csv: Stripen saldotapahtumat (maksut, kulut, palautukset, tilitykset).
+  - Liitteet tulevat myös kuun 2. päivän automaattiseen raporttisähköpostiin.
+  - Printifyn viralliset PDF-laskut eivät ole rajapinnassa: ne ladataan Printify > My account > Billing.
+- **Ajettu uudelleen 4.11.:**
+  - Myynti 1 tilaus, 54,39 € sis. ALV, ALV 11,05 €, Stripen kulu 2,03 €.
+  - Printify 53,93 €: 27.10. 17,56 € (tilaus 26E6D3EC, maksettu vanhassa kassassa Tmi Intellerin Stripe-tilille
+    ennen vaihtoa) ja 29.10. 36,37 € (2ED0A626). Rajapinnan verosarake 0,00; ALV tarkistetaan laskuilta.
+  - Stripe: 29.10. maksu 54,39 €, kulu 2,03 €, netto 52,36 €, käytettävissä 5.11. (tilitys marraskuussa).
+- **kirjanpito/2026-10/Tomille.md:** lyhyt selitys tiedostoista ja kysymys 26E6D3EC:n kulun kohdistuksesta. Kansio on
+  .gitignoressa.
+- **Coworkille:** kopioi kansio kirjanpito/2026-10 (Tomille.md, myyntiraportti CSV ja PDF, printify-veloitukset,
+  stripe-tapahtumat) Driveen Tomille, ja lataa samaan kansioon Printifyn PDF-laskut 27.-31.10.
+
 ### 4.11.2026 myöhäisilta: somen julkaisuketju (selvitys, ei tilejä luotu)
 
 **Ongelma:** Coworkin selain ei saa videotiedostoa Instagramin eikä TikTokin latauskenttään Blobista. Ratkaisu on
