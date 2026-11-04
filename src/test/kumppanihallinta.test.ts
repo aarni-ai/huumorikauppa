@@ -123,7 +123,7 @@ describe("hallinta /hallinta/kumppanit vaatii avaimen", () => {
     for (const req of [
       { method: "GET", query: { kumppanit: "" }, headers: {} },
       { method: "GET", query: { kumppanit: "vaara.avain" }, headers: {} },
-      { method: "GET", query: { kumppanit: muu }, headers: { cookie: `hk_hallinta_mittarit=${encodeURIComponent(muu)}` } },
+      { method: "GET", query: { kumppanit: muu }, headers: {} },
       { method: "POST", query: {}, headers: {}, body: { action: "kumppani-luo", teksti: "Antti; 1" } },
       { method: "POST", query: {}, headers: {}, body: { action: "kumppani-luo", avain: muu, kumppani: { nimi: "Antti" } } },
       { method: "POST", query: {}, headers: {}, body: { action: "kumppani-tila", koodi: "antti", aktiivinen: false } },
@@ -132,6 +132,13 @@ describe("hallinta /hallinta/kumppanit vaatii avaimen", () => {
       await kasittele(req, res, {});
       expect(res.status).toBe(404);
     }
+  });
+  it("toisen hallintasivun eväste (2.11. aktivointi) avaa myös kumppanisivun (4.11.2026)", async () => {
+    const { hallintaPaasy } = await import("../../api/sahkoposti.js");
+    const { allekirjoita } = await import("../../api/_lib/markkinointi.js");
+    const muu = allekirjoita("hallinta", "mittarit");
+    const res = vastaus();
+    expect(hallintaPaasy({ headers: { cookie: `hk_hallinta_mittarit=${encodeURIComponent(muu)}` } }, res, "kumppanit", "")).toBe(true);
   });
   it("kumppanit on hallintasivu: linkki päivän yhteenvedossa ja hallintalinkkiviestissä", async () => {
     const { HALLINTASIVUT, hallintaLinkit, hallintalinkkiViesti, yhteenvetoRivit } = await import("../../api/_lib/hallinta.js");
