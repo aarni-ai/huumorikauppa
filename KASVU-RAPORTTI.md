@@ -3420,3 +3420,40 @@ Uutiskirjeen tilaajia 0, tarjouspyyntöjä 0. Suppilo 2.11. alkaen: 198 käynti�
   - tuotesivun katselut 3/4
 - Hintatesti 4.11.: A 1 tuotesivu, B 0. Raja on 300 + 300.
 - Koon esivalinta: A 7, B 5 katselua, kumpikaan ei vielä koriin.
+
+### 4.11.2026 iltapäivä
+
+**Kumppanit, kierros 3: koodit Coworkin omalla hallintasivulla /hallinta/kumppanit (KAYTTOONOTTO.md kohta 25)**
+- Yksi kumppani lisätään kirjoittamalla nimi, malli 1 tai 2 ja halutessa oma koodi tai sähköposti.
+  - Jos koodia ei anneta, se tehdään nimestä automaattisesti (ä ja å muuttuvat a:ksi, ö o:ksi; jos toisella nimellä on
+    jo sama koodi, perään tulee -2).
+  - Sivu näyttää /k/-linkin ja raporttilinkin kopiointipainikkeineen.
+- Useita kerralla: liitä taulukon rivit muodossa "Nimi; malli", sitten Esikatsele ja Luo kaikki. Tulostaulukon voi
+  kopioida takaisin taulukkoon.
+- Lista näyttää kaikista kumppaneista:
+  - ensimmäisen aidon käynnin /k/-linkissä (kirjataan automaattisesti; botit ja hallintaselaimet eivät lasketa)
+  - klikit ja maksetut tilaukset
+  - painikkeen, jolla kumppanin voi poistaa käytöstä tai aktivoida
+- Driven taulukkoa huumorikauppa-kumppanit-kierros3 ei löytynyt koneen Drive-yhteydestä (se on todennäköisesti
+  huumorikauppa@gmail.comin Drivessa), joten Cowork luo 22 koodia sivulla itse.
+- Pääsy: uusi hallintalinkki päivän yhteenvedossa. Aktivointilinkki avaa jatkossa kaikki hallintasivut.
+
+**www-ohjaus:** `vercel whoami` = flyapeg-2135, `vercel teams ls` = vain flyapeg-2135s-projects. Vanha
+huumorikauppa.fi:tä palveleva projekti on tiimissä aarni-ais-projects, johon tällä tilillä ei ole pääsyä, joten
+ohjausta ei voi vaihtaa nyt. Korjaus tulee automaattisesti domainin siirron yhteydessä (KAYTTOONOTTO.md kohta 24,
+vaihe 3): uudessa projektissa www ohjaa juureen jo 308:lla.
+
+**Stripen kuitti tilausvahvistukseksi, kunnes Resend toimii**
+- Kuitissa näkyvät jo Stripen tilin tiedoista:
+  - kaupan nimi Huumorikauppa
+  - rivien nimet ja summat
+  - yhteystiedot huumorikauppa@gmail.com ja puhelinnumero
+  Viimeisimmän kuitin rakenne tarkistettiin ilman henkilötietoja.
+- Kuittiin lisättiin viimeisen rivin nimeen tilausnumero ja toimitusaika, esim.
+  "Toimitus, Posti kotiinkuljetus (tilaus #ABCD1234, toimitus yleensä 4-15 arkipäivää)". Stripen kuitti näyttää rivien
+  nimet, mutta maksun kuvausta ei näkynyt aiemmassa kuitissa.
+- Lisäksi maksun kuvaus (näkyy Stripen tiedoissa) ja sama tieto maksusivulla maksupainikkeen alla.
+- Kun oma vahvistus on käytössä (Resend), rivin nimeen ei enää lisätä mitään.
+- Rajoitus: Stripe kirjoittaa kuitin englanniksi ("Receipt from Huumorikauppa"). Kuitin kieltä tai leipätekstiä ei voi
+  muuttaa API:lla. Tilauksen yhteenveto Stripen laskulla (invoice_creation) olisi maksullinen, joten sitä ei otettu
+  käyttöön.
