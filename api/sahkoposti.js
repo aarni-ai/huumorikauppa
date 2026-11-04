@@ -30,6 +30,9 @@
  * POST { action: "aktivoi", koodi }                               kertakäyttöinen aktivointikoodi -> hallinnan evästeet 90 pv
  * GET  ?kumppanisivu=<koodi>                                       /k/<koodi>: kumppanin nimi, koodi evästeeseen 30 pv
  * GET  ?some=<avain>                                              /hallinta/some: somevideot ja Pinterest-kuvat (Blob)
+ * GET  ?kumppanit=<avain>                                         /hallinta/kumppanit: kumppanit, linkit, klikit, ensimmäinen käynti
+ * POST { action: "kumppani-luo", avain, kumppani | kumppanit | teksti, esikatselu }   kumppanikoodit ja /k/-linkit (enintään 100)
+ * POST { action: "kumppani-tila", avain, koodi, aktiivinen }        kumppanin aktivointi tai poisto käytöstä
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossaNyt, halytys } from "./_lib/sahkoposti.js";
@@ -173,7 +176,14 @@ export async function kasittele(req, res, store) {
     if (k) {
       res.setHeader("Set-Cookie", `${KUMPPANI_EVASTE}=${encodeURIComponent(k.koodi)}; Path=/; Max-Age=${KUMPPANI_EVASTE_PV * 86400}; Secure; SameSite=Lax`);
       // Middlewaren bottitarkistuksen sisäinen haku (x-bot-inject) ei ole avaus.
-      if (!onBotti(String(req.headers["user-agent"] || "")) && !req.headers["x-bot-inject"]) await kirjaaKlikki(sql(), k.koodi).catch(() => false);
+      if (!onBotti(String(req.headers["user-agent"] || "")) && !req.headers["x-bot-inject"]) {
+        await kirjaaKlikki(sql(), k.koodi).catch(() => false);
+        // Ensimmäinen käynti (/hallinta/kumppanit): ei botteja eikä hallintaselaimia (Coworkin oma testiavaus).
+        if (!onOmaTaiBotti({ ua: req.headers["user-agent"], cookie: req.headers.cookie })) {
+          const { merkitseEnsimmainenKaynti } = await import("./_lib/kumppani.js");
+          await merkitseEnsimmainenKaynti(sql(), k.koodi).catch(() => null);
+        }
+      }
     }
     // Syvälinkki /k/<koodi>/<polku> (vercel.json rewrite, jatka=): koodi evästeeseen ja suoraan sivulle, esim. tuotteeseen.
     if (typeof q.jatka === "string") {
@@ -214,6 +224,12 @@ export async function kasittele(req, res, store) {
     const r = await fetch(`https://${kauppa.toLowerCase()}.public.blob.vercel-storage.com/some/manifest.json`, { cache: "no-store" }).catch(() => null);
     if (!r?.ok) return res.status(502).json({ ok: false, error: "manifestia ei löytynyt" });
     return res.status(200).json({ ok: true, ...(await r.json()) });
+  }
+  // Hallinta: kumppanit (4.11.2026, /hallinta/kumppanit). Vain kumppanien omat tiedot ja tilausmäärät, ei asiakastietoja.
+  if (req.method === "GET" && typeof q.kumppanit === "string") {
+    if (!hallintaPaasy(req, res, "kumppanit", q.kumppanit)) return res.status(404).json({ ok: false });
+    const { kumppaniLista } = await import("./_lib/kumppanihallinta.js");
+    return res.status(200).json({ ok: true, kumppanit: await kumppaniLista(sql()) });
   }
   if (req.method !== "POST") return res.status(405).json({ ok: false, error: "POST" });
 
@@ -352,7 +368,7 @@ export async function kasittele(req, res, store) {
       return res.status(200).json({ ok: true, tallennettu: t.rivi });
     }
     case "aktivoi": {
-      // Kertakäyttöinen aktivointikoodi (api/_lib/aktivointi.js): evästeet mittariin, someen ja tarjouspyyntöihin 90 pv.
+      // Kertakäyttöinen aktivointikoodi (api/_lib/aktivointi.js): evästeet kaikkiin hallintasivuihin (HALLINTASIVUT) 90 pv.
       res.setHeader("Cache-Control", "private, no-store");
       // Taikalinkki (body.linkki, 48 h, kerran) tai koodi (body.koodi, 24 h, kerran).
       const { kaytaAktivointikoodi, kaytaAktivointilinkki } = await import("./_lib/aktivointi.js");
@@ -361,10 +377,11 @@ export async function kasittele(req, res, store) {
       const t = onLinkki ? await kaytaAktivointilinkki(sql(), body.linkki) : await kaytaAktivointikoodi(sql(), body.koodi);
       if (!t.ok) return res.status(t.syy === "lukittu" ? 429 : 400).json({ ok: false, virhe: t.syy === "lukittu" ? "Liian monta yritystä. Yritä tunnin päästä."
         : onLinkki ? "Linkki on vanhentunut tai jo käytetty. Pyydä uusi linkki päivän yhteenvedosta tai Aarnilta." : "Koodi on virheellinen, vanhentunut tai jo käytetty." });
-      for (const sivu of ["mittarit", "some", "tarjoukset"]) asetaHallintaEvaste(res, sivu, allekirjoita("hallinta", sivu));
+      const { HALLINTASIVUT } = await import("./_lib/hallinta.js");
+      for (const { sivu } of HALLINTASIVUT) asetaHallintaEvaste(res, sivu, allekirjoita("hallinta", sivu));
       // Oman liikenteen merkki (api/_lib/kaynnit.js onOmaTaiBotti): tämä selain ei näy käynneissä eikä suppilossa.
       res.setHeader("Set-Cookie", [...[].concat(res.getHeader?.("Set-Cookie") || []), `hk_oma=1; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
-      return res.status(200).json({ ok: true, sivut: ["/hallinta/mittarit", "/hallinta/some", "/hallinta/tarjoukset"] });
+      return res.status(200).json({ ok: true, sivut: HALLINTASIVUT.map(({ sivu }) => `/hallinta/${sivu}`) });
     }
     case "mainoskulut": {
       // Mainoskulut mittariin (api/_lib/mainoskulut.js); avain = mittarisivun avain.
@@ -375,6 +392,31 @@ export async function kasittele(req, res, store) {
       if (!t.ok) return res.status(400).json(t);
       await tallennaMainoskulut(sql(), t.rivi);
       return res.status(200).json({ ok: true, tallennettu: t.rivi });
+    }
+    case "kumppani-luo": {
+      // Yksi (body.kumppani), lista (body.kumppanit) tai liitetyt rivit (body.teksti: "Nimi; malli" tai "Nimi; koodi; malli"
+      // per rivi, myös sarkain tai pilkku). Enintään 100 kerralla. esikatselu: true laskee koodit tallentamatta.
+      if (!hallintaPaasy(req, res, "kumppanit", body.avain)) return res.status(404).json({ ok: false });
+      const { luoKumppanit, jasennaKumppaniRivit, MASSALUONNIN_MAKSIMI } = await import("./_lib/kumppanihallinta.js");
+      let lista = [], virheet = [];
+      if (typeof body.teksti === "string") {
+        if (body.teksti.length > 50000) return res.status(400).json({ ok: false, virhe: "Liian pitkä teksti." });
+        ({ rivit: lista, virheet } = jasennaKumppaniRivit(body.teksti));
+      } else if (Array.isArray(body.kumppanit)) lista = body.kumppanit;
+      else if (body.kumppani && typeof body.kumppani === "object") lista = [body.kumppani];
+      if (lista.length > MASSALUONNIN_MAKSIMI) return res.status(400).json({ ok: false, virhe: `Enintään ${MASSALUONNIN_MAKSIMI} riviä kerralla.` });
+      if (virheet.length) return res.status(400).json({ ok: false, virhe: "Korjaa rivit ja yritä uudelleen.", virheet });
+      if (!lista.length) return res.status(400).json({ ok: false, virhe: "Ei kumppaneita." });
+      const syotteet = lista.map((k, i) => (k && typeof k === "object" ? { rivi: Number.isInteger(k.rivi) ? k.rivi : i + 1, nimi: k.nimi, koodi: k.koodi, malli: k.malli, email: k.email } : { rivi: i + 1 }));
+      const { tulokset } = await luoKumppanit(sql(), syotteet, { esikatselu: body.esikatselu === true });
+      return res.status(200).json({ ok: tulokset.every((t) => !t.virhe), esikatselu: body.esikatselu === true, tulokset });
+    }
+    case "kumppani-tila": {
+      if (!hallintaPaasy(req, res, "kumppanit", body.avain)) return res.status(404).json({ ok: false });
+      if (typeof body.aktiivinen !== "boolean") return res.status(400).json({ ok: false });
+      const { asetaKumppaninTila } = await import("./_lib/kumppanihallinta.js");
+      const ok = await asetaKumppaninTila(sql(), body.koodi, body.aktiivinen);
+      return res.status(ok ? 200 : 404).json({ ok });
     }
     case "kumppaniklikki": {
       const kirjattu = await kirjaaKlikki(sql(), body.koodi);

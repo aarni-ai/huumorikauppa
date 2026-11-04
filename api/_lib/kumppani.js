@@ -5,8 +5,8 @@
  * jättää kauppaan provision jälkeen vähintään KUMPPANUUS.minKateEuroa (7,00 € 29.10.2026 alkaen, aiemmin 5,00 €)
  * nettokatetta. Jos tilauksen kate on raja tai alle, provisio on 0. Kate lasketaan Printifyn todellisilla kuluilla; kun kulua ei vielä tiedetä, provisio odottaa (0).
  *
- * Kumppanit ovat taulussa kumppanit (koodi, nimi, email, aktiivinen), ja niitä hallitaan cron-tehtävillä
- * ?tehtava=kumppani-lisaa ja ?tehtava=kumppani-poista. Kassa kirjaa hyväksytyn koodin tilauksen tapahtumaksi
+ * Kumppanit ovat taulussa kumppanit (koodi, nimi, email, aktiivinen), ja niitä hallitaan sivulla /hallinta/kumppanit
+ * (api/_lib/kumppanihallinta.js) tai cron-tehtävillä ?tehtava=kumppani-lisaa ja ?tehtava=kumppani-poista. Kassa kirjaa hyväksytyn koodin tilauksen tapahtumaksi
  * "kumppani" ({ koodi }). Raportti: ?tehtava=kumppanit[&kuukausi=YYYY-MM].
  */
 import { KUMPPANUUS, KUMPPANIT } from "./vakiot.js";
@@ -39,6 +39,13 @@ export async function varmistaKumppanitaulu(db) {
   await db`create table if not exists kumppanit (koodi text primary key, nimi text not null, email text,
     aktiivinen boolean not null default true, created_at timestamptz not null default now())`;
   await db`alter table kumppanit add column if not exists malli text not null default 'provisio'`;
+  // Ensimmäinen aito /k/<koodi>-avaus (4.11.2026, /hallinta/kumppanit): näyttää, kuka on avannut linkkinsä.
+  await db`alter table kumppanit add column if not exists ensimmainen_kaynti timestamptz`;
+}
+
+/** Merkitsee kumppanilinkin ensimmäisen avauksen, jos sitä ei vielä ole (kutsuja on jo suodattanut botit ja oman liikenteen). */
+export async function merkitseEnsimmainenKaynti(db, koodi) {
+  await db`update kumppanit set ensimmainen_kaynti = now() where koodi = ${koodi} and ensimmainen_kaynti is null`;
 }
 
 export const KUMPPANIMALLIT = ["provisio", "alennus"];

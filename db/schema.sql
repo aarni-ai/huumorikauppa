@@ -234,6 +234,11 @@ create table if not exists kumppanit (
   aktiivinen boolean not null default true,
   created_at timestamptz not null default now()
 );
+-- Malli 1/2 (31.10.2026) ja ensimmäinen aito /k/<koodi>-avaus (4.11.2026, /hallinta/kumppanit). Ajonaikainen
+-- varmistus api/_lib/kumppani.js varmistaKumppanitaulu lisää samat sarakkeet.
+alter table kumppanit add column if not exists malli text not null default 'provisio';
+alter table kumppanit add column if not exists kautta_nimi text;
+alter table kumppanit add column if not exists ensimmainen_kaynti timestamptz;
 
 -- Ensimmäisen tilauksen -5 % A/B-testi (5.11.2026, api/_lib/ensitilaus.js). Sama rakenne kuin hintatestissä
 -- (api/_lib/toimitustesti.js): koosteet päivä x versio x tapahtuma, ei tunnisteita. Ajonaikainen varmistus

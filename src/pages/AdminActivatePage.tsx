@@ -4,7 +4,7 @@ import { SEOHead } from "@/components/SEOHead";
 
 /**
  * /hallinta/aktivoi: kertakäyttöinen aktivointikoodi (api/sahkoposti.js action "aktivoi"). Onnistunut koodi antaa
- * tälle selaimelle 90 päivän pääsyn sivuille /hallinta/mittarit, /hallinta/some ja /hallinta/tarjoukset.
+ * tälle selaimelle 90 päivän pääsyn kaikille hallintasivuille (api/_lib/hallinta.js HALLINTASIVUT).
  * Taikalinkki /hallinta/aktivoi?t=<tunniste> (2.11.2026): aktivoi heti sivun avautuessa ilman koodia. Tunniste
  * poistetaan osoiteriviltä, ja se lähetetään vain JavaScriptillä (linkkiskannerit eivät kuluta linkkiä).
  */
@@ -41,6 +41,7 @@ const AdminActivatePage = () => {
             <li><Link to="/hallinta/mittarit">Tavoitemittari</Link></li>
             <li><Link to="/hallinta/some">Somevideot ja Pinterest-kuvat</Link></li>
             <li><Link to="/hallinta/tarjoukset">Tarjouspyynnöt</Link></li>
+            <li><Link to="/hallinta/kumppanit">Kumppanikoodit</Link></li>
           </ul>
         </div>
       ) : (
