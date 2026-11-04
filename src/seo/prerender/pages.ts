@@ -52,6 +52,8 @@ import { yrityksetPage, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrity
 import { YRITYS_ALAT, YRITYS_ALA_POLKU } from "@/data/yritysAlat";
 import { valitseAlanTuotteet, yritysAlaFaqs } from "@/data/yritysAlaSivu";
 import { esimerkkiHinnat } from "../../../api/_lib/yritysmyynti.js";
+import { PIKKUJOULU_PAKETIT } from "../../../api/_lib/pikkujoulut.js";
+import { pikkujoulutYrityksetPage, pakettiTeksti } from "@/data/pikkujoulutYrityksetPage";
 import { LOGO_RAJAT, LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
@@ -629,6 +631,7 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
         ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
         ...yrityksetPage.esimerkit.map((e) => `${e.kpl} t-paitaa: ${e.ennen}, määräalennus -${e.prosentti} % = ${e.jalkeen}`),
       ] },
+      { heading: "Pikkujoulupaketit", paragraphs: ["Valmiit pikkujoulupaketit: 10, 25 tai 50 paitaa eri vitseillä ja oma kokojakauma."], links: [{ href: "/pikkujoulut-yritykset", label: "Pikkujoulupaketit yrityksille" }] },
       { heading: "Paidat alasi mukaan", links: YRITYS_ALAT.map((a) => ({ href: YRITYS_ALA_POLKU(a.slug), label: a.nimi })) },
       ...yrityksetPage.sections.map((s) => ({ heading: s.heading, paragraphs: "paragraphs" in s ? s.paragraphs : undefined, items: "items" in s ? s.items : undefined, links: "links" in s ? s.links : undefined })),
       { heading: "Tarjouspyyntö", paragraphs: ["Lähetä tarjouspyyntö sivun lomakkeella tai sähköpostilla huumorikauppa@gmail.com."] },
@@ -639,6 +642,22 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
     ogImage: productImage(list[0]?.images[0]),
     faqs: yrityksetPage.faqs,
     jsonLd: [buildFaqJsonLd(yrityksetPage.faqs)],
+  });
+}
+
+/** /pikkujoulut-yritykset (4.11.2026): sama sisältö kuin src/pages/PikkujoulutYrityksetPage.tsx. */
+export function buildPikkujoulutYrityksetPage(): PrerenderPage {
+  return staticPage("/pikkujoulut-yritykset", {
+    breadcrumbs: [HOME, crumb("Yritykset", "/yritykset"), crumb(STATIC_PAGE_META["/pikkujoulut-yritykset"].name, "/pikkujoulut-yritykset")],
+    intro: pikkujoulutYrityksetPage.intro,
+    sections: [
+      ...PIKKUJOULU_PAKETIT.map((p) => ({ heading: p.nimi, paragraphs: [p.kuvaus], items: [pakettiTeksti(p.id)] })),
+      { heading: "Hinta ja maksu", paragraphs: [pikkujoulutYrityksetPage.hintaehto, pikkujoulutYrityksetPage.maksu, pikkujoulutYrityksetPage.jako] },
+      { heading: "Tarjouspyyntö", paragraphs: ["Valitse paketti, designit ja kokojakauma sivun lomakkeella ja lähetä tarjouspyyntö, tai kirjoita osoitteeseen huumorikauppa@gmail.com."] },
+      { heading: "Liittyvät sivut", links: pikkujoulutYrityksetPage.links },
+    ],
+    faqs: pikkujoulutYrityksetPage.faqs,
+    jsonLd: [buildFaqJsonLd(pikkujoulutYrityksetPage.faqs)],
   });
 }
 
@@ -663,6 +682,7 @@ export function buildBusinessVerticalPages(products: Product[]): PrerenderPage[]
           items: esimerkkiHinnat("logopaita").map((x) => `${x.kpl} paitaa: ${e(x.perKpl)} €/kpl, yhteensä ${e(x.yhteensa)} € (määräalennus -${x.alennusProsentti} %, toimitus ilmainen)`),
           links: [{ href: "/yritykset/tilaus", label: "Valitse koot ja tilaa" }],
         },
+        { heading: "Pikkujoulupaketit", links: [{ href: "/pikkujoulut-yritykset", label: "Valmiit pikkujoulupaketit: 10, 25 tai 50 paitaa" }] },
         { heading: "Ideoita omaan paitaan", items: ala.ideat },
         { heading: "Määräalennus t-paidoista", items: [
           ...yrityksetPage.portaat.map((p) => `${p.teksti}: -${p.prosentti} %`),
@@ -846,6 +866,7 @@ export function buildPrerenderPages(opts: BuildOptions): PrerenderPage[] {
     ...buildAbiKaupunkiPages(),
     buildBusinessPage(products),
     ...buildBusinessVerticalPages(products),
+    buildPikkujoulutYrityksetPage(),
     staticPage("/kumppanit", {
       intro: kumppanitPage.intro,
       sections: [

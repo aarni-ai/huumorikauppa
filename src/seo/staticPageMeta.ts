@@ -169,6 +169,16 @@ export const STATIC_PAGE_META = {
     intro:
       "Huumorikaupan kumppanina saat provision tilauksista, jotka tulevat oman linkkisi tai kumppanikoodisi kautta.",
   },
+  // Pikkujoulupaketit yrityksille (4.11.2026, src/pages/PikkujoulutYrityksetPage.tsx, api/_lib/pikkujoulut.js).
+  "/pikkujoulut-yritykset": {
+    title: "Pikkujoulupaidat yrityksille | Huumorikauppa",
+    description:
+      "Pikkujoulupaketit yrityksille: 10, 25 tai 50 t-paitaa eri vitseillä ja oma kokojakauma. Hinta näkyy heti, toimitus yhteen osoitteeseen.",
+    h1: "Pikkujoulupaidat yrityksille: valmiit paketit",
+    name: "Pikkujoulupaketit yrityksille",
+    intro:
+      "Valitse paketti, vaihda halutessasi designeja ja aseta kokojakauma. Hinta päivittyy heti, ja tarjouspyyntö lähtee samalla lomakkeella.",
+  },
   "/yritykset": {
     title: "Yritysten joululahjat ja tiimipaidat | Huumorikauppa",
     description:

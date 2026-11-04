@@ -85,11 +85,14 @@ export function pgMarkkinointi(db) {
         add column if not exists ilmoitus text, add column if not exists logo jsonb`;
       // Alakohtaiset sivut /yritykset/<ala> (2.11.2026): lomake esitäyttää alan.
       await db`alter table tarjouspyynnot add column if not exists ala text`;
+      // Lähde (yritykset, yritykset-ala, pikkujoulut-yritykset) ja pikkujoulupaketin tiedot (4.11.2026, api/_lib/pikkujoulut.js).
+      await db`alter table tarjouspyynnot add column if not exists lahde text, add column if not exists pikkujoulu jsonb`;
       return (await db`insert into tarjouspyynnot (yritys, nimi, email, puhelin, maara, viesti, paketti, malli, koot, hinta, kate,
-          toivottu_paiva, ehtii, jouluun, ytunnus, logo, ala)
+          toivottu_paiva, ehtii, jouluun, ytunnus, logo, ala, lahde, pikkujoulu)
         values (${t.yritys}, ${t.nimi}, ${t.email}, ${t.puhelin}, ${t.maara}, ${t.viesti}, ${t.paketti ?? null}, ${t.malli ?? null},
           ${t.koot ? db.json(t.koot) : null}, ${t.hinta ?? null}, ${t.kate ?? null}, ${t.toivottu_paiva ?? null}, ${t.ehtii ?? null},
-          ${t.jouluun ?? null}, ${t.ytunnus ?? null}, ${t.logo ? db.json(t.logo) : null}, ${t.ala ?? null}) returning id`)[0].id;
+          ${t.jouluun ?? null}, ${t.ytunnus ?? null}, ${t.logo ? db.json(t.logo) : null}, ${t.ala ?? null}, ${t.lahde ?? null},
+          ${t.pikkujoulu ? db.json(t.pikkujoulu) : null}) returning id`)[0].id;
     },
     /** /hallinta/tarjoukset: tarjouspyynnöt uusimmasta (kate vain täällä). */
     tarjouspyynnot: async () => db`select * from tarjouspyynnot order by created_at desc limit 300`,

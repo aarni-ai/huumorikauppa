@@ -9,6 +9,7 @@
  */
 import { aitousRivit } from "./botit.js";
 import { lisamyyntiValilla, lisamyyntiRivi } from "./lisamyynti.js";
+import { pikkujouluValilla, pikkujouluRivi } from "./pikkujoulu-seuranta.js";
 import { KK_TAVOITE, helsinki, paivanAlku, toteutuneet, toteutunutKate, tilauksenKate } from "./valvonta.js";
 import { provisioJaTila, provisioAsetukset } from "./kumppani.js";
 import { kaynnitValilla } from "./kaynnit.js";
@@ -149,13 +150,17 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   }
 
   // Yritysten tarjouspyynnöt (tila 'testi' pois, 2.11.2026).
-  let tarjoukset = { kk: 0, p30: 0, tilat: {}, arvoKk: 0, kateKk: 0 };
+  let tarjoukset = { kk: 0, p30: 0, tilat: {}, lahteet: {}, arvoKk: 0, kateKk: 0 };
   try {
-    const t = await db`select tila, hinta, kate, created_at from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)} and tila <> 'testi'`;
+    // Lähde (4.11.2026): yritykset, yritykset-ala, pikkujoulut-yritykset; ennen saraketta tallennetut "yritykset".
+    let t;
+    try { t = await db`select tila, hinta, kate, created_at, coalesce(lahde, 'yritykset') as lahde from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)} and tila <> 'testi'`; }
+    catch { t = (await db`select tila, hinta, kate, created_at from tarjouspyynnot where created_at >= ${paivanAlku(alku30Pv)} and tila <> 'testi'`).map((x) => ({ ...x, lahde: "yritykset" })); }
     const kkT = t.filter((x) => new Date(x.created_at) >= kuunAlku);
     tarjoukset = {
       kk: kkT.length, p30: t.length,
       tilat: Object.fromEntries([...new Set(t.map((x) => x.tila))].map((tila) => [tila, t.filter((x) => x.tila === tila).length])),
+      lahteet: Object.fromEntries([...new Set(t.map((x) => x.lahde))].map((l) => [l, t.filter((x) => x.lahde === l).length])),
       arvoKk: r2(kkT.reduce((s, x) => s + (Number(x.hinta) || 0), 0)), kateKk: r2(kkT.reduce((s, x) => s + (Number(x.kate) || 0), 0)),
     };
   } catch { /* taulua ei vielä ole */ }
@@ -180,6 +185,10 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
       and paiva between ${alku14}::date and ${h.paiva}::date group by 1`;
     suppilo = await suppiloValilla(db, alku14, h.paiva, Object.fromEntries(kayPv.map((r) => [r.paiva, r.n])));
   } catch { /* taulua ei vielä ole */ }
+
+  // Pikkujoulupaketit 30 pv (api/_lib/pikkujoulu-seuranta.js, 4.11.2026): sivukäynnit, paketin valinnat, tarjouspyynnöt.
+  let pikkujoulut = null;
+  try { pikkujoulut = await pikkujouluValilla(db, alku30Pv, h.paiva); } catch { /* taulua ei vielä ole */ }
 
   // Korin lisämyynti 14 pv (api/_lib/lisamyynti.js, 2.11.2026).
   let lisamyynti = null;
@@ -216,7 +225,7 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
   return {
     paiva: h.paiva, kuukausi: `${h.kuukausi}/${h.vuosi}`, paivia, kulunut, jaljella,
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
-    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, ryhmatilaukset, uutiskirje, kumppanit: [...kumppanit.values()],
+    kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, pikkujoulut, ryhmatilaukset, uutiskirje, kumppanit: [...kumppanit.values()],
     aitous,
   };
 }
@@ -240,7 +249,8 @@ export function mittariKooste(m) {
     liikenneKk: { hakukoneet: lk.orgaaninen ?? 0, lahjasivut: lk.lahjasivut ?? 0, media: lk.media ?? 0, kumppanisivut: lk.kumppanisivut ?? 0,
       blogi: lk.blogi ?? 0, yritysAlat: lk.yritysAlat ?? 0, ammattisivut: lk.ammattisivut ?? 0 },
     uutiskirje: m.uutiskirje ? { yhteensa: m.uutiskirje.yhteensa, p7: m.uutiskirje.p7, p28: m.uutiskirje.p28 } : null,
-    tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk },
+    tarjoukset: { kk: m.tarjoukset.kk, p30: m.tarjoukset.p30, arvoKk: m.tarjoukset.arvoKk, lahteet: m.tarjoukset.lahteet ?? {} },
+    pikkujoulut: m.pikkujoulut ? { sivu: m.pikkujoulut.sivu, paketti: m.pikkujoulut.paketti, tarjous: m.pikkujoulut.tarjous, tallennetut: m.pikkujoulut.tallennetut } : null,
     suppilo14: m.suppilo ? { ...m.suppilo.yhteensa, alku: m.suppilo.alku, luotettavaAlkaen: m.suppilo.luotettavaAlkaen } : null,
     lisamyynti14: m.lisamyynti ?? null,
     ryhmatilaukset: m.ryhmatilaukset ?? null,
@@ -275,7 +285,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     `Lähteet 30 pv: ${lahteet}`,
     ...(m.liikenne ? [`Liikenne tässä kuussa: hakukoneet ${m.liikenne.kk.orgaaninen}, lahjasivut ${m.liikenne.kk.lahjasivut}, media ${m.liikenne.kk.media}, kumppanisivut ${m.liikenne.kk.kumppanisivut} (kumppanilinkit ${m.liikenne.kk.kumppanilinkit}), blogi ${m.liikenne.kk.blogi ?? 0}, yritysten alasivut ${m.liikenne.kk.yritysAlat ?? 0}, ammattisivut ${m.liikenne.kk.ammattisivut ?? 0}`] : []),
     ...(m.uutiskirje ? [`Uutiskirjeen tilaajat: ${m.uutiskirje.yhteensa} (7 pv +${m.uutiskirje.p7}, 28 pv +${m.uutiskirje.p28})`] : []),
-    `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}`,
+    `Yritysten tarjouspyynnöt: tässä kuussa ${m.tarjoukset.kk} (arvo ${eur(m.tarjoukset.arvoKk)}), 30 pv ${m.tarjoukset.p30}${Object.keys(m.tarjoukset.lahteet || {}).length ? ` (${Object.entries(m.tarjoukset.lahteet).map(([l, n]) => `${l} ${n}`).join(", ")})` : ""}`,
     m.yritysmyynti
       ? `Yritysmyynti tässä kuussa (Cowork): viestejä lähetetty ${m.yritysmyynti.kk.viestit} / vastauksia ${m.yritysmyynti.kk.vastaukset} / tarjouspyyntöjä ${m.yritysmyynti.kk.tarjouspyynnot} / tilauksia ${m.yritysmyynti.kk.tilaukset}`
       : "Yritysmyynti (Cowork): ei kirjauksia",
@@ -283,6 +293,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     ...(m.suppilo ? [`Suppilo ${m.suppilo.alku} alkaen (luotettava ${m.suppilo.luotettavaAlkaen} alkaen): käynnit ${m.suppilo.yhteensa.kaynnit}, tuotesivut ${m.suppilo.yhteensa.tuotesivu}, koriin ${m.suppilo.yhteensa.kori}, kassalle ${m.suppilo.yhteensa.kassa}, maksuun ${m.suppilo.yhteensa.maksu}, ostot ${m.suppilo.yhteensa.ostot} (konversio ${m.suppilo.yhteensa.konversio == null ? "-" : `${lu(m.suppilo.yhteensa.konversio)} %`})`,
       `Etusivun A/B-testi: A ${m.suppilo.ab.a.etusivu} näyttöä, ${m.suppilo.ab.a.kori} koriin, ${m.suppilo.ab.a.ostot} ostoa; B ${m.suppilo.ab.b.etusivu} näyttöä, ${m.suppilo.ab.b.kori} koriin, ${m.suppilo.ab.b.ostot} ostoa`] : []),
     ...(m.lisamyynti ? [lisamyyntiRivi(m.lisamyynti)] : []),
+    ...(m.pikkujoulut ? [pikkujouluRivi(m.pikkujoulut)] : []),
     ...(m.aitous ? aitousRivit(m.aitous) : []),
     ...(m.ryhmatilaukset ? [ryhmatilausRivi(m.ryhmatilaukset)] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,

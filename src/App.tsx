@@ -122,6 +122,7 @@ const PersonoidutPage = lazyWithRetry(() => import("./pages/PersonoidutPage"));
 const PartnersPage = lazyWithRetry(() => import("./pages/PartnersPage"));
 const PartnerReportPage = lazyWithRetry(() => import("./pages/PartnerReportPage"));
 const BusinessOrderPage = lazyWithRetry(() => import("./pages/BusinessOrderPage"));
+const PikkujoulutYrityksetPage = lazyWithRetry(() => import("./pages/PikkujoulutYrityksetPage"));
 const QuoteAdminPage = lazyWithRetry(() => import("./pages/QuoteAdminPage"));
 const MetricsAdminPage = lazyWithRetry(() => import("./pages/MetricsAdminPage"));
 const LinksPage = lazyWithRetry(() => import("./pages/LinksPage"));
@@ -250,6 +251,7 @@ export const AppSisalto = () => (
               <Route path="/yritykset" element={<BusinessPage />} />
               <Route path="/yritykset/tilaus" element={<BusinessOrderPage />} />
               <Route path="/yritykset/:ala" element={<BusinessVerticalPage />} />
+              <Route path="/pikkujoulut-yritykset" element={<PikkujoulutYrityksetPage />} />
               <Route path="/hallinta/tarjoukset" element={<QuoteAdminPage />} />
               <Route path="/hallinta/mittarit" element={<MetricsAdminPage />} />
               <Route path="/hallinta/some" element={<SomeAdminPage />} />

@@ -9,6 +9,12 @@ type Tarjous = {
   paketti: string | null; ala?: string | null; malli: string | null; koot: Record<string, number> | null; hinta: string | null; kate: string | null;
   toivottu_paiva: string | null; ehtii: boolean | null; jouluun: boolean | null; ytunnus: string | null; tila: string; created_at: string; ilmoitus: string | null;
   logo: { kuvaus: string; vari: string; esikatselu: string } | null;
+  lahde?: string | null;
+  /** Pikkujoulupaketti (/pikkujoulut-yritykset, api/_lib/pikkujoulut.js pikkujouluTarjous). */
+  pikkujoulu?: {
+    nimi: string; designit: { slug: string; nimi: string }[]; alennusProsentti: number; perKpl: number; yhteensa: number; toimitus: number;
+    postinumero: string; kaupunki: string; logoToive: string | null;
+  } | null;
 };
 const TILAT = ["uusi", "vastattu", "tilattu", "hylatty", "testi"] as const;
 const eur = (x: string | null) => (x == null ? "-" : `${Number(x).toFixed(2).replace(".", ",")} €`);
@@ -57,7 +63,16 @@ const QuoteAdminPage = () => {
                   <td className="py-2 pr-3">{t.yritys}{t.ytunnus ? <div className="text-xs text-muted-foreground">{t.ytunnus}</div> : null}</td>
                   <td className="py-2 pr-3">{t.nimi}<div className="text-xs"><a href={`mailto:${t.email}`} className="text-primary underline">{t.email}</a></div>{t.puhelin && <div className="text-xs">{t.puhelin}</div>}</td>
                   <td className="py-2 pr-3">{t.paketti || "-"}<div className="text-xs text-muted-foreground">{t.malli || ""}{t.ala ? ` · ala: ${t.ala}` : ""}</div>
-                    {t.logo ? <div className="text-xs">{t.logo.kuvaus}, {t.logo.vari} <a href={t.logo.esikatselu} target="_blank" rel="noopener noreferrer" className="text-primary underline">esikatselu</a></div> : null}</td>
+                    {t.logo ? <div className="text-xs">{t.logo.kuvaus}, {t.logo.vari} <a href={t.logo.esikatselu} target="_blank" rel="noopener noreferrer" className="text-primary underline">esikatselu</a></div> : null}
+                    {t.lahde ? <div className="text-xs text-muted-foreground">lähde: {t.lahde}</div> : null}
+                    {t.pikkujoulu ? (
+                      <div className="text-xs mt-1 space-y-0.5" data-pikkujoulu>
+                        <div className="font-medium">{t.pikkujoulu.nimi}: {eur(String(t.pikkujoulu.perKpl))}/kpl, määräalennus {t.pikkujoulu.alennusProsentti} %</div>
+                        <ul className="list-disc pl-4">{t.pikkujoulu.designit.map((d) => <li key={d.slug}><a href={`/tuote/${d.slug}`} target="_blank" rel="noopener noreferrer" className="underline">{d.nimi}</a></li>)}</ul>
+                        <div>Toimitus: {t.pikkujoulu.postinumero} {t.pikkujoulu.kaupunki}</div>
+                        {t.pikkujoulu.logoToive ? <div>Logo/teksti: {t.pikkujoulu.logoToive}</div> : null}
+                      </div>
+                    ) : null}</td>
                   <td className="py-2 pr-3">{t.maara ?? "-"}<div className="text-xs text-muted-foreground">{t.koot ? Object.entries(t.koot).map(([k, n]) => `${k} ${n}`).join(", ") : ""}</div></td>
                   <td className="py-2 pr-3 whitespace-nowrap">{eur(t.hinta)}</td>
                   <td className="py-2 pr-3 whitespace-nowrap font-semibold">{eur(t.kate)}</td>

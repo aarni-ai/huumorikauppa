@@ -126,7 +126,17 @@ export function laskeTarjous({ malli, koot } = {}, { kerroin = 1, minKatePerKpl 
   }
   if (!kpl) return { kpl: 0, ennen: 0, alennusProsentti: 0, hinta: 0, toimitus: 0, yhteensa: 0, kate: 0, katePerKpl: 0 };
   kulut += m.eka + (kpl - 1) * m.lisa;
-  const porras = m.maara ? maaraPorras(kpl) : null;
+  return hinnoitteleTarjous({ kpl, ennen, kulut, maara: m.maara }, { kerroin, minKatePerKpl });
+}
+
+/**
+ * Tarjouslaskurin hinnoitteluydin (laskeTarjous ja pikkujoulupaketit, api/_lib/pikkujoulut.js): kpl, ennen = tuotteiden
+ * summa ilman alennusta (ALV sis.), kulut = Printifyn tuote- ja toimituskulut euroina (ALV 0). Määräalennuksen porras
+ * kappalemäärän mukaan; jos kate kappaleelta jää alle minKatePerKpl, suurin pienempi porras, jolla raja täyttyy, tai ei
+ * alennusta (api/_lib/katesaanto.js suurinSallittuAlennus). Toimitus ilmainen ILMAINEN_TOIMITUS_RAJA:sta alkaen.
+ */
+export function hinnoitteleTarjous({ kpl, ennen, kulut, maara = true }, { kerroin = 1, minKatePerKpl = null } = {}) {
+  const porras = maara ? maaraPorras(kpl) : null;
   const laske = (alennusProsentti) => {
     const hinta = r2(ennen * (1 - alennusProsentti / 100));
     const toimitus = ennen >= ILMAINEN_TOIMITUS_RAJA ? 0 : TOIMITUS;

@@ -9,7 +9,7 @@ import { useProducts } from "@/hooks/use-products";
 import { yrityksetPage as page, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
 import { YRITYS_ALAT, YRITYS_ALA_POLKU } from "@/data/yritysAlat";
 import { TYHJA_LOGO, type LogoValinta } from "@/components/LogoEditori";
-import { Maaraalennus, OmaLogo, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
+import { Maaraalennus, OmaLogo, PikkujouluNosto, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { STATIC_PAGE_META } from "@/seo/staticPageMeta";
 import { BLOG_END_COUNT, BLOG_PRODUCT_THEMES, selectBlogProducts } from "@/data/blogProducts";
 import { buildFaqJsonLd } from "@/seo/structuredData";
@@ -86,6 +86,8 @@ const BusinessPage = () => {
         <span className="font-semibold">Yritysten joululahjat:</span> tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.{" "}
         <Link to="/yritykset/tilaus" className="text-primary underline">Tilaa koko tiimille</Link>
       </p>
+
+      <PikkujouluNosto className="mb-6" />
 
       <Paketit valitse={valitse} />
 

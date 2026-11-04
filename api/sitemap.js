@@ -60,6 +60,8 @@ const STATIC_PAGES = [
   { loc: "/joukkueet", changefreq: "monthly", priority: "0.7" },
   { loc: "/yhdistykset", changefreq: "monthly", priority: "0.7" },
   { loc: "/yritykset", changefreq: "weekly", priority: "0.8" },
+  // Pikkujoulupaketit yrityksille (4.11.2026, api/_lib/pikkujoulut.js).
+  { loc: "/pikkujoulut-yritykset", changefreq: "weekly", priority: "0.8" },
   // Alakohtaiset yrityssivut (2.11.2026, src/data/yritysAlat.ts; src/data/yritysAlat.test.ts tarkistaa listan).
   { loc: "/yritykset/rakennus", changefreq: "weekly", priority: "0.7" },
   { loc: "/yritykset/insinoorit", changefreq: "weekly", priority: "0.7" },
