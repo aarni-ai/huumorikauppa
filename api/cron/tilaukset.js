@@ -276,7 +276,8 @@ export default async function handler(req, res) {
     const { linkki, vanhenee } = await luoAktivointilinkki(sql());
     res.setHeader("Cache-Control", "private, no-store");
     // &testi=1: linkki palautetaan testiskriptille (scripts/aktivointilinkki-testi.mjs käyttää sen heti eikä tulosta sitä).
-    if (req.query.testi === "1") return res.status(200).json({ ok: true, linkki, vanhenee });
+    // &palauta=1 (4.11.2026): scripts/cowork-aktivointi.mjs kirjoittaa linkin tiedostoon ~/huumorikauppa/.cowork/aktivointi.txt.
+    if (req.query.testi === "1" || req.query.palauta === "1") return res.status(200).json({ ok: true, linkki, vanhenee });
     const viesti = aktivointilinkkiViesti(linkki, vanhenee);
     const to = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.query.to || "") ? req.query.to : "huumorikauppa@gmail.com";
     const yritykset = [];
@@ -288,6 +289,12 @@ export default async function handler(req, res) {
     }
     res.setHeader("Cache-Control", "private, no-store");
     return res.status(200).json({ ok: r.ok, otsikko: viesti.subject, vanhenee, yritykset });
+  }
+
+  // Hallinnan evästeen tila ilman linkkiä (scripts/cowork-aktivointi.mjs --jos-tarvitaan).
+  if (req.query.tehtava === "aktivointi-tila") {
+    const { evasteenTila } = await import("../_lib/aktivointi.js");
+    return res.status(200).json({ ok: true, ...(await evasteenTila(sql())) });
   }
 
   // Hallinnan kertakäyttöinen aktivointikoodi (24 h, yksi käyttö; api/_lib/aktivointi.js, sivu /hallinta/aktivoi).

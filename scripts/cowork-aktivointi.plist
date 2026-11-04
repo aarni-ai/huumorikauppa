@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Coworkin aktivointilinkki tarvittaessa joka aamu (4.11.2026), scripts/cowork-aktivointi.mjs --jos-tarvitaan.
+     Asennus (Aarni, kerran): bash ~/huumorikauppa/scripts/cowork-aktivointi-asennus.sh
+     Mac on aikavyöhykkeellä UTC+5, joten 11.15 koneen aikaa on noin 8.15 Helsingin aikaa.
+     NODE ja KOTI korvataan asennuksessa. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>fi.huumorikauppa.cowork-aktivointi</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>NODE</string>
+    <string>KOTI/huumorikauppa/scripts/cowork-aktivointi.mjs</string>
+    <string>--jos-tarvitaan</string>
+  </array>
+  <key>WorkingDirectory</key><string>KOTI/huumorikauppa</string>
+  <key>StartCalendarInterval</key><dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>15</integer></dict>
+  <key>RunAtLoad</key><false/>
+  <key>StandardOutPath</key><string>KOTI/huumorikauppa/.cowork/aktivointi.log</string>
+  <key>StandardErrorPath</key><string>KOTI/huumorikauppa/.cowork/aktivointi.log</string>
+</dict>
+</plist>

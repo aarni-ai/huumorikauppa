@@ -60,3 +60,6 @@ some/.valimuisti/
 some/kuvat/
 scripts/.fontit/
 scripts/.painopiirrokset/
+
+# Coworkin aktivointilinkki (4.11.2026, scripts/cowork-aktivointi.mjs): ei koskaan repoon
+.cowork/

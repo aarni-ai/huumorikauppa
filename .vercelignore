@@ -8,3 +8,6 @@
 # Agenttien git-työpuut ja paikalliset työkalukansiot (3.11.2026: tiedostoraja 15 000 ylittyi)
 .claude
 .agents
+
+# Coworkin aktivointilinkki (4.11.2026): ei koskaan tuotantoon
+.cowork
