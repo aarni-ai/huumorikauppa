@@ -27,6 +27,42 @@ describe("hallintasivujen pääsy evästeellä", () => {
     expect(hallintaPaasy({ headers: { cookie: "hk_hallinta_mittarit=vaara.avain" } }, res(), "mittarit", undefined)).toBe(false);
   });
 
+  it("2.11. aktivoitu selain (evästeet mittarit, some, tarjoukset) pääsee myös kumppanisivulle ja tuleville sivuille", async () => {
+    const { hallintaPaasy } = await import("../../api/sahkoposti.js");
+    const { allekirjoita } = await import("../../api/_lib/markkinointi.js");
+    const vanhat = ["mittarit", "some", "tarjoukset"].map((s) => `hk_hallinta_${s}=${encodeURIComponent(allekirjoita("hallinta", s))}`).join("; ");
+    for (const sivu of ["kumppanit", "joulukalenteri", "tuleva-sivu"]) {
+      const r = res();
+      expect(hallintaPaasy({ headers: { cookie: vanhat } }, r, sivu, "")).toBe(true);
+      // Yleinen eväste asetetaan, jotta jatkossa riittää yksi eväste.
+      expect(String((r.h["set-cookie"] as string[])[0])).toMatch(/^hk_hallinta=.+; Path=\/; Max-Age=7776000; HttpOnly/);
+    }
+    // Yhdenkin sivun eväste riittää.
+    expect(hallintaPaasy({ headers: { cookie: `hk_hallinta_some=${encodeURIComponent(allekirjoita("hallinta", "some"))}` } }, res(), "kumppanit", "")).toBe(true);
+  });
+
+  it("yleinen eväste avaa kaikki sivut eikä sitä aseteta uudelleen", async () => {
+    const { hallintaPaasy } = await import("../../api/sahkoposti.js");
+    const { allekirjoita } = await import("../../api/_lib/markkinointi.js");
+    const cookie = `hk_hallinta=${encodeURIComponent(allekirjoita("hallinta", "kaikki"))}`;
+    for (const sivu of ["mittarit", "some", "tarjoukset", "kumppanit", "uusi"]) {
+      const r = res();
+      expect(hallintaPaasy({ headers: { cookie } }, r, sivu, "")).toBe(true);
+      expect(r.h["set-cookie"]).toBeUndefined();
+    }
+  });
+
+  it("väärennetyt tai väärään nimeen siirretyt evästeet eivät kelpaa", async () => {
+    const { hallintaPaasy } = await import("../../api/sahkoposti.js");
+    const { allekirjoita } = await import("../../api/_lib/markkinointi.js");
+    expect(hallintaPaasy({ headers: { cookie: "hk_hallinta=vaara" } }, res(), "kumppanit", "")).toBe(false);
+    // "kaikki"-allekirjoitus sivukohtaisessa nimessä tai sivun allekirjoitus yleisessä nimessä ei kelpaa.
+    expect(hallintaPaasy({ headers: { cookie: `hk_hallinta_some=${encodeURIComponent(allekirjoita("hallinta", "kaikki"))}` } }, res(), "kumppanit", "")).toBe(false);
+    expect(hallintaPaasy({ headers: { cookie: `hk_hallinta=${encodeURIComponent(allekirjoita("hallinta", "some"))}` } }, res(), "kumppanit", "")).toBe(false);
+    // Muun tarkoituksen allekirjoitus ei kelpaa.
+    expect(hallintaPaasy({ headers: { cookie: `hk_hallinta_some=${encodeURIComponent(allekirjoita("peru", "some"))}` } }, res(), "kumppanit", "")).toBe(false);
+  });
+
   it("viesti: otsikko, neljä avaimellista linkkiä ja ohjeet", async () => {
     const { hallintaLinkit, hallintalinkkiViesti, yhteenvetoRivit } = await import("../../api/_lib/hallinta.js");
     const l = hallintaLinkit("https://huumorikauppa.fi");

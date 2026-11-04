@@ -39,7 +39,7 @@
 import { onTietokanta, sql } from "./_lib/db.js";
 import { laheta, omaVahvistusKaytossaNyt, halytys } from "./_lib/sahkoposti.js";
 import { pgMarkkinointi } from "./_lib/markkinointi-db.js";
-import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail } from "./_lib/markkinointi.js";
+import { tilaaUutiskirje, tallennaKori, peruViestit, tarkistaTunniste, normalisoiEmail, allekirjoita as allekirjoitaHallintaFn } from "./_lib/markkinointi.js";
 import { kirjaaKlikki, kumppaniRaportti, kumppaniKoodinMuoto, RAPORTTI_TARKOITUS } from "./_lib/kumppani.js";
 import { haeTilaus, onPrintify } from "./_lib/printify.js";
 import { laskeTarjous, aikataulu, ytunnus as tarkistaYtunnus, MALLIT, KOOT, hintaArvio } from "./_lib/yritysmyynti.js";
@@ -59,10 +59,12 @@ function lueEvaste(req, nimi) {
   const pari = String(req.headers?.cookie || "").split(/;\s*/).find((c) => c.startsWith(`${nimi}=`));
   try { return pari ? decodeURIComponent(pari.slice(nimi.length + 1)) : ""; } catch { return ""; }
 }
+/** sivu null = yleinen eväste hk_hallinta (kaikki hallintasivut). */
 function asetaHallintaEvaste(res, sivu, avain) {
   const vanhat = [].concat(res.getHeader?.("Set-Cookie") || []);
-  res.setHeader("Set-Cookie", [...vanhat, `hk_hallinta_${sivu}=${encodeURIComponent(avain)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
+  res.setHeader("Set-Cookie", [...vanhat, `${sivu ? `hk_hallinta_${sivu}` : "hk_hallinta"}=${encodeURIComponent(avain)}; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
 }
+const allekirjoitaHallinta = (sivu) => allekirjoitaHallintaFn("hallinta", sivu);
 /** SPA-kuori (dist/spa-shell.html) palvelimen renderöimille sivuille; tuotannon osoitteesta, 5 min muistissa. */
 let kuoriMuisti = { aika: 0, html: "" };
 async function spaKuori(req) {
@@ -75,15 +77,41 @@ async function spaKuori(req) {
   }
   return kuoriMuisti.html || null;
 }
+/**
+ * Yksi aktivointi kattaa kaikki /hallinta-sivut, myös myöhemmin lisättävät (4.11.2026): pääsy, jos
+ *  - pyynnön avain on allekirjoitettu tälle sivulle tai kaikille ("kaikki"), tai
+ *  - selaimessa on yleinen eväste hk_hallinta (allekirjoitus "kaikki"), tai
+ *  - selaimessa on minkä tahansa hallintasivun kelvollinen eväste hk_hallinta_<x> (allekirjoitus x). Tämä kattaa
+ *    2.11. aktivoidut selaimet, joilla on evästeet vain mittareille, somelle ja tarjouksille.
+ * Pääsyn yhteydessä asetetaan yleinen eväste, jos sitä ei vielä ole (ei pidennä olemassa olevaa).
+ */
+export const HALLINTA_KAIKKI = "kaikki";
+function hallintaEvasteet(req) {
+  return String(req.headers?.cookie || "").split(/;\s*/).map((c) => {
+    const i = c.indexOf("=");
+    if (i < 0) return null;
+    let arvo = "";
+    try { arvo = decodeURIComponent(c.slice(i + 1)); } catch { return null; }
+    return { nimi: c.slice(0, i), arvo };
+  }).filter((x) => x && (x.nimi === "hk_hallinta" || x.nimi.startsWith("hk_hallinta_")));
+}
 export function hallintaPaasy(req, res, sivu, annettu) {
-  const nimi = `hk_hallinta_${sivu}`;
   res.setHeader("Cache-Control", "private, no-store");
-  if (annettu && tarkistaTunniste(annettu, "hallinta") === sivu) {
-    asetaHallintaEvaste(res, sivu, annettu);
-    return true;
+  const evasteet = hallintaEvasteet(req);
+  const yleinen = evasteet.some((e) => e.nimi === "hk_hallinta" && tarkistaTunniste(e.arvo, "hallinta") === HALLINTA_KAIKKI);
+  const asetaYleinen = () => { if (!yleinen) asetaHallintaEvaste(res, null, allekirjoitaHallinta(HALLINTA_KAIKKI)); };
+  if (annettu) {
+    const kohde = tarkistaTunniste(annettu, "hallinta");
+    if (kohde === sivu || kohde === HALLINTA_KAIKKI) {
+      if (kohde === sivu) asetaHallintaEvaste(res, sivu, annettu);
+      asetaYleinen();
+      return true;
+    }
   }
-  const evaste = lueEvaste(req, nimi);
-  return !!evaste && tarkistaTunniste(evaste, "hallinta") === sivu;
+  if (yleinen) return true;
+  const sivukohtainen = evasteet.some((e) => e.nimi.startsWith("hk_hallinta_") && tarkistaTunniste(e.arvo, "hallinta") === e.nimi.slice("hk_hallinta_".length));
+  if (sivukohtainen) { asetaYleinen(); return true; }
+  return false;
 }
 
 /** Laskureiden suodatus (api/_lib/kaynnit.js onOmaTaiBotti): botit, hallintaselaimet, testit ja ulkoiset kutsut. */
@@ -412,6 +440,7 @@ export async function kasittele(req, res, store) {
         : onLinkki ? "Linkki on vanhentunut tai jo käytetty. Pyydä uusi linkki päivän yhteenvedosta tai Aarnilta." : "Koodi on virheellinen, vanhentunut tai jo käytetty." });
       const { HALLINTASIVUT } = await import("./_lib/hallinta.js");
       for (const { sivu } of HALLINTASIVUT) asetaHallintaEvaste(res, sivu, allekirjoita("hallinta", sivu));
+      asetaHallintaEvaste(res, null, allekirjoita("hallinta", HALLINTA_KAIKKI));
       // Oman liikenteen merkki (api/_lib/kaynnit.js onOmaTaiBotti): tämä selain ei näy käynneissä eikä suppilossa.
       res.setHeader("Set-Cookie", [...[].concat(res.getHeader?.("Set-Cookie") || []), `hk_oma=1; Path=/; Max-Age=${HALLINTA_EVASTE_IKA}; HttpOnly; Secure; SameSite=Lax`]);
       return res.status(200).json({ ok: true, sivut: HALLINTASIVUT.map(({ sivu }) => `/hallinta/${sivu}`) });
