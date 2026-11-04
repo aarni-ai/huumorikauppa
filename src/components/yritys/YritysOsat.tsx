@@ -10,6 +10,7 @@ import { laskeTarjous, aikataulu, esimerkkiHinnat, joulutilausLaskuriTeksti, MAL
 import { TILAUKSEN_MIN_KATE_EUROA } from "../../../api/_lib/vakiot.js";
 import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { LogoEditori, logoTarkistus, tallennaLogoValinta, type LogoValinta } from "@/components/LogoEditori";
+import { PIKKUJOULU_OLETUSHINNAT, PIKKUJOULU_POLKU } from "@/data/pikkujoulutYrityksetPage";
 
 /**
  * Yritysmyynnin jaetut osat: /yritykset (src/pages/BusinessPage.tsx) ja alakohtaiset sivut /yritykset/<ala>
@@ -264,3 +265,22 @@ export function Maaraalennus() {
     </section>
   );
 }
+
+
+/**
+ * Nosto pikkujoulupaketteihin (/pikkujoulut-yritykset, api/_lib/pikkujoulut.js): /yritykset, /yritykset/<ala> ja
+ * /yritykset/tilaus. Hinta "alkaen" on pakettien oletusvalintojen edullisin paitakohtainen hinta.
+ */
+export function PikkujouluNosto({ className = "" }: { className?: string }) {
+  const alkaen = Math.min(...PIKKUJOULU_OLETUSHINNAT.map((h) => h.perKpl));
+  return (
+    <aside className={`rounded-xl border border-primary/40 bg-primary/5 p-4 ${className}`} data-pikkujoulu-nosto>
+      <p className="font-semibold text-foreground">Valmiit pikkujoulupaketit: 10, 25 tai 50 paitaa</p>
+      <p className="text-sm text-muted-foreground mt-1">
+        Eri pikkujoulu- ja työpaikkavitsit samassa paketissa, oma kokojakauma ja hinta heti näkyvissä, alkaen {eur(alkaen)}/paita toimitus mukaan lukien.
+      </p>
+      <Link to={PIKKUJOULU_POLKU} className="mt-2 inline-block text-sm font-medium text-primary underline">Katso pikkujoulupaketit</Link>
+    </aside>
+  );
+}
+

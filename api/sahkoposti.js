@@ -14,6 +14,8 @@
  * POST { action: "review", token, productName, stars, text, customerName }   arvio (409 = jo arvioitu)
  * POST { action: "unsubscribe", token }                           arviosivulta: ei enää viestejä
  * POST { action: "tarjouspyynto", yritys, nimi, email, ... }      /yritykset: tallennus ja ilmoitus omistajalle
+ *      (+ pikkujoulu: { paketti, designit, koot }, postinumero, kaupunki, logoToive, kesto)  /pikkujoulut-yritykset
+ * POST { action: "pikkujoulu", tapahtuma, paketti, aitous }       pikkujoulusivun seuranta (api/_lib/pikkujoulu-seuranta.js)
  * POST { action: "kumppaniklikki", koodi }                        kumppanilinkin avaus (laskuri, ei henkilötietoja)
  * GET  ?kumppaniraportti=<avain>                                  kumppanin oma raportti (api/_lib/kumppani.js kumppaniRaportti)
  * GET  ?tarjoukset=<avain>                                        /hallinta/tarjoukset: tarjouspyynnöt katteineen (avain: cron hallinta-linkki)
@@ -257,8 +259,31 @@ export async function kasittele(req, res, store) {
     case "tarjouspyynto": {
       // Roskapostisuoja: piilokenttä täytetty -> hyväksytään hiljaa tallentamatta.
       if (teksti(body.kotisivu, 200)) return res.status(200).json({ ok: true });
+      // Pikkujoulupaketti (/pikkujoulut-yritykset, api/_lib/pikkujoulut.js): paketti, designit, kokojakauma ja hinta
+      // lasketaan palvelimella uudelleen (kate vähintään 9 €/paita). Liian nopea täyttö kuitataan tallentamatta.
+      if (body.pikkujoulu) {
+        const { pikkujouluTarjous, PIKKUJOULU_MIN_TAYTTOAIKA_MS } = await import("./_lib/pikkujoulut.js");
+        const kesto = Number(body.kesto);
+        if (Number.isFinite(kesto) && kesto >= 0 && kesto < PIKKUJOULU_MIN_TAYTTOAIKA_MS) return res.status(200).json({ ok: true });
+        const pj = pikkujouluTarjous(body, { kerroin: PRINTIFY_KULUKERROIN });
+        if (!pj.ok) return res.status(400).json({ ok: false, error: pj.virheet.join(" "), virheet: pj.virheet });
+        const at = aikataulu(null);
+        const t = { ...pj.tarjous, toivottu_paiva: null, ehtii: null, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus), logo: null, ala: null };
+        const id = await store.tallennaTarjouspyynto(t);
+        const p = t.pikkujoulu;
+        const ilmoitus = await halytys(`Tarjouspyyntö: ${t.yritys}, ${p.nimi}`, [
+          `Lähde: ${t.lahde}`, `Yritys: ${t.yritys}`, `Yhteyshenkilö: ${t.nimi}`, `Sähköposti: ${t.email}`, `Puhelin: ${t.puhelin || "-"}`,
+          `Paketti: ${p.nimi} (${t.maara} kpl)`, `Designit: ${p.designit.map((d) => d.nimi).join("; ")}`,
+          `Koot: ${Object.entries(p.koot).map(([k, n]) => `${k} ${n}`).join(", ")}`,
+          `Hinta: ${p.yhteensa} € (${p.perKpl} €/kpl, määräalennus ${p.alennusProsentti} %, toimitus ${p.toimitus} €), kate (pahin arvio): ${t.kate} €`,
+          `Toimitus: ${p.postinumero} ${p.kaupunki}`, `Logo- tai tekstitoive: ${p.logoToive || "-"}`,
+          `Viesti: ${t.viesti || "-"}`, `Tallennettu tarjouspyynnot.id ${id}`,
+        ]).catch((e) => ({ ok: false, virhe: String(e?.message || e) }));
+        await store.merkitseTarjousIlmoitus?.(id, ilmoitus?.ok ? `lähetetty ${ilmoitus.vastaanottaja || ""}`.trim() : `virhe: ${String(ilmoitus?.virhe || "").slice(0, 200)}`).catch(() => null);
+        return res.status(200).json({ ok: true, hinta: t.hinta, aikataulu: at, arvio: [pj.arvio] });
+      }
       // Laskuri ja aikataulu lasketaan palvelimella uudelleen (selaimen arvoihin ei luoteta).
-      const koot = Object.fromEntries(KOOT.map((k) => [k, Math.max(0, Math.min(999, Math.floor(Number(body.koot?.[k]) || 0)))]).filter(([, n]) => n > 0));
+      const koot =Object.fromEntries(KOOT.map((k) => [k, Math.max(0, Math.min(999, Math.floor(Number(body.koot?.[k]) || 0)))]).filter(([, n]) => n > 0));
       const malli = MALLIT[body.malli] ? body.malli : null;
       const laskuri = malli && Object.keys(koot).length ? laskeTarjous({ malli, koot }, { kerroin: PRINTIFY_KULUKERROIN, minKatePerKpl: TILAUKSEN_MIN_KATE_EUROA }) : null;
       const at = aikataulu(teksti(body.toimituspaiva, 10));
@@ -277,6 +302,7 @@ export async function kasittele(req, res, store) {
         puhelin: teksti(body.puhelin, 40), maara: laskuri?.kpl || Number.parseInt(String(body.maara ?? ""), 10) || null, viesti: teksti(body.viesti, 2000),
         paketti: teksti(body.paketti, 60), malli, koot: laskuri ? koot : null, hinta: laskuri?.yhteensa ?? null, kate: laskuri?.kate ?? null,
         toivottu_paiva: at.toivottu, ehtii: at.ehtii, jouluun: at.jouluun, ytunnus: tarkistaYtunnus(body.ytunnus), logo, ala: teksti(body.ala, 60),
+        lahde: teksti(body.ala, 60) ? "yritykset-ala" : "yritykset",
       };
       if (!t.yritys || !t.nimi || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.email)) {
         return res.status(400).json({ ok: false, error: "Täytä yritys, nimi ja toimiva sähköpostiosoite." });
@@ -356,6 +382,13 @@ export async function kasittele(req, res, store) {
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaLisamyynti } = await import("./_lib/lisamyynti.js");
       return res.status(200).json({ ok: await kirjaaLisamyynti(sql(), teksti(body.tapahtuma, 30)) });
+    }
+    case "pikkujoulu": {
+      // Pikkujoulusivun seuranta (api/_lib/pikkujoulu-seuranta.js): sivu, paketin valinta, tarjouspyyntö. Vain aidot.
+      const ohita = await ohitaTaiBotti(req, body, "pikkujoulu");
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaPikkujoulu } = await import("./_lib/pikkujoulu-seuranta.js");
+      return res.status(200).json({ ok: await kirjaaPikkujoulu(sql(), teksti(body.tapahtuma, 20), teksti(body.paketti, 30) || "") });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.

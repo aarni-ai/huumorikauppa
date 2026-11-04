@@ -9,7 +9,7 @@ import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
 import { YRITYS_ALAT, YRITYS_ALA_POLKU, yritysAla, type YritysAla } from "@/data/yritysAlat";
 import { yritysAlaFaqs, yritysAlaTeema, valitseAlanTuotteet } from "@/data/yritysAlaSivu";
 import { TYHJA_LOGO, type LogoValinta } from "@/components/LogoEditori";
-import { Maaraalennus, OmaLogo, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
+import { Maaraalennus, OmaLogo, PikkujouluNosto, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { buildFaqJsonLd } from "@/seo/structuredData";
 import { SITE_URL } from "@/seo/site";
 import NotFound from "./NotFound";
@@ -62,6 +62,8 @@ function AlaSivu({ ala }: { ala: YritysAla }) {
       </p>
 
       <BlogProductStrip theme={theme} products={products} count={ala.tuotteet.length} variant="mid" />
+
+      <PikkujouluNosto className="mb-8" />
 
       <OmaLogo logo={logo} setLogo={setLogo} pyydaTarjous={pyydaLogoTarjous} />
 

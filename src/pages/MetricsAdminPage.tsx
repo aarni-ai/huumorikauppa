@@ -18,7 +18,8 @@ type Mittarit = {
   liikenne?: Record<"kk" | "p30", { orgaaninen: number; lahjasivut: number; media: number; kumppanisivut: number; kumppanilinkit: number; blogi?: number; yritysAlat?: number; ammattisivut?: number }>;
   uutiskirje?: { yhteensa: number; p7: number; p28: number } | null;
   konversio: { prosentti: number; lahde: string; oma: { prosentti: number | null; kaynteja: number; tilauksia: number; paivia: number; alkaen: string } | null };
-  tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; arvoKk: number; kateKk: number };
+  tarjoukset: { kk: number; p30: number; tilat: Record<string, number>; lahteet?: Record<string, number>; arvoKk: number; kateKk: number };
+  pikkujoulut?: { sivu: number; paketti: number; tarjous: number; tallennetut: number; paketeittain: Record<string, { paketti: number; tarjous: number; tallennetut: number }> } | null;
   kumppanit: { koodi: string; tilauksia: number; myynti: number; provisio: number }[];
   yritysmyynti: { kk: YSumma; p30: YSumma; paivat: (Record<YKentta, number> & { paiva: string; huom: string | null })[] } | null;
   suppilo?: {
@@ -192,7 +193,14 @@ const MetricsAdminPage = () => {
               rivit={m.kaynnit.p30.osiot.slice(0, 10).map((l) => ({ nimi: l.nimi, arvo: luku(l.kaynnit) }))} />
             <Lista otsikko="Yritysten tarjouspyynnöt" tyhja="-"
               rivit={[{ nimi: "Tässä kuussa", arvo: `${m.tarjoukset.kk} kpl, ${eur(m.tarjoukset.arvoKk)}` }, { nimi: "Kate tarjouksista (kk)", arvo: eur(m.tarjoukset.kateKk) },
-                { nimi: "30 päivää", arvo: `${m.tarjoukset.p30} kpl` }, ...Object.entries(m.tarjoukset.tilat).map(([k, n]) => ({ nimi: `  tila ${k}`, arvo: String(n) }))]} />
+                { nimi: "30 päivää", arvo: `${m.tarjoukset.p30} kpl` }, ...Object.entries(m.tarjoukset.tilat).map(([k, n]) => ({ nimi: `  tila ${k}`, arvo: String(n) })),
+                ...Object.entries(m.tarjoukset.lahteet || {}).map(([k, n]) => ({ nimi: `  lähde ${k}`, arvo: String(n) }))]} />
+            {m.pikkujoulut && (
+              <Lista otsikko="Pikkujoulupaketit (30 pv, botit pois)" tyhja="-"
+                rivit={[{ nimi: "Sivukäynnit", arvo: luku(m.pikkujoulut.sivu) }, { nimi: "Paketin valinnat", arvo: luku(m.pikkujoulut.paketti) },
+                  { nimi: "Tarjouspyynnöt", arvo: luku(m.pikkujoulut.tallennetut) },
+                  ...Object.entries(m.pikkujoulut.paketeittain).map(([id, x]) => ({ nimi: `  ${id}`, arvo: `valittu ${x.paketti}, pyyntöjä ${x.tallennetut}` }))]} />
+            )}
             <Lista otsikko="Kumppanien myynti (kk)" tyhja="Ei kumppanitilauksia tässä kuussa."
               rivit={m.kumppanit.map((k) => ({ nimi: k.koodi, arvo: `${k.tilauksia} kpl, ${eur(k.myynti)}, provisio ${eur(k.provisio)}` }))} />
           </div>
