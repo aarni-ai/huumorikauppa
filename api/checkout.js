@@ -24,7 +24,7 @@
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
 import { kaikkiTuotteet } from "./_lib/tuotteet.js";
-import { omaVahvistusKaytossaNyt } from "./_lib/sahkoposti.js";
+import { omaVahvistusKaytossaNyt, kuittiKuvaus, kuittiRivinNimi, tilausnumero, KUITTI_TOIMITUSAIKA } from "./_lib/sahkoposti.js";
 import { kumppaninTiedot, valitseKumppaniAlennus } from "./_lib/kumppani.js";
 import { ytunnus as tarkistaYtunnus, haeYritys, laskuData, YRITYS_MIN_KPL } from "./_lib/yritysmyynti.js";
 import { onPrintify, haeTuote } from "./_lib/printify.js";
@@ -269,6 +269,11 @@ export default async function handler(req, res) {
         lineItems.push({ price_data: { currency: "eur", product_data: { name: "Toimitus, Posti kotiinkuljetus" }, unit_amount: Math.round(laskettu.shipping * 100) }, quantity: 1 });
       }
     }
+    // Tilausnumero ja toimitusaika viimeisen rivin nimeen: näkyy Stripen kuitissa, kunnes oma vahvistus on käytössä.
+    if (!(await omaVahvistusKaytossaNyt())) {
+      const viimeinen = lineItems[lineItems.length - 1].price_data.product_data;
+      viimeinen.name = kuittiRivinNimi(viimeinen.name, tilaus.id, { fyysisia: !laskettu.only_gift_cards });
+    }
     // Maksutavat (api/_lib/maksutavat.js): vain ne, joilla tilauksen kate on vähintään 7 € maksutavan kululla.
     // Pelkät lahjakortit: ei tuotekuluja, kaikki maksutavat.
     const maksutavat = laskettu.only_gift_cards ? sallitutMaksutavat(() => Infinity) : sallitutMaksutavat((kulu) => laskettuNettokate(laskettu, tuotteet, kulu));
@@ -283,7 +288,10 @@ export default async function handler(req, res) {
       metadata: { order_id: tilaus.id },
       // Kunnes oma tilausvahvistus on käytössä (Resend-domain vahvistettu, SAHKOPOSTI_VAHVISTETTU=1), Stripe lähettää
       // kuitin: receipt_email live-tilassa lähettää sen Stripen sähköpostiasetuksista riippumatta.
-      payment_intent_data: { metadata: { order_id: tilaus.id }, ...((await omaVahvistusKaytossaNyt()) ? {} : { receipt_email: pyynto.customerEmail.trim() }) },
+      // Kuvaus näkyy Stripen kuitissa ja maksun tiedoissa: tilausnumero, toimitusaika ja yhteystieto (4.11.2026).
+      payment_intent_data: { metadata: { order_id: tilaus.id }, description: kuittiKuvaus(tilaus.id, { fyysisia: !laskettu.only_gift_cards }), ...((await omaVahvistusKaytossaNyt()) ? {} : { receipt_email: pyynto.customerEmail.trim() }) },
+      // Maksusivulla painikkeen alla: sama tieto ennen maksua.
+      custom_text: { submit: { message: `Tilausnumero #${tilausnumero(tilaus.id)}. ${laskettu.only_gift_cards ? "Lahjakortin koodi tulee sähköpostiin." : `Toimitus yleensä ${KUITTI_TOIMITUSAIKA.join("-")} arkipäivää.`} Kysymykset: huumorikauppa@gmail.com` } },
       locale: "fi",
     });
     await sql()`update orders set stripe_session_id = ${session.id} where id = ${tilaus.id}`;

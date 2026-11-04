@@ -116,6 +116,31 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const eur = (x) => `${Number(x).toFixed(2).replace(".", ",")} €`;
 export const tilausnumero = (id) => String(id).slice(0, 8).toUpperCase();
 
+/** Toimitusaika arkipäivinä (sama kuin src/config/toimitus.ts TOIMITUSAIKA_*; src/test/kuittikuvaus.test.ts vertaa). */
+export const KUITTI_TOIMITUSAIKA = [4, 15];
+/**
+ * Stripen kuitin kuvaus (PaymentIntent description, 4.11.2026): kunnes oma tilausvahvistus on käytössä, Stripen kuitti
+ * on asiakkaan ainoa vahvistus. Kuitissa näkyvät tilin nimi Huumorikauppa ja tuen osoite huumorikauppa@gmail.com
+ * (Stripen business_profile) sekä tämä kuvaus: tilausnumero, toimitusaika ja yhteystieto.
+ */
+/**
+ * Stripen kuitti näyttää rivien nimet (Summary) mutta ei välttämättä kuvausta, joten tilausnumero ja toimitusaika
+ * liitetään viimeisen rivin nimeen (toimitusrivi, jos sellainen on). Stripe sallii nimeen 250 merkkiä.
+ */
+export function kuittiRivinNimi(nimi, tilausId, { fyysisia = true } = {}) {
+  const [min, max] = KUITTI_TOIMITUSAIKA;
+  const lisa = `tilaus #${tilausnumero(tilausId)}${fyysisia ? `, toimitus yleensä ${min}-${max} arkipäivää` : ""}`;
+  return `${String(nimi).slice(0, 250 - lisa.length - 3)} (${lisa})`;
+}
+
+export function kuittiKuvaus(tilausId, { fyysisia = true } = {}) {
+  const [min, max] = KUITTI_TOIMITUSAIKA;
+  const toimitus = fyysisia
+    ? `Tuotteet painetaan tilauksesta, ja toimitus kestää yleensä ${min}-${max} arkipäivää. Saat seurantalinkin, kun paketti lähtee.`
+    : "Lahjakorttien koodit tulevat sähköpostiin.";
+  return `Huumorikauppa, tilaus #${tilausnumero(tilausId)}. Kiitos tilauksestasi! ${toimitus} Kysymykset: huumorikauppa@gmail.com, mainitse tilausnumero.`;
+}
+
 /** Myyjän tiedot viestin alatunnisteeseen (src/config/yritys.ts: 1.11.2026 alkaen Uusiku Oy). */
 export function myyjaRivi(nyt = new Date()) {
   const y = yritystiedot(nyt);
