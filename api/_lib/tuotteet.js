@@ -1,13 +1,14 @@
 /**
- * Tuotteiden lähde palvelimella: oma tietokanta (taulu products), jos DATABASE_URL on asetettu, muuten repon
- * tilannekuva data/products-snapshot.json (kopioitu Lovable Cloudin julkisella avaimella 21.10.2026, 781 tuotetta).
+ * Tuotteiden lähde palvelimella: aina repon staattinen katalogi data/products-snapshot.json (5.11.2026, Neonin
+ * ilmaiskiintiön loppuminen kaatoi tuotelistat, syötteen ja sivukartan). Tietokantaa ei lueta pyyntöjen aikana.
+ * Katalogi päivitetään scripts/katalogi.mjs:llä (tietokannan products-taulu cron-reitin kautta, kun kanta vastaa,
+ * Printifyn kuvat ja saatavuus API:sta) ja julkaistaan vain, kun tuotteet muuttuvat.
  * Hinta, näkyvyys (is_active) ja Printify-tunnukset (printify_product_id, variants.variant_map) ovat samat kuin
  * vanhassa taustassa.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { onTietokanta, sql } from "./db.js";
 import { onPiilotettuTuote } from "./piilotetut.js";
 import { heikoinKate, laskeKate } from "./kate.js";
 import { kaikkiPoissa, liitaSaatavuusTiedosto, saatavuusLista } from "./saatavuus.js";
@@ -16,7 +17,8 @@ import { poistaTummatVarit } from "./tummat-varit.js";
 import { LISATUOTE_KATEGORIAT, TILAUKSEN_MIN_KATE_EUROA } from "./vakiot.js";
 import { onEuReititetty } from "./eu-reititys.js";
 
-const VALIMUISTI_MS = 5 * 60 * 1000;
+// Katalogi on julkaisukohtainen tiedosto: luetaan kerran instanssia kohden.
+const VALIMUISTI_MS = Infinity;
 let valimuisti = null;
 
 function lueJson(suhteellinen, osat) {
@@ -59,18 +61,8 @@ export function valmisteleRivi(rivi) {
 /** Kaikki tuoterivit (myös piilotetut ja luonnokset), valmisteltuina (valmisteleRivi). */
 export async function kaikkiTuotteet() {
   if (valimuisti && Date.now() - valimuisti.at < VALIMUISTI_MS) return valimuisti.rivit;
-  let rivit = [];
-  let mista = "tilannekuva";
-  if (onTietokanta()) {
-    rivit = (await sql()`select * from products order by created_at desc`).map((r) => ({ ...r, price: Number(r.price) }));
-    mista = "tietokanta";
-  }
-  // Tyhjä tuotetaulu (tietokanta luotu, tuonti ajamatta): kauppa ei tyhjene, vaan käyttää tilannekuvaa.
-  if (rivit.length === 0) {
-    rivit = tilannekuva();
-    mista = "tilannekuva";
-  }
-  rivit = rivit.map(valmisteleRivi);
+  const mista = "katalogi";
+  const rivit = tilannekuva().map((r) => ({ ...r, price: Number(r.price) })).map(valmisteleRivi);
   valimuisti = { at: Date.now(), rivit, mista };
   return rivit;
 }
@@ -88,9 +80,9 @@ export async function naytettavatTuotteet() {
   return (await kaikkiTuotteet()).filter(myynnissa);
 }
 
-/** Mistä viimeisin haku tuli: "tietokanta" tai "tilannekuva". */
+/** Tuotteiden lähde: aina "katalogi" (staattinen data/products-snapshot.json). */
 export function lahde() {
-  return valimuisti?.mista ?? (onTietokanta() ? "tietokanta" : "tilannekuva");
+  return valimuisti?.mista ?? "katalogi";
 }
 
 /**

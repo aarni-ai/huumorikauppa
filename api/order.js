@@ -7,7 +7,7 @@
  */
 import { onTietokanta, sql } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
-import { kasitteleMaksu } from "./_lib/tilaus.js";
+import { kasitteleMaksu, blobTilausVarasto } from "./_lib/tilaus.js";
 import { laheta, vahvistusViesti } from "./_lib/sahkoposti.js";
 import { onLahjakortti, normalisoiKoodi } from "./_lib/lahjakortti.js";
 import { tilauksenLahjakortit, toimitaLahjakortit } from "./_lib/lahjakortti-db.js";
@@ -19,10 +19,30 @@ const haeTilaus = async (sessionId) => UUID_RE.test(sessionId)
   ? (await sql()`select * from orders where id = ${sessionId} and stripe_session_id is null and gift_card_amount > 0`)[0]
   : (await sql()`select * from orders where stripe_session_id = ${sessionId}`)[0];
 
+/**
+ * Puskuritilaus (kassa ilman tietokantaa, session metadata puskuri=1): tilaus Blobista, maksu käsitellään tässä, jos
+ * webhook ei ole vielä ehtinyt. null, jos sessio ei ole puskuritilaus tai tilaus on jo siirretty kantaan.
+ */
+async function puskuriTilaus(sessionId) {
+  if (!sessionId.startsWith("cs_") || !onStripe()) return null;
+  const session = await stripe().checkout.sessions.retrieve(sessionId);
+  const id = session.metadata?.order_id;
+  if (session.metadata?.puskuri !== "1" || !id) return null;
+  let t = await blobTilausVarasto().hae(id);
+  if (t && t.status === "odottaa_maksua" && session.payment_status === "paid") {
+    await kasitteleMaksu(session);
+    t = await blobTilausVarasto().hae(id);
+  }
+  return t;
+}
+
 export default async function handler(req, res) {
   if (!onTietokanta()) return res.status(200).json({ found: false, syy: "ei käytössä" });
   const sessionId = req.method === "GET" ? req.query.session_id || req.query.order_id : req.body?.sessionId || req.body?.orderId;
   if (!sessionId || typeof sessionId !== "string" || !(sessionId.startsWith("cs_") || UUID_RE.test(sessionId))) return res.status(400).json({ error: "session_id puuttuu" });
+  let puskurista = null;
+  try { puskurista = await puskuriTilaus(sessionId); } catch (e) { console.error("puskuritilaus:", e?.message || e); }
+  if (puskurista) return vastaaPuskurista(req, res, puskurista);
   let tilaus = await haeTilaus(sessionId);
   if ((!tilaus || tilaus.status === "odottaa_maksua") && onStripe() && sessionId.startsWith("cs_")) {
     try {
@@ -70,7 +90,23 @@ export default async function handler(req, res) {
     if (r.ok) await sql()`update orders set confirmation_email_sent_at = now() where id = ${tilaus.id}`;
     return res.status(200).json({ customerEmailSent: r.ok });
   }
-  return res.status(200).json({
+  return res.status(200).json(vastaus(tilaus, asiakaskoodit, lahjakortit));
+}
+
+/** Puskuritilauksen vastaus ja vahvistuksen uudelleenlähetys (ei lahjakortteja eikä asiakaskoodeja ilman kantaa). */
+async function vastaaPuskurista(req, res, tilaus) {
+  if (req.method === "POST" && req.body?.action === "resend") {
+    const viimeksi = tilaus.confirmation_email_sent_at ? new Date(tilaus.confirmation_email_sent_at).getTime() : 0;
+    if (Date.now() - viimeksi < 10 * 60 * 1000) return res.status(200).json({ customerEmailSent: true, recently: true });
+    const r = await laheta({ to: tilaus.customer_email, ...vahvistusViesti(tilaus) });
+    if (r.ok) await blobTilausVarasto().paivita(tilaus.id, { confirmation_email_sent_at: new Date() });
+    return res.status(200).json({ customerEmailSent: r.ok });
+  }
+  return res.status(200).json(vastaus(tilaus, {}, []));
+}
+
+function vastaus(tilaus, asiakaskoodit, lahjakortit) {
+  return {
     found: true,
     order: {
       id: tilaus.id,
@@ -93,5 +129,5 @@ export default async function handler(req, res) {
       code: k.code, value: Number(k.initial_value), expires_at: k.expires_at,
       recipient_name: k.recipient_name || null, recipient_email: k.recipient_email || null,
     })),
-  });
+  };
 }

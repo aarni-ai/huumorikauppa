@@ -110,11 +110,40 @@ export default async function handler(req, res) {
     return res.status(r.status).json(r.json);
   }
   if (!onTietokanta()) return res.status(503).json({ error: "DATABASE_URL puuttuu" });
+  // Tietokannan tila (5.11.2026): paikallinen vahti (scripts/kanta-palautus.mjs) ja julkaisun savutesti.
+  if (req.query.tehtava === "kanta-tila") {
+    const P = await import("../_lib/puskuri.js");
+    const kanta = await P.kantaVastaa();
+    const blobit = P.onBlob() ? await Promise.all([P.listaaBlob(P.TILAUS_ETULIITE), P.listaaBlob(P.TAPAHTUMA_ETULIITE)]).catch(() => [[], []]) : [[], []];
+    return res.status(200).json({ ok: true, kanta, puskuri: { tilauksia: blobit[0].length, tapahtumaeria: blobit[1].length } });
+  }
   const kuiva = req.query.kuiva === "1";
   const loki = [];
   const db = sql();
   const alku = Date.now();
   const aikaa = () => Date.now() - alku < AIKARAJA_MS;
+
+  // Staattisen katalogin lähde (scripts/katalogi.mjs): products-taulun rivit ja julkaistut arviot tuotteittain.
+  if (req.query.tehtava === "katalogi-vienti") {
+    const tuotteet = (await db`select * from products order by created_at desc`).map((r) => ({ ...r, price: Number(r.price) }));
+    const arviot = {};
+    const rivit = await db`select r.stars, r.body, r.customer_name, r.created_at, i->>'slug' as slug from reviews r
+      join orders o on o.id = r.order_id cross join lateral jsonb_array_elements(o.items) i
+      where r.status = 'julkaistu' and o.status = 'maksettu' and i->>'name' = r.product_name and i->>'slug' is not null
+      order by r.created_at desc`.catch(() => []);
+    for (const r of rivit) (arviot[r.slug] ||= []).length < 20 && arviot[r.slug].push({ stars: r.stars, body: r.body, customer_name: r.customer_name, created_at: r.created_at });
+    // Joulukalenterin 30 päivän alin hinta (api/products.js): hintahistoria 45 päivältä tiedostoon data/hintahistoria.json.
+    const hintahistoria = {};
+    for (const r of await db`select slug, to_char(paiva, 'YYYY-MM-DD') as paiva, price::float as hinta from hintahistoria
+      where paiva >= current_date - 45 order by slug, paiva`.catch(() => [])) (hintahistoria[r.slug] ||= []).push({ paiva: r.paiva, hinta: r.hinta });
+    return res.status(200).json({ ok: true, tuotteet, arviot, hintahistoria });
+  }
+
+  // Blob-puskurin siirto kantaan käsin (sama kuin tunnin valvonnassa).
+  if (req.query.tehtava === "puskuri-siirto") {
+    const S = await import("../_lib/puskuri-siirto.js");
+    return res.status(200).json({ ok: true, ...(kuiva ? {} : await S.siirraPuskuri(db, { aikaa })) });
+  }
 
   if (req.query.tehtava === "yhteenveto") {
     // Varmistus päivittäin: yksikään testitilaus ei jää Printifyyn pending- tai on-hold-tilaan.
@@ -123,6 +152,8 @@ export default async function handler(req, res) {
     const store = pgValvonta(db, kaikkiTuotteet, onPrintify() ? { haeTilaus } : {});
     // Tavoitemittari viestin loppuun ja avaimelliset hallintalinkit (mittarit, some, tarjoukset, kumppanit; api/_lib/hallinta.js).
     const lisarivit = async () => {
+      // Blob-puskurin tilastot ja tilaukset kantaan ennen lukuja (api/_lib/puskuri-siirto.js).
+      await import("../_lib/puskuri-siirto.js").then((S) => (kuiva ? null : S.siirraPuskuri(db))).catch((e) => console.error("puskuri:", e?.message || e));
       const { keraaMittarit, mittaririvit } = await import("../_lib/mittarit.js");
       const { hallintaLinkit, yhteenvetoRivit } = await import("../_lib/hallinta.js");
       const linkit = hallintaLinkit();
@@ -157,7 +188,10 @@ export default async function handler(req, res) {
       const { joulukalenteriPaivalta, joulukalenteriRivit } = await import("../_lib/joulukalenteri-seuranta.js");
       const { luukunNumero } = await import("../_lib/joulukalenteri.js");
       const kalenteri = luukunNumero(eilen) ? await joulukalenteriPaivalta(db, eilen).then(joulukalenteriRivit).catch(() => []) : [];
-      return [...linkkirivit, ...sposti, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...kalenteri, ...seuranta, ...laskeutumiset, ...toimitustesti, ...ensitilaus, ...kasin, ...yhteenvetoRivit(linkit)];
+      // Neonin kiintiöhälytys viestin alkuun (kulutusrivi on mittarissa).
+      const { neonKulutus, neonHalytys } = await import("../_lib/puskuri-siirto.js");
+      const neonRivit = [neonHalytys(await neonKulutus(db).catch(() => null))].filter(Boolean);
+      return [...neonRivit, ...linkkirivit, ...sposti, ...mittaririvit(await keraaMittarit(db, store, { kuiva }), linkit.mittarit, linkit.some), ...kalenteri, ...seuranta, ...laskeutumiset, ...toimitustesti, ...ensitilaus, ...kasin, ...yhteenvetoRivit(linkit)];
     };
     // Sama varareitti kuin hälytyksillä: ennen domainin vahvistusta Resendin testilähettäjä (2.11.2026; ilman sitä
     // yhteenveto kaatui "domain is not verified" -virheeseen).
@@ -1072,6 +1106,25 @@ export default async function handler(req, res) {
     const haut = printifyHaut({ apiKey: process.env.PRINTIFY_API_KEY, shopId: process.env.PRINTIFY_SHOP_ID });
     const r = await ajaEuSiirrot({ kanta: postgresKanta(db), haut, buildProductRow, kuiva, aikaa });
     return res.status(r.ok ? 200 : 500).json(r);
+  }
+
+  // 0. Blob-puskuri (5.11.2026, api/_lib/puskuri-siirto.js). Kanta ei vastaa: valvotaan vain puskuritilaukset
+  //    (maksut ja Printify) ja lopetetaan. Kanta vastaa: puskuritilaukset ja seurantaerät kantaan ennen muuta valvontaa.
+  {
+    const P = await import("../_lib/puskuri.js");
+    const S = await import("../_lib/puskuri-siirto.js");
+    if (!(await P.kantaVastaa())) {
+      const r = P.onBlob() ? await S.puskuriValvonta({ kuiva, aikaa }) : { tilauksia: 0, loki: ["Blob-varasto puuttuu"] };
+      return res.status(200).json({ ok: true, kuiva, kanta: false, puskuri: r.tilauksia, loki: r.loki });
+    }
+    if (P.onBlob() && !kuiva) {
+      try {
+        const s = await S.siirraPuskuri(db, { aikaa });
+        if (s.tilauksia || s.virheita || s.tapahtumat?.eria) loki.push(`puskuri kantaan: tilauksia ${s.tilauksia}, tapahtumaeriä ${s.tapahtumat?.eria ?? 0} (${s.tapahtumat?.riveja ?? 0} riviä), virheitä ${s.virheita + (s.tapahtumat?.virheita ?? 0)}`);
+      } catch (e) {
+        loki.push(`puskuri kantaan: ${e?.message || e}`);
+      }
+    }
   }
 
   // 1. Paikkaus Stripestä

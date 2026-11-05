@@ -12,13 +12,24 @@ const vercel = JSON.parse(fs.readFileSync(path.join(ROOT, "vercel.json"), "utf8"
 const crons: { path: string; schedule: string }[] = JSON.parse(fs.readFileSync(path.join(ROOT, "vercel.crons.json"), "utf8")).crons;
 
 describe("Vercel Cron", () => {
-  it("ajaa valvonnan tunnin välein, yhteenvedon, saatavuuden ja katetarkistuksen", () => {
+  // 5.11.2026 (Neonin ilmaiskiintiö): valvonta kahden tunnin välein ja muut ajot samoille heräämiskerroille
+  // (minuutit 0-5 tasatunnin jälkeen); saatavuus koneella (scripts/katalogi.mjs), ei tietokannassa.
+  it("ajaa valvonnan kahden tunnin välein, yhteenvedon ja katetarkistuksen, ei saatavuutta", () => {
     const polut = crons.map((c) => c.path);
-    expect(crons.find((c) => c.path === "/api/cron/tilaukset")?.schedule).toBe("17 * * * *");
+    expect(crons.find((c) => c.path === "/api/cron/tilaukset")?.schedule).toBe("3 1-23/2 * * *");
     expect(polut).toContain("/api/cron/tilaukset?tehtava=yhteenveto");
-    expect(polut).toContain("/api/cron/tilaukset?tehtava=saatavuus");
+    expect(polut).not.toContain("/api/cron/tilaukset?tehtava=saatavuus");
     expect(polut).toContain("/api/cron/tilaukset?tehtava=katetarkistus");
     expect(new Set(polut).size).toBe(polut.length);
+  });
+
+  it("ajot osuvat parittomille UTC-tunneille 0-5 minuutin kohdalle (sama Neonin herääminen)", () => {
+    for (const c of crons) {
+      const [min, tunti] = c.schedule.split(" ");
+      expect(Number(min), c.path).toBeLessThanOrEqual(5);
+      if (/^\d+$/.test(tunti)) expect(Number(tunti) % 2, c.path).toBe(1);
+      else if (!tunti.includes(",")) expect(tunti, c.path).toBe("1-23/2");
+    }
   });
 
   it("yhteenveto ajetaan 04 ja 05 UTC (klo 7 Helsingissä kesä- ja talviaikana)", () => {

@@ -17,6 +17,9 @@ ls public/media/*.zip >/dev/null 2>&1 || node scripts/media-zip.mjs
 if [ "${SKIP_ESITESTI:-}" != "1" ]; then
   echo "Esitestaus 1/3: ajonaikaiset importit ja tyypit"
   npx vitest run src/test/ajonaikaisetImportit.test.ts --reporter=dot >/dev/null
+  # Kauppa ilman tietokantaa (5.11.2026): tuotteet, sivukartta, syöte, kassa Blob-puskuriin ja maksu Printifyyn,
+  # kun DATABASE_URL osoittaa suljettuun porttiin.
+  npx vitest run src/test/ilmanKantaa.test.ts --reporter=dot >/dev/null
   npx tsc --noEmit -p tsconfig.app.json
 fi
 echo "Esitestaus 2/3: tuotantoversio ilman domainia"
@@ -25,12 +28,25 @@ npx vercel deploy --prod --skip-domain --yes --local-config .vercel/vercel.uusi.
 URL=$(grep -oE 'https://huumorikauppa-[a-z0-9]+-flyapeg-2135s-projects\.vercel\.app' "$LOKI" | tail -1)
 [ -n "$URL" ] || { echo "Julkaisun osoitetta ei löytynyt"; exit 1; }
 echo "Esitestaus 3/3: savutesti $URL"
+# Kolme User-Agentia (Googlebot, työpöytä-Chrome, iPhone Safari): etusivu, kategoriat, tuotesivut, kori, kassa, syöte,
+# sivukartta ja tuoterajapinta. Tuotteiden on tultava staattisesta katalogista (X-Tuotelahde: katalogi), jolloin sivut
+# eivät riipu tietokannasta (5.11.2026: Neonin kiintiön loppuminen kaatoi tuotelistat, syötteen ja sivukartan).
 VIRHEET=0
-for P in / /tuote/tonnin-seteli-t-paita /ostoskori /kassa /toimitusehdot /abipaidat /paidat/opettaja /joululahjat /api/products /product-feed.xml /sitemap.xml; do
-  KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 300 -o /dev/null -w "%{http_code}" -A "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" 2>/dev/null | tail -1 || true)
-  echo "  $KOODI $P"
-  [ "$KOODI" = "200" ] || VIRHEET=$((VIRHEET + 1))
+UAT=("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1")
+SIVUT=(/ /kategoria/t-paidat /kategoria/hupparit /tuote/tonnin-seteli-t-paita /tuote/kalju-t-paita /ostoskori /kassa /toimitusehdot /abipaidat /paidat/opettaja /joululahjat /api/products "/api/products?slug=tonnin-seteli-t-paita" /product-feed.xml /sitemap.xml)
+for UA in "${UAT[@]}"; do
+  echo "  UA: ${UA:0:40}"
+  for P in "${SIVUT[@]}"; do
+    KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 300 -o /dev/null -w "%{http_code}" -A "$UA" 2>/dev/null | tail -1 || true)
+    echo "    $KOODI $P"
+    [ "$KOODI" = "200" ] || VIRHEET=$((VIRHEET + 1))
+  done
 done
+LAHDE=$(npx vercel curl "/api/products?slug=tonnin-seteli-t-paita" --deployment "$URL" --yes -- -s -m 120 -D - -o /dev/null 2>/dev/null | grep -i '^x-tuotelahde:' | tr -d '\r' | awk '{print $2}' || true)
+echo "  tuotelähde: ${LAHDE:-?}"
+[ "$LAHDE" = "katalogi" ] || VIRHEET=$((VIRHEET + 1))
 if [ "$VIRHEET" -gt 0 ]; then
   echo "SAVUTESTI EPÄONNISTUI ($VIRHEET sivua): tuotanto pysyy edellisessä versiossa. Versio: $URL"
   exit 1

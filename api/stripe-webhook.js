@@ -5,7 +5,7 @@
  */
 import { onTietokanta, sql, kirjaaTapahtuma } from "./_lib/db.js";
 import { onStripe, stripe } from "./_lib/stripe.js";
-import { kasitteleMaksu, kasitteleLasku } from "./_lib/tilaus.js";
+import { kasitteleMaksu, kasitteleLasku, blobTilausVarasto } from "./_lib/tilaus.js";
 
 export const config = { api: { bodyParser: false } };
 
@@ -32,7 +32,15 @@ export default async function handler(req, res) {
       await kasitteleLasku(session);
     } else if (tapahtuma.type === "checkout.session.expired") {
       const id = session.metadata?.order_id || session.client_reference_id;
-      if (id) {
+      // Puskuritilaus (kassa ilman tietokantaa): peruutus Blobiin, ellei tilaus ole jo siirretty kantaan.
+      const blob = id && session.metadata?.puskuri === "1" ? blobTilausVarasto() : null;
+      const bt = blob ? await blob.hae(id) : null;
+      if (bt) {
+        if (bt.status === "odottaa_maksua") {
+          await blob.paivita(id, { status: "peruttu" });
+          await blob.tapahtuma(id, "peruttu", { syy: "session vanheni" });
+        }
+      } else if (id) {
         const r = await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${id} and status = 'odottaa_maksua' returning id`;
         if (r.length) await kirjaaTapahtuma(id, "peruttu", { syy: "session vanheni" });
       }

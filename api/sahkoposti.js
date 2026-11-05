@@ -49,6 +49,27 @@ import { PRINTIFY_KULUKERROIN } from "./_lib/kate.js";
 import { tarkistaLogopaita, logopaitaKuvaus, sallitutVarit } from "./_lib/logopaita.js";
 import { kaynninLahde, sivunOsio, onBotti, onOmaTaiBotti, kirjaaKaynti } from "./_lib/kaynnit.js";
 import { lahjakortitMyynnissa } from "./_lib/lahjakortti-db.js";
+import { tallentavaKanta, tyhjennaTarvittaessa } from "./_lib/puskuri.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+/**
+ * Seurantakirjaukset (5.11.2026): käynnit, suppilo, A/B-testit, tuotesivut ym. eivät herätä tietokantaa. Kyselyt
+ * kirjataan Blob-puskuriin (api/_lib/puskuri.js) ja ajetaan kantaan erissä tunnin valvonnassa. Botteja ei kirjata.
+ */
+const seuranta = tallentavaKanta();
+
+/** Julkaistut arviot staattisesta tiedostosta data/arviot.json (scripts/katalogi.mjs), ei tietokannasta. */
+let arviotMuisti = null;
+function arviotTiedostosta() {
+  if (arviotMuisti) return arviotMuisti;
+  for (const polku of [fileURLToPath(new URL("../data/arviot.json", import.meta.url)), join(process.cwd(), "data", "arviot.json")]) {
+    try { arviotMuisti = JSON.parse(readFileSync(polku, "utf8")); return arviotMuisti; } catch { /* seuraava */ }
+  }
+  arviotMuisti = {};
+  return arviotMuisti;
+}
 
 /**
  * Hallintasivujen pääsy (2.11.2026): allekirjoitettu avain pyynnöstä (?mittarit=, body.avain) tai evästeestä
@@ -130,13 +151,16 @@ async function ohitaTaiBotti(req, body, mittari, { vaadiAitous = true, sallitut 
   const { bottiSyy, asiakkaanIp, kirjaaAitous } = await import("./_lib/botit.js");
   const syy = oma === "botti" ? "ua-botti" : oma ? null : bottiSyy({ ua: req.headers?.["user-agent"], ip: asiakkaanIp(req.headers || {}), aitous: body.aitous, vaadiAitous });
   if (oma && oma !== "botti") return oma;
-  try { await kirjaaAitous(sql(), mittari, syy || "aito"); } catch { /* laskuri ei saa estää kirjausta */ }
-  return syy;
+  // Botteja ei kirjata lainkaan (5.11.2026): vain aidot aitouslaskuriin.
+  if (syy) return syy;
+  try { await kirjaaAitous(seuranta, mittari, "aito"); } catch { /* laskuri ei saa estää kirjausta */ }
+  return null;
 }
 
 const teksti = (x, max) => (typeof x === "string" && x.trim() ? x.trim().slice(0, max) : null);
 
-export async function kasittele(req, res, store) {
+/** arviot: tuotteen julkaistut arviot (oletus staattinen data/arviot.json; testi antaa oman). */
+export async function kasittele(req, res, store, { arviot = async (slug) => arviotTiedostosta()[slug] || [] } = {}) {
   const q = req.query || {};
   let body = req.body || {};
   if (typeof body === "string") {
@@ -179,7 +203,7 @@ export async function kasittele(req, res, store) {
   if (req.method === "GET" && typeof q.arviot === "string") {
     const slug = teksti(q.arviot, 200);
     if (!slug || !/^[a-z0-9-]+$/.test(slug)) return res.status(400).json({ arviot: [] });
-    const rivit = await store.julkaistutArviot(slug);
+    const rivit = await arviot(slug);
     // Nimi muodossa "Etunimi S."; ilman nimeä "Asiakas".
     const nimi = (n) => {
       const osat = String(n || "").trim().split(/\s+/).filter(Boolean);
@@ -369,7 +393,7 @@ export async function kasittele(req, res, store) {
       const ohitaK = await ohitaTaiBotti(req, body, "kaynti");
       if (ohitaK) return res.status(200).json({ ok: false, ohitettu: ohitaK });
       const lahde = kaynninLahde({ utm: teksti(body.utm, 40), ref: teksti(body.ref, 40), gclid: !!body.gclid, viittaaja: teksti(body.viittaaja, 120), ua: req.headers["user-agent"] });
-      await kirjaaKaynti(sql(), { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
+      await kirjaaKaynti(seuranta, { lahde, osio: sivunOsio(teksti(body.polku, 200)) });
       return res.status(200).json({ ok: true });
     }
     case "laskeutuminen": {
@@ -379,7 +403,7 @@ export async function kasittele(req, res, store) {
       const { laskeutumisRivi, kirjaaLaskeutuminen } = await import("./_lib/laskeutumiset.js");
       const rivi = laskeutumisRivi(body, req.headers["user-agent"]);
       if (!rivi) return res.status(400).json({ ok: false });
-      await kirjaaLaskeutuminen(sql(), rivi);
+      await kirjaaLaskeutuminen(seuranta, rivi);
       return res.status(200).json({ ok: true });
     }
     case "suppilo": {
@@ -388,49 +412,49 @@ export async function kasittele(req, res, store) {
       const ohita = await ohitaTaiBotti(req, body, "suppilo", { sallitut: ["testi"] });
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaVaihe } = await import("./_lib/suppilo.js");
-      return res.status(200).json({ ok: await kirjaaVaihe(sql(), teksti(body.vaihe, 20), teksti(body.ab, 2) || "", { testi: body.testi === true }) });
+      return res.status(200).json({ ok: await kirjaaVaihe(seuranta, teksti(body.vaihe, 20), teksti(body.ab, 2) || "", { testi: body.testi === true }) });
     }
     case "tuotetapahtumat": {
       // Tuotesivun seuranta (api/_lib/tuoteseuranta.js): yksi kooste katselua kohden, vain koostemäärät.
       const ohita = await ohitaTaiBotti(req, body, "tuotesivu");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaTuotetapahtumat } = await import("./_lib/tuoteseuranta.js");
-      return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(sql(), body)) > 0 });
+      return res.status(200).json({ ok: (await kirjaaTuotetapahtumat(seuranta, body)) >= 0 });
     }
     case "toimitustesti": {
       // Ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js): käynti, tuotesivu, kori, kassa versioittain.
       const ohita = await ohitaTaiBotti(req, body, "toimitustesti");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaToimitustesti } = await import("./_lib/toimitustesti.js");
-      return res.status(200).json({ ok: await kirjaaToimitustesti(sql(), body) });
+      return res.status(200).json({ ok: await kirjaaToimitustesti(seuranta, body) });
     }
     case "ensitilaus": {
       // Ensimmäisen tilauksen -5 % -testi (api/_lib/ensitilaus.js): käynti, tuotesivu, kori, kassa versioittain.
       const ohita = await ohitaTaiBotti(req, body, "ensitilaus");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaEnsitilaustesti } = await import("./_lib/ensitilaus.js");
-      return res.status(200).json({ ok: await kirjaaEnsitilaustesti(sql(), body) });
+      return res.status(200).json({ ok: await kirjaaEnsitilaustesti(seuranta, body) });
     }
     case "joulukalenteri": {
       // Joulukalenteri (api/_lib/joulukalenteri-seuranta.js): kaynti, luukku, kori; vain koostemäärät, botit pois.
       const ohita = await ohitaTaiBotti(req, body, "joulukalenteri");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaJoulukalenteri } = await import("./_lib/joulukalenteri-seuranta.js");
-      return res.status(200).json({ ok: await kirjaaJoulukalenteri(sql(), teksti(body.tapahtuma, 20)) });
+      return res.status(200).json({ ok: await kirjaaJoulukalenteri(seuranta, teksti(body.tapahtuma, 20)) });
     }
     case "lisamyynti": {
       // Korin lisämyynnin seuranta (api/_lib/lisamyynti.js): vain koostemäärät.
       const ohita = await ohitaTaiBotti(req, body, "lisamyynti", { vaadiAitous: false });
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaLisamyynti } = await import("./_lib/lisamyynti.js");
-      return res.status(200).json({ ok: await kirjaaLisamyynti(sql(), teksti(body.tapahtuma, 30)) });
+      return res.status(200).json({ ok: await kirjaaLisamyynti(seuranta, teksti(body.tapahtuma, 30)) });
     }
     case "pikkujoulu": {
       // Pikkujoulusivun seuranta (api/_lib/pikkujoulu-seuranta.js): sivu, paketin valinta, tarjouspyyntö. Vain aidot.
       const ohita = await ohitaTaiBotti(req, body, "pikkujoulu");
       if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
       const { kirjaaPikkujoulu } = await import("./_lib/pikkujoulu-seuranta.js");
-      return res.status(200).json({ ok: await kirjaaPikkujoulu(sql(), teksti(body.tapahtuma, 20), teksti(body.paketti, 30) || "") });
+      return res.status(200).json({ ok: await kirjaaPikkujoulu(seuranta, teksti(body.tapahtuma, 20), teksti(body.paketti, 30) || "") });
     }
     case "yritysluvut": {
       // Coworkin päivän yritysmyyntiluvut (api/_lib/yritysluvut.js); avain = mittarisivun avain.
@@ -532,7 +556,10 @@ export default async function handler(req, res) {
   if (!onTietokanta()) return res.status(503).json({ ok: false, error: "Ei käytössä tässä ympäristössä." });
   res.setHeader("Cache-Control", "no-store");
   try {
-    return await kasittele(req, res, pgMarkkinointi(sql()));
+    const vastaus = await kasittele(req, res, pgMarkkinointi(sql()));
+    // Seurantaerä Blobiin, kun rivejä tai ikää on tarpeeksi (api/_lib/puskuri.js); virhe ei näy kävijälle.
+    await tyhjennaTarvittaessa().catch(() => {});
+    return vastaus;
   } catch (e) {
     console.error("sahkoposti:", e?.message || e);
     return res.status(500).json({ ok: false, error: "Tallennus epäonnistui. Yritä hetken kuluttua uudelleen." });

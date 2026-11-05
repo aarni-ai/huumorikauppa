@@ -8,7 +8,7 @@
       "maxDuration": 60
     },
     "api/products.js": {
-      "includeFiles": "data/products-snapshot.json",
+      "includeFiles": "data/{products-snapshot.json,hintahistoria.json}",
       "maxDuration": 60
     },
     "api/checkout.js": {
@@ -36,6 +36,7 @@
       "maxDuration": 60
     },
     "api/sahkoposti.js": {
+      "includeFiles": "data/arviot.json",
       "maxDuration": 30
     }
   },

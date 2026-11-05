@@ -375,8 +375,12 @@ describe("/api/sahkoposti ?arviot=<slug>", () => {
       { order_id: "t1", product_name: "Paita", stars: 1, body: "x", customer_name: "B", status: "odottaa", created_at: new Date("2026-11-02T10:00:00Z") });
     const out = { status: 0, body: null as unknown };
     const res = { status: (c: number) => { out.status = c; return res; }, json: (b: unknown) => { out.body = b; return res; }, setHeader: () => res };
-    await kasittele({ method: "GET", query: { arviot: "paita-t-paita" }, body: {} }, res, s);
+    // Tuotannossa arviot tulevat staattisesta data/arviot.json-tiedostosta (scripts/katalogi.mjs, sama kysely cronissa).
+    await kasittele({ method: "GET", query: { arviot: "paita-t-paita" }, body: {} }, res, s, { arviot: (slug: string) => s.julkaistutArviot(slug) });
     expect(out.body).toEqual({ arviot: [{ nimi: "Anna A.", tahdet: 5, teksti: "Hyvä", pvm: "2026-11-02" }] });
+    // Oletus: tiedosto (tyhjä nyt), ei tietokantaa.
+    await kasittele({ method: "GET", query: { arviot: "paita-t-paita" }, body: {} }, res, s);
+    expect(out.body).toEqual({ arviot: [] });
   });
 });
 

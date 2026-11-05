@@ -227,6 +227,8 @@ export async function keraaMittarit(db, store, { nyt = new Date(), kuiva = false
     tavoite: laskelma, kk: kkSumma, p30: { ...s30, katePerTilaus, katePerTilausLahde, toteutunutPerTilaus }, edellinen: { kuukausi: edAlkuPv.slice(0, 7), ...edSumma },
     kaynnit: { kk: kayKk, p30: kay30 }, liikenne: { kk: liikenne(kayKk), p30: liikenne(kay30) }, konversio, tarjoukset, yritysmyynti, mainonta, suppilo, lisamyynti, pikkujoulut, ryhmatilaukset, uutiskirje, kumppanit: [...kumppanit.values()],
     aitous,
+    // Neonin kuukausikulutus (5.11.2026, ilmaiskiintiö 100 CU-h; api/_lib/puskuri-siirto.js).
+    neon: await import("./puskuri-siirto.js").then((x) => x.neonKulutus(db)).catch(() => null),
   };
 }
 
@@ -255,6 +257,7 @@ export function mittariKooste(m) {
     lisamyynti14: m.lisamyynti ?? null,
     ryhmatilaukset: m.ryhmatilaukset ?? null,
     aitous: m.aitous ?? null,
+    neon: m.neon ?? null,
     kumppanit: { tilauksia: m.kumppanit.reduce((s, k) => s + k.tilauksia, 0), myynti: r2(m.kumppanit.reduce((s, k) => s + k.myynti, 0)),
       provisio: r2(m.kumppanit.reduce((s, k) => s + k.provisio, 0)) },
   };
@@ -295,6 +298,7 @@ export function mittaririvit(m, linkki = null, someLinkki = null) {
     ...(m.lisamyynti ? [lisamyyntiRivi(m.lisamyynti)] : []),
     ...(m.pikkujoulut ? [pikkujouluRivi(m.pikkujoulut)] : []),
     ...(m.aitous ? aitousRivit(m.aitous) : []),
+    ...(m.neon ? [`Neonin kulutus tässä kuussa: ${lu(m.neon.cuh)} CU-h, ennuste ${lu(m.neon.ennuste)} / ${m.neon.kiintio} CU-h${m.neon.lahde === "neon" ? "" : " (arvio heräämisistä, alaraja)"}`] : []),
     ...(m.ryhmatilaukset ? [ryhmatilausRivi(m.ryhmatilaukset)] : []),
     `Kumppanien myynti tässä kuussa: ${m.kumppanit.length ? m.kumppanit.map((k) => `${k.koodi} ${k.tilauksia} kpl ${eur(k.myynti)}, provisio ${eur(k.provisio)}`).join("; ") : "ei tilauksia"}`,
     `Tarve 3000 €:oon: ${lu(t.tarve.tilauksiaPaivassa ?? "?")} tilausta ja ${t.tarve.kaynteja_paivassa ?? "?"} käyntiä päivässä (${eur(t.tarve.katePaivassa)} katetta/pv)`,

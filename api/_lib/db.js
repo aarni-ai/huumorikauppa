@@ -16,7 +16,7 @@ export function sql() {
   if (!onTietokanta()) throw new Error("DATABASE_URL puuttuu");
   if (!yhteys) {
     const paikallinen = /@(localhost|127\.0\.0\.1)[:/]/.test(tietokantaUrl());
-    yhteys = postgres(tietokantaUrl(), { ssl: paikallinen ? false : "require", max: 1, idle_timeout: 20, prepare: false });
+    yhteys = postgres(tietokantaUrl(), { ssl: paikallinen ? false : "require", max: 1, idle_timeout: 5, prepare: false });
   }
   return yhteys;
 }

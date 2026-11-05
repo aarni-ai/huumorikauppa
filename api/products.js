@@ -11,11 +11,30 @@
 import { kaikkiTuotteet, naytettavatTuotteet, lahde } from "./_lib/tuotteet.js";
 import { karsiVariantit } from "./_lib/saatavuus.js";
 import { ostetaanYhdessa } from "./_lib/suositukset.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Saatavuudettomat väri/koko-yhdistelmät pois (variants.variant_map, colors, sizes); lista kentässä unavailable_variants.
 const valitse = (p, kentat) => {
   const k = karsiVariantit(p);
   return kentat ? Object.fromEntries(kentat.map((x) => [x, k[x]])) : k;
+};
+
+let historiaMuisti = null;
+function hintahistoriaTiedosto() {
+  if (historiaMuisti) return historiaMuisti;
+  for (const polku of [fileURLToPath(new URL("../data/hintahistoria.json", import.meta.url)), join(process.cwd(), "data", "hintahistoria.json")]) {
+    try { historiaMuisti = JSON.parse(readFileSync(polku, "utf8")); return historiaMuisti; } catch { /* seuraava */ }
+  }
+  historiaMuisti = {};
+  return historiaMuisti;
+}
+
+/** Sama kyselyrajapinta kuin hintahistoria30 odottaa ({ slug: [{ paiva, hinta }] } -tiedostosta). */
+const staattinenHistoria = (H) => async (_osat, slug, paiva) => {
+  const alku = new Date(Date.parse(`${paiva}T00:00:00Z`) - 30 * 864e5).toISOString().slice(0, 10);
+  return (H[slug] || []).filter((r) => r.paiva >= alku && r.paiva < paiva).map((r) => ({ hinta: Number(r.hinta) }));
 };
 
 /**
@@ -26,12 +45,14 @@ async function joulukalenteri(res) {
   const { default: JOULUKALENTERI } = await import("./_lib/joulukalenteri-data.js");
   const { kalenterinJulkinenTila, hintahistoria30 } = await import("./_lib/joulukalenteri-seuranta.js");
   const { sekuntejaKeskiyohon, helsinginPaiva } = await import("./_lib/joulukalenteri.js");
-  const { onTietokanta, sql } = await import("./_lib/db.js");
   const nyt = new Date();
   const tanaan = helsinginPaiva(nyt);
+  // Hintahistoria staattisesta tiedostosta (data/hintahistoria.json, scripts/katalogi.mjs), ei tietokannasta: banneri
+  // kutsuu tätä kaikilla sivuilla, eikä kävijä saa herättää kantaa (5.11.2026).
+  const H = hintahistoriaTiedosto();
   const tila = await kalenterinJulkinenTila({
     luukut: JOULUKALENTERI, tuotteet: await kaikkiTuotteet(), nyt,
-    historia: async (slug) => (onTietokanta() ? hintahistoria30(sql(), slug, tanaan) : []),
+    historia: async (slug) => hintahistoria30(staattinenHistoria(H), slug, tanaan),
   });
   const ika = Math.max(0, Math.min(300, sekuntejaKeskiyohon(nyt) - 5));
   res.setHeader("Cache-Control", `public, max-age=${Math.min(60, ika)}, s-maxage=${ika}`);

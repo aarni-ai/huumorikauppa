@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Tietokannan palautuksen vahti (5.11.2026), scripts/kanta-palautus.mjs: 30 min välein; kun kanta vastaa, Blob-puskuri
+     kantaan, .cowork/syote hallinnan syötteeseen ja mittariskriptit kerran.
+     Asennus: bash ~/huumorikauppa/scripts/ajastus-asennus.sh kanta-palautus
+     NODE ja KOTI korvataan asennuksessa. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>fi.huumorikauppa.kanta-palautus</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>NODE</string>
+    <string>KOTI/huumorikauppa/scripts/kanta-palautus.mjs</string>
+  </array>
+  <key>WorkingDirectory</key><string>KOTI/huumorikauppa</string>
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>RunAtLoad</key><false/>
+  <key>StandardOutPath</key><string>KOTI/.huumorikauppa-some/kanta-palautus-launchd.log</string>
+  <key>StandardErrorPath</key><string>KOTI/.huumorikauppa-some/kanta-palautus-launchd.log</string>
+</dict>
+</plist>

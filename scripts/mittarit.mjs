@@ -44,4 +44,5 @@ console.log([
   `Kumppanit kuu: ${m.kumppanit.tilauksia} tilausta, myynti ${eur(m.kumppanit.myynti)}, provisio ${eur(m.kumppanit.provisio)}`,
   `Tarve: ${lu(t.tilauksiaPaivassa)} tilausta ja ${lu(t.kayntejaPaivassa)} käyntiä päivässä`,
   ...(m.aitous ? aitousRivit(m.aitous) : ["Bottisuodatus: -"]),
+  m.neon ? `Neonin kulutus tässä kuussa: ${lu(m.neon.cuh)} CU-h, ennuste ${lu(m.neon.ennuste)} / ${m.neon.kiintio} CU-h (${m.neon.lahde === "neon" ? "Neonin luku" : `arvio ${m.neon.heratyksia} heräämisestä, alaraja`})${m.neon.ennuste >= m.neon.kiintio * 0.8 ? " HÄLYTYS: kiintiö uhkaa ylittyä" : ""}` : "Neonin kulutus: -",
 ].join("\n"));
