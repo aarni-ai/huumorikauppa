@@ -3777,3 +3777,8 @@ hakusanaotsikoiksi ja pääkuvaksi etukuva, ja uusi otsikko näkyy jo omana rivi
 
 **Some (tilastot 5.11. aamulla).** Instagram: 01 8 katselua, 21 94, 22 34, 23 144. TikTok: 21 näkyvyys Kaikki, mutta
 0 näyttökertaa noin 6 tuntia julkaisusta (vanhat videot 361-1 992).
+
+**Some klo 11.30 ajo (tarkistettu 11.35).** Instagram 02 (pikkujoulut, muistan osittain) julkaistu 11.31,
+reel DfWtzQbho9I. TikTok 01 (tonnin seteli) julkaistu 11.33, video 7704618095024885014. Molemmat rivit
+some/julkaistut.csv:ssä ja kuvakaappaukset some/kuvakaappaukset/2026-11-05-0931*. Ei CAPTCHAa, profiilikopio toimi
+Sessions-rajauksen jälkeen. Neon edelleen kiinni (api/products 500), joten julkaisu ja syötteen lähetys kantaan odottavat.
