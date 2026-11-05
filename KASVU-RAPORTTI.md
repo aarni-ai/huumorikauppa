@@ -3853,3 +3853,30 @@ Neonin ilmainen kiintiö (100 CU-tuntia) loppui noin klo 7.12. Sen jälkeen tuot
 - Valvonta (`?tehtava=kanta-tila`) antaa: kanta false, puskuri tyhjä.
 - launchd: `fi.huumorikauppa.katalogi` ja `fi.huumorikauppa.kanta-palautus` asennettu (`scripts/ajastus-asennus.sh`).
 - Huomio: tämän koneen verkko ja nimipalvelu katkeilivat iltapäivällä (Printify-haku epäonnistui hetken, ja lataus oli noin 3 kt/s). Kauppaan se ei vaikuta.
+
+## 5.11.2026 ilta: koodit ilman tietokantaa, sivukartta, nimipalvelinvaihdon seuranta
+
+**Koodit ilman tietokantaa (commit 3a7beac, ei vielä tuotannossa: ks. Julkaisu)**
+- **Määrittelyt:**
+  - `data/koodit.json` repossa: julkiset kentät, nyt ERAMAANKULKIJAT (malli 2). Katalogiskripti päivittää tiedoston kannasta.
+  - Salattu Blob-tilannekuva kannasta (kumppanit, alennuskoodit, TERVE-tilaajat, asiakaskoodit, lahjakorttien saldot, maksaneet osoitteet, käytetyt koodit). Valvonta kirjoittaa sen, kun kanta vastaa, ja vain jos se muuttui.
+- **Kumppanikoodit:**
+  - /hallinta/kumppanit luo ja poistaa koodit aina Blobiin. Koodi toimii heti kassalla ja /k/-sivulla, ja valvonta siirtää sen kantaan.
+  - /k/-sivut ja kumppaniklikit eivät enää herätä kantaa.
+- **Alennus- ja asiakaskoodit:** tarkistetaan samoilla säännöillä kuin kannassa. Kertakäyttöinen koodi (TERVE, KIITOS, PALKKIO) varataan tilaukselle Blob-tiedostolla, jota ei voi ylikirjoittaa. Toinen tilaus saa saman viestin kuin kannassa ("Koodi käy vain ensimmäiseen tilaukseen").
+- **Uutiskirje:** kannan ollessa kiinni tilaus tallentuu Blobiin, ja TERVE-koodi näkyy heti.
+- **Lahjakortti, tuplakäytön esto:**
+  - Saldo lasketaan tilannekuvasta, josta vähennetään kirjaamattomat varaukset ja veloitukset.
+  - Jokainen käyttö luo numeroidun kirjauksen ilman ylikirjoitusta. Kaksi samanaikaista käyttöä eivät voi saada samaa numeroa, ja saldo tarkistetaan vasta oman varauksen jälkeen. Testissä kolmesta samanaikaisesta 8 €:n käytöstä 10 €:n kortille onnistui vain yksi.
+  - Varaus tehdään kassalla, ja Stripe-sessio vanhenee 30 minuutissa. Maksun jälkeen varaus muuttuu veloitukseksi, ja vanhentunut sessio vapauttaa sen (webhook ja valvonta). Jos kortti kattaa koko summan, tilaus käsitellään heti.
+  - Kun kanta vastaa, valvonta kirjaa veloitukset tauluun gift_card_redemptions (yksi per tilaus) ja saldoon. Kassa siirtää odottavat kirjaukset ennen kannan käyttöä.
+  - Lahjakorttien myynti vaatii edelleen kannan (koodit luodaan maksun jälkeen).
+- **Testit:** `src/test/kooditIlmanKantaa.test.ts` kattaa ERAMAANKULKIJAT, hallinnassa kannan ollessa kiinni luodun kumppanikoodin, TERVE-koodin ja lahjakortin, mukaan lukien rinnakkaiset käytöt ja siirron kantaan. Testi on mukana julkaisun esitestauksessa, ja koko sarja menee läpi: 2367 testiä.
+- **Tuotantokoe:** `node scripts/koodikoe.mjs` ajaa kassalla kaikki neljä koodityyppiä. Testikortti ja -kumppani tulevat cron-reitin `?tehtava=koodikoe` kautta, ja jokainen Stripe-sessio vanhennetaan ja siivotaan.
+- **Kierroksen 3 koodit:** niitä ei löytynyt koneelta, Gmailista eikä `.cowork`-kansiosta. Jos Cowork loi ne ennen katkoa 5.11. klo 7.12, ne ovat vain Neonissa. Ne palaavat tilannekuvaan ja tiedostoon, kun kanta vastaa. Muuten Cowork luo ne /hallinta/kumppanit-sivulla, joka toimii julkaisun jälkeen ilman kantaa.
+
+**Sivukartta:** https://huumorikauppa.fi/sitemap.xml vastaa 200 (1479 osoitetta, mukana `kalju-t-paita` ja /laksiaislahja, jotka ovat vain uudessa katalogissa). Tuoterajapinta ilmoittaa `X-Tuotelahde: katalogi`. Coworkin näkemä 500 oli ennen klo 14.30 julkaisua (välimuisti 1 h).
+
+**Julkaisu pysähtyi:** Vercel CLI:n kirjautuminen katosi klo 19.43 (`auth.json` tyhjä, `vercel whoami` = Logged out). Esitestaus meni läpi, ja tuotanto on edellisessä versiossa (dpl_GCuNcF2fixbTsRPcZN5MisMsiDGX). Aarni ajaa `npx vercel login`, minkä jälkeen ajetaan `bash scripts/julkaise-uusi.sh` ja `node scripts/koodikoe.mjs`.
+
+**Nimipalvelinvaihto (KAYTTOONOTTO.md kohta 24):** klo 19.50 .fi-rekisteri näyttää vielä aria/huxley. Seuranta (`dig NS @a.fi` 2 min välein) on käynnissä. Kun annabel/vick näkyvät, tehdään vaihe 2 (Resend: `?tehtava=resend-domain&vahvista=1`, `sahkoposti-tila.mjs --testi`). Vaihe 3 (domain uuteen Vercel-projektiin) vaatii Vercel-kirjautumisen.
