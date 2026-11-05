@@ -3880,3 +3880,14 @@ Neonin ilmainen kiintiö (100 CU-tuntia) loppui noin klo 7.12. Sen jälkeen tuot
 **Julkaisu pysähtyi:** Vercel CLI:n kirjautuminen katosi klo 19.43 (`auth.json` tyhjä, `vercel whoami` = Logged out). Esitestaus meni läpi, ja tuotanto on edellisessä versiossa (dpl_GCuNcF2fixbTsRPcZN5MisMsiDGX). Aarni ajaa `npx vercel login`, minkä jälkeen ajetaan `bash scripts/julkaise-uusi.sh` ja `node scripts/koodikoe.mjs`.
 
 **Nimipalvelinvaihto (KAYTTOONOTTO.md kohta 24):** klo 19.50 .fi-rekisteri näyttää vielä aria/huxley. Seuranta (`dig NS @a.fi` 2 min välein) on käynnissä. Kun annabel/vick näkyvät, tehdään vaihe 2 (Resend: `?tehtava=resend-domain&vahvista=1`, `sahkoposti-tila.mjs --testi`). Vaihe 3 (domain uuteen Vercel-projektiin) vaatii Vercel-kirjautumisen.
+
+### 5.11.2026 klo 17.39: Vercel-kirjautuminen ei voimassa, nimipalvelimet vielä vanhat
+- **Aamun yhteenvetoon ensimmäiseksi:** Vercel CLI:n kirjautuminen ei ole voimassa tällä koneella.
+  - `npx vercel whoami` vastaa "Logged out", ja `~/Library/Application Support/com.vercel.cli/auth.json` on tyhjä (muutettu viimeksi 19.43 koneen kellolla).
+  - Kirjautuminen ei ole tallentunut tämän käyttäjän CLI:hin, joten koodien julkaisu (3a7beac) ja tuotantokoe odottavat.
+  - Jos `npx vercel login` ajettiin toisessa ympäristössä (toinen käyttäjä, kontti tai etäkone), aja se tämän Macin päätteessä käyttäjänä aarninyblom.
+  - Seuranta huomaa kirjautumisen minuutin sisällä, ja silloin julkaisu ja koe ajetaan heti.
+- **Nimipalvelimet:** .fi-rekisteri (`dig NS @a.fi`) ja julkinen DNS näyttävät vielä aria/huxley, joten vaihto ei ole vielä näkynyt rekisterissä. Seuranta on käynnissä.
+- **Resend ja markkinointiviestit:** kun domain on vahvistettu, korimuistutukset, tervetuloviesti ja arvostelupyynnöt kytkeytyvät päälle automaattisesti (`markkinointiKaytossa`). Arvostelupyyntö lähtee vain Printifyn toimituspäivän jälkeen ja kerran.
+  - Korimuistutukset ja arvostelupyynnöt ajetaan valvonnassa, joka tarvitsee tietokannan, joten ne alkavat vasta, kun Neon vastaa.
+  - Tervetuloviesti toimii ilman kantaa.
