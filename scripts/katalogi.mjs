@@ -14,7 +14,7 @@
  *   --julkaise: muutos commitoidaan (vain katalogitiedostot), pushataan ja julkaistaan scripts/julkaise-uusi.sh:lla.
  *   --kuiva: ei kirjoiteta mitään.
  *
- * Ajastus: scripts/katalogi.plist (launchd tunnin välein :40, --ajastettu --julkaise: kerran päivässä klo 6 jälkeen
+ * Ajastus: scripts/katalogi.plist (launchd tunnin välein :04, --ajastettu --julkaise: kerran päivässä klo 7 jälkeen
  * Suomen aikaa). Julkaisu vain, jos työpuussa ei ole muita seurattuja muutoksia (ei keskeneräistä koodia tuotantoon).
  * Avaimia ei tulosteta: Printify-avain luetaan .env.printify.local-tiedostosta, CRON_SECRET .env.cron.local-tiedostosta.
  */
@@ -107,10 +107,11 @@ function keskeneraiset() {
 }
 
 async function main() {
-  // launchd (scripts/katalogi.plist) käynnistää tunnin välein: ajo kerran päivässä klo 6 jälkeen Suomen aikaa.
+  // launchd (scripts/katalogi.plist) käynnistää tunnin välein :04: ajo kerran päivässä klo 7 jälkeen Suomen aikaa, samaan
+  // aikaan kuin valvonnan ajot (UTC parittomat tunnit :00-:05), jolloin kannan vienti ei herätä Neonia erikseen.
   if (lippu("--ajastettu")) {
     const tila = existsSync(TILA) ? JSON.parse(readFileSync(TILA, "utf8")) : {};
-    if (hkiTunti() < 6 || tila.viimeisin === hkiPaiva()) return;
+    if (hkiTunti() < 7 || tila.viimeisin === hkiPaiva()) return;
     writeFileSync(TILA, JSON.stringify({ ...tila, viimeisin: hkiPaiva() }));
   }
   const kuiva = lippu("--kuiva");

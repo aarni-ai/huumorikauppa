@@ -6,8 +6,9 @@
  *   1. Blob-puskurin tilaukset ja seurantaerät kantaan (?tehtava=puskuri-siirto),
  *   2. .cowork/syote-kansion data /hallinta/syote-kantaan (scripts/data-haku.mjs --laheta-paikalliset PVM),
  *   3. node scripts/mittarit.mjs ja node scripts/tuoteseuranta-raportti.mjs.
- * Tulokset lokiin some/kantapalautusloki.txt. Tila ~/.huumorikauppa-some/kanta-palautus.json (valmis-päivä); uusi
- * katko nollaa tilan, joten seuraava palautus käsitellään samoin. Avaimia ei tulosteta.
+ * Tulokset lokiin some/kantapalautusloki.txt. Tila ~/.huumorikauppa-some/kanta-palautus.json: valmiin jälkeen vahti
+ * ei enää kysy kannan tilaa (kysely herättäisi Neonin 30 min välein); tunnin valvonta siirtää puskurin jatkossa itse.
+ * Uusi katko: poista tilatiedosto. Avaimia ei tulosteta.
  */
 import { readFileSync, writeFileSync, existsSync, appendFileSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -47,18 +48,18 @@ const aja = (komento, args) => {
 async function main() {
   const tila = existsSync(TILA) ? JSON.parse(readFileSync(TILA, "utf8")) : {};
   const pakota = process.argv.includes("--pakota");
+  // Valmis: ei enää kyselyitä (jokainen kanta-tila herättäisi Neonin). Tunnin valvonta siirtää puskurin jatkossa itse.
+  if (tila.valmis && !pakota) return;
   let k;
   try { k = await cron("kanta-tila", 60000); } catch (e) { loki(`kanta-tila: ${String(e?.message || e).slice(0, 120)}`); return; }
   const kanta = k.json?.kanta === true;
   if (!kanta && !pakota) {
-    if (tila.valmis) writeFileSync(TILA, JSON.stringify({ katko: new Date().toISOString() }));
     if (!tila.katkoKirjattu) {
       loki(`kanta ei vastaa; puskurissa tilauksia ${k.json?.puskuri?.tilauksia ?? "?"}, tapahtumaeriä ${k.json?.puskuri?.tapahtumaeria ?? "?"}`);
       writeFileSync(TILA, JSON.stringify({ ...tila, valmis: null, katkoKirjattu: true }));
     }
     return;
   }
-  if (tila.valmis && !pakota) return;
   loki(`kanta vastaa${pakota ? " (--pakota)" : ""}: palautustoimet alkavat`);
   const s = await cron("puskuri-siirto", 300000).catch((e) => ({ status: 0, json: { virhe: String(e?.message || e) } }));
   loki(`puskuri kantaan: ${s.status} ${JSON.stringify(s.json).slice(0, 400)}`);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!-- Staattinen katalogi (5.11.2026), scripts/katalogi.mjs --ajastettu --julkaise: tietokannan tuotteet (kun kanta vastaa),
-     Printifyn saatavuus, julkaisu vain muutoksesta. Käynnistyy tunnin välein :40, ajo kerran päivässä klo 6 jälkeen Suomen aikaa.
+     Printifyn saatavuus, julkaisu vain muutoksesta. Käynnistyy tunnin välein :04, ajo kerran päivässä klo 7 jälkeen Suomen aikaa (valvonnan heräämisen kanssa).
      Asennus: bash ~/huumorikauppa/scripts/ajastus-asennus.sh katalogi
      NODE ja KOTI korvataan asennuksessa. -->
 <plist version="1.0">
@@ -16,7 +16,7 @@
   </array>
   <key>WorkingDirectory</key><string>KOTI/huumorikauppa</string>
   <key>EnvironmentVariables</key><dict><key>PATH</key><string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
-  <key>StartCalendarInterval</key><dict><key>Minute</key><integer>40</integer></dict>
+  <key>StartCalendarInterval</key><dict><key>Minute</key><integer>4</integer></dict>
   <key>RunAtLoad</key><false/>
   <key>StandardOutPath</key><string>KOTI/.huumorikauppa-some/katalogi-launchd.log</string>
   <key>StandardErrorPath</key><string>KOTI/.huumorikauppa-some/katalogi-launchd.log</string>
