@@ -3782,3 +3782,74 @@ hakusanaotsikoiksi ja pääkuvaksi etukuva, ja uusi otsikko näkyy jo omana rivi
 reel DfWtzQbho9I. TikTok 01 (tonnin seteli) julkaistu 11.33, video 7704618095024885014. Molemmat rivit
 some/julkaistut.csv:ssä ja kuvakaappaukset some/kuvakaappaukset/2026-11-05-0931*. Ei CAPTCHAa, profiilikopio toimi
 Sessions-rajauksen jälkeen. Neon edelleen kiinni (api/products 500), joten julkaisu ja syötteen lähetys kantaan odottavat.
+
+
+## 5.11.2026 iltapäivä: kauppa toimimaan ilman tietokantaa
+
+Neonin ilmainen kiintiö (100 CU-tuntia) loppui noin klo 7.12. Sen jälkeen tuotelistat, Merchant-syöte ja sivukartta antoivat virheen 500. Tietokantaa en nostanut maksulliseksi.
+
+**Mikä piti kannan hereillä.** Neon menee lepoon vasta, kun kantaa ei ole käytetty 5 minuuttiin. Ilmaisella tasolla tätä aikaa ei voi lyhentää, joten se on jo lyhin mahdollinen. Kanta pysyi hereillä lähes koko vuorokauden, koska:
+- Kaikki selaimen seurantakirjaukset (käynnit, suppilo, tuotesivut, laskeutumiset, A/B-testit, lisämyynti ja bottien aitouslaskuri) kirjoitettiin kantaan heti. Kävijä tuotti useita kirjoituksia sivulatausta kohden, ja botitkin kirjattiin.
+- `/api/products`, Merchant-syöte ja sivukartta hakivat koko tuotetaulun (noin 4 Mt) aina, kun välimuisti oli tyhjä. Tuotesivun middleware haki tuotetta jokaiselle tuotesivulle.
+- Tuotesivun arviot luettiin kannasta.
+- Valvonta ajettiin tunnin välein, ja saatavuustarkistus ajettiin viiden minuutin välein klo 5–7 UTC (24 ajoa).
+- Ilmainen taso skaalautuu 2 CU:hun asti. Raskaat haut nostavat koneen kokoa, joten kulutus kasvaa hereilläolon lisäksi myös koon mukaan.
+
+**Muutokset (commit 06dfaa3)**
+- **Staattinen katalogi.** Tuotteet, kategoriat, tuotesivut, `/api/products`, Merchant-syöte ja sivukartta luetaan vain tiedostosta `data/products-snapshot.json`. Tietokantaa ei lueta pyyntöjen aikana.
+  - Katalogi on koottu 3.11. kannan kopiosta (1158 myynnissä olevaa tuotetta).
+  - Lisäksi palautettiin 14 uudelleen piirrettyä tuotetta, mukana `kalju-t-paita`. Ne olivat kopion hetkellä piilossa painolaadun vuoksi.
+  - Kuvat päivitettiin Printifystä (v=20261103) ja saatavuus tarkistettiin Printifyn API:sta.
+  - Myynnissä on 1172 tuotetta, kuten 3.11. tuotannossa.
+  - Mukaan lisättiin piiloon 291 mukia ja 18 EU-siirrossa korvattua riviä, jotta niiden vanhat osoitteet käyttäytyvät kuten ennen.
+  - Arviot tulevat tiedostosta `data/arviot.json` ja joulukalenterin 30 päivän hintahistoria tiedostosta `data/hintahistoria.json`.
+- **Katalogin päivitys.** `scripts/katalogi.mjs`:
+  - Lähteenä on kannan products-taulu cron-reitin `?tehtava=katalogi-vienti` kautta, kun kanta vastaa. Muuten pohjana on nykyinen katalogi. Lisäksi Printifyn kuvat ja saatavuus.
+  - Tiedosto kirjoitetaan vain, jos sisältö muuttui.
+  - `--julkaise` tekee commitin ja ajaa `julkaise-uusi.sh`:n, mutta vain jos työpuussa ei ole muita muutoksia.
+  - launchd `fi.huumorikauppa.katalogi` ajaa sen kerran päivässä klo 7.04 Suomen aikaa, samaan aikaan kuin valvonnan heräämisen.
+- **Kassa ilman kantaa.** Jos kanta ei vastaa:
+  - Tilaus tallennetaan Blobiin salattuna (`puskuri/tilaukset/<id>.json`, AES-256-GCM). Stripe-maksu luodaan metadatalla `puskuri=1`.
+  - Webhook, vahvistussivu ja valvonta vievät maksetun tilauksen Printifyyn samalla tilausvahdilla (EU-painotalo, kulut). Vahvistus lähetetään asiakkaalle ja ilmoitus omistajalle.
+  - Kun kanta vastaa, valvonta siirtää tilauksen kantaan samalla id:llä tapahtumineen.
+  - Puskuritilassa ei ole lahjakortteja, kumppanikoodeja eikä kannan alennuskoodeja; asiakas saa niistä selkeän viestin. Oletuskoodit toimivat. Ensitilauksen −5 % annetaan B-versiossa ilman ensimmäisyyden tarkistusta.
+  - Tilaukselle tallennetaan hinta-, ensitilaus- ja kokoversio, etusivun A/B-versio ja saapumislähde.
+- **Seuranta.** Käynnit, suppilo, A/B-testit, tuotesivut, laskeutumiset, lisämyynti, pikkujoulut ja joulukalenteri:
+  - Kysely tallennetaan instanssin muistiin, ja erä kirjoitetaan Blobiin, kun rivejä on 50 tai vanhin on 30 minuuttia vanha.
+  - Valvonta ja aamun yhteenveto ajavat erät kantaan samoina kyselyinä. Päivä on laskettu jo kirjaushetkellä, joten luvut osuvat oikeille päiville.
+  - Botteja ei kirjata lainkaan, ei myöskään aitouslaskuriin.
+  - Riski: instanssi voi sammua ennen kuin erä on kirjoitettu. Silloin enintään puolen tunnin kirjaukset siltä instanssilta katoavat. Tämä on hyväksytty, koska Blobin ilmaiskiintiö on 2 000 kirjoitusta kuukaudessa.
+- **Ajastukset (`vercel.crons.json`).**
+  - Valvonta ajetaan kahden tunnin välein, parittomina UTC-tunteina :03.
+  - Hintatarkistus 03.01, katetarkistus 05.04, kuukausiraportti 05.05 ja yhteenveto 04.00/05.00. Ne osuvat samoille heräämiskerroille.
+  - Saatavuusajo poistui Vercelistä ja ajetaan nyt koneella katalogin yhteydessä.
+  - Tietokantayhteys suljetaan 5 sekunnin tyhjäkäynnin jälkeen (oli 20 s).
+- **Neonin kulutus.**
+  - Jokainen herääminen kirjataan tauluun `db_heratykset` (`pg_postmaster_start_time`). Kirjaus tapahtuu vain, kun kanta on jo hereillä.
+  - Mittari (`node scripts/mittarit.mjs`, /hallinta/mittarit) näyttää kuukauden CU-tunnit ja ennusteen. Arvio on alaraja: 0,25 CU ja 5 minuutin tauko jokaisen heräämisen jälkeen.
+  - Jos Verceliin lisätään `NEON_API_KEY`, mittari käyttää Neonin omaa lukua.
+  - Päivän yhteenvedon alkuun tulee hälytys, jos ennuste ylittää 80 % kiintiöstä tai kulutus on jo yli 70 %.
+- **Julkaisun esitestaus.**
+  - Uusi testi `src/test/ilmanKantaa.test.ts` ajaa tuotteet, sivukartan, syötteen, kassan Blobiin, maksun Printifyyn ja seurannan niin, että DATABASE_URL osoittaa suljettuun porttiin.
+  - Savutesti käy läpi kolme User-Agentia (Googlebot, työpöytä-Chrome, iPhone Safari) ja 15 sivua, joihin kuuluvat kategoriat, kaksi tuotesivua, kori, kassa, syöte ja sivukartta.
+  - Lisäksi tarkistetaan, että tuotteet tulevat katalogista (`X-Tuotelahde: katalogi`).
+- **Kannan palautus.**
+  - `scripts/kanta-palautus.mjs` (launchd 30 min välein) huomaa, kun kanta vastaa. Silloin se tekee kerran seuraavat: Blob-puskuri kantaan, .cowork/syote-kansion tiedostot /hallinta/syote-kantaan, mittarit.mjs ja tuoteseuranta-raportti.mjs. Tulokset menevät tiedostoon some/kantapalautusloki.txt.
+  - Jos Aarni nostaa Neonin, käsiajo on `node scripts/kanta-palautus.mjs --pakota`.
+  - Odottanut versio (ostajan lähde, koon esivalinta, syötteen tallennusreitti, /laksiaislahja ja /joululahja-opettajalle) on mukana tässä julkaisussa.
+
+**Neonin kulutus, arvio**
+- **Ennen:** kiintiö (100 CU-h) täyttyi 5.11. aamulla. Jos kausi alkoi 1.11., vauhti oli noin 24 CU-h päivässä eli noin 700 CU-h kuukaudessa. Jos kausi alkoi resurssin luonnista 26.10., vauhti oli noin 10 CU-h päivässä eli noin 320 CU-h kuukaudessa.
+- **Jälkeen:**
+  - Valvonnan 12 heräämistä päivässä, joista kukin kestää noin 7 minuuttia, eli noin 1,4 tuntia.
+  - Kassat, hallinta ja Coworkin raportit, noin 0,5 tuntia.
+  - Yhteensä noin 2 tuntia päivässä 0,25 CU:lla, eli noin 0,5 CU-h päivässä ja noin 15 CU-h kuukaudessa.
+  - Varmuusvaran (autoskaalaus, käsiajot) kanssa noin 15–30 CU-h kuukaudessa. Tavoite alle 100 täyttyy.
+- Todellinen luku näkyy mittarissa ensimmäisten heräämisten jälkeen.
+
+**Julkaisu ja tarkistus (5.11. noin klo 14.30).**
+- Julkaistu `julkaise-uusi.sh`:lla (dpl_GCuNcF2fixbTsRPcZN5MisMsiDGX). Esitestaus ilman tietokantaa meni läpi, ja savutestissä 45/45 sivua vastasi 200 kolmella User-Agentilla. Tuotelähde on katalogi.
+- Tuotanto huumorikauppa.fi on tarkistettu Googlebotilla, työpöydän Chromella ja iPhonen Safarilla. Etusivu, /kategoria/t-paidat, /kategoria/hupparit, kaksi tuotesivua, kori, kassa, Merchant-syöte ja sivukartta vastasivat 200, eli 27/27.
+- Valvonta (`?tehtava=kanta-tila`) antaa: kanta false, puskuri tyhjä.
+- launchd: `fi.huumorikauppa.katalogi` ja `fi.huumorikauppa.kanta-palautus` asennettu (`scripts/ajastus-asennus.sh`).
+- Huomio: tämän koneen verkko ja nimipalvelu katkeilivat iltapäivällä (Printify-haku epäonnistui hetken, ja lataus oli noin 3 kt/s). Kauppaan se ei vaikuta.
