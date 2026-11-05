@@ -305,6 +305,10 @@ const PERUSSIVUT: LandingPageDef[] = [
         a: "Tilauksilla on kuluttajansuojalain mukainen 14 päivän peruutusoikeus. Palautuksen postikulut maksaa asiakas, ellei tuote ole virheellinen.",
       },
       {
+        q: "Onko joululahja kotimainen?",
+        a: "Huumorikauppa on suomalainen verkkokauppa, ja tuotteiden tekstit ovat suomenkielistä huumoria. Tuotteet painetaan tilauksesta painokumppaneiden tuotantolaitoksissa EU:ssa ja toimitetaan sieltä Suomeen.",
+      },
+      {
         q: "Mistä löydän joululahjan tietylle henkilölle?",
         a: "Sivun alalaidan lahjaoppaissa valikoima on rajattu saajan mukaan: miehelle, naiselle, isälle, äidille, vaimolle, kaverille, työkaverille, teinille, mummolle, papalle ja eläkeläiselle. Budjetin mukaan rajatut sivut ovat alle 30 ja alle 50 euron joululahjat.",
       },
@@ -2293,6 +2297,13 @@ const UUDET_LAHJASIVUT: LandingPageDef[] = [
     ["/lahjat/50-vuotiaalle-miehelle", "/lahjat/50-vuotiaalle-naiselle", "/40-vuotislahja", "/60-vuotislahja"], omat("/50-vuotislahja", IKA(50))),
   uusi("/60-vuotislahja", "60-vuotislahja", "lahjat",
     ["/lahjat/60-vuotiaalle-miehelle", "/lahjat/60-vuotiaalle-naiselle", "/50-vuotislahja", "/joululahja-elakelaiselle"], omat("/60-vuotislahja", IKA(60))),
+  // 5.11.2026 hakudatan aukot: "läksiäislahja työkaverille" (sijainti 20) ja "joululahja opettajalle" (18).
+  uusi("/laksiaislahja", "Läksiäislahja", "lahjat",
+    ["/lahjat/tyokaverille", "/elakelahjat", "/lahjat/pomolle", "/joululahja-tyokaverille"],
+    omat("/laksiaislahja", (p) => (TYO(p) || /eläk|vapautunut/.test(lower(p))) && !looksLikeMug(p))),
+  uusi("/joululahja-opettajalle", "Joululahja opettajalle", "joulu",
+    ["/joululahjat", "/joululahja-tyokaverille", "/hauska-joululahja", "/pikkujoululahja-alle-30-euroa"],
+    omat("/joululahja-opettajalle", (p) => (/opettaja|varhaiskasvat/.test(lower(p)) || JOULUTUOTE(p)) && !looksLikeMug(p))),
 ];
 
 /** Olemassa oleviin hakusivuihin opas, uusi intro ja lisä-UKK (sekä tarkennettu otsikko, jos annettu). */

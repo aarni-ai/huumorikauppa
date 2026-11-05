@@ -16,6 +16,7 @@
  *   node scripts/data-haku.mjs                      kaikki lähteet
  *   node scripts/data-haku.mjs --vain merchant      yksi lähde (search, merchant, instagram, tiktok)
  *   node scripts/data-haku.mjs --kuiva              ei tallennusta (tulostaa rivimäärät ja alun)
+ *   node scripts/data-haku.mjs --laheta-paikalliset 2026-11-05   paikalliset kopiot kantaan (jos tallennus epäonnistui)
  *   node scripts/data-haku.mjs --ajastettu          launchd: vain maanantaina klo 8 jälkeen Suomen aikaa, kerran viikossa
  * Ajastus: scripts/data-haku.plist (launchd joka tunti :05; skripti päättää Helsingin ajan mukaan, koska koneen
  * aikavyöhyke poikkeaa). Asennus: bash scripts/data-haku-asennus.sh
@@ -61,7 +62,18 @@ function salaisuus() {
   const f = join(JUURI, ".env.cron.local");
   return process.env.CRON_SECRET || (existsSync(f) ? (readFileSync(f, "utf8").match(/^CRON_SECRET=(.*)$/m)?.[1] || "").trim().replace(/^"|"$/g, "") : "");
 }
+/** Paikallinen kopio aina (.cowork/syote/, ei repoon): analyysi onnistuu myös, kun tietokanta ei vastaa. */
+function paikallinen(otsikko, sisalto) {
+  const kansio = join(JUURI, ".cowork", "syote");
+  mkdirSync(kansio, { recursive: true, mode: 0o700 });
+  const nimi = otsikko.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const f = join(kansio, `${hki()}-${nimi}.csv`);
+  writeFileSync(f, sisalto);
+  return f;
+}
+
 async function tallenna(otsikko, sisalto) {
+  if (!arg("--laheta-paikalliset")) paikallinen(otsikko, sisalto);
   if (lippu("--kuiva")) { console.log(`[kuiva] ${otsikko}:\n${sisalto.split("\n").slice(0, 4).join("\n")}`); return { ok: true, kuiva: true }; }
   const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
   for (let yritys = 1; ; yritys++) {
@@ -104,7 +116,7 @@ async function searchConsole(p) {
   await p.getByRole("tab", { name: /^(PAGES|SIVUT)$/i }).first().click();
   await p.waitForTimeout(7000);
   const sivut = await scTaulukko(p, "Top pages|Suosituimmat sivut");
-  const muunna = (r) => [r[0], enLuku(r[1]), enLuku(r[2]), enLuku(r[3]), enLuku(r[4])];
+  const muunna = (r) => [r[0].split(/\s+(?:Copy URL|Kopioi URL)/)[0].trim(), enLuku(r[1]), enLuku(r[2]), enLuku(r[3]), enLuku(r[4])];
   const tulos = [];
   tulos.push(["Search Console 28 pv", csv(["Kysely", "Klikkaukset", "Näyttökerrat", "CTR", "Sijainti"], kyselyt.map(muunna)), kyselyt.length]);
   if (sivut?.length) tulos.push(["Search Console sivut 28 pv", csv(["Sivu", "Klikkaukset", "Näyttökerrat", "CTR", "Sijainti"], sivut.map(muunna)), sivut.length]);
@@ -229,7 +241,25 @@ export function ajoviikko(nyt = new Date()) {
   return viikonpaiva === "Mon" && tunti >= 8 ? hki(nyt) : null;
 }
 
+/** --laheta-paikalliset PVM: päivän paikalliset kopiot (.cowork/syote/PVM-*.csv) kantaan, kun tietokanta taas vastaa. */
+async function lahetaPaikalliset(pvm) {
+  const { readdirSync } = await import("node:fs");
+  const kansio = join(JUURI, ".cowork", "syote");
+  const nimet = { "search-console-28-pv": "Search Console 28 pv", "search-console-sivut-28-pv": "Search Console sivut 28 pv",
+    "merchant-klikit": "Merchant klikit", "instagram-tilastot": "Instagram tilastot", "tiktok-tilastot": "TikTok tilastot" };
+  let virheita = 0;
+  for (const f of readdirSync(kansio).filter((x) => x.startsWith(`${pvm}-`) && x.endsWith(".csv"))) {
+    const otsikko = nimet[f.slice(pvm.length + 1, -4)];
+    if (!otsikko) continue;
+    const r = await tallenna(otsikko, readFileSync(join(kansio, f), "utf8"));
+    if (r.ok) loki("paikallinen", `tallennettu "${otsikko}" (${f})`, r.id ? `#${r.id}` : "");
+    else { virheita++; loki("paikallinen", `tallennus epäonnistui "${otsikko}":`, r.virhe || ""); }
+  }
+  return virheita ? 2 : 0;
+}
+
 async function main() {
+  if (arg("--laheta-paikalliset")) return lahetaPaikalliset(arg("--laheta-paikalliset"));
   const tilaF = join(AUTOMAATIO, "datahaku.json");
   const tehdyt = existsSync(tilaF) ? JSON.parse(readFileSync(tilaF, "utf8")) : {};
   const viikko = ajoviikko();

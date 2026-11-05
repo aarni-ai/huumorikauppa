@@ -149,6 +149,8 @@ export const LANDING_PATHS = [
   "/ammatit",
   "/joulu",
   "/joululahja-anopille",
+  "/laksiaislahja",
+  "/joululahja-opettajalle",
   "/hauska-joululahja",
   "/pikkujoululahja-alle-30-euroa",
   "/40-vuotislahja",

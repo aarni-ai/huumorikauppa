@@ -73,6 +73,9 @@ export const LANDING_PATHS: readonly string[] = [
   "/40-vuotislahja",
   "/50-vuotislahja",
   "/60-vuotislahja",
+  // Hakudatan aukot (5.11.2026)
+  "/laksiaislahja",
+  "/joululahja-opettajalle",
   // Ammatti- ja harrastussivut (2.11.2026, src/data/ammattisivut)
   ...AMMATTISIVU_SLUGIT.map((s) => `/paidat/${s}`),
 ];

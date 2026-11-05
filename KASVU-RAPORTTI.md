@@ -3712,3 +3712,68 @@ nimen vain yritystiedostoissa; raportin teksti on sama.
 
 **Somejulkaisut koneelta:** Instagram 01 ja TikTok 21 julkaistu 4.11. illalla. Ajastus käynnissä: seuraava ajo
 5.11. klo 11.30 (Instagram 02, TikTok 01), sitten 18.30 (Instagram 03, TikTok 22).
+
+## 5.11.2026 aamu: TIETOKANTA KIINNI (Neonin ilmaiskiintiö), tilaus tuotantoon, datahaku koneelta
+
+**TOIMENPIDE AARNILLE HETI: Neonin ilmaisen tason kiintiö on täynnä noin klo 7.12 alkaen (Suomen aikaa).** Tuotannon
+lokit: `PostgresError: Your account or project has exceeded the quota. Upgrade your plan to increase limits.` (koodi
+53000). Seuraukset: `/api/products`, `/product-feed.xml` ja `/sitemap.xml` palauttavat 500, kauppa näyttää tyhjältä,
+kassa ei voi tallentaa tilausta, mittari- ja syötereitit eivät toimi. Kanta on Vercel Marketplacen Neon (resurssi
+`huumorikauppa`, store_6EigLN99RwEEcWyy, Plan Free). Maksullista tasoa ei otettu käyttöön (sääntö). Vaihtoehdot:
+1. Neonin maksullinen taso Vercelin Storage-sivulta (Aarnin päätös, kanta palaa heti ja data säilyy).
+2. Odotus kiintiön nollautumiseen (laskutusjakson alku, ei näy CLI:stä; kauppa kiinni siihen asti).
+3. Uusi ilmainen Neon-resurssi ja tuotteiden tuonti uudelleen (KAYTTOONOTTO.md kohta 2). Vanhan kannan tilaukset,
+   lahjakortit, kumppanit ja uutiskirjeen tilaajat jäävät vanhaan kantaan, kunnes se taas vastaa. Tehdään vain
+   Aarnin luvalla.
+Kiintiön kulutuksen syytä ei nähdä ilman Neonin konsolia. Todennäköisiä kuluttajia ovat jokaisen funktion kylmäkäynnistyksen
+koko tuotetaulun haku (`select * from products`, 5 min muisti) sekä käynti- ja seurantakirjaukset jokaisesta sivulatauksesta.
+Kun kanta palaa, korjataan kulutus ennen muuta työtä.
+
+**Uusi tilaus 8D484335 (31,80 €, 4.11. klo 22.06).**
+- Printify-tilaus 26630629.43 oli on-hold: kassan automaattinen tuotantoon lähetys tehtiin, kun Printify vielä käsitteli
+  painokuvaa (tila pending). Ehdot täyttyivät (maksettu Stripessä, painotalo pp 30 Tšekki, Printifyn veloitus
+  8,90 + 8,49 = 17,39 € < 31,80 €), joten tilaus lähetettiin tuotantoon 5.11. klo 6.50 (Printify 202,
+  sending-to-production). Tuote Kalju | T-Paita M / Black.
+- A/B-versiot: hintatesti A (mittarin hintatestirivi: A 1 osto, kate 7,22 €), ensitilaus A (testi alkoi vasta
+  5.11., ei alennusta), koon esivalinta ei tiedossa (versiota ei tallennettu tilaukselle), etusivun testi ei tiedossa.
+- Lähde: ei tiedossa, koska lähdettä ei tallennettu tilaukselle. 4.11. aidot käynnit: Google 69, suora 25,
+  chatgpt.com 4, Bing 3, muu 3, DuckDuckGo 1. Kalju-paidalla on Merchantissa 4 klikkiä 28 päivässä.
+- Korjattu (julkaistaan, kun kanta palaa): kassa tallentaa tilaukselle saapumislähteen (`orders.lahde`, sama
+  luokittelu kuin käyntilaskurissa, vain muistissa sivulatauksen ajan) ja koon esivalinnan version
+  (`orders.koko_versio`). `?tehtava=maksetut` näyttää versiot, lähteen ja koot.
+- Tilausvahvistus ei lähtenyt (vahvistus_virhe), kuten 29.10. tilauksessa; Stripen kuitti lähti.
+
+**Datahaku koneelta (`scripts/data-haku.mjs`).** Coworkin laajennus irtoaa, joten kone lukee samalla Profile 8
+-kopiolla kuin somejulkaisu, vain lukien: Search Console (hakulausekkeet 1 000 ja sivut 773, 28 pv: klikit,
+näyttökerrat, CTR, sijainti), Merchant Center (Tilastot > Tuotteet > Näytä kaikki tuotteet, järjestys impressioiden
+mukaan, vieritys ja sivutus, otsikoittain summattuna; 200 riviä ennen kuin impressiot putoavat alle 20), Instagramin
+kelat (katselut) ja TikTok Studion julkaisulista (näyttökerrat, tykkäykset, kommentit). Tallennus
+`/hallinta/syote`-tauluun samoilla otsikoilla kuin Cowork (uusi cron-reitti `tehtava=syote-tallenna`), lisäksi aina
+paikallinen kopio `.cowork/syote/` (ei repoon). CAPTCHA, tarkistus tai puuttuva kirjautuminen lopettaa kyseisen lähteen
+ja kirjataan `some/datahakuloki.txt`:hen. Ensimmäisessä ajossa esteitä ei tullut. Kantaan tallennus epäonnistui
+kannan takia; siirto myöhemmin: `node scripts/data-haku.mjs --laheta-paikalliset 2026-11-05`. Ajastus launchd
+`fi.huumorikauppa.data-haku` (asennettu), maanantaisin klo 8 jälkeen Suomen aikaa kerran viikossa, sama lukko kuin
+somejulkaisulla.
+- Korjattu samalla somejulkaisun profiilikopio: rsync kaatui, kun käynnissä oleva Chrome vaihtoi istuntotiedostoja
+  (Sessions*), mikä olisi estänyt myös 11.30-ajon. Istuntokansiot jätetään pois ja kopiointi yritetään uudelleen.
+
+**Hakudatan korjaukset (Search Console 8.10.-4.11.).** Yhteensä 963 klikkiä, 24,9 t näyttöä, CTR 3,9 %, keskisijainti
+12,2. Sijainnilla 5-30 on 697 hakulauseketta. 29.-30.10. kierros (commitit d50450a, 20bf31f) kattoi jo sijainnit
+5-20 suurimmille ryhmille (50v/60v/30v lahja miehelle ja naiselle, eläkelahja, isänpäivä, tonnin seteli paita);
+28 päivän data on pääosin ajalta ennen sitä, joten niitä sivuja ei muutettu uudelleen. Uudet aukot:
+| Hakulausekkeet (sijainti, näyttöä 28 pv) | Toimenpide |
+|---|---|
+| läksiäislahja työkaverille 20,2 (76), läksiäislahjat 17,5 (46), läksiäislahja ideoita 22,5 (39), läksiäislahja 18,8 (36), työkaverille läksiäislahja 18,3 (30) | Uusi sivu `/laksiaislahja`: title, description, H1, intro, opas (eläkkeelle jäävälle, työpaikan vaihtajalle, yhteislahja), 4 UKK:ta, tuotteet, linkit työkaveri-, eläke-, pomo- ja joululahjasivuille |
+| joululahja opettajalle 18,3 (47), lahja opettajalle 16,5 (35) | Uusi sivu `/joululahja-opettajalle`: 12 opettaja- ja varhaiskasvattajatuotetta ensin, joulutuotteet perään |
+| kotimainen joululahja 19,6 (51), suomalainen joululahja 26,3 (30) | `/joululahjat`: UKK "Onko joululahja kotimainen?" totuudenmukaisella vastauksella (suomalainen kauppa ja huumori, painatus EU:ssa) |
+Sivut sivukarttaan ja reitteihin. Julkaistaan, kun kanta palaa (savutesti estää julkaisun nyt).
+
+**Merchant (28 pv).** 106 klikkiä, 15,4 t impressiota, CTR 0,7 %; tuotteiden keskiarvo 0,40 %. Heikoimmat: "se oli
+tonnin seteli. | T-Paita" 2 660 / 1, "tonnin seteli | Kahvikuppi" 1 770 / 0 (muki, ei enää syötteessä), "oispa kaljaa |
+Huppari" 264 / 0, "100% Eläkeläinen | T-Paita" 128 / 0, ICE AATANA huppari ja t-paita 118 ja 112 / 0, "Saatanan
+Tunarit | Huppari" 110 / 0. Raportissa näkyvät vielä vanhat otsikot: syötteen otsikot vaihdettiin 2.11.
+hakusanaotsikoiksi ja pääkuvaksi etukuva, ja uusi otsikko näkyy jo omana rivinään ("Hauska t-paita: Tonnin seteli"
+307 impressiota). Samaa korjausta ei tehty uudelleen; vaikutus arvioidaan maanantain viikkohaun jälkeen.
+
+**Some (tilastot 5.11. aamulla).** Instagram: 01 8 katselua, 21 94, 22 34, 23 144. TikTok: 21 näkyvyys Kaikki, mutta
+0 näyttökertaa noin 6 tuntia julkaisusta (vanhat videot 361-1 992).

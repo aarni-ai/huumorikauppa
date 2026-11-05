@@ -18,6 +18,133 @@ export interface LahjaOpas {
 }
 
 const RAAKA: Record<string, LahjaOpas> = {
+  // Hakudatan aukot 5.11.2026 (Search Console 28 pv): läksiäislahjat ja joululahja opettajalle.
+  "/laksiaislahja": {
+    "title": "Läksiäislahja työkaverille: hauskat ideat | Huumorikauppa",
+    "description": "Läksiäislahja työkaverille huumorilla: eläkeläisen paidat, Alalla X vuotta ja nimellä personoitava työsankari. Toimitus Suomeen.",
+    "h1": "Hauska läksiäislahja työkaverille",
+    "intro": [
+      "Hyvä läksiäislahja työkaverille on paita, jonka teksti kertoo, mitä hän jättää taakseen tai mitä hänellä on edessä: eläkeläiselle vapaus, alanvaihtajalle vuodet talossa ja jokaiselle lähtijälle muisto yhteisistä kahvitauoista.",
+      "Läksiäislahja ostetaan usein koko työporukan yhteislahjaksi. Paita on silloin helppo valinta, koska se on henkilökohtainen mutta ei liian kallis jaettavaksi, ja sen voi antaa yhdessä kortin kanssa, johon jokainen kirjoittaa oman terveisensä."
+    ],
+    "opas": [
+      {
+        "otsikko": "Eläkkeelle jäävälle",
+        "teksti": [
+          "Kun lähtijä jää eläkkeelle, vitsi kannattaa rakentaa vapauden ympärille. \"Vapautunut virallisesti\" ja \"Eläkkeellä. Kello on vain koru\" kertovat sen, mistä hän on puhunut kahvihuoneessa viimeiset kuukaudet. \"Eläkeläinen. Älä soita ennen kymmentä\" on varoitus entisille työkavereille, jotka kaipaavat vielä neuvoja.",
+          "Eläkeläisen paitoja on sekä t-paitoina että huppareina. Huppari on hyvä valinta, jos eläkepäivät aiotaan viettää mökillä tai pihatöissä, ja t-paita, jos lahja on osa isompaa pakettia."
+        ]
+      },
+      {
+        "otsikko": "Kun työkaveri vaihtaa työpaikkaa",
+        "teksti": [
+          "Alanvaihtajalle tai uuteen firmaan siirtyvälle sopii personoitava paita. \"Alalla X vuotta\" -paitaan kirjoitetaan omat vuodet, ja \"[NIMI] Legendaarinen työsankari\" -paitaan lähtijän nimi. Molemmat kertovat, että hänen panoksensa huomattiin.",
+          "Jos lähtijä on opettaja, \"Lukuvuosi ohi. Ääni palaa elokuussa\" sopii kevään viimeiseen kahvitaukoon. Ammattipaitoja löytyy myös muille aloille, ja ne on koottu ammattisivuille."
+        ]
+      },
+      {
+        "otsikko": "Yhteislahja ja aikataulu",
+        "teksti": [
+          "Paidat painetaan tilauksesta EU:ssa, joten tilaa lahja hyvissä ajoin ennen läksiäispäivää. Toimitusaika kerrotaan kassalla ja toimitusehdoissa. Jos aikaa ei ole, digitaalinen lahjakortti toimitetaan heti PDF-tiedostona, ja lähtijä valitsee paidan itse.",
+          "Kun koko tiimi tilaa samaan aikaan esimerkiksi läksiäis- ja pikkujoululahjat, vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Mikä on hyvä läksiäislahja työkaverille?",
+        "a": "Paita, jonka teksti liittyy lähtöön: eläkeläiselle esimerkiksi \"Vapautunut virallisesti\" ja alanvaihtajalle personoitava \"Alalla X vuotta\" omilla vuosilla."
+      },
+      {
+        "q": "Sopiiko paita yhteislahjaksi?",
+        "a": "Sopii. Paidan voi antaa kortin kanssa, johon jokainen työkaveri kirjoittaa terveisensä, ja kustannus jaetaan porukan kesken."
+      },
+      {
+        "q": "Entä jos lähtijän koko ei ole tiedossa?",
+        "a": "Valitse huppari, jossa väljä istuvuus haittaa vähemmän, tai digitaalinen lahjakortti, jonka arvo on 25, 35 tai 50 €."
+      },
+      {
+        "q": "Paljonko toimitus maksaa?",
+        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+      }
+    ],
+    "tuotteet": [
+      "hauska-t-paita-elakelaiselle-vapautunut-virallisesti",
+      "elakkeella-kello-on-vain-koru-t-paita-elakelaiselle",
+      "elakkeella-kello-on-vain-koru-huppari-elakelaiselle",
+      "elakelainen-ala-soita-ennen-kymmenta-t-paita-elakelaiselle",
+      "personoitava-t-paita-alalla-x-vuotta",
+      "personoitava-t-paita-nimi-legendaarinen-tyosankari",
+      "olen-elakkeella-t-paita",
+      "olen-elakkeella-huppari",
+      "lukuvuosi-ohi-aani-palaa-elokuussa-t-paita-opettajalle",
+      "lukuvuosi-ohi-aani-palaa-elokuussa-huppari-opettajalle"
+    ]
+  },
+  "/joululahja-opettajalle": {
+    "title": "Joululahja opettajalle: hauskat paidat | Huumorikauppa",
+    "description": "Joululahja opettajalle ja varhaiskasvattajalle koulun omalla huumorilla: kokeet, välitunnin kahvi ja kopiokone. T-paidat ja hupparit.",
+    "h1": "Hauska joululahja opettajalle",
+    "intro": [
+      "Opettajalle osuva joululahja on paita, jonka vitsin hän tunnistaa omasta työpäivästään: kokeet, välitunnilla kylmenevä kahvi, kopiokoneen jono ja käsiala, jota kukaan ei saa selville.",
+      "Lahjan voi antaa yksi perhe, mutta usein se on luokan tai kollegoiden yhteislahja ennen joululomaa. Silloin paita on hyvä valinta, koska se on henkilökohtainen ja sen hinta jakautuu monelle."
+    ],
+    "opas": [
+      {
+        "otsikko": "Tekstit koulun arjesta",
+        "teksti": [
+          "\"Opettaja. Kahvi kylmeni välitunnilla\" sopii jokaiselle, joka on joskus juonut kahvinsa kylmänä valvontavuoron jälkeen. \"Tämä tulee kokeeseen. Kaikki tulee\" on lause, jonka jokainen oppilas on kuullut, ja \"Opettaja. Kyllä, näin sen\" muistuttaa, ettei luokan takarivi ole näkymätön.",
+          "Äidinkielen opettajalle tai kenelle tahansa esseitä korjaavalle sopii \"Luen käsialaa, jota kirjoittaja ei itsekään lue\". Opettajainhuoneen kestosuosikki on \"Kopiokone ja minä olemme tauolla\"."
+        ]
+      },
+      {
+        "otsikko": "Varhaiskasvattajalle",
+        "teksti": [
+          "Päiväkodin väelle on oma paitansa: \"Varhaiskasvattaja. Selviän välipalalla\". Se on hyvä kiitos ryhmän aikuisille, jotka ovat pukeneet ja riisuneet lapsia koko syksyn.",
+          "Jos lahja annetaan koko tiimille, samaa tekstiä voi tilata useamman, jolloin paidoista tulee ryhmän yhteinen vitsi. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+        ]
+      },
+      {
+        "otsikko": "Hyvissä ajoin ennen joululomaa",
+        "teksti": [
+          "Paidat painetaan tilauksesta EU:ssa ja toimitetaan Suomeen, joten joulutilauksilla on takaraja. Viimeinen tilauspäivä on kerrottu joulun tilauspäivien sivulla. Jos lahja pitää antaa viimeisenä koulupäivänä, tilaa se ajoissa.",
+          "Jos aika loppuu, digitaalinen lahjakortti toimitetaan heti PDF-tiedostona. Sen voi tulostaa joulukortin väliin, ja opettaja valitsee paidan itse."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Mikä on hauska joululahja opettajalle?",
+        "a": "Paita, jonka vitsi tulee koulun arjesta, esimerkiksi \"Tämä tulee kokeeseen. Kaikki tulee\" tai \"Opettaja. Kahvi kylmeni välitunnilla\"."
+      },
+      {
+        "q": "Sopiiko paita luokan yhteislahjaksi?",
+        "a": "Sopii. Paidan voi antaa kortin kanssa, johon oppilaat kirjoittavat terveisensä, ja hinta jakautuu perheiden kesken."
+      },
+      {
+        "q": "Onko lahja myös varhaiskasvattajalle?",
+        "a": "On. \"Varhaiskasvattaja. Selviän välipalalla\" on saatavilla t-paitana ja hupparina."
+      },
+      {
+        "q": "Ehtiikö lahja ennen joululomaa?",
+        "a": "Joulun viimeinen tilauspäivä on kerrottu sivustolla. Digitaalinen lahjakortti toimitetaan heti PDF-tiedostona, joten se ehtii aina."
+      }
+    ],
+    "tuotteet": [
+      "tama-tulee-kokeeseen-kaikki-tulee-t-paita-opettajalle",
+      "tama-tulee-kokeeseen-kaikki-tulee-huppari-opettajalle",
+      "opettaja-kahvi-kylmeni-valitunnilla-t-paita-opettajalle",
+      "opettaja-kahvi-kylmeni-valitunnilla-huppari-opettajalle",
+      "opettaja-kylla-nain-sen-t-paita-opettajalle",
+      "opettaja-kylla-nain-sen-huppari-opettajalle",
+      "luen-kasialaa-jota-kirjoittaja-ei-itsekaan-lue-t-paita-opettajalle",
+      "luen-kasialaa-jota-kirjoittaja-ei-itsekaan-lue-huppari-opettajalle",
+      "kopiokone-ja-mina-olemme-tauolla-t-paita-opettajalle",
+      "kopiokone-ja-mina-olemme-tauolla-huppari-opettajalle",
+      "varhaiskasvattaja-selvian-valipalalla-t-paita-varhaiskasvattajalle",
+      "varhaiskasvattaja-selvian-valipalalla-huppari-varhaiskasvattajalle"
+    ]
+  },
   "/lahjat/joululahjaksi-miehelle": {
     "title": "Joululahja miehelle: hupparit ja t-paidat | Huumorikauppa",
     "description": "Joululahja miehelle huumorilla: kalastus-, sauna- ja kinkkuaiheiset t-paidat ja hupparit. Painettu tilauksesta EU:ssa ja toimitettu Suomeen.",
