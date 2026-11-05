@@ -110,16 +110,25 @@ export function etsiProfiili(chrome = CHROME, nimi = PROFIILIN_NIMI) {
   return osumat[0];
 }
 
-function paivitaKopio(kansio) {
+export function paivitaKopio(kansio) {
   mkdirSync(KOPIO, { recursive: true });
   for (const f of readdirSync(KOPIO)) if (f.startsWith("Singleton")) rmSync(join(KOPIO, f), { force: true });
-  execFileSync("rsync", ["-a", "--delete", ...["Cache", "Code Cache", "GPUCache", "DawnCache", "DawnGraphiteCache", "DawnWebGPUCache",
-    "Service Worker/CacheStorage", "Service Worker/ScriptCache", "Singleton*"].flatMap((e) => ["--exclude", e]),
-  `${join(CHROME, kansio)}/`, `${join(KOPIO, kansio)}/`]);
+  // Istuntotiedostot (Sessions*) pois: käynnissä oleva Chrome vaihtaa niitä kesken kopioinnin (rsync 23/24, 5.11.2026).
+  const komento = ["-a", "--delete", ...["Cache", "Code Cache", "GPUCache", "DawnCache", "DawnGraphiteCache", "DawnWebGPUCache",
+    "Service Worker/CacheStorage", "Service Worker/ScriptCache", "Singleton*", "Sessions", "Sessions_Encrypted"].flatMap((e) => ["--exclude", e]),
+  `${join(CHROME, kansio)}/`, `${join(KOPIO, kansio)}/`];
+  for (let yritys = 1; ; yritys++) {
+    try { execFileSync("rsync", komento, { stdio: ["ignore", "ignore", "pipe"] }); return; } catch (e) {
+      // 24 = tiedosto katosi kesken (kopio silti käyttökelpoinen); 23 = osa jäi kopioimatta, yritetään uudelleen.
+      if (e.status === 24) return;
+      if (e.status !== 23 || yritys === 3) throw new Error(`Profiilin kopiointi epäonnistui (rsync ${e.status}): ${String(e.stderr || "").split("\n")[0].slice(0, 160)}`);
+      execFileSync("sleep", ["2"]);
+    }
+  }
 }
 
 // ── Selain ────────────────────────────────────────────────────────────────────────────────────────────────────────
-async function kaynnista(kansio) {
+export async function kaynnista(kansio) {
   const { chromium } = await import("playwright-core");
   return chromium.launchPersistentContext(KOPIO, {
     channel: "chrome", headless: false, viewport: { width: 1280, height: 900 }, locale: "fi-FI",
@@ -136,7 +145,7 @@ async function kuva(p, nimi) {
 }
 
 const CAPTCHA = /captcha|drag the slider|vedä liukusäädin|fit the puzzle|verify to continue|vahvista, että olet ihminen|confirm it's you|we suspect automated|epäilemme automaattista/i;
-async function esteet(p, kanava) {
+export async function esteet(p, kanava) {
   const url = p.url();
   if (/\/accounts\/login|\/login(\?|\/|$)/.test(url)) return "kirjautuminen puuttuu";
   if (/\/challenge\/|\/checkpoint\//.test(url)) return "tarkistus (challenge)";

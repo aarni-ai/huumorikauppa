@@ -226,6 +226,16 @@ export default async function handler(req, res) {
         await merkitseEnsitilaus(sql(), tilaus.id, pyynto.ensitilausVersio, laskettuNettokate(laskettu, tuotteet), laskettu.first_order_discount);
       } catch (e) { console.error("ensitilaus_versio:", e?.message || e); }
     }
+    // Saapumislähde ja koon esivalinnan versio tilaukselle (5.11.2026): mistä ostaja tuli ja näkikö hän koon esivalinnan.
+    try {
+      const { kaynninLahde } = await import("./_lib/kaynnit.js");
+      const s = pyynto.saapuminen && typeof pyynto.saapuminen === "object" ? pyynto.saapuminen : null;
+      const t = (x, n) => String(x || "").slice(0, n);
+      const lahde = s ? kaynninLahde({ utm: t(s.utm, 40), ref: t(s.ref, 40), gclid: s.gclid === true, viittaaja: t(s.viittaaja, 120), ua: req.headers["user-agent"] }) : "tuntematon";
+      const kokoVersio = pyynto.kokoVersio === "a" || pyynto.kokoVersio === "b" ? pyynto.kokoVersio : null;
+      await sql()`alter table orders add column if not exists lahde text, add column if not exists koko_versio text`;
+      await sql()`update orders set lahde = ${lahde.slice(0, 40)}, koko_versio = ${kokoVersio} where id = ${tilaus.id}`;
+    } catch (e) { console.error("lahde:", e?.message || e); }
     const origin = req.headers.origin || `https://${req.headers.host}`;
 
     // Lahjakortti kattaa koko summan: ei Stripeä. Veloitus ja maksetuksi merkintä samassa transaktiossa.

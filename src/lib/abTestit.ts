@@ -83,6 +83,9 @@ export function abVersio(testi: AbTesti): "a" | "b" {
   return versiot[testi]!;
 }
 
+/** Tällä sivulatauksella jo arvottu versio ilman uutta arvontaa (kassa: näkikö ostaja koon esivalintatestin). */
+export const arvottuVersio = (testi: AbTesti): "a" | "b" | undefined => versiot[testi];
+
 /** Hintatesti: arvottiinko versio tällä sivulatauksella (uusi käynti). */
 export const toimitusKayntiAlkoi = (): boolean => {
   abVersio("toimitus");

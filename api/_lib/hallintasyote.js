@@ -130,7 +130,7 @@ const HAKU = {
   kysely: ["Suosituimmat kyselyt", "Kysely", "Hakulauseke", "Top queries", "Query"],
   sivu: ["Suosituimmat sivut", "Sivu", "Top pages", "Page", "URL"],
   klikit: ["Klikkaukset", "Klikit", "Clicks"],
-  nayttot: ["Näyttökerrat", "Näytöt", "Impressions"],
+  nayttot: ["Näyttökerrat", "Näytöt", "Impressiot", "Impressions"],
   sijainti: ["Sijainti", "Keskimääräinen sijainti", "Position", "Average position"],
 };
 
@@ -164,7 +164,7 @@ const MERCHANT = {
   tuote: ["Tuotteen nimi", "Tuotenimi", "Nimike", "Otsikko", "Product title", "Title", "Tuote", "Product"],
   id: ["Tuotetunnus", "Item ID", "Offer ID", "Tunnus", "ID"],
   klikit: ["Klikkaukset", "Klikit", "Clicks"],
-  nayttot: ["Näyttökerrat", "Näytöt", "Impressions"],
+  nayttot: ["Näyttökerrat", "Näytöt", "Impressiot", "Impressions"],
 };
 
 /**

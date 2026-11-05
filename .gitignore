@@ -67,3 +67,4 @@ scripts/.painopiirrokset/
 # Somejulkaisu koneelta (5.11.2026): kuvakaappaukset ja loki vain paikallisesti
 some/kuvakaappaukset/
 some/julkaisuloki.txt
+some/datahakuloki.txt

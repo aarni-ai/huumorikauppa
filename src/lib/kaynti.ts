@@ -17,6 +17,10 @@ export function kaynninTiedot(loc: { pathname: string; search: string; host: str
   return { action: "kaynti", polku: loc.pathname, viittaaja: host, utm: p.get("utm_source") || "", ref: p.get("ref") || "", gclid: p.has("gclid") };
 }
 
+/** Tämän sivulatauksen saapumistiedot (vain muistissa): kassa liittää lähteen tilaukseen (api/_lib/kaynnit.js kaynninLahde). */
+let saapuminen: { viittaaja: string; utm: string; ref: string; gclid: boolean } | null = null;
+export const saapumisTiedot = () => saapuminen;
+
 export function kirjaaKaynti(): void {
   if (typeof window === "undefined" || typeof fetch !== "function") return;
   if (navigator.webdriver || /bot|crawl|spider|slurp|preview|headless|prerender|lighthouse|inspectiontool|googleother/i.test(navigator.userAgent || "")) return;
@@ -27,6 +31,7 @@ export function kirjaaKaynti(): void {
   // Lyhyt bio-linkki (/ig, /tt, ...; index.html asettaa __hkBio): lähde ilman UTM-parametreja osoitteessa.
   const bio = (window as unknown as { __hkBio?: { utm_source: string } }).__hkBio;
   if (bio?.utm_source && !tiedot.utm) tiedot.utm = bio.utm_source;
+  saapuminen = { viittaaja: tiedot.viittaaja, utm: tiedot.utm, ref: tiedot.ref, gclid: tiedot.gclid };
   // Selaintesti (scripts/suppilo-testi.mjs): palvelin ohittaa testikäynnin (api/_lib/kaynnit.js onOmaTaiBotti).
   const testi = (window as unknown as { __suppiloTesti?: boolean }).__suppiloTesti === true;
   // Lähtee vasta, kun käynti on luokiteltu (src/lib/aitous.ts): ihminen, headless tai passiivinen (bottilaskuriin).

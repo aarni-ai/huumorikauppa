@@ -310,6 +310,13 @@ export default async function handler(req, res) {
     const { haeSyotteet } = await import("../_lib/hallintasyote.js");
     return res.status(200).json({ ok: true, merkinnat: await haeSyotteet(db, { id: req.query.id || null, otsikko: req.query.otsikko || null, maara: req.query.maara }) });
   }
+  // Koneen datahaku (5.11.2026, scripts/data-haku.mjs): sama tallennus kuin /hallinta/syote-sivulla (POST { otsikko, sisalto }).
+  if (req.query.tehtava === "syote-tallenna" && req.method === "POST") {
+    const { tallennaSyote } = await import("../_lib/hallintasyote.js");
+    const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
+    const r = await tallennaSyote(db, { otsikko: body.otsikko, sisalto: body.sisalto });
+    return res.status(r.ok ? 200 : 400).json(r);
+  }
   if (req.query.tehtava === "aktivointi-tila") {
     const { evasteenTila } = await import("../_lib/aktivointi.js");
     return res.status(200).json({ ok: true, ...(await evasteenTila(sql())) });
@@ -885,8 +892,7 @@ export default async function handler(req, res) {
 
   // Maksetut tilaukset (uusin ensin), ilman henkilötietoja: ensimmäisen oikean tilauksen seuranta.
   if (req.query.tehtava === "maksetut") {
-    const rivit = await db`select id, paid_at, amount_paid, total, shipping, items, printify_status, printify_order_id, printify_error,
-        sent_to_production_at, confirmation_email_sent_at from orders where status = 'maksettu' and customer_email <> 'kassatesti@huumorikauppa.fi'
+    const rivit = await db`select * from orders where status = 'maksettu' and customer_email <> 'kassatesti@huumorikauppa.fi'
         order by paid_at desc nulls last limit 10`;
     const tulos = [];
     for (const t of rivit) {
@@ -897,7 +903,9 @@ export default async function handler(req, res) {
         if (h.ok) painotalot = { tila: h.data?.status, rivit: (h.data?.line_items || []).map((r) => `${r.metadata?.title || r.product_id} / ${r.print_provider_id} ${r.metadata?.country || ""}`) };
       }
       tulos.push({ id: tilausnumero(t.id), maksettu: t.paid_at, summa: Number(t.amount_paid ?? t.total), kpl: (t.items || []).reduce((a, i) => a + (i.quantity || 0), 0),
-        printify: t.printify_status, virhe: t.printify_error, tuotantoon: t.sent_to_production_at, vahvistus: !!t.confirmation_email_sent_at, painotalot, tapahtumat: tap.map((e) => e.kind) });
+        printify: t.printify_status, virhe: t.printify_error, alennuskoodi: t.discount_code || null,
+        versiot: { etusivu: t.ab_versio ?? null, hinta: t.toimitus_versio ?? null, ensitilaus: t.ensitilaus_versio ?? null, koko: t.koko_versio ?? null },
+        lahde: t.lahde ?? null, koot: (t.items || []).map((i) => i.size || null), tuotantoon: t.sent_to_production_at, vahvistus: !!t.confirmation_email_sent_at, painotalot, tapahtumat: tap.map((e) => e.kind) });
     }
     return res.status(200).json({ ok: true, maara: tulos.length, tilaukset: tulos });
   }

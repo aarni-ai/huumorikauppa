@@ -3,6 +3,8 @@ import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
 import { toimitusVersio } from "@/lib/toimitustesti";
+import { arvottuVersio } from "@/lib/abTestit";
+import { saapumisTiedot } from "@/lib/kaynti";
 import { ensitilausVersio, ensitilausKorissa, ENSITILAUS_MERKKI } from "@/lib/ensitilaus";
 import { useCartContext } from "@/context/CartContext";
 import { ProductRating } from "@/components/ProductRating";
@@ -182,6 +184,8 @@ const CheckoutPage = () => {
           abVersio: nahtyVersio() || undefined,
           toimitusVersio: toimitusVersio(),
           ensitilausVersio: ensitilausVersio(),
+          kokoVersio: arvottuVersio("koko"),
+          saapuminen: saapumisTiedot() || undefined,
         }),
       });
       const data = await vastaus.json().catch(() => null);
