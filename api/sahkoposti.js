@@ -226,17 +226,18 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
   // ilman kirjoittamista (src/pages/PartnerLandingPage.tsx, src/lib/kumppani.ts). Eväste tallentaa vain koodin.
   if (req.method === "GET" && typeof q.kumppanisivu === "string") {
     const { kumppaniSivu, KUMPPANI_EVASTE, KUMPPANI_EVASTE_PV } = await import("./_lib/kumppani.js");
-    const k = onTietokanta() ? await kumppaniSivu(sql(), q.kumppanisivu).catch(() => null) : null;
+    // Määrittelyistä (api/_lib/koodit.js), ei kannasta: kumppanin yleisön käynnit eivät herätä tietokantaa (5.11.2026).
+    const k = await kumppaniSivu(null, q.kumppanisivu).catch(() => null);
     res.setHeader("Cache-Control", "private, no-store");
     if (k) {
       res.setHeader("Set-Cookie", `${KUMPPANI_EVASTE}=${encodeURIComponent(k.koodi)}; Path=/; Max-Age=${KUMPPANI_EVASTE_PV * 86400}; Secure; SameSite=Lax`);
       // Middlewaren bottitarkistuksen sisäinen haku (x-bot-inject) ei ole avaus.
       if (!onBotti(String(req.headers["user-agent"] || "")) && !req.headers["x-bot-inject"]) {
-        await kirjaaKlikki(sql(), k.koodi).catch(() => false);
+        await kirjaaKlikki(seuranta, k.koodi, { tarkistusKanta: null }).catch(() => false);
         // Ensimmäinen käynti (/hallinta/kumppanit): ei botteja eikä hallintaselaimia (Coworkin oma testiavaus).
         if (!onOmaTaiBotti({ ua: req.headers["user-agent"], cookie: req.headers.cookie })) {
           const { merkitseEnsimmainenKaynti } = await import("./_lib/kumppani.js");
-          await merkitseEnsimmainenKaynti(sql(), k.koodi).catch(() => null);
+          await merkitseEnsimmainenKaynti(seuranta, k.koodi).catch(() => null);
         }
       }
     }
@@ -283,8 +284,18 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
   // Hallinta: kumppanit (4.11.2026, /hallinta/kumppanit). Vain kumppanien omat tiedot ja tilausmäärät, ei asiakastietoja.
   if (req.method === "GET" && typeof q.kumppanit === "string") {
     if (!hallintaPaasy(req, res, "kumppanit", q.kumppanit)) return res.status(404).json({ ok: false });
-    const { kumppaniLista } = await import("./_lib/kumppanihallinta.js");
-    return res.status(200).json({ ok: true, kumppanit: await kumppaniLista(sql()) });
+    // Kanta kiinni: määrittelyt (data/koodit.json, tilannekuva ja Blobiin luodut), ilman klikkejä ja tilauksia.
+    // Kanta auki: kannan lista ja lisäksi Blobiin luodut, joita ei vielä ole siirretty kantaan.
+    const { kumppaniLista, raporttiLinkki } = await import("./_lib/kumppanihallinta.js");
+    const K = await import("./_lib/koodit.js");
+    const { kantaVastaa } = await import("./_lib/puskuri.js");
+    const blob = (await K.kumppaniLista()).map((k) => ({ koodi: k.koodi, nimi: k.nimi, email: k.email || null, malli: k.malli || "provisio",
+      aktiivinen: k.aktiivinen !== false, created_at: k.luotu || null, ensimmainen_kaynti: null, klikit: 0, ensimmainen_klikki: null, tilaukset: 0,
+      linkki: `https://huumorikauppa.fi/k/${k.koodi}`, raportti: raporttiLinkki(k.koodi), odottaaKantaa: k.lahde === "blob" }));
+    if (!(await kantaVastaa())) return res.status(200).json({ ok: true, kanta: false, kumppanit: blob });
+    const kannasta = await kumppaniLista(sql());
+    const tunnetut = new Set(kannasta.map((k) => k.koodi));
+    return res.status(200).json({ ok: true, kanta: true, kumppanit: [...blob.filter((k) => k.odottaaKantaa && !tunnetut.has(k.koodi)), ...kannasta] });
   }
   // Hallinta: syöte (5.11.2026, /hallinta/syote). Coworkin liittämät tekstit ja CSV:t (api/_lib/hallintasyote.js).
   if (req.method === "GET" && typeof q.syote === "string") {
@@ -302,7 +313,10 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
       const polku = typeof body.polku === "string" && /^\/[^\s]{0,100}$/.test(body.polku) ? body.polku : "";
       const lahde = `${teksti(body.lahde, 40) || "lomake"}${polku ? `:${polku}` : ""}`;
       const { markkinointiKaytossa } = await import("./_lib/sahkoposti.js");
-      const r = await tilaaUutiskirje(store, { email: body.email, suostumus: body.suostumus, lahde }, { laheta, voiLahettaa: await markkinointiKaytossa() });
+      // Kanta kiinni: tilaaja ja TERVE-koodi Blobiin (api/_lib/koodit.js blobMarkkinointi), siirto kantaan valvonnassa.
+      const { kantaVastaa } = await import("./_lib/puskuri.js");
+      const tilausStore = onTietokanta() && !(await kantaVastaa()) ? (await import("./_lib/koodit.js")).blobMarkkinointi() : store;
+      const r = await tilaaUutiskirje(tilausStore, { email: body.email, suostumus: body.suostumus, lahde }, { laheta, voiLahettaa: await markkinointiKaytossa() });
       return res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true, koodiLahetetty: r.koodiLahetetty, koodi: r.koodi || null, prosentti: r.prosentti || null } : r);
     }
     case "kori": {
@@ -508,7 +522,14 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
       if (virheet.length) return res.status(400).json({ ok: false, virhe: "Korjaa rivit ja yritä uudelleen.", virheet });
       if (!lista.length) return res.status(400).json({ ok: false, virhe: "Ei kumppaneita." });
       const syotteet = lista.map((k, i) => (k && typeof k === "object" ? { rivi: Number.isInteger(k.rivi) ? k.rivi : i + 1, nimi: k.nimi, koodi: k.koodi, malli: k.malli, email: k.email } : { rivi: i + 1 }));
-      const { tulokset } = await luoKumppanit(sql(), syotteet, { esikatselu: body.esikatselu === true });
+      // Luonti aina Blobiin (5.11.2026): koodi toimii heti kassalla ja /k/-sivulla ilman kantaa, ja valvonta siirtää sen
+      // kantaan. Koodien varaus kannasta ja määrittelyistä yhdessä, jotta nimestä tehty koodi ei törmää.
+      const K = await import("./_lib/koodit.js");
+      const { kantaVastaa } = await import("./_lib/puskuri.js");
+      const blobV = K.blobKumppaniVarasto();
+      const kanta = await kantaVastaa();
+      const varasto = { kaikki: async () => [...(kanta ? await sql()`select koodi, nimi, malli from kumppanit`.catch(() => []) : []), ...(await blobV.kaikki())], tallenna: blobV.tallenna };
+      const { tulokset } = await luoKumppanit(null, syotteet, { esikatselu: body.esikatselu === true, varasto });
       return res.status(200).json({ ok: tulokset.every((t) => !t.virhe), esikatselu: body.esikatselu === true, tulokset });
     }
     case "syote-tallenna": {
@@ -521,11 +542,16 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
       if (!hallintaPaasy(req, res, "kumppanit", body.avain)) return res.status(404).json({ ok: false });
       if (typeof body.aktiivinen !== "boolean") return res.status(400).json({ ok: false });
       const { asetaKumppaninTila } = await import("./_lib/kumppanihallinta.js");
-      const ok = await asetaKumppaninTila(sql(), body.koodi, body.aktiivinen);
+      // Blobiin aina (kassa ja /k/ lukevat määrittelyt), kantaan lisäksi, jos se vastaa.
+      const K = await import("./_lib/koodit.js");
+      const { kantaVastaa } = await import("./_lib/puskuri.js");
+      const blobOk = await K.blobKumppaniVarasto().asetaTila(String(body.koodi || "").trim().toLowerCase(), body.aktiivinen);
+      const kantaOk = (await kantaVastaa()) ? await asetaKumppaninTila(sql(), body.koodi, body.aktiivinen).catch(() => false) : false;
+      const ok = blobOk || kantaOk;
       return res.status(ok ? 200 : 404).json({ ok });
     }
     case "kumppaniklikki": {
-      const kirjattu = await kirjaaKlikki(sql(), body.koodi);
+      const kirjattu = await kirjaaKlikki(seuranta, body.koodi, { tarkistusKanta: null });
       return res.status(200).json({ ok: kirjattu });
     }
     case "review":

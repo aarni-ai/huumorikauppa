@@ -29,6 +29,8 @@ export async function puskuriValvonta({ kuiva = false, aikaa = () => true, varas
         if (!kuiva) await kasitteleMaksu(s);
       } else if (s?.status === "expired" && !kuiva) {
         await varasto.paivita(id, { status: "peruttu" });
+        const { vapautaPuskuriVaraukset } = await import("./tilaus.js");
+        await vapautaPuskuriVaraukset(t);
       }
       continue;
     }
@@ -89,6 +91,13 @@ export async function siirraPuskuri(db, { aikaa = () => true, varasto = blobTila
     }
   }
   tulos.tapahtumat = await siirraTapahtumat(db, { aikaa });
+  // Koodit (kumppanit, tilaajat, lahjakorttien käytöt, kertakäyttöiset) tilausten jälkeen: lahjakorttikäyttö viittaa tilaukseen.
+  try {
+    const K = await import("./koodit.js");
+    tulos.koodit = await K.siirraKoodit(db, { aikaa });
+  } catch (e) {
+    tulos.koodit = { virhe: String(e?.message || e) };
+  }
   return tulos;
 }
 

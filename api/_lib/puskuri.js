@@ -58,7 +58,7 @@ export async function lueBlob(polku) {
   const { head } = await import("@vercel/blob");
   let tiedot;
   try { tiedot = await head(polku); } catch (e) {
-    if (/not.?found|404/i.test(String(e?.message || e?.name || e))) return null;
+    if (e?.name === "BlobNotFoundError" || /not.?found|not exist|404/i.test(`${e?.name || ""} ${e?.message || e}`)) return null;
     throw e;
   }
   return lueUrl(tiedot.url);

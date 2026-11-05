@@ -1,0 +1,12 @@
+{
+ "kumppanit": [
+  {
+   "koodi": "eramaankulkijat",
+   "nimi": "Erämaiden Kulkijat",
+   "malli": "alennus",
+   "aktiivinen": true,
+   "kautta_nimi": "Erämaiden Kulkijoiden"
+  }
+ ],
+ "alennuskoodit": []
+}

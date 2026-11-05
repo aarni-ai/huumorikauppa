@@ -24,6 +24,11 @@ const haeTilaus = async (sessionId) => UUID_RE.test(sessionId)
  * webhook ei ole vielä ehtinyt. null, jos sessio ei ole puskuritilaus tai tilaus on jo siirretty kantaan.
  */
 async function puskuriTilaus(sessionId) {
+  // Kokonaan lahjakortilla maksettu puskuritilaus (ei Stripe-sessiota): tilauksen id.
+  if (UUID_RE.test(sessionId)) {
+    const t = await blobTilausVarasto().hae(sessionId).catch(() => null);
+    return t && !t.stripe_session_id && Number(t.gift_card_amount) > 0 ? t : null;
+  }
   if (!sessionId.startsWith("cs_") || !onStripe()) return null;
   const session = await stripe().checkout.sessions.retrieve(sessionId);
   const id = session.metadata?.order_id;

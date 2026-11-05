@@ -136,7 +136,51 @@ export default async function handler(req, res) {
     const hintahistoria = {};
     for (const r of await db`select slug, to_char(paiva, 'YYYY-MM-DD') as paiva, price::float as hinta from hintahistoria
       where paiva >= current_date - 45 order by slug, paiva`.catch(() => [])) (hintahistoria[r.slug] ||= []).push({ paiva: r.paiva, hinta: r.hinta });
-    return res.status(200).json({ ok: true, tuotteet, arviot, hintahistoria });
+    // Julkiset koodimäärittelyt repoon (data/koodit.json, api/_lib/koodit.js): kumppanit ilman sähköpostia ja alennuskoodit.
+    const koodit = {
+      kumppanit: (await db`select koodi, nimi, malli, aktiivinen, kautta_nimi from kumppanit order by koodi`.catch(() => [])).map((r) => ({ ...r })),
+      alennuskoodit: (await db`select code, discount_type, discount_value::float as discount_value, is_active from discount_codes order by code`.catch(() => [])).map((r) => ({ ...r })),
+    };
+    return res.status(200).json({ ok: true, tuotteet, arviot, hintahistoria, koodit });
+  }
+
+  // Koodien tuotantokoe ilman kantaa (5.11.2026, scripts/koodikoe.mjs): &vaihe=valmistele lisää tilannekuvaan testikortin
+  // (TESTI_KORTTI, saldo 5 €) ja testikumppanin Blobiin; &vaihe=siivoa poistaa ne sekä kassatesti-osoitteen tilaajan,
+  // TERVE-hakemiston, varaukset ja korttikirjaukset. Oikeisiin koodeihin ei kosketa.
+  if (req.query.tehtava === "koodikoe") {
+    const K = await import("../_lib/koodit.js");
+    const P = await import("../_lib/puskuri.js");
+    const KORTTI = "HK-TEST-KASS-ATST";
+    const TESTI_EMAIL = "kassatesti@huumorikauppa.fi";
+    if (req.query.vaihe === "valmistele") {
+      const kuva = (await K.tilannekuva()) || { kumppanit: [], alennuskoodit: [], tilaajat: [], asiakaskoodit: [], lahjakortit: [], maksaneet: [], kaytetyt: [], sovelletut: [] };
+      const kortit = (kuva.lahjakortit || []).filter((k) => k.code !== KORTTI);
+      await P.kirjoitaBlob("koodit/tilannekuva.json", { ...kuva, lahjakortit: [...kortit, { code: KORTTI, balance: 5, initial_value: 5, expires_at: new Date(Date.now() + 864e5).toISOString(), testi: true }] });
+      await K.blobKumppaniVarasto().tallenna({ koodi: "kassatesti-kumppani", nimi: "Kassatesti Kumppani", email: null, malli: "alennus" });
+      return res.status(200).json({ ok: true, kortti: KORTTI, kumppani: "kassatesti-kumppani" });
+    }
+    if (req.query.vaihe === "siivoa") {
+      const kuva = await K.tilannekuva();
+      if (kuva?.lahjakortit?.some((k) => k.code === KORTTI)) await P.kirjoitaBlob("koodit/tilannekuva.json", { ...kuva, lahjakortit: kuva.lahjakortit.filter((k) => k.code !== KORTTI) });
+      const t = await K.tilaaja(TESTI_EMAIL);
+      const poistettavat = [
+        ...(await P.listaaBlob(`koodit/lahjakortti/${KORTTI}/`)),
+        ...(await P.listaaBlob("koodit/kumppanit/kassatesti-kumppani")),
+        ...(await P.listaaBlob(`koodit/tilaajat/${K.tiiviste(TESTI_EMAIL)}`)),
+        ...(await P.listaaBlob(`koodit/maksaneet/${K.tiiviste(TESTI_EMAIL)}`)),
+        ...(t?.discount_code ? [...(await P.listaaBlob(`koodit/terve/${t.discount_code}`)), ...(await P.listaaBlob(`koodit/kaytto/${t.discount_code}`))] : []),
+      ];
+      await P.poistaBlob(poistettavat.map((b) => b.url));
+      // Testitilaukset puskurista (vain kassatesti-osoite).
+      const tilaukset = [];
+      for (const b of await P.listaaBlob(P.TILAUS_ETULIITE)) {
+        const o = await P.lueBlob(b.pathname).catch(() => null);
+        if (o?.customer_email === TESTI_EMAIL && o.status !== "maksettu") tilaukset.push(b.url);
+      }
+      await P.poistaBlob(tilaukset);
+      return res.status(200).json({ ok: true, poistettu: poistettavat.length, tilauksia: tilaukset.length });
+    }
+    return res.status(400).json({ error: "vaihe=valmistele|siivoa" });
   }
 
   // Blob-puskurin siirto kantaan käsin (sama kuin tunnin valvonnassa).

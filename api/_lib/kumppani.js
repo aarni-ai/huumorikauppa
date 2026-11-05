@@ -102,29 +102,44 @@ export function kumppaniSivunHtml(kuori, k, koodi) {
 export async function kumppaniSivu(db, arvo) {
   const t = await kumppaninTiedot(db, arvo);
   if (!t) return null;
-  let nimi = t.koodi, kautta = null;
-  try {
-    await db`alter table kumppanit add column if not exists kautta_nimi text`;
-    const [r] = await db`select nimi, kautta_nimi from kumppanit where koodi = ${t.koodi}`;
-    if (r?.nimi) nimi = r.nimi;
-    kautta = r?.kautta_nimi || null;
-  } catch { /* oletuskumppani ilman taulua */ }
+  let nimi = t.nimi || t.koodi, kautta = t.kautta_nimi || null;
+  if (db && !t.maarityksesta) {
+    try {
+      await db`alter table kumppanit add column if not exists kautta_nimi text`;
+      const [r] = await db`select nimi, kautta_nimi from kumppanit where koodi = ${t.koodi}`;
+      if (r?.nimi) nimi = r.nimi;
+      kautta = r?.kautta_nimi || null;
+    } catch { /* oletuskumppani ilman taulua */ }
+  }
   // Lempinimi suluissa ("Antti Heinonen (antsa)" -> Antsa), muuten nimen ensimmäinen sana.
   const lempi = nimi.match(/\(([^)]+)\)/)?.[1]?.trim();
   const kutsu = lempi ? lempi.charAt(0).toUpperCase() + lempi.slice(1) : nimi.split(/\s+/)[0];
   return { koodi: t.koodi, nimi: lempi ? kutsu : nimi, kautta: kautta || genetiivi(kutsu), malli: t.malli };
 }
 
-/** Hyväksytty, aktiivinen kumppani ja sen malli: { koodi, malli } tai null. */
+/**
+ * Hyväksytty, aktiivinen kumppani ja sen malli: { koodi, malli } tai null. db null = kanta kiinni: vain määrittelyt
+ * (api/_lib/koodit.js: Blobiin luodut, kannan tilannekuva ja data/koodit.json). Kannasta puuttuva koodi (luotu kannan
+ * ollessa kiinni, ei vielä siirretty) haetaan myös määrittelyistä.
+ */
 export async function kumppaninTiedot(db, arvo, { asetukset = KUMPPANUUS } = {}) {
   if (!asetukset.kaytossa) return null;
   const k = kumppaniKoodinMuoto(arvo);
   if (!k) return null;
   if (Object.prototype.hasOwnProperty.call(KUMPPANIT, k)) return { koodi: k, malli: "provisio" };
+  if (db) {
+    try {
+      await varmistaKumppanitaulu(db);
+      const [r] = await db`select koodi, malli, aktiivinen from kumppanit where koodi = ${k} limit 1`;
+      if (r) return r.aktiivinen ? { koodi: r.koodi, malli: KUMPPANIMALLIT.includes(r.malli) ? r.malli : "provisio" } : null;
+    } catch { /* kanta ei vastaa: määrittelyt */ }
+  }
   try {
-    await varmistaKumppanitaulu(db);
-    const [r] = await db`select koodi, malli from kumppanit where koodi = ${k} and aktiivinen limit 1`;
-    return r ? { koodi: r.koodi, malli: KUMPPANIMALLIT.includes(r.malli) ? r.malli : "provisio" } : null;
+    const { kumppaniMaaritys } = await import("./koodit.js");
+    const m = await kumppaniMaaritys(k);
+    return m && m.aktiivinen !== false
+      ? { koodi: m.koodi, malli: KUMPPANIMALLIT.includes(m.malli) ? m.malli : "provisio", nimi: m.nimi, kautta_nimi: m.kautta_nimi || null, maarityksesta: true }
+      : null;
   } catch {
     return null;
   }
@@ -161,17 +176,7 @@ export const provisioAsetukset = (details, asetukset = KUMPPANUUS) =>
 
 /** Hyväksytty, aktiivinen kumppanikoodi kannasta tai varalistasta; muuten null. */
 export async function tarkistaKumppani(db, arvo, { asetukset = KUMPPANUUS } = {}) {
-  if (!asetukset.kaytossa) return null;
-  const k = kumppaniKoodinMuoto(arvo);
-  if (!k) return null;
-  if (Object.prototype.hasOwnProperty.call(KUMPPANIT, k)) return k;
-  try {
-    await varmistaKumppanitaulu(db);
-    const [r] = await db`select koodi from kumppanit where koodi = ${k} and aktiivinen limit 1`;
-    return r ? k : null;
-  } catch {
-    return null;
-  }
+  return (await kumppaninTiedot(db, arvo, { asetukset }))?.koodi ?? null;
 }
 
 /**
@@ -201,8 +206,8 @@ export async function varmistaKlikkitaulu(db) {
 }
 
 /** Kirjaa yhden kumppanilinkin avauksen, jos koodi on hyväksytty ja aktiivinen. Palauttaa true, jos kirjattiin. */
-export async function kirjaaKlikki(db, arvo) {
-  const koodi = await tarkistaKumppani(db, arvo);
+export async function kirjaaKlikki(db, arvo, { tarkistusKanta = db } = {}) {
+  const koodi = await tarkistaKumppani(tarkistusKanta, arvo);
   if (!koodi) return false;
   await varmistaKlikkitaulu(db);
   const paiva = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());

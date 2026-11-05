@@ -19,7 +19,7 @@ if [ "${SKIP_ESITESTI:-}" != "1" ]; then
   npx vitest run src/test/ajonaikaisetImportit.test.ts --reporter=dot >/dev/null
   # Kauppa ilman tietokantaa (5.11.2026): tuotteet, sivukartta, syöte, kassa Blob-puskuriin ja maksu Printifyyn,
   # kun DATABASE_URL osoittaa suljettuun porttiin.
-  npx vitest run src/test/ilmanKantaa.test.ts --reporter=dot >/dev/null
+  npx vitest run src/test/ilmanKantaa.test.ts src/test/kooditIlmanKantaa.test.ts --reporter=dot >/dev/null
   npx tsc --noEmit -p tsconfig.app.json
 fi
 echo "Esitestaus 2/3: tuotantoversio ilman domainia"

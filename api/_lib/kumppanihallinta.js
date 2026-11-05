@@ -106,9 +106,19 @@ export function tarkistaKumppaniSyote(s) {
  * esikatselu: true laskee koodit kirjoittamatta mitään.
  * Palauttaa { tulokset: [{ rivi, nimi, koodi, malli, email, uusi, linkki, raportti } | { rivi, nimi, virhe }] }.
  */
-export async function luoKumppanit(db, syotteet, { esikatselu = false, pohja } = {}) {
-  await varmistaKumppanitaulu(db);
-  const olemassa = new Map((await db`select koodi, nimi, malli from kumppanit`).map((r) => [r.koodi, r]));
+/** Postgres-varasto luoKumppanit-funktiolle (kaikki, tallenna). */
+export const pgKumppaniVarasto = (db) => ({
+  kaikki: async () => { await varmistaKumppanitaulu(db); return db`select koodi, nimi, malli from kumppanit`; },
+  tallenna: async (t) => {
+    await db`insert into kumppanit (koodi, nimi, email, malli) values (${t.koodi}, ${t.nimi}, ${t.email}, ${t.malli || "provisio"})
+      on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true,
+        malli = coalesce(${t.malliAnnettu}, kumppanit.malli)`;
+  },
+});
+
+/** varasto: pgKumppaniVarasto(db) (oletus) tai api/_lib/koodit.js blobKumppaniVarasto (kanta kiinni, 5.11.2026). */
+export async function luoKumppanit(db, syotteet, { esikatselu = false, pohja, varasto = pgKumppaniVarasto(db) } = {}) {
+  const olemassa = new Map((await varasto.kaikki()).map((r) => [r.koodi, r]));
   const varatut = new Map([...olemassa].map(([k, r]) => [k, r.nimi]));
   const tulokset = [];
   for (const [i, s] of syotteet.entries()) {
@@ -123,11 +133,7 @@ export async function luoKumppanit(db, syotteet, { esikatselu = false, pohja } =
     }
     const vanha = olemassa.get(koodi);
     const malli = t.malli || vanha?.malli || "provisio";
-    if (!esikatselu) {
-      await db`insert into kumppanit (koodi, nimi, email, malli) values (${koodi}, ${t.nimi}, ${t.email}, ${t.malli || "provisio"})
-        on conflict (koodi) do update set nimi = excluded.nimi, email = coalesce(excluded.email, kumppanit.email), aktiivinen = true,
-          malli = coalesce(${t.malli}, kumppanit.malli)`;
-    }
+    if (!esikatselu) await varasto.tallenna({ koodi, nimi: t.nimi, email: t.email, malli: t.malli || (vanha ? vanha.malli : "provisio"), malliAnnettu: t.malli || null });
     varatut.set(koodi, t.nimi);
     olemassa.set(koodi, { koodi, nimi: t.nimi, malli });
     tulokset.push({ rivi, nimi: t.nimi, koodi, malli, email: t.email, uusi: !vanha, linkki: kumppaniLinkki(koodi, kauppa(pohja)), raportti: raporttiLinkki(koodi, pohja) });

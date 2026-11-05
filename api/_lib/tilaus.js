@@ -252,6 +252,20 @@ export async function kasittelePuskuriMaksu(session, tilausId, varasto = blobTil
   }
   const tilaus = await varasto.hae(tilausId);
   if (tilaus.status !== "maksettu") return tilaus.id;
+  // Koodien varaukset käytetyiksi (api/_lib/koodit.js): lahjakortin summa veloitettu, kertakäyttöinen koodi käytetty,
+  // ja osoite maksaneeksi (ensitilauksen koodi vain ensimmäiseen tilaukseen). Idempotentit.
+  try {
+    const K = await import("./koodit.js");
+    if (tilaus.gift_card_code && !tilaus.gift_card_charged_at) {
+      await K.paivitaLahjakortti(tilaus.gift_card_code, tilausId, "veloitettu");
+      await varasto.paivita(tilausId, { gift_card_charged_at: new Date() });
+      await varasto.tapahtuma(tilausId, "lahjakortti_veloitettu", { summa: Number(tilaus.gift_card_amount), puskuri: true });
+    }
+    if (tilaus.discount_code) await K.paivitaKoodi(String(tilaus.discount_code).split(" ")[0], tilausId, "kaytetty");
+    await K.merkitseMaksanut(tilaus.customer_email, tilausId);
+  } catch (e) {
+    console.error("puskuritilauksen koodit:", e?.message || e);
+  }
   if (!tilaus.confirmation_email_sent_at) {
     let suositukset = [];
     try { suositukset = seuraavaTilausSuositukset(tilaus, await kaikkiTuotteet(), { piilotettu: onPiilotettuTuote }); } catch { /* ilman suosituksia */ }
@@ -262,6 +276,14 @@ export async function kasittelePuskuriMaksu(session, tilausId, varasto = blobTil
   await lahetaPrintifyyn(tilausId, varasto);
   await ilmoitaOmistajalle(tilausId, varasto);
   return tilausId;
+}
+
+/** Peruttu tai vanhentunut puskuritilaus: lahjakortin ja kertakäyttöisen koodin varaukset vapaiksi. */
+export async function vapautaPuskuriVaraukset(t) {
+  if (!t) return;
+  const K = await import("./koodit.js");
+  if (t.gift_card_code) await K.paivitaLahjakortti(t.gift_card_code, t.id, "vapautettu").catch(() => {});
+  if (t.discount_code) await K.paivitaKoodi(String(t.discount_code).split(" ")[0], t.id, "vapautettu").catch(() => {});
 }
 
 /**

@@ -39,6 +39,8 @@ export default async function handler(req, res) {
         if (bt.status === "odottaa_maksua") {
           await blob.paivita(id, { status: "peruttu" });
           await blob.tapahtuma(id, "peruttu", { syy: "session vanheni" });
+          const { vapautaPuskuriVaraukset } = await import("./_lib/tilaus.js");
+          await vapautaPuskuriVaraukset(bt);
         }
       } else if (id) {
         const r = await sql()`update orders set status = 'peruttu', updated_at = now() where id = ${id} and status = 'odottaa_maksua' returning id`;

@@ -28,6 +28,7 @@ const JUURI = join(dirname(fileURLToPath(import.meta.url)), "..");
 const KATALOGI = join(JUURI, "data", "products-snapshot.json");
 const ARVIOT = join(JUURI, "data", "arviot.json");
 const HISTORIA = join(JUURI, "data", "hintahistoria.json");
+const KOODIT = join(JUURI, "data", "koodit.json");
 const LOKI = join(JUURI, "some", "katalogiloki.txt");
 const POHJA = process.env.KAUPPA_URL || "https://huumorikauppa-five.vercel.app";
 
@@ -103,7 +104,7 @@ const hkiTunti = (d = new Date()) => Number(new Intl.DateTimeFormat("en-GB", { t
 /** Työpuun seuratut muutokset katalogitiedostojen ja somekansion ulkopuolella: julkaisu ei saa viedä keskeneräistä. */
 function keskeneraiset() {
   const rivit = execFileSync("git", ["status", "--porcelain", "--untracked-files=no"], { cwd: JUURI, encoding: "utf8" }).split("\n").filter(Boolean);
-  return rivit.map((r) => r.slice(3)).filter((p) => !/^(data\/(products-snapshot|arviot|hintahistoria)\.json|some\/)/.test(p));
+  return rivit.map((r) => r.slice(3)).filter((p) => !/^(data\/(products-snapshot|arviot|hintahistoria|koodit)\.json|some\/)/.test(p));
 }
 
 async function main() {
@@ -121,6 +122,8 @@ async function main() {
   let arviot = vanhatArviot;
   const vanhaHistoria = existsSync(HISTORIA) ? JSON.parse(readFileSync(HISTORIA, "utf8")) : {};
   let historia = vanhaHistoria;
+  const vanhatKoodit = existsSync(KOODIT) ? JSON.parse(readFileSync(KOODIT, "utf8")) : { kumppanit: [], alennuskoodit: [] };
+  let koodit = vanhatKoodit;
   const lahde = arg("--lahde");
   if (lahde) {
     rivit = JSON.parse(readFileSync(lahde, "utf8"));
@@ -131,6 +134,7 @@ async function main() {
       rivit = k.tuotteet;
       if (k.arviot && typeof k.arviot === "object") arviot = k.arviot;
       if (k.hintahistoria && typeof k.hintahistoria === "object") historia = k.hintahistoria;
+      if (k.koodit?.kumppanit?.length) koodit = k.koodit;
       loki(`pohja: tietokanta (${rivit.length} riviä, arvioita ${Object.values(arviot).flat().length})`);
     } else {
       rivit = structuredClone(vanha);
@@ -180,12 +184,14 @@ async function main() {
 
   const uusi = normalisoi(rivit);
   const muuttui = tiiviste(uusi) !== tiiviste(normalisoi(vanha)) || tiiviste(arviot) !== tiiviste(vanhatArviot)
-    || tiiviste(historia) !== tiiviste(vanhaHistoria);
+    || tiiviste(historia) !== tiiviste(vanhaHistoria)
+    || tiiviste(koodit) !== tiiviste(vanhatKoodit);
   loki(muuttui ? `MUUTTUI (${vanha.length} -> ${uusi.length} riviä)` : "EI MUUTOSTA");
   if (!muuttui || kuiva) return;
   writeFileSync(KATALOGI, JSON.stringify(uusi));
   writeFileSync(ARVIOT, `${JSON.stringify(arviot, null, 1)}\n`);
   writeFileSync(HISTORIA, `${JSON.stringify(historia)}\n`);
+  writeFileSync(KOODIT, `${JSON.stringify(koodit, null, 1)}\n`);
   if (!lippu("--julkaise")) return;
   const kesken = keskeneraiset();
   if (kesken.length) {
@@ -193,7 +199,7 @@ async function main() {
     return;
   }
   const git = (...a) => execFileSync("git", a, { cwd: JUURI, stdio: "inherit" });
-  git("add", "data/products-snapshot.json", "data/arviot.json", "data/hintahistoria.json");
+  git("add", "data/products-snapshot.json", "data/arviot.json", "data/hintahistoria.json", "data/koodit.json");
   git("commit", "-m", "Katalogi päivitetty (scripts/katalogi.mjs)\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>");
   git("push", "origin", "HEAD:oma-tausta", "HEAD:main");
   execFileSync("bash", ["scripts/julkaise-uusi.sh"], { cwd: JUURI, stdio: "inherit" });

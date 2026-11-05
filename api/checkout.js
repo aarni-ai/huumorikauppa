@@ -57,8 +57,13 @@ async function alennus(koodi, email, kanta = true) {
   if (!koodi) return null;
   const k = String(koodi).trim().toUpperCase();
   if (!kanta) {
+    // Kanta kiinni (5.11.2026): samat säännöt määrittelyistä ja Blobin käytöistä (api/_lib/koodit.js).
     if (OLETUSKOODIT[k]) return OLETUSKOODIT[k];
-    throw new KassaVirhe("Alennuskoodin tarkistus ei juuri nyt onnistu. Poista koodi ja jatka tilausta, tai yritä hetken kuluttua uudelleen.", "discount_unavailable");
+    const { alennusIlmanKantaa } = await import("./_lib/koodit.js");
+    const { ENSITILAUS_ALENNUS_PROSENTTI } = await import("./_lib/vakiot.js");
+    const a = await alennusIlmanKantaa(k, email, { prosentti: ENSITILAUS_ALENNUS_PROSENTTI });
+    if (a?.virhe) throw new KassaVirhe(a.virhe, "discount_invalid");
+    return a;
   }
   if (onTietokanta()) {
     // Kiitos-, ystävä- ja palkkiokoodit (api/_lib/uusintaosto.js); katesääntö kuten muillakin koodeilla.
@@ -96,12 +101,27 @@ async function ensimmainenTilaus(email) {
   }
 }
 
+/**
+ * Kanta vastaa, mutta Blobissa on vielä siirtämättömiä koodikirjauksia (kanta oli kiinni): siirretään ne ensin, jotta
+ * lahjakortin saldo, käytetyt koodit ja kannan ollessa kiinni luodut koodit ovat kannassa ennen tarkistusta.
+ */
+async function siirraKooditJosOdottaa() {
+  try {
+    const K = await import("./_lib/koodit.js");
+    if (onBlob() && (await K.koodejaOdottaa())) await K.siirraKoodit(sql());
+  } catch (e) {
+    console.error("koodien siirto kassalla:", e?.message || e);
+  }
+}
+
 /** Lahjakortti koodista: { koodi, saldo } tai KassaVirhe. */
-async function lahjakortti(koodi) {
+async function lahjakortti(koodi, kanta = true) {
   if (!koodi) return null;
   const k = normalisoiKoodi(koodi);
   if (!k) throw new KassaVirhe("Tarkista lahjakortin koodi.", "giftcard_invalid");
-  const t = tarkistaLahjakortti(await haeLahjakortti(k));
+  // Kanta kiinni: saldo = kannan tilannekuva - Blobin kirjaamattomat varaukset ja veloitukset (api/_lib/koodit.js).
+  const kortti = kanta ? await haeLahjakortti(k) : await (await import("./_lib/koodit.js")).lahjakorttiIlmanKantaa(k);
+  const t = tarkistaLahjakortti(kortti);
   if (!t.ok) throw new KassaVirhe(t.virhe, "giftcard_invalid");
   return { koodi: k, saldo: t.saldo };
 }
@@ -122,7 +142,9 @@ export default async function handler(req, res) {
     if (!onTietokanta()) return res.status(503).json({ ok: false, error: "Lahjakortit eivät ole vielä käytössä tässä ympäristössä." });
     try {
       const k = normalisoiKoodi(pyynto.code);
-      const kortti = k ? await haeLahjakortti(k) : null;
+      const kanta = await kantaVastaa();
+      if (kanta) await siirraKooditJosOdottaa();
+      const kortti = !k ? null : kanta ? await haeLahjakortti(k) : await (await import("./_lib/koodit.js")).lahjakorttiIlmanKantaa(k);
       const t = tarkistaLahjakortti(kortti);
       if (!t.ok) return res.status(200).json({ ok: false, error: k ? t.virhe : "Tarkista lahjakortin koodi." });
       return res.status(200).json({ ok: true, code: k, saldo: t.saldo, voimassa: kortti.expires_at });
@@ -135,7 +157,9 @@ export default async function handler(req, res) {
   if (pyynto.action === "alennuskoodi") {
     // Kassasivun koodikenttä: { ok, percent } tai { ok: false, error }. Lopullinen tarkistus tehdään maksun alussa.
     try {
-      const a = await alennus(pyynto.code, pyynto.email, await kantaVastaa());
+      const kanta = await kantaVastaa();
+      if (kanta) await siirraKooditJosOdottaa();
+      const a = await alennus(pyynto.code, pyynto.email, kanta);
       if (a?.type === "percent") return res.status(200).json({ ok: true, code: String(pyynto.code).trim().toUpperCase(), percent: a.value });
       return res.status(200).json({ ok: false, error: "Virheellinen alennuskoodi." });
     } catch (e) {
@@ -147,7 +171,7 @@ export default async function handler(req, res) {
 
   if (pyynto.action === "kumppanikoodi") {
     if (!onTietokanta()) return res.status(200).json({ ok: false });
-    const kp = await kumppaninTiedot(sql(), pyynto.code).catch(() => null);
+    const kp = await kumppaninTiedot((await kantaVastaa()) ? sql() : null, pyynto.code).catch(() => null);
     if (!kp) return res.status(200).json({ ok: false });
     // Malli 2: alennus, joka kassalla toteutuu tälle korille (7 €:n kateehto). Ilman koria nimellinen alennus.
     let prosentti = kp.malli === "alennus" ? KUMPPANUUS.alennusmalli.alennusProsentti : 0;
@@ -188,15 +212,17 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: false, error: "Maksun aloitus epäonnistui. Yritä hetken kuluttua uudelleen.", diagnostics: { error_stage: "db_unavailable" } });
   }
   try {
-    if (!kanta && (pyynto.giftCardCode || (pyynto.items || []).some((it) => onLahjakortti(it)))) {
-      throw new KassaVirhe("Lahjakortit eivät ole juuri nyt käytössä. Poista lahjakortti ja jatka tilausta, tai yritä hetken kuluttua uudelleen.", "giftcard_unavailable");
+    // Lahjakorttien myynti vaatii kannan (koodit luodaan ja lähetetään maksun jälkeen); lahjakortilla maksu toimii ilman.
+    if (!kanta && (pyynto.items || []).some((it) => onLahjakortti(it))) {
+      throw new KassaVirhe("Lahjakortteja ei voi juuri nyt ostaa. Poista lahjakortti ostoskorista ja jatka tilausta, tai yritä hetken kuluttua uudelleen.", "giftcard_unavailable");
     }
+    if (kanta && (pyynto.discountCode || pyynto.giftCardCode)) await siirraKooditJosOdottaa();
     // Saatavuus: tallennettu päivittäinen tieto, täydennettynä tuoreella Printify-haulla (3 s, virheessä tallennettu).
     let tuotteet = await kaikkiTuotteet();
     if (onPrintify()) tuotteet = await liveSaatavuus(tuotteet, pyynto.items, { haeTuote: (id) => haeTuote(id, { aikaraja: 3000 }) });
     const koodiAlennus = await alennus(pyynto.discountCode, pyynto.customerEmail, kanta);
     // Ilmaisen toimituksen hintatesti (api/_lib/toimitustesti.js): versio selaimelta, hinta lasketaan täällä.
-    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a",
+    const lisat = { paketit: PAKETIT, lahjakortti: await lahjakortti(pyynto.giftCardCode, kanta), toimitusVersio: pyynto.toimitusVersio === "b" ? "b" : "a",
       // Ensimmäisen tilauksen -5 % (A/B-testi, api/_lib/ensitilaus.js): versio selaimelta, ensimmäisyys tarkistetaan täällä.
       ensitilausVersio: pyynto.ensitilausVersio === "b" ? "b" : "a",
       ensimmainenTilaus: pyynto.ensitilausVersio === "b" && !koodiAlennus ? (kanta ? await ensimmainenTilaus(pyynto.customerEmail) : true) : false,
@@ -204,7 +230,7 @@ export default async function handler(req, res) {
       joulukalenteri: { luukut: JOULUKALENTERI, nyt: new Date() } };
     // Kumppanimalli 2: kumppanin koodilla alennus (vain ilman alennuskoodia), kateehto 7 € provision jälkeen. Ei, kun korissa
     // on tämän päivän luukun tuote: luukun hinta ei yhdisty muihin alennuksiin (kumppanin provisio kirjataan silti).
-    const kp = kanta ? await kumppaninTiedot(sql(), pyynto.kumppani).catch(() => null) : null;
+    const kp = await kumppaninTiedot(kanta ? sql() : null, pyynto.kumppani).catch(() => null);
     const luukku = avoinLuukku(JOULUKALENTERI, lisat.joulukalenteri.nyt);
     const luukkuKorissa = !!luukku && !koodiAlennus && (pyynto.items || []).some((i) => i?.slug === luukku.slug)
       && (() => { try { return !!laskeTilaus(pyynto, tuotteet, null, lisat).joulukalenteri?.paiva; } catch { return false; } })();
@@ -212,7 +238,7 @@ export default async function handler(req, res) {
     const laskettu = valinta?.laskettu ?? laskeTilaus(pyynto, tuotteet, koodiAlennus, lisat);
     await varmistaLogot(laskettu.rivit);
     const osoite = laskettu.only_gift_cards ? {} : { ...pyynto.shippingAddress, country: "FI" };
-    if (!kanta) return await puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet });
+    if (!kanta) return await puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet, koodiAlennus, kp, valinta });
     const [tilaus] = await sql()`insert into orders (customer_email, customer_name, recipient_name, phone, shipping_address,
         items, subtotal, shipping, discount_code, discount, bundle_discount, total, gift_card_code, gift_card_amount, printify_status)
       values (${pyynto.customerEmail.trim()}, ${pyynto.customerName || null}, ${pyynto.recipientName?.trim()?.slice(0, 200) || null},
@@ -355,7 +381,7 @@ let alvId = null;
  * Kassa ilman tietokantaa: tilausrivi samoin kentin kuin orders-taulussa Blob-puskuriin (yksi kirjoitus Stripe-session
  * luonnin jälkeen), session metadataan puskuri=1. A/B-versiot, saapumislähde ja koon esivalinta samaan riviin.
  */
-async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet }) {
+async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet, koodiAlennus = null, kp = null, valinta = null }) {
   const id = randomUUID();
   const nyt = new Date().toISOString();
   const s = pyynto.saapuminen && typeof pyynto.saapuminen === "object" ? pyynto.saapuminen : null;
@@ -370,8 +396,9 @@ async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet }) {
     recipient_name: pyynto.recipientName?.trim()?.slice(0, 200) || null, phone: pyynto.shippingAddress?.phone || null,
     shipping_address: osoite, items: laskettu.rivit.map(({ unit_cents, ...r }) => r),
     subtotal: laskettu.subtotal, shipping: laskettu.shipping,
-    discount_code: pyynto.discountCode ? String(pyynto.discountCode).toUpperCase() : null, discount: laskettu.discount,
-    bundle_discount: laskettu.bundle_discount, total: laskettu.total, gift_card_code: null, gift_card_amount: 0,
+    discount_code: pyynto.discountCode ? String(pyynto.discountCode).trim().toUpperCase() : valinta?.prosentti ? `${kp.koodi.toUpperCase()} (kumppani -${valinta.prosentti} %)` : null,
+    discount: laskettu.discount,
+    bundle_discount: laskettu.bundle_discount, total: laskettu.total, gift_card_code: laskettu.gift_card_code || null, gift_card_amount: laskettu.gift_card_amount || 0,
     printify_status: "ei_lahetetty",
     ab_versio: pyynto.abVersio === "a" || pyynto.abVersio === "b" ? pyynto.abVersio : null,
     toimitus_versio: pyynto.toimitusVersio === "a" || pyynto.toimitusVersio === "b" ? pyynto.toimitusVersio : null,
@@ -381,20 +408,60 @@ async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet }) {
     lahde: lahde.slice(0, 40), koko_versio: pyynto.kokoVersio === "a" || pyynto.kokoVersio === "b" ? pyynto.kokoVersio : null,
     puskuri: true, tapahtumat: [],
   };
+  if (kp) tilaus.tapahtumat.push({ kind: "kumppani", created_at: nyt, details: kp.malli === "alennus"
+    ? { koodi: kp.koodi, malli: "alennus", alennus: valinta?.prosentti ?? 0, provisio: valinta?.provisioProsentti ?? KUMPPANUUS.alennusmalli.provisioProsentti }
+    : { koodi: kp.koodi } });
+  // Varaukset ennen maksua (api/_lib/koodit.js): kertakäyttöinen koodi (TERVE, KIITOS, PALKKIO) ja lahjakortin summa.
+  // Toinen tilaus ei saa samaa koodia eikä samaa saldoa; vanhentunut sessio vapauttaa ne.
+  const K = await import("./_lib/koodit.js");
+  const vapauta = async () => {
+    if (koodiAlennus?.kertakaytto) await K.paivitaKoodi(tilaus.discount_code, id, "vapautettu").catch(() => {});
+    if (tilaus.gift_card_code) await K.paivitaLahjakortti(tilaus.gift_card_code, id, "vapautettu").catch(() => {});
+  };
+  if (koodiAlennus?.kertakaytto && !(await K.varaaKoodi(tilaus.discount_code, id))) {
+    throw new KassaVirhe("Koodi on jo käytetty toisessa tilauksessa.", "discount_invalid");
+  }
+  if (tilaus.gift_card_code) {
+    const v = await K.varaaLahjakortti(tilaus.gift_card_code, tilaus.gift_card_amount, id);
+    if (!v.ok) {
+      await vapauta();
+      throw new KassaVirhe(v.virhe, "giftcard_balance");
+    }
+  }
   const origin = req.headers.origin || `https://${req.headers.host}`;
-  const lineItems = laskettu.rivit.map((r) => ({
+  // Lahjakortti kattaa koko summan: ei Stripeä, tilaus maksetuksi ja käsittelyyn heti (sama kuin maksun jälkeen).
+  if (laskettu.amount_due <= 0) {
+    try {
+      await kirjoitaBlob(`${TILAUS_ETULIITE}${id}.json`, tilaus);
+      const { kasittelePuskuriMaksu } = await import("./_lib/tilaus.js");
+      await kasittelePuskuriMaksu({ id: null, payment_status: "paid", amount_total: 0, payment_intent: null }, id);
+    } catch (e) {
+      await vapauta();
+      throw e;
+    }
+    return res.status(200).json({ ok: true, url: `${origin}/tilaus-vahvistettu?order_id=${id}` });
+  }
+  const lineItems = laskettu.gift_card_amount > 0 ? [{
+    price_data: { currency: "eur", product_data: { name: `Huumorikauppa, tilaus (lahjakortilla maksettu ${laskettu.gift_card_amount.toFixed(2).replace(".", ",")} €)`,
+      description: laskettu.rivit.map((r) => `${r.quantity} x ${r.name}`).join(", ").slice(0, 480) }, unit_amount: Math.round(laskettu.amount_due * 100) },
+    quantity: 1,
+  }] : laskettu.rivit.map((r) => ({
     price_data: { currency: "eur", product_data: { name: r.name, ...(kuvaus(r) ? { description: kuvaus(r) } : {}), ...(r.image ? { images: [r.image] } : {}) }, unit_amount: r.unit_cents },
     quantity: r.quantity,
   }));
-  if (laskettu.shipping > 0) lineItems.push({ price_data: { currency: "eur", product_data: { name: "Toimitus, Posti kotiinkuljetus" }, unit_amount: Math.round(laskettu.shipping * 100) }, quantity: 1 });
+  if (laskettu.shipping > 0 && !(laskettu.gift_card_amount > 0)) lineItems.push({ price_data: { currency: "eur", product_data: { name: "Toimitus, Posti kotiinkuljetus" }, unit_amount: Math.round(laskettu.shipping * 100) }, quantity: 1 });
   const omaVahvistus = await omaVahvistusKaytossaNyt();
   if (!omaVahvistus) {
     const viimeinen = lineItems[lineItems.length - 1].price_data.product_data;
     viimeinen.name = kuittiRivinNimi(viimeinen.name, id, { fyysisia: true });
   }
   const maksutavat = sallitutMaksutavat((kulu) => laskettuNettokate(laskettu, tuotteet, kulu));
-  const session = await stripe().checkout.sessions.create({
+  let session;
+  try {
+    session = await stripe().checkout.sessions.create({
     ...istunnonMaksutavat(maksutavat),
+    // Varauksen kanssa sessio vanhenee 30 minuutissa (Stripen minimi), jotta varattu koodi tai saldo vapautuu pian.
+    ...(koodiAlennus?.kertakaytto || tilaus.gift_card_code ? { expires_at: Math.floor(Date.now() / 1000) + 31 * 60 } : {}),
     customer_email: tilaus.customer_email,
     client_reference_id: id,
     line_items: lineItems,
@@ -405,7 +472,11 @@ async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet }) {
     payment_intent_data: { metadata: { order_id: id, puskuri: "1" }, description: kuittiKuvaus(id, { fyysisia: true }), ...(omaVahvistus ? {} : { receipt_email: tilaus.customer_email }) },
     custom_text: { submit: { message: `Tilausnumero #${tilausnumero(id)}. Toimitus yleensä ${KUITTI_TOIMITUSAIKA.join("-")} arkipäivää. Kysymykset: huumorikauppa@gmail.com` } },
     locale: "fi",
-  });
+    });
+  } catch (e) {
+    await vapauta();
+    throw e;
+  }
   tilaus.stripe_session_id = session.id;
   tilaus.tapahtumat.push({ kind: "kassa", details: { session: session.id, total: laskettu.total, maksutavat: maksutavat.tavat, puskuri: true }, created_at: nyt });
   try {
@@ -414,6 +485,7 @@ async function puskuriKassa({ req, res, pyynto, laskettu, osoite, tuotteet }) {
     // Ilman tallennettua tilausta maksua ei oteta: sessio vanhennetaan heti.
     console.error("puskuritilaus Blobiin:", e?.message || e);
     await stripe().checkout.sessions.expire(session.id).catch(() => {});
+    await vapauta();
     return res.status(200).json({ ok: false, error: "Maksun aloitus epäonnistui. Yritä hetken kuluttua uudelleen.", diagnostics: { error_stage: "buffer_write" } });
   }
   return res.status(200).json({ ok: true, url: session.url });
