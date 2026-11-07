@@ -3891,3 +3891,42 @@ Neonin ilmainen kiintiö (100 CU-tuntia) loppui noin klo 7.12. Sen jälkeen tuot
 - **Resend ja markkinointiviestit:** kun domain on vahvistettu, korimuistutukset, tervetuloviesti ja arvostelupyynnöt kytkeytyvät päälle automaattisesti (`markkinointiKaytossa`). Arvostelupyyntö lähtee vain Printifyn toimituspäivän jälkeen ja kerran.
   - Korimuistutukset ja arvostelupyynnöt ajetaan valvonnassa, joka tarvitsee tietokannan, joten ne alkavat vasta, kun Neon vastaa.
   - Tervetuloviesti toimii ilman kantaa.
+
+
+## 7.11.2026 aamu: julkaisu estynyt (Vercel-kirjautuminen), build-korjaus, nimipalvelimet eivät vaihtuneet, kaksi päivää ilman tilauksia
+
+**YHTEENVEDON ALKUUN: uutta versiota ei voi julkaista.**
+- `npx vercel whoami` vastaa "Logged out". `auth.json` on tyhjä 5.11. alkaen, joten kirjautuminen ei ole tallentunut tämän Macin käyttäjälle aarninyblom. Tarvitaan `npx vercel login` tämän koneen päätteessä.
+- Uudessa Vercel-projektissa (flyapeg-2135s-projects/huumorikauppa), joka palvelee kauppaa, ei ole Git-integraatiota (Vercel CLI ehdotti julkaisussa `vercel git connect`). Main-haaraa ei siis julkaista automaattisesti.
+- Git-integraatio on vain vanhassa välitysprojektissa (aarni-ais-projects), joka välittää huumorikauppa.fi:n pyynnöt uuteen projektiin. Sen julkaisu ei muuta kaupan toimintaa.
+- Koodien muutos (3a7beac ja uudemmat) odottaa julkaisua. Tuotanto on dpl_GCuNcF2fixbTsRPcZN5MisMsiDGX: katalogi, kassa Blob-puskurilla ja seuranta erissä ovat käytössä, mutta koodit eivät toimi ilman kantaa.
+
+**Build-korjaus (76f7590)**
+- Vanhan projektin GitHub-buildit epäonnistuivat 3a7beac:sta alkaen.
+- Syy: api/_lib/kumppani.js tuodaan myös selaimeen, ja sen uusi dynaaminen tuonti veti koodivaraston ja tietokantakirjaston (postgres) Viten selainbundleen.
+- Tuonti on nyt rajattu bundlen ulkopuolelle (`@vite-ignore`), ja vite build ajetaan julkaisun esitestauksessa.
+- 76f7590:n build onnistui GitHubissa. Testit 2367 läpi, ja vite build ja prerender toimivat paikallisesti.
+
+**Kassa tuotannossa ilman kantaa:** kassatesti klo 10.20 loi maksusession 31,80 € (metadata puskuri=1), ja sessio vanhennettiin heti.
+
+**Nimipalvelimet**
+- .fi-rekisterin whois (7.11. klo 10.25): nimipalvelimet ovat yhä huxley ja aria, ja "modified" on 12.4.2026.
+- Vaihto Domainhotellissa ei siis ole mennyt rekisteriin asti (tallennus tai vahvistus jäänyt kesken).
+- Uusi vyöhyke vastaa annabelilta ja vickiltä.
+- Kohdan 24 vaiheet 2 ja 3 odottavat. Seuranta (`dig NS @a.fi`, 2 min) on yhä käynnissä.
+
+**Neon:** kiinni koko ajan (kanta-tila false). Blobiin on kertynyt 13 tilastoerää siirtoa varten. Mittariskripti kaatuu kantaan.
+
+**Tilaukset ja kate 5.–7.11.**
+- Stripessä ei ole yhtään kassasessiota 4.11. jälkeen, ei myöskään keskeytyneitä. Printifyssä ei ole uusia tilauksia.
+- Ainoa marraskuun tilaus on #8D484335 (31,80 €). Se on Printifyssä tilassa fulfilled tšekkiläiseltä painotalolta 30, eli toimitettu.
+- Kate 5.–7.11. on 0 €. Marraskuun kate on 7,22 €.
+
+**Some**
+- **Julkaistu:** 5.11. klo 11.30 Instagram 02 ja TikTok 01, klo 18.30 TikTok 22.
+- **5.11. klo 18.30 Instagram 03 jäi julkaisematta.** Tilitarkistus luki sivun vielä latausruudussa ja tulkitsi sen vääräksi tiliksi. Korjattu: tarkistus odottaa sisältöä enintään 30 sekuntia.
+- **6.11. molemmat ajot epäonnistuivat**, koska koneen nettiyhteys oli poikki (ERR_INTERNET_DISCONNECTED ja aikakatkaisu). Instagramin 03 ja TikTokin 02 julkaistaan seuraavissa ajoissa.
+- **Näyttökerrat 7.11. klo 10.22:**
+  - Instagram: 02 16, 01 20, 23 146, 22 35, 21 96.
+  - TikTok: 22 1, 01 0, 21 0. Vanhat videot 361–1992.
+- **TikTok:** koneelta julkaistut videot eivät saa lainkaan jakelua. Syy voi olla automaation tunnistus tai uuden sisällön rajoitus. Kannattaa harkita, julkaiseeko Aarni TikTokin käsin puhelimesta.

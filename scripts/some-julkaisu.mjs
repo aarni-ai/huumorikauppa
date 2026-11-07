@@ -189,7 +189,14 @@ async function instagramTili(p) {
   await tauko(p, 4000, 6500);
   const este = await esteet(p, "instagram");
   if (este) return { este };
-  const teksti = await p.locator("main, body").first().innerText().catch(() => "");
+  // 7.11.2026: 5.11. klo 18.30 sivu oli vielä latausruudussa (Instagram-logo), ja tarkistus tulkitsi sen vääräksi
+  // tiliksi. Odotetaan sisältöä enintään 30 s ennen päätöstä.
+  let teksti = "";
+  for (let i = 0; i < 10; i++) {
+    teksti = await p.locator("main, body").first().innerText().catch(() => "");
+    if (teksti.includes(TILIT.instagram) || teksti.trim().length > 200) break;
+    await p.waitForTimeout(3000);
+  }
   return teksti.includes(TILIT.instagram) ? { ok: true } : { este: `väärä tili (odotettu ${TILIT.instagram})` };
 }
 
