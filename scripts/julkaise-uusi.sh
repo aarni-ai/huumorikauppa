@@ -21,6 +21,8 @@ if [ "${SKIP_ESITESTI:-}" != "1" ]; then
   # kun DATABASE_URL osoittaa suljettuun porttiin.
   npx vitest run src/test/ilmanKantaa.test.ts src/test/kooditIlmanKantaa.test.ts --reporter=dot >/dev/null
   npx tsc --noEmit -p tsconfig.app.json
+  # Selaimen build (7.11.2026: palvelinkoodi selaimen bundlessa kaatoi Vercelin buildin, vaikka testit menivät läpi).
+  npx vite build --logLevel error >/dev/null
 fi
 echo "Esitestaus 2/3: tuotantoversio ilman domainia"
 LOKI=$(mktemp)

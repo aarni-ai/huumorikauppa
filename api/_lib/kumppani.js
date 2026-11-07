@@ -13,6 +13,10 @@ import { KUMPPANUUS, KUMPPANIT } from "./vakiot.js";
 
 export const KUMPPANIKOODI = /^[a-z0-9][a-z0-9-]{1,39}$/;
 
+// Palvelimen koodivarasto (api/_lib/koodit.js -> Blob ja tietokantakirjasto): selain tuo tämän moduulin, joten tuonti
+// ei saa päätyä Viten bundleen (7.11.2026: postgres selaimen buildissa kaatoi julkaisun).
+const KOODIT_MODUULI = "./koodit.js";
+
 /** Kumppaneille näytettävä sääntö (sivu /kumppanit ja viestipohja). */
 export const PROVISIOSAANTO =
   `Provisio on ${KUMPPANUUS.provisioProsentti} % tilauksen tuotteiden arvosta (ilman arvonlisäveroa ja toimituskuluja) tilauksista, joista kaupalle jää provision jälkeen vähintään ${KUMPPANUUS.minKateEuroa.toFixed(2).replace(".", ",")} € katetta. Jos kate ei riitä täyteen ${KUMPPANUUS.provisioProsentti} %:iin, provisio on pienempi, ja jos tilauksen kate on ${KUMPPANUUS.minKateEuroa.toFixed(2).replace(".", ",")} € tai alle, provisiota ei makseta.`;
@@ -135,7 +139,7 @@ export async function kumppaninTiedot(db, arvo, { asetukset = KUMPPANUUS } = {})
     } catch { /* kanta ei vastaa: määrittelyt */ }
   }
   try {
-    const { kumppaniMaaritys } = await import("./koodit.js");
+    const { kumppaniMaaritys } = await import(/* @vite-ignore */ KOODIT_MODUULI);
     const m = await kumppaniMaaritys(k);
     return m && m.aktiivinen !== false
       ? { koodi: m.koodi, malli: KUMPPANIMALLIT.includes(m.malli) ? m.malli : "provisio", nimi: m.nimi, kautta_nimi: m.kautta_nimi || null, maarityksesta: true }
