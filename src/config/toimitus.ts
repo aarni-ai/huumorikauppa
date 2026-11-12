@@ -84,16 +84,19 @@ export const TOIMITUSAIKA_MUUT_LAUSE = `Julisteet ja tarrat ovat perillä ${toim
 /** Kahden tuotteen ilmainen toimitus (2.11.2026, api/_lib/vakiot.js ILMAINEN_TOIMITUS_KPL; ei yhdisty alennuskoodiin). */
 export const ILMAINEN_TOIMITUS_KPL = 2;
 
-/** Lyhyt toimitusrivi ostopainikkeen ja ostoskorin yhteenvedon alle: "Toimitus 6,90 €, ilmainen kahdesta tuotteesta". */
-export const TOIMITUSRIVI = `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`;
+/**
+ * Lyhyt toimitusrivi ostopainikkeen ja ostoskorin yhteenvedon alle. Sama sanamuoto kaikkialla (12.11.2026):
+ * "ilmainen toimitus kahdesta tuotteesta tai 79 eurosta" (kassa: api/_lib/vakiot.js toimitusmaksu).
+ */
+export const TOIMITUSRIVI = `Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta`;
 
 /** Toimitusaikalause: tuotetyypeittäin. */
 export const TOIMITUSAIKA_LAUSE = TOIMITUSAIKA_TYYPEITTAIN_LAUSE;
 /** Toimitusmaksulause, esim. "Toimitus maksaa 6,90 €, ja 79 euron tilauksista alkaen toimitus on ilmainen." */
-export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja kun tilaat kaksi tuotetta tai vähintään ${ILMAINEN_RAJA_TEKSTI} eurolla, toimitus on ilmainen tai alennettu (ostoskori näyttää maksun).`;
+export const TOIMITUSMAKSU_LAUSE = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta; joissakin tuoteyhdistelmissä toimitus on alennettu, ja ostoskori näyttää maksun ennen maksamista.`;
 
 /** Kahden tuotteen säännön ehdot (toimitusehdot, UKK). Katevahti: api/_lib/kate.js toimitusmaksuKatteella (2.11.2026). */
-export const KAHDEN_TUOTTEEN_EHTO = `Kahden tuotteen ilmainen toimitus koskee t-paitoja, huppareita ja julisteita (tarrat eivät lasketa), eikä se yhdisty alennuskoodiin eikä t-paitaparin kampanjahintaan. Niissä toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta. Lahjapaketeissa on kaksi tuotetta, joten niiden toimitus on ilmainen. Kahden t-paidan tilaus toimitetaan ilmaiseksi. Joissakin hupparin tai koristeen ja toisen tuotteen yhdistelmissä toimitus on 2,90 € tai 4,90 €, ja ostoskori näyttää tilauksen toimitusmaksun ennen maksamista.`;
+export const KAHDEN_TUOTTEEN_EHTO = `Kahden tuotteen ilmainen toimitus koskee t-paitoja, huppareita ja julisteita (tarrat eivät lasketa), eikä se yhdisty alennuskoodiin eikä t-paitaparin kampanjahintaan. Niissä toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Lahjapaketeissa on kaksi tuotetta, joten niiden toimitus on ilmainen. Kahden t-paidan tilaus toimitetaan ilmaiseksi. Joissakin hupparin tai koristeen ja toisen tuotteen yhdistelmissä toimitus on 2,90 € tai 4,90 €, ja ostoskori näyttää tilauksen toimitusmaksun ennen maksamista.`;
 
 /** Toimitusmaksu tilauksen välisummalle (sama sääntö kuin kassalla). */
 export function toimitusmaksuSummalle(valisumma: number): number {

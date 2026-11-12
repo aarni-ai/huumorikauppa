@@ -59,7 +59,7 @@ const CategoryPage = () => {
   const h1Text = CATEGORY_H1[slug || ""] || `Hauskat ${category.name}`;
   const content = CATEGORY_PAGE_CONTENT[slug || ""];
   const pageTitle = content?.title || category.seoTitle || `${h1Text} | Huumorikauppa.fi`;
-  const pageDescription = content?.description || category.seoDescription || `${category.description}. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin!`;
+  const pageDescription = content?.description || category.seoDescription || `${category.description}. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta!`;
   const h2Sections = CATEGORY_H2_SECTIONS[slug || ""] || [];
 
   const breadcrumbs = [

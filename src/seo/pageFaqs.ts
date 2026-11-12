@@ -22,7 +22,7 @@ export const CHRISTMAS_DEADLINE_TEXT =
   `${jouluLause()}`;
 
 const DELIVERY_SHORT = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
-const SHIPPING_COST = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
+const SHIPPING_COST = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
 
 /** /usein-kysytyt-kysymykset (näkyvä UKK ja FAQPage-JSON-LD samasta listasta). */
 export const SITE_FAQS: FaqItem[] = [

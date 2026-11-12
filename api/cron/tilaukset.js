@@ -144,6 +144,30 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, tuotteet, arviot, hintahistoria, koodit });
   }
 
+  // Blobin seurantaerien kooste (12.11.2026, kanta kiinni): kirjatut laskurikyselyt tauluittain arvoineen ja määrineen
+  // (käynnit päivä x lähde x osio, suppilo, A/B-testit, tuotesivut). Ei henkilötietoja: seurantakirjauksissa niitä ei ole.
+  if (req.query.tehtava === "puskuri-luvut") {
+    const P = await import("../_lib/puskuri.js");
+    const taulut = {};
+    let eria = 0, riveja = 0;
+    for (const b of await P.listaaBlob(P.TAPAHTUMA_ETULIITE)) {
+      const era = await P.lueBlob(b.pathname).catch(() => null);
+      if (!era) continue;
+      eria++;
+      for (const r of era.rivit || []) {
+        const q = r.q.join("?");
+        const m = q.match(/^\s*insert into (\w+)/i);
+        if (!m) continue;
+        riveja++;
+        const avain = JSON.stringify(r.v.map((x) => (x && typeof x === "object" ? null : x)));
+        const t = (taulut[m[1]] ||= {});
+        t[avain] = (t[avain] || 0) + 1;
+      }
+    }
+    const tulos = Object.fromEntries(Object.entries(taulut).map(([k, v]) => [k, Object.entries(v).map(([a, n]) => ({ v: JSON.parse(a), n }))]));
+    return res.status(200).json({ ok: true, eria, riveja, taulut: tulos });
+  }
+
   // Koodien tuotantokoe ilman kantaa (5.11.2026, scripts/koodikoe.mjs): &vaihe=valmistele lisää tilannekuvaan testikortin
   // (TESTI_KORTTI, saldo 5 €) ja testikumppanin Blobiin; &vaihe=siivoa poistaa ne sekä kassatesti-osoitteen tilaajan,
   // TERVE-hakemiston, varaukset ja korttikirjaukset. Oikeisiin koodeihin ei kosketa.

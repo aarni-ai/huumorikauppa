@@ -36,7 +36,7 @@ export const PERSONOIDUT_MALLIT: PersonoituMalliKortti[] = Object.keys(AIHEET).f
 
 export const PERSONOIDUT_INTRO = [
   `Personoitu paita tai huppari on lahja, jossa lukee saajan oma nimi, vuosiluku tai ikä. Valitse malli, kirjoita teksti ja katso esikatselu ennen kuin lisäät tuotteen koriin.`,
-  `T-paita maksaa ${PERSONOIDUT_HINNAT.tpaita} ja huppari ${PERSONOIDUT_HINNAT.huppari} (3XL-5XL ${PERSONOIDUT_HINNAT.huppariIso}). Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
+  `T-paita maksaa ${PERSONOIDUT_HINNAT.tpaita} ja huppari ${PERSONOIDUT_HINNAT.huppari} (3XL-5XL ${PERSONOIDUT_HINNAT.huppariIso}). Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
 ];
 
 export const PERSONOIDUT_FAQS = [
@@ -50,7 +50,7 @@ export const PERSONOIDUT_FAQS = [
   },
   {
     q: "Mitä personoitu paita ja huppari maksavat?",
-    a: `T-paita maksaa ${PERSONOIDUT_HINNAT.tpaita} ja huppari ${PERSONOIDUT_HINNAT.huppari}, kokojen 3XL-5XL huppari ${PERSONOIDUT_HINNAT.huppariIso}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+    a: `T-paita maksaa ${PERSONOIDUT_HINNAT.tpaita} ja huppari ${PERSONOIDUT_HINNAT.huppari}, kokojen 3XL-5XL huppari ${PERSONOIDUT_HINNAT.huppariIso}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   {
     q: "Miksi kaikkia tekstejä ei voi painaa?",

@@ -30,7 +30,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
     intro: [
       "Hauska t-paita on paita, jonka painatus on vitsi: Huumorikaupan t-paidoissa on meemejä, ikävuosipaitoja, ammatti- ja harrastuspaitoja sekä kotikaupunkiaiheisia paitoja.",
       "Miehille valikoimassa ovat esimerkiksi Isäntä, Amatimies ja Kalju, naisille slay queen ja Super äiskä. Pyöreitä vuosia täyttävälle on 30-, 40-, 50-, 60- ja 70-vuotistekstejä, ja kaupunkipaidoissa on omat mallinsa yli 50 paikkakunnalle. Oma teksti/kuva -paitaan kirjoitat itse painettavan tekstin tuotesivulla. Jos etsit lahjaa tietylle ihmiselle, lahjasivuilla paidat on valmiiksi rajattu saajan mukaan, esimerkiksi miehelle, naiselle tai työkaverille.",
-      `Tällä sivulla ovat kaikki myynnissä olevat t-paidat. Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa, toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      `Tällä sivulla ovat kaikki myynnissä olevat t-paidat. Paidat painetaan tilauksesta painokumppaneidemme tuotantolaitoksissa, toimitusaika Suomeen on ${TOIMITUSAIKA_TEKSTI} arkipäivää, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     ],
     faqs: [
       {
@@ -47,7 +47,7 @@ export const CATEGORY_PAGE_CONTENT: Record<string, CategoryPageContent> = {
       },
       {
         q: "Kauanko t-paidan toimitus kestää?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ${jouluLause()}`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. ${jouluLause()}`,
       },
     ],
   },

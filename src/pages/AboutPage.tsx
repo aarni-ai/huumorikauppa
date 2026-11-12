@@ -41,7 +41,7 @@ const processSteps = [
   {
     number: "04",
     title: "Toimitus",
-    body: `Posti toimittaa suoraan osoitteeseesi ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin. Jokainen tilaus on seurattavissa koko matkan ajan.`,
+    body: `Posti toimittaa suoraan osoitteeseesi ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Jokainen tilaus on seurattavissa koko matkan ajan.`,
   },
 ];
 
@@ -54,7 +54,7 @@ const materials = [
 ];
 
 const trustPoints = [
-  { icon: Truck, title: "Nopea toimitus", body: `${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.` },
+  { icon: Truck, title: "Nopea toimitus", body: `${TOIMITUSAIKA_TEKSTI} arkipäivää koko Suomeen Postin verkostolla. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
   { icon: RotateCcw, title: "14 pv palautusoikeus", body: "Palauta ilman selittelyjä 14 päivän kuluessa. Palautusohjeet löytyvät tilausvahvistuksesta." },
   { icon: Shield, title: "Turvallinen maksu", body: "Visa, Mastercard, Apple Pay, Google Pay, Klarna ja MobilePay. Maksu tehdään suojatulla maksusivulla." },
   { icon: Flag, title: "Suomalainen yritys", body: `Kauppaa pitää ${ORGANIZATION.legalName}, ${ORGANIZATION.addressLocality}. Y-tunnus ${ORGANIZATION.legalId}. Noudatamme EU:n kuluttajansuoja- ja GDPR-lainsäädäntöä.` },

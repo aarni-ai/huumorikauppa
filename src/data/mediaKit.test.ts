@@ -41,7 +41,7 @@ describe("/media", () => {
   it("kaupan tiedot tulevat vakioista: toimitus, joulun tilauspäivä, myyjä ja sähköposti", () => {
     const text = mediaKaupanTiedot().join("\n");
     expect(text).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
-    expect(text).toContain(`${ILMAINEN_RAJA_TEKSTI} euron`);
+    expect(text).toContain(`kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta`);
     expect(text).toContain(jouluLause());
     expect(text).toContain("Uusiku Oy");
     expect(text).toContain(MEDIA_EMAIL);

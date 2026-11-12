@@ -93,7 +93,7 @@ export const yrityksetPage = {
       heading: "Edut yritykselle",
       items: [
         `Määräalennus ${YRITYS_PORTAAT.map((p) => `${p.min}+ paitaa -${p.prosentti} %`).join(", ")} lasketaan kassalla automaattisesti ${eur(YRITYS_ESIMERKKI_HINTA)}:n t-paidoille. ${MEEMI_PORRAS_TEKSTI}`,
-        `Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen, joten kymmenen t-paidan tilaus toimitetaan ilman toimituskuluja.`,
+        `Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten kymmenen t-paidan tilaus toimitetaan ilman toimituskuluja.`,
         "Paidat painetaan tilauksesta EU:ssa, ja jokaisella tuotesivulla on kokotaulukko senttimetreinä.",
         "Valikoimassa on satoja valmiita designeja, esimerkiksi ammatti-, harrastus- ja meemipaidat.",
       ],

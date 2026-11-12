@@ -125,12 +125,12 @@ Talvella huppari on usein t-paitaa käytännöllisempi joululahja, koska sitä k
 
 ## Hinnat ja tilaaminen ajoissa
 
-Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alkaen ${HINTA.huppariAlkaen}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
+Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alkaen ${HINTA.huppariAlkaen}. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Kolme t-paitaa (74,70 €) jää vielä rajan alle, mutta kaksi t-paitaa ja huppari (99,70 €) ylittää sen. Jos ostat lahjoja usealle, kokoa ne samaan tilaukseen.
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. ${jouluLause()} Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
     faq: [
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
-      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen} tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
+      { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen} tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
       { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
       { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
@@ -152,7 +152,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä 
 
 Pikkujoulujen lahjanvaihdossa hintaraja on yleensä 10, 15 tai 20 euroa. Raja ei ole tavoite, vaan katto: sen tarkoitus on, ettei kukaan joudu nolon tilanteeseen ja että jokainen saa jotain samanarvoista. Siksi hyvä pikkujoululahja ei näytä halvalta, mutta ei myöskään selvästi kalliimmalta kuin muiden.
 
-Verkosta ostaessa kannattaa muistaa yksi asia, jonka moni unohtaa: toimituskulut. Huumorikaupassa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen se on ilmainen. Jos tilaat yhden pienen lahjan yksin, toimituskulu on suuri osa kokonaishinnasta. Siksi pikkujoululahja kannattaa tilata samalla kertaa omien joululahjojen kanssa tai yhdessä työkavereiden kanssa. Palaamme tähän lopussa.
+Verkosta ostaessa kannattaa muistaa yksi asia, jonka moni unohtaa: toimituskulut. Huumorikaupassa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Jos tilaat yhden pienen lahjan yksin, toimituskulu on suuri osa kokonaishinnasta. Siksi pikkujoululahja kannattaa tilata samalla kertaa omien joululahjojen kanssa tai yhdessä työkavereiden kanssa. Palaamme tähän lopussa.
 
 ## Viisi kriteeriä hyvälle pikkujoululahjalle
 
@@ -258,7 +258,7 @@ Kun nämä kuusi asiaa ovat kunnossa, lahja toimii riippumatta siitä, kenelle s
 Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. Jos pikkujoulut ovat marras- tai joulukuussa, tilaa heti kun tiedät, kenelle ostat. ${jouluLause()} Selaa valmiiksi koottuja [pikkujoululahjoja](/lahjat/pikkujouluihin) ja [edullisia lahjoja](/lahjat/alle-30-euroa).`,
     faq: [
       { q: "Mitä pikkujouluihin voi ostaa alle 20 eurolla?", a: `Tätä kirjoitettaessa Huumorikaupan edullisin t-paita maksaa alkaen ${HINTA.tpaitaAlkaen}, joten alle 20 euron rajalla t-paitaa ei saa. Ehdota porukalle 25 euron rajaa.` },
-      { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: `Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa.` },
+      { q: "Kuuluvatko toimituskulut pikkujoululahjan hintaan?", a: `Hintaraja koskee yleensä lahjaa, mutta toimituskulut maksat silti itse. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten pikkujoululahja kannattaa tilata muiden lahjojen kanssa.` },
       { q: "Onko t-paita hyvä pikkujoululahja?", a: "T-paita on hyvä pikkujoululahja, jos tiedät saajan koon ja hintaraja on vähintään 25 euroa. Jos kokoa ei tiedä, huppari on väljän mallin vuoksi turvallisempi valinta." },
       { q: "Milloin pikkujoululahja pitää tilata?", a: `Tilaa heti, kun tiedät saajan, koska tuotteet painetaan tilauksesta. ${jouluLause()}` },
     ],
@@ -371,7 +371,7 @@ Miehelle, jolla on kaikki, toimii lahja, jota hän ei ostaisi itse. Etsi vuoden 
 
 ## Tilaa ajoissa
 
-Personoidut tuotteet ja muut tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
+Personoidut tuotteet ja muut tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.
 
 Jos haluat lisää ideoita, selaa [hauskat lahjat miehelle](/hauskat-lahjat-miehelle) tai lue oppaamme [mitä antaa 50-vuotiaalle, jolla on jo kaikkea](/blogi/mita-antaa-50-vuotiaalle-jolla-on-jo-kaikkea). Valmiita jouluideoita löydät myös sivulta [joululahjat miehelle](/lahjat/joululahjaksi-miehelle).`,
     faq: [
@@ -642,7 +642,7 @@ Kun nämä ovat kunnossa, lahja ilahduttaa eikä aiheuta kenellekään paineita 
 
 - **Paketoi neutraalisti:** Työpaikalla lahjat avataan usein yhdessä, joten paketin ei tarvitse olla näyttävä, mutta siistin kannattaa olla.
 - **Lisää kortti:** Kaksi lausetta siitä, miksi valitsit juuri tämän lahjan, tekee pienestäkin lahjasta henkilökohtaisen.
-- **Tilaa yhdessä:** Jos useampi kollega ostaa samasta kaupasta, yksi tilaus säästää toimituskulut. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen.
+- **Tilaa yhdessä:** Jos useampi kollega ostaa samasta kaupasta, yksi tilaus säästää toimituskulut. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.
 - **Tilaa ajoissa:** Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()}
 
 Lisää ideoita löydät sivuilta [joululahja työkaverille](/joululahja-tyokaverille), [lahja kollegalle](/lahjat/tyokaverille) ja [pikkujoululahjat](/lahjat/pikkujouluihin).`,
@@ -819,7 +819,7 @@ Leikki onnistuu, kun järjestäjä sopii säännöt etukäteen. Ilman sääntöj
 
 ## Toimituskulut ja hintaraja
 
-Verkosta ostaessa toimituskulut voivat olla suurempi osa kuin itse lahja. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen. Jos tilaat 10 euron lahjan yksin, kokonaissumma on ${euroluku(10 + TOIMITUSMAKSU)} €.
+Verkosta ostaessa toimituskulut voivat olla suurempi osa kuin itse lahja. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Jos tilaat 10 euron lahjan yksin, kokonaissumma on ${euroluku(10 + TOIMITUSMAKSU)} €.
 
 Kaksi ratkaisua:
 
@@ -918,7 +918,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Jos lahjoje
     faq: [
       { q: "Mitä salaiselle joulupukille voi ostaa 10 eurolla?", a: `10 euron budjetti on Huumorikaupassa tiukka, sillä edullisin t-paita maksaa tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen}. Nosta budjetti 25 euroon, niin t-paita mahtuu mukaan.` },
       { q: "Mitä salaiselle joulupukille voi ostaa 20 eurolla?", a: `Kahdellakymmenellä eurolla Huumorikaupasta ei saa valmista lahjaa. Edullisin t-paita maksaa tätä kirjoitettaessa alkaen ${HINTA.tpaitaAlkaen}, joten nosta budjetti 25 euroon.` },
-      { q: "Kuuluvatko toimituskulut salaisen joulupukin hintarajaan?", a: `Järjestäjän kannattaa sopia asia etukäteen. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen, joten lahja kannattaa tilata omien joululahjojen kanssa.` },
+      { q: "Kuuluvatko toimituskulut salaisen joulupukin hintarajaan?", a: `Järjestäjän kannattaa sopia asia etukäteen. Huumorikaupassa toimitus on ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten lahja kannattaa tilata omien joululahjojen kanssa.` },
       { q: "Mitä teen, jos salaisen joulupukin lahja on väärää kokoa?", a: "Ota yhteyttä 14 päivän sisällä tuotteen vastaanottamisesta. Avaa paketti heti saapumisen jälkeen, koska peruutusaika lasketaan vastaanottopäivästä." },
     ],
   },
@@ -1044,7 +1044,7 @@ Joululahjaksi huppari on käytännöllinen, koska se on käytössä heti talvell
 
 ## Tilaa ajoissa
 
-Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen. Lisää ideoita nuorille löydät oppaasta [hauskat lahjat teinipojalle ja -tytölle](/blogi/hauskat-lahjat-teinipojalle-ja-tytolle).`,
+Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Lisää ideoita nuorille löydät oppaasta [hauskat lahjat teinipojalle ja -tytölle](/blogi/hauskat-lahjat-teinipojalle-ja-tytolle).`,
     faq: [
       { q: "Mikä on hauska joululahja teinille?", a: "Hauska joululahja teinille liittyy hänen omaan harrastukseensa tai tyyliinsä, esimerkiksi pelaajalle pelaajahuumoria ja lumilautailijalle rinnehuumoria. Huumorin pitää olla nuoren, ei aikuisen." },
       { q: "Millaista huumoria teinin lahjassa kannattaa välttää?", a: "Vältä vitsejä teinistä itsestään, kuten huoneen siivouksesta tai aamuheräämisestä. Jätä pois myös alkoholi- ja aikuishuumori." },
@@ -1153,7 +1153,7 @@ Ulkoilijan vaatteessa koko on tärkeä, koska paitaa käytetään usein muiden v
 
 ## Porukan yhteinen tilaus
 
-Kalastus-, metsästys- ja mökkiporukat tilaavat usein useamman paidan kerralla, esimerkiksi kaikille jahtiporukan jäsenille. Yksi tilaus usealle hengelle säästää toimituskulut: toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen ilmainen. Kerää kaikkien koot ennen tilausta, niin vältyt vaihdoilta.
+Kalastus-, metsästys- ja mökkiporukat tilaavat usein useamman paidan kerralla, esimerkiksi kaikille jahtiporukan jäsenille. Yksi tilaus usealle hengelle säästää toimituskulut: toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Kerää kaikkien koot ennen tilausta, niin vältyt vaihdoilta.
 
 ## Tilaa ajoissa
 
@@ -1162,7 +1162,7 @@ Tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()}`,
       { q: "Mitä ostaa kalastajalle lahjaksi, jos en tunne kalastusta?", a: "Osta kalastusaiheinen paita tai huppari välineen sijaan. Kalastaja ostaa vieheet ja vavat mieluiten itse, mutta hauska paita kalastuksesta ei kilpaile hänen varusteidensa kanssa." },
       { q: "Mikä on hyvä lahja metsästäjälle?", a: "Hyvä lahja metsästäjälle kunnioittaa jahdin tunnelmaa, kuten \"Ei ole kiire, olen metsässä\" -huppari. Jahtiporukalle sopii yhteinen paita, jossa on seuran nimi ja vuosiluku." },
       { q: "Mitä antaa mökkeilijälle joululahjaksi?", a: "Mökkeilijälle sopii lahja, joka muistuttaa mökistä talven keskellä, esimerkiksi huppari mökkikuvalla tai \"Mökki on terapiaa\" -huppari." },
-      { q: "Voiko jahtiporukalle tilata yhteiset paidat?", a: `Jahtiporukalle voi tilata yhteiset paidat omalla tekstillä tai kuvalla. Yksi yhteinen tilaus säästää toimituskulut, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.` },
+      { q: "Voiko jahtiporukalle tilata yhteiset paidat?", a: `Jahtiporukalle voi tilata yhteiset paidat omalla tekstillä tai kuvalla. Yksi yhteinen tilaus säästää toimituskulut, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
 
@@ -1208,7 +1208,7 @@ Jos teet personoidun lahjan, kirjoita teksti valmiiksi ja tarkista oikeinkirjoit
 
 ### Vaihe 3: yksi tilaus
 
-Kun lista on valmis, tee kaikki tilaukset kerralla. Se säästää aikaa ja rahaa: toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kun kokoat perheen kaikki lahjat samaan ostoskoriin, raja ylittyy usein jo muutamalla tuotteella.
+Kun lista on valmis, tee kaikki tilaukset kerralla. Se säästää aikaa ja rahaa: toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Kun kokoat perheen kaikki lahjat samaan ostoskoriin, raja ylittyy usein jo muutamalla tuotteella.
 
 ## Personoidut lahjat
 
@@ -1297,7 +1297,7 @@ Toimitusehdot kokonaisuudessaan löydät sivulta [toimitusehdot](/toimitusehdot)
     faq: [
       { q: "Mikä on joululahjojen viimeinen tilauspäivä 2026?", a: jouluLause() },
       { q: "Miksi viimeinen tilauspäivä on jo marraskuussa?", a: "Viimeinen tilauspäivä on marraskuussa, koska jokainen tuote painetaan tilauksesta painokumppaneillamme ennen kuljetusta. Joulun alla sekä painaminen että kuljetus ruuhkautuvat." },
-      { q: "Paljonko joulutoimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen. Kokoa kaikki lahjat samaan tilaukseen, niin raja ylittyy helpommin.` },
+      { q: "Paljonko joulutoimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Kokoa kaikki lahjat samaan tilaukseen, niin raja ylittyy helpommin.` },
       { q: "Voiko joululahjan palauttaa joulun jälkeen?", a: "Peruutusoikeus on 14 päivää tuotteen vastaanottamisesta, ei joulupäivästä. Avaa paketti heti saapumisen jälkeen ja tarkista koko, jotta ehdit tarvittaessa palauttaa sen." },
       { q: "Mitä teen, jos en ehtinyt tilata ajoissa?", a: "Anna kuusen alle lahjalupaus: tulosta kuva tuotteesta korttiin ja kerro, että lahja on tulossa. Toimituslupauksemme jouluaattoon koskee vain ajoissa tehtyjä tilauksia." },
     ],

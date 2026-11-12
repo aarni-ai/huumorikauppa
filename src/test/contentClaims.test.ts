@@ -96,7 +96,7 @@ describe("UKK (AEO)", () => {
     const text = SITE_FAQS.map((f) => f.a).join(" ");
     expect(text).toContain(jouluVastaus());
     expect(text).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
-    expect(text).toContain(`${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen`);
+    expect(text).toContain(`kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta`);
     expect(text).toContain("200 merkkiä");
     expect(text).toContain("huumorikauppa@gmail.com");
   });

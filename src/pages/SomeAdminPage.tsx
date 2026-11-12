@@ -11,7 +11,15 @@ type Video = {
   huomio?: string;
 };
 type Pinni = { slug: string; nimi: string; kuva: string; lataus: string; otsikko: string; kuvaus: string; linkki: string };
-type Manifest = { paivitetty: string; julkaisut: string; videot: Video[]; pinterest: Pinni[] };
+type Manifest = { paivitetty: string; julkaisut: string; videot: Video[]; pinterest: Pinni[]; tiktok?: { alku: string; jono: string[] } };
+
+/** Päivän TikTok-video: jonosta yksi päivässä alku-päivästä (Helsingin päivä); jonon lopussa viimeinen. */
+export function tamanPaivanTiktok(m: Pick<Manifest, "videot" | "tiktok">, paiva: string): Video | null {
+  if (!m.tiktok?.jono?.length) return null;
+  const paivia = Math.max(0, Math.round((Date.parse(`${paiva}T00:00:00Z`) - Date.parse(`${m.tiktok.alku}T00:00:00Z`)) / 864e5));
+  const nro = m.tiktok.jono[Math.min(paivia, m.tiktok.jono.length - 1)];
+  return m.videot.find((v) => v.nro === nro) ?? null;
+}
 
 const MUODOT: Record<string, string> = { perus: "Tuote", pov: "POV", dialogi: "Pariskunta", aanestys: "Äänestys", tarjous: "Black Friday" };
 
@@ -53,6 +61,27 @@ const SomeAdminPage = () => {
             {m.videot.length} videota, {m.pinterest.length} Pinterest-kuvaa. TikTokissa lisää sovelluksen oma musiikki; videoissa ei ole musiikkia.{" "}
             <a href={`${m.julkaisut}?download=1`} className="text-primary underline">Lataa JULKAISUT.md</a>
           </p>
+          {(() => {
+            const t = tamanPaivanTiktok(m, tanaan);
+            if (!t) return null;
+            return (
+              <section id="tiktok" className="rounded-xl border-2 border-primary bg-primary/5 p-3 mb-6">
+                <h2 className="font-semibold text-lg mb-1">Tämän päivän TikTok</h2>
+                <p className="text-xs text-muted-foreground mb-2">Julkaise puhelimesta TikTok-sovelluksessa: lataa video, kopioi kuvateksti ja lisää sovelluksen oma musiikki. Video {t.nro} · {MUODOT[t.muoto] || t.muoto}.</p>
+                <div className="flex gap-3">
+                  <img src={t.kansi} alt="" width={90} height={160} className="w-[90px] h-[160px] rounded object-cover shrink-0" />
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <div className="font-semibold">{t.hook}</div>
+                    <p className="text-sm whitespace-pre-wrap break-words">{t.kuvateksti}</p>
+                    <div className="flex flex-wrap gap-2">
+                      <a href={t.lataus} className="inline-flex items-center gap-1 rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"><Download className="h-4 w-4" aria-hidden="true" /> Lataa video</a>
+                      <Kopioi teksti={t.kuvateksti} nimi="kuvateksti" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
           <nav className="flex gap-3 text-sm mb-4"><a href="#videot" className="text-primary underline">Videot</a><a href="#pinterest" className="text-primary underline">Pinterest</a></nav>
           <h2 id="videot" className="font-semibold text-lg mb-2">Videot julkaisujärjestyksessä</h2>
           <p className="text-sm text-muted-foreground mb-3">Bio joka kanavassa: huumorikauppa.fi. Kuvatekstissä mainitaan vain "linkki biossa" tai huumorikauppa.fi. Somen käynnit tunnistetaan automaattisesti.</p>

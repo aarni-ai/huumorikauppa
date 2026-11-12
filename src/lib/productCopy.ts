@@ -114,7 +114,7 @@ function whyFunnyFor(name: string): string {
 
 function whyBuyFor(name: string, category: string): string {
   const noun = categoryNoun(category);
-  return `${cleanProductName(name)} on ${noun}, jonka teksti tekee lahjasta henkilökohtaisen. Tuote painetaan tilauksesta ja toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`;
+  return `${cleanProductName(name)} on ${noun}, jonka teksti tekee lahjasta henkilökohtaisen. Tuote painetaan tilauksesta ja toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
 }
 
 function scenariosFor(name: string, category: string): string[] {
@@ -172,10 +172,10 @@ export function generateProductCopy(p: ProductCopyInput): ProductCopy {
     `${whyBuy}`,
   ].join("\n\n");
 
-  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}.${material ? ` ${material}` : ""} Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
+  const feedDescription = `${cleanProductName(name)}: hauska ${noun} ${audience}. Sopii ${occasions}.${material ? ` ${material}` : ""} Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, 14 päivän peruutusoikeus. Painetaan tilauksesta.`.slice(0, 4900);
 
   const shortDescription = truncateAtWord(
-    `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
+    `${cleanProductName(name)}: hauska ${noun} Huumorikaupasta. Sopii ${audience}. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     158,
   );
 

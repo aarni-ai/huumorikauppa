@@ -39,7 +39,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     `Selaa alla olevia ideoita: jokaisen tuotteen sivulla on materiaali-, koko- ja hoitotiedot.`;
 
   const shippingTrust =
-    `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ` +
+    `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. ` +
     `Sinulla on 14 päivän peruutusoikeus, ja voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. ` +
     `Asiakaspalvelu vastaa sähköposteihin 1-2 arkipäivässä.`;
 
@@ -50,7 +50,7 @@ export function generateGiftGuideContent(s: SituationGift): GiftGuideContent {
     },
     {
       q: `Kuinka nopeasti tilaus saapuu?`,
-      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. ${jouluLause()}`,
+      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. ${jouluLause()}`,
     },
     {
       q: `Voinko palauttaa tuotteen, jos lahja ei sovi?`,

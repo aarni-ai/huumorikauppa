@@ -38,7 +38,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Onko teksti liian rivo lahjaksi?", a: "Useimmille suomalaisille ei ole, sillä \"Saatanan tunarit\" on tuttu ja lähes lempeä kirosana. Jos saaja on tarkka kielenkäytöstään, valitse hänelle mieluummin toinen huumoripaita. Kisakatsomossa ja kaveriporukassa lause kuitenkin naurattaa." },
       { q: "Miten paitaa kannattaa pestä?", a: "Pese paita kylmässä, enintään 30 asteen vedessä. Rumpukuivaimessa käytä matalaa lämpöä, äläkä silitä paitaa. Vältä myös kloorivalkaisua ja kemiallista pesua, sillä ne eivät kuulu tämän paidan hoito-ohjeisiin." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paketti kulkee Postin tai Matkahuollon kautta, ja se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivän kuluessa tilauksesta.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paketti kulkee Postin tai Matkahuollon kautta, ja se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivän kuluessa tilauksesta.` },
     ],
   },
   "saatanan-tunarit-huppari": {
@@ -47,7 +47,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko kiroileva teksti lahjaksi?", a: "Sopii, kun saaja käyttää samaa sanontaa itsekin urheilua katsoessaan. Huppari on tehty kavereiden kesken naurettavaksi. Mummon synttäreille tai työpaikan viralliseen juhlaan kannattaa valita jokin toinen malli." },
       { q: "Miten huppari pestään?", a: "Pese huppari koneessa kylmässä vedessä, enintään 30 °C. Rumpukuivaus onnistuu keskilämmöllä ja silitys tai höyrytys matalalla lämmöllä. Kemiallista pesua ja klooripohjaista valkaisuainetta ei saa käyttää." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paketti kulkee Postin tai Matkahuollon kautta ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. Huppari painetaan vasta tilauksen jälkeen.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paketti kulkee Postin tai Matkahuollon kautta ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. Huppari painetaan vasta tilauksen jälkeen.` },
     ],
   },
   "tonnin-seteli-t-paita": {
@@ -58,7 +58,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Kuka tahansa voi väittää olevansa arvokas, mutta harva kantaa sitä rintamuksessaan. "Tonnin seteli" on paita kaverille, joka tietää oman arvonsa: työporukan itsevarma myyjä, veli, joka kuittaa jokaisen ravintolalaskun, tai ystävä, jonka mielestä hän on koko seurueen kovin valuutta. Tonnin seteliä harva on nähnyt omassa lompakossaan, joten paidan kantaja on käytännössä harvinaisuus, jota kaikki haluaisivat pitää taskussa.\n\nVitsi toimii erityisen hyvin synttäreillä, polttareissa ja siinä kohtaa iltaa, kun joku kysyy, kuka maksaa seuraavan kierroksen. Paita saa kantajansa näyttämään juuri niin arvokkaalta kuin hän itse luulee olevansa, eikä kukaan uskalla väittää vastaan. Se on myös näppärä läksiäislahja työkaverille, jonka lähtö tuntuu tiimissä oikeasti kalliilta.\n\nT-paitaa on saatavilla kooissa S-5XL ja kahdeksassa värissä, esimerkiksi keltaisena, irlanninvihreänä, tummansinisenä ja mustana. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com. Paita painetaan tilauksesta, ja paketti lähtee Postin tai Matkahuollon kyytiin niin, että se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     faqs: [
       { q: "Kenelle Tonnin seteli -paita sopii lahjaksi?", a: "Se sopii itsevarmalle kaverille, joka pitää itseään seurueen arvokkaimpana jäsenenä. Paita on helppo lahja synttäreille tai polttareihin, koska vitsi aukeaa heti ilman selityksiä ja naurattaa myös saajaa itseään." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Jos tilaat paidan lisäksi toisen lahjan samaan pakettiin, raja ylittyy helposti ja postikulut jäävät kokonaan pois.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Jos tilaat paidan lisäksi toisen lahjan samaan pakettiin, raja ylittyy helposti ja postikulut jäävät kokonaan pois.` },
       { q: "Voinko palauttaa paidan, jos koko on väärä?", a: "Voit, sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Palautuksen postikulut maksat itse, ellei tuote ole viallinen, ja saat rahat takaisin 14 päivän kuluessa siitä, kun palautus on saapunut meille." },
     ],
   },
@@ -67,7 +67,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Kenellä enää kulkee käteistä mukana? Tämän hupparin kantaja voi silti väittää, että tonnin seteli on aina lähellä, vaikka lompakosta löytyisi pelkkiä kuitteja ja vanha bussikortti. Vitsi on tuttu jokaiselle, joka on joskus haaveillut isosta setelistä ja tietää, ettei sellaista näe arjessa koskaan.\n\nLahjana huppari sopii enolle, joka kertoo joka sukujuhlassa tehneensä hyvät kaupat, tai ystävälle, joka laskee jokaisen sentin mutta puhuu kuin sijoituspankkiiri. Naurut irtoavat esimerkiksi kaveriporukan mökkiviikonlopussa, kun joku kysyy, kuka maksaa seuraavan kierroksen, ja kaikki katsovat samaan suuntaan.\n\nHuppari on pehmeä ja kestää konepesun. Kokoja on S-5XL ja värejä yhdeksän, tummanharmaasta ja mustasta irlanninvihreään ja vaaleanpinkkiin. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan huppariin: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuote painetaan tilauksesta, ja paketti on perillä Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     faqs: [
       { q: "Kenelle tonnin seteli -huppari sopii lahjaksi?", a: "Se sopii jokaiselle, joka puhuu rahasta mielellään mutta maksaa mieluiten puhelimella. Erityisen hyvin se osuu kaveriin, joka kertoo aina löytäneensä edullisimman tarjouksen, tai sukulaiseen, joka säästää jokaisen alennuskuitin." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Jos tilaat samalla toisen hupparin tai paidan, ilmaisen toimituksen raja tulee nopeasti vastaan. Paketti kulkee Postin tai Matkahuollon kautta.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Jos tilaat samalla toisen hupparin tai paidan, ilmaisen toimituksen raja tulee nopeasti vastaan. Paketti kulkee Postin tai Matkahuollon kautta.` },
       { q: "Voinko palauttaa hupparin, jos koko ei sovi?", a: "Voit, sillä sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Palautuksen postikulut maksaa asiakas, ellei tuote ole viallinen. Rahat palautetaan 14 päivän kuluessa siitä, kun palautus on saapunut meille." },
     ],
   },
@@ -185,7 +185,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Ehtiikö paita eläkejuhliin?", a: `Ehtii, jos tilaat vähintään kolme viikkoa ennen juhlia. Paita painetaan tilauksesta, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää. Paketti kulkee Postin tai Matkahuollon kautta. Jos aikataulu on tiukka, tilaa mieluummin aiemmin kuin myöhemmin.` },
       { q: "Sopiiko paita naiselle?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Värivaihtoehdoista esimerkiksi violetti, punainen ja valkoinen ovat raikkaita valintoja eläkejuhliin." },
-      { q: "Saako toimituksen ilmaiseksi?", a: `Saa, kun tilauksen arvo on vähintään ${ILMAINEN_RAJA_TEKSTI} euroa. Sitä pienemmissä tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Jos työporukka hankkii samalla kertaa useamman lahjan, raja ylittyy helposti.` },
+      { q: "Saako toimituksen ilmaiseksi?", a: `Saa: toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Muissa tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Jos työporukka hankkii samalla kertaa useamman lahjan, raja ylittyy helposti.` },
     ],
   },
   "elakelainen-huppari": {
@@ -194,7 +194,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko huppari sekä naiselle että miehelle?", a: "Kokoja on S:stä 5XL:ään. Mittaa saajan hyvin istuvan hupparin leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Teksti toimii kenelle tahansa, joka on juuri jättänyt työelämän taakseen." },
       { q: "Mitä jos huppari on väärän kokoinen?", a: "Voit palauttaa sen 14 päivän kuluessa vastaanottamisesta. Palautuksen postikulut maksaa asiakas, ellei tuote ole viallinen, ja rahat palautetaan 14 päivän sisällä palautuksen saapumisesta. Uuden koon voi tilata samalla." },
-      { q: "Kuinka nopeasti huppari tulee perille?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Huppari painetaan vasta tilauksen jälkeen, ja paketin tuo Posti tai Matkahuolto. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.` },
+      { q: "Kuinka nopeasti huppari tulee perille?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Huppari painetaan vasta tilauksen jälkeen, ja paketin tuo Posti tai Matkahuolto. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
   "olen-elakkeella-t-paita": {
@@ -210,7 +210,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     description:
       `Eläkekahveilla tulee aina se hetki, kun joku kysyy, mitä sitä nyt sitten aikoo tehdä. Tämä huppari vastaa puolestaan: "Olen eläkkeellä". Lyhyt lause hoitaa kaikki selitykset kauppajonossa, kesämökin laiturilla ja sukujuhlissa, kun sukulaiset ihmettelevät, miksi kalenteri on tyhjä tiistaina kello kymmenen.\n\nLahja sopii kollegalle, joka jää keväällä pois kahvihuoneen vakiokalustosta, tai isälle, joka on laskenut työpäiviä jo pari vuotta. Vitsi toimii, koska teksti on ylpeä eikä selittele: nyt on saavutettu jotain, mitä moni työssä käyvä kadehtii.\n\nPehmeä huppari kestää konepesun ja on oikea vaate aamulenkille, puutarhaan ja mökin iltanuotiolle. Kokoja on S-5XL, ja värivalikoimassa on yhdeksän sävyä, esimerkiksi oranssi, vaaleansininen ja musta. Mittaa saajan hyvin istuvan hupparin leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää. Huppari painetaan tilauksesta, ja se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivän kuluttua.`,
     faqs: [
-      { q: "Sopiiko huppari työporukan eläkelahjaksi?", a: `Sopii, ja se on helppo antaa yhteislahjana läksiäiskahvien yhteydessä. Jos työporukka haluaa lahjaan useamman tuotteen, kannattaa huomata, että ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.` },
+      { q: "Sopiiko huppari työporukan eläkelahjaksi?", a: `Sopii, ja se on helppo antaa yhteislahjana läksiäiskahvien yhteydessä. Jos työporukka haluaa lahjaan useamman tuotteen, kannattaa huomata, että toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
       { q: "Kuinka pitkään toimitus kestää?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Huppari painetaan vasta tilauksen jälkeen, ja paketti kulkee Postin tai Matkahuollon kautta. Varaa siis muutama päivä pelivaraa ennen eläkejuhlia, niin lahja on varmasti valmiina.` },
       { q: "Kestääkö huppari pesua?", a: "Kyllä, huppari kestää tavallisen konepesun. Noudata vaatteen pesulapun ohjeita, niin huppari palvelee eläkeläisen arjessa mökillä, puutarhassa ja aamulenkeillä. Pehmeän hupparin voi heittää koneeseen aina puutarhatöiden jälkeen." },
     ],
@@ -248,7 +248,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Loukkaantuuko kalju kaveri lahjasta?", a: "Harvoin, jos hän heittää itsekin kaljuvitsejä. Teksti on ylpeä toteamus eikä pilkkaa, joten se toimii hyvin sille, joka on sinut ulkonäkönsä kanssa. Jos aihe on arka, valitse jokin muu lahja." },
       { q: "Mitä kokoja hupparista on?", a: "Kokoja on kahdeksan, S-5XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Mittaa saajan oman hupparin leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, niin koko osuu kohdalleen myös leveäharteiselle kaverille." },
-      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} euroa tilausta kohden. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paketti toimitetaan Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta, sillä huppari painetaan vasta tilauksen jälkeen.` },
+      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} euroa tilausta kohden. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paketti toimitetaan Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta, sillä huppari painetaan vasta tilauksen jälkeen.` },
     ],
   },
   "maailman-paras-ukki-t-paita": {
@@ -266,7 +266,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko huppari raskausuutisen kertomiseen?", a: "Sopii hyvin, sillä tuleva ukki saa uutisen paketista ilman sanoja. Lahjan voi antaa yhdessä ultraäänikuvan kanssa, jolloin viesti menee perille heti, kun huppari nostetaan paketista." },
       { q: "Mitä värejä hupparista on?", a: "Hupparista on yhdeksän väriä: tummanharmaa, vaaleanharmaa, valkoinen, musta, irlanninvihreä, punainen, tummansininen, vaaleanpinkki ja vaaleansininen. Kaikista valitaan koko väliltä S-5XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan huppariin: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan." },
-      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} € tilausta kohden. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten samalla kertaa voi tilata lahjan myös mummolle. Paketti tulee Postin tai Matkahuollon kautta.` },
+      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} € tilausta kohden. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten samalla kertaa voi tilata lahjan myös mummolle. Paketti tulee Postin tai Matkahuollon kautta.` },
     ],
   },
   "maailman-paras-pappa-t-paita": {
@@ -283,7 +283,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Pappa, joka opettaa lapsenlapset virvelöimään, korjaa polkupyörän ketjut ja tietää aina, missä karkkipussi on piilossa, ansaitsee tittelinsä painettuna. Tässä hupparissa lukee "Maailman Paras Pappa", eikä kukaan suvussa ryhdy kiistämään asiaa.\n\nLahjana huppari toimii, kun lapsenlapset ojentavat sen itse papan syntymäpäivillä, isänpäivänä tai jouluaattona. Huumori on lempeää: kehu on niin suuri, että pappa nauraa ja pukee hupparin silti heti päälle. Kahvipöydässä lapset voivat vielä lukea tekstin ääneen kuorossa, ja se hetki jää muistiin.\n\nPehmeä huppari kestää konepesun ja sopii mökin rantasaunan jälkeiseen iltaan tai pilkkireissulla toppatakin alle. Kokovalikoima S-5XL kattaa hoikan papan ja leveäharteisen metsämiehen. Värejä on yhdeksän, esimerkiksi tummanharmaa, irlanninvihreä ja tummansininen. Valitse koko vertaamalla saajan omaan hyvin istuvaan huppariin. Tarkat mitat senttimetreinä ovat tuotesivun kokotaulukossa. Tilauksesta painettu huppari saapuu Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${jouluLause()}`,
     faqs: [
       { q: "Kuka papalle tämän lahjan yleensä antaa?", a: "Useimmiten lapsenlapset, usein vanhempien avustuksella. Lahja on helppo ojentaa isänpäivänä, syntymäpäivillä tai jouluna, ja pienetkin lapset ymmärtävät, miksi pappa hymyilee paketin avattuaan. Samalla pappa saa lämpimän vaatteen." },
-      { q: "Voinko ostaa hupparin useammalle papalle?", a: `Voit, valitse jokaiselle oma koko ja väri samaan tilaukseen. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten usean lahjan tilaaminen kerralla säästää postikuluja.` },
+      { q: "Voinko ostaa hupparin useammalle papalle?", a: `Voit, valitse jokaiselle oma koko ja väri samaan tilaukseen. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten usean lahjan tilaaminen kerralla säästää postikuluja.` },
       { q: "Mitä teen, jos huppari on viallinen?", a: "Ota yhteyttä osoitteeseen huumorikauppa@gmail.com, niin vastaamme 1-2 arkipäivässä. Kerro viestissä tilausnumero ja vian kuvaus. Viallinen tuote korvataan uudella tai rahat palautetaan, eikä sinun tarvitse maksaa palautuksen postikuluja." },
     ],
   },
@@ -347,7 +347,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Kuka paidassa on se pomo?", a: "Paita ei kerro sitä, ja se on koko vitsin idea. Kantaja voi esittää olevansa pomo tai osoittaa sormella puolisoa, lasta tai vaikka kissaa. Tulkinta jää perheen keskusteltavaksi." },
       { q: "Mitkä koot paidasta löytyvät?", a: "Paitaa on saatavana kooissa S-4XL. Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää. Värejä on viisi." },
-      { q: "Saanko ilmaisen toimituksen?", a: `Saat, kun tilauksesi summa on vähintään ${ILMAINEN_RAJA_TEKSTI} euroa. Sitä pienemmissä tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja paketti saapuu Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Paita painetaan tilauksesta.` },
+      { q: "Saanko ilmaisen toimituksen?", a: `Saat: toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Muissa tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja paketti saapuu Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Paita painetaan tilauksesta.` },
     ],
   },
   "tassa-talossa-asuu-yksi-pomo-huppari": {
@@ -356,7 +356,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Kenelle tämä huppari kannattaa antaa?", a: "Sille perheenjäsenelle, joka oikeasti tekee päätökset, tai sille, joka kuvittelee tekevänsä. Tupaantuliaisissa ja hääpäivänä lahja toimii erityisen hyvin, koska koko perhe pääsee mukaan vitsiin ja väittelemään pomon henkilöllisyydestä." },
       { q: "Onko huppari saatavilla mustana?", a: "Ei ole, tätä mallia on kuudessa värissä. Vaihtoehdot ovat vaaleanharmaa, valkoinen, irlanninvihreä, punainen, vaaleanpinkki ja vaaleansininen, joten valittavaa löytyy sekä hillittyyn että pirteään makuun." },
-      { q: "Toimitetaanko huppari Matkahuollon kautta?", a: `Kyllä, toimitus hoidetaan Postin tai Matkahuollon kautta. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta ja maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Huppari painetaan ennen lähetystä.` },
+      { q: "Toimitetaanko huppari Matkahuollon kautta?", a: `Kyllä, toimitus hoidetaan Postin tai Matkahuollon kautta. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta ja maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Huppari painetaan ennen lähetystä.` },
     ],
   },
   "hauska-t-paita-pomolle-maailman-paras-pomo-itse-sanoo": {
@@ -365,7 +365,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Loukkaantuuko pomo tällaisesta lahjasta?", a: "Huumorintajuinen pomo ei loukkaannu, vaan nauraa mukana. Vitsi kohdistuu itsekehuun, ei osaamiseen, joten se on lempeä piikki. Jos olet epävarma, anna paita koko tiimin yhteisenä lahjana." },
       { q: "Missä väreissä paitaa on?", a: "Paitaa on yhdessä värissä, tumma suklaa. Ruskea sävy sopii farkkujen ja pikkutakin kanssa myös rennompaan toimistopäivään. Koot ovat S-2XL, joten kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com ennen tilausta." },
-      { q: "Voiko tiimi tilata useamman paidan kerralla?", a: `Voi, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Pienemmissä tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Jokainen paita painetaan tilauksesta, ja paketti saapuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Sävy on helppo yhdistää myös farkkuihin.` },
+      { q: "Voiko tiimi tilata useamman paidan kerralla?", a: `Voi, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Pienemmissä tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Jokainen paita painetaan tilauksesta, ja paketti saapuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Sävy on helppo yhdistää myös farkkuihin.` },
     ],
   },
   "personoitava-t-paita-isalle-maailman-paras-isa": {
@@ -409,7 +409,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Eläkeläisen kalenteri on yllättävän täynnä: aamulehti, kauppareissu, päiväunet ja naapurin kanssa aidan yli rupattelu. Tämä t-paita sanoo sen ääneen: "Eläkkeellä, kiireinen tekemään ei mitään". Vitsi osuu, koska jokainen eläkeläinen on kuullut kysymyksen siitä, mitä sitä nyt päivät tekee, ja paita vastaa puolestaan.\n\nLahjaksi se sopii kollegalle, joka jää eläkkeelle keväällä, tai sukulaiselle, jonka läksiäisiä juhlitaan kahvihuoneessa kakun kera. Eläkekahveilla paidan voi ojentaa paketissa, ja sen jälkeen sitä nähdään mökillä, golfkentällä ja torilla.\n\nMateriaali: ${materiaali("elakkeella-kiireinen-tekemaan-ei-mitaan-t-paita")} Sävyjä on yhdeksän, esimerkiksi meleerattu oranssi, meleerattu armeijanvihreä ja valkoinen, ja koot ovat S-2XL. Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää.\n\nPaita painetaan tilauksesta ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivän kuluttua Postin tai Matkahuollon kautta.`,
     faqs: [
       { q: "Mistä materiaalista paita on tehty?", a: `${materiaali("elakkeella-kiireinen-tekemaan-ei-mitaan-t-paita")} Kevyt kangas tekee siitä mukavan arkipaidan kesäpäiviin ja sisäkäyttöön ympäri vuoden.` },
-      { q: "Ehtiikö paita läksiäisiin?", a: `Ehtii, kun tilaat vähintään kolme viikkoa ennen juhlaa. Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää. Paketin tuo Posti tai Matkahuolto. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.` },
+      { q: "Ehtiikö paita läksiäisiin?", a: `Ehtii, kun tilaat vähintään kolme viikkoa ennen juhlaa. Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää. Paketin tuo Posti tai Matkahuolto. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
       { q: "Mikä on suurin saatavilla oleva koko?", a: "Suurin koko on 2XL. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com. Kokoja on S:stä 2XL:ään." },
     ],
   },
@@ -419,7 +419,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Onko huppari lämmin talvikäyttöön?", a: "Se on pehmeä huppari puuvilla-polyesterisekoitteesta, joten se sopii viileisiin päiviin. Kovilla pakkasilla sitä kannattaa käyttää välikerroksena takin alla, ja sisällä se on mukava sellaisenaan. Se on mukava myös mökin kuistilla." },
       { q: "Mikä koko kannattaa valita, jos saaja pitää väljistä vaatteista?", a: "Mittaa saajan hyvin istuvan hupparin leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Hupparia on saatavana kooissa S-2XL." },
-      { q: "Millä kuljetusyhtiöllä huppari toimitetaan?", a: `Huppari toimitetaan Postin tai Matkahuollon kautta. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, mutta ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Huppari painetaan tilauksesta.` },
+      { q: "Millä kuljetusyhtiöllä huppari toimitetaan?", a: `Huppari toimitetaan Postin tai Matkahuollon kautta. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, mutta toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Huppari painetaan tilauksesta.` },
     ],
   },
   "elakelainen-aamuheratys-vapaaehtoinen-t-paita": {
@@ -482,7 +482,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko paita naiselle?", a: "Sopii, teksti toimii yhtä hyvin naiselle kuin miehelle. Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää. Koot ovat S-2XL. Vertaa niitä saajan omaan paitaan." },
       { q: "Voiko numeron vaihtaa toiseen ikään?", a: "Ei voi, tämän paidan teksti on valmis. Jos haluat oman tekstin, valitse kaupan personoitava tuote, jonka toiveen voi kirjoittaa tuotesivun kenttään ennen ostoskoriin lisäämistä. Kenttään mahtuu enintään 200 merkkiä." },
-      { q: "Kuinka ajoissa paita pitää tilata synttäreille?", a: `Tilaa vähintään kolme viikkoa ennen juhlia. Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen.` },
+      { q: "Kuinka ajoissa paita pitää tilata synttäreille?", a: `Tilaa vähintään kolme viikkoa ennen juhlia. Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
   "40v-ei-vanha-vintage-t-paita": {
@@ -518,7 +518,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko paita myös miehelle?", a: "Sopii, teksti toimii kenelle tahansa viisikymppiselle. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan paitaan: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Koot ovat S-2XL. Vertaa mittoja saajan omaan t-paitaan, niin valinta on helppo." },
       { q: "Kuinka paksua kangas on?", a: `${materiaali("50-vuotta-nuori-t-paita")} Se on keskivahva t-paitakangas, joka sopii arkikäyttöön sellaisenaan tai neuleen alle. Värejä on yhdeksän, joten sävyn voi valita juhlijan makuun.` },
-      { q: "Mitä toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, ja paketti on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä Postin tai Matkahuollon kautta. Paita painetaan vasta tilauksen jälkeen.` },
+      { q: "Mitä toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, ja paketti on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä Postin tai Matkahuollon kautta. Paita painetaan vasta tilauksen jälkeen.` },
     ],
   },
   "50-ja-hopeanhohtoinen-vain-hiukset-t-paita": {
@@ -536,7 +536,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko huppari myös naiselle?", a: "Sopii, jos sankari arvostaa autoilijahuumoria. Teksti ei mainitse sukupuolta, joten se toimii kenelle tahansa 50 vuotta täyttävälle, joka on pitänyt itsestään hyvää huolta ja kestää pienen piikittelyn." },
       { q: "Mitä kokoja hupparista on?", a: "Hupparia on saatavilla kokoina S-2XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan huppariin: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan." },
-      { q: "Mitä toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, mikä kannattaa huomioida, jos ostat lahjan yhdessä muiden juhlavieraiden kanssa. Paketti kulkee Postin tai Matkahuollon kautta.` },
+      { q: "Mitä toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, mikä kannattaa huomioida, jos ostat lahjan yhdessä muiden juhlavieraiden kanssa. Paketti kulkee Postin tai Matkahuollon kautta.` },
     ],
   },
   "50-ja-paras-vasta-tulossa-t-paita": {
@@ -581,7 +581,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Mitä jos paita on väärää kokoa?", a: "Voit palauttaa paidan 14 päivän kuluessa vastaanottamisesta. Asiakas maksaa palautuksen postikulut, ellei tuote ole viallinen. Rahat palautetaan 14 päivän kuluessa siitä, kun palautus on saapunut." },
       { q: "Onko paitaa muita värejä?", a: "Ei ole, paita on saatavana vain tumman suklaan värisenä. Lämmin ruskea sävy sopii farkkujen ja neuletakin kanssa sekä arkeen että juhlaan. Koot ovat S-2XL. Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää." },
-      { q: "Kannattaako paita antaa suvun yhteislahjana?", a: `Kyllä, yhteislahjana paita on helppo ja hauska. Jos tilaatte samalla muitakin tuotteita, ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Muuten toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
+      { q: "Kannattaako paita antaa suvun yhteislahjana?", a: `Kyllä, yhteislahjana paita on helppo ja hauska. Jos tilaatte samalla muitakin tuotteita, toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Muuten toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     ],
   },
   "ala-kosketa-sahkomiesta-kun-olet-marka-t-paita": {
@@ -589,7 +589,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Sähköasentaja tietää, että vesi ja virta eivät kuulu yhteen, ja tämä paita muistuttaa siitä varoituskyltin tyylillä: "Älä Kosketa Sähkömiestä Kun Olet Märkä". Pilke silmäkulmassa teksti kertoo myös, että kantaja on sen verran säkenöivä tyyppi, että varovaisuus on paikallaan. Juuri tuo kaksoismerkitys tekee siitä hauskan, ja kaksimielisyys pysyy kevyenä.\n\nLahjaksi paita sopii sähkömiehelle, alan opiskelijalle valmistujaisiin tai puolisolle, joka on aina se, joka vaihtaa sulakkeet. Työmaan taukokopissa se naurattaa, ja pikkujouluissa se herättää keskustelua jo eteisessä. Sähköalan valmistujaisissa se on lahja, jota ei tarvitse selittää kenellekään.\n\nVärejä on kahdeksan, kuten keltainen, punainen ja tummanharmaa, ja kokoja S:stä 5XL:ään, joten valinnanvaraa on isommallekin miehelle. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com.\n\nPaita painetaan, kun tilaus on tehty, ja paketti saapuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä Postin tai Matkahuollon kautta.`,
     faqs: [
       { q: "Onko teksti kaksimielinen?", a: "Vähän, mutta kevyellä tavalla. Ensisijaisesti se on sähköturvallisuusvitsi, joka leikittelee varoituskylttien kielellä. Kaksoismerkitys naurattaa aikuisia, eikä siinä ole mitään rivoa. Työkavereiden kesken se on varma naurunaihe." },
-      { q: "Voiko paidan tilata koko tiimille eri kokoina?", a: `Voi, lisää ostoskoriin jokainen koko erikseen. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten tiimitilaus kannattaa tehdä yhdellä kertaa. Kaikki paidat painetaan tilauksesta. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
+      { q: "Voiko paidan tilata koko tiimille eri kokoina?", a: `Voi, lisää ostoskoriin jokainen koko erikseen. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten tiimitilaus kannattaa tehdä yhdellä kertaa. Kaikki paidat painetaan tilauksesta. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
       { q: "Mitä kokoja paidasta on?", a: "Kokoja on S:stä 5XL:ään. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan paitaan: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Värejä on kahdeksan." },
     ],
   },
@@ -607,7 +607,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Putkimies kuulee tippuvan hanan kolmen huoneen päästä ja haistaa kosteusvaurion jo eteisessä. Tämän paidan teksti "Löytää aina lekkauksen" tiivistää ammattitaidon yhteen lauseeseen, ja alan väki tunnistaa slangin heti. Muille sen voi selittää: lekkaus on vuoto, ja hyvä putkari löytää sen silloinkin, kun kukaan muu ei usko sen olevan olemassa.\n\nLahjaksi paita sopii putkiasentajalle, LVI-asentajalle tai kenelle tahansa putkialan ammattilaiselle, joka viettää työpäivänsä tiskialtaan alla. Työmaan taukokopissa tai firman pikkujouluissa se saa kollegat nauramaan, ja kotona puoliso voi muistuttaa, että keittiön hana vuotaa edelleen. Myös valmistujaisissa alan opiskelijalle se on hauska tervetulotoivotus ammattikuntaan.\n\nVäri on tumma suklaa, ja koot ovat S-2XL. Koon valinnassa auttaa tuotesivun kokoapu: mittaa saajan oman, hyvin istuvan paidan leveys kainaloiden kohdalta. Paita painetaan tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta niin, että se saapuu ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta.`,
     faqs: [
       { q: "Mitä lekkaus tarkoittaa?", a: "Lekkaus on alan slangia ja tarkoittaa vuotoa. Paidan vitsi on siinä, että hyvä putkimies löytää vuodon aina, oli se sitten seinän sisällä, lattian alla tai asiakkaan mielestä täysin olematon." },
-      { q: "Voinko tilata paidan koko työporukalle?", a: `Voit, valitse jokaiselle oma koko samaan tilaukseen. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten useamman paidan tilaaminen kerralla säästää postikuluissa. Kokoja on S-2XL.` },
+      { q: "Voinko tilata paidan koko työporukalle?", a: `Voit, valitse jokaiselle oma koko samaan tilaukseen. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten useamman paidan tilaaminen kerralla säästää postikuluissa. Kokoja on S-2XL.` },
       { q: "Ehtiikö paita pikkujouluihin?", a: `Ehtii, kun tilaat vähintään kolme viikkoa ennen juhlia. Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää Postin tai Matkahuollon kautta, joten pieni pelivara kannattaa varata.` },
     ],
   },
@@ -617,7 +617,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Kenelle rakennusalalla paita sopii?", a: "Paita sopii kaikille, jotka tekevät työtä käsillään. Se on hauska lahja kirvesmiehelle, muurarille, sähkömiehelle tai omakotitalon remontoijalle. Teksti kertoo arvostuksesta käytännön osaamista kohtaan. Vitsi aukeaa jokaiselle, joka on joskus seissyt telineillä." },
       { q: "Onko paita saatavilla isompana kuin 2XL?", a: "Ei ole, tämän paidan suurin koko on 2XL. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com. Näin vältät koon vaihtamisen." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen se on ilmainen. Paita painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja se on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paita painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta. Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     ],
   },
   "hauska-t-paita-poliisille-lain-kasi-myos-kahvitunnilla": {
@@ -661,7 +661,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Parturin tuolissa käydään läpi avioerot, kalareissut, kunnallispolitiikka ja naapurin uusi auto. Siksi paidan teksti "Leikkaa Myös Tukkaa" osuu suoraan: parturi on terapeutti, uutistoimisto ja neuvonantaja, ja hiukset leikataan siinä sivussa. Vitsin ymmärtää jokainen asiakas, joka on istunut tuolissa tunnin ja kertonut enemmän kuin aikoi.\n\nLahja sopii parturille, kampaajalle tai kauneudenhoitoalan opiskelijalle, ja se on hauska salongin avajaisissa, synttäreillä tai työporukan pikkujouluissa. Kanta-asiakas voi ojentaa sen kiitokseksi vuosien keskusteluista, ja työkaverit voivat antaa sen yhteislahjana, kun salongissa juhlitaan merkkipäivää.\n\nPaidan väri on tumma suklaa ja koot S-2XL. Valitse koko vertaamalla saajan omaan hyvin istuvaan paitaan. Tarkat mitat senttimetreinä ovat tuotesivun kokotaulukossa.\n\nPaita painetaan tilauksesta, ja se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivän sisällä. Kuljettajana toimii Posti tai Matkahuolto, ja toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €.`,
     faqs: [
       { q: "Sopiiko paita kampaajalle?", a: "Sopii hyvin, sillä kampaamossakin jutellaan vähintään yhtä paljon kuin parturissa. Paita on hauska lahja kaikille hiusalan ammattilaisille ja alan opiskelijoille. Koot ovat S-2XL ja väri tumma suklaa." },
-      { q: "Voiko paidan tilata koko salongin porukalle?", a: `Voi, lisää jokainen koko ostoskoriin erikseen. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paidat painetaan tilauksesta, ja ne saapuvat ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Muuten toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €.` },
+      { q: "Voiko paidan tilata koko salongin porukalle?", a: `Voi, lisää jokainen koko ostoskoriin erikseen. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paidat painetaan tilauksesta, ja ne saapuvat ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Muuten toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €.` },
       { q: "Missä väreissä paitaa on?", a: "Paitaa on yhdessä värissä, tummassa suklaassa. Koot ovat S-2XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Mittaa saajan omasta t-paidasta leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, varsinkin jos hän pitää töissä väljästä istuvuudesta." },
     ],
   },
@@ -669,7 +669,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     description:
       `Vanha sananlasku väittää, että puhtaus on puoli elämää. Siivoojalle se on pikemminkin koko työpäivä, ja tämä paita antaa sananlaskulle ammattilaisen arvovallan. "Puhtaus on puoli elämää" kertoo kantajasta, että hän tietää, mistä pöly löytyy, ja pitää huolen siitä, ettei muiden tarvitse ajatella asiaa.\n\nLahjaksi paita sopii siivoojalle, laitoshuoltajalle tai kiinteistöhuollon tiimille, mutta myös sille perheenjäsenelle, joka imuroi lauantaiaamuisin ennen kuin muut ovat heränneet. Työpaikan kahvihuoneessa se on hauska kiitos ihmiselle, jonka työ huomataan yleensä vasta, kun se jää tekemättä. Tiimin virkistyspäivä ja eläkejuhlat ovat myös luontevia hetkiä ojentaa se. Paidan kantaja voi myös vihjata, että toinen puoli elämästä kuuluu sohvalle ja ansaitulle tauolle.\n\nPaita on väriltään tumma suklaa, ja koot ovat S-2XL. Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Tuotesivun kokoapu neuvoo lisää. Painatus tehdään tilauksen jälkeen, minkä jälkeen paketti matkaa Postin tai Matkahuollon kyydissä ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta.`,
     faqs: [
-      { q: "Voiko paitaa ostaa koko siivoustiimille?", a: `Voi, ja yhteistilauksessa toimitus on ilmainen, kun tilauksen summa on vähintään ${ILMAINEN_RAJA_TEKSTI} euroa. Kokoja on S-2XL, joten valitse kullekin tiimiläiselle oma koko tuotesivun kokoavun avulla. Isompi tilaus pitää myös postikulut kurissa.` },
+      { q: "Voiko paitaa ostaa koko siivoustiimille?", a: `Voi, ja yhteistilauksessa toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Kokoja on S-2XL, joten valitse kullekin tiimiläiselle oma koko tuotesivun kokoavun avulla. Isompi tilaus pitää myös postikulut kurissa.` },
       { q: "Sopiiko paita myös kotona siivoavalle?", a: "Sopii, ja se on hauska kiitos perheenjäsenelle, joka pitää kodin järjestyksessä. Paidan voi antaa vaikka äitienpäivänä tai isänpäivänä, jolloin vitsi muuttuu samalla kiitokseksi kaikista lauantain imurointikerroista." },
       { q: "Kuinka nopeasti saan vastauksen kysymykseen?", a: "Vastaamme 1-2 arkipäivän kuluessa. Lähetä viesti osoitteeseen huumorikauppa@gmail.com, jos haluat kysyä esimerkiksi kokoja, toimitusta tai palautusta ennen tilausta. Vastaamme arkipäivisin, joten viikonloppuna lähetettyyn viestiin vastataan alkuviikosta." },
     ],
@@ -679,7 +679,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Kesäkuussa sataa liikaa, heinäkuussa liian vähän, ja syyskuussa puimuri seisoo, kun pellot ovat märkiä. Maanviljelijä tietää, että sää päättää, mutta työt tehdään silti. Paidan teksti "Sää päättää teen silti" on kuin koko ammattikunnan motto, lyhyt ja sitkeä kuin itse viljelijä.\n\nLahjana paita sopii maanviljelijälle, karjanhoitajalle tai maatalousalan ammattilaiselle, joka seuraa sääennustetta tarkemmin kuin uutisia. Vitsi naurattaa kylän juhlissa, maatalousnäyttelyssä ja sukulaisten luona, kun kaupunkilaiset valittavat sadetta ja isäntä vain kohauttaa olkapäitään. Se on myös hyvä kiitos naapurille, joka auttoi heinätöissä tai veti auton ojasta.\n\nVäri on tumma suklaa, ja kokovalikoima on S-2XL. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com. T-paita sopii navettaan, pellon laidalle ja kylän kesäjuhliin yhtä lailla. Paita painetaan tilauksesta, ja se saapuu Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta.`,
     faqs: [
       { q: "Kenelle paita sopii maatilalla?", a: "Paita sopii jokaiselle, joka tekee töitä sään armoilla. Viljelijän lisäksi se ilahduttaa karjanhoitajaa, metsuria tai puutarhuria, joka ei jätä töitä kesken sateen takia." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paketti kulkee Postin tai Matkahuollon kautta ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paketti kulkee Postin tai Matkahuollon kautta ja on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta.` },
       { q: "Sopiiko paita joululahjaksi?", a: `Sopii, ja talvi on maatilalla rauhallisempi aika ottaa uusi paita käyttöön. ${jouluLause()} Paita painetaan tilauksesta ennen lähetystä.` },
     ],
   },
@@ -689,7 +689,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko paita myös rekka- tai taksikuskille?", a: "Sopii, jos saaja tunnistaa itsensä Suomen pyörittäjänä. Teksti on suunniteltu linja-autonkuljettajille, mutta ylpeys kuljettamisesta on yhteistä kaikille ammattikuljettajille. Vitsi toimii jokaisen ratin takana istuvan kanssa." },
       { q: "Miten valitsen oikean koon?", a: "Mittaa saajan hyvin istuvan paidan leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan, ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Koot ovat S-2XL, joten mittaaminen kannattaa tehdä ennen tilausta." },
-      { q: "Kuinka kauan toimitus kestää?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Paita painetaan vasta tilauksen jälkeen, ja sen kuljettaa Posti tai Matkahuolto. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.` },
+      { q: "Kuinka kauan toimitus kestää?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Paita painetaan vasta tilauksen jälkeen, ja sen kuljettaa Posti tai Matkahuolto. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
   "hauska-t-paita-myyntimiehelle-kaupat-klousattu": {
@@ -697,7 +697,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Myyntipalaverissa puhutaan pipelinesta, liideistä ja kvartaalista, mutta tärkein sana on aina sama: klousattu. Tämä paita juhlistaa sitä hetkeä, kun nimi on paperissa ja kättely tehty: "Kaupat Klousattu". Suomen ja englannin sekoitus on myyntialan omaa murretta, ja juuri siksi vitsi naurattaa jokaista, joka on soittanut kylmäsoittonsa ja odottanut sitä yhtä kyllää.\n\nPaita sopii myyjälle, myyntipäällikölle, autokauppiaalle tai kiinteistönvälittäjälle. Se on hauska palkinto myyntikilpailun voittajalle, tiimin kick-offin lahja tai muistaminen, kun kuukauden tavoite täyttyy. Myös pikkujouluissa se kerää hymyjä myyntitiimin pöydässä.\n\nVäri on tumma suklaa, ja koot ovat S-2XL. Valitse koko vertaamalla saajan omaan hyvin istuvaan paitaan. Tarkat mitat senttimetreinä ovat tuotesivun kokotaulukossa.\n\nJokainen paita painetaan erikseen tilauksesta, ja paketti on perillä Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. ${jouluLause()}`,
     faqs: [
       { q: "Mitä \"klousattu\" tarkoittaa?", a: "Se tarkoittaa kauppaa, joka on saatu päätökseen. Sana tulee englannin sanasta close, ja myyntialalla sitä käytetään arkikielessä, kun asiakas on sanonut kyllä ja sopimus on allekirjoitettu." },
-      { q: "Sopiiko paita myyntikilpailun palkinnoksi?", a: `Sopii erinomaisesti, koska teksti kuvaa juuri voittohetkeä. Paidan voi ojentaa kuukauden myyjälle tai tiimin kick-offissa. Useamman paidan tilauksessa toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen. Paita painetaan tilauksesta.` },
+      { q: "Sopiiko paita myyntikilpailun palkinnoksi?", a: `Sopii erinomaisesti, koska teksti kuvaa juuri voittohetkeä. Paidan voi ojentaa kuukauden myyjälle tai tiimin kick-offissa. Useamman paidan tilauksessa toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paita painetaan tilauksesta.` },
       { q: "Ehtiikö paita jouluksi?", a: `${jouluVastaus()} Paita painetaan tilauksesta, ja toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää. Aikaisempi tilaus jättää varaa. Paketin tuo Posti tai Matkahuolto.` },
     ],
   },
@@ -707,7 +707,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Uskaltaako paitaa käyttää palaverissa?", a: "Uskaltaa, kun työyhteisössä osataan nauraa omille käytännöille. Moni käyttää sitä mieluiten perjantain viimeisessä palaverissa, kun tunnelma on muutenkin kevyempi ja viesti menee perille ilman sanoja." },
       { q: "Sopiiko paita esihenkilölle lahjaksi?", a: "Sopii, jos esihenkilö osaa nauraa omille kokouskäytännöilleen. Paita on hauska läksiäis- tai joululahja tiimiltä, ja se kertoo lempeästi, että tehokkaampia palavereja arvostettaisiin. Saajan oma huumori ratkaisee." },
-      { q: "Paljonko toimitus maksaa?", a: `Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Tiimin yhteistilaus ylittää rajan nopeasti, jos paita hankitaan useammalle palaverikriitikolle kerralla. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
+      { q: "Paljonko toimitus maksaa?", a: `Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Tiimin yhteistilaus ylittää rajan nopeasti, jos paita hankitaan useammalle palaverikriitikolle kerralla. Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     ],
   },
   "hauska-huppari-etatoita-tekeville-konttori-3-metria-sangysta": {
@@ -742,7 +742,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Ahven ei syönyt, sade kasteli eväät ja perämoottori sammui kahdesti, mutta silti päivä oli parempi kuin toimistolla. Tämä huppari tiivistää kalastajan elämänfilosofian: "Huonokin päivä kalassa on parempi kuin hyvä päivä töissä". Vitsi toimii, koska jokainen kalamies tietää sen olevan totta, ja jokainen puoliso on kuullut sen sata kertaa.\n\nHuppari on lahja isälle, joka lähtee pilkille ennen auringonnousua, appiukolle, jonka veneessä on aina tilaa yhdelle, tai työkaverille, joka laskee päiviä lomaan ja kesän ensimmäiseen heittoon. Se sopii isänpäivään, synttäreille ja eläkejuhliin, ja mökkirannassa se naurattaa koko kalaporukkaa.\n\nKalastus on usein kylmää puuhaa, joten huppari on käytännöllinen valinta: aamu-usvassa järven rannalla se on se vaate, jonka päälle vedetään vielä pelastusliivi. Kokoja on S-5XL ja värejä yhdeksän, esimerkiksi tummanharmaa, irlanninvihreä, tummansininen ja musta. Pehmeä huppari kestää konepesun. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan huppariin: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan. Huppari painetaan tilauksesta ja lähtee matkaan niin, että se on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     faqs: [
       { q: "Sopiiko huppari pilkkireissulle?", a: "Sopii välikerrokseksi talvitakin alle tai sellaisenaan keväällä ja syksyllä. Pehmeä huppari kestää konepesun, joten kalaisen reissun jälkeen sen saa helposti puhtaaksi. Kokoja on S-5XL. Värejä on yhdeksän." },
-      { q: "Voiko hupparin tilata koko kalaporukalle?", a: `Voi, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Valitse jokaiselle oma koko ja väri, sillä kokoja on S-5XL ja värejä yhdeksän, joten porukan kalastajat erottaa toisistaan jo rannalta.` },
+      { q: "Voiko hupparin tilata koko kalaporukalle?", a: `Voi, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Valitse jokaiselle oma koko ja väri, sillä kokoja on S-5XL ja värejä yhdeksän, joten porukan kalastajat erottaa toisistaan jo rannalta.` },
       { q: "Mitä jos huppari ei sovi?", a: "Voit palauttaa sen 14 päivän kuluessa tuotteen vastaanottamisesta. Palautuksen postikulut maksaa asiakas, ellei tuote ole viallinen, ja hyvitys maksetaan 14 päivän kuluessa palautuksen saapumisesta. Kysy apua osoitteesta huumorikauppa@gmail.com." },
     ],
   },
@@ -770,7 +770,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Onko hupparista muita värejä?", a: "Ei ole, huppari on saatavilla tummanharmaana. Väri sopii mökkiympäristöön ja arkeen, ja koot ovat S-2XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Mittaa saajan omasta hupparista leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan." },
       { q: "Sopiiko huppari tupaantuliaislahjaksi mökille?", a: "Sopii, ja se on lahja, jota käytetään heti ensimmäisenä iltana laiturilla. Uuden mökin omistaja tunnistaa tekstistä oman fiiliksensä, ja huppari kulkee mukana joka reissulla. Koot ovat S-2XL." },
-      { q: "Paljonko lähetys maksaa?", a: `Lähetys maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paketti tulee Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. Huppari painetaan tilauksesta. Toimitusmaksu on sama koko tilaukselle.` },
+      { q: "Paljonko lähetys maksaa?", a: `Lähetys maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paketti tulee Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä tilauksesta. Huppari painetaan tilauksesta. Toimitusmaksu on sama koko tilaukselle.` },
     ],
   },
   "hauska-t-paita-golfaajalle-bogey-on-elamantapa": {
@@ -779,7 +779,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Mikä on bogey?", a: "Bogey tarkoittaa golfissa yhtä lyöntiä yli reiän parin. Se on harrastajalle tuttu tulos, ja siksi paidan vitsi aukeaa jokaiselle, joka on joskus kirjannut tuloskorttiin toivottua suuremman numeron." },
       { q: "Voiko paitaa käyttää golfkentällä?", a: "Se riippuu kentän pukeutumissäännöistä, sillä monella kentällä edellytetään kauluspaitaa. Klubitalolla, harjoitusalueella ja golfmatkan illoissa t-paita on luonteva valinta. Tarkista säännöt omalta kentältä etukäteen, niin paita pääsee käyttöön oikeassa paikassa." },
-      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Paita painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Kahden lahjan tilauksella raja ylittyy nopeasti.` },
+      { q: "Paljonko postikulut ovat?", a: `Postikulut ovat ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Paita painetaan tilauksesta ja toimitetaan Postin tai Matkahuollon kautta ${TOIMITUSAIKA_TEKSTI} arkipäivässä. Kahden lahjan tilauksella raja ylittyy nopeasti.` },
     ],
   },
   "hauska-t-paita-pelaajalle-just-one-more-level": {
@@ -788,14 +788,14 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Sopiiko paita teinille?", a: "Sopii, kun teini käyttää vähintään S-kokoa. Paidan koot ovat S-2XL, joten teini ja aikuinen löytävät sopivan koon vertaamalla sitä omaan, hyvin istuvaan paitaan." },
       { q: "Onko teksti englanniksi?", a: "Kyllä, teksti on englanniksi: \"Just one more level\". Se tarkoittaa vielä yhtä kenttää, ja pelaajat tunnistavat lauseen ilman käännöstä. Muille perheenjäsenille vitsin voi selittää yhdellä myöhäisillan esimerkillä." },
-      { q: "Kauanko toimitus kestää?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Paita painetaan tilauksesta ja lähetetään Postin tai Matkahuollon kautta. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.` },
+      { q: "Kauanko toimitus kestää?", a: `Toimitus kestää ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Paita painetaan tilauksesta ja lähetetään Postin tai Matkahuollon kautta. Toimitusmaksu on ${TOIMITUSMAKSU_TEKSTI} euroa, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
   "hauska-t-paita-avantouijalle-20c-sopiva-uimakeli": {
     description:
       `Muualla maailmassa pakkasta pidetään syynä jäädä sisälle, täällä syynä mennä uimaan. Paidan teksti "-20°C sopiva uimakeli" tiivistää talviuinnin absurdin logiikan: mitä kylmempää, sitä parempi fiilis, ja ihmettelijät jäävät rannalle toppatakeissaan.\n\nPaita on hauska lahja avantouimarille, talviuintiseuran jäsenelle tai ystävälle, joka houkuttelee muitakin hyiseen veteen joka tammikuu. Saunaillassa, uintiseuran pikkujouluissa ja kevättalven synttäreillä se herättää naurua, ja kesällä se on muistutus siitä, että oikea uintikausi alkaa vasta jäiden tultua.\n\nT-paidan väri on tumma suklaa, ja kokoja on S-2XL. Valitse koko vertaamalla saajan omaan hyvin istuvaan paitaan. Tarkat mitat senttimetreinä ovat tuotesivun kokotaulukossa. Talvella t-paita löytää paikkansa saunan pukuhuoneessa tai kerrospukeutumisen alimpana kerroksena.\n\nTilauksesta painettu paita on perillä ${TOIMITUSAIKA_TEKSTI} arkipäivässä Postin tai Matkahuollon kautta. Jos lahja on menossa uintiseuran pikkujouluihin, varaa toimitukselle pari viikkoa. Avantouimari tietää, että paidan lause ei ole vitsi vaan sääennuste.`,
     faqs: [
-      { q: "Onko paita hyvä lahja uintiseuralle?", a: `On, ja koko seura voi tilata paidat yhdellä kertaa. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten yhteistilaus kannattaa. Jokainen paita painetaan erikseen tilauksesta. Toimitus maksaa muuten ${TOIMITUSMAKSU_TEKSTI} euroa.` },
+      { q: "Onko paita hyvä lahja uintiseuralle?", a: `On, ja koko seura voi tilata paidat yhdellä kertaa. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten yhteistilaus kannattaa. Jokainen paita painetaan erikseen tilauksesta. Toimitus maksaa muuten ${TOIMITUSMAKSU_TEKSTI} euroa.` },
       { q: "Voinko tilata paidan muussa värissä?", a: "Et voi, paita on saatavilla vain tumma suklaa -värisenä. Ruskea sävy on lämmin ja helppo yhdistää farkkuihin. Koot ovat S-2XL, joten kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com ennen tilausta." },
       { q: "Kuinka nopeasti paita saapuu?", a: `Paita saapuu ${TOIMITUSAIKA_TEKSTI} arkipäivän kuluessa tilauksesta. Se painetaan vasta tilauksen jälkeen ja lähetetään Postin tai Matkahuollon kautta. Talviuintikauden alkuun ehdit hyvin, kun tilaat pari viikkoa etukäteen.` },
     ],
@@ -841,7 +841,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Kaksi sanaa, jotka sopivat mihin tahansa hetkeen: kuumaan kesäpäivään, pitkään palaveriin, muuttoapuun tai maanantaiaamuun. "oispa kaljaa" on suomalainen nettiklassikko, joka kertoo kaipauksesta niin lyhyesti, ettei lisäselityksiä tarvita. Vitsi on sen ajattomuudessa, sillä lause osuu aina, vaikka kukaan ei olisi edes ehdottanut mitään.\n\nPaita on lahja kaverille, opiskelijalle, mökkiporukan saunavastaavalle tai sille työkaverille, joka sanoo sanonnan ääneen joka perjantai iltapäivällä. Festareilla, polttareissa ja saunaillassa se naurattaa, ja pikkujoulujen lahjapaketissa se on helppo valinta.\n\nVärejä on yhdeksän, esimerkiksi keltainen, violetti ja musta, ja koot ulottuvat S:stä 5XL:ään. Tuotesivun kokoapu neuvoo koon valinnassa, ja tarkat mitat saat kysymällä sähköpostilla huumorikauppa@gmail.com.\n\nPaita painetaan, kun tilaus on vastaanotettu, ja se on matkalla perille ${TOIMITUSAIKA_TEKSTI} arkipäivää Postin tai Matkahuollon kyydissä. ${jouluLause()}`,
     faqs: [
       { q: "Mistä sanonta tulee?", a: "Se on suomalainen nettiklassikko, jota toistetaan tilanteessa kuin tilanteessa. Lause on lyhyt huokaus, joka kertoo kaipauksesta kylmään juomaan, ja se toimii myös vitsinä silloin, kun mikään ei liity olueen." },
-      { q: "Sopiiko paita polttariporukalle?", a: `Sopii, ja samanlaiset paidat eri väreissä tekevät porukasta helposti tunnistettavan. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, joten koko porukan paidat kannattaa tilata kerralla. Paidat painetaan tilauksesta.` },
+      { q: "Sopiiko paita polttariporukalle?", a: `Sopii, ja samanlaiset paidat eri väreissä tekevät porukasta helposti tunnistettavan. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, joten koko porukan paidat kannattaa tilata kerralla. Paidat painetaan tilauksesta.` },
       { q: "Mitä värejä on valittavana?", a: "Värejä on yhdeksän: keltainen, irlanninvihreä, violetti, punainen, tummansininen, vaaleanharmaa, valkoinen, musta ja tummanharmaa. Koot ovat S-5XL. Tuotesivun kokoavussa näet saatavilla olevat koot. Vertaa saajan omaan, hyvin istuvaan paitaan: mittaa leveys kainaloiden kohdalta ja pituus olkasaumasta helmaan." },
     ],
   },
@@ -850,7 +850,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
       `Kaksi sanaa, joiden ymmärtämiseen ei tarvita sanakirjaa eikä selitystä. "oispa kaljaa" on suomalaisen kaipuun ydin, lause, joka kuuluu kesäisellä terassilla, kuumassa saunassa ja maanantain kolmannessa palaverissa. Huppari tekee siitä vaatteen: kantaja ilmoittaa toiveensa jokaiselle vastaantulijalle ilman, että hänen tarvitsee avata suutaan.\n\nLahjaksi se sopii kaverille, joka on aina ensimmäisenä saunan lauteilla, veljelle, joka järjestää jokaiset mökkiviikonloput, tai työkaverille, joka laskee tunteja perjantaihin. Polttareissa, festareilla ja syksyn mökkireissulla huppari on omiaan, ja kun illat viilenevät, siitä tulee porukan halutuin lainavaate. Se on myös helppo lahja ulkomailla asuvalle suomalaiselle, joka kaipaa kotimaan arkista huumoria.\n\nKokoja on S-5XL ja värejä yhdeksän, esimerkiksi musta, punainen, vaaleanpinkki ja tummansininen. Pehmeä huppari kestää konepesun. Valitse koko vertaamalla saajan omaan hyvin istuvaan huppariin. Tarkat mitat senttimetreinä ovat tuotesivun kokotaulukossa. Huppari painetaan, kun tilaus on tehty, ja Posti tai Matkahuolto kuljettaa sen perille ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     faqs: [
       { q: "Mistä \"oispa kaljaa\" tulee?", a: "Se on suomalainen nettimeemi ja arkinen huokaus, joka tarkoittaa toivetta saada olutta. Lause on levinnyt somesta tavalliseen puheeseen, ja siksi sen ymmärtää lähes jokainen suomalainen. Huppari tuo sen arkeen." },
-      { q: "Sopiiko huppari polttareihin porukan asuksi?", a: `Sopii, ja koko porukka voi valita oman värinsä yhdeksästä vaihtoehdosta. Isommassa tilauksessa toimitus on ilmainen, kun summa on vähintään ${ILMAINEN_RAJA_TEKSTI} euroa, ja koot ulottuvat S:stä 5XL:ään.` },
+      { q: "Sopiiko huppari polttareihin porukan asuksi?", a: `Sopii, ja koko porukka voi valita oman värinsä yhdeksästä vaihtoehdosta. Isommassa tilauksessa toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, ja koot ulottuvat S:stä 5XL:ään.` },
       { q: "Ehtiikö huppari jouluksi?", a: `${jouluVastaus()} huppari on valmiina pukinkonttiin kaverille, joka toivoo jouluksi lähinnä yhtä asiaa. Muuten toimitus vie ${TOIMITUSAIKA_TEKSTI} arkipäivää.` },
     ],
   },
@@ -896,7 +896,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Miten annan oman tekstin tai kuvatoiveen?", a: "Kirjoita teksti tai kuvaile kuvatoive tuotesivun kenttään, enintään 200 merkkiä. Kenttä on täytettävä ennen kuin paidan voi lisätä ostoskoriin, ja toive kulkee tilauksen mukana sellaisenaan." },
       { q: "Voinko palauttaa personoidun paidan?", a: "Et voi, koska personoidulla tuotteella ei ole 14 päivän peruutusoikeutta. Paita valmistetaan sinun ohjeidesi mukaan, joten kuluttajansuojalain 6 luvun 16 § rajaa sen peruutusoikeuden ulkopuolelle. Viallinen tuote vaihdetaan tai hyvitetään aina." },
-      { q: "Voinko tilata saman tekstin usealle eri koolle?", a: `Voit, lisää jokainen koko ostoskoriin erikseen ja kirjoita teksti kenttään joka kerta. Näin toive kulkee jokaisen paidan mukana. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.` },
+      { q: "Voinko tilata saman tekstin usealle eri koolle?", a: `Voit, lisää jokainen koko ostoskoriin erikseen ja kirjoita teksti kenttään joka kerta. Näin toive kulkee jokaisen paidan mukana. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
     ],
   },
   "oma-tekstikuva-huppari": {
@@ -923,7 +923,7 @@ export const PRODUCT_CONTENT: Record<string, ProductContent> = {
     faqs: [
       { q: "Ehtiikö huppari joulukuun pikkujouluihin?", a: `Ehtii, kun tilaat viimeistään kolme viikkoa ennen juhlia. Huppari painetaan tilauksen jälkeen ja toimitetaan ${TOIMITUSAIKA_TEKSTI} arkipäivässä Postin tai Matkahuollon kautta, joten marraskuussa tehty tilaus on ajoissa.` },
       { q: "Sopiiko huppari arpajaispalkinnoksi?", a: "Sopii, sillä vitsi on yhteinen kaikille juhlijoille eikä kohdistu kehenkään yksittäiseen ihmiseen. Kun voittaja ei ole tiedossa, valitse koko tuotesivun kokoavun avulla keskimääräisen juhlijan mukaan, esimerkiksi L." },
-      { q: "Voiko hupparin tilata koko tiimille kerralla?", a: `Voi, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen. Valitse jokaiselle oma koko väliltä S-2XL, niin koko tiimi saa yhteisen muiston juhlista ja lisäksi lämpimän vaatteen talveen.` },
+      { q: "Voiko hupparin tilata koko tiimille kerralla?", a: `Voi, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. Valitse jokaiselle oma koko väliltä S-2XL, niin koko tiimi saa yhteisen muiston juhlista ja lisäksi lämpimän vaatteen talveen.` },
     ],
   },
   "maailman-paras-ystava-ornament-ceramic-ornament": {

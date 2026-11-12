@@ -9,7 +9,7 @@ import { jouluLause } from "./tilauspaivat";
  * Säännöt kuten blogJoulu2026.ts: ei ajatus- tai lyhyitä viivoja, ei mukeja, ei myynnistä poistettuja
  * tuotteita, linkit vain olemassa oleville sivuille ja aktiivisille tuotteille. Tarkistus: src/data/blog.test.ts.
  */
-const TOIMITUS = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen toimitus on ilmainen.`;
+const TOIMITUS = `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
 const TOIMITUS_FAQ = {
   q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?",
   a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.`,

@@ -104,6 +104,21 @@ if (process.argv.includes("--uudet")) {
   process.exit(0);
 }
 
+// --tiktok (12.11.2026): TikTok julkaistaan puhelimesta. Manifestiin TikTokin jono: julkaisujärjestyksen videot, joita ei
+// ole julkaistu TikTokissa (some/julkaistut.csv). /hallinta/some näyttää jonosta yhden videon päivässä alku-päivästä
+// alkaen ("Tämän päivän TikTok"). Ajetaan, kun julkaistut.csv tai julkaisulista muuttuu.
+if (process.argv.includes("--tiktok")) {
+  const manifest = await (await fetch(`https://${blobHost()}.public.blob.vercel-storage.com/some/manifest.json?t=${Date.now()}`)).json();
+  const julkaistut = new Set((await readFile(join(JUURI, "some/julkaistut.csv"), "utf8")).split("\n").map((r) => r.split(","))
+    .filter((r) => r[1] === "tiktok").map((r) => r[0]));
+  const alku = process.argv[process.argv.indexOf("--tiktok") + 1]?.match(/^\d{4}-\d{2}-\d{2}$/)?.[0] || new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki" }).format(new Date());
+  manifest.tiktok = { alku, jono: manifest.videot.map((v) => v.nro).filter((n) => !julkaistut.has(n)), julkaistut: [...julkaistut] };
+  manifest.paivitetty = new Date().toISOString();
+  await put("some/manifest.json", JSON.stringify(manifest), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", cacheControlMaxAge: 60 });
+  console.log(`valmis: TikTok-jonossa ${manifest.tiktok.jono.length} videota ${alku} alkaen, julkaistu ${julkaistut.size}`);
+  process.exit(0);
+}
+
 const lisaArg = process.argv.includes("--lisakuvat") ? process.argv[process.argv.indexOf("--lisakuvat") + 1] : null;
 if (lisaArg) {
   const kuvat = JSON.parse(await readFile(join(JUURI, lisaArg), "utf8"));

@@ -53,7 +53,7 @@ export const professions: Profession[] = [
       },
       {
         q: "Kuinka nopeasti lahja toimitetaan?",
-        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus on ilmainen ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+        a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
       },
     ],
     relatedSlugs: ["lahihoitaja", "laakari", "hammaslaakari", "fysioterapeutti"],

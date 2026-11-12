@@ -54,7 +54,7 @@ const FAQS = [
   },
   {
     q: "Toimitetaanko äitienpäiväksi?",
-    a: `Kyllä: toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta koko Suomeen. ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen, ja tuotteilla on 14 päivän peruutusoikeus (ei koske personoituja tuotteita).`,
+    a: `Kyllä: toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta koko Suomeen. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta, ja tuotteilla on 14 päivän peruutusoikeus (ei koske personoituja tuotteita).`,
   },
   {
     q: "Sopiiko lahja myös mummille tai anopille?",

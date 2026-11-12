@@ -22,7 +22,7 @@ Lahjapaidoista löydät esimerkiksi setähuumoripaitoja, kalastuspaitoja, eläkk
 
 ## Miksi tilata hauska t-paita Huumorikaupasta?
 
-Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita. Tarjoamme ilmaisen toimituksen vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilauksiin ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.`,
+Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjatuotteita. Tarjoamme ilmaisen toimituksen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta ja 14 päivän palautusoikeuden. Paitamme ovat laadukkaita, ja maksaminen on turvallista.`,
   },
   {
     slug: "hupparit",
@@ -30,7 +30,7 @@ Huumorikauppa on suomalainen verkkokauppa, joka myy hauskoja vaatteita ja lahjat
     emoji: "🧥",
     description: "Hauskat hupparit sopivat lahjaksi syntymäpäiville, äitienpäivään tai polttareihin. Huumorikaupan hupparivalikoima sisältää hauskoja tekstejä ja sanontoja: löydä sopiva huppari äidille, kaverille tai itsellesi.",
     seoTitle: "Hauskat Hupparit - Huumorihupparit | Huumorikauppa.fi",
-    seoDescription: `Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat - ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} €. 🧥`,
+    seoDescription: `Hauskat hupparit lahjaksi kaverille, isälle tai itsellesi. Pehmeät, lämpimät ja hauskat - ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. 🧥`,
     seoText: `## Näin valitset hupparin aiheen
 
 Ikävuosihuppari sopii pyöreille vuosille, ja eläkeläishuppari eläkejuhliin. Ammattihuppareissa vitsi koskee saajan työtä, esimerkiksi sairaanhoitajan, opettajan tai putkimiehen arkea. Kotikaupunkihuppari on lahja sille, joka on muuttanut pois mutta puhuu kotiseudustaan edelleen.
@@ -49,7 +49,7 @@ Hupparit painetaan tilauksesta suoraan kankaaseen. Pese huppari nurin käännett
     emoji: "👔",
     description: "Pitkähihaiset paidat asenteella",
     seoTitle: "Hauskat pitkähihaiset paidat | Huumorikauppa.fi",
-    seoDescription: `Hauskat pitkähihaiset paidat huumorilla ja asenteella. Sopiva valinta viileisiin päiviin. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} €. 👔`,
+    seoDescription: `Hauskat pitkähihaiset paidat huumorilla ja asenteella. Sopiva valinta viileisiin päiviin. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta. 👔`,
     seoText: `## Hauskat pitkähihaiset paidat - huumoria pitkällä hihalla
 
 Pitkähihaiset paidat hauskalla tekstillä ja painatuksella sopivat hyvin viileämpiin päiviin. Huumorikaupan pitkähihaisten valikoima yhdistää mukavuuden, laadun ja huumorin - näytä asennettasi säällä kuin säällä.
@@ -60,7 +60,7 @@ Pitkähihainen hauska paita on erinomainen valinta syksylle ja keväälle, kun t
 
 ## Lahjaksi tai itselle
 
-Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. Ne ovat käytännöllisiä ja hauskoja - yhdistelmä joka ei koskaan petä. Koot S-XXL, ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+Hauskat pitkähihaiset ovat hieno lahja kenelle tahansa joka arvostaa huumoria. Ne ovat käytännöllisiä ja hauskoja - yhdistelmä joka ei koskaan petä. Koot S-XXL, ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   {
     slug: "tarrat",
@@ -116,7 +116,7 @@ Hauska pipo tai lippis on kätevä ja edullinen lahja. Se sopii kalastajalle, go
 
 ## Laatu ja istuvuus
 
-Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat valmistettu laadukkaista materiaaleista ja brodeeraus/painatus kestää käyttöä ja pesua. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+Pipomme ja lippiksemme ovat yhden koon malleja jotka sopivat useimmille. Ne ovat valmistettu laadukkaista materiaaleista ja brodeeraus/painatus kestää käyttöä ja pesua. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   {
     slug: "laukut",
@@ -135,7 +135,7 @@ Hauska kangaskassi on käytännöllinen ja edullinen lahja tai lisä isomman til
 
 ## Kestävät materiaalit
 
-Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raskaitakin ostoksia. Painatus kestää konepesun. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+Kangaskassimme ovat kestävää puuvillaa tai polyesteriä, ja ne kantavat raskaitakin ostoksia. Painatus kestää konepesun. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   {
     slug: "seinataulut",
@@ -165,7 +165,7 @@ Hauska koriste on oivallinen pieni lahja joka sopii moneen tilaisuuteen - tupaan
 
 ## Sisusta huumorilla
 
-Lisää kodin sisustukseen ripaus huumoria hauskoilla koristeilla. Ne sopivat hyllylle, pöydälle, ikkunalaudalle tai mihin tahansa näkyvälle paikalle. Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin ja 14 päivän palautusoikeus.`,
+Lisää kodin sisustukseen ripaus huumoria hauskoilla koristeilla. Ne sopivat hyllylle, pöydälle, ikkunalaudalle tai mihin tahansa näkyvälle paikalle. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta ja 14 päivän palautusoikeus.`,
   },
   {
     slug: "haalarimerkit",

@@ -23,7 +23,7 @@
  * näkyvät luvut (enintään yksi per palvelu per ajo). Jos lukuja ei saa luettua, se kirjataan lokiin.
  *
  * Ajo:
- *   node scripts/some-julkaisu.mjs                       molemmat palvelut, seuraava video
+ *   node scripts/some-julkaisu.mjs                       Instagram, seuraava video (TikTok 12.11. alkaen puhelimesta)
  *   node scripts/some-julkaisu.mjs --palvelu instagram   vain Instagram (tai tiktok)
  *   node scripts/some-julkaisu.mjs --nro 01              tietty video (testi); ei ohita julkaistut.csv-tarkistusta
  *   node scripts/some-julkaisu.mjs --kuiva               kaikki vaiheet paitsi viimeinen julkaisupainike
@@ -59,7 +59,9 @@ const kuiva = lippu("--kuiva");
 const vainTilastot = lippu("--tilastot");
 const ajastettu = lippu("--ajastettu");
 const pakotettu = arg("--nro");
-const palvelut = arg("--palvelu") ? [arg("--palvelu")] : ["instagram", "tiktok"];
+// 12.11.2026: TikTok julkaistaan puhelimesta (/hallinta/some "Tämän päivän TikTok"): koneelta julkaistut videot saivat
+// 0-1 näyttöä. Automaattinen ajo julkaisee vain Instagramiin; --palvelu tiktok toimii yhä käsiajona.
+const palvelut = arg("--palvelu") ? [arg("--palvelu")] : ["instagram"];
 
 const hki = (d = new Date(), o = {}) => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Helsinki", ...o }).format(d);
 const tanaan = () => hki();

@@ -54,7 +54,7 @@ export const christmasDeadlinePage = {
     },
     {
       q: "Mitä toimitus maksaa?",
-      a: `Alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksissa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Vähintään ${ILMAINEN_RAJA_TEKSTI} euron tilaukset toimitetaan ilman toimituskuluja.`,
+      a: `Yhden tuotteen alle ${ILMAINEN_RAJA_TEKSTI} euron tilauksessa toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} euroa. Toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     },
   ],
   /** Joululahjaoppaat. */

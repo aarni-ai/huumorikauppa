@@ -11,7 +11,7 @@ export interface FAQ {
  * Terms.tsx ja ReturnsPolicy.tsx. Ei ajatusviivoja eikä todistamattomia superlatiiveja.
  */
 
-const DELIVERY = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen, kun tilaat kaksi tuotetta tai vähintään ${ILMAINEN_RAJA_TEKSTI} eurolla.`;
+const DELIVERY = `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta, ja paketti kulkee Postin tai Matkahuollon kautta. Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja se on ilmainen, kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
 const RETURNS = "Voit: sinulla on 14 päivän peruutusoikeus tuotteen vastaanottamisesta. Ilmoita palautuksesta osoitteeseen huumorikauppa@gmail.com, niin saat palautusohjeet. Personoituja tuotteita peruutusoikeus ei koske.";
 const PAYMENT = "Voit maksaa Visalla, Mastercardilla, Apple Paylla, Google Paylla, Klarnalla ja MobilePaylla. Maksu tehdään tilauksen yhteydessä suojatulla maksusivulla.";
 const CUSTOM = "Saa niihin tuotteisiin, joiden nimessä on Oma teksti/kuva tai Personoitava. Kirjoitat tekstin tai kuvatoiveen tuotesivun kenttään (enintään 200 merkkiä), ja toive kulkee tilauksen mukana.";

@@ -46,7 +46,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Yhteislahja ja aikataulu",
         "teksti": [
           "Paidat painetaan tilauksesta EU:ssa, joten tilaa lahja hyvissä ajoin ennen läksiäispäivää. Toimitusaika kerrotaan kassalla ja toimitusehdoissa. Jos aikaa ei ole, digitaalinen lahjakortti toimitetaan heti PDF-tiedostona, ja lähtijä valitsee paidan itse.",
-          "Kun koko tiimi tilaa samaan aikaan esimerkiksi läksiäis- ja pikkujoululahjat, vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+          "Kun koko tiimi tilaa samaan aikaan esimerkiksi läksiäis- ja pikkujoululahjat, toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta."
         ]
       }
     ],
@@ -65,7 +65,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Paljonko toimitus maksaa?",
-        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta."
       }
     ],
     "tuotteet": [
@@ -101,7 +101,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Varhaiskasvattajalle",
         "teksti": [
           "Päiväkodin väelle on oma paitansa: \"Varhaiskasvattaja. Selviän välipalalla\". Se on hyvä kiitos ryhmän aikuisille, jotka ovat pukeneet ja riisuneet lapsia koko syksyn.",
-          "Jos lahja annetaan koko tiimille, samaa tekstiä voi tilata useamman, jolloin paidoista tulee ryhmän yhteinen vitsi. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi."
+          "Jos lahja annetaan koko tiimille, samaa tekstiä voi tilata useamman, jolloin paidoista tulee ryhmän yhteinen vitsi. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta."
         ]
       },
       {
@@ -178,7 +178,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Kaksi lahjaa samalla tilauksella",
         "teksti": [
-          "Kun samaan tilaukseen tulee kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennuksen. Samaan pakettiin mahtuu vaikkapa huppari miehelle ja t-paita hänen kalakaverilleen. Toimitus maksaa {TOIMITUSMAKSU} €, ja {ILMAINEN_RAJA} euron tilauksesta alkaen se on ilmainen, joten kaksi hupparia kulkee perille ilman toimituskuluja.",
+          "Kun samaan tilaukseen tulee kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennuksen. Samaan pakettiin mahtuu vaikkapa huppari miehelle ja t-paita hänen kalakaverilleen. Toimitus maksaa {TOIMITUSMAKSU} €, ja se on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, joten kaksi hupparia kulkee perille ilman toimituskuluja.",
           "Jos lahjan saaja ja sen maksaja asuvat eri puolilla Suomea, tilauksen voi osoittaa suoraan saajalle. Silloin paketti odottaa häntä valmiina, ja sinä hoidat vain kortin. Muista kuitenkin tarkistaa osoite ja koko ennen maksamista, niin lahja osuu kohdalleen ensimmäisellä kerralla."
         ]
       }
@@ -190,7 +190,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Saako kahden tuotteen tilauksesta alennusta?",
-        "a": "Saa. Kun tilaat kaksi tuotetta samalla kertaa, useimmista yhdistelmistä vähennetään 5 %. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan lisäksi ilman toimituskuluja."
+        "a": "Saa. Kun tilaat kaksi tuotetta samalla kertaa, useimmista yhdistelmistä vähennetään 5 %. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta."
       }
     ]
   },
@@ -228,7 +228,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Lahjakortti, kun aika loppuu",
         "teksti": [
           "Jos isän toiveet selviävät vasta aattoviikolla, digitaalinen lahjakortti hoitaa asian. Sen arvo on 25, 35 tai 50 €, ja se toimitetaan heti tulostettavana PDF:nä, joten sen voi taittaa joulukortin väliin vielä aattoaamuna. Paitojen ja huppareiden viimeiset tilauspäivät löydät sivustolta.",
-          "Kun tilaat ajoissa, toimitus maksaa {TOIMITUSMAKSU} € ja on ilmainen {ILMAINEN_RAJA} eurosta alkaen. Tuotteet painetaan tilauksesta EU:ssa, Tšekissä, Saksassa tai Ranskassa, ja paketti toimitetaan perille Suomeen."
+          "Kun tilaat ajoissa, toimitus maksaa {TOIMITUSMAKSU} € ja on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Tuotteet painetaan tilauksesta EU:ssa, Tšekissä, Saksassa tai Ranskassa, ja paketti toimitetaan perille Suomeen."
         ]
       }
     ],
@@ -239,7 +239,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Paljonko toimitus maksaa?",
-        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Vähintään {ILMAINEN_RAJA} euron tilaukset toimitetaan ilmaiseksi, ja kahdesta tuotteesta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen."
+        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, ja kahdesta tuotteesta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen."
       }
     ]
   },
@@ -277,7 +277,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Palautus ja toimitus",
         "teksti": [
           "Valmiilla tekstillä painetulla tuotteella on 14 päivän palautusoikeus. Personoidut tuotteet tehdään saajan omalla tekstillä, joten palautusoikeus ei koske niitä. Jos et ole varma tekstistä, valmis malli on siksi joustavampi lahja.",
-          "Tuotteet painetaan EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} € ja on ilmainen {ILMAINEN_RAJA} eurosta alkaen, ja kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen. Jos toiveet ovat hukassa, digitaalinen lahjakortti on saatavilla 25, 35 tai 50 euron arvoisena, ja se toimitetaan heti tulostettavana PDF:nä."
+          "Tuotteet painetaan EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} € ja on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, ja kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen. Jos toiveet ovat hukassa, digitaalinen lahjakortti on saatavilla 25, 35 tai 50 euron arvoisena, ja se toimitetaan heti tulostettavana PDF:nä."
         ]
       }
     ],
@@ -325,7 +325,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Tilaus ja toimitus",
         "teksti": [
-          "Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} €, ja {ILMAINEN_RAJA} euron tilauksesta alkaen se on maksuton. Joulun viimeiset tilauspäivät näet sivustolta.",
+          "Tuotteet painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} €, ja se on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Joulun viimeiset tilauspäivät näet sivustolta.",
           "Valmiilla tekstillä painetulla tuotteella on 14 päivän palautusoikeus, joten väärän koon voi palauttaa. Personoituja tuotteita palautusoikeus ei koske. Jos anoppi asuu toisella paikkakunnalla, paketti kannattaa tilata suoraan hänelle, jolloin lahja odottaa häntä kotona jo ennen joulua."
         ]
       }
@@ -413,7 +413,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Kun aika tai idea loppuu",
         "teksti": [
           "Digitaalinen lahjakortti on 25, 35 tai 50 euron arvoinen, ja se toimitetaan heti tulostettavana PDF:nä. Sen rinnalle sopii paita \"Lahjakortti on myös lahja.\", jolloin pakettiin tulee myös jotain avattavaa. Yhdistelmä on samalla vitsi, jonka saaja ymmärtää heti. Lahjakortilla hän voi valita itse mallin ja koon, joten kokoa ei tarvitse arvata.",
-          "Kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen. Toimitus Suomeen maksaa {TOIMITUSMAKSU} € ja on ilmainen {ILMAINEN_RAJA} eurosta alkaen. Fyysisten lahjojen viimeiset tilauspäivät on kerrottu sivustolla, ja niiden jälkeenkin lahjakortti ehtii perille samana päivänä."
+          "Kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen. Toimitus Suomeen maksaa {TOIMITUSMAKSU} € ja on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Fyysisten lahjojen viimeiset tilauspäivät on kerrottu sivustolla, ja niiden jälkeenkin lahjakortti ehtii perille samana päivänä."
         ]
       }
     ],
@@ -432,7 +432,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Saako useamman lahjan tilauksesta etua?",
-        "a": "Kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen, ja vähintään {ILMAINEN_RAJA} euron tilaukset toimitetaan ilmaiseksi. Muuten toimitus maksaa {TOIMITUSMAKSU} €."
+        "a": "Kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen, ja toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Muuten toimitus maksaa {TOIMITUSMAKSU} €."
       }
     ],
     "tuotteet": [
@@ -501,7 +501,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Tilaus ja toimitus",
         "teksti": [
-          "Paidat painetaan tilauksesta EU:ssa, Tšekissä, Saksassa tai Ranskassa, ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} euroa ja on ilmainen {ILMAINEN_RAJA} euron tilauksista alkaen, joten porukan kannattaa koota lahjat yhteen tilaukseen. Kahdesta tuotteesta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen, ja muilla kuin personoiduilla tuotteilla on 14 päivän palautusoikeus.",
+          "Paidat painetaan tilauksesta EU:ssa, Tšekissä, Saksassa tai Ranskassa, ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} euroa ja on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, joten porukan kannattaa koota lahjat yhteen tilaukseen. Kahdesta tuotteesta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen, ja muilla kuin personoiduilla tuotteilla on 14 päivän palautusoikeus.",
           "Koska paita valmistetaan vasta tilauksen jälkeen, tee tilaus hyvissä ajoin ennen juhlia. Jos aikaa ei enää ole, lahjakortti pelastaa tilanteen, sillä PDF on käytettävissä heti."
         ]
       }
@@ -521,7 +521,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Mitä toimitus maksaa?",
-        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Jos tilaus on vähintään {ILMAINEN_RAJA} €, toimitus on maksuton, joten yhteistilaus säästää toimituskuluissa."
+        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, joten yhteistilaus säästää toimituskuluissa."
       }
     ],
     "tuotteet": [
@@ -569,7 +569,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Huppari pakkasiin, lahjakortti varalle",
         "teksti": [
-          "Talvikäyttöön teksti \"Eläkkeellä. Kello on vain koru\" löytyy sekä hupparina 52,90 eurolla että t-paitana 27,90 eurolla. Kun samaan tilaukseen tulee kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennuksen, ja {ILMAINEN_RAJA} eurosta alkaen toimitus on maksuton.",
+          "Talvikäyttöön teksti \"Eläkkeellä. Kello on vain koru\" löytyy sekä hupparina 52,90 eurolla että t-paitana 27,90 eurolla. Kun samaan tilaukseen tulee kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennuksen, ja toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta.",
           "Jos saajan koko on arvoitus, digitaalinen lahjakortti 25, 35 tai 50 euroa on varma valinta. Se saapuu heti tulostettavana PDF-tiedostona, jonka voit taittaa joulukortin väliin. Lahjakortin ja paidan voi myös yhdistää, jos haluat antaa jotain konkreettista avattavaksi."
         ]
       },
@@ -623,7 +623,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Ajoissa juhliin",
         "teksti": [
-          "Tuotteet painetaan vasta tilauksen jälkeen EU:ssa, joten tilaa hyvissä ajoin ennen juhlapäivää. Painopaikka on Tšekissä, Saksassa tai Ranskassa, ja paketti saapuu sieltä suoraan Suomeen. Toimitus Suomeen maksaa {TOIMITUSMAKSU} euroa, ja {ILMAINEN_RAJA} euron tilauksesta alkaen se on maksuton. Jos aika loppuu kesken, digitaalinen lahjakortti tulee perille heti PDF-muodossa.",
+          "Tuotteet painetaan vasta tilauksen jälkeen EU:ssa, joten tilaa hyvissä ajoin ennen juhlapäivää. Painopaikka on Tšekissä, Saksassa tai Ranskassa, ja paketti saapuu sieltä suoraan Suomeen. Toimitus Suomeen maksaa {TOIMITUSMAKSU} euroa, ja se on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Jos aika loppuu kesken, digitaalinen lahjakortti tulee perille heti PDF-muodossa.",
           "Kahdesta tuotteesta samassa tilauksessa saat useimmissa yhdistelmissä 5 % alennuksen, mikä kannattaa, jos samalle vuodelle osuu useampi merkkipäivä."
         ]
       }
@@ -695,7 +695,7 @@ const RAAKA: Record<string, LahjaOpas> = {
         "otsikko": "Suvun yhteislahja",
         "teksti": [
           "Kun lahja hankitaan koko suvun nimissä, digitaalinen lahjakortti 35 tai 50 euroa jättää valinnan juhlijalle, ja kortin arvo jakautuu helposti useamman sukulaisen kesken. Kortti toimitetaan heti PDF-tiedostona, jonka voi tulostaa onnittelukortin sisään. Oman tekstin, esimerkiksi juhlijan nimen, saa t-paitaan 27,90 eurolla. Personoitua paitaa ei voi palauttaa, joten varmista nimen kirjoitusasu ennen tilaamista.",
-          "Tuotteet painetaan tilauksesta Tšekissä, Saksassa tai Ranskassa. Toimitus maksaa {TOIMITUSMAKSU} euroa, ja {ILMAINEN_RAJA} euron ostoksista alkaen se on ilmainen. Palautusoikeus on 14 päivää kaikille muille kuin personoiduille tuotteille. Kun samaan tilaukseen lisää paidan ja julisteen, useimmissa yhdistelmissä hinnasta lähtee 5 %."
+          "Tuotteet painetaan tilauksesta Tšekissä, Saksassa tai Ranskassa. Toimitus maksaa {TOIMITUSMAKSU} euroa, ja se on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Palautusoikeus on 14 päivää kaikille muille kuin personoiduille tuotteille. Kun samaan tilaukseen lisää paidan ja julisteen, useimmissa yhdistelmissä hinnasta lähtee 5 %."
         ]
       }
     ],
@@ -714,7 +714,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       },
       {
         "q": "Mitä toimitus maksaa?",
-        "a": "Toimitus Suomeen on {TOIMITUSMAKSU} €. Kun tilauksen summa on {ILMAINEN_RAJA} € tai enemmän, toimitusta ei veloiteta."
+        "a": "Toimitus Suomeen on {TOIMITUSMAKSU} €. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta."
       }
     ],
     "tuotteet": [
@@ -761,7 +761,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Kaveriporukan yhteislahja",
         "teksti": [
-          "Kun lahja kootaan porukalla, huppari on tuntuva valinta, ja ison porukan kesken jokaisen osuus jää pieneksi. Jos ostatte samalla kertaa sekä paidan että hupparin, kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen, ja toimitus on ilmainen {ILMAINEN_RAJA} euron tilauksista alkaen. Pakettiin kannattaa liittää kortti, johon jokainen osallistuja kirjoittaa oman onnittelunsa. Toinen tapa on antaa huppari juhlijalle ja tilata samalla paita itselle muistoksi illasta."
+          "Kun lahja kootaan porukalla, huppari on tuntuva valinta, ja ison porukan kesken jokaisen osuus jää pieneksi. Jos ostatte samalla kertaa sekä paidan että hupparin, kahden tuotteen tilauksesta saa useimmissa yhdistelmissä 5 % alennuksen, ja toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Pakettiin kannattaa liittää kortti, johon jokainen osallistuja kirjoittaa oman onnittelunsa. Toinen tapa on antaa huppari juhlijalle ja tilata samalla paita itselle muistoksi illasta."
         ]
       },
       {
@@ -837,7 +837,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Joulupaketti kalakaverille",
         "teksti": [
-          "Jouluksi 2026 kalastajan paketti on helppo koota. Kaksi tuotetta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen, ja vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi. Muuten toimitus maksaa {TOIMITUSMAKSU} €. Näin samaan pakettiin mahtuu esimerkiksi t-paita ja huppari kalaveljelle.",
+          "Jouluksi 2026 kalastajan paketti on helppo koota. Kaksi tuotetta samassa tilauksessa saa useimmissa yhdistelmissä 5 % alennuksen, ja toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta. Muuten toimitus maksaa {TOIMITUSMAKSU} €. Näin samaan pakettiin mahtuu esimerkiksi t-paita ja huppari kalaveljelle.",
           "Jos koko on epävarma, valitse digitaalinen lahjakortti. Se on saatavana 25, 35 tai 50 euron arvoisena, saapuu heti tulostettavana PDF:nä, ja kalastaja valitsee mieleisensä paidan itse."
         ]
       }
@@ -885,7 +885,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Tilaaminen ja toimitus",
         "teksti": [
-          "Paidat painetaan tilauksesta EU:n alueella Tšekissä, Saksassa tai Ranskassa, ja paketti tulee kotiin Suomeen. Kun samaan tilaukseen otetaan kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennusta, joten saunaparin lahjat kannattaa tilata yhdessä. Toimitusmaksu on {TOIMITUSMAKSU} €, mutta {ILMAINEN_RAJA} euron tilauksesta alkaen se on ilmainen.",
+          "Paidat painetaan tilauksesta EU:n alueella Tšekissä, Saksassa tai Ranskassa, ja paketti tulee kotiin Suomeen. Kun samaan tilaukseen otetaan kaksi tuotetta, useimmista yhdistelmistä saa 5 % alennusta, joten saunaparin lahjat kannattaa tilata yhdessä. Toimitusmaksu on {TOIMITUSMAKSU} €, mutta se on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta.",
           "Jos saunojan paitakoko on arvoitus, digitaalinen lahjakortti on toimiva ratkaisu. Sen arvo on 25, 35 tai 50 euroa, ja tulostettava PDF on käytössäsi heti maksun jälkeen. Valmiilla tuotteilla on lisäksi 14 päivän palautusoikeus."
         ]
       }
@@ -933,7 +933,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Jahtikaverin joululahja 2026",
         "teksti": [
-          "Paidat painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} €, ja {ILMAINEN_RAJA} euron tai suuremmat tilaukset kulkevat maksutta.",
+          "Paidat painetaan tilauksesta EU:ssa ja toimitetaan Suomeen. Toimitus maksaa {TOIMITUSMAKSU} €, ja toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta.",
           "Jos et tiedä, mikä teksti naurattaa häntä eniten, anna digitaalinen lahjakortti. Arvoltaan 25, 35 tai 50 euron kortti tulee heti tulostettavana PDF:nä, ja metsämies valitsee paitansa itse. Lahjakortti sopii myös tilanteeseen, jossa haluat jättää valinnan paidan ja hupparin välillä saajalle."
         ]
       }
@@ -979,7 +979,7 @@ const RAAKA: Record<string, LahjaOpas> = {
       {
         "otsikko": "Pikkujoulut ja yhteistilaus",
         "teksti": [
-          "Pikkujouluihin on oma paitansa, Pikkujoulut. Muistan osittain, joka on saatavana myös hupparina. Kun tilaatte lahjat koko porukalle kerralla, {TOIMITUSMAKSU} euron toimitusmaksu jää pois {ILMAINEN_RAJA} euron tilauksesta alkaen, ja kahden tuotteen tilauksissa useimmat yhdistelmät saavat 5 % alennuksen.",
+          "Pikkujouluihin on oma paitansa, Pikkujoulut. Muistan osittain, joka on saatavana myös hupparina. Kun tilaatte lahjat koko porukalle kerralla, {TOIMITUSMAKSU} euron toimitusmaksu jää pois kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, ja kahden tuotteen tilauksissa useimmat yhdistelmät saavat 5 % alennuksen.",
           "Yhteistilaus säästää myös vaivaa, kun kaikki lahjat tulevat samassa toimituksessa. Jos joku toivoo erilaista paitaa, digitaalinen lahjakortti toimii pikkujoulujen arvontapalkintona yhtä hyvin kuin paketti."
         ]
       }
@@ -1032,7 +1032,7 @@ const RAAKA: Record<string, LahjaOpas> = {
     "faqs": [
       {
         "q": "Paljonko toimitus maksaa?",
-        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Vähintään {ILMAINEN_RAJA} euron tilaus toimitetaan ilmaiseksi, joten kahden ystävän lahjat kannattaa tilata samalla kertaa."
+        "a": "Toimitus Suomeen maksaa {TOIMITUSMAKSU} €. Toimitus on ilmainen kahdesta tuotteesta tai {ILMAINEN_RAJA} eurosta, joten kahden ystävän lahjat kannattaa tilata samalla kertaa."
       },
       {
         "q": "Mitä ystävälle, joka pitää julisteista enemmän kuin vaatteista?",

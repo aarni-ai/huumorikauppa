@@ -19,16 +19,16 @@ export const STATIC_PAGE_META = {
   "/": {
     title: "Hauskat lahjat ja huumorilahjat | Huumorikauppa.fi",
     description:
-      `Hauskat lahjat ja huumorilahjat: t-paidat, hupparit ja oma teksti suomalaisella huumorilla. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen ${ILMAINEN_RAJA_TEKSTI} eurosta alkaen.`,
+      `Hauskat lahjat ja huumorilahjat: t-paidat, hupparit ja oma teksti. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     h1: "Hauskat lahjat ja huumorilahjat",
     name: "Etusivu",
     intro:
-      `Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`,
+      `Huumorikauppa on helsinkiläinen verkkokauppa, joka myy hauskoja t-paitoja, huppareita ja muita huumorituotteita. Jokainen tuote painetaan tilauksesta painokumppaneiden painotaloissa. Toimitamme koko Suomeen ${TOIMITUSAIKA_TEKSTI} arkipäivässä, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
   },
   "/kaikki-tuotteet": {
     title: "Kaikki hauskat tuotteet | Huumorikauppa.fi",
     description:
-      `Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit ja muut huumorilahjat. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`,
+      `Selaa kaikki Huumorikaupan tuotteet: hauskat t-paidat, hupparit ja muut huumorilahjat. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     h1: "Kaikki hauskat tuotteet",
     name: "Kaikki tuotteet",
     intro:
@@ -53,7 +53,7 @@ export const STATIC_PAGE_META = {
   "/toimitusehdot": {
     title: "Toimitusehdot | Huumorikauppa.fi",
     description:
-      `Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, toimituskulut ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin.`,
+      `Huumorikaupan toimitusehdot: tilaaminen, hinnat, toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä, toimituskulut ${TOIMITUSMAKSU_TEKSTI} € ja ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     h1: "Toimitusehdot ja palautukset",
     name: "Toimitusehdot",
   },

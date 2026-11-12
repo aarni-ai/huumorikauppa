@@ -20,7 +20,8 @@ describe("maksutavat yhdestä listasta", () => {
   });
 
   it("toimitusrivi rakentuu toimitusehdoista", () => {
-    expect(TOIMITUSRIVI).toBe(`Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta`);
+    // Sama sanamuoto kaikkialla (12.11.2026): kahdesta tuotteesta tai rajasta (kassa api/_lib/vakiot.js toimitusmaksu).
+    expect(TOIMITUSRIVI).toBe(`Toimitus ${TOIMITUSMAKSU_TEKSTI} €, ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta`);
   });
 });
 

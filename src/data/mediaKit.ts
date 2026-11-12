@@ -171,7 +171,7 @@ export function mediaKaupanTiedot(nowMs: number = Date.now()): string[] {
     "Huumorikauppa on kotimainen huumoripaitojen verkkokauppa.",
     `Kauppaa pitää ${MYYJA_NIMI}.`,
     "Jokainen tuote painetaan tilauksesta EU:ssa sijaitsevissa painotaloissa.",
-    `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen.`,
+    `Toimitus maksaa ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     `Maksutavat: ${MAKSUTAVAT}.`,
     jouluLause(nowMs),
     `Yhteys toimittajille: ${MEDIA_EMAIL}`,

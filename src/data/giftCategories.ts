@@ -77,7 +77,7 @@ Miehelle jolla on jo kaikkea, hauska paita tai huppari on hyvä lahja: se on jot
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
+- Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta
 - 14 päivän palautusoikeus
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus koko Suomeen
 - 100% suomalainen yritys`,
@@ -118,7 +118,7 @@ Hauska lahja naiselle on raikas vaihtoehto kukille ja suklaalle. Se osoittaa per
 
 ## Miksi tilata Huumorikaupasta?
 
-- Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
+- Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta
 - 14 päivän palautusoikeus
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus koko Suomeen
 - Lahjapaketointimahdollisuus`,
@@ -161,7 +161,7 @@ Polttaripaitojen lisäksi löydät meiltä hauskoja polttarilahjoja: huppareita,
 
 ## Tilaa polttaripaidat Huumorikaupasta
 
-- Ilmainen toimitus vähintään ${ILMAINEN_RAJA_TEKSTI} € tilauksiin
+- Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta
 - ${TOIMITUSAIKA_TEKSTI} arkipäivän toimitus
 - Ryhmätilaukset helposti - lisää eri koot koriin`,
     relatedBlogSlugs: ["parhaat-polttaripaidat-ja-polttarilahjat-2026"],

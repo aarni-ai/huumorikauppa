@@ -311,7 +311,7 @@ function buildCategoryPages(products: Product[]): PrerenderPage[] {
     const description =
       content?.description ||
       category.seoDescription ||
-      `${category.description}. Ilmainen toimitus ${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen.`;
+      `${category.description}. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`;
     return {
       path,
       title: content?.title || category.seoTitle || `${h1} | Huumorikauppa.fi`,
