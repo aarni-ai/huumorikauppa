@@ -3,6 +3,24 @@
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
 kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
+## Tilanne 12.11.2026 (marraskuu tähän mennessä)
+
+| Mittari | Marraskuu 1.-12.11. | Huomio |
+|---|---|---|
+| Tilaukset | 1 maksettu (#8D484335, 4.11.) | Stripe: ei muita maksettuja eikä keskeytyneitä sessioita 5.-12.11. Printify: fulfilled, painotalo 30 Tšekki (EU). |
+| Myynti | 31,80 € | |
+| Kate | 7,22 € | 31,80 - ALV 6,46 - Printify 17,39 (tuote 8,90 + toimitus 8,49) - Stripe 0,73 |
+| Aidot käynnit | noin 230 | 3.-4.11. 119 (bottisuodatus alkoi 3.11.), 5.-12.11. 111 Blob-puskurista (Google 85, suora 22, DuckDuckGo 2, Bing 2). 5.11. ennen klo 7.12 kirjatut ovat Neonissa. |
+| Konversio | noin 0,4 % | 1 tilaus / noin 230 aitoa käyntiä |
+| A/B: ilmaisen toimituksen hintatesti | kesken | tuotesivut A noin 34, B noin 37; koriin A 2, B 1 (raja 300 + 300) |
+| A/B: ensitilauksen -5 % | kesken | 5.11. alkaen: tuotesivut A 16, B 31; koriin A 0, B 3; ostoja 0 |
+| A/B: koon esivalinta | kesken | näytöt A noin 26, B noin 32; koriin A 0, B 1 |
+| A/B: etusivu | kesken | etusivun näytöt 5.-12.11. A 10, B 4 |
+| Matka 3 000 €:oon | 2 992,78 € | Kate 0,2 % tavoitteesta; 18 päivää jäljellä |
+
+Neon on ollut kiinni 5.11. klo 7.12 alkaen (ilmaiskiintiö). Kauppa toimii katalogin ja Blob-puskurin varassa: 77 tilastoerää
+odottaa siirtoa kantaan. Kiintiö nollautuu todennäköisesti kuun vaihteessa; palautusvahti siirtää datan automaattisesti.
+
 ## Tilanne lyhyesti
 
 **Tuotannossa (huumorikauppa.fi), tarkistettu curlilla tavallisella, Googlebot- ja tyhjällä User-Agentilla:**
@@ -3930,3 +3948,47 @@ Neonin ilmainen kiintiö (100 CU-tuntia) loppui noin klo 7.12. Sen jälkeen tuot
   - Instagram: 02 16, 01 20, 23 146, 22 35, 21 96.
   - TikTok: 22 1, 01 0, 21 0. Vanhat videot 361–1992.
 - **TikTok:** koneelta julkaistut videot eivät saa lainkaan jakelua. Syy voi olla automaation tunnistus tai uuden sisällön rajoitus. Kannattaa harkita, julkaiseeko Aarni TikTokin käsin puhelimesta.
+
+## 12.11.2026: julkaisu, koodien tuotantokoe, TikTok puhelimesta, toimituksen sanamuoto
+
+**Julkaisu**
+- `vercel whoami` = flyapeg-2135, eli kirjautuminen on voimassa.
+- Katalogin päivittäinen ajo oli jo julkaissut 11.11. ja 12.11. julkaisuskriptillä. Koodimuutokset (3a7beac ja uudemmat) olivat siis tuotannossa 11.11. alkaen.
+- 10.11. katalogijulkaisu epäonnistui (ei kirjautumista), ja tuotanto pysyi silloin edellisessä versiossa.
+- **Tämän päivän julkaisu:** dpl_6ndJ89Cpji3VzY75XvnRJrGAHjLA. Savutestissä 45/45 sivua vastasi 200 kolmella User-Agentilla (15 sivua kullakin), ja tuotelähde oli katalogi.
+- **Savutestin korjaus:** kaksi aiempaa yritystä pysähtyi, koska yksi sivu jäi kerran ilman vastausta tämän koneen verkosta. /kassa ja /joululahjat vastasivat uusintakokeessa 200. Savutesti yrittää nyt uudelleen enintään 3 kertaa, jos vastausta ei tule; muu kuin 200 on yhä virhe.
+
+**Tuotantokoe ilman tietokantaa (`node scripts/koodikoe.mjs`): kaikki ok**
+- **ERAMAANKULKIJAT:** malli 2. Hupparikorilla alennus jäi 3 %:iin 7 €:n kateehdon vuoksi, ja maksusessio syntyi puskuritilana.
+- **Kannan ollessa kiinni luotu kumppanikoodi:** /k/-sivu ja maksusessio toimivat.
+- **Uutiskirjeen koodi:** tilaus antoi TERVE-koodin (5 %), kassa hyväksyi sen, ja toinen käyttö estyi ("Koodi käy vain ensimmäiseen tilaukseen").
+- **Lahjakortti (5 € testikortti):**
+  - Saldo luettiin, ja maksettavaksi jäi 26,80 €.
+  - Toinen käyttö estyi saldon ollessa varattuna.
+  - Vanhentunut sessio vapautti saldon.
+- Kuusi sessiota vanhennettiin, ja testidata siivottiin.
+
+**TikTok**
+- Automaattinen TikTok-julkaisu on lopetettu, koska koneelta julkaistut videot saivat 0–1 näyttöä. `some-julkaisu.mjs` julkaisee ajastettuna vain Instagramiin; `--palvelu tiktok` toimii yhä käsiajona.
+- /hallinta/somessa on uusi kohta "Tämän päivän TikTok". Siinä on ladattava video, kopioitava kuvateksti ja ohje lisätä sovelluksen oma musiikki.
+- Jono on julkaisujärjestyksen 52 videota, joita ei ole julkaistu TikTokissa, yksi päivässä 12.11. alkaen (manifesti `some-blob.mjs --palvelin --tiktok PVM`).
+
+**Instagram**
+- Julkaistu 7.11. 03, 9.11. 24, 10.11. 04, 11.11. 36 ja 12.11. 05.
+- Klo 18.30 ajot epäonnistuivat 7.11., 8.11. ja 11.11. koneen nettikatkon vuoksi (ERR_INTERNET_DISCONNECTED) ja 9.11. painikkeen aikakatkaisuun. Käytännössä julkaisuja tulee yksi päivässä.
+- Katselut 12.11.: 21 104, 22 37, 23 148, 01 22, 02 18, 03 36, 24 122, 04 29, 36 3, 05 10.
+
+**Toimituksen sanamuoto**
+- Kassan sääntö: toimitus on ilmainen, kun tilauksessa on vähintään kaksi tuotetta (tarrat eivät lasketa, ei yhdisty alennuskoodiin eikä t-paitapariin) tai tilaus on 79 € tai enemmän. Muuten toimitus maksaa 6,90 €.
+- Sanamuoto on nyt kaikkialla sama: "ilmainen toimitus kahdesta tuotteesta tai 79 eurosta". Muutos kattaa:
+  - ylätunnisteen (myös mobiilissa) ja ostopainikkeen rivin
+  - meta-kuvaukset ja tuote- ja ammattisivujen UKK:t
+  - blogit (myös joulu 2026), lahjaoppaat, laskeutumissivut ja mediasivun
+- "Alle 79 euron tilauksissa toimitus maksaa..." on muutettu muotoon "Yhden tuotteen alle 79 euron tilauksessa...".
+- Toimitusehdot kertovat edelleen kahden tuotteen säännön tarkat ehdot.
+- Arkistoituja asiakasarvioita ei muutettu.
+- Vartijatesti `src/test/toimitusSanamuoto.test.ts` estää vanhat muodot.
+
+**Nimipalvelimet:** .fi-rekisterin whois näyttää yhä aria ja huxley (muutettu 12.4.2026). Vaihto ei ole mennyt rekisteriin asti, joten kohdan 24 vaiheet 2 ja 3 odottavat. Domainhotellissa vaihto pitää tallentaa ja vahvistaa uudelleen.
+
+**Neon:** kiinni (kanta-tila false). Blobissa on 77 tilastoerää (1586 kirjausta) odottamassa. Uusi cron `?tehtava=puskuri-luvut` laskee niistä käynnit ja A/B-luvut kantaa herättämättä.
