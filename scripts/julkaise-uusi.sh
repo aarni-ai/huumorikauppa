@@ -41,7 +41,12 @@ SIVUT=(/ /kategoria/t-paidat /kategoria/hupparit /tuote/tonnin-seteli-t-paita /t
 for UA in "${UAT[@]}"; do
   echo "  UA: ${UA:0:40}"
   for P in "${SIVUT[@]}"; do
-    KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 300 -o /dev/null -w "%{http_code}" -A "$UA" 2>/dev/null | tail -1 || true)
+    # Tyhjä tai 000 = vastausta ei saatu tämän koneen verkosta (12.11.2026 kaksi kertaa): uusi yritys, enintään 3.
+    # Muu kuin 200 on aina virhe.
+    for YRITYS in 1 2 3; do
+      KOODI=$(npx vercel curl "$P" --deployment "$URL" --yes -- -s -m 300 -o /dev/null -w "%{http_code}" -A "$UA" 2>/dev/null | tail -1 || true)
+      case "$KOODI" in ""|000) sleep 5 ;; *) break ;; esac
+    done
     echo "    $KOODI $P"
     [ "$KOODI" = "200" ] || VIRHEET=$((VIRHEET + 1))
   done
