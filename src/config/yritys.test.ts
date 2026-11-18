@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { INTELLER, UUSIKU, postiosoite, valittuMyyja, yritystiedot } from "./yritys";
 
 const ROOT = path.resolve(__dirname, "../..");
-const ENNEN = "";
+const ENNEN = "inteller";
 const JALKEEN = "uusiku";
 
 afterEach(() => {
@@ -13,15 +13,17 @@ afterEach(() => {
 });
 
 describe("yritystiedot()", () => {
-  it("oletus on Inteller; Uusiku Oy vain, kun MYYJA=uusiku (ei päivämäärään sidottua vaihtoa)", () => {
+  it("oletus on Uusiku Oy (18.11.2026); Inteller vain, kun MYYJA=inteller", () => {
     vi.stubEnv("MYYJA", "");
-    expect(valittuMyyja()).toBe("inteller");
-    expect(yritystiedot()).toBe(INTELLER);
+    expect(valittuMyyja()).toBe("uusiku");
+    expect(yritystiedot()).toBe(UUSIKU);
     expect(yritystiedot("inteller")).toBe(INTELLER);
     expect(yritystiedot("uusiku")).toBe(UUSIKU);
     vi.stubEnv("MYYJA", "Uusiku");
     expect(yritystiedot()).toBe(UUSIKU);
     vi.stubEnv("MYYJA", "jotain");
+    expect(yritystiedot()).toBe(UUSIKU);
+    vi.stubEnv("MYYJA", "inteller");
     expect(yritystiedot()).toBe(INTELLER);
   });
 

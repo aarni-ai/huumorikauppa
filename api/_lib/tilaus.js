@@ -120,6 +120,22 @@ async function virhe(tilaus, vaihe, viesti, v) {
   return { ok: false, vaihe, viesti };
 }
 
+/**
+ * Printifyn pending-tila (api/_lib/odottavat.js): ei virhe eikä hälytystä alle 24 tunnissa. Tilaus jää tilaan luotu,
+ * uusi yritys 15 minuutin päästä (cron ?tehtava=odottavat). 24 tunnin jälkeen tavallinen virhe ja hälytys.
+ */
+async function odotaPrintifya(tilaus, viesti, varasto, O) {
+  const alkaen = await O.lisaaOdottava(tilaus.id, varasto.laji).catch(() => new Date().toISOString());
+  if (O.odotusLoppunut(alkaen)) {
+    await O.poistaOdottava(tilaus.id).catch(() => {});
+    return virhe(tilaus, "send_to_production", `Printify pending yli ${O.ODOTUS_ENINTAAN_H} h: ${viesti}`, varasto);
+  }
+  await varasto.paivita(tilaus.id, { printify_status: "luotu", printify_error: `odottaa Printifyä (pending): ${viesti}`.slice(0, 1000),
+    next_retry_at: new Date(Date.now() + O.ODOTUS_VALI_MIN * 60000) });
+  await varasto.tapahtuma(tilaus.id, "printify_odottaa", { viesti: String(viesti).slice(0, 300), alkaen });
+  return { ok: false, vaihe: "odottaa", viesti };
+}
+
 /** Tilausvahdin pysäytys: tila 'pysaytetty', ei uudelleenyritystä, hälytys omistajalle heti. */
 async function pysayta(tilaus, printifyId, v, varasto) {
   const syy = v.syyt.join("; ");
@@ -191,8 +207,14 @@ export async function lahetaPrintifyyn(tilausId, varasto = pgTilausVarasto()) {
     // Jos Printify on jo ottanut tilauksen tuotantoon (esim. edellinen yritys onnistui, mutta vastaus katosi),
     // send_to_production palauttaa virheen: tarkistetaan tila ennen kuin merkitään virheeksi.
     const tila = await P.haeTilaus(printifyId);
-    if (!(tila.ok && onTuotannossa(tila.data?.status))) return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe", varasto);
+    if (!(tila.ok && onTuotannossa(tila.data?.status))) {
+      // Printify käsittelee tilausta vielä (8502 / pending): odotus 15 min välein enintään 24 h ilman hälytystä.
+      const O = await import("./odottavat.js");
+      if (O.onPrintifyPending(t.virhe, tila.data?.status)) return odotaPrintifya(tilaus, t.virhe || "pending", varasto, O);
+      return virhe(tilaus, "send_to_production", t.virhe || "tuntematon virhe", varasto);
+    }
   }
+  await import("./odottavat.js").then((O) => O.poistaOdottava(tilaus.id)).catch(() => {});
   await varasto.paivita(tilaus.id, { printify_status: "tuotannossa", printify_error: null, next_retry_at: null, sent_to_production_at: new Date() });
   await varasto.tapahtuma(tilaus.id, "printify_tuotannossa", { printifyId });
   return { ok: true };

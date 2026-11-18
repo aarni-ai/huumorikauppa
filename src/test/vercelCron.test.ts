@@ -24,7 +24,8 @@ describe("Vercel Cron", () => {
   });
 
   it("ajot osuvat parittomille UTC-tunneille 0-5 minuutin kohdalle (sama Neonin herääminen)", () => {
-    for (const c of crons) {
+    // Poikkeus: Printifyn pending-odotus (18.11.2026) 15 min välein; tyhjä lista ei kosketa tietokantaa.
+    for (const c of crons.filter((x) => !x.path.endsWith("tehtava=odottavat"))) {
       const [min, tunti] = c.schedule.split(" ");
       expect(Number(min), c.path).toBeLessThanOrEqual(5);
       if (/^\d+$/.test(tunti)) expect(Number(tunti) % 2, c.path).toBe(1);

@@ -1,8 +1,8 @@
 /**
  * Kaupan pitäjän yritystiedot (ainoa lähde, tavallinen JS: api-funktiot, middleware ja sivusto käyttävät samaa).
- * Kauppa siirtyy Tmi Intelleriltä Uusiku Oy:lle vasta, kun Uusiku Oy:n Stripe-tili ja uusi tausta otetaan käyttöön
- * (Stripe-tiliä ei voi siirtää). Vaihto tehdään ympäristömuuttujalla MYYJA=uusiku samassa käyttöönotossa
- * (KAYTTOONOTTO.md); ilman sitä sivuilla näkyy Inteller. Ei päivämäärään sidottua vaihtoa.
+ * Kaupan pitäjä on Uusiku Oy (Stripe-tili Uusiku Oy:n). 18.11.2026: oletus Uusiku Oy kaikkialla (alatunniste, sähköpostit,
+ * kuitit, ehdot, tietosuoja); aiemmin oletus oli Inteller ja vaihto vaati MYYJA=uusiku. Intellerin tiedot jäävät vain
+ * kirjanpidon edellisen pitäjän riveille (EDELLINEN_PITAJA). MYYJA=inteller palauttaa vanhan (vain testeille).
  * Tiedot: YTJ (avoindata.prh.fi), haettu 27.10.2026. Tyypit ja sivuston käyttö: src/config/yritys.ts.
  *
  * Selaimessa arvo tulee buildista (vite.config.ts määrittelee import.meta.env.VITE_MYYJA muuttujasta MYYJA),
@@ -40,7 +40,7 @@ export const UUSIKU = {
   email: EMAIL,
 };
 
-/** "uusiku" tai "inteller" (oletus). MYYJA tai VITE_MYYJA Nodessa, import.meta.env.VITE_MYYJA selaimessa. */
+/** "uusiku" (oletus) tai "inteller". MYYJA tai VITE_MYYJA Nodessa, import.meta.env.VITE_MYYJA selaimessa. */
 export function valittuMyyja() {
   const env = globalThis.process?.env;
   let arvo = env?.MYYJA ?? env?.VITE_MYYJA;
@@ -51,7 +51,7 @@ export function valittuMyyja() {
       arvo = undefined;
     }
   }
-  return String(arvo ?? "").trim().toLowerCase() === "uusiku" ? "uusiku" : "inteller";
+  return String(arvo ?? "").trim().toLowerCase() === "inteller" ? "inteller" : "uusiku";
 }
 
 /** Kaupan pitäjän tiedot (oletus: ympäristömuuttujan MYYJA mukaan). */

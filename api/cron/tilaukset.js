@@ -144,6 +144,26 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, tuotteet, arviot, hintahistoria, koodit });
   }
 
+  // Printifyn pending-tilassa odottavat (18.11.2026, api/_lib/odottavat.js): 15 minuutin välein, enintään 24 h. Tyhjä
+  // lista ei kosketa tietokantaa; puskuritilaukset Blobissa, kannan tilaukset vain, jos kanta vastaa.
+  if (req.query.tehtava === "odottavat") {
+    const O = await import("../_lib/odottavat.js");
+    const lista = await O.odottavat();
+    if (!lista.length) return res.status(200).json({ ok: true, odottavia: 0 });
+    const { blobTilausVarasto, pgTilausVarasto } = await import("../_lib/tilaus.js");
+    const P = await import("../_lib/puskuri.js");
+    const kanta = lista.some((e) => e.laji !== "blob") ? await P.kantaVastaa() : false;
+    const tulos = [];
+    for (const e of lista) {
+      if (e.laji !== "blob" && !kanta) { tulos.push({ id: e.id.slice(0, 8), tila: "kanta kiinni" }); continue; }
+      const varasto = e.laji === "blob" ? blobTilausVarasto() : pgTilausVarasto(db);
+      const r = kuiva ? { kuiva: true } : await lahetaPrintifyyn(e.id, varasto).catch((x) => ({ ok: false, viesti: String(x?.message || x) }));
+      if (r.ok && !kuiva) await O.poistaOdottava(e.id);
+      tulos.push({ id: e.id.slice(0, 8), ...r });
+    }
+    return res.status(200).json({ ok: true, odottavia: lista.length, tulos });
+  }
+
   // Blobin seurantaerien kooste (12.11.2026, kanta kiinni): kirjatut laskurikyselyt tauluittain arvoineen ja määrineen
   // (käynnit päivä x lähde x osio, suppilo, A/B-testit, tuotesivut). Ei henkilötietoja: seurantakirjauksissa niitä ei ole.
   if (req.query.tehtava === "puskuri-luvut") {
@@ -1266,9 +1286,11 @@ export default async function handler(req, res) {
 
   // 2c. Jumissa yli 2 h: hälytys kerran per tilaus (uudelleenyritykset jatkuvat kohdassa 2). Uudet sarakkeet
   // (db/schema.sql) puuttuvat, jos skeemaa ei ole ajettu: vaihe ohitetaan eikä muu valvonta kaadu.
+  // Printifyn pending-odotuksessa (alle 24 h, api/_lib/odottavat.js) olevat eivät ole jumissa: niistä ei hälytetä.
+  const odottavatIdt = new Set((await import("../_lib/odottavat.js").then((O) => O.odottavat()).catch(() => [])).map((e) => e.id));
   const jumissa = jumissaYli(await db`select * from orders where status = 'maksettu'
     and printify_status in ('ei_lahetetty', 'luotu', 'virhe') and stuck_alert_sent_at is null order by paid_at limit 50`
-    .catch((e) => { loki.push(`jumissa-tarkistus: ${e?.message} (aja db/schema.sql)`); return []; }));
+    .catch((e) => { loki.push(`jumissa-tarkistus: ${e?.message} (aja db/schema.sql)`); return []; })).filter((t) => !odottavatIdt.has(t.id));
   if (jumissa.length) {
     loki.push(`jumissa yli ${JUMISSA_TUNTIA} h: ${jumissa.length}`);
     if (!kuiva) {
