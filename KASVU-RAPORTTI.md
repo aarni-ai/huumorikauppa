@@ -3,6 +3,18 @@
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
 kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
+## 18.11.2026: tilaukset, Printifyn pending-tila, alatunniste
+
+| | |
+|---|---|
+| #0A0EB579 (17.11., 34,90 €) | Printifyssä tilassa in-production 18.11. klo 19.16 Suomen aikaa, painotalo 30 Tšekki (EU). Virhe 8502 "status pending" tarkoitti, että Printify käsitteli tilausta vielä. Mitään ei tarvinnut korjata, eikä maksua tai maksutapaa tarvittu. Kate 34,90 - ALV 7,09 - Printify 17,39 - Stripe 1,44 = 8,98 €. |
+| Jaanan tilaus #2ED0A626 (29.10., Amatimies-huppari, 54,39 €) | Painotalo 26 Saksa (EU). Tuotantoon 31.10., lähetetty 4.11. (Spring LX118005213NL). Printifyssä shipment_pre_transit. Perillä arviolta noin 26.11., ei ehdi 23.11. mennessä. |
+| Tilaukset 12.-18.11. | 1 tilaus (#0A0EB579), myynti 34,90 €, kate 8,98 €. Tuotannossa. |
+| Uusintalogiikka | Printifyn 8502 tai pending ei ole virhe: tilaus odottaa ja yritetään 15 min välein (cron `?tehtava=odottavat`, lista Blobissa) enintään 24 h. Ei hälytystä ennen sitä, eikä myöskään 2 tunnin jumissa-hälytystä. Testi `src/test/printifyPending.test.ts`. |
+| Alatunniste | Myyjän oletus on nyt Uusiku Oy (`api/_lib/yritys.js`). Sivuston alatunniste, ehdot, tietosuoja, sähköpostit ja kuitit näyttävät "Uusiku Oy, Y-tunnus 3653666-7, ALV-numero FI36536667". Tuotannossa tarkistettu: /, /toimitusehdot ja /tietosuoja. Intellerin tiedot jäävät vain kirjanpidon edellisen pitäjän riveille ja vanhoihin raportteihin. |
+| Julkaisu | dpl_2Ha3nbL3xi6nP1YQzSiNHHf8r2v6, savutestissä 45/45 sivua vastasi 200, tuotelähde katalogi. Testit 2370 läpi. |
+| Luonnokset | Ei tehty: tämän koneen Gmail-yhteys on eri tili kuin huumorikauppa@gmail.com. |
+
 ## Tilanne 12.11.2026 (marraskuu tähän mennessä)
 
 | Mittari | Marraskuu 1.-12.11. | Huomio |
