@@ -3,6 +3,71 @@
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
 kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
+## 24.11.2026: KAUPPA ALHAALLA huumorikauppa.fi-osoitteessa, SEO-, AEO-, GEO- ja konversioajo
+
+**KRIITTINEN: huumorikauppa.fi vastaa kaikilla sivuilla 402 DEPLOYMENT_DISABLED.**
+- Koskee etusivua, tuotesivuja, blogeja, sivukarttaa, Merchant-syötettä, robots.txt:tä ja llms.txt:tä.
+- Vanha välitysprojekti (Vercel-tiimi aarni-ais-projects) on poistettu käytöstä. Sen GitHub-buildit epäonnistuvat 22.11. alkaen, ja oma kävijätilasto loppuu 20.11., joten kauppa on ollut alhaalla noin 21.11. alkaen.
+- Uusi projekti toimii (huumorikauppa-five.vercel.app, savutesti 45/45 sivua 200).
+- **Aarni, toinen näistä:**
+  1. Kirjaudu Vercelin tiimiin aarni-ais-projects ja katso Usage-sivulta, miksi projekti on pysäytetty. Hobby-tason raja palautuu kauden vaihteessa. Maksulliseen ei vaihdeta.
+  2. Pysyvä korjaus: vaihda Domainhotellissa nimipalvelimiksi annabel ja vick (whois näyttää yhä aria ja huxley, muutettu 12.4.2026). Sen jälkeen domain siirretään heti uuteen projektiin (KAYTTOONOTTO.md kohta 24, vaihe 3), eikä vanhaa projektia tarvita.
+
+**Kävijäpolku 5.-20.11. (oma tilasto Blob-puskurista, 255 erää, aidot kävijät)**
+
+| Vaihe | Määrä | Pudotus |
+|---|---|---|
+| Käynnit | 388 | |
+| Laskeutui blogiin | 186 (48 %) | 141 lähti blogista jatkamatta (76 %) |
+| Blogista jatkoi | 45 | |
+| Tuotesivun näytöt | 119 | |
+| Koriin tuotesivulta | 3 (2,5 %) | 97 % ei lisää koriin |
+| Kori (suppilo) | 2 | |
+| Kassa | 1 | |
+| Maksu | 1 (#0A0EB579) | |
+
+- Kävijät putoavat kahdessa kohdassa: blogista ei jatketa tuotteisiin (76 %), ja tuotesivulta ei lisätä koriin (97 %).
+- Blogissa 51 % viipyy 10–30 sekuntia.
+- Blogista tuotteisiin ei ollut omaa seurantaa. Se on nyt lisätty: blogin näyttö, tuoteklikki, koriin ja kassa blogeittain (`api/_lib/blogiseuranta.js`).
+
+**Blogien konversio (21 blogia, joilla yli 10 klikkausta, sekä pikkujoulu-teema-ideat)**
+- **Suora vastaus ja Top 3:** H1:n alle tulee suora 2–3 lauseen vastaus (`src/data/blogVastaukset.ts`) ja Top 3 -tuotekortit. Korteissa on kuva, hinta ja "Lisää koriin" (koko ja väri valitaan kortissa, sivulta ei poistuta). Sama vastaus ja Top 3 ovat myös esirenderöidyssä HTML:ssä.
+- **Tekstin tuotteet:** jokainen tekstissä linkitetty tuote näkyy kappaleen perässä klikattavana korttina, jossa on "Lisää koriin". Kukin tuote näkyy kerran per artikkeli.
+- **Mobiilin alapalkki:** "Joulun viimeinen tilauspäivä ke 2.12. Ilmainen toimitus 2 tuotteesta." Palkki näkyy vain tilausaikana (`jouluAuki`).
+- Hintoja ja toimitusaikoja ei muutettu.
+
+**Joulusivut**
+- **/blogi/hauskat-joululahjaideat-miehelle-2026:**
+  - Uusi title "Joululahja miehelle 2026: 50 hauskaa ideaa" ja meta, jossa on "Mitä miehelle joululahjaksi?".
+  - Kaksi uutta UKK:ta hakulausekkeille "mitä miehelle joululahjaksi" ja "joululahja miehelle, jolla on kaikkea".
+  - Sivun 59 tekstin tuotelinkkiä näkyvät nyt tuotekortteina.
+  - Sisäiset linkit kuudesta blogista (lahja-miehelle-30v-40v-50v-60v, parhaat-hauskat-lahjat-miehelle, mita-antaa-50-vuotiaalle, pikkujoululahja-miehelle, hauska-lahja-kaverille, lahja-kalastajalle).
+  - Etusivun lahjaoppaissa ensimmäisenä.
+- **Pikkujouluasu 2026:** hakulause osuu sivulle /blogi/pikkujouluasu-2026 (hakusijainti 4,5, sivu 7,2, CTR 1,6 %). Uusi title "Pikkujouluasu 2026: hauska ja rento asu" ja houkuttelevampi meta.
+
+**Uudet title- ja meta-tekstit: 12 sivua**
+- Blogit: lahja-miehelle, lahja-naiselle, pikkujouluasu, pikkujoulu-teema-ideat ja joululahjaideat-miehelle.
+- Laskeutumissivut: /lahjat/30-vuotiaalle-miehelle ja /hauskat-lahjat-naiselle.
+- Tuotteet (`src/data/tuoteMeta.ts` ja productContent): tonnin-seteli-t-paita, ice-aatanat-paita, ice-aatanahuppari, kalju-t-paita ja museokamaa-t-paita.
+- Hakusanat säilyivät. Piilotettuja mukeja ei käsitelty, koska niitä ei myydä.
+
+**Skeemat**
+- Blogien ItemList sisältää nyt täydet Product-kohteet (nimi, kuva, tarjous hintoineen, myyjä Organization).
+- FAQPage on jo kaikissa blogeissa.
+- Organization (Uusiku Oy, Y-tunnus 3653666-7) on sivuston @graphissa, ja blogin julkaisija viittaa siihen.
+
+**llms.txt, robots.txt ja IndexNow**
+- llms.txt generoidaan buildissa (`src/seo/llms.ts`). Toimituksen sanamuoto korjattu, ja kaupan pitäjä on Uusiku Oy.
+- robots.txt sallii jo GPTBotin, OAI-SearchBotin, ClaudeBotin, PerplexityBotin ja Google-Extendedin.
+- IndexNow pingataan jokaisen julkaisun jälkeen (`scripts/indexnow.mjs`, avain `public/b1487b3a5992f938e01e3aa973052e5f.txt`). Ensimmäinen ping (1479 osoitetta) sai 403, koska avaintiedostoa ei saada huumorikauppa.fi-osoitteesta domainin ollessa alhaalla. Ping toimii, kun domain palaa.
+- Bingin nimetön sitemap-ping on poistettu käytöstä, joten sitemapin lähetys Bingiin vaatisi Webmaster Tools -tilin. Sitä ei tehty; IndexNow korvaa sen.
+
+**Merchant**
+- Syötteen koodiltarkistus 1171 tuotteelle: ei virheitä (tunnisteet, hinnat, kuvat, saatavuus, linkit, vaatteiden koko, väri, ikä ja sukupuoli).
+- Merchantin hylkäykset johtuvat nyt siitä, että tuotesivut vastaavat 402, eikä sitä voi korjata koodilla ennen domainin palautumista.
+
+**Julkaisu:** dpl_bCuWyTW8Edpw56J1Gfi6VnmxmBZW, savutestissä 45/45 sivua 200, commit 4031b50. Testit läpi lukuun ottamatta kolmea korialennus-testiä, jotka kaatuvat myös ilman tätä muutosta (päivämäärästä riippuva kampanjahinta).
+
 ## 18.11.2026: tilaukset, Printifyn pending-tila, alatunniste
 
 | | |
