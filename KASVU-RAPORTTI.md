@@ -3,6 +3,52 @@
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
 kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
+## 24.11.2026 ilta: KATKO KORJATTU, domain uudessa projektissa, Resend käytössä, tuotesivun kokovalinta
+
+**Domain**
+- Nimipalvelimet annabel ja vick näkyvät .fi-rekisterissä (whois muutettu 24.11. klo 18.52) ja julkisessa DNS:ssä.
+- Cloudflareen (tili huumorikauppa@gmail.com) lisättiin kaksi `_vercel`-TXT-tietuetta uudelle projektille. Vanhan tiimin arvot jäivät rinnalle.
+- Vercel vahvisti huumorikauppa.fi:n ja www.huumorikauppa.fi:n uuteen projektiin (flyapeg-2135s-projects/huumorikauppa).
+- huumorikauppa.fi vastaa 200, ja www ohjaa 308:lla pääosoitteeseen. Katko kesti noin 21.11.–24.11. klo 19.45.
+- Vercelin ja www:n tietueet ovat DNS only. Vercel ei raportoi virheellisiä asetuksia (misconfigured false), joten nykyiset A-tietueet (.65) jätettiin.
+- Sähköpostitietueet ovat kunnossa:
+  - Zoho MX ja juuren SPF
+  - default._domainkey (DKIM)
+  - Resendin resend._domainkey, send-MX ja send-SPF
+  - _dmarc, p=none
+- Savutesti huumorikauppa.fi-osoitteessa: 39/39 vastasi 200 kolmella User-Agentilla (13 sivua, mukana syöte, sivukartta, llms.txt, robots.txt ja IndexNow-avain).
+
+**Hakukoneet ja Merchant**
+- IndexNow: 1479 osoitetta, vastaus 200 OK.
+- Search Console: sitemap https://huumorikauppa.fi/sitemap.xml lähetetty uudelleen 24.11. Edellinen luku 19.11. näkyi tilassa "Couldn't fetch".
+- Merchant Center: tuotelähteen (PRODUCTS SOURCE 3, 1171 tuotetta) haku käynnistettiin heti Päivitä-painikkeella. Merchantissa ei ole erillistä uudelleentarkistuspyyntöä laskeutumissivuvirheille, vaan se tarkistaa tuotteet automaattisesti uudelleen, kun sivut vastaavat.
+- Huumorikauppa-profiilin kopio (Profile 8) ohjasi Search Consolessa toisen Google-tilin kirjautumiseen. Se pysäytettiin heti, eikä mitään syötetty. Sitemap lähetettiin Chromessa, jossa on huumorikauppa@gmail.com.
+
+**Resend**
+- Domain verified (DKIM ja SPF).
+- `node scripts/sahkoposti-tila.mjs --testi`: kaikki kahdeksan viestityyppiä lähtivät Resendin kautta osoitteeseen huumorikauppa@gmail.com: tilausvahvistus, lähetysilmoitus, lahjakortti, korimuistutus, tervetuloviesti, uutiskirje, arvostelupyyntö ja hallinta.
+- Lähetysreitti on resend, ja oma tilausvahvistus ja markkinointiviestit ovat päällä. Asiakasviestit menevät nyt asiakkaille.
+
+**Tuotesivu mobiilissa (Playwright, iPhone 13)**
+- Lataus 1,5–2,0 s ja LCP 1,5–1,7 s. Hinta ja toimitusrivi näkyvät heti.
+- Kiinteä "Lisää koriin" näkyy ilman vieritystä.
+- Pudotuksen syy: kiinteä painike vieritti kokovalintaan, jolloin kävijä joutui etsimään koon sivulta.
+- **Korjaus:**
+  - Koot aukeavat nyt suoraan kiinteään palkkiin, ja koon valinta lisää tuotteen koriin. Kaksi painallusta, ei vieritystä (tarkistettu tuotannossa).
+  - Palkkiin lisättiin luottamusrivi "Painetaan EU:ssa · Ilmainen toimitus 2 tuotteesta · Joulun viimeinen tilauspäivä ke 2.12.". EU-teksti näkyy vain EU-painotalon tuotteille ja päivämäärä vain tilausaikana.
+  - Pääpainikkeen alla oli jo samat faktat.
+
+**Testit**
+- Kolme kampanjahinnan testiä (src/test/korialennus.test.ts) kaatuivat, koska testit käyttivät oikeaa kelloa. Black Fridayn aikana kahden t-paidan hinta 44,90 € korvaa −5 %:n korialennuksen, joten koodi toimi oikein.
+- Testien kello on nyt kiinnitetty kampanjan ulkopuolelle (20.11.).
+- Koko sarja: 2372 testiä läpi.
+
+**Julkaisu:** dpl_HPMFqYd4WhGF5vvJ5kN1GxsRFvTf, savutestissä 45/45 sivua 200, commit 0ed212b.
+
+**Jäljellä (ei kiireellinen):**
+- Viikon päästä vanhan tiimin kaksi `_vercel`-arvoa voi poistaa.
+- Välitys-middleware ja ajastukset voi palauttaa vercel.jsoniin (KAYTTOONOTTO.md kohta 24, vaihe 3.5).
+
 ## 24.11.2026: KAUPPA ALHAALLA huumorikauppa.fi-osoitteessa, SEO-, AEO-, GEO- ja konversioajo
 
 **KRIITTINEN: huumorikauppa.fi vastaa kaikilla sivuilla 402 DEPLOYMENT_DISABLED.**
