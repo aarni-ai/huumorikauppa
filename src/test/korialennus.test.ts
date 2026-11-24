@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import { laskeTilaus } from "../../api/_lib/kassa.js";
 import { printifyToimitusSentit, laskeTilauksenNettokate } from "../../api/_lib/kate.js";
 import { sovellaKorialennus, kalleinVariantti } from "../../api/_lib/korialennus.js";
@@ -10,6 +10,11 @@ import type { Product } from "@/types/product";
 
 // T-paita todellisilla kuluilla 27.10.2026 (KATTEET.md "Keskiostoksen nosto: laskelma"): tuotekulu 8,90 (3XL 9,93),
 // Printify-katalogin Suomen toimitus OPT OnDemand (pp 30) ensimmäinen 8,49 / lisäkappale 1,19.
+// Kello kiinni kampanjan ulkopuolelle (24.11.2026): Black Fridayn t-paitapari (44,90 €, api/_lib/vakiot.js
+// TPAITAPARI_KAMPANJA) korvaa kahden t-paidan -5 %:n alennuksen kampanja-aikana, ja nämä testit koskevat -5 %:a.
+// Kampanjan omat testit antavat ajan parametrina (nyt).
+beforeAll(() => { vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(new Date("2026-11-20T10:00:00Z")); });
+afterAll(() => { vi.useRealTimers(); });
 const paita = {
   id: "t1", slug: "testi-t-paita", name: "Testi | T-Paita", category: "t-paidat", price: 24.9, is_active: true,
   printify_product_id: "pf-t", created_at: "2026-01-01",

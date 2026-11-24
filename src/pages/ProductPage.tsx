@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { JOULU_PAIVA_LYHYT, jouluAuki } from "@/data/tilauspaivat";
 import { TUOTE_META } from "@/data/tuoteMeta";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
@@ -273,6 +274,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // Koko puuttuu, kun Lisää koriin painettiin: kokovalitsin korostetaan ja vieritetään näkyviin (ei virhetoastia).
   const [kokoMuistutus, setKokoMuistutus] = useState(false);
   const [lisaaKunKoko, setLisaaKunKoko] = useState(false);
+  // Kiinteän palkin kokovalinta (24.11.2026): koot aukeavat palkkiin, joten koriin lisäys ei vaadi vieritystä.
+  const [stickyKoot, setStickyKoot] = useState(false);
   const stickyEndRef = useRef<HTMLDivElement>(null);
   const [buttonOutOfView, setButtonOutOfView] = useState(false);
   const [pageEndReached, setPageEndReached] = useState(false);
@@ -574,6 +577,7 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   // Koon valinta: jos ostaja painoi jo Lisää koriin ilman kokoa (myös esikatselussa ennen sovelluksen latautumista),
   // tuote lisätään koriin heti valitulla koolla.
   const valitseKoko = (size: string) => {
+    setStickyKoot(false);
     kirjaaTuotetapahtuma("koko");
     setKokoEsivalittu(false);
     setSelectedSize(size);
@@ -1293,7 +1297,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
           <Button
             onClick={() => {
               if (needsColor && !selectedColor) return scrollToVariants();
-              if (needsSize) setLisaaKunKoko(true);
+              if (needsSize) {
+                setLisaaKunKoko(true);
+                setStickyKoot(true);
+                return;
+              }
               handleAddToCart();
             }}
             size="lg"
@@ -1302,6 +1310,23 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
             <ShoppingCart className="h-4 w-4 mr-1" /> Lisää koriin
           </Button>
         </div>
+        {stickyKoot && needsSize && (
+          <div className="px-3 pb-2" role="radiogroup" aria-label="Valitse koko">
+            <p className="text-xs font-semibold text-foreground mb-1.5">Valitse koko, niin tuote lisätään koriin</p>
+            <div className="flex gap-1.5 overflow-x-auto">
+              {sellableSizes.map((size: string) => (
+                <button key={size} type="button" role="radio" aria-checked={false} onClick={() => valitseKoko(size)}
+                  className="shrink-0 min-w-[44px] h-10 px-3 rounded-md border border-border text-sm font-medium text-foreground hover:border-primary">
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* Luottamusrivi painikkeen alla (24.11.2026): faktat reposta, joulupäivä vain tilausaikana. */}
+        <p className="px-3 pb-2 -mt-1 text-[11px] leading-tight text-muted-foreground text-center">
+          {[euPaino ? "Painetaan EU:ssa" : null, "Ilmainen toimitus 2 tuotteesta", jouluAuki() ? `Joulun viimeinen tilauspäivä ${JOULU_PAIVA_LYHYT.replace(/\d{4}$/, "")}` : null].filter(Boolean).join(" · ")}
+        </p>
       </div>
       )}
     </div>
