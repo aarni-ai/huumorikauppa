@@ -3,7 +3,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { BLOG_VASTAUKSET } from "@/data/blogVastaukset";
 import { kirjaaBlogi } from "@/lib/blogiseuranta";
 import { useCartContext } from "@/context/CartContext";
-import { JOULU_PAIVA_LYHYT, jouluAuki } from "@/data/tilauspaivat";
+import { JOULU_PAIVA_LYHYT, JOULU_LAHJAKORTTI_TEKSTI, jouluAuki } from "@/data/tilauspaivat";
+import { JoulunLahjakorttiKortti, useJoulunLahjakorttiAika } from "@/components/JoulunLahjakortti";
 import type { Product } from "@/types/product";
 import { revealApp } from "@/lib/prerenderPreview";
 import { useParams, Link } from "react-router-dom";
@@ -226,6 +227,8 @@ const BlogPost = () => {
   const ideatEnsin = abVersio("blogi") === "b";
   // Top 3 (24.11.2026): kolme ensimmäistä teeman tuotetta H1:n alle; muut nostot niiden jälkeen.
   const top3 = blogProducts ? blogProducts.slice(0, 3) : null;
+  // Joulun lahjakorttiaika 3.12.-26.12. (src/data/tilauspaivat.ts): lahjakortti Top 3:n ensimmäiseksi.
+  const joulunLahjakortti = useJoulunLahjakorttiAika();
   const split = blogProducts ? splitBlogProducts(blogProducts.slice(3)) : null;
   const naytetyt = new Set<string>((top3 || []).map((p) => p.slug));
   const midProducts = split ? split.mid : isError ? [] : null;
@@ -307,8 +310,10 @@ const BlogPost = () => {
           {top3 && top3.length > 0 && (
             <>
               <h2 className="font-display text-lg text-foreground mb-3">Top 3</h2>
+              {joulunLahjakortti && <p className="text-sm font-semibold text-foreground mb-3">{JOULU_LAHJAKORTTI_TEKSTI}.</p>}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {top3.map((p) => <ProductCard key={p.slug} product={p as Product} lisaaKoriinNappi />)}
+                {joulunLahjakortti && <JoulunLahjakorttiKortti />}
+                {(joulunLahjakortti ? top3.slice(0, 2) : top3).map((p) => <ProductCard key={p.slug} product={p as Product} lisaaKoriinNappi />)}
               </div>
             </>
           )}
@@ -454,6 +459,14 @@ const BlogPost = () => {
       </article>
 
       {/* Mobiilin kiinteä alapalkki (24.11.2026): joulun viimeinen tilauspäivä ja ilmainen toimitus. Vain tilausaikana. */}
+      {joulunLahjakortti && (
+        <>
+          <div className="h-12 md:hidden" aria-hidden="true" />
+          <Link to="/lahjakortti" className="fixed inset-x-0 bottom-0 z-40 md:hidden bg-primary text-primary-foreground text-center text-xs font-semibold px-3 py-2.5 shadow-lg underline-offset-2">
+            {JOULU_LAHJAKORTTI_TEKSTI}. <span className="underline">Osta lahjakortti</span>
+          </Link>
+        </>
+      )}
       {jouluAuki() && (
         <>
           <div className="h-12 md:hidden" aria-hidden="true" />

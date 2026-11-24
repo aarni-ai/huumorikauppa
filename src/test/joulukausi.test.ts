@@ -41,6 +41,9 @@ describe("Joulukausi 3.11.-24.12.2026", () => {
       }
     }
     expect(kampanjaVaihe(loppu)).toBeNull();
-    expect(lahjakorttiAika(loppu)).toBe(false);
+    // Lahjakorttiviesti jatkuu tapaninpäivään, 27.12. alkaen normaali (src/data/tilauspaivat.ts joulunLahjakorttiAika).
+    expect(lahjakorttiAika(loppu)).toBe(true);
+    expect(lahjakorttiAika(helsinkiTimeToUtcMs(2026, 12, 27) - 1)).toBe(true);
+    expect(lahjakorttiAika(helsinkiTimeToUtcMs(2026, 12, 27))).toBe(false);
   });
 });

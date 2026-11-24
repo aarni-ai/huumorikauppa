@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Loader2, PartyPopper } from "lucide-react";
+import { ArrowRight, Check, Loader2, PartyPopper, Users } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,14 +14,14 @@ import { buildFaqJsonLd } from "@/seo/structuredData";
 import { SITE_URL } from "@/seo/site";
 import { proxiedImage } from "@/lib/imageProxy";
 import { kirjaaPikkujoulu } from "@/lib/pikkujouluSeuranta";
-import { pikkujoulutYrityksetPage as page, PIKKUJOULU_OLETUSHINNAT } from "@/data/pikkujoulutYrityksetPage";
+import { pikkujoulutYrityksetPage as page, PIKKUJOULU_OLETUSHINNAT, pikkujoulutKevatPage } from "@/data/pikkujoulutYrityksetPage";
+import { pikkujoulutKausi } from "@/data/pikkujoulutKausi";
 import {
   PIKKUJOULU_PAKETIT, PIKKUJOULU_KOOT, PIKKUJOULU_POLKU, PIKKUJOULU_SALLITUT, laskePikkujoulu, oletusValinta, designinNimi,
   sallitutKoot, korvaaPuuttuvat, tarkistaPikkujouluLomake,
 } from "../../api/_lib/pikkujoulut.js";
 import type { Product } from "@/types/product";
 
-const meta = STATIC_PAGE_META[PIKKUJOULU_POLKU as "/pikkujoulut-yritykset"];
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 type Paketti = (typeof PIKKUJOULU_PAKETIT)[number];
 type Valinta = { paketti: string; designit: string[]; koot: Record<string, number> };
@@ -122,9 +122,67 @@ function Koot({ valinta, kpl, setKoot }: { valinta: Valinta; kpl: number; setKoo
 
 const TYHJA = { yritys: "", ytunnus: "", nimi: "", email: "", puhelin: "", postinumero: "", kaupunki: "", logoToive: "", viesti: "", kotisivu: "" };
 
-/** /pikkujoulut-yritykset: valmiit pikkujoulupaketit yrityksille (api/_lib/pikkujoulut.js). */
-const PikkujoulutYrityksetPage = () => {
+/**
+ * /pikkujoulut-yritykset: yritysten joulutakarajaan (to 26.11.2026) asti valmiit pikkujoulupaketit
+ * (api/_lib/pikkujoulut.js), sen jälkeen samassa osoitteessa tiimipaidat kevään tapahtumiin (src/data/pikkujoulutKausi.ts).
+ */
+const PikkujoulutYrityksetPage = () => (pikkujoulutKausi() === "joulu" ? <PikkujouluPaketit /> : <KevaanTiimipaidat />);
+
+/** Kevään tapahtumat ja virkistyspäivät: ohjaa yritystilaukseen ja logopaitoihin. */
+function KevaanTiimipaidat() {
   usePrerenderReady();
+  const meta = STATIC_PAGE_META[PIKKUJOULU_POLKU as "/pikkujoulut-yritykset"];
+  const canonical = `${SITE_URL}${PIKKUJOULU_POLKU}`;
+  const sivu = pikkujoulutKevatPage;
+  return (
+    <div className="container py-8 md:py-12 max-w-4xl">
+      <SEOHead
+        title={meta.title}
+        description={meta.description}
+        canonical={canonical}
+        breadcrumbs={[{ name: "Etusivu", url: `${SITE_URL}/` }, { name: "Yritykset", url: `${SITE_URL}/yritykset` }, { name: meta.name, url: canonical }]}
+        jsonLd={buildFaqJsonLd(sivu.faqs)}
+      />
+      <h1 className="font-display text-3xl md:text-4xl text-foreground mb-4 flex items-center gap-3">
+        <Users className="h-8 w-8 text-primary shrink-0" aria-hidden="true" /> {meta.h1}
+      </h1>
+      <div className="space-y-3 text-muted-foreground mb-6">
+        {sivu.intro.map((p) => <p key={p}>{p}</p>)}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+        {sivu.toiminnot.map((t) => (
+          <Link key={t.href} to={t.href} className="group rounded-xl border border-border bg-card p-5 hover:border-primary transition-colors">
+            <h2 className="font-display text-lg text-foreground flex items-center gap-2">
+              {t.label} <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">{t.kuvaus}</p>
+          </Link>
+        ))}
+      </div>
+      <section className="mt-10">
+        <h2 className="font-display text-xl text-foreground mb-3">Usein kysyttyä</h2>
+        <div className="space-y-4">
+          {sivu.faqs.map((f) => (
+            <div key={f.q}>
+              <h3 className="font-medium text-foreground text-sm">{f.q}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <nav aria-label="Liittyvät sivut" className="mt-8 flex flex-wrap gap-2">
+        {sivu.links.map((l) => (
+          <Link key={l.href} to={l.href} className="inline-flex items-center px-3 py-1.5 rounded-full border border-border bg-card text-sm text-muted-foreground hover:text-primary">{l.label}</Link>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+/** Valmiit pikkujoulupaketit yrityksille (api/_lib/pikkujoulut.js). */
+function PikkujouluPaketit() {
+  usePrerenderReady();
+  const meta = STATIC_PAGE_META[PIKKUJOULU_POLKU as "/pikkujoulut-yritykset"];
   const canonical = `${SITE_URL}${PIKKUJOULU_POLKU}`;
   const [valinta, setValinta] = useState<Valinta>(() => oletusValinta(PIKKUJOULU_PAKETIT[1]));
   const [lomake, setLomake] = useState(TYHJA);
@@ -302,6 +360,6 @@ const PikkujoulutYrityksetPage = () => {
       </nav>
     </div>
   );
-};
+}
 
 export default PikkujoulutYrityksetPage;

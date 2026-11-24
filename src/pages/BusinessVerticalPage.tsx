@@ -6,6 +6,7 @@ import { BlogProductStrip } from "@/components/BlogProductStrip";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { yritysJouluAuki } from "@/data/pikkujoulutKausi";
 import { YRITYS_ALAT, YRITYS_ALA_POLKU, yritysAla, type YritysAla } from "@/data/yritysAlat";
 import { yritysAlaFaqs, yritysAlaTeema, valitseAlanTuotteet } from "@/data/yritysAlaSivu";
 import { TYHJA_LOGO, type LogoValinta } from "@/components/LogoEditori";
@@ -56,10 +57,10 @@ function AlaSivu({ ala }: { ala: YritysAla }) {
         {ala.intro.map((p) => <p key={p}>{p}</p>)}
       </div>
 
-      <p className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground">
+      {yritysJouluAuki() && <p className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground">
         <span className="font-semibold">Joulun yritystilaukset:</span> tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.{" "}
         <a href="#tarjouspyynto" className="text-primary underline">Pyydä tarjous</a>
-      </p>
+      </p>}
 
       <BlogProductStrip theme={theme} products={products} count={ala.tuotteet.length} variant="mid" />
 

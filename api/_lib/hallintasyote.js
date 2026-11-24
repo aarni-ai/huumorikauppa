@@ -12,7 +12,7 @@
 
 export const OTSIKKO_MAX = 100;
 export const SISALTO_MAX = 1_000_000;
-export const EHDOTUKSET = ["Search Console 28 pv", "Search Console sivut 28 pv", "Merchant klikit", "Instagram tilastot", "TikTok tilastot", "Pinterest tilastot", "Muu"];
+export const EHDOTUKSET = ["Search Console 28 pv", "Search Console sivut 28 pv", "Search Console 7 pv", "Viikkovertailu", "Merchant klikit", "Instagram tilastot", "TikTok tilastot", "Pinterest tilastot", "Muu"];
 
 export async function varmista(db) {
   await db`create table if not exists hallinta_syote (id bigserial primary key, otsikko text not null, sisalto text not null,

@@ -9,19 +9,21 @@
  * salasanoja tai koodeja ei syötetä. Jos sivulla on CAPTCHA, tarkistus tai kirjautuminen puuttuu, kyseinen lähde
  * ohitetaan heti ja syy kirjataan (some/datahakuloki.txt); muita lähteitä jatketaan, koska palvelut ovat erillisiä.
  *
- * Otsikot: "Search Console 28 pv" (hakulausekkeet), "Search Console sivut 28 pv", "Merchant klikit" (tuotteet 28 pv),
- * "Instagram tilastot", "TikTok tilastot".
+ * Otsikot: "Search Console 28 pv" (hakulausekkeet), "Search Console sivut 28 pv", "Search Console 7 pv" (kokonaisluvut),
+ * "Merchant klikit" (tuotteet 28 pv), "Instagram tilastot", "TikTok tilastot" ja "Viikkovertailu" (24.11.2026):
+ * Search Consolen klikkaukset viikko viikolta (edellisen maanantain tilannekuvasta) ja koriin lisäysten osuus tuotesivun
+ * kävijöistä 7 päivältä (tuotesivu_seuranta: Blob-puskuri ?tehtava=puskuri-luvut ja tietokanta ?tehtava=tuoteseuranta).
  *
  * Ajo:
  *   node scripts/data-haku.mjs                      kaikki lähteet
- *   node scripts/data-haku.mjs --vain merchant      yksi lähde (search, merchant, instagram, tiktok)
+ *   node scripts/data-haku.mjs --vain merchant      yksi lähde (search, merchant, instagram, tiktok, vertailu)
  *   node scripts/data-haku.mjs --kuiva              ei tallennusta (tulostaa rivimäärät ja alun)
  *   node scripts/data-haku.mjs --laheta-paikalliset 2026-11-05   paikalliset kopiot kantaan (jos tallennus epäonnistui)
  *   node scripts/data-haku.mjs --ajastettu          launchd: vain maanantaina klo 8 jälkeen Suomen aikaa, kerran viikossa
  * Ajastus: scripts/data-haku.plist (launchd joka tunti :05; skripti päättää Helsingin ajan mukaan, koska koneen
  * aikavyöhyke poikkeaa). Asennus: bash scripts/data-haku-asennus.sh
  */
-import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, rmSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, rmSync, statSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -33,6 +35,8 @@ const AUTOMAATIO = join(homedir(), ".huumorikauppa-some");
 const SC = "https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Ahuumorikauppa.fi&num_of_days=28&metrics=CLICKS%2CIMPRESSIONS%2CCTR%2CPOSITION";
 const MC_TILI = "5759809345";
 const LAHTEET = ["search", "merchant", "instagram", "tiktok"];
+/** Ilman selainta: viikkovertailu ajetaan lähteiden jälkeen (myös --vain vertailu). */
+const VERTAILU = "vertailu";
 
 const arg = (n) => (process.argv.includes(n) ? process.argv[process.argv.indexOf(n) + 1] : null);
 const lippu = (n) => process.argv.includes(n);
@@ -120,7 +124,117 @@ async function searchConsole(p) {
   const tulos = [];
   tulos.push(["Search Console 28 pv", csv(["Kysely", "Klikkaukset", "Näyttökerrat", "CTR", "Sijainti"], kyselyt.map(muunna)), kyselyt.length]);
   if (sivut?.length) tulos.push(["Search Console sivut 28 pv", csv(["Sivu", "Klikkaukset", "Näyttökerrat", "CTR", "Sijainti"], sivut.map(muunna)), sivut.length]);
-  return { tulos, huom: sivut?.length ? "" : "sivutaulukkoa ei saatu" };
+  // Kokonaisluvut 7 päivältä viikkovertailuun (24.11.2026): yhteenvetokortit "Total clicks" ja "Total impressions".
+  let huom7 = "";
+  try {
+    await p.goto(SC.replace("num_of_days=28", "num_of_days=7"), { waitUntil: "domcontentloaded" });
+    await p.waitForTimeout(8000);
+    const yht = scYhteensa(await p.locator("body").innerText());
+    if (yht.klikkaukset != null) tulos.push(["Search Console 7 pv", csv(["Jakso", "Klikkaukset", "Näyttökerrat"], [["7 pv", yht.klikkaukset, yht.nayttokerrat]]), 1]);
+    else huom7 = "7 päivän kokonaislukuja ei saatu";
+  } catch (e) { huom7 = `7 pv: ${String(e?.message || e).split("\n")[0].slice(0, 120)}`; }
+  return { tulos, huom: [sivut?.length ? "" : "sivutaulukkoa ei saatu", huom7].filter(Boolean).join("; ") };
+}
+
+/** Suorituskykyraportin yhteenvetokortit: "Total clicks\n1.2K" (myös suomeksi). */
+export function scYhteensa(teksti) {
+  const luku = (re) => { const m = String(teksti).match(re); return m ? enLuku(m[1]) : null; };
+  return {
+    klikkaukset: luku(/(?:Total clicks|Klikkaukset yhteensä)\s*\n?\s*([\d.,]+[KkMm]?)/),
+    nayttokerrat: luku(/(?:Total impressions|Näyttökerrat yhteensä)\s*\n?\s*([\d.,]+[KkMm]?)/),
+  };
+}
+
+// ── Viikkovertailu (24.11.2026) ─────────────────────────────────────────────────────────────────────────────────────
+const SYOTE = join(JUURI, ".cowork", "syote");
+const lisaaPv = (iso, n) => new Date(Date.parse(`${iso}T12:00:00Z`) + n * 864e5).toISOString().slice(0, 10);
+
+/** Uusin paikallinen tilannekuva (.cowork/syote/<pvm>-<nimi>.csv) annetulta päivältä tai ennen sitä: { pvm, rivit }. */
+export function tilannekuva(nimi, enintaan, kansio = SYOTE) {
+  if (!existsSync(kansio)) return null;
+  const pvmt = readdirSync(kansio).map((f) => f.match(new RegExp(`^(\\d{4}-\\d{2}-\\d{2})-${nimi}\\.csv$`))?.[1]).filter((d) => d && d <= enintaan).sort();
+  const pvm = pvmt.at(-1);
+  if (!pvm) return null;
+  const [, ...rivit] = readFileSync(join(kansio, `${pvm}-${nimi}.csv`), "utf8").trim().split("\n").map(jasennaRivi);
+  return { pvm, rivit };
+}
+function jasennaRivi(rivi) {
+  const out = []; let k = "", lainaus = false;
+  for (let i = 0; i < rivi.length; i++) {
+    const c = rivi[i];
+    if (lainaus) { if (c === '"' && rivi[i + 1] === '"') { k += '"'; i++; } else if (c === '"') lainaus = false; else k += c; }
+    else if (c === '"') lainaus = true; else if (c === ",") { out.push(k); k = ""; } else k += c;
+  }
+  out.push(k);
+  return out;
+}
+const summa = (rivit, sarake = 1) => rivit.reduce((s, r) => s + (Number(r[sarake]) || 0), 0);
+
+/** Tuotesivun katselut ja koriin lisäykset väliltä alku..loppu: Blob-puskurin rivit ja tietokannan kooste yhteensä. */
+export function tuoteKoriValilta(blobRivit, alku, loppu, kanta = null) {
+  let naytto = 0, kori = 0;
+  for (const r of blobRivit || []) {
+    const [paiva, tapahtuma] = r.v || [];
+    if (!(paiva >= alku && paiva <= loppu)) continue;
+    if (tapahtuma === "naytto") naytto += r.n;
+    if (tapahtuma === "kori") kori += r.n;
+  }
+  if (kanta) { naytto += kanta.naytto || 0; kori += kanta.kori || 0; }
+  return { naytto, kori };
+}
+
+const prosentti = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
+const muutos = (t, e) => (t == null || e == null ? ["", ""] : [Math.round((t - e) * 10) / 10, e ? Math.round(((t - e) / e) * 1000) / 10 : ""]);
+
+/**
+ * Vertailun CSV: Mittari, Tämä viikko, Edellinen viikko, Muutos, Muutos %, Huom. Puuttuva luku jää tyhjäksi, ja syy
+ * kerrotaan Huom-sarakkeessa (ei arvata).
+ */
+export function viikkovertailuCsv({ sc7, sc7Ed, sc28, sc28Ed, tuote, tuoteEd, jaksot }) {
+  const rivi = (mittari, t, e, huom = "") => [mittari, t ?? "", e ?? "", ...muutos(t, e), huom];
+  const pvmHuom = (a, b) => [a ? `tämä ${a}` : "tämä puuttuu", b ? `edellinen ${b}` : "edellinen puuttuu"].join(", ");
+  return csv(["Mittari", "Tämä viikko", "Edellinen viikko", "Muutos", "Muutos %", "Huom"], [
+    rivi("Search Console klikkaukset 7 pv", sc7?.klikkaukset, sc7Ed?.klikkaukset, pvmHuom(sc7?.pvm, sc7Ed?.pvm)),
+    rivi("Search Console näyttökerrat 7 pv", sc7?.nayttokerrat, sc7Ed?.nayttokerrat, pvmHuom(sc7?.pvm, sc7Ed?.pvm)),
+    rivi("Search Console klikkaukset 28 pv (sivut yhteensä)", sc28?.klikkaukset, sc28Ed?.klikkaukset, pvmHuom(sc28?.pvm, sc28Ed?.pvm)),
+    rivi("Tuotesivun kävijät 7 pv", tuote?.naytto, tuoteEd?.naytto, jaksot ? `${jaksot.tama} / ${jaksot.edellinen}` : ""),
+    rivi("Koriin lisäykset 7 pv", tuote?.kori, tuoteEd?.kori),
+    rivi("Koriin lisäysten osuus tuotesivun kävijöistä %", tuote ? prosentti(tuote.kori, tuote.naytto) : null, tuoteEd ? prosentti(tuoteEd.kori, tuoteEd.naytto) : null, "kori / naytto"),
+  ]);
+}
+
+async function cronJson(tehtava, aikaraja = 120000) {
+  const kauppa = process.env.KAUPPA || "https://huumorikauppa-five.vercel.app";
+  const r = await fetch(`${kauppa}/api/cron/tilaukset?tehtava=${tehtava}`, { headers: { authorization: `Bearer ${salaisuus()}` }, signal: AbortSignal.timeout(aikaraja) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error(`${tehtava.split("&")[0]} ${r.status}`);
+  return j;
+}
+
+/** Viikkovertailu syötteeseen: Search Consolen tilannekuvat ja tuotesivun seuranta. */
+async function viikkovertailu(nyt = new Date()) {
+  const tanaan = hki(nyt);
+  const sc7Kuva = (enintaan) => { const k = tilannekuva("search-console-7-pv", enintaan); return k ? { pvm: k.pvm, klikkaukset: Number(k.rivit[0]?.[1]) || 0, nayttokerrat: Number(k.rivit[0]?.[2]) || 0 } : null; };
+  const sc28Kuva = (enintaan) => { const k = tilannekuva("search-console-sivut-28-pv", enintaan); return k ? { pvm: k.pvm, klikkaukset: summa(k.rivit) } : null; };
+  const sc7 = sc7Kuva(tanaan), sc28 = sc28Kuva(tanaan);
+  // Edellinen tilannekuva vähintään 6 päivää vanhempi kuin tämän viikon kuva.
+  const sc7Ed = sc7 ? sc7Kuva(lisaaPv(sc7.pvm, -6)) : null;
+  const sc28Ed = sc28 ? sc28Kuva(lisaaPv(sc28.pvm, -6)) : null;
+  const jaksot = { tama: `${lisaaPv(tanaan, -7)}..${lisaaPv(tanaan, -1)}`, edellinen: `${lisaaPv(tanaan, -14)}..${lisaaPv(tanaan, -8)}` };
+  const huom = [];
+  let blob = null;
+  try { blob = (await cronJson("puskuri-luvut")).taulut?.tuotesivu_seuranta || []; } catch (e) { huom.push(`Blob: ${e.message}`); }
+  const kannasta = async (alku, loppu) => {
+    try {
+      const j = await cronJson(`tuoteseuranta&alkaen=${alku}&loppu=${loppu}`, 60000);
+      return { naytto: j.nayttoja || 0, kori: j.suppilo?.find((v) => v.avain === "kori")?.n ?? 0 };
+    } catch (e) { huom.push(`tietokanta ${alku}: ${e.message}`); return null; }
+  };
+  const [ta, tl] = jaksot.tama.split(".."), [ea, el] = jaksot.edellinen.split("..");
+  const kantaT = await kannasta(ta, tl), kantaE = await kannasta(ea, el);
+  const tuote = blob || kantaT ? tuoteKoriValilta(blob, ta, tl, kantaT) : null;
+  const tuoteEd = blob || kantaE ? tuoteKoriValilta(blob, ea, el, kantaE) : null;
+  return { sisalto: viikkovertailuCsv({ sc7, sc7Ed, sc28, sc28Ed, tuote, tuoteEd, jaksot }), huom: huom.join("; ") };
 }
 
 async function merchant(p) {
@@ -243,10 +357,10 @@ export function ajoviikko(nyt = new Date()) {
 
 /** --laheta-paikalliset PVM: päivän paikalliset kopiot (.cowork/syote/PVM-*.csv) kantaan, kun tietokanta taas vastaa. */
 async function lahetaPaikalliset(pvm) {
-  const { readdirSync } = await import("node:fs");
   const kansio = join(JUURI, ".cowork", "syote");
   const nimet = { "search-console-28-pv": "Search Console 28 pv", "search-console-sivut-28-pv": "Search Console sivut 28 pv",
-    "merchant-klikit": "Merchant klikit", "instagram-tilastot": "Instagram tilastot", "tiktok-tilastot": "TikTok tilastot" };
+    "merchant-klikit": "Merchant klikit", "instagram-tilastot": "Instagram tilastot", "tiktok-tilastot": "TikTok tilastot",
+    "search-console-7-pv": "Search Console 7 pv", "viikkovertailu": "Viikkovertailu" };
   let virheita = 0;
   for (const f of readdirSync(kansio).filter((x) => x.startsWith(`${pvm}-`) && x.endsWith(".csv"))) {
     const otsikko = nimet[f.slice(pvm.length + 1, -4)];
@@ -265,7 +379,8 @@ async function main() {
   const viikko = ajoviikko();
   if (lippu("--ajastettu") && (!viikko || tehdyt[viikko])) return 0;
   const vain = arg("--vain");
-  if (vain && !LAHTEET.includes(vain)) { console.error(`--vain: ${LAHTEET.join(", ")}`); return 1; }
+  if (vain && ![...LAHTEET, VERTAILU].includes(vain)) { console.error(`--vain: ${[...LAHTEET, VERTAILU].join(", ")}`); return 1; }
+  if (vain === VERTAILU) return ajaVertailu();
   mkdirSync(AUTOMAATIO, { recursive: true });
   // Sama lukko kuin somejulkaisulla: kumpikin käyttää samaa profiilin kopiota.
   const lukko = join(AUTOMAATIO, "ajo.lukko");
@@ -302,7 +417,21 @@ async function main() {
     await ctx?.close().catch(() => {});
     rmSync(lukko, { force: true });
   }
+  // Viikkovertailu lähteiden jälkeen (käyttää juuri tallennettuja tilannekuvia), ilman selainta.
+  if (!vain) virheita += await ajaVertailu();
   return virheita ? 2 : 0;
+}
+
+async function ajaVertailu() {
+  try {
+    const v = await viikkovertailu();
+    const t = await tallenna("Viikkovertailu", v.sisalto);
+    loki(VERTAILU, t.ok ? 'tallennettu "Viikkovertailu"' : `paikallinen kopio, tallennus kantaan epäonnistui: ${t.virhe || ""}`, v.huom ? `huom: ${v.huom}` : "");
+    return 0;
+  } catch (e) {
+    loki(VERTAILU, "VIRHE:", String(e?.message || e).split("\n")[0]);
+    return 1;
+  }
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) process.exit(await main());

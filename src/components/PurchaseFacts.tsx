@@ -3,6 +3,7 @@ import { Factory, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 import { maksutavatTekstina } from "@/config/maksutavat";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSMAKSU_TEKSTI, toimitusaikaTeksti } from "@/config/toimitus";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
+import { JoulunLahjakorttiRivi } from "@/components/JoulunLahjakortti";
 
 /**
  * Toimitus- ja palautustiedot heti hinnan alla (tuotesivu). Arvot: src/config/toimitus.ts.
@@ -65,6 +66,8 @@ export function PurchaseFacts({
         <span>{compact ? "Turvallinen maksu (Stripe)" : `Turvallinen maksu Stripellä: ${maksutavatTekstina(["visa", "mastercard", "mobilepay", "klarna"])}`}</span>
       </li>
       <JouluTakarajaRivi as="li" categories={jouluKategoriat} className="text-foreground" />
+      {/* Joulun lahjakorttiaika 3.12.-26.12.: fyysisten tuotteiden toimitusaika näkyy yllä sellaisenaan. */}
+      <JoulunLahjakorttiRivi as="li" className="text-foreground" />
       <li className="flex items-start gap-1.5">
         <RotateCcw className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
         {isCustom ? (

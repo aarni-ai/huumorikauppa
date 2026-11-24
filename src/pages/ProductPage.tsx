@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { JOULU_PAIVA_LYHYT, jouluAuki } from "@/data/tilauspaivat";
+import { JOULU_PAIVA_LYHYT, JOULU_LAHJAKORTTI_TEKSTI, jouluAuki } from "@/data/tilauspaivat";
+import { useJoulunLahjakorttiAika } from "@/components/JoulunLahjakortti";
 import { TUOTE_META } from "@/data/tuoteMeta";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
@@ -276,6 +277,8 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const [lisaaKunKoko, setLisaaKunKoko] = useState(false);
   // Kiinteän palkin kokovalinta (24.11.2026): koot aukeavat palkkiin, joten koriin lisäys ei vaadi vieritystä.
   const [stickyKoot, setStickyKoot] = useState(false);
+  // Joulun lahjakorttiaika 3.12.-26.12. (src/data/tilauspaivat.ts): viesti myös kiinteään ostopalkkiin.
+  const joulunLahjakortti = useJoulunLahjakorttiAika();
   const stickyEndRef = useRef<HTMLDivElement>(null);
   const [buttonOutOfView, setButtonOutOfView] = useState(false);
   const [pageEndReached, setPageEndReached] = useState(false);
@@ -1327,6 +1330,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
         <p className="px-3 pb-2 -mt-1 text-[11px] leading-tight text-muted-foreground text-center">
           {[euPaino ? "Painetaan EU:ssa" : null, "Ilmainen toimitus 2 tuotteesta", jouluAuki() ? `Joulun viimeinen tilauspäivä ${JOULU_PAIVA_LYHYT.replace(/\d{4}$/, "")}` : null].filter(Boolean).join(" · ")}
         </p>
+        {joulunLahjakortti && (
+          <p className="px-3 pb-2 -mt-1 text-[11px] leading-tight text-foreground text-center font-semibold">
+            {JOULU_LAHJAKORTTI_TEKSTI}. <Link to="/lahjakortti" className="underline">Osta lahjakortti</Link>
+          </p>
+        )}
       </div>
       )}
     </div>

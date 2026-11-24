@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/types/product";
+import { JoulunLahjakorttiKortti, useJoulunLahjakorttiAika } from "@/components/JoulunLahjakortti";
+import { JOULU_LAHJAKORTTI_TEKSTI } from "@/data/tilauspaivat";
 import TOP50 from "../../api/_lib/top50.generated.js";
 
 /** Sama malli t-paitana ja huppareina: yksi nosto per malli. */
@@ -26,13 +28,16 @@ export function valitseSuosituimmat(tuotteet: Product[], n = 8): Product[] {
 }
 
 export function EtusivunSuosituimmat({ tuotteet, lataa }: { tuotteet: Product[]; lataa: boolean }) {
-  const valitut = valitseSuosituimmat(tuotteet);
+  // Joulun lahjakorttiaika 3.12.-26.12. (src/data/tilauspaivat.ts): lahjakortti ensimmäisenä tuotteena.
+  const lahjakortti = useJoulunLahjakorttiAika();
+  const valitut = valitseSuosituimmat(tuotteet, lahjakortti ? 7 : 8);
   return (
     <section className="container pt-4 pb-2" aria-labelledby="suosituimmat-otsikko">
       <div className="flex items-baseline justify-between mb-3">
         <h2 id="suosituimmat-otsikko" className="font-display text-xl md:text-2xl text-foreground">Suosituimmat</h2>
         <Link to="/suosituimmat" className="text-sm text-primary underline">Katso kaikki</Link>
       </div>
+      {lahjakortti && <p className="text-sm font-semibold text-foreground mb-3">{JOULU_LAHJAKORTTI_TEKSTI}.</p>}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 min-h-[560px] md:min-h-[380px]">
         {lataa || !valitut.length
           ? Array.from({ length: 8 }, (_, i) => (
@@ -42,7 +47,12 @@ export function EtusivunSuosituimmat({ tuotteet, lataa }: { tuotteet: Product[];
               <div className="h-4 w-1/3 rounded bg-muted" />
             </div>
           ))
-          : valitut.map((p) => <ProductCard key={p.id} product={p} ostaNappi />)}
+          : (
+            <>
+              {lahjakortti && <JoulunLahjakorttiKortti />}
+              {valitut.map((p) => <ProductCard key={p.id} product={p} ostaNappi />)}
+            </>
+          )}
       </div>
     </section>
   );

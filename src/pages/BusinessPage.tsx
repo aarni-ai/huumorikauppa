@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { usePrerenderReady } from "@/hooks/use-prerender-ready";
 import { useProducts } from "@/hooks/use-products";
 import { yrityksetPage as page, YRITYS_PAKETIT, YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { yritysJouluAuki } from "@/data/pikkujoulutKausi";
 import { YRITYS_ALAT, YRITYS_ALA_POLKU } from "@/data/yritysAlat";
 import { TYHJA_LOGO, type LogoValinta } from "@/components/LogoEditori";
 import { Maaraalennus, OmaLogo, PikkujouluNosto, Tarjouspyynto, type Malli, YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
@@ -82,10 +83,10 @@ const BusinessPage = () => {
         {page.intro.map((p) => <p key={p}>{p}</p>)}
       </div>
 
-      <p className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground">
+      {yritysJouluAuki() && <p className="mb-6 rounded-xl border border-primary/40 bg-primary/5 p-3 text-sm text-foreground">
         <span className="font-semibold">Yritysten joululahjat:</span> tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.{" "}
         <Link to="/yritykset/tilaus" className="text-primary underline">Tilaa koko tiimille</Link>
-      </p>
+      </p>}
 
       <PikkujouluNosto className="mb-6" />
 

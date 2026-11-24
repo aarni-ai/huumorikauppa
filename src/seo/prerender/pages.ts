@@ -55,7 +55,8 @@ import { YRITYS_ALAT, YRITYS_ALA_POLKU } from "@/data/yritysAlat";
 import { valitseAlanTuotteet, yritysAlaFaqs } from "@/data/yritysAlaSivu";
 import { esimerkkiHinnat } from "../../../api/_lib/yritysmyynti.js";
 import { PIKKUJOULU_PAKETIT } from "../../../api/_lib/pikkujoulut.js";
-import { pikkujoulutYrityksetPage, pakettiTeksti } from "@/data/pikkujoulutYrityksetPage";
+import { pikkujoulutYrityksetPage, pakettiTeksti, pikkujoulutSivu } from "@/data/pikkujoulutYrityksetPage";
+import { yritysJouluAuki } from "@/data/pikkujoulutKausi";
 import { LOGO_RAJAT, LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../../api/_lib/logopaita.js";
 import { kumppanitPage } from "@/data/kumppanitPage";
 import { HINTA } from "@/data/hintatekstit";
@@ -636,7 +637,7 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
   const theme = BLOG_PRODUCT_THEMES.ryhmatilaus;
   const list = selectBlogProducts(theme, products, BLOG_END_COUNT);
   return staticPage("/yritykset", {
-    intro: [...yrityksetPage.intro, `Yritysten joululahjat: tilaa ja maksa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`],
+    intro: [...yrityksetPage.intro, ...(yritysJouluAuki() ? [`Yritysten joululahjat: tilaa ja maksa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`] : [])],
     sections: [
       ...YRITYS_PAKETIT.map((p) => ({
         heading: p.otsikko,
@@ -669,9 +670,24 @@ export function buildBusinessPage(products: Product[]): PrerenderPage {
 }
 
 /** /pikkujoulut-yritykset (4.11.2026): sama sisältö kuin src/pages/PikkujoulutYrityksetPage.tsx. */
-export function buildPikkujoulutYrityksetPage(): PrerenderPage {
+export function buildPikkujoulutYrityksetPage(nyt: Date = new Date()): PrerenderPage {
+  const sivu = pikkujoulutSivu(nyt);
+  const breadcrumbs = [HOME, crumb("Yritykset", "/yritykset"), crumb(STATIC_PAGE_META["/pikkujoulut-yritykset"].name, "/pikkujoulut-yritykset")];
+  if (sivu.kausi === "kevat") {
+    // Yritysten joulutakarajan jälkeen kevään tiimipaidat samassa osoitteessa (src/data/pikkujoulutKausi.ts).
+    return staticPage("/pikkujoulut-yritykset", {
+      breadcrumbs,
+      intro: sivu.intro,
+      sections: [
+        ...sivu.toiminnot.map((t) => ({ heading: t.label, paragraphs: [t.kuvaus], links: [{ href: t.href, label: t.label }] })),
+        { heading: "Liittyvät sivut", links: sivu.links },
+      ],
+      faqs: sivu.faqs,
+      jsonLd: [buildFaqJsonLd(sivu.faqs)],
+    });
+  }
   return staticPage("/pikkujoulut-yritykset", {
-    breadcrumbs: [HOME, crumb("Yritykset", "/yritykset"), crumb(STATIC_PAGE_META["/pikkujoulut-yritykset"].name, "/pikkujoulut-yritykset")],
+    breadcrumbs,
     intro: pikkujoulutYrityksetPage.intro,
     sections: [
       ...PIKKUJOULU_PAKETIT.map((p) => ({ heading: p.nimi, paragraphs: [p.kuvaus], items: [pakettiTeksti(p.id)] })),
@@ -697,7 +713,7 @@ export function buildBusinessVerticalPages(products: Product[]): PrerenderPage[]
       description: ala.description,
       h1: ala.h1,
       breadcrumbs: [HOME, crumb("Yritykset", "/yritykset"), crumb(ala.nimi, path)],
-      intro: [...ala.intro, `Joulun yritystilaukset: tilaa ja maksa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`],
+      intro: [...ala.intro, ...(yritysJouluAuki() ? [`Joulun yritystilaukset: tilaa ja maksa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`] : [])],
       sections: [
         {
           heading: "Oma logo tai teksti",

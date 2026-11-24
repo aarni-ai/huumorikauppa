@@ -2,6 +2,7 @@ import { BlogPost } from "@/types/blog";
 import { TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_LAUSE } from "@/config/toimitus";
 import { jouluLause, jouluVastaus } from "./tilauspaivat";
 import { YRITYS_JOULU_TEKSTI, YRITYS_PORTAAT } from "./yrityksetPage";
+import { yritysJouluAuki } from "./pikkujoulutKausi";
 import { LOGO_RAJAT, LOGOPAITA_MIN_KPL } from "../../api/_lib/logopaita.js";
 import { LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
 
@@ -14,7 +15,10 @@ import { LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
 const TOIMITUS = `${TOIMITUSMAKSU_LAUSE} Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`;
 // Portaat ja niiden ehto (meemipaidoissa pienempi porras, 7 €:n katesääntö 4.11.2026, src/data/yrityksetPage.ts).
 const PORTAAT = `${YRITYS_PORTAAT.map((p) => `${p.min} paitaa -${p.prosentti} %`).join(", ")}. Meemipaidoissa porras on pienempi tai sitä ei ole`;
-const YRITYS_JOULU = `Yritystilauksessa kokojen keruuseen ja maksuun kuluu muutama päivä, joten tilatkaa ja maksakaa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`;
+// Yritysten joulutakarajan (to 26.11.) jälkeen ei mennyttä päivää (src/data/pikkujoulutKausi.ts).
+const YRITYS_JOULU = !yritysJouluAuki()
+  ? "Yritystilaus kortilla lähtee painoon heti maksun jälkeen, ja laskulla tilattaessa paidat lähtevät painoon, kun lasku on maksettu."
+  : `Yritystilauksessa kokojen keruuseen ja maksuun kuluu muutama päivä, joten tilatkaa ja maksakaa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua.`;
 const AIKATAULU = `${jouluLause()} ${YRITYS_JOULU} Katso tarkempi aikataulu sivulta [joulun viimeiset tilauspäivät](/joulun-viimeiset-tilauspaivat).`;
 const JOULU_FAQ = {
   q: "Ehtiikö yritystilaus vielä jouluksi?",

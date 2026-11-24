@@ -5,7 +5,10 @@
  */
 import { PIKKUJOULU_PAKETIT, PIKKUJOULU_POLKU, PIKKUJOULU_KOOT, laskePikkujoulu, oletusValinta, designinNimi } from "../../api/_lib/pikkujoulut.js";
 import { LASKU_MAKSUAIKA_PV } from "../../api/_lib/yritysmyynti.js";
-import { YRITYS_JOULU_TEKSTI } from "./yrityksetPage";
+import { YRITYS_JOULU_TEKSTI, YRITYS_PORTAAT, portaatEhto } from "./yrityksetPage";
+import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../api/_lib/logopaita.js";
+import { TOIMITUSAIKA_TEKSTI } from "@/config/toimitus";
+import { PIKKUJOULUT_KEVAT_META, pikkujoulutKausi } from "./pikkujoulutKausi";
 
 const eur = (x: number) => `${x.toFixed(2).replace(".", ",")} €`;
 
@@ -63,3 +66,45 @@ export const pikkujoulutYrityksetPage = {
     { href: "/lahjat/pikkujouluihin", label: "Lahjat pikkujouluihin" },
   ],
 };
+
+const PORTAAT_TEKSTI = YRITYS_PORTAAT.map((p) => `${p.min}+ t-paitaa -${p.prosentti} %`).join(", ");
+
+/** Kevään sisältö (takarajan jälkeen). */
+export const pikkujoulutKevatPage = {
+  intro: [
+    PIKKUJOULUT_KEVAT_META.intro,
+    `Kassa laskee määräalennuksen samassa tilauksessa olevista t-paidoista: ${PORTAAT_TEKSTI}. ${portaatEhto()} Paidat toimitetaan yhteen osoitteeseen, ja toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta.`,
+    "Isossa tilauksessa jätä aikaa myös kokojen keräämiseen.",
+  ],
+  toiminnot: [
+    { href: "/yritykset/tilaus", label: "Tilaa tiimin paidat", kuvaus: "Valitse designit ja värit ja kirjoita määrät koon mukaan. Määräalennus lasketaan heti." },
+    { href: "/yritykset", label: "Logopaidat ja tarjouspyyntö", kuvaus: `Yrityksen logo tai teksti t-paitaan ${eur(LOGOPAITA_HINTA)}/kpl, vähintään ${LOGOPAITA_MIN_KPL} paitaa, painetaan EU:ssa.` },
+  ],
+  faqs: [
+    {
+      q: "Miten määräalennus lasketaan?",
+      a: `Kassa laskee alennuksen automaattisesti samassa tilauksessa olevista t-paidoista: ${PORTAAT_TEKSTI}. ${portaatEhto()} Paidat voivat olla eri designeja ja eri kokoja.`,
+    },
+    {
+      q: "Voiko paitaan lisätä yrityksen logon?",
+      a: `Voi. Logopaita maksaa ${eur(LOGOPAITA_HINTA)}/kpl, ja tilaus on vähintään ${LOGOPAITA_MIN_KPL} paitaa. Lataa logo tai kirjoita teksti yrityssivulla.`,
+    },
+    {
+      q: "Kuinka nopeasti paidat ovat perillä?",
+      a: `Toimitusaika on ${TOIMITUSAIKA_TEKSTI} arkipäivää tilauksesta. Laskulla tilattaessa paidat lähtevät painoon, kun lasku on maksettu.`,
+    },
+    {
+      q: "Voiko maksaa laskulla?",
+      a: `Voi. Tarjouksen hyväksymisen jälkeen lähetämme laskun, maksuaika ${LASKU_MAKSUAIKA_PV} päivää. Laskuun tarvitaan yrityksen Y-tunnus.`,
+    },
+  ],
+  links: [
+    { href: "/yritykset", label: "Yritysten tiimipaidat ja logopaidat" },
+    { href: "/yritykset/tilaus", label: "Tilaa omat designit koko tiimille" },
+    { href: "/kaikki-tuotteet", label: "Kaikki tuotteet" },
+  ],
+};
+
+/** Sivun kausi ja sisältö annettuna hetkenä (sama React-sivulle ja esirenderöinnille). */
+export const pikkujoulutSivu = (nyt: Date = new Date()) =>
+  pikkujoulutKausi(nyt) === "joulu" ? ({ kausi: "joulu", ...pikkujoulutYrityksetPage } as const) : ({ kausi: "kevat", ...pikkujoulutKevatPage } as const);

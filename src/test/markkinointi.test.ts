@@ -311,9 +311,11 @@ describe("Keskeneräisen tilauksen muistutus", () => {
 
 describe("Arviopyyntö", () => {
   const tilaus = (extra: Rivi) => ({ id: "abcdef12-0000", status: "maksettu", customer_email: "a@b.fi", customer_name: "Anna A", items: [{ name: "Paita" }, { name: "Kortti", type: "giftcard" }], ...extra });
-  it("vain varmistetun perillemenon jälkeen: vuorokausi toimituksesta, pelkkä lähetys ei riitä", () => {
-    expect(arvosteluAika(tilaus({ delivered_at: T0, shipped_at: min(-3000) }), min(23 * 60))).toBe(false);
-    expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(24 * 60))).toBe(true);
+  it("vain varmistetun perillemenon jälkeen: aikaisintaan 7 päivää toimituksesta, pelkkä lähetys ei riitä", () => {
+    expect(arvosteluAika(tilaus({ delivered_at: T0, shipped_at: min(-3000) }), min(24 * 60))).toBe(false);
+    expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(7 * 24 * 60 - 1))).toBe(false);
+    expect(arvosteluAika(tilaus({ delivered_at: T0 }), min(7 * 24 * 60))).toBe(true);
+    expect(arvosteluAika(tilaus({ delivered_at: T0, status: "odottaa" }), min(20 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({ shipped_at: T0 }), min(30 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({ delivered_at: T0, review_email_sent_at: T0 }), min(20 * 24 * 60))).toBe(false);
     expect(arvosteluAika(tilaus({}), min(20 * 24 * 60))).toBe(false);
@@ -332,6 +334,27 @@ describe("Arviopyyntö", () => {
     expect(String(viestit[0].html)).not.toContain("Kortti");
     expect((await ajaMarkkinointi(s, { laheta, nyt: min(12 * 24 * 60) })).lahetetty).toBe(0);
     expect(s.tilaukset[1].review_email_sent_at).toBeTruthy();
+  });
+  it("kerran per asiakas: kaksi toimitettua tilausta samalla osoitteella saa yhden viestin", async () => {
+    const s = muistiVarasto();
+    const viestit = resendMock();
+    s.tilaukset.push(tilaus({ delivered_at: T0 }), { ...tilaus({ delivered_at: T0 }), id: "cccccccc-0000", customer_email: "A@B.fi" });
+    // Ennen 7 päivää ei mitään.
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(6 * 24 * 60) })).lahetetty).toBe(0);
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(8 * 24 * 60) })).lahetetty).toBe(1);
+    expect((await ajaMarkkinointi(s, { laheta, nyt: min(9 * 24 * 60) })).lahetetty).toBe(0);
+    expect(viestit).toHaveLength(1);
+    expect(s.tilaukset.every((t) => t.review_email_sent_at)).toBe(true);
+  });
+  it("viesti on rento ja lyhyt, linkki paljaana osoitteena, ei markkinointia", () => {
+    const v = arvostelupyyntoViesti(tilaus({ delivered_at: new Date("2026-12-01T10:00:00Z") }));
+    expect(v.subject).toBe("Mitä tykkäsit? Tilaus #ABCDEF12");
+    expect(v.text).toMatch(/^Hei Anna!\n\nTilauksesi #ABCDEF12 tuli perille 1\.12\.2026\. Kerro parilla sanalla, mitä tykkäsit:\nhttps:\/\/huumorikauppa\.fi\/arvostele\?token=\S+&t=0\n/);
+    // Linkin teksti on itse osoite (ei nappia eikä "klikkaa tästä").
+    const m = String(v.html).match(/<a href="([^"]+)">([^<]+)<\/a>/);
+    expect(m && m[1]).toBe(m && m[2]);
+    expect(`${v.subject} ${v.text}`).not.toMatch(/[–—]|alennus|koodi|tarjous|uutuu|kampanja|%/i);
+    expect(v.text.split(/\s+/).length).toBeLessThan(40);
   });
 });
 

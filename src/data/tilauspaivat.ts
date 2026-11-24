@@ -5,6 +5,7 @@
  * esirenderöity HTML päivittyy seuraavassa julkaisussa.
  */
 import {
+  helsinkiTimeToUtcMs,
   CHRISTMAS_ORDER_END_UTC_MS,
   FATHERS_DAY_LAST_ORDER_TEXT,
   FATHERS_DAY_ORDER_END_UTC_MS,
@@ -20,6 +21,17 @@ import { TOIMITUSAIKA_LAUSE, TOIMITUSAIKA_TEKSTI } from "../config/toimitus.js";
 
 export const isanpaivaAuki = (nowMs: number = Date.now()): boolean => nowMs <= FATHERS_DAY_ORDER_END_UTC_MS;
 export const jouluAuki = (nowMs: number = Date.now()): boolean => nowMs <= CHRISTMAS_ORDER_END_UTC_MS;
+
+/**
+ * Joulun lahjakorttiaika (24.11.2026): sivuston joulun tilauspäivän (CHRISTMAS_ORDER_END_UTC_MS) jälkeen tapaninpäivän
+ * loppuun kaikkialla sama viesti, ja lahjakortti nostetaan ensimmäiseksi tuotteeksi (banneri, etusivu, blogien Top 3,
+ * tuotesivut). JOULUN_JALKEEN_NORMAALI_UTC_MS (Suomen aikaa) alkaen kaikki palautuu normaaliksi. Lahjakortti toimitetaan heti sähköpostilla
+ * (api/_lib/lahjakortti-db.js toimitaLahjakortit, koodi ja PDF myös kiitossivulla).
+ */
+export const JOULU_LAHJAKORTTI_TEKSTI = "Ehtii vielä jouluksi: lahjakortti perille heti sähköpostilla";
+export const JOULUN_JALKEEN_NORMAALI_UTC_MS = helsinkiTimeToUtcMs(2026, 12, 27);
+export const joulunLahjakorttiAika = (nowMs: number = Date.now()): boolean =>
+  nowMs > CHRISTMAS_ORDER_END_UTC_MS && nowMs < JOULUN_JALKEEN_NORMAALI_UTC_MS;
 
 /** Joulun viimeinen tilauspäivä sijamuodossa (lasketaan, ei kirjoiteta käsin). */
 export const JOULU_PAIVA_TEKSTI = paivaTeksti(JOULU_TILAUSPAIVA_ISO);

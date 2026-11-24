@@ -4,6 +4,7 @@
  */
 import { isBlogProductEligible, type BlogProduct, type BlogProductTheme } from "./blogProducts";
 import { YRITYS_PORTAAT, YRITYS_JOULU_TEKSTI, portaatEhto } from "./yrityksetPage";
+import { yritysJouluAuki } from "./pikkujoulutKausi";
 import { LOGOPAITA_HINTA, LOGOPAITA_MIN_KPL } from "../../api/_lib/logopaita.js";
 import type { YritysAla } from "./yritysAlat";
 
@@ -32,9 +33,10 @@ export function yritysAlaFaqs(ala: YritysAla): { q: string; a: string }[] {
       q: "Miten määräalennus toimii?",
       a: `Kassa laskee alennuksen automaattisesti samassa tilauksessa olevista t-paidoista: ${YRITYS_PORTAAT.map((p) => `${p.min}+ t-paitaa -${p.prosentti} %`).join(", ")}. ${portaatEhto()} Paidat voivat olla eri designeja, kokoja ja värejä.`,
     },
-    {
+    // Vain yritysten joulutakarajaan asti (src/data/pikkujoulutKausi.ts).
+    ...(yritysJouluAuki() ? [{
       q: "Mihin mennessä joulun yritystilaus pitää tehdä?",
       a: `Tilatkaa ja maksakaa viimeistään ${YRITYS_JOULU_TEKSTI}, niin paidat ovat perillä ennen joulua. Laskulla tilattaessa paidat lähtevät painoon, kun lasku on maksettu.`,
-    },
+    }] : []),
   ];
 }

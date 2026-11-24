@@ -16,6 +16,8 @@
  *
  * Ajastus: scripts/katalogi.plist (launchd tunnin välein :04, --ajastettu --julkaise: kerran päivässä klo 7 jälkeen
  * Suomen aikaa). Julkaisu vain, jos työpuussa ei ole muita seurattuja muutoksia (ei keskeneräistä koodia tuotantoon).
+ * Rajapäivinä (RAJAPAIVAT, 24.11.2026) julkaisu myös ilman katalogin muutosta heti päivän alussa (ensimmäinen ajo klo 0
+ * jälkeen), jotta esirenderöity HTML vaihtuu: yrityssivu kevääseen 27.11., joulun lahjakorttiaika 3.12. ja normaali 27.12.
  * Avaimia ei tulosteta: Printify-avain luetaan .env.printify.local-tiedostosta, CRON_SECRET .env.cron.local-tiedostosta.
  */
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from "node:fs";
@@ -107,9 +109,32 @@ function keskeneraiset() {
   return rivit.map((r) => r.slice(3)).filter((p) => !/^(data\/(products-snapshot|arviot|hintahistoria|koodit)\.json|some\/)/.test(p));
 }
 
+/** Päivät, joina esirenderöity sisältö vaihtuu (src/data/pikkujoulutKausi.ts, src/data/tilauspaivat.ts). */
+export const RAJAPAIVAT = ["2026-11-27", "2026-12-03", "2026-12-27"];
+
+/** Rajapäivän julkaisu: kerran päivässä, vain puhtaasta työpuusta (muuten yritetään seuraavalla tunnilla). */
+export function rajaJulkaisunAika(tila, paiva, kesken = []) {
+  return RAJAPAIVAT.includes(paiva) && tila.raja !== paiva && kesken.length === 0;
+}
+
 async function main() {
   // launchd (scripts/katalogi.plist) käynnistää tunnin välein :04: ajo kerran päivässä klo 7 jälkeen Suomen aikaa, samaan
   // aikaan kuin valvonnan ajot (UTC parittomat tunnit :00-:05), jolloin kannan vienti ei herätä Neonia erikseen.
+  if (lippu("--ajastettu") && lippu("--julkaise")) {
+    const tila = existsSync(TILA) ? JSON.parse(readFileSync(TILA, "utf8")) : {};
+    const paiva = hkiPaiva();
+    if (RAJAPAIVAT.includes(paiva) && tila.raja !== paiva) {
+      const kesken = keskeneraiset();
+      if (rajaJulkaisunAika(tila, paiva, kesken)) {
+        writeFileSync(TILA, JSON.stringify({ ...tila, raja: paiva }));
+        loki(`rajapäivä ${paiva}: julkaistaan esirenderöity sisältö uudelleen`);
+        execFileSync("bash", ["scripts/julkaise-uusi.sh"], { cwd: JUURI, stdio: "inherit" });
+        loki("rajapäivän julkaisu valmis");
+      } else {
+        loki(`rajapäivä ${paiva}: julkaisu odottaa, työpuussa muutoksia (${kesken.slice(0, 5).join(", ")})`);
+      }
+    }
+  }
   if (lippu("--ajastettu")) {
     const tila = existsSync(TILA) ? JSON.parse(readFileSync(TILA, "utf8")) : {};
     if (hkiTunti() < 7 || tila.viimeisin === hkiPaiva()) return;

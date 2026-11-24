@@ -14,6 +14,7 @@ import { kumppani } from "@/lib/kumppani";
 import { SITE_URL } from "@/seo/site";
 import { ILMAINEN_RAJA_TEKSTI } from "@/config/toimitus";
 import { YRITYS_JOULU_TEKSTI } from "@/data/yrityksetPage";
+import { yritysJouluAuki } from "@/data/pikkujoulutKausi";
 import { YritysJouluLaskuri } from "@/components/yritys/YritysOsat";
 import { PIKKUJOULU_POLKU } from "../../api/_lib/pikkujoulut.js";
 import { rivinHinta } from "../../api/_lib/kokohinnat.js";
@@ -203,7 +204,7 @@ const BusinessOrderPage = () => {
       </h1>
       <YritysJouluLaskuri className="mb-4" />
       <p className="text-muted-foreground mb-2">Valitse designit ja värit ja kirjoita määrät koon mukaan. Määräalennus lasketaan vähintään {MAARAALENNUS.portaat.map((p) => p.min).sort((a, b) => a - b)[0]} t-paidan tilauksesta automaattisesti.</p>
-      <p className="text-sm text-foreground mb-6">Jouluksi: tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI} <Link to="/yritykset" className="text-primary underline">Valmiit paketit ja tarjouspyyntö</Link></p>
+      {yritysJouluAuki() && <p className="text-sm text-foreground mb-6">Jouluksi: tilaa ja maksa viimeistään {YRITYS_JOULU_TEKSTI} <Link to="/yritykset" className="text-primary underline">Valmiit paketit ja tarjouspyyntö</Link></p>}
       <p className="text-sm text-muted-foreground mb-6 -mt-4">Pikkujouluihin valmiiksi koottu paketti, 10, 25 tai 50 paitaa: <Link to={PIKKUJOULU_POLKU} className="text-primary underline">pikkujoulupaketit yrityksille</Link></p>
 
       {tila === "valmis" && lasku ? (

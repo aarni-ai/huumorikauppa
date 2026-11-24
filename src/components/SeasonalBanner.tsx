@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react";
 import { Link } from "react-router-dom";
 import {
   activeBannerTheme,
+  CHRISTMAS_ORDER_END_UTC_MS,
   nextBannerChangeMs,
   joulukalenteriNosto,
   seuraavaKalenteriVaihtoMs,
@@ -10,11 +11,10 @@ import {
   type JoulukalenteriNosto,
 } from "@/data/campaignSchedule";
 import { JOULUKALENTERI_POLKU } from "../../api/_lib/joulukalenteri.js";
-import { isanpaivaLause, jouluPalkkiLause, jouluTpaidatPalkkiLause } from "@/data/tilauspaivat";
+import { isanpaivaLause, jouluPalkkiLause, jouluTpaidatPalkkiLause, joulunLahjakorttiAika, JOULU_LAHJAKORTTI_TEKSTI, JOULUN_JALKEEN_NORMAALI_UTC_MS } from "@/data/tilauspaivat";
 import { CHRISTMAS_DEADLINE_PATH } from "@/data/christmas";
-import { JOULU_MYOHAISIN_END_UTC_MS } from "@/data/jouluAikataulu";
 import { BLACK_FRIDAY_PALKKI } from "@/data/kampanjat";
-import { useLahjakortitMyynnissa } from "@/hooks/use-lahjakortit";
+import { useLahjakortitMyynnissa, useLahjakorttiSahkoposti } from "@/hooks/use-lahjakortit";
 
 export const FATHERS_DAY_LANDING_PATH = "/isanpaivalahja";
 
@@ -72,7 +72,9 @@ function subscribe(onChange: () => void): () => void {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const arm = () => {
     const nyt = Date.now();
-    const vaihdot = [nextBannerChangeMs(nyt), seuraavaKalenteriVaihtoMs(nyt)].filter((t): t is number => t !== null);
+    // Joulun lahjakorttiaika alkaa ke 2.12. klo 23.59 jälkeen ja päättyy 27.12. (src/data/tilauspaivat.ts).
+    const lahjakorttiVaihdot = [CHRISTMAS_ORDER_END_UTC_MS + 1, JOULUN_JALKEEN_NORMAALI_UTC_MS].filter((t) => t > nyt);
+    const vaihdot = [nextBannerChangeMs(nyt), seuraavaKalenteriVaihtoMs(nyt), lahjakorttiVaihdot[0] ?? null].filter((t): t is number => t !== null);
     const next = vaihdot.length ? Math.min(...vaihdot) : null;
     if (next === null) return;
     timer = setTimeout(() => {
@@ -113,8 +115,10 @@ export function SeasonalBanner() {
   const theme = useSyncExternalStore(subscribe, clientTheme, serverTheme);
   const kalenteri = useSyncExternalStore(subscribe, clientKalenteri, serverKalenteri);
   const lahjakortit = useLahjakortitMyynnissa();
+  const sahkoposti = useLahjakorttiSahkoposti();
   const viimeHetki = useSyncExternalStore(subscribe, () => lahjakorttiAika(Date.now()), () => false);
-  if (!theme && lahjakortit && viimeHetki) return <LahjakorttiBanneri kalenteri={kalenteri} />;
+  // Lahjakortti ohittaa teeman; 3.-4.12. t-paitojen tilauspäivä jää lahjakortin perään (joulu-tpaidat).
+  if (lahjakortit && sahkoposti && viimeHetki) return <LahjakorttiBanneri kalenteri={kalenteri} tpaidat={theme === "joulu-tpaidat"} />;
   if (!theme && kalenteri) return <JoulukalenteriBanneri tila={kalenteri} />;
   return <SeasonalBannerView theme={theme} kalenteri={kalenteri} />;
 }
@@ -153,26 +157,26 @@ export function JoulukalenteriBanneri({ tila }: { tila: JoulukalenteriNosto }) {
   );
 }
 
-/** Jouluaatto 24.12.2026 klo 23.59.59 Suomen aikaa (UTC+2). */
-const JOULUAATTO_LOPPU_UTC_MS = Date.UTC(2026, 11, 24, 21, 59, 59);
-
 /**
- * Viimeisen joulun tilauspäivän (JOULU_MYOHAISIN_END_UTC_MS) jälkeen jouluaattoon asti: banneri vaihtuu lahjakorttiin, joka
- * toimitetaan heti. 2.-4.12. banneri kertoo, että t-paidat ehtivät vielä (kampanjakalenteri 2.11.2026, src/data/kampanjat.ts).
+ * Joulun lahjakorttiaika (ke 2.12. klo 23.59 jälkeen, 27.12. alkaen normaali): banneri kertoo, että lahjakortti ehtii
+ * jouluksi sähköpostilla (src/data/tilauspaivat.ts joulunLahjakorttiAika). Fyysiset tuotteet pysyvät myynnissä, ja
+ * niiden toimitusaika näkyy tuotesivulla sellaisenaan.
  */
-export const lahjakorttiAika = (nyt: number) => nyt > JOULU_MYOHAISIN_END_UTC_MS && nyt <= JOULUAATTO_LOPPU_UTC_MS;
+export const lahjakorttiAika = (nyt: number) => joulunLahjakorttiAika(nyt);
 
-/** Viime hetken lahjakortti -banneri (vain kun lahjakortit ovat myynnissä, useLahjakortitMyynnissa). */
-export function LahjakorttiBanneri({ kalenteri = null }: { kalenteri?: JoulukalenteriNosto | null } = {}) {
+/** Joulun lahjakorttibanneri (vain kun lahjakortit ovat myynnissä, useLahjakortitMyynnissa). */
+export function LahjakorttiBanneri({ kalenteri = null, tpaidat = false }: { kalenteri?: JoulukalenteriNosto | null; tpaidat?: boolean } = {}) {
+  const tpaitaLause = tpaidat ? jouluTpaidatPalkkiLause() : "";
   return (
-    <aside aria-label="Viime hetken lahja" data-banner="lahjakortti" className="bg-red-900 text-white text-center text-xs md:text-sm px-4 py-2">
-      <span>Joulun tilauspäivä meni, mutta lahjakortti on perillä heti: koodi ja tulostettava PDF maksun jälkeen. </span>
+    <aside aria-label="Lahjakortti ehtii jouluksi" data-banner="lahjakortti" className="bg-red-900 text-white text-center text-xs md:text-sm px-4 py-2">
+      <span>{JOULU_LAHJAKORTTI_TEKSTI}. </span>
       <Link
         to="/lahjakortti"
         className="underline underline-offset-2 font-semibold whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         Osta lahjakortti
       </Link>
+      {tpaitaLause && <span> {tpaitaLause}</span>}
       {kalenteri && <KalenteriLinkki tila={kalenteri} />}
     </aside>
   );

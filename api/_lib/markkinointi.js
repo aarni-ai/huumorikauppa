@@ -6,8 +6,9 @@
  *    vain ensimmäiseen maksettuun tilaukseen ja vain samalla osoitteella.
  *  - Keskeneräisen tilauksen muistutus kerran 24 h kuluttua (taulu abandoned_carts): vain, jos asiakas valitsi kassalla
  *    "Lähetä minulle muistutus". Muistutukset loppuvat, kun samalla osoitteella maksetaan tilaus.
- *  - Arviopyyntö kerran per tilaus ja kerran per asiakas, vain varmistetun perillemenon jälkeen: vuorokausi Printifyn
- *    delivered_at-päivästä (3.11.2026, aiemmin 7 pv). Ilman toimituspäivää pyyntöä ei lähetetä kenellekään. Viestissä on suora arviolinkki jokaiselle tuotteelle.
+ *  - Arviopyyntö kerran per asiakas (sähköpostiosoite), vain varmistetun perillemenon jälkeen: aikaisintaan 7 päivää
+ *    Printifyn delivered_at-päivästä (24.11.2026). Ilman toimituspäivää pyyntöä ei lähetetä kenellekään. Viesti on lyhyt,
+ *    linkki paljaana osoitteena, eikä siinä ole markkinointia (ei tuotenostoja eikä koodeja). Peruutus ohittaa.
  *  - Jokaisessa viestissä on allekirjoitettu peruutuslinkki ja List-Unsubscribe (yhden klikkauksen peruutus).
  *    Peruutus kirjaa osoitteen tauluun email_optouts, ja siihen osoitteeseen ei lähetetä enää markkinointia.
  *  - Lähetysraja: enintään MARKKINOINTI_RAJA_AJO viestiä ajossa (oletus 20) ja MARKKINOINTI_RAJA_PAIVA päivässä
@@ -24,7 +25,7 @@ export { SUOSTUMUS_UUTISKIRJE, SUOSTUMUS_MUISTUTUS };
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const MUISTUTUS_1_MIN = 60;
 export const MUISTUTUS_2_MIN = 24 * 60;
-export const ARVOSTELU_TOIMITUKSESTA_PV = 1;
+export const ARVOSTELU_TOIMITUKSESTA_PV = 7;
 export const ARVOSTELU_LAHETYKSESTA_PV = 10;
 const KORI_VANHENEE_PV = 7;
 
@@ -143,20 +144,23 @@ export function koriMuistutusViesti(kori, vaihe) {
   };
 }
 
-/** Arviopyyntö tilauksesta (kerran). */
+/**
+ * Arviopyyntö (kerran per asiakas, 24.11.2026): rento ja lyhyt, linkki paljaana osoitteena. Yksi tuote: linkki suoraan
+ * sen arvioon; useampi: arviosivu listaa tilauksen tuotteet. Ei markkinointia (ei tuotenostoja, koodeja eikä tarjouksia).
+ */
 export function arvostelupyyntoViesti(tilaus) {
   const peruutus = peruutusLinkki(tilaus.customer_email);
-  const linkki = arvosteluLinkki(tilaus.id);
   const nro = tilausnumero(tilaus.id);
-  const syy = "Sait tämän viestin, koska tilasit Huumorikaupasta. Lähetämme arviopyynnön kerran tilausta kohden.";
-  const tila = `Tilauksesi #${nro} toimitettiin ${pvm(tilaus.delivered_at)}.`;
   const rivit = (tilaus.items || []).filter((i) => i.type !== "giftcard");
-  // Suora linkki jokaisen tuotteen arvioon (arviosivu avaa linkin tuotteen ensin).
-  const tuotteet = rivit.map((i, n) => `<li style="margin-bottom:8px">${esc(i.name)}<br><a href="${esc(arvosteluLinkki(tilaus.id, n))}">Arvioi tämä tuote</a></li>`).join("");
+  const linkki = rivit.length === 1 ? arvosteluLinkki(tilaus.id, 0) : arvosteluLinkki(tilaus.id);
+  const etunimi = String(tilaus.customer_name || "").trim().split(/\s+/)[0];
+  const hei = etunimi ? `Hei ${etunimi}!` : "Hei!";
+  const perilla = `Tilauksesi #${nro} tuli perille ${pvm(tilaus.delivered_at)}. Kerro parilla sanalla, mitä tykkäsit:`;
+  const syy = "Sait tämän viestin, koska tilasit Huumorikaupasta. Arviopyyntö lähtee vain kerran.";
   return {
-    subject: `Miten tilaus #${nro} onnistui? - Huumorikauppa`,
-    html: kehys(`<h2>Kerro, mitä pidit</h2><p>${tila}</p><ul>${tuotteet}</ul><p>Arvion antaminen vie minuutin. Luemme jokaisen arvion.</p>${nappi(rivit.length === 1 ? arvosteluLinkki(tilaus.id, 0) : linkki, "Anna arvio")}`, { peruutus, syy }),
-    text: `${tila} ${rivit.map((i, n) => `Arvioi ${i.name}: ${arvosteluLinkki(tilaus.id, n)}`).join(" ")} Peru viestit: ${peruutus}`,
+    subject: `Mitä tykkäsit? Tilaus #${nro}`,
+    html: kehys(`<p>${esc(hei)}</p><p>${esc(perilla)}</p><p><a href="${esc(linkki)}">${esc(linkki)}</a></p><p>Kiitos, että tilasit meiltä!<br>Huumorikauppa</p>`, { peruutus, syy }),
+    text: `${hei}\n\n${perilla}\n${linkki}\n\nKiitos, että tilasit meiltä!\nHuumorikauppa\n\nPeru viestit: ${peruutus}`,
     headers: peruutusOtsakkeet(tilaus.customer_email),
   };
 }
@@ -174,7 +178,7 @@ export function muistutusVaihe(kori, nyt = new Date()) {
   return ika >= MUISTUTUS_2_MIN ? 2 : null;
 }
 
-/** Onko arviopyynnön aika: vuorokausi Printifyn toimituspäivästä. Ilman toimituspäivää ei koskaan (pelkkä lähetys ei riitä). */
+/** Onko arviopyynnön aika: aikaisintaan 7 päivää Printifyn toimituspäivästä. Ilman toimituspäivää ei koskaan (pelkkä lähetys ei riitä). */
 export function arvosteluAika(tilaus, nyt = new Date()) {
   if (tilaus.review_email_sent_at || tilaus.status !== "maksettu") return false;
   // Vain varmistettu perillemeno (Printifyn delivered_at); pelkkä lähetyspäivä ei riitä.
@@ -243,9 +247,16 @@ export async function ajaMarkkinointi(store, { laheta, nyt = new Date(), rajat: 
     else loki.push(`muistutus epäonnistui ${kori.email}: ${r.virhe}`);
   }
 
-  // Arviopyynnöt.
+  // Arviopyynnöt: kerran per asiakas myös saman ajon sisällä (kaksi toimitettua tilausta samalla osoitteella).
+  const arvioOsoitteet = new Set();
   for (const t of await store.arvostelupyyntoEhdokkaat(nyt)) {
     if (!arvosteluAika(t, nyt)) continue;
+    const osoite = String(t.customer_email || "").trim().toLowerCase();
+    if (!osoite || arvioOsoitteet.has(osoite)) {
+      if (!kuiva) await store.merkitseArvostelupyynto(t.id, nyt);
+      continue;
+    }
+    arvioOsoitteet.add(osoite);
     // Ei koskaan kahdesti samalle asiakkaalle (2.11.2026): jos osoitteelle on jo lähetetty arviopyyntö, tämä tilaus
     // merkitään käsitellyksi ilman viestiä.
     if (await store.onKielto(t.customer_email) || (store.arviopyyntoLahetetty && await store.arviopyyntoLahetetty(t.customer_email, t.id))) {
