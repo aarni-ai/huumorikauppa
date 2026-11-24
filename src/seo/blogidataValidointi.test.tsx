@@ -16,14 +16,17 @@ vi.mock("@/hooks/use-products", () => ({
 }));
 
 import BlogPost from "@/pages/BlogPost";
+import { CartProvider } from "@/context/CartContext";
 
 function renderPost(slug: string) {
   return render(
-    <MemoryRouter initialEntries={[`/blogi/${slug}`]}>
-      <Routes>
-        <Route path="/blogi/:slug" element={<BlogPost />} />
-      </Routes>
-    </MemoryRouter>,
+    <CartProvider>
+      <MemoryRouter initialEntries={[`/blogi/${slug}`]}>
+        <Routes>
+          <Route path="/blogi/:slug" element={<BlogPost />} />
+        </Routes>
+      </MemoryRouter>
+    </CartProvider>,
   );
 }
 

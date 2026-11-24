@@ -1306,9 +1306,9 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/lahjat/30-vuotiaalle-miehelle",
     name: "Lahja 30-vuotiaalle miehelle",
     group: "lahjat",
-    title: "30v lahja miehelle: hauskat 30-vuotislahjat | Huumorikauppa",
+    title: "30v lahja miehelle: paidat ja hupparit | Huumorikauppa",
     description:
-      `30 v lahja miehelle: 30v-paidat ja -hupparit kuten 30 nuori, villi ja jo väsynyt sekä 30v selkä alkaa jo rusahdella. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
+      `30v lahja miehelle: 30v-paidat ja -hupparit kuten 30 nuori, villi ja jo väsynyt. Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.`,
     h1: "Hauska 30v lahja miehelle",
     intro: [
       "Hauska lahja 30-vuotiaalle miehelle on 30v-paita tai -huppari, jonka teksti nauraa kolmenkympin rajapyykille: 30 nuori, villi ja jo väsynyt, 30v selkä alkaa jo rusahdella tai 30 ja liian vanha tyhmyyksiin, teen ne silti.",
@@ -2076,7 +2076,7 @@ const PERUSSIVUT: LandingPageDef[] = [
     path: "/hauskat-lahjat-naiselle",
     name: "Lahjat naiselle",
     group: "lahjat",
-    title: "Hauskat lahjat naiselle | Huumorikauppa",
+    title: "Hauska lahja naiselle: paidat ja hupparit | Huumorikauppa",
     description:
       `Hauska lahja naiselle: Super äiskä, slay queen, äiti- ja ikävuosipaidat sekä omalla tekstillä painettu koriste. Toimitus ${TOIMITUSAIKA_TEKSTI} arkipäivässä.`,
     h1: "Hauskat lahjat naiselle",

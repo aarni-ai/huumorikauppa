@@ -59,3 +59,5 @@ if [ "$VIRHEET" -gt 0 ]; then
   exit 1
 fi
 npx vercel promote "$URL" --yes --local-config .vercel/vercel.uusi.json
+# IndexNow (24.11.2026): uudet ja muuttuneet sivut Bingille ja muille IndexNow-hakukoneille. Ei kaada julkaisua.
+node scripts/indexnow.mjs || true

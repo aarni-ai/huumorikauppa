@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { TUOTE_META } from "@/data/tuoteMeta";
 import { LISATUOTE_KATEGORIAT } from "../../api/_lib/vakiot.js";
 import { PERSONOITU_HINTA } from "../../api/_lib/personoitu.js";
 import { YritysNosto } from "@/components/YritysNosto";
@@ -668,11 +669,11 @@ const ProductPage = ({ previewOnly = false }: { previewOnly?: boolean }) => {
   const shortDesc = product.description.length > 200
     ? product.description.slice(0, 200) + "…"
     : product.description;
-  const metaDesc = contentOverride?.metaDescription ?? (contentOverride
+  const metaDesc = contentOverride?.metaDescription ?? TUOTE_META[product.slug]?.metaDescription ?? (contentOverride
     ? truncateAtWord(contentOverride.description.replace(/\s+/g, " "), 155)
     : seoCopy.shortDescription);
   // Hakusanaotsikko (api/_lib/hakuotsikko.js; käsin kirjoitettu seoTitle tiedostossa src/data/productContent.ts voittaa), sama kuin esirenderöinnissä.
-  const seoTitle = contentOverride?.seoTitle ?? hakuotsikko(product);
+  const seoTitle = contentOverride?.seoTitle ?? TUOTE_META[product.slug]?.seoTitle ?? hakuotsikko(product);
 
   return (
     <div className="min-h-screen">

@@ -5,6 +5,8 @@ import { buildBlogPostJsonLd } from "@/lib/blogJsonLd";
  *
  * Ajetaan buildissa scripts/prerender.mjs:n kautta (Viten ssrLoadModule), testataan vitestillä.
  */
+import { BLOG_VASTAUKSET } from "../../data/blogVastaukset";
+import { TUOTE_META } from "../../data/tuoteMeta";
 import { lisaaLahikuva } from "@/lib/lahikuva";
 import { PRODUCT_IMAGE_SIZES, defaultColorImages, productImageSources } from "@/lib/productImages";
 import { categories } from "@/data/products";
@@ -499,7 +501,11 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
     const linked = (post.productLinks ?? []).filter((l) => bySlug.has(l.slug));
     // Samat tuotenostot kuin React-sivulla (src/data/blogProducts.ts): keskellä ja lopussa.
     const theme = getBlogProductTheme(post.slug);
-    const { mid, end } = splitBlogProducts(selectBlogProducts(theme, products));
+    // 24.11.2026: Top 3 H1:n alle (sama kuin React-sivulla), muut nostot niiden jälkeen.
+    const valitut = selectBlogProducts(theme, products);
+    const top3 = valitut.slice(0, 3);
+    const { mid, end } = splitBlogProducts(valitut.slice(3));
+    const vastaus = BLOG_VASTAUKSET[post.slug];
     const productLinks = (list: Product[]) =>
       list.map((p) => ({ href: `/tuote/${p.slug}`, label: p.name, note: formatPriceFi(p.price) }));
     const cta = { href: theme.href, label: `Katso tuotteet: ${theme.name}` };
@@ -514,8 +520,9 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
       h1: post.title,
       ogType: "article" as const,
       breadcrumbs: [HOME, crumb("Blogi", "/blogi"), crumb(post.title, path)],
-      intro: [post.excerpt],
+      intro: vastaus ? [vastaus, post.excerpt] : [post.excerpt],
       sections: [
+        ...(top3.length > 0 ? [{ heading: "Top 3", links: productLinks(top3) }] : []),
         { markdown: before },
         ...(mid.length > 0 ? [{ heading: theme.heading, links: [...productLinks(mid), cta] }] : []),
         ...(after.trim() ? [{ markdown: after }] : []),
@@ -527,7 +534,7 @@ function buildBlogPosts(products: Product[]): PrerenderPage[] {
       ],
       faqs,
       // Sama Article + FAQPage + ItemList -graafi kuin selaimessa (src/lib/blogJsonLd.ts).
-      jsonLd: [buildBlogPostJsonLd(post, faqs, [...mid, ...end.filter((p) => !mid.includes(p))])],
+      jsonLd: [buildBlogPostJsonLd(post, faqs, [...top3, ...mid, ...end.filter((p) => !mid.includes(p))])],
     };
   });
 }
@@ -815,8 +822,8 @@ export function buildProductPage(product: Product, all: Product[]): PrerenderPag
   const lahja = sopiiLahjaksi(product);
   return {
     path,
-    title: override?.seoTitle ?? hakuotsikko(product),
-    description: override?.metaDescription ?? (override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription),
+    title: override?.seoTitle ?? TUOTE_META[product.slug]?.seoTitle ?? hakuotsikko(product),
+    description: override?.metaDescription ?? TUOTE_META[product.slug]?.metaDescription ?? (override ? truncateAtWord(override.description.replace(/\s+/g, " "), 155) : copy.shortDescription),
     h1: product.name,
     price: product.price,
     images: imageAlts,

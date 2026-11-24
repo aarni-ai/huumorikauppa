@@ -143,7 +143,7 @@ describe("rakenteinen data: kaikki esirenderöidyt sivut", () => {
     expect([...htmlByPath.keys()].some((p) => p.startsWith("/blogi/"))).toBe(true);
   });
 
-  it("JSON-LD on kelvollista, ei ajatusviivoja eikä arvioita, eikä Productia muualla kuin tuotesivulla", () => {
+  it("JSON-LD on kelvollista, ei ajatusviivoja eikä arvioita, Product vain tuotesivulla ja täytenä blogin ItemListissä", () => {
     for (const [path, html] of htmlByPath) {
       const blocks = extractJsonLd(html);
       expect(blocks.length, path).toBeGreaterThan(0);
@@ -154,8 +154,12 @@ describe("rakenteinen data: kaikki esirenderöidyt sivut", () => {
         expect("aggregateRating" in o || "review" in o, `${path}: aggregateRating/review`).toBe(false);
         expect(["AggregateRating", "Review"].includes(o["@type"]), `${path}: ${o["@type"]}`).toBe(false);
       }
-      const productCount = objs.filter((o) => o["@type"] === "Product").length;
-      expect(productCount, path).toBe(path.startsWith("/tuote/") ? 1 : 0);
+      const tuotteet = objs.filter((o) => o["@type"] === "Product");
+      if (path.startsWith("/tuote/")) expect(tuotteet.length, path).toBe(1);
+      // 24.11.2026: blogien ItemList sisältää täydet Product-kohteet (nimi, kuva, tarjous), koska blogisivu näyttää
+      // tuotekortit hintoineen. Vajaata Productia (ilman offersia) ei sallita missään.
+      else if (path.startsWith("/blogi/")) for (const t of tuotteet) expect(t.offers && t.name && t.image, `${path}: vajaa Product`).toBeTruthy();
+      else expect(tuotteet.length, path).toBe(0);
     }
   });
 

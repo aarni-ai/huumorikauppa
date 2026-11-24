@@ -1,4 +1,10 @@
-import { useLayoutEffect, useMemo, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
+import { ProductCard } from "@/components/ProductCard";
+import { BLOG_VASTAUKSET } from "@/data/blogVastaukset";
+import { kirjaaBlogi } from "@/lib/blogiseuranta";
+import { useCartContext } from "@/context/CartContext";
+import { JOULU_PAIVA_LYHYT, jouluAuki } from "@/data/tilauspaivat";
+import type { Product } from "@/types/product";
 import { revealApp } from "@/lib/prerenderPreview";
 import { useParams, Link } from "react-router-dom";
 import { SEOHead } from "@/components/SEOHead";
@@ -26,8 +32,27 @@ import {
 import { buildBlogPostJsonLd, blogImageUrl } from "@/lib/blogJsonLd";
 import { ILMAINEN_RAJA_TEKSTI, TOIMITUSAIKA_TEKSTI, TOIMITUSMAKSU_TEKSTI } from "@/config/toimitus";
 
+/** Tekstin tuotelinkkien slugit ([nimi](/tuote/slug)). */
+const tuoteSlugit = (teksti: string) => [...teksti.matchAll(/\]\(\/tuote\/([a-z0-9-]+)\)/g)].map((m) => m[1]);
+
+/**
+ * Tekstin tuotekortit (24.11.2026): jokainen tekstissä mainittu tuote näkyy kappaleen tai listan perässä klikattavana
+ * korttina, jossa on kuva, hinta ja "Lisää koriin". Kukin tuote kerran artikkelia kohden (naytetyt).
+ */
+function tekstinKortit(teksti: string, tuotteet: Map<string, Product> | null, naytetyt: Set<string>, avain: string): JSX.Element | null {
+  if (!tuotteet) return null;
+  const kortit = tuoteSlugit(teksti).filter((s) => !naytetyt.has(s) && tuotteet.has(s));
+  if (!kortit.length) return null;
+  for (const s of kortit) naytetyt.add(s);
+  return (
+    <div key={avain} className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-4 not-prose">
+      {kortit.map((s) => <ProductCard key={s} product={tuotteet.get(s)!} lisaaKoriinNappi />)}
+    </div>
+  );
+}
+
 /** Artikkelin teksti; midBlock (tuotenosto) lisätään blogMidInsertLine-riville (kahden osion jälkeen). */
-function renderContent(content: string, midBlock: ReactNode) {
+function renderContent(content: string, midBlock: ReactNode, tuotteet: Map<string, Product> | null = null, naytetyt: Set<string> = new Set()) {
   const lines = content.split("\n");
   const elements: JSX.Element[] = [];
   let listItems: string[] = [];
@@ -35,6 +60,7 @@ function renderContent(content: string, midBlock: ReactNode) {
 
   const flushList = () => {
     if (listItems.length > 0) {
+      const kortit = tekstinKortit(listItems.join("\n"), tuotteet, naytetyt, `kortit-lista-${elements.length}`);
       elements.push(
         <ul key={`list-${elements.length}`} className="space-y-2 ml-1 my-4">
           {listItems.map((item, j) => (
@@ -45,6 +71,7 @@ function renderContent(content: string, midBlock: ReactNode) {
           ))}
         </ul>
       );
+      if (kortit) elements.push(kortit);
       listItems = [];
     }
   };
@@ -86,6 +113,8 @@ function renderContent(content: string, midBlock: ReactNode) {
           {renderInlineFormatting(trimmed)}
         </p>
       );
+      const kortit = tekstinKortit(trimmed, tuotteet, naytetyt, `kortit-${i}`);
+      if (kortit) elements.push(kortit);
     }
   }
   flushList();
@@ -149,6 +178,18 @@ const BlogPost = () => {
     () => (allProducts ? selectBlogProducts(productTheme, allProducts) : null),
     [allProducts, productTheme],
   );
+  // Tuotteet slugin mukaan: tekstin tuotekortit (vain myynnissä olevat, joilla on hinta).
+  const tuotteetSlugilla = useMemo(
+    () => (allProducts ? new Map(allProducts.filter((p) => p.price > 0).map((p) => [p.slug, p as Product])) : null),
+    [allProducts],
+  );
+  // Blogien konversioseuranta (src/lib/blogiseuranta.ts): näyttö kerran, koriin lisäys blogisivulla.
+  const { lastAddedItem } = useCartContext();
+  const ensimmainenLisays = useRef(lastAddedItem);
+  useEffect(() => { if (slug && post) kirjaaBlogi("naytto", slug); }, [slug, post]);
+  useEffect(() => {
+    if (lastAddedItem && lastAddedItem !== ensimmainenLisays.current && slug) kirjaaBlogi("kori", slug);
+  }, [lastAddedItem, slug]);
 
   if (!post) {
     return (
@@ -183,10 +224,13 @@ const BlogPost = () => {
 
   // Ladattaessa varataan korttien tila; jos haku epäonnistuu, lohkot jätetään pois.
   const ideatEnsin = abVersio("blogi") === "b";
-  const split = blogProducts ? splitBlogProducts(blogProducts) : null;
+  // Top 3 (24.11.2026): kolme ensimmäistä teeman tuotetta H1:n alle; muut nostot niiden jälkeen.
+  const top3 = blogProducts ? blogProducts.slice(0, 3) : null;
+  const split = blogProducts ? splitBlogProducts(blogProducts.slice(3)) : null;
+  const naytetyt = new Set<string>((top3 || []).map((p) => p.slug));
   const midProducts = split ? split.mid : isError ? [] : null;
   const endProducts = split ? split.end : isError ? [] : null;
-  const combinedJsonLd = buildBlogPostJsonLd(post, blogFaqs, split ? [...split.mid, ...split.end.filter((p) => !split.mid.includes(p))] : []);
+  const combinedJsonLd = buildBlogPostJsonLd(post, blogFaqs, split ? [...(top3 || []), ...split.mid, ...split.end.filter((p) => !split.mid.includes(p))] : []);
 
   return (
     <div className="min-h-screen">
@@ -254,12 +298,31 @@ const BlogPost = () => {
 
         {/* A/B-testi blogi (src/lib/abTestit.ts): versio b näyttää artikkelin tuoteideat heti otsikon alla, koska
             blogista tuleva kävijä hakee ideoita; versio a tekstin keskellä kuten ennen. */}
+        {/* Suora vastaus ja Top 3 heti H1:n alle (24.11.2026, AEO ja konversio). */}
+        <section aria-label="Lyhyt vastaus ja suosituimmat" className="mb-8"
+          onClickCapture={(e) => { if ((e.target as HTMLElement).closest?.('a[href^="/tuote/"]')) kirjaaBlogi("tuote", post.slug); }}>
+          {BLOG_VASTAUKSET[post.slug] && (
+            <p className="text-base leading-relaxed text-foreground border-l-4 border-primary pl-4 mb-5">{BLOG_VASTAUKSET[post.slug]}</p>
+          )}
+          {top3 && top3.length > 0 && (
+            <>
+              <h2 className="font-display text-lg text-foreground mb-3">Top 3</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {top3.map((p) => <ProductCard key={p.slug} product={p as Product} lisaaKoriinNappi />)}
+              </div>
+            </>
+          )}
+        </section>
+
         {ideatEnsin && <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />}
 
-        <div className="text-muted-foreground">
+        <div className="text-muted-foreground"
+          onClickCapture={(e) => { if ((e.target as HTMLElement).closest?.('a[href^="/tuote/"]')) kirjaaBlogi("tuote", post.slug); }}>
           {renderContent(
             post.content,
             ideatEnsin ? null : <BlogProductStrip theme={productTheme} products={midProducts} count={BLOG_MID_COUNT} variant="mid" />,
+            tuotteetSlugilla,
+            naytetyt,
           )}
         </div>
 
@@ -389,6 +452,16 @@ const BlogPost = () => {
           <NewsletterBoxLazy lahde="blogi" />
         </div>
       </article>
+
+      {/* Mobiilin kiinteä alapalkki (24.11.2026): joulun viimeinen tilauspäivä ja ilmainen toimitus. Vain tilausaikana. */}
+      {jouluAuki() && (
+        <>
+          <div className="h-12 md:hidden" aria-hidden="true" />
+          <div className="fixed inset-x-0 bottom-0 z-40 md:hidden bg-primary text-primary-foreground text-center text-xs font-semibold px-3 py-2.5 shadow-lg">
+            Joulun viimeinen tilauspäivä {JOULU_PAIVA_LYHYT.replace(/\d{4}$/, "")} Ilmainen toimitus 2 tuotteesta.
+          </div>
+        </>
+      )}
     </div>
   );
 };

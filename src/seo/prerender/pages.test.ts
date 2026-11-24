@@ -135,7 +135,7 @@ describe("llms.txt", () => {
   it("states delivery, returns and contact facts without dashes", () => {
     expect(short).toContain("4-15 arkipäivää");
     expect(short).toContain(`${TOIMITUSMAKSU_TEKSTI} €`);
-    expect(short).toContain(`${ILMAINEN_RAJA_TEKSTI} euron tilauksista alkaen toimitus on ilmainen`);
+    expect(short).toContain(`Ilmainen toimitus kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta`);
     expect(short).toContain("14 päivän peruutusoikeus");
     expect(short).toContain("huumorikauppa@gmail.com");
     expect(short).toContain("Mukeja ei tällä hetkellä myydä.");

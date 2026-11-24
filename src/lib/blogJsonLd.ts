@@ -2,8 +2,10 @@ import type { BlogPost } from "@/types/blog";
 
 const SITE = "https://huumorikauppa.fi";
 
+// Sama @id kuin sivuston Organization-skeemassa (src/seo/structuredData.ts: Uusiku Oy, Y-tunnus).
 const ORGANIZATION = {
   "@type": "Organization",
+  "@id": `${SITE}/#organization`,
   "name": "Huumorikauppa",
   "url": SITE,
 };
@@ -20,11 +22,11 @@ export function blogImageUrl(image: string | undefined): string | undefined {
  * Blogiartikkelin rakenteinen data: Article + FAQPage samassa @graph-rakenteessa.
  * Yleinen kaikille artikkeleille; kuva lisätään vain, jos artikkelilla on sellainen.
  *
- * Artikkelin tuotenostot merkitään ItemListinä, jonka ListItem-kohteilla on vain position ja url
- * (tuotesivun osoite). Ei Product-kohteita: blogisivulla ei ole tarjoustietoja, ja vajaa Product
- * (ilman offersia) on Googlen Product snippets -virhe. Täydet Product-tiedot ovat tuotesivuilla.
+ * Artikkelin tuotenostot merkitään ItemListinä. 24.11.2026: blogisivulla näkyvät tuotekortit hintoineen (Top 3 ja
+ * tekstin kortit), joten ListItem sisältää Product-kohteen (nimi, kuva, tarjous), kun tuotteella on hinta ja kuva.
+ * Ilman niitä vain position ja url (vajaa Product ilman offersia on Googlen virhe).
  */
-export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[], products: { slug: string }[] = []) {
+export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[], products: { slug: string; name?: string; price?: number; images?: string[] }[] = []) {
   const url = `${SITE}/blogi/${post.slug}`;
   const image = blogImageUrl(post.image);
 
@@ -61,11 +63,31 @@ export function buildBlogPostJsonLd(post: BlogPost, faqs: BlogFaq[], products: {
       "@id": `${url}#tuotteet`,
       "name": `Tuotteet: ${post.title}`,
       "numberOfItems": products.length,
-      "itemListElement": products.map((p, i) => ({
-        "@type": "ListItem",
-        "position": i + 1,
-        "url": `${SITE}/tuote/${p.slug}`,
-      })),
+      "itemListElement": products.map((p, i) => {
+        const tuoteUrl = `${SITE}/tuote/${p.slug}`;
+        const kuva = p.images?.[0];
+        if (!(p.price && p.price > 0 && kuva && p.name)) return { "@type": "ListItem", "position": i + 1, "url": tuoteUrl };
+        return {
+          "@type": "ListItem",
+          "position": i + 1,
+          "item": {
+            "@type": "Product",
+            "@id": `${tuoteUrl}#product`,
+            "name": p.name,
+            "url": tuoteUrl,
+            "image": /^https?:\/\//.test(kuva) ? kuva : `${SITE}${kuva.startsWith("/") ? "" : "/"}${kuva}`,
+            "brand": { "@type": "Brand", "name": "Huumorikauppa" },
+            "offers": {
+              "@type": "Offer",
+              "url": tuoteUrl,
+              "price": p.price.toFixed(2),
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock",
+              "seller": { "@id": `${SITE}/#organization` },
+            },
+          },
+        };
+      }),
     });
   }
   if (faqs.length > 0) {

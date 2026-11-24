@@ -463,6 +463,13 @@ export async function kasittele(req, res, store, { arviot = async (slug) => arvi
       const { kirjaaLisamyynti } = await import("./_lib/lisamyynti.js");
       return res.status(200).json({ ok: await kirjaaLisamyynti(seuranta, teksti(body.tapahtuma, 30)) });
     }
+    case "blogi": {
+      // Blogien konversioseuranta (api/_lib/blogiseuranta.js): näyttö, tuoteklikki, kori ja kassa blogeittain.
+      const ohita = await ohitaTaiBotti(req, body, "blogi", { vaadiAitous: body.tapahtuma === "naytto" });
+      if (ohita) return res.status(200).json({ ok: false, ohitettu: ohita });
+      const { kirjaaBlogitapahtuma } = await import("./_lib/blogiseuranta.js");
+      return res.status(200).json({ ok: await kirjaaBlogitapahtuma(seuranta, teksti(body.blogi, 120), teksti(body.tapahtuma, 20)) });
+    }
     case "pikkujoulu": {
       // Pikkujoulusivun seuranta (api/_lib/pikkujoulu-seuranta.js): sivu, paketin valinta, tarjouspyyntö. Vain aidot.
       const ohita = await ohitaTaiBotti(req, body, "pikkujoulu");

@@ -428,9 +428,14 @@ const Index = () => {
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {blogPosts
-            .slice()
-            .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+          {/* Joulusesonki (24.11.2026): joululahjaopas miehelle ensin, sitten uusimmat. */}
+          {[
+            ...blogPosts.filter((p) => p.slug === "hauskat-joululahjaideat-miehelle-2026"),
+            ...blogPosts
+              .filter((p) => p.slug !== "hauskat-joululahjaideat-miehelle-2026")
+              .slice()
+              .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()),
+          ]
             .slice(0, 4)
             .map(post => (
               <Link

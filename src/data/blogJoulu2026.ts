@@ -12,12 +12,12 @@ export const jouluOppaat2026: BlogPost[] = [
   // 1 ──────────────────────────────────────────────────────────────────────
   {
     slug: "hauskat-joululahjaideat-miehelle-2026",
-    title: "50 hauskaa joululahjaideaa miehelle 2026",
-    metaTitle: "50 hauskaa joululahjaideaa miehelle 2026 | Huumorikauppa",
-    metaDescription: "Hauska joululahja miehelle: 50 ideaa harrastuksen, työn, iän ja huumorintajun mukaan. Lisäksi vinkit koon valintaan ja tilaamiseen ajoissa.",
+    title: "Joululahja miehelle 2026: 50 hauskaa joululahjaideaa",
+    metaTitle: "Joululahja miehelle 2026: 50 hauskaa ideaa | Huumorikauppa",
+    metaDescription: "Mitä miehelle joululahjaksi? 50 hauskaa joululahjaa miehelle harrastuksen, työn ja iän mukaan. Ilmainen toimitus kahdesta tuotteesta.",
     excerpt: "50 hauskaa joululahjaideaa miehelle ryhmiteltynä harrastuksen, työn, iän ja huumorityypin mukaan, sekä vinkit koon valintaan ja tilausaikatauluun.",
     publishedAt: "2026-10-21",
-    updatedAt: "2026-10-21",
+    updatedAt: "2026-11-24",
     category: "lahjaideat",
     tags: ["joululahja miehelle", "hauska joululahja", "joululahjaideat", "hauska lahja miehelle", "joulu 2026"],
     relatedCategories: ["t-paidat", "hupparit"],
@@ -129,9 +129,10 @@ Tätä kirjoitettaessa t-paidat maksavat ${HINTA.tpaitaHaarukka} ja hupparit alk
 
 Tuotteet painetaan tilauksesta painokumppaneillamme, joten niitä ei lähetetä hyllystä. ${jouluLause()} Lue tarkemmin [joululahjan tilausaikataulusta](/blogi/joululahjan-viimeiset-tilauspaivat-2026) tai selaa kaikkia [joululahjoja](/joululahjat).`,
     faq: [
+      { q: "Mitä miehelle joululahjaksi?", a: "Hauska paita tai huppari, jonka vitsi liittyy hänen harrastukseensa, työhönsä tai ikäänsä. Tämän oppaan 50 ideaa on ryhmitelty niin, että sopivan löytää lahjan saajan mukaan." },
+      { q: "Mikä on hyvä joululahja miehelle, jolla on kaikkea?", a: "Vitsi, jota hänellä ei vielä ole: tekstipaita tai huppari, jonka teksti kertoo hänestä itsestään. Lahja on henkilökohtainen ja käytännöllinen." },
       { q: "Mikä on hyvä hauska joululahja miehelle?", a: "Hyvä hauska joululahja liittyy miehen omaan harrastukseen, työhön tai ikään. Esimerkiksi kalastajalle kalastusaiheinen paita ja grillaajalle grillimestarin paita osuvat, koska vitsi koskee hänen omaa elämäänsä." },
       { q: "Paljonko hauska joululahja miehelle maksaa?", a: `Huumorikaupassa t-paita maksaa ${HINTA.tpaitaHaarukka} ja huppari alkaen ${HINTA.huppariAlkaen} tätä kirjoitettaessa. Toimitus on ${TOIMITUSMAKSU_TEKSTI} €, ja toimitus on ilmainen kahdesta tuotteesta tai ${ILMAINEN_RAJA_TEKSTI} eurosta.` },
-      { q: "Miten valitsen oikean koon vaatelahjaan?", a: "Mittaa hänen käyttämänsä paidan leveys ja pituus ja kysy tuotteen mitat sähköpostilla huumorikauppa@gmail.com. Pelkkä kokomerkintä ei riitä, koska eri valmistajien koot eroavat." },
       { q: "Milloin joululahja pitää tilata, jotta se ehtii jouluksi?", a: `${jouluLause()} Tuotteet painetaan tilauksesta painokumppaneillamme.` },
     ],
   },
@@ -1068,6 +1069,8 @@ Kaikki tuotteet painetaan tilauksesta painokumppaneillamme. ${jouluLause()} Toim
     content: `## Miksi välinelahja on riski
 
 Kalastaja, metsästäjä ja mökkeilijä ovat lahjan saajina samanlaisia: he tietävät tarkalleen, mitä tarvitsevat. Kalastajalla on mielipide jokaisesta vieheestä ja siimasta, metsästäjällä omat merkkinsä vaatteissa ja varusteissa, ja mökkeilijällä on mökillä jo kaikki, mitä hän on vuosien varrella sinne kantanut.
+
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
 
 Siksi välinelahja on riski. Jos et itse harrasta samaa lajia, on helppo ostaa väärä viehe, väärän kokoinen kahluuhousu tai työkalu, joka on mökillä jo kahtena kappaleena. Välineet hän ostaa mieluiten itse.
 

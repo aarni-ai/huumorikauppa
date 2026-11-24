@@ -170,8 +170,11 @@ export default async function handler(req, res) {
     const P = await import("../_lib/puskuri.js");
     const taulut = {};
     let eria = 0, riveja = 0;
-    for (const b of await P.listaaBlob(P.TAPAHTUMA_ETULIITE)) {
-      const era = await P.lueBlob(b.pathname).catch(() => null);
+    // 24.11.2026: erät rinnakkain 25 kerrallaan (255 erää ei mahtunut 60 s aikarajaan peräkkäin).
+    const blobit = await P.listaaBlob(P.TAPAHTUMA_ETULIITE);
+    const erat = [];
+    for (let i = 0; i < blobit.length; i += 25) erat.push(...await Promise.all(blobit.slice(i, i + 25).map((b) => P.lueBlob(b.pathname).catch(() => null))));
+    for (const era of erat) {
       if (!era) continue;
       eria++;
       for (const r of era.rivit || []) {

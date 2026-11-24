@@ -56,7 +56,7 @@ Teemoja ovat esimerkiksi ammattihuumori, kalastus, eläkeläishuumori sekä synt
 ## Toimitus
 - Toimitamme vain Suomeen, Postin tai Matkahuollon kautta.
 - Toimitusaika on ${days} arkipäivää tilauksesta.
-- Toimituskulut ovat ${fee}. ${SHIPPING.freeThresholdEur} euron tilauksista alkaen toimitus on ilmainen.
+- Toimituskulut ovat ${fee}. Ilmainen toimitus kahdesta tuotteesta tai ${SHIPPING.freeThresholdEur} eurosta.
 - Joulu 2026: ${jouluLause()}
 - Noutoa ei ole.
 
@@ -100,7 +100,7 @@ function giftLinks(): string {
 export function buildLlmsTxt(products: Product[]): string {
   return withoutDashes(`# Huumorikauppa.fi
 
-> Suomalainen verkkokauppa: hauskat t-paidat, hupparit ja muut huumorituotteet. Toimitus Suomeen ${days} arkipäivässä, ilmainen ${SHIPPING.freeThresholdEur} eurosta alkaen, ${RETURNS.days} päivän peruutusoikeus.
+> Suomalainen verkkokauppa: hauskat t-paidat, hupparit ja muut huumorituotteet. Toimitus Suomeen ${days} arkipäivässä, ilmainen toimitus kahdesta tuotteesta tai ${SHIPPING.freeThresholdEur} eurosta, ${RETURNS.days} päivän peruutusoikeus.
 
 ${factsSection(products)}
 

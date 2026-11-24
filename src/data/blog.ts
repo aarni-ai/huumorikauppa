@@ -327,6 +327,8 @@ ${jouluLause()}
 
 Kaikki hauskat lahjat miehelle samalla sivulla: [hauskat lahjat miehelle](/hauskat-lahjat-miehelle). Pyöreitä täyttävälle katso [lahja miehelle 30v, 40v, 50v ja 60v](/blogi/lahja-miehelle-30v-40v-50v-60v).
 
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
+
 Miehelle lahjan ostaminen on tunnetusti Suomen vaikein tehtävä heti verottajan lomakkeiden täyttämisen jälkeen. "Mitä antaa miehelle jolla on jo kaikkea?" on kysymys, joka pyörii miljoonien suomalaisten päässä joka syntymäpäivä, joulu ja isänpäivä.
 
 Hyvä uutinen: hauska lahja on aina oikea vastaus. Miehet rakastavat huumoria, ja lahja joka naurattaa on lahja joka muistetaan. Kokosimme 15 parasta hauskaa lahjaa miehelle - näistä löydät takuuvarmasti oikean lahjan isälle, kaverille, aviomiehelle, veljelle tai sedälle.
@@ -494,6 +496,8 @@ Hauska t-paita naurattaa päivittäin. Oma teksti tai kuva tekee siitä persoona
     content: `## Mitä antaa 50-vuotiaalle, jolla on jo kaikkea?
 
 Viisikymppisellä on yleensä jo hyvä kahvinkeitin, tarpeeksi sukkia ja kaapillinen työkaluja. Uusi tavara ei ilahduta, mutta osuva vitsi ilahduttaa. Siksi hauska 50v lahja on usein paita tai huppari, jossa on juuri hänen huumorinsa.
+
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
 
 Kaikki alla olevat tuotteet ovat valikoimassa, ja jokaisesta on linkki tuotesivulle.
 
@@ -1155,8 +1159,8 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
   {
     slug: "lahja-miehelle-30v-40v-50v-60v",
     title: "Lahja miehelle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
-    metaTitle: "50v lahja miehelle ja 30v, 40v, 60v | Huumorikauppa.fi",
-    metaDescription: `Hauska 50v lahja miehelle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat alkaen ${HINTA.tpaitaUniikki} ja hupparit alkaen ${HINTA.huppariAlkaen}. Toimitus 3-10 arkipäivää.`,
+    metaTitle: "Lahja miehelle 30v, 40v, 50v ja 60v | Huumorikauppa",
+    metaDescription: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle miehelle? Hauskat paidat ja hupparit ikävuosittain. Ilmainen toimitus kahdesta tuotteesta.",
     excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle miehelle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä on itse vitsi.",
     publishedAt: "2023-03-15",
     updatedAt: "2026-10-29",
@@ -1165,6 +1169,8 @@ Laadukas paita kestävällä painatuksella kestää vuosia. Se ei mene pilalle p
     content: `## Lahja miehelle ikävuosittain: 30v, 40v, 50v ja 60v
 
 Hauska lahja pyöreitä täyttävälle miehelle on paita tai huppari, jossa ikä on itse vitsi. Huumorikaupassa jokaiselle pyöreälle iälle on omat tekstinsä, ja useimmista on sekä t-paita (alkaen ${HINTA.tpaitaUniikki}) että huppari (alkaen ${HINTA.huppariAlkaen}). Alla ideat iän mukaan, ja jokaisen kohdalla tuote, jonka voit tilata suoraan.
+
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
 
 ## 50v lahja miehelle
 
@@ -1249,8 +1255,8 @@ Paidat ja hupparit ovat unisex-mallia, koot S-5XL. Jokaisella tuotesivulla on ko
   {
     slug: "lahja-naiselle-30v-40v-50v-60v",
     title: "Lahja naiselle 30v, 40v, 50v ja 60v: hauskat lahjaideat ikävuosittain",
-    metaTitle: "50v lahja naiselle ja 30v, 40v, 60v | Huumorikauppa.fi",
-    metaDescription: `Hauska 50v lahja naiselle sekä 30-, 40- ja 60-vuotiaalle: ikävuositeemaiset t-paidat alkaen ${HINTA.tpaitaUniikki} ja hupparit alkaen ${HINTA.huppariAlkaen}. Toimitus 3-10 arkipäivää.`,
+    metaTitle: "Lahja naiselle 30v, 40v, 50v ja 60v | Huumorikauppa",
+    metaDescription: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle naiselle? Hauskat paidat ja hupparit ikävuosittain. Ilmainen toimitus kahdesta tuotteesta.",
     excerpt: "Mitä lahjaksi 30-, 40-, 50- tai 60-vuotiaalle naiselle? Ikävuosittain valitut hauskat paidat ja hupparit, joissa ikä käännetään kehuksi.",
     publishedAt: "2023-06-10",
     updatedAt: "2026-10-29",
@@ -1877,6 +1883,8 @@ Kaikki mallit löydät sivulta [hauskat hupparit](/kategoria/hupparit).
     content: `## Hauska lahja kaverille
 
 Kaverin tunnet paremmin kuin kukaan muu, joten paras lahja on teidän yhteinen vitsinne. Alla on 12 ideaa, jotka kaikki löytyvät valikoimasta.
+
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
 
 ## Meemipaita kaverille
 

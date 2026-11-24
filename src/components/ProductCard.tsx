@@ -19,6 +19,11 @@ interface ProductCardProps {
   product: Product;
   /** Näkyvä Osta-painike (blogi-, sarja- ja laskeutumissivut): hakukävijä pääsee tuotesivulle ja koriin kahdella klikkauksella. */
   ostaNappi?: boolean;
+  /**
+   * Näkyvä "Lisää koriin" -painike kaikilla laitteilla (blogien Top 3 ja tekstin tuotekortit, 24.11.2026): koko ja väri
+   * valitaan kortissa, ja tuote lisätään koriin poistumatta sivulta.
+   */
+  lisaaKoriinNappi?: boolean;
 }
 
 const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
@@ -95,7 +100,7 @@ function getHoverImage(product: Product): string | null {
   return null;
 }
 
-export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
+export function ProductCard({ product, ostaNappi = false, lisaaKoriinNappi = false }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [canUseHover, setCanUseHover] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -361,7 +366,13 @@ export function ProductCard({ product, ostaNappi = false }: ProductCardProps) {
           </span>
           {naytettava !== product.price && <span className="text-[11px] font-semibold text-primary">Ilmainen toimitus</span>}
         </div>
-        {ostaNappi && (
+        {lisaaKoriinNappi && !showOptions && (
+          <button type="button" onClick={handleQuickAdd} data-blogi="kori"
+            className="mt-1 flex items-center justify-center gap-1.5 w-full min-h-[40px] rounded-md bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90">
+            <ShoppingCart className="h-4 w-4" aria-hidden="true" /> Lisää koriin
+          </button>
+        )}
+        {ostaNappi && !lisaaKoriinNappi && (
           <span className="mt-1 flex items-center justify-center gap-1.5 w-full min-h-[40px] rounded-md bg-primary text-primary-foreground text-sm font-bold">
             <ShoppingCart className="h-4 w-4" aria-hidden="true" /> Osta
           </span>

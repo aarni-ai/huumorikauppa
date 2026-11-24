@@ -115,8 +115,8 @@ Tuotteemme painetaan tilauksesta painokumppaneillamme. ${AIKATAULU} ${TOIMITUS}`
   {
     slug: "pikkujouluasu-2026",
     title: "Pikkujouluasu 2026: rento ja hauska asu miehille ja naisille",
-    metaTitle: "Pikkujouluasu 2026 miehille ja naisille | Huumorikauppa",
-    metaDescription: "Pikkujouluasu 2026: näin kokoat rennon ja hauskan asun pikkujouluihin, kun juhlan teema on vapaa, ja vinkit porukan yhteisiin paitoihin.",
+    metaTitle: "Pikkujouluasu 2026: hauska ja rento asu | Huumorikauppa",
+    metaDescription: "Pikkujouluasu 2026 miehille ja naisille: hauska tekstipaita tai huppari farkkujen kanssa. Valmiit asuideat ja jouluteemaiset paidat.",
     excerpt: "Pikkujouluasun ei tarvitse olla juhlapuku. Kun dresscode on rento, hauska tekstipaita ja huppari kertovat illan tunnelman ennen kuin ensimmäinen glögi on kaadettu.",
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
@@ -198,8 +198,8 @@ Pikkujouluja vietetään marraskuun lopulta joulukuun puoliväliin. Tuotteemme p
   {
     slug: "pikkujoulu-teema-ideat",
     title: "Pikkujoulu teema ideoita: 7 teemaa, jotka saavat porukan pukeutumaan",
-    metaTitle: "Pikkujoulu teema ideoita: 7 helppoa teemaa | Huumorikauppa",
-    metaDescription: "Pikkujoulu teema ideoita: tonttuilta, karaoke, ammattipäivä, Suomi-ilta, joulusauna ja porukan oma paita. Näin teema toimii käytännössä.",
+    metaTitle: "Pikkujoulun teema 2026: 7 helppoa ideaa | Huumorikauppa",
+    metaDescription: "Pikkujoulun teema, johon jokainen pukeutuu ilman vaivaa: 7 teemaa ohjeineen ja hauskat teemapaidat koko porukalle.",
     excerpt: "Hyvä pikkujoulun teema on helppo toteuttaa ja hauska kaikille. Tässä seitsemän teemaa, ohjeet niiden järjestämiseen ja ideat asuihin.",
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
@@ -403,6 +403,8 @@ Tuotteemme painetaan tilauksesta painokumppaneillamme. ${TOIMITUS} Lisää ideoi
     content: `## Kaksi tilannetta, kaksi tapaa valita
 
 Pikkujoululahja miehelle ostetaan yleensä kahdessa tilanteessa. Joko lahja menee lahjapeliin, jolloin saajaa ei tiedetä, tai lahja on nimetty, esimerkiksi salaisen joulupukin arvonnassa. Kummassakin tilanteessa hauska lahja toimii, kun vitsi on yleinen ja hyväntahtoinen.
+
+**Joululahja miehelle 2026:** katso [50 hauskaa joululahjaideaa miehelle](/blogi/hauskat-joululahjaideat-miehelle-2026).
 
 Ennen kuin valitset, tarkista porukan sovittu hintaraja. Jos raja on matala, katso vinkit oppaasta [pikkujoululahja alle 20 euroa](/blogi/pikkujoululahja-alle-20-euroa). Hinnat näet tuotekorteista.
 

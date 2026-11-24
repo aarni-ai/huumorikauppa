@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { JouluTakarajaRivi } from "@/components/JouluTakaraja";
 import { jouluAvain } from "@/data/jouluAikataulu";
 import { kirjaaVaihe, nahtyVersio } from "@/lib/suppilo";
+import { kirjaaBlogiKassa } from "@/lib/blogiseuranta";
 import { toimitusVersio } from "@/lib/toimitustesti";
 import { arvottuVersio } from "@/lib/abTestit";
 import { saapumisTiedot } from "@/lib/kaynti";
@@ -194,6 +195,8 @@ const CheckoutPage = () => {
       }
       if (data?.url) {
         kirjaaVaihe("maksu");
+        // Blogikäynnin kävijä siirtyi maksuun (src/lib/blogiseuranta.ts; ei mitään ilman blogikäyntiä).
+        kirjaaBlogiKassa();
         window.location.href = data.url;
       } else {
         throw new Error("Stripe-sessiota ei voitu luoda");
