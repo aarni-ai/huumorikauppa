@@ -3,6 +3,50 @@
 Tavoite 3 000 €/kk nettokate, alkaen joulusesongista 2026. Sisältö- ja SEO-muutokset `main`-haarassa (tuotanto),
 kassa-, tilaus-, maksu- ja tietokantamuutokset vain `oma-tausta`-haarassa. Päivitetty 27.10.2026 (uusi tausta valmiina, joulumyynti, syöte, yritysvaihto MYYJA-muuttujalla).
 
+## 24.11.2026 myöhäisilta: joulumyyntiajo, kaikki ajastettu (commit 7f1f5e8, tuotannossa)
+
+**Indeksointi (Search Console, URL-tarkistus 20 eniten klikatulle sivulle 28 pv, 23.11. tilannekuva)**
+- 16 sivua indeksissä.
+- /isanpaiva-lahjat: "Page with redirect", 301 sivulle /hauska-isanpaivalahja, joka on indeksissä. Tarkoituksellinen.
+- 3 sivua pudonnut indeksistä katkon takia, syy "Blocked due to other 4xx issue" (Google haki ne 24.11. aamulla, kun
+  vanha projekti palautti virheen): `/`, `/blogi/parhaat-hauskat-lahjat-miehelle`, `/tuote/tonnin-seteli-t-paita`.
+  Kaikki kolme vastaavat nyt 200, robots index ja oma canonical (tarkistettu kolmella käyttäjäagentilla).
+- Toimenpiteet: sitemap https://huumorikauppa.fi/sitemap.xml lähetetty uudelleen (Submitted successfully, 1 479 sivua),
+  IndexNow-ping 1 479 osoitetta 200 OK (kahdesti, myös julkaisun lopussa). "Request indexing" -pyyntöä ei tehty.
+- Indeksointiraportti: 1,5 t. indeksissä, "Blocked due to access forbidden (403)" 180 sivua, validointi käynnissä.
+
+**Arvostelupyynnöt (api/_lib/markkinointi.js)**
+- Aikaisintaan 7 päivää Printifyn vahvistamasta toimituksesta (delivered_at), vain maksetut ja toimitetut tilaukset,
+  kerran per asiakas (sähköpostiosoite, myös saman ajon sisällä), peruutus ohittaa.
+- Viesti: "Mitä tykkäsit? Tilaus #X", 4 riviä, linkki paljaana osoitteena, ei tuotenostoja, koodeja eikä tarjouksia.
+- Ajo tunnin valvonnassa (ajaMarkkinointi), vaatii tietokannan: lähtee, kun Neon palaa (kiintiö nollautuu arviolta 1.12.).
+
+**Joulun aikataulu (src/data/tilauspaivat.ts joulunLahjakorttiAika)**
+- Ke 2.12. klo 23.59 jälkeen 26.12. loppuun "Ehtii vielä jouluksi: lahjakortti perille heti sähköpostilla":
+  yläpalkki (3.-4.12. t-paitojen lause perässä), etusivun Suosituimmat (lahjakortti 1. tuote), blogien Top 3
+  (lahjakortti 1.) ja mobiilipalkki, tuotesivun ostotiedot ja kiinteä ostopalkki. Fyysisten tuotteiden toimitusaika
+  näkyy ennallaan. 27.12. alkaen normaali.
+- Näkyy vain, kun lahjakortit ovat myynnissä ja oma sähköposti on käytössä (/api/sahkoposti?tila=1), jotta lupaus pitää.
+  Lahjakortin osto vaatii tietokannan.
+- Testit kiinnitetyllä kellolla: 2.12. 23.59, 3.12., 26.12. 23.59, 27.12. (src/test/joulunLahjakortti.test.tsx).
+
+**Yrityssivu /pikkujoulut-yritykset (src/data/pikkujoulutKausi.ts)**
+- To 26.11. loppuun pikkujoulupaketit, pe 27.11. alkaen samassa osoitteessa "Tiimipaidat kevään tapahtumiin ja
+  virkistyspäiviin": määräalennus, logopaita, toimitusaika, lasku, linkit /yritykset/tilaus ja /yritykset. Title, meta,
+  H1, UKK ja esirenderöinti samasta päivälogiikasta. Sivua ei poistettu.
+- Vanhentuvat "tilaa viimeistään to 26.11." -rivit piiloutuvat takarajan jälkeen: /yritykset, /yritykset/<ala>,
+  /yritykset/tilaus, alasivujen UKK ja yritysblogien aikataululause.
+
+**Ajastukset**
+- scripts/katalogi.mjs (launchd :04): rajapäivinä 27.11., 3.12. ja 27.12. julkaisu heti päivän ensimmäisessä ajossa,
+  jotta esirenderöity HTML vaihtuu. Vain puhtaasta työpuusta, kerran päivässä.
+- scripts/data-haku.mjs (maanantaisin): uusi "Search Console 7 pv" ja "Viikkovertailu" (.cowork/syote/<pvm>-viikkovertailu.csv):
+  klikkaukset viikko viikolta ja koriin lisäysten osuus tuotesivun kävijöistä. Ensimmäinen koeajo (Blob, kanta kiinni):
+  tuotesivun kävijät 33 vs 57, koriin 1 vs 2, osuus 3,0 % vs 3,5 %; Search Console 28 pv klikkaukset 1 599 (23.11.) vs
+  1 120 (9.11.). 7 päivän vertailu alkaa, kun kaksi maanantain tilannekuvaa on olemassa.
+
+**Julkaisu**: julkaise-uusi.sh: esitestit, savutesti 3 UA:lla, promote, IndexNow 200 OK. Testit 2 391 läpi, tsc ja vite build ok.
+
 ## 24.11.2026 ilta: KATKO KORJATTU, domain uudessa projektissa, Resend käytössä, tuotesivun kokovalinta
 
 **Domain**
